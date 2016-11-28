@@ -21,7 +21,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 //		echo phpinfo(); die();
-		echo 'Shervin\'s Playgrounds'; die();
+		echo 'Cooking... V1 release date: Dec 30th 2016 @ 11:59p'; die();
 		$this->load->view('welcome_message');
 	}
 }
