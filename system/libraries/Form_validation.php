@@ -164,7 +164,7 @@ class CI_Form_validation {
 	 * @param	array	$errors
 	 * @return	CI_Form_validation
 	 */
-	public function set_rules($field, $label = null, $rules = null, $errors = array())
+	public function set_rules($field, $label = '', $rules = array(), $errors = array())
 	{
 		// No reason to set rules if we have no POST data
 		// or a validation array has not been specified
@@ -196,10 +196,6 @@ class CI_Form_validation {
 			}
 
 			return $this;
-		}
-		elseif ( ! isset($rules))
-		{
-			throw new BadMethodCallException('Form_validation: set_rules() called without a $rules parameter');
 		}
 
 		// No fields or no rules? Nothing to do...
@@ -1233,9 +1229,9 @@ class CI_Form_validation {
 	 */
 	public function valid_email($str)
 	{
-		if (function_exists('idn_to_ascii') && $atpos = strpos($str, '@'))
+		if (function_exists('idn_to_ascii') && sscanf($str, '%[^@]@%s', $name, $domain) === 2)
 		{
-			$str = substr($str, 0, ++$atpos).idn_to_ascii(substr($str, $atpos));
+			$str = $name.'@'.idn_to_ascii($domain);
 		}
 
 		return (bool) filter_var($str, FILTER_VALIDATE_EMAIL);
@@ -1527,7 +1523,12 @@ class CI_Form_validation {
 	 */
 	public function prep_url($str = '')
 	{
-		if ($str !== '' && stripos($str, 'http://') !== 0 && stripos($str, 'https://') !== 0)
+		if ($str === 'http://' OR $str === '')
+		{
+			return '';
+		}
+
+		if (strpos($str, 'http://') !== 0 && strpos($str, 'https://') !== 0)
 		{
 			return 'http://'.$str;
 		}
