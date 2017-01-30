@@ -66,7 +66,7 @@ class Us_model extends CI_Model {
 			//$ps = $this->fetch_pattern_from_id(intval($node_link_id));
 		}
 	
-		$this->db->select('id,node_id,parent,value_string');
+		$this->db->select('*');
 		$this->db->from('us');
 		$this->db->where_in('parent',array(2));
 		$this->db->where('status >',0);

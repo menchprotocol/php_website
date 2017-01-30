@@ -157,7 +157,7 @@ echo '</div>';
 	
 	<div class="container" style="padding-left:5px;">
 		<footer class="outsider">
-	        <p><a href="/US">#US</a><span>Open Source AI</span></p>
+	        <p><a href="/US">#US</a><span>Open source micro education content management.</span></p>
 	        <p><a href="/Signup">#JoinToGrow</a> or <a href="/Login">#Login</a>
 	        <p>Hi <a href="/Shervin">#Shervin</a> Wanna <a href="/Logout">#Logout</a>?</p>
 	        <?php /* if(is_pattern_admin()){ ?>

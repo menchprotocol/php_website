@@ -11,6 +11,27 @@ function default_start(){
 	//Return the default start node for the current user, if any
 	return 'US';
 }
+function current_user_id(){
+	//TODO: Later change this based on session data
+	return 20;
+}
+function next_id(){
+	//TODO: These is a bug in the auto ID creation, need to look at it later
+	//This can be eliminated if the native ID incrementer works
+	$CI =& get_instance();
+	$new_id = $CI->Us_model->next_id();
+	return $new_id;
+}
+
+function http_404($message){
+	header("HTTP/1.1 404 ".$message);
+	die();
+}
+
+function valid_hashtag($text){
+	//TODO expand upon this, set hashtag policy, check first letter, etc...
+	return (ctype_alnum($text));
+}
 
 function all_ses_data(){
 	$CI =& get_instance();
