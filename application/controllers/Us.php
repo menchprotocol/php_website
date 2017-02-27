@@ -23,13 +23,12 @@ class Us extends CI_Controller {
 	
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
-		
-		$this->load->model('Us_model');
 	}
 
 	
 	
 	function index() {
+		$this->load->model('Us_model');
 		$top_users = $this->Us_model->fetch_top_users();
 		$this->load->view('shared/header' , array( 'title' => 'US' ));
 		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
@@ -38,6 +37,7 @@ class Us extends CI_Controller {
 	
 	
 	function load_profile($username){
+		$this->load->model('Us_model');
 		$top_users = $this->Us_model->fetch_top_users();
 		$this->load->view('shared/header' , array( 'title' => 'US' ));
 		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
