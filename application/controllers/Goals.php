@@ -7,8 +7,6 @@ class Goals extends CI_Controller {
 	
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
-		
-		$this->load->model('us/Us_model');
 	}
 	
 	function index(){
