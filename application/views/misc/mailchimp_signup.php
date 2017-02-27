@@ -1,5 +1,8 @@
 <!-- Begin MailChimp Signup Form -->
+<head>
 <meta name="google-site-verification" content="TSvUvs9NB1h_ccSm_ptFgR_fmUKKdlv1Un0eFPkMuF0" />
+</head>
+<body>
 <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 	#mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:300px;}
@@ -33,3 +36,4 @@
 </div>
 
 <!--End mc_embed_signup-->
+</body>
