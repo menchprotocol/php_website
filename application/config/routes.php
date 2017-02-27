@@ -50,9 +50,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-$route['default_controller'] = 'eatcircle'; //us
+if(substr_count($_SERVER['HTTP_HOST'],'eatcircle.com')>0){
+	$route['default_controller'] = 'eatcircle';
+} elseif(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0){
+	$route['default_controller'] = 'us/signup';
+} else {
+	$route['default_controller'] = 'us';
+}
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 //We can only have two types of URL: All number node ID, or mix character hashtag:
-$route['(:any)'] = "us/node/$1";
+//$route['(:any)'] = "us/node/$1";
+$route['template'] = "us/template";
+$route['goals'] = "goals/load_goal";
+$route['goals/(:any)'] = "goals/load_goal/$1";
+$route['us/signup'] = "us/signup";
+$route['us/(:any)'] = "us/load_profile/$1";
+$route['sources/(:any)'] = "source/load_source/$1";

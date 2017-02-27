@@ -28,12 +28,32 @@ class Us extends CI_Controller {
 	}
 
 	
-	function index($node_id) {
-		if(intval($node_id)<1){
-			//No node defined, redirect to starting node based on user data:
-			header("Location: /".default_start());
-		}
+	
+	function index() {
+		$top_users = $this->Us_model->fetch_top_users();
+		$this->load->view('shared/header' , array( 'title' => 'US' ));
+		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
+		$this->load->view('shared/footer');
 	}
+	
+	
+	function load_profile($username){
+		$top_users = $this->Us_model->fetch_top_users();
+		$this->load->view('shared/header' , array( 'title' => 'US' ));
+		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
+		$this->load->view('shared/footer');
+	}
+	
+	function signup() {
+		$this->load->view('misc/mailchimp_signup');
+	}
+	
+	
+	function template(){
+		//Only used to see sample code base for UI design
+		$this->load->view('misc/template');
+	}
+	
 	
 	function add(){
 		if(!isset($_GET['hashtagName']) || strlen($_GET['hashtagName'])<1){

@@ -1,10 +1,32 @@
 <?php
 
 
+
+function source_types($id=NULL){
+	$types = array(
+		1 => 'Book',
+		2 => 'Article',
+		3 => 'Video',
+		4 => 'Podcast',
+	);
+	
+	if($id && isset($types[$id])){
+		return $types[$id];
+	} else {
+		return $types;
+	}
+}
+
+
+
+
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	return 'v1.17';
 }
+
+
+
 
 
 function default_start(){
