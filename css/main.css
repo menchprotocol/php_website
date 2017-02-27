@@ -12,9 +12,12 @@ body,input,table {
 
 h1, h2, h3, h4, h5, h6 {
 	font-weight:bold;
+	margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 a { color:#63d297; }
+footer{ text-align:center; }
 
 #main_container{
 	background-color: #ffffff;
@@ -25,6 +28,16 @@ a { color:#63d297; }
 .container {
 	margin-top:5px;
 	border-radius:4px;
+}
+
+.headercont{
+	margin-top:15px;
+}
+.headercont a {
+	color:#333;
+	font-weight:bold;
+	margin:0 5px;
+	padding:0;
 }
 
 .outsider {

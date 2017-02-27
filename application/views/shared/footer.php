@@ -3,10 +3,9 @@
 	</div> <!-- End #main_container -->
 	
 	
-	<div class="container" style="padding-left:5px;">
+	<div class="container">
 		<footer class="outsider">
-	        <p><a href="/Signup">#JoinToGrow</a> or <a href="/Login">#Login</a>
-	        <p>Hi <a href="/Shervin">@shrvne</a> Wanna <a href="/Logout">#Logout</a>?</p>
+	        <p>US is a #ZeroSum and #OpenSource foundation on a mission to #ExpandHumanPotential</p>
 		</footer>
 	</div>
 

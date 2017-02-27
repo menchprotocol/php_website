@@ -18,7 +18,7 @@ foreach ($top_sources as $row){
 	$rank++;
 	echo '<tr>
                 <td>'.$rank.'</td>
-                <td><a href="/sources/'.$row['hashtag'].'">#'.$row['hashtag'].'</a></td>
+                <td><a href="/sources/'.$row['hashtag'].'">&'.$row['hashtag'].'</a></td>
                 <td>'.source_types($row['type_id']).'</td>
                 <td>'.$row['reference_count'].'</td>
 				<td>';

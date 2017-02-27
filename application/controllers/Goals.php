@@ -10,6 +10,7 @@ class Goals extends CI_Controller {
 	}
 	
 	function index(){
+		$this->load_goal();
 		$top_goals = $this->Us_model->fetch_top_goals();
 		$this->load->view('shared/header' , array( 'title' => 'Goals' ));
 		$this->load->view('goals/all_goals' , array( 'top_goals' => $top_goals));

@@ -35,17 +35,22 @@
   <body>    
     
     
-    <div class="container" style="padding-left:5px;">
-		<div class="outsider">
-			<p>
-				<a href="/us">#us</a>
+    <div class="container headercont">
+	    <div class="row">
+		  <div class="col-xs-6">
+		  	<p>
+				<a href="/us">@us</a>
 				<a href="/goals">#goals</a>
-				<a href="/sources">#sources</a>
+				<a href="/sources">&sources</a>
 			</p>
+		  </div>
+		  <div class="col-xs-6">
+		  	<p style="text-align: right;">
+				<a href="/us/signin">Sign in / Sign up</a>
+			</p>
+		  </div>
 		</div>
 	</div>
-    
-    
     
     
     <div class="container " role="main" id="main_container">
