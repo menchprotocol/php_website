@@ -20,7 +20,7 @@
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>	
+	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 	<link href="/css/easy-autocomplete.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -31,22 +31,19 @@
     <?php //TODO: Wire in based on session ?>
     <style> .modOnly{ display:block; } </style>
   </head>
-
-  <body>    
-    
+  <body>
     
     <div class="container headercont">
 	    <div class="row">
 		  <div class="col-xs-6">
 		  	<p>
-				<a href="/us">@us</a>
-				<a href="/goals">#goals</a>
-				<a href="/sources">&sources</a>
+				<a href="/us">US</a>
+				<a href="/patterns">#patterns</a>
 			</p>
 		  </div>
 		  <div class="col-xs-6">
 		  	<p style="text-align: right;">
-				<a href="/us/signin">Sign in / Sign up</a>
+				<a href="/us/signin" class="button">get-in</a>
 			</p>
 		  </div>
 		</div>

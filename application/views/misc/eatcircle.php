@@ -9,7 +9,7 @@
     <meta name="author" content="">
 
     <title>EatCircle - We're Cooking Something Spicy...</title>
-
+	<meta name="google-site-verification" content="MZaYQNNCoBA8QLdYysuX_tdeViXhZaavTSfVMrar55o" />
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
