@@ -64,7 +64,7 @@ $route['translate_uri_dashes'] = FALSE;
 //We can only have two types of URL: All number node ID, or mix character hashtag:
 //$route['(:any)'] = "us/node/$1";
 $route['template'] = "us/template";
-$route['patterns'] = "patterns/load_pattern/root"; //This is the default pattern tree
+$route['patterns'] = "patterns/load_pattern/Patterns"; //This is the default pattern tree
 $route['patterns/add'] = "patterns/add_pattern";
 $route['patterns/eatcircle'] = "patterns/eatcircle";
 $route['patterns/(:any)/edit'] = "patterns/edit_pattern/$1";

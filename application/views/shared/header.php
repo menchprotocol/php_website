@@ -38,12 +38,12 @@
 		  <div class="col-xs-6">
 		  	<p>
 				<a href="/us">US</a>
-				<a href="/patterns">#patterns</a>
+				<a href="/patterns">#Patterns</a>
 			</p>
 		  </div>
 		  <div class="col-xs-6">
 		  	<p style="text-align: right;">
-				<a href="/us/signin" class="button">get-in</a>
+				<a href="/us/signin" class="button">login</a>
 			</p>
 		  </div>
 		</div>

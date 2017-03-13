@@ -39,32 +39,19 @@ class Us_model extends CI_Model {
 	
 	function fetch_pattern($hashtag){
 		
-		if(!$hashtag){
-			//Top of tree:
-			$patterns = array(
-				'p_id' => 0,
-				'p_name' => 'Patterns',
-				'p_status' => 1,
-				'p_hashtag' => 'patterns',
-				'p_description' => 'What we pursue in life.',
-				'p_creator' => 'shervin',
-			);
-		} else {
-			$patterns = array();
-			$this->db->select('
-				g.id AS p_id,
-				g.name AS p_name,
-				g.status as p_status,
-				g.hashtag as p_hashtag,
-				g.description as p_description,
-				u.username AS p_creator
-			');
-			$this->db->from('patterns g');
-			$this->db->join('users u' , 'u.id = g.creator_id');
-			$this->db->where('g.hashtag' , $hashtag);
-			$q = $this->db->get();
-			$patterns = $q->row_array();
-		}
+		$patterns = array();
+		$this->db->select('
+			g.id AS p_id,
+			g.name AS p_name,
+			g.status as p_status,
+			g.hashtag as p_hashtag,
+			u.username AS p_creator
+		');
+		$this->db->from('patterns g');
+		$this->db->join('users u' , 'u.id = g.creator_id');
+		$this->db->where('g.hashtag' , $hashtag);
+		$q = $this->db->get();
+		$patterns = $q->row_array();
 		
 		
 		//Parent:
@@ -73,7 +60,6 @@ class Us_model extends CI_Model {
 			g.name AS p_name,
 			g.status as p_status,
 			g.hashtag as p_hashtag,
-			g.description as p_description,
 
 			l.id AS link_id,
 			l.status AS link_status,
@@ -91,7 +77,6 @@ class Us_model extends CI_Model {
 			g.name AS p_name,
 			g.status as p_status,
 			g.hashtag as p_hashtag,
-			g.description as p_description,
 
 			u.username AS link_creator,
 
@@ -105,8 +90,6 @@ class Us_model extends CI_Model {
 		$this->db->where('l.parent_id' , $patterns['p_id']);
 		$q = $this->db->get();
 		$patterns['children'] = $q->result_array();
-		
-		
 		
 		//Return everything:
 		return $patterns;
