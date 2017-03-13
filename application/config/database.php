@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'usnetwork.cf7c4gbt7lvh.us-west-2.rds.amazonaws.com',
-	'username' => 'us',
-	'password' => 'TtQfMyv8c%ThBbu4w&MZ',
-	'database' => 'usnetwork',
+	'hostname' => '', //Contact Admin to get credentials.
+	'username' => '', //Contact Admin to get credentials.
+	'password' => '', //Contact Admin to get credentials.
+	'database' => '', //Contact Admin to get credentials.
 	'dbdriver' => 'postgre',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
