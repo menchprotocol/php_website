@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '', //Contact Admin to get credentials. 1
+	'hostname' => '', //Contact Admin to get credentials.2
 	'username' => '', //Contact Admin to get credentials.
 	'password' => '', //Contact Admin to get credentials.
 	'database' => '', //Contact Admin to get credentials.
