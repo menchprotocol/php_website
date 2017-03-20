@@ -13,13 +13,16 @@ class Patterns extends CI_Controller {
 	function load_pattern($hashtag=null){
 		//Load this specific pattern:
 		$pattern = $this->Us_model->fetch_pattern($hashtag);
-		$this->load->view('shared/header' , array( 'title' => $pattern['p_name'] ));
+		$this->load->view('shared/header' , array( 'title' => $pattern['p_hashtag'] ));
 		$this->load->view('patterns/viewp' , array( 'pattern' => $pattern));
 		$this->load->view('shared/footer');
 	}
 	
 	function eatcircle(){
 		$this->load->view('misc/eatcircle');
+	}
+	function aromatrading(){
+		$this->load->view('misc/aromatrading');
 	}
 	
 	function autocomplete(){

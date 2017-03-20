@@ -52,6 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 if(substr_count($_SERVER['HTTP_HOST'],'eatcircle.com')>0){
 	$route['default_controller'] = 'patterns/eatcircle';
+} elseif(substr_count($_SERVER['HTTP_HOST'],'aromatradinggroup.com')>0){
+	$route['default_controller'] = 'patterns/aromatrading';
 } elseif(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0){
 	$route['default_controller'] = 'us/signup';
 } else {

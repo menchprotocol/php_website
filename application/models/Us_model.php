@@ -37,46 +37,53 @@ class Us_model extends CI_Model {
 
 	
 	
-	function fetch_pattern($hashtag){
+	function fetch_pattern($hashtag_or_id){
 		
 		$patterns = array();
 		$this->db->select('
-			g.id AS p_id,
-			g.name AS p_name,
-			g.status as p_status,
-			g.hashtag as p_hashtag,
+			p.id AS p_id,
+			p.status as p_status,
+			p.created as p_last_edited,
+			p.hashtag as p_hashtag,
+			p.keywords AS p_keywords,
 			u.username AS p_creator
 		');
-		$this->db->from('patterns g');
-		$this->db->join('users u' , 'u.id = g.creator_id');
-		$this->db->where('g.hashtag' , $hashtag);
+		$this->db->from('patterns p');
+		$this->db->join('users u' , 'u.id = p.creator_id');
+		if(is_numeric($hashtag_or_id)){
+			$this->db->where('p.id' , $hashtag_or_id);
+		} else {
+			$this->db->where('p.hashtag' , $hashtag_or_id);
+		}
 		$q = $this->db->get();
 		$patterns = $q->row_array();
 		
 		
 		//Parent:
 		$this->db->select('
-			g.id AS p_id,
-			g.name AS p_name,
-			g.status as p_status,
-			g.hashtag as p_hashtag,
+			p.id AS p_id,
+			p.keywords AS p_keywords,
+			p.created as p_last_edited,
+			p.status as p_status,
+			p.hashtag as p_hashtag,
 
 			l.id AS link_id,
 			l.status AS link_status,
 			l.reference_notes AS link_reference_notes
 		');
 		$this->db->from('links l');
-		$this->db->join('patterns g' , 'g.id = l.parent_id');
+		$this->db->join('patterns p' , 'p.id = l.parent_id');
 		$this->db->where('l.child_id' , $patterns['p_id']);
 		$q = $this->db->get();
 		$patterns['parents'] = $q->result_array();
 		
 		//Child:
 		$this->db->select('
-			g.id AS p_id,
-			g.name AS p_name,
-			g.status as p_status,
-			g.hashtag as p_hashtag,
+			p.id AS p_id,
+			p.keywords AS p_keywords,
+			p.created as p_last_edited,
+			p.status as p_status,
+			p.hashtag as p_hashtag,
 
 			u.username AS link_creator,
 
@@ -85,7 +92,7 @@ class Us_model extends CI_Model {
 			l.reference_notes AS link_reference_notes
 		');
 		$this->db->from('links l');
-		$this->db->join('patterns g' , 'g.id = l.child_id');
+		$this->db->join('patterns p' , 'p.id = l.child_id');
 		$this->db->join('users u' , 'u.id = l.creator_id');
 		$this->db->where('l.parent_id' , $patterns['p_id']);
 		$q = $this->db->get();

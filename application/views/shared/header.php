@@ -20,6 +20,7 @@
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+	<link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
 	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 	<link href="/css/easy-autocomplete.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,6 +28,12 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+    
     <link href="/css/main.css" rel="stylesheet">
     <?php //TODO: Wire in based on session ?>
     <style> .modOnly{ display:block; } </style>
@@ -35,13 +42,13 @@
     
     <div class="container headercont">
 	    <div class="row">
-		  <div class="col-xs-6">
+		  <div class="col-xs-8">
 		  	<p>
 				<a href="/us">US</a>
 				<a href="/patterns">#Patterns</a>
 			</p>
 		  </div>
-		  <div class="col-xs-6">
+		  <div class="col-xs-4">
 		  	<p style="text-align: right;">
 				<a href="/us/signin" class="button">login</a>
 			</p>
