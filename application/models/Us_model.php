@@ -7,7 +7,15 @@ class Us_model extends CI_Model {
 	}
 
 	
-	
+	function validate_user($email,$pass){
+		$this->db->select('*');
+		$this->db->from('users u');		
+		$this->db->where('u.email' , trim($email));
+		$this->db->where('u.password_hash' , sha1(trim($pass)));
+		$this->db->where('u.status >' , 0);
+		$q = $this->db->get();
+		return $q->row_array();
+	}
 
 	
 	function fetch_top_users(){

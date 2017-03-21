@@ -76,10 +76,7 @@ footer{ text-align:center; }
 	border-radius:4px;
 }
 
-.headercont{
-	margin-top:15px;
-}
-.headercont a {
+.headercont>a {
 	font-size:30px;
 	color:#333;
 	font-weight:bold;

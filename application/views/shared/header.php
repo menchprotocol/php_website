@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php 
+//Attempt to fetch session variables:
+$user_data = $this->session->userdata('user');
+?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -12,11 +15,8 @@
     <title><?= ( isset($title) ? $title : '#USNetwork' ) ?></title>
 
     <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
@@ -34,27 +34,45 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
     
-    <link href="/css/main.css" rel="stylesheet">
-    <?php //TODO: Wire in based on session ?>
-    <style> .modOnly{ display:block; } </style>
+    <link href="/css/main.css?v=<?= version_salt() ?>" rel="stylesheet">
   </head>
   <body>
     
-    <div class="container headercont">
+    <?php 
+    if(isset($user_data['id'])){
+    ?>
+    <div class="container" style="margin-top:15px;">
 	    <div class="row">
 		  <div class="col-xs-8">
-		  	<p>
+		  	<p class="headercont">
 				<a href="/us">US</a>
 				<a href="/patterns">#Patterns</a>
 			</p>
 		  </div>
 		  <div class="col-xs-4">
-		  	<p style="text-align: right;">
-				<a href="/us/signin" class="button">login</a>
-			</p>
+			  <div class="btn-group" style="float:right; margin-top:5px;">
+				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?= $user_data['username'] ?> <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a href="/us/<?= $user_data['username'] ?>">Profile</a></li>
+				    <li><a href="/us/logout">Logout</a></li>
+				  </ul>
+			  </div>
 		  </div>
 		</div>
 	</div>
-    
-    
+    <?php } else { ?>
+    <style type="text/css">
+		#main_container{ margin-top:50px; }
+	</style>
+    <?php } ?>
     <div class="container " role="main" id="main_container">
+    
+    <?php
+	//Any Html Messages int he flash session to show?
+	$hm = $this->session->flashdata('hm');
+	if($hm){
+		echo '<div class="row" style="margin-top:10px;"><div class="col-xs-12">'.$hm.'</div></div>';
+	}
+	?>

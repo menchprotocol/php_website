@@ -7,6 +7,9 @@ class Patterns extends CI_Controller {
 	
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
+		
+		//Require every one to login for all functions in this controller:
+		auth();
 	}
 	
 	
@@ -16,20 +19,6 @@ class Patterns extends CI_Controller {
 		$this->load->view('shared/header' , array( 'title' => $pattern['p_hashtag'] ));
 		$this->load->view('patterns/viewp' , array( 'pattern' => $pattern));
 		$this->load->view('shared/footer');
-	}
-	
-	function eatcircle(){
-		$this->load->view('misc/eatcircle');
-	}
-	function aromatrading(){
-		$this->load->view('misc/aromatrading');
-	}
-	
-	function autocomplete(){
-		//TODO: Search patterns
-		//$data = $this->Us_model->search_node(@$_GET['keyword'],intval(@$_GET['parentScope']));
-		//header('Content-Type: application/json');
-		//echo json_encode($data);
 	}
 	
 	function new_pattern(){

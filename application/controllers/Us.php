@@ -27,7 +27,61 @@ class Us extends CI_Controller {
 
 	
 	
+	function under_construction() {
+		//Current default view
+		$this->load->view('shared/header' , array( 'title' => 'US' ));
+		$this->load->view('landing/under_construction');
+		$this->load->view('shared/footer');
+	}
+	
+	function login() {
+		$this->load->view('shared/header' , array( 'title' => 'US Login' ));
+		$this->load->view('us/login');
+		$this->load->view('shared/footer');
+	}
+	function logout() {
+		//Destroy all sessions:
+		$this->session->unset_userdata('user');
+		
+		//Redirect:
+		redirect_message('/','<div class="alert alert-success" role="alert">Logout successful.</div>');
+	}
+	
+	
+	
+	function login_process() {
+		if(!isset($_POST['user_email']) || !filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)){
+			//Invalid email:
+			redirect_message('/us/login','<div class="alert alert-warning" role="alert">Invalid email address.</div>');
+		} elseif(!isset($_POST['user_pass']) || strlen($_POST['user_pass'])<2){
+			//Invalid password:
+			redirect_message('/us/login','<div class="alert alert-warning" role="alert">Invalid password.</div>'); 
+		} else {
+			//Seems like valid input, lets validate with databases:
+			$user_data =  $this->Us_model->validate_user($_POST['user_email'],$_POST['user_pass']);
+			if(!isset($user_data['id']) || intval($user_data['id'])<1){
+				//Validation failed:
+				redirect_message('/us/login','<div class="alert alert-warning" role="alert">Invalid email/password combination.</div>');
+			} else {
+				//Good to go!
+				//Assign session variables:
+				$user_data['login_timestamp'] = time();
+				$this->session->set_userdata(array(
+					'user' => $user_data,
+				));
+				
+				//TODO: Log login pattern
+				
+				//Redirect to pattern home page:
+				header("Location: /patterns");
+				exit;
+			}
+		}
+	}
+	
+	
 	function index() {
+		auth();
 		$top_users = $this->Us_model->fetch_top_users();
 		$this->load->view('shared/header' , array( 'title' => 'US' ));
 		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
@@ -36,24 +90,16 @@ class Us extends CI_Controller {
 	
 	
 	function load_profile($username){
+		auth();
 		$top_users = $this->Us_model->fetch_top_users();
 		$this->load->view('shared/header' , array( 'title' => 'US' ));
 		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
 		$this->load->view('shared/footer');
 	}
 	
-	function signup() {
-		$this->load->view('misc/mailchimp_signup');
-	}
-	
-	
-	function template(){
-		//Only used to see sample code base for UI design
-		$this->load->view('misc/template');
-	}
-	
 	
 	function add(){
+		auth();
 		if(!isset($_GET['hashtagName']) || strlen($_GET['hashtagName'])<1){
 			//No proper hashtag name defined!
 			if(isset($_GET['hashtagChildId'])){
@@ -77,30 +123,6 @@ class Us extends CI_Controller {
 			//Create parent hashtag
 		} elseif(isset($_GET['hashtagParentId'])) {
 			//Create child hashtag
-		}
-	}
-	
-	function node($hashtag){
-		
-		//Hashtag is a mask URL that looks prettier than an ID
-		//Find the Node ID based on input hashtag:
-		$nodes = $this->Us_model->search_node($hashtag,0,'none');
-		//print_r($nodes);die();
-		if(count($nodes)>0){
-			//We found this node!
-			//Does it match exactly?
-			if($hashtag!==$nodes[0]['value_string']){
-				header("Location: /".$nodes[0]['value_string']);
-			}
-			
-			//lets load the node:
-			$node_data = $this->Us_model->fetch_node_content($nodes[0]['node_id']);
-			$this->load->view('node_v1' , array( 'nds' => $node_data, 'node_id' => $nodes[0]['node_id'] ));
-			
-		} else {
-			//Oops, nothing found, lets give error and redirect to default node:
-			$this->session->set_flashdata('html_message', '<div class="editable-error-block"><b>#'.$hashtag.'</b> not found! Welcome to:</div>');
-			header("Location: /".default_start());
 		}
 	}
 }

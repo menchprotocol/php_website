@@ -5,10 +5,25 @@
 
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
-	return 'v1.17';
+	return 'v0.10';
 }
 
 
+function redirect_message($url,$message){
+	//For message handling across the platform.
+	$CI =& get_instance();
+	$CI->session->set_flashdata('hm', $message);
+	header("Location: ".$url);
+	die();
+}
+
+function auth(){
+	$CI =& get_instance();
+	$user_data = $CI->session->userdata('user');
+	if(!isset($user_data['id'])){
+		redirect_message('/us/login','<div class="alert alert-danger" role="alert">Login to access this page.</div>');
+	}
+}
 
 
 

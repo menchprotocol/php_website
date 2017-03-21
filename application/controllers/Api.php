@@ -22,5 +22,12 @@ class Api extends CI_Controller {
 		die();
 	}
 	
+	function autocomplete(){
+		//TODO: Search patterns
+		//$data = $this->Us_model->search_node(@$_GET['keyword'],intval(@$_GET['parentScope']));
+		//header('Content-Type: application/json');
+		//echo json_encode($data);
+	}
+	
 }
 

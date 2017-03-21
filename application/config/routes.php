@@ -50,26 +50,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-if(substr_count($_SERVER['HTTP_HOST'],'eatcircle.com')>0){
-	$route['default_controller'] = 'patterns/eatcircle';
-} elseif(substr_count($_SERVER['HTTP_HOST'],'aromatradinggroup.com')>0){
-	$route['default_controller'] = 'patterns/aromatrading';
-} elseif(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0){
-	$route['default_controller'] = 'us/signup';
-} else {
-	$route['default_controller'] = 'us';
-}
+
+//The default home page.
+$route['default_controller'] = 'us/under_construction';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//We can only have two types of URL: All number node ID, or mix character hashtag:
-//$route['(:any)'] = "us/node/$1";
-$route['template'] = "us/template";
+$route['us/under_construction'] = "us/under_construction";
+$route['us/signup'] = "us/signup";
+$route['us/login_process'] = "us/login_process";
+$route['us/login'] = "us/login";
+$route['us/logout'] = "us/logout";
+$route['us/(:any)'] = "us/load_profile/$1";
+
 $route['patterns'] = "patterns/load_pattern/Patterns"; //This is the default pattern tree
 $route['patterns/add'] = "patterns/add_pattern";
-$route['patterns/eatcircle'] = "patterns/eatcircle";
 $route['patterns/(:any)/edit'] = "patterns/edit_pattern/$1";
 $route['patterns/(:any)'] = "patterns/load_pattern/$1";
-$route['us/signup'] = "us/signup";
-$route['us/(:any)'] = "us/load_profile/$1";
