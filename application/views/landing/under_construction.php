@@ -15,7 +15,7 @@
 
 <div id="mc_embed_signup">
 <h2>Subscribe for Updates:</h2>
-<form action="//eatcircle.us15.list-manage.com/subscribe/post?u=b743daf559988c4b0ac43499e&amp;id=155eaa5fe1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+<form action="//usfoundation.us15.list-manage.com/subscribe/post?u=b743daf559988c4b0ac43499e&amp;id=155eaa5fe1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
     <div id="mc_embed_signup_scroll">
 <div class="mc-field-group">
 	<label for="mce-EMAIL">Email</label>
