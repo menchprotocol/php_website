@@ -9,7 +9,7 @@
 <div style="text-align:center; margin:20px 0;"><img src="/img/US.png" /></div>
 <p>We're on a mission to extend human survival.</p>
 <p>We optimize learning for complex skills.</p>
-<p>We're an open-source and decentralized.</p>
+<p>We're <a href="https://github.com/USfoundation/us-indexer">open-source</a> and decentralized.</p>
 <p>We live once, lets make our dreams come true.</p>
 <p><a href="javascript:$('#mc_embed_signup').toggle();">Signup</a> or <a href="/us/login">login to indexer</a>.</p>
 
