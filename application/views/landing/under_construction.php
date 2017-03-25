@@ -7,14 +7,16 @@
 </style>
 
 <div style="text-align:center; margin:20px 0;"><img src="/img/US.png" /></div>
-<p>We're a startup on a mission to extend human survival by significantly increasing the effectiveness of knowledge transfer.</p>
-<p>We're building technology that makes the right information available at the right time, empowering more of us to achieve our goals and dreams.</p>
-<p><a href="mailto:support@us.foundation">Email US</a>, <a href="javascript:$('#mc_embed_signup').toggle();">subscribe</a> to our newsletter or <a href="/us/login">login as admin</a>.</p>
+<p>We're on a mission to extend human survival.</p>
+<p>We optimize learning for complex skills.</p>
+<p>We're an open-source and decentralized.</p>
+<p>We live once, lets make our dreams come true.</p>
+<p><a href="javascript:$('#mc_embed_signup').toggle();">Signup</a> or <a href="/us/login">login to indexer</a>.</p>
 
 
 
 <div id="mc_embed_signup">
-<h2>Subscribe for Updates:</h2>
+<h2>Signup for Updates:</h2>
 <form action="//usfoundation.us15.list-manage.com/subscribe/post?u=b743daf559988c4b0ac43499e&amp;id=155eaa5fe1" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
     <div id="mc_embed_signup_scroll">
 <div class="mc-field-group">

@@ -103,6 +103,7 @@ class Us_model extends CI_Model {
 		$this->db->join('patterns p' , 'p.id = l.child_id');
 		$this->db->join('users u' , 'u.id = l.creator_id');
 		$this->db->where('l.parent_id' , $patterns['p_id']);
+		$this->db->order_by('l.id ASC');
 		$q = $this->db->get();
 		$patterns['children'] = $q->result_array();
 		

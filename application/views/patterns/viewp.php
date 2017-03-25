@@ -1,32 +1,42 @@
 <?php //print_r($pattern) ?>
 
 <h1 style="margin:5px 0 15px 0;">#<?= $pattern['p_hashtag'] . ($pattern['p_id']>0 ? '<a style="padding: 5px 6px 0 12px; font-size:18px; line-height: 0;" href="javascript:edit_pattern('.$pattern['p_id'].')"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>' : '') ?></h1>
-<h4 style="margin:15px 0 0 0;"><?= $pattern['p_keywords'] ?> (<?= $pattern['p_id'] ?>)</h4>
+<h4 style="margin:15px 0 15px 0;"><?= ( strlen($pattern['p_keywords'])>0 ? $pattern['p_keywords'] : 'No Keywords' ) ?> (<?= $pattern['p_id'] ?>)</h4>
 
 
 
 
+
+
+<?php if(count($pattern['parents'])>0){ ?>
+<h2>Parents</h2>
 <div class="list-group">
+<?php } ?>
 <?php 
 foreach ($pattern['parents'] as $row){
 	//TODO: Reflect status of the other patterns
-	echo '<a href="/patterns/'.$row['p_hashtag'].'" class="list-group-item"><span class="badge" style="float: left; margin-right: 10px;"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> #'.$row['p_hashtag'].'</span> '.$row['link_reference_notes'].'</a>';
+	echo '<li class="list-group-item"><span class="badge" style="float: left; margin-right: 10px;"><a href="/patterns/'.$row['p_hashtag'].'"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> #'.$row['p_hashtag'].'</span></a>&nbsp;'.$row['link_reference_notes'].'</li>';
 }
 ?>
+<?php if(count($pattern['parents'])>0){ ?>
 </div>
+<?php } ?>
 
 
 
+
+
+<h2 style="margin-top:40px;">Children</h2>
 <div class="list-group" id="sortableChild">
 <?php 
 if(count($pattern['children'])>0){
 	foreach ($pattern['children'] as $row){
 		//TODO: Reflect status of the other patterns
 		//TODO: Implement sorting later: <span class="glyphicon glyphicon-sort sort_handle spott" aria-hidden="true"></span>
-		echo '<a href="/patterns/'.$row['p_hashtag'].'" class="list-group-item context-menu-one"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>#'.$row['p_hashtag'].' <span style="color:#CCC;">'.$row['p_id'].' </span></a>';
+		echo '<a href="/patterns/'.$row['p_hashtag'].'" class="list-group-item context-menu-one"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>#'.$row['p_hashtag'].' <span style="color:#EFEFEF;">'.$row['p_id'].' </span></a>';
 	}
 } else {
-	echo '<p class="list-group-item-text">Nothing yet...</p>';
+	echo '<div class="alert alert-info" role="alert">No children, yet.</div>';
 	//echo '<div class="alert alert-warning" role="alert">Nothing found.</div>';
 }
 echo '<div class="list-group-item ui-state-disabled" style="padding:2px 3px;">
