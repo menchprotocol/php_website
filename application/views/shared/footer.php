@@ -4,16 +4,15 @@ $user_data = $this->session->userdata('user');
 ?>
 	</div> <!-- End #main_container -->
 	
-	<?php if(isset($user_data['id'])){ ?>
-	<div class="container">
+	<div class="container nonesearch">
 		<footer class="outsider">
-	        <p><b><?= version_salt() ?></b> Made in Vancouver with Love</p>
+	        <p><a href="https://github.com/USfoundation/us-indexer/commits/develop"><?= version_salt() ?></a>Built with &#10084; in Vancouver</p>
 		</footer>
 	</div>
-	<?php } ?>
-	
+
+	<?php /* 	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+*/ ?>	
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 	<script src="/js/jquery.easy-autocomplete.min.js"></script>
 	<script src="/js/main.js?v=<?= version_salt() ?>"></script>
   </body>

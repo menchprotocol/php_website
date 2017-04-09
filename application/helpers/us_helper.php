@@ -1,13 +1,84 @@
 <?php
 
-
-
-
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
-	return 'v0.10';
+	return 'v0.20';
 }
 
+function parents(){
+	return array(
+		1  => array(
+			'name' => 'Us',
+			'sign' => '@',
+			'node_id' => 1,
+		),
+		2  => array(
+			'name' => 'Sources',
+			'sign' => '&',
+			'node_id' => 2,
+		),
+		3  => array(
+			'name' => 'Goals',
+			'sign' => '#',
+			'node_id' => 3,
+		),
+		4  => array(
+			'name' => 'Questions',
+			'sign' => '?',
+		),
+		43 => array(
+			'name' => 'System',
+			'sign' => '!',
+		),
+	);
+}
+
+function status_descriptions($status_id){
+	//translates numerical status fields to descriptive meanings
+	if($status_id==-2){
+		return array(
+				'name' => 'Deleted',
+				'description' => 'When content does not follow community guidelines.',
+		);
+	} elseif($status_id==-1){
+		return array(
+				'name' => 'Replaced',
+				'description' => 'When a new update replaces this update.',
+		);
+	} elseif($status_id==0){
+		return array(
+				'name' => 'Contender',
+				'description' => 'The initial status updates have when submitted by guest users.',
+		);
+	} elseif($status_id==1){
+		return array(
+				'name' => 'Top',
+				'description' => 'The top link for the given node.',
+		);
+	} elseif($status_id==2){
+		return array(
+				'name' => 'Active',
+				'description' => 'Active node links.',
+		);
+	} else {
+		//This should never happen!
+		return array(
+				'name' => 'Unknown!',
+				'description' => 'Error: '.$status_id.' is an unknown status ID.',
+		);
+	}
+}
+
+function format_timestamp($t){
+	$timestamp = strtotime(substr($t,0,19));
+	$format = ( date("Y",$timestamp)==date("Y") ? "M jS" : "M jS Y");
+	return date($format,$timestamp);
+}
+
+function clean($string){
+	//return preg_replace("/[^a-zA-Z0-9]+/", "", $string);
+	return str_replace(" ", "<span class='sp'> </span>", $string);
+}
 
 function redirect_message($url,$message){
 	//For message handling across the platform.
@@ -17,31 +88,23 @@ function redirect_message($url,$message){
 	die();
 }
 
-function auth(){
+
+function admin_error($message){
+	//TODO: Email $message to admin for review.
+}
+
+function auth($donot_redirect=false){
 	$CI =& get_instance();
 	$user_data = $CI->session->userdata('user');
-	if(!isset($user_data['id'])){
-		redirect_message('/us/login','<div class="alert alert-danger" role="alert">Login to access this page.</div>');
+	$node_id = $CI->uri->segment(1);
+	
+	if($donot_redirect){
+		return (isset($user_data['id']));
+	} elseif(!isset($user_data['id'])){
+		redirect_message('/login'.( intval($node_id)>0 ? '?next='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login to access this page.</div>');
 	}
 }
 
-
-
-function default_start(){
-	//Return the default start node for the current user, if any
-	return 'US';
-}
-function current_user_id(){
-	//TODO: Later change this based on session data
-	return 20;
-}
-function next_id(){
-	//TODO: These is a bug in the auto ID creation, need to look at it later
-	//This can be eliminated if the native ID incrementer works
-	$CI =& get_instance();
-	$new_id = $CI->Us_model->next_id();
-	return $new_id;
-}
 
 function http_404($message){
 	header("HTTP/1.1 404 ".$message);
@@ -58,93 +121,11 @@ function all_ses_data(){
 	return $CI->session->all_userdata();
 }
 
-function metadata_types(){
-	//TODO: implement
-	return array(
-	 	1 => array(
-	 			'name' => 'External ID',
-	 			'icon' => '<span class="glyphicon glyphicon-link" aria-hidden="true"></span>',
-	 			'storage' => 'value_int',
-	 	),
-		14 => array(
-				'name' => 'User',
-				'icon' => '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		13 => array(
-				'name' => 'Pattern',
-				'icon' => '<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		11 => array(
-				'name' => 'Number',
-				'icon' => '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		8 => array(
-				'name' => 'Dollar',
-				'icon' => '<span class="glyphicon glyphicon-usd" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		3 => array(
- 				'name' => 'Date',
-				'icon' => '<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		2 => array(
-				'name' => 'Date/Time',
-				'icon' => '<span class="glyphicon glyphicon-time" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		12 => array(
-				'name' => 'Text',
-				'icon' => '<span class="glyphicon glyphicon-font" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		4 => array(
-				'name' => 'Text Area',
-				'icon' => '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		5 => array(
-				'name' => 'Checkbox',
-				'icon' => '<span class="glyphicon glyphicon-check" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		7 => array(
-				'name' => 'Picklist',
-				'icon' => '<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		6 => array(
-				'name' => 'Email',
-				'icon' => '<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		9 => array(
-				'name' => 'Phone',
-				'icon' => '<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		10 => array(
-				'name' => 'URL',
-				'icon' => '<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>',
-				'storage' => 'value_string',
-		),
-		/*
-		15 => array(
-				'name' => 'Single File',
-				'icon' => '<span class="glyphicon glyphicon-file" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		16 => array(
-				'name' => 'Multiple Files',
-				'icon' => '<span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>',
-				'storage' => 'value_int',
-		),
-		*/
-	);
-}
+
+
+
+
+
 
 function prep_metadata_for_edit($data){
 	//TODO: implement

@@ -5,110 +5,193 @@ class Us_model extends CI_Model {
 	function __construct() {
 		parent::__construct();
 	}
-
 	
-	function validate_user($email,$pass){
+	
+	function insert_link($link_data){
+		$this->db->insert('v3_data', $link_data);
+		return $this->db->insert_id();
+	}
+	
+	
+	function count_children($node_id){
+		
+		//Count the number of child nodes:
+		$this->db->select('COUNT(id) as child_count');
+		$this->db->from('v3_data d');
+		$this->db->where('d.parent_id' , $node_id);
+		$this->db->where('d.node_id !=' , $node_id);
+		$this->db->where('d.status >' , 0);
+		$this->db->where('d.ui_rank >' , 0);
+		$q = $this->db->get();
+		$stats = $q->row_array();
+		return $stats['child_count'];
+	}
+	
+	function count_links($node_id){
+		//Count the number of child nodes:
+		$this->db->select('COUNT(id) as link_count');
+		$this->db->from('v3_data d');
+		$this->db->where('d.node_id' , $node_id);
+		$this->db->where('d.status >' , 0);
+		$this->db->where('d.ui_rank >' , 0);
+		$q = $this->db->get();
+		$stats = $q->row_array();
+		return $stats['link_count'];
+	}
+	
+	function search_node($value_string, $parent_id=null){
+		//Return the node_id of a link that matches the value and parent ID
+		//Fetch all node links
 		$this->db->select('*');
-		$this->db->from('users u');		
-		$this->db->where('u.email' , trim($email));
-		$this->db->where('u.password_hash' , sha1(trim($pass)));
-		$this->db->where('u.status >' , 0);
-		$q = $this->db->get();
-		return $q->row_array();
-	}
-
-	
-	function fetch_top_users(){
-		$res = array();
-		//TODO: Expand to other elements and include in users table.
-		$this->db->select('	
-				u.username,
-				COUNT(DISTINCT g.id) as count_patterns,
-				COUNT(DISTINCT l.id) as count_links,
-				
-				((COUNT(DISTINCT g.id))*5 + (COUNT(DISTINCT l.id))*2 ) as points,
-		');
-		$this->db->from('users u');
-		$this->db->join('links l' , 'l.creator_id = u.id' , 'left outer');
-		$this->db->join('patterns g' , 'g.creator_id = u.id' , 'left outer');
-		$this->db->where('u.status >' , 0);
-		$this->db->where('u.email IS NOT NULL');
-		$this->db->where('(g.status IS NULL OR g.status>0)');
-		$this->db->where('(l.status IS NULL OR l.status>0)');
-		$this->db->group_by('u.username');
-		$this->db->order_by('points DESC');
-		$q = $this->db->get();
-		$res = $q->result_array();
-		//Return everything:
-		return $res;
-	}
-
-	
-	
-	function fetch_pattern($hashtag_or_id){
-		
-		$patterns = array();
-		$this->db->select('
-			p.id AS p_id,
-			p.status as p_status,
-			p.created as p_last_edited,
-			p.hashtag as p_hashtag,
-			p.keywords AS p_keywords,
-			u.username AS p_creator
-		');
-		$this->db->from('patterns p');
-		$this->db->join('users u' , 'u.id = p.creator_id');
-		if(is_numeric($hashtag_or_id)){
-			$this->db->where('p.id' , $hashtag_or_id);
-		} else {
-			$this->db->where('p.hashtag' , $hashtag_or_id);
+		$this->db->from('v3_data d');
+		if($parent_id){
+			$this->db->where('d.parent_id' , $parent_id);
 		}
+		$this->db->where('d.value', $value_string); //TODO Maybe move to Agolia search engine for faster search?
+		$this->db->where('d.status >' , 0);
+		$this->db->order_by('d.status' , 'ASC'); //status=1 always comes before status=2
 		$q = $this->db->get();
-		$patterns = $q->row_array();
-		
-		
-		//Parent:
-		$this->db->select('
-			p.id AS p_id,
-			p.keywords AS p_keywords,
-			p.created as p_last_edited,
-			p.status as p_status,
-			p.hashtag as p_hashtag,
-
-			l.id AS link_id,
-			l.status AS link_status,
-			l.reference_notes AS link_reference_notes
-		');
-		$this->db->from('links l');
-		$this->db->join('patterns p' , 'p.id = l.parent_id');
-		$this->db->where('l.child_id' , $patterns['p_id']);
-		$q = $this->db->get();
-		$patterns['parents'] = $q->result_array();
-		
-		//Child:
-		$this->db->select('
-			p.id AS p_id,
-			p.keywords AS p_keywords,
-			p.created as p_last_edited,
-			p.status as p_status,
-			p.hashtag as p_hashtag,
-
-			u.username AS link_creator,
-
-			l.id AS link_id,
-			l.status AS link_status,
-			l.reference_notes AS link_reference_notes
-		');
-		$this->db->from('links l');
-		$this->db->join('patterns p' , 'p.id = l.child_id');
-		$this->db->join('users u' , 'u.id = l.creator_id');
-		$this->db->where('l.parent_id' , $patterns['p_id']);
-		$this->db->order_by('l.id ASC');
-		$q = $this->db->get();
-		$patterns['children'] = $q->result_array();
-		
-		//Return everything:
-		return $patterns;
+		return $q->result_array();
 	}
+	
+	function fetch_node($node_id , $action='fetch_node'){
+		
+		if(intval($node_id)<1 || !in_array($action,array('fetch_node','fetch_children','fetch_top_plain'))){
+			//No a valid node id or action
+			return false;
+		}
+		
+		//Fetch all node links
+		$this->db->select('*');
+		$this->db->from('v3_data d');
+		$this->db->where('d.status >' , 0);
+		
+		if($action=='fetch_node'){
+			
+			$this->db->where('d.node_id' , $node_id);
+			
+		} elseif($action=='fetch_top_plain'){
+			
+			$this->db->where('d.node_id' , $node_id);
+			$this->db->where('d.status' , 1); //Only top links as we need their name:
+			
+		} elseif($action=='fetch_children'){
+			
+			$this->db->where('d.parent_id' , $node_id);
+			$this->db->where('d.node_id !=', $node_id);
+			$this->db->where('d.ui_rank >' , 0); //Below 0 is hidden from the UI
+			$this->db->order_by('d.ui_rank' , 'ASC'); //status=2 is ranked based on ur_rank ASC
+			
+		}
+		
+		//Default sorts:
+		$this->db->order_by('d.status' , 'ASC'); //status=1 always comes before status=2
+		$this->db->order_by('d.grandpa_id' , 'ASC'); //To group parents
+		$this->db->order_by('d.parent_id' , 'ASC'); //To group parents
+		$this->db->order_by('d.id' , 'DSC'); //To group parents
+		$q = $this->db->get();
+		$links = $q->result_array();
+		
+		
+		
+		if($action=='fetch_top_plain'){
+			//Quick return:
+			return $links[0];
+		}
+		
+		
+		
+		//Lets curate/enhance the data a bit:
+		$parents = parents(); //Everything at level 1
+		$contributors = array(); //Caching mechanism for usernames based on their us_id
+		
+		foreach($links as $i=>$link){
+			
+			//See how many levels deep is this data point?
+			if(array_key_exists($link['node_id'],$parents)){
+				$level = 1;
+			} elseif($link['grandpa_id']==$link['parent_id']){
+				$level = 2;
+			} else {
+				$level = 3; //Or more...
+			}
+			
+			if(strlen($link['value'])<1){
+				
+				if($action=='fetch_node'){
+					
+					//This has no value, meaning the node_id needs to be invoked for data:
+					$invoke_node = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
+					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
+					
+					$parent_top_link = $this->fetch_node($invoke_node['parent_id'], 'fetch_top_plain');
+					$links[$i]['parent_id'] = $parent_top_link['node_id'];
+					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
+					$links[$i]['index'] = 1; //For debugging
+					
+					$links[$i]['value'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
+					
+				} elseif($action=='fetch_children'){
+					//This has no value, meaning the node_id needs to be invoked for data:
+					$invoke_node = $this->fetch_node($link['node_id'], 'fetch_top_plain');
+					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
+					
+					$parent_top_link = $this->fetch_node($invoke_node['parent_id'], 'fetch_top_plain');
+					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
+					$links[$i]['index'] = 2; //For debugging
+				}
+				
+			} else {
+				
+				if($action=='fetch_node'){
+					
+					//Create custom node title based on primary data set:
+					$links[$i]['title'] = $parents[$link['grandpa_id']]['sign'].clean($link['value']);
+					
+					//Fetch parent name:
+					$parent_top_link = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
+					$parent_sign = $parents[$link['grandpa_id']]['sign'];
+					$links[$i]['parent_name'] = $parent_sign.clean($parent_top_link['value']);
+					$links[$i]['index'] = 3; //For debugging
+					
+				} elseif($action=='fetch_children'){
+					
+					//Create custom node title based on primary data set:
+					$links[$i]['title'] = $parents[$link['grandpa_id']]['sign'].clean($link['value']);
+					
+					//Fetch parent name:
+					$parent_top_link = $this->fetch_node($link['node_id'], 'fetch_top_plain');
+					$parent_sign = $parents[$parent_top_link['grandpa_id']]['sign'];
+					$links[$i]['parent_name'] = $parent_sign.clean($parent_top_link['value']);
+					$links[$i]['index'] = 4; //For debugging
+					
+				}
+				
+			}
 
+			
+					
+			
+			//Do we have this user ID in the cache variable?
+			if(!isset($contributors[$link['us_id']])){
+				//Fetch user name:
+				$person_link = $this->fetch_node($link['us_id'], 'fetch_top_plain');
+				$contributors[$link['us_id']] = '@'.clean($person_link['value']);
+				
+			}
+			
+			//Append uploader name:
+			//TODO: Maybe for some $action s only?
+			$links[$i]['us_name'] = $contributors[$link['us_id']];
+			
+			//Append child count only to the top link:
+			//TODO: Maybe this can be optimized for certain $action s only?
+			$links[$i]['child_count'] = $this->count_children($link['node_id']);
+			
+			//Count node links:
+			$links[$i]['links_count'] = $this->count_links($link['node_id']);
+		}
+		
+		return $links;
+	}
 }

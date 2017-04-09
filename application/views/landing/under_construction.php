@@ -6,7 +6,7 @@
 	   p, h2 { text-align:center; margin:15px 10px; }
 </style>
 
-<div style="text-align:center; margin:20px 0;"><img src="/img/US.png" /></div>
+<h1 style="">Intelligence On-Demand</h1>
 <p>We're on a mission to extend human survival.</p>
 <p>We optimize learning for complex skills.</p>
 <p>We're <a href="https://github.com/USfoundation/us-indexer">open-source</a> and decentralized.</p>

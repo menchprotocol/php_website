@@ -1,73 +1,89 @@
 <?php 
 //Attempt to fetch session variables:
 $user_data = $this->session->userdata('user');
+//print_r($user_data);exit;
+$parents = parents();
+$controller = $this->uri->segment(1);
+$function = $this->uri->segment(2);
 ?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="https://trello-attachments.s3.amazonaws.com/56663c0b94f2f4d85376ee1a/80x80/2477359e76f4b66fa7023f18148cbbe7/US_Network_Space.png">
+	<link rel="shortcut icon" href="/favicon.ico" />
+    <title><?= ( isset($node[0]['title']) ? $parents[$node[0]['grandpa_id']]['sign'].' '.strip_tags($node[0]['value']) : 'Us' ) ?></title>
 
-    <title><?= ( isset($title) ? $title : '#USNetwork' ) ?></title>
-
-    <!-- Latest compiled and minified CSS -->
+    <!-- CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
-	<link href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
-	<link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
-	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	<link href="/css/easy-autocomplete.min.css" rel="stylesheet">
+	<link href="/css/main.css?v=<?= version_salt() ?>" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     
-    <link href="/css/main.css?v=<?= version_salt() ?>" rel="stylesheet">
   </head>
   <body>
     
-    <?php 
-    if(isset($user_data['id'])){
-    ?>
-    <div class="container" style="margin-top:15px;">
-	    <div class="row">
-		  <div class="col-xs-8">
-		  	<p class="headercont">
-				<a href="/us">US</a>
-				<a href="/patterns">#Patterns</a>
-			</p>
-		  </div>
-		  <div class="col-xs-4">
-			  <div class="btn-group" style="float:right; margin-top:5px;">
-				  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> <?= $user_data['username'] ?> <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a href="/us/<?= $user_data['username'] ?>">Profile</a></li>
-				    <li><a href="/us/logout">Logout</a></li>
-				  </ul>
-			  </div>
-		  </div>
-		</div>
+    <div class="container topline <?= (isset($user_data['id']) ? '' : 'guestheader') ?>">
+	  	<p class="headercont">
+			<a href="/" style="display:inline-block">Us</a>
+			<?php if(isset($user_data['id'])){ ?>
+			<form class="search-block">
+			     <div class="input-group">
+			     
+			      <!-- 
+			      <div class="input-group-addon search-type">
+			      	<div class="btn-group">
+					  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*</button>
+					  <ul class="dropdown-menu">
+					    <li><a href="#"><b>*</b>Everything</a></li>
+					    <li><a href="#"><b>@</b>Us</a></li>
+					    <li><a href="#"><b>&</b>Sources</a></li>
+					    <li><a href="#"><b>#</b>Pattern</a></li>
+					    <li><a href="#"><b>?</b>Questions</a></li>
+					  </ul>
+					</div>
+			      </div>
+			       -->
+			       
+				  <input type="text" class="form-control" id="MainSearch" placeholder="Search">
+			    </div>
+			</form>
+			<?php } ?>				
+		</p>
 	</div>
-    <?php } else { ?>
-    <style type="text/css">
-		#main_container{ margin-top:50px; }
-	</style>
-    <?php } ?>
-    <div class="container " role="main" id="main_container">
+	
+	
+	<div class="container searchresults"></div>
+	
+	<div class="container main-header nonesearch">
+		<ul class="nav nav-tabs">
+		  <?php if(isset($user_data['id'])){ ?>	
+		  <li role="presentation" <?= ( $node[0]['grandpa_id']==1 && $node[0]['node_id']!=$user_data['node_id']? 'class="active"' : '' ) ?>><a href="/1">@</a></li>
+		  <li role="presentation" <?= ( $node[0]['grandpa_id']==2 ? 'class="active"' : '' ) ?>><a href="/2">&</a></li>
+		  <li role="presentation" <?= ( $node[0]['grandpa_id']==3 ? 'class="active"' : '' ) ?>><a href="/3">#</a></li>
+		  <li role="presentation" <?= ( $node[0]['grandpa_id']==4 ? 'class="active"' : '' ) ?>><a href="/4">?</a></li>
+		  <li role="presentation" <?= ( $node[0]['grandpa_id']==43 ? 'class="active"' : '' ) ?>><a href="/43">!</a></li>
+		  <li role="presentation" <?= ( $node[0]['node_id']==$user_data['node_id'] ? 'class="active"' : '' ) ?> style="float:right;"><a href="/<?= $user_data['node_id'] ?>">@me</a></li>
+		  <?php } else { ?>
+		  <li role="presentation" <?= ( $controller=='login' ? 'class="active"' : '' ) ?> style="float:right;"><a href="/login">Login</a></li>
+		  <li role="presentation" <?= ( $controller=='join' ? 'class="active"' : '' ) ?> style="float:right;"><a href="/join">Join Us</a></li>
+		  <?php } ?>
+		</ul>
+	</div>
+    <div class="container nonesearch" role="main" id="main_container">
     
     <?php
 	//Any Html Messages int he flash session to show?

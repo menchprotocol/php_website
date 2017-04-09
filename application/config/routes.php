@@ -52,19 +52,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 //The default home page.
-$route['default_controller'] = 'us/under_construction';
+$route['default_controller'] = 'us';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['us/under_construction'] = "us/under_construction";
-$route['us/signup'] = "us/signup";
-$route['us/login_process'] = "us/login_process";
-$route['us/login'] = "us/login";
-$route['us/logout'] = "us/logout";
-$route['us/(:any)'] = "us/load_profile/$1";
+//Default intro pages:
+$route['(:num)'] = "us/load_node/$1";
+$route['(:num)/(:num)'] = "us/load_link/$2";
 
-$route['patterns'] = "patterns/load_pattern/Patterns"; //This is the default pattern tree
-$route['patterns/add'] = "patterns/add_pattern";
-$route['patterns/(:any)/edit'] = "patterns/edit_pattern/$1";
-$route['patterns/(:any)'] = "patterns/load_pattern/$1";
+$route['join'] = "us/join";
+$route['logout'] = "us/logout";
+$route['login'] = "us/login";
+$route['login_process'] = "us/login_process";
+$route['add'] = "us/add";
+

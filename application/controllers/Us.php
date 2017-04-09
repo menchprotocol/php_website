@@ -24,105 +24,140 @@ class Us extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 	}
-
 	
-	
-	function under_construction() {
-		//Current default view
-		$this->load->view('shared/header' , array( 'title' => 'US' ));
-		$this->load->view('landing/under_construction');
+	function index(){
+		//TODO: Move to nodes through public and html objects
+		//The main landing page:
+		$this->load->view('shared/header' , array( 'title' => 'Welcome to Us' ));
+		$this->load->view('us/home_page');
 		$this->load->view('shared/footer');
 	}
+	
+	//The main function for loading nodes:
+	function load_node($node_id){
+		
+		//TODO: Look into removing this:
+		auth();
+		
+		//Build data sets for our views:
+		$data_set = array(
+			'node' 		 => $this->Us_model->fetch_node($node_id),
+			'child_data' => $this->Us_model->fetch_node($node_id, 'fetch_children'),
+		);
+		//print_r($data_set);exit;
+		
+		//Load views:
+		$this->load->view('shared/header', $data_set);
+		$this->load->view('us/load_node', $data_set);
+		$this->load->view('shared/footer', $data_set);
+	}
+	
+	function load_link(){
+		//Manage specific links
+	}
+	
+	function add() {
+		auth();
+		$this->load->view('shared/header' , array( 'title' => 'Add Pattern' ));
+		$this->load->view('us/add');
+		$this->load->view('shared/footer');
+	}
+	
 	
 	function login() {
 		$this->load->view('shared/header' , array( 'title' => 'US Login' ));
 		$this->load->view('us/login');
 		$this->load->view('shared/footer');
 	}
+	function join() {
+		$this->load->view('shared/header' , array( 'title' => 'Join US' ));
+		$this->load->view('us/join');
+		$this->load->view('shared/footer');
+	}
 	function logout() {
 		//Destroy all sessions:
 		$this->session->unset_userdata('user');
-		
 		//Redirect:
-		redirect_message('/','<div class="alert alert-success" role="alert">Logout successful.</div>');
+		redirect_message('/','<div class="alert alert-success" role="alert">Logout successful. See you soon &#128536;</div>');
 	}
-	
-	
 	
 	function login_process() {
+		
 		if(!isset($_POST['user_email']) || !filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL)){
 			//Invalid email:
-			redirect_message('/us/login','<div class="alert alert-warning" role="alert">Invalid email address.</div>');
+			redirect_message('/login','<div class="alert alert-danger" role="alert">Invalid email address.</div>');
 		} elseif(!isset($_POST['user_pass']) || strlen($_POST['user_pass'])<2){
 			//Invalid password:
-			redirect_message('/us/login','<div class="alert alert-warning" role="alert">Invalid password.</div>'); 
+			redirect_message('/login','<div class="alert alert-danger" role="alert">Invalid password.</div>'); 
 		} else {
-			//Seems like valid input, lets validate with databases:
-			$user_data =  $this->Us_model->validate_user($_POST['user_email'],$_POST['user_pass']);
-			if(!isset($user_data['id']) || intval($user_data['id'])<1){
-				//Validation failed:
-				redirect_message('/us/login','<div class="alert alert-warning" role="alert">Invalid email/password combination.</div>');
+			//Fetch user nodes with this email:
+			//TODO We can wire this in Agolia for faster string search!
+			$matching_users = $this->Us_model->search_node($_POST['user_email'],24);
+			
+			if(count($matching_users)<1){
+				//We could not find this email linked to the email node
+				redirect_message('/login','<div class="alert alert-danger" role="alert">Email "'.$_POST['user_email'].'" not found.</div>');
+			}
+			
+			//Now fetch entire user node:
+			$user_node = $this->Us_model->fetch_node($matching_users[0]['node_id']);
+			
+			if($user_node[0]['grandpa_id']!=1){
+				//We could not find this email linked to the email node
+				//TODO This should technically never happen!
+				redirect_message('/login','<div class="alert alert-danger" role="alert">Email not associated to a valid user.</div>');
+			}
+			
+			//Now lets see if this user has a login password and if it matches the entered password
+			$has_password = false;
+			foreach($user_node as $link){
+				if($link['parent_id']==44){
+					//TODO: We should prevent duplicate password relations to be created
+					//Yes they have a password link attached to the user node!
+					$has_password = true;
+					
+					//Does it match login form entry?
+					$matched_password = ($link['value']==sha1($_POST['user_pass']));
+					
+					break;
+				}
+			}
+			
+			if(!$has_password){
+				//We could not find this password linked to anyone!
+				redirect_message('/login','<div class="alert alert-danger" role="alert">A login password has not been assigned to your account.</div>');
+			} elseif(!$matched_password){
+				//Invalid 
+				redirect_message('/login','<div class="alert alert-danger" role="alert">Invalid password for "'.$_POST['user_email'].'".</div>');
 			} else {
+				
 				//Good to go!
 				//Assign session variables:
-				$user_data['login_timestamp'] = time();
+				$matching_users[0]['login_timestamp'] = time();
 				$this->session->set_userdata(array(
-					'user' => $user_data,
+					'user' => $matching_users[0],
 				));
 				
-				//TODO: Log login pattern
+				//Log Login history
+				$this->Us_model->insert_link(array(
+					'us_id' => $matching_users[0]['node_id'],
+					'timestamp' => date("Y-m-d H:i:s"),
+					'status' => 2,
+					'node_id' => $matching_users[0]['node_id'],
+					'grandpa_id' => 43, //System
+					'parent_id' => 61, //The login history node
+				));
 				
 				//Redirect to pattern home page:
-				header("Location: /patterns");
+				if(isset($_POST['login_node_id']) && intval($_POST['login_node_id'])>0){
+					//This is page the user was trying to access when their failed authentication:
+					header("Location: /".intval($_POST['login_node_id']));
+				} else {
+					//Send user to default starting node post-login:
+					header("Location: /1"); //Us node for now
+				}
 				exit;
 			}
-		}
-	}
-	
-	
-	function index() {
-		auth();
-		$top_users = $this->Us_model->fetch_top_users();
-		$this->load->view('shared/header' , array( 'title' => 'US' ));
-		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
-		$this->load->view('shared/footer');
-	}
-	
-	
-	function load_profile($username){
-		auth();
-		$top_users = $this->Us_model->fetch_top_users();
-		$this->load->view('shared/header' , array( 'title' => 'US' ));
-		$this->load->view('us/leaderboard' , array( 'top_users' => $top_users ));
-		$this->load->view('shared/footer');
-	}
-	
-	
-	function add(){
-		auth();
-		if(!isset($_GET['hashtagName']) || strlen($_GET['hashtagName'])<1){
-			//No proper hashtag name defined!
-			if(isset($_GET['hashtagChildId'])){
-				header("Location: /".$_GET['hashtagChildId']);
-			} elseif(isset($_GET['hashtagParentId'])) {
-				header("Location: /".$_GET['hashtagParentId']);
-			} else {
-				die('Invalid Data, nothing I can do!');
-			}
-		}
-		
-		//Check to make sure this hashtag is not a duplicate:
-		
-		
-		//insert the new hashtag after making sure it's not duplicate:
-		
-		
-		
-		//This function would simply create a parent OR child hashtag, and link it to the origin:
-		if(isset($_GET['hashtagChildId'])){
-			//Create parent hashtag
-		} elseif(isset($_GET['hashtagParentId'])) {
-			//Create child hashtag
 		}
 	}
 }

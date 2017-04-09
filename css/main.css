@@ -5,21 +5,120 @@ body {
 }
 
 body,input,table {
-  font-family: 'Inconsolata', monospace;
+  /*font-family: 'Inconsolata', monospace;*/
+  /* font-family: 'Exo', sans-serif;*/
+  font-family: 'Lato', sans-serif;
   font-weight: 200;
-  font-size:18px;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-weight:bold;
-	margin-top: 10px;
-    margin-bottom: 10px;
+	margin: 0;
+    line-height:100%;
+    font-family: 'Lato', sans-serif;
+    /*font-family: 'Exo', sans-serif;*/
+    /*font-family: 'Inconsolata', monospace;*/
 }
+
+.boldi {margin: 45px 130px 45px 100px; }
+/* Global Font Sizes Per Screen Size */
+body{ font-size:22px; }
+h1{ font-size:40px; }
+h2{ font-size:30px; }
+.featurelist>div>div { font-size:64px; }
+.featurelist b { font-size:26px; }
+.featurelist p { font-size:18px; }
+.nav a { font-size:28px !important; }
+.headercont>a { font-size:64px; }
+.topline{ margin-top:5px; height:85px; }
+.guestheader{ height:30px; }
+
+@media (max-width: 768px){
+	/* Global Font Sizes Per Screen Size */
+	body { font-size:18px; }
+	h1{ font-size:30px; }
+	h2{ font-size:22px; }
+	.nav a { font-size:22px !important; }
+	.headercont>a { font-size:48px; }
+	.topline{ margin-top:1px; height: 65px; }
+	.guestheader{ height:20px; }
+	.boldi {margin: 30px 15px 30px 15px; }
+	
+	#main_container{
+		background-color: #ffffff;
+		margin:0;
+		border-radius:0;
+	}
+}
+
+em{
+	font-style:normal;
+	text-decoration:underline;
+	text-decoration-style: dotted;
+	cursor:help;
+}
+.node_details {
+	padding:0;
+	margin:0;
+	line-height:120%;
+}
+.node_details .handler{
+	margin:0;
+	padding:0;
+	line-height:100%;
+}
+.meta_data{
+	font-size:0.7em;
+	color:#AAA;
+}
+.node_details .handler a{
+	font-size:0.7em;
+	color:#AAA;
+}
+
+.node_details .value{
+	font-size:1.1em;
+	margin:0;
+	padding:0;
+	font-weight:normal;
+}
+.node_details .hover{
+	min-height:26px;
+	display:block;
+}
+.node_details .hover>div{
+	font-family: 'Lato', sans-serif;
+	margin:0;
+	padding:0;
+	font-size:12px;
+	font-weight:normal;
+	color:#AAA;
+	display:none;
+}
+.show_child .hover>div{
+	display:block !important;
+}
+.node_details .hover>div>span{
+	display:inline-block;
+	padding-left:8px;
+	
+}
+
+.link_count{
+	font-size:12px;
+	color:#AAA;
+	margin-left:0px;
+}
+.sp{
+	width: 1px;
+    display: inline-block;
+}
+
 
 h4{
 	margin-top: 0;
     font-size: 14px;
-    color: #999;
+    color: #AAA;
 }
 
 a { color:#63d297; }
@@ -31,8 +130,16 @@ footer{ text-align:center; }
     /*border:0;*/
 }
 
+.featurelist .col-sm-4{
+	margin:30px 0 0 0 !important;
+	display:block;
+	text-align:center;
+}
 
 
+.list-group-item>.badge {
+    margin-top: 5px;
+}
 /* CSS3 */
 
 /* The whole thing */
@@ -68,7 +175,7 @@ footer{ text-align:center; }
 #main_container{
 	background-color: #ffffff;
 	margin-top:0;
-	padding-top:5px;
+	padding-top:10px;
 	padding-bottom:10px;
 }
 .container {
@@ -76,29 +183,42 @@ footer{ text-align:center; }
 	border-radius:4px;
 }
 
-.headercont>a {
-	font-size:30px;
-	color:#333;
-	font-weight:bold;
-	margin:0 5px;
+.headercont {
+	display:inline-block;
+	text-align:left;
+	margin:0;
 	padding:0;
 }
-
+.headercont>a {
+	color:#333;
+	margin:0;
+	padding:0;
+	font-family: 'Exo', sans-serif;
+	font-weight: 800;
+	text-decoration:none;
+}
+.headercont>a:hover {
+	color:#AAA;
+	text-decoration:none;
+}
+.btn {
+    padding: 6px 10px;
+}
 .outsider {
 	margin-top:5px;
 	padding-left:5px;
 	padding-right:5px;
 	font-size:16px;
-	color:#999;
+	color:#AAA;
+	min-height:30px;
 }
 
 .outsider p{
-	margin-bottom:5px;
-	min-height:30px;
+	margin:0;
 }
 .outsider a{
 	font-weight:bold;
-	color:#999;
+	color:#AAA;
 	margin-right:10px;
 	display:inline-block;
 }
@@ -143,6 +263,10 @@ footer{ text-align:center; }
     padding-top: 5px;
 }
 
+.dropdown-menu{
+	min-width:50px;
+	font-size:20px;
+}
 
 .theme-dropdown .dropdown-menu {
   position: static;
@@ -218,29 +342,54 @@ display:block;
 }
 }
 
-
-@media (max-width: 768px){
-h1{
-	font-size:26px;
+.searchresults{
+	display:none;
+	margin-top:50px;
+	text-align:center;
 }
-#main_container{
-	background-color: #ffffff;
-	margin:0;
+.searchresults span{
+	font-size:42px;
+	color:#333;
+}
+.search-block{
+	margin:20px 2px 0 0;
+	display:inline-block;
+	width:153px;
+	float:right;
+}
+#MainSearch {
+	border:0;
+	background-color: transparent;
 	border-radius:0;
+	box-shadow:none;
+	font-size:20px;
+	padding-left: 0;
+	border-bottom:1px solid #BBB;
 }
+.search-type{
+	padding:0;
+	border: 0;
+	border-radius:0;
+	border-bottom:1px solid #BBB;
 }
-
-
-
+.search-type button{
+	padding:4px 8px;
+	background-color: transparent;
+}
+.search-type b{
+	padding-right:2px;
+}
 .navbar-nav{
 	margin-left:0px;
 }
 .nav a {
-	font-size:20px !important;
 	text-shadow:none !important;
 	color:#000 !important;
+	padding:7px 12px !important;
 }
 
+
+/*
 .active a {
 	background-color:#000000 !important;
 	background-image:none !important;
@@ -249,6 +398,7 @@ h1{
 	border-bottom-right-radius:6px;
 	color:#FFFFFF !important;
 }
+*/
 
 .navbar-brand {
     padding:0 15px;
@@ -256,7 +406,7 @@ h1{
 }
 
 .ai-logo {
-	color:#999;
+	color:#AAA;
 	font-size: 20px;
     padding-left: 4px;
 }
@@ -288,4 +438,7 @@ h1 .edit_text_area{
 	display:inline-block !important;
 	transition:none !important;
 	padding:0 !important;
+}
+.nav, .nav:hover, .nav a, .nav a:hover {
+	border:0 !important;
 }

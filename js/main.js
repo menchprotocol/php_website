@@ -8,6 +8,61 @@ ga('send', 'pageview');
 
 
 
+function search(term){
+	//Docs: https://www.algolia.com/doc/api-client/javascript/getting-started/#quick-start
+	var client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+	var index = client.initIndex('getstarted_actors');
+	index.search(term, function(err, content) {
+		$('.searchresults').html('<ul></ul>');
+		for (var key in content.hits) {
+			if (content.hits.hasOwnProperty(key)) {
+				//Show in UI:
+				$('.searchresults ul').append('<li>'+content.hits[key].name+'</li>');
+			}
+		}
+	});
+}
+
+$( ".node_details" ).hover(function() {
+	$( this ).addClass('show_child');
+}).mouseleave(function() {
+	$( this ).removeClass('show_child');
+});
+
+
+$("#MainSearch").on('change keydown paste input', function(){
+	search($("#MainSearch").val());
+});
+
+
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
+
+function pop_search_open(){
+	 var win_width = $(window).width();
+	 if(win_width>720){win_width=720;}
+	 $( ".search-block" ).css('width',(win_width-110)+'px');
+}
+
+$( "#MainSearch" ).focus(function() {
+	pop_search_open();
+	//Switch results page.
+	$( ".nonesearch" ).hide();
+	$( ".searchresults" ).fadeIn().html('<span>Start typing...</span>');
+}).focusout(function() {
+	//default width:
+	 $( ".search-block" ).css('width','153px');
+	 
+	//Switch results page.
+	$( ".nonesearch" ).fadeIn();
+	$( ".searchresults" ).hide();
+});
+$( window ).resize(function() {
+	pop_search_open();
+});
+
 $.fn.editable.defaults.mode = 'inline';
 $(document).ready(function() {
 	//TODO: load editable if the user is admin:
