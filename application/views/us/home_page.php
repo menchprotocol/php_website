@@ -1,70 +1,71 @@
-<h1 class="boldi">Grow a technology startup, Really Fast.</h1>
-<p class="boldi">We optimize learning through collaboration:</p>
-
+<h1 class="boldi">Intelligence to Grow. Faster.</h1>
+<p class="boldi">Us is a decentralized platform to store, organize and distribute knowledge that contributes to your everyday goals.</p>
+<p class="boldi">Platform characteristics:</p>
 
 <div class="row featurelist">
   <div class="col-sm-4">
-  	<div>&#128512;</div>
+  	<!-- <div>&#128512;</div> -->
+  	<div><img src="/img/icons/smile.png" width="90" height="90" /></div>
 	<b>Crowdsourcing</b>
-	<p>Collecting intelligence.<br />Powered by community.</p>
+	<p>We gather best-practices from public knowledge.</p>
   </div>
   <div class="col-sm-4">
-  	<div>&#128142;</div>
-	<b>Data Curation</b>
-	<p>Source & author credibility.<br />Ongoing peer review.</p>
+  	<div><img src="/img/icons/diamond.png" width="90" height="90" /></div>
+	<b>Credibility Based</b>
+	<p>We score data using author credentials & qualifications.</p>
   </div>
   <div class="col-sm-4">
-  	<div>&#128064;</div>
-  	<b>Always Optimizing</b>
-  	<p>To better communicate.<br />To reshape perspectives.</p>
-  </div>
-  
-</div>
-
-
-<div class="row featurelist">
-  <div class="col-sm-4">
-    <div>&#127919;</div>
+    <div><img src="/img/icons/target.png" width="90" height="90" /></div>
   	<b>Goal-Driven</b>
-  	<p>You set the goal.<br />We'll get there together.</p>
+  	<p>We correlate best-practices to specific, tangible goals.</p>
   </div>
+</div>
+
+<div class="row featurelist">
   <div class="col-sm-4">
-    <div>&#128269;</div>
+    <div><img src="/img/icons/search.png" width="90" height="90" /></div>
   	<b>Personalized</b>
-  	<p>2-Way communication.<br />We'll learn what you need.</p>
+  	<p>Explore data that matters with micro-questions.</p>
   </div>
   <div class="col-sm-4">
-  	<div>&#9889;</div>
+  	<div><img src="/img/icons/bolt.png" width="90" height="90" /></div>
   	<b>On-Demand</b>
-  	<p>Relevant best-practices.<br />Ready when you are.</p>
+  	<p>Instantly access actionable insights by searching goals.</p>
+  </div>
+  <div class="col-sm-4">
+  	<div><img src="/img/icons/rainbow.png" width="90" height="90" /></div>
+  	<b>For All of Us.</b>
+  	<p>We are both <a href="https://github.com/usfoundation">open-source</a> & <a href="http://www2.gov.bc.ca/gov/content/employment-business/business/not-for-profit-organizations/societies">non-profit</a>.</p>
   </div>
 </div>
 
 
+<!-- 
 <div class="row featurelist">
   <div class="col-sm-4">
-  	<div>&#128591;</div>
+  	<div><img src="/img/icons/mentor.png" width="90" height="90" /></div>
 	<b>Mentorship</b>
 	<p>Build relationships.<br />With people who care.</p>
   </div>
   <div class="col-sm-4">
-    <div>&#127909;</div>
+    <div><img src="/img/icons/camera.png" width="90" height="90" /></div>
   	<b>Video Based</b>
   	<p>Live mentor video chats.<br />Short informative videos.</p>
   </div>
   <div class="col-sm-4">
-  	<div>&#127752;</div>
-  	<b>For all of Us.</b>
-  	<p>For the greater good.<br /><a href="https://github.com/usfoundation">Open-source</a> & non-profit.</p>
+  	<div><img src="/img/icons/wrench.png" width="90" height="90" /></div>
+  	<b>Always Optimizing</b>
+  	<p>We measure the A learning that is easier, faster and more effective.</p>
   </div>
 </div>
+-->
 
 
-<h1 style="margin:35px 0 15px ;">"Us" means all of "us" humans.</h1>
-<p>Our mission is to <b>Extend Human Survival</b>.</p>
+
+<p style="margin-top:50px;">Our mission is to <b>Extend Human Survival</b>.</p>
 <p>The question we're most concerned about is:
 <br /><b>Are we humans still growing a million years from now?</b></p>
-<p>We're building a shared intelligence platform to increase our odds.</p>
+<p>We believe leveraging our common intelligence would grow our chances.</p>
 
 
 

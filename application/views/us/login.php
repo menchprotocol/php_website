@@ -1,4 +1,4 @@
-<h1 style="margin-bottom:20px;">Welcome Back &#128536;</h1>
+<h1 style="margin-bottom:20px;">Welcome Back</h1>
 <form class="form-signin" action="/login_process" method="post">
 	<input type="hidden" name="login_node_id" value="<?= @$_GET['next'] ?>" />
 	<label for="inputEmail" class="sr-only">Email</label>

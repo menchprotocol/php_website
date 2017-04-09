@@ -71,15 +71,15 @@ $function = $this->uri->segment(2);
 	<div class="container main-header nonesearch">
 		<ul class="nav nav-tabs">
 		  <?php if(isset($user_data['id'])){ ?>	
-		  <li role="presentation" <?= ( $node[0]['grandpa_id']==1 && $node[0]['node_id']!=$user_data['node_id']? 'class="active"' : '' ) ?>><a href="/1">@</a></li>
-		  <li role="presentation" <?= ( $node[0]['grandpa_id']==2 ? 'class="active"' : '' ) ?>><a href="/2">&</a></li>
-		  <li role="presentation" <?= ( $node[0]['grandpa_id']==3 ? 'class="active"' : '' ) ?>><a href="/3">#</a></li>
-		  <li role="presentation" <?= ( $node[0]['grandpa_id']==4 ? 'class="active"' : '' ) ?>><a href="/4">?</a></li>
-		  <li role="presentation" <?= ( $node[0]['grandpa_id']==43 ? 'class="active"' : '' ) ?>><a href="/43">!</a></li>
-		  <li role="presentation" <?= ( $node[0]['node_id']==$user_data['node_id'] ? 'class="active"' : '' ) ?> style="float:right;"><a href="/<?= $user_data['node_id'] ?>">@me</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==1 && $node[0]['node_id']!=$user_data['node_id']? 'class="active"' : '' ) ?>><a href="/1">@</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==2 ? 'class="active"' : '' ) ?>><a href="/2">&</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==3 ? 'class="active"' : '' ) ?>><a href="/3">#</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==4 ? 'class="active"' : '' ) ?>><a href="/4">?</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==43 ? 'class="active"' : '' ) ?>><a href="/43">!</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['node_id']==$user_data['node_id'] ? 'class="active"' : '' ) ?> style="float:right;"><a href="/<?= $user_data['node_id'] ?>">@me</a></li>
 		  <?php } else { ?>
-		  <li role="presentation" <?= ( $controller=='login' ? 'class="active"' : '' ) ?> style="float:right;"><a href="/login">Login</a></li>
-		  <li role="presentation" <?= ( $controller=='join' ? 'class="active"' : '' ) ?> style="float:right;"><a href="/join">Join Us</a></li>
+			  <li role="presentation" <?= ( $controller=='login' ? 'class="active"' : '' ) ?> style="float:right;"><a href="/login">Login</a></li>
+			  <li role="presentation" <?= ( $controller=='join' ? 'class="active"' : '' ) ?> style="float:right;"><a href="/join">Join Us</a></li>
 		  <?php } ?>
 		</ul>
 	</div>

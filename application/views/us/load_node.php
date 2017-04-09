@@ -24,7 +24,7 @@ foreach($node as $key=>$value){
 		echo ( $key==0 ? '<h1>'.$value['value'].'</h1>' : $value['value'] )/*.'('.$value['index'].')'*/;
 			echo '<div class="hover"><div>';
 				echo '<span><a href="/'.$value['us_id'].'">'.$value['us_name'].'</a></span>';
-				echo '<span><em title="Added on '.substr($value['timestamp'],0,19).'" data-toggle="tooltip"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> '.format_timestamp($value['timestamp']).'</em></span>';
+				echo '<span><em title="'.substr($value['timestamp'],0,19).' UTC" data-toggle="tooltip"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> '.format_timestamp($value['timestamp']).'</em></span>';
 				echo '<span><em title="'.$status['description'].'" data-toggle="tooltip"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> '.$status['name'].'</em></span>';
 				echo '<span><a href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> '.$value['id'].'</a></span>';
 				echo '</div></div>';
