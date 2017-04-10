@@ -2,7 +2,7 @@
 
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
-	return 'v0.22';
+	return 'v0.23';
 }
 
 function parents(){

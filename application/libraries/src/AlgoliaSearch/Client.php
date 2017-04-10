@@ -83,7 +83,9 @@ class Client
             throw new \Exception('AlgoliaSearch requires the JSON PHP extension.');
         }
 
-        $this->caInfoPath = __DIR__.'/../../resources/ca-bundle.crt';
+        //$this->caInfoPath = __DIR__.'/../../resources/ca-bundle.crt';
+        $this->caInfoPath = '/etc/ssl/certs/ca-certificates.crt';
+        
         foreach ($options as $option => $value) {
             switch ($option) {
                 case self::CAINFO:
