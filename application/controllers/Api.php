@@ -38,7 +38,6 @@ class Api extends CI_Controller {
 						'last_edited' => substr($link['timestamp'],0,19),
 						'grandpa_id' => $link['grandpa_id'],
 						'parent_id' => $link['parent_id'],
-						'parent_name' => strip_tags($link['parent_name']),
 						'value' => $link['value'],
 						'links_blob' => '',
 					);
@@ -59,7 +58,8 @@ class Api extends CI_Controller {
 		//Include PHP library:
 		require_once('application/libraries/algoliasearch.php');
 		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-		$index = $client->initIndex('patterns');
+		$index = $client->initIndex('nodes');
+		$index->clearIndex();
 		$index->addObjects($obj);
 	}
 	

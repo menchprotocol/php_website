@@ -11,7 +11,7 @@ ga('send', 'pageview');
 function search(term){
 	//Docs: https://www.algolia.com/doc/api-client/javascript/getting-started/#quick-start
 	var client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-	var index = client.initIndex('getstarted_actors');
+	var index = client.initIndex('nodes');
 	index.search(term, function(err, content) {
 		$('.searchresults').html('<ul></ul>');
 		for (var key in content.hits) {
