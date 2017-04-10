@@ -53,7 +53,7 @@ class Api extends CI_Controller {
 		}
 			
 		//print_r($return);exit;
-		//$obj = json_decode(json_encode($return), FALSE);
+		$obj = json_decode(json_encode($return), FALSE);
 		//print_r($obj);
 		
 		//Include PHP library:
