@@ -58,7 +58,7 @@ class Api extends CI_Controller {
 		
 		//Include PHP library:
 		require_once('application/libraries/algoliasearch.php');
-		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "ca3cf5f541daee514976bc49f8399716");
+		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
 		$index = $client->initIndex('patterns');
 		$index->addObjects($obj);
 	}
