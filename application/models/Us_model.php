@@ -54,6 +54,25 @@ class Us_model extends CI_Model {
 		return $q->result_array();
 	}
 	
+	
+	
+	function fetch_node_ids(){
+		$this->db->distinct();
+		$this->db->select('node_id');
+		$this->db->from('v3_data d');
+		$this->db->where('d.status >' , 0);
+		$this->db->order_by('node_id' , 'ASC');
+		$q = $this->db->get();
+		$nodes = $q->result_array();
+		$return = array();
+		foreach($nodes as $node){
+			array_push($return,$node['node_id']);
+		}
+		return $return;
+	}
+	
+	
+	
 	function fetch_node($node_id , $action='fetch_node'){
 		
 		if(intval($node_id)<1 || !in_array($action,array('fetch_node','fetch_children','fetch_top_plain'))){
@@ -129,7 +148,7 @@ class Us_model extends CI_Model {
 					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
 					$links[$i]['index'] = 1; //For debugging
 					
-					$links[$i]['value'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
+					$links[$i]['value_alt'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
 					
 				} elseif($action=='fetch_children'){
 					//This has no value, meaning the node_id needs to be invoked for data:

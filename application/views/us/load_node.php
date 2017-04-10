@@ -11,6 +11,9 @@ $parents = parents();
 $last_handler = null;
 foreach($node as $key=>$value){
 	$status = status_descriptions($value['status']);
+	//This is used for links that don't have a value
+	//but we add a custom value to "value_alt" to make the UI pretty
+	$value_field = ( strlen($value['value'])>0 ? $value['value'] : @$value['value_alt'] );
 	echo '<div class="row node_details">';
 		echo '<div class="col-sm-3 handler">';
 			if($last_handler!==$value['parent_id']){
@@ -21,7 +24,7 @@ foreach($node as $key=>$value){
 			}
 		echo '</div>';
 		echo '<div class="col-sm-9 value">';
-		echo ( $key==0 ? '<h1>'.$value['value'].'</h1>' : $value['value'] )/*.'('.$value['index'].')'*/;
+		echo ( $key==0 ? '<h1>'.$value_field.'</h1>' : $value_field )/*.'('.$value['index'].')'*/;
 			echo '<div class="hover"><div>';
 				echo '<span><a href="/'.$value['us_id'].'">'.$value['us_name'].'</a></span>';
 				echo '<span><em title="'.substr($value['timestamp'],0,19).' UTC" data-toggle="tooltip"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> '.format_timestamp($value['timestamp']).'</em></span>';

@@ -50,20 +50,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-
-//The default home page.
-$route['default_controller'] = 'us';
-
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//Default intro pages:
-$route['(:num)'] = "us/load_node/$1";
-$route['(:num)/(:num)'] = "us/load_link/$2";
+//Some landing pages
+//Also edit controllers/us/load_wiki to define title.
+//TODO Move to nodes through public and html objects
+$route['default_controller'] = "us/load_wiki";
+$route['collectiveai'] = "us/load_wiki/collectiveai";
+$route['patternnetwork'] = "us/load_wiki/patternnetwork";
+$route['join'] = "us/load_wiki/join";
+$route['login'] = "us/load_wiki/login";
 
-$route['join'] = "us/join";
-$route['logout'] = "us/logout";
-$route['login'] = "us/login";
-$route['login_process'] = "us/login_process";
+//Application logic:
+$route['(:num)'] = "us/load_node/$1";
+$route['(:num)/(:num)'] = "us/load_link/$1/$2";
 $route['add'] = "us/add";
+$route['logout'] = "us/logout";
+$route['login_process'] = "us/login_process";
+
+
 

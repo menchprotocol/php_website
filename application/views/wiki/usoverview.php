@@ -1,13 +1,13 @@
 <h1 class="boldi">Intelligence to Grow. Faster.</h1>
-<p class="boldi">Us is a decentralized platform to store, organize and distribute knowledge that contributes to your everyday goals.</p>
-<p class="boldi">Platform characteristics:</p>
+<p class="boldi">Us is a decentralized platform to store, organize and distribute knowledge that contributes to your most important goals. We're currently gathering intelligence on <b>growing a startup</b>.</p>
+<h2 class="boldi">How Us works?</h2>
 
 <div class="row featurelist">
   <div class="col-sm-4">
-  	<!-- <div>&#128512;</div> -->
-  	<div><img src="/img/icons/smile.png" width="90" height="90" /></div>
+  	<!-- <div>&#128525;</div> -->
+  	<div><img src="/img/icons/love.png" width="90" height="90" /></div>
 	<b>Crowdsourcing</b>
-	<p>We gather best-practices from public knowledge.</p>
+	<p>We connect human intelligence to create AI.</p>
   </div>
   <div class="col-sm-4">
   	<div><img src="/img/icons/diamond.png" width="90" height="90" /></div>
@@ -25,7 +25,7 @@
   <div class="col-sm-4">
     <div><img src="/img/icons/search.png" width="90" height="90" /></div>
   	<b>Personalized</b>
-  	<p>Explore data that matters with micro-questions.</p>
+  	<p>2-Way interactions gives you data that matters.</p>
   </div>
   <div class="col-sm-4">
   	<div><img src="/img/icons/bolt.png" width="90" height="90" /></div>
@@ -40,7 +40,7 @@
 </div>
 
 
-<!-- 
+<?php /*
 <div class="row featurelist">
   <div class="col-sm-4">
   	<div><img src="/img/icons/mentor.png" width="90" height="90" /></div>
@@ -58,18 +58,21 @@
   	<p>We measure the A learning that is easier, faster and more effective.</p>
   </div>
 </div>
--->
+*/?>
 
 
 
-<p style="margin-top:50px;">Our mission is to <b>Extend Human Survival</b>.</p>
-<p>The question we're most concerned about is:
-<br /><b>Are we humans still growing a million years from now?</b></p>
-<p>We believe leveraging our common intelligence would grow our chances.</p>
+<p class="boldi" style="margin-top:75px;">Our mission is to <b>Extend Human Survival</b>.</p>
+<p class="boldi">The question we're most concerned about is:
+<br /><b>Would we humans be growing a million years from now?</b></p>
+<p class="boldi">We believe leveraging our common intelligence would increase our chances.</p>
 
 
 
 <div class="list-group" style="margin-top:30px;">
+	<?php /*
+	<a href="/collectiveai" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Explore Collective AI</a>
+	*/?>
 	<a href="/join" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Join US</a>
 	<a href="/login" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Login</a>
 </div>

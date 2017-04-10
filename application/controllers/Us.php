@@ -26,10 +26,22 @@ class Us extends CI_Controller {
 	}
 	
 	function index(){
-		//TODO: Move to nodes through public and html objects
-		//The main landing page:
-		$this->load->view('shared/header' , array( 'title' => 'Welcome to Us' ));
-		$this->load->view('us/home_page');
+		$this->load_wiki();
+	}
+	
+	function load_wiki($file_name= 'usoverview'){
+		//For quick static pages
+		//Also edit config/routes.php to load Wiki!
+		$wiki_index = array(
+			'login' => 'US Login',
+			'join' => 'Join US',
+			'usoverview' => 'Us Humans Foundation',
+			'collectiveai' => 'Collective AI',
+			'patternnetwork' => 'Pattern Network',
+		);
+		//Load views
+		$this->load->view('shared/header' , array( 'title' => $wiki_index[$file_name] ));
+		$this->load->view('wiki/'.$file_name);
 		$this->load->view('shared/footer');
 	}
 	
@@ -52,26 +64,17 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer', $data_set);
 	}
 	
-	function load_link(){
+	function load_link($node_id,$link_id){
 		//Manage specific links
+		
 	}
+	
+	
 	
 	function add() {
 		auth();
-		$this->load->view('shared/header' , array( 'title' => 'Add Pattern' ));
+		$this->load->view('shared/header');
 		$this->load->view('us/add');
-		$this->load->view('shared/footer');
-	}
-	
-	
-	function login() {
-		$this->load->view('shared/header' , array( 'title' => 'US Login' ));
-		$this->load->view('us/login');
-		$this->load->view('shared/footer');
-	}
-	function join() {
-		$this->load->view('shared/header' , array( 'title' => 'Join US' ));
-		$this->load->view('us/join');
 		$this->load->view('shared/footer');
 	}
 	function logout() {

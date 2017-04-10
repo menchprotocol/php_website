@@ -14,7 +14,7 @@ $function = $this->uri->segment(2);
     <meta name="description" content="">
     <meta name="author" content="">
 	<link rel="shortcut icon" href="/favicon.ico" />
-    <title><?= ( isset($node[0]['title']) ? $parents[$node[0]['grandpa_id']]['sign'].' '.strip_tags($node[0]['value']) : 'Us' ) ?></title>
+    <title><?= ( isset($node[0]['title']) ? $parents[$node[0]['grandpa_id']]['sign'].' '.strip_tags($node[0]['value']) : ( isset($title) ? $title: 'Us') ) ?></title>
 
     <!-- CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
