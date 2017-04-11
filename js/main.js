@@ -7,108 +7,99 @@ ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
 
-
-function search(term){
-	//Docs: https://www.algolia.com/doc/api-client/javascript/getting-started/#quick-start
-	var client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-	var index = client.initIndex('nodes');
-	index.search(term, function(err, content) {
-		$('.searchresults').html('<ul></ul>');
-		for (var key in content.hits) {
-			if (content.hits.hasOwnProperty(key)) {
-				//Show in UI:
-				$('.searchresults ul').append('<li>'+content.hits[key].name+'</li>');
-			}
-		}
-	});
+function parents(grandpa_id){
+	//A PHP version of this function is in us_helper.php
+	switch(grandpa_id) {
+    case 1:
+    	return '@';
+        break;
+    case 2:
+    	return '&';
+        break;
+    case 3:
+    	return '#';
+        break;
+    case 4:
+    	return '?';
+        break;
+    default:
+    	return '!';
+	}
 }
 
+//Expands search input when focused
+function pop_search_open(){
+	 var win_width = $(window).width();
+	 if(win_width>720){win_width=720;}
+	 $( ".search-block" ).css('width',(win_width-125)+'px');
+}
+
+//Main search:
+var index,client;
+
+$( document ).ready(function() {
+	
+	//By default we do not load until user goes to search box:
+	algolia_loaded = 0;
+	$( "#mainsearch" ).focus(function() {
+		if(!algolia_loaded){
+			//Prevent second time loading:
+			algolia_loaded = 1;
+			//Assign to global variables:
+			window.client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+			window.index = client.initIndex('nodes');
+		}
+	});
+	
+	
+	$('#mainsearch').autocomplete({ hint: false }, [{
+	    source: function(q, cb) {
+	      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+	        if (error) {
+	          cb([]);
+	          return;
+	        }
+	        
+	        cb(content.hits, content);
+	      });
+	    },
+	    displayKey: 'value',
+	    templates: {
+	      suggestion: function(suggestion) {
+	         return parents(parseInt(suggestion._highlightResult.grandpa_id.value)) + suggestion._highlightResult.value.value;
+	      }
+	    }
+	}]).focus(function() {
+		pop_search_open();
+		
+		//Handle window resize on focus:
+		$( window ).resize(function() { pop_search_open(); });
+	}).focusout(function() {
+		//default width:
+		$( ".search-block" ).css('width','120px');
+	}).on('autocomplete:selected', function(event, suggestion, dataset) {
+		window.location.replace("/"+suggestion._highlightResult.node_id.value);
+	});
+});
+
+
+
+//The hover of link settings
 $( ".node_details" ).hover(function() {
 	$( this ).addClass('show_child');
 }).mouseleave(function() {
 	$( this ).removeClass('show_child');
 });
 
-
-$("#MainSearch").on('change keydown paste input', function(){
-	search($("#MainSearch").val());
-});
-
-
+//For any tooltips on any page
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip();
 });
 
 
-function pop_search_open(){
-	 var win_width = $(window).width();
-	 if(win_width>720){win_width=720;}
-	 $( ".search-block" ).css('width',(win_width-110)+'px');
-}
 
-$( "#MainSearch" ).focus(function() {
-	pop_search_open();
-	//Switch results page.
-	$( ".nonesearch" ).hide();
-	$( ".searchresults" ).fadeIn().html('<span>Start typing...</span>');
-}).focusout(function() {
-	//default width:
-	 $( ".search-block" ).css('width','153px');
-	 
-	//Switch results page.
-	$( ".nonesearch" ).fadeIn();
-	$( ".searchresults" ).hide();
-});
-$( window ).resize(function() {
-	pop_search_open();
-});
 
-$.fn.editable.defaults.mode = 'inline';
-$(document).ready(function() {
-	//TODO: load editable if the user is admin:
-    $('.editable').editable({
-        escape: true,
-        showbuttons: false,
-        inputclass: 'edit_text_area',
-        url: '/api/edit_value_string'
-    });
 
-    $('.editable').on('shown', function(e, editable) {
-        //Set proper height for this box:
-        $('.edit_text_area').css({"height":$(this).height()+"px"});
-    });
-
-    
-    $('.editable').on('save', function(e, params) {
-        //This would update the main ID to the newly inserted row
-        if(params.response.parent==2){
-            //This is a hashtag change, requires a page reload:
-        	window.location = "/"+params.response.value_string;
-        } else {
-        	$(this).editable('option', 'pk', params.response.new_id);
-        }
-    });
-
-    
-    $( ".hashtagAddChild" ).focus(function() {
-    	if($(this).val().length==0){
-    		$(this).val('#');
-    	}
-    });
-
-    $( ".hashtagAddChild" ).focusout(function() {
-    	if($(this).val()=='#'){
-    		$(this).val('');
-    	}
-    });
-    
-
-	//Give the screen a nice Fade in effect:
-	//$('#main_container').hide().fadeIn();
-	
-	//Render auto complete inputs, if any:
-	initiate_nodesearch_autocomplete(".hashtagAddChild");
-});
 
 
 /*
@@ -130,97 +121,4 @@ Sortable.create( list , {
 	}
 });
 */
-
-
-/*
- * 
-Editable text image creator: http://www.text2image.com/html5_canvas.html 
-*/
-
-//A function for getCursorPosition()
-(function ($, undefined) {
-    $.fn.getCursorPosition = function() {
-        var el = $(this).get(0);
-        var pos = 0;
-        if('selectionStart' in el) {
-            pos = el.selectionStart;
-        } else if('selection' in document) {
-            el.focus();
-            var Sel = document.selection.createRange();
-            var SelLength = document.selection.createRange().text.length;
-            Sel.moveStart('character', -el.value.length);
-            pos = Sel.text.length - SelLength;
-        }
-        return pos;
-    }
-})(jQuery);
-
-
-
-
-
-
-
-function extract_hashtag(inputstring,handler){
-	var hshtgs = (inputstring.match(/#/g) || []).length; //Total number of hashtags found in the string
-	var arr = inputstring.split('#');
-	var pos = handler.getCursorPosition();
-	
-	return inputstring;
-}
-
-
-
-function initiate_nodesearch_autocomplete(object_selector){
-	//Loop through all the auto complete fields on the page:
-	$(object_selector).each(function() {
-		var handler = $(object_selector);
-		handler.easyAutocomplete({
-			url: function(phrase) {
-				return "/api/autocomplete/?parentscope="+handler.attr('parentscope')+"keyword="+extract_hashtag(phrase,handler);
-			},
-			getValue: function(element) {
-				return element.value_string.replace(/(<([^>]+)>)/ig,"").trim();
-			},
-			requestDelay: 0, //Milliseconds
-			highlightPhrase: true,
-			/*placeholder: "Search for pattern ID",*/
-			template: {
-				type: "custom",
-				method: function(value, item) {
-					if(item.parent==2){
-						return '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> #'+item.value_string;
-					} else if(item.parent==7){
-						return item.value_string;
-					}
-				}
-			},
-			list: {
-				onChooseEvent: function() {
-					var object_id = handler.getSelectedItemData().id;
-					var object_id = handler.getSelectedItemData().id;
-					if(object_id>0){
-						switch (handler.attr('performaction')) {
-						 case "add_parent":
-						 case "add_child":
-							window.location = "/api/quick_link/?performaction="+handler.attr('performaction')+"&currentnode="+handler.attr('currentnode')+"&hashtagId="+object_id;
-							break;
-						  default:
-							//For now, default is to insert ID in the input field
-							//alert( '"' + handler.getSelectedItemData().hashtag.replace(/(<([^>]+)>)/ig,"").trim() + '" selected with ID ' + object_id);
-							//TODO: Later update to a fancier UI that shows name, and with click enables ID change
-							handler.val(object_id);
-						}
-					}
-				},
-				match: {
-					enabled: true
-				},
-				sort: {
-					enabled: true
-				}
-			}
-		});
-	});
-}
 

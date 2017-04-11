@@ -9,14 +9,7 @@ class Api extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	function autocomplete(){
-		//TODO: Search patterns
-		//$data = $this->Us_model->search_node(@$_GET['keyword'],intval(@$_GET['parentScope']));
-		//header('Content-Type: application/json');
-		//echo json_encode($data);
-	}
-	
-	
+	//Run this to completely update the "nodes" index
 	function update_algolia(){
 			
 		//Buildup this array to save to search index

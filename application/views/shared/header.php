@@ -17,10 +17,9 @@ $function = $this->uri->segment(2);
     <title><?= ( isset($node[0]['title']) ? $parents[$node[0]['grandpa_id']]['sign'].' '.strip_tags($node[0]['value']) : ( isset($title) ? $title: 'Us') ) ?></title>
 
     <!-- CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-	<link href="/css/easy-autocomplete.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/css/main.css?v=<?= version_salt() ?>" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -29,10 +28,17 @@ $function = $this->uri->segment(2);
     <![endif]-->
     
     <!-- JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <?php /*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+*/ ?>
+
+	<script src="https://cdn.jsdelivr.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="/js/main.js?v=<?= version_salt() ?>"></script>
+   
   </head>
   <body>
     
@@ -40,10 +46,9 @@ $function = $this->uri->segment(2);
 	  	<p class="headercont">
 			<a href="/" style="display:inline-block">Us</a>
 			<?php if(isset($user_data['id'])){ ?>
-			<form class="search-block">
-			     <div class="input-group">
-			     
-			      <!-- 
+				<form class="search-block">
+			      <?php /* 
+			      //TODO: Possible implement search filter if needed
 			      <div class="input-group-addon search-type">
 			      	<div class="btn-group">
 					  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*</button>
@@ -56,19 +61,15 @@ $function = $this->uri->segment(2);
 					  </ul>
 					</div>
 			      </div>
-			       -->
-			       
-				  <input type="text" class="form-control" id="MainSearch" placeholder="Search">
-			    </div>
-			</form>
+			      */ ?>
+				  <input type="text" class="form-control" id="mainsearch" placeholder="Jump To...">
+				</form>
 			<?php } ?>				
 		</p>
 	</div>
 	
-	
-	<div class="container searchresults"></div>
-	
-	<div class="container main-header nonesearch">
+		
+	<div class="container main-header">
 		<ul class="nav nav-tabs">
 		  <?php if(isset($user_data['id'])){ ?>	
 			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==1 && $node[0]['node_id']!=$user_data['node_id']? 'class="active"' : '' ) ?>><a href="/1">@</a></li>
@@ -83,7 +84,8 @@ $function = $this->uri->segment(2);
 		  <?php } ?>
 		</ul>
 	</div>
-    <div class="container nonesearch" role="main" id="main_container">
+	
+    <div class="container" role="main" id="main_container">
     
     <?php
 	//Any Html Messages int he flash session to show?

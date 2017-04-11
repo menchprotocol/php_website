@@ -30,7 +30,7 @@ h2{ font-size:30px; }
 .featurelist p { font-size:18px; }
 .nav a { font-size:28px !important; }
 .headercont>a { font-size:64px; }
-.topline{ margin-top:5px; height:85px; }
+.topline{ margin-top:5px; min-height:85px; }
 .guestheader{ height:30px; }
 
 @media (max-width: 768px){
@@ -40,7 +40,7 @@ h2{ font-size:30px; }
 	h2{ font-size:22px; }
 	.nav a { font-size:22px !important; }
 	.headercont>a { font-size:48px; }
-	.topline{ margin-top:1px; height: 65px; }
+	.topline{ margin-top:1px; min-height: 65px; }
 	.guestheader{ height:20px; }
 	.boldi {margin: 30px 15px 30px 15px; }
 	
@@ -349,13 +349,19 @@ display:block;
 	font-size:42px;
 	color:#333;
 }
+.search-block>.input-group{
+	display: block;
+}
+
 .search-block{
 	margin:20px 2px 0 0;
 	display:inline-block;
-	width:153px;
-	float:right;
+	width:160px; /* This is hard coded in main.js for search resizing */
+	margin-left:25px;
 }
-#MainSearch {
+
+
+#mainsearch {
 	border:0;
 	background-color: transparent;
 	border-radius:0;
@@ -426,17 +432,34 @@ h1 .edit_text_area{
 	line-height: 110%;
 }
 
-.hashtagAddParent, .hashtagAddChild {
-	font-size: 18px !important;
-	border:0 !important;
-	border-radius:0 !important;
-	box-shadow:none !important;
-	-webkit-box-shadow:none !important;
-	-webkit-transition:none !important;
-	display:inline-block !important;
-	transition:none !important;
-	padding:0 !important;
-}
 .nav, .nav:hover, .nav a, .nav a:hover {
 	border:0 !important;
+}
+
+
+.algolia-autocomplete {
+  width: 100%;
+}
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 100%;
+}
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-top: none;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #B2D7FF;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
 }

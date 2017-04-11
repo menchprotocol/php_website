@@ -2,10 +2,11 @@
 
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
-	return 'v0.23';
+	return 'v0.30';
 }
 
 function parents(){
+	//A Javascript version of this function is in main.js
 	return array(
 		1  => array(
 			'name' => 'Us',
