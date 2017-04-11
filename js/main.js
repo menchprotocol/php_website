@@ -34,14 +34,48 @@ function pop_search_open(){
 	 $( ".search-block" ).css('width',(win_width-125)+'px');
 }
 
+
+function create_node(node_name){
+	var parent_id = $("#parent_node_id").val();
+
+	$( '<a href="/7" class="list-group-item context-menu-one"><span class="badge">1 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'+node_name+' <span class="link_count"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>7</span></a>' ).insertBefore( ".list_input" );
+	$( "#addnode" ).focus().val("");
+
+}
+function link_node(child_id){
+	var parent_id = $("#parent_node_id").val();
+	//Give user the option to enter value:
+	//var value = prompt("Enter optional value for this new link:", "");
+	
+	$( "#addnode" ).focus().val("");
+	$( '<a href="/7" class="list-group-item context-menu-one"><span class="badge">1 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>@Shervin<span class="sp"> </span>Enayati <span class="link_count"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>7</span></a>' ).insertBefore( ".list_input" );
+	
+	
+	//alert(parent_id+' to '+child_id+' val: '+value);
+}
+
 //Main search:
 var index,client;
-
 $( document ).ready(function() {
+	
+	//The hover of link settings
+	$( ".node_details" ).hover(function() {
+		$( this ).addClass('show_child');
+	}).mouseleave(function() {
+		$( this ).removeClass('show_child');
+	});
+
+	$('[data-toggle="tooltip"]').tooltip();
+	
+	//Prevent Node creation form submission
+	$("#addnodeform").submit(function(e){
+        e.preventDefault();
+    });
+	
 	
 	//By default we do not load until user goes to search box:
 	algolia_loaded = 0;
-	$( "#mainsearch" ).focus(function() {
+	$( ".autosearch" ).focus(function() {
 		if(!algolia_loaded){
 			//Prevent second time loading:
 			algolia_loaded = 1;
@@ -52,49 +86,104 @@ $( document ).ready(function() {
 	});
 	
 	
-	$('#mainsearch').autocomplete({ hint: false }, [{
+	//New Node search box call to action: 
+	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+		//Ajax processing to link two nodes together
+		link_node(suggestion._highlightResult.node_id.value);
+	}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+	    source: function(q, cb) {
+		      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+		        if (error) {
+		          cb([]);
+		          return;
+		        }
+		        
+		        cb(content.hits, content);
+		      });
+		    },
+		    displayKey: function(suggestion) { return "" },
+		    templates: {
+		      suggestion: function(suggestion) {
+		         return '<span class="glyphicon glyphicon-link" aria-hidden="true"></span> '+parents(parseInt(suggestion._highlightResult.grandpa_id.value)) + suggestion._highlightResult.value.value;
+		      },
+		      header: function(data) {
+		    	  if(!data.isEmpty){
+		    		  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> "'+data.query+'" <span style="color:#999;">(Create Node)</span></a>';
+		    	  }
+		      },
+		      empty: function(data) {
+	    		  	  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> "'+data.query+'" <span style="color:#999;">(Create Node)</span></a>';
+		      },
+		    }
+		}]);
+	
+	
+	//Header search specific functions for UI and autocomplete result selection:
+	$( "#mainsearch" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+		window.location.replace("/"+suggestion._highlightResult.node_id.value);
+	}).focus(function() {
+		pop_search_open();
+		//Handle window resize on focus:
+		$( window ).resize(function() { pop_search_open(); });
+	}).focusout(function() {
+		//default width:
+		$( ".search-block" ).css('width','120px');
+	}).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
 	    source: function(q, cb) {
 	      index.search(q, { hitsPerPage: 7 }, function(error, content) {
 	        if (error) {
 	          cb([]);
 	          return;
 	        }
-	        
 	        cb(content.hits, content);
 	      });
 	    },
-	    displayKey: 'value',
+	    /*displayKey: 'value',*/
+	    displayKey: function(suggestion) { return "" },
 	    templates: {
 	      suggestion: function(suggestion) {
 	         return parents(parseInt(suggestion._highlightResult.grandpa_id.value)) + suggestion._highlightResult.value.value;
-	      }
+	      },
 	    }
-	}]).focus(function() {
-		pop_search_open();
-		
-		//Handle window resize on focus:
-		$( window ).resize(function() { pop_search_open(); });
-	}).focusout(function() {
-		//default width:
-		$( ".search-block" ).css('width','120px');
-	}).on('autocomplete:selected', function(event, suggestion, dataset) {
-		window.location.replace("/"+suggestion._highlightResult.node_id.value);
-	});
+	}]);
 });
 
 
 
-//The hover of link settings
-$( ".node_details" ).hover(function() {
-	$( this ).addClass('show_child');
-}).mouseleave(function() {
-	$( this ).removeClass('show_child');
-});
+function edit_link(key,id){
+	//Yellow bg & visible metadata:
+	$('#link'+id).addClass('edit_mode').addClass('show_child_edit');
+	//Create the Cancel href:
+	var cancel_href = 'javascript:discard_link_edit(' + key + ',' + id + ');';
+	//Repurpose original edit link:
+	$('#link'+id+" .edit_link").attr('href',cancel_href);
+	//Add buttons:
+	$('#link'+id+" .hover")
+		.append('<div class="action_buttons"><a class="btn btn-primary btn-sm a_save" href="#" role="button">Save Intelligence</a><a class="btn btn-primary btn-sm a_cancel" href="'+cancel_href+'" role="button">Cancel</a><a class="a_delete" href="javascript:delete_link(' + key + ',' + id + ');"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</a></div">');
 
-//For any tooltips on any page
-$(function () {
-	$('[data-toggle="tooltip"]').tooltip();
-});
+	
+}
+function discard_link_edit(key,id){
+	//Revert the link editing back to default:
+	$('#link'+id).removeClass('edit_mode').removeClass('show_child_edit');
+	//Repurpose original edit link:
+	$('#link'+id+" .edit_link").attr('href','javascript:edit_link(' + key + ',' + id + ');');
+	//Remove buttons:
+	$('#link'+id+" .action_buttons").remove();
+	
+}
+
+function delete_link(key,id){
+	//TODO
+	if(confirm('Are you really sure you want to delete this link?')){
+		alert('deleted');
+	} else {
+		//Exit edit mode, assuming nothing else has been changed:
+		discard_link_edit(key,id);
+	}
+	
+}
+
 
 
 

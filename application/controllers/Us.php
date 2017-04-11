@@ -49,10 +49,10 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer');
 	}
 	
-	//The main function for loading nodes:
+	
 	function load_node($node_id){
-		
-		//TODO: Look into removing this:
+		//The main function for loading nodes
+		//TODO: Design platform to be more open and accessible without login
 		auth();
 		
 		//Build data sets for our views:
@@ -68,19 +68,7 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer', $data_set);
 	}
 	
-	function load_link($node_id,$link_id){
-		//Manage specific links
-		
-	}
 	
-	
-	
-	function add() {
-		auth();
-		$this->load->view('shared/header');
-		$this->load->view('us/add');
-		$this->load->view('shared/footer');
-	}
 	function logout() {
 		//Destroy all sessions:
 		$this->session->unset_userdata('user');
@@ -146,6 +134,8 @@ class Us extends CI_Controller {
 				));
 				
 				//Log Login history
+				//TODO: Enable later. Disabled due to required UI adjustmens!
+				/*
 				$this->Us_model->insert_link(array(
 					'us_id' => $matching_users[0]['node_id'],
 					'timestamp' => date("Y-m-d H:i:s"),
@@ -154,6 +144,7 @@ class Us extends CI_Controller {
 					'grandpa_id' => 43, //System
 					'parent_id' => 61, //The login history node
 				));
+				*/
 				
 				//Redirect to pattern home page:
 				if(isset($_POST['login_node_id']) && intval($_POST['login_node_id'])>0){

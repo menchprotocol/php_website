@@ -64,10 +64,7 @@ $route['login'] = "us/load_wiki/login";
 
 //Application logic:
 $route['(:num)'] = "us/load_node/$1";
-$route['(:num)/(:num)'] = "us/load_link/$1/$2";
-$route['add'] = "us/add";
 $route['logout'] = "us/logout";
 $route['login_process'] = "us/login_process";
-
 
 

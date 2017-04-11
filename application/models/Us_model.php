@@ -142,13 +142,8 @@ class Us_model extends CI_Model {
 					//This has no value, meaning the node_id needs to be invoked for data:
 					$invoke_node = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
 					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
-					
-					$parent_top_link = $this->fetch_node($invoke_node['parent_id'], 'fetch_top_plain');
-					$links[$i]['parent_id'] = $parent_top_link['node_id'];
-					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
+					$links[$i]['parent_name'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
 					$links[$i]['index'] = 1; //For debugging
-					
-					$links[$i]['value_alt'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
 					
 				} elseif($action=='fetch_children'){
 					//This has no value, meaning the node_id needs to be invoked for data:

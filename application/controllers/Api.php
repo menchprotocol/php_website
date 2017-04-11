@@ -28,7 +28,6 @@ class Api extends CI_Controller {
 					//Lets append some core info:
 					$node_search_object = array(
 						'node_id' => $link['node_id'],
-						'last_edited' => substr($link['timestamp'],0,19),
 						'grandpa_id' => $link['grandpa_id'],
 						'parent_id' => $link['parent_id'],
 						'value' => $link['value'],

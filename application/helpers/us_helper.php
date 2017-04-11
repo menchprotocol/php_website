@@ -2,7 +2,7 @@
 
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
-	return 'v0.30';
+	return 'v0.31';
 }
 
 function parents(){
@@ -28,11 +28,12 @@ function parents(){
 			'sign' => '?',
 		),
 		43 => array(
-			'name' => 'System',
+			'name' => 'Metadata',
 			'sign' => '!',
 		),
 	);
 }
+
 
 function status_descriptions($status_id){
 	//translates numerical status fields to descriptive meanings
@@ -53,13 +54,18 @@ function status_descriptions($status_id){
 		);
 	} elseif($status_id==1){
 		return array(
-				'name' => 'Top',
+				'name' => 'Primary',
 				'description' => 'The top link for the given node.',
 		);
 	} elseif($status_id==2){
 		return array(
 				'name' => 'Active',
-				'description' => 'Active node links.',
+				'description' => 'Active node links with content association.',
+		);
+	} elseif($status_id==3){
+		return array(
+				'name' => 'Active',
+				'description' => 'Naked node link without content association.',
 		);
 	} else {
 		//This should never happen!
