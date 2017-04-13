@@ -67,12 +67,12 @@
 <br /><b>Would we humans be growing a million years from now?</b></p>
 <p class="boldi">We believe leveraging our common intelligence would increase our chances.</p>
 
-
-
+<?php if(!auth(1)){ ?>
 <div class="list-group" style="margin-top:30px;">
 	<?php /*
 	<a href="/collectiveai" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Explore Collective AI</a>
 	*/?>
-	<a href="/join" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Join US</a>
+	<a href="/join" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Join Us</a>
 	<a href="/login" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Login</a>
 </div>
+<?php } else { user_nav(); } ?>

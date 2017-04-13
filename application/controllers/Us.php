@@ -23,6 +23,7 @@ class Us extends CI_Controller {
 	
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
+		
 	}
 	
 	function index(){
@@ -43,6 +44,10 @@ class Us extends CI_Controller {
 			'collectiveai' => 'Collective AI',
 			'patternnetwork' => 'Pattern Network',
 		);
+		if(in_array($file_name,array('login','join')) && auth(1)){
+			//Redirect to Us:
+			header("Location: /1");
+		}
 		//Load views
 		$this->load->view('shared/header' , array( 'title' => $wiki_index[$file_name] ));
 		$this->load->view('wiki/'.$file_name);
@@ -97,6 +102,8 @@ class Us extends CI_Controller {
 			//Now fetch entire user node:
 			$user_node = $this->Us_model->fetch_node($matching_users[0]['node_id']);
 			
+			//print_r($user_node);exit;
+			
 			if($user_node[0]['grandpa_id']!=1){
 				//We could not find this email linked to the email node
 				//TODO This should technically never happen!
@@ -128,9 +135,11 @@ class Us extends CI_Controller {
 				
 				//Good to go!
 				//Assign session variables:
-				$matching_users[0]['login_timestamp'] = time();
+				$user_node[0]['login_timestamp'] = time();
+				//Detect if this user is a moderator, IF they belong to Moderators node:
+				$user_node[0]['is_mod'] = ( $user_node[0]['parent_id']==18 ? 1 : 0 );
 				$this->session->set_userdata(array(
-					'user' => $matching_users[0],
+					'user' => $user_node[0],
 				));
 				
 				//Log Login history

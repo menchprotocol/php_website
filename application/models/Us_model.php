@@ -12,6 +12,12 @@ class Us_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function update_link($link_id,$link_data){
+		$this->db->where('id', $link_id);
+		$this->db->update('v3_data', $link_data);
+		return $this->db->affected_rows();
+	}
+	
 	
 	function count_children($node_id){
 		
@@ -142,7 +148,8 @@ class Us_model extends CI_Model {
 					//This has no value, meaning the node_id needs to be invoked for data:
 					$invoke_node = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
 					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
-					$links[$i]['parent_name'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
+					//$links[$i]['parent_name'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
+					$links[$i]['parent_name'] = $links[$i]['title'];
 					$links[$i]['index'] = 1; //For debugging
 					
 				} elseif($action=='fetch_children'){
@@ -190,7 +197,7 @@ class Us_model extends CI_Model {
 			if(!isset($contributors[$link['us_id']])){
 				//Fetch user name:
 				$person_link = $this->fetch_node($link['us_id'], 'fetch_top_plain');
-				$contributors[$link['us_id']] = '@'.clean($person_link['value']);
+				$contributors[$link['us_id']] = $person_link['value'];
 				
 			}
 			

@@ -2,7 +2,9 @@
 
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
-	return 'v0.31';
+	//Also appended a timestamp To prevent static file cashing for local development
+	//TODO Implemenet in sesseion when user logs in and logout if not matched!
+	return 'v0.32'.( $_SERVER['SERVER_NAME']!=='us.foundation' ? '-'.substr(time(),6) : '' );
 }
 
 function parents(){
@@ -35,6 +37,7 @@ function parents(){
 }
 
 
+
 function status_descriptions($status_id){
 	//translates numerical status fields to descriptive meanings
 	if($status_id==-2){
@@ -44,12 +47,12 @@ function status_descriptions($status_id){
 		);
 	} elseif($status_id==-1){
 		return array(
-				'name' => 'Replaced',
+				'name' => 'Updated',
 				'description' => 'When a new update replaces this update.',
 		);
 	} elseif($status_id==0){
 		return array(
-				'name' => 'Contender',
+				'name' => 'Pending',
 				'description' => 'The initial status updates have when submitted by guest users.',
 		);
 	} elseif($status_id==1){
@@ -76,15 +79,52 @@ function status_descriptions($status_id){
 	}
 }
 
+
+function action_type_descriptions($action_type_id){
+	//translates numerical status fields to descriptive meanings
+	if($action_type_id==-1){
+		return array(
+			'name' => 'Deleted',
+			'description' => 'Deleted a link relation.',
+		);
+	} elseif($action_type_id==0){
+		return array(
+			'name' => 'Pending',
+			'description' => 'Added, but pending moderation.',
+		);
+	} elseif($action_type_id==1){
+		return array(
+			'name' => 'Added',
+			'description' => 'Created a new link from scratch.',
+		);
+	} elseif($action_type_id==2){
+		return array(
+			'name' => 'Updated',
+			'description' => 'Updated the content or parent of the link.',
+		);
+	} elseif($action_type_id==3){
+		return array(
+			'name' => 'Sorted',
+			'description' => 'Re-sorted child nodes.',
+		);
+	} else {
+		//This should never happen!
+		return array(
+				'name' => 'Unknown!',
+				'description' => 'Error: '.$action_type_id.' is unknown.',
+		);
+	}
+}
+
 function format_timestamp($t){
 	$timestamp = strtotime(substr($t,0,19));
-	$format = ( date("Y",$timestamp)==date("Y") ? "M jS" : "M jS Y");
+	$format = ( date("Y",$timestamp)==date("Y") ? "j M Y" : "j M Y");
 	return date($format,$timestamp);
 }
 
-function clean($string){
+function clean($string,$noblank=false){
 	//return preg_replace("/[^a-zA-Z0-9]+/", "", $string);
-	return str_replace(" ", "<span class='sp'> </span>", $string);
+	return str_replace(" ", ($noblank?'':"<span class='sp'> </span>"), $string);
 }
 
 function redirect_message($url,$message){
@@ -95,6 +135,14 @@ function redirect_message($url,$message){
 	die();
 }
 
+function user_nav($from_node_id=null){
+	$CI =& get_instance();
+	$user_data = $CI->session->userdata('user');
+	echo '<div class="list-group node_list">';
+	echo '<a href="/'.$user_data['node_id'].'?from='.$from_node_id.'" class="list-group-item context-menu-one"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$user_data['title'].'</a>';
+	echo '<a href="/logout?from='.$from_node_id.'" class="list-group-item context-menu-one"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>';
+	echo '</div>';
+}
 
 function admin_error($message){
 	//TODO: Email $message to admin for review.
@@ -111,6 +159,20 @@ function auth($donot_redirect=false){
 		redirect_message('/login'.( intval($node_id)>0 ? '?next='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login to access this page.</div>');
 	}
 }
+
+function auth_admin($donot_redirect=false){
+	$CI =& get_instance();
+	$user_data = $CI->session->userdata('user');
+	$node_id = $CI->uri->segment(1);
+	
+	if($donot_redirect){
+		return $user_data['is_mod'];
+	} elseif(!$user_data['is_mod']){
+		redirect_message('/login'.( intval($node_id)>0 ? '?next='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login as moderator to access this page.</div>');
+	}
+}
+
+
 
 
 function http_404($message){
