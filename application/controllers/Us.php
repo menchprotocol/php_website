@@ -66,6 +66,8 @@ class Us extends CI_Controller {
 				'child_data' => $this->Us_model->fetch_node($node_id, 'fetch_children'),
 		);
 		
+		//print_r($data_set);exit;
+		
 		if($data_set['node'][0]['id']<1){
 			//We did not find this ID:
 			redirect_message('/1','<div class="alert alert-danger" role="alert">Node id '.$node_id.' does not exist.</div>');
@@ -94,6 +96,9 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer', $data_set);
 	}
 	
+	function info(){
+		echo phpinfo();
+	}
 	
 	function logout() {
 		//Destroy all sessions:

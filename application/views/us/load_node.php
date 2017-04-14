@@ -1,5 +1,4 @@
 <?php 
-
 //Make core data available on JS layer:
 $user_data = $this->session->userdata('user');
 echo '<script> var node = '.json_encode($node).'; </script>';
@@ -60,15 +59,14 @@ foreach($node as $key=>$value){
 echo '<div id="sortconf"></div>';
 echo '<ul class="list-group node_list" id="sortableChild">';
 if(count($child_data)>0){
-	foreach ($child_data as $key=>$value){
-		$p_name = ( in_array($value['index'],array(1,4)) ? $value['parent_name']: $value['title']);
-		echo '<li class="list-group-item child-node" node-id="'.$value['node_id'].'"><a href="/'.$value['node_id'].'?from='.$node[0]['node_id'].'"><span class="badge">'.($value['child_count']>0?$value['child_count']:'').' <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$p_name.' <span class="link_count">'.( preg_replace("/[^a-zA-Z0-9]+/", "", $value['value'])==preg_replace("/[^a-zA-Z0-9]+/", "", strip_tags($p_name)) ? '' : $value['value'] ).' <span class="glyphicon glyphicon-link" aria-hidden="true"></span>'.$value['links_count'].'</span>'.( $node[0]['grandpa_id']==3 && $user_data['is_mod'] ? ' <span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span>' : '' ).'</a></li>';
+	foreach ($child_data as $value){
+		echo print_child($value,$node[0],$user_data);
 	}
 }
 if($user_data['is_mod']){
 	echo '<li class="list-group-item list_input">
 		<form id="addnodeform">
-		<input type="text" class="form-control autosearch" required="required" id="addnode" name="node_name" value="" placeholder="New node...">
+		<input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="New node...">
 		</form>
 	</li>';
 }

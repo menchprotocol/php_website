@@ -1,10 +1,15 @@
 <?php
 
+
+function is_production(){
+	return ( $_SERVER['SERVER_NAME']=='us.foundation');
+}
+
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.33'.( $_SERVER['SERVER_NAME']!=='us.foundation' ? '-'.substr(time(),6) : '' );
+	return 'v0.40'.( is_production() ? '' : '-'.substr(time(),6) );
 }
 
 function parents(){
@@ -82,10 +87,25 @@ function status_descriptions($status_id){
 
 function action_type_descriptions($action_type_id){
 	//translates numerical status fields to descriptive meanings
-	if($action_type_id==-1){
+	if($action_type_id==-4){
 		return array(
-			'name' => 'Deleted',
-			'description' => 'Deleted a link relation.',
+				'name' => 'Nuclear',
+				'description' => 'Delete node and all child nodes.',
+		);
+	} elseif($action_type_id==-3){
+		return array(
+				'name' => 'Delete & Move',
+				'description' => 'Delete a node and mode all child nodes to a different node.',
+		);
+	} elseif($action_type_id==-2){
+		return array(
+				'name' => 'Delete Node & Links',
+				'description' => 'Delete childless node and all links.',
+		);
+	} elseif($action_type_id==-1){
+		return array(
+				'name' => 'Delete Link',
+				'description' => 'Delete node link.',
 		);
 	} elseif($action_type_id==0){
 		return array(
@@ -107,16 +127,36 @@ function action_type_descriptions($action_type_id){
 			'name' => 'Sorted',
 			'description' => 'Re-sorted child nodes.',
 		);
+	} elseif($action_type_id==4){
+		return array(
+			'name' => 'Linked',
+			'description' => 'Linked two existing nodes to each other.',
+		);
 	} else {
 		//This should never happen!
 		return array(
-				'name' => 'Unknown!',
-				'description' => 'Error: '.$action_type_id.' is unknown.',
+			'name' => 'Unknown!',
+			'description' => 'Error: '.$action_type_id.' is unknown.',
 		);
 	}
 }
 
+function next_node_id(){
+	//Find the current largest node id and increments it by 1:
+	$CI =& get_instance();
+	$largest_node_id = $CI->Us_model->largest_node_id();
+	$largest_node_id++;
+	return $largest_node_id;
+}
 
+function alphanum($string){
+	return preg_replace("/[^a-zA-Z0-9]+/", "", strip_tags($string));
+}
+
+function print_child($value,$node,$user_data){
+	$p_name = ( in_array($value['index'],array(1,4)) ? $value['parent_name']: $value['title']);
+	return '<li class="list-group-item child-node" id="child'.$value['node_id'].'" node-id="'.$value['node_id'].'"><a href="/'.$value['node_id'].'?from='.$node['node_id'].'"><span class="badge">'.($value['child_count']>0?$value['child_count']:'').' <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$p_name.' <span class="link_count">'.( alphanum($value['value'])==alphanum($p_name) ? '' : $value['value'] ).' <span class="glyphicon glyphicon-link" aria-hidden="true"></span>'.$value['links_count'].'</span>'.( $node['grandpa_id']==3 && $user_data['is_mod'] ? ' <span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span>' : '' ).'</a></li>';
+}
 
 function echo_html($status,$message){
 	if($status){
@@ -164,7 +204,7 @@ function auth($donot_redirect=false){
 	if($donot_redirect){
 		return (isset($user_data['id']));
 	} elseif(!isset($user_data['id'])){
-		redirect_message('/login'.( intval($node_id)>0 ? '?next='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login to access this page.</div>');
+		redirect_message('/login'.( intval($node_id)>0 ? '?from='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login to access this page.</div>');
 	}
 }
 
@@ -176,7 +216,7 @@ function auth_admin($donot_redirect=false){
 	if($donot_redirect){
 		return $user_data['is_mod'];
 	} elseif(!$user_data['is_mod']){
-		redirect_message('/login'.( intval($node_id)>0 ? '?next='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login as moderator to access this page.</div>');
+		redirect_message('/login'.( intval($node_id)>0 ? '?from='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login as moderator to access this page.</div>');
 	}
 }
 

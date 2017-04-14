@@ -105,6 +105,18 @@ h2{ font-size:30px; }
 .glyphicon-minus-sign { padding-right:2px; }
 .suggest-prefix{ color:#999; font-size:0.7em; display:inline-block; }
 
+#setdeleteparent{
+	background-color: #FFF;
+    border: 0;
+    width:150px;
+    padding: 0 0 0 2px;
+    margin: 0 0 0 3px;
+    line-height: 110%;
+    color: #777;
+    height: 20px;
+    display:inline !important;
+}
+
 em{
 	font-style:normal;
 	text-decoration:underline;

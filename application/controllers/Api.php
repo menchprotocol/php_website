@@ -15,9 +15,141 @@ class Api extends CI_Controller {
 		}
 	}
 	
-	
-	function delete($link_id,$type){
+	function create_node(){
 		
+		//Make sure all inputs are find:
+		if(intval($_REQUEST['grandpa_id'])<1 || intval($_REQUEST['parent_id'])<1 || strlen($_REQUEST['value'])<1 || strlen($_REQUEST['ui_rank'])<1){
+			return echo_html(0,'Invalid inputs.');
+		}
+		
+		//We're good! Insert new link:
+		$user_data = $this->session->userdata('user');
+		$next_node_id = next_node_id();
+		$update_id = $this->Us_model->insert_link(array(
+			'us_id' => $user_data['node_id'],
+			'timestamp' => date("Y-m-d H:i:s"),
+			'status' => 1, //TODO: Consider "0" for non-admins
+			'node_id' => $next_node_id,
+			'grandpa_id' => intval($_REQUEST['grandpa_id']),
+			'parent_id' =>  intval($_REQUEST['parent_id']),
+			'value' => trim($_REQUEST['value']),
+			'ui_rank' => intval($_REQUEST['ui_rank']),
+			'action_type' => 1, //For adding
+		));
+		
+		if(!$update_id){
+			//Ooops, some unknown error:
+			return echo_html(0,'Unknown Error while adding node.');
+		}
+		
+		
+		
+		//Return results as a new line:
+		$child_link = $this->Us_model->fetch_node($next_node_id);
+		echo print_child( $child_link[0] , array(
+			'node_id' => intval($_REQUEST['parent_id']),
+			'grandpa_id' => intval($_REQUEST['grandpa_id']),
+		) , $user_data);
+		
+		
+		//TODO: Update Algolia Search index
+		$this->add_algolia_obj($next_node_id);
+	}
+	
+	
+	function link_node(){
+		
+		//Make sure all inputs are find:
+		if(intval($_REQUEST['grandpa_id'])<1 || intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['child_node_id'])<1 || strlen($_REQUEST['ui_rank'])<1){
+			return echo_html(0,'Invalid inputs.');
+		}
+		
+		//We're good! Insert new link:
+		$has_value = (strlen(trim($_REQUEST['value']))>0);
+		$user_data = $this->session->userdata('user');
+		$next_node_id = next_node_id();
+		$update_id = $this->Us_model->insert_link(array(
+			'us_id' => $user_data['node_id'],
+			'timestamp' => date("Y-m-d H:i:s"),
+			'status' => ( $has_value ? 2 : 3), //TODO: Consider "0" for non-admins
+			'node_id' => intval($_REQUEST['child_node_id']),
+			'grandpa_id' => intval($_REQUEST['grandpa_id']),
+			'parent_id' =>  intval($_REQUEST['parent_id']),
+			'value' => ( $has_value ? trim($_REQUEST['value']) : null),
+			'ui_rank' => intval($_REQUEST['ui_rank']),
+			'action_type' => 4, //For linking
+		));
+		
+		if(!$update_id){
+			//Ooops, some unknown error:
+			return echo_html(0,'Unknown Error while linking nodes.');
+		}
+		
+		//Do we need to update search index?
+		if($has_value){
+			//TODO: Update Algolia Search index
+		}
+		
+		//Return results as a new line:
+		$child_link = $this->Us_model->fetch_node(intval($_REQUEST['child_node_id']));
+		echo print_child( $child_link[0] , array(
+				'node_id' => intval($_REQUEST['parent_id']),
+				'grandpa_id' => intval($_REQUEST['grandpa_id']),
+		) , $user_data);
+	}
+	
+	
+	
+	
+	function delete(){
+		
+		//Make sure all inputs are find:
+		if(intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['node_id'])<1 || intval($_REQUEST['id'])<1 || intval($_REQUEST['type'])<-4 || intval($_REQUEST['type'])>=0){
+			return echo_html(0,'Invalid inputs.');
+		}
+		
+		
+		
+		//TODO: Update Algolia Search index
+		
+		
+		//Start deleting:
+		if($_REQUEST['type']==-1){
+			
+			//Simple link delete:
+			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),intval($_REQUEST['type']));
+			return echo_html($status,($status ? 'Link deleted.' : 'Unknown error.'));
+			
+		} else {
+			
+			//This is the deletion of the entire node!
+			//Set session variable to show confirmation on redirect:
+			$del_message = '<b>'.$_REQUEST['node_name'].'</b> was deleted';
+			
+			if($_REQUEST['type']==-3){
+				
+				//Move these nodes to $_REQUEST['parent_id']
+				$moved_children = $this->Us_model->move_child_nodes(intval($_REQUEST['node_id']),intval($_REQUEST['parent_id']),intval($_REQUEST['type']));
+				$del_message .= ' and '.$moved_children.' children have been moved here';
+				
+			} elseif($_REQUEST['type']==-4){
+				
+				//Recursively delete all children/grandchildren
+				$deleted_children = $this->Us_model->recursive_node_delete(intval($_REQUEST['node_id']),intval($_REQUEST['type']));
+				$del_message .= ' along with '.$deleted_children.' children/grandchildren';
+				
+				//Reindex search:
+				$this->update_algolia();
+				
+			}
+			
+			//Main node delete:
+			$status = $this->Us_model->delete_node(intval($_REQUEST['node_id']),intval($_REQUEST['type']));
+			
+			//Set header message for after redirect:
+			$this->session->set_flashdata('hm', '<div class="alert alert-success" role="alert">'.$del_message.'.</div>');
+			echo $status;
+		}
 	}
 	
 	function update_link(){
@@ -72,6 +204,9 @@ class Api extends CI_Controller {
 			return echo_html(0,'Unknown Error while saving changes.');
 		}
 		
+		//TODO: Update Algolia Search index
+		
+		
 		//Then remove old one:
 		$affected_rows = $this->Us_model->update_link($link['id'], array(
 			'update_id' => $update_id,
@@ -89,6 +224,7 @@ class Api extends CI_Controller {
 	}
 	
 	function update_sort(){
+		
 		if(intval($_REQUEST['node_id'])<1 || !is_array($_REQUEST['new_sort'])){
 			//We start with a DIV to prevent errors from being hidden after a few seconds:
 			return echo_html(0,'Invalid Input.');
@@ -154,39 +290,52 @@ class Api extends CI_Controller {
 		echo_html(1,'Saved!');
 	}
 	
+	function add_algolia_obj($node_id){
+		if(!is_production()){ return false; }
+		$return = array();
+		array_push($return,$this->generate_algolia_obj($node_id));
+		$index = load_algolia();
+		$index->addObjects(json_decode(json_encode($return), FALSE));
+	}
+	
+	function generate_algolia_obj($node_id){
+		if(!is_production()){ return false; }
+		//Fetch node:
+		$node = $this->Us_model->fetch_node($node_id);
+		//CLeanup and prep for search indexing:
+		foreach($node as $i=>$link){
+			if($i==0){
+				//This is the primary link!
+				//Lets append some core info:
+				$node_search_object = array(
+						'node_id' => $link['node_id'],
+						'grandpa_id' => $link['grandpa_id'],
+						'parent_id' => $link['parent_id'],
+						'value' => $link['value'],
+						'links_blob' => '',
+				);
+			} elseif(strlen($link['value'])>0){
+				//This is a secondary link with a value attached to it
+				//Lets add this to the links blob
+				$node_search_object['links_blob'] .= $link['value'].' ';
+			}
+		}
+		return $node_search_object;
+	}
 	
 	//Run this to completely update the "nodes" index
 	function update_algolia(){
-			
+		
+		if(!is_production()){ return false; }
+		
 		//Buildup this array to save to search index
 		$return = array();
 		
 		//Fetch all nodes:
 		$active_node_ids = $this->Us_model->fetch_node_ids();
 		foreach($active_node_ids as $node_id){
-			//Fetch node:
-			$node = $this->Us_model->fetch_node($node_id);
-			//CLeanup and prep for search indexing:
-			unset($node_search_object);
-			foreach($node as $i=>$link){
-				if($i==0){
-					//This is the primary link!
-					//Lets append some core info:
-					$node_search_object = array(
-						'node_id' => $link['node_id'],
-						'grandpa_id' => $link['grandpa_id'],
-						'parent_id' => $link['parent_id'],
-						'value' => $link['value'],
-						'links_blob' => '',
-					);
-				} elseif(strlen($link['value'])>0){
-					//This is a secondary link with a value attached to it
-					//Lets add this to the links blob
-					$node_search_object['links_blob'] .= $link['value'].' ';
-				}
-			}
 			//Add to main array
-			array_push($return,$node_search_object);
+			array_push($return,$this->generate_algolia_obj($node_id));
 		}
 			
 		//print_r($return);exit;

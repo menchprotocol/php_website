@@ -39,31 +39,6 @@ function pop_search_open(){
 }
 
 
-function create_node(node_name){
-	// node[0]['node_id'] (parent node)
-
-	$( '<a href="/7" class="list-group-item context-menu-one"><span class="badge">1 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'+node_name+' <span class="link_count"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>7</span></a>' ).insertBefore( ".list_input" );
-	$( "#addnode" ).focus().val("");
-
-}
-
-
-function link_node(child_id){
-	child_id = parseInt(child_id);
-	// node[0]['node_id'] (parent node)
-	
-	//Give user the option to enter value:
-	//var value = prompt("Enter optional value for this new link:", "");
-	
-	$( "#addnode" ).focus().val("");
-	$( '<a href="/7" class="list-group-item context-menu-one"><span class="badge">1 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>@Shervin<span class="sp"> </span>Enayati <span class="link_count"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>7</span></a>' ).insertBefore( ".list_input" );
-	
-	
-	//alert(parent_id+' to '+child_id+' val: '+value);
-}
-
-
-
 var index,client;
 function load_algolia(index_name='nodes'){
 	window.client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
@@ -104,7 +79,7 @@ $( document ).ready(function() {
 	
 	//Header search specific functions for UI and autocomplete result selection:
 	$( "#mainsearch" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-		window.location.replace("/"+suggestion._highlightResult.node_id.value);
+		window.location.replace("/"+suggestion._highlightResult.node_id.value+'?from=search');
 	}).focus(function() {
 		pop_search_open();
 		//Handle window resize on focus:
@@ -138,8 +113,8 @@ $( document ).ready(function() {
 	if(user_data['is_mod']){
 		//New Node search box call to action: 
 		$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-			//Ajax processing to link two nodes together
-			link_node(suggestion._highlightResult.node_id.value);
+			//Link nodes together:
+			link_node(suggestion.node_id);
 		}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
 		    source: function(q, cb) {
 			      index.search(q, { hitsPerPage: 7 }, function(error, content) {
@@ -165,8 +140,13 @@ $( document ).ready(function() {
 		    		  	  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Create</span> '+parents(node[0]['grandpa_id'])+data.query+'</a>';
 			      },
 			    }
-		}]);
-		
+		}]).keypress(function (e) {
+	        var code = (e.keyCode ? e.keyCode : e.which);
+	        if (code == 13) {
+	        	create_node($( "#addnode" ).val());
+	            return true;
+	        }
+	    });
 		
 		$( "#sortableChild" ).sortable({
 			items: ".child-node",
@@ -278,7 +258,7 @@ function edit_link(key,id){
 			$( '#link'+id+" #editparent" ).remove();
 			//Show placeholder until real update happens upon submission:
 			$( '#link'+id+" .node_top_node").html( '<a href="/'+suggestion.node_id+'">'+parents(parseInt(suggestion.grandpa_id)) + suggestion.value.replace(/\W/g, '')+'</a> <span class="edit_warning not_saved">(Not saved yet)</span>' );
-		}).autocomplete({ hint: false, keyboardShortcuts: ['p'] }, [{
+		}).autocomplete({ hint: false }, [{
 		    source: function(q, cb) {
 		      index.search(q, { hitsPerPage: 7 }, function(error, content) {
 		        if (error) {
@@ -306,8 +286,8 @@ $(document).keyup(function(e) {
     	//In case its being edited:
     	discard_link_edit(key_global, id_global);
     	//In case the focus is on these inputs:
-    	$( "#addnode" ).blur();
-    	$( "#mainsearch" ).blur();
+    	$( "#addnode" ).blur().val("");
+    	$( "#mainsearch" ).blur().val("");
     }
 });
 
@@ -337,17 +317,64 @@ function delete_link(key,id){
 	//TODO Implement more stats on what would be deleted!
 	$('#link'+id+" .a_delete").attr('href','javascript:cancel_delete_link(' + key + ',' + id + ');');
 	//TODO: The descriptions here can be improved to be more clear
-	if(key==0 && child_count>0){
-		var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><ul>'
-			+'<li>Option 1: Make <b>'+parent_val+'</b> parent of all '+child_count+' children: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', 2)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a></li>'
-			+'<li>Option 2: Delete all '+child_count+' children & grandchildren: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', 3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Nuclear</a></li>'
-			+ '</ul>';
+	if(key==0){
+		if(child_count>0){
+			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><ul style="list-style:decimal; margin-left:-20px;">'
+				+'<li>Move children to <span id="setdelparentcontainer" node-id="'+node[0]['parent_id']+'"><input type="text" id="setdeleteparent" class="autosearch" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a></li>'
+				+'<li>Delete '+child_count+' children & all their grandchildren: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Nuclear</a></li>'
+				+ '</ul>';
+			
+		} else {
+			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><b>Confirm:</b> <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -2)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
+		}
 	} else {
 		var del_box = '<b>Confirm:</b> '
-			+'<a href="javascript:delete_link_confirmed(' + key + ',' + id + ', 1)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
+			+'<a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -1)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
 	}
 	
 	$('#link'+id+' .node_stats').append('<div id="delete_confirm">' + del_box + ' or <a href="javascript:cancel_delete_link(' + key + ',' + id + ')" style="color:#999;"><u>cancel</u></a></div>');
+
+
+	if(key==0 && child_count>0){
+		//Loadup search engine if not already:
+		if(!algolia_loaded){
+			//Prevent second time loading:
+			algolia_loaded = 1;
+			//Assign to global variables:
+			load_algolia();
+		}
+		
+		//Enable searching for a new parent:
+		$( '#link'+id+' #setdeleteparent' ).on('autocomplete:selected', function(event, suggestion, dataset) {
+			//Set new id:
+			$( '#link'+id+' #setdelparentcontainer' ).attr('node-id' , suggestion.node_id);
+			
+			//Set HTML without any further editing options:
+			$( '#link'+id+' #setdelparentcontainer' ).html(parents(parseInt(suggestion.grandpa_id)) + suggestion.value.replace(/\W/g, ''));
+			
+		}).autocomplete({ hint: false }, [{
+		    source: function(q, cb) {
+		      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+		        if (error) {
+		          cb([]);
+		          return;
+		        }
+		        cb(content.hits, content);
+		      });
+		    },
+		    /*displayKey: 'value',*/
+		    displayKey: function(suggestion) { return "" },
+		    templates: {
+		      suggestion: function(suggestion) {
+		         return parents(parseInt(suggestion.grandpa_id)) + suggestion._highlightResult.value.value;
+		      },
+		    }
+		}]);
+		
+		//Adjust CSS:
+		$( '#link'+id+' .algolia-autocomplete' ).attr('style','position: relative; display:inline; direction: ltr;');
+	}
+
 }
 function cancel_delete_link(key,id){
 	$('#link'+id+" .a_delete").attr('href','javascript:delete_link(' + key + ',' + id + ');');
@@ -355,20 +382,44 @@ function cancel_delete_link(key,id){
 }
 function delete_link_confirmed(key,id,type){
 	/*
-	 * "type" index:
-	 * 
-	 * 1 is for single/simple parent-link delete
-	 * 2 is for node delete + assign children to parent
-	 * 3 is for node delete + delete all children (Nuclear)
+	 * See helper function action_type_descriptions() for "type" index
 	 * 
 	 * */
-	discard_link_edit(key,id);
+	
+
+	//Prepare data for processing:
+	var input_data = {
+		id:id,
+		node_id:parseInt(node[0]['node_id']),
+		parent_id: parseInt(( type==-3 ? $( '#link'+id+' #setdelparentcontainer' ).attr('node-id') : node[0]['parent_id'] )),
+		type:type,
+		node_name:node[0]['title'],
+		child_count:child_count,
+	};
+		
+	//Show processing:
+	$('#link'+id).html('<span class="saving"><img src="/img/loader.gif" /> Deleting...</span>');
+	
+	//Update backend:
+	$.post("/api/delete", input_data, function(data) {
+		if(type==-1){
+			//Update UI to confirm with user:
+			$('#link'+id).html(data);
+			//Disapper in a while:
+			setTimeout(function() {
+				$('#link'+id).fadeOut();
+		    }, 3000);
+		} else {
+			//Redirect to parent node as the entire node has been deleted:
+			window.location.replace("/"+input_data['parent_id']+'?from='+node[0]['node_id']);
+		}
+    });
+	
 	
 }
 
 
 function save_link_updated(key,id){
-	
 	//Define variables:
 	var new_value = $( '#link'+id+' .node_h1 textarea' ).val();
 	var new_parent_id = parseInt($( '#link'+id ).attr('new-parent-id')); //This is optional!
@@ -386,7 +437,7 @@ function save_link_updated(key,id){
 	$('#link'+id+" .hover>div").append('<span class="action_buttons saving"><img src="/img/loader.gif" /> Saving...</span>');
 
 	//Prepare data for processing:
-	var data = {
+	var input_data = {
 		key:key,
 		id:id,
 		new_parent_id:new_parent_id,
@@ -394,7 +445,7 @@ function save_link_updated(key,id){
 	};
 	
 	//Update backend:
-	$.post("/api/update_link", data, function(data) {
+	$.post("/api/update_link", input_data, function(data) {
 		//Update UI to confirm with user:
 		$('#link'+id+" .hover>div").html(data);
 		
@@ -403,8 +454,69 @@ function save_link_updated(key,id){
 			$('#link'+id+" .hover>div>span").fadeOut();
 	    }, 3000);
     });
-	
-	
-	
 }
 
+
+
+function create_node(node_name){
+	if(node_name.length<1){
+		return false;
+	}
+	
+	//Show loader:
+	$( '<li class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</li>' ).insertBefore( ".list_input" );
+	
+	//Prepare data for processing:
+	window.child_count = child_count+1;
+	var input_data = {
+		grandpa_id:node[0]['grandpa_id'],
+		parent_id:node[0]['node_id'],
+		value:node_name,
+		ui_rank:child_count,
+	};
+	
+	//Create node:
+	$.post("/api/create_node", input_data, function(data) {
+		//Update UI to confirm with user:
+		
+		$( ".loading-node" ).remove();
+		$( data ).insertBefore( ".list_input" );
+		
+		//Empty search value and focus on it:
+		$( "#addnode" ).val("").focus();
+    });
+}
+
+
+function link_node(child_node_id){
+	child_node_id = parseInt(child_node_id);
+	if(child_node_id<1){
+		return false;
+	}
+	
+	//Show loader:
+	$( '<li class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</li>' ).insertBefore( ".list_input" );
+	
+	//Prepare data for processing:
+	window.child_count = child_count+1;
+	var new_value = prompt("Enter optional link value:", "");
+	var input_data = {
+		grandpa_id:node[0]['grandpa_id'],
+		parent_id:node[0]['node_id'],
+		child_node_id:child_node_id,
+		value:new_value,
+		ui_rank:child_count,
+	};
+	
+	//Create node:
+	$.post("/api/link_node", input_data, function(data) {
+		//Update UI to confirm with user:
+		$( ".loading-node" ).remove();
+		$( data ).insertBefore( ".list_input" );
+		
+		//TODO: Fix BUG that does not show new_value in the newly displayed <li>
+		
+		//Empty search value and focus on it:
+		$( "#addnode" ).val("").focus();
+    });
+}

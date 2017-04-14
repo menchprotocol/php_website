@@ -2,8 +2,10 @@
 
 class Us_model extends CI_Model {
 
+	var $success_deletes;
 	function __construct() {
 		parent::__construct();
+		$this->success_deletes = 0; //Used for recursive_node_delete() count tracker.
 	}
 	
 	
@@ -31,6 +33,145 @@ class Us_model extends CI_Model {
 		$q = $this->db->get();
 		$stats = $q->row_array();
 		return $stats['child_count'];
+	}
+	
+	
+	function delete_link($link_id,$action_type){
+		//This would delete a single link:
+		
+		//Define key variables:
+		$user_data = $this->session->userdata('user');
+		$link = $this->fetch_link($link_id);
+		
+		//Insert new row to log delete history:
+		$update_id = $this->Us_model->insert_link(array(
+			'us_id' => $user_data['node_id'],
+			'timestamp' => date("Y-m-d H:i:s"),
+			'status' => -2, //Deleted
+			'node_id' => $link['node_id'],
+			'grandpa_id' => $link['grandpa_id'],
+			'parent_id' => $link['parent_id'],
+			'value' => $link['value'],
+			'update_id' => $link_id, //This would be deleted as well
+			'ui_rank' => $link['ui_rank'],
+			'correlation' => $link['correlation'],
+			'action_type' => $action_type,
+		));
+		
+		if(!$update_id){
+			//Ooops, some unknown error:
+			return false;
+		}
+		
+		//Also delete main link:
+		$affected_rows = $this->Us_model->update_link($link_id, array(
+			'update_id' => $update_id,
+			'status' => -2,
+		));
+		
+		return intval($affected_rows); //1 or 0
+	}
+	
+	function delete_node($node_id,$action_type){
+		//This would delete all links within this node:
+		$node = $this->fetch_node($node_id);
+		$links_deleted = 0;
+		foreach ($node as $key=>$value){
+			$links_deleted += $this->delete_link($value['id'],$action_type);
+		}
+		return $links_deleted;
+	}
+	
+	
+	function move_child_nodes($node_id,$new_parent_id,$action_type){
+		
+		//Move all child nodes to a new parent:
+		$user_data  = $this->session->userdata('user');
+		$child_data = $this->fetch_node($node_id, 'fetch_children');
+		$new_parent = $this->fetch_node($new_parent_id, 'fetch_top_plain');
+		
+		$success_moves = 0;
+		foreach ($child_data as $link){
+			//Insert new row:
+			$update_id = $this->Us_model->insert_link(array(
+					'us_id' => $user_data['node_id'],
+					'timestamp' => date("Y-m-d H:i:s"),
+					'status' => $link['status'],
+					'node_id' => $link['node_id'],
+					'grandpa_id' => $new_parent['grandpa_id'],
+					'parent_id' => $new_parent['node_id'],
+					'value' => $link['value'],
+					'update_id' => $link['id'], //This would be deleted as well
+					'ui_rank' => 999, //Position this at the end of the children of new parent
+					'correlation' => $link['correlation'],
+					'action_type' => $action_type,
+			));
+			
+			if($update_id){
+				//Also update original link:
+				$affected_rows = $this->Us_model->update_link($link['id'], array(
+						'update_id' => $update_id,
+						'status' => -2, //Currently moving can happen only through deletion. TODO: Enable moving as a standalone function.
+				));
+				
+				$success_moves += $affected_rows;
+			}
+		}
+		//Return number of nodes moved!
+		return $success_moves;
+	}
+	
+	
+	function recursive_node_delete($node_id,$action_type){
+		
+		//NUCLEAR! Find all children/grandchildren and delete!
+		$user_data  = $this->session->userdata('user');
+		$child_data = $this->fetch_node($node_id, 'fetch_children');
+		
+		foreach ($child_data as $link){
+			
+			//Fetch child nodes first:
+			if($link['node_id']!==$node_id){
+				//Go to next level, if any:
+				$this->recursive_node_delete($link['node_id'], $action_type);
+			}
+			
+			//Main delete:
+			$update_id = $this->Us_model->insert_link(array(
+				'us_id' => $user_data['node_id'],
+				'timestamp' => date("Y-m-d H:i:s"),
+				'status' => -2, //Deleted
+				'node_id' => $link['node_id'],
+				'grandpa_id' => $link['grandpa_id'],
+				'parent_id' => $link['parent_id'],
+				'value' => $link['value'],
+				'update_id' => $link['id'],
+				'ui_rank' => $link['ui_rank'],
+				'correlation' => $link['correlation'],
+				'action_type' => $action_type,
+			));
+			
+			if($update_id){
+				//Also update original link:
+				$affected_rows = $this->Us_model->update_link($link['id'], array(
+					'update_id' => $update_id,
+					'status' => -2, //Deleted!
+				));
+				
+				$this->success_deletes += $affected_rows;
+			}
+		}
+		
+		//Return number of nodes delete:
+		return $this->success_deletes;
+	}
+	
+	function largest_node_id(){
+		$this->db->select('MAX(node_id) as largest_node');
+		$this->db->from('v3_data d');
+		$q = $this->db->get();
+		$stats = $q->row_array();
+		return $stats['largest_node'];
 	}
 	
 	function count_links($node_id){

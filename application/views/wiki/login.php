@@ -1,6 +1,6 @@
 <h1 style="margin-bottom:20px;">Welcome Back</h1>
 <form class="form-signin" action="/login_process" method="post">
-	<input type="hidden" name="login_node_id" value="<?= @$_GET['next'] ?>" />
+	<input type="hidden" name="login_node_id" value="<?= @$_GET['from'] ?>" />
 	<label for="inputEmail" class="sr-only">Email</label>
     <input type="email" id="inputEmail" name="user_email" class="form-control" placeholder="Email" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
