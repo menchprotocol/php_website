@@ -4,7 +4,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.32'.( $_SERVER['SERVER_NAME']!=='us.foundation' ? '-'.substr(time(),6) : '' );
+	return 'v0.33'.( $_SERVER['SERVER_NAME']!=='us.foundation' ? '-'.substr(time(),6) : '' );
 }
 
 function parents(){
@@ -116,6 +116,17 @@ function action_type_descriptions($action_type_id){
 	}
 }
 
+
+
+function echo_html($status,$message){
+	if($status){
+		echo '<span class="success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'</span>';
+	} else {
+		echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.'</span></div>';
+	}
+	return $status;
+}
+
 function format_timestamp($t){
 	$timestamp = strtotime(substr($t,0,19));
 	$format = ( date("Y",$timestamp)==date("Y") ? "j M Y" : "j M Y");
@@ -123,8 +134,8 @@ function format_timestamp($t){
 }
 
 function clean($string,$noblank=false){
-	//return preg_replace("/[^a-zA-Z0-9]+/", "", $string);
-	return str_replace(" ", ($noblank?'':"<span class='sp'> </span>"), $string);
+	//return str_replace(" ", ($noblank?'':"<span class='sp'> </span>"), $string);
+	return str_replace(" ", ($noblank?'':" "), $string);
 }
 
 function redirect_message($url,$message){
@@ -135,13 +146,10 @@ function redirect_message($url,$message){
 	die();
 }
 
-function user_nav($from_node_id=null){
-	$CI =& get_instance();
-	$user_data = $CI->session->userdata('user');
-	echo '<div class="list-group node_list">';
-	echo '<a href="/'.$user_data['node_id'].'?from='.$from_node_id.'" class="list-group-item context-menu-one"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$user_data['title'].'</a>';
-	echo '<a href="/logout?from='.$from_node_id.'" class="list-group-item context-menu-one"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>';
-	echo '</div>';
+function load_algolia($index_name='nodes'){
+	require_once('application/libraries/algoliasearch.php');
+	$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
+	return $client->initIndex($index_name);
 }
 
 function admin_error($message){

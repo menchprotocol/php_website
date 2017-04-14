@@ -10,7 +10,8 @@ class Api extends CI_Controller {
 		
 		if(!auth_admin(1)){
 			//Check for session for all functions here!
-			die('<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Invalid session! Login and try again...</span></div>');
+			echo_html(0,'Invalid session! Login and try again...');
+			exit;
 		}
 	}
 	
@@ -19,12 +20,78 @@ class Api extends CI_Controller {
 		
 	}
 	
+	function update_link(){
+		if(intval($_REQUEST['id'])<1){
+			return echo_html(0,'Invalid link ID.');
+		} elseif(!intval($_REQUEST['key']) && strlen($_REQUEST['new_value'])<1){
+			return echo_html(0,'You must enter a value for the top link.');
+		}
+		
+		//Fetch link:
+		$link = $this->Us_model->fetch_link(intval($_REQUEST['id']));
+		$p_update = (intval($_REQUEST['new_parent_id'])>0);
+		
+		if($link['status']<0){
+			return echo_html(0,'You can edit active links only (status>0).');
+		} elseif($_REQUEST['new_value']==$link['value'] && !$p_update){
+			//Nothing has changed!
+			return echo_html(0,'You did not make any changes.');
+		}
+		
+		//We're good! Insert new link:
+		$user_data = $this->session->userdata('user');
+		$timestamp = date("Y-m-d H:i:s"); //Make sure all action in this batch have the same time
+		
+		if($p_update){
+			//Fetch parent details:
+			$parent_node = $this->Us_model->fetch_node(intval($_REQUEST['new_parent_id']), 'fetch_top_plain');
+			
+			//Did we find this?
+			if($parent_node['node_id']<1 || $parent_node['node_id']!=intval($_REQUEST['new_parent_id'])){
+				return echo_html(0,'Invalid parent.');
+			}
+		}
+		
+		//Valid, insert new row:
+		$update_id = $this->Us_model->insert_link(array(
+			'us_id' => $user_data['node_id'],
+			'timestamp' => $timestamp,
+			'status' => ( intval($_REQUEST['key']) ? ( strlen($_REQUEST['new_value'])>0 ? 2 : 3 ) : 1 ), //TODO: Consider "0" for non-admins
+			'node_id' => $link['node_id'],
+			'grandpa_id' => ( $p_update ? $parent_node['grandpa_id'] : $link['grandpa_id']),
+			'parent_id' =>  ( $p_update ? $parent_node['node_id'] : $link['parent_id']),
+			'value' => ( strlen($_REQUEST['new_value'])>0 ? $_REQUEST['new_value'] : null),
+			'update_id' => $link['id'],
+			'ui_rank' => $link['ui_rank'],
+			'correlation' => $link['correlation'],
+			'action_type' => 2, //For updating
+		));
+		
+		if(!$update_id){
+			//Ooops, some unknown error:
+			return echo_html(0,'Unknown Error while saving changes.');
+		}
+		
+		//Then remove old one:
+		$affected_rows = $this->Us_model->update_link($link['id'], array(
+			'update_id' => $update_id,
+			'status' => -1, //-1 is for updated items.
+		));
+		
+		
+		if(!$affected_rows){
+			//Ooops, some unknown error:
+			return echo_html(0,'Unknown Error while removing old data.');
+		} else {
+			//All good!
+			echo_html(1,'Saved!');
+		}
+	}
+	
 	function update_sort(){
 		if(intval($_REQUEST['node_id'])<1 || !is_array($_REQUEST['new_sort'])){
 			//We start with a DIV to prevent errors from being hidden after a few seconds:
-			echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Invalid Input. Contact admin.</span></div>';
-			//TODO: This should not happen! Implement admin-trigger
-			return false;
+			return echo_html(0,'Invalid Input.');
 		}
 		
 		//Awesome Sauce! lets move-on...
@@ -45,9 +112,7 @@ class Api extends CI_Controller {
 			
 			if(!array_key_exists($link['node_id'],$new_sort_index)){
 				//Ooops, some unknown error:
-				echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Unknown sort index.</span></div>';
-				//TODO: This should not happen! Implement admin-trigger
-				return false;
+				return echo_html(0,'Unknown sort index.');
 			}
 			
 			
@@ -68,9 +133,7 @@ class Api extends CI_Controller {
 			
 			if(!$update_id){
 				//Ooops, some unknown error:
-				echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Unknown Error. Contact admin.</span></div>';
-				//TODO: This should not happen! Implement admin-trigger
-				return false;
+				return echo_html(0,'Unknown Error.');
 			}
 			
 			//Then remove old one:
@@ -81,16 +144,14 @@ class Api extends CI_Controller {
 			
 			if(!$affected_rows){
 				//Ooops, some unknown error:
-				echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Unknown Error. Contact admin.</span></div>';
-				//TODO: This should not happen! Implement admin-trigger
-				return false;
+				return echo_html(0,'Unknown Error.');
 			} else {
 				//All good!
 				$success++;
 			}
 		}
 		
-		echo '<span class="success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Saved!</span>';
+		echo_html(1,'Saved!');
 	}
 	
 	
@@ -133,9 +194,7 @@ class Api extends CI_Controller {
 		//print_r($obj);
 		
 		//Include PHP library:
-		require_once('application/libraries/algoliasearch.php');
-		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-		$index = $client->initIndex('nodes');
+		$index = load_algolia();
 		$index->clearIndex();
 		$index->addObjects($obj);
 	}

@@ -57,18 +57,39 @@ class Us extends CI_Controller {
 	
 	function load_node($node_id){
 		//The main function for loading nodes
-		//TODO: Design platform to be more open and accessible without login
-		auth();
+		//auth(); //Wooot wooot :X
+		
 		
 		//Build data sets for our views:
 		$data_set = array(
-			'node' 		 => $this->Us_model->fetch_node($node_id),
-			'child_data' => $this->Us_model->fetch_node($node_id, 'fetch_children'),
+				'node' 		 => $this->Us_model->fetch_node($node_id),
+				'child_data' => $this->Us_model->fetch_node($node_id, 'fetch_children'),
 		);
-		//print_r($data_set);exit;
+		
+		if($data_set['node'][0]['id']<1){
+			//We did not find this ID:
+			redirect_message('/1','<div class="alert alert-danger" role="alert">Node id '.$node_id.' does not exist.</div>');
+		}
+		
+		//See if we have a description:
+		$meta_data = '<link rel="canonical" href="//us.foundation/'.$node_id.'" />';
+		foreach($data_set['node'] as $key=>$value){
+			if($value['parent_id']==45){
+				$meta_data .= "\n\t".'<meta name="description" content="'.$value['value'].'">';
+			}
+			if($value['grandpa_id']==1){
+				$meta_data .= "\n\t".'<meta name="author" content="'.str_replace('@','',$value['parent_name']).'">';
+			}
+		}
+		
+		//Create header variables:
+		$header_data = array(
+			'show_grandpas' => 1, //To force show the navigation for guests
+			'meta_data' => $meta_data, //SEO optimizations
+		);
 		
 		//Load views:
-		$this->load->view('shared/header', $data_set);
+		$this->load->view('shared/header', array_merge($data_set,$header_data));
 		$this->load->view('us/load_node', $data_set);
 		$this->load->view('shared/footer', $data_set);
 	}

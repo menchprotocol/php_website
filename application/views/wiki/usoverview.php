@@ -75,4 +75,4 @@
 	<a href="/join" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Join Us</a>
 	<a href="/login" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Login</a>
 </div>
-<?php } else { user_nav(); } ?>
+<?php } ?>

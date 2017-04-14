@@ -79,6 +79,14 @@ class Us_model extends CI_Model {
 	
 	
 	
+	function fetch_link($link_id){
+		$this->db->select('*');
+		$this->db->from('v3_data d');
+		$this->db->where('d.id' , $link_id);
+		$q = $this->db->get();
+		return $q->row_array();
+	}
+	
 	function fetch_node($node_id , $action='fetch_node'){
 		
 		if(intval($node_id)<1 || !in_array($action,array('fetch_node','fetch_children','fetch_top_plain'))){

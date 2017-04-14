@@ -54,7 +54,7 @@ h2{ font-size:30px; }
 .node_h1 textarea 					{ background-color:#FFF; border: 0; width:100%; padding:0; margin:0; line-height:110%; overflow:hidden; }
 .node_top_node input[type="text"] 	{ background-color:#FFF; border: 0; width:150px; padding:0 0 0 2px; margin:0 0 0 3px; line-height:110%; font-size: 0.7em; color: #777; height:20px; }
 .list-group-item .badge { margin-top: 3px; float:right; }
-
+.suggest-prefix{ width:72px; }
 
 @media (max-width: 768px){
 	/* Global Font Sizes Per Screen Size */
@@ -78,6 +78,7 @@ h2{ font-size:30px; }
 	.node_details .node_top_node>a{ padding:3px 0 0 2px; }
 	.node_top_node input[type="text"] 	{ margin:0 0 0 0; }
 	.list-group-item>.badge { margin-top:0; }
+	.suggest-prefix{ width:58px; }
 	
 	#main_container{
 		background-color: #ffffff;
@@ -102,7 +103,7 @@ h2{ font-size:30px; }
 .danger { color:#fe3c3c; }
 .success { color:#63d297; }
 .glyphicon-minus-sign { padding-right:2px; }
-.suggest-prefix{ color:#999; font-size:0.7em; width:55px; display:inline-block; }
+.suggest-prefix{ color:#999; font-size:0.7em; display:inline-block; }
 
 em{
 	font-style:normal;
@@ -144,8 +145,6 @@ em{
 	margin-right:9px;
 	display:inline-block;
 }
-
-
 
 
 .action_buttons {

@@ -10,5 +10,8 @@ $user_data = $this->session->userdata('user');
 	        <p><a href="https://github.com/USfoundation/us-indexer/commits/develop"><?= version_salt() ?></a> Built with &#10084; in Vancouver.</p>
 		</footer>
 	</div>
+	
+	<script src="/js/main.js?v=<?= version_salt() ?>"></script>
+	
   </body>
 </html>
