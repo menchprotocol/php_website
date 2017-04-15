@@ -88,6 +88,7 @@ class Api extends CI_Controller {
 		//Do we need to update search index?
 		if($has_value){
 			//TODO: Update Algolia Search index
+			
 		}
 		
 		//Return results as a new line:
