@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.40'.( is_production() ? '' : '-'.substr(time(),6) );
+	return 'v0.41'.( is_production() ? '' : '-'.substr(time(),6) );
 }
 
 function parents(){
@@ -155,7 +155,8 @@ function alphanum($string){
 
 function print_child($value,$node,$user_data){
 	$p_name = ( in_array($value['index'],array(1,4)) ? $value['parent_name']: $value['title']);
-	return '<li class="list-group-item child-node" id="child'.$value['node_id'].'" node-id="'.$value['node_id'].'"><a href="/'.$value['node_id'].'?from='.$node['node_id'].'"><span class="badge">'.($value['child_count']>0?$value['child_count']:'').' <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$p_name.' <span class="link_count">'.( alphanum($value['value'])==alphanum($p_name) ? '' : $value['value'] ).' <span class="glyphicon glyphicon-link" aria-hidden="true"></span>'.$value['links_count'].'</span>'.( $node['grandpa_id']==3 && $user_data['is_mod'] ? ' <span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span>' : '' ).'</a></li>';
+	return '<li class="list-group-item child-node" id="child'.$value['node_id'].'" node-id="'.$value['node_id'].'"><a href="/'.$value['node_id'].'?from='.$node['node_id'].'"><span class="badge">'.($value['child_count']>0?$value['child_count']:'').' <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$p_name.' <span class="link_count"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>'.$value['links_count'].'</span>'.( $node['grandpa_id']==3 && $user_data['is_mod'] ? ' <span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span>' : '' ).'</a></li>';
+	//Removed the value: '.( alphanum($value['value'])==alphanum($p_name) ? '' : $value['value'] ).' 
 }
 
 function echo_html($status,$message){

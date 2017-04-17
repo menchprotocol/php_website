@@ -45,6 +45,16 @@ function load_algolia(index_name='nodes'){
 	window.index = client.initIndex(index_name);
 }
 
+function editHeightControl(){
+	if(/<[a-z][\s\S]*>/i.test($(".node_details textarea").val())){
+		//This means this text contains HTML, show smaller font:
+		$(".node_details textarea").addClass('codefont');
+	}
+	
+	$('.node_details').on( 'change keyup keydown paste cut', 'textarea', function (){
+	    $(this).height(0).height(this.scrollHeight);
+	}).find( 'textarea' ).change();
+}
 
 
 
@@ -197,7 +207,16 @@ function edit_link(key,id){
 	$('#link'+id).attr('edit-mode','1');
 	
 	//Set variables:
-	main_val = $('#link'+id+" .node_h1").text();
+	//Get main value from core node:
+	for(var index in node) { 
+	    if(node[index]['id']==id){
+	    	main_val = node[index]['value'];
+	    	break;
+	    }
+	}
+	//main_val = $('#link'+id+" .node_h1").text(); //This did not support HTML
+	
+	
 	parent_val = $('#link'+id+" .node_top_node a").text();
 	parent_html = $('#link'+id+" .node_top_node").html();
 	key_global = key;
@@ -229,7 +248,8 @@ function edit_link(key,id){
 	//Wire the enter key on the textarea to save
 	$('#link'+id+" .node_h1 textarea").keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
+        //Ctrl+Enter to save:
+        if (e.ctrlKey && code>=10 && code<=13) {
         	save_link_updated(key,id);
             return true;
         }
@@ -237,6 +257,9 @@ function edit_link(key,id){
 	
 	//Set value and focus:
 	$('#link'+id+" .node_h1 textarea").focus().val(main_val);
+	editHeightControl(); //Adjust height
+	
+	
 	//Make parent link editable only if:
 	if(key==0 && !parents(node[0]['node_id'])){
 		
@@ -488,18 +511,24 @@ function create_node(node_name){
 }
 
 
+
 function link_node(child_node_id){
 	child_node_id = parseInt(child_node_id);
 	if(child_node_id<1){
 		return false;
 	}
 	
-	//Show loader:
-	$( '<li class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</li>' ).insertBefore( ".list_input" );
+	var new_value = prompt("Enter optional link value:", "");
+	if (new_value == null) {
+	    return false;
+	}
 	
 	//Prepare data for processing:
 	window.child_count = child_count+1;
-	var new_value = prompt("Enter optional link value:", "");
+	
+	//Show loader:
+	$( '<li class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</li>' ).insertBefore( ".list_input" );
+	
 	var input_data = {
 		grandpa_id:node[0]['grandpa_id'],
 		parent_id:node[0]['node_id'],
@@ -513,10 +542,5 @@ function link_node(child_node_id){
 		//Update UI to confirm with user:
 		$( ".loading-node" ).remove();
 		$( data ).insertBefore( ".list_input" );
-		
-		//TODO: Fix BUG that does not show new_value in the newly displayed <li>
-		
-		//Empty search value and focus on it:
-		$( "#addnode" ).val("").focus();
     });
 }

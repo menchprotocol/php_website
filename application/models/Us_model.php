@@ -230,6 +230,7 @@ class Us_model extends CI_Model {
 	
 	function fetch_node($node_id , $action='fetch_node'){
 		
+		
 		if(intval($node_id)<1 || !in_array($action,array('fetch_node','fetch_children','fetch_top_plain'))){
 			//No a valid node id or action
 			return false;
