@@ -20,22 +20,6 @@ class Us_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 	
-	
-	function count_children($node_id){
-		
-		//Count the number of child nodes:
-		$this->db->select('COUNT(id) as child_count');
-		$this->db->from('v3_data d');
-		$this->db->where('d.parent_id' , $node_id);
-		$this->db->where('d.node_id !=' , $node_id);
-		$this->db->where('d.status >' , 0);
-		$this->db->where('d.ui_rank >' , 0);
-		$q = $this->db->get();
-		$stats = $q->row_array();
-		return $stats['child_count'];
-	}
-	
-	
 	function delete_link($link_id,$action_type){
 		//This would delete a single link:
 		
@@ -178,7 +162,7 @@ class Us_model extends CI_Model {
 		//Count the number of child nodes:
 		$this->db->select('COUNT(id) as link_count');
 		$this->db->from('v3_data d');
-		$this->db->where('d.node_id' , $node_id);
+		$this->db->where('(d.node_id='.$node_id.' OR d.parent_id='.$node_id.')');
 		$this->db->where('d.status >' , 0);
 		$this->db->where('d.ui_rank >' , 0);
 		$q = $this->db->get();
@@ -188,13 +172,14 @@ class Us_model extends CI_Model {
 	
 	function search_node($value_string, $parent_id=null){
 		//Return the node_id of a link that matches the value and parent ID
+		//TODO Maybe move to Agolia search engine for faster search.
 		//Fetch all node links
 		$this->db->select('*');
 		$this->db->from('v3_data d');
 		if($parent_id){
 			$this->db->where('d.parent_id' , $parent_id);
-		}
-		$this->db->where('d.value', $value_string); //TODO Maybe move to Agolia search engine for faster search?
+		}		
+		$this->db->where('d.value', $value_string);
 		$this->db->where('d.status >' , 0);
 		$this->db->order_by('d.status' , 'ASC'); //status=1 always comes before status=2
 		$q = $this->db->get();
@@ -228,10 +213,34 @@ class Us_model extends CI_Model {
 		return $q->row_array();
 	}
 	
-	function fetch_node($node_id , $action='fetch_node'){
+	
+	function fetch_full_node($node_id){
+		//The new function that would use the old one to fetch the complete node:
+		$parent = $this->Us_model->fetch_node($node_id, 'fetch_parents');
+		$child 	= $this->Us_model->fetch_node($node_id, 'fetch_children');
+		return array_merge($parent,$child);
+	}
+	
+	function fetch_grandpas_child($node_id){
+		//Iteratively loop until parent_id = any grandpa_id
+		$grandpas = parents();
+		$looking = 1;
+		while($looking){
+			$fetch_node = $this->fetch_node($node_id,'fetch_top_plain');
+			if(array_key_exists($fetch_node['parent_id'],$grandpas)){
+				//The parent of this is a grandpa!
+				return $fetch_node['node_id'];
+			} else {
+				//Continue our search:
+				$node_id = $fetch_node['parent_id'];
+			}
+		}
+		return 0;
+	}
+	
+	function fetch_node($node_id , $action='fetch_parents', $setting=array()){
 		
-		
-		if(intval($node_id)<1 || !in_array($action,array('fetch_node','fetch_children','fetch_top_plain'))){
+		if(intval($node_id)<1 || !in_array($action,array('fetch_parents','fetch_children','fetch_top_plain'))){
 			//No a valid node id or action
 			return false;
 		}
@@ -241,14 +250,9 @@ class Us_model extends CI_Model {
 		$this->db->from('v3_data d');
 		$this->db->where('d.status >' , 0);
 		
-		if($action=='fetch_node'){
+		if($action=='fetch_parents' || $action=='fetch_top_plain'){
 			
 			$this->db->where('d.node_id' , $node_id);
-			
-		} elseif($action=='fetch_top_plain'){
-			
-			$this->db->where('d.node_id' , $node_id);
-			$this->db->where('d.status' , 1); //Only top links as we need their name:
 			
 		} elseif($action=='fetch_children'){
 			
@@ -278,44 +282,59 @@ class Us_model extends CI_Model {
 		
 		//Lets curate/enhance the data a bit:
 		$parents = parents(); //Everything at level 1
-		$contributors = array(); //Caching mechanism for usernames based on their us_id
+		//Caching mechanism for usernames and counts
+		$cache = array(
+			'contributors' => array(),
+			'link_count' => array(),
+		);
 		
 		foreach($links as $i=>$link){
 			
-			//See how many levels deep is this data point?
-			if(array_key_exists($link['node_id'],$parents)){
-				$level = 1;
-			} elseif($link['grandpa_id']==$link['parent_id']){
-				$level = 2;
-			} else {
-				$level = 3; //Or more...
+			//Append Sign, always:
+			$links[$i]['sign'] = $parents[$link['grandpa_id']]['sign'];
+			
+			//Some elements are for the first level only, to make queries faster:
+			if(!isset($setting['recursive_level'])){
+				//Do we have this user ID in the cache variable?
+				if(!isset($cache['contributors'][$link['us_id']])){
+					//Fetch user name:
+					$person_link = $this->fetch_node($link['us_id'], 'fetch_top_plain');
+					$cache['contributors'][$link['us_id']] = $person_link['value'];
+				}
+				
+				//Determine what are we counting based on parent/child position:
+				$count_column = ( ($node_id==$link['node_id']) ? $link['parent_id'] : $link['node_id']);
+				if(!isset($cache['link_count'][$count_column])){
+					//Fetch link counts:
+					$cache['link_count'][$count_column] = $this->count_links($count_column);
+				}
+				
+				//Append uploader name:
+				//TODO: Maybe for some $action s only?
+				$links[$i]['us_name'] = $cache['contributors'][$link['us_id']];
+				
+				//Count node links:
+				$links[$i]['link_count'] = $cache['link_count'][$count_column];
 			}
 			
-			if(strlen($link['value'])<1){
-				
-				if($action=='fetch_node'){
-					
+			
+			//We fetch the parents of parent !MetaData nodes for settings:
+			//TODO Maybe we only need to do this when grandpa_id=43 (MetaData). Time would tell...
+			if( !isset($setting['recursive_level']) || $setting['recursive_level']<1){
+				//Go fetch:
+				$links[$i]['parents'] = $this->fetch_node( ( $action=='fetch_parents' ? $link['parent_id'] : $link['node_id'] ) , 'fetch_parents', array('recursive_level'=>(!isset($setting['recursive_level'])?1:(1 + $setting['recursive_level']))));
+			}
+			
+			/*
+			if($action=='fetch_parents'){
+				if(strlen($link['value'])<1){
 					//This has no value, meaning the node_id needs to be invoked for data:
 					$invoke_node = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
 					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
 					//$links[$i]['parent_name'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
 					$links[$i]['parent_name'] = $links[$i]['title'];
 					$links[$i]['index'] = 1; //For debugging
-					
-				} elseif($action=='fetch_children'){
-					//This has no value, meaning the node_id needs to be invoked for data:
-					$invoke_node = $this->fetch_node($link['node_id'], 'fetch_top_plain');
-					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
-					
-					$parent_top_link = $this->fetch_node($invoke_node['parent_id'], 'fetch_top_plain');
-					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
-					$links[$i]['index'] = 2; //For debugging
-				}
-				
-			} else {
-				
-				if($action=='fetch_node'){
-					
+				} else {
 					//Create custom node title based on primary data set:
 					$links[$i]['title'] = $parents[$link['grandpa_id']]['sign'].clean($link['value']);
 					
@@ -324,9 +343,19 @@ class Us_model extends CI_Model {
 					$parent_sign = $parents[$link['grandpa_id']]['sign'];
 					$links[$i]['parent_name'] = $parent_sign.clean($parent_top_link['value']);
 					$links[$i]['index'] = 3; //For debugging
+				}
+				
+			} elseif($action=='fetch_children'){
+				
+				if(strlen($link['value'])<1){
+					//This has no value, meaning the node_id needs to be invoked for data:
+					$invoke_node = $this->fetch_node($link['node_id'], 'fetch_top_plain');
+					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
 					
-				} elseif($action=='fetch_children'){
-					
+					$parent_top_link = $this->fetch_node($invoke_node['parent_id'], 'fetch_top_plain');
+					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
+					$links[$i]['index'] = 2; //For debugging
+				} else {
 					//Create custom node title based on primary data set:
 					$links[$i]['title'] = $parents[$link['grandpa_id']]['sign'].clean($link['value']);
 					
@@ -335,32 +364,10 @@ class Us_model extends CI_Model {
 					$parent_sign = $parents[$parent_top_link['grandpa_id']]['sign'];
 					$links[$i]['parent_name'] = $parent_sign.clean($parent_top_link['value']);
 					$links[$i]['index'] = 4; //For debugging
-					
 				}
-				
 			}
-
+			*/
 			
-					
-			
-			//Do we have this user ID in the cache variable?
-			if(!isset($contributors[$link['us_id']])){
-				//Fetch user name:
-				$person_link = $this->fetch_node($link['us_id'], 'fetch_top_plain');
-				$contributors[$link['us_id']] = $person_link['value'];
-				
-			}
-			
-			//Append uploader name:
-			//TODO: Maybe for some $action s only?
-			$links[$i]['us_name'] = $contributors[$link['us_id']];
-			
-			//Append child count only to the top link:
-			//TODO: Maybe this can be optimized for certain $action s only?
-			$links[$i]['child_count'] = $this->count_children($link['node_id']);
-			
-			//Count node links:
-			$links[$i]['links_count'] = $this->count_links($link['node_id']);
 		}
 		
 		return $links;

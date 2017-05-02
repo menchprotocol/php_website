@@ -55,15 +55,21 @@ class Us extends CI_Controller {
 	}
 	
 	
+	function fetch_full_node($node_id){
+		header('Content-Type: application/json');
+		echo json_encode($this->Us_model->fetch_full_node($node_id));
+	}
+	
+	
+	//The main function for loading nodes:
 	function load_node($node_id){
-		//The main function for loading nodes
-		//auth(); //Wooot wooot :X
 		
+		//Load custom node functions for possible processing:
+		$this->load->helper('node_helper');
 		
 		//Build data sets for our views:
 		$data_set = array(
-				'node' 		 => $this->Us_model->fetch_node($node_id),
-				'child_data' => $this->Us_model->fetch_node($node_id, 'fetch_children'),
+			'node' => $this->Us_model->fetch_full_node($node_id),
 		);
 		
 		//print_r($data_set);exit;
@@ -77,10 +83,10 @@ class Us extends CI_Controller {
 		$meta_data = '<link rel="canonical" href="//us.foundation/'.$node_id.'" />';
 		foreach($data_set['node'] as $key=>$value){
 			if($value['parent_id']==45){
-				$meta_data .= "\n\t".'<meta name="description" content="'.$value['value'].'">';
+				$meta_data .= "\n\t".'<meta name="description" content="'.$value['value'].'" />';
 			}
-			if($value['grandpa_id']==1){
-				$meta_data .= "\n\t".'<meta name="author" content="'.str_replace('@','',$value['parent_name']).'">';
+			if($value['grandpa_id']==1 && !($value['parent_id']==$node_id)){
+				$meta_data .= "\n\t".'<meta name="author" content="'.$value['parents'][0]['value'].'" />';
 			}
 		}
 		

@@ -39,11 +39,18 @@ function pop_search_open(){
 }
 
 
-var index,client;
+var algolia_index,client,algolia_loaded;
+algolia_loaded = 0;
 function load_algolia(index_name='nodes'){
+	if(algolia_loaded){
+		return false;
+	}
+	algolia_loaded = 1; //Do not load again.
 	window.client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-	window.index = client.initIndex(index_name);
+	window.algolia_index = client.initIndex(index_name);
 }
+
+
 
 function editHeightControl(){
 	if(/<[a-z][\s\S]*>/i.test($(".node_details textarea").val())){
@@ -66,7 +73,8 @@ $( document ).ready(function() {
 	}).mouseleave(function() {
 		$( this ).removeClass('show_child');
 	});
-
+	
+	//Loaded by default for easier use:
 	$('[data-toggle="tooltip"]').tooltip();
 	
 	//Prevent Node creation form submission
@@ -74,22 +82,14 @@ $( document ).ready(function() {
         e.preventDefault();
     });
 	
-	
-	
 	//By default we do not load until user goes to search box:
-	algolia_loaded = 0;
 	$( ".autosearch" ).focus(function() {
-		if(!algolia_loaded){
-			//Prevent second time loading:
-			algolia_loaded = 1;
-			//Assign to global variables:
-			load_algolia();
-		}
+		load_algolia();
 	});
 	
 	//Header search specific functions for UI and autocomplete result selection:
 	$( "#mainsearch" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-		window.location.replace("/"+suggestion._highlightResult.node_id.value+'?from=search');
+		window.location.replace("/"+suggestion.node_id+'?from=search');
 	}).focus(function() {
 		pop_search_open();
 		//Handle window resize on focus:
@@ -99,7 +99,7 @@ $( document ).ready(function() {
 		$( ".search-block" ).css('width','120px');
 	}).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
 	    source: function(q, cb) {
-	      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+	      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
 	        if (error) {
 	          cb([]);
 	          return;
@@ -116,18 +116,16 @@ $( document ).ready(function() {
 	    }
 	}]);
 	
-	
-	
 	//Initiate Sortable for moderators and for certain parents
 	//TODO move logic to #SortableNodes
 	if(user_data['is_mod']){
 		//New Node search box call to action: 
 		$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 			//Link nodes together:
-			link_node(suggestion.node_id);
+			link_node(suggestion.node_id, (parents(parseInt(suggestion.grandpa_id))+suggestion.value) );
 		}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
 		    source: function(q, cb) {
-			      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+			      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
 			        if (error) {
 			          cb([]);
 			          return;
@@ -157,34 +155,6 @@ $( document ).ready(function() {
 	            return true;
 	        }
 	    });
-		
-		$( "#sortableChild" ).sortable({
-			items: ".child-node",
-			handle: ".sort-handle", //We have sorting for a #Goals only
-			update: function( event, ui ) {
-				//Set processing status:
-				$( "#sortconf" ).html('<span class="saving"><img src="/img/loader.gif" /> Saving...</span>');
-				//Fetch new sort:
-				var new_sort = [];
-				var sort_rank = 0;
-				$( ".child-node" ).each(function() {
-					//We would later use this to update DB:
-					new_sort[sort_rank] = $( this ).attr('node-id');
-					sort_rank++;
-				});
-				
-				//Update backend:
-				$.post("/api/update_sort", {node_id:node[0]['node_id'], new_sort:new_sort}, function(data) {
-					//Update UI to confirm with user:
-					$( "#sortconf" ).html(data);
-					
-					//Disapper in a while:
-					setTimeout(function() {
-				        $("#sortconf>span").fadeOut();
-				    }, 3000);
-			    });
-			}
-	    });
 	}
 });
 
@@ -208,19 +178,21 @@ function edit_link(key,id){
 	
 	//Set variables:
 	//Get main value from core node:
-	for(var index in node) { 
-	    if(node[index]['id']==id){
-	    	main_val = node[index]['value'];
+	for(var i in node) {
+	    if(node[i]['id']==id){
+	    	//Does not consider PHP templating in load_node.php
+	    	main_val = node[i]['value'];
 	    	break;
 	    }
-	}
-	//main_val = $('#link'+id+" .node_h1").text(); //This did not support HTML
+	}	
 	
-	
-	parent_val = $('#link'+id+" .node_top_node a").text();
+	parent_val = $.trim($('#link'+id+" .node_top_node .parentLink").text());
 	parent_html = $('#link'+id+" .node_top_node").html();
 	key_global = key;
 	id_global = id;
+	
+	//Hide potential followupContent:
+	$('.followupContent').hide();
 	
 	//Yellow bg & visible metadata:
 	$('#link'+id).addClass('edit_mode').addClass('show_child_edit');	
@@ -257,7 +229,8 @@ function edit_link(key,id){
 	
 	//Set value and focus:
 	$('#link'+id+" .node_h1 textarea").focus().val(main_val);
-	editHeightControl(); //Adjust height
+	//Adjust textarea height:
+	editHeightControl();
 	
 	
 	//Make parent link editable only if:
@@ -266,12 +239,7 @@ function edit_link(key,id){
 		$('#link'+id+' .node_top_node').html('<input type="text" id="editparent" class="autosearch" value="'+parent_val+'" />');
 		
 		//Loadup search engine if not already:
-		if(!algolia_loaded){
-			//Prevent second time loading:
-			algolia_loaded = 1;
-			//Assign to global variables:
-			load_algolia();
-		}
+		load_algolia();
 		
 		//Enable the edit auto search:
 		$( '#link'+id+' #editparent' ).on('autocomplete:selected', function(event, suggestion, dataset) {
@@ -283,7 +251,7 @@ function edit_link(key,id){
 			$( '#link'+id+" .node_top_node").html( '<a href="/'+suggestion.node_id+'">'+parents(parseInt(suggestion.grandpa_id)) + suggestion.value.replace(/\W/g, '')+'</a> <span class="edit_warning not_saved">(Not saved yet)</span>' );
 		}).autocomplete({ hint: false }, [{
 		    source: function(q, cb) {
-		      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+		      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
 		        if (error) {
 		          cb([]);
 		          return;
@@ -314,6 +282,10 @@ $(document).keyup(function(e) {
     }
 });
 
+function toggleValue(link_id){
+	$('#linkval'+link_id).toggle();
+}
+
 function discard_link_edit(key,id,keep_parent=false){
 	//Exit edit mode:
 	$('#link'+id).attr('edit-mode','0');
@@ -326,6 +298,9 @@ function discard_link_edit(key,id,keep_parent=false){
 	//Remove buttons:
 	$('#link'+id+" .action_buttons").remove();
 	
+	//Show potential followupContent:
+	$('.followupContent').fadeIn();
+	
 	//Reset input fields back to defualt values:
 	$('#link'+id+" .node_h1").html(main_val);
 	if(key==0 && !parents(node[0]['node_id']) && !keep_parent){
@@ -334,6 +309,69 @@ function discard_link_edit(key,id,keep_parent=false){
 	
 	//Also close possible delete warnings:
 	cancel_delete_link(key,id);
+}
+
+function toggleSort(doEnable){
+	if(doEnable){
+		//Enable sort:
+		$('#secondNav').append('<li role="presentation" id="sortIsOn" class="li_setting pull-right disabled"><a href="javascript:void(0)" class="disabled pink-bg"><span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span> Sort On</a></li>');
+		$('.is_children .sortconf').before(' <span class="glyphicon glyphicon glyphicon-sort pink" aria-hidden="true"></span>&nbsp;');
+		$( ".list-group" ).sortable({
+			items: ".child-node",
+			handle: ".list-group-item-heading", //The entire href line. .sort-handle is the icon.
+			update: function( event, ui ) {
+				//Set processing status:
+				$( ".sortconf" ).html('<span class="saving"><img src="/img/loader.gif" /></span>');
+				//Fetch new sort:
+				var new_sort = [];
+				var sort_rank = 0;
+				$( ".child-node" ).each(function() {
+					//We would later use this to update DB:
+					new_sort[sort_rank] = $( this ).attr('node-id');
+					sort_rank++;
+				});
+				
+				//Update backend:
+				$.post("/api/update_sort", {node_id:node[0]['node_id'], new_sort:new_sort}, function(data) {
+					//Update UI to confirm with user:
+					$( ".sortconf" ).html(data);
+					
+					//Disapper in a while:
+					setTimeout(function() {
+				        $(".sortconf>span").fadeOut();
+				    }, 3000);
+			    });
+			}
+	    });
+		
+	} else {
+		//Disable sort:
+		$('#sortIsOn').remove();
+		$('.is_children .glyphicon-sort').remove();
+		$( ".list-group" ).sortable( "destroy" );
+	}
+}
+
+
+function nav2nd(focus_nav){
+	$('.nav-pills li').removeClass('active');
+	$('.nav-pills .li_'+focus_nav).addClass('active');
+	
+	if(focus_nav=='all'){
+		$(".node_details").show();
+	} else {
+		$(".node_details").hide();
+		$(".is_top, .is_"+focus_nav).show();
+	}
+	
+	//Enable sortable for children only:
+	if(user_data['is_mod']){
+		if(focus_nav=='children'){
+			toggleSort(1);
+		} else {
+			toggleSort(0);
+		}
+	}		
 }
 
 function delete_link(key,id){
@@ -360,12 +398,7 @@ function delete_link(key,id){
 
 	if(key==0 && child_count>0){
 		//Loadup search engine if not already:
-		if(!algolia_loaded){
-			//Prevent second time loading:
-			algolia_loaded = 1;
-			//Assign to global variables:
-			load_algolia();
-		}
+		load_algolia();
 		
 		//Enable searching for a new parent:
 		$( '#link'+id+' #setdeleteparent' ).on('autocomplete:selected', function(event, suggestion, dataset) {
@@ -377,7 +410,7 @@ function delete_link(key,id){
 			
 		}).autocomplete({ hint: false }, [{
 		    source: function(q, cb) {
-		      index.search(q, { hitsPerPage: 7 }, function(error, content) {
+		      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
 		        if (error) {
 		          cb([]);
 		          return;
@@ -487,7 +520,7 @@ function create_node(node_name){
 	}
 	
 	//Show loader:
-	$( '<li class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</li>' ).insertBefore( ".list_input" );
+	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( ".list_input" );
 	
 	//Prepare data for processing:
 	window.child_count = child_count+1;
@@ -503,44 +536,105 @@ function create_node(node_name){
 		//Update UI to confirm with user:
 		
 		$( ".loading-node" ).remove();
-		$( data ).insertBefore( ".list_input" );
+		$( data.message ).insertBefore( ".list_input" );
+		
+		//Expand current node:
+		window.node = data.node;
 		
 		//Empty search value and focus on it:
-		$( "#addnode" ).val("").focus();
+		$( "#addnode" ).focus().val("");
     });
 }
 
 
 
-function link_node(child_node_id){
+
+function link_node(child_node_id,new_name){
+	
 	child_node_id = parseInt(child_node_id);
 	if(child_node_id<1){
 		return false;
 	}
 	
-	var new_value = prompt("Enter optional link value:", "");
-	if (new_value == null) {
-	    return false;
+	if($('#linkNodeModal').length>0) {
+		$('#linkNodeModal').remove();
 	}
 	
-	//Prepare data for processing:
-	window.child_count = child_count+1;
+	$('#linkNodeModal').remove();
+	$('body').append('<div class="modal fade" id="linkNodeModal" tabindex="-1" role="dialog">'
+  +'<div class="modal-dialog" role="document">'
+    +'<div class="modal-content">'
+      +'<div class="modal-body">'
+            
+      +'<div class="form-group">'
+      +'<label for="exampleInputEmail1">Optional Value</label>'
+      +'<textarea id="newVal" tabindex="1" class="form-control" rows="3"></textarea>'
+      +'</div>'
+      
+      +'<div class="form-group">'
+	      + '<div><label for="exampleInputEmail1">Who is Parent?</label></div>'
+	      + '<label class="radio">'
+	      + '<input type="radio" tabindex="2" name="parentNodeName" id="originalValue" checked="checked"> '+parents(node[0]['grandpa_id'])+node[0]['value']
+	      + '</label>'
+	      + '<label class="radio">'
+	      + '<input type="radio" tabindex="3" name="parentNodeName" id="childValue"> '+new_name
+	      + '</label>'
+	  +'</div>'
+        
+      +'</div>'
+      +'<div class="modal-footer">'
+        +'<button type="button" id="modalCancel" class="btn btn-default" data-dismiss="modal">Cancel</button>'
+        +'<button type="button" tabindex="4" id="modalSubmit" class="btn btn-primary"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Link</button>'
+      +'</div>'
+    +'</div><!-- /.modal-content -->'
+  +'</div><!-- /.modal-dialog -->'
++'</div><!-- /.modal -->');
 	
-	//Show loader:
-	$( '<li class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</li>' ).insertBefore( ".list_input" );
+	$('#linkNodeModal').modal('show').on('shown.bs.modal', function () {
+		$("#newVal").focus(); //Focus on the optional value field
+		
+		//wire in key code for saving:
+		$('#newVal').keypress(function (e) {
+	        var code = (e.keyCode ? e.keyCode : e.which);
+	        //Ctrl+Enter to save:
+	        if (e.ctrlKey && code>=10 && code<=13) {
+	        	$( "#modalSubmit" ).click();
+	        }
+	    });
+	});
 	
-	var input_data = {
-		grandpa_id:node[0]['grandpa_id'],
-		parent_id:node[0]['node_id'],
-		child_node_id:child_node_id,
-		value:new_value,
-		ui_rank:child_count,
-	};
 	
-	//Create node:
-	$.post("/api/link_node", input_data, function(data) {
-		//Update UI to confirm with user:
-		$( ".loading-node" ).remove();
-		$( data ).insertBefore( ".list_input" );
-    });
+	//Setup listeners:
+	$( "#modalCancel" ).click(function() {
+		$( "#addnode" ).val("").focus();
+	});
+	
+	$( "#modalSubmit" ).click(function() {
+		
+		//Prepare data for processing:
+		window.child_count = child_count+1;
+		
+		var input_data = {
+			parent_id: parseInt( $('#originalValue').is(":checked") ? node[0]['node_id'] : child_node_id ),
+			child_node_id: parseInt( $('#originalValue').is(":checked") ? child_node_id : node[0]['node_id'] ),
+			normal_parenting: ( $('#originalValue').is(":checked") ? 1 : 0 ),
+			value: $("#newVal").val(),
+			ui_rank:child_count,
+		};
+		
+		//Show loader:
+		//TODO Improvement: We can position this at the botton of current parent Nodes, instead of at the bottom of child Nodes
+		$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( ".list_input" );
+		$('#linkNodeModal').modal('hide');
+		
+		//Create node:
+		$.post("/api/link_node", input_data, function(data) {
+			//Update UI to confirm with user:
+			$( ".loading-node" ).remove();
+			$( data.message ).insertBefore( ".list_input" );
+			
+			//Expand current node:
+			window.node = data.node;
+	    });
+	});
 }

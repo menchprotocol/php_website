@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.41'.( is_production() ? '' : '-'.substr(time(),6) );
+	return 'v0.49'.( is_production() ? '' : '.'.substr(time(),4) );
 }
 
 function parents(){
@@ -141,6 +141,25 @@ function action_type_descriptions($action_type_id){
 	}
 }
 
+function count_links($node,$type){
+	$child_count = 0;
+	foreach($node as $value){
+		if($type=='children' && $node[0]['node_id']!==$value['node_id']){
+			$child_count++;
+		} elseif($type=='parents' && $node[0]['node_id']==$value['node_id']){
+			$child_count++;
+		} elseif(is_integer($type)){
+			//Lets see parent or child:
+			if($value['node_id']==$node[0]['node_id'] && $type==$value['grandpa_id']){
+				$child_count++;
+			} elseif($value['node_id']!==$node[0]['node_id'] && $type==$value['parents'][0]['grandpa_id']){
+				$child_count++;
+			}
+		}
+	}
+	return $child_count;
+}
+
 function next_node_id(){
 	//Find the current largest node id and increments it by 1:
 	$CI =& get_instance();
@@ -151,12 +170,6 @@ function next_node_id(){
 
 function alphanum($string){
 	return preg_replace("/[^a-zA-Z0-9]+/", "", strip_tags($string));
-}
-
-function print_child($value,$node,$user_data){
-	$p_name = ( in_array($value['index'],array(1,4)) ? $value['parent_name']: $value['title']);
-	return '<li class="list-group-item child-node" id="child'.$value['node_id'].'" node-id="'.$value['node_id'].'"><a href="/'.$value['node_id'].'?from='.$node['node_id'].'"><span class="badge">'.($value['child_count']>0?$value['child_count']:'').' <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>'.$p_name.' <span class="link_count"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>'.$value['links_count'].'</span>'.( $node['grandpa_id']==3 && $user_data['is_mod'] ? ' <span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span>' : '' ).'</a></li>';
-	//Removed the value: '.( alphanum($value['value'])==alphanum($p_name) ? '' : $value['value'] ).' 
 }
 
 function echo_html($status,$message){
@@ -170,7 +183,7 @@ function echo_html($status,$message){
 
 function format_timestamp($t){
 	$timestamp = strtotime(substr($t,0,19));
-	$format = ( date("Y",$timestamp)==date("Y") ? "j M Y" : "j M Y");
+	$format = ( date("Y",$timestamp)==date("Y") ? "j M" : "j M Y");
 	return date($format,$timestamp);
 }
 
@@ -199,12 +212,11 @@ function admin_error($message){
 
 function auth($donot_redirect=false){
 	$CI =& get_instance();
-	$user_data = $CI->session->userdata('user');
-	$node_id = $CI->uri->segment(1);
-	
+	$user_data = $CI->session->userdata('user');	
 	if($donot_redirect){
 		return (isset($user_data['id']));
 	} elseif(!isset($user_data['id'])){
+		$node_id = $CI->uri->segment(1);
 		redirect_message('/login'.( intval($node_id)>0 ? '?from='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login to access this page.</div>');
 	}
 }
@@ -222,6 +234,186 @@ function auth_admin($donot_redirect=false){
 }
 
 
+
+
+
+function one_two_explode($one,$two,$content){
+	if(substr_count($content, $one)<1){
+		return NULL;
+	}
+	$temp = explode($one,$content,2);
+	$temp = explode($two,$temp[1],2);
+	return trim($temp[0]);
+}
+
+
+
+
+function echoNode($node,$key){
+	
+	$CI =& get_instance();
+	$user_data = $CI->session->userdata('user');
+	
+	//Loop through parent nodes to apply any settings:
+	$status = status_descriptions($node[$key]['status']);
+	$is_parent = ($node[0]['node_id']==$node[$key]['node_id']);
+	$edit_lock_type = ($node[$key]['parent_id']==44 ? '!OwnerEditOnly' : null); //TODO: Move this to a node and nodeLogic. Ask Shervin.
+	$return_string = '';
+	
+	
+	
+	if($is_parent){
+		//Parent nodes:
+		$href = ( $node[$key]['parents'][0]['node_id']==$node[0]['node_id']? null : '/'.$node[$key]['parents'][0]['node_id'].'?from='.$node[0]['node_id'] );
+		$anchor = $node[$key]['parents'][0]['sign'].$node[$key]['parents'][0]['value'];
+		$direct_anchor = '<span class="glyphicon glyphicon-arrow-left rotate45" aria-hidden="true"></span> '.$node[$key]['link_count'];
+	} else {
+		//Child nodes:
+		$href = '/'.$node[$key]['node_id'].'?from='.$node[0]['node_id'];
+		$anchor = $node[$key]['parents'][0]['sign'].$node[$key]['parents'][0]['value'];
+		$direct_anchor = $node[$key]['link_count'].' <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span>';
+	}
+	
+	
+	//Start the display:
+	$return_string .= '<div class="list-group-item  '.( $key==0 ? 'is_top' : 'node_details child-node').' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].'" id="link'.$node[$key]['id'].'" data-link-index="'.$key.'" edit-mode="0" new-parent-id="0" data-link-id="'.$node[$key]['id'].'" node-id="'.$node[$key]['node_id'].'">';
+	
+	$return_string .= '<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.( $href ? '<a href="'.$href.'"><span class="badge">'.$direct_anchor.'</span></a>' : '<span class="badge grey-bg">'.$direct_anchor.'</span>').'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="parentLink">'.$anchor.( $key>0 ? '' : ' <span class="glyphicon glyphicon-bookmark grey hastt" aria-hidden="true" title="The primary node" data-toggle="tooltip"></span>').' <span class="sortconf"></span></a></h4>';
+	
+	$return_string .= '<div id="linkval'.$node[$key]['id'].'" class="link-details value '.( $key==0 ? 'is_top' : '').'">';
+	$return_string .= '<'.( $key==0 ? 'h1' : 'p').' class="list-group-item-text node_h1 '.( $key==0 ? 'is_top' : '').'">';
+	//Search for display logic:
+	$matched = 0;
+	$value_template = null;
+	$followup_content = null;
+	//First from direct parents:
+	if($key>0){
+		foreach($node[$key]['parents'] as $k=>$p){
+			
+			//Custom Node-driven logical block:
+			if($p['parent_id']==63 && substr_count($p['value'],'{value}')>0){
+				
+				//This belogs to the templating node:
+				if(substr($p['value'],0,8)=='__eval__'){
+					//This needs a PHP evaluation call to attempt to call the function and fill-in {value}
+					eval("\$value_template = ".str_replace('__eval__','',str_replace('{value}','"'.$node[$key]['value'].'"',$p['value'])).";");
+				} else {
+					$value_template = str_replace('{value}',$node[$key]['value'],$p['value']);
+				}
+				
+				$matched = 1;
+				
+				if($p['node_id']==237){
+					//This is a YouTube embed, lets see if we can find start/end times.
+					//This feels like a super-hack! We'll figure out how to make it work...
+					$start_time = 0;
+					$end_time = 0;
+					foreach($node as $p2){
+						if($node[0]['node_id']==$p2['node_id'] && intval($p2['value'])>0){
+							//This belogs to the templating node:
+							if($p2['parent_id']==73){
+								$start_time = $p2['value'];
+							} elseif($p2['parent_id']==74){
+								$end_time = $p2['value'];
+							}
+						}
+					}
+					if($start_time>0 || $end_time>0){
+						$value_template = str_replace( $node[$key]['value'] , $node[$key]['value'].'?start='.$start_time.'&end='.$end_time , $value_template );
+					}
+				}
+			} elseif($p['parent_id']==237){
+				//This is a YouTube embed, lets see if we can find start/end times.
+				//This feels like a super-hack! We'll figure out how to make it work...
+				$start_time = 0;
+				$end_time = 0;
+				
+				foreach($node[$key]['parents'] as $p2){
+					if($p2['parent_id']==73){
+						$start_time = $p2['value'];
+					} elseif($p2['parent_id']==74){
+						$end_time = $p2['value'];
+					}
+				}
+				
+				if($start_time>0 || $end_time>0){
+					//Go one more level deep!
+					$parent_node = $CI->Us_model->fetch_node($p['parent_id'], 'fetch_parents');
+					
+					foreach($parent_node as $p3){
+						if($p3['parent_id']==63 && substr_count($p3['value'],'{value}')>0){
+							//This is special content fetched from 2 levels deep only for YouTube videos for now:
+							$followup_content = '<div class="followupContent">'.str_replace('{value}',$p['value'].'?start='.$start_time.'&end='.$end_time,$p3['value']).'</div>';
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	//Now go through main templates, assuming this is a child node:
+	if($key>0 && !$matched && !$is_parent){
+		//Try searching in the main parent:
+		foreach($node as $p){
+			if($node[0]['node_id']==$p['node_id'] && $p['parent_id']==63 && substr_count($p['value'],'{value}')>0){
+				//This belogs to the templating node:
+				$value_template = str_replace('{value}',$node[$key]['value'],$p['value']);
+				$matched = 1;
+			}
+		}
+	}
+	
+	
+	//Did we find any template matches? If not, just display:
+	
+	if(!$matched){
+		$return_string .= $node[$key]['value'];
+	} else {
+		$return_string .= $value_template;
+	}
+	
+	//This is only used for special nodes for now:
+	$return_string .= $followup_content;
+	
+	$return_string .= '</'.( $key==0 ? 'h1' : 'p').'>';
+	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
+	$return_string .= '<span title="'.substr($node[$key]['timestamp'],0,19).' UTC" data-toggle="tooltip"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> '.format_timestamp($node[$key]['timestamp']).'</span>';
+	$return_string .= '<span><a href="/'.$node[$key]['us_id'].'">@'.$node[$key]['us_name'].'</a></span>';
+	
+	if($user_data['is_mod']){
+		$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></span>';
+	}
+	$return_string .= '</div></div>';
+	$return_string .= '</div>';
+	$return_string .= '</div>';
+	
+	//Return:
+	return $return_string;
+}
+
+
+
+function echoFetchNode($parent_id,$node_id,$regular=1){
+	$CI =& get_instance();
+	//Load $node_id with parent $parent_id
+	$node = $CI->Us_model->fetch_full_node(($regular ? $parent_id : $node_id));
+	$match_key = 0; //We need to find this based on $node_id
+	foreach($node as $key=>$value){
+		if($value['node_id']==$node_id && $value['parent_id']==$parent_id){
+			$match_key = $key;
+			break;
+		}
+	}
+	if($match_key>0){
+		//Should always be greater than zero:
+		return echoNode($node,$match_key);
+	} else {
+		//TODO Sould never happen, put alarm system in place, so 
+		//     in case it does we get auto notified...
+		echo_html(0,'Refresh to see Node.');
+	}
+}
 
 
 function http_404($message){
@@ -277,6 +469,7 @@ function prep_metadata_for_edit($data){
 
 function data_validate_cleanup($type_id,$value){
 	//TODO: implement
+	/*
 	$CI =& get_instance();
 	$value = trim($value);
 	
@@ -330,4 +523,5 @@ function data_validate_cleanup($type_id,$value){
 		//Unknown?!
 		return null;
 	}
+	*/
 }

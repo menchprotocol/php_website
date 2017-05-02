@@ -8,12 +8,22 @@ class Api extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 		
-		if(!auth_admin(1)){
+		if(!auth(1)){
 			//Check for session for all functions here!
 			echo_html(0,'Invalid session! Login and try again...');
 			exit;
 		}
 	}
+	
+	function sliceYouTubePost(){
+		//print_r($_POST[]);
+		echo_html(1,'');
+	}
+	
+	
+	
+	
+	
 	
 	function create_node(){
 		
@@ -21,11 +31,11 @@ class Api extends CI_Controller {
 		if(intval($_REQUEST['grandpa_id'])<1 || intval($_REQUEST['parent_id'])<1 || strlen($_REQUEST['value'])<1 || strlen($_REQUEST['ui_rank'])<1){
 			return echo_html(0,'Invalid inputs.');
 		}
-		
+				
 		//We're good! Insert new link:
 		$user_data = $this->session->userdata('user');
 		$next_node_id = next_node_id();
-		$update_id = $this->Us_model->insert_link(array(
+		$new_link = array(
 			'us_id' => $user_data['node_id'],
 			'timestamp' => date("Y-m-d H:i:s"),
 			'status' => 1, //TODO: Consider "0" for non-admins
@@ -35,7 +45,8 @@ class Api extends CI_Controller {
 			'value' => trim($_REQUEST['value']),
 			'ui_rank' => intval($_REQUEST['ui_rank']),
 			'action_type' => 1, //For adding
-		));
+		);
+		$update_id = $this->Us_model->insert_link($new_link);
 		
 		if(!$update_id){
 			//Ooops, some unknown error:
@@ -43,47 +54,51 @@ class Api extends CI_Controller {
 		}
 		
 		
+		//Update Algolia Search index
+		$this->add_algolia_obj($next_node_id);
+		
 		
 		//Return results as a new line:
-		$child_link = $this->Us_model->fetch_node($next_node_id);
-		echo print_child( $child_link[0] , array(
-			'node_id' => intval($_REQUEST['parent_id']),
-			'grandpa_id' => intval($_REQUEST['grandpa_id']),
-		) , $user_data);
-		
-		
-		//TODO: Update Algolia Search index
-		$this->add_algolia_obj($next_node_id);
+		//Return results as a new line:
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'message' => echoFetchNode($new_link['parent_id'],$new_link['node_id']),
+			'node' => $this->Us_model->fetch_full_node(intval($_REQUEST['parent_id'])),
+		));
 	}
 	
 	
 	function link_node(){
 		
 		//Make sure all inputs are find:
-		if(intval($_REQUEST['grandpa_id'])<1 || intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['child_node_id'])<1 || strlen($_REQUEST['ui_rank'])<1){
+		if(intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['child_node_id'])<1 || strlen($_REQUEST['ui_rank'])<1){
 			return echo_html(0,'Invalid inputs.');
 		}
 		
 		//We're good! Insert new link:
+		$pnode = $this->Us_model->fetch_node(intval($_REQUEST['parent_id']),'fetch_top_plain');
 		$has_value = (strlen(trim($_REQUEST['value']))>0);
 		$user_data = $this->session->userdata('user');
 		$next_node_id = next_node_id();
-		$update_id = $this->Us_model->insert_link(array(
+		$new_link = array(
 			'us_id' => $user_data['node_id'],
 			'timestamp' => date("Y-m-d H:i:s"),
 			'status' => ( $has_value ? 2 : 3), //TODO: Consider "0" for non-admins
 			'node_id' => intval($_REQUEST['child_node_id']),
-			'grandpa_id' => intval($_REQUEST['grandpa_id']),
+			'grandpa_id' => $pnode['grandpa_id'],
 			'parent_id' =>  intval($_REQUEST['parent_id']),
 			'value' => ( $has_value ? trim($_REQUEST['value']) : null),
 			'ui_rank' => intval($_REQUEST['ui_rank']),
 			'action_type' => 4, //For linking
-		));
+		);
+		$update_id = $this->Us_model->insert_link($new_link);
+		
 		
 		if(!$update_id){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while linking nodes.');
 		}
+		
 		
 		//Do we need to update search index?
 		if($has_value){
@@ -92,11 +107,11 @@ class Api extends CI_Controller {
 		}
 		
 		//Return results as a new line:
-		$child_link = $this->Us_model->fetch_node(intval($_REQUEST['child_node_id']));
-		echo print_child( $child_link[0] , array(
-				'node_id' => intval($_REQUEST['parent_id']),
-				'grandpa_id' => intval($_REQUEST['grandpa_id']),
-		) , $user_data);
+		header('Content-Type: application/json');
+		echo json_encode(array(
+			'message' => echoFetchNode($new_link['parent_id'],$new_link['node_id'],intval($_REQUEST['normal_parenting'])),
+			'node' => $this->Us_model->fetch_full_node(intval($_REQUEST['parent_id'])),
+		));
 	}
 	
 	
@@ -214,13 +229,12 @@ class Api extends CI_Controller {
 			'status' => -1, //-1 is for updated items.
 		));
 		
-		
 		if(!$affected_rows){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while removing old data.');
 		} else {
 			//All good!
-			echo_html(1,'Saved!');
+			echo_html(1,'');
 		}
 	}
 	
@@ -288,7 +302,7 @@ class Api extends CI_Controller {
 			}
 		}
 		
-		echo_html(1,'Saved!');
+		echo_html(1,'');
 	}
 	
 	function add_algolia_obj($node_id){
@@ -301,19 +315,27 @@ class Api extends CI_Controller {
 	
 	function generate_algolia_obj($node_id){
 		if(!is_production()){ return false; }
+		
 		//Fetch node:
 		$node = $this->Us_model->fetch_node($node_id);
+		//Grandpa Signs:
+		$parents = parents(); //Everything at level 1
+		
 		//CLeanup and prep for search indexing:
 		foreach($node as $i=>$link){
 			if($i==0){
 				//This is the primary link!
+				//Search for grandpas_child_id, which is the node One level below the Grandpa:
+				$grandpas_child_id = $this->Us_model->fetch_grandpas_child($link['node_id']);
 				//Lets append some core info:
 				$node_search_object = array(
-						'node_id' => $link['node_id'],
-						'grandpa_id' => $link['grandpa_id'],
-						'parent_id' => $link['parent_id'],
-						'value' => $link['value'],
-						'links_blob' => '',
+					'node_id' => $link['node_id'],
+					'grandpa_id' => $link['grandpa_id'],
+					'grandpa_sign' => $parents[$link['grandpa_id']]['sign'],
+					'grandpas_child_id' => $grandpas_child_id,
+					'parent_id' => $link['parent_id'],
+					'value' => $link['value'],
+					'links_blob' => '',
 				);
 			} elseif(strlen($link['value'])>0){
 				//This is a secondary link with a value attached to it
@@ -327,7 +349,10 @@ class Api extends CI_Controller {
 	//Run this to completely update the "nodes" index
 	function update_algolia(){
 		
-		if(!is_production()){ return false; }
+		if(!is_production()){ 
+			echo 'ERROR: Cannot update cache on local.';
+			return false;
+		}
 		
 		//Buildup this array to save to search index
 		$return = array();
@@ -347,6 +372,8 @@ class Api extends CI_Controller {
 		$index = load_algolia();
 		$index->clearIndex();
 		$index->addObjects($obj);
+		
+		echo 'SUCCESS: Search cache updated. Refresh the page and search on...';
 	}
 	
 }
