@@ -449,9 +449,11 @@ function delete_link_confirmed(key,id,type){
 		node_id:parseInt(node[0]['node_id']),
 		parent_id: parseInt(( type==-3 ? $( '#link'+id+' #setdelparentcontainer' ).attr('node-id') : node[0]['parent_id'] )),
 		type:type,
-		node_name:node[0]['title'],
+		node_name:node[0]['sign']+node[0]['value'],
 		child_count:child_count,
 	};
+	
+	console.log(input_data);
 		
 	//Show processing:
 	$('#link'+id).html('<span class="saving"><img src="/img/loader.gif" /> Deleting...</span>');
@@ -635,6 +637,8 @@ function link_node(child_node_id,new_name){
 			
 			//Expand current node:
 			window.node = data.node;
+			console.log('lets see');
+			console.log(window.node);
 	    });
 	});
 }

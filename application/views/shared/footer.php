@@ -6,7 +6,7 @@ $user_data = $this->session->userdata('user');
 	
 	<div class="container nonesearch">
 		<footer class="outsider">
-	        <p><?= ( $user_data['is_mod'] ? '<a href="/api/update_algolia">Update Search Cache</a>' : 'We love welcoming new contributors to <a href="/join">our community</a>.') ?></p>
+	        <p><?= ( auth_admin(1)? '<a href="/api/update_algolia">Update Search Cache</a>' : 'We love welcoming new contributors to <a href="/join">our community</a>.') ?></p>
 	        <p><a href="https://github.com/USfoundation/us-indexer/commits/develop"><?= version_salt() ?></a> Built with &#10084; in Vancouver.</p>
 		</footer>
 	</div>

@@ -15,10 +15,7 @@ class Api extends CI_Controller {
 		}
 	}
 	
-	function sliceYouTubePost(){
-		//print_r($_POST[]);
-		echo_html(1,'');
-	}
+	
 	
 	
 	
@@ -28,34 +25,27 @@ class Api extends CI_Controller {
 	function create_node(){
 		
 		//Make sure all inputs are find:
-		if(intval($_REQUEST['grandpa_id'])<1 || intval($_REQUEST['parent_id'])<1 || strlen($_REQUEST['value'])<1 || strlen($_REQUEST['ui_rank'])<1){
+		if(intval($_REQUEST['parent_id'])<1 || strlen($_REQUEST['value'])<1 || strlen($_REQUEST['ui_rank'])<1){
 			return echo_html(0,'Invalid inputs.');
 		}
 				
 		//We're good! Insert new link:
-		$user_data = $this->session->userdata('user');
-		$next_node_id = next_node_id();
-		$new_link = array(
-			'us_id' => $user_data['node_id'],
-			'timestamp' => date("Y-m-d H:i:s"),
-			'status' => 1, //TODO: Consider "0" for non-admins
-			'node_id' => $next_node_id,
-			'grandpa_id' => intval($_REQUEST['grandpa_id']),
-			'parent_id' =>  intval($_REQUEST['parent_id']),
-			'value' => trim($_REQUEST['value']),
-			'ui_rank' => intval($_REQUEST['ui_rank']),
-			'action_type' => 1, //For adding
-		);
-		$update_id = $this->Us_model->insert_link($new_link);
+		$new_link = $this->Us_model->insert_link(array(
+				'grandpa_id' => intval($_REQUEST['grandpa_id']),
+				'parent_id' =>  intval($_REQUEST['parent_id']),
+				'value' => trim($_REQUEST['value']),
+				'ui_rank' => intval($_REQUEST['ui_rank']),
+				'action_type' => 1, //For adding
+		));
 		
-		if(!$update_id){
+		if(!$new_link){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while adding node.');
 		}
 		
 		
 		//Update Algolia Search index
-		$this->add_algolia_obj($next_node_id);
+		$this->add_algolia_obj($new_link['node_id']);
 		
 		
 		//Return results as a new line:
@@ -63,7 +53,7 @@ class Api extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array(
 			'message' => echoFetchNode($new_link['parent_id'],$new_link['node_id']),
-			'node' => $this->Us_model->fetch_full_node(intval($_REQUEST['parent_id'])),
+			'node' => $this->Us_model->fetch_full_node($new_link['parent_id']),
 		));
 	}
 	
@@ -76,25 +66,20 @@ class Api extends CI_Controller {
 		}
 		
 		//We're good! Insert new link:
-		$pnode = $this->Us_model->fetch_node(intval($_REQUEST['parent_id']),'fetch_top_plain');
 		$has_value = (strlen(trim($_REQUEST['value']))>0);
 		$user_data = $this->session->userdata('user');
-		$next_node_id = next_node_id();
-		$new_link = array(
-			'us_id' => $user_data['node_id'],
-			'timestamp' => date("Y-m-d H:i:s"),
-			'status' => ( $has_value ? 2 : 3), //TODO: Consider "0" for non-admins
-			'node_id' => intval($_REQUEST['child_node_id']),
-			'grandpa_id' => $pnode['grandpa_id'],
-			'parent_id' =>  intval($_REQUEST['parent_id']),
-			'value' => ( $has_value ? trim($_REQUEST['value']) : null),
-			'ui_rank' => intval($_REQUEST['ui_rank']),
-			'action_type' => 4, //For linking
-		);
-		$update_id = $this->Us_model->insert_link($new_link);
+		$new_link = $this->Us_model->insert_link(array(
+				'us_id' => $user_data['node_id'],
+				'status' => ( auth_admin(1) ? ( $has_value ? 2 : 3) : 0),
+				'node_id' => intval($_REQUEST['child_node_id']),
+				'parent_id' =>  intval($_REQUEST['parent_id']),
+				'value' => ( $has_value ? trim($_REQUEST['value']) : null),
+				'ui_rank' => intval($_REQUEST['ui_rank']),
+				'action_type' => 4, //For linking
+		));
 		
 		
-		if(!$update_id){
+		if(!$new_link){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while linking nodes.');
 		}
@@ -110,7 +95,7 @@ class Api extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array(
 			'message' => echoFetchNode($new_link['parent_id'],$new_link['node_id'],intval($_REQUEST['normal_parenting'])),
-			'node' => $this->Us_model->fetch_full_node(intval($_REQUEST['parent_id'])),
+			'node' => $this->Us_model->fetch_full_node( ( intval($_REQUEST['normal_parenting']) ? $new_link['parent_id'] : $new_link['node_id']) ),
 		));
 	}
 	
@@ -188,7 +173,6 @@ class Api extends CI_Controller {
 		
 		//We're good! Insert new link:
 		$user_data = $this->session->userdata('user');
-		$timestamp = date("Y-m-d H:i:s"); //Make sure all action in this batch have the same time
 		
 		if($p_update){
 			//Fetch parent details:
@@ -201,21 +185,19 @@ class Api extends CI_Controller {
 		}
 		
 		//Valid, insert new row:
-		$update_id = $this->Us_model->insert_link(array(
+		$new_link = $this->Us_model->insert_link(array(
 			'us_id' => $user_data['node_id'],
-			'timestamp' => $timestamp,
-			'status' => ( intval($_REQUEST['key']) ? ( strlen($_REQUEST['new_value'])>0 ? 2 : 3 ) : 1 ), //TODO: Consider "0" for non-admins
+			'status' => ( $user_data['node_id'] ? ( intval($_REQUEST['key']) ? ( strlen($_REQUEST['new_value'])>0 ? 2 : 3 ) : 1 ) : 0 ),
 			'node_id' => $link['node_id'],
 			'grandpa_id' => ( $p_update ? $parent_node['grandpa_id'] : $link['grandpa_id']),
 			'parent_id' =>  ( $p_update ? $parent_node['node_id'] : $link['parent_id']),
 			'value' => ( strlen($_REQUEST['new_value'])>0 ? $_REQUEST['new_value'] : null),
 			'update_id' => $link['id'],
 			'ui_rank' => $link['ui_rank'],
-			'correlation' => $link['correlation'],
 			'action_type' => 2, //For updating
 		));
 		
-		if(!$update_id){
+		if(!$new_link){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while saving changes.');
 		}
@@ -225,7 +207,7 @@ class Api extends CI_Controller {
 		
 		//Then remove old one:
 		$affected_rows = $this->Us_model->update_link($link['id'], array(
-			'update_id' => $update_id,
+			'update_id' => $new_link['id'],
 			'status' => -1, //-1 is for updated items.
 		));
 		
@@ -247,8 +229,6 @@ class Api extends CI_Controller {
 		
 		//Awesome Sauce! lets move-on...
 		//Fetch child links to update:
-		$user_data = $this->session->userdata('user');
-		$timestamp = date("Y-m-d H:i:s"); //Make sure all action in this batch have the same time
 		$child_links = $this->Us_model->fetch_node(intval($_REQUEST['node_id']), 'fetch_children');
 		
 		//Inverse key
@@ -266,11 +246,8 @@ class Api extends CI_Controller {
 				return echo_html(0,'Unknown sort index.');
 			}
 			
-			
 			//Valid, insert new row:
-			$update_id = $this->Us_model->insert_link(array(
-				'us_id' => $user_data['node_id'],
-				'timestamp' => $timestamp,
+			$new_link = $this->Us_model->insert_link(array(
 				'status' => $link['status'],
 				'node_id' => $link['node_id'],
 				'grandpa_id' => $link['grandpa_id'],
@@ -278,18 +255,17 @@ class Api extends CI_Controller {
 				'value' => $link['value'],
 				'update_id' => $link['id'],
 				'ui_rank' => $new_sort_index[$link['node_id']],
-				'correlation' => $link['correlation'],
 				'action_type' => 3, //For sorting
 			));
 			
-			if(!$update_id){
+			if(!$new_link){
 				//Ooops, some unknown error:
 				return echo_html(0,'Unknown Error.');
 			}
 			
 			//Then remove old one:
 			$affected_rows = $this->Us_model->update_link($link['id'], array(
-				'update_id' => $update_id,
+				'update_id' => $new_link['id'],
 				'status' => -1, //-1 is for updated items.
 			));
 			

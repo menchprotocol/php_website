@@ -10,19 +10,125 @@ class Openapi extends CI_Controller {
 	}
 	
 	
+
+	
+	
+	function indexYouTubeVideos(){
+		
+		die('inactive for now...');
+		$parent_id = 56;
+		$videos = explode("\n","https://www.youtube.com/watch?v=-HufDVSkgrI
+https://www.youtube.com/watch?v=-HufDVSkgrI");
+		
+		//Loadup YouTube helper:
+		$this->load->helper('node/65');
+		$result = array();
+		foreach($videos as $url){
+			//This does all the heavy liftin:
+			array_push($result,add_youtube_video($url,0,0,$parent_id));
+		}
+		
+		print_r($result);
+		
+	}
+	
+	
+	
+	function sliceYouTubePost(){
+		
+		$this->load->helper('node/65');
+		
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
+		
+		//Search through the people:
+		/*
+		$_POST['people_string'] = 'Elon Musk, Kevin Spacey';
+		$public_figures = explode(',' , $_POST['people_string']);
+		foreach($public_figures as $fullName){
+			//Search among public figures /33
+			$current = $this->Us_model->search_node($fullName, 33 , array('compare_lowercase'=>1));
+			if(!isset($current[0]['node_id'])){
+				//Lets index this person:
+				
+			}
+		}
+		*/
+		
+		//See if we need to create a new #hashtag:
+		/*
+		 * 
+		 * var params = "youtube_id="+input_data['youtube_id']
+		+"&start_time="+input_data['start_time']
+		+"&end_time="+input_data['end_time']
+		+"&selected_id="+input_data['selected_id']
+		+"&new_node_text="+input_data['new_node_text']
+		+"&description="+input_data['description'];
+		 * 
+		 * */
+		
+		if(intval($_POST['selected_id'])>0){
+			//Insert the node into the pending bucket:
+			$child_hashtag = intval($_POST['selected_id']);
+		} elseif(intval($_POST['selected_id'])<1 && strlen($_POST['new_node_text'])>0){
+			//Insert the node into the pending bucket:
+			$new_hashtag = $this->Us_model->insert_link(array(
+					'status' => 1, //TODO Update
+					'grandpa_id' => 3, //Always #Hashtag
+					'parent_id' => 298, //Newly added bucket
+					'value' => trim($_POST['new_node_text']),
+					'ui_rank' => 999, //Place last on the list
+					'action_type' => 1, //For adding
+			));
+			if(!$new_hashtag){
+				echo json_encode($new_hashtag);
+				return false;
+			} else {
+				$child_hashtag = $new_hashtag['node_id'];
+			}
+		} else {
+			$child_hashtag = 0;
+		}
+		
+		
+		$result = add_youtube_video($_POST['youtube_id'],$_POST['start_time'],$_POST['end_time'],$child_hashtag,$_POST['description']);
+		
+		echo_html(1,'Added Successfully');
+	}
+	
+	
 	function bcall(){
-		echo '<script> chrome.runtime.sendMessage("mgdoadincellakcmdpobfleifadheffk", { status: "logged in" }); </script>';
+		//echo '<script> chrome.runtime.sendMessage("mgdoadincellakcmdpobfleifadheffk", { status: "logged in" }); </script>';
 	}
 	
 	function fetchUserSession(){
-		header("Access-Control-Allow-Origin: *");		
+		
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
+		$ses = $this->session->all_userdata();
+		if(count($ses)>1){
+			echo json_encode($ses);
+		} else {
+			$this->session->set_userdata(array(
+				'hello' => 1,
+					'hi' => 2,
+					'hi' => '333',
+			));
+			$ses = $this->session->all_userdata();
+			echo json_encode($ses);
+			echo json_encode($_POST);
+		}
+		
+		
+		/*
+		header("Access-Control-Allow-Origin: *");
 		if(auth(1)){
 			$user_data = $this->session->userdata('user');
 			header('Content-Type: application/json');
 			echo json_encode($user_data);
 		} else {
 			echo 0;
-		}
+		}*/
 	}
 	
 	function search2steps($parent_start,$parent_end,$search_value){

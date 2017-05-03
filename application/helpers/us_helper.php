@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.49'.( is_production() ? '' : '.'.substr(time(),4) );
+	return 'v0.50'.( is_production() ? '' : '.'.substr(time(),4) );
 }
 
 function parents(){
@@ -227,8 +227,8 @@ function auth_admin($donot_redirect=false){
 	$node_id = $CI->uri->segment(1);
 	
 	if($donot_redirect){
-		return $user_data['is_mod'];
-	} elseif(!$user_data['is_mod']){
+		return (isset($user_data['is_mod']) && $user_data['is_mod']);
+	} elseif(!isset($user_data['is_mod']) || !$user_data['is_mod']){
 		redirect_message('/login'.( intval($node_id)>0 ? '?from='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login as moderator to access this page.</div>');
 	}
 }
@@ -278,7 +278,7 @@ function echoNode($node,$key){
 	//Start the display:
 	$return_string .= '<div class="list-group-item  '.( $key==0 ? 'is_top' : 'node_details child-node').' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].'" id="link'.$node[$key]['id'].'" data-link-index="'.$key.'" edit-mode="0" new-parent-id="0" data-link-id="'.$node[$key]['id'].'" node-id="'.$node[$key]['node_id'].'">';
 	
-	$return_string .= '<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.( $href ? '<a href="'.$href.'"><span class="badge">'.$direct_anchor.'</span></a>' : '<span class="badge grey-bg">'.$direct_anchor.'</span>').'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="parentLink">'.$anchor.( $key>0 ? '' : ' <span class="glyphicon glyphicon-bookmark grey hastt" aria-hidden="true" title="The primary node" data-toggle="tooltip"></span>').' <span class="sortconf"></span></a></h4>';
+	$return_string .= '<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.( $href ? '<a href="'.$href.'"><span class="badge">'.$direct_anchor.'</span></a>' : '<span class="badge grey-bg">'.$direct_anchor.'</span>').'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="parentLink">'.$anchor.( $key>0 ? '' : ' <span class="glyphicon glyphicon-bookmark grey hastt" aria-hidden="true" title="The primary node" data-toggle="tooltip"></span>').( $node[$key]['status']==0 ? ' <span style="color:#FF0000;"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Pending</span>' : '' ).' <span class="sortconf"></span></a></h4>';
 	
 	$return_string .= '<div id="linkval'.$node[$key]['id'].'" class="link-details value '.( $key==0 ? 'is_top' : '').'">';
 	$return_string .= '<'.( $key==0 ? 'h1' : 'p').' class="list-group-item-text node_h1 '.( $key==0 ? 'is_top' : '').'">';
@@ -322,6 +322,7 @@ function echoNode($node,$key){
 						$value_template = str_replace( $node[$key]['value'] , $node[$key]['value'].'?start='.$start_time.'&end='.$end_time , $value_template );
 					}
 				}
+				
 			} elseif($p['parent_id']==237){
 				//This is a YouTube embed, lets see if we can find start/end times.
 				//This feels like a super-hack! We'll figure out how to make it work...
@@ -381,7 +382,7 @@ function echoNode($node,$key){
 	$return_string .= '<span title="'.substr($node[$key]['timestamp'],0,19).' UTC" data-toggle="tooltip"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> '.format_timestamp($node[$key]['timestamp']).'</span>';
 	$return_string .= '<span><a href="/'.$node[$key]['us_id'].'">@'.$node[$key]['us_name'].'</a></span>';
 	
-	if($user_data['is_mod']){
+	if(auth_admin(1)){
 		$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></span>';
 	}
 	$return_string .= '</div></div>';

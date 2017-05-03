@@ -8,10 +8,87 @@ class Us_model extends CI_Model {
 		$this->success_deletes = 0; //Used for recursive_node_delete() count tracker.
 	}
 	
+	function insert_batch_links($batch_input){
+		
+		//Buildup for output:
+		$batch_output = array();
+		
+		//Assign new one for this batch in case needed:
+		$next_node = next_node_id();
+		
+		foreach($batch_input as $link_data){
+			if(!isset($link_data['ui_rank'])){
+				//A feature of batch insert in case needed:
+				$link_data['ui_rank'] = count($batch_output)+1;
+			}
+			if(!isset($link_data['node_id'])){
+				//Batch assumption is that node IDs are grouped
+				$link_data['node_id'] = $next_node;
+			}
+			if(!isset($link_data['us_id'])){
+				//Assign to Guest for now
+				$user_data = $this->session->userdata('user');
+				if(isset($user_data['node_id'])){
+					$link_data['us_id'] = $user_data['node_id'];
+				} else {
+					//TODO remove and enforce session on all?
+					$link_data['us_id'] = 314; //Guest
+				}				
+			}
+			array_push( $batch_output , $this->insert_link($link_data) );
+		}
+		
+		return $batch_output;
+	}
 	
 	function insert_link($link_data){
+		
+		if(!isset($link_data['action_type']) || !isset($link_data['parent_id'])){
+			//These are required
+			return false;
+		}
+		if(!isset($link_data['us_id'])){
+			$user_data = $this->session->userdata('user');
+			if(isset($user_data['node_id'])){
+				$link_data['us_id'] = $user_data['node_id'];
+			} else {
+				//User required for each entry
+				//TODO Remove later:
+				$link_data['us_id'] = 314; //Guest
+				//return false;
+			}
+		}
+		
+		//Now some improvements to the input in case missing:
+		if(!isset($link_data['ui_rank'])){
+			$link_data['ui_rank'] = 1; //We assume the top
+		}
+		if(!isset($link_data['status'])){
+			$link_data['status'] = ( $link_data['ui_rank']==1 ? 1 : 2);
+		}
+		if(!isset($link_data['grandpa_id'])){
+			$top_parent = $this->fetch_node(intval($link_data['parent_id']),'fetch_top_plain');
+			$link_data['grandpa_id'] = $top_parent['grandpa_id'];
+		}
+		if(!isset($link_data['timestamp'])){
+			$link_data['timestamp'] = date("Y-m-d H:i:s");
+		}
+		if(!isset($link_data['node_id'])){
+			$link_data['node_id'] = next_node_id(); //Assign new one
+		}
+		if(!isset($link_data['value'])){
+			$link_data['value'] = '';
+		}
+		
+		
+		//Lets now add:		
 		$this->db->insert('v3_data', $link_data);
-		return $this->db->insert_id();
+		
+		//Fetch inserted id:
+		$link_data['id'] = $this->db->insert_id();
+		
+		//Boya!
+		return $link_data;
 	}
 	
 	function update_link($link_id,$link_data){
@@ -24,13 +101,10 @@ class Us_model extends CI_Model {
 		//This would delete a single link:
 		
 		//Define key variables:
-		$user_data = $this->session->userdata('user');
 		$link = $this->fetch_link($link_id);
 		
 		//Insert new row to log delete history:
-		$update_id = $this->Us_model->insert_link(array(
-			'us_id' => $user_data['node_id'],
-			'timestamp' => date("Y-m-d H:i:s"),
+		$new_link = $this->Us_model->insert_link(array(
 			'status' => -2, //Deleted
 			'node_id' => $link['node_id'],
 			'grandpa_id' => $link['grandpa_id'],
@@ -38,18 +112,17 @@ class Us_model extends CI_Model {
 			'value' => $link['value'],
 			'update_id' => $link_id, //This would be deleted as well
 			'ui_rank' => $link['ui_rank'],
-			'correlation' => $link['correlation'],
 			'action_type' => $action_type,
 		));
 		
-		if(!$update_id){
+		if(!$new_link){
 			//Ooops, some unknown error:
 			return false;
 		}
 		
 		//Also delete main link:
 		$affected_rows = $this->Us_model->update_link($link_id, array(
-			'update_id' => $update_id,
+			'update_id' => $new_link['id'],
 			'status' => -2,
 		));
 		
@@ -70,16 +143,13 @@ class Us_model extends CI_Model {
 	function move_child_nodes($node_id,$new_parent_id,$action_type){
 		
 		//Move all child nodes to a new parent:
-		$user_data  = $this->session->userdata('user');
 		$child_data = $this->fetch_node($node_id, 'fetch_children');
 		$new_parent = $this->fetch_node($new_parent_id, 'fetch_top_plain');
 		
 		$success_moves = 0;
 		foreach ($child_data as $link){
 			//Insert new row:
-			$update_id = $this->Us_model->insert_link(array(
-					'us_id' => $user_data['node_id'],
-					'timestamp' => date("Y-m-d H:i:s"),
+			$new_link = $this->Us_model->insert_link(array(
 					'status' => $link['status'],
 					'node_id' => $link['node_id'],
 					'grandpa_id' => $new_parent['grandpa_id'],
@@ -87,14 +157,14 @@ class Us_model extends CI_Model {
 					'value' => $link['value'],
 					'update_id' => $link['id'], //This would be deleted as well
 					'ui_rank' => 999, //Position this at the end of the children of new parent
-					'correlation' => $link['correlation'],
 					'action_type' => $action_type,
 			));
 			
-			if($update_id){
+			if(isset($new_link['id'])){
+				
 				//Also update original link:
 				$affected_rows = $this->Us_model->update_link($link['id'], array(
-						'update_id' => $update_id,
+						'update_id' => $new_link['id'],
 						'status' => -2, //Currently moving can happen only through deletion. TODO: Enable moving as a standalone function.
 				));
 				
@@ -109,7 +179,6 @@ class Us_model extends CI_Model {
 	function recursive_node_delete($node_id,$action_type){
 		
 		//NUCLEAR! Find all children/grandchildren and delete!
-		$user_data  = $this->session->userdata('user');
 		$child_data = $this->fetch_node($node_id, 'fetch_children');
 		
 		foreach ($child_data as $link){
@@ -121,9 +190,7 @@ class Us_model extends CI_Model {
 			}
 			
 			//Main delete:
-			$update_id = $this->Us_model->insert_link(array(
-				'us_id' => $user_data['node_id'],
-				'timestamp' => date("Y-m-d H:i:s"),
+			$new_link = $this->Us_model->insert_link(array(
 				'status' => -2, //Deleted
 				'node_id' => $link['node_id'],
 				'grandpa_id' => $link['grandpa_id'],
@@ -131,14 +198,13 @@ class Us_model extends CI_Model {
 				'value' => $link['value'],
 				'update_id' => $link['id'],
 				'ui_rank' => $link['ui_rank'],
-				'correlation' => $link['correlation'],
 				'action_type' => $action_type,
 			));
 			
-			if($update_id){
+			if(isset($new_link['id'])){
 				//Also update original link:
 				$affected_rows = $this->Us_model->update_link($link['id'], array(
-					'update_id' => $update_id,
+					'update_id' => $new_link['id'],
 					'status' => -2, //Deleted!
 				));
 				
@@ -163,14 +229,14 @@ class Us_model extends CI_Model {
 		$this->db->select('COUNT(id) as link_count');
 		$this->db->from('v3_data d');
 		$this->db->where('(d.node_id='.$node_id.' OR d.parent_id='.$node_id.')');
-		$this->db->where('d.status >' , 0);
+		$this->db->where('d.status >=' , 0);
 		$this->db->where('d.ui_rank >' , 0);
 		$q = $this->db->get();
 		$stats = $q->row_array();
 		return $stats['link_count'];
 	}
 	
-	function search_node($value_string, $parent_id=null){
+	function search_node($value_string, $parent_id=null, $setting=array()){
 		//Return the node_id of a link that matches the value and parent ID
 		//TODO Maybe move to Agolia search engine for faster search.
 		//Fetch all node links
@@ -178,12 +244,27 @@ class Us_model extends CI_Model {
 		$this->db->from('v3_data d');
 		if($parent_id){
 			$this->db->where('d.parent_id' , $parent_id);
-		}		
-		$this->db->where('d.value', $value_string);
+		}
+		
+		if(isset($setting['compare_lowercase'])){
+			$this->db->where('LOWER(d.value)', strtolower($value_string));
+		} else {
+			$this->db->where('d.value', $value_string);
+		}
+		
 		$this->db->where('d.status >' , 0);
 		$this->db->order_by('d.status' , 'ASC'); //status=1 always comes before status=2
 		$q = $this->db->get();
-		return $q->result_array();
+		$res = $q->result_array();
+		 
+		//This can be expanded to append more things like child parent, etc...
+		if(isset($setting['append_node_top'])){
+			foreach($res as $key=>$value){
+				$res[$key]['node'] = $this->fetch_node($value['node_id'], 'fetch_top_plain');
+			}
+		}
+		
+		return $res;
 	}
 	
 	
@@ -218,7 +299,20 @@ class Us_model extends CI_Model {
 		//The new function that would use the old one to fetch the complete node:
 		$parent = $this->Us_model->fetch_node($node_id, 'fetch_parents');
 		$child 	= $this->Us_model->fetch_node($node_id, 'fetch_children');
-		return array_merge($parent,$child);
+		$merge = array_merge($parent,$child);
+		
+		if($merge[0]['status']==0){
+			//TODO This is a hack, need a better solution:
+			foreach($merge as $key=>$value){
+				if($value['status']==1){
+					//This is the main guy:
+					$merge[$key] = $merge[0];
+					$merge[0] = $value;
+					break;
+				}
+			}
+		}
+		return $merge;
 	}
 	
 	function fetch_grandpas_child($node_id){
@@ -248,7 +342,7 @@ class Us_model extends CI_Model {
 		//Fetch all node links
 		$this->db->select('*');
 		$this->db->from('v3_data d');
-		$this->db->where('d.status >' , 0);
+		$this->db->where('d.status >=' , 0); //Show status=0 differently as they're pending approval
 		
 		if($action=='fetch_parents' || $action=='fetch_top_plain'){
 			

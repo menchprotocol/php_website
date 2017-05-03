@@ -1,18 +1,8 @@
 <?php
-
-/*
- * This helper would have node specific functions,
- * where the {value} is curated via any PHP function
- * before displayed to the user.
- * 
- * This makes powerful integrations possible, while
- * managing micro snippets of code.
- * 
- * */
-
+//Custom functions for Node 25: http://us.foundation/25
 
 function formatPhoneNumber($phoneNumber) {
-	//http://us.foundation/25
+	
 	$phoneNumber = preg_replace('/[^0-9]/','',$phoneNumber);
 	
 	if(strlen($phoneNumber) > 10) {
@@ -38,10 +28,4 @@ function formatPhoneNumber($phoneNumber) {
 	}
 	
 	return $phoneNumber;
-}
-
-
-function formatBirthday($yyyymmdd){
-	//http://us.foundation/27
-	return 'Happy Birthday! '.$yyyymmdd;
 }

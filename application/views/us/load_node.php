@@ -59,7 +59,7 @@ echo '<div class="list-group">';
 		echo echoNode($node,$key);
 	}
 	//To add new node:
-	if($user_data['is_mod']){
+	if(auth_admin(1)){
 		//An input to create a new node or link to an existing node:
 		echo '<div class="list-group-item list_input">';
 		echo '<form id="addnodeform"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="New..."></form>';

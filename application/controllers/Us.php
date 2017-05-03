@@ -65,7 +65,10 @@ class Us extends CI_Controller {
 	function load_node($node_id){
 		
 		//Load custom node functions for possible processing:
-		$this->load->helper('node_helper');
+		//TODO automate the loading of these
+		$this->load->helper('node/25');
+		$this->load->helper('node/27');
+		
 		
 		//Build data sets for our views:
 		$data_set = array(
@@ -177,9 +180,8 @@ class Us extends CI_Controller {
 				//Log Login history
 				//TODO: Enable later. Disabled due to required UI adjustmens!
 				/*
-				$this->Us_model->insert_link(array(
+				$new_link = $this->Us_model->insert_link(array(
 					'us_id' => $matching_users[0]['node_id'],
-					'timestamp' => date("Y-m-d H:i:s"),
 					'status' => 2,
 					'node_id' => $matching_users[0]['node_id'],
 					'grandpa_id' => 43, //System
