@@ -31,6 +31,7 @@ class Api extends CI_Controller {
 				
 		//We're good! Insert new link:
 		$new_link = $this->Us_model->insert_link(array(
+				'status' => 1, //This is the top node as its being newly created.
 				'grandpa_id' => intval($_REQUEST['grandpa_id']),
 				'parent_id' =>  intval($_REQUEST['parent_id']),
 				'value' => trim($_REQUEST['value']),
