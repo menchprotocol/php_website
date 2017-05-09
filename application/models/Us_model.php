@@ -43,10 +43,20 @@ class Us_model extends CI_Model {
 	
 	function insert_link($link_data){
 		
+		
 		if(!isset($link_data['action_type']) || !isset($link_data['parent_id'])){
 			//These are required
 			return false;
 		}
+		
+		if(isset($link_data['update_id']) && intval($link_data['update_id'])>0){
+			//This is replacing an older link, lets find related data for that:
+			$current_link = $this->fetch_link(intval($link_data['update_id']));
+		} else {
+			$current_link = NULL;
+		}
+		
+		
 		if(!isset($link_data['us_id'])){
 			$user_data = $this->session->userdata('user');
 			if(isset($user_data['node_id'])){
@@ -59,12 +69,13 @@ class Us_model extends CI_Model {
 			}
 		}
 		
+		
 		//Now some improvements to the input in case missing:
 		if(!isset($link_data['ui_rank'])){
 			$link_data['ui_rank'] = 1; //We assume the top
 		}
 		if(!isset($link_data['status'])){
-			$link_data['status'] = ( $link_data['ui_rank']==1 ? 1 : 2);
+			$link_data['status'] = ( $current_link ? $current_link['status'] : 2 );
 		}
 		if(!isset($link_data['grandpa_id'])){
 			$top_parent = $this->fetch_node(intval($link_data['parent_id']),'fetch_top_plain');
