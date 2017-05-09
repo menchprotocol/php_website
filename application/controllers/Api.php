@@ -187,7 +187,7 @@ class Api extends CI_Controller {
 		//Valid, insert new row:
 		$new_link = $this->Us_model->insert_link(array(
 			'us_id' => $user_data['node_id'],
-			'status' => ( $user_data['node_id'] ? ( intval($_REQUEST['key']) ? ( strlen($_REQUEST['new_value'])>0 ? 2 : 3 ) : 1 ) : 0 ),
+			'status' => ( $user_data['is_mod'] ? ( intval($_REQUEST['key']) ? ( strlen($_REQUEST['new_value'])>0 ? $link['status'] : 3 ) : 1 ) : 0 ),
 			'node_id' => $link['node_id'],
 			'grandpa_id' => ( $p_update ? $parent_node['grandpa_id'] : $link['grandpa_id']),
 			'parent_id' =>  ( $p_update ? $parent_node['node_id'] : $link['parent_id']),
