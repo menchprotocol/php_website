@@ -317,7 +317,7 @@ class Api extends CI_Controller {
 			} elseif(strlen($link['value'])>0){
 				//This is a secondary link with a value attached to it
 				//Lets add this to the links blob
-				$node_search_object['links_blob'] .= $link['value'].' ';
+				$node_search_object['links_blob'] .= strip_tags($link['value']).' ';
 			}
 		}
 		return $node_search_object;
@@ -349,10 +349,18 @@ class Api extends CI_Controller {
 		$index->clearIndex();
 		$obj_add_message = $index->addObjects($obj);
 		
-		echo 'SUCCESS: Search cache updated. Refresh the page and search on...';
-		echo '$return: '; print_r($return);
-		echo '$obj_add_message: '; print_r($obj_add_message);
+		//Now update database with the objectIDs:
+		if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+			foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+				//Fetch top node, as that is all we need to update:
+				$link = $this->Us_model->fetch_node($return[$key]['node_id'], 'fetch_top_plain');
+				//Update link:
+				$update_status = $this->Us_model->update_link($link['id'],array('algolia_id'=>$algolia_id));
+			}
+		}
+		
+		echo 'SUCCESS: Search index updated for '.count($return).' nodes.';
+		//echo '$return: '; print_r($return);
+		//echo '$obj_add_message: '; print_r($obj_add_message);
 	}
-	
 }
-
