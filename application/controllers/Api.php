@@ -341,16 +341,17 @@ class Api extends CI_Controller {
 			array_push($return,$this->generate_algolia_obj($node_id));
 		}
 			
-		//print_r($return);exit;
 		$obj = json_decode(json_encode($return), FALSE);
 		//print_r($obj);
 		
 		//Include PHP library:
 		$index = load_algolia();
 		$index->clearIndex();
-		$index->addObjects($obj);
+		$obj_add_message = $index->addObjects($obj);
 		
 		echo 'SUCCESS: Search cache updated. Refresh the page and search on...';
+		echo '$return: '; print_r($return);
+		echo '$obj_add_message: '; print_r($obj_add_message);
 	}
 	
 }
