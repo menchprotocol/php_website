@@ -61,6 +61,8 @@ $route['collectiveai'] = "us/load_wiki/collectiveai";
 $route['patternnetwork'] = "us/load_wiki/patternnetwork";
 $route['join'] = "us/load_wiki/join";
 $route['login'] = "us/load_wiki/login";
+$route['kazbot'] = "us/load_wiki/kazbot";
+$route['terms'] = "us/load_wiki/terms";
 
 //Application logic:
 $route['(:num)'] = "us/load_node/$1";
