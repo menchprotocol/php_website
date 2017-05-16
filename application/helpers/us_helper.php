@@ -12,11 +12,113 @@ function version_salt(){
 	return 'v0.50'.( is_production() ? '' : '.'.substr(time(),4) );
 }
 
+
+
+function user_login($user_email,$user_pass){
+	
+	$CI =& get_instance();
+	
+	if(!isset($user_email) || !filter_var($user_email, FILTER_VALIDATE_EMAIL)){
+		//Invalid email:
+		return array(
+			'status' => 0,
+			'message' => 'Invalid email address.',
+		);
+	} elseif(!isset($user_pass) || strlen($user_pass)<2){
+		//Invalid password:
+		return array(
+			'status' => 0,
+			'message' => 'Invalid password.',
+		);
+	} else {
+		
+		//Fetch user nodes with this email:
+		//TODO We can wire this in Agolia for faster string search!
+		$matching_users = $CI->Us_model->search_node($user_email,24);
+		
+		if(count($matching_users)<1){
+			//We could not find this email linked to the email node
+			return array(
+				'status' => 0,
+				'message' => 'Email "'.$user_email.'" not found.',
+			);
+		}
+		
+		//Now fetch entire user node:
+		$user_node = $CI->Us_model->fetch_node($matching_users[0]['node_id']);
+				
+		if($user_node[0]['grandpa_id']!=1){
+			//We could not find this email linked to the email node
+			//This should technically never happen!
+			return array(
+				'status' => 0,
+				'message' => 'Email not associated to a valid user.',
+			);
+		}
+		
+		//Now lets see if this user has a login password and if it matches the entered password
+		$has_password = false;
+		foreach($user_node as $link){
+			if($link['parent_id']==44){
+				//TODO: We should prevent duplicate password relations to be created
+				//Yes they have a password link attached to the user node!
+				$has_password = true;
+				
+				//Does it match login form entry?
+				$matched_password = ($link['value']==sha1($user_pass));
+				
+				break;
+			}
+		}
+		
+		
+		if(!$has_password){
+			//We could not find this password linked to anyone!
+			return array(
+				'status' => 0,
+				'message' => 'A login password has not been assigned to your account.',
+			);
+		} elseif(!$matched_password){
+			//Invalid
+			return array(
+				'status' => 0,
+					'message' => 'Invalid password for "'.$user_email.'".',
+			);
+		} else {
+			
+			//Good to go!
+			//Assign some extra variables to return array:
+			$user_node[0]['timestamp'] = time();
+			
+			//Detect if this user is a moderator, IF they belong to Moderators node:
+			$user_node[0]['is_mod'] = ( $user_node[0]['parent_id']==18 ? 1 : 0 );
+			
+			//Log Login history
+			//TODO: Enable later. Disabled due to required UI adjustmens!
+			/*
+			 $new_link = $CI->Us_model->insert_link(array(
+			 'us_id' => $matching_users[0]['node_id'],
+			 'status' => 2,
+			 'node_id' => $matching_users[0]['node_id'],
+			 'grandpa_id' => 43, //System
+			 'parent_id' => 61, //The login history node
+			 ));
+			*/
+			
+			return array(
+				'status' => 1,
+				'message' => 'Successfully authenticated user.',
+				'link' => $user_node[0],
+			);
+		}
+	}
+}
+
 function parents(){
 	//A Javascript version of this function is in main.js
 	return array(
 		1  => array(
-			'name' => 'Us',
+			'name' => 'Entities',
 			'sign' => '@',
 			'node_id' => 1,
 		),
@@ -26,7 +128,7 @@ function parents(){
 			'node_id' => 2,
 		),
 		3  => array(
-			'name' => 'Goals',
+			'name' => 'Intents',
 			'sign' => '#',
 			'node_id' => 3,
 		),
@@ -90,7 +192,7 @@ function action_type_descriptions($action_type_id){
 	if($action_type_id==-4){
 		return array(
 				'name' => 'Nuclear',
-				'description' => 'Delete node and all child nodes.',
+				'description' => 'Delete node and all direct child nodes.',
 		);
 	} elseif($action_type_id==-3){
 		return array(
@@ -106,11 +208,6 @@ function action_type_descriptions($action_type_id){
 		return array(
 				'name' => 'Delete Link',
 				'description' => 'Delete node link.',
-		);
-	} elseif($action_type_id==0){
-		return array(
-			'name' => 'Pending',
-			'description' => 'Added, but pending moderation.',
 		);
 	} elseif($action_type_id==1){
 		return array(
@@ -278,10 +375,12 @@ function echoNode($node,$key){
 	//Start the display:
 	$return_string .= '<div class="list-group-item  '.( $key==0 ? 'is_top' : 'node_details child-node').' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].'" id="link'.$node[$key]['id'].'" data-link-index="'.$key.'" edit-mode="0" new-parent-id="0" data-link-id="'.$node[$key]['id'].'" node-id="'.$node[$key]['node_id'].'">';
 	
-	$return_string .= '<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.( $href ? '<a href="'.$href.'"><span class="badge">'.$direct_anchor.'</span></a>' : '<span class="badge grey-bg">'.$direct_anchor.'</span>').'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="parentLink">'.$anchor.( $key>0 ? '' : ' <span class="glyphicon glyphicon-bookmark grey hastt" aria-hidden="true" title="The primary node" data-toggle="tooltip"></span>').( $node[$key]['status']==0 ? ' <span style="color:#FF0000;"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Pending</span>' : '' ).' <span class="sortconf"></span></a></h4>';
+	$return_string .= '<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.( $href ? '<a href="'.$href.'"><span class="badge '.( !$is_parent? 'pink-bg' : '').'">'.$direct_anchor.'</span></a>' : '<span class="badge grey-bg">'.$direct_anchor.'</span>').'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="parentLink">'.$anchor.( $key>0 ? '' : ' <span class="glyphicon glyphicon-bookmark grey hastt" aria-hidden="true" title="The primary node" data-toggle="tooltip"></span>').( $node[$key]['status']==0 ? ' <span style="color:#FF0000;"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Pending</span>' : '' ).' <span class="sortconf"></span></a></h4>';
 	
 	$return_string .= '<div id="linkval'.$node[$key]['id'].'" class="link-details value '.( $key==0 ? 'is_top' : '').'">';
 	$return_string .= '<'.( $key==0 ? 'h1' : 'p').' class="list-group-item-text node_h1 '.( $key==0 ? 'is_top' : '').'">';
+	
+	
 	//Search for display logic:
 	$matched = 0;
 	$value_template = null;
@@ -366,10 +465,9 @@ function echoNode($node,$key){
 	}
 	
 	
-	//Did we find any template matches? If not, just display:
-	
+	//Did we find any template matches? If not, just display:W
 	if(!$matched){
-		$return_string .= $node[$key]['value'];
+		$return_string .= nl2br($node[$key]['value']);
 	} else {
 		$return_string .= $value_template;
 	}
