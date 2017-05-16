@@ -20,7 +20,6 @@ $function = $this->uri->segment(2);
     <link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-	
 	<link href="/css/jquery-ui.min.css" rel="stylesheet"><!-- Click to see what it includes -->
 	<link href="/css/main.css?v=<?= version_salt() ?>" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -35,7 +34,6 @@ $function = $this->uri->segment(2);
     <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="/js/jquery-ui.min.js"></script><!-- Click to see what it includes -->
-   
   </head>
   <body>
     
