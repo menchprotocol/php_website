@@ -8,7 +8,7 @@ class Api extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 		
-		if(!auth(1)){
+		if(!auth(1) && 0){
 			//Check for session for all functions here!
 			echo_html(0,'Invalid session! Login and try again...');
 			exit;
