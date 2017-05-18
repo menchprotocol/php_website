@@ -8,31 +8,30 @@ class Us_model extends CI_Model {
 		$this->success_deletes = 0; //Used for recursive_node_delete() count tracker.
 	}
 	
+	
+	function next_node_id(){
+		//Find the current largest node id and increments it by 1:
+		$largest_node_id = $this->Us_model->largest_node_id();
+		$largest_node_id++;
+		return $largest_node_id;
+	}
+	
 	function insert_batch_links($batch_input){
-		
 		//Buildup for output:
 		$batch_output = array();
-		
-		//Assign new one for this batch in case needed:
-		$next_node = next_node_id();
 		
 		foreach($batch_input as $link_data){
 			if(!isset($link_data['ui_rank'])){
 				//A feature of batch insert in case needed:
 				$link_data['ui_rank'] = count($batch_output)+1;
 			}
-			if(!isset($link_data['node_id'])){
-				//Batch assumption is that node IDs are grouped
-				$link_data['node_id'] = $next_node;
-			}
-			if(!isset($link_data['us_id'])){
+			if(!isset($link_data['us_id']) || intval($link_data['us_id'])<1){
 				//Assign to Guest for now
 				$user_data = $this->session->userdata('user');
 				if(isset($user_data['node_id'])){
 					$link_data['us_id'] = $user_data['node_id'];
 				} else {
-					//TODO remove and enforce session on all?
-					$link_data['us_id'] = 314; //Guest
+					return false;
 				}				
 			}
 			array_push( $batch_output , $this->insert_link($link_data) );
@@ -43,52 +42,86 @@ class Us_model extends CI_Model {
 	
 	function insert_link($link_data){
 		
+		$is_update = (isset($link_data['update_id']) && intval($link_data['update_id'])>0);
+		$parent_update = false;
 		
-		if(!isset($link_data['action_type']) || !isset($link_data['parent_id'])){
+		if($is_update){
+			//This is replacing an older link, lets find related data for that:
+			$link = $this->fetch_link(intval($link_data['update_id']));
+			
+			if(isset($link_data['parent_id'])){
+				$parent_update = intval($link_data['parent_id'])!=intval($link['parent_id']);
+			} else {
+				//We would only auto-fill parent for updating requests
+				$link_data['parent_id'] = $link['parent_id'];
+			}
+		}
+		
+		
+		if(isset($link_data['action_type'])){
+			$action_analysis = action_type_descriptions($link_data['action_type']);
+			if(!$action_analysis['valid']){
+				//This should NOT happen!
+				return false;
+			}
+		} elseif(!isset($link_data['action_type']) || !isset($link_data['parent_id'])){
 			//These are required
 			return false;
 		}
 		
-		if(isset($link_data['update_id']) && intval($link_data['update_id'])>0){
-			//This is replacing an older link, lets find related data for that:
-			$current_link = $this->fetch_link(intval($link_data['update_id']));
-		} else {
-			$current_link = NULL;
-		}
 		
-		
-		if(!isset($link_data['us_id'])){
+		if(!isset($link_data['us_id']) || intval($link_data['us_id'])<1){
+			//Fetch user session:
 			$user_data = $this->session->userdata('user');
 			if(isset($user_data['node_id'])){
 				$link_data['us_id'] = $user_data['node_id'];
 			} else {
-				//User required for each entry
-				//TODO Remove later:
-				$link_data['us_id'] = 314; //Guest
-				//return false;
+				//This should NOT happen!
+				return false;
 			}
 		}
 		
 		
 		//Now some improvements to the input in case missing:
 		if(!isset($link_data['ui_rank'])){
-			$link_data['ui_rank'] = 1; //We assume the top
+			$link_data['ui_rank'] = ( $is_update? $link['ui_rank'] : 1 ); //We assume the top of the child list
+		}
+		if(!isset($link_data['ui_parent_rank'])){
+			$link_data['ui_parent_rank'] = ( $is_update ? $link['ui_parent_rank'] : ( isset($link_data['node_id']) ? 2 : 1 ) );
 		}
 		if(!isset($link_data['status'])){
-			$link_data['status'] = ( $current_link ? $current_link['status'] : 2 );
+			//Solely based on the current user's privileges, for now all approved:
+			//TODO Once there is regular users whom need moderation, we need to insert them as 0
+			//TODO also keep in mind the GEM slicer conent which is being added without an active session
+			$link_data['status'] = 1;
+		} else {
+			$status_analysis = status_descriptions($link_data['status']);
+			if(!$status_analysis['valid']){
+				//This should NOT happen!
+				return false;
+			}
 		}
 		if(!isset($link_data['grandpa_id'])){
-			$top_parent = $this->fetch_node(intval($link_data['parent_id']),'fetch_top_plain');
-			$link_data['grandpa_id'] = $top_parent['grandpa_id'];
+			if($is_update && !$parent_update){
+				$link_data['grandpa_id'] = $link['grandpa_id'];
+			} else {
+				$top_parent = $this->fetch_node(intval($link_data['parent_id']),'fetch_top_plain');
+				$link_data['grandpa_id'] = $top_parent['grandpa_id'];
+			}
 		}
 		if(!isset($link_data['timestamp'])){
 			$link_data['timestamp'] = date("Y-m-d H:i:s");
 		}
 		if(!isset($link_data['node_id'])){
-			$link_data['node_id'] = next_node_id(); //Assign new one
+			$link_data['node_id'] = ( $is_update ? $link['node_id'] : $this->next_node_id() ); //Generate new one if not updating!
 		}
+		
+		$value_updated = ( $is_update && isset($link_data['value']) && !($link_data['value']==$link['value']) );
 		if(!isset($link_data['value'])){
-			$link_data['value'] = '';
+			$link_data['value'] = ( $is_update ? $link['value'] : '' );
+		}
+		if(!isset($link_data['algolia_id'])){
+			$link_data['algolia_id'] = ( $is_update ? intval($link['algolia_id']) : 0 );
 		}
 		
 		
@@ -97,6 +130,37 @@ class Us_model extends CI_Model {
 		
 		//Fetch inserted id:
 		$link_data['id'] = $this->db->insert_id();
+		
+		
+		//Algolia only works on Production due to Curl certificate requirements
+		if(is_production()){
+			
+			$return = array();
+			$index = load_algolia();
+			
+			if($link_data['action_type']==1){
+				
+				array_push($return , generate_algolia_obj($node_id));
+				$res = $index->addObjects(json_decode(json_encode($return), FALSE));
+				//Now update database with the objectIDs:
+				if(isset($res['objectIDs'][0]) && intval($res['objectIDs'][0])>0){
+					$link_data['algolia_id'] = $res['objectIDs'][0];
+					$this->Us_model->update_link($link_data['id'],array('algolia_id'=>$link_data['algolia_id']));
+				}
+				
+			} elseif($value_updated && $link_data['algolia_id']>0 && ($link_data['action_type']==2 || $link_data['action_type']==4)){
+				
+				//This is update or new link, lets update algolia index:
+				array_push($return , generate_algolia_obj($node_id,$link_data['algolia_id']));
+				$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+				
+			} elseif($link_data['action_type']<0 && $link_data['algolia_id']>0){
+				
+				//We're deleting:
+				$index->deleteObject($link_data['algolia_id']);
+				
+			}
+		}
 		
 		//Boya!
 		return $link_data;
@@ -109,21 +173,17 @@ class Us_model extends CI_Model {
 	}
 	
 	function delete_link($link_id,$action_type){
-		//This would delete a single link:
+		//This would delete a single link.
 		
 		//Define key variables:
 		$link = $this->fetch_link($link_id);
 		
 		//Insert new row to log delete history:
 		$new_link = $this->Us_model->insert_link(array(
-			'status' => -2, //Deleted
-			'node_id' => $link['node_id'],
-			'grandpa_id' => $link['grandpa_id'],
-			'parent_id' => $link['parent_id'],
-			'value' => $link['value'],
-			'update_id' => $link_id, //This would be deleted as well
-			'ui_rank' => $link['ui_rank'],
-			'action_type' => $action_type,
+				'status' => -2, //Deleted
+				'node_id' => $link['node_id'],
+				'update_id' => $link_id, //This would be deleted as well
+				'action_type' => $action_type, //Could be single delete, batch delete, etc...
 		));
 		
 		if(!$new_link){
@@ -161,11 +221,8 @@ class Us_model extends CI_Model {
 		foreach ($child_data as $link){
 			//Insert new row:
 			$new_link = $this->Us_model->insert_link(array(
-					'status' => $link['status'],
-					'node_id' => $link['node_id'],
 					'grandpa_id' => $new_parent['grandpa_id'],
 					'parent_id' => $new_parent['node_id'],
-					'value' => $link['value'],
 					'update_id' => $link['id'], //This would be deleted as well
 					'ui_rank' => 999, //Position this at the end of the children of new parent
 					'action_type' => $action_type,
@@ -202,14 +259,9 @@ class Us_model extends CI_Model {
 			
 			//Main delete:
 			$new_link = $this->Us_model->insert_link(array(
-				'status' => -2, //Deleted
-				'node_id' => $link['node_id'],
-				'grandpa_id' => $link['grandpa_id'],
-				'parent_id' => $link['parent_id'],
-				'value' => $link['value'],
-				'update_id' => $link['id'],
-				'ui_rank' => $link['ui_rank'],
-				'action_type' => $action_type,
+					'status' => -2, //Deleted
+					'update_id' => $link['id'],
+					'action_type' => $action_type,
 			));
 			
 			if(isset($new_link['id'])){
@@ -278,7 +330,26 @@ class Us_model extends CI_Model {
 		return $res;
 	}
 	
-	
+	function fetch_parent_tree($node_id){
+		//Recursively follows parent nodes to get to a grandparent and returns array:
+		$return = array($node_id);
+		$grandparents= grandparents();
+		$reached_grandpa = false;
+		
+		$link['parent_id'] = $node_id;
+		//Loop through all parents until we hit a grandpa:
+		while(!$reached_grandpa){
+			$link= $this->fetch_node($link['parent_id'],'fetch_top_plain');			
+			array_push($return,$link['parent_id']);
+			if(array_key_exists($link['parent_id'],$grandparents)){
+				//Reached the top!
+				$reached_grandpa = true;
+				break;
+			}
+		}
+		
+		return $return;
+	}
 	
 	function fetch_node_ids(){
 		$this->db->distinct();
@@ -328,11 +399,11 @@ class Us_model extends CI_Model {
 	
 	function fetch_grandpas_child($node_id){
 		//Iteratively loop until parent_id = any grandpa_id
-		$grandpas = parents();
+		$grandparents = grandparents();
 		$looking = 1;
 		while($looking){
 			$fetch_node = $this->fetch_node($node_id,'fetch_top_plain');
-			if(array_key_exists($fetch_node['parent_id'],$grandpas)){
+			if(array_key_exists($fetch_node['parent_id'],$grandparents)){
 				//The parent of this is a grandpa!
 				return $fetch_node['node_id'];
 			} else {
@@ -353,11 +424,12 @@ class Us_model extends CI_Model {
 		//Fetch all node links
 		$this->db->select('*');
 		$this->db->from('v3_data d');
-		$this->db->where('d.status >=' , 0); //Show status=0 differently as they're pending approval
+		$this->db->where('d.status >=' , 0); //0 is pending approval, and 1+ is live content
 		
 		if($action=='fetch_parents' || $action=='fetch_top_plain'){
 			
 			$this->db->where('d.node_id' , $node_id);
+			$this->db->order_by('d.ui_parent_rank' , 'ASC');
 			
 		} elseif($action=='fetch_children'){
 			
@@ -369,24 +441,16 @@ class Us_model extends CI_Model {
 		}
 		
 		//Default sorts:
-		$this->db->order_by('d.status' , 'ASC'); //status=1 always comes before status=2
-		$this->db->order_by('d.grandpa_id' , 'ASC'); //To group parents
-		$this->db->order_by('d.parent_id' , 'ASC'); //To group parents
-		$this->db->order_by('d.id' , 'DSC'); //To group parents
 		$q = $this->db->get();
 		$links = $q->result_array();
-		
-		
 		
 		if($action=='fetch_top_plain'){
 			//Quick return:
 			return $links[0];
 		}
 		
-		
-		
 		//Lets curate/enhance the data a bit:
-		$parents = parents(); //Everything at level 1
+		$grandparents= grandparents(); //Everything at level 1
 		//Caching mechanism for usernames and counts
 		$cache = array(
 			'contributors' => array(),
@@ -396,7 +460,7 @@ class Us_model extends CI_Model {
 		foreach($links as $i=>$link){
 			
 			//Append Sign, always:
-			$links[$i]['sign'] = $parents[$link['grandpa_id']]['sign'];
+			$links[$i]['sign'] = $grandparents[$link['grandpa_id']]['sign'];
 			
 			//Some elements are for the first level only, to make queries faster:
 			if(!isset($setting['recursive_level'])){
@@ -424,55 +488,9 @@ class Us_model extends CI_Model {
 			
 			
 			//We fetch the parents of parent !MetaData nodes for settings:
-			//TODO Maybe we only need to do this when grandpa_id=43 (MetaData). Time would tell...
 			if( !isset($setting['recursive_level']) || $setting['recursive_level']<1){
-				//Go fetch:
 				$links[$i]['parents'] = $this->fetch_node( ( $action=='fetch_parents' ? $link['parent_id'] : $link['node_id'] ) , 'fetch_parents', array('recursive_level'=>(!isset($setting['recursive_level'])?1:(1 + $setting['recursive_level']))));
 			}
-			
-			/*
-			if($action=='fetch_parents'){
-				if(strlen($link['value'])<1){
-					//This has no value, meaning the node_id needs to be invoked for data:
-					$invoke_node = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
-					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
-					//$links[$i]['parent_name'] = '<a href="/'.$link['parent_id'].'">'.$links[$i]['title'].'</a>';
-					$links[$i]['parent_name'] = $links[$i]['title'];
-					$links[$i]['index'] = 1; //For debugging
-				} else {
-					//Create custom node title based on primary data set:
-					$links[$i]['title'] = $parents[$link['grandpa_id']]['sign'].clean($link['value']);
-					
-					//Fetch parent name:
-					$parent_top_link = $this->fetch_node($link['parent_id'], 'fetch_top_plain');
-					$parent_sign = $parents[$link['grandpa_id']]['sign'];
-					$links[$i]['parent_name'] = $parent_sign.clean($parent_top_link['value']);
-					$links[$i]['index'] = 3; //For debugging
-				}
-				
-			} elseif($action=='fetch_children'){
-				
-				if(strlen($link['value'])<1){
-					//This has no value, meaning the node_id needs to be invoked for data:
-					$invoke_node = $this->fetch_node($link['node_id'], 'fetch_top_plain');
-					$links[$i]['title'] = $parents[$invoke_node['grandpa_id']]['sign'].clean($invoke_node['value']);
-					
-					$parent_top_link = $this->fetch_node($invoke_node['parent_id'], 'fetch_top_plain');
-					$links[$i]['parent_name'] = $parents[$parent_top_link['grandpa_id']]['sign'].clean($parent_top_link['value']);
-					$links[$i]['index'] = 2; //For debugging
-				} else {
-					//Create custom node title based on primary data set:
-					$links[$i]['title'] = $parents[$link['grandpa_id']]['sign'].clean($link['value']);
-					
-					//Fetch parent name:
-					$parent_top_link = $this->fetch_node($link['node_id'], 'fetch_top_plain');
-					$parent_sign = $parents[$parent_top_link['grandpa_id']]['sign'];
-					$links[$i]['parent_name'] = $parent_sign.clean($parent_top_link['value']);
-					$links[$i]['index'] = 4; //For debugging
-				}
-			}
-			*/
-			
 		}
 		
 		return $links;

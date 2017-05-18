@@ -2,47 +2,46 @@
 //Make core data available on JS layer:
 $user_data = $this->session->userdata('user');
 echo '<script> var node = '.json_encode($node).'; </script>';
-echo '<script> var child_count = '.count_links($node,'children').'; </script>'; // TODO To be removed!
+echo '<script> var child_count = '.count_links($node,'children').'; </script>'; // TODO To be removed by moving entire object into JS layer
 echo '<script> var user_data = '.json_encode($user_data).'; </script>';
 
 
+$out_count = count_links($node,'children'); //Need OUT in advance
 $sub_navigation = array(
-		array(
-				'icon' => '<span class="glyphicon glyphicon-arrow-left rotate45" aria-hidden="true"></span>',
-				'count_key' => 'parents',
-		),
-		array(
-				'icon' => '<span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span>',
-				'count_key' => 'children',
-		),
-		array(
-				'icon' => '@',
-				'count_key' => 1,
-		),
-		array(
-				'icon' => '&',
-				'count_key' => 2,
-		),
-		array(
-				'icon' => '#',
-				'count_key' => 3,
-		),
-		array(
-				'icon' => '?',
-				'count_key' => 4,
-		),
-		array(
-				'icon' => '!',
-				'count_key' => 43,
-		),
+	array(
+			'icon' => '@',
+			'count_key' => 1,
+	),
+	array(
+			'icon' => '#',
+			'count_key' => 3,
+	),
+	array(
+			'icon' => '?',
+			'count_key' => 4,
+	),
+	array(
+			'icon' => '!',
+			'count_key' => 43,
+	),
+	array(
+			'icon' => '<span class="glyphicon glyphicon-arrow-right blue rotate45" aria-hidden="true"></span>IN',
+			'count_key' => 'parents',
+			'append_class' => 'blue',
+	),
+	array(
+			'icon' => ' OUT<span class="glyphicon glyphicon-arrow-up '.($out_count>0?'pink':'grey').' rotate45" aria-hidden="true"></span>',
+			'count_key' => 'children',
+			'append_class' => 'pink',
+	),
 );
 
 
 echo '<ul id="secondNav" class="nav nav-pills">';
-echo '<li role="presentation" class="li_all active"><a href="javascript:nav2nd(\'all\')">All '.count($node).'</a></li>';
+echo '<li role="presentation" class="li_all active"><a href="javascript:nav2nd(\'all\')">All'.count($node).'</a></li>';
 foreach($sub_navigation as $sn){
 	$count = count_links($node,$sn['count_key']);
-	echo '<li role="presentation" class="li_'.$sn['count_key'].( $count==0 ? ' disabled' : '').'"><a href="javascript:'.( $count==0 ? 'void(0)' : 'nav2nd('.( is_integer($sn['count_key']) ? $sn['count_key'] : '\''.$sn['count_key'].'\'').')').'">'.$sn['icon'].$count.'</a></li>';
+	echo '<li role="presentation" class="li_'.$sn['count_key'].( $count==0 ? ' disabled' : '').'"><a href="javascript:'.( $count==0 ? 'void(0)' : 'nav2nd('.( is_integer($sn['count_key']) ? $sn['count_key'] : '\''.$sn['count_key'].'\'').')').'" '.( isset($sn['append_class']) && $count>0? ' class="'.$sn['append_class'].'"' : '').'>'.$count.$sn['icon'].'</a></li>';
 }
 
 
@@ -53,7 +52,7 @@ if($node[0]['node_id']==$user_data['node_id']){
 echo '</ul>';
 
 
-echo '<div class="list-group">';
+echo '<div class="list-group lgmain">';
 	//Show current nodes:
 	foreach($node as $key=>$value){
 		echo echoNode($node,$key);

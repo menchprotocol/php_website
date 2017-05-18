@@ -39,14 +39,11 @@ class Us extends CI_Controller {
 		//Also edit config/routes.php to load Wiki!
 		$wiki_index = array(
 			'login' => 'US Login',
-			'kazbot' => 'KazBot',
-			'terms' => 'Terms of Service & Privacy Policy',
-			'join' => 'Join US',
-			'usoverview' => 'Us Humans Foundation',
-			'collectiveai' => 'Collective AI',
-			'patternnetwork' => 'Pattern Network',
+			'terms' => 'Our Commitments',
+			'signup' => 'Signup',
+			'usoverview' => 'Us | Intelligence Assistant',
 		);
-		if(in_array($file_name,array('login','join')) && auth(1)){
+		if(in_array($file_name,array('login','join','usoverview')) && auth(1)){
 			//Redirect to Us:
 			header("Location: /1");
 		}
@@ -56,7 +53,6 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer');
 	}
 	
-	
 	function fetch_full_node($node_id){
 		header('Content-Type: application/json');
 		echo json_encode($this->Us_model->fetch_full_node($node_id));
@@ -65,6 +61,9 @@ class Us extends CI_Controller {
 	
 	//The main function for loading nodes:
 	function load_node($node_id){
+		
+		//While we're building:
+		auth();
 		
 		//Load custom node functions for possible processing:
 		//TODO automate the loading of these

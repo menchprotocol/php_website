@@ -9,7 +9,9 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	
+	function test_message(){
+		
+	}
 	
 	function test(){
 		//Fetch all node links

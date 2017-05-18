@@ -143,7 +143,7 @@ function add_youtube_video($input,$start,$end,$hashtag_id,$notes=null,$user_id=n
 		}
 		
 		
-		$next_node = next_node_id();
+		$next_node = $CI->Us_model->next_node_id();
 		$batch_input = array();
 		
 		if(intval($hashtag_id)>0){
@@ -161,6 +161,7 @@ function add_youtube_video($input,$start,$end,$hashtag_id,$notes=null,$user_id=n
 				'parent_id' => $main_node, //Parent Full YouTube Video
 				'value' => ( intval($hashtag_id)>0 ? $fetch_node[0]['value'] : 'Video Gem / Seconds '.$start.' - '.$end ),
 				'action_type' => 1, //For adding
+				'ui_parent_rank' => 1, //TOP
 		));
 		array_push($batch_input , array(
 				'us_id' => $user_id,

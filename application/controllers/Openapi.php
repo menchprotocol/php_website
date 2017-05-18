@@ -9,9 +9,42 @@ class Openapi extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	
 
+
+	function reverse_delete($start_id, $end_id){
+		//Fetch all node links
+		$this->db->select('*');
+		$this->db->from('v3_data d');
+		$this->db->where('d.status < ' , 0); //Must already be deleted
+		$this->db->where('d.id >= ' , $start_id);
+		$this->db->where('d.id <= ' , $end_id);
+		$this->db->where('d.update_id > ' , 0);
+		$q = $this->db->get();
+		$deleted_links = $q->result_array();
+		
+		//Loop through and reverse:
+		foreach($deleted_links as $value){
+			//Bring back old one:
+			$this->Us_model->update_link($value['update_id'],array('update_id'=>0,'status'=>2)); //TODO update to status=1
+			
+			//Delete this new deleted row:
+			$this->db->where('id', $value['id']);
+			$this->db->delete('v3_data');
+		}
+	}
 	
+	function addYoutubeVideo($video_id,$parent_id,$user_node){
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
+		$this->load->helper('node/65');
+		echo json_encode(add_youtube_video($video_id,0,0,$parent_id));
+	}
+	
+	function validateUser(){
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
+		echo json_encode(user_login($_GET['user_email'],$_GET['user_pass']));
+	}
 	
 	function indexYouTubeVideos(){
 		
@@ -73,9 +106,9 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		} elseif(intval($_POST['selected_id'])<1 && strlen($_POST['new_node_text'])>0){
 			//Insert the node into the pending bucket:
 			$new_hashtag = $this->Us_model->insert_link(array(
-					'status' => 1, //TODO Update
-					'grandpa_id' => 3, //Always #Hashtag
+					'us_id' => intval($_POST['user_node_id']),
 					'parent_id' => 298, //Newly added bucket
+					'grandpa_id' => 3, //Always #Intent
 					'value' => trim($_POST['new_node_text']),
 					'ui_rank' => 999, //Place last on the list
 					'action_type' => 1, //For adding
@@ -90,8 +123,7 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 			$child_hashtag = 0;
 		}
 		
-		
-		$result = add_youtube_video($_POST['youtube_id'],$_POST['start_time'],$_POST['end_time'],$child_hashtag,$_POST['description']);
+		$result = add_youtube_video($_POST['youtube_id'],$_POST['start_time'],$_POST['end_time'],$child_hashtag,$_POST['description'],intval($_POST['user_node_id']));
 		
 		echo_html(1,'Added Successfully');
 	}

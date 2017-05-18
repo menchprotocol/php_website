@@ -57,11 +57,8 @@ $route['translate_uri_dashes'] = FALSE;
 //Also edit controllers/us/load_wiki to define title.
 //TODO Move to nodes through public and html objects
 $route['default_controller'] = "us/load_wiki";
-$route['collectiveai'] = "us/load_wiki/collectiveai";
-$route['patternnetwork'] = "us/load_wiki/patternnetwork";
-$route['join'] = "us/load_wiki/join";
+$route['signup'] = "us/load_wiki/signup";
 $route['login'] = "us/load_wiki/login";
-$route['kazbot'] = "us/load_wiki/kazbot";
 $route['terms'] = "us/load_wiki/terms";
 
 //Application logic:
