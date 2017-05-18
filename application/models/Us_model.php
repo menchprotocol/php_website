@@ -136,7 +136,12 @@ class Us_model extends CI_Model {
 			//For updates, remove the old link:
 			$this->Us_model->update_link( $link_data['update_id'] , array(
 					'update_id' => $link_data['id'],
-					'status' => -1, //-1 is for updated items.
+					'status' => -1, //Updated
+			));
+		} elseif($link_data['action_type']<0 && $is_update){
+			$this->Us_model->update_link( $link_data['update_id'] , array(
+					'update_id' => $link_data['id'],
+					'status' => -2, //Deleted
 			));
 		}
 		
@@ -216,13 +221,7 @@ class Us_model extends CI_Model {
 			return false;
 		}
 		
-		//Also delete main link:
-		$affected_rows = $this->Us_model->update_link($link_id, array(
-			'update_id' => $new_link['id'],
-			'status' => -2,
-		));
-		
-		return intval($affected_rows); //1 or 0
+		return 1;
 	}
 	
 	function delete_node($node_id,$action_type){
@@ -253,16 +252,7 @@ class Us_model extends CI_Model {
 					'action_type' => $action_type,
 			));
 			
-			if(isset($new_link['id'])){
-				
-				//Also update original link:
-				$affected_rows = $this->Us_model->update_link($link['id'], array(
-						'update_id' => $new_link['id'],
-						'status' => -2, //Currently moving can happen only through deletion. TODO: Enable moving as a standalone function.
-				));
-				
-				$success_moves += $affected_rows;
-			}
+			$success_moves++;
 		}
 		//Return number of nodes moved!
 		return $success_moves;
@@ -290,13 +280,7 @@ class Us_model extends CI_Model {
 			));
 			
 			if(isset($new_link['id'])){
-				//Also update original link:
-				$affected_rows = $this->Us_model->update_link($link['id'], array(
-					'update_id' => $new_link['id'],
-					'status' => -2, //Deleted!
-				));
-				
-				$this->success_deletes += $affected_rows;
+				$this->success_deletes++;
 			}
 		}
 		
