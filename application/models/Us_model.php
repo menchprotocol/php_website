@@ -176,9 +176,12 @@ class Us_model extends CI_Model {
 					//We're deleting:
 					$index->deleteObject($link_data['algolia_id']);
 				} else {
+					//This is secondary, lets update it:
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
-						$index->deleteObject($top_node['algolia_id']);
+						//We had this indexed, lets update it:
+						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
+						$res = $index->saveObjects($return);
 					}
 				}				
 			}
