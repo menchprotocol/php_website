@@ -140,7 +140,7 @@ class Us_model extends CI_Model {
 			
 			if($link_data['action_type']==1){
 				
-				array_push($return , generate_algolia_obj($node_id));
+				array_push($return , generate_algolia_obj($link_data['node_id']));
 				$res = $index->addObjects(json_decode(json_encode($return), FALSE));
 				//Now update database with the objectIDs:
 				if(isset($res['objectIDs'][0]) && intval($res['objectIDs'][0])>0){
@@ -151,7 +151,7 @@ class Us_model extends CI_Model {
 			} elseif($value_updated && $link_data['algolia_id']>0 && ($link_data['action_type']==2 || $link_data['action_type']==4)){
 				
 				//This is update or new link, lets update algolia index:
-				array_push($return , generate_algolia_obj($node_id,$link_data['algolia_id']));
+				array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
 				$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
 				
 			} elseif($link_data['action_type']<0 && $link_data['algolia_id']>0){
