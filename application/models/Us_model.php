@@ -154,7 +154,7 @@ class Us_model extends CI_Model {
 				if($top_node['algolia_id']>0){
 					//We had this indexed, lets update it:
 					array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-					$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+					$res = $index->saveObjects($return);
 				}
 				
 			} elseif($link_data['action_type']<0 && $link_data['algolia_id']>0){
