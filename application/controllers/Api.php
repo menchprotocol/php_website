@@ -187,21 +187,10 @@ class Api extends CI_Controller {
 		if(!$new_link){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while saving changes.');
-		}		
-		
-		//Then remove old one:
-		$affected_rows = $this->Us_model->update_link($link['id'], array(
-			'update_id' => $new_link['id'],
-			'status' => -1, //-1 is for updated items.
-		));
-		
-		if(!$affected_rows){
-			//Ooops, some unknown error:
-			return echo_html(0,'Unknown Error while removing old data.');
-		} else {
-			//All good!
-			echo_html(1,'');
 		}
+		
+		//All good!
+		echo_html(1,'');
 	}
 	
 	function update_sort(){

@@ -131,6 +131,14 @@ class Us_model extends CI_Model {
 		//Fetch inserted id:
 		$link_data['id'] = $this->db->insert_id();
 		
+		//Remove older links if needed:
+		if($link_data['action_type']==2 && $is_update){
+			//For updates, remove the old link:
+			$this->Us_model->update_link( $link_data['update_id'] , array(
+					'update_id' => $link_data['id'],
+					'status' => -1, //-1 is for updated items.
+			));
+		}
 		
 		//Algolia only works on Production due to Curl certificate requirements
 		if(is_production()){
