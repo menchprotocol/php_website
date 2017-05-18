@@ -61,11 +61,10 @@ class Api extends CI_Controller {
 		}
 		
 		//We're good! Insert new link:
-		$has_value = (strlen(trim($_REQUEST['value']))>0);
 		$new_link = $this->Us_model->insert_link(array(
 				'node_id' => intval($_REQUEST['child_node_id']),
 				'parent_id' =>  intval($_REQUEST['parent_id']),
-				'value' => ( $has_value ? trim($_REQUEST['value']) : null),
+				'value' => ( strlen(trim($_REQUEST['value']))>0 ? trim($_REQUEST['value']) : null),
 				'ui_rank' => intval($_REQUEST['ui_rank']),
 				'action_type' => 4, //For linking
 		));
@@ -74,13 +73,6 @@ class Api extends CI_Controller {
 		if(!$new_link){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while linking nodes.');
-		}
-		
-		
-		//Do we need to update search index?
-		if($has_value){
-			//TODO: Update Algolia Search index
-			
 		}
 		
 		//Return results as a new line:
@@ -195,10 +187,7 @@ class Api extends CI_Controller {
 		if(!$new_link){
 			//Ooops, some unknown error:
 			return echo_html(0,'Unknown Error while saving changes.');
-		}
-		
-		//TODO: Update Algolia Search index
-		
+		}		
 		
 		//Then remove old one:
 		$affected_rows = $this->Us_model->update_link($link['id'], array(
@@ -239,7 +228,6 @@ class Api extends CI_Controller {
 			
 			if(!array_key_exists($link['id'],$new_sort_index)){
 				//Ooops, some unknown error:
-				//return echo_html(0,'Unknown sort index.');
 				continue;
 			}
 			

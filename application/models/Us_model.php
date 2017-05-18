@@ -148,11 +148,14 @@ class Us_model extends CI_Model {
 					$this->Us_model->update_link($link_data['id'],array('algolia_id'=>$link_data['algolia_id']));
 				}
 				
-			} elseif($value_updated && $link_data['algolia_id']>0 && ($link_data['action_type']==2 || $link_data['action_type']==4)){
+			} elseif($link_data['action_type']==2 || $link_data['action_type']==4){
 				
-				//This is update or new link, lets update algolia index:
-				array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
-				$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+				$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
+				if($top_node['algolia_id']>0){
+					//We had this indexed, lets update it:
+					array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
+					$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+				}
 				
 			} elseif($link_data['action_type']<0 && $link_data['algolia_id']>0){
 				
@@ -339,7 +342,7 @@ class Us_model extends CI_Model {
 		$link['parent_id'] = $node_id;
 		//Loop through all parents until we hit a grandpa:
 		while(!$reached_grandpa){
-			$link= $this->fetch_node($link['parent_id'],'fetch_top_plain');			
+			$link = $this->fetch_node($link['parent_id'],'fetch_top_plain');			
 			array_push($return,$link['parent_id']);
 			if(array_key_exists($link['parent_id'],$grandparents)){
 				//Reached the top!
