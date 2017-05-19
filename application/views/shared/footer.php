@@ -6,7 +6,9 @@ $user_data = $this->session->userdata('user');
 	
 	<div class="container nonesearch">
 		<footer class="outsider">
-	        <p><a href="https://github.com/USfoundation/us-indexer/commits/develop"><?= version_salt() ?></a> Built with &#10084; in Vancouver. <a href="/terms">Terms</a></p>
+	        <p>Built with &#10084; in Vancouver</p>
+	        <p>Us Humans Foundation</p>
+	        <p><b><?= version_salt() ?></b> / <a href="/terms">Terms</a></p>
 		</footer>
 	</div>
 	

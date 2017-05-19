@@ -1,5 +1,14 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  
+  RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+  RewriteRule ^(.*)$ http://%1/$1 [R=301]
+
+
+  RewriteCond %{HTTP_HOST} ^us\.foundation [NC]
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
   # !IMPORTANT! Set your RewriteBase here and don't forget trailing and leading
   #  slashes.
   # If your page resides at
@@ -19,12 +28,3 @@
 
   ErrorDocument 404 /index.php
 </IfModule>
-
-
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1/$1 [R=301]
-
-
-RewriteCond %{HTTP_HOST} ^us\.foundation [NC]
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

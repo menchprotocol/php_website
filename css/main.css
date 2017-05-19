@@ -50,9 +50,11 @@ h3{ font-size:24px; color:#000; }
 .grey-bg { background-color:#CCC !important; }
 .grey{ color:#CCC !important; font-size:0.7em; }
 .pink-bg { background-color:#f731d2 !important; }
+.pink-bg-light { background-color:#fca7eb !important; }
 .pink{ color:#f731d2 !important; font-size:0.9em; }
 .red{ color:#FF0000 !important; font-size:0.9em; }
 .blue-bg { background-color:#31d2f7 !important; }
+.blue-bg-light { background-color:#86e8ff !important; }
 .blue{ color:#31d2f7 !important; font-size:0.9em; }
 .is_top{ display:block !important;  }
 .link-details.is_top{ padding-left:5px !important;  }
@@ -90,6 +92,8 @@ h3{ font-size:24px; color:#000; }
 }
 .lgmain>.list-group-item{padding-bottom:3px;}
 
+#addnode { padding: 6px 12px 6px 36px !important; }
+
 @media (max-width: 768px){
 	/* Global Font Sizes Per Screen Size */
 	body { font-size:18px; }
@@ -108,7 +112,7 @@ h3{ font-size:24px; color:#000; }
 	.nav-pills {margin-bottom:5px; margin-left:-10px; margin-right:-10px; }
 	#main_container{ padding-top:7px; }
 	.list-group-item  { padding: 3px 3px; }
-	#addnode{ padding-left: 2px; }
+	#addnode{ padding-left: 2px; padding:0px 3px 0px 15px !important; }
 	
 	.glyphicon-triangle-bottom { font-size: 0.8em; margin-right:1px; }
 	.glyphicon-triangle-right { font-size: 0.8em; margin-right:1px; }
@@ -124,6 +128,9 @@ h3{ font-size:24px; color:#000; }
     display:inline-block;
 }
 
+.zoom-out { cursor:zoom-out !important; }
+.zoom-in { cursor:zoom-in !important; }
+.light{ opacity: 0.5; }
 .node_h1 { margin-top:0 !important; margin-bottom:0 !important; }
 .parentTopLink { cursor:default; }
 .plain_badge{ margin-top:-5px; }

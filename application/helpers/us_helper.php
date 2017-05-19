@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.56'.( is_production() ? '' : '.'.substr(time(),4) );
+	return 'v0.57'.( auth(1) ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
@@ -307,9 +307,25 @@ function echo_html($status,$message){
 }
 
 function format_timestamp($t){
-	$timestamp = strtotime(substr($t,0,19));
-	$format = ( date("Y",$timestamp)==date("Y") ? "j M" : "j M Y");
-	return date($format,$timestamp);
+	
+	
+	$time = time() - strtotime(substr($t,0,19)); // to get the time since that moment
+	$time = ($time<1)? 1 : $time;
+	$tokens = array (
+			31536000 => 'year',
+			2592000 => 'month',
+			604800 => 'week',
+			86400 => 'day',
+			3600 => 'hr',
+			60 => 'min',
+			1 => 'sec'
+	);
+	
+	foreach ($tokens as $unit => $text) {
+		if ($time < $unit) continue;
+		$numberOfUnits = floor($time / $unit);
+		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
+	}
 }
 
 function redirect_message($url,$message){
@@ -381,12 +397,12 @@ function echoNode($node,$key){
 		//Parent nodes:
 		$href = '/'.$node[$key]['parents'][0]['node_id'].'?from='.$node[0]['node_id']; // SELF: $node[$key]['parents'][0]['node_id']==$node[0]['node_id']
 		$anchor = $node[$key]['parents'][0]['value'];
-		$direct_anchor = $node[$key]['link_count'].' <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span>IN';
+		$direct_anchor = ( $is_direct ? 'DIRECT ' : '').'IN <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span>';
 	} else {
 		//Child nodes:
 		$href = '/'.$node[$key]['node_id'].'?from='.$node[0]['node_id'];
 		$anchor = $node[$key]['parents'][0]['value'];
-		$direct_anchor = $node[$key]['link_count'].' OUT<span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>';
+		$direct_anchor = ( $is_direct ? 'DIRECT ' : '').'OUT <span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>';
 	}
 	
 	
@@ -487,7 +503,31 @@ function echoNode($node,$key){
 	//Start the display:
 	$return_string .= '<div class="list-group-item  '.( $key==0 ? 'is_top' : 'node_details child-node').' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].'" id="link'.$node[$key]['id'].'" data-link-index="'.$key.'" is-direct="'.( $is_direct? 1 : 0 ).'" edit-mode="0" new-parent-id="0" data-link-id="'.$node[$key]['id'].'" node-id="'.$node[$key]['node_id'].'">';
 	
-	$return_string .= '<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'"><a href="'.$href.'" class="expA"><span class="boldbadge badge '.( !$is_parent? 'pink-bg' : '').'">'.$direct_anchor.'</span></a><a href="javascript:toggleValue('.$node[$key]['id'].');" class="parentLink '.( $key==0 ? 'parentTopLink' : '').'">'.( $key==0? '<span class="glyphicon glyphicon-bookmark hastt" aria-hidden="true" title="TOP Link" data-toggle="tooltip"></span>' : '<span class="glyphicon gh'.$node[$key]['id'].' glyphicon-triangle-'.( $ui_setting['auto_open'] ? 'bottom' : 'right' ).'" aria-hidden="true"></span>' ).$node[$key]['parents'][0]['sign'].'<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span>'.( $is_direct? ' <span class="glyphicon glyphicon glyphicon-link grey  aria-hidden="true" title="Direct link" data-toggle="tooltip"></span>' : '' ).( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon glyphicon-info-sign" style="font-size:0.9em;" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').( $node[$key]['status']==0 ? ' <span style="color:#FF0000;"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Pending</span>' : '' ).(count($node[$key]['parents'])>19 ? ' <span class="red">!'.count($node[$key]['parents']).'IN</span>' : '' ).' <span class="sortconf"></span></a></h4>';
+	$return_string .= 
+	'<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.
+	
+		'<a href="'.$href.'" class="expA"><span class="boldbadge badge '.( !$is_parent? 'pink-bg' : 'blue-bg').( $node[$key]['link_count']<=1 ? '-light' : '' ).'" aria-hidden="true" title="'.( $is_direct ? 'DIRECT links define Gem origin & fabric.' : 'Regular links for association.' ).'" data-toggle="tooltip">'.$direct_anchor.'</span></a>'.
+		
+		'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="'.( $key==0 ? 'parentTopLink' : 'parentLink '.( $ui_setting['auto_open'] ? 'zoom-out' : 'zoom-in' )).'">'.
+			
+		( $key==0 ? '' : '<span class="glyphicon gh'.$node[$key]['id'].' glyphicon-triangle-'.( $ui_setting['auto_open'] ? 'bottom' : 'right' ).'" aria-hidden="true"></span>' ).
+		
+				//Toggle handle:
+				$node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span>'.
+																
+				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
+								
+				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
+				
+				' <span class="grey hastt" title="'.( $node[$key]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['link_count'].' Gems at next step.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['link_count'].'</span>'.
+				
+				
+				//TODO '<span class="grey hastt" style="padding-left:5px;" title="54 User Message Reads and 156 Foundation Clicks (Community Engagement)" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 210</span>'.
+				
+				(count($node[$key]['parents'])>19 ? ' <span class="red">!'.count($node[$key]['parents']).'IN</span>' : '' ).' <span class="sortconf"></span>'.
+				
+		'</a>'.
+	'</h4>';
 	
 	$return_string .= '<div id="linkval'.$node[$key]['id'].'" class="link-details value '.( $key==0 ? 'is_top' : '').'" style="display:'.( $ui_setting['auto_open'] ?'block':'none').';">';
 	$return_string .= '<'.( $key==0 ? 'h1' : 'p').' class="list-group-item-text node_h1 '.( $key==0 ? 'is_top' : '').'">';
@@ -505,16 +545,21 @@ function echoNode($node,$key){
 	
 	$return_string .= '</'.( $key==0 ? 'h1' : 'p').'>';
 	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
-	$return_string .= '<span title="'.substr($node[$key]['timestamp'],0,19).' UTC" data-toggle="tooltip"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> '.format_timestamp($node[$key]['timestamp']).'</span>';
-	$return_string .= '<span><a href="/'.$node[$key]['us_id'].'">@'.$node[$key]['us_name'].'</a></span>';
+	//TODO $return_string .= '<span title="Revision history to browse previous versions." data-toggle="tooltip" class="hastt"><a href="alert(\'Version Tracking Under Development\')"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> 5</a></span>';
+	$return_string .= '<span title="Unique Gem ID, assigned per each revision." data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" />'.$node[$key]['id'].'</span>';
+	$return_string .= '<span title="@'.$node[$key]['us_name'].' is the Gem Collector." data-toggle="tooltip"><a href="/'.$node[$key]['us_id'].'">@'.$node[$key]['us_name'].'</a></span>';
+	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
+	
 	
 	if(auth_admin(1)){
-		$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></span>';
+		$return_string .= '<span title="Knowledge improves one step at a time, so does this line. Make a contribution and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Improve</a></span>';		
 		/* TODO Implement later
 		if(!$is_direct){
 			$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" aria-hidden="true" title="Inverse the direction of the link" data-toggle="tooltip"><span class="glyphicon glyphicon-sort rotate45" aria-hidden="true"></span>Inverse</a></span>';
 		}
 		*/
+	} else {
+		$return_string .= '<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Limited Access</span>';
 	}
 	$return_string .= '</div></div>';
 	$return_string .= '</div>';

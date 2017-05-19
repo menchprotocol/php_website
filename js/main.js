@@ -142,7 +142,7 @@ $( document ).ready(function() {
 			      },
 			      header: function(data) {
 			    	  if(!data.isEmpty){
-			    		  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Create</span> '+parents(node[0]['grandpa_id'])+data.query+'</a>';
+			    		  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create</span> '+parents(node[0]['grandpa_id'])+data.query+' <span class="boldbadge badge pink-bg-light" style="float:none; display:inline-block; margin-bottom:5px;">DIRECT OUT<span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span></span> <span class="grey">from '+node[0]['sign']+node[0]['value']+'</span></a>';
 			    	  }
 			      },
 			      empty: function(data) {
@@ -309,9 +309,11 @@ function toggleValue(link_id){
 	$('#linkval'+link_id).toggle();
 	
 	if($( '.gh'+link_id ).hasClass( "glyphicon-triangle-bottom" )){
+		$( '#link'+link_id+' .parentLink' ).removeClass('zoom-out').addClass('zoom-in');
 		$( '.gh'+link_id ).removeClass('glyphicon-triangle-bottom');
 		$( '.gh'+link_id ).addClass('glyphicon-triangle-right');
 	} else if($( '.gh'+link_id ).hasClass( "glyphicon-triangle-right" )){
+		$( '#link'+link_id+' .parentLink' ).removeClass('zoom-in').addClass('zoom-out');
 		$( '.gh'+link_id ).removeClass('glyphicon-triangle-right');
 		$( '.gh'+link_id ).addClass('glyphicon-triangle-bottom');
 	}
