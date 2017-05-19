@@ -31,7 +31,7 @@ class Us extends CI_Controller {
 	}
 	
 	function test(){
-		$this->load->view('us/test');
+		$this->Apiai_model->addEntity();
 	}
 	
 	function load_wiki($file_name= 'usoverview'){

@@ -83,8 +83,15 @@ class Client
             throw new \Exception('AlgoliaSearch requires the JSON PHP extension.');
         }
 
-        //$this->caInfoPath = __DIR__.'/../../resources/ca-bundle.crt';
-        $this->caInfoPath = '/etc/ssl/certs/ca-certificates.crt';
+        //$this->caInfoPath = __DIR__.'/../../resources/ca-bundle.crt'; //This was original
+        
+        if(is_production()){
+        	$this->caInfoPath = '/etc/ssl/certs/ca-certificates.crt';
+        } else {
+        	//TODO fix this for your local path
+        	$this->caInfoPath = 'C:\wamp\...';
+        }
+        
         
         foreach ($options as $option => $value) {
             switch ($option) {
