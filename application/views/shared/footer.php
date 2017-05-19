@@ -9,6 +9,15 @@ $user_data = $this->session->userdata('user');
 	        <p>Built with &#10084; in Vancouver</p>
 	        <p>Us Humans Foundation</p>
 	        <p><b><?= version_salt() ?></b> / <a href="/terms">Terms</a></p>
+	        <?= ( auth_admin(1) ? '<div class="btn-group dropup">
+  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Admin <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="https://us.foundation/api/update_algolia" target="_blank">Redo Search Index</a></li>
+    <li><a href="https://us.foundation/api/health_check" target="_blank">Run System Health Check</a></li>
+  </ul>
+</div>' : '' ) ?>
 		</footer>
 	</div>
 	

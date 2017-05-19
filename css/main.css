@@ -130,7 +130,7 @@ h3{ font-size:24px; color:#000; }
 
 .zoom-out { cursor:zoom-out !important; }
 .zoom-in { cursor:zoom-in !important; }
-.light{ opacity: 0.5; }
+.light{ opacity: 0.75; }
 .node_h1 { margin-top:0 !important; margin-bottom:0 !important; }
 .parentTopLink { cursor:default; }
 .plain_badge{ margin-top:-5px; }

@@ -30,10 +30,6 @@ class Us extends CI_Controller {
 		$this->load_wiki();
 	}
 	
-	function test(){
-		$this->Apiai_model->addEntity();
-	}
-	
 	function load_wiki($file_name= 'usoverview'){
 		//For quick static pages
 		//Also edit config/routes.php to load Wiki!
