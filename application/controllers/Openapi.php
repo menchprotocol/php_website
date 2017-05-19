@@ -188,4 +188,120 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		//Return this if nothing found:
 		echo 0;
 	}
+	
+	
+	
+	function health_check($naked_list_only=0){
+		//Would go through all active nodes and look for a series of issues.
+		boost_power();
+		
+		//Fetch all active nodes with status>=0
+		$active_nodes = $this->Us_model->fetch_node_ids();
+		$parent_trees = array();
+		//Prepare error list:
+		$err = array(
+				'missing_top' => array(), //When a node is missing a TOP link
+				'multiple_top' => array(), //When a node has multiple TOP links
+				'missing_algolia' => array(), //Top nodes that do not have a valid Algolia ID
+				'outdated_grandpa' => array(), //When the grandpa ID does not belong to parent_id due to moving the nodes around
+				'naked' => array(), //Nodes that have a single link to their parent with NO other IN/OUTs
+		);
+		
+		//Start looping through nodes and look for errors:
+		foreach($active_nodes as $node_id){
+			//Fetch the top of each node:
+			$parents = $this->Us_model->fetch_node($node_id, 'fetch_parents');
+			$children = $this->Us_model->fetch_node($node_id, 'fetch_children');
+			
+			//Is this naked?
+			if(count($parents)<=1 && count($children)<=0){
+				array_push($err['naked'],$node_id);
+			}
+			
+			//Now start checking for various issues:
+			if(!$naked_list_only){
+				foreach($parents as $k=>$v){
+					if($k==0){
+						if($v['ui_parent_rank']!=1){
+							array_push($err['missing_top'],$node_id);
+						} elseif(intval($v['algolia_id'])<=0){
+							array_push($err['missing_algolia'],$node_id);
+						}
+					} elseif($k==1 && $v['ui_parent_rank']==1){
+						//If there is a second TOP, it would be right after the first one!
+						array_push($err['multiple_top'],$node_id);
+					}
+					
+					//Every parent link's grandpa_id should be up to date:
+					if(!isset($parent_trees[$node_id])){
+						$parent_trees[$node_id] = $this->Us_model->fetch_parent_tree($v['node_id']);
+					}
+					
+					//Is the grandpa up to date?
+					if(end($parent_trees[$node_id])!=$v['grandpa_id']){
+						if(!in_array($node_id,$err['outdated_grandpa'])){
+							array_push($err['outdated_grandpa'],$node_id);
+						}
+						//Fix:
+						$this->Us_model->update_link($v['id'],array('grandpa_id'=>end($parent_trees[$node_id])));
+					}
+				}
+			}
+		}
+		
+		if($naked_list_only){
+			foreach($err['naked'] as $n){
+				//echo '<a href="/'.$n.'">#'.$n.'</a><br />';
+				echo $n.',';
+			}
+		} else {
+			header('Content-Type: application/json');
+			echo json_encode($err);
+		}
+	}
+	
+	
+	
+	//Run this to completely update the "nodes" index
+	function update_algolia(){
+		
+		if(!is_production()){
+			echo 'ERROR: Cannot update cache on local.';
+			return false;
+		}
+		
+		boost_power();
+		
+		//Buildup this array to save to search index
+		$return = array();
+		
+		//Fetch all nodes:
+		$active_node_ids = $this->Us_model->fetch_node_ids();
+		foreach($active_node_ids as $node_id){
+			//Add to main array
+			array_push($return,generate_algolia_obj($node_id));
+		}
+		
+		$obj = json_decode(json_encode($return), FALSE);
+		//print_r($obj);
+		
+		//Include PHP library:
+		$index = load_algolia();
+		$index->clearIndex();
+		$obj_add_message = $index->addObjects($obj);
+		
+		//Now update database with the objectIDs:
+		if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+			foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+				//Fetch top node, as that is all we need to update:
+				$link = $this->Us_model->fetch_node($return[$key]['node_id'], 'fetch_top_plain');
+				//Update link:
+				$update_status = $this->Us_model->update_link($link['id'],array('algolia_id'=>$algolia_id));
+			}
+		}
+		
+		echo 'SUCCESS: Search index updated for '.count($return).' nodes.';
+		//echo '$return: '; print_r($return);
+		//echo '$obj_add_message: '; print_r($obj_add_message);
+	}
 }

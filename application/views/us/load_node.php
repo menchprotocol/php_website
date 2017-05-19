@@ -25,7 +25,7 @@ $sub_navigation = array(
 			'count_key' => 43,
 	),
 	array(
-			'icon' => '<span class="glyphicon glyphicon-arrow-right blue rotate45" aria-hidden="true"></span>IN',
+			'icon' => ' IN<span class="glyphicon glyphicon-arrow-right blue rotate45" aria-hidden="true"></span>',
 			'count_key' => 'parents',
 			'append_class' => 'blue',
 	),

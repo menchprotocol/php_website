@@ -142,7 +142,7 @@ $( document ).ready(function() {
 			      },
 			      header: function(data) {
 			    	  if(!data.isEmpty){
-			    		  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create</span> '+parents(node[0]['grandpa_id'])+data.query+' <span class="boldbadge badge pink-bg-light" style="float:none; display:inline-block; margin-bottom:5px;">DIRECT OUT<span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span></span> <span class="grey">from '+node[0]['sign']+node[0]['value']+'</span></a>';
+			    		  return '<a href="javascript:create_node(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create</span> '+parents(node[0]['grandpa_id'])+data.query+' <span class="boldbadge badge pink-bg-light" style="float:none; display:inline-block; margin-bottom:5px;">DIRECT OUT<span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span></span> <span class="grey">from '+node[0]['sign']+node[0]['value'].replace(/\s/g, '')+'</span></a>';
 			    	  }
 			      },
 			      empty: function(data) {
@@ -187,7 +187,7 @@ function edit_link(key,id){
 	    }
 	}	
 	
-	parent_val = $.trim($('#link'+id+" .node_top_node .parentLink").text());
+	parent_val = $.trim($('#link'+id+" .parentTopLink .anchor").text());
 	parent_html = $('#link'+id+" .node_top_node").html();
 	key_global = key;
 	id_global = id;

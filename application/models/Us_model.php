@@ -43,6 +43,7 @@ class Us_model extends CI_Model {
 	function insert_link($link_data){
 		
 		$is_update = (isset($link_data['update_id']) && intval($link_data['update_id'])>0);
+		$is_value_reques = ($link_data['action_type']==2 || $link_data['action_type']==4);
 		$parent_update = false;
 		
 		if($is_update){
@@ -153,6 +154,7 @@ class Us_model extends CI_Model {
 			
 			if($link_data['action_type']==1){
 				
+				//For adding new nodes:
 				array_push($return , generate_algolia_obj($link_data['node_id']));
 				$res = $index->addObjects(json_decode(json_encode($return), FALSE));
 				//Now update database with the objectIDs:
@@ -161,7 +163,7 @@ class Us_model extends CI_Model {
 					$this->Us_model->update_link($link_data['id'],array('algolia_id'=>$link_data['algolia_id']));
 				}
 				
-			} elseif($link_data['action_type']==2 || $link_data['action_type']==4){
+			} elseif($is_update_reques){
 				
 				if($link_data['algolia_id']>0){
 					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));

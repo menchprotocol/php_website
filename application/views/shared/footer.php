@@ -14,8 +14,8 @@ $user_data = $this->session->userdata('user');
     Admin <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
-    <li><a href="https://us.foundation/api/update_algolia" target="_blank">Redo Search Index</a></li>
-    <li><a href="https://us.foundation/api/health_check" target="_blank">Run System Health Check</a></li>
+    <li><a href="https://us.foundation/openapi/update_algolia" target="_blank">Redo Search Index</a></li>
+    <li><a href="https://us.foundation/openapi/health_check" target="_blank">Run System Health Check</a></li>
   </ul>
 </div>' : '' ) ?>
 		</footer>

@@ -118,7 +118,7 @@ h3{ font-size:24px; color:#000; }
 	.glyphicon-triangle-right { font-size: 0.8em; margin-right:1px; }
 	.glyphicon-bookmark { font-size: 0.8em; margin-right:4px; }
 	
-	.list-group-item { padding-top: 5px; padding-bottom: 3px; }
+	.list-group-item { padding-top: 5px; padding-bottom:7px; }
 }
 
 .boldbadge{

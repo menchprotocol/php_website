@@ -379,7 +379,9 @@ function one_two_explode($one,$two,$content){
 }
 
 
-
+function removeSpace($text){
+	return str_replace(' ','',$text);
+}
 
 function echoNode($node,$key){
 	
@@ -513,7 +515,7 @@ function echoNode($node,$key){
 		( $key==0 ? '' : '<span class="glyphicon gh'.$node[$key]['id'].' glyphicon-triangle-'.( $ui_setting['auto_open'] ? 'bottom' : 'right' ).'" aria-hidden="true"></span>' ).
 		
 				//Toggle handle:
-				$node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span>'.
+				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
 																
 				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
 								
@@ -546,13 +548,18 @@ function echoNode($node,$key){
 	$return_string .= '</'.( $key==0 ? 'h1' : 'p').'>';
 	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
 	//TODO $return_string .= '<span title="Revision history to browse previous versions." data-toggle="tooltip" class="hastt"><a href="alert(\'Version Tracking Under Development\')"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> 5</a></span>';
+	if($key==0){
+		$return_string .= '<span title="'.$node[$key]['sign'].removeSpace($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt">/'.$node[$key]['node_id'].'</span>';
+	}
+	
+	
 	$return_string .= '<span title="Unique Gem ID, assigned per each revision." data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" />'.$node[$key]['id'].'</span>';
 	$return_string .= '<span title="@'.$node[$key]['us_name'].' is the Gem Collector." data-toggle="tooltip"><a href="/'.$node[$key]['us_id'].'">@'.$node[$key]['us_name'].'</a></span>';
 	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
 	
 	
 	if(auth_admin(1)){
-		$return_string .= '<span title="Knowledge improves one step at a time, so does this line. Make a contribution and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Improve</a></span>';		
+		$return_string .= '<span title="Improve the content of this Gem and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Improve</a></span>';		
 		/* TODO Implement later
 		if(!$is_direct){
 			$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" aria-hidden="true" title="Inverse the direction of the link" data-toggle="tooltip"><span class="glyphicon glyphicon-sort rotate45" aria-hidden="true"></span>Inverse</a></span>';
