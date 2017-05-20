@@ -43,8 +43,10 @@ class Us_model extends CI_Model {
 	function insert_link($link_data){
 		
 		$is_update = (isset($link_data['update_id']) && intval($link_data['update_id'])>0);
-		$is_value_reques = ($link_data['action_type']==2 || $link_data['action_type']==4);
+		$is_value_reques = ( in_array($link_data['action_type'],array(2,4)) );
 		$parent_update = false;
+		
+		//Fetch node ID and TOP nodes:
 		
 		if($is_update){
 			//This is replacing an older link, lets find related data for that:
@@ -85,7 +87,7 @@ class Us_model extends CI_Model {
 		
 		//Now some improvements to the input in case missing:
 		if(!isset($link_data['ui_rank'])){
-			$link_data['ui_rank'] = ( $is_update? $link['ui_rank'] : 1 ); //We assume the top of the child list
+			$link_data['ui_rank'] = ( $is_update ? $link['ui_rank'] : 1 ); //We assume the top of the child list
 		}
 		if(!isset($link_data['ui_parent_rank'])){
 			$link_data['ui_parent_rank'] = ( $is_update ? $link['ui_parent_rank'] : ( isset($link_data['node_id']) ? 2 : 1 ) );
@@ -132,8 +134,9 @@ class Us_model extends CI_Model {
 		//Fetch inserted id:
 		$link_data['id'] = $this->db->insert_id();
 		
+		
 		//Remove older links if needed:
-		if($link_data['action_type']==2 && $is_update){
+		if(in_array($link_data['action_type'],array(2,5)) && $is_update){
 			//For updates, remove the old link:
 			$this->Us_model->update_link( $link_data['update_id'] , array(
 					'update_id' => $link_data['id'],
@@ -145,6 +148,56 @@ class Us_model extends CI_Model {
 					'status' => -2, //Deleted
 			));
 		}
+		
+		
+		
+		
+		
+		
+		//Perform special/custom functions based on parent nodes.
+		if($link_data['action_type']<0 || $is_value_reques){
+			//Fetch the parents of this Node:
+			$IN_links = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
+			
+			if($link_data['action_type']<0 && $link_data['parent_id']==590){
+				
+				//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
+				$delete_status = $this->Apiai_model->deleteSingleEntity($link_data['value']);
+				
+			} else {
+				
+				foreach($IN_links as $INs){
+					if($INs['parent_id']==590){
+						//Found the primary !SyncSingleEntity Meta Data.
+						
+						//This is for action 2/4 which means we need to add/update
+						//Lets attemp to sync and save the results:
+						
+						//Anything else requires add/updating
+						//Sync Entity
+						$custom_status = $this->Apiai_model->syncSingleEntity($link_data['node_id']);
+						
+						//Update field with result:
+						//Save Entity ID in {value} field for future referencing/updating:
+						if(($custom_status['status'] && isset($custom_status['res']['id'])) || !$custom_status['status']){
+							$this->insert_link(array(
+									'value' => ( $custom_status['status'] ? $custom_status['res']['id'] : 'Error: '.$custom_status['message'].' | Array: '.print_r($custom_status['res'],true) ), //Our new ID
+									'update_id' => $INs['id'],
+									'action_type' => 5, //For system updates
+							));
+						}
+					}
+				}
+			}
+		}		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//Algolia only works on Production due to Curl certificate requirements
 		if(is_production()){
@@ -163,7 +216,7 @@ class Us_model extends CI_Model {
 					$this->Us_model->update_link($link_data['id'],array('algolia_id'=>$link_data['algolia_id']));
 				}
 				
-			} elseif($is_update_reques){
+			} elseif($is_update){
 				
 				if($link_data['algolia_id']>0){
 					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));

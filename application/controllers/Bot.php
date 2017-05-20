@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Api extends CI_Controller {
+class Bot extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		
@@ -15,8 +15,11 @@ class Api extends CI_Controller {
 		}
 	}
 
-	function test(){
-		$this->Apiai_model->addEntity();
+	function test($node_id){
+		print_r($this->Apiai_model->syncSingleEntity($node_id));
 	}
 	
+	function del($id){
+		print_r($this->Apiai_model->deleteSingleEntity($id));
+	}
 }

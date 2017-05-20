@@ -9,12 +9,22 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.57'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.58'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
 	ini_set('memory_limit','2048M');
 	ini_set('max_execution_time', 300);
+}
+
+function objectToArray( $object ) {
+	if( !is_object( $object ) && !is_array( $object ) ) {
+		return $object;
+	}
+	if( is_object( $object ) ) {
+		$object = (array) $object;
+	}
+	return array_map( 'objectToArray', $object );
 }
 
 function user_login($user_email,$user_pass){
@@ -229,6 +239,12 @@ function action_type_descriptions($action_type_id){
 				'name' => 'Linked',
 				'description' => 'Linked two existing nodes to each other.',
 		);
+	} elseif($action_type_id==5){
+		return array(
+				'valid' => 1,
+				'name' => 'Sys Updated',
+				'description' => 'When the system updates the link.',
+		);
 	} else {
 		//This should never happen!
 		return array(
@@ -383,6 +399,10 @@ function removeSpace($text){
 	return str_replace(' ','',$text);
 }
 
+function parepareEntityName($text){	
+	return 'E-'.substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,27);
+}
+
 function echoNode($node,$key){
 	
 	$CI =& get_instance();
@@ -410,11 +430,12 @@ function echoNode($node,$key){
 	
 	//Go through the UI setting and extract details based on custom-coded nodes:
 	$ui_setting = array(
-		'template_matched' => 0,
-		'auto_open' => 0,
-		'value_template' => null,
-		'followup_content' => null,
-		'node_description' => null,
+			'template_matched' => 0,
+			'workflow_dev' => 0,
+			'auto_open' => 0,
+			'value_template' => null,
+			'followup_content' => null,
+			'node_description' => null,
 	);
 	
 	//First from direct parents:
@@ -484,6 +505,9 @@ function echoNode($node,$key){
 				$ui_setting['node_description']= $p['value'];
 			} elseif($p['parent_id']==463){
 				$ui_setting['auto_open'] = 1;
+			} elseif($p['parent_id']==628){
+				//Workflow Under development
+				$ui_setting['workflow_dev'] = 1;
 			}
 		}
 	}
@@ -518,6 +542,11 @@ function echoNode($node,$key){
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
 																
 				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
+				
+				
+				( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt red" aria-hidden="true" title="Workflow Under Development" data-toggle="tooltip"></span>' : '').
+				
+				
 								
 				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
 				
@@ -552,14 +581,13 @@ function echoNode($node,$key){
 		$return_string .= '<span title="'.$node[$key]['sign'].removeSpace($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt">/'.$node[$key]['node_id'].'</span>';
 	}
 	
-	
-	$return_string .= '<span title="Unique Gem ID, assigned per each revision." data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" />'.$node[$key]['id'].'</span>';
-	$return_string .= '<span title="@'.$node[$key]['us_name'].' is the Gem Collector." data-toggle="tooltip"><a href="/'.$node[$key]['us_id'].'">@'.$node[$key]['us_name'].'</a></span>';
-	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
+	$return_string .= '<span title="Unique Gem ID, assigned per each revision." data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" style="margin-right:2px;" />id.'.$node[$key]['id'].'</span>';
+	$return_string .= '<span title="'.$node[$key]['us_name'].' is the Gem Collector." data-toggle="tooltip"><a href="/'.$node[$key]['us_id'].'">@'.removeSpace($node[$key]['us_name']).'</a></span>';
+	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
 	
 	
 	if(auth_admin(1)){
-		$return_string .= '<span title="Improve the content of this Gem and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Improve</a></span>';		
+		$return_string .= '<span title="Improve the content of this Gem and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-plus" aria-hidden="true" style="margin-right:2px;"></span>Improve</a></span>';		
 		/* TODO Implement later
 		if(!$is_direct){
 			$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" aria-hidden="true" title="Inverse the direction of the link" data-toggle="tooltip"><span class="glyphicon glyphicon-sort rotate45" aria-hidden="true"></span>Inverse</a></span>';
