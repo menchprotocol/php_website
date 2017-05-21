@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.58'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.59'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
@@ -48,6 +48,7 @@ function user_login($user_email,$user_pass){
 		//Fetch user nodes with this email:
 		//TODO We can wire this in Agolia for faster string search!
 		$matching_users = $CI->Us_model->search_node($user_email,24);
+		
 		
 		if(count($matching_users)<1){
 			//We could not find this email linked to the email node
@@ -105,6 +106,9 @@ function user_login($user_email,$user_pass){
 			
 			//Detect if this user is a moderator, IF they belong to Moderators node:
 			$user_node[0]['is_mod'] = ( $user_node[0]['parent_id']==18 ? 1 : 0 );
+			
+			//Append email data:
+			$user_node[0]['email'] = $matching_users[0];
 			
 			//Log Login history
 			//TODO: Enable later. Disabled due to required UI adjustmens!
@@ -267,6 +271,8 @@ function generate_algolia_obj($node_id,$algolia_id=0){
 	$grandparents = grandparents(); //Everything at level 1
 	
 	//CLeanup and prep for search indexing:
+	$node_search_object = array();
+	
 	foreach($node as $i=>$link){
 		if($i==0){
 			//This is the primary link!
@@ -291,6 +297,7 @@ function generate_algolia_obj($node_id,$algolia_id=0){
 			$node_search_object['links_blob'] .= strip_tags($link['value']).' ';
 		}
 	}
+	
 	return $node_search_object;
 }
 
@@ -411,11 +418,12 @@ function echoNode($node,$key){
 	//Loop through parent nodes to apply any settings:
 	//$status = status_descriptions($node[$key]['status']);
 	$return_string = '';
-	$is_parent = ($node[0]['node_id']==$node[$key]['node_id']);
+	$flow_IN = ($node[0]['node_id']==$node[$key]['node_id']);
 	$is_direct = ($node[$key]['ui_parent_rank']==1);	
+	$is_last_IN = ($node[$key]['node_id']==$node[0]['node_id'] && ( !isset($node[($key+1)]) || $node[($key+1)]['node_id']!=$node[0]['node_id']));
+	$is_first_OUT = ($key>0 && $node[($key-1)]['node_id']==$node[0]['node_id'] && $node[$key]['node_id']!=$node[0]['node_id']);
 	
-	
-	if($is_parent){
+	if($flow_IN){
 		//Parent nodes:
 		$href = '/'.$node[$key]['parents'][0]['node_id'].'?from='.$node[0]['node_id']; // SELF: $node[$key]['parents'][0]['node_id']==$node[0]['node_id']
 		$anchor = $node[$key]['parents'][0]['value'];
@@ -433,6 +441,7 @@ function echoNode($node,$key){
 			'template_matched' => 0,
 			'workflow_dev' => 0,
 			'auto_open' => 0,
+			'is_live' => 0, //Used for intents and entities that are being synced
 			'value_template' => null,
 			'followup_content' => null,
 			'node_description' => null,
@@ -449,6 +458,11 @@ function echoNode($node,$key){
 				if(substr($p['value'],0,8)=='__eval__'){
 					//This needs a PHP evaluation call to attempt to call the function and fill-in {value}
 					eval("\$ui_setting['value_template'] = ".str_replace('__eval__','',str_replace('{value}','"'.$node[$key]['value'].'"',$p['value'])).";");
+					
+					
+				// TODO #142 } elseif(substr_count($p['value'],'php_')){
+					// Sample entry: php_md5(strtolower(trim("{value}")))
+				
 				} else {
 					$ui_setting['value_template'] = str_replace('{value}',$node[$key]['value'],$p['value']);
 				}
@@ -508,13 +522,16 @@ function echoNode($node,$key){
 			} elseif($p['parent_id']==628){
 				//Workflow Under development
 				$ui_setting['workflow_dev'] = 1;
+			} elseif(in_array($p['parent_id'],array(590,594)) || in_array($p['node_id'],array(590,594))){
+				//Workflow Under development
+				$ui_setting['is_live'] = 1;
 			}
 		}
 	}
 	
 	
 	//Now go through main templates, assuming this is a child node:
-	if($key>0 && !$ui_setting['template_matched'] && !$is_parent){
+	if($key>0 && !$ui_setting['template_matched'] && !$flow_IN){
 		//Try searching in the main parent:
 		foreach($node as $p){
 			if($node[0]['node_id']==$p['node_id'] && $p['parent_id']==63 && substr_count($p['value'],'{value}')>0){
@@ -527,32 +544,39 @@ function echoNode($node,$key){
 	
 	
 	//Start the display:
-	$return_string .= '<div class="list-group-item  '.( $key==0 ? 'is_top' : 'node_details child-node').' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].'" id="link'.$node[$key]['id'].'" data-link-index="'.$key.'" is-direct="'.( $is_direct? 1 : 0 ).'" edit-mode="0" new-parent-id="0" data-link-id="'.$node[$key]['id'].'" node-id="'.$node[$key]['node_id'].'">';
+	$return_string .= '<div class="list-group-item'.( $key==0 ? ' is_top ' : ' node_details child-node ').($is_last_IN ? ' lastIN ':'').( $is_first_OUT ? ' first_OUT ' : '').($flow_IN?' is_parents ':' is_children ').' is_'.$node[$key]['parents'][0]['grandpa_id'].'" id="link'.$node[$key]['id'].'" data-link-index="'.$key.'" is-direct="'.( $is_direct? 1 : 0 ).'" edit-mode="0" new-parent-id="0" data-link-id="'.$node[$key]['id'].'" node-id="'.$node[$key]['node_id'].'">';
 	
 	$return_string .= 
-	'<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($is_parent?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.
+	'<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($flow_IN?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.
 	
-		'<a href="'.$href.'" class="expA"><span class="boldbadge badge '.( !$is_parent? 'pink-bg' : 'blue-bg').( $node[$key]['link_count']<=1 ? '-light' : '' ).'" aria-hidden="true" title="'.( $is_direct ? 'DIRECT links define Gem origin & fabric.' : 'Regular links for association.' ).'" data-toggle="tooltip">'.$direct_anchor.'</span></a>'.
+		'<a href="'.$href.'" class="expA"><span class="boldbadge badge '.( !$flow_IN? 'pink-bg' : 'blue-bg').( $node[$key]['link_count']<=1 ? '-light' : '' ).'" aria-hidden="true" title="'.( $is_direct ? 'DIRECT links define Gem origin & fabric.' : 'Regular links for association.' ).'" data-toggle="tooltip">'.$direct_anchor.'</span></a>'.
 		
 		'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="'.( $key==0 ? 'parentTopLink' : 'parentLink '.( $ui_setting['auto_open'] ? 'zoom-out' : 'zoom-in' )).'">'.
 			
 		( $key==0 ? '' : '<span class="glyphicon gh'.$node[$key]['id'].' glyphicon-triangle-'.( $ui_setting['auto_open'] ? 'bottom' : 'right' ).'" aria-hidden="true"></span>' ).
 		
-				//Toggle handle:
+				//TOP Title
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
-																
-				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
 				
+				//URL ID
+	($key==0 ? ' <span title="'.$node[$key]['sign'].removeSpace($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt grey">/'.$node[$key]['node_id'].'</span>': '').
 				
-				( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt red" aria-hidden="true" title="Workflow Under Development" data-toggle="tooltip"></span>' : '').
+				//Description
+	( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
 				
+				//Workflow under dev?
+				( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt red" aria-hidden="true" title="Pending Development" data-toggle="tooltip"></span>' : '').
 				
-								
+				//Is live via api.ai?
+				( $ui_setting['is_live'] ? ' <span class="glyphicon glyphicon-phone grey hastt green" aria-hidden="true" title="Synced with api.ai which makes it accessible to our users on Messenger" data-toggle="tooltip"></span>' : '').
+				
+				//Is pending verification?
 				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
 				
+				//Link Count
 				' <span class="grey hastt" title="'.( $node[$key]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['link_count'].' Gems at next step.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['link_count'].'</span>'.
-				
-				
+								
+				//Engagement Stats
 				//TODO '<span class="grey hastt" style="padding-left:5px;" title="54 User Message Reads and 156 Foundation Clicks (Community Engagement)" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 210</span>'.
 				
 				(count($node[$key]['parents'])>19 ? ' <span class="red">!'.count($node[$key]['parents']).'IN</span>' : '' ).' <span class="sortconf"></span>'.
@@ -564,12 +588,16 @@ function echoNode($node,$key){
 	$return_string .= '<'.( $key==0 ? 'h1' : 'p').' class="list-group-item-text node_h1 '.( $key==0 ? 'is_top' : '').'">';
 	
 	
-	//Did we find any template matches? If not, just display:W
-	if(!$ui_setting['template_matched']){
-		$return_string .= nl2br($node[$key]['value']);
-	} else {
-		$return_string .= $ui_setting['value_template'];
+	//We do not show {value} for DIRECT OUT because its a duplicate of its TOP title, which is redundant
+	if($flow_IN || !$is_direct){
+		//Did we find any template matches? If not, just display:
+		if(!$ui_setting['template_matched']){
+			$return_string .= nl2br($node[$key]['value']);
+		} else {
+			$return_string .= $ui_setting['value_template'];
+		}
 	}
+		
 	
 	//This is only used for special nodes for now:
 	$return_string .= $ui_setting['followup_content'];
@@ -577,17 +605,19 @@ function echoNode($node,$key){
 	$return_string .= '</'.( $key==0 ? 'h1' : 'p').'>';
 	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
 	//TODO $return_string .= '<span title="Revision history to browse previous versions." data-toggle="tooltip" class="hastt"><a href="alert(\'Version Tracking Under Development\')"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> 5</a></span>';
-	if($key==0){
-		$return_string .= '<span title="'.$node[$key]['sign'].removeSpace($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt">/'.$node[$key]['node_id'].'</span>';
-	}
 	
-	$return_string .= '<span title="Unique Gem ID, assigned per each revision." data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" style="margin-right:2px;" />id.'.$node[$key]['id'].'</span>';
-	$return_string .= '<span title="'.$node[$key]['us_name'].' is the Gem Collector." data-toggle="tooltip"><a href="/'.$node[$key]['us_id'].'">@'.removeSpace($node[$key]['us_name']).'</a></span>';
+	//Gem Collector:
+	$return_string .= '<span title="@'.removeSpace($node[$key]['us_node'][0]['value']).' collected this Gem." data-toggle="tooltip"><a href="/'.$node[$key]['us_node'][0]['node_id'].'"><img src="https://www.gravatar.com/avatar/'.md5(strtolower(trim($node[$key]['us_node'][1]['value']))).'?d=identicon" class="mini-image" /></a></span>';
+	
+	//Date
 	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
+	
+	//Gem ID
+	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" style="margin-right:2px;" />'.$node[$key]['id'].'</span>';
 	
 	
 	if(auth_admin(1)){
-		$return_string .= '<span title="Improve the content of this Gem and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-plus" aria-hidden="true" style="margin-right:2px;"></span>Improve</a></span>';		
+		$return_string .= '<span title="Improve the content of this Gem and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-cog edit-cog" aria-hidden="true"></span></a></span>';		
 		/* TODO Implement later
 		if(!$is_direct){
 			$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" aria-hidden="true" title="Inverse the direction of the link" data-toggle="tooltip"><span class="glyphicon glyphicon-sort rotate45" aria-hidden="true"></span>Inverse</a></span>';
@@ -604,15 +634,26 @@ function echoNode($node,$key){
 	return $return_string;
 }
 
+function fetchMax($input_array,$searchKey){
+	//Find the biggest $searchKey in $input_array:
+	$max_ui_rank = 0;
+	foreach($input_array as $child){
+		if($child[$searchKey]>$max_ui_rank){
+			$max_ui_rank = $child[$searchKey];
+		}
+	}
+	return $max_ui_rank;
+}
 
-
-function echoFetchNode($parent_id,$node_id,$regular=1){
+function echoFetchNode($link_id,$parent_id,$node_id,$regular=1){
+	
 	$CI =& get_instance();
+	
 	//Load $node_id with parent $parent_id
 	$node = $CI->Us_model->fetch_full_node(($regular ? $parent_id : $node_id));
 	$match_key = 0; //We need to find this based on $node_id
 	foreach($node as $key=>$value){
-		if($value['node_id']==$node_id && $value['parent_id']==$parent_id){
+		if($value['id']==$link_id){
 			$match_key = $key;
 			break;
 		}
@@ -623,6 +664,6 @@ function echoFetchNode($parent_id,$node_id,$regular=1){
 	} else {
 		//TODO Sould never happen, put alarm system in place, so 
 		//     in case it does we get auto notified...
-		echo_html(0,'Refresh to see Node.');
+		echo_html(0,'Unknown Error.');
 	}
 }

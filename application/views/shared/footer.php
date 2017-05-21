@@ -6,8 +6,8 @@ $user_data = $this->session->userdata('user');
 	
 	<div class="container nonesearch">
 		<footer class="outsider">
-	        <p>Built with &#10084; in Vancouver</p>
 	        <p>Us Humans Foundation</p>
+	        <p>Built with &#x2764; on &#x1F30D;</p>
 	        <p><b><?= version_salt() ?></b> / <a href="/terms">Terms</a></p>
 	        <?= ( auth_admin(1) ? '<div class="btn-group dropup">
   <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

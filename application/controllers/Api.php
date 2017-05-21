@@ -26,17 +26,21 @@ class Api extends CI_Controller {
 		//A one way function that creates a DIRECT LINK from the originating node.
 		
 		//Make sure all inputs are fine:
-		if(intval($_REQUEST['parent_id'])<1 || strlen($_REQUEST['value'])<1 || strlen($_REQUEST['ui_rank'])<1){
+		if(intval($_REQUEST['parent_id'])<1 || strlen($_REQUEST['value'])<1){
 			return echo_html(0,'Invalid inputs.');
 		}
-				
+		
+		//See how many OUTs this node has:
+		$children = $this->Us_model->fetch_node(intval($_REQUEST['parent_id']), 'fetch_children');
+		
 		//We're good! Insert new link:
 		$new_link = $this->Us_model->insert_link(array(
-			'parent_id' =>  intval($_REQUEST['parent_id']),
-			'grandpa_id' => intval($_REQUEST['grandpa_id']),
-			'value' => trim($_REQUEST['value']),
-			'ui_rank' => intval($_REQUEST['ui_rank']),
-			'action_type' => 1, //For adding
+				'parent_id' =>  intval($_REQUEST['parent_id']),
+				'grandpa_id' => intval($_REQUEST['grandpa_id']),
+				'value' => trim($_REQUEST['value']),
+				'ui_parent_rank' => 1, //As this is a DIRECT IN for the newly created Node
+				'ui_rank' => fetchMax($children,'ui_rank')+1, //This is always added as the last one
+				'action_type' => 1, //For adding
 		));
 		
 		if(!$new_link){
@@ -47,28 +51,37 @@ class Api extends CI_Controller {
 		//Return results as a new line:
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'message' => echoFetchNode($new_link['parent_id'],$new_link['node_id']),
-			'node' => $this->Us_model->fetch_full_node($new_link['parent_id']),
+				'message' => echoFetchNode($new_link['id'],$new_link['parent_id'],$new_link['node_id']),
+				'node' => $this->Us_model->fetch_full_node($new_link['parent_id']),
 		));
 	}
 	
 	
 	function link_node(){
-		
+				
 		//Make sure all inputs are find:
-		if(intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['child_node_id'])<1 || strlen($_REQUEST['ui_rank'])<1){
+		if(intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['child_node_id'])<1){
 			return echo_html(0,'Invalid inputs.');
 		}
 		
-		//We're good! Insert new link:
-		$new_link = $this->Us_model->insert_link(array(
+		//Initial data set:
+		$link_data = array(
 				'node_id' => intval($_REQUEST['child_node_id']),
 				'parent_id' =>  intval($_REQUEST['parent_id']),
 				'value' => ( strlen(trim($_REQUEST['value']))>0 ? trim($_REQUEST['value']) : null),
-				'ui_rank' => intval($_REQUEST['ui_rank']),
 				'action_type' => 4, //For linking
-		));
+		);
 		
+		//Fetch current OUTs first:
+		$children = $this->Us_model->fetch_node($link_data['parent_id'], 'fetch_children');
+		$link_data['ui_rank'] = fetchMax($children,'ui_rank')+1;
+		
+		//Also append to last item in linked IN:
+		$parents  = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
+		$link_data['ui_parent_rank'] = fetchMax($parents,'ui_parent_rank')+1;
+		
+		//We're good! Insert new link:
+		$new_link = $this->Us_model->insert_link($link_data);
 		
 		if(!$new_link){
 			//Ooops, some unknown error:
@@ -78,8 +91,8 @@ class Api extends CI_Controller {
 		//Return results as a new line:
 		header('Content-Type: application/json');
 		echo json_encode(array(
-			'message' => echoFetchNode($new_link['parent_id'],$new_link['node_id'],intval($_REQUEST['normal_parenting'])),
-			'node' => $this->Us_model->fetch_full_node( ( intval($_REQUEST['normal_parenting']) ? $new_link['parent_id'] : $new_link['node_id']) ),
+				'message' => echoFetchNode($new_link['id'],$new_link['parent_id'],$new_link['node_id'],intval($_REQUEST['normal_parenting'])),
+				'node' => $this->Us_model->fetch_full_node( ( intval($_REQUEST['normal_parenting']) ? $new_link['parent_id'] : $new_link['node_id']) ),
 		));
 	}
 	

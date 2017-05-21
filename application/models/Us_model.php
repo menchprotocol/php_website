@@ -156,11 +156,14 @@ class Us_model extends CI_Model {
 		
 		//Perform special/custom functions based on parent nodes.
 		if($link_data['action_type']<0 || $is_value_reques){
+			
+			
 			//Fetch the parents of this Node:
 			$IN_links = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
 			
+			
 			if($link_data['action_type']<0 && $link_data['parent_id']==590){
-				
+								
 				//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
 				$delete_status = $this->Apiai_model->deleteSingleEntity($link_data['value']);
 				
@@ -363,6 +366,16 @@ class Us_model extends CI_Model {
 		return $stats['link_count'];
 	}
 	
+	function fetch_sandwich_node($node_id, $parent_id){
+		$this->db->select('*');
+		$this->db->from('v3_data d');
+		$this->db->where('d.node_id' , $node_id);
+		$this->db->where('d.parent_id' , $parent_id);
+		$this->db->where('d.status >' , 0);
+		$q = $this->db->get();
+		return $q->row_array();
+	}
+	
 	function search_node($value_string, $parent_id=null, $setting=array()){
 		//Return the node_id of a link that matches the value and parent ID
 		//TODO Maybe move to Agolia search engine for faster search.
@@ -492,6 +505,9 @@ class Us_model extends CI_Model {
 		
 		if($action=='fetch_parents' || $action=='fetch_top_plain'){
 			
+			if(isset($setting['parent_id'])){
+				$this->db->where('d.parent_id' , $setting['parent_id']);
+			}
 			$this->db->where('d.node_id' , $node_id);
 			$this->db->order_by('d.ui_parent_rank' , 'ASC');
 			
@@ -531,10 +547,11 @@ class Us_model extends CI_Model {
 				//Do we have this user ID in the cache variable?
 				if(!isset($cache['contributors'][$link['us_id']])){
 					//Fetch user name:
-					$person_link = $this->fetch_node($link['us_id'], 'fetch_top_plain');
-					$cache['contributors'][$link['us_id']] = $person_link['value'];
+					$user_node[0] = $this->fetch_node($link['us_id'],'fetch_top_plain');
+					$user_node[1] = $this->fetch_node($link['us_id'],'fetch_top_plain' , array('parent_id'=>24)); //Fetch email for this user:
+					$cache['contributors'][$link['us_id']] = $user_node;
 				}
-				
+
 				//Determine what are we counting based on parent/child position:
 				$count_column = ( ($node_id==$link['node_id']) ? $link['parent_id'] : $link['node_id']);
 				if(!isset($cache['link_count'][$count_column])){
@@ -543,8 +560,7 @@ class Us_model extends CI_Model {
 				}
 				
 				//Append uploader name:
-				//TODO: Maybe for some $action s only?
-				$links[$i]['us_name'] = $cache['contributors'][$link['us_id']];
+				$links[$i]['us_node'] = $cache['contributors'][$link['us_id']];
 				
 				//Count node links:
 				$links[$i]['link_count'] = $cache['link_count'][$count_column];

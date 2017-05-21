@@ -52,12 +52,12 @@ $function = $this->uri->segment(2);
 	<div class="container main-header">
 		<ul class="nav nav-tabs">
 		  <?php if(isset($user_data['id']) || isset($show_grandpas)){ ?>
-			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==1 && $node[0]['node_id']!=$user_data['node_id'] ? 'class="active"' : '' ) ?>><a href="/1?from=header">@</a></li>
+			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==1 ? 'class="active"' : '' ) ?>><a href="/1?from=header">@</a></li>
 			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==3 ? 'class="active"' : '' ) ?>><a href="/3?from=header">#</a></li>
 			  <?php if(isset($user_data['id'])){ ?>
 			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==4 ? 'class="active"' : '' ) ?>><a href="/4?from=header">?</a></li>
 			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==43 ? 'class="active"' : '' ) ?>><a href="/43?from=header">!</a></li>
-			  <li role="presentation" <?= ( isset($node) && $node[0]['node_id']==$user_data['node_id'] ? 'class="active"' : '' ) ?> style="float:right;"><a href="/<?= $user_data['node_id'] ?>?from=header">@me</a></li>
+			  <li role="presentation" style="float:right;"><a href="/<?= $user_data['node_id'] ?>?from=header" id="myGravatar" title="A link to your profile. Change your image on gravatar.com" data-toggle="tooltip" data-placement="bottom"><img src="https://www.gravatar.com/avatar/<?= md5(strtolower(trim($user_data['email']['value']))) ?>?d=identicon" /></a></li>
 			  <?php } ?>
 		  <?php } ?>
 		  

@@ -372,10 +372,6 @@ function toggleSort(doEnable,sortType){
 	}
 	
 	
-		
-	
-	
-	
 	if(doEnable){
 		
 		if(oppositeIsOn){
@@ -383,6 +379,9 @@ function toggleSort(doEnable,sortType){
 			$('#sortIsOn').remove();
 			$('.'+(sortType=='child' ? 'is_parents' : 'is_children' )+' .glyphicon-sort').remove();
 		}
+		
+		//Remove any existing handlers:
+		$('.glyphicon-sort').remove();
 		
 		//Enable sort:
 		$('#secondNav').append('<li role="presentation" id="sortIsOn" class="li_setting pull-right disabled sortType'+sortType+'"><a href="javascript:void(0)" class="disabled '+colorClass+'-bg"><span class="glyphicon glyphicon glyphicon-sort sort-handle" aria-hidden="true"></span> Sort On</a></li>');
@@ -451,6 +450,19 @@ function nav2nd(focus_nav){
 			toggleSort(0,'parent');
 			toggleSort(0,'child');
 		}
+	}
+}
+
+function restrat_sort(){
+	//Restarts sort to include newly added items, if filter is sortable:
+	if($('#secondNav .li_parents').hasClass( "active" )){
+		//IN Active
+		toggleSort(0,'child');
+		toggleSort(1,'parent');
+	} else if($('#secondNav .li_children').hasClass( "active" )){
+		//OUT Active
+		toggleSort(0,'parent');
+		toggleSort(1,'child');
 	}
 }
 
@@ -554,6 +566,8 @@ function delete_link_confirmed(key,id,type){
 }
 
 
+
+
 function save_link_updated(key,id){
 	//Define variables:
 	var new_value = $( '#link'+id+' .node_h1 textarea' ).val();
@@ -601,14 +615,10 @@ function create_node(node_name){
 	//Show loader:
 	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( ".list_input" );
 	
-	//Prepare data for processing:
-	child_count += 1;
-	
 	var input_data = {
 		grandpa_id:node[0]['grandpa_id'],
 		parent_id:node[0]['node_id'],
 		value:node_name,
-		ui_rank:child_count,
 	};
 	
 	//Create node:
@@ -620,6 +630,9 @@ function create_node(node_name){
 		
 		//Expand current node:
 		node = data.node;
+		
+		//Reset SORT setting, if filtering IN or OUT:
+		restrat_sort();
 		
 		//Empty search value and focus on it:
 		$( "#addnode" ).focus().val("");
@@ -644,22 +657,33 @@ function link_node(child_node_id,new_name){
 	$('body').append('<div class="modal fade" id="linkNodeModal" tabindex="-1" role="dialog">'
   +'<div class="modal-dialog" role="document">'
     +'<div class="modal-content">'
+    	+'<div class="modal-header">'
+    		+'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+    		+'<h3 class="modal-title">New <img src="/img/gem/diamond_48.png" width="36" class="light" style="margin-right:2px;"> from '+parents(node[0]['grandpa_id'])+node[0]['value']+'</h3>'
+    	+'</div>'
       +'<div class="modal-body">'
-            
-      +'<div class="form-group">'
-      +'<label for="exampleInputEmail1">Optional Value</label>'
-      +'<textarea id="newVal" tabindex="1" class="form-control" rows="3"></textarea>'
-      +'</div>'
       
+      //Introduction to Flow:
+      +'<p>Choose Flow <span class="glyphicon glyphicon-info-sign hastt" aria-hidden="true" title="Flow moves from OUT towards IN. IN represents the parent/originator while OUT represents the child/dependant." data-placement="bottom" data-toggle="tooltip"></span>:</p>'
+
       +'<div class="form-group">'
-	      + '<div><label for="exampleInputEmail1">Who is Parent?</label></div>'
 	      + '<label class="radio">'
-	      + '<input type="radio" tabindex="2" name="parentNodeName" id="originalValue" checked="checked"> '+parents(node[0]['grandpa_id'])+node[0]['value']
+	      + '<input type="radio" tabindex="3" name="parentNodeName" id="childValue"> '
+	      + new_name
+	      + ' <span class="boldbadge badge blue-bg">IN <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span></span>'
 	      + '</label>'
+	      
 	      + '<label class="radio">'
-	      + '<input type="radio" tabindex="3" name="parentNodeName" id="childValue"> '+new_name
+	      + '<input type="radio" tabindex="2" name="parentNodeName" id="originalValue" checked="checked"> '
+	      + new_name
+	      + ' <span class="boldbadge badge pink-bg">OUT <span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span></span>'
 	      + '</label>'
 	  +'</div>'
+	  
+	  +'<div class="form-group">'
+      +'<label for="exampleInputEmail1">Optional Value:</label>'
+      +'<textarea id="newVal" tabindex="1" class="form-control" rows="3"></textarea>'
+      +'</div>'
         
       +'</div>'
       +'<div class="modal-footer">'
@@ -669,6 +693,9 @@ function link_node(child_node_id,new_name){
     +'</div><!-- /.modal-content -->'
   +'</div><!-- /.modal-dialog -->'
 +'</div><!-- /.modal -->');
+	
+	//Reset Toggle:
+	$('[data-toggle="tooltip"]').tooltip();
 	
 	$('#linkNodeModal').modal('show').on('shown.bs.modal', function () {
 		$("#newVal").focus(); //Focus on the optional value field
@@ -690,33 +717,42 @@ function link_node(child_node_id,new_name){
 	});
 	
 	$( "#modalSubmit" ).click(function() {
-		
-		//Prepare data for processing:
-		child_count += 1;
-		
+				
 		var input_data = {
 			parent_id: parseInt( $('#originalValue').is(":checked") ? node[0]['node_id'] : child_node_id ),
 			child_node_id: parseInt( $('#originalValue').is(":checked") ? child_node_id : node[0]['node_id'] ),
 			normal_parenting: ( $('#originalValue').is(":checked") ? 1 : 0 ),
 			value: $("#newVal").val(),
-			ui_rank:child_count,
 		};
 		
 		//Show loader:
+		var loader_position = ( input_data['normal_parenting'] ? ".list_input" : ".first_OUT" );
+		
+		//Scroll if needed:
+		if(!input_data['normal_parenting']){
+			//This is OUT, which means we should scroll to the top.
+			$('html, body').animate({
+		        scrollTop: $(".lastIN").offset().top
+		    }, 1000);
+		}
+		
+		
+		
 		//TODO Improvement: We can position this at the botton of current parent Nodes, instead of at the bottom of child Nodes
-		$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( ".list_input" );
+		$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( loader_position );
 		$('#linkNodeModal').modal('hide');
 		
 		//Create node:
 		$.post("/api/link_node", input_data, function(data) {
 			//Update UI to confirm with user:
 			$( ".loading-node" ).remove();
-			$( data.message ).insertBefore( ".list_input" );
+			$( data.message ).insertBefore( loader_position );
+			
+			//Reset SORT setting, if filtering IN or OUT:
+			restrat_sort();
 			
 			//Expand current node:
 			node = data.node;
-			console.log('lets see');
-			console.log(node);
 	    });
 	});
 }
