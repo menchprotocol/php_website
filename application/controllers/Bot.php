@@ -36,7 +36,7 @@ class Bot extends CI_Controller {
 				//This makes the system ignores "speech", "displayText", and "data":
 				// https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
 				//TODO Implement for unknown:
-				//'followupEvent' => array(),
+				'followupEvent' => array(),
 		));
 	}
 }
