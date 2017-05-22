@@ -52,15 +52,13 @@ h3{ font-size:24px; color:#000; }
 .pink-bg { background-color:#f731d2 !important; }
 .pink-bg-light { background-color:#fca7eb !important; }
 .pink{ color:#f731d2 !important; font-size:0.9em; }
-.red{ color:#FF0000 !important; font-size:0.9em; }
-.green{ color:#58db2c !important; font-size:0.9em; }
 .blue-bg { background-color:#31d2f7 !important; }
 .blue-bg-light { background-color:#86e8ff !important; }
 .blue{ color:#31d2f7 !important; font-size:0.9em; }
 .is_top{ display:block !important;  }
 .is_top .node_stats { margin-left:20px; }
 .link-details.is_top{ padding-left:5px !important;  }
-
+.clean-name{ font-size:0.8em; font-weight:normal; color:#AAA; }
 .hastt,.hastt a { cursor:help !important; }
 .suggest-prefix{ width:72px; }
 .nav-pills li a{ font-size:0.9em; }

@@ -8,18 +8,32 @@ class Bot extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 		
-		if(!auth(1)){
-			//Check for session for all functions here!
-			echo_html(0,'Invalid session! Login and try again...');
-			exit;
-		}
+	}
+	
+	function apiai_webhook(){
+		//This function receives incoming requests from api.ai, logs and processes them:
+		$new = $this->Engagement_model->log_engagement(array(
+				'us_id' => 651, //api.ai API User
+				'node_type_id' => 653, //Bot API Webhook Log
+				'blob' => json_encode($_POST), //Dump all incoming variables
+		));
+		
+		//Return success message to bot:
+		header('Content-Type: application/json');
+		header("HTTP/1.1 ".( $new['id'] ? "200 OK" : "400" ));
+		echo json_encode(array(
+				'status' 	=> ( $new['id'] ? 1 : 0 ),
+				'message' 	=> ( $new['id'] ? 'Webhook #'.$new['id'].' logged.' : 'Error while logging webhook.'),
+		));
 	}
 
 	function test($node_id){
-		print_r($this->Apiai_model->syncSingleEntity($node_id));
+		print_r($this->Apiai_model->sync_entity($node_id));
 	}
 	
-	function del($id){
-		print_r($this->Apiai_model->deleteSingleEntity($id));
+	function in($node_id){
+		print_r($this->Apiai_model->fetch_intent($node_id));
 	}
+	
+
 }

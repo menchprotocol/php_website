@@ -2,7 +2,7 @@
 
 
 function is_production(){
-	return ( $_SERVER['SERVER_NAME']=='us.foundation');
+	return ( $_SERVER['SERVER_NAME']=='us.foundation' );
 }
 
 function version_salt(){
@@ -390,8 +390,6 @@ function auth_admin($donot_redirect=false){
 
 
 
-
-
 function one_two_explode($one,$two,$content){
 	if(substr_count($content, $one)<1){
 		return NULL;
@@ -402,12 +400,9 @@ function one_two_explode($one,$two,$content){
 }
 
 
-function removeSpace($text){
-	return str_replace(' ','',$text);
-}
-
-function parepareEntityName($text){	
-	return 'E-'.substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,27);
+function nodeName($text){
+	//Cleans text and
+	return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,30);
 }
 
 function echoNode($node,$key){
@@ -422,6 +417,7 @@ function echoNode($node,$key){
 	$is_direct = ($node[$key]['ui_parent_rank']==1);	
 	$is_last_IN = ($node[$key]['node_id']==$node[0]['node_id'] && ( !isset($node[($key+1)]) || $node[($key+1)]['node_id']!=$node[0]['node_id']));
 	$is_first_OUT = ($key>0 && $node[($key-1)]['node_id']==$node[0]['node_id'] && $node[$key]['node_id']!=$node[0]['node_id']);
+	$attention_color = ( $flow_IN ? 'blue' : 'pink' ); //Used for elements that need more attention
 	
 	if($flow_IN){
 		//Parent nodes:
@@ -559,16 +555,16 @@ function echoNode($node,$key){
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
 				
 				//URL ID
-	($key==0 ? ' <span title="'.$node[$key]['sign'].removeSpace($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt grey">/'.$node[$key]['node_id'].'</span>': '').
+	($key==0 ? ' <span title="'.$node[$key]['sign'].nodeName($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt grey">/'.$node[$key]['node_id'].'</span>': '').
 				
 				//Description
 	( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
 				
 				//Workflow under dev?
-				( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt red" aria-hidden="true" title="Pending Development" data-toggle="tooltip"></span>' : '').
+	( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt '.$attention_color.'" aria-hidden="true" title="Pending Development" data-toggle="tooltip"></span>' : '').
 				
 				//Is live via api.ai?
-				( $ui_setting['is_live'] ? ' <span class="glyphicon glyphicon-phone grey hastt green" aria-hidden="true" title="Synced with api.ai which makes it accessible to our users on Messenger" data-toggle="tooltip"></span>' : '').
+	( $ui_setting['is_live'] ? ' <span class="glyphicon glyphicon-phone grey hastt '.$attention_color.'" aria-hidden="true" title="Synced with api.ai which makes it accessible to our users on Messenger" data-toggle="tooltip"></span>' : '').
 				
 				//Is pending verification?
 				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
@@ -579,7 +575,7 @@ function echoNode($node,$key){
 				//Engagement Stats
 				//TODO '<span class="grey hastt" style="padding-left:5px;" title="54 User Message Reads and 156 Foundation Clicks (Community Engagement)" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 210</span>'.
 				
-				(count($node[$key]['parents'])>19 ? ' <span class="red">!'.count($node[$key]['parents']).'IN</span>' : '' ).' <span class="sortconf"></span>'.
+	(count($node[$key]['parents'])>19 ? ' <span class="'.$attention_color.'">!'.count($node[$key]['parents']).'IN</span>' : '' ).' <span class="sortconf"></span>'.
 				
 		'</a>'.
 	'</h4>';
@@ -597,7 +593,15 @@ function echoNode($node,$key){
 			$return_string .= $ui_setting['value_template'];
 		}
 	}
-		
+	
+	
+	//Appendix to the bottom of value under certain situation.
+	//TODO think of a way to systematize this.
+	if($node[$key]['parent_id']==590){
+		//Append clean name:
+		$return_string .= '<div class="clean-name">Live on api.ai: <a href="https://console.api.ai/api-client/#/agent/f272195f-d792-498a-a0d4-a8da90a99bc7/editEntity/'.$node[$key]['value'].'" target="_blank">'.$node[0]['sign'].nodeName($node[0]['value']).'</a></div>';
+	}
+	
 	
 	//This is only used for special nodes for now:
 	$return_string .= $ui_setting['followup_content'];
@@ -607,7 +611,7 @@ function echoNode($node,$key){
 	//TODO $return_string .= '<span title="Revision history to browse previous versions." data-toggle="tooltip" class="hastt"><a href="alert(\'Version Tracking Under Development\')"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> 5</a></span>';
 	
 	//Gem Collector:
-	$return_string .= '<span title="@'.removeSpace($node[$key]['us_node'][0]['value']).' collected this Gem." data-toggle="tooltip"><a href="/'.$node[$key]['us_node'][0]['node_id'].'"><img src="https://www.gravatar.com/avatar/'.md5(strtolower(trim($node[$key]['us_node'][1]['value']))).'?d=identicon" class="mini-image" /></a></span>';
+	$return_string .= '<span title="@'.nodeName($node[$key]['us_node'][0]['value']).' collected this Gem." data-toggle="tooltip"><a href="/'.$node[$key]['us_node'][0]['node_id'].'"><img src="https://www.gravatar.com/avatar/'.md5(strtolower(trim($node[$key]['us_node'][1]['value']))).'?d=identicon" class="mini-image" /></a></span>';
 	
 	//Date
 	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
@@ -645,25 +649,27 @@ function fetchMax($input_array,$searchKey){
 	return $max_ui_rank;
 }
 
-function echoFetchNode($link_id,$parent_id,$node_id,$regular=1){
+function echoFetchNode($link_id,$parent_id,$node_id,$regular=1){	
 	
 	$CI =& get_instance();
 	
+	//First lets make sure the link is not updated:
+	$link = $CI->Us_model->fetch_link($link_id);
+	if(intval($link['status'])<0 && intval($link['update_id'])>0){
+		//Update the link ID to the latest link:
+		$link_id = $link['update_id'];
+	}
+	
 	//Load $node_id with parent $parent_id
-	$node = $CI->Us_model->fetch_full_node(($regular ? $parent_id : $node_id));
-	$match_key = 0; //We need to find this based on $node_id
+	$focus_node = ($regular ? $parent_id : $node_id);
+	$node = $CI->Us_model->fetch_full_node($focus_node);
+	
 	foreach($node as $key=>$value){
 		if($value['id']==$link_id){
-			$match_key = $key;
-			break;
+			return echoNode($node,$key);
 		}
 	}
-	if($match_key>0){
-		//Should always be greater than zero:
-		return echoNode($node,$match_key);
-	} else {
-		//TODO Sould never happen, put alarm system in place, so 
-		//     in case it does we get auto notified...
-		echo_html(0,'Unknown Error.');
-	}
+	
+	//There is an issue if we're still here:
+	return '<div class="list-group-item">Error finding Gem'.$link_id.' in Node'.$focus_node.'</div>';
 }

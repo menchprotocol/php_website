@@ -2,45 +2,83 @@
 
 class Apiai_model extends CI_Model {
 	
+	var $DEV_KEY;
+	var $CLI_KEY;
+	
 	function __construct() {
 		parent::__construct();
-	}
-	
-	
-	
-	
-	
-	
-	
-	function generateSynonyms(){
 		
+		//api.ai API Keys:
+		$this->CLI_KEY = 'fd6bbb1f5e7b44d7a74ec1c472c598a0'; //Client key used to make query callss
+		$this->DEV_KEY = 'c617539ff5ba4f01b75180621b9767d3'; //Dev key To manage @Entities & #Intents
 	}
 	
-	function getSingleEntity($apiai_entity_id){
-		$ch = curl_init('https://api.api.ai/v1/entities/'.$apiai_entity_id.'?v=20150910');
+
+	/*
+	 * 
+	 * @Entity Functions
+	 * 
+	 */
+	function fetch_entity($apiai_obj_id){
+		$ch = curl_init('https://api.api.ai/v1/entities/'.$apiai_obj_id.'?v=20150910');
 		curl_setopt_array($ch, array(
 				CURLOPT_POST => FALSE,
 				CURLOPT_RETURNTRANSFER => TRUE,
 				CURLOPT_HTTPHEADER => array(
-						'Authorization: Bearer c617539ff5ba4f01b75180621b9767d3', //Dev key To manage @Entities & #Intents
+						'Authorization: Bearer '.$this->DEV_KEY,
 				),
 		));
 		// Send the request
 		return objectToArray(json_decode(curl_exec($ch)));
 	}
 	
-	function deleteSingleEntity($apiai_entity_id){
-		$ch = curl_init('https://api.api.ai/v1/entities/'.$apiai_entity_id.'?v=20150910');
+	function delete_entity($apiai_obj_id){
+		$ch = curl_init('https://api.api.ai/v1/entities/'.$apiai_obj_id.'?v=20150910');
 		curl_setopt_array($ch, array(
 				CURLOPT_CUSTOMREQUEST => 'DELETE',
 				CURLOPT_RETURNTRANSFER => TRUE,
 				CURLOPT_HTTPHEADER => array(
-						'Authorization: Bearer c617539ff5ba4f01b75180621b9767d3', //Dev key To manage @Entities & #Intents
+						'Authorization: Bearer '.$this->DEV_KEY,
 				),
 		));
 		// Send the request
 		return objectToArray(json_decode(curl_exec($ch)));
 	}
+	
+	
+	
+	
+	/*
+	 *
+	 * #Intent Functions
+	 *
+	 */
+	function fetch_intent($apiai_obj_id){
+		$ch = curl_init('https://api.api.ai/v1/intents/'.$apiai_obj_id.'?v=20150910');
+		curl_setopt_array($ch, array(
+				CURLOPT_POST => FALSE,
+				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_HTTPHEADER => array(
+						'Authorization: Bearer '.$this->DEV_KEY,
+				),
+		));
+		// Send the request
+		return objectToArray(json_decode(curl_exec($ch)));
+	}
+	
+	function delete_intent($apiai_obj_id){
+		$ch = curl_init('https://api.api.ai/v1/entities/'.$apiai_obj_id.'?v=20150910');
+		curl_setopt_array($ch, array(
+				CURLOPT_CUSTOMREQUEST => 'DELETE',
+				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_HTTPHEADER => array(
+						'Authorization: Bearer '.$this->DEV_KEY,
+				),
+		));
+		// Send the request
+		return objectToArray(json_decode(curl_exec($ch)));
+	}
+	
 	
 	function getAllEntity(){
 		$ch = curl_init('https://api.api.ai/v1/entities?v=20150910');
@@ -48,14 +86,14 @@ class Apiai_model extends CI_Model {
 				CURLOPT_POST => FALSE,
 				CURLOPT_RETURNTRANSFER => TRUE,
 				CURLOPT_HTTPHEADER => array(
-						'Authorization: Bearer c617539ff5ba4f01b75180621b9767d3', //Dev key To manage @Entities & #Intents
+						'Authorization: Bearer '.$this->DEV_KEY,
 				),
 		));
 		// Send the request
 		return objectToArray(json_decode(curl_exec($ch)));
 	}
 	
-	function syncSingleEntity($node_id){
+	function sync_entity($node_id){
 		
 		if(intval($node_id)<1){
 			return array(
@@ -101,7 +139,7 @@ class Apiai_model extends CI_Model {
 		}
 		
 		// The data to send to the API
-		$ent_name = parepareEntityName($IN_links[0]['value']);
+		$ent_name = nodeName($IN_links[0]['value']);
 		$postData = array(
 				'name' => $ent_name,
 				'entries' => array(
@@ -117,7 +155,7 @@ class Apiai_model extends CI_Model {
 		if($apiai_entity_id){
 			//This is an update request:
 			//Try fetching this entity from API.AI:
-			$remote_entity = $this->getSingleEntity($apiai_entity_id);
+			$remote_entity = $this->fetch_entity($apiai_entity_id);
 			
 			if(!isset($remote_entity['entries']) || $remote_entity['id']!==$apiai_entity_id){
 				//Ooops, this was deleted from api.ai?!

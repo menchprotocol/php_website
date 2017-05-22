@@ -165,7 +165,7 @@ class Us_model extends CI_Model {
 			if($link_data['action_type']<0 && $link_data['parent_id']==590){
 								
 				//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
-				$delete_status = $this->Apiai_model->deleteSingleEntity($link_data['value']);
+				$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
 				
 			} else {
 				
@@ -178,7 +178,7 @@ class Us_model extends CI_Model {
 						
 						//Anything else requires add/updating
 						//Sync Entity
-						$custom_status = $this->Apiai_model->syncSingleEntity($link_data['node_id']);
+						$custom_status = $this->Apiai_model->sync_entity($link_data['node_id']);
 						
 						//Update field with result:
 						//Save Entity ID in {value} field for future referencing/updating:

@@ -39,6 +39,10 @@ function pop_search_open(){
 	 $( ".search-block" ).css('width',(win_width-125)+'px');
 }
 
+function resetCoreInputs(){
+	$( "#addnode" ).blur().val("");
+	$( "#mainsearch" ).blur().val("");
+}
 
 var algolia_index,client,algolia_loaded;
 algolia_loaded = 0;
@@ -280,6 +284,8 @@ function edit_link(key,id){
 	}
 }
 
+
+
 var lastToggleId = 0;
 //Wire the enter key on the textarea to save
 $(document).keyup(function(e) {
@@ -294,8 +300,7 @@ $(document).keyup(function(e) {
     	}   	
     	
     	//In case the focus is on these inputs:
-    	$( "#addnode" ).blur().val("");
-    	$( "#mainsearch" ).blur().val("");
+    	resetCoreInputs();
     }
 });
 
@@ -612,6 +617,12 @@ function create_node(node_name){
 		return false;
 	}
 	
+	//Reset:
+	resetCoreInputs();
+	
+	//Re-focus on Add-box, asap:
+	$( "#addnode" ).focus();
+	
 	//Show loader:
 	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( ".list_input" );
 	
@@ -628,14 +639,17 @@ function create_node(node_name){
 		$( ".loading-node" ).remove();
 		$( data.message ).insertBefore( ".list_input" );
 		
+		//Flash our new diamond:
+		//TODO implemenet data.link_id and make it shine for both add/link
+		
+		//Update Toggle:
+		$('[data-toggle="tooltip"]').tooltip();
+
 		//Expand current node:
 		node = data.node;
 		
 		//Reset SORT setting, if filtering IN or OUT:
 		restrat_sort();
-		
-		//Empty search value and focus on it:
-		$( "#addnode" ).focus().val("");
     });
 }
 
@@ -663,39 +677,41 @@ function link_node(child_node_id,new_name){
     	+'</div>'
       +'<div class="modal-body">'
       
-      //Introduction to Flow:
-      +'<p>Choose Flow <span class="glyphicon glyphicon-info-sign hastt" aria-hidden="true" title="Flow moves from OUT towards IN. IN represents the parent/originator while OUT represents the child/dependant." data-placement="bottom" data-toggle="tooltip"></span>:</p>'
-
+      
       +'<div class="form-group">'
-	      + '<label class="radio">'
-	      + '<input type="radio" tabindex="3" name="parentNodeName" id="childValue"> '
-	      + new_name
-	      + ' <span class="boldbadge badge blue-bg">IN <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span></span>'
-	      + '</label>'
-	      
-	      + '<label class="radio">'
-	      + '<input type="radio" tabindex="2" name="parentNodeName" id="originalValue" checked="checked"> '
-	      + new_name
-	      + ' <span class="boldbadge badge pink-bg">OUT <span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span></span>'
-	      + '</label>'
-	  +'</div>'
-	  
-	  +'<div class="form-group">'
       +'<label for="exampleInputEmail1">Optional Value:</label>'
       +'<textarea id="newVal" tabindex="1" class="form-control" rows="3"></textarea>'
       +'</div>'
+      
+      //Introduction to Flow:
+      +'<p>Choose Flow <span class="glyphicon glyphicon-info-sign hastt" aria-hidden="true" title="Flow moves from OUT towards IN. IN represents the parent/originator while OUT represents the child/dependant. Exploring nodes require one to follow its OUTs all the way down." data-placement="bottom" data-toggle="tooltip"></span>:</p>'
+
+      
+      +'<div class="form-group">'
+	      + '<label class="radio">'
+	      + '<input type="radio" tabindex="4" name="parentNodeName" id="originalValue" checked="checked"> '
+	      + new_name
+	      + ' <span class="boldbadge badge pink-bg">OUT <span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span></span>'
+	      + '</label>'
+	      
+	      + '<label class="radio">'
+	      + '<input type="radio" tabindex="2" name="parentNodeName" id="childValue"> '
+	      + new_name
+	      + ' <span class="boldbadge badge blue-bg">IN <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span></span>'
+	      + '</label>'
+	  +'</div>'
+	  
+	  
         
       +'</div>'
       +'<div class="modal-footer">'
         +'<button type="button" id="modalCancel" class="btn btn-default" data-dismiss="modal">Cancel</button>'
-        +'<button type="button" tabindex="4" id="modalSubmit" class="btn btn-primary"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Link</button>'
+        +'<button type="button" tabindex="3" id="modalSubmit" class="btn btn-primary"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Link</button>'
       +'</div>'
     +'</div><!-- /.modal-content -->'
   +'</div><!-- /.modal-dialog -->'
 +'</div><!-- /.modal -->');
 	
-	//Reset Toggle:
-	$('[data-toggle="tooltip"]').tooltip();
 	
 	$('#linkNodeModal').modal('show').on('shown.bs.modal', function () {
 		$("#newVal").focus(); //Focus on the optional value field
@@ -725,34 +741,51 @@ function link_node(child_node_id,new_name){
 			value: $("#newVal").val(),
 		};
 		
-		//Show loader:
-		var loader_position = ( input_data['normal_parenting'] ? ".list_input" : ".first_OUT" );
+		//Show message:
+		var message = '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>';
+		if(input_data['normal_parenting']){
+			$( message ).insertBefore( ".list_input" );
+		} else {
+			$( message ).insertAfter( ".lastIN" );
+		}
+		
 		
 		//Scroll if needed:
 		if(!input_data['normal_parenting']){
 			//This is OUT, which means we should scroll to the top.
 			$('html, body').animate({
 		        scrollTop: $(".lastIN").offset().top
-		    }, 1000);
-		}
+		    }, 500);
+		}		
 		
 		
-		
-		//TODO Improvement: We can position this at the botton of current parent Nodes, instead of at the bottom of child Nodes
-		$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( loader_position );
 		$('#linkNodeModal').modal('hide');
+		
+		//Reset:
+		resetCoreInputs();
+		
+		//Re-focus on Add-box, asap:
+		$( "#addnode" ).focus();
 		
 		//Create node:
 		$.post("/api/link_node", input_data, function(data) {
+			
 			//Update UI to confirm with user:
 			$( ".loading-node" ).remove();
-			$( data.message ).insertBefore( loader_position );
+			
+			if(input_data['normal_parenting']){
+				$( data.message ).insertBefore( ".list_input" );
+			} else {
+				$( data.message ).insertAfter( ".lastIN" );
+			}
+			
+			//Update Toggle:
+			$('[data-toggle="tooltip"]').tooltip();
 			
 			//Reset SORT setting, if filtering IN or OUT:
 			restrat_sort();
 			
-			//Expand current node:
-			node = data.node;
+			//TODO Append newly added data to node var in JS. Later when we move app to JS framework
 	    });
 	});
 }

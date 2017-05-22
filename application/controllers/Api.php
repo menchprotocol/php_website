@@ -53,6 +53,7 @@ class Api extends CI_Controller {
 		echo json_encode(array(
 				'message' => echoFetchNode($new_link['id'],$new_link['parent_id'],$new_link['node_id']),
 				'node' => $this->Us_model->fetch_full_node($new_link['parent_id']),
+				'link_id' => $new_link['id'],
 		));
 	}
 	
@@ -62,6 +63,11 @@ class Api extends CI_Controller {
 		//Make sure all inputs are find:
 		if(intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['child_node_id'])<1){
 			return echo_html(0,'Invalid inputs.');
+		}
+		
+		if(!intval($_REQUEST['normal_parenting']) && is_production()){
+			//Extra pause for JS to scroll up and user see the loading...
+			sleep(1);
 		}
 		
 		//Initial data set:
@@ -93,6 +99,7 @@ class Api extends CI_Controller {
 		echo json_encode(array(
 				'message' => echoFetchNode($new_link['id'],$new_link['parent_id'],$new_link['node_id'],intval($_REQUEST['normal_parenting'])),
 				'node' => $this->Us_model->fetch_full_node( ( intval($_REQUEST['normal_parenting']) ? $new_link['parent_id'] : $new_link['node_id']) ),
+				'link_id' => $new_link['id'],
 		));
 	}
 	
@@ -122,7 +129,7 @@ class Api extends CI_Controller {
 			
 			//Simple link delete:
 			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),intval($_REQUEST['type']));
-			return echo_html($status,($status ? 'Link deleted.' : 'Unknown error.'));
+			return echo_html($status,($status ? 'Link deleted.' : 'Unknown error with status.'));
 			
 		} else {
 			
@@ -248,12 +255,14 @@ class Api extends CI_Controller {
 				$update_data['ui_parent_rank'] = $new_sort_index[$link['id']];
 			}
 			
+			//print_r($update_data);die();
+			
 			//Valid, insert new row:
 			$new_link = $this->Us_model->insert_link($update_data);
 			
 			if(!$new_link){
 				//Ooops, some unknown error:
-				return echo_html(0,'Unknown Error.');
+				return echo_html(0,'Unknown Error while adding link.');
 			}
 			
 			//Then remove old one:
@@ -264,7 +273,7 @@ class Api extends CI_Controller {
 			
 			if(!$affected_rows){
 				//Ooops, some unknown error:
-				return echo_html(0,'Unknown Error.');
+				return echo_html(0,'Unknown Error while updating old link.');
 			} else {
 				//All good!
 				$success++;
