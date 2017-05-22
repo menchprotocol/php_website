@@ -26,11 +26,17 @@ class Bot extends CI_Controller {
 		//Return success message to bot:
 		header('Content-Type: application/json');
 		echo json_encode(array(
-				'status' => array(
-						'code' => ( $new['id'] ? 200 : 206 ),
-						'errorType' => ( $new['id'] ? 'success' : 'unknown_error'),
-						'errorDetails' => ( $new['id'] ? 'Webhook #'.$new['id'].' logged.' : 'Error while logging webhook.'),
-				)
+				'speech' => 'Barack Hussein Obama II is the 44th and current President of the United States.',
+				'displayText' => "Barack Hussein Obama II is the 44th and current President of the United States, and the first African American to hold the office. Born in Honolulu, Hawaii, Obama is a graduate of Columbia University   and Harvard Law School, where ",
+				'data' => array(),
+				'contextOut' => array(),
+				
+				'source' => "DuckDuckGo",
+				
+				//This makes the system ignores "speech", "displayText", and "data":
+				// https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
+				//TODO Implement for unknown:
+				//'followupEvent' => array(),
 		));
 	}
 }
