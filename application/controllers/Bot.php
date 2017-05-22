@@ -24,6 +24,7 @@ class Bot extends CI_Controller {
 		));
 		
 		//Return success message to bot:
+		header("Access-Control-Allow-Origin: *");
 		header('Content-Type: application/json');
 		echo json_encode(array(
 				'speech' => 'Barack Hussein Obama II is the 44th and current President of the United States.',
@@ -38,7 +39,7 @@ class Bot extends CI_Controller {
 				//This makes the system ignores "speech", "displayText", and "data":
 				// https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
 				//TODO Implement for unknown:
-				//'followupEvent' => array(),
+				'followupEvent' => array(),
 		));
 	}
 }
