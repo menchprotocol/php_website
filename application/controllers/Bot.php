@@ -11,7 +11,8 @@ class Bot extends CI_Controller {
 	}
 	
 	function fetch_intent($apiai_id){
-		print_r($this->Apiai_model->fetch_intent($apiai_id));
+		header('Content-Type: application/json');
+		echo json_encode($this->Apiai_model->fetch_intent($apiai_id));
 	}
 	
 	
@@ -43,4 +44,3 @@ class Bot extends CI_Controller {
 		));
 	}
 }
-

@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.59'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.591'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
@@ -414,7 +414,7 @@ function echoNode($node,$key){
 	//$status = status_descriptions($node[$key]['status']);
 	$return_string = '';
 	$flow_IN = ($node[0]['node_id']==$node[$key]['node_id']);
-	$is_direct = ($node[$key]['ui_parent_rank']==1);	
+	$is_direct = ($node[$key]['ui_parent_rank']==1);
 	$is_last_IN = ($node[$key]['node_id']==$node[0]['node_id'] && ( !isset($node[($key+1)]) || $node[($key+1)]['node_id']!=$node[0]['node_id']));
 	$is_first_OUT = ($key>0 && $node[($key-1)]['node_id']==$node[0]['node_id'] && $node[$key]['node_id']!=$node[0]['node_id']);
 	$attention_color = ( $flow_IN ? 'blue' : 'pink' ); //Used for elements that need more attention
@@ -554,9 +554,6 @@ function echoNode($node,$key){
 				//TOP Title
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
 				
-				//URL ID
-	($key==0 ? ' <span title="'.$node[$key]['sign'].nodeName($node[$key]['value']).' is a DIRECT IN Gem which means it has '.$node[$key]['node_id'].' as its URL ID for loading and accessing its Gems." data-toggle="tooltip" class="hastt grey">/'.$node[$key]['node_id'].'</span>': '').
-				
 				//Description
 	( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
 				
@@ -613,20 +610,38 @@ function echoNode($node,$key){
 	//Gem Collector:
 	$return_string .= '<span title="@'.nodeName($node[$key]['us_node'][0]['value']).' collected this Gem." data-toggle="tooltip"><a href="/'.$node[$key]['us_node'][0]['node_id'].'"><img src="https://www.gravatar.com/avatar/'.md5(strtolower(trim($node[$key]['us_node'][1]['value']))).'?d=identicon" class="mini-image" /></a></span>';
 	
+	//Pattern ID
+	$return_string .= ($key==0 ? ' <span title="DIRECT IN Gems have a Pattern ID (or pid) for URL access and inline Gem referencing." data-toggle="tooltip" class="hastt black"><b>||'.$node[$key]['node_id'].'</b></span>': '');
+	
 	//Date
 	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
 	
 	//Gem ID
-	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" style="margin-right:2px;" />'.$node[$key]['id'].'</span>';
+	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" style="margin:-2px 1px 0 0;" />'.$node[$key]['id'].'</span>';
 	
 	
 	if(auth_admin(1)){
-		$return_string .= '<span title="Improve the content of this Gem and earn points." data-toggle="tooltip"><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" title="Link ID '.$node[$key]['id'].'"><span class="glyphicon glyphicon-cog edit-cog" aria-hidden="true"></span></a></span>';		
-		/* TODO Implement later
-		if(!$is_direct){
-			$return_string .= '<span><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link" aria-hidden="true" title="Inverse the direction of the link" data-toggle="tooltip"><span class="glyphicon glyphicon-sort rotate45" aria-hidden="true"></span>Inverse</a></span>';
+		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>';
+		$return_string .= '<ul class="dropdown-menu">';
+		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></li>';
+		
+		//Make sure this is not a grandpa before showing the delete button:
+		$grandparents = grandparents();
+		if(!($key==0 && array_key_exists($node[$key]['node_id'],$grandparents))){
+			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$node[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>';
 		}
-		*/
+		
+		//Display inversing if NOT direct
+		if(!$is_direct){
+			//TODO $return_string .= '<li><a href="javascript:inverse_link('.$key.','.$node[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Flip Direction</a></li>';
+		}
+		if($node[$key]['update_id']>0){
+			//This gem has previous revisions:
+			//TODO $return_string .= '<li><a href="javascript:browse_revisions('.$key.','.$node[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Revisions</a></li>';
+		}
+		
+    $return_string .= '</ul></div>';
+    
 	} else {
 		$return_string .= '<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Limited Access</span>';
 	}

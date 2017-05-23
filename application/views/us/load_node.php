@@ -61,7 +61,7 @@ echo '<div class="list-group lgmain">';
 	if(auth_admin(1)){
 		//An input to create a new node or link to an existing node:
 		echo '<div class="list-group-item list_input">';
-		echo '<form id="addnodeform"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="+ Gem" title="Add a new Gem by either (1) linking IN/OUT to existing Gems or (2) creating a new DIRECT OUT Gem from here :)" data-toggle="tooltip"></form>';
+		echo '<form id="addnodeform"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="+ Gem" title="Add a new Gem by either (1) linking IN/OUT to existing Gems or (2) Add a whole new Pattern with a DIRECT OUT Gem :)" data-toggle="tooltip"></form>';
 		echo '</div>';
 	}
 echo '</div>';

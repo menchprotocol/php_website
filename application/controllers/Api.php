@@ -129,7 +129,7 @@ class Api extends CI_Controller {
 			
 			//Simple link delete:
 			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),intval($_REQUEST['type']));
-			return echo_html($status,($status ? 'Link deleted.' : 'Unknown error with status.'));
+			return echo_html($status,($status ? 'Gem Marked for Removal' : 'Unknown error with status.'));
 			
 		} else {
 			

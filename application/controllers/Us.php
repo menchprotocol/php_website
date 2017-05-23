@@ -76,7 +76,7 @@ class Us extends CI_Controller {
 		
 		if($data_set['node'][0]['id']<1){
 			//We did not find this ID:
-			redirect_message('/1','<div class="alert alert-danger" role="alert">Node id '.$node_id.' does not exist.</div>');
+			redirect_message('/1','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> has no active Gems.</div>');
 		}
 		
 		//See if we have a description:

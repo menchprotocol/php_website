@@ -30,7 +30,7 @@ a { color:#31d2f7; /* #63d297 */ }
 a:hover { text-decoration: underline; text-decoration-style: dotted; }
 .edit_link { display: inline-block; }
 .boldi {margin: 45px 130px 45px 100px !important; }
-.modal-body{background-color:#EFEFEF}
+.modal-body{background-color:#EFEFEF;}
 
 /* Global Font Sizes Per Screen Size */
 body { font-size:22px; }
@@ -55,6 +55,7 @@ h3{ font-size:24px; color:#000; }
 .blue-bg { background-color:#31d2f7 !important; }
 .blue-bg-light { background-color:#86e8ff !important; }
 .blue{ color:#31d2f7 !important; font-size:0.9em; }
+.black{ color:#000 !important; font-size:0.9em; }
 .is_top{ display:block !important;  }
 .is_top .node_stats { margin-left:20px; }
 .link-details.is_top{ padding-left:5px !important;  }
@@ -87,7 +88,8 @@ h3{ font-size:24px; color:#000; }
 #myGravatar img { width:60px; height:60px; }
 .mini-image { border-radius: 50%; width: 22px; height: 22px; margin-top: -4px; }
 
-
+.dropdown-menu .textcomplete-item a,
+.dropdown-menu .textcomplete-item a:hover { font-size:0.8em; padding:3px 10px; }
 
 .list-group-item {
     background-color: #fff;
@@ -129,6 +131,9 @@ h3{ font-size:24px; color:#000; }
 	
 	.list-group-item { padding-top: 5px; padding-bottom:7px; }
 	.list_input{ padding: 0px 0 2px !important; }
+	
+	.dropdown-menu .textcomplete-item a,
+	.dropdown-menu .textcomplete-item a:hover { font-size:0.6em; padding:2px 6px; }
 }
 
 .boldbadge{
@@ -255,7 +260,25 @@ em{
 	font-size:0.7em;
 	color:#AAA;
 }
+.node_stats .btn-group button, .node_stats .btn-group button:hover, .node_stats .btn-group button:active { 
+	padding: 3px 7px 0px 5px;
+	border: 0;
+	background-color:transparent;
+	color:#999;
+}
 
+.node_stats .dropdown-menu {
+	    padding: 1px 0;
+}
+
+.node_stats .dropdown-menu li {
+	    padding:0;
+}
+
+.node_stats .dropdown-menu li a {
+	    font-size:0.7em;
+	    padding: 4px 10px;
+}
 
 .edit-cog{margin-right:2px; font-size:1em; color: #555;}
 .action_buttons {
@@ -488,6 +511,43 @@ footer{ text-align:center; }
     
 }
 
+
+
+/* Text Autocomplete */
+.dropdown-menu {
+	z-index:9999 !important;
+}
+.dropdown-menu .textcomplete-item a,
+.dropdown-menu .textcomplete-item a:hover {
+  cursor: pointer;
+  font-weight: normal;
+  color:#555;
+  position: relative;
+  max-width:260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dropdown-menu .textcomplete-item.active a {
+  color:#000;
+  font-weight:bold;
+  background:#EFEFEF;
+}
+/* Highlighting of the matching part 
+   of each search result */
+.dropdown-menu .textcomplete-item a em {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.algolia-autocomplete .aa-dropdown-menu li a {
+	font-size:0.7em !important;
+}
+
+
+
+
+
 .editable{
 display:block;
 }
@@ -655,10 +715,12 @@ h1 .edit_text_area{
   background-color: #fff;
   border: 1px solid #EFEFEF;
   border-top: none;
+  font-size:0.9em;
 }
 .add_node, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
   cursor: pointer;
-  padding: 5px 4px;
+  padding: 3px 4px;
+  border-top: 1px solid #efefef;
 }
 .add_node:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
   background-color: #31d2f7;

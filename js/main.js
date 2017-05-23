@@ -11,6 +11,175 @@ function nl2br (str, is_xhtml) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
+
+//To be used in text auto complete
+var emojies = [
+	  '+1', '-1', '100', '1234', '8ball', 'a', 'ab', 'abc', 'abcd', 'accept',
+	  'aerial_tramway', 'airplane', 'alarm_clock', 'alien', 'ambulance', 'anchor',
+	  'angel', 'anger', 'angry', 'anguished', 'ant', 'apple', 'aquarius', 'aries',
+	  'arrow_backward', 'arrow_double_down', 'arrow_double_up', 'arrow_down',
+	  'arrow_down_small', 'arrow_forward', 'arrow_heading_down',
+	  'arrow_heading_up', 'arrow_left', 'arrow_lower_left', 'arrow_lower_right',
+	  'arrow_right', 'arrow_right_hook', 'arrow_up', 'arrow_up_down',
+	  'arrow_up_small', 'arrow_upper_left', 'arrow_upper_right',
+	  'arrows_clockwise', 'arrows_counterclockwise', 'art', 'articulated_lorry',
+	  'astonished', 'athletic_shoe', 'atm', 'b', 'baby', 'baby_bottle',
+	  'baby_chick', 'baby_symbol', 'back', 'baggage_claim', 'balloon',
+	  'ballot_box_with_check', 'bamboo', 'banana', 'bangbang', 'bank', 'bar_chart',
+	  'barber', 'baseball', 'basketball', 'bath', 'bathtub', 'battery', 'bear',
+	  'bee', 'beer', 'beers', 'beetle', 'beginner', 'bell', 'bento', 'bicyclist',
+	  'bike', 'bikini', 'bird', 'birthday', 'black_circle', 'black_joker',
+	  'black_large_square', 'black_medium_small_square', 'black_medium_square',
+	  'black_nib', 'black_small_square', 'black_square_button', 'blossom',
+	  'blowfish', 'blue_book', 'blue_car', 'blue_heart', 'blush', 'boar', 'boat',
+	  'bomb', 'book', 'bookmark', 'bookmark_tabs', 'books', 'boom', 'boot',
+	  'bouquet', 'bow', 'bowling', 'bowtie', 'boy', 'bread', 'bride_with_veil',
+	  'bridge_at_night', 'briefcase', 'broken_heart', 'bug', 'bulb',
+	  'bullettrain_front', 'bullettrain_side', 'bus', 'busstop',
+	  'bust_in_silhouette', 'busts_in_silhouette', 'cactus', 'cake', 'calendar',
+	  'calling', 'camel', 'camera', 'cancer', 'candy', 'capital_abcd', 'capricorn',
+	  'car', 'card_index', 'carousel_horse', 'cat', 'cat2', 'cd', 'chart',
+	  'chart_with_downwards_trend', 'chart_with_upwards_trend', 'checkered_flag',
+	  'cherries', 'cherry_blossom', 'chestnut', 'chicken', 'children_crossing',
+	  'chocolate_bar', 'christmas_tree', 'church', 'cinema', 'circus_tent',
+	  'city_sunrise', 'city_sunset', 'cl', 'clap', 'clapper', 'clipboard',
+	  'clock1', 'clock10', 'clock1030', 'clock11', 'clock1130', 'clock12',
+	  'clock1230', 'clock130', 'clock2', 'clock230', 'clock3', 'clock330',
+	  'clock4', 'clock430', 'clock5', 'clock530', 'clock6', 'clock630', 'clock7',
+	  'clock730', 'clock8', 'clock830', 'clock9', 'clock930', 'closed_book',
+	  'closed_lock_with_key', 'closed_umbrella', 'cloud', 'clubs', 'cn',
+	  'cocktail', 'coffee', 'cold_sweat', 'collision', 'computer', 'confetti_ball',
+	  'confounded', 'confused', 'congratulations', 'construction',
+	  'construction_worker', 'convenience_store', 'cookie', 'cool', 'cop',
+	  'copyright', 'corn', 'couple', 'couple_with_heart', 'couplekiss', 'cow',
+	  'cow2', 'credit_card', 'crescent_moon', 'crocodile', 'crossed_flags',
+	  'crown', 'cry', 'crying_cat_face', 'crystal_ball', 'cupid', 'curly_loop',
+	  'currency_exchange', 'curry', 'custard', 'customs', 'cyclone', 'dancer',
+	  'dancers', 'dango', 'dart', 'dash', 'date', 'de', 'deciduous_tree',
+	  'department_store', 'diamond_shape_with_a_dot_inside', 'diamonds',
+	  'disappointed', 'disappointed_relieved', 'dizzy', 'dizzy_face',
+	  'do_not_litter', 'dog', 'dog2', 'dollar', 'dolls', 'dolphin', 'door',
+	  'doughnut', 'dragon', 'dragon_face', 'dress', 'dromedary_camel', 'droplet',
+	  'dvd', 'e-mail', 'ear', 'ear_of_rice', 'earth_africa', 'earth_americas',
+	  'earth_asia', 'egg', 'eggplant', 'eight', 'eight_pointed_black_star',
+	  'eight_spoked_asterisk', 'electric_plug', 'elephant', 'email', 'end',
+	  'envelope', 'envelope_with_arrow', 'es', 'euro', 'european_castle',
+	  'european_post_office', 'evergreen_tree', 'exclamation', 'expressionless',
+	  'eyeglasses', 'eyes', 'facepunch', 'factory', 'fallen_leaf', 'family',
+	  'fast_forward', 'fax', 'fearful', 'feelsgood', 'feet', 'ferris_wheel',
+	  'file_folder', 'finnadie', 'fire', 'fire_engine', 'fireworks',
+	  'first_quarter_moon', 'first_quarter_moon_with_face', 'fish', 'fish_cake',
+	  'fishing_pole_and_fish', 'fist', 'five', 'flags', 'flashlight',
+	  'floppy_disk', 'flower_playing_cards', 'flushed', 'foggy', 'football',
+	  'footprints', 'fork_and_knife', 'fountain', 'four', 'four_leaf_clover', 'fr',
+	  'free', 'fried_shrimp', 'fries', 'frog', 'frowning', 'fu', 'fuelpump',
+	  'full_moon', 'full_moon_with_face', 'game_die', 'gb', 'gem', 'gemini',
+	  'ghost', 'gift', 'gift_heart', 'girl', 'globe_with_meridians', 'goat',
+	  'goberserk', 'godmode', 'golf', 'grapes', 'green_apple', 'green_book',
+	  'green_heart', 'grey_exclamation', 'grey_question', 'grimacing', 'grin',
+	  'grinning', 'guardsman', 'guitar', 'gun', 'haircut', 'hamburger', 'hammer',
+	  'hamster', 'hand', 'handbag', 'hankey', 'hash', 'hatched_chick',
+	  'hatching_chick', 'headphones', 'hear_no_evil', 'heart', 'heart_decoration',
+	  'heart_eyes', 'heart_eyes_cat', 'heartbeat', 'heartpulse', 'hearts',
+	  'heavy_check_mark', 'heavy_division_sign', 'heavy_dollar_sign',
+	  'heavy_exclamation_mark', 'heavy_minus_sign', 'heavy_multiplication_x',
+	  'heavy_plus_sign', 'helicopter', 'herb', 'hibiscus', 'high_brightness',
+	  'high_heel', 'hocho', 'honey_pot', 'honeybee', 'horse', 'horse_racing',
+	  'hospital', 'hotel', 'hotsprings', 'hourglass', 'hourglass_flowing_sand',
+	  'house', 'house_with_garden', 'hurtrealbad', 'hushed', 'ice_cream',
+	  'icecream', 'id', 'ideograph_advantage', 'imp', 'inbox_tray',
+	  'incoming_envelope', 'information_desk_person', 'information_source',
+	  'innocent', 'interrobang', 'iphone', 'it', 'izakaya_lantern',
+	  'jack_o_lantern', 'japan', 'japanese_castle', 'japanese_goblin',
+	  'japanese_ogre', 'jeans', 'joy', 'joy_cat', 'jp', 'key', 'keycap_ten',
+	  'kimono', 'kiss', 'kissing', 'kissing_cat', 'kissing_closed_eyes',
+	  'kissing_heart', 'kissing_smiling_eyes', 'koala', 'koko', 'kr', 'lantern',
+	  'large_blue_circle', 'large_blue_diamond', 'large_orange_diamond',
+	  'last_quarter_moon', 'last_quarter_moon_with_face', 'laughing', 'leaves',
+	  'ledger', 'left_luggage', 'left_right_arrow', 'leftwards_arrow_with_hook',
+	  'lemon', 'leo', 'leopard', 'libra', 'light_rail', 'link', 'lips', 'lipstick',
+	  'lock', 'lock_with_ink_pen', 'lollipop', 'loop', 'loudspeaker', 'love_hotel',
+	  'love_letter', 'low_brightness', 'm', 'mag', 'mag_right', 'mahjong',
+	  'mailbox', 'mailbox_closed', 'mailbox_with_mail', 'mailbox_with_no_mail',
+	  'man', 'man_with_gua_pi_mao', 'man_with_turban', 'mans_shoe', 'maple_leaf',
+	  'mask', 'massage', 'meat_on_bone', 'mega', 'melon', 'memo', 'mens', 'metal',
+	  'metro', 'microphone', 'microscope', 'milky_way', 'minibus', 'minidisc',
+	  'mobile_phone_off', 'money_with_wings', 'moneybag', 'monkey', 'monkey_face',
+	  'monorail', 'moon', 'mortar_board', 'mount_fuji', 'mountain_bicyclist',
+	  'mountain_cableway', 'mountain_railway', 'mouse', 'mouse2', 'movie_camera',
+	  'moyai', 'muscle', 'mushroom', 'musical_keyboard', 'musical_note',
+	  'musical_score', 'mute', 'nail_care', 'name_badge', 'neckbeard', 'necktie',
+	  'negative_squared_cross_mark', 'neutral_face', 'new', 'new_moon',
+	  'new_moon_with_face', 'newspaper', 'ng', 'nine', 'no_bell', 'no_bicycles',
+	  'no_entry', 'no_entry_sign', 'no_good', 'no_mobile_phones', 'no_mouth',
+	  'no_pedestrians', 'no_smoking', 'non-potable_water', 'nose', 'notebook',
+	  'notebook_with_decorative_cover', 'notes', 'nut_and_bolt', 'o', 'o2',
+	  'ocean', 'octocat', 'octopus', 'oden', 'office', 'ok', 'ok_hand', 'ok_woman',
+	  'older_man', 'older_woman', 'on', 'oncoming_automobile', 'oncoming_bus',
+	  'oncoming_police_car', 'oncoming_taxi', 'one', 'open_book',
+	  'open_file_folder', 'open_hands', 'open_mouth', 'ophiuchus', 'orange_book',
+	  'outbox_tray', 'ox', 'package', 'page_facing_up', 'page_with_curl', 'pager',
+	  'palm_tree', 'panda_face', 'paperclip', 'parking', 'part_alternation_mark',
+	  'partly_sunny', 'passport_control', 'paw_prints', 'peach', 'pear', 'pencil',
+	  'pencil2', 'penguin', 'pensive', 'performing_arts', 'persevere',
+	  'person_frowning', 'person_with_blond_hair', 'person_with_pouting_face',
+	  'phone', 'pig', 'pig2', 'pig_nose', 'pill', 'pineapple', 'pisces', 'pizza',
+	  'point_down', 'point_left', 'point_right', 'point_up', 'point_up_2',
+	  'police_car', 'poodle', 'poop', 'post_office', 'postal_horn', 'postbox',
+	  'potable_water', 'pouch', 'poultry_leg', 'pound', 'pouting_cat', 'pray',
+	  'princess', 'punch', 'purple_heart', 'purse', 'pushpin',
+	  'put_litter_in_its_place', 'question', 'rabbit', 'rabbit2', 'racehorse',
+	  'radio', 'radio_button', 'rage', 'rage1', 'rage2', 'rage3', 'rage4',
+	  'railway_car', 'rainbow', 'raised_hand', 'raised_hands', 'raising_hand',
+	  'ram', 'ramen', 'rat', 'recycle', 'red_car', 'red_circle', 'registered',
+	  'relaxed', 'relieved', 'repeat', 'repeat_one', 'restroom',
+	  'revolving_hearts', 'rewind', 'ribbon', 'rice', 'rice_ball', 'rice_cracker',
+	  'rice_scene', 'ring', 'rocket', 'roller_coaster', 'rooster', 'rose',
+	  'rotating_light', 'round_pushpin', 'rowboat', 'ru', 'rugby_football',
+	  'runner', 'running', 'running_shirt_with_sash', 'sa', 'sagittarius',
+	  'sailboat', 'sake', 'sandal', 'santa', 'satellite', 'satisfied', 'saxophone',
+	  'school', 'school_satchel', 'scissors', 'scorpius', 'scream', 'scream_cat',
+	  'scroll', 'seat', 'secret', 'see_no_evil', 'seedling', 'seven', 'shaved_ice',
+	  'sheep', 'shell', 'ship', 'shipit', 'shirt', 'shit', 'shoe', 'shower',
+	  'signal_strength', 'six', 'six_pointed_star', 'ski', 'skull', 'sleeping',
+	  'sleepy', 'slot_machine', 'small_blue_diamond', 'small_orange_diamond',
+	  'small_red_triangle', 'small_red_triangle_down', 'smile', 'smile_cat',
+	  'smiley', 'smiley_cat', 'smiling_imp', 'smirk', 'smirk_cat', 'smoking',
+	  'snail', 'snake', 'snowboarder', 'snowflake', 'snowman', 'sob', 'soccer',
+	  'soon', 'sos', 'sound', 'space_invader', 'spades', 'spaghetti', 'sparkle',
+	  'sparkler', 'sparkles', 'sparkling_heart', 'speak_no_evil', 'speaker',
+	  'speech_balloon', 'speedboat', 'squirrel', 'star', 'star2', 'stars',
+	  'station', 'statue_of_liberty', 'steam_locomotive', 'stew', 'straight_ruler',
+	  'strawberry', 'stuck_out_tongue', 'stuck_out_tongue_closed_eyes',
+	  'stuck_out_tongue_winking_eye', 'sun_with_face', 'sunflower', 'sunglasses',
+	  'sunny', 'sunrise', 'sunrise_over_mountains', 'surfer', 'sushi', 'suspect',
+	  'suspension_railway', 'sweat', 'sweat_drops', 'sweat_smile', 'sweet_potato',
+	  'swimmer', 'symbols', 'syringe', 'tada', 'tanabata_tree', 'tangerine',
+	  'taurus', 'taxi', 'tea', 'telephone', 'telephone_receiver', 'telescope',
+	  'tennis', 'tent', 'thought_balloon', 'three', 'thumbsdown', 'thumbsup',
+	  'ticket', 'tiger', 'tiger2', 'tired_face', 'tm', 'toilet', 'tokyo_tower',
+	  'tomato', 'tongue', 'top', 'tophat', 'tractor', 'traffic_light', 'train',
+	  'train2', 'tram', 'triangular_flag_on_post', 'triangular_ruler', 'trident',
+	  'triumph', 'trolleybus', 'trollface', 'trophy', 'tropical_drink',
+	  'tropical_fish', 'truck', 'trumpet', 'tshirt', 'tulip', 'turtle', 'tv',
+	  'twisted_rightwards_arrows', 'two', 'two_hearts', 'two_men_holding_hands',
+	  'two_women_holding_hands', 'u5272', 'u5408', 'u55b6', 'u6307', 'u6708',
+	  'u6709', 'u6e80', 'u7121', 'u7533', 'u7981', 'u7a7a', 'uk', 'umbrella',
+	  'unamused', 'underage', 'unlock', 'up', 'us', 'v', 'vertical_traffic_light',
+	  'vhs', 'vibration_mode', 'video_camera', 'video_game', 'violin', 'virgo',
+	  'volcano', 'vs', 'walking', 'waning_crescent_moon', 'waning_gibbous_moon',
+	  'warning', 'watch', 'water_buffalo', 'watermelon', 'wave', 'wavy_dash',
+	  'waxing_crescent_moon', 'waxing_gibbous_moon', 'wc', 'weary', 'wedding',
+	  'whale', 'whale2', 'wheelchair', 'white_check_mark', 'white_circle',
+	  'white_flower', 'white_large_square', 'white_medium_small_square',
+	  'white_medium_square', 'white_small_square', 'white_square_button',
+	  'wind_chime', 'wine_glass', 'wink', 'wolf', 'woman', 'womans_clothes',
+	  'womans_hat', 'womens', 'worried', 'wrench', 'x', 'yellow_heart', 'yen',
+	  'yum', 'zap', 'zero', 'zzz'
+	];
+
+
+
 function parents(grandpa_id){
 	grandpa_id = parseInt(grandpa_id);
 	//A PHP version of this function is in us_helper.php
@@ -164,6 +333,48 @@ $( document ).ready(function() {
 });
 
 
+function load_textcomplete(objHandler){
+
+	//Load search
+	load_algolia();
+	
+	var lastQuery = '';
+	$(objHandler).textcomplete([
+		 {
+		    // #3 - Regular expression used to trigger the autocomplete dropdown
+		    match: /(^|\s)\|\|(\w*(?:\S*\w*))$/,
+		    // #4 - Function called at every new keystroke
+		    search: function(query, callback) {
+		      lastQuery = query;
+		      algolia_index.search(lastQuery, { hitsPerPage: 5 })
+		        .then(function searchSuccess(content) {
+		          if (content.query === lastQuery) {
+		            callback(content.hits);
+		          }
+		        })
+		        .catch(function searchFailure(err) {
+		        	console.error(err);
+		        });
+		    },
+		    // #5 - Template used to display each result obtained by the Algolia API
+		    template: function (hit) {
+		      // Returns the highlighted version of the name attribute
+		      return '<b>'+hit._highlightResult.grandpa_sign.value +'</b>'+ hit._highlightResult.value.value;
+		    },
+		    // #6 - Template used to display the selected result in the textarea
+		    replace: function (hit) {
+		      return ' ||'+hit.node_id + ' ';
+		    }
+		 }
+	], {
+	    onKeydown: function (e, commands) {
+	        if (e.ctrlKey && e.keyCode === 74) { // CTRL-J
+	            return commands.KEY_ENTER;
+	        }
+	    }
+	});
+}
+
 //Set some global values for editing:
 var main_val, parent_val, parent_html, key_global, id_global, original_parent_val;
 
@@ -206,28 +417,31 @@ function edit_link(key,id){
 	var cancel_href = 'javascript:discard_link_edit(' + key + ',' + id + ');';
 	//Repurpose original edit link:
 	$('#link'+id+" .edit_link").attr('href',cancel_href);
+	
 	//Add buttons:
-	//TODO: Migrate this logic to node level so we can protect any node with a link to !DeleteProtected
-	if(parents(node[0]['node_id']) && key==0){
-		var delete_button = '<span><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> !DeleteProtected</span>';		
-	} else {
-		var delete_button = '<a class="a_delete" href="javascript:delete_link(' + key + ',' + id + ');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
-	}
 	//Additional fixed buttons:
 	var save_button = '<a class="btn btn-primary btn-sm a_save" href="javascript:save_link_updated(' + key + ',' + id + ');" role="button">Save</a>';
 	var cancel_button = '<a class="a_cancel" href="'+cancel_href+'"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>';
 	//Create action buttons:
-	$('#link'+id+" .hover>div").append('<div class="action_buttons">'+save_button+cancel_button+delete_button+'</div">');
+	$('#link'+id+" .hover>div").append('<div class="action_buttons">'+save_button+cancel_button+'</div">');
 	
 	//Make primary value editable:
 	var height = (  $('#link'+id+" .node_h1").height() <24 ? 24 : $('#link'+id+" .node_h1").height() );
-	$('#link'+id+" .node_h1").html('<textarea style="height:'+height+'px; font-weight:'+( key==0 ? 'bold' : 'normal')+';"></textarea>');
+	$('#link'+id+" .node_h1").html('<textarea class="mainEditTextarea" style="height:'+height+'px; font-weight:'+( key==0 ? 'bold' : 'normal')+';"></textarea>');
+	//$('#link'+id+" .node_h1 textarea").addClass('');
 	
-	//Update parent only if this is a direct link:
+	
 	if(parseInt($( '#link'+id ).attr('is-direct'))){
+		//This is a direct link, bind text changes
 		$('#link'+id+" .node_h1 textarea").bind('input propertychange', function() {
 			$('#tl'+id).text($('#link'+id+" .node_h1 textarea").val());
 		});
+	} else {
+		
+		//This is a indirect Gem
+		//Append textcomplete only for non-direct gems
+		//Inform users that doubleLine is enabled:
+		load_textcomplete('.mainEditTextarea');
 	}
 		
 	
@@ -347,6 +561,9 @@ function discard_link_edit(key,id,keep_parent=false,origin='default'){
 		//Resent parent value
 		$('#tl'+id).text(original_parent_val);
 	}
+	
+	//Remove TextComplete, if any
+	$('#link'+id+' .mainEditTextarea').textcomplete('destroy');
 	
 	//Reset input fields back to defualt values:
 	$('#link'+id+" .node_h1").html(nl2br(main_val));
@@ -476,12 +693,15 @@ function delete_link(key,id){
 	//TODO Implement more stats on what would be deleted!
 	$('#link'+id+" .a_delete").attr('href','javascript:cancel_delete_link(' + key + ',' + id + ');');
 	
+	//Update this:
+	parent_val = $.trim($('#link'+id+" .parentTopLink .anchor").text());
+	
 	//TODO: The descriptions here can be improved to be more clear
 	if(key==0){
 		if(child_count>0){
-			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><ul style="list-style:decimal; margin-left:-20px;">'
-				+'<li>Move children to <span id="setdelparentcontainer" node-id="'+node[0]['parent_id']+'"><input type="text" id="setdeleteparent" class="autosearch" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a></li>'
-				+'<li>Delete '+child_count+' children & all their grandchildren: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Nuclear</a></li>'
+			var del_box = '<b style="color:#fe3c3c">You removing this entire pattern:</b><br /><ul style="list-style:decimal; margin-left:-20px;">'
+				+'<li>Move DIRECT OUTs to <span id="setdelparentcontainer" node-id="'+node[0]['parent_id']+'"><input type="text" id="setdeleteparent" class="autosearch" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a></li>'
+				+'<li>Remove '+child_count+' OUT Gems & all dependant DIRECT OUTs: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Nuclear</a></li>'
 				+ '</ul>';
 		} else {
 			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><b>Confirm:</b> <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -2)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
@@ -540,6 +760,9 @@ function delete_link_confirmed(key,id,type){
 	 * 
 	 * */
 	
+	
+	//TODO Fix this BUG when this function removes vital CSS classes used to position newly added/linked Gems
+	
 
 	//Prepare data for processing:
 	var input_data = {
@@ -588,7 +811,7 @@ function save_link_updated(key,id){
 	$('#link'+id+" .node_h1").html(nl2br(new_value));
 	
 	//Show processing in UI:
-	$('#link'+id+" .hover>div").append('<span class="action_buttons saving"><img src="/img/loader.gif" /> Saving...</span>');
+	$('#link'+id+" .hover>div").append('<span class="action_buttons saving"><img src="/img/loader.gif" /> Adding <img src="/img/gem/diamond_48.png" width="20" class="light" />...</span>');
 
 	//Prepare data for processing:
 	var input_data = {
@@ -624,7 +847,7 @@ function create_node(node_name){
 	$( "#addnode" ).focus();
 	
 	//Show loader:
-	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>' ).insertBefore( ".list_input" );
+	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Adding <img src="/img/gem/diamond_48.png" width="20" class="light" />...</div>' ).insertBefore( ".list_input" );
 	
 	var input_data = {
 		grandpa_id:node[0]['grandpa_id'],
@@ -673,13 +896,13 @@ function link_node(child_node_id,new_name){
     +'<div class="modal-content">'
     	+'<div class="modal-header">'
     		+'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-    		+'<h3 class="modal-title">New <img src="/img/gem/diamond_48.png" width="36" class="light" style="margin-right:2px;"> from '+parents(node[0]['grandpa_id'])+node[0]['value']+'</h3>'
+    		+'<h3 class="modal-title">Add <img src="/img/gem/diamond_48.png" width="20" class="light" style="margin-right:2px;"> from '+parents(node[0]['grandpa_id'])+node[0]['value']+'</h3>'
     	+'</div>'
       +'<div class="modal-body">'
       
       
       +'<div class="form-group">'
-      +'<label for="exampleInputEmail1">Optional Value:</label>'
+      +'<label>Optional Value:</label>'
       +'<textarea id="newVal" tabindex="1" class="form-control" rows="3"></textarea>'
       +'</div>'
       
@@ -713,8 +936,16 @@ function link_node(child_node_id,new_name){
 +'</div><!-- /.modal -->');
 	
 	
+	
+	
+	
 	$('#linkNodeModal').modal('show').on('shown.bs.modal', function () {
-		$("#newVal").focus(); //Focus on the optional value field
+		
+		//Focus on the optional value field:
+		$("#newVal").focus(); 
+		
+		//Enable textComplete:
+		load_textcomplete('#newVal');
 		
 		//wire in key code for saving:
 		$('#newVal').keypress(function (e) {
@@ -724,6 +955,7 @@ function link_node(child_node_id,new_name){
 	        	$( "#modalSubmit" ).click();
 	        }
 	    });
+		
 	});
 	
 	
@@ -732,6 +964,10 @@ function link_node(child_node_id,new_name){
 		$( "#addnode" ).val("").focus();
 	});
 	
+	//Show tooltips:
+	$('[data-toggle="tooltip"]').tooltip();
+	
+	//Listen for submission:
 	$( "#modalSubmit" ).click(function() {
 				
 		var input_data = {
@@ -742,7 +978,7 @@ function link_node(child_node_id,new_name){
 		};
 		
 		//Show message:
-		var message = '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Saving...</div>';
+		var message = '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Adding <img src="/img/gem/diamond_48.png" width="20" class="light" />...</div>';
 		if(input_data['normal_parenting']){
 			$( message ).insertBefore( ".list_input" );
 		} else {
@@ -785,6 +1021,8 @@ function link_node(child_node_id,new_name){
 			//Reset SORT setting, if filtering IN or OUT:
 			restrat_sort();
 			
+			//Expand current node:
+			node = data.node;
 			//TODO Append newly added data to node var in JS. Later when we move app to JS framework
 	    });
 	});
