@@ -9,12 +9,12 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.591'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.60'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
 	ini_set('memory_limit','2048M');
-	ini_set('max_execution_time', 300);
+	ini_set('max_execution_time', 600);
 }
 
 function objectToArray( $object ) {
