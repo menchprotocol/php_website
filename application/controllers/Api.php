@@ -119,11 +119,6 @@ class Api extends CI_Controller {
 			return echo_html(0,'Invalid inputs.');
 		}
 		
-		
-		
-		//TODO: Update Algolia Search index
-		
-		
 		//Start deleting:
 		if($_REQUEST['type']==-1){
 			
@@ -196,7 +191,7 @@ class Api extends CI_Controller {
 				'node_id' => $link['node_id'],
 				'grandpa_id' => ( $p_update ? $parent_node['grandpa_id'] : $link['grandpa_id']),
 				'parent_id' =>  ( $p_update ? $parent_node['node_id'] : $link['parent_id']),
-				'value' => ( strlen($_REQUEST['new_value'])>0 ? $_REQUEST['new_value'] : null),
+				'value' => ( strlen($_REQUEST['new_value'])>0 ? $_REQUEST['new_value'] : ''),
 				'update_id' => $link['id'],
 				'ui_rank' => $link['ui_rank'],
 				'ui_parent_rank' => $link['ui_parent_rank'],
@@ -209,8 +204,29 @@ class Api extends CI_Controller {
 			return echo_html(0,'Unknown Error while saving changes.');
 		}
 		
-		//All good!
-		echo_html(1,'');
+		
+		//Return results as a new line:
+		header('Content-Type: application/json');
+		if($p_update){
+			//Parent updated, redirect:
+			echo json_encode(array(
+					'message' => 'Success',
+					'link_id' => $new_link['id'],
+					'new_parent_id' => intval($_REQUEST['new_parent_id']),
+			));
+		} else {
+			
+			//What this a child or parent edit?
+			$is_IN = !($_REQUEST['original_node_id']==$new_link['node_id']);
+			
+			echo json_encode(array(
+					'message' => echoFetchNode($new_link['id'],$new_link['parent_id'],$new_link['node_id'],$is_IN,true),
+					'node' => $this->Us_model->fetch_full_node( ( $is_IN ? $new_link['parent_id'] : $new_link['node_id']) ),
+					'link_id' => $new_link['id'],
+					'new_parent_id' => 0,
+			));
+		}
+			
 	}
 	
 	function update_sort(){

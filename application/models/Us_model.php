@@ -43,7 +43,6 @@ class Us_model extends CI_Model {
 	function insert_link($link_data){
 		
 		$is_update = (isset($link_data['update_id']) && intval($link_data['update_id'])>0);
-		$is_value_reques = ( in_array($link_data['action_type'],array(2,4)) );
 		$parent_update = false;
 		
 		//Fetch node ID and TOP nodes:
@@ -79,7 +78,7 @@ class Us_model extends CI_Model {
 			if(isset($user_data['node_id'])){
 				$link_data['us_id'] = $user_data['node_id'];
 			} else {
-				//This should NOT happen!
+				//This should NOT happen:
 				return false;
 			}
 		}
@@ -155,7 +154,7 @@ class Us_model extends CI_Model {
 		
 		
 		//Perform special/custom functions based on parent nodes.
-		if($link_data['action_type']<0 || $is_value_reques){
+		if($link_data['action_type']<0 || in_array($link_data['action_type'],array(2,4))){
 			
 			
 			//Fetch the parents of this Node:
@@ -165,7 +164,13 @@ class Us_model extends CI_Model {
 			if($link_data['action_type']<0 && $link_data['parent_id']==590){
 								
 				//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
-				$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
+				if($IN_links[0]['grandpa_id']==1){
+					//This is an @Entity
+					$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
+				} elseif($IN_links[0]['grandpa_id']==3){
+					//This is an #Intent:
+					$delete_status = $this->Apiai_model->delete_intent($link_data['value']);
+				}
 				
 			} else {
 				
@@ -177,17 +182,15 @@ class Us_model extends CI_Model {
 						//Lets attemp to sync and save the results:
 						
 						//Anything else requires add/updating
-						//Sync Entity
-						$custom_status = $this->Apiai_model->sync_entity($link_data['node_id']);
-						
-						//Update field with result:
-						//Save Entity ID in {value} field for future referencing/updating:
-						if(($custom_status['status'] && isset($custom_status['res']['id'])) || !$custom_status['status']){
-							$this->insert_link(array(
-									'value' => ( $custom_status['status'] ? $custom_status['res']['id'] : 'Error: '.$custom_status['message'].' | Array: '.print_r($custom_status['res'],true) ), //Our new ID
-									'update_id' => $INs['id'],
-									'action_type' => 5, //For system updates
-							));
+						if($IN_links[0]['grandpa_id']==1){
+							
+							//This is an @Entity that needs syncing:
+							$custom_status = $this->Apiai_model->sync_entity( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
+							
+						} elseif($IN_links[0]['grandpa_id']==3){
+							
+							//This is an #Intent that needs syncing:
+							$custom_status = $this->Apiai_model->sync_intent( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
 						}
 					}
 				}
@@ -237,7 +240,8 @@ class Us_model extends CI_Model {
 				
 				if($link_data['algolia_id']>0){
 					//We're deleting:
-					$index->deleteObject($link_data['algolia_id']);
+					//TODO has a PHP BUg, fix later:
+					//$index->deleteObject($link_data['algolia_id']);
 				} else {
 					//This is secondary, lets update it:
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
@@ -246,9 +250,13 @@ class Us_model extends CI_Model {
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
 						$res = $index->saveObjects($return);
 					}
-				}				
+				}	
 			}
 		}
+		
+		
+		
+		
 		
 		//Boya!
 		return $link_data;
@@ -455,23 +463,11 @@ class Us_model extends CI_Model {
 	
 	
 	function fetch_full_node($node_id){
+		//TODO merge into fetch_node() with new action type
 		//The new function that would use the old one to fetch the complete node:
 		$parent = $this->Us_model->fetch_node($node_id, 'fetch_parents');
 		$child 	= $this->Us_model->fetch_node($node_id, 'fetch_children');
-		$merge = array_merge($parent,$child);
-		
-		if($merge[0]['status']==0){
-			//TODO This is a hack, need a better solution:
-			foreach($merge as $key=>$value){
-				if($value['status']==1){
-					//This is the main guy:
-					$merge[$key] = $merge[0];
-					$merge[0] = $value;
-					break;
-				}
-			}
-		}
-		return $merge;
+		return array_merge($parent,$child);
 	}
 	
 	function fetch_grandpas_child($node_id){

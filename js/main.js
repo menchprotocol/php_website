@@ -491,7 +491,7 @@ function edit_link(key,id){
 		    displayKey: function(suggestion) { return "" },
 		    templates: {
 		      suggestion: function(suggestion) {
-		         return parents(parseInt(suggestion.grandpa_id)) + suggestion._highlightResult.value.value;
+		         return parents(parseInt(suggestion.grandpa_id)) + suggestion.value;
 		      },
 		    }
 		}]);
@@ -815,21 +815,45 @@ function save_link_updated(key,id){
 
 	//Prepare data for processing:
 	var input_data = {
-		key:key,
-		id:id,
-		new_parent_id:new_parent_id,
-		new_value:new_value,
+			original_node_id:node[0]['node_id'],
+			key:key,
+			id:id,
+			new_parent_id:new_parent_id,
+			new_value:new_value,
 	};
 	
 	//Update backend:
 	$.post("/api/update_link", input_data, function(data) {
 		//Update UI to confirm with user:
-		$('#link'+id+" .hover>div").html(data);
 		
-		//Disapper in a while:
-		setTimeout(function() {
-			$('#link'+id+" .hover>div>span").fadeOut();
-	    }, 3000);
+		if( !data.message ){
+			
+			//Means an error message:
+			$('#link'+id+" .hover>div").html(data);
+			
+			//Disapper in a while:
+			setTimeout(function() {
+				$('#link'+id+" .hover>div>span").fadeOut();
+		    }, 3000);
+			
+		} else if(key==0 && data.new_parent_id>0){
+			
+			//User changed the parent, lets redirect to new one:
+			location.replace( "/"+data.new_parent_id+'?from='+node[0]['node_id'] );
+			
+		} else {
+			
+			$('#link'+id).replaceWith(data.message);
+			
+			//Update Toggle:
+			$('[data-toggle="tooltip"]').tooltip();
+	
+			//Expand current node:
+			node = data.node;
+			
+			//Reset SORT setting, if filtering IN or OUT:
+			restrat_sort();
+		}
     });
 }
 
@@ -873,6 +897,10 @@ function create_node(node_name){
 		
 		//Reset SORT setting, if filtering IN or OUT:
 		restrat_sort();
+		
+		//Reset:
+		resetCoreInputs();
+		$('#addnode').focus();
     });
 }
 
@@ -890,7 +918,7 @@ function link_node(child_node_id,new_name){
 		$('#linkNodeModal').remove();
 	}
 	
-	$('#linkNodeModal').remove();
+	
 	$('body').append('<div class="modal fade" id="linkNodeModal" tabindex="-1" role="dialog">'
   +'<div class="modal-dialog" role="document">'
     +'<div class="modal-content">'
@@ -942,7 +970,7 @@ function link_node(child_node_id,new_name){
 	$('#linkNodeModal').modal('show').on('shown.bs.modal', function () {
 		
 		//Focus on the optional value field:
-		$("#newVal").focus(); 
+		$("#newVal").focus();
 		
 		//Enable textComplete:
 		load_textcomplete('#newVal');
@@ -961,7 +989,11 @@ function link_node(child_node_id,new_name){
 	
 	//Setup listeners:
 	$( "#modalCancel" ).click(function() {
-		$( "#addnode" ).val("").focus();
+		//Reset:
+		resetCoreInputs();
+		
+		//Re-focus on Add-box, asap:
+		$( "#addnode" ).focus();
 	});
 	
 	//Show tooltips:
@@ -982,7 +1014,7 @@ function link_node(child_node_id,new_name){
 		if(input_data['normal_parenting']){
 			$( message ).insertBefore( ".list_input" );
 		} else {
-			$( message ).insertAfter( ".lastIN" );
+			$( message ).insertAfter( $(".lastIN").last() );
 		}
 		
 		
@@ -990,18 +1022,12 @@ function link_node(child_node_id,new_name){
 		if(!input_data['normal_parenting']){
 			//This is OUT, which means we should scroll to the top.
 			$('html, body').animate({
-		        scrollTop: $(".lastIN").offset().top
+		        scrollTop: $(".lastIN").last().offset().top
 		    }, 500);
-		}		
+		}
 		
 		
 		$('#linkNodeModal').modal('hide');
-		
-		//Reset:
-		resetCoreInputs();
-		
-		//Re-focus on Add-box, asap:
-		$( "#addnode" ).focus();
 		
 		//Create node:
 		$.post("/api/link_node", input_data, function(data) {
@@ -1009,10 +1035,15 @@ function link_node(child_node_id,new_name){
 			//Update UI to confirm with user:
 			$( ".loading-node" ).remove();
 			
+			//Reset:
+			resetCoreInputs();
+			
 			if(input_data['normal_parenting']){
 				$( data.message ).insertBefore( ".list_input" );
+				//Re-focus on Add-box, asap:
+				$( "#addnode" ).focus();
 			} else {
-				$( data.message ).insertAfter( ".lastIN" );
+				$( data.message ).insertAfter( $(".lastIN").last() );
 			}
 			
 			//Update Toggle:
@@ -1024,6 +1055,8 @@ function link_node(child_node_id,new_name){
 			//Expand current node:
 			node = data.node;
 			//TODO Append newly added data to node var in JS. Later when we move app to JS framework
+			
+			
 	    });
 	});
 }

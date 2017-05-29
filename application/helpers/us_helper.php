@@ -322,9 +322,9 @@ function count_links($node,$type){
 
 function echo_html($status,$message){
 	if($status){
-		echo '<span class="success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'</span>';
+		echo '<span class="success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'.</span>';
 	} else {
-		echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.'</span></div>';
+		echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.' Refresh to try again.</span></div>';
 	}
 	return $status;
 }
@@ -389,6 +389,87 @@ function auth_admin($donot_redirect=false){
 }
 
 
+function nodeName($text){
+	//Cleans text and
+	return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,30);
+}
+
+
+function extract_patterns($value){
+	//TODO merge this into $this->Apiai_model->sync_intent() as that is a more comprehensive function
+	
+	$prefs = array();
+	$temp = explode('||',$value);
+	
+	//Anything?
+	if(count($temp)<=1){
+		//No pattern reference found:
+		return $prefs;
+	}
+	
+	
+	//We have something...
+	$CI =& get_instance();
+	$grandparents = grandparents();
+	
+	foreach($temp as $key=>$t){
+		if($key>0){
+			//Do we have any space?
+			if(substr_count($t,' ')>0){
+				$temp2 = explode(' ',$t,2);
+				$num_attemp = intval($temp2[0]);
+			} elseif(intval(substr($t,0,1))==substr($t,0,1)){
+				$num_attemp = intval($t);
+			} else {
+				$num_attemp = 0;
+			}
+			
+			if($num_attemp && !isset($prefs[$num_attemp])){
+				$INs = $CI->Us_model->fetch_node($num_attemp);
+				if(isset($INs[0]['node_id'])){
+					//Process to see if we have User Says or Sysnonyms:
+					//TODO show the related content in tool tip:
+					/*
+					$tooltip = null;
+					foreach($INs as $key=>$IN){
+						if(in_array($IN['parent_id'],array(561,595))){
+							$tooltip .= $IN['value'].' ';
+						}
+					}
+					
+					if($tooltip){
+						
+					} else {
+						
+					}
+					*/
+					
+					$prefs[$INs[0]['node_id']] = array(
+							'clean_name' => $grandparents[$INs[0]['grandpa_id']]['sign'].nodeName($INs[0]['value']),
+							'html' => '<a href="/'.$INs[0]['node_id'].'">'.$grandparents[$INs[0]['grandpa_id']]['sign'].nodeName($INs[0]['value']).'</a>',
+					);
+				}
+			}
+		}
+	}
+	
+	return $prefs;
+}
+
+function echoValue($value){
+	
+	$value = nl2br($value);
+	$prefs = extract_patterns($value);
+		
+	if(count($prefs)>0){
+		foreach($prefs as $pid=>$res){
+			//Replace in Value:
+			$value = str_replace( '||'.$pid , $res['html'] , $value );
+		}
+	}
+	
+	return $value;
+}
 
 function one_two_explode($one,$two,$content){
 	if(substr_count($content, $one)<1){
@@ -400,12 +481,9 @@ function one_two_explode($one,$two,$content){
 }
 
 
-function nodeName($text){
-	//Cleans text and
-	return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,30);
-}
 
-function echoNode($node,$key){
+
+function echoNode($node,$key,$load_open=false){
 	
 	$CI =& get_instance();
 	$user_data = $CI->session->userdata('user');
@@ -436,11 +514,12 @@ function echoNode($node,$key){
 	$ui_setting = array(
 			'template_matched' => 0,
 			'workflow_dev' => 0,
-			'auto_open' => 0,
+			'auto_open' => ( $load_open ),
 			'is_live' => 0, //Used for intents and entities that are being synced
 			'value_template' => null,
 			'followup_content' => null,
 			'node_description' => null,
+			'is_message_content' => null,
 	);
 	
 	//First from direct parents:
@@ -518,9 +597,11 @@ function echoNode($node,$key){
 			} elseif($p['parent_id']==628){
 				//Workflow Under development
 				$ui_setting['workflow_dev'] = 1;
-			} elseif(in_array($p['parent_id'],array(590,594)) || in_array($p['node_id'],array(590,594))){
+			} elseif(in_array(590,array($p['parent_id'],$p['node_id']))){
 				//Workflow Under development
 				$ui_setting['is_live'] = 1;
+			} elseif($p['parent_id']==566){
+				$ui_setting['is_message_content'] = 1;
 			}
 		}
 	}
@@ -555,7 +636,10 @@ function echoNode($node,$key){
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
 				
 				//Description
-	( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
+				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
+	
+				//Messaging content?
+				( $ui_setting['is_message_content'] ? ' <span class="glyphicon glyphicon-comment grey hastt '.$attention_color.'" aria-hidden="true" title="Messaging content that would be shared with users." data-toggle="tooltip"></span>' : '').
 				
 				//Workflow under dev?
 	( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt '.$attention_color.'" aria-hidden="true" title="Pending Development" data-toggle="tooltip"></span>' : '').
@@ -585,18 +669,10 @@ function echoNode($node,$key){
 	if($flow_IN || !$is_direct){
 		//Did we find any template matches? If not, just display:
 		if(!$ui_setting['template_matched']){
-			$return_string .= nl2br($node[$key]['value']);
+			$return_string .= echoValue($node[$key]['value']);
 		} else {
 			$return_string .= $ui_setting['value_template'];
 		}
-	}
-	
-	
-	//Appendix to the bottom of value under certain situation.
-	//TODO think of a way to systematize this.
-	if($node[$key]['parent_id']==590){
-		//Append clean name:
-		$return_string .= '<div class="clean-name">Live on api.ai: <a href="https://console.api.ai/api-client/#/agent/f272195f-d792-498a-a0d4-a8da90a99bc7/editEntity/'.$node[$key]['value'].'" target="_blank">'.$node[0]['sign'].nodeName($node[0]['value']).'</a></div>';
 	}
 	
 	
@@ -664,7 +740,7 @@ function fetchMax($input_array,$searchKey){
 	return $max_ui_rank;
 }
 
-function echoFetchNode($link_id,$parent_id,$node_id,$regular=1){	
+function echoFetchNode($link_id,$parent_id,$node_id,$regular=1,$load_open=false){
 	
 	$CI =& get_instance();
 	
@@ -681,7 +757,7 @@ function echoFetchNode($link_id,$parent_id,$node_id,$regular=1){
 	
 	foreach($node as $key=>$value){
 		if($value['id']==$link_id){
-			return echoNode($node,$key);
+			return echoNode($node,$key,$load_open);
 		}
 	}
 	
