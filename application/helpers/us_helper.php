@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.60'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.61'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
@@ -275,44 +275,6 @@ function action_type_descriptions($action_type_id){
 	}
 }
 
-function generate_algolia_obj($node_id,$algolia_id=0){
-		
-	$CI =& get_instance();
-	
-	//Fetch parents:
-	$node = $CI->Us_model->fetch_node($node_id , 'fetch_parents' , array('recursive_level'=>1) );
-	
-	//Grandpa Signs:
-	$grandparents = grandparents(); //Everything at level 1
-	
-	//CLeanup and prep for search indexing:
-	$node_search_object = array();
-	
-	foreach($node as $i=>$link){
-		if($i==0){
-			//This is the primary link, Lets append some core info:
-			$node_search_object = array(
-					'node_id' => $link['node_id'],
-					'grandpa_id' => $link['grandpa_id'],
-					'grandpa_sign' => $grandparents[$link['grandpa_id']]['sign'],
-					'parent_id' => $link['parent_id'],
-					'value' => $link['value'],
-					'links_blob' => '',
-			);
-			if($algolia_id>0){
-				$node_search_object['objectID'] = $algolia_id; //This would update
-			}
-			
-		} elseif(strlen($link['value'])>0){
-			//This is a secondary link with a value attached to it
-			//Lets add this to the links blob
-			$node_search_object['links_blob'] .= strip_tags($link['value']).' ';
-		}
-	}
-	
-	return $node_search_object;
-}
-
 function count_links($node,$type){
 	$child_count = 0;
 	foreach($node as $value){
@@ -371,11 +333,6 @@ function redirect_message($url,$message){
 	die();
 }
 
-function load_algolia($index_name='nodes'){
-	require_once('application/libraries/algoliasearch.php');
-	$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-	return $client->initIndex($index_name);
-}
 
 function auth($donot_redirect=false){
 	$CI =& get_instance();
@@ -663,7 +620,10 @@ function echoNode($node,$key,$load_open=false){
 				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
 				
 				//Link Count
-				' <span class="grey hastt" title="'.( $node[$key]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['link_count'].' Gems at next step.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['link_count'].'</span>'.
+				' <span class="grey hastt" title="'.( $node[$key]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['link_count'].' Gems at next step, '.($node[$key]['link_count']-$node[$key]['out_count']).' IN, '.$node[$key]['out_count'].' OUT.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['link_count'].'</span>'.
+	
+				//DIRECT OUT Count:
+	( $node[$key]['direct_out_count']>0 && $key>0 ? ' <span class="grey hastt" title="This Pattern has '.$node[$key]['direct_out_count'].' DIRECT OUTs" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>'.$node[$key]['direct_out_count'].'</span>' : '').
 								
 				//Engagement Stats
 				//TODO '<span class="grey hastt" style="padding-left:5px;" title="54 User Message Reads and 156 Foundation Clicks (Community Engagement)" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 210</span>'.

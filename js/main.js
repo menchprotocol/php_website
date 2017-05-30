@@ -693,19 +693,33 @@ function delete_link(key,id){
 	//TODO Implement more stats on what would be deleted!
 	$('#link'+id+" .a_delete").attr('href','javascript:cancel_delete_link(' + key + ',' + id + ');');
 	
-	//Update this:
-	parent_val = $.trim($('#link'+id+" .parentTopLink .anchor").text());
+	//Determine direction:
+	var is_inward = (key==0 || node[key]['node_id']==node[0]['node_id']);
+	
+	if(is_inward){
+		parent_val = $.trim($('#link'+id+" .parentTopLink .anchor").text());
+	} else {
+		parent_val = node[0]['sign']+node[0]['value'];
+	}
 	
 	//TODO: The descriptions here can be improved to be more clear
-	if(key==0){
-		if(child_count>0){
-			var del_box = '<b style="color:#fe3c3c">You removing this entire pattern:</b><br /><ul style="list-style:decimal; margin-left:-20px;">'
-				+'<li>Move DIRECT OUTs to <span id="setdelparentcontainer" node-id="'+node[0]['parent_id']+'"><input type="text" id="setdeleteparent" class="autosearch" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a></li>'
-				+'<li>Remove '+child_count+' OUT Gems & all dependant DIRECT OUTs: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Nuclear</a></li>'
+	var do_search = 0;
+	if(node[key]['ui_parent_rank']==1 && node[key]['link_count']>1){
+		
+		if(node[key]['direct_out_count']>1){
+			
+			//This has more links to it, give the user some options:
+			var del_box = '<b style="color:#fe3c3c">Remove entire pattern:</b><br /><ul style="list-style:decimal; margin-left:-20px;">'
+				+'<li>Move '+node[key]['direct_out_count']+' DIRECT OUTs to <span class="setdelparentcontainer" node-id="'+( is_inward ? node[0]['parent_id'] : node[0]['node_id'] )+'"><input type="text" class="autosearch setdeleteparent" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete & Move</a></li>'
+				+'<li>Remove '+node[key]['out_count']+' OUT Gems & all dependant DIRECT OUTs: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Go Nuclear!</a></li>'
 				+ '</ul>';
+			
+			do_search = 1;
+			
 		} else {
 			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><b>Confirm:</b> <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -2)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
 		}
+		
 	} else {
 		var del_box = '<b>Confirm:</b> '
 			+'<a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -1)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
@@ -713,18 +727,17 @@ function delete_link(key,id){
 	
 	$('#link'+id+' .node_stats').append('<div id="delete_confirm">' + del_box + ' or <a href="javascript:cancel_delete_link(' + key + ',' + id + ')" style="color:#999;"><u>cancel</u></a></div>');
 
-
-	if(key==0 && child_count>0){
-		//Loadup search engine if not already:
+	//Update Algolia now:
+	if(do_search){
 		load_algolia();
 		
 		//Enable searching for a new parent:
-		$( '#link'+id+' #setdeleteparent' ).on('autocomplete:selected', function(event, suggestion, dataset) {
+		$( '#link'+id+' .setdeleteparent' ).on('autocomplete:selected', function(event, suggestion, dataset) {
 			//Set new id:
-			$( '#link'+id+' #setdelparentcontainer' ).attr('node-id' , suggestion.node_id);
+			$( '#link'+id+' .setdelparentcontainer' ).attr('node-id' , suggestion.node_id);
 			
 			//Set HTML without any further editing options:
-			$( '#link'+id+' #setdelparentcontainer' ).html(parents(parseInt(suggestion.grandpa_id)) + suggestion.value.replace(/\W/g, ''));
+			$( '#link'+id+' .setdelparentcontainer' ).html(parents(parseInt(suggestion.grandpa_id)) + suggestion.value.replace(/\W/g, ''));
 			
 		}).autocomplete({ hint: false }, [{
 		    source: function(q, cb) {
@@ -748,34 +761,26 @@ function delete_link(key,id){
 		//Adjust CSS:
 		$( '#link'+id+' .algolia-autocomplete' ).attr('style','position: relative; display:inline; direction: ltr;');
 	}
-
 }
 function cancel_delete_link(key,id){
 	$('#link'+id+" .a_delete").attr('href','javascript:delete_link(' + key + ',' + id + ');');
 	$('#link'+id+' .node_stats #delete_confirm').remove();
 }
 function delete_link_confirmed(key,id,type){
-	/*
-	 * See helper function action_type_descriptions() for "type" index
-	 * 
-	 * */
 	
+	var is_inward = ( (key==0 || node[key]['node_id']==node[0]['node_id']) ? 1 : 0 );
 	
-	//TODO Fix this BUG when this function removes vital CSS classes used to position newly added/linked Gems
-	
-
+	//See helper function action_type_descriptions() for "type" index
 	//Prepare data for processing:
 	var input_data = {
-		id:id,
-		node_id:parseInt(node[0]['node_id']),
-		parent_id: parseInt(( type==-3 ? $( '#link'+id+' #setdelparentcontainer' ).attr('node-id') : node[0]['parent_id'] )),
-		type:type,
-		node_name:node[0]['sign']+node[0]['value'],
-		child_count:child_count,
+			is_inward:is_inward,
+			id:id,
+			new_parent_id: ( type==-3 ? parseInt($('#link'+id+' .setdelparentcontainer').attr('node-id')) : 0 ),
+			type:type,
 	};
-		
+	
 	//Show processing:
-	$('#link'+id).html('<span class="saving"><img src="/img/loader.gif" /> Deleting...</span>');
+	$('#link'+id).html('<span class="saving"><img src="/img/loader.gif" /> Removing...</span>');
 	
 	//Update backend:
 	$.post("/api/delete", input_data, function(data) {
@@ -788,7 +793,7 @@ function delete_link_confirmed(key,id,type){
 		    }, 3000);
 		} else {
 			//Redirect to parent node as the entire node has been deleted:
-			location.replace("/"+input_data['parent_id']+'?from='+node[0]['node_id']);
+			location.replace("/"+( input_data['new_parent_id']>0 ? input_data['new_parent_id'] : node[0]['parent_id'] )+'?from='+node[0]['node_id']);			
 		}
     });	
 }

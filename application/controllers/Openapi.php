@@ -9,7 +9,11 @@ class Openapi extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-
+	
+	function danger(){
+		//Only activate when needed
+		$this->Us_model->restore_delete(5887,6142);
+	}
 
 	function reverse_delete($start_id, $end_id){
 		//Fetch all node links
@@ -264,41 +268,6 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 	
 	//Run this to completely update the "nodes" index
 	function update_algolia(){
-		
-		if(!is_production()){
-			//echo 'ERROR: Cannot update cache on local.';
-			//return false;
-		}
-		boost_power();
-		
-		//Buildup this array to save to search index
-		$return = array();
-		
-		//Fetch all nodes:
-		$active_node_ids = $this->Us_model->fetch_node_ids();		
-		foreach($active_node_ids as $node_id){
-			//Add to main array
-			array_push($return,generate_algolia_obj($node_id));
-		}
-		
-		
-		$obj = json_decode(json_encode($return), FALSE);
-		
-		//Include PHP library:
-		$index = load_algolia();
-		$index->clearIndex();
-		$obj_add_message = $index->addObjects($obj);
-		
-		//Now update database with the objectIDs:
-		if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
-			foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
-				//Fetch top node, as that is all we need to update:
-				$link = $this->Us_model->fetch_node($return[$key]['node_id'], 'fetch_top_plain');
-				//Update link:
-				$update_status = $this->Us_model->update_link($link['id'],array('algolia_id'=>$algolia_id));
-			}
-		}
-		
-		echo 'SUCCESS: Search index updated for '.count($return).' nodes.';
+		echo $this->Algolia_model->sync_all();
 	}
 }

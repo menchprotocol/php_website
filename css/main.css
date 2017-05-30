@@ -25,7 +25,7 @@ h4{
     color:#31d2f7;
 }
 
-.shrink{ font-size:0.8em; }
+.shrink{ font-size:0.8em !important; }
 .sp{ width: 1px; display: inline-block; }
 a { color:#31d2f7; /* #63d297 */ }
 a:hover { text-decoration: underline; text-decoration-style: dotted; }
@@ -211,10 +211,10 @@ h3{ font-size:24px; color:#000; }
 
 
 
-#setdeleteparent{
+.setdeleteparent{
 	background-color: #FFF;
     border: 0;
-    width:150px;
+    width:150px !important;
     padding: 0 0 0 2px;
     margin: 0 0 0 3px;
     line-height: 110%;

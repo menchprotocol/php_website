@@ -115,48 +115,52 @@ class Api extends CI_Controller {
 	function delete(){
 		
 		//Make sure all inputs are find:
-		if(intval($_REQUEST['parent_id'])<1 || intval($_REQUEST['node_id'])<1 || intval($_REQUEST['id'])<1 || intval($_REQUEST['type'])<-4 || intval($_REQUEST['type'])>=0){
+		if(!isset($_REQUEST['is_inward']) || !isset($_REQUEST['new_parent_id']) || intval($_REQUEST['id'])<1 || intval($_REQUEST['type'])<-4 || intval($_REQUEST['type'])>=0){
 			return echo_html(0,'Invalid inputs.');
 		}
+		
 		
 		//Start deleting:
 		if($_REQUEST['type']==-1){
 			
 			//Simple link delete:
-			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),intval($_REQUEST['type']));
+			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),-1);
 			return echo_html($status,($status ? 'Gem Marked for Removal' : 'Unknown error with status.'));
 			
 		} else {
 			
+			$link = $this->Us_model->fetch_link(intval($_REQUEST['id']));
+			
 			//This is the deletion of the entire node!
 			//Set session variable to show confirmation on redirect:
-			$del_message = '<b>'.$_REQUEST['node_name'].'</b> was deleted';
+			$del_message = '<b>'.$link['value'].'</b> removed';
 			
-			if($_REQUEST['type']==-3){
+			if($_REQUEST['type']==-3 && intval($_REQUEST['new_parent_id'])>0){
 				
-				//Move these nodes to $_REQUEST['parent_id']
-				$moved_children = $this->Us_model->move_child_nodes(intval($_REQUEST['node_id']),intval($_REQUEST['parent_id']),intval($_REQUEST['type']));
-				$del_message .= ' and '.$moved_children.' children have been moved here';
+				$status = $this->Us_model->move_child_nodes($link['node_id'],intval($_REQUEST['new_parent_id']),-3);
+				$del_message .= ': '.$status['moved'].' moved & '.$status['deleted'].' removed';
 				
 			} elseif($_REQUEST['type']==-4){
 				
 				//Recursively delete all children/grandchildren
-				$deleted_children = $this->Us_model->recursive_node_delete(intval($_REQUEST['node_id']),intval($_REQUEST['type']));
-				$del_message .= ' along with '.$deleted_children.' children/grandchildren';
+				$deleted_children = $this->Us_model->recursive_node_delete($link['node_id'],-4);
+				$del_message .= ': '.$deleted_children.' OUTs recursively removed';
 				
 				//Reindex search:
-				$this->update_algolia();
-				
+				if(!is_production()){
+					$this->Algolia_model->sync_all();
+				}
+			} else {
+				//Huh?!
+				$this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid Inputs</div>');
+				return false;
 			}
-			
-			//Main node delete:
-			$status = $this->Us_model->delete_node(intval($_REQUEST['node_id']),intval($_REQUEST['type']));
 			
 			//Set header message for after redirect:
 			$this->session->set_flashdata('hm', '<div class="alert alert-success" role="alert">'.$del_message.'.</div>');
-			echo $status;
 		}
 	}
+	
 	
 	function update_link(){
 		if(intval($_REQUEST['id'])<1){

@@ -9,9 +9,41 @@ class Us_model extends CI_Model {
 	}
 	
 	
+	function restore_delete($start_gem_id, $end_gem_id){
+		//Fetch the target gems:
+		
+		$this->db->select('*');
+		$this->db->from('v3_data d');
+		$this->db->where('d.id>=' , $start_gem_id);
+		$this->db->where('d.id<=' , $end_gem_id);
+		$this->db->where('d.status' , -2);
+		$this->db->order_by('d.id' , 'DESC');
+		$q = $this->db->get();
+		$res = $q->result_array();
+		
+		$count = 0;
+		foreach($res as $key=>$value){
+			//First revert the old link:
+			$this->Us_model->update_link( $value['update_id'] , array(
+					'update_id' => 0, //Reset
+					'status' => 1, //Active again
+			));
+			
+			//Also delete this link:
+			$this->db->where('id', $value['id']);
+			$this->db->delete('v3_data');
+			
+			//Counter:
+			$count++;
+		}
+
+		echo $count.' Restored.';
+	}
+	
+	
 	function next_node_id(){
 		//Find the current largest node id and increments it by 1:
-		$largest_node_id = $this->Us_model->largest_node_id();
+		$largest_node_id = $this->largest_node_id();
 		$largest_node_id++;
 		return $largest_node_id;
 	}
@@ -209,18 +241,19 @@ class Us_model extends CI_Model {
 		if(is_production()){
 			
 			$return = array();
-			$index = load_algolia();
+			$index = $this->Algolia_model->load_algolia();
 			
 			if($link_data['action_type']==1){
 				
 				//For adding new nodes:
-				array_push($return , generate_algolia_obj($link_data['node_id']));
+				$alg = $this->Algolia_model->generate_algolia_obj($link_data['node_id']);
+				array_push($return , $alg);
 				$res = $index->addObjects(arrayToObject($return));
 				//Now update database with the objectIDs:
 				if(isset($res['objectIDs'][0]) && intval($res['objectIDs'][0])>0){
 					$link_data['algolia_id'] = $res['objectIDs'][0];
 					$this->Us_model->update_link($link_data['id'],array('algolia_id'=>$link_data['algolia_id']));
-				}				
+				}
 				
 			} elseif($link_data['action_type']<0){
 				
@@ -232,7 +265,8 @@ class Us_model extends CI_Model {
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
-						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
+						$alg = $this->Algolia_model->generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']);
+						array_push($return , $alg);
 						$res = $index->saveObjects($return);
 					}
 				}
@@ -241,14 +275,16 @@ class Us_model extends CI_Model {
 				
 				if($link_data['algolia_id']>0){
 					
-					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
+					$alg = $this->Algolia_model->generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']);
+					array_push($return , $alg);
 					$res = $index->saveObjects($return);
 					
 				} else {
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
-						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
+						$alg = $this->Algolia_model->generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']);
+						array_push($return , $alg);
 						$res = $index->saveObjects($return);
 					}
 				}
@@ -279,7 +315,6 @@ class Us_model extends CI_Model {
 		//Insert new row to log delete history:
 		$new_link = $this->Us_model->insert_link(array(
 				'status' => -2, //Deleted
-				'node_id' => $link['node_id'],
 				'update_id' => $link_id, //This would be deleted as well
 				'action_type' => $action_type, //Could be single delete, batch delete, etc...
 		));
@@ -305,56 +340,67 @@ class Us_model extends CI_Model {
 	
 	function move_child_nodes($node_id,$new_parent_id,$action_type){
 		
-		//Move all child nodes to a new parent:
+		//Move DIRECT OUTs to a new parent:
 		$child_data = $this->fetch_node($node_id, 'fetch_children');
 		$new_parent = $this->fetch_node($new_parent_id, 'fetch_top_plain');
 		
-		$success_moves = 0;
+		$status = array(
+				'moved' => 0,
+				'deleted' => 0,
+		);
+		
+		//First delete INs
+
 		foreach ($child_data as $link){
-			//Insert new row:
-			$new_link = $this->Us_model->insert_link(array(
-					'grandpa_id' => $new_parent['grandpa_id'],
-					'parent_id' => $new_parent['node_id'],
-					'update_id' => $link['id'], //This would be deleted as well
-					'ui_rank' => 999, //Position this at the end of the children of new parent
-					'action_type' => $action_type,
-			));
 			
-			$success_moves++;
+			if($link['ui_parent_rank']==1){
+				//This is DIRECT OUT:
+				$new_link = $this->Us_model->insert_link(array(
+						'grandpa_id' => $new_parent['grandpa_id'],
+						'parent_id' => $new_parent['node_id'],
+						'update_id' => $link['id'], //This would be deleted as well
+						'ui_rank' => 999, //Position this at the end of the children of new parent
+						'action_type' => $action_type,
+				));
+				$status['moved']++;
+			} else {
+				//This is regular OUT, which needs to be removed:
+				$this->delete_link($link['id'],$action_type);
+				$status['deleted']++;
+			}			
 		}
+		
+		//Delete main node:
+		$status['deleted'] += $this->delete_node($node_id,$action_type);
+		
+		
 		//Return number of nodes moved!
-		return $success_moves;
+		return $status;
 	}
 	
 	
-	function recursive_node_delete($node_id,$action_type){
+	function recursive_node_delete($node_id , $action_type){
+		//NUCLEAR! Find all grand-OUTs & delete!
+		$OUTs = $this->fetch_node($node_id, 'fetch_children');
 		
-		//NUCLEAR! Find all children/grandchildren and delete!
-		$child_data = $this->fetch_node($node_id, 'fetch_children');
-		
-		foreach ($child_data as $link){
-			
-			//Fetch child nodes first:
-			if($link['node_id']!==$node_id){
-				//Go to next level, if any:
-				$this->recursive_node_delete($link['node_id'], $action_type);
-			}
-			
-			//Main delete:
-			$new_link = $this->Us_model->insert_link(array(
-					'status' => -2, //Deleted
-					'update_id' => $link['id'],
-					'action_type' => $action_type,
-			));
-			
-			if(isset($new_link['id'])){
-				$this->success_deletes++;
+		//Start with outs:
+		foreach ($OUTs as $link){
+			//Go into this OUT if DIRECT:
+			if($link['ui_parent_rank']==1){
+				$this->success_deletes += $this->recursive_node_delete($link['node_id'], $action_type);
+			} else {
+				//Now delete this single Gem:
+				$this->success_deletes += $this->delete_link($link['id'],$action_type);
 			}
 		}
+		
+		//Also delete INs:
+		$this->success_deletes += $this->delete_node($node_id,$action_type);
 		
 		//Return number of nodes delete:
 		return $this->success_deletes;
 	}
+	
 	
 	function largest_node_id(){
 		$this->db->select('MAX(node_id) as largest_node');
@@ -375,6 +421,32 @@ class Us_model extends CI_Model {
 		$stats = $q->row_array();
 		return $stats['link_count'];
 	}
+	
+	function count_OUTs($node_id){
+		//Count the number of child nodes:
+		$this->db->select('COUNT(id) as link_count');
+		$this->db->from('v3_data d');
+		$this->db->where('d.parent_id' , $node_id);
+		$this->db->where('d.status >=' , 0);
+		$this->db->where('d.ui_rank >' , 0);
+		$q = $this->db->get();
+		$stats = $q->row_array();
+		return $stats['link_count'];
+	}
+	function count_direct_OUTs($node_id){
+		//Count the number of child nodes:
+		$this->db->select('COUNT(id) as link_count');
+		$this->db->from('v3_data d');
+		$this->db->where('d.parent_id' , $node_id);
+		$this->db->where('d.ui_parent_rank' , 1);
+		$this->db->where('d.status >=' , 0);
+		$this->db->where('d.ui_rank >' , 0);
+		$q = $this->db->get();
+		$stats = $q->row_array();
+		return $stats['link_count'];
+	}
+	
+	
 	
 	function fetch_sandwich_node($node_id, $parent_id){
 		$this->db->select('*');
@@ -514,8 +586,10 @@ class Us_model extends CI_Model {
 		$grandparents= grandparents(); //Everything at level 1
 		//Caching mechanism for usernames and counts
 		$cache = array(
-			'contributors' => array(),
-			'link_count' => array(),
+				'contributors' => array(),
+				'link_count' => array(),
+				'out_count' => array(),
+				'direct_out_count' => array(),
 		);
 		
 		foreach($links as $i=>$link){
@@ -538,6 +612,8 @@ class Us_model extends CI_Model {
 				if(!isset($cache['link_count'][$count_column])){
 					//Fetch link counts:
 					$cache['link_count'][$count_column] = $this->count_links($count_column);
+					$cache['out_count'][$count_column] = $this->count_OUTs($count_column);
+					$cache['direct_out_count'][$count_column] = $this->count_direct_OUTs($count_column);
 				}
 				
 				//Append uploader name:
@@ -545,6 +621,8 @@ class Us_model extends CI_Model {
 				
 				//Count node links:
 				$links[$i]['link_count'] = $cache['link_count'][$count_column];
+				$links[$i]['out_count'] = $cache['out_count'][$count_column];
+				$links[$i]['direct_out_count'] = $cache['direct_out_count'][$count_column];
 			}
 			
 			
