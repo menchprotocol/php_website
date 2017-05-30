@@ -158,9 +158,9 @@ class Us_model extends CI_Model {
 			$link_data['algolia_id'] = ( $is_update ? intval($link['algolia_id']) : 0 );
 		}
 		
-		//Make sure new update_id=0
+		//TODO Make sure new update_id=0
 		if($link_data['status']>=0 && isset($link_data['update_id']) && intval($link_data['update_id'])>0){
-			$link_data['update_id'] = 0;
+			//$link_data['update_id'] = 0;
 		}
 		
 		//Lets now add:		
