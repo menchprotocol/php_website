@@ -271,12 +271,7 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 						$this->Us_model->update_link($v['id'],array('grandpa_id'=>end($parent_trees[$node_id])));
 					}
 				}
-			}
-			
-			if($key>50){
-				break;
-			}
-			
+			}			
 		}
 		
 		if($naked_list_only){
