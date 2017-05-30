@@ -226,15 +226,18 @@ class Us_model extends CI_Model {
 				
 				if($link_data['algolia_id']>0){
 					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
-					$object = (object) $return;
-					$res = $index->saveObjects($object);
+					if(count($return)>0){
+						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+					} else {
+						//Deleted?
+						$index->deleteObject($link_data['algolia_id']);
+					}
 				} else {
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$object = (object) $return;
-						$res = $index->saveObjects($object);
+						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
 					}
 				}				
 				
@@ -242,16 +245,14 @@ class Us_model extends CI_Model {
 				
 				if($link_data['algolia_id']>0){
 					//We're deleting:
-					//TODO has a PHP BUg, fix later:
-					//$index->deleteObject($link_data['algolia_id']);
+					$index->deleteObject($link_data['algolia_id']);
 				} else {
 					//This is secondary, lets update it:
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$object = (object) $return;
-						$res = $index->saveObjects($object);
+						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
 					}
 				}	
 			}
