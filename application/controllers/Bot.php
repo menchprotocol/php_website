@@ -18,13 +18,7 @@ class Bot extends CI_Controller {
 	function prep_intent($pid){
 		header('Content-Type: application/json');
 		echo json_encode($this->Apiai_model->prep_intent($pid));
-	}
-	
-	function sync_intent($pid){
-		header('Content-Type: application/json');
-		echo json_encode($this->Apiai_model->sync_intent($pid,array('force_publish'=>1)));
-	}
-	
+	}	
 	
 	function apiai_webhook(){
 		//This function receives incoming requests from api.ai, logs and processes them:

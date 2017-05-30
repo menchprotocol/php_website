@@ -14,7 +14,7 @@ function version_salt(){
 
 function boost_power(){
 	ini_set('memory_limit','2048M');
-	ini_set('max_execution_time', 1200);
+	ini_set('max_execution_time', 300);
 }
 
 function objectToArray( $object ) {
@@ -265,6 +265,7 @@ function generate_algolia_obj($node_id,$algolia_id=0){
 	
 	//Fetch parents:
 	$node = $CI->Us_model->fetch_node($node_id , 'fetch_parents' , array('recursive_level'=>1) );
+	
 	//Grandpa Signs:
 	$grandparents = grandparents(); //Everything at level 1
 	
@@ -275,13 +276,14 @@ function generate_algolia_obj($node_id,$algolia_id=0){
 		if($i==0){
 			//This is the primary link!
 			//Search for grandpas_child_id, which is the node One level below the Grandpa:
-			$grandpas_child_id = $CI->Us_model->fetch_grandpas_child($link['node_id']);
+			//$grandpas_child_id = $CI->Us_model->fetch_grandpas_child($link['node_id']);
+			
 			//Lets append some core info:
 			$node_search_object = array(
 					'node_id' => $link['node_id'],
 					'grandpa_id' => $link['grandpa_id'],
 					'grandpa_sign' => $grandparents[$link['grandpa_id']]['sign'],
-					'grandpas_child_id' => $grandpas_child_id,
+					/*'grandpas_child_id' => $grandpas_child_id,*/
 					'parent_id' => $link['parent_id'],
 					'value' => $link['value'],
 					'links_blob' => '',
@@ -289,6 +291,7 @@ function generate_algolia_obj($node_id,$algolia_id=0){
 			if($algolia_id>0){
 				$node_search_object['objectID'] = $algolia_id; //This would update
 			}
+			
 		} elseif(strlen($link['value'])>0){
 			//This is a secondary link with a value attached to it
 			//Lets add this to the links blob

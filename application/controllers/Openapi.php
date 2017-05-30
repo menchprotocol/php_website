@@ -266,21 +266,21 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 	function update_algolia(){
 		
 		if(!is_production()){
-			echo 'ERROR: Cannot update cache on local.';
-			return false;
+			//echo 'ERROR: Cannot update cache on local.';
+			//return false;
 		}
-		
 		boost_power();
 		
 		//Buildup this array to save to search index
 		$return = array();
 		
 		//Fetch all nodes:
-		$active_node_ids = $this->Us_model->fetch_node_ids();
+		$active_node_ids = $this->Us_model->fetch_node_ids();		
 		foreach($active_node_ids as $node_id){
 			//Add to main array
 			array_push($return,generate_algolia_obj($node_id));
 		}
+		
 		
 		$obj = json_decode(json_encode($return), FALSE);
 		
