@@ -215,7 +215,7 @@ class Us_model extends CI_Model {
 				
 				//For adding new nodes:
 				array_push($return , generate_algolia_obj($link_data['node_id']));
-				$res = $index->addObjects(json_decode(json_encode($return), FALSE));
+				$res = $index->addObjects(arrayToObject($return));
 				//Now update database with the objectIDs:
 				if(isset($res['objectIDs'][0]) && intval($res['objectIDs'][0])>0){
 					$link_data['algolia_id'] = $res['objectIDs'][0];
@@ -233,29 +233,23 @@ class Us_model extends CI_Model {
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+						$res = $index->saveObjects(arrayToObject($return));
 					}
 				}
 				
 			} elseif($is_update){
 				
 				if($link_data['algolia_id']>0){
+					
 					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
+					$res = $index->saveObjects(arrayToObject($return));
 					
-					print_r(json_decode(json_encode($return), FALSE));
-					
-					if(count($return)>0){
-						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
-					} else {
-						//Deleted?
-						$index->deleteObject($link_data['algolia_id']);
-					}
 				} else {
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+						$res = $index->saveObjects(arrayToObject($return));
 					}
 				}
 				
