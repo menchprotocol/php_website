@@ -74,7 +74,7 @@ class Us_model extends CI_Model {
 	
 	function insert_link($link_data){
 		
-		$is_update = intval($link_data['update_id']);
+		$is_update = ( isset($link_data['update_id']) ? intval($link_data['update_id']) : 0 );
 		$parent_update = false;
 		
 		//Fetch node ID and TOP nodes:
@@ -159,7 +159,7 @@ class Us_model extends CI_Model {
 		}
 		
 		//Make sure new update_id=0
-		if($link_data['status']>=0 && intval($link_data['update_id'])>0){
+		if($link_data['status']>=0 && isset($link_data['update_id']) && intval($link_data['update_id'])>0){
 			$link_data['update_id'] = 0;
 		}
 		
