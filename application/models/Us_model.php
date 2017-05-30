@@ -522,7 +522,7 @@ class Us_model extends CI_Model {
 		
 		if($action=='fetch_top_plain'){
 			//Quick return:
-			return $links[0];
+			return ( isset($links[0]) ? $links[0] : false );
 		}
 		
 		//Lets curate/enhance the data a bit:

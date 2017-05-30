@@ -283,7 +283,7 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		}
 		
 		$obj = json_decode(json_encode($return), FALSE);
-		//print_r($obj);
+		print_r($obj);
 		
 		//Include PHP library:
 		$index = load_algolia();
