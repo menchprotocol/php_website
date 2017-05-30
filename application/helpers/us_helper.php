@@ -14,7 +14,7 @@ function version_salt(){
 
 function boost_power(){
 	ini_set('memory_limit','2048M');
-	ini_set('max_execution_time', 600);
+	ini_set('max_execution_time', 1200);
 }
 
 function objectToArray( $object ) {
@@ -260,13 +260,11 @@ function action_type_descriptions($action_type_id){
 }
 
 function generate_algolia_obj($node_id,$algolia_id=0){
-	
-	if(!is_production()){ return false; }
-	
+		
 	$CI =& get_instance();
 	
 	//Fetch parents:
-	$node = $CI->Us_model->fetch_node($node_id);
+	$node = $CI->Us_model->fetch_node($node_id , 'fetch_parents' , array('recursive_level'=>1) );
 	//Grandpa Signs:
 	$grandparents = grandparents(); //Everything at level 1
 	

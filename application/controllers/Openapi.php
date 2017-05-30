@@ -283,7 +283,6 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		}
 		
 		$obj = json_decode(json_encode($return), FALSE);
-		print_r($obj);
 		
 		//Include PHP library:
 		$index = load_algolia();
@@ -301,7 +300,5 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		}
 		
 		echo 'SUCCESS: Search index updated for '.count($return).' nodes.';
-		//echo '$return: '; print_r($return);
-		//echo '$obj_add_message: '; print_r($obj_add_message);
 	}
 }
