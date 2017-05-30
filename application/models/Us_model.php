@@ -226,13 +226,15 @@ class Us_model extends CI_Model {
 				
 				if($link_data['algolia_id']>0){
 					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
-					$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+					$object = (object) $return;
+					$res = $index->saveObjects($object);
 				} else {
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+						$object = (object) $return;
+						$res = $index->saveObjects($object);
 					}
 				}				
 				
@@ -248,7 +250,8 @@ class Us_model extends CI_Model {
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
+						$object = (object) $return;
+						$res = $index->saveObjects($object);
 					}
 				}	
 			}
