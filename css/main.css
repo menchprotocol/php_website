@@ -25,6 +25,7 @@ h4{
     color:#31d2f7;
 }
 
+.shrink{ font-size:0.8em; }
 .sp{ width: 1px; display: inline-block; }
 a { color:#31d2f7; /* #63d297 */ }
 a:hover { text-decoration: underline; text-decoration-style: dotted; }

@@ -274,16 +274,11 @@ function generate_algolia_obj($node_id,$algolia_id=0){
 	
 	foreach($node as $i=>$link){
 		if($i==0){
-			//This is the primary link!
-			//Search for grandpas_child_id, which is the node One level below the Grandpa:
-			//$grandpas_child_id = $CI->Us_model->fetch_grandpas_child($link['node_id']);
-			
-			//Lets append some core info:
+			//This is the primary link, Lets append some core info:
 			$node_search_object = array(
 					'node_id' => $link['node_id'],
 					'grandpa_id' => $link['grandpa_id'],
 					'grandpa_sign' => $grandparents[$link['grandpa_id']]['sign'],
-					/*'grandpas_child_id' => $grandpas_child_id,*/
 					'parent_id' => $link['parent_id'],
 					'value' => $link['value'],
 					'links_blob' => '',
@@ -323,9 +318,9 @@ function count_links($node,$type){
 
 function echo_html($status,$message){
 	if($status){
-		echo '<span class="success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'.</span>';
+		echo '<span class="success shrink"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'</span>';
 	} else {
-		echo '<div><span class="danger"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.' Refresh to try again.</span></div>';
+		echo '<div><span class="danger shrink"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.' Refresh to try again.</span></div>';
 	}
 	return $status;
 }

@@ -226,13 +226,13 @@ class Us_model extends CI_Model {
 				
 				if($link_data['algolia_id']>0){
 					array_push($return , generate_algolia_obj($link_data['node_id'],$link_data['algolia_id']));
-					$res = $index->saveObjects($return);
+					$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
 				} else {
 					$top_node = $this->fetch_node($link_data['node_id'],'fetch_top_plain');
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$res = $index->saveObjects($return);
+						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
 					}
 				}				
 				
@@ -248,7 +248,7 @@ class Us_model extends CI_Model {
 					if($top_node['algolia_id']>0){
 						//We had this indexed, lets update it:
 						array_push($return , generate_algolia_obj($link_data['node_id'],$top_node['algolia_id']));
-						$res = $index->saveObjects($return);
+						$res = $index->saveObjects(json_decode(json_encode($return), FALSE));
 					}
 				}	
 			}
@@ -468,23 +468,6 @@ class Us_model extends CI_Model {
 		$parent = $this->Us_model->fetch_node($node_id, 'fetch_parents');
 		$child 	= $this->Us_model->fetch_node($node_id, 'fetch_children');
 		return array_merge($parent,$child);
-	}
-	
-	function fetch_grandpas_child($node_id){
-		//Iteratively loop until parent_id = any grandpa_id
-		$grandparents = grandparents();
-		$looking = 1;
-		while($looking){
-			$fetch_node = $this->fetch_node($node_id,'fetch_top_plain');
-			if(array_key_exists($fetch_node['parent_id'],$grandparents)){
-				//The parent of this is a grandpa!
-				return $fetch_node['node_id'];
-			} else {
-				//Continue our search:
-				$node_id = $fetch_node['parent_id'];
-			}
-		}
-		return 0;
 	}
 	
 	function fetch_node($node_id , $action='fetch_parents', $setting=array()){
