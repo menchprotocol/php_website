@@ -33,7 +33,7 @@ function arrayToObject($array){
 	foreach($array as $k => $v) {
 		if(strlen($k)) {
 			if(is_array($v)) {
-				$obj->{$k} = array_to_object($v); //RECURSION
+				$obj->{$k} = arrayToObject($v); //RECURSION
 			} else {
 				$obj->{$k} = $v;
 			}
