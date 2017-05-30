@@ -201,6 +201,7 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		
 		//Fetch all active nodes with status>=0
 		$active_nodes = $this->Us_model->fetch_node_ids();
+		
 		$parent_trees = array();
 		//Prepare error list:
 		$err = array(
@@ -208,37 +209,57 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 				'multiple_top' => array(), //When a node has multiple TOP links
 				'missing_algolia' => array(), //Top nodes that do not have a valid Algolia ID
 				'outdated_grandpa' => array(), //When the grandpa ID does not belong to parent_id due to moving the nodes around
-				'naked' => array(), //Nodes that have a single link to their parent with NO other IN/OUTs
+				'is_naked' => array(), //Nodes that have a single link to their parent with NO other IN/OUTs
+				
+				'update_id_unsync' => array(), //update_id=0 for most recent nodes, and everything before that should reflect previous Gems pointing to the most recent v3_data.id
+				'missing_ui_parent_rank' => array(), //ui_parent_rank should be >=1 all the time
+				'is_fat' => array(), //patterns with many links
 		);
 		
 		//Start looping through nodes and look for errors:
-		foreach($active_nodes as $node_id){
+		foreach($active_nodes as $key=>$node_id){
 			//Fetch the top of each node:
-			$parents = $this->Us_model->fetch_node($node_id, 'fetch_parents');
-			$children = $this->Us_model->fetch_node($node_id, 'fetch_children');
+			$parents  = $this->Us_model->fetch_node($node_id, 'fetch_parents', array('recursive_level'=>1));
+			$children = $this->Us_model->fetch_node($node_id, 'fetch_children', array('recursive_level'=>1));
 			
 			//Is this naked?
-			if(count($parents)<=1 && count($children)<=0){
-				array_push($err['naked'],$node_id);
+			if(count($parents)<=1 && count($children)<=0 && !in_array($node_id,$err['is_naked'])){
+				array_push($err['is_naked'],$node_id);
+			} elseif((count($parents)+count($children))>=20 && !in_array($node_id,$err['is_fat'])){
+				array_push($err['is_fat'],$node_id);
 			}
 			
 			//Now start checking for various issues:
 			if(!$naked_list_only){
 				foreach($parents as $k=>$v){
+					
 					if($k==0){
-						if($v['ui_parent_rank']!=1){
+						if($v['ui_parent_rank']!=1 && !in_array($node_id,$err['missing_top'])){
 							array_push($err['missing_top'],$node_id);
-						} elseif(intval($v['algolia_id'])<=0){
+						} elseif(intval($v['algolia_id'])<=0 && !in_array($node_id,$err['missing_algolia'])){
 							array_push($err['missing_algolia'],$node_id);
 						}
-					} elseif($k==1 && $v['ui_parent_rank']==1){
+					} elseif($k>0 && $v['ui_parent_rank']==1 && !in_array($node_id,$err['multiple_top'])){
 						//If there is a second TOP, it would be right after the first one!
 						array_push($err['multiple_top'],$node_id);
 					}
 					
+					if($v['ui_parent_rank']<1 && !in_array($node_id,$err['missing_ui_parent_rank'])){
+						//If there is a second TOP, it would be right after the first one!
+						array_push($err['missing_ui_parent_rank'],$node_id);
+					}
 					//Every parent link's grandpa_id should be up to date:
 					if(!isset($parent_trees[$node_id])){
 						$parent_trees[$node_id] = $this->Us_model->fetch_parent_tree($v['node_id']);
+					}
+					
+					if(intval($v['update_id'])>0){
+						//Ooops, this should always be zero for active links:
+						if(!in_array($node_id,$err['update_id_unsync'])){
+							array_push($err['update_id_unsync'],$node_id);
+						}						
+						//Fix:
+						$this->Us_model->update_link($v['id'],array('update_id'=>0));
 					}
 					
 					//Is the grandpa up to date?
@@ -251,10 +272,15 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 					}
 				}
 			}
+			
+			if($key>50){
+				break;
+			}
+			
 		}
 		
 		if($naked_list_only){
-			foreach($err['naked'] as $n){
+			foreach($err['is_naked'] as $n){
 				//echo '<a href="/'.$n.'">#'.$n.'</a><br />';
 				echo $n.',';
 			}

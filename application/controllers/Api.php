@@ -114,17 +114,19 @@ class Api extends CI_Controller {
 	
 	function delete(){
 		
+		$type = intval($_REQUEST['type']);
+		
 		//Make sure all inputs are find:
-		if(!isset($_REQUEST['is_inward']) || !isset($_REQUEST['new_parent_id']) || intval($_REQUEST['id'])<1 || intval($_REQUEST['type'])<-4 || intval($_REQUEST['type'])>=0){
+		if(!isset($_REQUEST['is_inward']) || !isset($_REQUEST['new_parent_id']) || intval($_REQUEST['id'])<1 || $type<-4 || $type>=0){
 			return echo_html(0,'Invalid inputs.');
 		}
 		
 		
 		//Start deleting:
-		if($_REQUEST['type']==-1){
+		if($type==-1){
 			
 			//Simple link delete:
-			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),-1);
+			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),$type);
 			return echo_html($status,($status ? 'Gem Marked for Removal' : 'Unknown error with status.'));
 			
 		} else {
@@ -135,21 +137,28 @@ class Api extends CI_Controller {
 			//Set session variable to show confirmation on redirect:
 			$del_message = '<b>'.$link['value'].'</b> removed';
 			
-			if($_REQUEST['type']==-3 && intval($_REQUEST['new_parent_id'])>0){
+			if($type==-2){
 				
-				$status = $this->Us_model->move_child_nodes($link['node_id'],intval($_REQUEST['new_parent_id']),-3);
+				//Regular node delete:
+				$deleted_gems = $this->Us_model->delete_node($link['node_id'],$type);
+				$del_message .= ': '.$deleted_gems.' related Gems also removed';
+				
+			} elseif($type==-3 && intval($_REQUEST['new_parent_id'])>0){
+				
+				$status = $this->Us_model->move_child_nodes($link['node_id'],intval($_REQUEST['new_parent_id']),$type);
 				$del_message .= ': '.$status['moved'].' moved & '.$status['deleted'].' removed';
 				
-			} elseif($_REQUEST['type']==-4){
+			} elseif($type==-4){
 				
 				//Recursively delete all children/grandchildren
-				$deleted_children = $this->Us_model->recursive_node_delete($link['node_id'],-4);
-				$del_message .= ': '.$deleted_children.' OUTs recursively removed';
+				$deleted_gems = $this->Us_model->recursive_node_delete($link['node_id'],$type);
+				$del_message .= ': '.$deleted_gems.' OUTs recursively removed';
 				
 				//Reindex search:
 				if(!is_production()){
 					$this->Algolia_model->sync_all();
 				}
+				
 			} else {
 				//Huh?!
 				$this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid Inputs</div>');

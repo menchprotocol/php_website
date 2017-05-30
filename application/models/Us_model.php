@@ -74,7 +74,7 @@ class Us_model extends CI_Model {
 	
 	function insert_link($link_data){
 		
-		$is_update = (isset($link_data['update_id']) && intval($link_data['update_id'])>0);
+		$is_update = intval($link_data['update_id']);
 		$parent_update = false;
 		
 		//Fetch node ID and TOP nodes:
@@ -158,6 +158,10 @@ class Us_model extends CI_Model {
 			$link_data['algolia_id'] = ( $is_update ? intval($link['algolia_id']) : 0 );
 		}
 		
+		//Make sure new update_id=0
+		if($link_data['status']>=0 && intval($link_data['update_id'])>0){
+			$link_data['update_id'] = 0;
+		}
 		
 		//Lets now add:		
 		$this->db->insert('v3_data', $link_data);
@@ -186,48 +190,49 @@ class Us_model extends CI_Model {
 		
 		
 		//Perform special/custom functions based on parent nodes.
-		if($link_data['action_type']<0 || in_array($link_data['action_type'],array(2,4))){
-			
-			
-			//Fetch the parents of this Node:
-			$IN_links = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
-			
-			
-			if($link_data['action_type']<0 && $link_data['parent_id']==590){
+		if($link_data['ui_parent_rank']==1 || ml_related($link_data['parent_id']) || ml_related($link_data['node_id'])){
+			if($link_data['action_type']<0 || in_array($link_data['action_type'],array(2,4))){
+				
+				//Fetch the parents of this Node:
+				$IN_links = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
+				
+				
+				if($link_data['action_type']<0 && $link_data['parent_id']==590){
+									
+					//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
+					if($IN_links[0]['grandpa_id']==1){
+						//This is an @Entity
+						$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
+					} elseif($IN_links[0]['grandpa_id']==3){
+						//This is an #Intent:
+						$delete_status = $this->Apiai_model->delete_intent($link_data['value']);
+					}
+					
+				} else {
+					
+					foreach($IN_links as $INs){
+						if($INs['parent_id']==590){
+							//Found the primary Publish Live Pattern.
+							
+							//This is for action 2/4 which means we need to add/update
+							//Lets attemp to sync and save the results:
+							
+							//Anything else requires add/updating
+							if($IN_links[0]['grandpa_id']==1){
 								
-				//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
-				if($IN_links[0]['grandpa_id']==1){
-					//This is an @Entity
-					$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
-				} elseif($IN_links[0]['grandpa_id']==3){
-					//This is an #Intent:
-					$delete_status = $this->Apiai_model->delete_intent($link_data['value']);
-				}
-				
-			} else {
-				
-				foreach($IN_links as $INs){
-					if($INs['parent_id']==590){
-						//Found the primary !SyncSingleEntity Meta Data.
-						
-						//This is for action 2/4 which means we need to add/update
-						//Lets attemp to sync and save the results:
-						
-						//Anything else requires add/updating
-						if($IN_links[0]['grandpa_id']==1){
-							
-							//This is an @Entity that needs syncing:
-							$custom_status = $this->Apiai_model->sync_entity( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
-							
-						} elseif($IN_links[0]['grandpa_id']==3){
-							
-							//This is an #Intent that needs syncing:
-							$custom_status = $this->Apiai_model->sync_intent( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
+								//This is an @Entity that needs syncing:
+								$custom_status = $this->Apiai_model->sync_entity( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
+								
+							} elseif($IN_links[0]['grandpa_id']==3){
+								
+								//This is an #Intent that needs syncing:
+								$custom_status = $this->Apiai_model->sync_intent( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
+							}
 						}
 					}
 				}
 			}
-		}		
+		}
 		
 		
 		
@@ -398,7 +403,7 @@ class Us_model extends CI_Model {
 		$this->success_deletes += $this->delete_node($node_id,$action_type);
 		
 		//Return number of nodes delete:
-		return $this->success_deletes;
+		return ($this->success_deletes-1);
 	}
 	
 	
@@ -440,10 +445,10 @@ class Us_model extends CI_Model {
 		$this->db->where('d.parent_id' , $node_id);
 		$this->db->where('d.ui_parent_rank' , 1);
 		$this->db->where('d.status >=' , 0);
-		$this->db->where('d.ui_rank >' , 0);
 		$q = $this->db->get();
 		$stats = $q->row_array();
-		return $stats['link_count'];
+		$grandparents = grandparents();
+		return $stats['link_count']-( array_key_exists($node_id,$grandparents) ? 1 : 0 );
 	}
 	
 	
@@ -607,17 +612,23 @@ class Us_model extends CI_Model {
 					$cache['contributors'][$link['us_id']] = $user_node;
 				}
 
+				//Append uploader name:
+				$links[$i]['us_node'] = $cache['contributors'][$link['us_id']];
+			}
+			
+			if($i==0) {
+				//This is only for the first parent:
+				
 				//Determine what are we counting based on parent/child position:
-				$count_column = ( ($node_id==$link['node_id']) ? $link['parent_id'] : $link['node_id']);
+				$count_column = ( $links[0]['node_id']==$link['node_id'] && isset($setting['recursive_level']) ? $link['parent_id'] : $link['node_id']);
+				$count_column = $node_id;
+				
 				if(!isset($cache['link_count'][$count_column])){
 					//Fetch link counts:
 					$cache['link_count'][$count_column] = $this->count_links($count_column);
 					$cache['out_count'][$count_column] = $this->count_OUTs($count_column);
 					$cache['direct_out_count'][$count_column] = $this->count_direct_OUTs($count_column);
 				}
-				
-				//Append uploader name:
-				$links[$i]['us_node'] = $cache['contributors'][$link['us_id']];
 				
 				//Count node links:
 				$links[$i]['link_count'] = $cache['link_count'][$count_column];

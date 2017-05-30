@@ -704,20 +704,22 @@ function delete_link(key,id){
 	
 	//TODO: The descriptions here can be improved to be more clear
 	var do_search = 0;
-	if(node[key]['ui_parent_rank']==1 && node[key]['link_count']>1){
+	var link_count = ( key==0 ? node[key]['link_count'] : node[key]['parents'][0]['link_count'] );
+	var direct_out_count = ( key==0 ? node[key]['direct_out_count'] : node[key]['parents'][0]['direct_out_count'] );
+	if(node[key]['ui_parent_rank']==1 && link_count>0){
 		
-		if(node[key]['direct_out_count']>1){
+		if(direct_out_count>0){
 			
 			//This has more links to it, give the user some options:
 			var del_box = '<b style="color:#fe3c3c">Remove entire pattern:</b><br /><ul style="list-style:decimal; margin-left:-20px;">'
-				+'<li>Move '+node[key]['direct_out_count']+' DIRECT OUTs to <span class="setdelparentcontainer" node-id="'+( is_inward ? node[0]['parent_id'] : node[0]['node_id'] )+'"><input type="text" class="autosearch setdeleteparent" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete & Move</a></li>'
-				+'<li>Remove '+node[key]['out_count']+' OUT Gems & all dependant DIRECT OUTs: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Go Nuclear!</a></li>'
+				+'<li>Move '+direct_out_count+' DIRECT OUTs to <span class="setdelparentcontainer" node-id="'+( is_inward ? node[0]['parent_id'] : node[0]['node_id'] )+'"><input type="text" class="autosearch setdeleteparent" value="'+parent_val+'" /></span>: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -3)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete & Move</a></li>'
+				+'<li>Remove all OUT Gems & all dependant DIRECT OUTs: <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -4)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Go Nuclear!</a></li>'
 				+ '</ul>';
 			
 			do_search = 1;
 			
 		} else {
-			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire node:</b><br /><b>Confirm:</b> <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -2)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
+			var del_box = '<b style="color:#fe3c3c">You are about to delete this entire Pattern:</b><br /><b>Confirm:</b> <a href="javascript:delete_link_confirmed(' + key + ',' + id + ', -2)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Delete</a>';
 		}
 		
 	} else {

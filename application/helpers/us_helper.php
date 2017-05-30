@@ -9,12 +9,16 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.61'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.62'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
 	ini_set('memory_limit','2048M');
-	ini_set('max_execution_time', 300);
+	ini_set('max_execution_time', 600);
+}
+
+function ml_related($pid){
+	return in_array($pid,array(590,561,566,595));
 }
 
 function objectToArray( $object ) {
@@ -488,7 +492,7 @@ function echoNode($node,$key,$load_open=false){
 			'value_template' => null,
 			'followup_content' => null,
 			'node_description' => null,
-			'is_message_content' => null,
+			'is_ml_related' => null,
 	);
 	
 	//First from direct parents:
@@ -569,8 +573,8 @@ function echoNode($node,$key,$load_open=false){
 			} elseif(in_array(590,array($p['parent_id'],$p['node_id']))){
 				//Workflow Under development
 				$ui_setting['is_live'] = 1;
-			} elseif($p['parent_id']==566){
-				$ui_setting['is_message_content'] = 1;
+			} elseif(($p['ui_parent_rank']==1 && ml_related($p['parent_id'])) || ml_related($p['node_id'])){
+				$ui_setting['is_ml_related'] = 1;
 			}
 		}
 	}
@@ -595,7 +599,7 @@ function echoNode($node,$key,$load_open=false){
 	$return_string .= 
 	'<h4 class="list-group-item-heading handler node_top_node '.( $key==0 ? ' '.($flow_IN?'is_parents':'is_children').' is_'.$node[$key]['parents'][0]['grandpa_id'].' node_details' : '').'">'.
 	
-		'<a href="'.$href.'" class="expA"><span class="boldbadge badge '.( !$flow_IN? 'pink-bg' : 'blue-bg').( $node[$key]['link_count']<=1 ? '-light' : '' ).'" aria-hidden="true" title="'.( $is_direct ? 'DIRECT links define Gem origin & fabric.' : 'Regular links for association.' ).'" data-toggle="tooltip">'.$direct_anchor.'</span></a>'.
+	'<a href="'.$href.'" class="expA"><span class="boldbadge badge '.( !$flow_IN? 'pink-bg' : 'blue-bg').( $node[$key]['parents'][0]['link_count']<=1 ? '-light' : '' ).'" aria-hidden="true" title="'.( $is_direct ? 'DIRECT links define Gem origin & fabric.' : 'Regular links for association.' ).'" data-toggle="tooltip">'.$direct_anchor.'</span></a>'.
 		
 		'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="'.( $key==0 ? 'parentTopLink' : 'parentLink '.( $ui_setting['auto_open'] ? 'zoom-out' : 'zoom-in' )).'">'.
 			
@@ -608,7 +612,7 @@ function echoNode($node,$key,$load_open=false){
 				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
 	
 				//Messaging content?
-				( $ui_setting['is_message_content'] ? ' <span class="glyphicon glyphicon-comment grey hastt '.$attention_color.'" aria-hidden="true" title="Messaging content that would be shared with users." data-toggle="tooltip"></span>' : '').
+				( $ui_setting['is_ml_related'] ? ' <span class="glyphicon glyphicon-comment grey hastt '.$attention_color.'" aria-hidden="true" title="api.ai logic pattern, including messaging content that would be shared with users." data-toggle="tooltip"></span>' : '').
 				
 				//Workflow under dev?
 	( $ui_setting['workflow_dev'] ? ' <span class="glyphicon glyphicon-alert grey hastt '.$attention_color.'" aria-hidden="true" title="Pending Development" data-toggle="tooltip"></span>' : '').
@@ -620,10 +624,10 @@ function echoNode($node,$key,$load_open=false){
 				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
 				
 				//Link Count
-				' <span class="grey hastt" title="'.( $node[$key]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['link_count'].' Gems at next step, '.($node[$key]['link_count']-$node[$key]['out_count']).' IN, '.$node[$key]['out_count'].' OUT.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['link_count'].'</span>'.
+	' <span class="grey hastt" title="'.( $node[$key]['parents'][0]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['parents'][0]['link_count'].' Gems at next step, '.($node[$key]['parents'][0]['link_count']-$node[$key]['parents'][0]['out_count']).' IN, '.$node[$key]['parents'][0]['out_count'].' OUT.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['parents'][0]['link_count'].'</span>'.
 	
 				//DIRECT OUT Count:
-	( $node[$key]['direct_out_count']>0 && $key>0 ? ' <span class="grey hastt" title="This Pattern has '.$node[$key]['direct_out_count'].' DIRECT OUTs" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>'.$node[$key]['direct_out_count'].'</span>' : '').
+	( $node[$key]['parents'][0]['direct_out_count']>0 ? ' <span class="grey hastt" title="This Pattern has '.$node[$key]['parents'][0]['direct_out_count'].' DIRECT OUTs" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>'.$node[$key]['parents'][0]['direct_out_count'].'</span>' : '').
 								
 				//Engagement Stats
 				//TODO '<span class="grey hastt" style="padding-left:5px;" title="54 User Message Reads and 156 Foundation Clicks (Community Engagement)" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 210</span>'.
