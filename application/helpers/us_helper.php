@@ -13,7 +13,7 @@ function version_salt(){
 }
 
 function boost_power(){
-	ini_set('memory_limit','8000M');
+	ini_set('memory_limit', 600000000 );
 	ini_set('max_execution_time', 600);
 }
 

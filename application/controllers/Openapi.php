@@ -248,6 +248,8 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 						//If there is a second TOP, it would be right after the first one!
 						array_push($err['missing_ui_parent_rank'],$node_id);
 					}
+					
+					
 					//Every parent link's grandpa_id should be up to date:
 					if(!isset($parent_trees[$node_id])){
 						$parent_trees[$node_id] = $this->Us_model->fetch_parent_tree($v['node_id']);
