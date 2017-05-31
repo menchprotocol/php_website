@@ -250,10 +250,8 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 					}
 					
 					
-					//Every parent link's grandpa_id should be up to date:
-					if(!isset($parent_trees[$node_id])){
-						$parent_trees[$node_id] = $this->Us_model->fetch_parent_tree($v['node_id']);
-					}
+					
+					
 					
 					if(intval($v['update_id'])>0){
 						//Ooops, this should always be zero for active links:
@@ -265,6 +263,11 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 					}
 					
 					//Is the grandpa up to date?
+					//Every parent link's grandpa_id should be up to date:
+					if(!isset($parent_trees[$node_id])){
+						$parent_trees[$node_id] = $this->Us_model->fetch_parent_tree($v['node_id']);
+					}
+					
 					if(end($parent_trees[$node_id])!=$v['grandpa_id']){
 						if(!in_array($node_id,$err['outdated_grandpa'])){
 							array_push($err['outdated_grandpa'],$node_id);

@@ -103,6 +103,8 @@ class Us extends CI_Controller {
 	}
 	
 	function info(){
+		echo "openssl.cafile: ", ini_get('openssl.cafile'), "<hr />";
+		echo "curl.cainfo: ", ini_get('curl.cainfo'), "<hr />";
 		echo phpinfo();
 	}
 	
