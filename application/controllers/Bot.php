@@ -26,31 +26,31 @@ class Bot extends CI_Controller {
 		$new = $this->Engagement_model->log_engagement(array(
 				'us_id' => 651, //api.ai API User
 				'node_type_id' => 653, //Bot API Webhook Log
-				'blob' => print_r($_REQUEST,true), //Dump all incoming variables
+				'blob' => print_r($_POST[],true).print_r($_GET[],true), //Dump all incoming variables
 		));
 		
 		//Return success message to bot:
-		header("Access-Control-Allow-Origin: *");
+		//header("Access-Control-Allow-Origin: *");
 		header('Content-Type: application/json');
 		echo json_encode(array(
 				'speech' => 'Barack Hussein Obama II is the 44th and current President of the United States.',
 				'displayText' => "Barack Hussein Obama II Harvard Law School, where.",
 				'data' => array(
-						'facebook' => array(
-								'attachment' => array(
-										'type' => 'video',
-										'payload' => array(
-												'url' => 'https://s3-us-west-2.amazonaws.com/us-videos/20170509_090827.mp4',
+						'google' => array(
+								'expect_user_response' => false,
+								'final_response' => array(
+										'speech_response' => array(
+												'text_to_speech' => 'Hiiiiiiiiiiiiiii',
 										),
 								),
 						),
 				),
 				'contextOut' => array(),
-				'source' => "DuckDuckGo",
+				'source' => "webhook",
 				//This makes the system ignores "speech", "displayText", and "data":
 				// https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
 				//TODO Implement for unknown:
-				'followupEvent' => array(),
+				//'followupEvent' => array(),
 		));
 	}
 }
