@@ -156,7 +156,7 @@ h3{ font-size:24px; color:#000; }
 .zoom-out { cursor:zoom-out !important; }
 .zoom-in { cursor:zoom-in !important; }
 .light{ opacity: 0.75; }
-.super-light{ opacity: 0.25; }
+.super-light{ opacity: 0.33; }
 .node_h1 { margin-top:0 !important; margin-bottom:0 !important; }
 .parentTopLink { cursor:default; padding:5px 2px 0 !important; }
 .plain_badge{ margin-top:-5px; }
