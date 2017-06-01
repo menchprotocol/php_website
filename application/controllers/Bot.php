@@ -26,7 +26,7 @@ class Bot extends CI_Controller {
 		$new = $this->Engagement_model->log_engagement(array(
 				'us_id' => 651, //api.ai API User
 				'node_type_id' => 653, //Bot API Webhook Log
-				'blob' => print_r($_POST,true).print_r($_GET,true), //Dump all incoming variables
+				'blob' => print_r(json_decode(file_get_contents('php://input'), true),true), //Dump all incoming variables
 		));
 		
 		//Return success message to bot:
