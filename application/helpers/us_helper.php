@@ -672,7 +672,7 @@ function echoNode($node,$key,$load_open=false){
 	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
 	
 	//Gem ID
-	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="16" class="light" style="margin:-2px 1px 0 0;" />'.$node[$key]['id'].'</span>';
+	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;" />'.$node[$key]['id'].'</span>';
 	
 	
 	if(auth_admin(1)){

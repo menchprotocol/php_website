@@ -38,7 +38,7 @@ $sub_navigation = array(
 
 
 echo '<ul id="secondNav" class="nav nav-pills">';
-echo '<li role="presentation" class="li_all active"><a href="javascript:nav2nd(\'all\')">'.count($node).'<img src="/img/gem/diamond_16.png" width="13" style="margin:-2px 0 0 1px;"></a></li>';
+echo '<li role="presentation" class="li_all active"><a href="javascript:nav2nd(\'all\')">'.count($node).'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 0 0 1px;"></a></li>';
 foreach($sub_navigation as $sn){
 	$count = count_links($node,$sn['count_key']);
 	echo '<li role="presentation" class="li_'.$sn['count_key'].( $count==0 ? ' disabled' : '').'"><a href="javascript:'.( $count==0 ? 'void(0)' : 'nav2nd('.( is_integer($sn['count_key']) ? $sn['count_key'] : '\''.$sn['count_key'].'\'').')').'" '.( isset($sn['append_class']) && $count>0? ' class="'.$sn['append_class'].'"' : '').'>'.$count.$sn['icon'].'</a></li>';
