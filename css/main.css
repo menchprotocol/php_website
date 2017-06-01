@@ -213,6 +213,7 @@ h3{ font-size:24px; color:#000; }
 .tooltip-inner {
     white-space:pre-wrap;
     text-align:left;
+    min-width:115px;
 }
 .grey.pull-right{
 		padding-right:4px;

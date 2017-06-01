@@ -21,11 +21,12 @@ class Bot extends CI_Controller {
 	}	
 	
 	function apiai_webhook(){
+		
 		//This function receives incoming requests from api.ai, logs and processes them:
 		$new = $this->Engagement_model->log_engagement(array(
 				'us_id' => 651, //api.ai API User
 				'node_type_id' => 653, //Bot API Webhook Log
-				'blob' => json_encode(objectToArray($_POST)), //Dump all incoming variables
+				'blob' => print_r($_REQUEST,true), //Dump all incoming variables
 		));
 		
 		//Return success message to bot:
@@ -33,14 +34,19 @@ class Bot extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(array(
 				'speech' => 'Barack Hussein Obama II is the 44th and current President of the United States.',
-				'displayText' => "Barack Hussein Obama II is the 44th and current President of the United States, and the first African American to hold the office. Born in Honolulu, Hawaii, Obama is a graduate of Columbia University   and Harvard Law School, where ",
+				'displayText' => "Barack Hussein Obama II Harvard Law School, where.",
 				'data' => array(
-						'usBotTalk' => array()
+						'facebook' => array(
+								'attachment' => array(
+										'type' => 'video',
+										'payload' => array(
+												'url' => 'https://s3-us-west-2.amazonaws.com/us-videos/20170509_090827.mp4',
+										),
+								),
+						),
 				),
 				'contextOut' => array(),
-				
 				'source' => "DuckDuckGo",
-				
 				//This makes the system ignores "speech", "displayText", and "data":
 				// https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
 				//TODO Implement for unknown:
