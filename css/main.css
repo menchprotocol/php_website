@@ -156,6 +156,7 @@ h3{ font-size:24px; color:#000; }
 .zoom-out { cursor:zoom-out !important; }
 .zoom-in { cursor:zoom-in !important; }
 .light{ opacity: 0.75; }
+.super-light{ opacity: 0.25; }
 .node_h1 { margin-top:0 !important; margin-bottom:0 !important; }
 .parentTopLink { cursor:default; padding:5px 2px 0 !important; }
 .plain_badge{ margin-top:-5px; }
@@ -209,8 +210,13 @@ h3{ font-size:24px; color:#000; }
     transform: rotate(45deg);
 }
 
-
-
+.tooltip-inner {
+    white-space:pre-wrap;
+    text-align:left;
+}
+.grey.pull-right{
+		padding-right:4px;
+	}
 .setdeleteparent{
 	background-color: #FFF;
     border: 0;

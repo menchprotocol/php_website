@@ -624,10 +624,13 @@ function echoNode($node,$key,$load_open=false){
 				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
 				
 				//Link Count
-	' <span class="grey hastt" title="'.( $node[$key]['parents'][0]['link_count']==1 ? 'This Gem is Single! Follow and add more Gems :)' : $node[$key]['parents'][0]['link_count'].' Gems at next step, '.($node[$key]['parents'][0]['link_count']-$node[$key]['parents'][0]['out_count']).' IN, '.$node[$key]['parents'][0]['out_count'].' OUT.').'" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-link"></span>'.$node[$key]['parents'][0]['link_count'].'</span>'.
+	' <span class="grey hastt pull-right" title="'.$node[$key]['parents'][0]['link_count'].' Gems =
+1 DIRECT IN +
+'.($node[$key]['parents'][0]['link_count']-$node[$key]['parents'][0]['out_count']-1).' INs +
+'.($node[$key]['parents'][0]['out_count']-$node[$key]['parents'][0]['direct_out_count']).' OUTs +
+'.($node[$key]['parents'][0]['direct_out_count']).' DIRECT OUTs" data-toggle="tooltip" aria-hidden="true">'.( $node[$key]['parents'][0]['direct_out_count']>0 ? $node[$key]['parents'][0]['direct_out_count'].'<span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span> ' : '').$node[$key]['parents'][0]['link_count'].'<img src="/img/gem/diamond_16.png" width="12" class="super-light" style="margin:-2px 0 0 1px;"></span>'.
 	
-				//DIRECT OUT Count:
-	( $node[$key]['parents'][0]['direct_out_count']>0 ? ' <span class="grey hastt" title="This Pattern has '.$node[$key]['parents'][0]['direct_out_count'].' DIRECT OUTs" data-toggle="tooltip" aria-hidden="true"><span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>'.$node[$key]['parents'][0]['direct_out_count'].'</span>' : '').
+	
 								
 				//Engagement Stats
 				//TODO '<span class="grey hastt" style="padding-left:5px;" title="54 User Message Reads and 156 Foundation Clicks (Community Engagement)" data-toggle="tooltip"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 210</span>'.

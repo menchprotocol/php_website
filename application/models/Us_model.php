@@ -432,6 +432,7 @@ class Us_model extends CI_Model {
 		$this->db->select('COUNT(id) as link_count');
 		$this->db->from('v3_data d');
 		$this->db->where('d.parent_id' , $node_id);
+		$this->db->where('d.node_id != d.grandpa_id');
 		$this->db->where('d.status >=' , 0);
 		$this->db->where('d.ui_rank >' , 0);
 		$q = $this->db->get();
