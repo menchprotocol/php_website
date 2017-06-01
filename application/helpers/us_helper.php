@@ -18,7 +18,7 @@ function boost_power(){
 }
 
 function ml_related($pid){
-	return in_array($pid,array(590,561,566,595));
+	return in_array($pid,array(590,561,595,567,575,576,577,578));
 }
 
 function objectToArray( $object ) {
