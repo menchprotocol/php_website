@@ -114,11 +114,18 @@ class Api extends CI_Controller {
 	
 	function delete(){
 		
-		$type = intval($_REQUEST['type']);
+		//Variables:
+		$set_flash = ( intval(@$_REQUEST['key'])>0 ? 0 : 1 );
+		$type = intval(@$_REQUEST['type']);
 		
-		//Make sure all inputs are find:
-		if(!isset($_REQUEST['is_inward']) || !isset($_REQUEST['new_parent_id']) || intval($_REQUEST['id'])<1 || $type<-4 || $type>=0){
-			return echo_html(0,'Invalid inputs.');
+		
+		//Basic checks:
+		if(!isset($_REQUEST['is_inward']) || !isset($_REQUEST['type']) || !isset($_REQUEST['key']) || !isset($_REQUEST['new_parent_id']) || !isset($_REQUEST['id'])){
+			return echo_html(0,'Missing some inputs.',$set_flash);
+		} elseif($type<-4 || $type>=0){
+			return echo_html(0,'Invalid Type input.',$set_flash);
+		} elseif(intval($_REQUEST['id'])<1){
+			return echo_html(0,'Invalid ID input.',$set_flash);
 		}
 		
 		
@@ -127,46 +134,42 @@ class Api extends CI_Controller {
 			
 			//Simple link delete:
 			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),$type);
-			return echo_html($status,($status ? 'Gem Marked for Removal' : 'Unknown error with status.'));
+			return echo_html($status,($status ? '<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;"> Marked for Removal, Pending Peer Review...' : 'Unknown error with status.'),$set_flash);
 			
 		} else {
 			
 			$link = $this->Us_model->fetch_link(intval($_REQUEST['id']));
 			
-			//This is the deletion of the entire node!
-			//Set session variable to show confirmation on redirect:
-			$del_message = '<b>'.$link['value'].'</b> removed';
-			
+			//This is the deletion of the entire node!	
 			if($type==-2){
 				
 				//Regular node delete:
 				$deleted_gems = $this->Us_model->delete_node($link['node_id'],$type);
-				$del_message .= ': '.$deleted_gems.' related Gems also removed';
+				$del_message = '<b>'.$link['value'].'</b> removed with '.$deleted_gems.'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;">';
 				
 			} elseif($type==-3 && intval($_REQUEST['new_parent_id'])>0){
 				
 				$status = $this->Us_model->move_child_nodes($link['node_id'],intval($_REQUEST['new_parent_id']),$type);
-				$del_message .= ': '.$status['moved'].' moved & '.$status['deleted'].' removed';
+				$del_message = '<b>'.$link['value'].'</b> removed: '.$status['moved'].'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;"> moved & '.$status['deleted'].'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;"> removed';
 				
 			} elseif($type==-4){
 				
 				//Recursively delete all children/grandchildren
 				$deleted_gems = $this->Us_model->recursive_node_delete($link['node_id'],$type);
-				$del_message .= ': '.$deleted_gems.' OUTs recursively removed';
+				$del_message = '<b>'.$link['value'].'</b> and its '.$deleted_gems.'OUTs removed recursively.';
 				
 				//Reindex search:
 				if(!is_production()){
 					$this->Algolia_model->sync_all();
 				}
-				
+
 			} else {
 				//Huh?!
-				$this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid Inputs</div>');
-				return false;
+				return echo_html(0,'Invalid Type Input',$set_flash);
 			}
 			
-			//Set header message for after redirect:
-			$this->session->set_flashdata('hm', '<div class="alert alert-success" role="alert">'.$del_message.'.</div>');
+			//All seems good! Set header message for after redirect:
+			return echo_html(1,$del_message,$set_flash);
 		}
 	}
 	

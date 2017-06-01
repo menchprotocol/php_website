@@ -298,12 +298,32 @@ function count_links($node,$type){
 	return $child_count;
 }
 
-function echo_html($status,$message){
-	if($status){
-		echo '<span class="success shrink"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'</span>';
+function echo_html($status,$message,$set_flash=false){
+	
+	//Take action:
+	if($set_flash){
+		
+		//Compile message:
+		if($status){
+			$message = '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'</div>';
+		} else {
+			$message = '<div class="alert alert-danger"  role="alert"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.'</div>';
+		}
+		
+		//Set to session:
+		$CI =& get_instance();
+		$CI->session->set_flashdata('hm', $message);
+		
 	} else {
-		echo '<div><span class="danger shrink"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.' Refresh to try again.</span></div>';
+		//Compile message:
+		if($status){
+			echo '<span class="success shrink"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> '.$message.'</span>';
+		} else {
+			echo '<div><span class="danger shrink"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> '.$message.' Refresh to try again.</span></div>';
+		}
 	}
+		
+	//Return status:
 	return $status;
 }
 
@@ -609,8 +629,8 @@ function echoNode($node,$key,$load_open=false){
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
 				
 				//Description
-				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.strip_tags($ui_setting['node_description']).'" data-toggle="tooltip"></span>' : '').
-	
+				( $ui_setting['node_description'] ? ' <span class="glyphicon glyphicon-info-sign grey hastt" aria-hidden="true" title="'.str_replace('"',"'",strip_tags($ui_setting['node_description'])).'" data-toggle="tooltip"></span>' : '').
+
 				//Messaging content?
 				( $ui_setting['is_ml_related'] ? ' <span class="glyphicon glyphicon-comment grey hastt '.$attention_color.'" aria-hidden="true" title="api.ai logic pattern, including messaging content that would be shared with users." data-toggle="tooltip"></span>' : '').
 				
@@ -673,7 +693,6 @@ function echoNode($node,$key,$load_open=false){
 	
 	//Gem ID
 	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;" />'.$node[$key]['id'].'</span>';
-	
 	
 	if(auth_admin(1)){
 		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>';

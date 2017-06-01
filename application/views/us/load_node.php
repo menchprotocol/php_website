@@ -25,12 +25,12 @@ $sub_navigation = array(
 			'count_key' => 43,
 	),
 	array(
-			'icon' => ' IN<span class="glyphicon glyphicon-arrow-right blue rotate45" aria-hidden="true"></span>',
+			'icon' => ' INs<span class="glyphicon glyphicon-arrow-right blue rotate45" aria-hidden="true"></span>',
 			'count_key' => 'parents',
 			'append_class' => 'blue',
 	),
 	array(
-			'icon' => ' OUT<span class="glyphicon glyphicon-arrow-up '.($out_count>0?'pink':'grey').' rotate45" aria-hidden="true"></span>',
+			'icon' => ' OUTs<span class="glyphicon glyphicon-arrow-up '.($out_count>0?'pink':'grey').' rotate45" aria-hidden="true"></span>',
 			'count_key' => 'children',
 			'append_class' => 'pink',
 	),

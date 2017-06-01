@@ -776,6 +776,7 @@ function delete_link_confirmed(key,id,type){
 	//Prepare data for processing:
 	var input_data = {
 			is_inward:is_inward,
+			key:key,
 			id:id,
 			new_parent_id: ( type==-3 ? parseInt($('#link'+id+' .setdelparentcontainer').attr('node-id')) : 0 ),
 			type:type,
@@ -786,13 +787,15 @@ function delete_link_confirmed(key,id,type){
 	
 	//Update backend:
 	$.post("/api/delete", input_data, function(data) {
-		if(type==-1){
+		if(key>0){
+			
 			//Update UI to confirm with user:
 			$('#link'+id).html(data);
 			//Disapper in a while:
 			setTimeout(function() {
 				$('#link'+id).fadeOut();
 		    }, 3000);
+			
 		} else {
 			//Redirect to parent node as the entire node has been deleted:
 			location.replace("/"+( input_data['new_parent_id']>0 ? input_data['new_parent_id'] : node[0]['parent_id'] )+'?from='+node[0]['node_id']);			
