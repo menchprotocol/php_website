@@ -43,8 +43,8 @@ $function = $this->uri->segment(2);
 	  	<p class="headercont">
 			<a href="/" style="display:inline-block">Us</a>
 			<?php if(isset($user_data['id']) || isset($show_grandpas)){ ?>
-				<form class="search-block">
-				  <input type="text" class="form-control autosearch" id="mainsearch" placeholder="Jump To...">
+				<form id="searchForm" class="search-block">
+				  <input type="text" class="form-control autosearch" id="mainsearch" placeholder="Search...">
 				</form>
 			<?php } ?>				
 		</p>
@@ -70,7 +70,7 @@ $function = $this->uri->segment(2);
 		</ul>
 	</div>
 	
-    <div class="container" role="main" id="main_container">
+    <div class="container <?= (isset($view) ? 'view_'.$view : '') ?>" role="main" id="main_container">
     
     <?php
 	//Any Html Messages int he flash session to show?

@@ -372,7 +372,7 @@ class Apiai_model extends CI_Model {
 				'responses' => array(
 						array(
 								'resetContexts' => false,
-								'action' => '',
+								'action' => '||'.$GEMs[0]['node_id'], //Used to detect #intent Pattern when triggered
 								'affectedContexts' => array(),
 								'parameters' => array(), //api.ai will auto generate this field...
 								'messages' => array( //Order matters, first ones go out first...

@@ -241,6 +241,15 @@ function editHeightControl(){
 
 $( document ).ready(function() {
 	
+	//Disable enter submission on top search:
+	$('#searchForm').on('keyup keypress', function(e) {
+		  var keyCode = e.keyCode || e.which;
+		  if (keyCode === 13) {
+		    e.preventDefault();
+		    return false;
+		  }
+	});
+	
 	//The hover of link settings
 	$( ".node_details" ).hover(function() {
 		$( this ).addClass('show_child');

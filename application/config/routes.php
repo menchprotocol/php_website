@@ -56,7 +56,7 @@ $route['translate_uri_dashes'] = FALSE;
 //Some landing pages
 //Also edit controllers/us/load_wiki to define title.
 //TODO Move to nodes through public and html objects
-$route['default_controller'] = "us/load_wiki";
+$route['default_controller'] = "us";
 $route['signup'] = "us/load_wiki/signup";
 $route['login'] = "us/load_wiki/login";
 $route['terms'] = "us/load_wiki/terms";
@@ -65,5 +65,4 @@ $route['terms'] = "us/load_wiki/terms";
 $route['(:num)'] = "us/load_node/$1";
 $route['logout'] = "us/logout";
 $route['login_process'] = "us/login_process";
-
 

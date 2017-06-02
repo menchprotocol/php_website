@@ -26,25 +26,39 @@ class Us extends CI_Controller {
 		
 	}
 	
+	
+	
 	function index(){
-		$this->load_wiki();
+		if(auth(1)){
+			//Load default search page:
+			$this->load_wiki();
+		} else {
+			//Load home page for visitors:
+			$this->load_wiki('usoverview');
+		}
 	}
 	
-	function load_wiki($file_name= 'usoverview'){
+	function load_wiki($file_name='start'){
 		//For quick static pages
 		//Also edit config/routes.php to load Wiki!
 		$wiki_index = array(
-			'login' => 'US Login',
-			'terms' => 'Our Commitments',
-			'signup' => 'Signup',
-			'usoverview' => 'Us | Intelligence Assistant',
+				'start' => 'Start...',
+				'login' => 'Foundation Login',
+				'terms' => 'Terms of Service',
+				'signup' => 'Foundation Signup',
+				'usoverview' => 'Us Foundation | Grow, Faster.',
 		);
+		
 		if(in_array($file_name,array('login','join','usoverview')) && auth(1)){
 			//Redirect to Us:
-			header("Location: /1");
+			header("Location: /");
 		}
+				
 		//Load views
-		$this->load->view('shared/header' , array( 'title' => $wiki_index[$file_name] ));
+		$this->load->view('shared/header' , array(
+				'title' => $wiki_index[$file_name],
+				'view' => $file_name,
+		));
 		$this->load->view('wiki/'.$file_name);
 		$this->load->view('shared/footer');
 	}
@@ -76,7 +90,7 @@ class Us extends CI_Controller {
 		
 		if($data_set['node'][0]['id']<1){
 			//We did not find this ID:
-			redirect_message('/1','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> has no active Gems.</div>');
+			redirect_message('/','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> has no active Gems.</div>');
 		}
 		
 		//See if we have a description:
@@ -130,7 +144,7 @@ class Us extends CI_Controller {
 				header("Location: /".intval($_POST['login_node_id']));
 			} else {
 				//Send user to default starting node post-login:
-				header("Location: /1"); //Us node for now
+				header("Location: /"); //Default
 			}
 		} else {
 			//Ooops, some sort of error! Let them know:

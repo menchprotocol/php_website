@@ -626,7 +626,7 @@ function echoNode($node,$key,$load_open=false){
 '.($node[$key]['parents'][0]['direct_out_count']).' DIRECT OUTs" data-toggle="tooltip">'.
 	
 	//Link Count
-	$node[$key]['parents'][0]['link_count'].( $node[$key]['parents'][0]['direct_out_count']>0 ? ':'.$node[$key]['parents'][0]['direct_out_count'] : '').' '.$direct_anchor.'</span></a>'.
+	( $node[$key]['parents'][0]['direct_out_count']>0 ? $node[$key]['parents'][0]['direct_out_count'].'/' : '').$node[$key]['parents'][0]['link_count'].' '.$direct_anchor.'</span></a>'.
 		
 		'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="'.( $key==0 ? 'parentTopLink' : 'parentLink '.( $ui_setting['auto_open'] ? 'zoom-out' : 'zoom-in' )).'">'.
 			

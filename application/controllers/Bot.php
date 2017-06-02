@@ -10,6 +10,11 @@ class Bot extends CI_Controller {
 		
 	}
 	
+	function fetch_entity($apiai_id){
+		header('Content-Type: application/json');
+		echo json_encode($this->Apiai_model->fetch_entity($apiai_id));
+	}
+	
 	function fetch_intent($apiai_id){
 		header('Content-Type: application/json');
 		echo json_encode($this->Apiai_model->fetch_intent($apiai_id));
@@ -20,20 +25,27 @@ class Bot extends CI_Controller {
 		echo json_encode($this->Apiai_model->prep_intent($pid));
 	}	
 	
+	
 	function apiai_webhook(){
+		//The main function to receive user message.
+		//Facebook Messenger send the data to api.ai, they attempt to detect #intents/@entities.
+		//And then they send the results to Us here.
+		//Data from api.ai
+		$json_data = json_decode(file_get_contents('php://input'), true);
 		
-		//This function receives incoming requests from api.ai, logs and processes them:
+		//See what we should respond to the user:
+		
+		//Log impression:
 		$new = $this->Engagement_model->log_engagement(array(
 				'us_id' => 651, //api.ai API User
 				'node_type_id' => 653, //Bot API Webhook Log
-				'blob' => print_r(json_decode(file_get_contents('php://input'), true),true), //Dump all incoming variables
+				'blob' => $json_data['result']['action'].' <<<>>> '.json_encode($json_data), //Dump all incoming variables
 		));
 		
 		//Return success message to bot:
-		//header("Access-Control-Allow-Origin: *");
 		header('Content-Type: application/json');
 		echo json_encode(array(
-				'speech' => 'Barack Hussein Obama II is the 44th and current President of the United States.',
+				'speech' => 'Barack Hussein Obama II is the 44th and current President of the United States. '.time(),
 				'displayText' => "Barack Hussein Obama II Harvard Law School, where.",
 				'data' => array(
 						'google' => array(

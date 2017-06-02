@@ -209,7 +209,7 @@ h3{ font-size:24px; color:#000; }
     -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
     transform: rotate(45deg);
 }
-
+.view_start{display:none;}
 .tooltip-inner {
     white-space:pre-wrap;
     text-align:left;
@@ -268,12 +268,25 @@ em{
 	font-size:0.7em;
 	color:#AAA;
 }
+
+
 .node_stats .btn-group button, .node_stats .btn-group button:hover, .node_stats .btn-group button:active { 
 	padding: 3px 7px 0px 5px;
 	border: 0;
-	background-color:transparent;
 	color:#999;
 }
+
+.outsider .btn-group {
+	display:inline-block !important;
+}
+.outsider .btn-group button {
+	background-color:transparent;
+	border:0;
+	color:#AAA;
+	font-size:1em;
+	margin-top:-2px;
+}
+
 
 .node_stats .dropdown-menu {
 	    padding: 1px 0;
@@ -431,11 +444,10 @@ footer{ text-align:center; }
 	min-height:30px;
 }
 
-.outsider p{
+.outsider div{
 	margin:0;
 }
 .outsider a{
-	font-weight:bold;
 	color:#AAA;
 }
 .outsider span{
