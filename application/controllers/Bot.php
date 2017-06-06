@@ -2,11 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Bot extends CI_Controller {
+	
+	var $facebook_page_id;
+	
 	function __construct() {
 		parent::__construct();
 		
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
+		
+		//Assign global variables:
+		$this->facebook_page_id = 1782774501750818;
 		
 	}
 	
@@ -33,14 +39,30 @@ class Bot extends CI_Controller {
 		//Data from api.ai
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
-		//See what we should respond to the user:
 		
-		//Log impression:
+		//See what we should respond to the user:
+		$us_id = 763; //Default api.ai API User, IF not with facebok
+		if(isset($json_data['originalRequest']['source']) 
+				&& $json_data['originalRequest']['source']=='facebook'
+				&& $json_data['originalRequest']['source']['recipient']['id']==$this->facebook_page_id){
+					//This is from Messenger, which we currently support!
+					// $json_data['originalRequest']['source']['sender']['id']
+					//$us_id = ''; //TODO: Find/Register user and assign ID
+		}
+		
+		//Log engagement with api.ai Bot:
 		$new = $this->Engagement_model->log_engagement(array(
-				'us_id' => 651, //api.ai API User
-				'node_type_id' => 653, //Bot API Webhook Log
-				'blob' => $json_data['result']['action'].' <<<>>> '.json_encode($json_data), //Dump all incoming variables
+				'entity_pid' => $us_id,
+				'intent_pid' => 653, //Bot API Webhook Log
+				'json_blob' => $json_data['result']['action'].' <<<>>> '.json_encode($json_data), //Dump all incoming variables
+				'external_id' => $json_data['result']['action'].' <<<>>> '.json_encode($json_data), //Dump all incoming variables
 		));
+		
+		//Log engagement with Facebook Bot/Page:
+		
+		
+		//Log engagement with Foundation Web App:
+		
 		
 		//Return success message to bot:
 		header('Content-Type: application/json');

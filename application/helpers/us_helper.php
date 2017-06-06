@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.64'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.65'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
@@ -277,25 +277,6 @@ function action_type_descriptions($action_type_id){
 				'description' => 'Error: '.$action_type_id.' is unknown.',
 		);
 	}
-}
-
-function count_links($node,$type){
-	$child_count = 0;
-	foreach($node as $value){
-		if($type=='children' && $node[0]['node_id']!==$value['node_id']){
-			$child_count++;
-		} elseif($type=='parents' && $node[0]['node_id']==$value['node_id']){
-			$child_count++;
-		} elseif(is_integer($type)){
-			//Lets see parent or child:
-			if($value['node_id']==$node[0]['node_id'] && $type==$value['grandpa_id']){
-				$child_count++;
-			} elseif($value['node_id']!==$node[0]['node_id'] && $type==$value['parents'][0]['grandpa_id']){
-				$child_count++;
-			}
-		}
-	}
-	return $child_count;
 }
 
 function echo_html($status,$message,$set_flash=false){

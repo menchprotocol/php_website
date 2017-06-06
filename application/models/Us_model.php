@@ -334,11 +334,20 @@ class Us_model extends CI_Model {
 	
 	function delete_node($node_id,$action_type){
 		//This would delete all links within this node:
-		$node = $this->fetch_node($node_id);
 		$links_deleted = 0;
-		foreach ($node as $key=>$value){
+		
+		//Start with OUTs:
+		$OUTs = $this->fetch_node($node_id,'fetch_children');
+		foreach ($OUTs as $key=>$value){
 			$links_deleted += $this->delete_link($value['id'],$action_type);
 		}
+		
+		//Continue with inverse INs (to delete DIRECT IN last):
+		$INs = $this->fetch_node($node_id,'fetch_parents',array('inverse_sort'=>1));
+		foreach ($INs as $key=>$value){
+			$links_deleted += $this->delete_link($value['id'],$action_type);
+		}		
+		
 		return $links_deleted;
 	}
 	
@@ -346,7 +355,7 @@ class Us_model extends CI_Model {
 	function move_child_nodes($node_id,$new_parent_id,$action_type){
 		
 		//Move DIRECT OUTs to a new parent:
-		$child_data = $this->fetch_node($node_id, 'fetch_children');
+		$OUTs = $this->fetch_node($node_id, 'fetch_children');
 		$new_parent = $this->fetch_node($new_parent_id, 'fetch_top_plain');
 		
 		$status = array(
@@ -354,9 +363,8 @@ class Us_model extends CI_Model {
 				'deleted' => 0,
 		);
 		
-		//First delete INs
-
-		foreach ($child_data as $link){
+		//First move OUTs
+		foreach ($OUTs as $link){
 			
 			if($link['ui_parent_rank']==1){
 				//This is DIRECT OUT:
@@ -568,14 +576,14 @@ class Us_model extends CI_Model {
 				$this->db->where('d.parent_id' , $setting['parent_id']);
 			}
 			$this->db->where('d.node_id' , $node_id);
-			$this->db->order_by('d.ui_parent_rank' , 'ASC');
+			$this->db->order_by('d.ui_parent_rank' , ( isset($setting['inverse_sort']) ? 'DESC' : 'ASC'));
 			
 		} elseif($action=='fetch_children'){
 			
 			$this->db->where('d.parent_id' , $node_id);
 			$this->db->where('d.node_id !=', $node_id);
 			$this->db->where('d.ui_rank >' , 0); //Below 0 is hidden from the UI
-			$this->db->order_by('d.ui_rank' , 'ASC'); //status=2 is ranked based on ur_rank ASC
+			$this->db->order_by('d.ui_rank' , ( isset($setting['inverse_sort']) ? 'DESC' : 'ASC')); //status=2 is ranked based on ur_rank ASC
 			
 		}
 		
