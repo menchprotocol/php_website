@@ -56,9 +56,8 @@ class Bot extends CI_Controller {
 				'correlation' => ( isset($json_data['result']['score']) ? $json_data['result']['score'] : 1 ),
 				'platform_pid' => 763, //766 Us, 765 FB, 763 api.ai //We assume its from api.ai console
 				'is_inbound' => true, //Either true or false
-				'ses_id' => $json_data['sessionId'], //Always from api.ai
+				'session_id' => $json_data['sessionId'], //Always from api.ai
 		);
-		
 		
 		if(isset($json_data['originalRequest']['source']) 
 		&& $json_data['originalRequest']['source']=='facebook'
