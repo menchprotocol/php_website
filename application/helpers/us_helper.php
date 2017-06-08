@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.65'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.66'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function boost_power(){
@@ -18,7 +18,13 @@ function boost_power(){
 }
 
 function ml_related($pid){
-	return in_array($pid,array(590,561,595,567,575,576,577,578));
+	//Patterns realted to api.ai machine learning:
+	return in_array($pid,array(590,561,595));
+}
+
+function content_related($pid){
+	//Patterns realted to conversational content
+	return in_array($pid,array(567,575,576,577,578));
 }
 
 function objectToArray( $object ) {
@@ -46,6 +52,12 @@ function arrayToObject($array){
 	return $obj;
 }
 
+function json_response($pid,$setting=array()){
+	$CI =& get_instance();
+	$response = $CI->Us_model->generate_response($pid,$setting);
+	header('Content-Type: application/json');
+	echo json_encode($response);
+}
 
 function user_login($user_email,$user_pass){
 	
@@ -496,6 +508,7 @@ function echoNode($node,$key,$load_open=false){
 			'is_ml_related' => null,
 	);
 	
+	
 	//First from direct parents:
 	if($key>0){
 		foreach($node[$key]['parents'] as $k=>$p){
@@ -563,8 +576,8 @@ function echoNode($node,$key,$load_open=false){
 						}
 					}
 				}
-			} elseif($p['parent_id']==45){
-				//This is a description, which we can append:
+			} elseif($p['parent_id']==910){
+				//This is the admin description, which we can append:
 				$ui_setting['node_description']= $p['value'];
 			} elseif($p['parent_id']==463){
 				$ui_setting['auto_open'] = 1;

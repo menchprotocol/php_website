@@ -163,7 +163,7 @@ class Us_model extends CI_Model {
 			//$link_data['update_id'] = 0;
 		}
 		
-		//Lets now add:		
+		//Lets now add:
 		$this->db->insert('v3_data', $link_data);
 		
 		//Fetch inserted id:
@@ -190,44 +190,43 @@ class Us_model extends CI_Model {
 		
 		
 		//Perform special/custom functions based on parent nodes.
-		if($link_data['ui_parent_rank']==1 || ml_related($link_data['parent_id']) || ml_related($link_data['node_id'])){
-			if($link_data['action_type']<0 || in_array($link_data['action_type'],array(2,4))){
+		if(($link_data['action_type']<0 || in_array($link_data['action_type'],array(2,4))) && ($link_data['ui_parent_rank']==1 || ml_related($link_data['parent_id']))){
+			
+			//Fetch INs:
+			$IN_links = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
+			
+			//Are we deleting the !PublishLive Meta Data?
+			if($link_data['action_type']<0 && $link_data['parent_id']==590){
 				
-				//Fetch the parents of this Node:
-				$IN_links = $this->Us_model->fetch_node($link_data['node_id'], 'fetch_parents');
+				//YES! which requires us to sync api.ai:
+				if($IN_links[0]['grandpa_id']==1){
+					//This is an @Entity
+					$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
+				} elseif($IN_links[0]['grandpa_id']==3){
+					//This is an #Intent:
+					$delete_status = $this->Apiai_model->delete_intent($link_data['value']);
+				}
 				
+			} else {
 				
-				if($link_data['action_type']<0 && $link_data['parent_id']==590){
-									
-					//We're deleting the !SyncSingleEntity Meta Data, which requires us to remove from remote:
-					if($IN_links[0]['grandpa_id']==1){
-						//This is an @Entity
-						$delete_status = $this->Apiai_model->delete_entity($link_data['value']);
-					} elseif($IN_links[0]['grandpa_id']==3){
-						//This is an #Intent:
-						$delete_status = $this->Apiai_model->delete_intent($link_data['value']);
-					}
-					
-				} else {
-					
-					foreach($IN_links as $INs){
-						if($INs['parent_id']==590){
-							//Found the primary Publish Live Pattern.
+				//See if !PublishLive is appended, which we would then update everything:
+				foreach($IN_links as $INs){
+					if($INs['parent_id']==590){
+						//Found the primary Publish Live Pattern.
+						
+						//This is for action 2/4 which means we need to add/update
+						//Lets attemp to sync and save the results:
+						
+						//Anything else requires add/updating
+						if($IN_links[0]['grandpa_id']==1){
 							
-							//This is for action 2/4 which means we need to add/update
-							//Lets attemp to sync and save the results:
+							//This is an @Entity that needs syncing:
+							$custom_status = $this->Apiai_model->sync_entity( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
 							
-							//Anything else requires add/updating
-							if($IN_links[0]['grandpa_id']==1){
-								
-								//This is an @Entity that needs syncing:
-								$custom_status = $this->Apiai_model->sync_entity( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
-								
-							} elseif($IN_links[0]['grandpa_id']==3){
-								
-								//This is an #Intent that needs syncing:
-								$custom_status = $this->Apiai_model->sync_intent( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
-							}
+						} elseif($IN_links[0]['grandpa_id']==3){
+							
+							//This is an #Intent that needs syncing:
+							$custom_status = $this->Apiai_model->sync_intent( $link_data['node_id'] , array( 'force_update' => 1, 'force_publish' => 1 ) );
 						}
 					}
 				}
@@ -300,6 +299,80 @@ class Us_model extends CI_Model {
 		
 		
 		
+		
+		//Boya!
+		return $link_data;
+	}
+	
+	
+	
+	function log_engagement($link_data){
+		
+		//These are required fields:
+		if(!isset($link_data['platform_pid']) || intval($link_data['platform_pid'])<=0){
+			return false;
+		} elseif(!isset($link_data['is_inbound']) || !is_bool($link_data['is_inbound'])){
+			return false;
+		} elseif(!isset($link_data['us_id']) || !is_int($link_data['us_id']) || $link_data['us_id']<0){
+			//Try to fetch user ID from session:
+			$user_data = $this->session->userdata('user');
+			if(isset($user_data['node_id'])){
+				$link_data['us_id'] = $user_data['node_id'];
+			} else {
+				//This should not happen, return error:
+				return false;
+			}
+		}
+		
+		//These are optional and could have defaults:
+		if(!isset($link_data['gem_id'])){
+			$link_data['gem_id'] = 0;
+		}
+		if(!isset($link_data['timestamp'])){
+			$link_data['timestamp'] = date("Y-m-d H:i:s");
+		}
+		if(!isset($link_data['intent_pid'])){
+			$link_data['intent_pid'] = 0;
+		}
+		if(!isset($link_data['json_blob'])){
+			$link_data['json_blob'] = '';
+		}
+		if(!isset($link_data['external_id'])){
+			$link_data['external_id'] = '';
+		}
+		if(!isset($link_data['message'])){
+			$link_data['message'] = '';
+		}
+		if(!isset($link_data['seq'])){
+			$current_seq = intval(@$this->session->userdata('seq'));
+			if($current_seq>0){
+				//Increment:
+				$current_seq++;
+				
+				//Update session:
+				$this->session->set_userdata('seq', $current_seq);
+				
+				//We have a seq set in the session:
+				$link_data['seq'] = $current_seq;
+			} else {
+				//There is no active session and no sequence:
+				$link_data['seq'] = 0;
+			}
+		}
+		if(!isset($link_data['session_id'])){
+			$session_id = $this->session->userdata('ses_id'); //Manually assigned session
+			$link_data['session_id'] = ( strlen($session_id)>0 ? $session_id : '' );
+		}
+		if(!isset($link_data['correlation'])){
+			$link_data['correlation'] = 1.00; //We assume a full correalation
+		}
+		
+		
+		//Lets now add:
+		$this->db->insert('v3_engagement', $link_data);
+		
+		//Fetch inserted id:
+		$link_data['id'] = $this->db->insert_id();
 		
 		//Boya!
 		return $link_data;
@@ -653,5 +726,104 @@ class Us_model extends CI_Model {
 		}
 		
 		return $links;
+	}
+	
+	
+	
+	function generate_response($pid,$setting=array()){
+		//This is the main function that parses Gems for the Bot to deliver
+		
+		if($pid<=0){
+			//Ooops, give an error:
+			$chosen_reply = 'No intent ID passed!';
+			return array(
+					'speech' => $chosen_reply,
+					'displayText' => $chosen_reply,
+					'data' => array(), //Its only a text response
+					'contextOut' => array(),
+					'source' => "webhook",
+			);
+		}
+		
+		//Fetch pattern INs:
+		$INs = $this->fetch_node($pid);
+		
+		
+		if(!isset($setting['skip_history'])){
+			//TODO See what has been consumed already?
+			//$history = $this->fetch_engagements($us_id,$pid);
+		}
+		
+		//Lets see what needs to be appended to the response:
+		foreach($INs as $gem){
+			
+			//These are the responses we would give instantly, assuming they are before the conversation stopper:
+			if($gem['parent_id']==567){
+				
+				//Explore the different variations of this text:
+				$variations = explode("\n",$gem['value']);
+				
+				//Randomly choose one of the variations:
+				$chosen_reply = $variations[rand(0,(count($variations)-1))];
+				
+				//Text Message
+				return array(
+						'speech' => $chosen_reply,
+						'displayText' => $chosen_reply,
+						'data' => array(), //Its only a text response
+						'contextOut' => array(),
+						'source' => "webhook",
+						//This makes the system ignores "speech", "displayText", and "data":
+						//https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
+						//TODO Implement for unknown:
+						//'followupEvent' => array(),
+				);
+				
+			} elseif($gem['parent_id']==575){
+				
+				//Image URL
+				//TODO test to make sure this works
+				return array(
+						'speech' => '',
+						'displayText' => '',
+						'data' => array(
+								 'facebook' => array(
+										 'attachment' => array(
+												 'type' => 'image',
+												 'payload' => array(
+												 		'url' => $gem['value'],
+												 ),
+										 ),
+								 ),
+						),
+						'contextOut' => array(),
+						'source' => "webhook",
+				);
+				
+			} elseif($gem['parent_id']==576){
+				
+				//TODO
+				
+			} elseif($gem['parent_id']==577){
+				
+				//TODO
+				
+			} elseif($gem['parent_id']==578){
+				
+				//TODO
+				
+			}
+		}
+		
+		
+		//Nothing found!
+		$chosen_reply = 'It seems you have already consumed all content for this goal.';
+		return array(
+				'speech' => $chosen_reply,
+				'displayText' => $chosen_reply,
+				'data' => array(), //Its only a text response
+				'contextOut' => array(),
+				'source' => "webhook",
+		);
 	}
 }

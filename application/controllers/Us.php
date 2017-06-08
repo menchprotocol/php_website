@@ -63,6 +63,7 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer');
 	}
 	
+	
 	function fetch_full_node($node_id){
 		header('Content-Type: application/json');
 		echo json_encode($this->Us_model->fetch_full_node($node_id));
@@ -72,8 +73,29 @@ class Us extends CI_Controller {
 	//The main function for loading nodes:
 	function load_node($node_id){
 		
-		//While we're building:
+		//Require authentication:
 		auth();
+		
+		
+		//Build data sets for our views:
+		$data_set = array(
+				'node' => $this->Us_model->fetch_full_node($node_id),
+		);
+		
+		//Make sure it was valid:	
+		if($data_set['node'][0]['id']<1){
+			//We did not find this ID:
+			redirect_message('/','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> has no active Gems.</div>');
+		}
+		
+		//Log engagement:
+		$eng = $this->Us_model->log_engagement(array(
+				'gem_id' => $data_set['node'][0]['id'],
+				'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
+				'is_inbound' => true, //Either true or false
+				'intent_pid' => $data_set['node'][0]['node_id'],
+				'json_blob' => trim(json_encode($data_set['node'])),
+		));
 		
 		//Load custom node functions for possible processing:
 		//TODO automate the loading of these
@@ -81,28 +103,8 @@ class Us extends CI_Controller {
 		$this->load->helper('node/27');
 		
 		
-		//Build data sets for our views:
-		$data_set = array(
-			'node' => $this->Us_model->fetch_full_node($node_id),
-		);
-		
-		//print_r($data_set);exit;
-		
-		if($data_set['node'][0]['id']<1){
-			//We did not find this ID:
-			redirect_message('/','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> has no active Gems.</div>');
-		}
-		
 		//See if we have a description:
 		$meta_data = '<link rel="canonical" href="//us.foundation/'.$node_id.'" />';
-		foreach($data_set['node'] as $key=>$value){
-			if($value['parent_id']==45){
-				$meta_data .= "\n\t".'<meta name="description" content="'.$value['value'].'" />';
-			}
-			if($value['grandpa_id']==1 && !($value['parent_id']==$node_id)){
-				$meta_data .= "\n\t".'<meta name="author" content="'.$value['parents'][0]['value'].'" />';
-			}
-		}
 		
 		//Create header variables:
 		$header_data = array(
@@ -117,14 +119,22 @@ class Us extends CI_Controller {
 	}
 	
 	function info(){
-		echo "openssl.cafile: ", ini_get('openssl.cafile'), "<hr />";
-		echo "curl.cainfo: ", ini_get('curl.cainfo'), "<hr />";
+		echo session_id()."<br /><hr /><br />";
+		print_r($this->session->all_userdata())."<br /><hr /><br />";
 		echo phpinfo();
 	}
 	
 	function logout() {
+		//Log engagement:
+		$eng = $this->Us_model->log_engagement(array(
+				'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
+				'is_inbound' => true, //Either true or false
+				'intent_pid' => 843, //Logout intent
+		));
+		
 		//Destroy all sessions:
 		$this->session->unset_userdata('user');
+		
 		//Redirect:
 		redirect_message('/','<div class="alert alert-success" role="alert">Logout successful. See you soon &#128536;</div>');
 	}
@@ -133,10 +143,27 @@ class Us extends CI_Controller {
 		$res = user_login($_POST['user_email'],$_POST['user_pass']);
 		
 		if($res['status']){
+			
+			$seq = 1; //This is for their login sequence which is always the first one
+			$time = time();
+			$session_id = md5($time.$seq.print_r($res['link'],true));
+			
 			//Yes!, Set session and redirect:
 			$this->session->set_userdata(array(
-				'user' => $res['link'], //This has the user's top link data
+					'user' => $res['link'], //This has the user's top link data
+					'seq' => $seq,
+					'login_time' => $time,
+					'ses_id' => $session_id,
 			));
+			
+			//Log engagement:
+			$eng = $this->Us_model->log_engagement(array(
+					'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
+					'is_inbound' => true, //Either true or false
+					'intent_pid' => 44, //Login password pattern, which indicates login
+					'seq' => $seq,
+					'session_id' => $session_id,
+			));			
 			
 			//Redirect to pattern home page:
 			if(isset($_POST['login_node_id']) && intval($_POST['login_node_id'])>0){
@@ -146,6 +173,7 @@ class Us extends CI_Controller {
 				//Send user to default starting node post-login:
 				header("Location: /"); //Default
 			}
+			
 		} else {
 			//Ooops, some sort of error! Let them know:
 			redirect_message('/login','<div class="alert alert-danger" role="alert">'.$res['message'].'</div>');

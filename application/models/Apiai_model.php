@@ -71,7 +71,6 @@ class Apiai_model extends CI_Model {
 			);
 		}
 		
-		
 		//Fetch INs
 		$IN_links = $this->Us_model->fetch_node(intval($pid) , 'fetch_parents');
 		
@@ -129,6 +128,8 @@ class Apiai_model extends CI_Model {
 					'message' => 'This entity is not connected to Pattern ||590.',
 			);
 		}
+		
+		
 		
 		if($apiai_entity_id){
 			
@@ -372,7 +373,7 @@ class Apiai_model extends CI_Model {
 				'responses' => array(
 						array(
 								'resetContexts' => false,
-								'action' => '||'.$GEMs[0]['node_id'], //Used to detect #intent Pattern when triggered
+								'action' => 'pid'.$GEMs[0]['node_id'], //Used to detect #intent Pattern for webhook
 								'affectedContexts' => array(),
 								'parameters' => array(), //api.ai will auto generate this field...
 								'messages' => array( //Order matters, first ones go out first...
@@ -435,14 +436,11 @@ class Apiai_model extends CI_Model {
 				'events' => array(), //Not used for now
 		);
 		
+		
+		
 		//Now populate User Says statements and responses:
 		foreach($GEMs as $key=>$gem){
-			if($gem['parent_id']==672){
-				
-				//Conversation OUT-put Stopper:
-				break;
-				
-			} elseif($gem['parent_id']==561 && strlen($gem['value'])>0){
+			if($gem['parent_id']==561 && strlen($gem['value'])>0){
 				
 				
 				$examples = explode("\n",$gem['value']);
@@ -546,84 +544,7 @@ class Apiai_model extends CI_Model {
 					//Now add to main array:
 					array_push($intent['userSays'],$base);
 					
-				}
-					
-			} elseif(strlen($gem['value'])>0 && (in_array($gem['node_id'],array(567,575,576,577,578)) || in_array($gem['parent_id'],array(567,575,576,577,578)))){
-				
-				//These are the responses we would give instantly, assuming they are before the conversation stopper:
-				if(in_array(567,array($gem['parent_id'],$gem['node_id']))){
-					//Text Message
-					array_push( $intent['responses'][0]['messages'] , array(
-							'type' => 0, //text
-							'platform' => 'facebook', //Could be NULL
-							'speech' => explode("\n",$gem['value']),
-					));
-					
-				} elseif(in_array(575,array($gem['parent_id'],$gem['node_id']))){
-					//Image URL
-					array_push( $intent['responses'][0]['messages'] , array(
-							'type' => 3, //Image
-							'platform' => 'facebook',
-							'imageUrl' => $gem['value'],
-					));
-					
-				} elseif(in_array(576,array($gem['parent_id'],$gem['node_id']))){
-					//Video MP4 URL
-					array_push( $intent['responses'][0]['messages'] , array(
-							'type' => 4, //Custom payload
-							'platform' => 'facebook',
-							'payload' => array(
-									'facebook' => array(
-											'attachment' => array(
-													'type' => 'video',
-													'payload' => array(
-															'url' => $gem['value'],
-													),
-											),
-									),
-							),
-					));
-					
-				} elseif(in_array(577,array($gem['parent_id'],$gem['node_id']))){
-					//File URL
-					array_push( $intent['responses'][0]['messages'] , array(
-							'type' => 4, //Custom payload
-							'platform' => 'facebook',
-							'payload' => array(
-									'facebook' => array(
-											'attachment' => array(
-													'type' => 'file',
-													'payload' => array(
-															'url' => $gem['value'],
-													),
-											),
-									),
-							),
-					));
-					
-				} elseif(in_array(578,array($gem['parent_id'],$gem['node_id']))){
-					//Audio File URL
-					array_push( $intent['responses'][0]['messages'] , array(
-							'type' => 4, //Custom payload
-							'platform' => 'facebook',
-							'payload' => array(
-									'facebook' => array(
-											'attachment' => array(
-													'type' => 'audio',
-													'payload' => array(
-															'url' => $gem['value'],
-													),
-											),
-									),
-							),
-					));
-					
-				}
-			} elseif(strlen($gem['value'])>0 && in_array($gem['node_id'],array(567,575,576,577,578)) && in_array($gem['parent_id'],array(567,575,576,577,578))){
-				
-				//TODO Wire in next call to actions based on these objects:
-				//This section is with Quick replies to help user jump to next topic from here
-				
+				}				
 			}
 		}
 		
