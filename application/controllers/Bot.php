@@ -12,7 +12,7 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 		
 		//Assign global variables:
-		$this->facebook_page_id = 1782774501750818;
+		$this->facebook_page_id = '1782774501750818';
 		
 	}
 	
@@ -50,7 +50,7 @@ class Bot extends CI_Controller {
 				'us_id' => 0, //Default api.ai API User, IF not with facebok
 				'intent_pid' => ( substr_count($json_data['result']['action'],'pid')==1 ? intval(str_replace('pid','',$json_data['result']['action'])) : 0 ),
 				'json_blob' => json_encode($json_data), //Dump all incoming variables
-				'external_id' => $json_data['id'], //api.ai message id
+				'external_id' => $json_data['id'], //api.ai id
 				'message' => $json_data['result']['resolvedQuery'],
 				'seq' => 0, //No sequence if from api.ai
 				'correlation' => ( isset($json_data['result']['score']) ? $json_data['result']['score'] : 1 ),
@@ -59,21 +59,21 @@ class Bot extends CI_Controller {
 				'session_id' => $json_data['sessionId'], //Always from api.ai
 		);
 		
-		/*
+		//Is this message coming from Facebook? (Instead of api.ai console)
 		if(isset($json_data['originalRequest']['source']) 
 		&& $json_data['originalRequest']['source']=='facebook'
 		&& $json_data['originalRequest']['data']['recipient']['id']==$this->facebook_page_id){
 			
 			//This is from Facebook Messenger
-			$fb_user_id = intval($json_data['originalRequest']['data']['sender']['id']);
+			$fb_user_id = $json_data['originalRequest']['data']['sender']['id'];
 			
 			$eng_data['platform_pid'] = 765; //It is from Facebook!
 			$eng_data['external_id'] = $json_data['originalRequest']['data']['message']['mid']; //Facebook message id
 			$eng_data['seq'] = $json_data['originalRequest']['data']['message']['seq']; //Fascebook message sequence
 			$eng_data['message'] = $json_data['originalRequest']['data']['message']['text']; //Fascebook message content
 			
-			
 			if($fb_user_id>0){
+				
 				//We have a sender ID, see if this is registered on Us:
 				$matching_users = $this->Us_model->search_node($fb_user_id,765); //Facebook Messenger
 				
@@ -92,7 +92,7 @@ class Bot extends CI_Controller {
 				}
 			}
 		}
-		*/
+		
 		
 		//Log engagement:
 		$new = $this->Us_model->log_engagement($eng_data);
