@@ -92,7 +92,7 @@ class Us extends CI_Controller {
 		$eng = $this->Us_model->log_engagement(array(
 				'gem_id' => $data_set['node'][0]['id'],
 				'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
-				'is_inbound' => true, //Either true or false
+				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'intent_pid' => $data_set['node'][0]['node_id'],
 				'json_blob' => trim(json_encode($data_set['node'])),
 		));
@@ -128,7 +128,7 @@ class Us extends CI_Controller {
 		//Log engagement:
 		$eng = $this->Us_model->log_engagement(array(
 				'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
-				'is_inbound' => true, //Either true or false
+				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'intent_pid' => 843, //Logout intent
 		));
 		
@@ -159,7 +159,7 @@ class Us extends CI_Controller {
 			//Log engagement:
 			$eng = $this->Us_model->log_engagement(array(
 					'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
-					'is_inbound' => true, //Either true or false
+					'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 					'intent_pid' => 44, //Login password pattern, which indicates login
 					'seq' => $seq,
 					'session_id' => $session_id,

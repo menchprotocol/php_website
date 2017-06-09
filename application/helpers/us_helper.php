@@ -52,12 +52,6 @@ function arrayToObject($array){
 	return $obj;
 }
 
-function json_response($pid,$setting=array()){
-	$CI =& get_instance();
-	$response = $CI->Us_model->generate_response($pid,$setting);
-	header('Content-Type: application/json');
-	echo json_encode($response);
-}
 
 function user_login($user_email,$user_pass){
 	
@@ -141,18 +135,6 @@ function user_login($user_email,$user_pass){
 			
 			//Append email data:
 			$user_node[0]['email'] = $matching_users[0];
-			
-			//Log Login history
-			//TODO: Enable later. Disabled due to required UI adjustmens!
-			/*
-			 $new_link = $CI->Us_model->insert_link(array(
-			 'us_id' => $matching_users[0]['node_id'],
-			 'node_id' => $matching_users[0]['node_id'],
-			 'parent_id' => 61, //The login history node
-			 'grandpa_id' => 43, //System
-			 'action_type' => 4, //For linking
-			 ));
-			*/
 			
 			return array(
 				'status' => 1,

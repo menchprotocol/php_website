@@ -13,12 +13,9 @@ class Bot extends CI_Controller {
 		
 		//Assign global variables:
 		$this->facebook_page_id = '1782774501750818';
-		
 	}
+
 	
-	function test_response($pid){
-		json_response($pid);
-	}
 	
 	function fetch_entity($apiai_id){
 		header('Content-Type: application/json');
@@ -41,11 +38,9 @@ class Bot extends CI_Controller {
 		//Facebook Messenger send the data to api.ai, they attempt to detect #intents/@entities.
 		//And then they send the results to Us here.
 		//Data from api.ai
+		//Shervin facebook User ID is 1344093838979504
 		
 		$json_data = json_decode(file_get_contents('php://input'), true);
-		
-		//$json_data = objectToArray(json_decode('{"originalRequest":{"source":"facebook","data":{"sender":{"id":"1344093838979504"},"recipient":{"id":"1782774501750818"},"message":{"mid":"mid.$cAAZVbKt7ywpiu4rqGlcikWlWLdAX","text":"hi","seq":14953},"timestamp":1496968438298}},"id":"283f4928-2a2f-4e66-84f5-1a8219a85881","timestamp":"2017-06-09T00:33:58.628Z","lang":"en","result":{"source":"agent","resolvedQuery":"hi","speech":"","action":"pid614","actionIncomplete":false,"parameters":[],"contexts":[{"name":"generic","parameters":{"facebook_sender_id":"1344093838979504"},"lifespan":0}],"metadata":{"intentId":"c380b273-08b5-48f5-b01b-c3ba677a6122","webhookUsed":"true","webhookForSlotFillingUsed":"false","intentName":"Introduce Us"},"fulfillment":{"speech":"holllla!","messages":[{"type":0,"platform":"facebook","speech":"holllla!"},{"type":0,"speech":"holllla!"}]},"score":1},"status":{"code":200,"errorType":"success"},"sessionId":"5b7abe9f-6037-4708-9fd6-5e5dce8cc4e8"}'));
-
 		
 		//See what we should respond to the user:
 		$eng_data = array(
@@ -58,9 +53,9 @@ class Bot extends CI_Controller {
 				'seq' => 0, //No sequence if from api.ai
 				'correlation' => ( isset($json_data['result']['score']) ? $json_data['result']['score'] : 1 ),
 				'platform_pid' => 763, //766 Us, 765 FB, 763 api.ai //We assume its from api.ai console
-				'is_inbound' => true, //Either true or false
+				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'session_id' => $json_data['sessionId'], //Always from api.ai
-		);
+		);		
 		
 		//Is this message coming from Facebook? (Instead of api.ai console)
 		if(isset($json_data['originalRequest']['source']) 
@@ -76,7 +71,16 @@ class Bot extends CI_Controller {
 			$eng_data['seq'] 			= $json_data['originalRequest']['data']['message']['seq']; //Facebook message sequence
 			$eng_data['message'] 		= $json_data['originalRequest']['data']['message']['text']; //Facebook message content
 			
+			
 			if(strlen($fb_user_id)>0){
+				
+				//Indicate to the user that we're typing:
+				$this->Messenger_model->send_message(array(
+						'recipient' => array(
+								'id' => $fb_user_id
+						),
+						'sender_action' => 'typing_on'
+				));
 				
 				//We have a sender ID, see if this is registered on Us:
 				$matching_users = $this->Us_model->search_node($fb_user_id,765); //Facebook Messenger
@@ -89,30 +93,61 @@ class Bot extends CI_Controller {
 					//TODO Check to see if this user is unsubscribed:
 					//$unsubscribed_gem = $this->Us_model->fetch_sandwich_node($eng_data['us_id'],845);
 					
-				} else {
-					//TODO This is a new user that needs to be registered
 					
-					//Call facebook messenger API and get user details
+				} else {
+					//This is a new user that needs to be registered!
+					$eng_data['us_id'] = $this->Us_model->create_user_from_fb($fb_user_id);
+					
+					if(!$eng_data['us_id']){
+						//There was an error fetching the user profile from Facebook:
+						$eng_data['us_id'] = 765; //Use FB messenger
+						//TODO Log error and look into this
+					}
 				}
+				
+				
+				//Log incoming engagement:
+				$new = $this->Us_model->log_engagement($eng_data);				
+				
+				//Fancy:
+				//sleep(1);
+				
+				if(isset($unsubscribed_gem['id'])){
+					//Oho! This user is unsubscribed, Ask them if they would like to re-join us:
+					$response = array(
+							'text' => 'You had unsubscribed from Us. Would you like to re-join?',
+					);
+				} else {
+					//Now figure out the response:
+					$response = $this->Us_model->generate_response($eng_data['intent_pid'],$setting);
+				}
+				
+				//TODO: Log response engagement
+				
+				//Send message back to user:
+				$this->Messenger_model->send_message(array(
+						'recipient' => array(
+								'id' => $fb_user_id
+						),
+						'message' => $response,
+						'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+				));
 			}
-		}
-		
-		
-		//Log engagement:
-		$new = $this->Us_model->log_engagement($eng_data);
-		
-		
-		//Respond:
-		if(isset($unsubscribed_gem['id'])){
-			
-			//Oho! This user is unsubscribed, Ask them if they would like to re-join us:
-			json_response(846,array('skip_history'=>1));
 			
 		} else {
+			//Log engagement:
+			$new = $this->Us_model->log_engagement($eng_data);
 			
-			//This must either be a specific pattern, or the default fallback:
-			json_response($eng_data['intent_pid']);
-			
+			//most likely this is the api.ai console.
+			header('Content-Type: application/json');
+			$chosen_reply = 'Testing intents on api.ai, huh? Currently we programmed to only respond in Facebook messanger directly!';
+			echo json_encode(array(
+					'speech' => $chosen_reply,
+					'displayText' => $chosen_reply,
+					'data' => array(), //Its only a text response
+					'contextOut' => array(),
+					'source' => "webhook",
+			));
 		}
 	}
 }

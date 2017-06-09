@@ -311,7 +311,7 @@ class Us_model extends CI_Model {
 		//These are required fields:
 		if(!isset($link_data['platform_pid']) || intval($link_data['platform_pid'])<=0){
 			return false;
-		} elseif(!isset($link_data['is_inbound']) || !is_bool($link_data['is_inbound'])){
+		} elseif(!isset($link_data['action_pid']) || !is_bool($link_data['action_pid'])){
 			return false;
 		} elseif(!isset($link_data['us_id']) || !is_int($link_data['us_id']) || $link_data['us_id']<0){
 			//Try to fetch user ID from session:
@@ -545,6 +545,8 @@ class Us_model extends CI_Model {
 		return $q->row_array();
 	}
 	
+	
+	
 	function search_node($value_string, $parent_id=null, $setting=array()){
 		//Return the node_id of a link that matches the value and parent ID
 		//TODO Maybe move to Agolia search engine for faster search.
@@ -735,13 +737,8 @@ class Us_model extends CI_Model {
 		
 		if($pid<=0){
 			//Ooops, give an error:
-			$chosen_reply = 'No intent ID passed!';
 			return array(
-					'speech' => $chosen_reply,
-					'displayText' => $chosen_reply,
-					'data' => array(), //Its only a text response
-					'contextOut' => array(),
-					'source' => "webhook",
+					'text' => 'I did not understand that. One of us would get back to you soon.',
 			);
 		}
 		
@@ -754,8 +751,12 @@ class Us_model extends CI_Model {
 			//$history = $this->fetch_engagements($us_id,$pid);
 		}
 		
+		
 		//Lets see what needs to be appended to the response:
 		foreach($INs as $gem){
+			
+			//TODO check to see what they have consumed already, and inform them about it
+			
 			
 			//These are the responses we would give instantly, assuming they are before the conversation stopper:
 			if($gem['parent_id']==567){
@@ -764,66 +765,192 @@ class Us_model extends CI_Model {
 				$variations = explode("\n",$gem['value']);
 				
 				//Randomly choose one of the variations:
-				$chosen_reply = $variations[rand(0,(count($variations)-1))];
-				
-				//Text Message
 				return array(
-						'speech' => $chosen_reply,
-						'displayText' => $chosen_reply,
-						'data' => array(), //Its only a text response
-						'contextOut' => array(),
-						'source' => "webhook",
-						//This makes the system ignores "speech", "displayText", and "data":
-						//https://docs.api.ai/docs/concept-events#invoking-event-from-webhook
-						//TODO Implement for unknown:
-						//'followupEvent' => array(),
+						'text' => $variations[rand(0,(count($variations)-1))],
 				);
 				
 			} elseif($gem['parent_id']==575){
 				
-				//Image URL
-				//TODO test to make sure this works
+				//Image
 				return array(
-						'speech' => '',
-						'displayText' => '',
-						'data' => array(
-								 'facebook' => array(
-										 'attachment' => array(
-												 'type' => 'image',
-												 'payload' => array(
-												 		'url' => $gem['value'],
-												 ),
-										 ),
-								 ),
+						'attachment' => array(
+								'type' => 'image',
+								'payload' => array(
+										'url' => $gem['value'],
+								),
 						),
-						'contextOut' => array(),
-						'source' => "webhook",
 				);
 				
 			} elseif($gem['parent_id']==576){
 				
-				//TODO
+				//Video
+				return array(
+						'attachment' => array(
+								'type' => 'video',
+								'payload' => array(
+										'url' => $gem['value'],
+								),
+						),
+				);
 				
 			} elseif($gem['parent_id']==577){
 				
-				//TODO
+				//File
+				return array(
+						'attachment' => array(
+								'type' => 'file',
+								'payload' => array(
+										'url' => $gem['value'],
+								),
+						),
+				);
 				
 			} elseif($gem['parent_id']==578){
 				
-				//TODO
+				//Audio
+				return array(
+						'attachment' => array(
+								'type' => 'audio',
+								'payload' => array(
+										'url' => $gem['value'],
+								),
+						),
+				);
 				
 			}
 		}
 		
 		
-		//Nothing found!
-		$chosen_reply = 'It seems you have already consumed all content for this goal.';
+		//Still here?! Then nothing found...
 		return array(
-				'speech' => $chosen_reply,
-				'displayText' => $chosen_reply,
-				'data' => array(), //Its only a text response
-				'contextOut' => array(),
-				'source' => "webhook",
+				'text' => 'Found your requested intent, but I have nothing to say about it.',
 		);
+	}
+	
+	
+	function append_metadata($node_array){
+		
+		if(!$node_array || !is_array($node_array) || count($node_array)<1){
+			return false;
+		}
+		
+		foreach($node_array as $node){
+			
+			$subnode_id = 0;
+			
+			//First see if this exists:
+			$OUTs = $this->fetch_node($node['container_pid'],'fetch_children');
+			foreach($OUTs as $OUT){
+				if($OUT['value']==$node['container_val']){
+					$subnode_id = $OUT['node_id'];
+					break;
+				}
+			}
+			
+			if(!$subnode_id){
+				//Create this new node
+				$new_node = $this->insert_link(array(
+						'parent_id' => $node['container_pid'], //Facebook Messenger
+						'value' => $node['container_val'],
+						'action_type' => 1, //For adding
+						'us_id' => $node['us_id'],
+						'status' => 1,
+				));
+				//Assign new node ID:
+				$subnode_id = $new_node['node_id'];
+			}
+			
+			//Now create the new relationship:
+			$new_rel = $this->insert_link(array(
+					'node_id' => $node['connector_pid'],
+					'parent_id' => $subnode_id,
+					'value' => '',
+					'action_type' => 1, //For adding
+					'us_id' => $node['us_id'],
+					'status' => 1,
+			));
+		}
+		
+		return true;
+	}
+	
+	
+	function create_user_from_fb($fb_user_id){
+		//Call facebook messenger API and get user details:
+		$fb_profile = $this->Messenger_model->fetch_profile($fb_user_id);
+		
+		if(!isset($fb_profile['first_name'])){
+			//There was an issue accessing this on FB
+			return false;
+		}
+		
+		//Genearte full name, which is how we'll store it on our side 
+		$full_name = $fb_profile['first_name'].' '.$fb_profile['last_name'];
+		
+		//Search People by name to See if we have this user already:
+		$matching_users = $this->search_node($full_name,18);
+		
+		
+		//Is this user in our system already?
+		if(count($matching_users)>0){
+			//Yes, just assume the user is the first node:
+			$user_node = $matching_users[0];
+		} else {
+			//No create user:
+			$user_node = $this->insert_link(array(
+					'parent_id' => 18, //Belongs to People
+					'value' => $full_name,
+					'action_type' => 1, //For adding
+					'us_id' => 765, //Facebook Messenger is creator
+					'status' => 1,
+			));
+		}
+		
+		
+		//Insert messenger ID for future referencing:
+		$messenger_id_gem = $this->insert_link(array(
+				'node_id' => $user_node['node_id'],
+				'parent_id' => 765, //Facebook Messenger
+				'value' => $fb_user_id,
+				'action_type' => 1, //For adding
+				'us_id' => 765, //Facebook Messenger is creator
+				'status' => 1,
+		));
+		
+		
+		//Insert profile picture:
+		$profile_pic_gem = $this->insert_link(array(
+				'node_id' => $user_node['node_id'],
+				'parent_id' => 918, //Profile picture Node
+				'value' => $fb_profile['profile_pic'],
+				'action_type' => 1, //For adding
+				'us_id' => 765, //Facebook Messenger is creator
+				'status' => 1,
+		));
+		
+		//Now append extra meta data, that their Nodes may or may not exit:
+		$this->append_metadata(array(
+				array(
+						'container_pid' => 919, //Timezone
+						'container_val' => 'Timezone: '.$fb_profile['timezone'], //-7
+						'connector_pid' => $user_node['node_id'], //Connect to this user
+						'us_id' => 765, //Facebook Messenger is creator
+				),
+				array(
+						'container_pid' => 924, //locale
+						'container_val' => 'Locale: '.$fb_profile['locale'], //en_US
+						'connector_pid' => $user_node['node_id'], //Connect to this user
+						'us_id' => 765, //Facebook Messenger is creator
+				),
+				array(
+						'container_pid' => 921, //gender
+						'container_val' => 'Gender: '.$fb_profile['gender'], //male
+						'connector_pid' => $user_node['node_id'], //Connect to this user
+						'us_id' => 765, //Facebook Messenger is creator
+				),
+		));
+		
+		//Finally return the user Pattern ID:
+		return $user_node['node_id'];
 	}
 }
