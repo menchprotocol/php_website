@@ -42,7 +42,10 @@ class Bot extends CI_Controller {
 		//And then they send the results to Us here.
 		//Data from api.ai
 		
-		$json_data = json_decode(file_get_contents('php://input'), true);
+		$json_data = objectToArray(json_decode(file_get_contents('php://input'), true));
+		
+		//$json_data = objectToArray(json_decode('{"originalRequest":{"source":"facebook","data":{"sender":{"id":"1344093838979504"},"recipient":{"id":"1782774501750818"},"message":{"mid":"mid.$cAAZVbKt7ywpiu4rqGlcikWlWLdAX","text":"hi","seq":14953},"timestamp":1496968438298}},"id":"283f4928-2a2f-4e66-84f5-1a8219a85881","timestamp":"2017-06-09T00:33:58.628Z","lang":"en","result":{"source":"agent","resolvedQuery":"hi","speech":"","action":"pid614","actionIncomplete":false,"parameters":[],"contexts":[{"name":"generic","parameters":{"facebook_sender_id":"1344093838979504"},"lifespan":0}],"metadata":{"intentId":"c380b273-08b5-48f5-b01b-c3ba677a6122","webhookUsed":"true","webhookForSlotFillingUsed":"false","intentName":"Introduce Us"},"fulfillment":{"speech":"holllla!","messages":[{"type":0,"platform":"facebook","speech":"holllla!"},{"type":0,"speech":"holllla!"}]},"score":1},"status":{"code":200,"errorType":"success"},"sessionId":"5b7abe9f-6037-4708-9fd6-5e5dce8cc4e8"}'));
+
 		
 		//See what we should respond to the user:
 		$eng_data = array(
@@ -67,12 +70,14 @@ class Bot extends CI_Controller {
 			//This is from Facebook Messenger
 			$fb_user_id = $json_data['originalRequest']['data']['sender']['id'];
 			
-			$eng_data['platform_pid'] = 765; //It is from Facebook!
-			$eng_data['external_id'] = $json_data['originalRequest']['data']['message']['mid']; //Facebook message id
-			$eng_data['seq'] = $json_data['originalRequest']['data']['message']['seq']; //Fascebook message sequence
-			$eng_data['message'] = $json_data['originalRequest']['data']['message']['text']; //Fascebook message content
+			//Update engagement variables:
+			$eng_data['platform_pid'] 	= 765; //It is from Facebook!
+			$eng_data['external_id'] 	= $json_data['originalRequest']['data']['message']['mid']; //Facebook message id
+			$eng_data['seq'] 			= $json_data['originalRequest']['data']['message']['seq']; //Facebook message sequence
+			$eng_data['message'] 		= $json_data['originalRequest']['data']['message']['text']; //Facebook message content
 			
-			if($fb_user_id>0){
+			/*
+			if(strlen($fb_user_id)>0){
 				
 				//We have a sender ID, see if this is registered on Us:
 				$matching_users = $this->Us_model->search_node($fb_user_id,765); //Facebook Messenger
@@ -91,6 +96,7 @@ class Bot extends CI_Controller {
 					//Call facebook messenger API and get user details
 				}
 			}
+			*/
 		}
 		
 		
