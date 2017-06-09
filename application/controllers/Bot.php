@@ -59,6 +59,7 @@ class Bot extends CI_Controller {
 				'session_id' => $json_data['sessionId'], //Always from api.ai
 		);
 		
+		/*
 		if(isset($json_data['originalRequest']['source']) 
 		&& $json_data['originalRequest']['source']=='facebook'
 		&& $json_data['originalRequest']['data']['recipient']['id']==$this->facebook_page_id){
@@ -91,7 +92,7 @@ class Bot extends CI_Controller {
 				}
 			}
 		}
-			
+		*/
 		
 		//Log engagement:
 		$new = $this->Us_model->log_engagement($eng_data);
