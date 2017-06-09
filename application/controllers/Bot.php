@@ -76,7 +76,6 @@ class Bot extends CI_Controller {
 			$eng_data['seq'] 			= $json_data['originalRequest']['data']['message']['seq']; //Facebook message sequence
 			$eng_data['message'] 		= $json_data['originalRequest']['data']['message']['text']; //Facebook message content
 			
-			/*
 			if(strlen($fb_user_id)>0){
 				
 				//We have a sender ID, see if this is registered on Us:
@@ -96,7 +95,6 @@ class Bot extends CI_Controller {
 					//Call facebook messenger API and get user details
 				}
 			}
-			*/
 		}
 		
 		
