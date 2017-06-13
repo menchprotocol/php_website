@@ -11,7 +11,6 @@ function nl2br (str, is_xhtml) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
-
 //To be used in text auto complete
 var emojies = [
 	  '+1', '-1', '100', '1234', '8ball', 'a', 'ab', 'abc', 'abcd', 'accept',

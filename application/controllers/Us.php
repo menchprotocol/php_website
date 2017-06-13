@@ -76,7 +76,6 @@ class Us extends CI_Controller {
 		//Require authentication:
 		auth();
 		
-		
 		//Build data sets for our views:
 		$data_set = array(
 				'node' => $this->Us_model->fetch_full_node($node_id),
@@ -85,7 +84,7 @@ class Us extends CI_Controller {
 		//Make sure it was valid:	
 		if($data_set['node'][0]['id']<1){
 			//We did not find this ID:
-			redirect_message('/','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> has no active Gems.</div>');
+			redirect_message('/','<div class="alert alert-danger" role="alert"><b>||'.$node_id.'</b> does not exit.</div>');
 		}
 		
 		//Log engagement:

@@ -1,17 +1,14 @@
 <?php
 
-
-
-function add_youtube_video($input,$start,$end,$hashtag_id,$notes=null,$user_id=null){
+function add_youtube_video($youtube_identifier,$IN_intent,$us_id=null){
 	
-	$CI =& get_instance();
-	
-	if(strlen($input)==11){
+	//Input validation:
+	if(strlen($youtube_identifier)==11){
 		//Its an ID:
-		$youtube_id = $input;
+		$youtube_id = $youtube_identifier;
 	} else {
 		//Input is a URL:
-		$youtube_url= $input;
+		$youtube_url= $youtube_identifier;
 		
 		//Validate URL and extract ID:
 		if(preg_match("~\byoutube\.com\/watch\?v\b~",$youtube_url)){
@@ -21,20 +18,20 @@ function add_youtube_video($input,$start,$end,$hashtag_id,$notes=null,$user_id=n
 		} else {
 			return array(
 				'status' => 0,
-				'message' => '"'.$youtube_url.'" not recognized as a valid YouTube URL',
+				'message' => $youtube_url.' not recognized as a valid YouTube URL',
 			);
 		}
 		//Anything wrong with the ID?
 		if(strlen($youtube_id)!=11){
 			return array(
 				'status' => 0,
-				'message' => 'YouTube Video ID "'.$youtube_id.'" is not 11 characters, which is what a standard YouTube ID is.',
+				'message' => 'YouTube Video ID '.$youtube_id.' is not 11 characters, which is what a standard YouTube ID is.',
 			);
 		}
 	}
 	
 	//Check to see if we have this ID already, and where:
-	$is_full_video = (!$start && !$end);
+	$CI =& get_instance();
 	$current = $CI->Us_model->search_node($youtube_id, 237 , array('append_node_top'=>1));
 	//print_r($current);
 	$main_node = 0; //This is the node that [node_id][parent_id]=65 which means its part of &YouTubeVideos
@@ -45,170 +42,80 @@ function add_youtube_video($input,$start,$end,$hashtag_id,$notes=null,$user_id=n
 		}
 	}
 	
-	
 	//Lets run some more checks:
-	if($is_full_video && $main_node){
+	if($main_node){
 		return array(
 			'status' => 0,
-			'message' => 'YouTube Video ID "'.$youtube_id.'" already exists as full video here: /'.$main_node,
+			'message' => 'YouTube Video ID '.$youtube_id.' already exists on ||'.$main_node,
 		);
-	} elseif($is_full_video && !$hashtag_id){
+	} elseif(!$IN_intent){
 		return array(
-			'status' => 0,
-			'message' => 'Parent #Goal required for full YouTube videos to indicate what its topic is.',
+				'status' => 0,
+				'message' => '#Intent required for new YouTube videos.',
 		);
-	} else
-	
-	//Lets start creating the video:
-	if($is_full_video){
-		
-		if($main_node){
-			return array(
-				'status' => 0,
-				'message' => 'YouTube Video ID "'.$youtube_id.'" already exists as full video here: /'.$main_node,
-			);
-		} elseif(!$hashtag_id){
-			return array(
-				'status' => 0,
-				'message' => 'Parent #Goal required for full YouTube videos to indicate what its topic is.',
-			);
-		}
-		
-		$html = file_get_contents('https://www.youtube.com/watch?v='.$youtube_id);
-		$minutes = intval(one_two_explode('itemprop="duration" content="PT','M',$html));
-		$seconds = intval(one_two_explode('itemprop="duration" content="PT'.$minutes.'M','S',$html));
-		
-		//TODO Consider looking for embed enabled videos only and reject those with embed restrictions
-		$batch_input = array(
-			array(
-				'us_id' => $user_id,
-				'parent_id' => 65, //YouTube Video
-				'status' => 1,
-				'value' => one_two_explode('name="title" content="','"',$html),
-				'action_type' => 1, //For adding
-			),
-			array(
-				'us_id' => $user_id,
-				'parent_id' => 237, //YouTube Video ID
-				'status' => 2,
-				'value' => $youtube_id,
-				'action_type' => 4, //For linking
-			),
-			array(
-				'us_id' => $user_id,
-				'parent_id' => 28, //Publish date
-				'status' => 2,
-				'value' => one_two_explode('itemprop="datePublished" content="','"',$html),
-				'action_type' => 4, //For linking
-			),
-			array(
-				'us_id' => $user_id,
-				'parent_id' => 192, //Video views
-				'status' => 2,
-				'value' => one_two_explode('itemprop="interactionCount" content="','"',$html),
-				'action_type' => 4, //For linking
-			),
-			array(
-				'us_id' => $user_id,
-				'parent_id' => 161, //Video duration in minutes
-				'status' => 2,
-				'value' => $minutes + ( $seconds>=30 ? 1 : 0 ), //Round-off
-				'action_type' => 4, //For linking
-			),
-			array(
-				'us_id' => $user_id,
-				'parent_id' => 310, //YouTube Publisher Channel ID
-				'status' => 2,
-				'value' => one_two_explode('itemprop="channelId" content="','"',$html),
-				'action_type' => 4, //For linking
-			),
-			array(
-				'us_id' => $user_id,
-				'parent_id' => $hashtag_id, //The assigned parent ID
-				'status' => 2,
-				'value' => 'Video content is related to this goal',
-				'action_type' => 4, //For linking
-			),
-		);
-		
-	} else {
-		
-		// video Slice
-		//Do some checks:
-		if(!$main_node){
-			return array(
-				'status' => 0,
-				'message' => 'YouTube Video ID "'.$youtube_id.'" not found as a full video under /65, so you cannot add this partial video until we have the full video.',
-			);
-		}
-		
-		
-		$next_node = $CI->Us_model->next_node_id();
-		$batch_input = array();
-		
-		if(intval($hashtag_id)>0){
-			//User has submitted a hashtag
-			//Fetch the sub-#hashtag this is referencing:
-			$fetch_node = $CI->Us_model->fetch_node($hashtag_id);
-		}
-		
-		
-		//Main linking:
-		array_push($batch_input , array(
-				'us_id' => $user_id,
-				'node_id' => $next_node,
-				'status' => 1, //TODO Update
-				'parent_id' => $main_node, //Parent Full YouTube Video
-				'value' => ( intval($hashtag_id)>0 ? $fetch_node[0]['value'] : 'Video Gem / Seconds '.$start.' - '.$end ),
-				'action_type' => 1, //For adding
-				'ui_parent_rank' => 1, //TOP
-		));
-		array_push($batch_input , array(
-				'us_id' => $user_id,
-				'node_id' => $next_node,
-				'status' => 2, //TODO Update
-				'parent_id' => 237, //YouTube Video ID
-				'value' => $youtube_id,
-				'action_type' => 4, //For linking
-		));
-		array_push($batch_input , array(
-				'us_id' => $user_id,
-				'node_id' => $next_node,
-				'status' => 2, //TODO Update
-				'parent_id' => 73, //Media start time
-				'value' => $start,
-				'action_type' => 4, //For linking
-		));
-		array_push($batch_input , array(
-				'us_id' => $user_id,
-				'node_id' => $next_node,
-				'status' => 2, //TODO Update
-				'parent_id' => 74, //Media end time
-				'value' => $end,
-				'action_type' => 4, //For linking
-		));
-		
-		if(intval($hashtag_id)>0){
-			//Insert this as the child:
-			array_push($batch_input , array(
-					'us_id' => $user_id,
-					'node_id' => $hashtag_id,
-					'status' => 2, //TODO Update
-					'grandpa_id' => 3, //Always hashtags
-					'parent_id' => $next_node, //This slice references hashtag
-					'value' => $notes,
-					'action_type' => 4, //For linking
-			));
-		}
 	}
-
+		
+	//Lets start creating the video:
+	$html = curl_html('https://www.youtube.com/watch?v='.$youtube_id);
+	$minutes = intval(one_two_explode('itemprop="duration" content="PT','M',$html));
+	$seconds = intval(one_two_explode('itemprop="duration" content="PT'.$minutes.'M','S',$html));
+	
+	//TODO Consider looking for embed enabled videos only and reject those with embed restrictions
+	// Sample embed disabled video: https://www.youtube.com/watch?v=ORHjkwwpLyU
+	
+	$next_node = $CI->Us_model->next_node_id();
+	
 	//Add batch:
-	$batch_insert = $CI->Us_model->insert_batch_links($batch_input);
+	$batch_insert = $CI->Us_model->insert_batch_links(array(
+			array(
+					'us_id' => $us_id,
+					'node_id' => $next_node,
+					'parent_id' => 65, //YouTube Video
+					'value' => one_two_explode('name="title" content="','"',$html),
+					'action_type' => 1, //For adding
+					'ui_parent_rank' => 1, //TOP
+			),
+			array(
+					'us_id' => $us_id,
+					'node_id' => $next_node,
+					'parent_id' => 237, //YouTube Video ID
+					'value' => $youtube_id,
+					'action_type' => 4, //For linking
+			),
+			array(
+					'us_id' => $us_id,
+					'node_id' => $next_node,
+					'parent_id' => 28, //Publish date
+					'value' => one_two_explode('itemprop="datePublished" content="','"',$html),
+					'action_type' => 4, //For linking
+			),
+			array(
+					'us_id' => $us_id,
+					'node_id' => $next_node,
+					'parent_id' => 192, //Video views
+					'value' => one_two_explode('itemprop="interactionCount" content="','"',$html),
+					'action_type' => 4, //For linking
+			),
+			array(
+					'us_id' => $us_id,
+					'node_id' => $next_node,
+					'parent_id' => 161, //Video duration in minutes
+					'value' => $minutes + ( $seconds>=30 ? 1 : 0 ), //Round-off
+					'action_type' => 4, //For linking
+			),
+			array(
+					'us_id' => $us_id,
+					'node_id' => $next_node,
+					'parent_id' => $IN_intent, //The core intent of the video
+					'value' => '',
+					'action_type' => 4, //For linking
+			),
+	));
 	
 	//Return final results:
 	return array(
 		'status' => (count($batch_insert)>0),
-		'message' => count($batch_insert).' links modified.',
+		'message' => count($batch_insert).' gems added.',
 		'link' => $batch_insert,
 	);
 }

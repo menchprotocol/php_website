@@ -9,13 +9,14 @@ class Openapi extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	
 	function danger(){
 		//Only activate when needed
-		$this->Us_model->restore_delete(5887,6142);
+		//$this->Us_model->restore_delete(5887,6142);
 	}
-
+	
+	
 	function reverse_delete($start_id, $end_id){
+		die('disabled for now');
 		//Fetch all node links
 		$this->db->select('*');
 		$this->db->from('v3_data d');
@@ -37,12 +38,6 @@ class Openapi extends CI_Controller {
 		}
 	}
 	
-	function addYoutubeVideo($video_id,$parent_id,$user_node){
-		header("Access-Control-Allow-Origin: *");
-		header('Content-Type: application/json');
-		$this->load->helper('node/65');
-		echo json_encode(add_youtube_video($video_id,0,0,$parent_id));
-	}
 	
 	function validateUser(){
 		header("Access-Control-Allow-Origin: *");
@@ -62,136 +57,223 @@ https://www.youtube.com/watch?v=-HufDVSkgrI");
 		$result = array();
 		foreach($videos as $url){
 			//This does all the heavy liftin:
-			array_push($result,add_youtube_video($url,0,0,$parent_id));
+			array_push($result,add_youtube_video($url,$parent_id));
 		}
 		
 		print_r($result);
-		
 	}
 	
 	
 	
-	function sliceYouTubePost(){
-		
+	
+	
+	
+	
+	
+	function addYoutubeVideo(){
+		//Create a new YouTube video from Gem Chrome Extension when the user stumbles upon a new video:
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
 		$this->load->helper('node/65');
 		
-		header("Access-Control-Allow-Origin: *");
-		header('Content-Type: application/json');
-		
-		//Search through the people:
-		/*
-		$_POST['people_string'] = 'Elon Musk, Kevin Spacey';
-		$public_figures = explode(',' , $_POST['people_string']);
-		foreach($public_figures as $fullName){
-			//Search among public figures /33
-			$current = $this->Us_model->search_node($fullName, 33 , array('compare_lowercase'=>1));
-			if(!isset($current[0]['node_id'])){
-				//Lets index this person:
-				
-			}
-		}
-		*/
-		
-		//See if we need to create a new #hashtag:
-		/*
-		 * 
-		 * var params = "youtube_id="+input_data['youtube_id']
-		+"&start_time="+input_data['start_time']
-		+"&end_time="+input_data['end_time']
-		+"&selected_id="+input_data['selected_id']
-		+"&new_node_text="+input_data['new_node_text']
-		+"&description="+input_data['description'];
-		 * 
-		 * */
-		
-		if(intval($_POST['selected_id'])>0){
-			//Insert the node into the pending bucket:
-			$child_hashtag = intval($_POST['selected_id']);
-		} elseif(intval($_POST['selected_id'])<1 && strlen($_POST['new_node_text'])>0){
-			//Insert the node into the pending bucket:
-			$new_hashtag = $this->Us_model->insert_link(array(
-					'us_id' => intval($_POST['user_node_id']),
-					'parent_id' => 298, //Newly added bucket
-					'grandpa_id' => 3, //Always #Intent
-					'value' => trim($_POST['new_node_text']),
-					'ui_rank' => 999, //Place last on the list
-					'action_type' => 1, //For adding
+		//Validate inputs:
+		if(!isset($_GET['us_id']) || intval($_GET['us_id'])<=0){
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Missing user ID.',
 			));
-			if(!$new_hashtag){
-				echo json_encode($new_hashtag);
-				return false;
+		} elseif(!isset($_GET['video_id']) || strlen($_GET['video_id'])<8){
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Missing YouTube video ID',
+			));
+		} elseif((!isset($_GET['intent_id']) || intval($_GET['intent_id'])<=0) && (!isset($_GET['intent_name']) || strlen($_GET['intent_name'])<1)){
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Require either a link to existing intent or a new intent name.',
+			));
+		} else {
+			
+			//All seems good, lets define input variables:
+			$video_id = trim($_GET['video_id']);
+			$us_id = intval($_GET['us_id']);
+			$intent_id_ref = intval($_GET['intent_id']);
+			$people = trim($_GET['people']);
+			$organizations = trim($_GET['organizations']);
+			
+			
+			//Are we referencing existing intent, or creating a new one?
+			if(!$intent_id_ref){
+				//Creating new #Intent:
+				$new_link = $this->Us_model->insert_link(array(
+						'us_id' => $us_id,
+						'parent_id' => 298, // #NewlyCreatedIntents
+						'value' => trim($_GET['intent_name']),
+						'action_type' => 1, //For adding
+						'ui_parent_rank' => 1, //TOP
+				));
+				$intent_id_ref = $new_link['node_id']; //A new ID for this new #intent
+			}
+			
+			//Create video:
+			$batch_process = add_youtube_video($video_id,$intent_id_ref,$us_id);
+			
+			//See results:
+			if(!$batch_process['status']){
+				//O o, some issues in batch processing:
+				echo json_encode(array(
+						'status' => 0,
+						'message' => $batch_process['message'],
+				));
 			} else {
-				$child_hashtag = $new_hashtag['node_id'];
+				//All seems good!
+				
+				//We do have any people/organization references?
+				$entity_refs = array();
+				if(strlen($people)>0){
+					$temp = explode(',',$people);
+					foreach($temp as $obj_name){
+						array_push($entity_refs,array(
+								'container_pid' => 18, //People
+								'container_val' => trim($obj_name),
+								'connector_pid' => $batch_process['link'][0]['node_id'],
+								'us_id' => $us_id,
+						));
+					}
+				}
+				if(strlen($organizations)>0){
+					$temp = explode(',',$organizations);
+					foreach($temp as $obj_name){
+						array_push($entity_refs,array(
+								'container_pid' => 21, //Organizations
+								'container_val' => trim($obj_name),
+								'connector_pid' => $batch_process['link'][0]['node_id'],
+								'us_id' => $us_id,
+						));
+					}
+				}
+				
+				if(count($entity_refs)>0){
+					//We do have some!
+					$this->Us_model->append_metadata($entity_refs);
+				}
+				
+				//All went well!
+				echo json_encode(array(
+						'status' => 1,
+						'message' => $batch_process['message'],
+						'link' => $batch_process['link'][0], //Return only top link in Batch
+				));
 			}
-		} else {
-			$child_hashtag = 0;
-		}
-		
-		$result = add_youtube_video($_POST['youtube_id'],$_POST['start_time'],$_POST['end_time'],$child_hashtag,$_POST['description'],intval($_POST['user_node_id']));
-		
-		echo_html(1,'Added Successfully');
+		}	
 	}
+
 	
 	
-	function bcall(){
-		//echo '<script> chrome.runtime.sendMessage("mgdoadincellakcmdpobfleifadheffk", { status: "logged in" }); </script>';
-	}
 	
-	function fetchUserSession(){
+	function sliceYouTubeVideo(){
 		
 		header("Access-Control-Allow-Origin: *");
 		header('Content-Type: application/json');
-		$ses = $this->session->all_userdata();
-		if(count($ses)>1){
-			echo json_encode($ses);
-		} else {
-			$this->session->set_userdata(array(
-				'hello' => 1,
-					'hi' => 2,
-					'hi' => '333',
+		
+		if(!isset($_GET['video_node_id']) || intval($_GET['video_node_id'])<=0){
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Missing Indexed video PID.',
 			));
-			$ses = $this->session->all_userdata();
-			echo json_encode($ses);
-			echo json_encode($_POST);
-		}
-		
-		
-		/*
-		header("Access-Control-Allow-Origin: *");
-		if(auth(1)){
-			$user_data = $this->session->userdata('user');
-			header('Content-Type: application/json');
-			echo json_encode($user_data);
+		} elseif(!isset($_GET['us_id']) || intval($_GET['us_id'])<=0){
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Missing User PID.',
+			));
+		} elseif((!isset($_GET['intent_id']) || intval($_GET['intent_id'])<=0) && (!isset($_GET['intent_name']) || strlen($_GET['intent_name'])<1)){
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Require either a link to existing intent or a new intent name.',
+			));
+		} elseif(!isset($_GET['start_time']) || intval($_GET['start_time'])<=0 || !isset($_GET['end_time']) || strlen($_GET['end_time'])<1){
+			//TODO Improve time check validation and sync with JS logic on contentscript.js
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'We require both start time and end time to slice this video.',
+			));
 		} else {
-			echo 0;
-		}*/
+			
+			//All seems good, lets define input variables:
+			$us_id = intval($_GET['us_id']);
+			$intent_id_ref = intval($_GET['intent_id']);
+			
+			//Are we referencing existing intent, or creating a new one?
+			if(!$intent_id_ref){
+				//Creating new #Intent:
+				$new_link = $this->Us_model->insert_link(array(
+						'us_id' => $us_id,
+						'parent_id' => 298, // #NewlyCreatedIntents
+						'value' => trim($_GET['intent_name']),
+						'action_type' => 1, //For adding
+						'ui_parent_rank' => 1, //TOP
+				));
+				$intent_id_ref = $new_link['node_id']; //A new ID for this new #intent
+			}
+			
+			//Insert new Reference
+			$new_link2 = $this->Us_model->insert_link(array(
+					'us_id' => $us_id,
+					'node_id' => $intent_id_ref,
+					'parent_id' => intval($_GET['video_node_id']),
+					'value' => 'slice/'.intval($_GET['start_time']).':'.intval($_GET['end_time']),
+					'action_type' => 4, //For linking
+			));
+			
+			//See results:
+			echo json_encode(array(
+					'status' => 1,
+					'message' => 'Gem #'.$new_link2['id'].' successfully collected.',
+			));
+			
+		}
 	}
+	
+	
 	
 	function search2steps($parent_start,$parent_end,$search_value){
 		//Searches for a value/parent match, and then grab finds node connected to $parent_end
 		$matches = $this->Us_model->search_node($search_value,$parent_start);
-		//Display results:
-		header("Access-Control-Allow-Origin: *");
+		$return_array = array();
 		if(count($matches)>0){
 			//Fetch the top nodes for what we found:
-			$return_array = array();
 			foreach($matches as $m){
 				$top_parent = $this->Us_model->fetch_node($m['node_id'],'fetch_top_plain');
 				if($top_parent['parent_id']==$parent_end){
 					//Qualifies as part of the search result:
 					array_push($return_array,$top_parent);
+					break;
 				}
-			}
-			if(count($return_array)>0){
-				header('Content-Type: application/json');
-				echo json_encode($return_array);
-				return true;
 			}
 		}
 		
-		//Return this if nothing found:
-		echo 0;
+		
+		//Display results:
+		header("Access-Control-Allow-Origin: *");
+		header('Content-Type: application/json');
+		
+		if(count($return_array)>0){
+			echo json_encode(array(
+					'status' => 1,
+					'message' => 'Video Found.',
+					'link' => $return_array[0], //Only one, since we broke the loop
+			));
+		} else {
+			//Return this if nothing found:
+			echo json_encode(array(
+					'status' => 0,
+					'message' => 'Video Not Found.',
+					'link' => array(),
+			));
+		}	
 	}
+	
+	
 	
 	
 	

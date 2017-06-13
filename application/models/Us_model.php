@@ -118,7 +118,12 @@ class Us_model extends CI_Model {
 		
 		//Now some improvements to the input in case missing:
 		if(!isset($link_data['ui_rank'])){
-			$link_data['ui_rank'] = ( $is_update ? $link['ui_rank'] : 1 ); //We assume the top of the child list
+			if($is_update){
+				$link_data['ui_rank'] = $link['ui_rank'];
+			} else {
+				//TODO Find the biggest and do+1:
+				$link_data['ui_rank'] = 9999;
+			}
 		}
 		if(!isset($link_data['ui_parent_rank'])){
 			$link_data['ui_parent_rank'] = ( $is_update ? $link['ui_parent_rank'] : ( isset($link_data['node_id']) ? 2 : 1 ) );
@@ -841,7 +846,7 @@ class Us_model extends CI_Model {
 			//First see if this exists:
 			$OUTs = $this->fetch_node($node['container_pid'],'fetch_children');
 			foreach($OUTs as $OUT){
-				if($OUT['value']==$node['container_val']){
+				if(alphanumeric_lower($OUT['value']) == alphanumeric_lower($node['container_val'])){
 					$subnode_id = $OUT['node_id'];
 					break;
 				}

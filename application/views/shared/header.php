@@ -46,12 +46,21 @@ $function = $this->uri->segment(2);
 				<form id="searchForm" class="search-block">
 				  <input type="text" class="form-control autosearch" id="mainsearch" placeholder="Search...">
 				</form>
-			<?php } ?>				
+			<?php } ?>		
 		</p>
 	</div>
 	
 		
 	<div class="container main-header">
+		
+		<?php
+		//Any Html Messages int he flash session to show?
+		$hm = $this->session->flashdata('hm');
+		if($hm){
+			echo '<div class="row" style="margin-top:10px;"><div class="col-xs-12">'.$hm.'</div></div>';
+		}
+		?>
+		
 		<ul class="nav nav-tabs">
 		  <?php if(isset($user_data['id']) || isset($show_grandpas)){ ?>
 			  <li role="presentation" <?= ( isset($node) && $node[0]['grandpa_id']==1 ? 'class="active"' : '' ) ?>><a href="/1?from=header">@</a></li>
@@ -70,12 +79,6 @@ $function = $this->uri->segment(2);
 		</ul>
 	</div>
 	
-    <div class="container <?= (isset($view) ? 'view_'.$view : '') ?>" role="main" id="main_container">
-    
-    <?php
-	//Any Html Messages int he flash session to show?
-	$hm = $this->session->flashdata('hm');
-	if($hm){
-		echo '<div class="row" style="margin-top:10px;"><div class="col-xs-12">'.$hm.'</div></div>';
-	}
-	?>
+	 
+	
+    <div class="container <?= (isset($view) ? 'view_'.$view : '') ?>" role="main" id="main_container">   

@@ -9,7 +9,21 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.66'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.67'.( !is_production() ? '.'.substr(time(),7) : '' );
+}
+
+function curl_html($url){
+	$ch = curl_init($url);
+	curl_setopt_array($ch, array(
+			CURLOPT_CUSTOMREQUEST => 'GET',
+			CURLOPT_POST => FALSE,
+			CURLOPT_RETURNTRANSFER => TRUE,
+	));
+	return curl_exec($ch);
+}
+
+function alphanumeric_lower($string){
+	return preg_replace("/[^a-z0-9]/", '', strtolower($string));
 }
 
 function boost_power(){
@@ -502,62 +516,26 @@ function echoNode($node,$key,$load_open=false){
 				if(substr($p['value'],0,8)=='__eval__'){
 					//This needs a PHP evaluation call to attempt to call the function and fill-in {value}
 					eval("\$ui_setting['value_template'] = ".str_replace('__eval__','',str_replace('{value}','"'.$node[$key]['value'].'"',$p['value'])).";");
-					
-					
-				// TODO #142 } elseif(substr_count($p['value'],'php_')){
-					// Sample entry: php_md5(strtolower(trim("{value}")))
-				
 				} else {
 					$ui_setting['value_template'] = str_replace('{value}',$node[$key]['value'],$p['value']);
 				}
 				
-				$ui_setting['template_matched']= 1;
+				// TODO #142 } elseif(substr_count($p['value'],'php_')){
+				// Sample entry: php_md5(strtolower(trim("{value}")))
 				
-				if($p['node_id']==237){
-					//This is a YouTube embed, lets see if we can find start/end times.
-					//This feels like a super-hack! We'll figure out how to make it work...
-					$start_time = 0;
-					$end_time = 0;
-					foreach($node as $p2){
-						if($node[0]['node_id']==$p2['node_id'] && intval($p2['value'])>0){
-							//This belogs to the templating node:
-							if($p2['parent_id']==73){
-								$start_time = $p2['value'];
-							} elseif($p2['parent_id']==74){
-								$end_time = $p2['value'];
-							}
-						}
-					}
-					if($start_time>0 || $end_time>0){
-						$ui_setting['value_template'] = str_replace( $node[$key]['value'] , $node[$key]['value'].'?start='.$start_time.'&end='.$end_time , $ui_setting['value_template']);
-					}
-				}
+				$ui_setting['template_matched'] = 1;
 				
-			} elseif($p['parent_id']==237){
-				//This is a YouTube embed, lets see if we can find start/end times.
-				//This feels like a super-hack! We'll figure out how to make it work...
-				$start_time = 0;
-				$end_time = 0;
+			} elseif($p['parent_id']==237 && substr($node[$key]['value'],0,6)=='slice/'){
 				
-				foreach($node[$key]['parents'] as $p2){
-					if($p2['parent_id']==73){
-						$start_time = $p2['value'];
-					} elseif($p2['parent_id']==74){
-						$end_time = $p2['value'];
-					}
-				}
-				
+				//This is a Slice of video/audio:
+				$times = explode(':',str_replace('slice/','',$node[$key]['value']),2);
+				$start_time = intval($times[0]);
+				$end_time = intval($times[1]);
 				if($start_time>0 || $end_time>0){
-					//Go one more level deep!
-					$parent_node = $CI->Us_model->fetch_node($p['parent_id'], 'fetch_parents');
-					
-					foreach($parent_node as $p3){
-						if($p3['parent_id']==63 && substr_count($p3['value'],'{value}')>0){
-							//This is special content fetched from 2 levels deep only for YouTube videos for now:
-							$ui_setting['followup_content'] = '<div class="followupContent">'.str_replace('{value}',$p['value'].'?start='.$start_time.'&end='.$end_time,$p3['value']).'</div>';
-						}
-					}
+					$ui_setting['template_matched'] = 1;
+					$ui_setting['value_template'] = '<span class="fullwidthcontnet"><iframe src="//www.youtube.com/embed/'.$p['value'].'?start='.$start_time.'&end='.$end_time.'" frameborder="0" allowfullscreen class="video"></iframe></span>';
 				}
+				
 			} elseif($p['parent_id']==910){
 				//This is the admin description, which we can append:
 				$ui_setting['node_description']= $p['value'];
@@ -583,7 +561,7 @@ function echoNode($node,$key,$load_open=false){
 			if($node[0]['node_id']==$p['node_id'] && $p['parent_id']==63 && substr_count($p['value'],'{value}')>0){
 				//This belogs to the templating node:
 				$ui_setting['value_template'] = str_replace('{value}',$node[$key]['value'],$p['value']);
-				$ui_setting['template_matched']= 1;
+				$ui_setting['template_matched'] = 1;
 			}
 		}
 	}
