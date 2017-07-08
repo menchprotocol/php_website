@@ -34,8 +34,8 @@ class Bot extends CI_Controller {
 	
 	
 	function facebook_webhook(){		
-		$challenge = ( isset($_REQUEST['hub_challenge']) ? $_REQUEST['hub_challenge'] : (isset($_REQUEST['hub.challenge']) ? $_REQUEST['hub.challenge'] : null ) );
-		$verify_token = ( isset($_REQUEST['hub_verify_token']) ? $_REQUEST['hub_verify_token'] : (isset($_REQUEST['hub.verify_token']) ? $_REQUEST['hub.verify_token'] : null ) );
+		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : (isset($_GET['hub.challenge']) ? $_GET['hub.challenge'] : null ) );
+		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : (isset($_GET['hub.verify_token']) ? $_GET['hub.verify_token'] : null ) );
 		
 		if ($verify_token === '722bb4e2bac428aa697cc97a605b2c5a') {
 			echo $challenge;
