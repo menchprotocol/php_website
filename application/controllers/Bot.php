@@ -33,6 +33,17 @@ class Bot extends CI_Controller {
 	}	
 	
 	
+	function facebook_webhook(){		
+		$challenge = $_REQUEST['hub_challenge'];
+		$verify_token = $_REQUEST['hub_verify_token'];
+		
+		if ($verify_token === '722bb4e2bac428aa697cc97a605b2c5a') {
+			echo $challenge;
+		} else {
+			echo 'Invalid Token';
+		}
+	}
+	
 	function apiai_webhook(){
 		//The main function to receive user message.
 		//Facebook Messenger send the data to api.ai, they attempt to detect #intents/@entities.
