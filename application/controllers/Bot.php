@@ -33,11 +33,33 @@ class Bot extends CI_Controller {
 	}	
 	
 	
-	function facebook_webhook(){		
+	function facebook_webhook(){
+		
+		//Log engagement:
+		$json_data = json_decode(file_get_contents('php://input'), true);
+		if(strlen($json_data)<1){
+			$json_data = $_POST;
+		}
+		//See what we should respond to the user:
+		$eng_data = array(
+				'gem_id' => 7,
+				'us_id' => 7, //Default api.ai API User, IF not with facebok
+				'intent_pid' => 7,
+				'json_blob' => json_encode($json_data), //Dump all incoming variables
+				'external_id' => 'sssssssvsvs', //api.ai id
+				'message' => 'hiii',
+				'seq' => 0, //No sequence if from api.ai
+				'correlation' => 1,
+				'platform_pid' => 763, //766 Us, 765 FB, 763 api.ai //We assume its from api.ai console
+				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
+				'session_id' => 'ssss', //Always from api.ai
+		);
+		$new = $this->Us_model->log_engagement($eng_data);
+		
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : (isset($_GET['hub.challenge']) ? $_GET['hub.challenge'] : null ) );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : (isset($_GET['hub.verify_token']) ? $_GET['hub.verify_token'] : null ) );
 		
-		if ($verify_token === '722bb4e2bac428aa697cc97a605b2c5a') {
+		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
 			echo $challenge;
 		} else {
 			echo 'Invalid inputs...';
@@ -66,7 +88,7 @@ class Bot extends CI_Controller {
 				'platform_pid' => 763, //766 Us, 765 FB, 763 api.ai //We assume its from api.ai console
 				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'session_id' => $json_data['sessionId'], //Always from api.ai
-		);		
+		);
 		
 		//Is this message coming from Facebook? (Instead of api.ai console)
 		if(isset($json_data['originalRequest']['source']) 
@@ -118,7 +140,7 @@ class Bot extends CI_Controller {
 				
 				
 				//Log incoming engagement:
-				$new = $this->Us_model->log_engagement($eng_data);				
+				$new = $this->Us_model->log_engagement($eng_data);
 				
 				//Fancy:
 				//sleep(1);

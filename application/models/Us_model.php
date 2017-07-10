@@ -151,6 +151,9 @@ class Us_model extends CI_Model {
 		if(!isset($link_data['timestamp'])){
 			$link_data['timestamp'] = date("Y-m-d H:i:s");
 		}
+		if(!isset($link_data['ref_id'])){
+			$link_data['ref_id'] = ( $is_update ? $link['ref_id'] : 0 );
+		}
 		if(!isset($link_data['node_id'])){
 			$link_data['node_id'] = ( $is_update ? $link['node_id'] : $this->next_node_id() ); //Generate new one if not updating!
 		}
@@ -313,10 +316,11 @@ class Us_model extends CI_Model {
 	
 	function log_engagement($link_data){
 		
+		
 		//These are required fields:
 		if(!isset($link_data['platform_pid']) || intval($link_data['platform_pid'])<=0){
 			return false;
-		} elseif(!isset($link_data['action_pid']) || !is_bool($link_data['action_pid'])){
+		} elseif(!isset($link_data['action_pid'])){
 			return false;
 		} elseif(!isset($link_data['us_id']) || !is_int($link_data['us_id']) || $link_data['us_id']<0){
 			//Try to fetch user ID from session:
@@ -328,6 +332,8 @@ class Us_model extends CI_Model {
 				return false;
 			}
 		}
+		
+		
 		
 		//These are optional and could have defaults:
 		if(!isset($link_data['gem_id'])){
@@ -700,9 +706,22 @@ class Us_model extends CI_Model {
 					$user_node[1] = $this->fetch_node($link['us_id'],'fetch_top_plain' , array('parent_id'=>24)); //Fetch email for this user:
 					$cache['contributors'][$link['us_id']] = $user_node;
 				}
+				
+				
+				//Do we have a reference?
+				if(intval($link['ref_id'])>0){
+					//Yes! Lets append metadata to our return.
+					$ref_node[0] = $this->fetch_node($link['ref_id'],'fetch_top_plain');
+					$ref_node[1] = $this->fetch_node($link['ref_id'],'fetch_top_plain' , array('parent_id'=>24)); //Fetch email for this reference
+					$cache['referencer'][$link['ref_id']] = $ref_node;
+				}
 
-				//Append uploader name:
+				
+				//Append uploader & referencer:
 				$links[$i]['us_node'] = $cache['contributors'][$link['us_id']];
+				if(intval($link['ref_id'])>0){
+					$links[$i]['referencer'] = $cache['contributors'][$link['ref_id']];
+				}
 			}
 			
 			if($i==0) {
