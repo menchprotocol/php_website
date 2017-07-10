@@ -37,15 +37,13 @@ class Bot extends CI_Controller {
 		
 		//Log engagement:
 		$json_data = json_decode(file_get_contents('php://input'), true);
-		if(strlen($json_data)<1){
-			$json_data = $_POST;
-		}
+
 		//See what we should respond to the user:
 		$eng_data = array(
 				'gem_id' => 7,
 				'us_id' => 7, //Default api.ai API User, IF not with facebok
 				'intent_pid' => 7,
-				'json_blob' => json_encode($json_data), //Dump all incoming variables
+				'json_blob' => json_encode($json_data).'---'.print_r($_POST,true).'---'.print_r($_GET,true), //Dump all incoming variables
 				'external_id' => 'sssssssvsvs', //api.ai id
 				'message' => 'hiii',
 				'seq' => 0, //No sequence if from api.ai
