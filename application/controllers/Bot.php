@@ -49,7 +49,6 @@ class Bot extends CI_Controller {
 			echo $challenge;
 		}
 		
-		
 		//Fetch input data:
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
@@ -59,7 +58,7 @@ class Bot extends CI_Controller {
 				'json_blob' => json_encode($json_data),
 				'us_id' => 1,
 				'platform_pid' => 1, //The facebook page
-		));		
+		));
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
@@ -78,13 +77,13 @@ class Bot extends CI_Controller {
 			if(!isset($entry['id']) || !fb_page_pid($entry['id'])){
 				log_error('Facebook webhook call with unknown page id ['.$entry['id'].'].',$json_data);
 				continue;
-			} elseif(!isset($entry['entry']['messaging'])){
+			} elseif(!isset($entry['messaging'])){
 				log_error('Facebook webhook call without the Messaging Array().',$json_data);
 				continue;
 			}
 			
 			//loop though the messages:
-			foreach($entry['entry']['messaging'] as $im){
+			foreach($entry['messaging'] as $im){
 				
 				if(isset($im['read'])){
 					
