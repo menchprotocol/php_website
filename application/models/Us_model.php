@@ -324,10 +324,11 @@ class Us_model extends CI_Model {
 	
 	function log_engagement($link_data){
 		
+		
 		//These are required fields:
 		if(!isset($link_data['action_pid'])){
 			return false;
-		} elseif(!isset($link_data['us_id']) || !is_int($link_data['us_id']) || $link_data['us_id']<0){
+		} elseif(!isset($link_data['us_id']) || intval($link_data['us_id'])<=0){
 			//Try to fetch user ID from session:
 			$user_data = $this->session->userdata('user');
 			if(isset($user_data['node_id'])){
@@ -337,7 +338,6 @@ class Us_model extends CI_Model {
 				return false;
 			}
 		}
-		
 		
 		//These are optional and could have defaults:
 		if(!isset($link_data['platform_pid'])){
@@ -387,7 +387,6 @@ class Us_model extends CI_Model {
 		if(!isset($link_data['correlation'])){
 			$link_data['correlation'] = 1.00; //We assume a full correalation
 		}
-		
 		
 		//Lets now add:
 		$this->db->insert('v3_engagement', $link_data);

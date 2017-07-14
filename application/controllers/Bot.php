@@ -11,6 +11,8 @@ class Bot extends CI_Controller {
 	}
 	
 	
+	function t(){
+	}
 	
 	function fetch_entity($apiai_id){
 		header('Content-Type: application/json');
@@ -51,13 +53,9 @@ class Bot extends CI_Controller {
 		//Fetch input data:
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
-		//Test logging:
-		$this->Us_model->log_engagement(array(
-				'action_pid' => 1, //New Optin
-				'json_blob' => json_encode($json_data),
-				'us_id' => 1,
-				'platform_pid' => 1, //The facebook page
-		));
+		//This is for local testing only:
+		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"1782774501750818","time":1499996475889,"messaging":[{"sender":{"id":"1344093838979504"},"recipient":{"id":"1782774501750818"},"timestamp":1499996142295,"message":{"mid":"mid.$cAAZVbKt7ywpjcAIC11dPry4JmWqI","seq":17325,"text":"hi"}}]}]}'));
+		
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
@@ -250,6 +248,8 @@ class Bot extends CI_Controller {
 					 * 
 					 * */
 					
+					
+					
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
@@ -323,12 +323,10 @@ class Bot extends CI_Controller {
 						
 					}
 					
+					
 					//Log incoming engagement:
 					$this->Us_model->log_engagement($eng_data);
 					
-					//Test logging 2:
-					$last_q = $this->db->last_query();
-					$this->Us_model->insert_error($last_q , $eng_data);
 					
 					//Do we need to auto reply?
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
