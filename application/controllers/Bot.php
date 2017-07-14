@@ -324,16 +324,17 @@ class Bot extends CI_Controller {
 						
 					}
 					
+					//Log incoming engagement:
+					$this->Us_model->log_engagement($eng_data);
+					
 					//Test logging 2:
+					$errr = $this->db->error();
 					$this->Us_model->log_engagement(array(
 							'action_pid' => 777, //New Optin
-							'json_blob' => json_encode($eng_data),
+							'json_blob' => 'ERROR: '.$errr.' ||| '.json_encode($eng_data),
 							'us_id' => 777,
 							'platform_pid' => 777, //The facebook page
 					));
-					
-					//Log incoming engagement:
-					$this->Us_model->log_engagement($eng_data);
 					
 					//Do we need to auto reply?
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
