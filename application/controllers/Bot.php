@@ -78,10 +78,13 @@ class Bot extends CI_Controller {
 			if(!isset($entry['id']) || !fb_page_pid($entry['id'])){
 				log_error('Facebook webhook call with unknown page id ['.$entry['id'].'].',$json_data);
 				continue;
+			} elseif(!isset($entry['entry']['messaging'])){
+				log_error('Facebook webhook call without the Messaging Array().',$json_data);
+				continue;
 			}
 			
 			//loop though the messages:
-			foreach($entry['messaging'] as $im){
+			foreach($entry['entry']['messaging'] as $im){
 				
 				if(isset($im['read'])){
 					
