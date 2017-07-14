@@ -73,11 +73,6 @@ class Bot extends CI_Controller {
 				continue;
 			}
 			
-			if($entry['id']!==$im['recipient']['id'] && $entry['id']!==$im['sender']['id']){
-				log_error('Facebook webhook call with page ID that is not in sender nor recipient fields.',$json_data);
-				continue;
-			}
-			
 			//loop though the messages:
 			foreach($entry['messaging'] as $im){
 				

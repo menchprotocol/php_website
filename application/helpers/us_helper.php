@@ -12,7 +12,6 @@ function version_salt(){
 }
 
 function ping_admin($message , $from_log_error=false){
-	/*
 	$CI =& get_instance();
 	$CI->Messenger_model->send_message(array(
 			'recipient' => array(
@@ -23,16 +22,14 @@ function ping_admin($message , $from_log_error=false){
 			),
 			'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
 	) , $from_log_error );
-	*/
 }
 
 function log_error($title, $error_blob=array()){
 	$CI =& get_instance();
-	$error_id = 0;
 	//First log error in DB:
-	//$error_id = $CI->Us_model->insert_error($title,$error_blob);
+	$error_id = $CI->Us_model->insert_error($title,$error_blob);
 	//Notifty admin via Messenger:
-	//ping_admin('Error #'.$error_id.': '.$title , true);
+	ping_admin('Error #'.$error_id.': '.$title , true);
 	//Return error ID:
 	return $error_id;
 }
