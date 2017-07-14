@@ -53,6 +53,13 @@ class Bot extends CI_Controller {
 		//Fetch input data:
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
+		//Test logging:
+		$this->Us_model->log_engagement(array(
+				'action_pid' => 1, //New Optin
+				'json_blob' => json_encode($json_data),
+				'us_id' => 1,
+				'platform_pid' => 1, //The facebook page
+		));		
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){

@@ -48,7 +48,7 @@ function fetch_grandchild($pid,$grandpa_id,$json_data){
 	
 	if(!isset($node['node_id'])){
 		return 0;
-	} elseif($node['grandpa_id']!==$grandpa_id){
+	} elseif(!($node['grandpa_id']==$grandpa_id)){
 		log_error('Referrer Grandpa for PID ['.$node['node_id'].'] is NOT equal to ['.$grandpa_id.'].' , $json_data);
 		return 0;
 	}
