@@ -277,6 +277,11 @@ class Bot extends CI_Controller {
 					$app_id  = ( $sent_from_us ? $im['message']['app_id'] : null );
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					
+					if($metadata=='SKIP_ECHO_LOGGING'){
+						//We've been asked to skip this error logging!
+						continue;
+					}
+					
 					//Do some checks:
 					if(strlen($eng_data['external_id'])<1){
 						log_error('Received message without Facebook Message ID!' , $json_data);

@@ -19,6 +19,7 @@ function ping_admin($message , $from_log_error=false){
 			),
 			'message' => array(
 					'text' => $message,
+					'metadata' => 'SKIP_ECHO_LOGGING', //Prevent further impression logging on this.
 			),
 			'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
 	) , $from_log_error );
