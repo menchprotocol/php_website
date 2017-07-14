@@ -283,43 +283,72 @@ class Bot extends CI_Controller {
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-echo
 					if(isset($im['message']['attachments'])){
-						//We have some attachments, lets see what type:
-						if(in_array($im['message']['attachments']['type'],array('image','audio','video','file'))){
-							
-							//Message with image attachment
-							$eng_data['message'] .= ' '.$im['message']['attachments']['type'].'/'.$im['message']['attachments']['payload']['url'];
-							
-							//TODO additional processing...
-							
-						} elseif($im['message']['attachments']['type']=='location'){
-							
-							//Message with location attachment
-							//TODO test to make sure this works!
-							$loc_lat = $im['message']['attachments']['payload']['coordinates']['lat'];
-							$loc_long = $im['message']['attachments']['payload']['coordinates']['long'];
-							$eng_data['message'] .= ' location/'.$loc_lat.','.$loc_long;
-							
-						} elseif($im['message']['attachments']['type']=='template'){
-							
-							//Message with template attachment, like a button or something...
-							$eng_data['message'] .= ' TEMPLATE';
-							
-						} elseif($im['message']['attachments']['type']=='fallback'){
-							
-							//A fallback attachment is any attachment not currently recognized or supported by the Message Echo feature.
-							//This should not happen, report to admin:
-							log_error('Received message with [fallback] attachment type!' , $json_data);
-							
-						} else {
-							//This should really not happen!
-							log_error('Received Facebook message with unknown attachment type: '.$im['message']['attachments']['type'] , $json_data);
+						//We have some attachments, lets loops through them:
+						foreach($im['message']['attachments'] as $att){
+							if(in_array($att['type'],array('image','audio','video','file'))){
+								
+								//Message with image attachment
+								$eng_data['message'] .= ' attachment/'.$att['type'].'/'.$att['payload']['url'];
+								
+								//TODO additional processing...
+								
+							} elseif($att['type']=='location'){
+								
+								//Message with location attachment
+								//TODO test to make sure this works!
+								$loc_lat = $att['payload']['coordinates']['lat'];
+								$loc_long = $att['payload']['coordinates']['long'];
+								$eng_data['message'] .= ' attachment/location/'.$loc_lat.','.$loc_long;
+								
+							} elseif($att['type']=='template'){
+								
+								//Message with template attachment, like a button or something...
+								$eng_data['message'] .= ' attachment/TEMPLATE';
+								
+							} elseif($att['type']=='fallback'){
+								
+								//A fallback attachment is any attachment not currently recognized or supported by the Message Echo feature.
+								//This should not happen, report to admin:
+								log_error('Received message with [fallback] attachment type!' , $json_data);
+								
+							} else {
+								//This should really not happen!
+								log_error('Received Facebook message with unknown attachment type: '.$att['type'] , $json_data);
+							}
 						}
 					}
 					
 					
-					if(isset($im['message']['quick_reply'])){
+					if(isset($im['message']['quick_reply']) && isset($im['message']['quick_reply']['payload']) && intval($im['message']['quick_reply']['payload'])>0){
 						//This message has a quick reply in it:
+						$quick_reply_pid = fetch_grandchild( $im['message']['quick_reply']['payload'] , 3 , $json_data);
 						
+						//Lets expand the scope of $eng_data['intent_pid'] & have it store this PID
+						$eng_data['intent_pid'] = $quick_reply_pid;
+						
+						//TODO Lets see what type of pattern is this?
+						//IF grandpa_id=3, then > $eng_data['intent_pid'] = $quick_reply_pid;
+						
+					}
+					
+					//Should we detect intents/entities with api.ai?
+					//Only if not already set in quick_reply.payload & if we have an inbound text
+					if(!$quick_reply_pid && strlen($eng_data['message'])>0 && (!$sent_from_us || substr_count($eng_data['message'],'search for')>0)){
+						if(substr_count($eng_data['message'],'search for')>0){
+							//User has a specific ask!
+							$temp = explode('search for',$eng_data['message'],2);
+							$search_for = $temp[1];
+						} else {
+							$search_for = $eng_data['message'];
+						}
+						
+						//Send reuqest to api.ai
+						$json_data['api_ai'] = array();
+						//Update core variable to store result as well:
+						$eng_data['json_blob'] = json_encode($json_data);
+						
+						//Update correlation:
+						$eng_data['correlation'] = 1; //The score from api.ai
 					}
 					
 					
@@ -327,13 +356,11 @@ class Bot extends CI_Controller {
 					$this->Us_model->log_engagement($eng_data);
 					
 					
-					//Do we need to auto reply?
+					//Should we start talking?!
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
 						
 						//TODO disabled for now, build later
 						//Incoming text message, attempt to auto detect it:
-						$eng_data['correlation'] = 1; //The score from api.ai
-						$eng_data['intent_pid'] = 0; //Potentially detected intents
 						$eng_data['gem_id'] = ''; //If intent was found, the update ID that was served
 						
 						//Indicate to the user that we're typing:

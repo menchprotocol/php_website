@@ -25,14 +25,23 @@ function ping_admin($message , $from_log_error=false){
 	) , $from_log_error );
 }
 
-function log_error($title, $error_blob=array()){
+function log_error($error_message, $json_data=array()){
 	$CI =& get_instance();
+	
 	//First log error in DB:
-	$error_id = $CI->Us_model->insert_error($title,$error_blob);
+	//TODO improve to log details like platform_pid and us_id based on error origin
+	$res = $CI->Us_model->log_engagement(array(
+			'message' => $error_message,
+			'action_pid' => 1033, //Error logging
+			'json_blob' => json_encode($json_data),
+			'us_id' => 766,
+			'platform_pid' => 766,
+	));
+	
 	//Notifty admin via Messenger:
-	ping_admin('Error #'.$error_id.': '.$title , true);
+	ping_admin('Error #'.$res['id'].': '.$error_message, true);
 	//Return error ID:
-	return $error_id;
+	return $res['id'];
 }
 
 

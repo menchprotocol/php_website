@@ -8,15 +8,6 @@ class Us_model extends CI_Model {
 		$this->success_deletes = 0; //Used for recursive_node_delete() count tracker.
 	}
 	
-	function insert_error($title,$error_blob=array()){
-		$this->db->insert('v3_errors', array(
-				'created' => date("Y-m-d H:i:s"),
-				'title' => $title,
-				'error_blob' => json_encode($error_blob),
-		));
-		return $this->db->insert_id();
-	}
-	
 	function restore_delete($start_gem_id, $end_gem_id){
 		//Fetch the target gems:
 		
