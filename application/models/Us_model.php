@@ -324,7 +324,6 @@ class Us_model extends CI_Model {
 	
 	function log_engagement($link_data){
 		
-		
 		//These are required fields:
 		if(!isset($link_data['action_pid'])){
 			return false;

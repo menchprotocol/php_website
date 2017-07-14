@@ -91,33 +91,27 @@ class Bot extends CI_Controller {
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
 					//The watermark field is used to determine which messages were read.
 					//It represents a timestamp indicating that all messages with a timestamp before watermark were read by the recipient.
-					$eng_data = array(
+					$this->Us_model->log_engagement(array(
 							'action_pid' => 1026,
 							'json_blob' => json_encode($json_data),
 							'us_id' => $this->Us_model->put_fb_user($im['sender']['id']),
-							'seq' => $im['delivery']['seq'], //Message sequence number
+							'seq' => $im['read']['seq'], //Message sequence number
 							'platform_pid' => fb_page_pid($im['recipient']['id']), //The facebook page
-							'api_timestamp' => fb_time($im['delivery']['watermark']), //Messages sent before this time were read
-					);
-					
-					//Log engagement:
-					$new = $this->Us_model->log_engagement($eng_data);
+							'api_timestamp' => fb_time($im['read']['watermark']), //Messages sent before this time were read
+					));
 					
 				} elseif(isset($im['delivery'])) {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
-					$eng_data = array(
+					$new = $this->Us_model->log_engagement(array(
 							'action_pid' => 1027,
 							'json_blob' => json_encode($json_data),
 							'us_id' => $this->Us_model->put_fb_user($im['sender']['id']),
 							'seq' => $im['delivery']['seq'], //Message sequence number
 							'platform_pid' => fb_page_pid($im['recipient']['id']), //The facebook page
 							'api_timestamp' => fb_time($im['delivery']['watermark']), //Messages sent before this time were delivered
-					);
-					
-					//Log engagement:
-					$new = $this->Us_model->log_engagement($eng_data);
+					));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
 					
@@ -330,8 +324,16 @@ class Bot extends CI_Controller {
 						
 					}
 					
+					//Test logging 2:
+					$this->Us_model->log_engagement(array(
+							'action_pid' => 777, //New Optin
+							'json_blob' => json_encode($eng_data),
+							'us_id' => 777,
+							'platform_pid' => 777, //The facebook page
+					));
+					
 					//Log incoming engagement:
-					$new = $this->Us_model->log_engagement($eng_data);
+					$this->Us_model->log_engagement($eng_data);
 					
 					//Do we need to auto reply?
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
