@@ -330,9 +330,10 @@ class Bot extends CI_Controller {
 					//Test logging 2:
 					$errr = $this->db->_error_message();
 					$last_q = $this->db->last_query();
+					
 					$this->Us_model->log_engagement(array(
 							'action_pid' => 777, //New Optin
-							'json_blob' => 'Last Query: '.$last_q.' ||| ERROR: '.print_r($errr,true).' ||| '.json_encode($eng_data),
+							'json_blob' => 'Last Query: '.$last_q.' ||| ERROR: '.$errr.' ||| '.json_encode($eng_data),
 							'us_id' => 777,
 							'platform_pid' => 777, //The facebook page
 					));
