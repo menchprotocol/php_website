@@ -288,9 +288,21 @@ class Bot extends CI_Controller {
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
 								//Message with image attachment
-								$eng_data['message'] .= ' attachment/'.$att['type'].'/'.$att['payload']['url'];
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].':'.$att['payload']['url'];
 								
 								//TODO additional processing...
+								if($att['type']=='audio'){
+									//Testing for now:
+									$this->Messenger_model->send_message(array(
+											'recipient' => array(
+													'id' => $user_id
+											),
+											'message' => array(
+													'text' => 'Got your voice. We will get back to you soon.',
+											),
+											'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+									));
+								}
 								
 							} elseif($att['type']=='location'){
 								
@@ -298,12 +310,12 @@ class Bot extends CI_Controller {
 								//TODO test to make sure this works!
 								$loc_lat = $att['payload']['coordinates']['lat'];
 								$loc_long = $att['payload']['coordinates']['long'];
-								$eng_data['message'] .= ' attachment/location/'.$loc_lat.','.$loc_long;
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:location:'.$loc_lat.','.$loc_long;
 								
 							} elseif($att['type']=='template'){
 								
 								//Message with template attachment, like a button or something...
-								$eng_data['message'] .= ' attachment/TEMPLATE';
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:template';
 								
 							} elseif($att['type']=='fallback'){
 								
