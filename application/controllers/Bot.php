@@ -54,8 +54,7 @@ class Bot extends CI_Controller {
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
 		//This is for local testing only:
-		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"1782774501750818","time":1499996475889,"messaging":[{"sender":{"id":"1344093838979504"},"recipient":{"id":"1782774501750818"},"timestamp":1499996142295,"message":{"mid":"mid.$cAAZVbKt7ywpjcAIC11dPry4JmWqI","seq":17325,"text":"hi"}}]}]}'));
-		
+		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"1782774501750818","time":1499996475889,"messaging":[{"sender":{"id":"1344093838979504"},"recipient":{"id":"1782774501750818"},"timestamp":1499996142295,"message":{"mid":"mid.$cAAZVbKt7ywpjcAIC11dPry4JmWqI","seq":17325,"text":"hi"}}]}]}'));		
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
@@ -379,6 +378,7 @@ class Bot extends CI_Controller {
 			}
 		}
 	}
+	
 	
 	
 	function apiai_webhook(){

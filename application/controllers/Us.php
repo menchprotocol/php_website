@@ -95,12 +95,14 @@ class Us extends CI_Controller {
 		}
 		
 		//Log engagement:
+		/*
 		$eng = $this->Us_model->log_engagement(array(
 				'gem_id' => $data_set['node'][0]['id'],
 				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'intent_pid' => $data_set['node'][0]['node_id'],
 				'json_blob' => trim(json_encode($data_set['node'])),
 		));
+		*/
 		
 		//Load custom node functions for possible processing:
 		//TODO automate the loading of these
@@ -132,10 +134,12 @@ class Us extends CI_Controller {
 	
 	function logout() {
 		//Log engagement:
+		/*
 		$eng = $this->Us_model->log_engagement(array(
 				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'intent_pid' => 843, //Logout intent
 		));
+		*/
 		
 		//Destroy all sessions:
 		$this->session->unset_userdata('user');
