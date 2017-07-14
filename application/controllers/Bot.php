@@ -10,7 +10,6 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-
 	
 	
 	function fetch_entity($apiai_id){
@@ -327,13 +326,9 @@ class Bot extends CI_Controller {
 					//Log incoming engagement:
 					$this->Us_model->log_engagement($eng_data);
 					
-					$this->Us_model->insert_error('hiiiiiiii');
-					
 					//Test logging 2:
-					$errr = $this->db->_error_message();
 					$last_q = $this->db->last_query();
-					$this->Us_model->insert_error($last_q);
-					$this->Us_model->insert_error('Last Query: '.$last_q.' --- ERROR: '.$errr , $eng_data);
+					$this->Us_model->insert_error($last_q , $eng_data);
 					
 					//Do we need to auto reply?
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
