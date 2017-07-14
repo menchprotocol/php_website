@@ -1,12 +1,46 @@
-<h1 class="boldi">Your Personal Intelligence Assistant</h1>
+<?php
+$pid = '614_766'; //Learn More Plugin + brainplugins.com @Entity
+$active_bots = $this->config->item('active_bots');
+?>
+<script>
+  // Learn more: https://developers.facebook.com/docs/messenger-platform/plugin-reference/send-to-messenger
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: "<?= $active_bots[0]['fb_app_id'] ?>",
+      xfbml: true,
+      version: "v2.6"
+    });
+    
+    FB.Event.subscribe('send_to_messenger', function(e) {
+    	if(e.event=='rendered'){
+        	//Log this:
+        	$('#initial_buttom').hide();
+        } else if(e.event=='clicked'){
+        	//Show loading:
+        	
+        } else if(e.event=='opt_in'){
+        	//Redirect to messenger:
+        	window.location.href = "<?= $active_bots[0]['bot_ref_url'].$pid ?>";
+        }
+    });
+  };
 
-<p class="boldi">We're building a bot assistant called "Us" that streamlines the learning of select topics. Our name is inspired by the human contribution that powers our bots' intelligence.</p>
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) { return; }
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 
-<p class="boldi"><a href=""></a></p>
+<h1 class="boldi">Tansform Your Life</h1>
+<p class="boldi">Close the gab between where you are today, and where you want to be.</p>
+<p class="boldi">Get Started on Messenger:</p>
 
-<?php if(!auth(1)){ ?>
-<div class="list-group boldi">
-	<a href="/signup" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Signup for Updates</a>
-	<a href="/login" class="list-group-item"><span class="badge"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>Admin Login</a>
-</div>
-<?php } ?>
+<div class="boldi messenger"><div class="fb-send-to-messenger" 
+  messenger_app_id="<?= $active_bots[0]['fb_app_id'] ?>" 
+  page_id="<?= $active_bots[0]['fb_page_id'] ?>" 
+  data-ref="<?= $pid ?>" 
+  color="blue" 
+  size="xlarge"></div><a href="<?= $active_bots[0]['bot_ref_url'].$pid ?>" id="initial_buttom"><img src="/img/sendtomessenger.PNG" /></a></div>

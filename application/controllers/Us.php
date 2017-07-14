@@ -31,7 +31,8 @@ class Us extends CI_Controller {
 	function index(){
 		if(auth(1)){
 			//Load default search page:
-			$this->load_wiki();
+			header("Location: /3"); //Default
+			//$this->load_wiki(); //This used to load a blank page
 		} else {
 			//Load home page for visitors:
 			$this->load_wiki('usoverview');
@@ -39,17 +40,23 @@ class Us extends CI_Controller {
 	}
 	
 	function load_wiki($file_name='start'){
+		
+		if($file_name=='signup'){
+			//We no longer have a signup page:
+			header("Location: /");
+			exit;
+		}
+		
 		//For quick static pages
 		//Also edit config/routes.php to load Wiki!
 		$wiki_index = array(
 				'start' => 'Start...',
 				'login' => 'Foundation Login',
 				'terms' => 'Terms of Service',
-				'signup' => 'Foundation Signup',
 				'usoverview' => 'Us Foundation | Grow, Faster.',
 		);
 		
-		if(in_array($file_name,array('login','join','usoverview')) && auth(1)){
+		if(in_array($file_name,array('login','usoverview')) && auth(1)){
 			//Redirect to Us:
 			header("Location: /");
 		}
@@ -90,7 +97,6 @@ class Us extends CI_Controller {
 		//Log engagement:
 		$eng = $this->Us_model->log_engagement(array(
 				'gem_id' => $data_set['node'][0]['id'],
-				'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
 				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'intent_pid' => $data_set['node'][0]['node_id'],
 				'json_blob' => trim(json_encode($data_set['node'])),
@@ -103,7 +109,8 @@ class Us extends CI_Controller {
 		
 		
 		//See if we have a description:
-		$meta_data = '<link rel="canonical" href="//us.foundation/'.$node_id.'" />';
+		$website = $this->config->item('website');
+		$meta_data = '<link rel="canonical" href="'.$website['url'].$node_id.'" />';
 		
 		//Create header variables:
 		$header_data = array(
@@ -126,7 +133,6 @@ class Us extends CI_Controller {
 	function logout() {
 		//Log engagement:
 		$eng = $this->Us_model->log_engagement(array(
-				'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
 				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 				'intent_pid' => 843, //Logout intent
 		));
@@ -139,6 +145,7 @@ class Us extends CI_Controller {
 	}
 	
 	function login_process() {
+		
 		$res = user_login($_POST['user_email'],$_POST['user_pass']);
 		
 		if($res['status']){
@@ -155,14 +162,19 @@ class Us extends CI_Controller {
 					'ses_id' => $session_id,
 			));
 			
-			//Log engagement:
+			/* TODO Log engagement
 			$eng = $this->Us_model->log_engagement(array(
-					'platform_pid' => 766, //766 Us, 765 FB, 763 api.ai
 					'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 					'intent_pid' => 44, //Login password pattern, which indicates login
 					'seq' => $seq,
 					'session_id' => $session_id,
-			));			
+			)); */
+			
+			
+			//Inform admin of new logins:
+			if(!($res['link']['node_id']==7)){
+				ping_admin($res['link']['value'].' just logged in.');
+			}
 			
 			//Redirect to pattern home page:
 			if(isset($_POST['login_node_id']) && intval($_POST['login_node_id'])>0){

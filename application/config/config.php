@@ -1,6 +1,51 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
+
+//Brain Plugins Variables:
+$config['website'] = array(
+		'url' => 'http://brainplugins.com/', //Important to end with / as other links depend on this.
+		'name' => 'BrainPlugins',
+		'email' => 'support@brainplugins.com',
+);
+
+$config['active_bots'] = array(
+		0 => array(
+				'name' => 'BrainPlugins',
+				'square128_logo_url' => '/img/bp_128.png',
+				'fb_page_id' => '1782774501750818',
+				'fb_app_id' => '1648089818536368',
+				'bot_ref_url' => 'https://m.me/brainplugins?ref=',
+				'access_token' => 'EAAXa7dAxGbABAGMRXO5fo2QWnUsMxCqtScDkwGTCOZC4xfzLoSiaWTZBNNrWl2TDbmVUdlUpDkZAgDkQ9ZCxS0Jvu4DDtlQ1JzZBupZCjAgxxAWZAAZAaZAWFyEO4UgKhuIhXzZCnYImRptIOhX3pXEnLwu2eAMrkyv9SOwZCbH3jGwZCQZDZD',
+				'entity_pid' => 1023, //For BrainPlugins Entity on our system
+		),
+);
+
+//TODO Fetch grandparent during logging, pass to session and use that instead of these names. More unified...
+$config['grand_parents'] = array(
+		3  => array(
+				'name' => 'Brain Plugins',
+				'sign' => '<img src="/img/bp_48.png" class="pattern_img" />',
+				'node_id' => 3,
+		),
+		1  => array(
+				'name' => 'Entities',
+				'sign' => '@',
+				'node_id' => 1,
+		),
+		4  => array(
+				'name' => 'Questions',
+				'sign' => '?',
+		),
+		43 => array(
+				'name' => 'Metadata',
+				'sign' => '!',
+		),
+);
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

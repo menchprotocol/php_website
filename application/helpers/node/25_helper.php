@@ -1,5 +1,5 @@
 <?php
-//Custom functions for Node 25: http://us.foundation/25
+//Custom functions for Node 25
 
 function formatPhoneNumber($phoneNumber) {
 	

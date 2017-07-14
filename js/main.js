@@ -11,6 +11,116 @@ function nl2br (str, is_xhtml) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
+function pulse() {
+	if($('.us_first').length){
+		$('.us_first').animate({
+	    	opacity: 0.7,
+	    	fontSize : '30px',
+	    }, 1222, function() { //To reflect a calm person's haert rate
+	        $('.us_first').animate({
+	        	opacity: 1,
+	        	fontSize : '30.50px',
+	        }, 700, function() {
+	            pulse();
+	        });
+	    }); 
+	}
+};
+
+(function (d) {
+    d.each(["backgroundColor", "borderBottomColor", "borderLeftColor", "borderRightColor", "borderTopColor", "color", "outlineColor"], function (f, e) {
+        d.fx.step[e] = function (g) {
+            if (!g.colorInit) {
+                g.start = c(g.elem, e);
+                g.end = b(g.end);
+                g.colorInit = true
+            }
+            g.elem.style[e] = "rgb(" + [Math.max(Math.min(parseInt((g.pos * (g.end[0] - g.start[0])) + g.start[0]), 255), 0), Math.max(Math.min(parseInt((g.pos * (g.end[1] - g.start[1])) + g.start[1]), 255), 0), Math.max(Math.min(parseInt((g.pos * (g.end[2] - g.start[2])) + g.start[2]), 255), 0)].join(",") + ")"
+        }
+    });
+
+    function b(f) {
+        var e;
+        if (f && f.constructor == Array && f.length == 3) {
+            return f
+        }
+        if (e = /rgb\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*\)/.exec(f)) {
+            return [parseInt(e[1]), parseInt(e[2]), parseInt(e[3])]
+        }
+        if (e = /rgb\(\s*([0-9]+(?:\.[0-9]+)?)\%\s*,\s*([0-9]+(?:\.[0-9]+)?)\%\s*,\s*([0-9]+(?:\.[0-9]+)?)\%\s*\)/.exec(f)) {
+            return [parseFloat(e[1]) * 2.55, parseFloat(e[2]) * 2.55, parseFloat(e[3]) * 2.55]
+        }
+        if (e = /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/.exec(f)) {
+            return [parseInt(e[1], 16), parseInt(e[2], 16), parseInt(e[3], 16)]
+        }
+        if (e = /#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/.exec(f)) {
+            return [parseInt(e[1] + e[1], 16), parseInt(e[2] + e[2], 16), parseInt(e[3] + e[3], 16)]
+        }
+        if (e = /rgba\(0, 0, 0, 0\)/.exec(f)) {
+            return a.transparent
+        }
+        return a[d.trim(f).toLowerCase()]
+    }
+    function c(g, e) {
+        var f;
+        do {
+            f = d.css(g, e);
+            if (f != "" && f != "transparent" || d.nodeName(g, "body")) {
+                break
+            }
+            e = "backgroundColor"
+        } while (g = g.parentNode);
+        return b(f)
+    }
+    var a = {
+        aqua: [0, 255, 255],
+        azure: [240, 255, 255],
+        beige: [245, 245, 220],
+        black: [0, 0, 0],
+        blue: [0, 0, 255],
+        brown: [165, 42, 42],
+        cyan: [0, 255, 255],
+        darkblue: [0, 0, 139],
+        darkcyan: [0, 139, 139],
+        darkgrey: [169, 169, 169],
+        darkgreen: [0, 100, 0],
+        darkkhaki: [189, 183, 107],
+        darkmagenta: [139, 0, 139],
+        darkolivegreen: [85, 107, 47],
+        darkorange: [255, 140, 0],
+        darkorchid: [153, 50, 204],
+        darkred: [139, 0, 0],
+        darksalmon: [233, 150, 122],
+        darkviolet: [148, 0, 211],
+        fuchsia: [255, 0, 255],
+        gold: [255, 215, 0],
+        green: [0, 128, 0],
+        indigo: [75, 0, 130],
+        khaki: [240, 230, 140],
+        lightblue: [173, 216, 230],
+        lightcyan: [224, 255, 255],
+        lightgreen: [144, 238, 144],
+        lightgrey: [211, 211, 211],
+        lightpink: [255, 182, 193],
+        lightyellow: [255, 255, 224],
+        lime: [0, 255, 0],
+        magenta: [255, 0, 255],
+        maroon: [128, 0, 0],
+        navy: [0, 0, 128],
+        olive: [128, 128, 0],
+        orange: [255, 165, 0],
+        pink: [255, 192, 203],
+        purple: [128, 0, 128],
+        violet: [128, 0, 128],
+        red: [255, 0, 0],
+        silver: [192, 192, 192],
+        white: [255, 255, 255],
+        yellow: [255, 255, 0],
+        transparent: [255, 255, 255]
+    }
+})(jQuery);
+
+
 //To be used in text auto complete
 var emojies = [
 	  '+1', '-1', '100', '1234', '8ball', 'a', 'ab', 'abc', 'abcd', 'accept',
@@ -178,6 +288,55 @@ var emojies = [
 	];
 
 
+function copyToClipboard(elem) {
+	  // create hidden text element, if it doesn't already exist
+  var targetId = "_hiddenCopyText_";
+  var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+  var origSelectionStart, origSelectionEnd;
+  if (isInput) {
+      // can just use the original source element for the selection and copy
+      target = elem;
+      origSelectionStart = elem.selectionStart;
+      origSelectionEnd = elem.selectionEnd;
+  } else {
+      // must use a temporary form element for the selection and copy
+      target = document.getElementById(targetId);
+      if (!target) {
+          var target = document.createElement("textarea");
+          target.style.position = "absolute";
+          target.style.left = "-9999px";
+          target.style.top = "0";
+          target.id = targetId;
+          document.body.appendChild(target);
+      }
+      target.textContent = elem.textContent;
+  }
+  // select the content
+  var currentFocus = document.activeElement;
+  target.focus();
+  target.setSelectionRange(0, target.value.length);
+  
+  // copy the selection
+  var succeed;
+  try {
+  	  succeed = document.execCommand("copy");
+  } catch(e) {
+      succeed = false;
+  }
+  // restore original focus
+  if (currentFocus && typeof currentFocus.focus === "function") {
+      currentFocus.focus();
+  }
+  
+  if (isInput) {
+      // restore prior selection
+      elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+  } else {
+      // clear temporary content
+      target.textContent = "";
+  }
+  return succeed;
+}
 
 function parents(grandpa_id){
 	grandpa_id = parseInt(grandpa_id);
@@ -187,7 +346,7 @@ function parents(grandpa_id){
     	return '@';
         break;
     case 3:
-    	return '#';
+    	return '<img src="/img/bp_48.png" class="pattern_img" />';
         break;
     case 4:
     	return '?';
@@ -204,7 +363,7 @@ function parents(grandpa_id){
 function pop_search_open(){
 	 var win_width = $(window).width();
 	 if(win_width>720){win_width=720;}
-	 $( ".search-block" ).css('width',(win_width-125)+'px');
+	 $( ".search-block" ).css('width',(win_width-25)+'px');
 }
 
 function resetCoreInputs(){
@@ -240,6 +399,28 @@ function editHeightControl(){
 
 $( document ).ready(function() {
 	
+	//Heart-beat Effect IF logo found
+	pulse();
+
+	//Copy to Clipboard function:
+	var cb = new Clipboard('.clickcopy');
+	
+	cb.on('success', function(e) {
+	    
+		var ref_url = e.text.split('ref=');
+		
+		$('.ref_'+ref_url[1]).css('background-color','#808080').css('color','#ffffff').animate({
+			backgroundColor: "#ffffff",
+			color: "#808080",
+	    }, 667, function() {}); 
+		
+	});
+	cb.on('error', function(e) {
+	    alert('Oooops, I Failed to copy to clipboard!');
+	});
+	
+	
+	
 	//Disable enter submission on top search:
 	$('#searchForm').on('keyup keypress', function(e) {
 		  var keyCode = e.keyCode || e.which;
@@ -271,7 +452,7 @@ $( document ).ready(function() {
 	
 	//Header search specific functions for UI and autocomplete result selection:
 	$( "#mainsearch" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-		location.replace("/"+suggestion.node_id+'?from=search');
+		location.replace("/"+suggestion.node_id);
 	}).focus(function() {
 		pop_search_open();
 		//Handle window resize on focus:
@@ -300,7 +481,7 @@ $( document ).ready(function() {
 	
 	//Initiate Sortable for moderators and for certain parents
 	//TODO move logic to #SortableNodes
-	if(user_data['is_mod']){
+	if(typeof user_data !== 'undefined' && user_data['is_mod']){
 		//New Node search box call to action: 
 		$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 			//Link nodes together:
@@ -536,9 +717,13 @@ function toggleValue(link_id){
 	$('#linkval'+link_id).toggle();
 	
 	if($( '.gh'+link_id ).hasClass( "glyphicon-triangle-bottom" )){
-		$( '#link'+link_id+' .parentLink' ).removeClass('zoom-out').addClass('zoom-in');
-		$( '.gh'+link_id ).removeClass('glyphicon-triangle-bottom');
-		$( '.gh'+link_id ).addClass('glyphicon-triangle-right');
+		if($( '.gh'+link_id ).hasClass( "is_zero" )){
+			//Do nothing!
+		} else {
+			$( '#link'+link_id+' .parentLink' ).removeClass('zoom-out').addClass('zoom-in');
+			$( '.gh'+link_id ).removeClass('glyphicon-triangle-bottom');
+			$( '.gh'+link_id ).addClass('glyphicon-triangle-right');
+		}			
 	} else if($( '.gh'+link_id ).hasClass( "glyphicon-triangle-right" )){
 		$( '#link'+link_id+' .parentLink' ).removeClass('zoom-in').addClass('zoom-out');
 		$( '.gh'+link_id ).removeClass('glyphicon-triangle-right');
@@ -806,7 +991,7 @@ function delete_link_confirmed(key,id,type){
 			
 		} else {
 			//Redirect to parent node as the entire node has been deleted:
-			location.replace("/"+( input_data['new_parent_id']>0 ? input_data['new_parent_id'] : node[0]['parent_id'] )+'?from='+node[0]['node_id']);			
+			location.replace("/"+( input_data['new_parent_id']>0 ? input_data['new_parent_id'] : node[0]['parent_id'] ));			
 		}
     });	
 }
@@ -829,7 +1014,7 @@ function save_link_updated(key,id){
 	$('#link'+id+" .node_h1").html(nl2br(new_value));
 	
 	//Show processing in UI:
-	$('#link'+id+" .hover>div").append('<span class="action_buttons saving"><img src="/img/loader.gif" /> Adding <img src="/img/gem/diamond_48.png" width="20" class="light" />...</span>');
+	$('#link'+id+" .hover>div").append('<span class="action_buttons saving"><img src="/img/loader.gif" /> Adding...</span>');
 
 	//Prepare data for processing:
 	var input_data = {
@@ -857,7 +1042,7 @@ function save_link_updated(key,id){
 		} else if(key==0 && data.new_parent_id>0){
 			
 			//User changed the parent, lets redirect to new one:
-			location.replace( "/"+data.new_parent_id+'?from='+node[0]['node_id'] );
+			location.replace( "/"+data.new_parent_id );
 			
 		} else {
 			
@@ -889,7 +1074,7 @@ function create_node(node_name){
 	$( "#addnode" ).focus();
 	
 	//Show loader:
-	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Adding <img src="/img/gem/diamond_48.png" width="20" class="light" />...</div>' ).insertBefore( ".list_input" );
+	$( '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Adding...</div>' ).insertBefore( ".list_input" );
 	
 	var input_data = {
 		grandpa_id:node[0]['grandpa_id'],
@@ -904,7 +1089,6 @@ function create_node(node_name){
 		$( ".loading-node" ).remove();
 		$( data.message ).insertBefore( ".list_input" );
 		
-		//Flash our new diamond:
 		//TODO implemenet data.link_id and make it shine for both add/link
 		
 		//Update Toggle:
@@ -942,7 +1126,7 @@ function link_node(child_node_id,new_name){
     +'<div class="modal-content">'
     	+'<div class="modal-header">'
     		+'<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-    		+'<h3 class="modal-title">Add <img src="/img/gem/diamond_48.png" width="20" class="light" style="margin-right:2px;"> from '+parents(node[0]['grandpa_id'])+node[0]['value']+'</h3>'
+    		+'<h3 class="modal-title">Link to '+parents(node[0]['grandpa_id'])+node[0]['value']+'</h3>'
     	+'</div>'
       +'<div class="modal-body">'
       
@@ -1028,7 +1212,7 @@ function link_node(child_node_id,new_name){
 		};
 		
 		//Show message:
-		var message = '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Adding <img src="/img/gem/diamond_48.png" width="20" class="light" />...</div>';
+		var message = '<div class="list-group-item loading-node"><img src="/img/loader.gif" /> Adding...</div>';
 		if(input_data['normal_parenting']){
 			$( message ).insertBefore( ".list_input" );
 		} else {

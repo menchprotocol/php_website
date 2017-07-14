@@ -22,7 +22,7 @@ class Algolia_model extends CI_Model {
 		$node = $this->Us_model->fetch_node($node_id , 'fetch_parents' , array('recursive_level'=>1) );
 		
 		//Grandpa Signs:
-		$grandparents = grandparents(); //Everything at level 1
+		$grandparents = $this->config->item('grand_parents');
 		
 		//CLeanup and prep for search indexing:
 		$node_search_object = array();

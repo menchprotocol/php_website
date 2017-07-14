@@ -1,6 +1,7 @@
 <?php 
 //Attempt to fetch session variables:
 $user_data = $this->session->userdata('user');
+$website = $this->config->item('website');
 ?>
 	</div> <!-- End #main_container -->
 	
@@ -15,8 +16,8 @@ $user_data = $this->session->userdata('user');
     Tools <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
-    <li><a href="https://us.foundation/openapi/update_algolia" target="_blank"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Search Index</a></li>
-    <li><a href="https://us.foundation/openapi/health_check" target="_blank"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Health Check</a></li>
+    <li><a href="'.$website['url'].'openapi/update_algolia" target="_blank"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Search Index</a></li>
+    <li><a href="'.$website['url'].'openapi/health_check" target="_blank"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Health Check</a></li>
   </ul>
 </div>' : '' ) ?>
 	        </div>

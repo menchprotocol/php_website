@@ -8,6 +8,14 @@ class Us_model extends CI_Model {
 		$this->success_deletes = 0; //Used for recursive_node_delete() count tracker.
 	}
 	
+	function insert_error($title,$error_blob=array()){
+		$this->db->insert('v3_errors', array(
+				'created' => date("Y-m-d H:i:s"),
+				'title' => $title,
+				'error_blob' => json_encode($error_blob),
+		));
+		return $this->db->insert_id();
+	}
 	
 	function restore_delete($start_gem_id, $end_gem_id){
 		//Fetch the target gems:
@@ -318,9 +326,7 @@ class Us_model extends CI_Model {
 		
 		
 		//These are required fields:
-		if(!isset($link_data['platform_pid']) || intval($link_data['platform_pid'])<=0){
-			return false;
-		} elseif(!isset($link_data['action_pid'])){
+		if(!isset($link_data['action_pid'])){
 			return false;
 		} elseif(!isset($link_data['us_id']) || !is_int($link_data['us_id']) || $link_data['us_id']<0){
 			//Try to fetch user ID from session:
@@ -334,10 +340,18 @@ class Us_model extends CI_Model {
 		}
 		
 		
-		
 		//These are optional and could have defaults:
+		if(!isset($link_data['platform_pid'])){
+			$link_data['platform_pid'] = 766; //Website
+		}
 		if(!isset($link_data['gem_id'])){
 			$link_data['gem_id'] = 0;
+		}
+		if(!isset($link_data['referrer_pid'])){
+			$link_data['referrer_pid'] = 0;
+		}
+		if(!isset($link_data['external_id'])){
+			$link_data['external_id'] = '';
 		}
 		if(!isset($link_data['timestamp'])){
 			$link_data['timestamp'] = date("Y-m-d H:i:s");
@@ -347,9 +361,6 @@ class Us_model extends CI_Model {
 		}
 		if(!isset($link_data['json_blob'])){
 			$link_data['json_blob'] = '';
-		}
-		if(!isset($link_data['external_id'])){
-			$link_data['external_id'] = '';
 		}
 		if(!isset($link_data['message'])){
 			$link_data['message'] = '';
@@ -433,6 +444,46 @@ class Us_model extends CI_Model {
 		}		
 		
 		return $links_deleted;
+	}
+	
+	
+	function put_fb_user($user_fb_id){
+		//A function to check or create a new user using FB id:
+		
+		//Search for current users:
+		$matching_users = $this->search_node($user_fb_id,1024);
+		
+		$us_id = null;
+		
+		//What did we find?
+		if(count($matching_users) == 1){
+			
+			//Yes, we found them!
+			$us_id = $matching_users[0]['node_id'];
+			
+		} elseif(count($matching_users) <= 0){
+			
+			//This is a new user that needs to be registered!
+			$us_id = $this->create_user_from_fb($user_fb_id);
+			
+		} else {
+			//Inconsistent data:
+			log_error('We had two users in the system for FB user ID '.$user_fb_id , $matching_users);
+			
+			//Set default:
+			$us_id = $matching_users[0]['node_id'];
+		}
+		
+		
+		if($us_id){
+			//We found it!
+			return $us_id;
+		} else {
+			//Ooops, some error!
+			log_error('Faced issued when trying to create/fetch user using Facebook ID.',$json_data);
+			
+			return 766; //Set the website as the default so this can be looked into!
+		}
 	}
 	
 	
@@ -540,7 +591,7 @@ class Us_model extends CI_Model {
 		$this->db->where('d.status >=' , 0);
 		$q = $this->db->get();
 		$stats = $q->row_array();
-		$grandparents = grandparents();
+		$grandparents = $this->config->item('grand_parents');
 		return $stats['link_count']-( array_key_exists($node_id,$grandparents) ? 1 : 0 );
 	}
 	
@@ -592,7 +643,7 @@ class Us_model extends CI_Model {
 	function fetch_parent_tree($node_id){
 		//Recursively follows parent nodes to get to a grandparent and returns array:
 		$return = array($node_id);
-		$grandparents= grandparents();
+		$grandparents= $this->config->item('grand_parents');
 		$reached_grandpa = false;
 		
 		$link['parent_id'] = $node_id;
@@ -683,7 +734,7 @@ class Us_model extends CI_Model {
 		}
 		
 		//Lets curate/enhance the data a bit:
-		$grandparents= grandparents(); //Everything at level 1
+		$grandparents= $this->config->item('grand_parents');
 		//Caching mechanism for usernames and counts
 		$cache = array(
 				'contributors' => array(),
@@ -934,7 +985,7 @@ class Us_model extends CI_Model {
 		//Insert messenger ID for future referencing:
 		$messenger_id_gem = $this->insert_link(array(
 				'node_id' => $user_node['node_id'],
-				'parent_id' => 765, //Facebook Messenger
+				'parent_id' => 1024, //Facebook PSID
 				'value' => $fb_user_id,
 				'action_type' => 1, //For adding
 				'us_id' => 765, //Facebook Messenger is creator

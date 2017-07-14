@@ -1,15 +1,78 @@
 <?php
 
-
 function is_production(){
-	return ( $_SERVER['SERVER_NAME']=='us.foundation' );
+	return in_array($_SERVER['SERVER_NAME'],array('us.foundation','brainplugins.com'));
 }
 
 function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.67'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.68'.( !is_production() ? '.'.substr(time(),7) : '' );
+}
+
+function ping_admin($message , $from_log_error=false){
+	$CI =& get_instance();
+	$CI->Messenger_model->send_message(array(
+			'recipient' => array(
+					'id' => '1344093838979504', //Shervin
+			),
+			'message' => array(
+					'text' => $message,
+			),
+			'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+	) , $from_log_error );
+}
+
+function log_error($title, $error_blob=array()){
+	$CI =& get_instance();
+	//First log error in DB:
+	$error_id = $CI->Us_model->insert_error($title,$error_blob);
+	//Notifty admin via Messenger:
+	ping_admin('Error #'.$error_id.': '.$title , true);
+	//Return error ID:
+	return $error_id;
+}
+
+
+
+function fetch_grandchild($pid,$grandpa_id,$json_data){
+	$pid = intval($pid);
+	if($pid<=0){
+		return 0;
+	}
+	
+	//We have an intent_pid, lets look for it!
+	$CI =& get_instance();
+	$node = $CI->Us_model->fetch_node($pid, 'fetch_top_plain');
+	
+	if(!isset($node['node_id'])){
+		return 0;
+	} elseif($node['grandpa_id']!==$grandpa_id){
+		log_error('Referrer Grandpa for PID ['.$node['node_id'].'] is NOT equal to ['.$grandpa_id.'].' , $json_data);
+		return 0;
+	}
+	
+	//Everything was ok!
+	return $node['node_id'];
+}
+
+function fb_page_pid($fb_page_id){
+	$CI =& get_instance();
+	$active_bots = $CI->config->item('active_bots');
+	foreach($active_bots as $bot){
+		if($bot['fb_page_id']==$fb_page_id){
+			return $bot['entity_pid'];
+		}
+	}
+	//Not found?!
+	log_error('PHP Helper Function fb_page_pid() failed to find Facebook Page ID ['.$fb_page_id.'].');
+	return 0;
+}
+
+function fb_time($unix_time){
+	//It has milliseconds like "1458668856253", which we need to tranform for DB insertion:
+	return date("Y-m-d H:i:s",round($unix_time/1000));
 }
 
 function curl_html($url){
@@ -159,29 +222,6 @@ function user_login($user_email,$user_pass){
 	}
 }
 
-function grandparents(){
-	//A Javascript version of this function is in main.js
-	return array(
-			1  => array(
-					'name' => 'Entities',
-					'sign' => '@',
-					'node_id' => 1,
-			),
-			3  => array(
-					'name' => 'Intents',
-					'sign' => '#',
-					'node_id' => 3,
-			),
-			4  => array(
-					'name' => 'Questions',
-					'sign' => '?',
-			),
-			43 => array(
-					'name' => 'Metadata',
-					'sign' => '!',
-			),
-	);
-}
 
 
 function status_descriptions($status_id){
@@ -354,7 +394,7 @@ function auth($donot_redirect=false){
 		return (isset($user_data['id']));
 	} elseif(!isset($user_data['id'])){
 		$node_id = $CI->uri->segment(1);
-		redirect_message('/login'.( intval($node_id)>0 ? '?from='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login to access this page.</div>');
+		redirect_message('/login','<div class="alert alert-danger" role="alert">Login to access this page.</div>');
 	}
 }
 
@@ -366,7 +406,7 @@ function auth_admin($donot_redirect=false){
 	if($donot_redirect){
 		return (isset($user_data['is_mod']) && $user_data['is_mod']);
 	} elseif(!isset($user_data['is_mod']) || !$user_data['is_mod']){
-		redirect_message('/login'.( intval($node_id)>0 ? '?from='.intval($node_id) : '' ),'<div class="alert alert-danger" role="alert">Login as moderator to access this page.</div>');
+		redirect_message('/login','<div class="alert alert-danger" role="alert">Login as moderator to access this page.</div>');
 	}
 }
 
@@ -392,7 +432,7 @@ function extract_patterns($value){
 	
 	//We have something...
 	$CI =& get_instance();
-	$grandparents = grandparents();
+	$grandparents = $CI->config->item('grand_parents');
 	
 	foreach($temp as $key=>$t){
 		if($key>0){
@@ -464,11 +504,11 @@ function one_two_explode($one,$two,$content){
 
 
 
-
 function echoNode($node,$key,$load_open=false){
 	
 	$CI =& get_instance();
 	$user_data = $CI->session->userdata('user');
+	$active_bots = $CI->config->item('active_bots');
 	
 	//Loop through parent nodes to apply any settings:
 	//$status = status_descriptions($node[$key]['status']);
@@ -481,12 +521,12 @@ function echoNode($node,$key,$load_open=false){
 	
 	if($flow_IN){
 		//Parent nodes:
-		$href = '/'.$node[$key]['parents'][0]['node_id'].'?from='.$node[0]['node_id']; // SELF: $node[$key]['parents'][0]['node_id']==$node[0]['node_id']
+		$href = '/'.$node[$key]['parents'][0]['node_id']; // SELF: $node[$key]['parents'][0]['node_id']==$node[0]['node_id']
 		$anchor = $node[$key]['parents'][0]['value'];
 		$direct_anchor = ( $is_direct ? 'DIRECT ' : '').'IN <span class="glyphicon glyphicon-arrow-right rotate45" aria-hidden="true"></span>';
 	} else {
 		//Child nodes:
-		$href = '/'.$node[$key]['node_id'].'?from='.$node[0]['node_id'];
+		$href = '/'.$node[$key]['node_id'];
 		$anchor = $node[$key]['parents'][0]['value'];
 		$direct_anchor = ( $is_direct ? 'DIRECT ' : '').'OUT <span class="glyphicon glyphicon-arrow-up rotate45" aria-hidden="true"></span>';
 	}
@@ -584,7 +624,7 @@ function echoNode($node,$key,$load_open=false){
 		
 		'<a href="javascript:toggleValue('.$node[$key]['id'].');" class="'.( $key==0 ? 'parentTopLink' : 'parentLink '.( $ui_setting['auto_open'] ? 'zoom-out' : 'zoom-in' )).'">'.
 			
-		( $key==0 ? '' : '<span class="glyphicon gh'.$node[$key]['id'].' glyphicon-triangle-'.( $ui_setting['auto_open'] ? 'bottom' : 'right' ).'" aria-hidden="true"></span>' ).
+		'<span class="glyphicon gh'.$node[$key]['id'].' glyphicon-triangle-'.( $ui_setting['auto_open'] || $key==0? 'bottom' : 'right' ).( $key==0 ? ' is_zero' : '' ).'" aria-hidden="true"></span>'.
 		
 				//TOP Title
 				'<span class="anchor">'. $node[$key]['parents'][0]['sign'] . '<span id="tl'.$node[$key]['id'].'">'.$anchor.'</span></span>'.
@@ -602,7 +642,7 @@ function echoNode($node,$key,$load_open=false){
 	( $ui_setting['is_live'] ? ' <span class="glyphicon glyphicon-phone grey hastt '.$attention_color.'" aria-hidden="true" title="Synced with api.ai which makes it accessible to our users on Messenger" data-toggle="tooltip"></span>' : '').
 				
 				//Is pending verification?
-				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Gem Collector Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
+				( $node[$key]['status']<1 ? ' <span class="hastt grey" title="Pending Approval" data-toggle="tooltip"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true" style="color:#FF0000;"></span></span>' : '' ).
 				
 				
 				//Engagement Stats
@@ -628,6 +668,7 @@ function echoNode($node,$key,$load_open=false){
 	}
 	
 	
+	
 	//This is only used for special nodes for now:
 	$return_string .= $ui_setting['followup_content'];
 	
@@ -635,17 +676,19 @@ function echoNode($node,$key,$load_open=false){
 	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
 	//TODO $return_string .= '<span title="Revision history to browse previous versions." data-toggle="tooltip" class="hastt"><a href="alert(\'Version Tracking Under Development\')"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span> 5</a></span>';
 	
-	//Gem Collector:
+	//Collector:
 	$return_string .= '<span title="@'.nodeName($node[$key]['us_node'][0]['value']).' collected this Gem." data-toggle="tooltip"><a href="/'.$node[$key]['us_node'][0]['node_id'].'"><img src="https://www.gravatar.com/avatar/'.md5(strtolower(trim($node[$key]['us_node'][1]['value']))).'?d=identicon" class="mini-image" /></a></span>';
 	
 	//Pattern ID
-	$return_string .= ($key==0 ? ' <span title="DIRECT IN Gems have a Pattern ID (or pid) for URL access and inline Gem referencing." data-toggle="tooltip" class="hastt black"><b>||'.$node[$key]['node_id'].'</b></span>': '');
+	$bot_pid = ( !$flow_IN ? $node[$key]['node_id'] : $node[$key]['parent_id'] );
+	$ref_key = $bot_pid.'_'.$user_data['node_id'];
+	$return_string .= ( ( $node[$key]['grandpa_id']==3 || $node[$key]['parents'][0]['grandpa_id']==3 ) ? ' <span title="Click to Copy URL to share Plugin on Messenger." data-toggle="tooltip" class="hastt clickcopy ref_'.$ref_key.'" data-clipboard-text="'.$active_bots[0]['bot_ref_url'].$ref_key.'"><img src="/img/icons/messenger.png" class="action_icon" /><b>'.$bot_pid.'</b></span>': '' );
 	
 	//Date
-	$return_string .= '<span title="Gem collected at '.substr($node[$key]['timestamp'],0,19).' UTC timezone." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
+	$return_string .= '<span title="Added '.substr($node[$key]['timestamp'],0,19).' UTC" data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>'.format_timestamp($node[$key]['timestamp']).'</span>';
 	
-	//Gem ID
-	$return_string .= '<span title="Unique Gem ID is '.$node[$key]['id'].'" data-toggle="tooltip" class="hastt"><img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;" />'.$node[$key]['id'].'</span>';
+	//Update ID
+	$return_string .= '<span title="Unique Update ID assigned per each edit." data-toggle="tooltip" class="hastt">#'.$node[$key]['id'].'</span>';
 	
 	if(auth_admin(1)){
 		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>';
@@ -653,10 +696,14 @@ function echoNode($node,$key,$load_open=false){
 		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></li>';
 		
 		//Make sure this is not a grandpa before showing the delete button:
-		$grandparents = grandparents();
+		$grandparents = $CI->config->item('grand_parents');
 		if(!($key==0 && array_key_exists($node[$key]['node_id'],$grandparents))){
 			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$node[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>';
 		}
+		
+		//Add search shortcuts:
+		$return_string .= '<li><a href="https://www.google.com/search?q='.urlencode($node[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Google</a></li>';
+		$return_string .= '<li><a href="https://www.youtube.com/results?search_query='.urlencode($node[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> YouTube</a></li>';
 		
 		//Display inversing if NOT direct
 		if(!$is_direct){

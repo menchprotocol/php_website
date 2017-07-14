@@ -6,11 +6,10 @@ class Messenger_model extends CI_Model {
 	
 	function __construct() {
 		parent::__construct();
-		
-		$this->page_access_token = 'EAAXa7dAxGbABANZCQVwRYyCEe5ZBHHAn2IVIcfaqmNRQHCszfSNxU4sdAmKpUiC0oqZBJgBX0aGC4DbmC8vI0Hf15RUkdh9laY9NqMYZCbtQ2S0ts8wFd89R7zhE4ZCSRcvXTXEDPSyiMWEpTc9VN9eXHrwfweBzUvyItBBpaJgZDZD';
-		
+		//Fetch the primary bot's access token:
+		$active_bots = $this->config->item('active_bots');
+		$this->page_access_token = $active_bots[0]['access_token'];
 	}
-	
 	
 	
 	function fetch_profile($user_id){
@@ -24,7 +23,8 @@ class Messenger_model extends CI_Model {
 	}
 	
 	
-	function send_message($payload){
+	function send_message($payload , $from_log_error=false){
+
 		//Make the call for add/update
 		$ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token='.$this->page_access_token);
 		curl_setopt_array($ch, array(
@@ -41,10 +41,23 @@ class Messenger_model extends CI_Model {
 		
 		// Check for CURL errors
 		if($response === FALSE){
-			return false;
+			log_error('CURL Failed in sending message via Messenger.',$payload);
 		}
 		
-		return objectToArray(json_decode($response));
+		$res_array = objectToArray(json_decode($response));
+		
+		//This prevents the function getting into an endless loop
+		if(!$from_log_error){
+			//Do we have any errors here?
+			if(isset($res_array['error'])){
+				log_error($res_array['error']['message'], array(
+						'input_payload' => $payload,
+						'error_content' => $res_array,
+				));
+			}
+		}
+		
+		return $res_array;
 	}
 	
 	

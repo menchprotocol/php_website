@@ -2,14 +2,14 @@
 
 //Define main navigation:
 $sub_navigation = array(
+		3 => array(
+				'icon' => '<img src="/img/bp_48.png" class="pattern_img" />',
+				'count_key' => 3,
+				'count' => 0,
+		),
 		1 => array(
 				'icon' => '@',
 				'count_key' => 1,
-				'count' => 0,
-		),
-		3 => array(
-				'icon' => '#',
-				'count_key' => 3,
 				'count' => 0,
 		),
 		4 => array(
@@ -60,7 +60,7 @@ echo '<script> var user_data = '.json_encode($user_data).'; </script>';
 
 //The 2nd level navigation:
 echo '<ul id="secondNav" class="nav nav-pills">';
-echo '<li role="presentation" class="li_all active"><a href="javascript:nav2nd(\'all\')">'.count($node).'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 0 0 1px;"></a></li>';
+echo '<li role="presentation" class="li_all active"><a href="javascript:nav2nd(\'all\')">'.count($node).' Total</a></li>';
 foreach($sub_navigation as $sn){
 	echo '<li role="presentation" class="li_'.$sn['count_key'].( $sn['count']==0 ? ' disabled' : '').'"><a href="javascript:'.( $sn['count']==0 ? 'void(0)' : 'nav2nd('.( is_integer($sn['count_key']) ? $sn['count_key'] : '\''.$sn['count_key'].'\'').')').'" '.( isset($sn['append_class']) && $sn['count']>0? ' class="'.$sn['append_class'].'"' : '').'>'.$sn['count'].$sn['icon'].'</a></li>';
 }
@@ -82,7 +82,7 @@ echo '<div class="list-group lgmain">';
 	if(auth_admin(1)){
 		//An input to create a new node or link to an existing node:
 		echo '<div class="list-group-item list_input">';
-		echo '<form id="addnodeform"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="+ Gem"></form>';
+		echo '<form id="addnodeform"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="+ Add"></form>';
 		echo '</div>';
 	}
 echo '</div>';

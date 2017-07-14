@@ -134,7 +134,7 @@ class Api extends CI_Controller {
 			
 			//Simple link delete:
 			$status = $this->Us_model->delete_link(intval($_REQUEST['id']),$type);
-			return echo_html($status,($status ? '<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;"> Marked for Removal, Pending Peer Review...' : 'Unknown error with status.'),$set_flash);
+			return echo_html($status,($status ? 'Marked for Removal...' : 'Unknown error with status.'),$set_flash);
 			
 		} else {
 			
@@ -145,12 +145,12 @@ class Api extends CI_Controller {
 				
 				//Regular node delete:
 				$deleted_gems = $this->Us_model->delete_node($link['node_id'],$type);
-				$del_message = '<b>'.$link['value'].'</b> removed with '.$deleted_gems.'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;">';
+				$del_message = '<b>'.$link['value'].'</b> removed with '.$deleted_gems.' Links';
 				
 			} elseif($type==-3 && intval($_REQUEST['new_parent_id'])>0){
 				
 				$status = $this->Us_model->move_child_nodes($link['node_id'],intval($_REQUEST['new_parent_id']),$type);
-				$del_message = '<b>'.$link['value'].'</b> removed: '.$status['moved'].'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;"> moved & '.$status['deleted'].'<img src="/img/gem/diamond_16.png" width="14" class="light" style="margin:-2px 1px 0 0;"> removed';
+				$del_message = '<b>'.$link['value'].'</b> removed: '.$status['moved'].' Links';
 				
 			} elseif($type==-4){
 				
