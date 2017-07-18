@@ -684,6 +684,11 @@ class Us_model extends CI_Model {
 		return array_merge($parent,$child);
 	}
 	
+	function fetch_chats($user_node_id,$start_time,$end_time){
+		//TODO
+	}
+	
+	
 	function fetch_node($node_id , $action='fetch_parents', $setting=array()){
 		
 		if(intval($node_id)<1 || !in_array($action,array('fetch_parents','fetch_children','fetch_top_plain'))){

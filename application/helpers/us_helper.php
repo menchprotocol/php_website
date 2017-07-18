@@ -11,6 +11,60 @@ function version_salt(){
 	return 'v0.68'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
+function fetch_file_ext($url){
+	$url_parts = explode('?',$url,2);
+	$url_parts = explode('/',$url_parts[0]);
+	$file_parts = explode('.',end($url_parts));
+	return end($file_parts);
+}
+
+function save_file($file_url){
+	$CI =& get_instance();
+	
+	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
+	$file_name = time().'-'.md5($file_url.time().'someSa!t').'.'.fetch_file_ext($file_url);
+	$file_path = 'application/cache/temp_files/';
+	
+	//chmod($file_path, 0777);die();
+	
+	//Fetch Remote:
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $file_url);
+	curl_setopt($ch, CURLOPT_VERBOSE, 1);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+	$result = curl_exec($ch);
+	curl_close($ch);
+	
+	
+	//Write in directory:
+	$fp = fopen( $file_path.$file_name , 'w');
+	fwrite($fp, $result);
+	fclose($fp);
+	
+	//Then upload to AWS S3:
+	require( '/application/libraries/aws/aws-autoloader.php' );
+	$s3 = new Aws\S3\S3Client([
+			'version' 		=> 'latest',
+			'region'  		=> 'us-west-2',
+			'credentials' 	=> $CI->config->item('aws_credentials'),
+	]);
+	$result = $s3->putObject(array(
+			'Bucket'       => 's3foundation', //Same bucket for now
+			'Key'          => $file_name,
+			'SourceFile'   => $file_path.$file_name,
+			'ACL'          => 'public-read'
+	));
+	
+	if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
+		@unlink($file_path.$file_name);
+		return $result['ObjectURL'];
+	} else {
+		return false;
+	}
+}
+
 function ping_admin($message , $from_log_error=false){
 	$CI =& get_instance();
 	$CI->Messenger_model->send_message(array(
@@ -162,7 +216,6 @@ function user_login($user_email,$user_pass){
 		//TODO We can wire this in Agolia for faster string search!
 		$matching_users = $CI->Us_model->search_node($user_email,24);
 		
-		
 		if(count($matching_users)<1){
 			//We could not find this email linked to the email node
 			return array(
@@ -179,7 +232,7 @@ function user_login($user_email,$user_pass){
 			//This should technically never happen!
 			return array(
 				'status' => 0,
-				'message' => 'Email not associated to a valid user.',
+					'message' => 'Email not associated to a valid user.',
 			);
 		}
 		

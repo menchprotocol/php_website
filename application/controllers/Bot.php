@@ -12,6 +12,7 @@ class Bot extends CI_Controller {
 	
 	
 	function t(){
+		
 	}
 	
 	function fetch_entity($apiai_id){
@@ -285,10 +286,18 @@ class Bot extends CI_Controller {
 					if(isset($im['message']['attachments'])){
 						//We have some attachments, lets loops through them:
 						foreach($im['message']['attachments'] as $att){
+							
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
+								//Store to local DB:
+								$new_url = save_file($att['payload']['url']);
+								
+								if(!$new_url){
+									log_error('Unable to upload Facebook Message Atatchment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
+								}
+								
 								//Message with image attachment
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].':'.$att['payload']['url'];
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment/'.$att['type'].'/'.$new_url;
 								
 								//TODO additional processing...
 								if($att['type']=='audio'){
@@ -310,12 +319,12 @@ class Bot extends CI_Controller {
 								//TODO test to make sure this works!
 								$loc_lat = $att['payload']['coordinates']['lat'];
 								$loc_long = $att['payload']['coordinates']['long'];
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:location:'.$loc_lat.','.$loc_long;
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment/location/'.$loc_lat.','.$loc_long;
 								
 							} elseif($att['type']=='template'){
 								
 								//Message with template attachment, like a button or something...
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:template';
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment/template';
 								
 							} elseif($att['type']=='fallback'){
 								

@@ -22,6 +22,14 @@ $config['active_bots'] = array(
 		),
 );
 
+//See more details here:
+//https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
+$config['aws_credentials'] = [
+		'key'    => 'AKIAJOLBLKFSYCCYYDRA',
+		'secret' => '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',
+];
+
+
 //TODO Fetch grandparent during logging, pass to session and use that instead of these names. More unified...
 $config['grand_parents'] = array(
 		3  => array(

@@ -62,6 +62,7 @@ $route['login'] = "us/load_wiki/login";
 $route['terms'] = "us/load_wiki/terms";
 
 //Application logic:
+$route['(:num)/chat'] = "us/load_chat/$1";
 $route['(:num)'] = "us/load_node/$1";
 $route['logout'] = "us/logout";
 $route['login_process'] = "us/login_process";
