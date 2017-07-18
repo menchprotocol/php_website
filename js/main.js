@@ -343,16 +343,16 @@ function parents(grandpa_id){
 	//A PHP version of this function is in us_helper.php
 	switch(grandpa_id) {
     case 1:
-    	return '@';
+    	return '<b>@</b>';
         break;
     case 3:
-    	return '<img src="/img/bp_48.png" class="pattern_img" />';
+    	return '<b class="blue">#</b>';
         break;
     case 4:
-    	return '?';
+    	return '<b>?</b>';
         break;
     case 43:
-    	return '!';
+    	return '<b>!</b>';
         break;
     default:
     	return null;

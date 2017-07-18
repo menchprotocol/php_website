@@ -256,6 +256,7 @@ class Bot extends CI_Controller {
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
+					$from_helper = ( in_array($user_id,$this->config->item('human_helpers')) );
 					
 					$eng_data = array(
 							'message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
@@ -285,35 +286,37 @@ class Bot extends CI_Controller {
 					//It may also have an attachment
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-echo
+					$new_file_url = null; //Would be updated IF message is a file
 					if(isset($im['message']['attachments'])){
 						//We have some attachments, lets loops through them:
 						foreach($im['message']['attachments'] as $att){
 							
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
-								//TODO additional processing...
-								if($att['type']=='audio'){
-									//Store to local DB:
-									$new_url = save_file($att['payload']['url']);
-									
-									if(!$new_url){
-										log_error('Unable to upload Facebook Message Attachment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
-									}
-									
-									//Message with image attachment
-									$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].'::'.$new_url;
-									
-									//Testing for now:
-									$this->Messenger_model->send_message(array(
-											'recipient' => array(
-													'id' => $user_id
-											),
-											'message' => array(
-													'text' => 'Got your voice stored and will get back to you: '.$new_url,
-											),
-											'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-									));
-								}
+								//Store to local DB:
+								$new_file_url = save_file($att['payload']['url'],$json_data);
+								
+								//Message with image attachment
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].'::'.$new_file_url;
+								
+								//Reply:
+								$this->Messenger_model->send_message(array(
+										'recipient' => array(
+												'id' => $user_id
+										),
+										'sender_action' => 'typing_on'
+								));
+								
+								//Testing for now:
+								$this->Messenger_model->send_message(array(
+										'recipient' => array(
+												'id' => $user_id
+										),
+										'message' => array(
+												'text' => 'Got your messageand will get back to you soon!',
+										),
+										'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+								));
 								
 							} elseif($att['type']=='location'){
 								
@@ -379,23 +382,17 @@ class Bot extends CI_Controller {
 					$this->Us_model->log_engagement($eng_data);
 					
 					
+					
+					
 					//Should we start talking?!
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
 						
 						//TODO disabled for now, build later
 						//Incoming text message, attempt to auto detect it:
-						$eng_data['gem_id'] = ''; //If intent was found, the update ID that was served
+						//$eng_data['gem_id'] = ''; //If intent was found, the update ID that was served
 						
 						//Indicate to the user that we're typing:
-						$this->Messenger_model->send_message(array(
-								'recipient' => array(
-										'id' => $user_id
-								),
-								'sender_action' => 'typing_on'
-						));
 						
-						//Fancy:
-						//sleep(1);
 						
 						if(isset($unsubscribed_gem['id'])){
 							//Oho! This user is unsubscribed, Ask them if they would like to re-join us:

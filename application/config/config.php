@@ -2,23 +2,36 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
+//TODO Move this to an internal system on the Goal Network:
+$config['human_helpers'] = array(7,46); //Shervin & Miguel for now...
+
+$config['live_websites'] = array('us.foundation','brainplugins.com','askmench.com','mench.ai');
 
 //Brain Plugins Variables:
 $config['website'] = array(
-		'url' => 'http://brainplugins.com/', //Important to end with / as other links depend on this.
-		'name' => 'BrainPlugins',
-		'email' => 'support@brainplugins.com',
+		'url' => 'https://us.foundation/', //Important to end with / as other links depend on this.
+		'name' => 'Us Foundation',
+		'email' => 'support@us.foundation',
 );
 
 $config['active_bots'] = array(
 		0 => array(
-				'name' => 'BrainPlugins',
-				'square128_logo_url' => '/img/bp_128.png',
+				'name' => 'Us Chatter',
+				'square128_logo_url' => '/img/US.png',
 				'fb_page_id' => '1782774501750818',
 				'fb_app_id' => '1648089818536368',
-				'bot_ref_url' => 'https://m.me/brainplugins?ref=',
+				'bot_ref_url' => 'https://m.me/uschatter?ref=',
 				'access_token' => 'EAAXa7dAxGbABAGMRXO5fo2QWnUsMxCqtScDkwGTCOZC4xfzLoSiaWTZBNNrWl2TDbmVUdlUpDkZAgDkQ9ZCxS0Jvu4DDtlQ1JzZBupZCjAgxxAWZAAZAaZAWFyEO4UgKhuIhXzZCnYImRptIOhX3pXEnLwu2eAMrkyv9SOwZCbH3jGwZCQZDZD',
-				'entity_pid' => 1023, //For BrainPlugins Entity on our system
+				'entity_pid' => 1023,
+		),
+		1 => array(
+				'name' => 'Ask Mench',
+				'square128_logo_url' => '/img/US.png',
+				'fb_page_id' => '247519339076993',
+				'fb_app_id' => '',
+				'bot_ref_url' => 'https://m.me/askmench?ref=',
+				'access_token' => '',
+				'entity_pid' => 1043,
 		),
 );
 
@@ -33,14 +46,12 @@ $config['aws_credentials'] = [
 //TODO Fetch grandparent during logging, pass to session and use that instead of these names. More unified...
 $config['grand_parents'] = array(
 		3  => array(
-				'name' => 'Brain Plugins',
-				'sign' => '<img src="/img/bp_48.png" class="pattern_img" />',
-				'node_id' => 3,
+				'name' => 'Goals',
+				'sign' => '<b class="blue" style="font-size:1.1em; padding-right:1px;">#</b>',
 		),
 		1  => array(
 				'name' => 'Entities',
 				'sign' => '@',
-				'node_id' => 1,
 		),
 		4  => array(
 				'name' => 'Questions',

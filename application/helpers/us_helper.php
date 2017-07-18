@@ -1,7 +1,8 @@
 <?php
 
 function is_production(){
-	return in_array($_SERVER['SERVER_NAME'],array('us.foundation','brainplugins.com'));
+	$CI =& get_instance();
+	return in_array($_SERVER['SERVER_NAME'],$CI->config->item('live_websites'));
 }
 
 function version_salt(){
@@ -12,20 +13,18 @@ function version_salt(){
 }
 
 function fetch_file_ext($url){
+	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
 	$url_parts = explode('?',$url,2);
 	$url_parts = explode('/',$url_parts[0]);
 	$file_parts = explode('.',end($url_parts));
 	return end($file_parts);
 }
 
-function save_file($file_url){
+function save_file($file_url,$json_data){
 	$CI =& get_instance();
 	
-	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
-	$file_name = time().'-'.md5($file_url.time().'someSa!t').'.'.fetch_file_ext($file_url);
+	$file_name = md5($file_url.time().'someSa!t').'.'.fetch_file_ext($file_url);
 	$file_path = 'application/cache/temp_files/';
-	
-	//chmod($file_path, 0777);die();
 	
 	//Fetch Remote:
 	$ch = curl_init();
@@ -36,7 +35,6 @@ function save_file($file_url){
 	curl_setopt($ch, CURLOPT_HEADER, 0);
 	$result = curl_exec($ch);
 	curl_close($ch);
-	
 	
 	//Write in directory:
 	$fp = fopen( $file_path.$file_name , 'w');
@@ -61,6 +59,7 @@ function save_file($file_url){
 		@unlink($file_path.$file_name);
 		return $result['ObjectURL'];
 	} else {
+		log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data);
 		return false;
 	}
 }

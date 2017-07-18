@@ -3,7 +3,7 @@
 //Define main navigation:
 $sub_navigation = array(
 		3 => array(
-				'icon' => '<img src="/img/bp_48.png" class="pattern_img" />',
+				'icon' => '<b class="blue">#</b>',
 				'count_key' => 3,
 				'count' => 0,
 		),

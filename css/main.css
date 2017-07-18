@@ -53,10 +53,10 @@ h3{ font-size:24px; color:#2f2639; }
 .grey{ color:#CCC !important; font-size:0.7em; }
 .pink-bg { background-color:#2f2639 !important; }
 .pink-bg-light { background-color:#918e95 !important; }
-.pink{ color:#2f2639 !important; font-size:0.9em; }
+.pink{ color:#2f2639 !important; }
 .blue-bg { background-color:#eccd15 !important; }
 .blue-bg-light { background-color:#86e8ff !important; }
-.blue{ color:#eccd15 !important; font-size:0.9em; }
+.blue{ color:#eccd15 !important; }
 .black{ color:#2f2639 !important; font-size:0.9em; }
 .is_top{ display:block !important;  }
 .is_top .node_stats { margin-left:20px; }
