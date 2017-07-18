@@ -44,7 +44,7 @@ function save_file($file_url){
 	fclose($fp);
 	
 	//Then upload to AWS S3:
-	require( '/application/libraries/aws/aws-autoloader.php' );
+	require( '/var/www/us/application/libraries/aws/aws-autoloader.php' );
 	$s3 = new Aws\S3\S3Client([
 			'version' 		=> 'latest',
 			'region'  		=> 'us-west-2',

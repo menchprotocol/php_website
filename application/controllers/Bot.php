@@ -12,7 +12,7 @@ class Bot extends CI_Controller {
 	
 	
 	function t(){
-		require( '/application/libraries/aws/aws-autoloader.php' );
+		require( '/var/www/us/application/libraries/aws/aws-autoloader.php' );
 		
 	}
 	
@@ -38,7 +38,7 @@ class Bot extends CI_Controller {
 	
 	
 	function facebook_webhook(){
-		exit;
+		
 		/*
 		 * 
 		 * Used for all webhooks from facebook, including user messaging, delivery notifications, etc...
