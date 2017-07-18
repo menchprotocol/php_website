@@ -290,7 +290,8 @@ class Bot extends CI_Controller {
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
 								//Store to local DB:
-								$new_url = save_file($att['payload']['url']);
+								$new_url = 'sss';
+								//$new_url = save_file($att['payload']['url']);
 								if(!$new_url){
 									log_error('Unable to upload Facebook Message Atatchment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
 								}
