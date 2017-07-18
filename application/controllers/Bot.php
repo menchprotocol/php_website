@@ -37,6 +37,7 @@ class Bot extends CI_Controller {
 	
 	
 	function facebook_webhook(){
+		exit;
 		/*
 		 * 
 		 * Used for all webhooks from facebook, including user messaging, delivery notifications, etc...
@@ -289,25 +290,25 @@ class Bot extends CI_Controller {
 							
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
-								//Store to local DB:
-								$new_url = save_file($att['payload']['url']);
-								
-								if(!$new_url){
-									log_error('Unable to upload Facebook Message Attachment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
-								}
-								
-								//Message with image attachment
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].'::'.$new_url;
-								
 								//TODO additional processing...
 								if($att['type']=='audio'){
+									//Store to local DB:
+									$new_url = save_file($att['payload']['url']);
+									
+									if(!$new_url){
+										log_error('Unable to upload Facebook Message Attachment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
+									}
+									
+									//Message with image attachment
+									$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].'::'.$new_url;
+									
 									//Testing for now:
 									$this->Messenger_model->send_message(array(
 											'recipient' => array(
 													'id' => $user_id
 											),
 											'message' => array(
-													'text' => 'Got your voice. We will get back to you soon.',
+													'text' => 'Got your voice stored and will get back to you: '.$new_url,
 											),
 											'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
 									));
@@ -319,12 +320,12 @@ class Bot extends CI_Controller {
 								//TODO test to make sure this works!
 								$loc_lat = $att['payload']['coordinates']['lat'];
 								$loc_long = $att['payload']['coordinates']['long'];
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment/location/'.$loc_lat.','.$loc_long;
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:location::'.$loc_lat.','.$loc_long;
 								
 							} elseif($att['type']=='template'){
 								
 								//Message with template attachment, like a button or something...
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment/template';
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:template';
 								
 							} elseif($att['type']=='fallback'){
 								
