@@ -55,7 +55,7 @@ class Bot extends CI_Controller {
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
 		//This is for local testing only:
-		$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"1782774501750818","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"1782774501750818"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));		
+		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"1782774501750818","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"1782774501750818"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
@@ -290,10 +290,10 @@ class Bot extends CI_Controller {
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
 								//Store to local DB:
-								$new_url = 'sss';
-								//$new_url = save_file($att['payload']['url']);
+								$new_url = save_file($att['payload']['url']);
+								
 								if(!$new_url){
-									log_error('Unable to upload Facebook Message Atatchment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
+									log_error('Unable to upload Facebook Message Attachment ['.$att['payload']['url'].'] to Internal Storage.' , $json_data);
 								}
 								
 								//Message with image attachment
