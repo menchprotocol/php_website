@@ -12,6 +12,7 @@ class Bot extends CI_Controller {
 	
 	
 	function t(){
+		require( '/application/libraries/aws/aws-autoloader.php' );
 		
 	}
 	
