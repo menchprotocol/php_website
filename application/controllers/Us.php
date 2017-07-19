@@ -26,18 +26,21 @@ class Us extends CI_Controller {
 		
 	}
 	
-	
-	
 	function index(){
-		if(auth(1)){
-			//Load default search page:
-			$this->load_node(3);
-			//header("Location: /3"); //Default
-			//$this->load_wiki(); //This used to load a blank page
+		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0 || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0 || 1){
+			//The landing page of Mench.ai controlled using clickfunnels.com
+			$this->load->view('mench/landing_page');
 		} else {
-			//Load home page for visitors:
-			$this->load_wiki('usoverview');
-		}
+			if(auth(1)){
+				//Load default search page:
+				$this->load_node(3);
+				//header("Location: /3"); //Default
+				//$this->load_wiki(); //This used to load a blank page
+			} else {
+				//Load home page for visitors:
+				$this->load_wiki('usoverview');
+			}
+		}	
 	}
 	
 	function load_wiki($file_name='start'){
