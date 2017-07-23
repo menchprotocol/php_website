@@ -27,7 +27,7 @@ class Us extends CI_Controller {
 	}
 	
 	function index(){
-		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0 || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0 || 1){
+		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0 || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0){
 			//The landing page of Mench.ai controlled using clickfunnels.com
 			$this->load->view('mench/landing_page');
 		} else {
@@ -84,13 +84,16 @@ class Us extends CI_Controller {
 	//The main function for loading nodes:
 	function load_node($node_id){
 		
-		//Require authentication:
-		auth();
-		
 		//Build data sets for our views:
 		$data_set = array(
 				'node' => $this->Us_model->fetch_full_node($node_id),
 		);
+		
+		
+		if(!in_array($node_id,$this->config->item('public_nodes')) && !in_array($data_set['node'][0]['parent_id'],$this->config->item('public_nodes'))){
+			//Require authentication:
+			auth();
+		}
 		
 		//Make sure it was valid:	
 		if($data_set['node'][0]['id']<1){

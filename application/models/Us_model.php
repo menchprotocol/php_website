@@ -40,13 +40,6 @@ class Us_model extends CI_Model {
 	}
 	
 	
-	function next_node_id(){
-		//Find the current largest node id and increments it by 1:
-		$largest_node_id = $this->largest_node_id();
-		$largest_node_id++;
-		return $largest_node_id;
-	}
-	
 	function insert_batch_links($batch_input){
 		//Buildup for output:
 		$batch_output = array();
@@ -154,7 +147,7 @@ class Us_model extends CI_Model {
 			$link_data['ref_id'] = ( $is_update ? $link['ref_id'] : 0 );
 		}
 		if(!isset($link_data['node_id'])){
-			$link_data['node_id'] = ( $is_update ? $link['node_id'] : $this->next_node_id() ); //Generate new one if not updating!
+			$link_data['node_id'] = ( $is_update ? $link['node_id'] : ($this->sql_stats('v3_data','node_id','MAX')+1) ); //Generate new one if not updating!
 		}
 		
 		$value_updated = ( $is_update && isset($link_data['value']) && !($link_data['value']==$link['value']) );
@@ -539,13 +532,31 @@ class Us_model extends CI_Model {
 	}
 	
 	
-	function largest_node_id(){
-		$this->db->select('MAX(node_id) as largest_node');
-		$this->db->from('v3_data d');
+	function sql_stats($table,$field,$function){
+		$is_next = false; //This is a special $function, off by default.
+		if($function=='NEXT'){
+			$function = 'MIN';
+			$is_next = true; //It's on baby
+		}
+		$this->db->select($function.'('.$field.') as the_stat');
+		$this->db->from($table);
 		$q = $this->db->get();
 		$stats = $q->row_array();
-		return $stats['largest_node'];
+		
+		if($is_next){
+			//TODO This can be a lot better at fiding the empty IDs in between MIN/MAX...
+			if($stats['the_stat']>1){
+				//Awesome, we can still to lower:
+				return $stats['the_stat'] - 1;
+			} else {
+				//Can't go any lower than this! Let's go up:
+				return ( $this->sql_stats($table,$field,'MAX') + 1 );
+			}
+		} else {
+			return $stats['the_stat'];
+		}
 	}
+	
 	
 	function count_links($node_id){
 		//Count the number of child nodes:
@@ -803,6 +814,14 @@ class Us_model extends CI_Model {
 	
 	function generate_response($pid,$setting=array()){
 		//This is the main function that parses Gems for the Bot to deliver
+		
+		//Which patterns would trigger the:
+		$setting = array(
+				'subscribe_pids' => array(946), //Will ask user to subscribe when hits these PIDs ||946
+				'starting_point_pids' => array(614), //Will treat these PIDs as new user entry points
+				'termination_pids' => array(), //Will terminate conversation when hits these PIDs
+		);
+		
 		
 		if($pid<=0){
 			//Ooops, give an error:

@@ -5,6 +5,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //TODO Move this to an internal system on the Goal Network:
 $config['human_helpers'] = array(7,46); //Shervin & Miguel for now...
 
+//The following nodes and their immediate children would would publicly visible without login requirements:
+$config['public_nodes'] = array(); //15,65,11,837 Books, YouTube, Podcast & Articles
+
+
 $config['live_websites'] = array('us.foundation','brainplugins.com','askmench.com','mench.ai');
 
 //Brain Plugins Variables:
@@ -48,6 +52,44 @@ $config['grand_parents'] = array(
 		3  => array(
 				'name' => 'Goals',
 				'sign' => '<b class="blue" style="font-size:1.1em; padding-right:1px;">#</b>',
+				'descent_logic' => array(
+						'IN' => array(
+								1 => array(
+										'read_out_loud' => 0,
+										'follow_depth' => -1, //-1 is unlimited, 0 is NOT follow, 1+ is the # of levels to follow
+								),
+								3 => array(
+										'readout_INs' => 0,
+										'follow_OUTs' => 1,
+								),
+								4 => array(
+										'readout_INs' => 0,
+										'follow_OUTs' => 1,
+								),
+								43 => array(
+										'readout_INs' => 0, //!MetaData are not read out loud!
+										'follow_OUTs' => 0, //No need to follow !MetaData either
+								),
+						),
+						'OUT' => array(
+								1 => array(
+										'readout_INs' => 0,
+										'follow_OUTs' => 1,
+								),
+								3 => array(
+										'readout_INs' => 0,
+										'follow_OUTs' => 1,
+								),
+								4 => array(
+										'readout_INs' => 0,
+										'follow_OUTs' => 1,
+								),
+								43 => array(
+										'readout_INs' => 0,
+										'follow_OUTs' => 1,
+								),
+						),
+				),
 		),
 		1  => array(
 				'name' => 'Entities',

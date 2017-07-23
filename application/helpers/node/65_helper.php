@@ -63,7 +63,7 @@ function add_youtube_video($youtube_identifier,$IN_intent,$us_id=null){
 	//TODO Consider looking for embed enabled videos only and reject those with embed restrictions
 	// Sample embed disabled video: https://www.youtube.com/watch?v=ORHjkwwpLyU
 	
-	$next_node = $CI->Us_model->next_node_id();
+	$next_node = $CI->Us_model->sql_stats('v3_data','node_id','MAX')+1;
 	
 	//Add batch:
 	$batch_insert = $CI->Us_model->insert_batch_links(array(

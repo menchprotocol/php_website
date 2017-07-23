@@ -250,8 +250,6 @@ class Bot extends CI_Controller {
 					 * 
 					 * */
 					
-					
-					
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
@@ -267,6 +265,7 @@ class Bot extends CI_Controller {
 							'seq' => ( isset($im['message']['seq']) ? $im['message']['seq'] : 0 ), //Message sequence number
 							'platform_pid' => fb_page_pid($page_id), //The facebook page
 							'api_timestamp' => fb_time($im['timestamp']), //Facebook timestamp
+							'queue_id' => ( $this->Us_model->sql_stats('v3_engagement','queue_id','NEXT') + 1), //0 When Handeled
 					);
 					
 					//Some that are not used yet:
@@ -299,6 +298,7 @@ class Bot extends CI_Controller {
 								//Message with image attachment
 								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].'::'.$new_file_url;
 								
+								/*
 								//Reply:
 								$this->Messenger_model->send_message(array(
 										'recipient' => array(
@@ -317,6 +317,7 @@ class Bot extends CI_Controller {
 										),
 										'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
 								));
+								*/
 								
 							} elseif($att['type']=='location'){
 								
@@ -380,8 +381,6 @@ class Bot extends CI_Controller {
 					
 					//Log incoming engagement:
 					$this->Us_model->log_engagement($eng_data);
-					
-					
 					
 					
 					//Should we start talking?!

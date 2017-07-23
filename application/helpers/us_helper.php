@@ -779,7 +779,7 @@ function echoNode($node,$key,$load_open=false){
     $return_string .= '</ul></div>';
     
 	} else {
-		$return_string .= '<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Limited Access</span>';
+		$return_string .= ''; //<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Limited Access</span>
 	}
 	$return_string .= '</div></div>';
 	$return_string .= '</div>';
