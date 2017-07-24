@@ -80,10 +80,12 @@ $function = $this->uri->segment(2);
 			  <li role="presentation" <?= $active_states[0] ?>><a href="/<?= $user_data['node_id'] ?>" id="myGravatar" title="A shortcut link to your profile. Change your image on gravatar.com" data-toggle="tooltip" data-placement="bottom"><img src="https://www.gravatar.com/avatar/<?= md5(strtolower(trim($user_data['email']['value']))) ?>?d=identicon" /></a></li>
 		  <?php } ?>
 		  
-		  <?php if(!isset($user_data['id'])) { ?>
-		  
+		  <?php if(!isset($user_data['id'])) { 
+		  	  /*
 			  <li role="presentation" class="us_first rancol<?=rand(1,7)?>">Us</li>
 			  <li role="presentation" <?= ( !$controller ? 'class="active"' : '' ) ?>><a href="/">Foundation</a></li>
+			  */
+			  ?>
 			  <li role="presentation" <?= ( $controller=='login' ? 'class="active"' : '' ) ?> style="float:right;" title="Login to the publisher network." data-toggle="tooltip" data-placement="bottom"><a href="/login" style="margin-top: -5px; padding-bottom: 10px !important;"><span class="glyphicon glyphicon-log-in " aria-hidden="true"></span>&nbsp;</a></li>
 		  
 		  <?php } ?>
