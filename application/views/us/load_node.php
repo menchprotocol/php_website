@@ -44,8 +44,13 @@ foreach($node as $value){
 		$sub_navigation[45]['count']++;
 		$sub_navigation[$value['grandpa_id']]['count']++;
 	} else {
-		$sub_navigation[$value['parents'][0]['grandpa_id']]['count']++;
-		$sub_navigation[44]['count']++;
+		if(isset($value['parents'][0]) && is_array($value['parents'][0])){
+			$sub_navigation[$value['parents'][0]['grandpa_id']]['count']++;
+			$sub_navigation[44]['count']++;
+		} else {
+			//Ooops, this is wierd error!
+			log_error('#'.$value['id'].' missing [parents] sub array().', $node);
+		}
 	}
 }
 

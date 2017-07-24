@@ -13,29 +13,20 @@ $config['live_websites'] = array('us.foundation','brainplugins.com','askmench.co
 
 //Brain Plugins Variables:
 $config['website'] = array(
-		'url' => 'https://us.foundation/', //Important to end with / as other links depend on this.
-		'name' => 'Us Foundation',
-		'email' => 'support@us.foundation',
+		'url' => 'http://mench.ai/', //Important to end with / as other links depend on this.
+		'name' => 'Mench',
+		'email' => 'support@mench.ai',
 );
 
 $config['active_bots'] = array(
 		0 => array(
-				'name' => 'Us Chatter',
-				'square128_logo_url' => '/img/US.png',
+				'name' => 'Mench',
+				'square128_logo_url' => 'https://s3-us-west-2.amazonaws.com/us-videos/Mench-logo-square.png',
 				'fb_page_id' => '1782774501750818',
 				'fb_app_id' => '1648089818536368',
-				'bot_ref_url' => 'https://m.me/uschatter?ref=',
-				'access_token' => 'EAAXa7dAxGbABAGMRXO5fo2QWnUsMxCqtScDkwGTCOZC4xfzLoSiaWTZBNNrWl2TDbmVUdlUpDkZAgDkQ9ZCxS0Jvu4DDtlQ1JzZBupZCjAgxxAWZAAZAaZAWFyEO4UgKhuIhXzZCnYImRptIOhX3pXEnLwu2eAMrkyv9SOwZCbH3jGwZCQZDZD',
-				'entity_pid' => 1023,
-		),
-		1 => array(
-				'name' => 'Ask Mench',
-				'square128_logo_url' => '/img/US.png',
-				'fb_page_id' => '247519339076993',
-				'fb_app_id' => '',
 				'bot_ref_url' => 'https://m.me/askmench?ref=',
-				'access_token' => '',
-				'entity_pid' => 1043,
+				'access_token' => 'EAAXa7dAxGbABAGMRXO5fo2QWnUsMxCqtScDkwGTCOZC4xfzLoSiaWTZBNNrWl2TDbmVUdlUpDkZAgDkQ9ZCxS0Jvu4DDtlQ1JzZBupZCjAgxxAWZAAZAaZAWFyEO4UgKhuIhXzZCnYImRptIOhX3pXEnLwu2eAMrkyv9SOwZCbH3jGwZCQZDZD',
+				'entity_pid' => 1075,
 		),
 );
 

@@ -23,12 +23,12 @@ h1, h2, h3, h4, h5, h6 {
 h4{
 	margin-top: 0;
     font-size: 0.9em;
-    color:#eccd15;
+    color:#19ade9;
 }
 
 .shrink{ font-size:0.8em !important; }
 .sp{ width: 1px; display: inline-block; }
-a { color:#eccd15; /* #63d297 */ }
+a { color:#19ade9; /* #63d297 */ }
 a:hover { text-decoration: underline; text-decoration-style: dotted; }
 .edit_link { display: inline-block; }
 .boldi {margin: 45px 130px 45px 100px !important; }
@@ -48,15 +48,15 @@ h3{ font-size:24px; color:#2f2639; }
 .topline{ margin-top:5px; min-height:85px; }
 .guestheader{ height:30px; }
 .node_h1 textarea 					{ background-color:#FFF; border: 0; width:100%; padding:0; margin:0; line-height:110%; overflow:hidden; }
-.list-group-item .badge { margin-top:1px; float:right; background-color:#eccd15; }
+.list-group-item .badge { margin-top:1px; float:right; background-color:#19ade9; }
 .grey-bg { background-color:#CCC !important; }
 .grey{ color:#CCC !important; font-size:0.7em; }
 .pink-bg { background-color:#2f2639 !important; }
 .pink-bg-light { background-color:#918e95 !important; }
 .pink{ color:#2f2639 !important; }
-.blue-bg { background-color:#eccd15 !important; }
+.blue-bg { background-color:#19ade9 !important; }
 .blue-bg-light { background-color:#86e8ff !important; }
-.blue{ color:#eccd15 !important; }
+.blue{ color:#19ade9 !important; }
 .black{ color:#2f2639 !important; font-size:0.9em; }
 .is_top{ display:block !important;  }
 .is_top .node_stats { margin-left:20px; }
@@ -342,7 +342,7 @@ em{
 }
 
 .action_buttons .a_save{
-	background-color: #eccd15 !important;
+	background-color: #19ade9 !important;
 	color: #FFF !important;
 	margin:-3px 7px 0 9px;
 }
@@ -371,7 +371,7 @@ em{
 }
 
 .btn-primary{
-    background-color: #eccd15;
+    background-color: #19ade9;
     color: #FFFFFF !important;
     font-weight:bold;
 }
@@ -777,7 +777,7 @@ h1 .edit_text_area{
   border-top: 1px solid #efefef;
 }
 .add_node:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-  background-color: #eccd15;
+  background-color: #19ade9;
   color: #FFF;
   text-decoration:none;
 }

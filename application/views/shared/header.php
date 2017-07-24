@@ -3,6 +3,7 @@
 $user_data = $this->session->userdata('user');
 //print_r($user_data);exit;
 $grandparents = $this->config->item('grand_parents');
+$website = $this->config->item('website');
 $controller = $this->uri->segment(1);
 $function = $this->uri->segment(2);
 ?><!DOCTYPE html>
@@ -11,8 +12,8 @@ $function = $this->uri->segment(2);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" href="/favicon.ico" />
-    <title><?= ( isset($node[0]) ? strip_tags($node[0]['value']) : ( isset($title) ? $title: 'Brain Plugins') ) ?></title>
+	<link rel="shortcut icon" href="https://s3-us-west-2.amazonaws.com/us-videos/Mench-logo-square.png" />
+    <title><?= ( isset($node[0]) ? strip_tags($node[0]['value']) : ( isset($title) ? $title: $website['name'] ) ) ?></title>
 	<?= @$meta_data ?>
 	
     <!-- CSS -->

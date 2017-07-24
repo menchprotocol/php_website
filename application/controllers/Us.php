@@ -27,9 +27,12 @@ class Us extends CI_Controller {
 	}
 	
 	function index(){
-		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0 || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0){
+		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0){
 			//The landing page of Mench.ai controlled using clickfunnels.com
 			$this->load->view('mench/landing_page');
+		} if(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0 || substr_count($_SERVER['HTTP_HOST'],'brainplugins.com')>0  || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0){
+			//Redirect to main website:
+			header("Location: http://mench.ai");
 		} else {
 			if(auth(1)){
 				//Load default search page:
