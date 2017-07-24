@@ -30,7 +30,7 @@ class Us extends CI_Controller {
 		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0){
 			//The landing page of Mench.ai controlled using clickfunnels.com
 			$this->load->view('mench/landing_page');
-		} if(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0 || substr_count($_SERVER['HTTP_HOST'],'brainplugins.com')>0  || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0){
+		} elseif(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0 || substr_count($_SERVER['HTTP_HOST'],'brainplugins.com')>0  || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0){
 			//Redirect to main website:
 			header("Location: http://mench.ai");
 		} else {
@@ -41,7 +41,7 @@ class Us extends CI_Controller {
 				//$this->load_wiki(); //This used to load a blank page
 			} else {
 				//Load home page for visitors:
-				$this->load_wiki('usoverview');
+				//$this->load_wiki('usoverview');
 			}
 		}	
 	}
