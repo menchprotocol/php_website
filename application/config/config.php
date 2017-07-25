@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 //TODO Move this to an internal system on the Goal Network:
-$config['human_helpers'] = array(7,46); //Shervin & Miguel for now...
+$config['mench_users'] = array(7,46); //Shervin & Miguel for now...
 
 //The following nodes and their immediate children would would publicly visible without login requirements:
 $config['public_nodes'] = array(); //15,65,11,837 Books, YouTube, Podcast & Articles

@@ -252,7 +252,6 @@ class Bot extends CI_Controller {
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
-					$is_mench = ( in_array($user_id,$this->config->item('human_helpers')) );
 					
 					$eng_data = array(
 							'message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
@@ -266,6 +265,7 @@ class Bot extends CI_Controller {
 					);
 					
 					//Some that are not used yet:
+					$is_mench = ( in_array($eng_data['us_id'],$this->config->item('mench_users')) );
 					$app_id  = ( $sent_from_us ? $im['message']['app_id'] : null );
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					
