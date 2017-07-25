@@ -356,9 +356,12 @@ class Bot extends CI_Controller {
 					}
 					
 					//Do we need to detect any commands and auto-reply?
+					$mench_command_pid = null;
 					if($is_mench && !$quick_reply_pid && strlen($eng_data['message'])>0){
 						//Attempt detecting possible coach-related commands in chat:
-						$this->run_mench_commands($eng_data['us_id'],$user_id,$eng_data['message']);
+						$mench_command_pid = $this->run_mench_commands($eng_data['us_id'],$user_id,$eng_data['message']);
+						
+						$eng_data['intent_pid'] = $mench_command_pid;
 					}
 					
 					
@@ -422,6 +425,8 @@ class Bot extends CI_Controller {
 			quick_message($from_fb_id,'Here are the commands that help you as a coach:
 					
 /send - Allows you to send messages to your student entrepenuers like: /send last 3 to Miguel Hernandez');
+			
+			return 1104; //help command PID
 			
 		} elseif(substr($message,0,6)=='/send '){
 			
@@ -499,6 +504,8 @@ class Bot extends CI_Controller {
 				//Ooops, this is clearly an issue!
 				quick_message($from_fb_id,'Error: /send command requires " to " followed by the full recipient name.');
 			}
+			
+			return 1105; //send command PID
 		}
 	}
 	
