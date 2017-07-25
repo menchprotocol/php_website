@@ -255,7 +255,6 @@ class Bot extends CI_Controller {
 					
 					$eng_data = array(
 							'message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
-							'external_id' => ( isset($im['message']['mid']) ? $im['message']['mid'] : 0 ),
 							'action_pid' => ( $sent_from_us ? 1031 : 1032 ), //Define message direction
 							'json_blob' => json_encode($json_data),
 							'us_id' => $this->Us_model->put_fb_user($user_id),
@@ -275,7 +274,7 @@ class Bot extends CI_Controller {
 					}
 					
 					//Do some checks:
-					if(strlen($eng_data['external_id'])<1){
+					if(!isset($im['message']['mid'])){
 						log_error('Received message without Facebook Message ID!' , $json_data);
 					}
 					
@@ -531,7 +530,6 @@ class Bot extends CI_Controller {
 				'seq' => 0, //No sequence if from api.ai
 				'correlation' => ( isset($json_data['result']['score']) ? $json_data['result']['score'] : 1 ),
 				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
-				'session_id' => $json_data['sessionId'], //Always from api.ai
 		);
 		
 		//Is this message coming from Facebook? (Instead of api.ai console)

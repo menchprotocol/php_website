@@ -346,13 +346,7 @@ function parents(grandpa_id){
     	return '<b>@</b>';
         break;
     case 3:
-    	return '<b class="blue">#</b>';
-        break;
-    case 4:
-    	return '<b>?</b>';
-        break;
-    case 43:
-    	return '<b>!</b>';
+    	return '<b>#</b>';
         break;
     default:
     	return null;

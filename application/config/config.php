@@ -38,10 +38,15 @@ $config['aws_credentials'] = [
 
 
 //TODO Fetch grandparent during logging, pass to session and use that instead of these names. More unified...
+//TODO maybe even remove?!
 $config['grand_parents'] = array(
+		1  => array(
+				'name' => 'Entities',
+				'sign' => '@',
+		),
 		3  => array(
-				'name' => 'Goals',
-				'sign' => '<b class="blue" style="font-size:1.1em; padding-right:1px;">#</b>',
+				'name' => 'Intents',
+				'sign' => '#',
 				'descent_logic' => array(
 						'IN' => array(
 								1 => array(
@@ -51,14 +56,6 @@ $config['grand_parents'] = array(
 								3 => array(
 										'readout_INs' => 0,
 										'follow_OUTs' => 1,
-								),
-								4 => array(
-										'readout_INs' => 0,
-										'follow_OUTs' => 1,
-								),
-								43 => array(
-										'readout_INs' => 0, //!MetaData are not read out loud!
-										'follow_OUTs' => 0, //No need to follow !MetaData either
 								),
 						),
 						'OUT' => array(
@@ -70,28 +67,8 @@ $config['grand_parents'] = array(
 										'readout_INs' => 0,
 										'follow_OUTs' => 1,
 								),
-								4 => array(
-										'readout_INs' => 0,
-										'follow_OUTs' => 1,
-								),
-								43 => array(
-										'readout_INs' => 0,
-										'follow_OUTs' => 1,
-								),
 						),
 				),
-		),
-		1  => array(
-				'name' => 'Entities',
-				'sign' => '@',
-		),
-		4  => array(
-				'name' => 'Questions',
-				'sign' => '?',
-		),
-		43 => array(
-				'name' => 'Metadata',
-				'sign' => '!',
 		),
 );
 

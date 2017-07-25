@@ -333,9 +333,6 @@ class Us_model extends CI_Model {
 		if(!isset($link_data['referrer_pid'])){
 			$link_data['referrer_pid'] = 0;
 		}
-		if(!isset($link_data['external_id'])){
-			$link_data['external_id'] = '';
-		}
 		if(!isset($link_data['timestamp'])){
 			$link_data['timestamp'] = date("Y-m-d H:i:s");
 		}
@@ -363,10 +360,6 @@ class Us_model extends CI_Model {
 				//There is no active session and no sequence:
 				$link_data['seq'] = 0;
 			}
-		}
-		if(!isset($link_data['session_id'])){
-			$session_id = $this->session->userdata('ses_id'); //Manually assigned session
-			$link_data['session_id'] = ( strlen($session_id)>0 ? $session_id : '' );
 		}
 		if(!isset($link_data['correlation'])){
 			$link_data['correlation'] = 1.00; //We assume a full correalation

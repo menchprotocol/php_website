@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.681'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.69'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function fetch_file_ext($url){
@@ -788,7 +788,7 @@ function echoNode($node,$key,$load_open=false){
 	$return_string .= '<span title="@'.nodeName($node[$key]['us_node'][0]['value']).' collected this Gem." data-toggle="tooltip"><a href="/'.$node[$key]['us_node'][0]['node_id'].'"><img src="https://www.gravatar.com/avatar/'.md5(strtolower(trim($node[$key]['us_node'][1]['value']))).'?d=identicon" class="mini-image" /></a></span>';
 	
 	//Pattern ID
-	$bot_pid = ( !$flow_IN ? $node[$key]['node_id'] : $node[$key]['parent_id'] );
+	$bot_pid = ( $flow_IN && $key>0 ? $node[$key]['parent_id'] : $node[$key]['node_id'] );
 	$ref_key = $bot_pid.'_'.$user_data['node_id'];
 	$return_string .= ( ( $node[$key]['grandpa_id']==3 || $node[$key]['parents'][0]['grandpa_id']==3 ) ? ' <span title="Click to Copy URL to share Plugin on Messenger." data-toggle="tooltip" class="hastt clickcopy ref_'.$ref_key.'" data-clipboard-text="'.$active_bots[0]['bot_ref_url'].$ref_key.'"><img src="/img/icons/messenger.png" class="action_icon" /><b>'.$bot_pid.'</b></span>': '' );
 	

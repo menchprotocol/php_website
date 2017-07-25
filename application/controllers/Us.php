@@ -28,7 +28,7 @@ class Us extends CI_Controller {
 	}
 	
 	function index(){
-		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0){
+		if(substr_count($_SERVER['HTTP_HOST'],'mench.ai')>0 || !is_production()){
 			//The landing page of Mench.ai controlled using clickfunnels.com
 			if(auth(1)){
 				//Load default search page:
@@ -193,14 +193,13 @@ class Us extends CI_Controller {
 			
 			$seq = 1; //This is for their login sequence which is always the first one
 			$time = time();
-			$session_id = md5($time.$seq.print_r($res['link'],true));
 			
 			//Yes!, Set session and redirect:
 			$this->session->set_userdata(array(
 					'user' => $res['link'], //This has the user's top link data
 					'seq' => $seq,
 					'login_time' => $time,
-					'ses_id' => $session_id,
+					'ses_id' => md5($time.$seq.print_r($res['link'],true)), //TODO maybe remove all together?
 			));
 			
 			/* TODO Log engagement
@@ -208,7 +207,6 @@ class Us extends CI_Controller {
 					'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
 					'intent_pid' => 44, //Login password pattern, which indicates login
 					'seq' => $seq,
-					'session_id' => $session_id,
 			)); */
 			
 			

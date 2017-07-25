@@ -64,20 +64,16 @@ $function = $this->uri->segment(2);
 				0 => ( isset($node) && $node[0]['node_id']==$user_data['node_id'] ? 'class="active"' : null ),
 				1 => ( isset($node) && $node[0]['grandpa_id']==1 && $node[0]['node_id']!=$user_data['node_id'] ? 'class="active"' : null ),
 				3 => ( isset($node) && $node[0]['grandpa_id']==3 ? 'class="active"' : null ),
-				4 => ( isset($node) && $node[0]['grandpa_id']==4 ? 'class="active"' : null ),
-				43 => ( isset($node) && $node[0]['grandpa_id']==43 ? 'class="active"' : null ),
 		);
 		?>
 		
 		<ul class="nav nav-tabs">
 		  <?php if(isset($user_data['id']) || isset($show_grandpas)){ ?>
 		  
-			  <li role="presentation" <?= $active_states[3] ?>><a href="/3"><b class="blue">#</b></a></li>
 			  <li role="presentation" <?= $active_states[1] ?>><a href="/1">@</a></li>
-			  <li role="presentation" <?= $active_states[4] ?>><a href="/4">?</a></li>
-			  <li role="presentation" <?= $active_states[43] ?>><a href="/43">!</a></li>
-			  
+			  <li role="presentation" <?= $active_states[3] ?>><a href="/3">#</a></li>
 			  <li role="presentation" <?= $active_states[0] ?>><a href="/<?= $user_data['node_id'] ?>" id="myGravatar" title="A shortcut link to your profile. Change your image on gravatar.com" data-toggle="tooltip" data-placement="bottom"><img src="https://www.gravatar.com/avatar/<?= md5(strtolower(trim($user_data['email']['value']))) ?>?d=identicon" /></a></li>
+			  
 		  <?php } ?>
 		  
 		  <?php if(!isset($user_data['id'])) { 

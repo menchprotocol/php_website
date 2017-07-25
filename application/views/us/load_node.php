@@ -2,24 +2,14 @@
 
 //Define main navigation:
 $sub_navigation = array(
-		3 => array(
-				'icon' => '<b class="blue">#</b>',
-				'count_key' => 3,
-				'count' => 0,
-		),
 		1 => array(
 				'icon' => '@',
 				'count_key' => 1,
 				'count' => 0,
 		),
-		4 => array(
-				'icon' => '?',
-				'count_key' => 4,
-				'count' => 0,
-		),
-		43 => array(
-				'icon' => '!',
-				'count_key' => 43,
+		3 => array(
+				'icon' => '#',
+				'count_key' => 3,
 				'count' => 0,
 		),
 		//Arbitrary Key IDs for INs/OUTs:
