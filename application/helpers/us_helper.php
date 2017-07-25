@@ -9,7 +9,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.68'.( !is_production() ? '.'.substr(time(),7) : '' );
+	return 'v0.681'.( !is_production() ? '.'.substr(time(),7) : '' );
 }
 
 function fetch_file_ext($url){

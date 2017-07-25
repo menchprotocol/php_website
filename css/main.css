@@ -118,6 +118,9 @@ h3{ font-size:24px; color:#2f2639; }
 .bp_first{ margin:-10px 0 0 -12px; }
 .bp_first img{ height:48px; }
 
+.node_h1.is_top img { height:40px; margin-top:-5px; }
+.anchor img { height:26px; margin-top:-3px; }
+
 @media (max-width: 768px){
 	/* Global Font Sizes Per Screen Size */
 	body { font-size:18px; }
@@ -156,6 +159,9 @@ h3{ font-size:24px; color:#2f2639; }
 	
 	.bp_first{ margin:-10px 0 0 -12px; }
 	.bp_first img{ height:36px; }
+	
+	.node_h1.is_top img { height:32px; margin-top:-3px; }
+	.anchor img { height:20px; margin-top:-1px; }
 }
 
 .clickcopy{ cursor:crosshair !important; color:#808080; padding:3px 2px; line-height:100%; border-radius:3px; }
