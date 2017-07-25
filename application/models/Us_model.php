@@ -609,6 +609,19 @@ class Us_model extends CI_Model {
 	
 	
 	
+	function fetch_recent_messages($us_id, $limit){
+		$this->db->select('timestamp,message');
+		$this->db->from('v3_engagement e');
+		$this->db->where('e.us_id' , $us_id);
+		$this->db->where('e.action_pid' , 1032); //Messages sent from $us_id to AskMench bot
+		$this->db->order_by('id' , 'DESC');
+		$this->db->limit($limit);
+		$q = $this->db->get();
+		return array_reverse($q->result_array());
+	}
+	
+	
+	
 	function search_node($value_string, $parent_id=null, $setting=array()){
 		//Return the node_id of a link that matches the value and parent ID
 		//TODO Maybe move to Agolia search engine for faster search.
@@ -963,6 +976,42 @@ class Us_model extends CI_Model {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function fetch_fb_user_id($full_name){
+		
+		//Cleanup:
+		$full_name = trim(strtolower($full_name));
+		
+		//This function attempts to fetch the user from ||18 and then find the link to ||1024
+		$matching_users = $this->search_node($full_name,18,array('compare_lowercase'=>1));
+		
+		if(count($matching_users)>0){
+			//Yes, just assume the user is the first node:
+			//TODO implement duplicate prevention policy later on, or adjust this.
+			$user_node = $this->fetch_node($matching_users[0]['node_id']);
+			
+			//Now lets see if this user has an active FB messenger ID:
+			foreach($user_node as $link){
+				if($link['parent_id']==1024 && strlen($link['value'])>10){ //Facebook PSID
+					//yes, found it!
+					return $link['value'];
+				}
+			}
+		}
+		
+		//Ooops, still here?!
+		return null;
+	}
+	
 	function create_user_from_fb($fb_user_id){
 		//Call facebook messenger API and get user details:
 		$fb_profile = $this->Messenger_model->fetch_profile($fb_user_id);
@@ -977,7 +1026,6 @@ class Us_model extends CI_Model {
 		
 		//Search People by name to See if we have this user already:
 		$matching_users = $this->search_node($full_name,18);
-		
 		
 		//Is this user in our system already?
 		if(count($matching_users)>0){

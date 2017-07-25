@@ -8,7 +8,6 @@ $config['human_helpers'] = array(7,46); //Shervin & Miguel for now...
 //The following nodes and their immediate children would would publicly visible without login requirements:
 $config['public_nodes'] = array(); //15,65,11,837 Books, YouTube, Podcast & Articles
 
-
 $config['live_websites'] = array('us.foundation','brainplugins.com','askmench.com','mench.ai');
 
 //Brain Plugins Variables:

@@ -12,8 +12,6 @@ class Bot extends CI_Controller {
 	
 	
 	function t(){
-		require( '/var/www/us/application/libraries/aws/aws-autoloader.php' );
-		
 	}
 	
 	function fetch_entity($apiai_id){
@@ -254,7 +252,7 @@ class Bot extends CI_Controller {
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
-					$from_helper = ( in_array($user_id,$this->config->item('human_helpers')) );
+					$is_mench = ( in_array($user_id,$this->config->item('human_helpers')) );
 					
 					$eng_data = array(
 							'message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
@@ -265,7 +263,6 @@ class Bot extends CI_Controller {
 							'seq' => ( isset($im['message']['seq']) ? $im['message']['seq'] : 0 ), //Message sequence number
 							'platform_pid' => fb_page_pid($page_id), //The facebook page
 							'api_timestamp' => fb_time($im['timestamp']), //Facebook timestamp
-							'queue_id' => ( $this->Us_model->sql_stats('v3_engagement','queue_id','NEXT') + 1), //0 When Handeled
 					);
 					
 					//Some that are not used yet:
@@ -358,24 +355,10 @@ class Bot extends CI_Controller {
 						
 					}
 					
-					//Should we detect intents/entities with api.ai?
-					//Only if not already set in quick_reply.payload & if we have an inbound text
-					if(!$quick_reply_pid && strlen($eng_data['message'])>0 && (!$sent_from_us || substr_count($eng_data['message'],'search for')>0)){
-						if(substr_count($eng_data['message'],'search for')>0){
-							//User has a specific ask!
-							$temp = explode('search for',$eng_data['message'],2);
-							$search_for = $temp[1];
-						} else {
-							$search_for = $eng_data['message'];
-						}
-						
-						//Send reuqest to api.ai
-						$json_data['api_ai'] = array();
-						//Update core variable to store result as well:
-						$eng_data['json_blob'] = json_encode($json_data);
-						
-						//Update correlation:
-						$eng_data['correlation'] = 1; //The score from api.ai
+					//Do we need to detect any commands and auto-reply?
+					if($is_mench && !$quick_reply_pid && strlen($eng_data['message'])>0){
+						//Attempt detecting possible coach-related commands in chat:
+						$this->run_mench_commands($eng_data['us_id'],$user_id,$eng_data['message']);
 					}
 					
 					
@@ -426,6 +409,98 @@ class Bot extends CI_Controller {
 	}
 	
 	
+	
+	function run_mench_commands($from_us_id,$from_fb_id,$message){
+		
+		//Cleanup the message:
+		$message = trim(strtolower($message));
+		
+		//See if we can detect commands from this message:
+		if($message=='help' || substr($message,0,5)=='/help'){
+			
+			//We have a help menu for our coaches:
+			quick_message($from_fb_id,'Here are the commands that help you as a coach:
+					
+/send - Allows you to send messages to your student entrepenuers like: /send last 3 to Miguel Hernandez');
+			
+		} elseif(substr($message,0,6)=='/send '){
+			
+			/*
+			 * Used by Menches when they want to forward 1 or more messages to their clients.
+			 *
+			 * Format: [send] [last 4] [to] [Soroush Babaeian, Miguel Hernandez]
+			 *
+			 * [send] Required, activates command
+			 * [last 4] Optional, default is [last 1], if detected would search for last X messages sent to AskMench from Coach
+			 * [to] Required, de
+			 * [Soroush Babaeian] Required, comma separated full name of individuals that the message should be forwarded to!
+			 *
+			 * */
+			
+			if(substr_count($message,' to ')==1){
+				
+				//Awesome, we found the second required element:
+				$temp = explode(' to ',$message,2);
+				$people = explode(',',$temp[1]);
+				
+				//Now see if we can find the recipient(s):
+				$valid_users = array();
+				foreach($people as $full_name){
+					$fb_user_id = $this->Us_model->fetch_fb_user_id($full_name);
+					if(strlen($fb_user_id)>10){
+						//Found it! lets add them to the list!
+						array_push($valid_users,$fb_user_id);
+					} else {
+						//Empty all results and return error:
+						unset($valid_users);
+						$valid_users = array();
+						quick_message($from_fb_id,'Error: "'.$full_name.'" is not a valid user with an active Facebook id. Command suspended; you may try again.');
+						break;
+					}
+				}
+				
+				if(count($valid_users)>0){
+					//We're ready to dispatch the last X messages to these users!
+					//How many messages are we sending over?
+					$last_msgs = 1; //Default
+					if(substr_count($temp[0],'last ')==1){
+						$temp2 = explode('last ',$temp[0],2);
+						$last_msgs = ( intval($temp2[1])>1 ? intval($temp2[1]) : 1 );
+					}
+					
+					//Go through the messages and see what we find:
+					$msgs = $this->Us_model->fetch_recent_messages($from_us_id,$last_msgs);
+					if(count($msgs)==$last_msgs){
+						
+						//All seems good, lets move on and send all messages to all users:
+						$success_count = 0; 
+						foreach($valid_users as $fb_user_id){
+							foreach($msgs as $msg){
+								//TODO: Don't send using quick_message(), instead send directly with meta_data and log engagement directly!
+								if(quick_message($fb_user_id,$msg['message'])){
+									$success_count++;
+								} else {
+									//Ooops, this should not happen
+									log_error('FB Message "'.$msg.'" could not be sent to user ID "'.$fb_user_id.'" using the quick_message() function.');
+								}
+							}
+						}
+						
+						//Notify Mench about the status of this command:
+						quick_message($from_fb_id, 'Success: '.$success_count.' messages sent to '.count($valid_users).' recipient(s).');
+						
+					} else {
+						//Was not able to find the number of sent messages as requested! Abandon...
+						quick_message($from_fb_id,'Error: Could not locate your '.$last_msgs.' most recent message(s). Command suspended; you may try again.');
+					}
+				}
+				
+			} else {
+				//Ooops, this is clearly an issue!
+				quick_message($from_fb_id,'Error: /send command requires " to " followed by the full recipient name.');
+			}
+		}
+	}
 	
 	function apiai_webhook(){
 		

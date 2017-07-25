@@ -565,6 +565,52 @@ function one_two_explode($one,$two,$content){
 }
 
 
+function quick_message($fb_user_id,$message){
+	$CI =& get_instance();
+	
+	//Detect what type of message is this?
+	if(substr($message,0,11)=='attachment:'){
+		//Some sort of attachment:
+		$attachment_type = one_two_explode('attachment:','::',$message);
+		
+		if(in_array($attachment_type,array('image','audio','video','file'))){
+			$temp = explode('::',$message,2);
+			$attachment_url = $temp[1];
+			$CI->Messenger_model->send_message(array(
+					'recipient' => array(
+							'id' => $fb_user_id
+					),
+					'message' => array(
+							'attachment' => array(
+									'type' => $attachment_type,
+									'payload' => array(
+											'url' => $attachment_url,
+									),
+							),
+					),
+					'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+			));
+			return 1;
+		}
+		
+		//Still here? oops:
+		return 0;
+		
+	} else {
+		
+		//Assumption is that this is a regular text message:
+		$CI->Messenger_model->send_message(array(
+				'recipient' => array(
+						'id' => $fb_user_id
+				),
+				'message' => array(
+						'text' => $message,
+				),
+				'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+		));
+		return 1;
+	}
+}
 
 function echoNode($node,$key,$load_open=false){
 	
