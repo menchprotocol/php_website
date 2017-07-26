@@ -959,7 +959,7 @@ class Us_model extends CI_Model {
 					'node_id' => $node['connector_pid'],
 					'parent_id' => $subnode_id,
 					'value' => '',
-					'action_type' => 1, //For adding
+					'action_type' => 4, //For linking
 					'us_id' => $node['us_id'],
 					'status' => 1,
 			));
@@ -1017,6 +1017,9 @@ class Us_model extends CI_Model {
 		//Genearte full name, which is how we'll store it on our side 
 		$full_name = $fb_profile['first_name'].' '.$fb_profile['last_name'];
 		
+		//Notify Admin:
+		ping_admin("Welcoming new user: ".$full_name);
+		
 		//Search People by name to See if we have this user already:
 		$matching_users = $this->search_node($full_name,18);
 		
@@ -1025,7 +1028,7 @@ class Us_model extends CI_Model {
 			//Yes, just assume the user is the first node:
 			$user_node = $matching_users[0];
 		} else {
-			//No create user:
+			//Not found, create user:
 			$user_node = $this->insert_link(array(
 					'parent_id' => 18, //Belongs to People
 					'value' => $full_name,
@@ -1041,7 +1044,7 @@ class Us_model extends CI_Model {
 				'node_id' => $user_node['node_id'],
 				'parent_id' => 1024, //Facebook PSID
 				'value' => $fb_user_id,
-				'action_type' => 1, //For adding
+				'action_type' => 4, //For linking
 				'us_id' => 765, //Facebook Messenger is creator
 				'status' => 1,
 		));
@@ -1052,7 +1055,7 @@ class Us_model extends CI_Model {
 				'node_id' => $user_node['node_id'],
 				'parent_id' => 918, //Profile picture Node
 				'value' => $fb_profile['profile_pic'],
-				'action_type' => 1, //For adding
+				'action_type' => 4, //For linking
 				'us_id' => 765, //Facebook Messenger is creator
 				'status' => 1,
 		));
