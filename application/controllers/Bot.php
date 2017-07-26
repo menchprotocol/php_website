@@ -167,8 +167,6 @@ class Bot extends CI_Controller {
 						$referral_array = $im['referral'];
 					}
 					
-					
-					
 					//General variables:
 					$eng_data = array(
 							'action_pid' => (isset($im['referral']) ? 1028 : 1029), //Either referral or postback
@@ -292,7 +290,7 @@ class Bot extends CI_Controller {
 								$new_file_url = save_file($att['payload']['url'],$json_data);
 								
 								//Message with image attachment
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:'.$att['type'].'::'.$new_file_url;
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url;
 								
 								/*
 								//Reply:
@@ -321,22 +319,21 @@ class Bot extends CI_Controller {
 								//TODO test to make sure this works!
 								$loc_lat = $att['payload']['coordinates']['lat'];
 								$loc_long = $att['payload']['coordinates']['long'];
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:location::'.$loc_lat.','.$loc_long;
+								$eng_data['message'] .= (strlen($eng_data['message'])>0?"\n\n":'').'/attach location:'.$loc_lat.','.$loc_long;
 								
 							} elseif($att['type']=='template'){
 								
 								//Message with template attachment, like a button or something...
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?' ':'').'attachment:template';
+								$template_type = $att['payload']['template_type'];
 								
 							} elseif($att['type']=='fallback'){
 								
 								//A fallback attachment is any attachment not currently recognized or supported by the Message Echo feature.
-								//This should not happen, report to admin:
-								log_error('Received message with [fallback] attachment type!' , $json_data);
+								//We can ignore them for now :)
 								
 							} else {
 								//This should really not happen!
-								log_error('Received Facebook message with unknown attachment type: '.$att['type'] , $json_data);
+								log_error('Received Facebook message with unknown attachment type ['.$att['type'].']' , $json_data);
 							}
 						}
 					}

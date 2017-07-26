@@ -569,12 +569,12 @@ function quick_message($fb_user_id,$message){
 	$CI =& get_instance();
 	
 	//Detect what type of message is this?
-	if(substr($message,0,11)=='attachment:'){
+	if(substr($message,0,8)=='/attach '){
 		//Some sort of attachment:
-		$attachment_type = one_two_explode('attachment:','::',$message);
+		$attachment_type = trim(one_two_explode('/attach ',':',$message));
 		
 		if(in_array($attachment_type,array('image','audio','video','file'))){
-			$temp = explode('::',$message,2);
+			$temp = explode($attachment_type.':',$message,2);
 			$attachment_url = $temp[1];
 			$CI->Messenger_model->send_message(array(
 					'recipient' => array(
