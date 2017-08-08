@@ -137,32 +137,6 @@ class Us extends CI_Controller {
 		$this->load->view('shared/footer', $data_set);
 	}
 	
-	function load_chat($node_id){
-		//TODO
-		//Require authentication:
-		auth();
-		
-		//Build data sets for our views:
-		$data_set = array(
-				'node' => $this->Us_model->fetch_node($node_id, 'fetch_top_plain'),
-		);
-		
-		//Validate this is a human:
-		if(!isset($data_set['node']['parent_id'])){
-			redirect_message('/' , '<div class="alert alert-danger" role="alert">Cannot open chat because <b>'.$node_id.'</b> is not a valid ID.</div>');
-		} elseif(!($data_set['node']['parent_id']==18)){
-			redirect_message('/'.$node_id , '<div class="alert alert-danger" role="alert">Cannot open chat because <b>'.$data_set['node']['value'].'</b> does not belong to <a href="/18">People</a>.</div>');
-		}
-		
-		//Append more data:
-		$data_set['chats'] = $this->Us_model->fetch_chats($node_id, 'fetch_top_plain');
-		
-		//Load chat UI:
-		$this->load->view('shared/header', $data_set);
-		$this->load->view('us/load_node', $data_set);
-		$this->load->view('shared/footer', $data_set);
-	}
-	
 	function info(){
 		echo session_id()."<br /><hr /><br />";
 		print_r($this->session->all_userdata())."<br /><hr /><br />";
