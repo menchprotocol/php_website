@@ -51,4 +51,21 @@
 
 	<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc    -->
 	<script src="/js/challenges/material-kit.js?v=1.1.0" type="text/javascript"></script>
+	
+	
+	<script type="text/javascript">
+    $(document).ready(function() {
+    	$(window).scroll(function() {    
+    	    var scroll = $(window).scrollTop();
+
+    	     //>=, not <=
+    	    if (scroll >= 100) {
+    	        //clearHeader, not clearheader - caps H
+    	    	$(".navbar").removeClass("navbar-transparent");
+    	    } else {
+    	    	$(".navbar").addClass("navbar-transparent");
+    	    }
+    	}); //missing );
+    });
+   </script>
 </html>

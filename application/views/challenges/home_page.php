@@ -4,7 +4,7 @@
             <div class="row">
 				<div class="col-md-6">
 					<h1 class="title">Group Challenges for Entrepreneurs.</h1>
-                    <h4>Mench is a marketplace for 2-12 week challanges lead by world-class experts. Don't just learn, get s**t done.</h4>
+                    <h4>Mench is a marketplace for 2-12 week challanges lead by world-class entrepreneurs. Don't just learn, get s**t done.</h4>
                     <br />
                     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="btn btn-danger btn-raised btn-lg">
 						<i class="fa fa-search"></i> &nbsp;&nbsp; Browse Challenges
@@ -17,7 +17,15 @@
 	<div class="main main-raised">
 		<div class="container">
 	    	<div class="section text-center">
-				<div class="features">
+				
+				<div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h2 class="title">Let's talk product</h2>
+                        <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious, otherwise he wouldn't scroll to get here. Add a button if you want the user to see more.</h5>
+                    </div>
+                </div>
+                
+                <div class="features">
 					<div class="row">
 						<div class="col-md-4">
 							<div class="info">
