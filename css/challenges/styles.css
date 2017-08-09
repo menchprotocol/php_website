@@ -1,0 +1,14 @@
+@CHARSET "ISO-8859-1";
+
+.navbar-brand img{
+	display: inline-block;
+    width: 40px;
+    margin-top: -12px;
+    margin-right: 3px;
+}
+.navbar-brand span{
+	display: inline-block;
+    font-family: 'Titillium Web',sans-serif;
+    font-size: 36px;
+    color: #2f2639;
+}
