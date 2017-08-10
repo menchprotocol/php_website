@@ -16,7 +16,6 @@
 body {
   background-color: #E5E5E5;
   color: #3C4858;
-  font-size:18px;
 }
 body.inverse {
   background: #333333;
@@ -5767,7 +5766,6 @@ select[data-dropdownjs][disabled] + .dropdownjs > input[readonly] {
   bottom: 60px;
 }
 .page-header .container {
-  padding-top: 226px;
   color: #FFFFFF;
 }
 .page-header .title {
@@ -7720,9 +7718,7 @@ select.selectpicker {
   margin-top: 80px;
 }
 
-.landing-page .page-header {
-  min-height: 100vh;
-}
+
 .landing-page .page-header .share {
   margin-top: 150px;
 }
