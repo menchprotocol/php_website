@@ -1,35 +1,49 @@
- 	
+</div>
+</div>
+
  	<footer class="footer">
         <div class="container">
             <nav class="pull-left">
                 <ul>
-                    <li>
-                        <a href="http://www.creative-tim.com">
-                            Creative Tim
-                        </a>
-                    </li>
-					<li>
-                        <a href="http://presentation.creative-tim.com">
-                           About Us
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://blog.creative-tim.com">
-                           Blog
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://www.creative-tim.com/license">
-                            Licenses
-                        </a>
-                    </li>
+                    <li><a href="/terms">Terms & Privacy</a></li>
                 </ul>
             </nav>
             <div class="copyright pull-right">
-                &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+                &copy; <script>document.write(new Date().getFullYear())</script> Mench Media Inc.
             </div>
         </div>
     </footer>
+
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-login">
+		<div class="modal-content">
+			<div class="card card-signup card-plain">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+
+					<div class="header header-primary text-center">
+						<h4 class="card-title">Sign In / Sign Up</h4>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="card-content">
+						<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+					</div>
+				</div>
+				<!-- 
+				<div class="modal-footer text-center">
+					<a href="#pablo" class="btn btn-primary btn-simple btn-wd btn-lg">Get Started</a>
+				</div>
+				-->
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
 
 </body>
 	<!--   Core JS Files   -->
@@ -52,20 +66,6 @@
 	<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc    -->
 	<script src="/js/challenges/material-kit.js?v=1.1.0" type="text/javascript"></script>
 	
-	
-	<script type="text/javascript">
-    $(document).ready(function() {
-    	$(window).scroll(function() {    
-    	    var scroll = $(window).scrollTop();
-
-    	     //>=, not <=
-    	    if (scroll >= 100) {
-    	        //clearHeader, not clearheader - caps H
-    	    	$(".navbar").removeClass("navbar-transparent");
-    	    } else {
-    	    	$(".navbar").addClass("navbar-transparent");
-    	    }
-    	}); //missing );
-    });
-   </script>
+	<!-- Custom JS file -->
+	<script src="/js/challenges/global.js" type="text/javascript"></script>
 </html>

@@ -1,4 +1,7 @@
-<!doctype html>
+<?php 
+//Attempt to fetch session variables:
+$user_data = $this->session->userdata('user');
+?><!doctype html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -6,12 +9,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
 	<title><?= ( isset($node[0]) ? strip_tags($node[0]['value']) : ( isset($title) ? $title: $website['name'] ) ) ?></title>
-	<?= @$meta_data ?>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
 	<!--     Fonts and icons     -->
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
 	<!-- CSS Files -->
@@ -37,10 +39,24 @@
         	<div class="collapse navbar-collapse">
         		<ul class="nav navbar-nav navbar-right">
     				<li><a href="/challenges"><i class="fa fa-search"></i> Browse</a></li>
-    				<li><a href="/challenges"><i class="fa fa-rocket"></i> Launch</a></li>
-    				<li><a href="/signup">Sign Up</a></li>
-    				<li><a href="/login">Login</a></li>
+    				<li><a href="/launch"><i class="fa fa-rocket"></i> Launch</a></li>
+    				<li><a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Sign In / Sign Up</a></li>
         		</ul>
         	</div>
     	</div>
     </nav>
+    
+<?php 
+if(isset($landing_page)){
+	//Yes, load the page:
+	$this->load->view('challenges/landing_pages/'.$landing_page );
+	
+	//Load landing page containers:
+	echo '<div class="main main-raised">';
+	echo '<div class="container">';
+} else {
+	//Regular content page:
+	echo '<div class="main main-raised main-plain">';
+	echo '<div class="container">';
+}
+?>

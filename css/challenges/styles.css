@@ -3,7 +3,7 @@
 .navbar-brand img{
 	display: inline-block;
     width: 40px;
-    margin-top: -12px;
+    margin-top: -10px;
     margin-right: 3px;
 }
 .navbar-brand span{
@@ -11,4 +11,11 @@
     font-family: 'Titillium Web',sans-serif;
     font-size: 36px;
     color: #2f2639;
+}
+.main-plain{ margin-top:100px; }
+.main-plain .container{ padding:45px 45px 45px 15px; }
+
+@media (max-width: 768px){
+	.main-plain{ margin-top:70px; }
+	.main-plain .container{ padding:15px 30px 15px 15px; }
 }

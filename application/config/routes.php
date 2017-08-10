@@ -56,13 +56,17 @@ $route['translate_uri_dashes'] = FALSE;
 //Some landing pages
 //Also edit controllers/us/load_wiki to define title.
 //TODO Move to nodes through public and html objects
-$route['default_controller'] = "us";
+$route['default_controller'] = "challenges";
 $route['signup'] = "us/load_wiki/signup";
 $route['login'] = "us/load_wiki/login";
-$route['terms'] = "us/load_wiki/terms";
+$route['login_process'] = "us/login_process";
 
 //Application logic:
 $route['(:num)'] = "us/load_node/$1";
 $route['logout'] = "us/logout";
-$route['login_process'] = "us/login_process";
 
+//New:
+$route['terms'] = "challenges/terms";
+$route['launch'] = "challenges/launch";
+$route['challenges'] = "challenges/browse";
+$route['auth'] = "challenges/login_process";

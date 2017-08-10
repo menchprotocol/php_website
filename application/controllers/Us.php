@@ -44,7 +44,7 @@ class Us extends CI_Controller {
 			//} elseif(substr_count($_SERVER['HTTP_HOST'],'us.foundation')>0 || substr_count($_SERVER['HTTP_HOST'],'brainplugins.com')>0  || substr_count($_SERVER['HTTP_HOST'],'askmench.com')>0){
 			//Redirect to main website:
 			header("Location: http://mench.ai");
-		}	
+		}
 	}
 	
 	function load_wiki($file_name='start'){

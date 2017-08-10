@@ -8,13 +8,13 @@ $config['mench_users'] = array(7,46); //Shervin & Miguel for now...
 //The following nodes and their immediate children would would publicly visible without login requirements:
 $config['public_nodes'] = array(); //15,65,11,837 Books, YouTube, Podcast & Articles
 
-$config['live_websites'] = array('us.foundation','brainplugins.com','askmench.com','mench.ai');
+$config['live_websites'] = array('us.foundation','brainplugins.com','askmench.com','mench.ai','mench.co');
 
 //Brain Plugins Variables:
 $config['website'] = array(
-		'url' => 'http://mench.ai/', //Important to end with / as other links depend on this.
+		'url' => 'http://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
-		'email' => 'support@mench.ai',
+		'email' => 'shervin@mench.co',
 );
 
 $config['active_bots'] = array(
