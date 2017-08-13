@@ -37,6 +37,17 @@ class Challenges extends CI_Controller {
 		$this->load->view('shared/z_footer');
 	}
 	
+	function contact(){
+		//Load views
+		$this->load->view('shared/z_header' , array(
+				'title' => 'Contact Us',
+		));
+		$this->load->view('standalone/contact');
+		$this->load->view('shared/z_footer');
+	}
+	
+	
+	
 	/* ******************************
 	 * Buyer Challenge Pages
 	 ****************************** */

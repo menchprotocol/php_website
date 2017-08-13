@@ -33,30 +33,10 @@ var big_image;
          $(".selectpicker").selectpicker();
      }
 
-     // Activate Popovers
-     $('[data-toggle="popover"]').popover();
 
-     // Active Carousel
- 	$('.carousel').carousel({
-       interval: 3000
-     });
 
-     //Activate tags
-     //removed class label and label-color from tag span and replaced with data-color
-
-     if($('.navbar-color-on-scroll').length != 0){
-         $(window).on('scroll', materialKit.checkScrollForTransparentNavbar)
-     }
-
-     if (window_width >= 768){
-         big_image = $('.page-header[data-parallax="true"]');
-         if(big_image.length != 0){
-            $(window).on('scroll', materialKitDemo.checkScrollForParallax);
-         }
-
-     }
  });
-
+/*
  $(window).on("load", function() {
       //initialise rotating cards
       materialKit.initRotateCard();
@@ -77,7 +57,7 @@ var big_image;
          $rotating_card_container.addClass('hover');
      }
  });
-
+*/
  $(document).on('click', '.navbar-toggle', function(){
      $toggle = $(this);
 
@@ -119,9 +99,6 @@ var big_image;
      }
  });
 
- $(window).on('resize', function(){
-     materialKit.initRotateCard();
- });
 
  materialKit = {
      misc:{

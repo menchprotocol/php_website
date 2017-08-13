@@ -56,6 +56,7 @@ $route['translate_uri_dashes'] = FALSE;
 //Standalone Pages:
 $route['default_controller'] 				= "challenges"; //Home page / main landing page
 $route['terms'] 							= "challenges/terms"; //Terms page
+$route['contact'] 							= "challenges/contact"; //Contact Us page
 
 //Challenges:
 $route['launch'] 							= "challenges/launch"; //Seller landing page & value prop pitch

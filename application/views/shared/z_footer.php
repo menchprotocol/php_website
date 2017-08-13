@@ -5,12 +5,13 @@
         <div class="container">
             <nav class="pull-left">
                 <ul>
-                    <li><?= version_salt() ?></li>
-                    <li><a href="/terms">Terms & Privacy</a></li>
+                    <li><a href="/terms">Terms</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><i><?= version_salt() ?></i></li>
                 </ul>
             </nav>
             <?php /*
-            <div class="copyright pull-right">
+            <div class="pull-right">
                 &copy; <script>document.write(new Date().getFullYear())</script> Mench Media Inc.
             </div>
             */ ?>

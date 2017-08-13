@@ -76,7 +76,7 @@ $website = $this->config->item('website');
 								<li><a href="/account"><i class="fa fa-user-circle-o"></i> My Account</a></li>
 								'.( $udata['status']>=1 ? '<li><a href="/dashboard"><i class="fa fa-tachometer"></i> Seller Dashboard</a></li>' : '' ).'
 								'.( $udata['status']>=1 ? '<li><a href="/users"><i class="fa fa-users"></i> Browse Users</a></li>' : '' ).'
-								'.( $udata['status']>=1 ? '<li><a href="/challenges/start"><i class="fa fa-plus-circle"></i> New Challenge</a></li>' : '' ).'
+								'.( $udata['status']>=1 ? '<li><a href="/challenges/start"><i class="fa fa-plus-circle"></i> Start a Challenge</a></li>' : '' ).'
 								<li><a href="#" id="logoutbutton"><i class="fa fa-sign-out"></i> Logout</a></li>
 							</ul>
 						</li>';

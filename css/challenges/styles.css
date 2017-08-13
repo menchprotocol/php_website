@@ -25,6 +25,7 @@ body { font-size:18px; }
 	.main-plain .container{ padding:15px 30px 15px 15px; }
 	.page-header .container { padding-top: 100px; }
 	.landing-page .page-header { min-height: 90vh; }
+	.contactleft{padding-top:70px;}
 }
 
 .morphext > .animated {
@@ -32,3 +33,5 @@ body { font-size:18px; }
 }
 
 .jsrotate {display:none;}
+
+.tab-pane p {text-align:left;}
