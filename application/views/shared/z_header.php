@@ -40,8 +40,8 @@ $website = $this->config->item('website');
 	<!--	Plugin for Text Flasher http://morphext.fyianlai.com/ -->
 	<script src="/js/lib/morphext.min.js"></script>
 
-	<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc    
-	<script src="/js/lib/material-kit.js?v=1.1.0" type="text/javascript"></script>-->
+	<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc  -->   
+	<script src="/js/challenges/material-kit.js?v=<?= version_salt() ?>" type="text/javascript"></script>
 	
 	<!-- Custom JS file -->
 	<script src="/js/challenges/global.js?v=<?= version_salt() ?>" type="text/javascript"></script>
