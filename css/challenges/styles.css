@@ -26,3 +26,9 @@ body { font-size:18px; }
 	.page-header .container { padding-top: 100px; }
 	.landing-page .page-header { min-height: 90vh; }
 }
+
+.morphext > .animated {
+    display: inline-block;
+}
+
+.jsrotate {display:none;}

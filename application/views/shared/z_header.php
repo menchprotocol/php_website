@@ -9,17 +9,42 @@ $website = $this->config->item('website');
 	<link rel="icon" type="image/png" href="/img/bp_16.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= ( isset($title) ? $title : $website['name'] ) ?></title>
-
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
-	<!--     Fonts and icons     -->
+	<!-- Fonts and icons -->
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
-	<!-- CSS Files -->
-    <link href="/css/challenges/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/challenges/material-kit.css?v=1.1.0" rel="stylesheet"/>
-    <link href="/css/challenges/styles.css?v=1.1.0" rel="stylesheet"/>
+	<!-- CSS Addons -->
+    <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/lib/animate.css" rel="stylesheet" />
+    
+    <!-- Custom CSS -->
+    <link href="/css/challenges/material-kit.css?v=<?= version_salt() ?>" rel="stylesheet"/>
+    <link href="/css/challenges/styles.css?v=<?= version_salt() ?>" rel="stylesheet"/>
+    
+    <!-- Core JS Files -->
+	<script src="/js/lib/jquery.min.js" type="text/javascript"></script>
+	<script src="/js/lib/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/js/lib/material.min.js"></script>
+	
+	<!--    Plugin for Date Time Picker and Full Calendar Plugin   -->
+	<script src="/js/lib/moment.min.js"></script>
+
+	<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker   -->
+	<script src="/js/lib/bootstrap-datetimepicker.js" type="text/javascript"></script>
+
+	<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput   -->
+	<script src="/js/lib/jasny-bootstrap.min.js"></script>
+	
+	<!--	Plugin for Text Flasher http://morphext.fyianlai.com/ -->
+	<script src="/js/lib/morphext.min.js"></script>
+
+	<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc    
+	<script src="/js/lib/material-kit.js?v=1.1.0" type="text/javascript"></script>-->
+	
+	<!-- Custom JS file -->
+	<script src="/js/challenges/global.js?v=<?= version_salt() ?>" type="text/javascript"></script>
 </head>
 
 <body class="landing-page">

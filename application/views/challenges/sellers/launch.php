@@ -2,8 +2,8 @@
 				
 				<div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <h2 class="title">Let's talk product</h2>
-                        <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious, otherwise he wouldn't scroll to get here. Add a button if you want the user to see more.</h5>
+                        <h2 class="title pull-left">Empower Your Audience to <span id="js-rotating" class="jsrotate">Accomplish, Execute, Get S**t Done, Succeed</span></h2>
+                        <h5 class="description">While creating an entirely new revenue stream with your existing content. We give you tools to run a <a href="/challenges">challenge</a> to infuse clarity, accountability and motivation for those serious enough to join it.</h5>
                     </div>
                 </div>
                 
@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="info">
-								<div class="icon icon-info">
+								<div class="icon">
 									<i class="material-icons">chat</i>
 								</div>
 								<h4 class="info-title">Free Chat</h4>
@@ -21,7 +21,7 @@
 
 						<div class="col-md-4">
 							<div class="info">
-								<div class="icon icon-success">
+								<div class="icon">
 									<i class="material-icons">verified_user</i>
 								</div>
 								<h4 class="info-title">Verified Users</h4>
@@ -31,7 +31,7 @@
 
 						<div class="col-md-4">
 							<div class="info">
-								<div class="icon icon-danger">
+								<div class="icon">
 									<i class="material-icons">fingerprint</i>
 								</div>
 								<h4 class="info-title">Fingerprint</h4>
@@ -51,3 +51,20 @@
                 </div>
 
             </div>
+            
+<script>
+$(document).ready(function() {
+	$('.jsrotate').css('display','inline-block');
+	$("#js-rotating").Morphext({
+	    // The [in] animation type. Refer to Animate.css for a list of available animations.
+	    animation: "bounceIn",
+	    // An array of phrases to rotate are created based on this separator. Change it if you wish to separate the phrases differently (e.g. So Simple | Very Doge | Much Wow | Such Cool).
+	    separator: ",",
+	    // The delay between the changing of each phrase in milliseconds.
+	    speed: 2000,
+	    complete: function () {
+	        // Called after the entrance animation is executed.
+	    }
+	});
+});
+</script>

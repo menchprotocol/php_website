@@ -1,3 +1,12 @@
+//US Foundation Google Analytics:
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-92774608-1', 'auto');
+ga('send', 'pageview');
+
+
 (function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
      if (d.getElementById(id)) {return;}
@@ -46,30 +55,28 @@ window.fbAsyncInit = function() {
     	
     } else {
     	
-    	//Look for logout:
+    	//Look for logout click:
 	    $( "#logoutbutton" ).click(function() {
         	
 	    	//lets log them out from Facebook:
 	    	FB.getLoginStatus(function(response) {
 	        	if(response.status=='connected'){
-	        		FB.logout(function(response) {
+	        		FB.logout(function(response2) {
 	    	    		// user is now logged out
+	        			alert('Logout successful. See you soon ;)');
 	    	    	});
 	        	}
-	        });	    	
+	        });
 	    	
-	    	//Logout from us:
+	    	//Logout the session & redirect:s
 	    	$.ajax({
 		        type: "POST",
 		        url: "/logout", //Removes their session variables
-		    });
-	    	
-	    	//Notify them:
-	    	alert('Logout successful. See you soon ;)');
-	    	
-	    	//Go to Home Page:
-	    	window.location = "/";
-	    	
+		        success: function(data){
+		        	//Go to Home Page:
+			    	window.location = "/";
+		        }
+		    });	    	
 	    });
 	    
     }
