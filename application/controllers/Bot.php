@@ -294,7 +294,7 @@ class Bot extends CI_Controller {
 								
 								/*
 								//Reply:
-								$this->Messenger_model->send_message(array(
+								$this->Facebook_model->send_message(array(
 										'recipient' => array(
 												'id' => $user_id
 										),
@@ -302,7 +302,7 @@ class Bot extends CI_Controller {
 								));
 								
 								//Testing for now:
-								$this->Messenger_model->send_message(array(
+								$this->Facebook_model->send_message(array(
 										'recipient' => array(
 												'id' => $user_id
 										),
@@ -386,7 +386,7 @@ class Bot extends CI_Controller {
 						}
 						 
 						//Send message back to user:
-						$this->Messenger_model->send_message(array(
+						$this->Facebook_model->send_message(array(
 								'recipient' => array(
 										'id' => $user_id
 								),
@@ -545,7 +545,7 @@ class Bot extends CI_Controller {
 			if(strlen($fb_user_id)>0){
 				
 				//Indicate to the user that we're typing:
-				$this->Messenger_model->send_message(array(
+				$this->Facebook_model->send_message(array(
 						'recipient' => array(
 								'id' => $fb_user_id
 						),
@@ -595,7 +595,7 @@ class Bot extends CI_Controller {
 				//TODO: Log response engagement
 				
 				//Send message back to user:
-				$this->Messenger_model->send_message(array(
+				$this->Facebook_model->send_message(array(
 						'recipient' => array(
 								'id' => $fb_user_id
 						),

@@ -242,7 +242,7 @@ class Us_model extends CI_Model {
 		
 		
 		//Algolia only works on Production due to Curl certificate requirements
-		if(is_production()){
+		if($_SERVER['HTTP_HOST']=='mench.co'){
 			
 			$return = array();
 			$index = $this->Algolia_model->load_algolia();
@@ -551,44 +551,6 @@ class Us_model extends CI_Model {
 	}
 	
 	
-	function count_links($node_id){
-		//Count the number of child nodes:
-		$this->db->select('COUNT(id) as link_count');
-		$this->db->from('v3_data d');
-		$this->db->where('(d.node_id='.$node_id.' OR d.parent_id='.$node_id.')');
-		$this->db->where('d.status >=' , 0);
-		$this->db->where('d.ui_rank >' , 0);
-		$q = $this->db->get();
-		$stats = $q->row_array();
-		return $stats['link_count'];
-	}
-	
-	function count_OUTs($node_id){
-		//Count the number of child nodes:
-		$this->db->select('COUNT(id) as link_count');
-		$this->db->from('v3_data d');
-		$this->db->where('d.parent_id' , $node_id);
-		$this->db->where('d.node_id != d.grandpa_id');
-		$this->db->where('d.status >=' , 0);
-		$this->db->where('d.ui_rank >' , 0);
-		$q = $this->db->get();
-		$stats = $q->row_array();
-		return $stats['link_count'];
-	}
-	function count_direct_OUTs($node_id){
-		//Count the number of child nodes:
-		$this->db->select('COUNT(id) as link_count');
-		$this->db->from('v3_data d');
-		$this->db->where('d.parent_id' , $node_id);
-		$this->db->where('d.ui_parent_rank' , 1);
-		$this->db->where('d.status >=' , 0);
-		$q = $this->db->get();
-		$stats = $q->row_array();
-		$grandparents = $this->config->item('grand_parents');
-		return $stats['link_count']-( array_key_exists($node_id,$grandparents) ? 1 : 0 );
-	}
-	
-	
 	
 	function fetch_sandwich_node($node_id, $parent_id){
 		$this->db->select('*');
@@ -749,9 +711,6 @@ class Us_model extends CI_Model {
 		//Caching mechanism for usernames and counts
 		$cache = array(
 				'contributors' => array(),
-				'link_count' => array(),
-				'out_count' => array(),
-				'direct_out_count' => array(),
 		);
 		
 		foreach($links as $i=>$link){
@@ -792,18 +751,6 @@ class Us_model extends CI_Model {
 				//Determine what are we counting based on parent/child position:
 				$count_column = ( $links[0]['node_id']==$link['node_id'] && isset($setting['recursive_level']) ? $link['parent_id'] : $link['node_id']);
 				$count_column = $node_id;
-				
-				if(!isset($cache['link_count'][$count_column])){
-					//Fetch link counts:
-					$cache['link_count'][$count_column] = $this->count_links($count_column);
-					$cache['out_count'][$count_column] = $this->count_OUTs($count_column);
-					$cache['direct_out_count'][$count_column] = $this->count_direct_OUTs($count_column);
-				}
-				
-				//Count node links:
-				$links[$i]['link_count'] = $cache['link_count'][$count_column];
-				$links[$i]['out_count'] = $cache['out_count'][$count_column];
-				$links[$i]['direct_out_count'] = $cache['direct_out_count'][$count_column];
 			}
 			
 			
@@ -922,60 +869,6 @@ class Us_model extends CI_Model {
 	}
 	
 	
-	function append_metadata($node_array){
-		
-		if(!$node_array || !is_array($node_array) || count($node_array)<1){
-			return false;
-		}
-		
-		foreach($node_array as $node){
-			
-			$subnode_id = 0;
-			
-			//First see if this exists:
-			$OUTs = $this->fetch_node($node['container_pid'],'fetch_children');
-			foreach($OUTs as $OUT){
-				if(alphanumeric_lower($OUT['value']) == alphanumeric_lower($node['container_val'])){
-					$subnode_id = $OUT['node_id'];
-					break;
-				}
-			}
-			
-			if(!$subnode_id){
-				//Create this new node
-				$new_node = $this->insert_link(array(
-						'parent_id' => $node['container_pid'], //Facebook Messenger
-						'value' => $node['container_val'],
-						'action_type' => 1, //For adding
-						'us_id' => $node['us_id'],
-						'status' => 1,
-				));
-				//Assign new node ID:
-				$subnode_id = $new_node['node_id'];
-			}
-			
-			//Now create the new relationship:
-			$new_rel = $this->insert_link(array(
-					'node_id' => $node['connector_pid'],
-					'parent_id' => $subnode_id,
-					'value' => '',
-					'action_type' => 4, //For linking
-					'us_id' => $node['us_id'],
-					'status' => 1,
-			));
-		}
-		
-		return true;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -1007,7 +900,7 @@ class Us_model extends CI_Model {
 	
 	function create_user_from_fb($fb_user_id){
 		//Call facebook messenger API and get user details:
-		$fb_profile = $this->Messenger_model->fetch_profile($fb_user_id);
+		$fb_profile = $this->Facebook_model->fetch_profile($fb_user_id);
 		
 		if(!isset($fb_profile['first_name'])){
 			//There was an issue accessing this on FB

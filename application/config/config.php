@@ -1,101 +1,45 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
-//TODO Move this to an internal system on the Goal Network:
-$config['mench_users'] = array(7,46); //Shervin & Miguel for now...
-
-//The following nodes and their immediate children would would publicly visible without login requirements:
-$config['public_nodes'] = array(); //15,65,11,837 Books, YouTube, Podcast & Articles
-
-$config['live_websites'] = array('us.foundation','brainplugins.com','askmench.com','mench.ai','mench.co');
-
-//Brain Plugins Variables:
+//Primary website variables:
 $config['website'] = array(
 		'url' => 'http://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
 		'email' => 'shervin@mench.co',
+		'fb_page_id' => '381488558920384',
+		'fb_app_id' => '1782431902047009',
+		'bot_ref_url' => 'https://m.me/381488558920384',
+		'access_token' => 'EAAZAVHMRbmyEBAA7OcamZAVnuGSJs4jfhnGXzcsePZCngjHoa0py5veCAspgpfVp41NyaxpyaajZBFKUEAynZBt6b2sdJ8o9oe3fofSazwZBBDX9ZATkydlUZA36I54EtDHDKZCmUbYl2cTpnCHG3hOl782ykZAwRqFhkRfou4cke31QZDZD',
 );
 
-$config['active_bots'] = array(
-		0 => array(
-				'name' => 'Mench',
-				'square128_logo_url' => 'https://s3-us-west-2.amazonaws.com/us-videos/Mench-logo-square.png',
-				'fb_page_id' => '1782774501750818',
-				'fb_app_id' => '1648089818536368',
-				'bot_ref_url' => 'https://m.me/askmench?ref=',
-				'access_token' => 'EAAXa7dAxGbABAGMRXO5fo2QWnUsMxCqtScDkwGTCOZC4xfzLoSiaWTZBNNrWl2TDbmVUdlUpDkZAgDkQ9ZCxS0Jvu4DDtlQ1JzZBupZCjAgxxAWZAAZAaZAWFyEO4UgKhuIhXzZCnYImRptIOhX3pXEnLwu2eAMrkyv9SOwZCbH3jGwZCQZDZD',
-				'entity_pid' => 1075,
-		),
-);
-
-//See more details here:
-//https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
+//Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
 		'key'    => 'AKIAJOLBLKFSYCCYYDRA',
 		'secret' => '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',
 ];
 
-
-//TODO Fetch grandparent during logging, pass to session and use that instead of these names. More unified...
-//TODO maybe even remove?!
-$config['grand_parents'] = array(
-		1  => array(
-				'name' => 'Entities',
-				'sign' => '@',
-		),
-		3  => array(
-				'name' => 'Intents',
-				'sign' => '#',
-				'descent_logic' => array(
-						'IN' => array(
-								1 => array(
-										'read_out_loud' => 0,
-										'follow_depth' => -1, //-1 is unlimited, 0 is NOT follow, 1+ is the # of levels to follow
-								),
-								3 => array(
-										'readout_INs' => 0,
-										'follow_OUTs' => 1,
-								),
-						),
-						'OUT' => array(
-								1 => array(
-										'readout_INs' => 0,
-										'follow_OUTs' => 1,
-								),
-								3 => array(
-										'readout_INs' => 0,
-										'follow_OUTs' => 1,
-								),
-						),
-				),
-		),
-);
-
-
-
 /*
-|--------------------------------------------------------------------------
-| Base Site URL
-|--------------------------------------------------------------------------
-|
-| URL to your CodeIgniter root. Typically this will be your base URL,
-| WITH a trailing slash:
-|
-|	http://example.com/
-|
-| WARNING: You MUST set this value!
-|
-| If it is not set, then CodeIgniter will try guess the protocol and path
-| your installation, but due to security concerns the hostname will be set
-| to $_SERVER['SERVER_ADDR'] if available, or localhost otherwise.
-| The auto-detection mechanism exists only for convenience during
-| development and MUST NOT be used in production!
-|
-| If you need to allow multiple domains, remember that this file is still
-| a PHP script and you can easily do that on your own.
-|
-*/
+ |--------------------------------------------------------------------------
+ | Base Site URL
+ |--------------------------------------------------------------------------
+ |
+ | URL to your CodeIgniter root. Typically this will be your base URL,
+ | WITH a trailing slash:
+ |
+ |	http://example.com/
+ |
+ | WARNING: You MUST set this value!
+ |
+ | If it is not set, then CodeIgniter will try guess the protocol and path
+ | your installation, but due to security concerns the hostname will be set
+ | to $_SERVER['SERVER_ADDR'] if available, or localhost otherwise.
+ | The auto-detection mechanism exists only for convenience during
+ | development and MUST NOT be used in production!
+ |
+ | If you need to allow multiple domains, remember that this file is still
+ | a PHP script and you can easily do that on your own.
+ |
+ */
 $config['base_url'] = '';
 
 /*

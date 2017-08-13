@@ -1,14 +1,14 @@
 <?php if ( !defined('BASEPATH')) exit('No direct script access allowed');
 
-class Messenger_model extends CI_Model {
+class Facebook_model extends CI_Model {
 	
 	var $page_access_token;
 	
 	function __construct() {
 		parent::__construct();
 		//Fetch the primary bot's access token:
-		$active_bots = $this->config->item('active_bots');
-		$this->page_access_token = $active_bots[0]['access_token'];
+		$website = $this->config->item('website');
+		$this->page_access_token = $website['access_token'];
 	}
 	
 	

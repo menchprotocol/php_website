@@ -7,7 +7,6 @@ class Algolia_model extends CI_Model {
 	}
 	
 	
-	
 	function load_algolia($index_name='nodes'){
 		require_once('application/libraries/algoliasearch.php');
 		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
@@ -54,11 +53,7 @@ class Algolia_model extends CI_Model {
 	
 	
 	function sync_all(){
-		
-		if(!is_production()){
-			echo 'ERROR: Cannot update cache on local.';
-			return false;
-		}
+	
 		boost_power();
 		
 		//Buildup this array to save to search index

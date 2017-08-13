@@ -84,13 +84,7 @@ class Client
         }
 
         //$this->caInfoPath = __DIR__.'/../../resources/ca-bundle.crt'; //This was original
-        
-        if(is_production()){
-        	$this->caInfoPath = '/etc/ssl/certs/ca-certificates.crt';
-        } else {
-        	//TODO fix this for your local path
-        	$this->caInfoPath = 'C:\wamp\...';
-        }
+        $this->caInfoPath = '/etc/ssl/certs/ca-certificates.crt';
         
         
         foreach ($options as $option => $value) {

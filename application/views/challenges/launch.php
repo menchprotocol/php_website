@@ -1,1 +1,0 @@
-Landing page for experts to learn why they should launch their challenge on Mench.

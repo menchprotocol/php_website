@@ -3602,7 +3602,7 @@ h2.title {
   margin-right: 0;
 }
 .card-plain .card-content {
-  padding:35px 5px 50px;
+  padding:35px 5px;
   margin-left: 20px;
   text-align: center;
 }
@@ -6185,10 +6185,7 @@ footer ul {
   padding: 0;
   list-style: none;
 }
-footer ul li {
-  display: inline-block;
-}
-footer ul li a {
+footer ul li a, footer ul li {
   color: inherit;
   padding: 15px;
   font-weight: 500;
@@ -6197,7 +6194,7 @@ footer ul li a {
   border-radius: 3px;
   text-decoration: none;
   position: relative;
-  display: block;
+  display: inline-block;
 }
 footer ul li a:hover {
   text-decoration: none;

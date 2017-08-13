@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('us_helper');
+$autoload['helper'] = array('general_helper');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Us_model','Apiai_model','Messenger_model','Algolia_model','Challenges_model');
+$autoload['model'] = array('Db_model','Facebook_model'); //'Apiai_model','Algolia_model'

@@ -53,20 +53,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//Some landing pages
-//Also edit controllers/us/load_wiki to define title.
-//TODO Move to nodes through public and html objects
-$route['default_controller'] = "challenges";
-$route['signup'] = "us/load_wiki/signup";
-$route['login'] = "us/load_wiki/login";
-$route['login_process'] = "us/login_process";
+//Standalone Pages:
+$route['default_controller'] 				= "challenges"; //Home page / main landing page
+$route['terms'] 							= "challenges/terms"; //Terms page
 
-//Application logic:
-$route['(:num)'] = "us/load_node/$1";
-$route['logout'] = "us/logout";
+//Challenges:
+$route['launch'] 							= "challenges/launch"; //Seller landing page & value prop pitch
+$route['dashboard'] 						= "challenges/dashboard"; //Sellers: challenges, stats, what needs att.
+$route['challenges'] 						= "challenges/public_list"; //Both: List of challenges with filters
+$route['challenges/start'] 					= "challenges/modify/overview"; //Sellers: Create new challenge
+$route['challenges/(:any)/modify/(:any)'] 	= "challenges/modify/$2/$1"; //Sellers: Challenge Creation Wizard w/ 5-7 Steps
+$route['challenges/(:any)/activity'] 		= "challenges/activity/$1"; //Sellers: See activity stream of a challenge
+$route['challenges/(:any)'] 				= "challenges/view/$1"; //Both: View challenge, macro stats, leaderboard, file upload
 
-//New:
-$route['terms'] = "challenges/terms";
-$route['launch'] = "challenges/launch";
-$route['challenges'] = "challenges/browse";
-$route['auth'] = "challenges/login_process";
+//Users:
+$route['account'] 							= "users/account"; //Both: Edit personal account
+$route['login_auth'] 						= "users/login_auth"; //Both: Login via Facebook
+$route['logout'] 							= "users/logout"; //Both: Logout
+$route['users'] 							= "users/browse"; //Sellers: See list of their users & filter (Admins see all)
+$route['ses'] 								= "users/ses";
+$route['users/(:any)'] 						= "users/load/$1"; //Both: Load specific user and see their stats
+
+
+
