@@ -61,22 +61,24 @@ window.fbAsyncInit = function() {
 	    	//lets log them out from Facebook:
 	    	FB.getLoginStatus(function(response) {
 	        	if(response.status=='connected'){
+	        		//Logout on Facebook:
 	        		FB.logout(function(response2) {
-	    	    		// user is now logged out
+	        			//Delay the logout & redirect to allow facebook to log them out
+	        			//If not, the user logs back in!
+	        			setTimeout(function() {
+	        				$.ajax({
+		        		        type: "POST",
+		        		        url: "/logout", //Removes their session variables
+		        		        success: function(data){
+		        		        	//Go to Home Page:
+		        			    	window.location = "/";
+		        		        }
+		        		    });
+	        			}, 1000);
 	        			alert('Logout successful. See you soon ;)');
 	    	    	});
 	        	}
 	        });
-	    	
-	    	//Logout the session & redirect:s
-	    	$.ajax({
-		        type: "POST",
-		        url: "/logout", //Removes their session variables
-		        success: function(data){
-		        	//Go to Home Page:
-			    	window.location = "/";
-		        }
-		    });	    	
 	    });
 	    
     }
