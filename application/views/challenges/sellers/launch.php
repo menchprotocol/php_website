@@ -124,13 +124,13 @@
 		<div class="card-content">
 			<div class="tab-content text-center">
 				<div class="tab-pane active" id="testimonials">
-					<p> I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. </p>
+					<p>User testimonials here...</p>
 				</div>
 				<div class="tab-pane" id="pricing">
 					<p>Pay have a universal rate of 20% per each challenge entry.</p>
 				</div>
 				<div class="tab-pane" id="faq">
-					<p>I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. So when you get something that has the name Kanye West on it, it’s supposed to be pushing the furthest possibilities. I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus.</p>
+					<p>More context here...</p>
 				</div>
 			</div>
 		</div>
