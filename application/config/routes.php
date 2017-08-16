@@ -53,27 +53,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//Standalone Pages:
-$route['default_controller'] 				= "challenges"; //Home page / main landing page
-$route['terms'] 							= "challenges/terms"; //Terms page
-$route['contact'] 							= "challenges/contact"; //Contact Us page
+/* ******************************
+ * Front
+ ****************************** */
 
-//Challenges:
-$route['launch'] 							= "challenges/launch"; //Seller landing page & value prop pitch
-$route['dashboard'] 						= "challenges/dashboard"; //Sellers: challenges, stats, what needs att.
-$route['challenges'] 						= "challenges/public_list"; //Both: List of challenges with filters
-$route['challenges/start'] 					= "challenges/modify/overview"; //Sellers: Create new challenge
-$route['challenges/(:any)/modify/(:any)'] 	= "challenges/modify/$2/$1"; //Sellers: Challenge Creation Wizard w/ 5-7 Steps
-$route['challenges/(:any)/activity'] 		= "challenges/activity/$1"; //Sellers: See activity stream of a challenge
-$route['challenges/(:any)'] 				= "challenges/view/$1"; //Both: View challenge, macro stats, leaderboard, file upload
+$route['default_controller'] 	= "front"; // index() Landing page
+$route['terms'] 				= "front/terms";
+$route['contact'] 				= "front/contact";
+$route['features'] 				= "front/features";
+$route['pricing'] 				= "front/pricing";
+$route['aboutus'] 				= "front/aboutus";
+$route['ses'] 					= "front/ses"; //Raw session logs
 
-//Users:
-$route['account'] 							= "users/account"; //Both: Edit personal account
-$route['login_auth'] 						= "users/login_auth"; //Both: Login via Facebook
-$route['logout'] 							= "users/logout"; //Both: Logout
-$route['users'] 							= "users/browse"; //Sellers: See list of their users & filter (Admins see all)
-$route['ses'] 								= "users/ses";
-$route['users/(:any)'] 						= "users/load/$1"; //Both: Load specific user and see their stats
+
+/* ******************************
+ * Dashboard
+ ****************************** */
+
+//Users & Authentication:
+$route['user/login'] 								= "dashboard/login";
+$route['user/logout'] 								= "dashboard/logout";
+$route['user/pending'] 								= "dashboard/user_pending";
+$route['user/(:any)/edit'] 							= "dashboard/user_edit/$1"; //Admin Only
+$route['user/(:any)'] 								= "dashboard/user_view/$1"; //PUBLIC & HYBRID
+
+//Challenges PARTNERS:
+$route['challenge/(:any)/settings'] 				= "dashboard/challenge_settings/$1";
+$route['challenge/(:any)/library/(:num)']			= "dashboard/challenge_library/$1/$2"; //Oh mama!
+$route['challenge/(:any)/library']					= "dashboard/challenge_library/$1"; //Redirect
+$route['challenge'] 								= "dashboard";
+
+//Challenges PUBLIC:
+$route['challenge/(:any)/insights'] 				= "dashboard/challenge_insights_overview/$1";
+$route['challenge/(:any)/join'] 					= "dashboard/challenge_join/$1"; //$$$
+$route['challenge/(:any)'] 							= "dashboard/challenge_landing_page/$1";
+
+//Runs:
+$route['challenge/(:any)/run'] 						= "dashboard/run_list/$1";
+$route['challenge/(:any)/run/(:num)'] 				= "dashboard/run_dashboard/$1/$2";
+$route['challenge/(:any)/run/(:num)/leaderboard']	= "dashboard/run_leaderboard/$1/$2";
+$route['challenge/(:any)/run/(:num)/stream'] 		= "dashboard/run_stream/$1/$2";
+$route['challenge/(:any)/run/(:num)/settings'] 		= "dashboard/run_settings/$1/$2";
+
+
+
 
 
 

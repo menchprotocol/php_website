@@ -1,0 +1,138 @@
+@CHARSET "ISO-8859-1";
+
+.navbar-brand img{
+	display: inline-block;
+    width: 40px;
+    margin-top: -12px;
+    margin-right: 1px;
+}
+.navbar-brand span{
+	display: inline-block;
+    font-family: 'Titillium Web',sans-serif;
+    font-size: 36px;
+    color: #2f2639;
+}
+
+body { font-size:18px; }
+.main-plain{ margin-top:100px; }
+.main-plain .container{ padding:45px 45px 45px 15px; }
+.landing-page .page-header { min-height: 100vh; }
+.page-header .container { padding-top: 104px; padding-left: 30px; }
+.home-p{ max-width:326px; }
+.dashboard-logo{ padding:8px 0 0 2px !important; }
+.landing-page .navbar-header { padding:0 0 0 0;}
+.navbar .navbar-brand { padding:7px 10px 7px 27px; }
+.container { width: 100%; }
+.navbar-right { margin-right:10px; }
+.footer .container { padding-left:30px; padding-right:30px; } 
+@media (max-width: 767px){
+	body { font-size:15px; }
+	.main-plain{ margin-top:70px; }
+	.main-plain .container{ padding:15px 30px 15px 15px; }
+	.page-header .container { padding-top: 70px; padding-left: 15px; }
+	.landing-page .page-header { min-height: 90vh; }
+	.listtabs li { display:block; float: none; text-align: left; }
+	.footer .container { padding-left:12px; padding-right:12px; } 
+	
+	.contactleft{padding-top:70px;}
+	.home-p{ max-width:270px; }
+	
+	.navbar-brand img{
+	    width: 30px;
+	    margin-top: -8px;
+	    margin-right: 0;
+	}
+	.navbar-brand span { font-size: 28px; }
+	.navbar .navbar-brand { padding:7px 10px 7px 12px; }
+	
+	.btn.btn-lg, .btn-group-lg .btn,
+	.navbar .navbar-nav > li > a.btn.btn-lg, .btn-group-lg
+	.navbar .navbar-nav > li > a.btn {
+	  font-size: 16px;
+	  padding: 9px 14px;
+	}
+	.dashboard-logo{ padding:12px 0 0 15px !important; }
+	.navbar.navbar-transparent { padding:0;}
+	.landing-page .navbar-nav { padding-top:20px;}
+	.navbar { padding:0; }
+	.landing-page .navbar-header { padding:5px 0 0 0;}
+}
+
+.morphext > .animated {
+    display: inline-block;
+}
+
+.jsrotate {display:none;}
+
+.tab-pane p {text-align:left;}
+.mtweak {margin: 50px 0 -25px;}
+
+.bootstrap-select.btn-group .dropdown-menu li:first-child{
+	border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+	background-color:#FFF !important;
+}
+
+.nav>.active>a:focus, .nav>.active>a:hover {
+	background-color:#fedd16 !important;
+	cursor:default !important;
+}
+
+
+.bg-glow {
+	background-color:transparent !important;
+    -webkit-transition: text-shadow 1s linear;
+    -moz-transition: text-shadow 1s linear;
+    -ms-transition: text-shadow 1s linear;
+    -o-transition: text-shadow 1s linear;
+    transition: text-shadow 1s linear;
+}
+.bg-glow:hover,
+.bg-glow.glow {
+    text-shadow: 0 0 1px #000;
+}
+.bg-glow:hover {
+    background-color:#FFF !important;
+}
+
+
+
+.bootstrap-select.btn-group .dropdown-menu li:first-child .fa {
+	color:#fedd16;
+}
+
+.bootstrap-select.btn-group .dropdown-menu li:first-child:hover .fa {
+	color:#000;
+}
+
+.navbar-nav>li{
+	margin-left:20px;
+}
+
+
+.dash h2 {
+	margin:10px 0;
+	padding:0;
+	line-height:120%;
+}
+
+.navbar-collapse{
+	padding-left:5px;
+	padding-right:5px;
+}
+.sub-button {
+	padding-left:5px;
+	color:#000;
+}
+.sub-button a{
+	color:#000;
+	text-decoration:underline;
+}
+.sub-button a:hover{
+	color:#FFF;
+	text-decoration:none;
+}
