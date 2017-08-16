@@ -23,10 +23,10 @@ function checkLoginState(){
 			$.ajax({
 		        type: "POST",
 		        url: "/user/login",
-		        data:{ response:response }, 
+		        data:{ response:response },
 		        success: function(data){
 		        	//Refresh page:
-		        	window.location = "/challenge";
+		        	window.location = "/dashboard";
 		        }
 		    });
 		}

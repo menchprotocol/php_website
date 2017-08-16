@@ -6,12 +6,12 @@ $udata = $this->session->userdata('user');
         <div class="container">
             <div class="row">
 				<div class="col-sm-9">
-					<h1>The<br />Online<br />Challenge<br />Framework.</h1>
+					<h1 class="home-p">Run Online Challenges.</h1>
                     <h4 class="home-p">Empower your audience to achieve their goals by taking action.</h4>
                     
                     <?php
     				if(isset($udata['id'])){
-    					echo '<a href="/challenge" class="btn btn-danger btn-raised btn-lg bg-glow">My Challenges <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+    					echo '<a href="/dashboard" class="btn btn-danger btn-raised btn-lg bg-glow">MY DASHBOARD <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
     				} else {
     					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow">Get Early Access <i class="fa fa-sign-in"></i></a>';
     					echo '<p class="sub-button">Or <a href="#" data-toggle="modal" data-target="#loginModal">Login as Partner</a></p>';

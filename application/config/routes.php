@@ -73,27 +73,30 @@ $route['ses'] 					= "front/ses"; //Raw session logs
 //Users & Authentication:
 $route['user/login'] 								= "dashboard/login";
 $route['user/logout'] 								= "dashboard/logout";
-$route['user/pending'] 								= "dashboard/user_pending";
+$route['user/missing_access'] 						= "dashboard/missing_access";
+$route['user/thankyou'] 							= "dashboard/thankyou"; //Message only
 $route['user/(:any)/edit'] 							= "dashboard/user_edit/$1"; //Admin Only
 $route['user/(:any)'] 								= "dashboard/user_view/$1"; //PUBLIC & HYBRID
 
-//Challenges PARTNERS:
-$route['challenge/(:any)/settings'] 				= "dashboard/challenge_settings/$1";
-$route['challenge/(:any)/library/(:num)']			= "dashboard/challenge_library/$1/$2"; //Oh mama!
-$route['challenge/(:any)/library']					= "dashboard/challenge_library/$1"; //Redirect
-$route['challenge'] 								= "dashboard";
+//Challenges ADMIN-ONLY:
+$route['dashboard/(:any)/settings'] 				= "dashboard/challenge_settings/$1";
+$route['dashboard/(:any)/library/(:num)']			= "dashboard/challenge_library/$1/$2"; //Oh mama!
+$route['dashboard/(:any)/library']					= "dashboard/challenge_library/$1"; //Redirect
 
 //Challenges PUBLIC:
-$route['challenge/(:any)/insights'] 				= "dashboard/challenge_insights_overview/$1";
 $route['challenge/(:any)/join'] 					= "dashboard/challenge_join/$1"; //$$$
-$route['challenge/(:any)'] 							= "dashboard/challenge_landing_page/$1";
+$route['challenge/(:any)'] 							= "dashboard/challenge_landing_page/$1"; //Landing Page
 
-//Runs:
-$route['challenge/(:any)/run'] 						= "dashboard/run_list/$1";
-$route['challenge/(:any)/run/(:num)'] 				= "dashboard/run_dashboard/$1/$2";
-$route['challenge/(:any)/run/(:num)/leaderboard']	= "dashboard/run_leaderboard/$1/$2";
-$route['challenge/(:any)/run/(:num)/stream'] 		= "dashboard/run_stream/$1/$2";
-$route['challenge/(:any)/run/(:num)/settings'] 		= "dashboard/run_settings/$1/$2";
+//Challenges HYBRID:
+$route['dashboard'] 								= "dashboard/challenge_list/admin"; //HYBRID
+$route['challenge'] 								= "dashboard/challenge_list/user"; //HYBRID
+
+//Runs ADMIN-ONLY:
+$route['dashboard/(:any)/run'] 						= "dashboard/run_list/$1";
+$route['dashboard/(:any)/run/(:num)'] 				= "dashboard/run_dashboard/$1/$2";
+$route['dashboard/(:any)/run/(:num)/leaderboard']	= "dashboard/run_leaderboard/$1/$2";
+$route['dashboard/(:any)/run/(:num)/stream'] 		= "dashboard/run_stream/$1/$2";
+$route['dashboard/(:any)/run/(:num)/settings'] 		= "dashboard/run_settings/$1/$2";
 
 
 

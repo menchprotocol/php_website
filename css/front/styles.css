@@ -17,14 +17,13 @@ body { font-size:18px; }
 .main-plain{ margin-top:100px; }
 .main-plain .container{ padding:45px 45px 45px 15px; }
 .landing-page .page-header { min-height: 100vh; }
-.page-header .container { padding-top: 104px; padding-left: 30px; }
+.page-header .container { padding-top: 90px; padding-left:40px; }
 .home-p{ max-width:326px; }
 .dashboard-logo{ padding:8px 0 0 2px !important; }
 .landing-page .navbar-header { padding:0 0 0 0;}
 .navbar .navbar-brand { padding:7px 10px 7px 27px; }
-.container { width: 100%; }
+.body-container { width: 95%; }
 .navbar-right { margin-right:10px; }
-.footer .container { padding-left:30px; padding-right:30px; } 
 @media (max-width: 767px){
 	body { font-size:15px; }
 	.main-plain{ margin-top:70px; }
@@ -32,7 +31,6 @@ body { font-size:18px; }
 	.page-header .container { padding-top: 70px; padding-left: 15px; }
 	.landing-page .page-header { min-height: 90vh; }
 	.listtabs li { display:block; float: none; text-align: left; }
-	.footer .container { padding-left:12px; padding-right:12px; } 
 	
 	.contactleft{padding-top:70px;}
 	.home-p{ max-width:270px; }

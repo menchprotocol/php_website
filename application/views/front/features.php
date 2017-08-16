@@ -1,4 +1,7 @@
-
+<?php 
+//Attempt to fetch session variables:
+$udata = $this->session->userdata('user');
+?>
 
 <div class="section text-center" style="padding-top:10px;">	
 	
@@ -74,6 +77,35 @@
 	
 	
 	
+	
+	
+	<div class="features" style="margin-top:60px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="title">Testimonials</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="info">
+					<p>Thanks so much for lighting a fire under my butt with this challenge. I've been talking about doing this course for about five years. I'm so excited to finally be doing it!!!<br /><b style="color:#000;">Linda Salazar</b></p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="info">
+					<p>Just wanted to thank you, the truth is that I've been "cooking" this course for about 2 years now, and I'm taking up your challenge as the accountability push to make it happen.<br /><b style="color:#000;">Pazit Perez</b></p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="info">
+					<p>Week #1's Assignment forced me to focus on this OUTLINE... an obstacle that I've failed to overcome for over two years... and YOU helped me complete it in a week!<br /><b style="color:#000;">Wayne Pollard</b></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
 	<!--  
 	<div class="features-4">
 			<div class="row">
@@ -131,7 +163,16 @@
 <div class="section section-contacts" style="padding-top:20px;">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2" style="text-align:center;">
-            <a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">Get Early Access <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>
+					<?php
+    				if(isset($udata['id'])){
+    					echo '<a href="/dashboard" class="btn btn-danger btn-raised btn-lg bg-glow">MY DASHBOARD <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+    				} else {
+    					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">Get Early Access <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
+    					echo '<p class="sub-button">Or <a href="#" data-toggle="modal" data-target="#loginModal">Login as Partner</a></p>';
+    				}
+    				?>
+    				
+            
 		</div>
 	</div>
 </div>

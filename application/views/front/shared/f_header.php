@@ -86,10 +86,10 @@ if(isset($landing_page)){
 	
 	//Load landing page containers:
 	echo '<div class="main main-raised">';
-	echo '<div class="container">';
+	echo '<div class="container body-container">';
 } else {
 	//Regular content page:
 	echo '<div class="main main-raised main-plain">';
-	echo '<div class="container">';
+	echo '<div class="container body-container">';
 }
 ?>

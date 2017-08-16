@@ -9,7 +9,6 @@ class Dashboard extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	
 	function index(){
 		die('Nothing here...');
 	}
@@ -79,6 +78,7 @@ class Dashboard extends CI_Controller {
 			
 		} else {
 			//Ooops, they do not seem to be logged in!
+			die('Missing parameters for login');
 		}
 		//print_r($_POST['response']);
 	}
@@ -111,22 +111,37 @@ class Dashboard extends CI_Controller {
 		$this->load->view('shared/z_footer');
 	}
 	
+	function missing_access(){
+		//Informs the user that they cannot access that page:
+		
+		$this->load->view('dashboard/shared/d_header' , array(
+				'title' => 'Mench | Missing Access'.( isset($_GET['url']) ? ' for '.$_GET['url'] : '' ),
+		));
+		$this->load->view('users/public_account' , array(
+				'udata' => $udata,
+		));
+		$this->load->view('dashboard/shared/d_footer');
+	}
 	
+	function thankyou(){
+		//Loads a single user profile for everyone to see.
+		$udata = array();
+		
+		//This lists all users based on the permissions of the user
+		$this->load->view('shared/z_header' , array(
+				'title' => '',
+		));
+		$this->load->view('users/public_account' , array(
+				'udata' => $udata,
+		));
+		$this->load->view('shared/z_footer');
+	}
 	
 	
 	
 	/* ******************************
-	 * Challenges PARTNERS
+	 * Challenges ADMIN ONLY
 	 ****************************** */
-	
-	function index(){
-		//List all challenges to choose from
-		$this->load->view('shared/z_header' , array(
-				'title' => 'Seller Dashboard',
-		));
-		$this->load->view('challenges/sellers/dashboard');
-		$this->load->view('shared/z_footer');
-	}
 	
 	function challenge_settings($challenge_key){
 		//The dashboard of a given challenge
@@ -151,11 +166,13 @@ class Dashboard extends CI_Controller {
 	}
 	
 	
+	
+	
 	/* ******************************
 	 * Challenges PUBLIC
 	 ****************************** */
 	
-	function challenge_insights_overview($challenge_key){
+	function challenge_landing_page($challenge_key){
 		//The dashboard of a given challenge
 		$this->load->view('shared/z_header' , array(
 				'title' => 'Seller Dashboard',
@@ -173,7 +190,32 @@ class Dashboard extends CI_Controller {
 		$this->load->view('shared/z_footer');
 	}
 	
-	function challenge_landing_page($challenge_key){
+	
+	
+	/* ******************************
+	 * Challenges HYBRID
+	 ****************************** */
+	
+	function challenge_list($source){
+		//What's the source? Defines challenge list settings:
+		
+		if($source=='admin'){
+			//Load admin dashboard style:
+			
+		} elseif($source=='user'){
+			//Load front-end user UI:
+			
+		} else {
+			die('invalid source');
+		}
+		
+		/*
+		$c = $this->Db_model->nice();
+		if(!$pid){
+			$pid = $c['id'];
+		}
+		*/
+		
 		//The dashboard of a given challenge
 		$this->load->view('shared/z_header' , array(
 				'title' => 'Seller Dashboard',
@@ -181,6 +223,7 @@ class Dashboard extends CI_Controller {
 		$this->load->view('challenges/sellers/dashboard');
 		$this->load->view('shared/z_footer');
 	}
+	
 	
 	
 	

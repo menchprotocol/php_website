@@ -1,1 +1,1 @@
-View
+View user profile

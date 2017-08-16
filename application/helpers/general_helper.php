@@ -4,7 +4,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.12';
+	return 'v0.13';
 }
 
 function fetch_file_ext($url){
@@ -13,6 +13,24 @@ function fetch_file_ext($url){
 	$url_parts = explode('/',$url_parts[0]);
 	$file_parts = explode('.',end($url_parts));
 	return end($file_parts);
+}
+
+function auth($min_level,$show_error=false){
+	
+	$CI =& get_instance();
+	$udata = $CI->session->userdata('user');
+	
+	if(!isset($udata['status']) || intval($udata['status'])<intval($min_level)){
+		//Ooops, there is an error:
+		if(!$show_error){
+			return false;
+		} else {
+			//Block access:
+			header( 'Location: /user/missing_access?url='.$_SERVER[REQUEST_URI] ) ;
+		}
+	}
+	
+	return true;
 }
 
 function save_file($file_url,$json_data){

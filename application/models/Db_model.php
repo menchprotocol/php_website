@@ -61,5 +61,21 @@ class Db_model extends CI_Model {
 	 * Challenge Functions
 	 ****************************** */
 	
+	function challenges_fetch($conditions){
+		
+		//Missing anything?
+		$this->db->select('*');
+		$this->db->from('v5_challenges');
+		foreach($match_columns as $key=>$value){
+			$this->db->where($key,$value);
+		}
+		$q = $this->db->get();
+		$challenges = $q->result_array();
+		
+		//Now append more data to this and prime it:
+		
+		
+		return $challenges;
+	}
 	
 }

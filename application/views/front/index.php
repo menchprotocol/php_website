@@ -5,7 +5,7 @@
 			<div class="features">
 				<div class="row">
 					<div class="col-md-12">
-						<h3 class="title">How Mench Works</h3>
+						<h2 class="title">How Mench Works</h2>
 					</div>
 				</div>
 				
@@ -21,7 +21,7 @@
 						<div class="info">
 							<div class="icon icon-primary mtweak"><i class="material-icons">filter_2</i></div>
 							<h4 class="info-title">Invite Your Audience</h4>
-							<p>Set a launch date and announce your challenge. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We'll automate your workflows.</p>
+							<p>Set a launch date and announce your challenge. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We automate these workflows.</p>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -38,7 +38,7 @@
 			<div class="features">
 				<div class="row">
 					<div class="col-md-12">
-						<h3 class="title" style="margin-top:70px;">Why Mench?</h3>
+						<h2 class="title" style="margin-top:70px;">Why Mench?</h2>
 					</div>
 				</div>
 				
