@@ -61,13 +61,13 @@ h1, .h1 {
 
 a {
   color: #000;
-  text-decoration:underline;
+  text-decoration:none;
 }
 .btn a, .btn, .navbar a {
   text-decoration:none !important;
 }
 a:hover, a:focus {
-  color: #2f2639;
+  color: #777;
   text-decoration: none;
 }
 a.text-info:hover, a.text-info:focus {
@@ -335,7 +335,9 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle:focus, .open >
 .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle:hover {
   background-color: #fedd16;
-  color: #2f2639;
+  font-size: 15px;
+  font-weight: bold;
+  color: #000;
 }
 .btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary:hover,
 .navbar .navbar-nav > li > a.btn.btn-primary:focus,
@@ -1057,6 +1059,11 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   position: relative;
   top: 2px;
 }
+
+.label .fa {
+  font-size: 13px !important;
+}
+
 .btn.btn-fab,
 .navbar .navbar-nav > li > a.btn.btn-fab {
   border-radius: 50%;
@@ -1748,6 +1755,7 @@ output {
 }
 .label.label-primary {
   background-color: #fedd16;
+  color:#212121;
 }
 .label.label-success {
   background-color: #4caf50;
@@ -1759,7 +1767,7 @@ output {
   background-color: #fedd16;
 }
 .label.label-danger {
-  background-color: #fedd16;
+  background-color: #f44336;
 }
 .label.label-rose {
   background-color: #e91e63;
@@ -2817,8 +2825,8 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   background-color: rgba(0, 0, 0, 0.12);
 }
 .dropdown-menu li > a {
-  font-size: 16px;
-  padding: 10px 20px;
+  font-size: 15px;
+  padding: 10px 15px;
   margin: 0 5px;
   border-radius: 2px;
   -webkit-transition: all 150ms linear;
@@ -3060,13 +3068,14 @@ h2, .h2 {
 h3, .h3 {
   font-size: 1.825em;
   line-height: 1.4em;
-  margin: 20px 0 20px;
+  margin: 35px 0 0;
 }
 
 h4, .h4 {
-  font-size: 1.5em;
+  font-size: 1.2em;
   line-height: 1.55em;
   color:#2f2639;
+  font-weight:bold;
 }
 
 h5, .h5 {
@@ -4353,8 +4362,9 @@ hr.on-light {
   text-align: right;
 }
 .table .td-actions .btn {
-  margin: 0px;
-  padding: 5px;
+  margin: 0 10px 0 0;
+  padding: 5px 12px;
+  
 }
 .table > tbody > tr {
   position: relative;
@@ -7071,9 +7081,13 @@ select.selectpicker {
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline-block;
   overflow: hidden;
-  width: 100%;
   text-align: left;
   text-overflow: ellipsis;
+  line-height:170%;
+}
+
+#mainsidebar .bootstrap-select.btn-group .dropdown-toggle .filter-option {
+  max-width:200px;
 }
 
 .bootstrap-select.btn-group[class*="col-"] .dropdown-toggle {
@@ -7134,6 +7148,8 @@ select.selectpicker {
 
 .bootstrap-select.btn-group .dropdown-menu li a span.text {
   display: inline-block;
+  white-space: normal;
+  line-height: 110%;
 }
 
 .bootstrap-select.btn-group .dropdown-menu li small {
@@ -7183,7 +7199,7 @@ select.selectpicker {
 }
 
 .bootstrap-select.btn-group.show-tick .dropdown-menu li a span.text {
-  margin-right: 34px;
+  margin-right: 5px;
 }
 
 .bootstrap-select.show-menu-arrow.open > .dropdown-toggle {

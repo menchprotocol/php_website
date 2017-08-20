@@ -10,8 +10,8 @@ $udata = $this->session->userdata('user');
                     <h4 class="home-p">Empower your audience to achieve their goals by taking action.</h4>
                     
                     <?php
-    				if(isset($udata['id'])){
-    					echo '<a href="/dashboard" class="btn btn-danger btn-raised btn-lg bg-glow">MY DASHBOARD <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+    				if(isset($udata['u_id'])){
+    					echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
     				} else {
     					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow">Get Early Access <i class="fa fa-sign-in"></i></a>';
     					echo '<p class="sub-button">Or <a href="#" data-toggle="modal" data-target="#loginModal">Login as Partner</a></p>';

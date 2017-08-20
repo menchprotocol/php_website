@@ -11,39 +11,25 @@ $website = $this->config->item('website');
 	<title><?= ( isset($title) ? $title : $website['name'] ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
-	<!-- Fonts and icons -->
+	<!-- Fonts/Icons -->
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
 
-	<!-- CSS Addons -->
+	<!-- CSS -->
     <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/lib/animate.css" rel="stylesheet" />
-    
-    <!-- Custom CSS -->
     <link href="/css/front/material-kit.css?v=<?= version_salt() ?>" rel="stylesheet"/>
     <link href="/css/front/styles.css?v=<?= version_salt() ?>" rel="stylesheet"/>
     
-    <!-- Core JS Files -->
+    <!-- JS -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
 	<script src="/js/lib/jquery.min.js" type="text/javascript"></script>
 	<script src="/js/lib/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/js/lib/material.min.js"></script>
-	
-	<!--    Plugin for Date Time Picker and Full Calendar Plugin   -->
+	<script src="/js/lib/material.min.js"></script>	
 	<script src="/js/lib/moment.min.js"></script>
-
-	<!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker   -->
-	<script src="/js/lib/bootstrap-datetimepicker.js" type="text/javascript"></script>
-
-	<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput   -->
 	<script src="/js/lib/jasny-bootstrap.min.js"></script>
-	
-	<!--	Plugin for Text Flasher http://morphext.fyianlai.com/ -->
 	<script src="/js/lib/morphext.min.js"></script>
-
-	<!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc  -->   
 	<script src="/js/front/material-kit.js?v=<?= version_salt() ?>" type="text/javascript"></script>
-	
-	<!-- Custom JS file -->
 	<script src="/js/front/global.js?v=<?= version_salt() ?>" type="text/javascript"></script>
 </head>
 
@@ -66,9 +52,9 @@ $website = $this->config->item('website');
     				<li><a href="/features">Features</a></li>
     				<?php
     				//<li><a href="/pricing">Pricing</a></li>
-    				if(isset($udata['id'])){
-    					echo '<li id="isloggedin"><a href="/dashboard">MY DASHBOARD <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
-    					
+    				if(isset($udata['u_id'])){
+    					echo '<li id="isloggedin"><a href="/marketplace">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+    					echo '<li><a href="#" id="logoutbutton">LOGOUT <i class="fa fa-power-off" aria-hidden="true"></i></a></li>';
     				} else {
     					echo '<li><a href="https://mench.typeform.com/to/nh4s2u">EARLY ACCESS <i class="fa fa-sign-in"></i></a></li>';
     				}

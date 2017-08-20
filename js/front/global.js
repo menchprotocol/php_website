@@ -26,7 +26,7 @@ function checkLoginState(){
 		        data:{ response:response },
 		        success: function(data){
 		        	//Refresh page:
-		        	window.location = "/dashboard";
+		        	window.location = "/marketplace";
 		        }
 		    });
 		}
@@ -84,6 +84,21 @@ window.fbAsyncInit = function() {
     }
 };
 
+function update_showdown(){
+	//First detect manuall conversions like YouTube Embed:
+	
+	//Start core convertor:
+	var converter = new showdown.Converter({ 
+		'simplifiedAutoLink': true,
+		'strikethrough': true,
+		'tables': true,
+		'parseImgDimension': true,
+		'headerLevelStart': '3',
+	});
+	//Convert and return:
+	$('.showdown').html(converter.makeHtml($('.showdown').text())).fadeIn();
+}
+
 function adj(){
 	var scroll = $(window).scrollTop();
      //>=, not <=
@@ -96,10 +111,21 @@ function adj(){
 }
 
 $(document).ready(function() {
+	//Navbar landing page?
 	if(!$(".navbar").hasClass("no-adj")){
 		adj();
 	  	$(window).scroll(function() {
 	  		adj();
 	  	});
 	}
+	
+	//Showdowns?
+	if ( $( ".showdown" ).length ) {
+		update_showdown();
+	}
+	
+	//Load tooltips:
+	$(function () {
+		  $('[data-toggle="tooltip"]').addClass('').tooltip();
+	})
 });

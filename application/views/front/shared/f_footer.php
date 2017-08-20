@@ -10,7 +10,7 @@ $udata = $this->session->userdata('user');
                 <ul>
                     <li class="pull-left"><a href="/terms">Terms</a></li>
                     <li class="pull-left"><a href="/contact">Contact</a></li>
-                    <?= (!isset($udata['id']) ? '<li class="pull-left"><a href="#" data-toggle="modal" data-target="#loginModal">Partner Login</a></li>' : ''); ?>
+                    <?= (!isset($udata['u_id']) ? '<li class="pull-left"><a href="#" data-toggle="modal" data-target="#loginModal">Partner Login</a></li>' : ''); ?>
                     
                     <li class="pull-right"><i> Mench Media Inc.</i></li>
                     <li class="pull-right"><i><?= version_salt() ?></i></li>

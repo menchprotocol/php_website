@@ -57,49 +57,49 @@ $route['translate_uri_dashes'] = FALSE;
  * Front
  ****************************** */
 
-$route['default_controller'] 	= "front"; // index() Landing page
-$route['terms'] 				= "front/terms";
-$route['contact'] 				= "front/contact";
-$route['features'] 				= "front/features";
-$route['pricing'] 				= "front/pricing";
-$route['aboutus'] 				= "front/aboutus";
-$route['ses'] 					= "front/ses"; //Raw session logs
+$route['default_controller'] 		= "front"; // index() Landing page
+$route['terms'] 					= "front/terms";
+$route['contact'] 					= "front/contact";
+$route['features'] 					= "front/features";
+$route['pricing'] 					= "front/pricing";
+$route['aboutus'] 					= "front/aboutus";
+$route['ses'] 						= "front/ses"; //Raw session logs
+$route['missing_access'] 			= "front/missing_access";
+$route['signup_pending'] 			= "front/signup_pending"; //After signup
+
+//Challenges PUBLIC:
+$route['challenge/(:any)/join']		= "front/challenge_join/$1"; //Checkout
+$route['challenge/(:any)'] 			= "front/challenge_landing_page/$1"; //Landing Page
+$route['challenge'] 				= "front/challenge_browse";
+
 
 
 /* ******************************
- * Dashboard
+ * Marketplace ADMIN-ONLY
  ****************************** */
+//Admin Guides:
+$route['guides/status_bible'] 						= "marketplace/status_bible";
+$route['guides/showdown_markup'] 					= "marketplace/showdown_markup";
 
 //Users & Authentication:
-$route['user/login'] 								= "dashboard/login";
-$route['user/logout'] 								= "dashboard/logout";
-$route['user/missing_access'] 						= "dashboard/missing_access";
-$route['user/thankyou'] 							= "dashboard/thankyou"; //Message only
-$route['user/(:any)/edit'] 							= "dashboard/user_edit/$1"; //Admin Only
-$route['user/(:any)'] 								= "dashboard/user_view/$1"; //PUBLIC & HYBRID
-
-//Challenges ADMIN-ONLY:
-$route['dashboard/(:any)/settings'] 				= "dashboard/challenge_settings/$1";
-$route['dashboard/(:any)/library/(:num)']			= "dashboard/challenge_library/$1/$2"; //Oh mama!
-$route['dashboard/(:any)/library']					= "dashboard/challenge_library/$1"; //Redirect
-
-//Challenges PUBLIC:
-$route['challenge/(:any)/join'] 					= "dashboard/challenge_join/$1"; //$$$
-$route['challenge/(:any)'] 							= "dashboard/challenge_landing_page/$1"; //Landing Page
-
-//Challenges HYBRID:
-$route['dashboard'] 								= "dashboard/challenge_list/admin"; //HYBRID
-$route['challenge'] 								= "dashboard/challenge_list/user"; //HYBRID
-
-//Runs ADMIN-ONLY:
-$route['dashboard/(:any)/run'] 						= "dashboard/run_list/$1";
-$route['dashboard/(:any)/run/(:num)'] 				= "dashboard/run_dashboard/$1/$2";
-$route['dashboard/(:any)/run/(:num)/leaderboard']	= "dashboard/run_leaderboard/$1/$2";
-$route['dashboard/(:any)/run/(:num)/stream'] 		= "dashboard/run_stream/$1/$2";
-$route['dashboard/(:any)/run/(:num)/settings'] 		= "dashboard/run_settings/$1/$2";
+$route['user/login'] 								= "marketplace/login";
+$route['user/logout'] 								= "marketplace/logout";
+$route['user/(:any)/edit'] 							= "marketplace/user_edit/$1"; //Admin Only
+$route['user/(:any)'] 								= "marketplace/user_view/$1"; //PUBLIC & HYBRID
 
 
+//Challenges:
+$route['marketplace/(:any)/editcopy'] 				= "marketplace/challenge_editcopy/$1";
+$route['marketplace/(:any)/library/(:num)']			= "marketplace/challenge_library/$1/$2"; //Oh mama!
+$route['marketplace/(:any)/library']				= "marketplace/challenge_library/$1"; //Redirect
+$route['marketplace/new'] 							= "marketplace/challenge_create";
+$route['marketplace'] 								= "marketplace/challenge_marketplace";
 
-
-
+//Runs:
+$route['marketplace/(:any)/new'] 					= "marketplace/run_create/$1";
+$route['marketplace/(:any)/(:num)'] 				= "marketplace/run_dashboard/$1/$2";
+$route['marketplace/(:any)/(:num)/leaderboard']		= "marketplace/run_leaderboard/$1/$2";
+$route['marketplace/(:any)/(:num)/timeline'] 		= "marketplace/run_timeline/$1/$2";
+$route['marketplace/(:any)/(:num)/settings'] 		= "marketplace/run_settings/$1/$2";
+$route['marketplace/(:any)'] 						= "marketplace/challenge_overview/$1";
 

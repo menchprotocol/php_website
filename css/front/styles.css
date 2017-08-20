@@ -12,22 +12,45 @@
     font-size: 36px;
     color: #2f2639;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border-top: 0px solid #ddd;
+}
+
+.showdown { display:none; }
+.showdown table th { padding:5px 10px; border:1px solid #ccc; background-color:#333; color:#FFF; }
+.showdown table td { padding:5px 10px; border:1px solid #ccc; }
 
 body { font-size:18px; }
+p a, td a { text-decoration:underline; }
+.mono { font-family:monospace; background-color:#EFEFEF; padding:10px; line-height:180%; border-radius:3px; }
+
+.subhead{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+.subhead li{
+	display:inline-block;
+	margin-right:20px;
+	color:#666;
+}
+#marketplace h1 { font-size:2.8em; margin-bottom:15px; }
 .main-plain{ margin-top:100px; }
-.main-plain .container{ padding:45px 45px 45px 15px; }
+.main-plain .container{ padding:30px; }
 .landing-page .page-header { min-height: 100vh; }
 .page-header .container { padding-top: 90px; padding-left:40px; }
 .home-p{ max-width:326px; }
-.dashboard-logo{ padding:8px 0 0 2px !important; }
+.dashboard-logo{ padding:8px 0 0 0 !important; }
 .landing-page .navbar-header { padding:0 0 0 0;}
 .navbar .navbar-brand { padding:7px 10px 7px 27px; }
+.navbar { height:60px; }
 .body-container { width: 95%; }
 .navbar-right { margin-right:10px; }
+.tooltip, .tooltip * {font-size:12px; margin:0; }
 @media (max-width: 767px){
 	body { font-size:15px; }
 	.main-plain{ margin-top:70px; }
-	.main-plain .container{ padding:15px 30px 15px 15px; }
+	.main-plain .container{ padding:15px; }
 	.page-header .container { padding-top: 70px; padding-left: 15px; }
 	.landing-page .page-header { min-height: 90vh; }
 	.listtabs li { display:block; float: none; text-align: left; }
@@ -60,15 +83,35 @@ body { font-size:18px; }
     display: inline-block;
 }
 
+.li-notify {
+	padding-left: 20px;
+	padding-bottom: 15px;
+	color: #999;
+}
+#mainsidebar { margin-top:60px; padding-top:5px; }
 .jsrotate {display:none;}
+.span-activity span {
+	display:inline-block;
+	margin-right:15px;
+}
 
 .tab-pane p {text-align:left;}
 .mtweak {margin: 50px 0 -25px;}
 
 .bootstrap-select.btn-group .dropdown-menu li:first-child{
-	border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-    margin-bottom: 5px;
+	border:0;
+    margin-bottom:0;
+}
+.bootstrap-select.btn-group .dropdown-menu li{
+    padding-bottom:7px;
+}
+.mini-li .fa { color:#fedd16; }
+.mini-li a:hover .fa { color:#000; }
+
+
+.mini-li {
+	display: inline-block;
+	margin-left:0;
 }
 
 .nav>li>a:focus, .nav>li>a:hover {
@@ -95,16 +138,6 @@ body { font-size:18px; }
 }
 .bg-glow:hover {
     background-color:#FFF !important;
-}
-
-
-
-.bootstrap-select.btn-group .dropdown-menu li:first-child .fa {
-	color:#fedd16;
-}
-
-.bootstrap-select.btn-group .dropdown-menu li:first-child:hover .fa {
-	color:#000;
 }
 
 .navbar-nav>li{

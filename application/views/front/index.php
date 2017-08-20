@@ -45,16 +45,9 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="info">
-							<div class="icon icon-primary mtweak"><i class="material-icons">trending_up</i></div>
-							<h4 class="info-title">Grow Your Audience</h4>
+							<div class="icon icon-primary mtweak"><i class="material-icons">blur_on</i></div>
+							<h4 class="info-title">Expand Your Reach</h4>
 							<p>People love challenges, especially when their friends join. You know what that means right? more participants, more reach, more business for you. Challenges are one of the most effective lead generation solutions available.</p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><i class="material-icons">stars</i></div>
-							<h4 class="info-title">Be Seen as a Leader</h4>
-							<p>Who runs a challenge? You do. You are the organizer, the one that creates the rules, the one that decides who stays and who goes, the one that sets the pace, the one that rewards the finishers. You lead the way - You are the leader!</p>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -62,6 +55,13 @@
 							<div class="icon icon-primary mtweak"><i class="material-icons">flash_on</i></div>
 							<h4 class="info-title">Make an Impact</h4>
 							<p>A challenge is all about getting your audience tangible results via execution. With Mench we help you raise the stakes so people actually take action and accomplish their goals once and for all. Only through action we can change the world!</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="info">
+							<div class="icon icon-primary mtweak"><i class="material-icons">monetization_on</i></div>
+							<h4 class="info-title">Grow Your Business</h4>
+							<p>When you run a challenge you're helping a group of like-minded people achieve tangible results. Those results will bring them closer to their goals and help them grow. When you help your audience grow, your business will grow along.</p>
 						</div>
 					</div>
 				</div>

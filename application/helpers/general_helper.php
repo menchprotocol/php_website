@@ -4,7 +4,7 @@ function version_salt(){
 	//This variable ensures that the CSS/JS files are being updated upon each launch
 	//Also appended a timestamp To prevent static file cashing for local development
 	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.13';
+	return 'v0.15';
 }
 
 function fetch_file_ext($url){
@@ -15,22 +15,162 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-function auth($min_level,$show_error=false){
+function dash_li($url,$anchor){
+	return '<li'.( $url==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="'.$url.'">'.$anchor.'</a></li>';
+}
+
+
+function echo_users($users){
+	foreach($users as $i=>$user){
+		if($i>0){
+			echo ', ';
+		}
+		echo '<a href="/user/'.$user['u_url_key'].'">@'.$user['u_url_key'].'</a>';
+	}
+}
+
+
+function status_bible($object=null,$status=null){
+	
+	/* ******************************
+	 * OBJECTS
+	 ****************************** */
+	$o_name = array( //Name
+			-2 	=> 'REJECTED <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			-1 	=> 'DELETED <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			1 	=> 'DRAFTING <i class="fa fa-info-circle" aria-hidden="true"></i>', //Normally Default
+			2	=> 'BEING REVIEWED <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			3	=> 'RUNNING <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			4	=> 'DONE <i class="fa fa-info-circle" aria-hidden="true"></i>', //Not for all objects
+	);
+	$o_desc = array( //Insight
+			-2 	=> 'rejected because it did not match community guidelines.',
+			-1 	=> 'deleted by user.',
+			1 	=> 'created and being prepared to be published live. Users cannot see challenges until they are published live.', //Normally Default
+			2	=> 'draft submitted for peer review before going live.',
+			3	=> 'is running, taking in new registrants and then operating.',
+			4	=> 'finished and completed.',
+	);
+	
+	
+	/* ******************************
+	 * USERS
+	 ****************************** */
+	$u_name = array( //Name
+			-1 	=> 'DELETED <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			0 	=> 'PENDING <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			1 	=> 'ACTIVE <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			2	=> 'LEADER <i class="fa fa-info-circle" aria-hidden="true"></i>',
+	);
+	$u_desc = array( //Name
+			-1 	=> 'deleted because user did not meet community guidelines.',
+			0 	=> 'pending approval from moderator.',
+			1 	=> 'active.',
+			2	=> 'leader/admin.',
+	);
+	
+	
+	//Ok draft bible:
+	$status_bible = array(
+			
+			/* ******************************
+			 * OBJECTS
+			 ****************************** */
+			'c' => array( //Challenges
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Challenge '.$o_desc[-2].'">'.$o_name[-2].'</span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Challenge '.$o_desc[-1].'">'.$o_name[-1].'</span>',
+					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Challenge '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
+					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Challenge '.$o_desc[2].'">'.$o_name[2].'</span>',
+					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Challenge '.$o_desc[3].'">'.$o_name[3].'</span>',
+			),
+			'r' => array( //Runs
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Run '.$o_desc[-2].'">'.$o_name[-2].'</span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Run '.$o_desc[-1].'">'.$o_name[-1].'</span>',
+					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Run '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
+					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Run '.$o_desc[2].'">'.$o_name[2].'</span>',
+					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Run '.$o_desc[3].'">'.$o_name[3].'</span>',
+					4	=> '<span class="label label-rose" 		data-toggle="tooltip" title="Run '.$o_desc[4].'">'.$o_name[4].'</span>',
+			),
+			'i' => array( //Insights
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight '.$o_desc[-2].'">'.$o_name[-2].'</span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight '.$o_desc[-1].'">'.$o_name[-1].'</span>',
+					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
+					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Insight '.$o_desc[2].'">'.$o_name[2].'</span>',
+					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight '.$o_desc[3].'">'.$o_name[3].'</span>',
+			),
+			'cr' => array( //Challenge Relations (to Insights)
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[-2].'">'.$o_name[-2].'</span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[-1].'">'.$o_name[-1].'</span>',
+					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
+					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Insight Reference '.$o_desc[2].'">'.$o_name[2].'</span>',
+					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[3].'">'.$o_name[3].'</span>',
+			),
+			
+			
+			/* ******************************
+			 * USERS
+			 ****************************** */
+			'u' => array( //Users
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User is '.$u_desc[-1].'">'.$u_name[-1].'</span>', //Default
+					0 	=> '<span class="label label-info" 		data-toggle="tooltip" title="User is '.$u_desc[0].'">'.$u_name[0].'</span>', //Default
+					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User is '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
+					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User is '.$u_desc[2].'">'.$u_name[2].'</span>',
+			),
+			'ru' => array( //Users who joined a particular run, either as Admin or Participants
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[-1].'">'.$u_name[-1].'</span>', //Default
+					0 	=> '<span class="label label-info" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[0].'">'.$u_name[0].'</span>', //Default
+					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
+					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[2].'">'.$u_name[2].'</span>',
+			),
+	);
+	
+	//Return what's asked for:
+	if(!$object){
+		//Everything
+		return $status_bible;
+	} elseif(!$status){
+		//Object Specific
+		return @$status_bible[$object];
+	} else {
+		//Object & Status Specific
+		return @$status_bible[$object][intval($status)];
+	}
+}
+
+function filter($array,$ikey,$ivalue){
+	if(!is_array($array) || count($array)<=0){
+		return null;
+	}
+	foreach($array as $key=>$value){
+		if(isset($value[$ikey]) && $value[$ikey]==$ivalue){
+			return $array[$key];
+		}
+	}
+	return null;
+}
+
+function auth($min_level,$force_redirect=0){
 	
 	$CI =& get_instance();
 	$udata = $CI->session->userdata('user');
 	
-	if(!isset($udata['status']) || intval($udata['status'])<intval($min_level)){
+	if(!isset($udata['u_status']) || intval($udata['u_status'])<intval($min_level)){
 		//Ooops, there is an error:
-		if(!$show_error){
+		if(!$force_redirect){
 			return false;
 		} else {
 			//Block access:
-			header( 'Location: /user/missing_access?url='.$_SERVER[REQUEST_URI] ) ;
+			header( 'Location: /missing_access?url='.$_SERVER['REQUEST_URI'] );
 		}
 	}
 	
-	return true;
+	return $udata;
+}
+
+function redirect_message($url,$message){
+	$CI =& get_instance();
+	$CI->session->set_flashdata('hm', $message);
+	header("Location: ".$url);
 }
 
 function save_file($file_url,$json_data){
@@ -156,9 +296,9 @@ function arrayToObject($array){
 	return $obj;
 }
 
-function format_timestamp($t){	
+function format_timestamp($t){
 	$time = time() - strtotime(substr($t,0,19)); // to get the time since that moment
-	$time = ($time<1)? 1 : $time;
+	$time = ($time<1) ? 1 : $time;
 	$tokens = array (
 			31536000 => 'year',
 			2592000 => 'month',
@@ -249,4 +389,101 @@ function fetchMax($input_array,$searchKey){
 		}
 	}
 	return $max_ui_rank;
+}
+
+
+
+
+
+
+function html_new_run(){
+	//Start generating the add new Run button:
+	$return_string = '';
+	$return_string .= '<div class="list-group-item">';
+	$return_string .= '<h4 class="list-group-item-heading">';
+	
+	$return_string .= '<a href="/" class="expA"><span class="boldbadge badge">New</span></a>';
+	
+	
+	$return_string .= '</h4>';
+	$return_string .= '</div>';
+	return $return_string;
+}
+
+function html_run($run){
+	
+	$CI =& get_instance();
+	$user_data = $CI->session->userdata('user');
+	
+
+	//Start the display:
+	$return_string = '';
+	$return_string .= '<div class="list-group-item">';
+	
+	$return_string .= '<h4 class="list-group-item-heading">';
+	$return_string .= '<a href="/"><span class="boldbadge badge">'.'Hiii'.'</span></a>';
+	$return_string .= '<a href="alert(\'Hiii\');">'.
+							'ICON'.'<span class="anchor">'. 'TITLE 1' . '<span>'.'ANCHOR'.'</span>'.'</span>'.
+	
+	( 1 ? ' ICON2' : '').
+	
+	'<span class="updateStatus"></span>'.
+	
+	'</a>'.
+	'</h4>';
+	
+	
+	$return_string .= '<div class="link-details">';
+	$return_string .= '<p class="list-group-item-text">'.'VALUE'.'</p>';
+	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
+	
+	//Collector:
+	$return_string .= '<span><a href="/"><img src="https://www.gravatar.com/avatar/'.md5('ssasif').'?d=identicon" class="mini-image" /></a></span>';
+	
+	//COPY LANDING PAGE:
+	$return_string .= ' <span title="Click to Copy URL to share Plugin on Messenger." data-toggle="tooltip" class="hastt clickcopy" data-clipboard-text="httpurlhere"><img src="/img/icons/messenger.png" class="action_icon" /><b>112233</b></span>';
+	
+	//Date
+	$return_string .= '<span title="Added TIME UTC" data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>TIME</span>';
+	
+	/*
+	//Update ID
+	$return_string .= '<span title="Unique Update ID assigned per each edit." data-toggle="tooltip" class="hastt">#'.$node[$key]['id'].'</span>';
+	
+	if(auth_admin(1)){
+		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>';
+		$return_string .= '<ul class="dropdown-menu">';
+		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></li>';
+		
+		//Make sure this is not a grandpa before showing the delete button:
+		$grandparents = $CI->config->item('grand_parents');
+		if(!($key==0 && array_key_exists($node[$key]['node_id'],$grandparents))){
+			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$node[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>';
+		}
+		
+		//Add search shortcuts:
+		$return_string .= '<li><a href="https://www.google.com/search?q='.urlencode($node[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Google</a></li>';
+		$return_string .= '<li><a href="https://www.youtube.com/results?search_query='.urlencode($node[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> YouTube</a></li>';
+		
+		//Display inversing if NOT direct
+		if(!$is_direct){
+			//TODO $return_string .= '<li><a href="javascript:inverse_link('.$key.','.$node[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Flip Direction</a></li>';
+		}
+		if($node[$key]['update_id']>0){
+			//This gem has previous revisions:
+			//TODO $return_string .= '<li><a href="javascript:browse_revisions('.$key.','.$node[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Revisions</a></li>';
+		}
+		
+		$return_string .= '</ul></div>';
+		
+	} else {
+		$return_string .= ''; //<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Limited Access</span>
+	}
+	*/
+	$return_string .= '</div></div>';
+	$return_string .= '</div>';
+	$return_string .= '</div>';
+	
+	//Return:
+	return $return_string;
 }
