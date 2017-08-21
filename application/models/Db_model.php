@@ -69,7 +69,7 @@ class Db_model extends CI_Model {
 			$this->db->where($key,$value);
 		}
 		$this->db->group_by('r.r_id');
-		$this->db->order_by('r.r_version','DESC');
+		$this->db->order_by('r.r_version','ASC');
 		$q = $this->db->get();
 		$runs = $q->result_array();
 		

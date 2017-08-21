@@ -1,6 +1,9 @@
+<?php 
+//Attempt to fetch session variables:
+$udata = $this->session->userdata('user');
+?>
+
 	    <div class="section text-center">
-	    	
-	    	
     		<!-- How? -->
 			<div class="features">
 				<div class="row">
@@ -66,7 +69,25 @@
 					</div>
 				</div>
 			</div>
+			
+			
+			<!-- Get Started -->
+			<div class="section section-contacts" style="padding-top:20px;">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2" style="text-align:center;">
+						<?php
+			    		if(isset($udata['u_id'])){
+			    			echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+			    		} else {
+			    			echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">Get Early Access <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
+			    			echo '<p class="sub-button">Or <a href="#" data-toggle="modal" data-target="#loginModal">Login as Partner</a></p>';
+			    		}
+			    		?>
+					</div>
+				</div>
+			</div>
 
+			<?php /*
         	<div class="section section-contacts">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2" style="text-align:center;">
@@ -74,6 +95,6 @@
                     </div>
                 </div>
             </div>
-             
+            */ ?>
              
           </div>

@@ -33,8 +33,6 @@ var big_image;
          $(".selectpicker").selectpicker();
      }
 
-
-
  });
 /*
  $(window).on("load", function() {

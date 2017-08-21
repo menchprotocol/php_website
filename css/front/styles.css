@@ -54,7 +54,7 @@ p a, td a { text-decoration:underline; }
 	.page-header .container { padding-top: 70px; padding-left: 15px; }
 	.landing-page .page-header { min-height: 90vh; }
 	.listtabs li { display:block; float: none; text-align: left; }
-	
+	.btn { padding: 6px 12px; }
 	.contactleft{padding-top:70px;}
 	.home-p{ max-width:270px; }
 	

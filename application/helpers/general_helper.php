@@ -1,12 +1,5 @@
 <?php
 
-function version_salt(){
-	//This variable ensures that the CSS/JS files are being updated upon each launch
-	//Also appended a timestamp To prevent static file cashing for local development
-	//TODO Implemenet in sesseion when user logs in and logout if not matched!
-	return 'v0.15';
-}
-
 function fetch_file_ext($url){
 	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
 	$url_parts = explode('?',$url,2);
@@ -29,6 +22,18 @@ function echo_users($users){
 	}
 }
 
+function run_ver($run_version){
+	if($run_version==1){
+		return '<i class="material-icons">looks_one</i>';
+	} elseif($run_version==2){
+		return '<i class="material-icons">looks_two</i>';
+	} elseif($run_version>2 && $run_version<=6){
+		return '<i class="material-icons">looks_'.$run_version.'</i>';
+	} else {
+		//Ooops, no option here!
+		return $run_version;
+	}
+}
 
 function status_bible($object=null,$status=null){
 	
@@ -36,20 +41,18 @@ function status_bible($object=null,$status=null){
 	 * OBJECTS
 	 ****************************** */
 	$o_name = array( //Name
-			-2 	=> 'REJECTED <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			-2 	=> 'REMOVED <i class="fa fa-info-circle" aria-hidden="true"></i>',
 			-1 	=> 'DELETED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			1 	=> 'DRAFTING <i class="fa fa-info-circle" aria-hidden="true"></i>', //Normally Default
-			2	=> 'BEING REVIEWED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			3	=> 'RUNNING <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			4	=> 'DONE <i class="fa fa-info-circle" aria-hidden="true"></i>', //Not for all objects
+			0 	=> 'ITERATING <i class="fa fa-info-circle" aria-hidden="true"></i>', //Normally Default
+			1	=> 'LIVE <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			2	=> 'DONE <i class="fa fa-info-circle" aria-hidden="true"></i>', //Not for all objects
 	);
 	$o_desc = array( //Insight
-			-2 	=> 'rejected because it did not match community guidelines.',
+			-2 	=> 'removed because it did meet our community guidelines.',
 			-1 	=> 'deleted by user.',
-			1 	=> 'created and being prepared to be published live. Users cannot see challenges until they are published live.', //Normally Default
-			2	=> 'draft submitted for peer review before going live.',
-			3	=> 'is running, taking in new registrants and then operating.',
-			4	=> 'finished and completed.',
+			0 	=> 'created and being prepared to be published live. Users cannot see challenges until they are published live.', //Normally Default
+			1	=> 'is live and visible to the Mench community.',
+			2	=> 'finished and completed.',
 	);
 	
 	
@@ -57,16 +60,22 @@ function status_bible($object=null,$status=null){
 	 * USERS
 	 ****************************** */
 	$u_name = array( //Name
+			-2 	=> 'REMOVED <i class="fa fa-info-circle" aria-hidden="true"></i>',
 			-1 	=> 'DELETED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			0 	=> 'PENDING <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			1 	=> 'ACTIVE <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			2	=> 'LEADER <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			0 	=> 'INVITED <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			1 	=> 'MEMBER <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			2	=> 'CONTRIBUTOR <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			3	=> 'LEADER <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			4	=> 'ADMIN <i class="fa fa-info-circle" aria-hidden="true"></i>',
 	);
 	$u_desc = array( //Name
-			-1 	=> 'deleted because user did not meet community guidelines.',
-			0 	=> 'pending approval from moderator.',
-			1 	=> 'active.',
-			2	=> 'leader/admin.',
+			-2 	=> 'removed because it did meet our community guidelines.',
+			-1 	=> 'deleted their account by their own will.',
+			0 	=> 'has been invited through a friend.',
+			1 	=> 'is an active member.',
+			2	=> 'is an Mench researcher and content contributor.',
+			3	=> 'is an leader in one or more runs.',
+			4	=> 'is an Mench administrator.',
 	);
 	
 	
@@ -79,31 +88,27 @@ function status_bible($object=null,$status=null){
 			'c' => array( //Challenges
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Challenge '.$o_desc[-2].'">'.$o_name[-2].'</span>',
 					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Challenge '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Challenge '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
-					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Challenge '.$o_desc[2].'">'.$o_name[2].'</span>',
-					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Challenge '.$o_desc[3].'">'.$o_name[3].'</span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Challenge '.$o_desc[0].'">'.$o_name[0].'</span>',
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Challenge '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
 			),
 			'r' => array( //Runs
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Run '.$o_desc[-2].'">'.$o_name[-2].'</span>',
 					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Run '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Run '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Run '.$o_desc[0].'">'.$o_name[0].'</span>', //Default
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Run '.$o_desc[1].'">'.$o_name[1].'</span>',
 					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Run '.$o_desc[2].'">'.$o_name[2].'</span>',
-					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Run '.$o_desc[3].'">'.$o_name[3].'</span>',
-					4	=> '<span class="label label-rose" 		data-toggle="tooltip" title="Run '.$o_desc[4].'">'.$o_name[4].'</span>',
 			),
 			'i' => array( //Insights
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight '.$o_desc[-2].'">'.$o_name[-2].'</span>',
 					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
-					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Insight '.$o_desc[2].'">'.$o_name[2].'</span>',
-					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight '.$o_desc[3].'">'.$o_name[3].'</span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight '.$o_desc[0].'">'.$o_name[0].'</span>', //Default
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight '.$o_desc[1].'">'.$o_name[1].'</span>',
 			),
 			'cr' => array( //Challenge Relations (to Insights)
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[-2].'">'.$o_name[-2].'</span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
-					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Insight Reference '.$o_desc[2].'">'.$o_name[2].'</span>',
-					3	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[3].'">'.$o_name[3].'</span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference was replaced by a new reference or '.$o_desc[-1].'">'.$o_name[-1].'</span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[0].'">'.$o_name[0].'</span>', //Default
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[1].'">'.$o_name[1].'</span>',
 			),
 			
 			
@@ -111,16 +116,21 @@ function status_bible($object=null,$status=null){
 			 * USERS
 			 ****************************** */
 			'u' => array( //Users
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User is '.$u_desc[-1].'">'.$u_name[-1].'</span>', //Default
-					0 	=> '<span class="label label-info" 		data-toggle="tooltip" title="User is '.$u_desc[0].'">'.$u_name[0].'</span>', //Default
-					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User is '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
-					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User is '.$u_desc[2].'">'.$u_name[2].'</span>',
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User '.$u_desc[-2].'">'.$u_name[-2].'</span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User '.$u_desc[-1].'">'.$u_name[-1].'</span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="User '.$u_desc[0].'">'.$u_name[0].'</span>',
+					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
+					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User '.$u_desc[2].'">'.$u_name[2].'</span>',
+					3	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User '.$u_desc[3].'">'.$u_name[3].'</span>',
+					4	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User '.$u_desc[4].'">'.$u_name[4].'</span>',
 			),
 			'ru' => array( //Users who joined a particular run, either as Admin or Participants
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[-2].'">'.$u_name[-2].'</span>', //Default
 					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[-1].'">'.$u_name[-1].'</span>', //Default
-					0 	=> '<span class="label label-info" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[0].'">'.$u_name[0].'</span>', //Default
+					0 	=> '<span class="label label-default"	data-toggle="tooltip" title="User Run registration status is '.$u_desc[0].'">'.$u_name[0].'</span>', //Default
 					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
 					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[2].'">'.$u_name[2].'</span>',
+					3	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[3].'">'.$u_name[3].'</span>',
 			),
 	);
 	

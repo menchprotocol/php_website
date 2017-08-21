@@ -1,6 +1,7 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
+$website = $this->config->item('website');
 ?></div>
 </div>
 
@@ -13,7 +14,7 @@ $udata = $this->session->userdata('user');
                     <?= (!isset($udata['u_id']) ? '<li class="pull-left"><a href="#" data-toggle="modal" data-target="#loginModal">Partner Login</a></li>' : ''); ?>
                     
                     <li class="pull-right"><i> Mench Media Inc.</i></li>
-                    <li class="pull-right"><i><?= version_salt() ?></i></li>
+                    <li class="pull-right"><i>v<?= $website['version'] ?></i></li>
                 </ul>
             </nav>
         </div>

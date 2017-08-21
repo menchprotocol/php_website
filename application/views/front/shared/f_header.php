@@ -18,8 +18,8 @@ $website = $this->config->item('website');
 	<!-- CSS -->
     <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/lib/animate.css" rel="stylesheet" />
-    <link href="/css/front/material-kit.css?v=<?= version_salt() ?>" rel="stylesheet"/>
-    <link href="/css/front/styles.css?v=<?= version_salt() ?>" rel="stylesheet"/>
+    <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet"/>
+    <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet"/>
     
     <!-- JS -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
@@ -29,8 +29,8 @@ $website = $this->config->item('website');
 	<script src="/js/lib/moment.min.js"></script>
 	<script src="/js/lib/jasny-bootstrap.min.js"></script>
 	<script src="/js/lib/morphext.min.js"></script>
-	<script src="/js/front/material-kit.js?v=<?= version_salt() ?>" type="text/javascript"></script>
-	<script src="/js/front/global.js?v=<?= version_salt() ?>" type="text/javascript"></script>
+	<script src="/js/front/material-kit.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
 </head>
 
 <body class="landing-page">
@@ -49,8 +49,8 @@ $website = $this->config->item('website');
 
         	<div class="collapse navbar-collapse">
         		<ul class="nav navbar-nav navbar-right">
-    				<li><a href="/features">Features</a></li>
     				<?php
+    				//<li><a href="/features">Features</a></li>
     				//<li><a href="/pricing">Pricing</a></li>
     				if(isset($udata['u_id'])){
     					echo '<li id="isloggedin"><a href="/marketplace">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';

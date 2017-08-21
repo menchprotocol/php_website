@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //Primary website variables:
 $config['website'] = array(
+		'version' => 0.16,
 		'url' => 'http://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
 		'email' => 'shervin@mench.co',
@@ -17,6 +18,33 @@ $config['aws_credentials'] = [
 		'key'    => 'AKIAJOLBLKFSYCCYYDRA',
 		'secret' => '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',
 ];
+
+
+
+
+
+//TODO Develop further?
+$config['objects'] = array(
+		'c' => array(
+				'name_s' => 'Challenge',
+				'name_p' => 'Challenges',
+				'desc' => 'Challenges',
+				'url' => '/marketplace',
+				'dbname' => 'v5_challenges',
+		),
+		'i' => array(
+				'name_s' => 'Patterns',
+				'name_p' => 'Patterns',
+				'dbname' => 'v5_insights',
+		),
+		'cr' => array(
+				'name_s' => 'Reference',
+				'name_p' => 'References',
+				'dbname' => 'v5_insights',
+		),
+);
+
+
 
 /*
  |--------------------------------------------------------------------------

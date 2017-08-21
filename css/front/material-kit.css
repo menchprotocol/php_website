@@ -1064,6 +1064,13 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   font-size: 13px !important;
 }
 
+.label .fa-info-circle {
+  font-size: 10px !important;
+  margin-left:2px;
+}
+
+10px !important
+
 .btn.btn-fab,
 .navbar .navbar-nav > li > a.btn.btn-fab {
   border-radius: 50%;

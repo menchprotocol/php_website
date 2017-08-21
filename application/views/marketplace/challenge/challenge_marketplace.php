@@ -7,7 +7,6 @@
 	<thead>
 		<tr>
 			<th>Challenge</th>
-			<th>Stage</th>
 			<th>Activity</th>
 			<th>Actions</th>
 		</tr>
@@ -26,7 +25,6 @@
 			?>
 			<tr>
 			    <td><a href="/marketplace/<?= $c['c_url_key']?>"><i class="fa fa-rocket"></i> <?= $c['c_objective']?></a></td>
-			    <td><?= status_bible('c',$c['c_status']); ?></td>
 			    <td class="span-activity">
 			    	<span data-toggle="tooltip" title="Users"><i class="fa fa-user"></i> <?= $c['count_users']?></span>
 			    	<span data-toggle="tooltip" title="Runs"><i class="fa fa-code-fork"></i> <?= $c['count_runs']?></span>
