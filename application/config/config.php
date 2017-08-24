@@ -1,9 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//Settime zone to PST:
+date_default_timezone_set('America/Los_Angeles');
+
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.16,
+		'version' => 0.18,
+		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'http://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
 		'email' => 'shervin@mench.co',

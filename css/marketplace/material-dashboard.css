@@ -499,8 +499,8 @@ h2.title {
   line-height: 30px;
   font-size: 16px;
 }
-.sidebar .nav i,
-.off-canvas-sidebar .nav i {
+.sidebar .nav a>i,
+.off-canvas-sidebar .nav a>i {
   font-size: 24px;
   float: left;
   margin-right: 15px;
@@ -657,7 +657,7 @@ h2.title {
 }
 .main-panel > .content {
   margin-top: 50px;
-  padding: 20px;
+  padding: 10px 0;
   min-height: calc(100% - 123px);
 }
 .main-panel > .footer {
@@ -2771,7 +2771,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
   background-color: #fedd16;
   color: #FFFFFF;
-  box-shadow: 0 12px 20px -10px rgba(156, 39, 176, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(156, 39, 176, 0.2);
+  box-shadow: 0 6px 10px -10px rgba(156, 39, 176, 0.28), 0 4px 10px 0px rgba(0, 0, 0, 0.12), 0 7px 4px -5px rgba(156, 39, 176, 0.2);
 }
 .nav-pills:not(.nav-pills-icons) > li > a {
   border-radius: 30px;

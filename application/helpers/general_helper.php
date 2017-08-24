@@ -8,11 +8,6 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-function dash_li($url,$anchor){
-	return '<li'.( $url==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="'.$url.'">'.$anchor.'</a></li>';
-}
-
-
 function echo_users($users){
 	foreach($users as $i=>$user){
 		if($i>0){
@@ -22,7 +17,46 @@ function echo_users($users){
 	}
 }
 
-function run_ver($run_version){
+function load_object($object,$obj_limits){
+	
+	$CI =& get_instance();
+	
+	if($object=='c'){
+		//Fetch Challenge:
+		$fetch_challenges = $CI->Db_model->c_fetch($obj_limits);
+		
+		//Valid challenge key?
+		if(!count($fetch_challenges)==1){
+			redirect_message('/marketplace','<div class="alert alert-danger" role="alert">Invalid challenge key.</div>');
+		}
+		
+		//Append more data:
+		$fetch_challenges[0]['runs'] = $CI->Db_model->r_fetch(array(
+				'r.r_c_id' => $fetch_challenges[0]['c_id'],
+				'r.r_status >=' => 0,
+		));
+		
+		return $fetch_challenges[0];
+	} elseif($object=='u'){
+		
+		//Fetch users:
+		$users = $CI->Db_model->users_fetch($obj_limits);
+		
+		if(!count($users)==1){
+			//Ooops, something wrong:
+			//TODO Redirect to a user index instead of the marketpace
+			redirect_message('/marketplace','<div class="alert alert-danger" role="alert">Invalid username.</div>');
+		}
+		
+		//Append permissions:
+		$users[0]['access'] = $CI->Db_model->fetch_user_access($users[0]['u_id']);
+		
+		return $users[0];
+	}
+		
+}
+
+function run_icon($run_version){
 	if($run_version==1){
 		return '<i class="material-icons">looks_one</i>';
 	} elseif($run_version==2){
@@ -35,17 +69,41 @@ function run_ver($run_version){
 	}
 }
 
+function can_modify($object,$object_id){
+	
+	$CI =& get_instance();
+	$udata = $CI->session->userdata('user');
+	
+	//Validate:
+	if(isset($udata['u_status']) && $udata['u_status']>=2){
+		if(in_array($object,array('c','r'))){
+			
+			return in_array($object_id,$udata['access'][$object]);
+			
+		} elseif($object=='u'){
+			
+			return ($udata['u_id']==$object_id || $udata['u_status']>=4);
+			
+		}
+	}
+	
+	//No access:
+	return false;
+}
+
 function status_bible($object=null,$status=null){
+	
+	$CI =& get_instance();
 	
 	/* ******************************
 	 * OBJECTS
 	 ****************************** */
 	$o_name = array( //Name
-			-2 	=> 'REMOVED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			-1 	=> 'DELETED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			0 	=> 'ITERATING <i class="fa fa-info-circle" aria-hidden="true"></i>', //Normally Default
-			1	=> 'LIVE <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			2	=> 'DONE <i class="fa fa-info-circle" aria-hidden="true"></i>', //Not for all objects
+			-2 	=> 'DISQUALIFIED',
+			-1 	=> 'DELETED',
+			0 	=> 'PREPPING', //Normally Default
+			1	=> 'LIVE',
+			2	=> 'DONE', //Not for all objects
 	);
 	$o_desc = array( //Insight
 			-2 	=> 'removed because it did meet our community guidelines.',
@@ -60,13 +118,13 @@ function status_bible($object=null,$status=null){
 	 * USERS
 	 ****************************** */
 	$u_name = array( //Name
-			-2 	=> 'REMOVED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			-1 	=> 'DELETED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			0 	=> 'INVITED <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			1 	=> 'MEMBER <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			2	=> 'CONTRIBUTOR <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			3	=> 'LEADER <i class="fa fa-info-circle" aria-hidden="true"></i>',
-			4	=> 'ADMIN <i class="fa fa-info-circle" aria-hidden="true"></i>',
+			-2 	=> 'DISQUALIFIED',
+			-1 	=> 'DELETED',
+			0 	=> 'INVITED',
+			1 	=> 'MEMBER',
+			2	=> 'CONTRIBUTOR',
+			3	=> 'LEADER',
+			4	=> 'ADMIN',
 	);
 	$u_desc = array( //Name
 			-2 	=> 'removed because it did meet our community guidelines.',
@@ -86,29 +144,29 @@ function status_bible($object=null,$status=null){
 			 * OBJECTS
 			 ****************************** */
 			'c' => array( //Challenges
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Challenge '.$o_desc[-2].'">'.$o_name[-2].'</span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Challenge '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Challenge '.$o_desc[0].'">'.$o_name[0].'</span>',
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Challenge '.$o_desc[1].'">'.$o_name[1].'</span>', //Default
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-2].'">'.$o_name[-2].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-1].'">'.$o_name[-1].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[0].'">'.$o_name[0].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[1].'">'.$o_name[1].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
 			),
 			'r' => array( //Runs
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Run '.$o_desc[-2].'">'.$o_name[-2].'</span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Run '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Run '.$o_desc[0].'">'.$o_name[0].'</span>', //Default
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Run '.$o_desc[1].'">'.$o_name[1].'</span>',
-					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="Run '.$o_desc[2].'">'.$o_name[2].'</span>',
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[2].'">'.$o_name[2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'i' => array( //Insights
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight '.$o_desc[-2].'">'.$o_name[-2].'</span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight '.$o_desc[0].'">'.$o_name[0].'</span>', //Default
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight '.$o_desc[1].'">'.$o_name[1].'</span>',
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('i_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('i_name').' '.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('i_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('i_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'cr' => array( //Challenge Relations (to Insights)
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[-2].'">'.$o_name[-2].'</span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Insight Reference was replaced by a new reference or '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[0].'">'.$o_name[0].'</span>', //Default
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="Insight Reference '.$o_desc[1].'">'.$o_name[1].'</span>',
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' was replaced by a new reference or '.$o_desc[-1].'">'.$o_name[-1].'</span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			
 			
@@ -116,34 +174,36 @@ function status_bible($object=null,$status=null){
 			 * USERS
 			 ****************************** */
 			'u' => array( //Users
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User '.$u_desc[-2].'">'.$u_name[-2].'</span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User '.$u_desc[-1].'">'.$u_name[-1].'</span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="User '.$u_desc[0].'">'.$u_name[0].'</span>',
-					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
-					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User '.$u_desc[2].'">'.$u_name[2].'</span>',
-					3	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User '.$u_desc[3].'">'.$u_name[3].'</span>',
-					4	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User '.$u_desc[4].'">'.$u_name[4].'</span>',
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[-2].'">'.$u_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[-1].'">'.$u_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[0].'">'.$u_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[1].'">'.$u_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[2].'">'.$u_name[2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					3	=> '<span class="label label-rose" 		data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[3].'">'.$u_name[3].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					4	=> '<span class="label label-rose" 		data-toggle="tooltip" title="'.$CI->lang->line('u_name').' '.$u_desc[4].'">'.$u_name[4].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'ru' => array( //Users who joined a particular run, either as Admin or Participants
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[-2].'">'.$u_name[-2].'</span>', //Default
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[-1].'">'.$u_name[-1].'</span>', //Default
-					0 	=> '<span class="label label-default"	data-toggle="tooltip" title="User Run registration status is '.$u_desc[0].'">'.$u_name[0].'</span>', //Default
-					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="User Run registration status is '.$u_desc[1].'">'.$u_name[1].'</span>', //Default
-					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[2].'">'.$u_name[2].'</span>',
-					3	=> '<span class="label label-rose" 		data-toggle="tooltip" title="User Run registration status is '.$u_desc[3].'">'.$u_name[3].'</span>',
+					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[-2].'">'.$u_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[-1].'">'.$u_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					0 	=> '<span class="label label-default"	data-toggle="tooltip" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[0].'">'.$u_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					1 	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[1].'">'.$u_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+					2	=> '<span class="label label-rose" 		data-toggle="tooltip" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[2].'">'.$u_name[2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+					3	=> '<span class="label label-rose" 		data-toggle="tooltip" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[3].'">'.$u_name[3].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 	);
 	
+	
+	
 	//Return what's asked for:
-	if(!$object){
+	if($object==null){
 		//Everything
 		return $status_bible;
-	} elseif(!$status){
+	} elseif($status==null){
 		//Object Specific
-		return @$status_bible[$object];
+		return $status_bible[$object];
 	} else {
 		//Object & Status Specific
-		return @$status_bible[$object][intval($status)];
+		return $status_bible[$object][intval($status)];
 	}
 }
 
@@ -158,6 +218,9 @@ function filter($array,$ikey,$ivalue){
 	}
 	return null;
 }
+
+//2x Authentication Functions:
+
 
 function auth($min_level,$force_redirect=0){
 	
@@ -306,9 +369,26 @@ function arrayToObject($array){
 	return $obj;
 }
 
-function format_timestamp($t){
+
+
+function time_ispast($t){
+	return ((time() - strtotime(substr($t,0,19))) > 0);
+}
+
+function time_format($t,$date_only=false){
+	$this_year = ( date("Y")==date("Y",strtotime(substr($t,0,19))) );
+	if($date_only){
+		return date(( $this_year ? "M j" : "M j, Y" ),strtotime(substr($t,0,19)));
+	} else {
+		return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),strtotime(substr($t,0,19)));
+	}
+	
+}
+
+function time_diff($t){
 	$time = time() - strtotime(substr($t,0,19)); // to get the time since that moment
-	$time = ($time<1) ? 1 : $time;
+	$is_future = ( $time<0 );
+	$time = abs($time);
 	$tokens = array (
 			31536000 => 'year',
 			2592000 => 'month',
@@ -325,6 +405,8 @@ function format_timestamp($t){
 		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
 	}
 }
+
+
 
 
 function url_name($text){

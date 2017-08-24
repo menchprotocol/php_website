@@ -77,6 +77,7 @@ $route['challenge'] 				= "front/challenge_browse";
 /* ******************************
  * Marketplace ADMIN-ONLY
  ****************************** */
+
 //Admin Guides:
 $route['guides/status_bible'] 						= "marketplace/status_bible";
 $route['guides/showdown_markup'] 					= "marketplace/showdown_markup";
@@ -87,19 +88,16 @@ $route['user/logout'] 								= "marketplace/logout";
 $route['user/(:any)/edit'] 							= "marketplace/user_edit/$1"; //Admin Only
 $route['user/(:any)'] 								= "marketplace/user_view/$1"; //PUBLIC & HYBRID
 
+//Runs:
+$route['marketplace/(:num)/run/(:num)'] 			= "marketplace/run_dashboard/$1/$2";
+$route['marketplace/(:num)/run/(:num)/leaderboard']	= "marketplace/run_leaderboard/$1/$2";
+$route['marketplace/(:num)/run/(:num)/activity'] 	= "marketplace/run_activity/$1/$2";
+$route['marketplace/(:num)/run/(:num)/settings'] 	= "marketplace/run_settings/$1/$2";
+$route['marketplace/(:num)/run/new'] 				= "marketplace/run_settings/$1";
 
 //Challenges:
-$route['marketplace/(:any)/editcopy'] 				= "marketplace/challenge_editcopy/$1";
-$route['marketplace/(:any)/library/(:num)']			= "marketplace/challenge_library/$1/$2"; //Oh mama!
-$route['marketplace/(:any)/library']				= "marketplace/challenge_library/$1"; //Redirect
+$route['marketplace/(:num)/(:num)'] 				= "marketplace/challenge_framework/$1/$2";
+$route['marketplace/(:num)'] 						= "marketplace/challenge_framework/$1";
 $route['marketplace/new'] 							= "marketplace/challenge_create";
 $route['marketplace'] 								= "marketplace/challenge_marketplace";
-
-//Runs:
-$route['marketplace/(:any)/new'] 					= "marketplace/run_create/$1";
-$route['marketplace/(:any)/(:num)'] 				= "marketplace/run_dashboard/$1/$2";
-$route['marketplace/(:any)/(:num)/leaderboard']		= "marketplace/run_leaderboard/$1/$2";
-$route['marketplace/(:any)/(:num)/timeline'] 		= "marketplace/run_timeline/$1/$2";
-$route['marketplace/(:any)/(:num)/settings'] 		= "marketplace/run_settings/$1/$2";
-$route['marketplace/(:any)'] 						= "marketplace/challenge_overview/$1";
 

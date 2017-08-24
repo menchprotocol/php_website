@@ -1974,7 +1974,7 @@ label.control-label {
 
 .form-group {
   padding-bottom: 7px;
-  margin: 27px 0 0 0;
+  margin: 5px 0 0 0;
 }
 .form-group .form-control {
   margin-bottom: 7px;
@@ -2289,7 +2289,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   font-size: 10px;
 }
 .label.label-default {
-  background-color: #999999;
+  background-color: #2f2639;
 }
 
 .section-dark .nav-pills > li > a, .section-image .nav-pills > li > a {
@@ -2321,7 +2321,6 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
   background-color: #;
   color: #2f2639;
-  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(156, 39, 176, 0.6);
 }
 .nav-pills:not(.nav-pills-icons) > li > a {
   border-radius: 30px;
@@ -2449,7 +2448,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 }
 .navbar .navbar-nav > .open > a, .navbar .navbar-nav > .open > a:hover, .navbar .navbar-nav > .open > a:focus {
   background-color: transparent;
-  color: inherit;
+  color: #000;
 }
 @media (max-width: 767px) {
   .navbar .navbar-nav .navbar-text {

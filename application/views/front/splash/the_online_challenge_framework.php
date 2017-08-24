@@ -6,15 +6,15 @@ $udata = $this->session->userdata('user');
         <div class="container">
             <div class="row">
 				<div class="col-sm-9">
-					<h1 class="home-p">Run Online Challenges.</h1>
-                    <h4 class="home-p">Empower your audience to achieve their goals by taking action.</h4>
+					<h1 class="home-p"><?= $this->lang->line('headline_primary') ?></h1>
+                    <h4 class="home-p"><?= $this->lang->line('headline_secondary') ?></h4>
                     
                     <?php
     				if(isset($udata['u_id'])){
-    					echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+    					echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
     				} else {
-    					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow">Get Early Access <i class="fa fa-sign-in"></i></a>';
-    					echo '<p class="sub-button">Or <a href="#" data-toggle="modal" data-target="#loginModal">Login as Partner</a></p>';
+    					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i></a>';
+    					echo '<p class="sub-button">'.$this->lang->line('or').' <a href="#" data-toggle="modal" data-target="#loginModal">'.$this->lang->line('login').'</a></p>';
     				}
     				?>
 				</div>

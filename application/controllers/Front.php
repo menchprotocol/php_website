@@ -18,7 +18,7 @@ class Front extends CI_Controller {
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
 				'landing_page' => 'front/splash/the_online_challenge_framework',
-				'title' => 'Run Online Challenges.',
+				'title' => $this->lang->line('headline_primary'),
 		));
 		$this->load->view('front/index');
 		$this->load->view('front/shared/f_footer');
@@ -58,7 +58,7 @@ class Front extends CI_Controller {
 	
 	function contact(){
 		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Contact Us',
+				'title' => $this->lang->line('contact_us'),
 		));
 		$this->load->view('front/contact');
 		$this->load->view('front/shared/f_footer');

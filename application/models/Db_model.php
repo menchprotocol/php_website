@@ -13,11 +13,69 @@ class Db_model extends CI_Model {
 	 * Users
 	 ****************************** */
 	
+	//Called upon user login to save their Challenges/Runs into the session:
+	function fetch_user_access($u_id){
+		
+		if(intval($u_id)<=0){
+			return false;
+		}
+		
+		//The framework:
+		$user_access = array(
+				'c' => array(), //Challenges
+				'r' => array(), //Runs
+		);
+		
+		//Fetch Runs:
+		$this->db->select('ru.ru_r_id');
+		$this->db->from('v5_challenge_run_users ru');
+		$this->db->where('ru.ru_u_id',$u_id);
+		$this->db->where('ru.ru_status >=',2); //Leader or Admin
+		$q = $this->db->get();
+		$run_users = $q->result_array();
+		foreach($run_users as $ru){
+			if(!in_array($ru['ru_r_id'], $user_access['r'], true)){
+				array_push($user_access['r'] , $ru['ru_r_id']);
+			}
+		}
+		
+		if(count($user_access['r'])>0){
+			//Now fetch unique challenges:
+			$this->db->select('r.r_c_id');
+			$this->db->from('v5_challenge_runs r');
+			$this->db->where_in('r.r_id',$user_access['r']);
+			$this->db->or_where('r.r_creator_id',$u_id);
+			$q = $this->db->get();
+			$runs = $q->result_array();
+			foreach($runs as $r){
+				if(!in_array($r['r_c_id'], $user_access['c'], true)){
+					array_push($user_access['c'] , $r['r_c_id']);
+				}
+			}
+		}
+		
+		//Any challenges they directly created?
+		$this->db->select('c.c_id');
+		$this->db->from('v5_challenges c');
+		$this->db->where('c.c_creator_id',$u_id); //Challenges they created them selves
+		$this->db->where('c.c_status >=',-1); //Deleted by user, but not removed by moderator.
+		$this->db->where('c.c_is_grandpa',true); //necessary here since we have many none-grandpa challenges
+		$q = $this->db->get();
+		$challenges = $q->result_array();
+		foreach($challenges as $c){
+			if(!in_array($c['c_id'], $user_access['c'], true)){
+				array_push($user_access['c'] , $c['c_id']);
+			}
+		}
+		
+		return $user_access;
+	}
+	
 	function users_fetch($match_columns){
 		//Fetch the target gems:
 		
 		$this->db->select('*');
-		$this->db->from('v5_users');
+		$this->db->from('v5_users u');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -45,6 +103,18 @@ class Db_model extends CI_Model {
 	}
 	
 	function user_update($user_id,$update_columns){
+		//Update first
+		$this->db->where('u_id', $user_id);
+		$this->db->update('v5_users', $update_columns);
+		//Return new row:
+		$users = $this->users_fetch(array(
+				'u_id' => $user_id
+		));
+		return $users[0];
+	}
+	
+	
+	function fetch_user_($user_id,$update_columns){
 		//Update first
 		$this->db->where('u_id', $user_id);
 		$this->db->update('v5_users', $update_columns);
@@ -91,47 +161,6 @@ class Db_model extends CI_Model {
 	 * Challenge
 	 ****************************** */
 	
-	function c_ses_fetch($udata=null){
-		//Loads all challenges and their runs into the session:
-		if(!$udata){
-			$udata = $this->session->userdata('user');
-		}
-		//Prepare filter:
-		$match_columns = array(
-				'ru.ru_u_id' => $udata['u_id'],
-				'ru.ru_status >=' => 2, //Run Leader
-		);
-		
-		$this->db->select('c.*');
-		$this->db->from('v5_challenges c');
-		$this->db->join('v5_challenge_runs r', 'r.r_c_id = c.c_id', 'left');
-		$this->db->join('v5_challenge_run_users ru', 'ru.ru_r_id = r.r_id', 'left');
-		$this->db->group_by('c.c_id');
-		
-		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
-		}
-		$q = $this->db->get();
-		$challenges = $q->result_array();
-		
-		foreach($challenges as $key=>$value){
-			$challenges[$key]['admins'] = $this->Db_model->c_users_fetch(array(
-					'r.r_c_id' 			=> $value['c_id'],
-					'r.r_status >='		=> 1, //1 is Drafting
-					'r.r_status <='		=> 3, //3 is Live
-					'u.u_status >='		=> 1, //Active user
-					'ru.ru_status >='	=> 2, //2 & above are admins
-			));
-			$challenges[$key]['runs'] = $this->r_fetch(array_merge( $match_columns , array(
-					'r.r_c_id' => $value['c_id'],
-					'r.r_status >=' => 1,
-					'r.r_status <=' => 3,
-			)));
-		}
-		
-		return $challenges;
-	}
-	
 	function c_users_fetch($match_columns){
 		$this->db->select('u.*');
 		$this->db->from('v5_challenge_runs r');
@@ -158,6 +187,51 @@ class Db_model extends CI_Model {
 		}
 		$q = $this->db->get();
 		return $q->result_array();
+	}
+	
+	function c_plain_fetch($match_columns){
+		//Missing anything?
+		$this->db->select('c.*');
+		$this->db->from('v5_challenges c');
+		foreach($match_columns as $key=>$value){
+			$this->db->where($key,$value);
+		}
+		$q = $this->db->get();
+		return $q->row_array();
+	}
+	
+	
+	function cr_outbound_fetch($match_columns){
+		//Missing anything?
+		$this->db->select('*');
+		$this->db->from('v5_challenges c');
+		$this->db->join('v5_challenge_relations cr', 'cr.cr_outbound_id = c.c_id');
+		foreach($match_columns as $key=>$value){
+			$this->db->where($key,$value);
+		}
+		$this->db->order_by('cr.cr_outbound_rank','ASC');
+		$q = $this->db->get();
+		return $q->result_array();
+	}
+	
+	function cr_inbound_fetch($match_columns){
+		//Missing anything?
+		$this->db->select('*');
+		$this->db->from('v5_challenges c');
+		$this->db->join('v5_challenge_relations cr', 'cr.cr_inbound_id = c.c_id');
+		foreach($match_columns as $key=>$value){
+			$this->db->where($key,$value);
+		}
+		$this->db->order_by('cr.cr_inbound_rank','ASC');
+		$q = $this->db->get();
+		return $q->result_array();
+	}
+	
+	
+	function challenge_update($c_id,$update_columns){
+		//Update first
+		$this->db->where('c_id', $c_id);
+		$this->db->update('v5_challenges', $update_columns);
 	}
 	
 	

@@ -17,6 +17,7 @@ ga('send', 'pageview');
 
 
 function checkLoginState(){
+	//Also called when user clicks on FB Login Button
 	FB.getLoginStatus(function(response) {
 		if(response.status=='connected'){
 			//We're in! Redirect and log in the user:
@@ -57,8 +58,7 @@ window.fbAsyncInit = function() {
     	
     	//Look for logout click:
 	    $( "#logoutbutton" ).click(function() {
-        	
-	    	//lets log them out from Facebook:
+        	//lets log them out from Facebook:
 	    	FB.getLoginStatus(function(response) {
 	        	if(response.status=='connected'){
 	        		//Logout on Facebook:
@@ -84,9 +84,8 @@ window.fbAsyncInit = function() {
     }
 };
 
-function update_showdown(){
+function update_showdown(target,text){
 	//First detect manuall conversions like YouTube Embed:
-	
 	//Start core convertor:
 	var converter = new showdown.Converter({ 
 		'simplifiedAutoLink': true,
@@ -96,7 +95,7 @@ function update_showdown(){
 		'headerLevelStart': '3',
 	});
 	//Convert and return:
-	$('.showdown').html(converter.makeHtml($('.showdown').text())).fadeIn();
+	target.html(converter.makeHtml(text)).fadeIn();
 }
 
 function adj(){
@@ -110,7 +109,42 @@ function adj(){
     }
 }
 
+function save_c(){
+	
+	//Save the object and its overview:
+	if(!$('#save_c_objective').val().length){
+		alert('Objective is required.');
+		return false;
+	}
+	
+	//Show spinner:
+	$('#save_c_results').html('<span>Saving...</span>').hide().fadeIn();
+	
+	$.post("/marketplace/challenge_modify", {
+		save_c_id:$('#save_c_id').val(),
+		save_c_objective:$('#save_c_objective').val(),
+		save_c_description:$('#save_c_description').val(),
+	}, function(data) {
+		//Update UI to confirm with user:
+		$('#save_c_results').html(data).hide().fadeIn();
+		
+		//Disapper in a while:
+		setTimeout(function() {
+			$('#save_c_results').fadeOut();
+	    }, 5000);
+    });	
+}
+
+
 $(document).ready(function() {
+	$('#save_c_description').bind('input propertychange', function() {
+		update_showdown($('.showdown'),this.value);
+	});
+	$('#save_c_objective').bind('input propertychange', function() {
+		update_showdown($('.c_objective'),this.value);
+	});
+
+	
 	//Navbar landing page?
 	if(!$(".navbar").hasClass("no-adj")){
 		adj();
@@ -121,7 +155,7 @@ $(document).ready(function() {
 	
 	//Showdowns?
 	if ( $( ".showdown" ).length ) {
-		update_showdown();
+		update_showdown($('.showdown'),$('.showdown').text());
 	}
 	
 	//Load tooltips:

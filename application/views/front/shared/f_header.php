@@ -8,7 +8,7 @@ $website = $this->config->item('website');
 	<meta charset="utf-8" />
 	<link rel="icon" type="image/png" href="/img/bp_16.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title><?= ( isset($title) ? $title : $website['name'] ) ?></title>
+	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
 	<!-- Fonts/Icons -->
@@ -44,7 +44,7 @@ $website = $this->config->item('website');
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
         		</button>
-        		<a class="navbar-brand" href="/"><img src="/img/bp_48.png" /><span>mench</span></a>
+        		<a class="navbar-brand" href="/"><img src="/img/bp_48.png" /><span><?= $website['name'] ?></span></a>
         	</div>
 
         	<div class="collapse navbar-collapse">
@@ -53,10 +53,10 @@ $website = $this->config->item('website');
     				//<li><a href="/features">Features</a></li>
     				//<li><a href="/pricing">Pricing</a></li>
     				if(isset($udata['u_id'])){
-    					echo '<li id="isloggedin"><a href="/marketplace">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
-    					echo '<li><a href="#" id="logoutbutton">LOGOUT <i class="fa fa-power-off" aria-hidden="true"></i></a></li>';
+    					echo '<li id="isloggedin"><a href="/marketplace">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+    					echo '<li><a href="#" id="logoutbutton">'.$this->lang->line('logout').' <i class="fa fa-power-off" aria-hidden="true"></i></a></li>';
     				} else {
-    					echo '<li><a href="https://mench.typeform.com/to/nh4s2u">EARLY ACCESS <i class="fa fa-sign-in"></i></a></li>';
+    					echo '<li><a href="https://mench.typeform.com/to/nh4s2u">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i></a></li>';
     				}
     				?>
         		</ul>

@@ -9,11 +9,11 @@ $website = $this->config->item('website');
         <div class="container">
             <nav>
                 <ul>
-                    <li class="pull-left"><a href="/terms">Terms</a></li>
-                    <li class="pull-left"><a href="/contact">Contact</a></li>
-                    <?= (!isset($udata['u_id']) ? '<li class="pull-left"><a href="#" data-toggle="modal" data-target="#loginModal">Partner Login</a></li>' : ''); ?>
+                    <li class="pull-left"><a href="/terms"><?= $this->lang->line('terms') ?></a></li>
+                    <li class="pull-left"><a href="/contact"><?= $this->lang->line('contact_us') ?></a></li>
+                    <?= (!isset($udata['u_id']) ? '<li class="pull-left"><a href="#" data-toggle="modal" data-target="#loginModal">'.$this->lang->line('login').'</a></li>' : ''); ?>
                     
-                    <li class="pull-right"><i> Mench Media Inc.</i></li>
+                    <li class="pull-right"><i><?= $website['legaL_name'] ?></i></li>
                     <li class="pull-right"><i>v<?= $website['version'] ?></i></li>
                 </ul>
             </nav>
@@ -29,19 +29,18 @@ $website = $this->config->item('website');
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
 
 					<div class="header header-primary text-center">
-						<h4 class="card-title">Partner Login</h4>
+						<h4 class="card-title"><?= $this->lang->line('login') ?></h4>
 					</div>
 				</div>
 				<div class="modal-body">
 					<div class="card-content" style="padding-bottom:30px;">
-						<p>Already a Mench Partner?</p>
 						<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" onlogin="checkLoginState();"></div>
 					</div>
 				</div>
 
 				<div class="modal-footer text-center">
-					<p style="padding-bottom:0;">Don't have one? <a href="https://mench.typeform.com/to/nh4s2u">Get Early Access <i class="fa fa-sign-in"></i></a></p>
-					<p style="padding-bottom:20px;">Anything we can help? <a href="/contact">Contact Us <i class="fa fa-comment" aria-hidden="true"></i></a></p>
+					<p style="padding-bottom:0;"><?= $this->lang->line('no_account') ?> <a href="https://mench.typeform.com/to/nh4s2u"><?= $this->lang->line('signup') ?> <i class="fa fa-sign-in"></i></a></p>
+					<p style="padding-bottom:20px;"><?= $this->lang->line('no_clue') ?> <a href="/contact"><?= $this->lang->line('contact_us') ?> <i class="fa fa-comment" aria-hidden="true"></i></a></p>
 				</div>
 
 			</div>

@@ -11,14 +11,21 @@
     font-family: 'Titillium Web',sans-serif;
     font-size: 36px;
     color: #2f2639;
+    text-transform: lowercase;
 }
+.nav li a { text-transform:uppercase; }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     border-top: 0px solid #ddd;
 }
 
+.submenu { padding:0 0 0 45px; }
+.submenu a { padding-top:7px; padding-bottom:7px; }
+.submenu p { font-size:0.9em !important;}
+
 .showdown { display:none; }
 .showdown table th { padding:5px 10px; border:1px solid #ccc; background-color:#333; color:#FFF; }
 .showdown table td { padding:5px 10px; border:1px solid #ccc; }
+.mini-label {display:block; margin-bottom:-3px;margin-top:10px;}
 
 body { font-size:18px; }
 p a, td a { text-decoration:underline; }
@@ -34,19 +41,56 @@ p a, td a { text-decoration:underline; }
 	margin-right:20px;
 	color:#666;
 }
-#marketplace h1 { font-size:2.8em; margin-bottom:15px; }
+.underl {
+	text-decoration-line: underline;
+    text-decoration-style: dotted;
+}
+.fa-info-circle{
+	text-decoration-line:none !important;
+	font-size:0.7em;
+}
+#marketplace h1 { font-size:2.8em; margin-bottom:15px; margin-top:10px; line-height: 100%; }
 .main-plain{ margin-top:100px; }
 .main-plain .container{ padding:30px; }
 .landing-page .page-header { min-height: 100vh; }
 .page-header .container { padding-top: 90px; padding-left:40px; }
-.home-p{ max-width:326px; }
+.home-p{ max-width:350px; }
 .dashboard-logo{ padding:8px 0 0 0 !important; }
 .landing-page .navbar-header { padding:0 0 0 0;}
 .navbar .navbar-brand { padding:7px 10px 7px 27px; }
 .navbar { height:60px; }
 .body-container { width: 95%; }
+#save_c_results{ margin-left:15px; }
 .navbar-right { margin-right:10px; }
 .tooltip, .tooltip * {font-size:12px; margin:0; }
+.container-fluid .alert { margin-top:10px; }
+.container-fluid {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.typicalform {max-width:50%;}
+.nav-pills:not(.nav-pills-icons) > li > a {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+.nav-pills > li i {
+    display: inline-block;
+    font-size: 1em;
+    padding:0;
+}
+
+.title p {
+	font-size: 0.8em;
+    font-weight: normal;
+    color: #999;
+    font-family: Lato;
+    padding: 0;
+    margin: 0;
+}
+.title h4 {
+	margin-bottom:5px;
+}
+
 @media (max-width: 767px){
 	body { font-size:15px; }
 	.main-plain{ margin-top:70px; }
@@ -77,6 +121,13 @@ p a, td a { text-decoration:underline; }
 	.landing-page .navbar-nav { padding-top:20px;}
 	.navbar { padding:0; }
 	.landing-page .navbar-header { padding:5px 0 0 0;}
+	
+	.container-fluid {
+	    padding-right: 10px;
+	    padding-left: 10px;
+	}
+	.typicalform {max-width:100%;}
+	.nav-pills:not(.nav-pills-icons) > li > a { font-size: 0.8em; }
 }
 
 .morphext > .animated {

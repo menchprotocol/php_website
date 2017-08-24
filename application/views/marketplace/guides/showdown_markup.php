@@ -1,5 +1,5 @@
-<h1>Showdown Markup Syntax</h1>
-<p>For challenge descriptions we support a <a href="https://github.com/showdownjs/showdown">showdown</a>. Here is an overview of the syntaxes you can use in your descriptions.</p>
+<h1>Markup Syntax</h1>
+<p>For certain elements we support a <a href="https://github.com/showdownjs/showdown">showdown markup language</a> for a richer experience.</p>
 
 <h3>Headings</h3>
 <p>You can use three sizes of headers using #s.</p>
@@ -37,6 +37,14 @@ this is my email somedude@mail.com
 ![Alt text](url/to/image)<br />
 ![Alt text](url/to/image "Optional title")<br />
 ![Alt text](url/to/image =250x250 "Optional title")
+</p>
+
+
+<h3>Youtube Videos (Coming Soon)</h3>
+<p>Embed a YouTube video using the following format:</p>
+<p class="mono">
+![Video Title](https://www.youtube.com/watch?v=H_j3x8N8fpA)<br />
+![Video Title](https://www.youtube.com/watch?v=H_j3x8N8fpA?start=350&end=389)<br />
 </p>
 
 
