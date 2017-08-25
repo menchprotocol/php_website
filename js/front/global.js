@@ -16,6 +16,25 @@ ga('send', 'pageview');
 }(document, 'script', 'facebook-jssdk'));
 
 
+//Load direction:
+var is_outbound = true;
+function change_direction(){
+	if(is_outbound){
+		is_outbound = false; //change direction
+		$('#dir_handle').removeClass('label-primary').addClass('label-default');
+		$('#dir_name').html('INBOUND');
+	} else {
+		is_outbound = true; //change direction
+		$('#dir_handle').removeClass('label-default').addClass('label-primary');
+		$('#dir_name').html('OUTBOUND');
+	}
+}
+
+//Loadup Algolia:
+client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+algolia_index = client.initIndex('nodes');
+
+
 function checkLoginState(){
 	//Also called when user clicks on FB Login Button
 	FB.getLoginStatus(function(response) {
@@ -110,7 +129,6 @@ function adj(){
 }
 
 function save_c(){
-	
 	//Save the object and its overview:
 	if(!$('#save_c_objective').val().length){
 		alert('Objective is required.');
@@ -118,7 +136,7 @@ function save_c(){
 	}
 	
 	//Show spinner:
-	$('#save_c_results').html('<span>Saving...</span>').hide().fadeIn();
+	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
 	$.post("/marketplace/challenge_modify", {
 		save_c_id:$('#save_c_id').val(),
@@ -136,7 +154,105 @@ function save_c(){
 }
 
 
+function new_challenge(c_objective){
+	if(is_outbound){
+		alert('OUT NEW');
+	} else {
+		alert('IN NEW');
+	}
+}
+
+//Triggered when clicked on the toggle direction
+function link_challenge(new_link_id){
+	current_link_id = $('#save_c_id').val();
+	if(is_outbound){
+		alert('OUT LINK');
+	} else {
+		alert('IN LINK');
+	}
+}
+
+function echo_dir(){
+	if(is_outbound){
+		return '<span class="label dirlabel label-primary">OUTBOUND <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+	} else {
+		return '<span class="label dirlabel label-default">INBOUND <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+	}
+}
+
+function load_sortable(direction){
+	var thelist = document.getElementById("list-"+direction);
+	var sort = Sortable.create( thelist , {
+		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+		  onUpdate: function (evt/**Event*/){
+			    //Set processing status:
+			    $( "#list-"+direction+" .srt-"+direction ).hide().fadeIn().html(' <img src="/img/loader.gif" />');
+			  
+			    //Fetch new sort:
+			    var new_sort = [];
+				var sort_rank = 0;
+				$( "#list-"+direction+" a" ).each(function() {
+					sort_rank++;
+					new_sort[sort_rank] = $( this ).attr('data-link-id');
+				});
+				
+				//Update backend:
+				$.post("/marketplace/update_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
+					//Update UI to confirm with user:
+					$( "#list-"+direction+" .srt-"+direction ).html(data).hide().fadeIn();
+					
+					//Disapper in a while:
+					setTimeout(function() {
+				        $("#list-"+direction+" .srt-"+direction).fadeOut();
+				    }, 3000);
+				});
+		  }
+	});
+	//sort.destroy();
+}
+
+function delete_c(grandpa_id,c_id,c_title){
+	//Double check:
+	var r = confirm("Delete Challenge: "+c_title+"?");
+	if (r == true) {
+	    //Redirect to delete:
+		window.location = "/marketplace/delete_c/"+grandpa_id+"/"+c_id;
+	}
+}
+
+
+function cr_delete(cr_id,cr_title){
+	
+	//Stop href:
+	var current_href = $('#cr_'+cr_id).attr("href");
+	$('#cr_'+cr_id).attr("href", "#");
+	
+	//Double check:
+	var r = confirm("Delete Dependency: "+cr_title+"?");
+	if (r == true) {
+	    //Delete and remove:
+		$.post("/marketplace/cr_delete", {cr_id:cr_id}, function(data) {
+			//Update UI to confirm with user:
+			
+			$( "#cr_"+cr_id ).html(data);
+			
+			//Disapper in a while:
+			setTimeout(function() {
+				$( "#cr_"+cr_id ).fadeOut();
+		    }, 3000);
+		});
+	} else {
+		//Put link back in:
+		setTimeout(function() {
+			$('#cr_'+cr_id).attr("href", "#").attr("href", current_href);
+	    }, 1000);
+	}
+}
+
 $(document).ready(function() {
+	
 	$('#save_c_description').bind('input propertychange', function() {
 		update_showdown($('.showdown'),this.value);
 	});
@@ -161,5 +277,54 @@ $(document).ready(function() {
 	//Load tooltips:
 	$(function () {
 		  $('[data-toggle="tooltip"]').addClass('').tooltip();
-	})
+	});
+	
+	
+	//Load Sortable, IF ADMIN:
+	if(u_status>=2 && $('#list-outbound').length){
+		$('#list-outbound a').prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-outbound"></span>');
+		$('#list-inbound a' ).prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-inbound"></span>');
+		load_sortable('inbound');
+		load_sortable('outbound');
+	}
+		  	
+		
+
+	
+	//Load Algolia:
+	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+		//Link nodes together:
+		link_challenge(suggestion.node_id );
+	}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+	    source: function(q, cb) {
+		      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+		        if (error) {
+		          cb([]);
+		          return;
+		        }
+		        
+		        cb(content.hits, content);
+		      });
+		    },
+		    displayKey: function(suggestion) { return "" },
+		    templates: {
+		      suggestion: function(suggestion) {
+		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.value.value + ' ' + echo_dir();
+		      },
+		      header: function(data) {
+		    	  if(!data.isEmpty){
+		    		  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'" '+echo_dir()+'</a>';
+		    	  }
+		      },
+		      empty: function(data) {
+	    		  	  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'" '+echo_dir()+'</a>';
+		      },
+		    }
+	}]).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+        	new_challenge('outbound',$( "#addnode" ).val());
+            return true;
+        }
+    });
 });

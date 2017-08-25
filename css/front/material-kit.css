@@ -1453,7 +1453,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   left: 15px;
 }
 .togglebutton label input[type=checkbox]:checked + .toggle {
-  background-color: rgba(156, 39, 176, 0.7);
+  background-color:#b5b4b2;
 }
 .togglebutton label input[type=checkbox]:checked + .toggle:after {
   border-color: #fedd16;
@@ -2188,7 +2188,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 .input-group .input-group-addon {
   border: 0;
   background: transparent;
-  padding: 6px 15px 0px;
+  padding: 0 0 0 15px;
 }
 
 .form-group input[type=file] {
@@ -2971,8 +2971,9 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   color: #ffffff;
 }
 .alert.alert-warning {
-  background-color: #ff9e0f;
-  color: #ffffff;
+  background-color: #fff;
+  color: #AAA;
+  box-shadow:none;
 }
 .alert.alert-warning a, .alert.alert-warning .alert-link {
   color: #ffffff;

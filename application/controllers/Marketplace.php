@@ -14,6 +14,14 @@ class Marketplace extends CI_Controller {
 	}
 	
 	/* ******************************
+	 * Crons
+	 ****************************** */
+	
+	function cron_algolia(){
+		$this->Algolia_model->sync_all();
+	}
+	
+	/* ******************************
 	 * Admin Guides
 	 ****************************** */
 	
@@ -189,7 +197,7 @@ class Marketplace extends CI_Controller {
 		$challenge = load_object('c' , array(
 				'c.c_id' => $c_id,
 				'c.c_is_grandpa' => true,
-		));		
+		));
 		$pid = ( isset($pid) && intval($pid)>0 ? $pid : $challenge['c_id'] );
 		//Construct data:
 		$view_data = array(
@@ -201,9 +209,11 @@ class Marketplace extends CI_Controller {
 						)),
 						'inbound' => $this->Db_model->cr_inbound_fetch(array(
 								'cr.cr_outbound_id' => $pid,
+								'cr.cr_status >=' => 0,
 						)),
 						'outbound' => $this->Db_model->cr_outbound_fetch(array(
 								'cr.cr_inbound_id' => $pid,
+								'cr.cr_status >=' => 0,
 						)),
 				),
 		);
@@ -234,6 +244,100 @@ class Marketplace extends CI_Controller {
 	 * I/O Processing & Forms
 	 ****************************** */
 	
+	function delete_c($grandpa_id,$c_id){
+		die('disabled for now');
+		$udata = auth(2,1);
+		$main_challenge = load_object('c' , array(
+				'c.c_id' => $grandpa_id,
+				'c.c_status >=' => 0,
+		));
+		$sub_challenge = load_object('c' , array(
+				'c.c_id' => $c_id,
+				'c.c_status >=' => 0,
+		));
+		
+		if(!can_modify('c',$c_id)){
+			redirect_message('/marketplace/'.$grandpa_id.'/'.$c_id, '<div class="alert alert-danger" role="alert">You dont have the permission to delete this challenge.</div>');
+		}
+		
+		//Delete links:
+		$links_deleted = 0;
+		$links_deleted += $this->Db_model->cr_update( intval($cr_id) , array(
+				'cr_creator_id' => $udata['u_id'],
+				'cr_timestamp' => date("Y-m-d H:i:s"),
+				'cr_status' => -1,
+		) , 'cr_inbound_id' );
+		$links_deleted += $this->Db_model->cr_update( intval($cr_id) , array(
+				'cr_creator_id' => $udata['u_id'],
+				'cr_timestamp' => date("Y-m-d H:i:s"),
+				'cr_status' => -1,
+		) , 'cr_outbound_id' );
+		
+		
+		//Delete challenge:
+		$this->Db_model->c_update( intval($cr_id) , array(
+				'c_creator_id' => $udata['u_id'],
+				'c_timestamp' => date("Y-m-d H:i:s"),
+				'c_status' => -1,
+		));
+		
+		//TODO Update Algolia:
+		
+		//TODO Log activity
+		
+		//Redirect and show susccess message:
+		redirect_message('/marketplace/'.$grandpa_id, '<div class="alert alert-success" role="alert">Challenge <b>'.$sub_challenge['c_objective'].'</b> deleted with '.$links_deleted.' dependencies.</div>');
+	}
+	
+	function update_sort(){
+		//Auth user and Load object:
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['save_c_id']) || intval($_POST['save_c_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+		} elseif(!isset($_POST['sort_direction']) || !in_array($_POST['sort_direction'],array('outbound','inbound'))){
+			die('<span style="color:#FF0000;">Error: Invalid sort direction.</span>');
+		} elseif(!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort'])<=0){
+			die('<span style="color:#FF0000;">Error: Nothing passed for sorting.</span>');
+		}
+		
+		//Update them all:
+		foreach($_POST['new_sort'] as $rank=>$cr_id){
+			$this->Db_model->cr_update( intval($cr_id) , array(
+					'cr_creator_id' => $udata['u_id'],
+					'cr_timestamp' => date("Y-m-d H:i:s"),
+					'cr_'.$_POST['sort_direction'].'_rank' => intval($rank),
+			));
+		}
+		
+		//TODO Save change history
+		echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
+	}
+	
+	function cr_delete(){
+		//Auth user and Load object:
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['cr_id']) || intval($_POST['cr_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid cr_id.</span>');
+		}
+		
+		//Now update the DB:
+		$this->Db_model->cr_update( intval($_POST['cr_id']) , array(
+				'cr_creator_id' => $udata['u_id'],
+				'cr_timestamp' => date("Y-m-d H:i:s"),
+				'cr_status' => -1, //Deleted by user
+		));
+		
+		//TODO Save change history
+		
+		//Show result:
+		die('<span style="color:#00CC00;">Deleted</span>');
+	}
 	function challenge_modify(){
 		//Auth user and Load object:
 		$udata = auth(2);

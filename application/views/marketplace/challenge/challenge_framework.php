@@ -19,38 +19,53 @@
 <div class="tab-content tab-space">
     <div class="tab-pane active" id="pill1">
 <?php
-echo '<div class="list-group">';
-	$count = 0;
+echo '<div id="list-inbound" class="list-group">';
 	if(isset($cr['inbound']) && count($cr['inbound'])>0){
 		foreach($cr['inbound'] as $relation){
-			$count++;
-			echo '<a href="/marketplace/'.$challenge['c_id'].'/'.$relation['c_id'].'" class="list-group-item"><span class="label label-default pull-right">Inbound <i class="fa fa-chevron-right" aria-hidden="true"></i></span>'.$relation['c_objective'].'</a>';
+			echo echo_cr($challenge,$relation,'inbound');
 		}
 	}
+echo '</div>';
+
+
+//OUTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+echo '<div id="list-outbound" class="list-group">';
 	if(isset($cr['outbound']) && count($cr['outbound'])>0){
 		foreach($cr['outbound'] as $relation){
-			$count++;
-			echo '<a href="/marketplace/'.$challenge['c_id'].'/'.$relation['c_id'].'" class="list-group-item"><span class="label label-primary pull-right">Outbound <i class="fa fa-chevron-right" aria-hidden="true"></i></span>'.$relation['c_objective'].'</a>';
+			echo echo_cr($challenge,$relation,'outbound');
 		}
-	}
-	
-	if($count==0){
-		//Notify that there are no runs!
-		echo '<div class="alert alert-warning" role="alert">'.$this->lang->line('cr_missing').'</div>';
-	}
-	
-	if(can_modify('c',$challenge['c_id'])){
-		echo '<div class="list-group-item list_input">';
-		echo '<form id="addnodeform"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="+ Add"></form>';
-		echo '</div>';
-	}
-	
+	}	
 echo '</div>';
+
+
+//Can they modify?
+if(can_modify('c',$challenge['c_id'])){
+	echo '<div class="list-group">';
+		echo '<div class="list-group-item list_input">';
+		?>
+		<div class="input-group">
+			<div class="form-group is-empty"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Objective"></div>
+			<span class="input-group-addon" data-toggle="tooltip" title="Click to Toggle direction of new dependancies.">
+				<span id="dir_handle" class="label label-primary pull-right">
+					<div style="margin-bottom:5px;"><span id="dir_name">OUTBOUND</span> <i class="fa fa-chevron-right"></i></div>											
+					<div class="togglebutton">
+		            	<label>
+		                	<input type="checkbox" onclick="change_direction()" />
+		            	</label>
+            		</div>
+				</span>
+			</span>
+		</div>
+		<?php 
+		//echo '<input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Objective">';
+		echo '</div>';
+	echo '</div>';
+}
+
 ?>	      
     </div>
     <div class="tab-pane" id="pill2">
     
-      <div class="list_input"><form id="addnodeform" _lpchecked="1"><div class="form-group is-empty"><input type="text" class="form-control autosearch" id="addnode" name="node_name" value="" placeholder="+ Add"><span class="material-input"></span></div></form></div>
     </div>
 	<div class="tab-pane" id="pill3">
 		<?php
@@ -85,6 +100,20 @@ echo '</div>';
 			</div>
 		
 		  
-		  <a href="javascript:save_c();" class="btn btn-primary">Save</a> <span id="save_c_results"></span>
+		    <div class="row">
+			  <div class="col-xs-6"><a href="javascript:save_c();" class="btn btn-primary">Save</a> <span id="save_c_results"></span></div>
+			  <div class="col-xs-6 action-right">
+			  <?php 
+			  if($cr['c']['c_is_grandpa']=='f'){
+			  	//echo '<a href="javascript:delete_c('.$challenge['c_id'].','.$cr['c']['c_id'].',\''.$cr['c']['c_objective'].'\')"><i class="fa fa-times-circle" aria-hidden="true"></i> Delete</a>';
+			  } else {
+			    //echo '<span data-toggle="tooltip" title="Delete protected."><i class="fa fa-lock" aria-hidden="true"></i> Protected</span>';
+			  }
+			  ?>
+			  </div>
+			</div>
+
+
+		  
     </div>
 </div>

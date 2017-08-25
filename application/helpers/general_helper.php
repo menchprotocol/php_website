@@ -8,6 +8,10 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
+function echo_cr($challenge,$relation,$direction){
+	return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$challenge['c_id'].'/'.$relation['c_id'].'" class="list-group-item is_sortable"><span class="pull-right"><i class="fa fa-times" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'">'.$direction.' <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.$relation['c_objective'].'</a>';
+}
+
 function echo_users($users){
 	foreach($users as $i=>$user){
 		if($i>0){
@@ -69,27 +73,7 @@ function run_icon($run_version){
 	}
 }
 
-function can_modify($object,$object_id){
-	
-	$CI =& get_instance();
-	$udata = $CI->session->userdata('user');
-	
-	//Validate:
-	if(isset($udata['u_status']) && $udata['u_status']>=2){
-		if(in_array($object,array('c','r'))){
-			
-			return in_array($object_id,$udata['access'][$object]);
-			
-		} elseif($object=='u'){
-			
-			return ($udata['u_id']==$object_id || $udata['u_status']>=4);
-			
-		}
-	}
-	
-	//No access:
-	return false;
-}
+
 
 function status_bible($object=null,$status=null){
 	
@@ -165,7 +149,6 @@ function status_bible($object=null,$status=null){
 			'cr' => array( //Challenge Relations (to Insights)
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' was replaced by a new reference or '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
 					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			
@@ -221,7 +204,6 @@ function filter($array,$ikey,$ivalue){
 
 //2x Authentication Functions:
 
-
 function auth($min_level,$force_redirect=0){
 	
 	$CI =& get_instance();
@@ -238,6 +220,27 @@ function auth($min_level,$force_redirect=0){
 	}
 	
 	return $udata;
+}
+function can_modify($object,$object_id){
+	
+	$CI =& get_instance();
+	$udata = $CI->session->userdata('user');
+	
+	//Validate:
+	if(isset($udata['u_status']) && $udata['u_status']>=2){
+		if(in_array($object,array('c','r'))){
+			
+			return in_array($object_id,$udata['access'][$object]);
+			
+		} elseif($object=='u'){
+			
+			return ($udata['u_id']==$object_id || $udata['u_status']>=4);
+			
+		}
+	}
+	
+	//No access:
+	return false;
 }
 
 function redirect_message($url,$message){
@@ -501,6 +504,7 @@ function html_new_run(){
 	$return_string .= '</div>';
 	return $return_string;
 }
+
 
 function html_run($run){
 	

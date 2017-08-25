@@ -31,7 +31,11 @@ $website = $this->config->item('website');
 	<script src="/js/marketplace/bootstrap.min.js" type="text/javascript"></script>
 	<script src="/js/marketplace/material.min.js" type="text/javascript"></script>
 	<script src="/js/marketplace/material-dashboard.js" type="text/javascript"></script>
+	<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
 	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+	<script type="text/javascript"> var u_status = <?= intval($udata['u_status']) ?>; </script>
 </head>
 <body>
 
