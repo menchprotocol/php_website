@@ -345,7 +345,7 @@ class Db_model extends CI_Model {
 		$return = array();
 		foreach($challenges as $challenge){
 			//Adjust Algolia ID:
-			if(intval($challenge['c_algolia_id'])>0){
+			if(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0){
 				$challenge['objectID'] = intval($challenge['c_algolia_id']);
 			}
 			unset($challenge['c_algolia_id']);
@@ -361,7 +361,7 @@ class Db_model extends CI_Model {
 			
 			if($challenge['c_status']>=0){
 				
-				if(intval($challenge['c_algolia_id'])>0){
+				if(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0){
 					//Update existing
 					$obj_add_message = $index->saveObjects($return);
 				} else {
@@ -369,7 +369,7 @@ class Db_model extends CI_Model {
 					$obj_add_message = $index->addObjects($return);
 				}
 				
-			} elseif(intval($challenge['c_algolia_id'])>0) {
+			} elseif(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0) {
 				//Delete object:
 				$index->deleteObject($challenge['c_algolia_id']);
 			}
