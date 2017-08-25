@@ -19,6 +19,7 @@
 <div class="tab-content tab-space">
     <div class="tab-pane active" id="pill1">
 <?php
+/*
 echo '<div id="list-inbound" class="list-group">';
 	if(isset($cr['inbound']) && count($cr['inbound'])>0){
 		foreach($cr['inbound'] as $relation){
@@ -26,7 +27,7 @@ echo '<div id="list-inbound" class="list-group">';
 		}
 	}
 echo '</div>';
-
+*/
 
 //OUTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 echo '<div id="list-outbound" class="list-group">';
@@ -45,10 +46,10 @@ if(can_modify('c',$challenge['c_id'])){
 		?>
 		<div class="input-group">
 			<div class="form-group is-empty"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Objective"></div>
-			<span class="input-group-addon" data-toggle="tooltip" title="Click to Toggle direction of new dependancies.">
+			<span class="input-group-addon">
 				<span id="dir_handle" class="label label-primary pull-right">
-					<div style="margin-bottom:5px;"><span id="dir_name">OUTBOUND</span> <i class="fa fa-chevron-right"></i></div>											
-					<div class="togglebutton">
+					<div><span id="dir_name">OUTBOUND</span> <i class="fa fa-chevron-right"></i></div>											
+					<div class="togglebutton" style="display:none; margin-top:5px;">
 		            	<label>
 		                	<input type="checkbox" onclick="change_direction()" />
 		            	</label>

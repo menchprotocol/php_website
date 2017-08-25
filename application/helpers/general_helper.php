@@ -1,5 +1,9 @@
 <?php
 
+function is_dev(){
+	return in_array($_SERVER['SERVER_NAME'],array('local.mench.co'));
+}
+
 function fetch_file_ext($url){
 	//https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
 	$url_parts = explode('?',$url,2);

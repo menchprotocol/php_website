@@ -32,7 +32,7 @@ function change_direction(){
 
 //Loadup Algolia:
 client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-algolia_index = client.initIndex('nodes');
+algolia_index = client.initIndex('challenges');
 
 
 function checkLoginState(){
@@ -166,9 +166,9 @@ function new_challenge(c_objective){
 function link_challenge(new_link_id){
 	current_link_id = $('#save_c_id').val();
 	if(is_outbound){
-		alert('OUT LINK');
+		alert('OUT LINK'+new_link_id);
 	} else {
-		alert('IN LINK');
+		alert('IN LINK'+new_link_id);
 	}
 }
 
@@ -281,20 +281,24 @@ $(document).ready(function() {
 	
 	
 	//Load Sortable, IF ADMIN:
-	if(u_status>=2 && $('#list-outbound').length){
-		$('#list-outbound a').prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-outbound"></span>');
-		$('#list-inbound a' ).prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-inbound"></span>');
-		load_sortable('inbound');
-		load_sortable('outbound');
+	if(u_status>=2){
+		if($('#list-outbound').length){
+			$('#list-outbound a').prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-outbound"></span>');
+			load_sortable('outbound');
+		}
+		if($('#list-inbound').length){
+			$('#list-inbound a' ).prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-inbound"></span>');
+			load_sortable('inbound');
+		}
 	}
-		  	
 		
 
 	
 	//Load Algolia:
 	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-		//Link nodes together:
-		link_challenge(suggestion.node_id );
+		
+		link_challenge(suggestion.c_id);
+		
 	}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
 	    source: function(q, cb) {
 		      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
@@ -309,7 +313,7 @@ $(document).ready(function() {
 		    displayKey: function(suggestion) { return "" },
 		    templates: {
 		      suggestion: function(suggestion) {
-		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.value.value + ' ' + echo_dir();
+		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value + ' ' + echo_dir();
 		      },
 		      header: function(data) {
 		    	  if(!data.isEmpty){

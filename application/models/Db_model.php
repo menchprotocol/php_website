@@ -252,6 +252,10 @@ class Db_model extends CI_Model {
 		
 		boost_power();
 		
+		if(is_dev()){
+			return file_get_contents("http://mench.co/marketplace/algolia/".$c_id);
+		}
+		
 		//Include PHP library:
 		require_once('application/libraries/algoliasearch.php');
 		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
@@ -285,7 +289,14 @@ class Db_model extends CI_Model {
 		//print_r($return);
 		
 		if($c_id){
-			$obj_add_message = $index->saveObjects($return);
+			
+			if($challenge['c_status']>=0){
+				$obj_add_message = $index->saveObjects($return);
+			} else {
+				//Delete object:
+				$index->deleteObject($challenge['c_algolia_id']);
+			}
+			
 		} else {
 			$obj_add_message = $index->addObjects($return);
 			

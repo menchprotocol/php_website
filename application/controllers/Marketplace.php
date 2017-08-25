@@ -281,7 +281,8 @@ class Marketplace extends CI_Controller {
 				'c_status' => -1,
 		));
 		
-		//TODO Update Algolia:
+		//Update Algolia:
+		$this->Db_model->sync_algolia(intval($cr_id));
 		
 		//TODO Log activity
 		
@@ -360,7 +361,8 @@ class Marketplace extends CI_Controller {
 				'c_description' => $_POST['save_c_description'],
 		));
 		
-		//TODO Update Algolia:
+		//Update Algolia:
+		$this->Db_model->sync_algolia(intval($_POST['save_c_id']));
 		
 		//TODO Save change history
 		
