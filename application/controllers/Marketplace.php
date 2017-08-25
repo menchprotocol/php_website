@@ -17,8 +17,8 @@ class Marketplace extends CI_Controller {
 	 * Crons
 	 ****************************** */
 	
-	function cron_algolia(){
-		$this->Algolia_model->sync_all();
+	function algolia($pid=null){
+		$this->Db_model->sync_algolia($pid);
 	}
 	
 	/* ******************************

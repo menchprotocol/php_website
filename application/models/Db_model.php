@@ -247,4 +247,60 @@ class Db_model extends CI_Model {
 	
 	
 	
+	
+	function sync_algolia($c_id=null){
+		
+		boost_power();
+		
+		//Fetch all nodes:
+		$limits = array(
+				'c.c_status >=' => 0,
+		);
+		if($c_id){
+			$limits['c_id'] = $c_id;
+		}
+		$challenges = $this->c_fetch($limits);
+		
+		//Buildup this array to save to search index
+		$return = array();
+		foreach($challenges as $challenge){
+			//Adjust Algolia ID:
+			if(intval($challenge['c_algolia_id'])>0){
+				$challenge['objectID'] = intval($challenge['c_algolia_id']);
+			}
+			unset($challenge['c_algolia_id']);
+			
+			//Add to main array
+			array_push( $return , $challenge);
+		}
+		
+		
+		//Include PHP library:
+		require_once('application/libraries/algoliasearch.php');
+		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
+		$index = $client->initIndex('challenges');
+		
+		if(!$c_id){
+			$index->clearIndex();
+		}
+		
+		//Upload to Algolia:
+		$obj_add_message = $index->addObjects(json_decode(json_encode($return), FALSE));
+		
+		//Now update local with objectIDs:
+		if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+			foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+				$this->Db_model->c_update( $return[$key]['c_id'] , array(
+						'c_algolia_id' => $algolia_id,
+				));
+			}
+		}
+		
+		return array(
+				'c_id' => $c_id,
+				'challenges' => $challenges,
+				'output' => $obj_add_message['objectIDs'],
+		);
+	}
+	
 }
