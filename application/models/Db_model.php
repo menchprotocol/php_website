@@ -252,12 +252,19 @@ class Db_model extends CI_Model {
 		
 		boost_power();
 		
+		//Include PHP library:
+		require_once('application/libraries/algoliasearch.php');
+		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
+		$index = $client->initIndex('challenges');
+		
 		//Fetch all nodes:
 		$limits = array(
 				'c.c_status >=' => 0,
 		);
 		if($c_id){
 			$limits['c_id'] = $c_id;
+		} else {
+			$index->clearIndex();
 		}
 		$challenges = $this->c_fetch($limits);
 		
@@ -274,29 +281,23 @@ class Db_model extends CI_Model {
 			array_push( $return , $challenge);
 		}
 		
+		//$obj = json_decode(json_encode($return), FALSE);
+		//print_r($return);
 		
-		
-		//Include PHP library:
-		require_once('application/libraries/algoliasearch.php');
-		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-		$index = $client->initIndex('challenges');
-		
-		if(!$c_id){
-			$index->clearIndex();
-		}
-		
-		//Send to Algolia:
-		$obj = json_decode(json_encode($return), FALSE);
-		$obj_add_message = $index->addObjects($obj);
-		
-		//Now update database with the objectIDs:
-		if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
-			foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
-				$this->Db_model->c_update( $return[$key]['c_id'] , array(
-						'c_algolia_id' => $algolia_id,
-				));
+		if($c_id){
+			$obj_add_message = $index->saveObjects($return);
+		} else {
+			$obj_add_message = $index->addObjects($return);
+			
+			//Now update database with the objectIDs:
+			if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+				foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+					$this->Db_model->c_update( $return[$key]['c_id'] , array(
+							'c_algolia_id' => $algolia_id,
+					));
+				}
 			}
-		}
+		}			
 		
 		return array(
 				'c_id' => $c_id,
