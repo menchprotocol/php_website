@@ -239,10 +239,79 @@ class Db_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 	
+	
+	
+	
+	
+	//TODO
+	function max_value($table,$column,$match_columns){
+		$this->db->select('MAX('.$column.') as largest');
+		$this->db->from($table);
+		foreach($match_columns as $key=>$value){
+			$this->db->where($key,$value);
+		}
+		$q = $this->db->get();
+		$stats = $q->row_array();
+		return $stats['largest'];
+	}
+	
+	function cr_create($insert_columns){
+		
+		//Missing anything?
+		if(!isset($insert_columns['cr_inbound_id']) || !isset($insert_columns['cr_inbound_rank'])){
+			return false;
+		} elseif(!isset($insert_columns['cr_outbound_id']) || !isset($insert_columns['cr_outbound_rank'])){
+			return false;
+		} elseif(!isset($insert_columns['cr_creator_id'])){
+			return false;
+		}
+		
+		//Autocomplete required
+		if(!isset($insert_columns['cr_timestamp'])){
+			$insert_columns['cr_timestamp'] = date("Y-m-d H:i:s");
+		}
+		if(!isset($insert_columns['cr_status'])){
+			$insert_columns['cr_status'] = 1; //Live link
+		}
+		
+		//Lets now add:
+		$this->db->insert('v5_challenge_relations', $insert_columns);
+		
+		//Fetch inserted id:
+		$insert_columns['cr_id'] = $this->db->insert_id();
+		
+		return $insert_columns;
+	}
+	
 	function c_update($c_id,$update_columns){
 		$this->db->where('c_id', $c_id);
 		$this->db->update('v5_challenges', $update_columns);
 		return $this->db->affected_rows();
+	}
+	
+	function c_create($insert_columns){
+		
+		//Missing anything?
+		if(!isset($insert_columns['c_timestamp'])){
+			$insert_columns['c_timestamp'] = date("Y-m-d H:i:s");
+		}
+		if(!isset($insert_columns['c_status'])){
+			$insert_columns['c_status'] = 0; //Being prepared
+		}
+		if(!isset($insert_columns['c_is_grandpa'])){
+			$insert_columns['c_is_grandpa'] = 'f';
+		}
+		if(!isset($insert_columns['c_algolia_id'])){
+			$insert_columns['c_algolia_id'] = 0;
+		}
+		
+		//Lets now add:
+		$this->db->insert('v5_challenges', $insert_columns);
+		
+		//Fetch inserted id:
+		$insert_columns['c_id'] = $this->db->insert_id();
+		
+		return $insert_columns;
 	}
 	
 	
@@ -291,8 +360,16 @@ class Db_model extends CI_Model {
 		if($c_id){
 			
 			if($challenge['c_status']>=0){
-				$obj_add_message = $index->saveObjects($return);
-			} else {
+				
+				if(intval($challenge['c_algolia_id'])>0){
+					//Update existing
+					$obj_add_message = $index->saveObjects($return);
+				} else {
+					//Create new ones
+					$obj_add_message = $index->addObjects($return);
+				}
+				
+			} elseif(intval($challenge['c_algolia_id'])>0) {
 				//Delete object:
 				$index->deleteObject($challenge['c_algolia_id']);
 			}

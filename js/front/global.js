@@ -155,16 +155,48 @@ function save_c(){
 
 
 function new_challenge(c_objective){
-	if(is_outbound){
-		alert('OUT NEW');
-	} else {
-		alert('IN NEW');
-	}
+	
+	//Fetch needed vars:
+	pid = $('#save_c_id').val();
+	var direction = ( is_outbound ? 'outbound' : 'inbound' );
+	
+	//Set processing status:
+    $( "#list-"+direction ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>').hide().fadeIn();
+	
+	//Update backend:
+	$.post("/marketplace/challenge_create", {pid:pid, c_objective:c_objective, direction:direction}, function(data) {
+		//Update UI to confirm with user:
+		$( "#temp" ).remove();
+		$( "#list-"+direction ).append(data).hide().fadeIn();
+		
+		//Resort:
+		load_sortable(direction);
+	});
 }
 
 //Triggered when clicked on the toggle direction
 function link_challenge(new_link_id){
+	
+	//Fetch needed vars:
 	current_link_id = $('#save_c_id').val();
+	var direction = ( is_outbound ? 'outbound' : 'inbound' );
+	
+	//Set processing status:
+    $( "#list-"+direction ).append('<a href="#" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>').hide().fadeIn();
+	
+	//Update backend:
+	$.post("/marketplace/", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
+		//Update UI to confirm with user:
+		$( "#list-"+direction+" .srt-"+direction ).html(data).hide().fadeIn();
+		
+		//Disapper in a while:
+		setTimeout(function() {
+	        $("#list-"+direction+" .srt-"+direction).fadeOut();
+	    }, 3000);
+	});
+	
+	
+	
 	if(is_outbound){
 		alert('OUT LINK'+new_link_id);
 	} else {
@@ -286,10 +318,12 @@ $(document).ready(function() {
 			$('#list-outbound a').prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-outbound"></span>');
 			load_sortable('outbound');
 		}
+		/*
 		if($('#list-inbound').length){
 			$('#list-inbound a' ).prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-inbound"></span>');
 			load_sortable('inbound');
 		}
+		*/
 	}
 		
 
@@ -327,7 +361,7 @@ $(document).ready(function() {
 	}]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13) {
-        	new_challenge('outbound',$( "#addnode" ).val());
+        	new_challenge($( "#addnode" ).val());
             return true;
         }
     });

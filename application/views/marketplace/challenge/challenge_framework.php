@@ -19,7 +19,7 @@
 <div class="tab-content tab-space">
     <div class="tab-pane active" id="pill1">
 <?php
-/*
+
 echo '<div id="list-inbound" class="list-group">';
 	if(isset($cr['inbound']) && count($cr['inbound'])>0){
 		foreach($cr['inbound'] as $relation){
@@ -27,7 +27,6 @@ echo '<div id="list-inbound" class="list-group">';
 		}
 	}
 echo '</div>';
-*/
 
 //OUTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 echo '<div id="list-outbound" class="list-group">';

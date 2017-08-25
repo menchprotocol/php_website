@@ -18,6 +18,7 @@ class Marketplace extends CI_Controller {
 	 ****************************** */
 	
 	function algolia($pid=null){
+		//Used to update local host:
 		print_r($this->Db_model->sync_algolia($pid));
 	}
 	
@@ -243,6 +244,47 @@ class Marketplace extends CI_Controller {
 	/* ******************************
 	 * I/O Processing & Forms
 	 ****************************** */
+	
+	function challenge_create(){
+
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+		} elseif(!isset($_POST['direction']) || !in_array($_POST['direction'],array('outbound','inbound'))){
+			die('<span style="color:#FF0000;">Error: Invalid direction.</span>');
+		} elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
+			die('<span style="color:#FF0000;">Error: Missing name.</span>');
+		}		
+		
+		//Create challenge:
+		$challenge = $this->Db_model->c_create(array(
+				'c_creator_id' => $udata['u_id'],
+				'c_objective' => trim($_POST['c_objective']),
+		));
+		
+		//Create Link:
+		/*
+		$relation = $this->Db_model->cr_create(array(
+				'cr_creator_id' => $udata['u_id'],
+				'cr_inbound_id' => 1,
+				'cr_inbound_rank' => max_value('v5_challenge_relations','cr_inbound_rank',array(
+						'cr_inbound_id' => 1,
+				)),
+				'cr_outbound_id' => 1,
+				'cr_outbound_rank' => 1,
+		));
+		*/
+		
+		//Update Algolia:
+		$this->Db_model->sync_algolia($challenge['c_id']);
+		
+		//Return result:
+		echo 'Done done';
+		//echo echo_cr($challenge,$relation,$_POST['direction']);
+	}
 	
 	function delete_c($grandpa_id,$c_id){
 		die('disabled for now');
