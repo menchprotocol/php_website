@@ -341,6 +341,11 @@ class Db_model extends CI_Model {
 		}
 		$challenges = $this->c_fetch($limits);
 		
+		if(count($challenges)<=0){
+			//Nothing found here!
+			return false;
+		}
+		
 		//Buildup this array to save to search index
 		$return = array();
 		foreach($challenges as $challenge){
