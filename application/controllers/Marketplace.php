@@ -18,7 +18,7 @@ class Marketplace extends CI_Controller {
 	 ****************************** */
 	
 	function algolia($pid=null){
-		$this->Db_model->sync_algolia($pid);
+		print_r($this->Db_model->sync_algolia($pid));
 	}
 	
 	/* ******************************

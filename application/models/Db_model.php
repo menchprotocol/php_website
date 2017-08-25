@@ -275,6 +275,7 @@ class Db_model extends CI_Model {
 		}
 		
 		
+		
 		//Include PHP library:
 		require_once('application/libraries/algoliasearch.php');
 		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
@@ -284,10 +285,11 @@ class Db_model extends CI_Model {
 			$index->clearIndex();
 		}
 		
-		//Upload to Algolia:
-		$obj_add_message = $index->addObjects(json_decode(json_encode($return), FALSE));
+		//Send to Algolia:
+		$obj = json_decode(json_encode($return), FALSE);
+		$obj_add_message = $index->addObjects($obj);
 		
-		//Now update local with objectIDs:
+		//Now update database with the objectIDs:
 		if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
 			foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
 				$this->Db_model->c_update( $return[$key]['c_id'] , array(
@@ -302,5 +304,6 @@ class Db_model extends CI_Model {
 				'output' => $obj_add_message['objectIDs'],
 		);
 	}
+	
 	
 }
