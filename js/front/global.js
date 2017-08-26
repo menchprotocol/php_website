@@ -158,16 +158,20 @@ function new_challenge(c_objective){
 	
 	//Fetch needed vars:
 	pid = $('#save_c_id').val();
+	c_id = $('#c_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
 	
 	//Set processing status:
-    $( "#list-"+direction ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>').hide().fadeIn();
+    $( "#list-"+direction ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
+	
+    //Empty Input:
+	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/challenge_create", {pid:pid, c_objective:c_objective, direction:direction}, function(data) {
+	$.post("/marketplace/challenge_create", {c_id:c_id, pid:pid, c_objective:c_objective, direction:direction}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
-		$( "#list-"+direction ).append(data).hide().fadeIn();
+		$( "#list-"+direction ).append(data);
 		
 		//Resort:
 		load_sortable(direction);
@@ -204,14 +208,6 @@ function link_challenge(new_link_id){
 	}
 }
 
-function echo_dir(){
-	if(is_outbound){
-		return '<span class="label dirlabel label-primary">OUTBOUND <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
-	} else {
-		return '<span class="label dirlabel label-default">INBOUND <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
-	}
-}
-
 function load_sortable(direction){
 	var thelist = document.getElementById("list-"+direction);
 	var sort = Sortable.create( thelist , {
@@ -220,7 +216,7 @@ function load_sortable(direction){
 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
 		  onUpdate: function (evt/**Event*/){
 			    //Set processing status:
-			    $( "#list-"+direction+" .srt-"+direction ).hide().fadeIn().html(' <img src="/img/loader.gif" />');
+			    $( "#list-"+direction+" .srt-"+direction ).html(' <img src="/img/loader.gif" />');
 			  
 			    //Fetch new sort:
 			    var new_sort = [];
@@ -233,16 +229,15 @@ function load_sortable(direction){
 				//Update backend:
 				$.post("/marketplace/update_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
 					//Update UI to confirm with user:
-					$( "#list-"+direction+" .srt-"+direction ).html(data).hide().fadeIn();
+					$( "#list-"+direction+" .srt-"+direction ).html(data);
 					
 					//Disapper in a while:
 					setTimeout(function() {
-				        $("#list-"+direction+" .srt-"+direction).fadeOut();
+				        $("#list-"+direction+" .srt-"+direction+">span").fadeOut();
 				    }, 3000);
 				});
 		  }
 	});
-	//sort.destroy();
 }
 
 function delete_c(grandpa_id,c_id,c_title){
@@ -315,15 +310,11 @@ $(document).ready(function() {
 	//Load Sortable, IF ADMIN:
 	if(u_status>=2){
 		if($('#list-outbound').length){
-			$('#list-outbound a').prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-outbound"></span>');
 			load_sortable('outbound');
 		}
-		/*
 		if($('#list-inbound').length){
-			$('#list-inbound a' ).prepend('<i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>').append(' <span class="srt-inbound"></span>');
 			load_sortable('inbound');
 		}
-		*/
 	}
 		
 
@@ -347,15 +338,15 @@ $(document).ready(function() {
 		    displayKey: function(suggestion) { return "" },
 		    templates: {
 		      suggestion: function(suggestion) {
-		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value + ' ' + echo_dir();
+		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
 		      },
 		      header: function(data) {
 		    	  if(!data.isEmpty){
-		    		  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'" '+echo_dir()+'</a>';
+		    		  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
 		    	  }
 		      },
 		      empty: function(data) {
-	    		  	  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'" '+echo_dir()+'</a>';
+	    		  	  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
 		      },
 		    }
 	}]).keypress(function (e) {

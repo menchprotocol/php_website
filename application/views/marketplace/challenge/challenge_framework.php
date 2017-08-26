@@ -5,7 +5,7 @@
 <?php } ?>
 <h1 class="c_objective"><?= $cr['c']['c_objective'] ?></h1>
 <p class="showdown"><?= $cr['c']['c_description'] ?></p>
-
+<input type="hidden" id="c_id" value="<?= $this->uri->segment(2, 0) ?>" />
 
 
 <ul class="nav nav-pills nav-pills-primary" style="margin-top:30px; padding-top:20px; border-top:5px solid #000;">
@@ -20,47 +20,62 @@
     <div class="tab-pane active" id="pill1">
 <?php
 
-echo '<div id="list-inbound" class="list-group">';
-	if(isset($cr['inbound']) && count($cr['inbound'])>0){
-		foreach($cr['inbound'] as $relation){
-			echo echo_cr($challenge,$relation,'inbound');
-		}
-	}
-echo '</div>';
 
-//OUTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-echo '<div id="list-outbound" class="list-group">';
-	if(isset($cr['outbound']) && count($cr['outbound'])>0){
-		foreach($cr['outbound'] as $relation){
-			echo echo_cr($challenge,$relation,'outbound');
-		}
-	}	
-echo '</div>';
+
 
 
 //Can they modify?
 if(can_modify('c',$challenge['c_id'])){
 	echo '<div class="list-group">';
-		echo '<div class="list-group-item list_input">';
-		?>
-		<div class="input-group">
-			<div class="form-group is-empty"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Objective"></div>
-			<span class="input-group-addon">
-				<span id="dir_handle" class="label label-primary pull-right">
-					<div><span id="dir_name">OUTBOUND</span> <i class="fa fa-chevron-right"></i></div>											
-					<div class="togglebutton" style="display:none; margin-top:5px;">
-		            	<label>
-		                	<input type="checkbox" onclick="change_direction()" />
-		            	</label>
-            		</div>
+	echo '<div class="list-group-item list_input">';
+	?>
+			<div class="input-group">
+				<div class="form-group is-empty"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Challenge"></div>
+				<span class="input-group-addon">
+					<span id="dir_handle" class="label label-primary pull-right">
+						<div><span id="dir_name">OUTBOUND</span> <i class="fa fa-chevron-right"></i></div>
+						<div class="togglebutton" style="margin-top:5px;">
+			            	<label>
+			                	<input type="checkbox" onclick="change_direction()" />
+			            	</label>
+	            		</div>
+					</span>
 				</span>
-			</span>
-		</div>
-		<?php 
-		//echo '<input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Objective">';
+			</div>
+			<?php 
 		echo '</div>';
 	echo '</div>';
 }
+
+
+
+
+
+//OUTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+echo '<div id="list-outbound" class="list-group">';
+	if(isset($cr['outbound']) && count($cr['outbound'])>0){
+		foreach($cr['outbound'] as $relation){
+			echo echo_cr($this->uri->segment(2, 0),$relation,'outbound');
+		}
+	}	
+echo '</div>';
+
+
+
+
+
+echo '<div id="list-inbound" class="list-group">';
+if(isset($cr['inbound']) && count($cr['inbound'])>0){
+	foreach($cr['inbound'] as $relation){
+		echo echo_cr($this->uri->segment(2, 0),$relation,'inbound');
+	}
+}
+echo '</div>';
+
+
+
+
+
 
 ?>	      
     </div>

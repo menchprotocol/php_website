@@ -12,8 +12,9 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-function echo_cr($challenge,$relation,$direction){
-	return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$challenge['c_id'].'/'.$relation['c_id'].'" class="list-group-item is_sortable"><span class="pull-right"><i class="fa fa-times" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'">'.$direction.' <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.$relation['c_objective'].'</a>';
+function echo_cr($c_id,$relation,$direction){
+	//Fetch current Challenge:	
+	return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i><span class="pull-right"><i class="fa fa-times" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'">'.$direction.' <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.$relation['c_objective'].' <span class="srt-'.$direction.'"></span></a>';
 }
 
 function echo_users($users){

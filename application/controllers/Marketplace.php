@@ -246,44 +246,69 @@ class Marketplace extends CI_Controller {
 	 ****************************** */
 	
 	function challenge_create(){
-
+		
 		$udata = auth(2);
 		
 		if(!$udata){
 			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid c_id.</span>');
 		} elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 			die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
 		} elseif(!isset($_POST['direction']) || !in_array($_POST['direction'],array('outbound','inbound'))){
 			die('<span style="color:#FF0000;">Error: Invalid direction.</span>');
 		} elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
 			die('<span style="color:#FF0000;">Error: Missing name.</span>');
-		}		
+		}
+		
+		//Fetch existing challenge:
+		$f_challenge = load_object('c' , array(
+				'c.c_id' => $_POST['pid'],
+				'c.c_status >=' => 0,
+		));
 		
 		//Create challenge:
+		$is_outbound = ($_POST['direction']=='outbound');
 		$challenge = $this->Db_model->c_create(array(
 				'c_creator_id' => $udata['u_id'],
 				'c_objective' => trim($_POST['c_objective']),
 		));
 		
 		//Create Link:
-		/*
 		$relation = $this->Db_model->cr_create(array(
 				'cr_creator_id' => $udata['u_id'],
-				'cr_inbound_id' => 1,
-				'cr_inbound_rank' => max_value('v5_challenge_relations','cr_inbound_rank',array(
-						'cr_inbound_id' => 1,
+				
+				//Linking:
+				'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $challenge['c_id'] ),
+				'cr_outbound_id' => ( $is_outbound ? $challenge['c_id'] : $f_challenge['c_id'] ),
+				
+				//Fetch ranks:
+				'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_inbound_rank', array(
+						'cr_status >=' => 0,
+						'cr_outbound_id' => $f_challenge['c_id'],
 				)),
-				'cr_outbound_id' => 1,
-				'cr_outbound_rank' => 1,
+				'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_outbound_rank', array(
+						'cr_status >=' => 0,
+						'cr_inbound_id' => $f_challenge['c_id'],
+				)),
 		));
-		*/
+		
+		//Fetch full link package:
+		if($is_outbound){
+			$relations = $this->Db_model->cr_outbound_fetch(array(
+					'cr.cr_id' => $relation['cr_id'],
+			));
+		} else {
+			$relations = $this->Db_model->cr_inbound_fetch(array(
+					'cr.cr_id' => $relation['cr_id'],
+			));
+		}
 		
 		//Update Algolia:
 		$this->Db_model->sync_algolia($challenge['c_id']);
 		
 		//Return result:
-		echo 'Done done';
-		//echo echo_cr($challenge,$relation,$_POST['direction']);
+		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction']);
 	}
 	
 	function delete_c($grandpa_id,$c_id){

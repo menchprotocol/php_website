@@ -243,7 +243,6 @@ class Db_model extends CI_Model {
 	
 	
 	
-	//TODO
 	function max_value($table,$column,$match_columns){
 		$this->db->select('MAX('.$column.') as largest');
 		$this->db->from($table);
@@ -252,7 +251,7 @@ class Db_model extends CI_Model {
 		}
 		$q = $this->db->get();
 		$stats = $q->row_array();
-		return $stats['largest'];
+		return intval($stats['largest']);
 	}
 	
 	function cr_create($insert_columns){
@@ -303,6 +302,9 @@ class Db_model extends CI_Model {
 		}
 		if(!isset($insert_columns['c_algolia_id'])){
 			$insert_columns['c_algolia_id'] = 0;
+		}
+		if(!isset($insert_columns['c_description'])){
+			$insert_columns['c_description'] = '';
 		}
 		
 		//Lets now add:
@@ -372,6 +374,15 @@ class Db_model extends CI_Model {
 				} else {
 					//Create new ones
 					$obj_add_message = $index->addObjects($return);
+					
+					//Now update database with the objectIDs:
+					if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+						foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+							$this->Db_model->c_update( $return[$key]['c_id'] , array(
+									'c_algolia_id' => $algolia_id,
+							));
+						}
+					}
 				}
 				
 			} elseif(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0) {
@@ -380,6 +391,7 @@ class Db_model extends CI_Model {
 			}
 			
 		} else {
+			//Create new ones
 			$obj_add_message = $index->addObjects($return);
 			
 			//Now update database with the objectIDs:
@@ -392,12 +404,11 @@ class Db_model extends CI_Model {
 			}
 		}			
 		
+		
 		return array(
 				'c_id' => $c_id,
 				'challenges' => $challenges,
 				'output' => $obj_add_message['objectIDs'],
 		);
 	}
-	
-	
 }
