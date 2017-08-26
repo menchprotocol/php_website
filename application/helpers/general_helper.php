@@ -12,9 +12,36 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
+
+
+function echo_message($i){
+	//Fetch current Challenge:
+	echo '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
+		echo '<div>';
+			echo '<span class="showdown">'.$i['i_message'].'</span>';
+			echo '<textarea class="edit-on">'.$i['i_message'].'</textarea>';
+			echo '<div class="original">'.$i['i_message'].'</div>';
+			echo '<ul class="msg-nav">';
+			    echo '<li><i class="fa fa-sort"></i></li>';
+			    echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
+			    //echo '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
+			    echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
+			    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
+			    echo '<li class="edit-updates"></li>';
+			    echo '<li class="pull-right"><a href="javascript:msg_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+			    echo '<li class="edit-on pull-right"><a href="/guides/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Syntax</a></li>';
+			    echo '</ul>';
+		echo '</div>';
+	echo '</div>';
+}
+
 function echo_cr($c_id,$relation,$direction){
-	//Fetch current Challenge:	
-	return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i><span class="pull-right"><i class="fa fa-times" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'">'.$direction.' <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.$relation['c_objective'].' <span class="srt-'.$direction.'"></span></a>';
+	//Fetch current Challenge:
+	if($direction=='outbound'){
+		return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i><span class="pull-right"><i class="fa fa-trash btn-adj" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.$relation['c_objective'].' <span class="srt-'.$direction.'"></span></a>';
+	} else {
+		return '<a href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span> '.$relation['c_objective'].'</a>';
+	}
 }
 
 function echo_users($users){

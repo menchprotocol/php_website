@@ -22,7 +22,7 @@ $lang['i_name'] = 'Drip Media';
 $lang['i_pname'] = 'Drip Media';
 $lang['i_icon'] = '<i class="fa fa-comments" aria-hidden="true"></i>';
 $lang['i_missing'] = 'No drop media found.';
-$lang['i_desc']  /*TODO*/ = 'Insights are content that help users understand the challenge and how to execute it. They are built by our community of challenge creators, and shared among everyone to enable rapid content creation for each challenge. Frameworks are organized in a tree structure.';
+$lang['i_desc'] = 'Content that would be gradually distributed to users via Facebook Messenger when the user reaches this specific challenge. The content should help users execute effectively to build the challenge deliverables.';
 
 //Run Sub-Menu Names:
 $lang['r_d_name'] = 'Dashboard';
@@ -36,11 +36,11 @@ $lang['r_l_name'] = 'Leaderboard';
 $lang['r_l_desc'] = 'The Run leaderboard ranks run members based on their performance for deliverying each milestone. It also helps leaders detect members who might need extra help.';
 $lang['r_l_none'] = 'No members registered for this run yet.';
 
-$lang['cr_name'] = 'Dependency';
-$lang['cr_pname'] = 'Dependencies';
-$lang['cr_missing'] = 'No dependencies linked yet.';
+$lang['cr_name'] = 'Curriculum';
+$lang['cr_pname'] = 'Curriculum';
+$lang['cr_missing'] = 'No curriculum linked yet.';
 $lang['cr_icon'] = '<i class="fa fa-link" aria-hidden="true"></i>';
-$lang['cr_desc'] = 'Links to other challenges that contribute to accomplishing this challenge. The tree of challenges.';
+$lang['cr_desc'] = 'Related, independant challenges that contribute to accomplishing this challenge.';
 $lang['u_name'] = 'User';
 $lang['u_pname'] = 'Users';
 $lang['ru_name'] = 'Run User';

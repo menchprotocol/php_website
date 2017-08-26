@@ -155,7 +155,6 @@ function save_c(){
 
 
 function new_challenge(c_objective){
-	
 	//Fetch needed vars:
 	pid = $('#save_c_id').val();
 	c_id = $('#c_id').val();
@@ -178,37 +177,67 @@ function new_challenge(c_objective){
 	});
 }
 
+
 //Triggered when clicked on the toggle direction
-function link_challenge(new_link_id){
-	
+function link_challenge(target_id){
 	//Fetch needed vars:
-	current_link_id = $('#save_c_id').val();
+	pid = $('#save_c_id').val();
+	c_id = $('#c_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
 	
 	//Set processing status:
-    $( "#list-"+direction ).append('<a href="#" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>').hide().fadeIn();
+    $( "#list-"+direction ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
+	
+    //Empty Input:
+	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
+	$.post("/marketplace/challenge_link", {c_id:c_id, pid:pid, target_id:target_id, direction:direction}, function(data) {
 		//Update UI to confirm with user:
-		$( "#list-"+direction+" .srt-"+direction ).html(data).hide().fadeIn();
+		$( "#temp" ).remove();
+		$( "#list-"+direction ).append(data);
 		
-		//Disapper in a while:
-		setTimeout(function() {
-	        $("#list-"+direction+" .srt-"+direction).fadeOut();
-	    }, 3000);
+		//Resort:
+		load_sortable(direction);
 	});
-	
-	
-	
-	if(is_outbound){
-		alert('OUT LINK'+new_link_id);
-	} else {
-		alert('IN LINK'+new_link_id);
-	}
 }
 
+
+function load_message_sorting(){
+	var thelist = document.getElementById("message-sorting");
+	var sort_msg = Sortable.create( thelist , {
+		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+		  onUpdate: function (evt/**Event*/){
+			    //Set processing status:
+			    $( ".edit-updates" ).html('<img src="/img/loader.gif" />');
+			  
+			    //Fetch new sort:
+			    var new_sort = [];
+				var sort_rank = 0;
+				$( "#message-sorting>div" ).each(function() {
+					sort_rank++;
+					new_sort[sort_rank] = $( this ).attr('iid');
+				});
+				
+				//Update backend:
+				$.post("/marketplace/update_msg_sort", {new_sort:new_sort}, function(data) {
+					//Update UI to confirm with user:
+					$( ".edit-updates" ).html(data);
+					
+					//Disapper in a while:
+					setTimeout(function() {
+				        $(".edit-updates>span").fadeOut();
+				    }, 3000);
+				});
+		  }
+	});
+}
+
+
 function load_sortable(direction){
+	if(direction=='inbound'){return false;}
 	var thelist = document.getElementById("list-"+direction);
 	var sort = Sortable.create( thelist , {
 		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
@@ -221,7 +250,7 @@ function load_sortable(direction){
 			    //Fetch new sort:
 			    var new_sort = [];
 				var sort_rank = 0;
-				$( "#list-"+direction+" a" ).each(function() {
+				$( "#list-"+direction+">a" ).each(function() {
 					sort_rank++;
 					new_sort[sort_rank] = $( this ).attr('data-link-id');
 				});
@@ -251,7 +280,6 @@ function delete_c(grandpa_id,c_id,c_title){
 
 
 function cr_delete(cr_id,cr_title){
-	
 	//Stop href:
 	var current_href = $('#cr_'+cr_id).attr("href");
 	$('#cr_'+cr_id).attr("href", "#");
@@ -267,7 +295,7 @@ function cr_delete(cr_id,cr_title){
 			
 			//Disapper in a while:
 			setTimeout(function() {
-				$( "#cr_"+cr_id ).fadeOut();
+				$( "#cr_"+cr_id ).fadeOut().remove();
 		    }, 3000);
 		});
 	} else {
@@ -278,13 +306,147 @@ function cr_delete(cr_id,cr_title){
 	}
 }
 
+function update_i_showdown(){
+	$( "#message-sorting>div" ).each(function( index ) {
+		var i_id = $( this ).attr('iid');
+		update_showdown( $("#ul-nav-"+i_id+" .showdown") , $("#ul-nav-"+i_id+" textarea").val() );
+	});
+}
+function update_c_overview_showdown(){
+	update_showdown( $("#main_desc") , $("#main_desc").text() );
+}
+
+
+
+function msg_create(){
+	
+	//Fetch needed vars:
+	var i_message = $('#i_message').val();
+	var pid = $('#save_c_id').val();
+	
+	if(i_message.length<1 || pid<1){
+		return false;
+	}
+	
+	//Set processing status:
+    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/loader.gif" /> Adding... </div></div>');
+	
+    //Empty Input:
+	$( "#i_message" ).val("").focus();
+	
+	//Update backend:
+	$.post("/marketplace/msg_create", {pid:pid, i_message:i_message}, function(data) {
+		//Update UI to confirm with user:
+		$( "#temp" ).remove();
+		$( "#message-sorting" ).append(data);
+		
+		//Update showdown:
+		update_i_showdown();
+		
+		//Resort:
+		load_message_sorting();
+	});
+}
+
+function msg_delete(i_id){
+	//Double check:
+	var r = confirm("Delete Message?");
+	if (r == true) {
+	    //Delete and remove:
+		$.post("/marketplace/i_delete", {i_id:i_id}, function(data) {
+			//Update UI to confirm with user:
+			
+			$("#ul-nav-"+i_id).html('<div>'+data+'</div>');
+			
+			//Disapper in a while:
+			setTimeout(function() {
+				$("#ul-nav-"+i_id).fadeOut().remove();
+		    }, 3000);
+		});
+	}
+}
+
+function msg_start_edit(i_id){
+	
+	//Start editing:
+	$("#ul-nav-"+i_id+" .edit-off").hide();
+	$("#ul-nav-"+i_id+" .edit-on").fadeIn().css("display","inline-block");
+	$("#ul-nav-"+i_id+">div").css('width','100%');
+	
+	//Watch typing:
+	$(document).keyup(function(e) {
+		//Live Update the UI:
+		update_showdown( $("#ul-nav-"+i_id+" .showdown") , $("#ul-nav-"+i_id+" textarea").val() );
+		
+		//Watch for action keys:
+		if (e.ctrlKey && e.keyCode === 13){
+			msg_save_edit(i_id);
+		} else if (e.keyCode === 27) {
+			msg_cancel_edit(i_id);
+		}
+	});
+}
+
+function msg_cancel_edit(i_id,success=0){
+	//Revert editing:
+	$("#ul-nav-"+i_id+" .edit-off").fadeIn().css("display","inline-block");
+	$("#ul-nav-"+i_id+" .edit-on").hide();
+	$("#ul-nav-"+i_id+">div").css('width','inherit');
+	
+	if(!success){
+		//Revert text changes to original:
+		var original = $("#ul-nav-"+i_id+" .original").text(); //Original content
+		$("#ul-nav-"+i_id+" textarea").val(original); //Revert Textarea
+		update_showdown( $("#ul-nav-"+i_id+" .showdown") , original ); //Revert UI
+	}
+}
+
+
+function msg_save_edit(i_id){
+	//Make sure there is some value:
+	var i_message = $("#ul-nav-"+i_id+" textarea").val();
+	if(i_message.length<1){
+		alert('Message is required. Try again.');
+		return false;
+	}
+	
+	//Revert View:
+	msg_cancel_edit(i_id,1);
+	
+	//Show loader:
+	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/loader.gif" /></div>');
+	
+	//Update message:
+	$.post("/marketplace/i_edit", {i_id:i_id, i_message:i_message}, function(data) {
+		//Update UI to confirm with user:
+		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
+		
+		//Update original:
+		$("#ul-nav-"+i_id+" .original").text(i_message);
+		
+		//Disapper in a while:
+		setTimeout(function() {
+			$("#ul-nav-"+i_id+" .edit-updates>div").fadeOut();
+	    }, 3000);
+	});
+}
+
+
+
 $(document).ready(function() {
 	
 	$('#save_c_description').bind('input propertychange', function() {
-		update_showdown($('.showdown'),this.value);
+		update_showdown($('#main_desc'),this.value);
 	});
 	$('#save_c_objective').bind('input propertychange', function() {
 		update_showdown($('.c_objective'),this.value);
+	});
+	
+	
+	$('#i_message').keydown(function (e) {
+		  if (e.ctrlKey && e.keyCode == 13) {
+			  msg_create();
+		  }
 	});
 
 	
@@ -298,14 +460,14 @@ $(document).ready(function() {
 	
 	//Showdowns?
 	if ( $( ".showdown" ).length ) {
-		update_showdown($('.showdown'),$('.showdown').text());
+		update_i_showdown();
+		update_c_overview_showdown();
 	}
 	
 	//Load tooltips:
 	$(function () {
 		  $('[data-toggle="tooltip"]').addClass('').tooltip();
 	});
-	
 	
 	//Load Sortable, IF ADMIN:
 	if(u_status>=2){
@@ -351,7 +513,7 @@ $(document).ready(function() {
 		    }
 	}]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
         	new_challenge($( "#addnode" ).val());
             return true;
         }

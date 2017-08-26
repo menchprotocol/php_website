@@ -125,6 +125,56 @@ class Db_model extends CI_Model {
 		return $users[0];
 	}
 	
+	/* ******************************
+	 * i Messages
+	 ****************************** */
+	
+	function i_fetch($match_columns){
+		$this->db->select('*');
+		$this->db->from('v5_challenge_insights');
+		foreach($match_columns as $key=>$value){
+			$this->db->where($key,$value);
+		}
+		$q = $this->db->get();
+		return $q->result_array();
+	}
+	
+	function i_create($insert_columns){
+		//Missing anything?
+		if(!isset($insert_columns['i_c_id'])){
+			return false;
+		} elseif(!isset($insert_columns['i_message'])){
+			return false;
+		}
+		
+		//Autocomplete required
+		if(!isset($insert_columns['i_timestamp'])){
+			$insert_columns['i_timestamp'] = date("Y-m-d H:i:s");
+		}
+		if(!isset($insert_columns['i_status'])){
+			$insert_columns['i_status'] = 0; //Drafting...
+		}
+		if(!isset($insert_columns['i_rank'])){
+			$insert_columns['i_rank'] = 1;
+		}
+		if(!isset($insert_columns['i_drip_time'])){
+			$insert_columns['i_drip_time'] = 0;
+		}
+		
+		//Lets now add:
+		$this->db->insert('v5_challenge_insights', $insert_columns);
+		
+		//Fetch inserted id:
+		$insert_columns['i_id'] = $this->db->insert_id();
+		
+		return $insert_columns;
+	}
+	
+	function i_update($i_id,$update_columns){
+		$this->db->where('i_id', $i_id);
+		$this->db->update('v5_challenge_insights', $update_columns);
+		return $this->db->affected_rows();
+	}
 	
 	/* ******************************
 	 * Runs
@@ -231,6 +281,7 @@ class Db_model extends CI_Model {
 	function challenge_update($c_id,$update_columns){
 		$this->db->where('c_id', $c_id);
 		$this->db->update('v5_challenges', $update_columns);
+		return $this->db->affected_rows();
 	}
 	
 	function cr_update($cr_id,$update_columns,$column='cr_id'){

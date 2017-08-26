@@ -217,6 +217,10 @@ class Marketplace extends CI_Controller {
 								'cr.cr_status >=' => 0,
 						)),
 				),
+				'i_messages' => $this->Db_model->i_fetch(array(
+						'i_status >=' => 0,
+						'i_c_id >=' => $pid,
+				)),
 		);
 		
 		//Valid challenge key?
@@ -225,7 +229,7 @@ class Marketplace extends CI_Controller {
 		}
 		
 		//Append Title:
-		$view_data['title'] = $this->lang->line('i_name').' | '.$view_data['cr']['c']['c_objective'];
+		$view_data['title'] = $view_data['cr']['c']['c_objective'];
 		
 		//Do we have a run loaded in session?
 		if($this->session->userdata('r_focus_version')) {
@@ -244,6 +248,43 @@ class Marketplace extends CI_Controller {
 	/* ******************************
 	 * I/O Processing & Forms
 	 ****************************** */
+	
+	function msg_create(){
+		
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh to Continue.</span>');
+		} elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+		} elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
+			die('<span style="color:#FF0000;">Error: Missing message.</span>');
+		}
+		
+		//Fetch existing challenge:
+		$f_challenge = load_object('c' , array(
+				'c.c_id' => $_POST['pid'],
+				'c.c_status >=' => 0,
+		));
+		
+		//Create Link:
+		$i = $this->Db_model->i_create(array(
+				'i_creator_id' => $udata['u_id'],
+				'i_c_id' => $f_challenge['c_id'],
+				'i_message' => trim($_POST['i_message']),
+				'i_rank' => 1 + $this->Db_model->max_value('v5_challenge_insights','i_rank', array(
+						'i_status >=' => 0,
+						'i_c_id' => $f_challenge['c_id'],
+				)),
+		));
+		
+		//TODO Integrate Message & Update Algolia:
+		
+		
+		//Print the challenge:
+		echo_message($i);
+	}
+	
 	
 	function challenge_create(){
 		
@@ -311,6 +352,72 @@ class Marketplace extends CI_Controller {
 		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction']);
 	}
 	
+	
+	function challenge_link(){
+		
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid c_id.</span>');
+		} elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+		} elseif(!isset($_POST['direction']) || !in_array($_POST['direction'],array('outbound','inbound'))){
+			die('<span style="color:#FF0000;">Error: Invalid direction.</span>');
+		} elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
+		}
+		
+		//Fetch existing challenge:
+		$f_challenge = load_object('c' , array(
+				'c.c_id' => $_POST['pid'],
+				'c.c_status >=' => 0,
+		));
+		
+		//Create challenge:
+		$is_outbound = ($_POST['direction']=='outbound');
+		$challenge = load_object('c' , array(
+				'c.c_id' => $_POST['target_id'],
+				'c.c_status >=' => 0,
+		));
+		
+		//TODO Check to make sure not duplicate
+		
+		//Create Link:
+		$relation = $this->Db_model->cr_create(array(
+				'cr_creator_id' => $udata['u_id'],
+				
+				//Linking:
+				'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $challenge['c_id'] ),
+				'cr_outbound_id' => ( $is_outbound ? $challenge['c_id'] : $f_challenge['c_id'] ),
+				
+				//Fetch ranks:
+				'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_inbound_rank', array(
+						'cr_status >=' => 0,
+						'cr_outbound_id' => $f_challenge['c_id'],
+				)),
+				'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_outbound_rank', array(
+						'cr_status >=' => 0,
+						'cr_inbound_id' => $f_challenge['c_id'],
+				)),
+		));
+		
+		//Fetch full link package:
+		if($is_outbound){
+			$relations = $this->Db_model->cr_outbound_fetch(array(
+					'cr.cr_id' => $relation['cr_id'],
+			));
+		} else {
+			$relations = $this->Db_model->cr_inbound_fetch(array(
+					'cr.cr_id' => $relation['cr_id'],
+			));
+		}
+		
+		//Return result:
+		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction']);
+	}
+	
 	function delete_c($grandpa_id,$c_id){
 		die('disabled for now');
 		$udata = auth(2,1);
@@ -357,6 +464,30 @@ class Marketplace extends CI_Controller {
 		redirect_message('/marketplace/'.$grandpa_id, '<div class="alert alert-success" role="alert">Challenge <b>'.$sub_challenge['c_objective'].'</b> deleted with '.$links_deleted.' dependencies.</div>');
 	}
 	
+	
+	function update_msg_sort(){
+		//Auth user and Load object:
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort'])<=0){
+			die('<span style="color:#FF0000;">Error: Nothing to sort.</span>');
+		}
+		
+		//Update them all:
+		foreach($_POST['new_sort'] as $i_rank=>$i_id){
+			$this->Db_model->i_update( intval($i_id) , array(
+					'i_creator_id' => $udata['u_id'],
+					'i_timestamp' => date("Y-m-d H:i:s"),
+					'i_rank' => intval($i_rank),
+			));
+		}
+		
+		//TODO Save change history
+		echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
+	}
+	
 	function update_sort(){
 		//Auth user and Load object:
 		$udata = auth(2);
@@ -384,6 +515,31 @@ class Marketplace extends CI_Controller {
 		echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
 	}
 	
+	
+	function i_delete(){
+		//Auth user and Load object:
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Invalid i_id.</span>');
+		}
+		
+		//Now update the DB:
+		$this->Db_model->i_update( intval($_POST['i_id']) , array(
+				'i_creator_id' => $udata['u_id'],
+				'i_timestamp' => date("Y-m-d H:i:s"),
+				'i_status' => -1, //Deleted by user
+		));
+		
+		//TODO Save change history
+		
+		
+		//Show result:
+		die('<span style="color:#00CC00;">Deleted</span>');
+	}
+	
 	function cr_delete(){
 		//Auth user and Load object:
 		$udata = auth(2);
@@ -406,6 +562,32 @@ class Marketplace extends CI_Controller {
 		//Show result:
 		die('<span style="color:#00CC00;">Deleted</span>');
 	}
+	
+	function i_edit(){
+		//Auth user and Load object:
+		$udata = auth(2);
+		
+		if(!$udata){
+			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+		} elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
+			die('<span style="color:#FF0000;">Error: Missing i_id.</span>');
+		} elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
+			die('<span style="color:#FF0000;">Error: Missing i_message.</span>');
+		}
+		
+		//Now update the DB:
+		$this->Db_model->i_update( intval($_POST['i_id']) , array(
+				'i_creator_id' => $udata['u_id'],
+				'i_timestamp' => date("Y-m-d H:i:s"),
+				'i_message' => trim($_POST['i_message']),
+		));
+		
+		//TODO Save change history
+		
+		//Show result:
+		die('<span style="color:#00CC00;">Saved</span>');
+	}
+	
 	function challenge_modify(){
 		//Auth user and Load object:
 		$udata = auth(2);

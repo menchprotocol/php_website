@@ -25,8 +25,12 @@ a ~~strikethrough~~ element
 <h3>Links</h3>
 <p>If you wrap a valid URL or email in <> it will be turned into a link whose text is the link itself.</p>
 <p class="mono">
-link to http://www.google.com/<br />
-this is my email somedude@mail.com
+Simple: link to http://www.google.com/<br />
+Simple: this is my email somedude@mail.com<br />
+Inline: [Get Showdown!](https://github.com/showdownjs/showdown)<br />
+Referencing:<br /><br />
+this is a [link to google][1]<br /><br />
+[1]: www.google.com
 </p>
 
 
@@ -65,6 +69,7 @@ this is my email somedude@mail.com
 3. Item three
 </p>
 
+<?php /*
 
 <h3>Nested Lists</h3>
 <p>You can create nested lists by indenting list items by <b><i>four spaces</i></b>.</p>
@@ -110,3 +115,5 @@ In the words of Abraham Lincoln:<br />
 |&nbsp;col&nbsp;2&nbsp;is&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;*centered*&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;$12&nbsp;|<br />
 |&nbsp;zebra&nbsp;stripes&nbsp;|&nbsp;~~are&nbsp;neat~~&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$1&nbsp;|
 </p>
+
+*/ ?>
