@@ -48,7 +48,7 @@ class Bot extends CI_Controller {
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
 		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
-			echo $challenge;
+			die($challenge);
 		}
 		
 		//Fetch input data:

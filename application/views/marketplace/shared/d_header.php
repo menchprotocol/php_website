@@ -93,10 +93,7 @@ $website = $this->config->item('website');
 	            	if(isset($challenge) && $challenge && 0){
             			//Challenge Nav:
 	            		echo '<li'.( '/marketplace/'.$challenge['c_id']==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'">'.$this->lang->line('c_icon').'<p>'.$this->lang->line('c_name').'</p></a></li>';
-	            		
             			?>
-            			
-            			
             			<li>
 	                        <a data-toggle="collapse" href="#pagesExamples" class="collapsed" aria-expanded="false">
 	                            <?= ( isset($run) ? run_icon($run['r_version']).'<p> '.time_format($run['r_kickoff_time'],true).' '.$this->lang->line('r_name') : $this->lang->line('r_icon').'<p> '.$this->lang->line('r_pname') ) ?>
@@ -136,8 +133,6 @@ $website = $this->config->item('website');
 							echo '<li class="submenu '.( '/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/leaderboard'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/leaderboard'.'">'.'<p>'.$this->lang->line('r_l_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
 							echo '<li class="submenu '.( '/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/settings'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/settings'.'">'.'<p>'.$this->lang->line('r_s_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
 						}
-            		} else {
-            			echo '<p style="padding:15px;">v0.20 Navigation Goes Here...</p>';
             		}
 	            	?>
 	            </ul>
