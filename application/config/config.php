@@ -14,7 +14,7 @@ $config['website'] = array(
 		'fb_page_id' => '381488558920384',
 		'fb_app_id' => '1782431902047009',
 		'bot_ref_url' => 'https://m.me/381488558920384',
-		'access_token' => 'EAAZAVHMRbmyEBAC1CZAzLDFnZBZC7O3T9iBE8wx8DkLmPRe1YPFMPSn4MPu9KNRnIZBqjDk9SmTjUhUfWEwDtpxZBxhvGOhnxAh9lIOqJXRLYz859zj0eHrlBYJsyiZB5rZCYBHsIMG30tZBNZC4talazgsVaxH2iXqoNIVe8FpfJhtwZDZD',
+		'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
 );
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
