@@ -177,6 +177,7 @@ class Bot extends CI_Controller {
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => (isset($im['referral']) ? 4 : 3), //referral or postback
 							'e_json' => json_encode($json_data),
+							'e_c_id' => 0, //We assume no referral here...
 					);
 					
 					
@@ -188,9 +189,19 @@ class Bot extends CI_Controller {
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
 						
-						//TODO Validate the ref ID and log error if not valid.
-						//Decode ref variable:
-						$eng_data['e_c_id'] = intval($referral_array['ref']);
+						//Validate ref ID:
+						$challenges = $this->Db_model->c_fetch(array(
+								'c_id >=' => intval($referral_array['ref']),
+						));
+						
+						
+						if(count($challenges)==1){
+							//We found this!
+							//Decode ref variable:
+							$eng_data['e_c_id'] = $challenges[0]['c_id'];
+						}
+						
+						
 						
 						//Optional actions that may need to be taken on SOURCE:
 						if(strtoupper($ref_source)=='ADS' && $ad_id){
@@ -210,6 +221,12 @@ class Bot extends CI_Controller {
 					
 					//General variables:
 					$this->Db_model->log_engagement($eng_data);
+					
+					if($eng_data['e_c_id']>0){
+						//They had a valid referral, let them know which challenge they are joining:
+						quick_message($im['sender']['id'],'Welcome to Mench!');
+						quick_message($im['sender']['id'],'It seems you are interested to '.$challenges[0]['c_objective']);
+					}
 					
 				} elseif(isset($im['optin'])) {
 					
