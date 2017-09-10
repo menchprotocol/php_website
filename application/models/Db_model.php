@@ -519,7 +519,7 @@ class Db_model extends CI_Model {
 		} elseif(!isset($link_data['e_medium_action_id'])){
 			log_error('log_engagement Missing e_medium_action_id.' , $link_data, $link_data['e_medium_id']);
 			return false;
-		} elseif(!isset($link_data['e_creator_id']) || intval($link_data['e_creator_id'])<=0){
+		} elseif(!isset($link_data['e_creator_id'])){
 			//Try to fetch user ID from session:
 			$user_data = $this->session->userdata('user');
 			if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
