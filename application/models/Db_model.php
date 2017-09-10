@@ -83,12 +83,49 @@ class Db_model extends CI_Model {
 	
 	function user_create($insert_columns){
 		
+		//Make sure required fields are here:
+		if(!isset($insert_columns['u_fname'])){
+			log_error('user_create() Missing u_fname.',$insert_columns,2);
+			return false;
+		} elseif(!isset($insert_columns['u_lname'])){
+			log_error('user_create() Missing u_lname.',$insert_columns,2);
+			return false;
+		} elseif(!isset($insert_columns['u_fb_id'])){
+			log_error('user_create() Missing u_fb_id.',$insert_columns,2);
+			return false;
+		}
+		
+		
 		//Missing anything?
 		if(!isset($insert_columns['u_timestamp'])){
 			$insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
 		}
 		if(!isset($insert_columns['u_status'])){
 			$insert_columns['u_status'] = 1;
+		}
+		if(!isset($insert_columns['u_url_key'])){
+			$insert_columns['u_url_key'] = preg_replace("/[^A-Za-z0-9]/", '', $insert_columns['u_fname'].$insert_columns['u_lname']);
+		}
+		
+		
+		//Check u_url_key to be unique, and if not, add a number and increment:
+		$original_u_url_key = $insert_columns['u_url_key'];
+		$is_duplicate = true;
+		$increment = 0;
+		while($is_duplicate){
+			$matching_users = $this->users_fetch(array(
+					'u_url_key' => $insert_columns['u_url_key'],
+			));
+			
+			if(count($matching_users)==0){
+				//Yes!
+				$is_duplicate = false;
+				break;
+			} else {
+				//This is a duplicate:
+				$increment++;
+				$insert_columns['u_url_key'] = $original_u_url_key.$increment;
+			}
 		}
 		
 		//Lets now add:
@@ -211,7 +248,6 @@ class Db_model extends CI_Model {
 				'u_fb_id' 			=> $u_fb_id,
 				'u_fname' 			=> $fb_profile['first_name'],
 				'u_lname' 			=> $fb_profile['last_name'],
-				'u_url_key'			=> preg_replace("/[^a-z0-9]/", '', strtolower($fb_profile['first_name'].' '.$fb_profile['last_name'])),
 				'u_timezone' 		=> $fb_profile['timezone'],
 				'u_image_url' 		=> $fb_profile['profile_pic'],
 				'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
