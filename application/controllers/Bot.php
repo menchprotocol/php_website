@@ -191,7 +191,7 @@ class Bot extends CI_Controller {
 						
 						//Validate ref ID:
 						$challenges = $this->Db_model->c_fetch(array(
-								'c_id >=' => intval($referral_array['ref']),
+								'c_id' => intval($referral_array['ref']),
 						));
 						
 						
