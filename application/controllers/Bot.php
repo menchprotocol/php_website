@@ -11,7 +11,8 @@ class Bot extends CI_Controller {
 	}
 	
 	
-	function t(){
+	function t($id){
+		print_r($this->Facebook_model->fetch_profile($id));
 	}
 	
 	function fetch_entity($apiai_id){
@@ -55,10 +56,10 @@ class Bot extends CI_Controller {
 		}
 		
 		//Fetch input data:
-		//$json_data = json_decode(file_get_contents('php://input'), true);
+		$json_data = json_decode(file_get_contents('php://input'), true);
 		
 		//This is for local testing only:
-		$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"'.$website['fb_page_id'].'","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"'.$website['fb_page_id'].'"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
+		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"'.$website['fb_page_id'].'","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"'.$website['fb_page_id'].'"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
