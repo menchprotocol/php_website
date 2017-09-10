@@ -38,6 +38,14 @@ class Bot extends CI_Controller {
 	
 	function facebook_webhook(){
 		
+		$this->Db_model->log_engagement(array(
+				'e_creator_id' => 1,
+				'e_medium_id' => 2, //Messenger Bot
+				'e_medium_action_id' => 1, //read
+				'e_message' => 'hi', //read
+		));
+		exit;
+		
 		/*
 		 * 
 		 * Used for all webhooks from facebook, including user messaging, delivery notifications, etc...
