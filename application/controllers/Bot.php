@@ -47,15 +47,18 @@ class Bot extends CI_Controller {
 		//Facebook Webhook Authentication:
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
+		$website = $this->config->item('website');
+		
+		
 		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
 			echo $challenge;
 		}
 		
 		//Fetch input data:
-		$json_data = json_decode(file_get_contents('php://input'), true);
+		//$json_data = json_decode(file_get_contents('php://input'), true);
 		
 		//This is for local testing only:
-		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"1782774501750818","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"1782774501750818"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
+		$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"'.$website['fb_page_id'].'","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"'.$website['fb_page_id'].'"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
@@ -71,7 +74,7 @@ class Bot extends CI_Controller {
 		foreach($json_data['entry'] as $entry){
 			
 			//check the page ID:
-			if(!isset($entry['id']) || !fb_page_pid($entry['id'])){
+			if(!isset($entry['id']) || $entry['id']!==$website['fb_page_id']){
 				log_error('Facebook webhook call with unknown page id ['.$entry['id'].'].',$json_data,2);
 				continue;
 			} elseif(!isset($entry['messaging'])){
@@ -281,7 +284,7 @@ class Bot extends CI_Controller {
 								$new_file_url = save_file($att['payload']['url'],$json_data);
 								
 								//Message with image attachment
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url;
+								$eng_data['e_message'] .= (strlen($eng_data['e_message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url;
 								
 								/*
 								//Reply:
@@ -310,7 +313,7 @@ class Bot extends CI_Controller {
 								//TODO test to make sure this works!
 								$loc_lat = $att['payload']['coordinates']['lat'];
 								$loc_long = $att['payload']['coordinates']['long'];
-								$eng_data['message'] .= (strlen($eng_data['message'])>0?"\n\n":'').'/attach location:'.$loc_lat.','.$loc_long;
+								$eng_data['e_message'] .= (strlen($eng_data['e_message'])>0?"\n\n":'').'/attach location:'.$loc_lat.','.$loc_long;
 								
 							} elseif($att['type']=='template'){
 								
@@ -356,11 +359,11 @@ class Bot extends CI_Controller {
 					*/
 					
 					//Log incoming engagement:
-					$this->Us_model->log_engagement($eng_data);
+					$this->Db_model->log_engagement($eng_data);
 					
 					
 					//Should we start talking?!
-					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['message'])>0){
+					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['e_message'])>0){
 						
 						//TODO disabled for now, build later
 						//Incoming text message, attempt to auto detect it:
@@ -376,7 +379,7 @@ class Bot extends CI_Controller {
 							);
 						} else {
 							//Now figure out the response:
-							$response = $this->Us_model->generate_response($eng_data['intent_pid'],$setting);
+							$response = $this->Us_model->generate_response($eng_data['e_c_id'],$setting);
 						}
 						 
 						//Send message back to user:
@@ -525,8 +528,7 @@ class Bot extends CI_Controller {
 		
 		//Is this message coming from Facebook? (Instead of api.ai console)
 		if(isset($json_data['originalRequest']['source']) 
-		&& $json_data['originalRequest']['source']=='facebook'
-		&& fb_page_pid($json_data['originalRequest']['data']['recipient']['id'])){
+		&& $json_data['originalRequest']['source']=='facebook'){
 			
 			//This is from Facebook Messenger
 			$fb_user_id = $json_data['originalRequest']['data']['sender']['id'];

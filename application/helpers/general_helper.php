@@ -303,26 +303,30 @@ function save_file($file_url,$json_data){
 	fclose($fp);
 	
 	//Then upload to AWS S3:
-	require( '/var/www/us/application/libraries/aws/aws-autoloader.php' );
-	$s3 = new Aws\S3\S3Client([
-			'version' 		=> 'latest',
-			'region'  		=> 'us-west-2',
-			'credentials' 	=> $CI->config->item('aws_credentials'),
-	]);
-	$result = $s3->putObject(array(
-			'Bucket'       => 's3foundation', //Same bucket for now
-			'Key'          => $file_name,
-			'SourceFile'   => $file_path.$file_name,
-			'ACL'          => 'public-read'
-	));
-	
-	if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
-		@unlink($file_path.$file_name);
-		return $result['ObjectURL'];
+	if(@include( '/var/www/us/application/libraries/aws/aws-autoloader.php' )){
+		$s3 = new Aws\S3\S3Client([
+				'version' 		=> 'latest',
+				'region'  		=> 'us-west-2',
+				'credentials' 	=> $CI->config->item('aws_credentials'),
+		]);
+		$result = $s3->putObject(array(
+				'Bucket'       => 's3foundation', //Same bucket for now
+				'Key'          => $file_name,
+				'SourceFile'   => $file_path.$file_name,
+				'ACL'          => 'public-read'
+		));
+		
+		if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
+			@unlink($file_path.$file_name);
+			return $result['ObjectURL'];
+		} else {
+			log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data, 2);
+			return false;
+		}
 	} else {
-		log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data, 2);
+		//Probably local, ignore this!
 		return false;
-	}
+	}		
 }
 
 function ping_admin($message , $from_log_error=false){
