@@ -252,7 +252,7 @@ class Bot extends CI_Controller {
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					
 					$eng_data = array(
-							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_creator_id' => ( $sent_from_us ? 0 : $this->Db_model->put_fb_user($im['sender']['id'])),
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => ( $sent_from_us ? 7 : 6 ), //Inbound or Outbound Message
 							'e_json' => json_encode($json_data),
