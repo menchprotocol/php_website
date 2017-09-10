@@ -320,12 +320,14 @@ function save_file($file_url,$json_data){
 		@unlink($file_path.$file_name);
 		return $result['ObjectURL'];
 	} else {
-		log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data);
+		log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data, 2);
 		return false;
 	}
 }
 
 function ping_admin($message , $from_log_error=false){
+	return false;
+	//TODO Build latar...
 	$CI =& get_instance();
 	$CI->Facebook_model->send_message(array(
 			'recipient' => array(
@@ -339,23 +341,20 @@ function ping_admin($message , $from_log_error=false){
 	) , $from_log_error );
 }
 
-function log_error($error_message, $json_data=array()){
+function log_error($error_message, $json_data=array(), $e_medium_id=1){
 	$CI =& get_instance();
 	
 	//First log error in DB:
-	//TODO improve to log details like platform_pid and us_id based on error origin
-	$res = $CI->Us_model->log_engagement(array(
-			'message' => $error_message,
-			'action_pid' => 1033, //Error logging
-			'json_blob' => json_encode($json_data),
-			'us_id' => 766,
-			'platform_pid' => 766,
+	$res = $CI->Db_model->log_engagement(array(
+			'e_message' => $error_message,
+			'e_medium_id' => $e_medium_id, //Error logging
+			'e_medium_action_id' => 0, //Reserved for errors
 	));
 	
 	//Notifty admin via Messenger:
-	ping_admin('Error #'.$res['id'].': '.$error_message, true);
+	ping_admin('Error #'.$res['e_id'].': '.$error_message, true);
 	//Return error ID:
-	return $res['id'];
+	return $res['e_id'];
 }
 
 function fb_time($unix_time){

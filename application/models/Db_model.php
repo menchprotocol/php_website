@@ -23,7 +23,6 @@ class Db_model extends CI_Model {
 		//The framework:
 		$user_access = array(
 				'c' => array(), //Challenges
-				'r' => array(), //Runs
 		);
 		
 		//Fetch Runs:
@@ -73,7 +72,6 @@ class Db_model extends CI_Model {
 	
 	function users_fetch($match_columns){
 		//Fetch the target gems:
-		
 		$this->db->select('*');
 		$this->db->from('v5_users u');
 		foreach($match_columns as $key=>$value){
@@ -114,16 +112,120 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function fetch_user_($user_id,$update_columns){
-		//Update first
-		$this->db->where('u_id', $user_id);
-		$this->db->update('v5_users', $update_columns);
-		//Return new row:
-		$users = $this->users_fetch(array(
-				'u_id' => $user_id
+	function put_fb_user($u_fb_id){
+		//A function to check or create a new user using FB id:
+		
+		//Search for current users:
+		$matching_users = $this->users_fetch(array(
+				'u_fb_id' => $u_fb_id,
 		));
-		return $users[0];
+		
+		$u_id = null;
+		
+		//What did we find?
+		if(count($matching_users) == 1){
+			
+			//Yes, we found them!
+			$u_id = $matching_users[0]['u_id'];
+			
+		} elseif(count($matching_users) <= 0){
+			
+			//This is a new user that needs to be registered!
+			$u_id = $this->create_user_from_fb($u_fb_id);
+			
+		} else {
+			//Inconsistent data:
+			log_error('Found multiple users for Facebook ID ['.$u_fb_id.']',$matching_users,2);
+			return 0;
+		}
+		
+		
+		if($u_id){
+			//We found it!
+			return $u_id;
+		} else {
+			//Ooops, some error!
+			log_error('Failed to create/fetch user using their Facebook ID ['.$u_fb_id.']',null,2);
+			return 0;
+		}
 	}
+	
+	function fetch_fb_user_id($full_name){		
+		//Fetch the user using their full name
+		$this->db->select('u_fb_id, LOWER(CONCAT(u_fname," ",u_lname)) AS full_name');
+		$this->db->from('v5_users u');
+		$this->db->where('full_name',trim(strtolower($full_name)));
+		$this->db->where('u_status >',0);
+		$q = $this->db->get();
+		$matching_users = $q->result_array();
+		
+		if(count($matching_users)>0){
+			
+			if(count($matching_users)>=2){
+				//Multiple users found!
+				log_error('Found '.count($matching_users).' users with a full name of ['.$full_name.']. First result returned.',$matching_users,2);
+			}
+			
+			//Return first result:
+			return $matching_users[0]['u_fb_id'];
+		}
+		
+		//Ooops, nothing found!
+		return null;
+	}
+	
+	
+	function create_user_from_fb($u_fb_id){
+		
+		//Call facebook messenger API and get user details
+		//https://developers.facebook.com/docs/messenger-platform/user-profile/
+		$fb_profile = $this->Facebook_model->fetch_profile($u_fb_id);
+		
+		if(!isset($fb_profile['first_name'])){
+			//There was an issue accessing this on FB
+			return false;
+		}
+		
+		//Notify Admin:
+		ping_admin("Welcoming new user: ".$fb_profile['first_name'].' '.$fb_profile['last_name']);
+		
+		//Do we already have this person?
+		$matching_users = $this->users_fetch(array(
+				'u_fb_id' => $u_fb_id,
+		));
+		
+		//Is this user in our system already?
+		if(count($matching_users)>0){
+			if(count($matching_users)>=2){
+				log_error('Found multiple users for Facebook ID ['.$u_fb_id.']',$matching_users,2);
+			}
+			//Yes, just assume the user is the first result:
+			return $matching_users[0]['u_id'];
+		}
+		
+		//Split locale into language and country
+		$locale = explode('_',$fb_profile['locale'],2);
+		
+		//Create user
+		$udata = $this->user_create(array(
+				'u_fb_id' 			=> $u_fb_id,
+				'u_fname' 			=> $fb_profile['first_name'],
+				'u_lname' 			=> $fb_profile['last_name'],
+				'u_url_key'			=> preg_replace("/[^a-z0-9]/", '', strtolower($fb_profile['first_name'].' '.$fb_profile['last_name'])),
+				'u_timezone' 		=> $fb_profile['timezone'],
+				'u_image_url' 		=> $fb_profile['profile_pic'],
+				'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+				'u_language' 		=> $locale[0],
+				'u_country_code' 	=> $locale[1],
+		));
+		
+		return $udata['u_id'];
+	}
+	
+	
+	
+	
+	
 	
 	/* ******************************
 	 * i Messages
@@ -366,6 +468,65 @@ class Db_model extends CI_Model {
 		
 		return $insert_columns;
 	}
+	
+	
+	/* ******************************
+	 * Other
+	 ****************************** */
+	
+	function log_engagement($link_data){
+		
+		//These are required fields:
+		if(!isset($link_data['e_medium_id'])){
+			log_error('log_engagement Missing e_medium_id.' , $link_data);
+			return false;
+		} elseif(!isset($link_data['e_medium_action_id'])){
+			log_error('log_engagement Missing e_medium_action_id.' , $link_data, $link_data['e_medium_id']);
+			return false;
+		} elseif(!isset($link_data['e_creator_id']) || intval($link_data['e_creator_id'])<=0){
+			//Try to fetch user ID from session:
+			$user_data = $this->session->userdata('user');
+			if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
+				$link_data['e_creator_id'] = $user_data['u_id'];
+			} elseif($link_data['e_medium_action_id']==0) {
+				//This is for error loggin, no need for a user...
+				$link_data['e_creator_id'] = 0;
+			} else {
+				//This should not happen, return error:
+				log_error('log_engagement Missing e_creator_id.' , $link_data, $link_data['e_medium_id']);
+				return false;
+			}
+		}
+		
+		//These are optional and could have defaults:
+		if(!isset($link_data['e_timestamp'])){
+			$link_data['e_timestamp'] = date("Y-m-d H:i:s");
+		}
+		if(!isset($link_data['e_c_id'])){
+			$link_data['e_c_id'] = 0;
+		}
+		if(!isset($link_data['e_i_id'])){
+			$link_data['e_i_id'] = 0;
+		}
+		if(!isset($link_data['e_json'])){
+			$link_data['e_json'] = '';
+		}
+		if(!isset($link_data['e_message'])){
+			$link_data['e_message'] = '';
+		}
+		
+		
+		//Lets now add:
+		$this->db->insert('v5_engagement', $link_data);
+		
+		//Fetch inserted id:
+		$link_data['e_id'] = $this->db->insert_id();
+		
+		//Boya!
+		return $link_data;
+	}
+	
+	
 	
 	
 	

@@ -48,7 +48,7 @@ class Bot extends CI_Controller {
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
 		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
-			die($challenge);
+			echo $challenge;
 		}
 		
 		//Fetch input data:
@@ -59,10 +59,10 @@ class Bot extends CI_Controller {
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
-			log_error('Facebook webhook call missing either object/entry variables.',$json_data);
+			log_error('Facebook webhook call missing either object/entry variables.',$json_data,2);
 			return false;
 		} elseif(!$json_data['object']=='page'){
-			log_error('Facebook webhook call object value is not equal to [page], which is what was expected.',$json_data);
+			log_error('Facebook webhook call object value is not equal to [page], which is what was expected.',$json_data,2);
 			return false;
 		}
 		
@@ -72,10 +72,10 @@ class Bot extends CI_Controller {
 			
 			//check the page ID:
 			if(!isset($entry['id']) || !fb_page_pid($entry['id'])){
-				log_error('Facebook webhook call with unknown page id ['.$entry['id'].'].',$json_data);
+				log_error('Facebook webhook call with unknown page id ['.$entry['id'].'].',$json_data,2);
 				continue;
 			} elseif(!isset($entry['messaging'])){
-				log_error('Facebook webhook call without the Messaging Array().',$json_data);
+				log_error('Facebook webhook call without the Messaging Array().',$json_data,2);
 				continue;
 			}
 			
@@ -88,26 +88,22 @@ class Bot extends CI_Controller {
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
 					//The watermark field is used to determine which messages were read.
 					//It represents a timestamp indicating that all messages with a timestamp before watermark were read by the recipient.
-					$this->Us_model->log_engagement(array(
-							'action_pid' => 1026,
-							'json_blob' => json_encode($json_data),
-							'us_id' => $this->Us_model->put_fb_user($im['sender']['id']),
-							'seq' => $im['read']['seq'], //Message sequence number
-							'platform_pid' => fb_page_pid($im['recipient']['id']), //The facebook page
-							'api_timestamp' => fb_time($im['read']['watermark']), //Messages sent before this time were read
+					$this->Db_model->log_engagement(array(
+							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_medium_id' => 2, //Messenger Bot
+							'e_medium_action_id' => 1, //read
+							'e_json' => json_encode($json_data),
 					));
 					
 				} elseif(isset($im['delivery'])) {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
-					$new = $this->Us_model->log_engagement(array(
-							'action_pid' => 1027,
-							'json_blob' => json_encode($json_data),
-							'us_id' => $this->Us_model->put_fb_user($im['sender']['id']),
-							'seq' => $im['delivery']['seq'], //Message sequence number
-							'platform_pid' => fb_page_pid($im['recipient']['id']), //The facebook page
-							'api_timestamp' => fb_time($im['delivery']['watermark']), //Messages sent before this time were delivered
+					$this->Db_model->log_engagement(array(
+							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_medium_id' => 2, //Messenger Bot
+							'e_medium_action_id' => 2, //delivery
+							'e_json' => json_encode($json_data),
 					));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -167,29 +163,28 @@ class Bot extends CI_Controller {
 						$referral_array = $im['referral'];
 					}
 					
-					//General variables:
+					
+					
+					
 					$eng_data = array(
-							'action_pid' => (isset($im['referral']) ? 1028 : 1029), //Either referral or postback
-							'json_blob' => json_encode($json_data),
-							'us_id' => $this->Us_model->put_fb_user($im['sender']['id']),
-							'platform_pid' => fb_page_pid($im['recipient']['id']), //The facebook page
-							'api_timestamp' => fb_time($im['timestamp']),
+							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_medium_id' => 2, //Messenger Bot
+							'e_medium_action_id' => (isset($im['referral']) ? 4 : 3), //referral or postback
+							'e_json' => json_encode($json_data),
 					);
 					
 					
 					if($referral_array && isset($referral_array['ref']) && strlen($referral_array['ref'])>0){
 						
 						//We have referrer data, see what this is all about!
-						//We expect two numbers in the format of 123_456
-						//The first number is the intent_pid, where the second one is the referrer PID
+						//We expect an integer which is the challenge ID
 						$ref_source = $referral_array['source'];
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
 						
+						//TODO Validate the ref ID and log error if not valid.
 						//Decode ref variable:
-						$ref_data = explode('_',$referral_array['ref'],2);
-						$eng_data['intent_pid'] = fetch_grandchild($ref_data[0],3,$json_data);
-						$eng_data['referrer_pid'] = fetch_grandchild($ref_data[1],1,$json_data);
+						$eng_data['e_c_id'] = intval($referral_array['ref']);
 						
 						//Optional actions that may need to be taken on SOURCE:
 						if(strtoupper($ref_source)=='ADS' && $ad_id){
@@ -207,8 +202,8 @@ class Bot extends CI_Controller {
 						}
 					}
 					
-					//Log engagement:
-					$new = $this->Us_model->log_engagement($eng_data);
+					//General variables:
+					$this->Db_model->log_engagement($eng_data);
 					
 				} elseif(isset($im['optin'])) {
 					
@@ -224,20 +219,19 @@ class Bot extends CI_Controller {
 					//This parameter is set by the data-ref field on the "Send to Messenger" plugin.
 					//This field can be used by the developer to associate a click event on the plugin with a callback.
 					$eng_data = array(
-							'action_pid' => 1030, //New Optin
-							'json_blob' => json_encode($json_data),
-							'us_id' => $this->Us_model->put_fb_user($im['sender']['id']),
-							'platform_pid' => fb_page_pid($im['recipient']['id']), //The facebook page
-							'api_timestamp' => fb_time($im['timestamp']),
+							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_medium_id' => 2, //Messenger Bot
+							'e_medium_action_id' => 5, //optin
+							'e_json' => json_encode($json_data),
 					);
 					
+					
+					//TODO Validate the ref ID and log error if not valid.
 					//Decode ref variable:
-					$ref_data = explode('_',$im['optin']['ref'],2);
-					$eng_data['intent_pid'] = fetch_grandchild($ref_data[0],3,$json_data);
-					$eng_data['referrer_pid'] = fetch_grandchild($ref_data[1],1,$json_data);
+					$eng_data['e_c_id'] = intval($im['optin']['ref']);
 					
 					//Log engagement:
-					$new = $this->Us_model->log_engagement($eng_data);
+					$new = $this->Db_model->log_engagement($eng_data);
 					
 				} elseif(isset($im['message'])) {
 					
@@ -252,18 +246,15 @@ class Bot extends CI_Controller {
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					
 					$eng_data = array(
-							'message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
-							'action_pid' => ( $sent_from_us ? 1031 : 1032 ), //Define message direction
-							'json_blob' => json_encode($json_data),
-							'us_id' => $this->Us_model->put_fb_user($user_id),
-							'seq' => ( isset($im['message']['seq']) ? $im['message']['seq'] : 0 ), //Message sequence number
-							'platform_pid' => fb_page_pid($page_id), //The facebook page
-							'api_timestamp' => fb_time($im['timestamp']), //Facebook timestamp
-					);
+							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_medium_id' => 2, //Messenger Bot
+							'e_medium_action_id' => ( $sent_from_us ? 7 : 6 ), //Inbound or Outbound Message
+							'e_json' => json_encode($json_data),
+							'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
+					);					
 					
 					//Some that are not used yet:
-					$is_mench = ( in_array($eng_data['us_id'],$this->config->item('mench_users')) );
-					$app_id  = ( $sent_from_us ? $im['message']['app_id'] : null );
+					$is_mench = 0; //TODO
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					
 					if($metadata=='SKIP_ECHO_LOGGING'){
@@ -273,7 +264,7 @@ class Bot extends CI_Controller {
 					
 					//Do some checks:
 					if(!isset($im['message']['mid'])){
-						log_error('Received message without Facebook Message ID!' , $json_data);
+						log_error('Received message without Facebook Message ID!',$json_data,2);
 					}
 					
 					//It may also have an attachment
@@ -333,11 +324,14 @@ class Bot extends CI_Controller {
 								
 							} else {
 								//This should really not happen!
-								log_error('Received Facebook message with unknown attachment type ['.$att['type'].']' , $json_data);
+								log_error('Received Facebook message with unknown attachment type ['.$att['type'].']',$json_data,2);
 							}
 						}
 					}
 					
+					
+					
+					/*
 					$quick_reply_pid = null;
 					if(isset($im['message']['quick_reply']) && isset($im['message']['quick_reply']['payload']) && intval($im['message']['quick_reply']['payload'])>0){
 						//This message has a quick reply in it:
@@ -359,7 +353,7 @@ class Bot extends CI_Controller {
 						
 						$eng_data['intent_pid'] = $mench_command_pid;
 					}
-					
+					*/
 					
 					//Log incoming engagement:
 					$this->Us_model->log_engagement($eng_data);
@@ -401,7 +395,7 @@ class Bot extends CI_Controller {
 					}
 					
 				} else {
-					log_error('We received an unrecognized Facebook webhook call.',$json_data);
+					log_error('We received an unrecognized Facebook webhook call.',$json_data,2);
 				}
 			}
 		}
@@ -447,7 +441,7 @@ class Bot extends CI_Controller {
 				//Now see if we can find the recipient(s):
 				$valid_users = array();
 				foreach($people as $full_name){
-					$fb_user_id = $this->Us_model->fetch_fb_user_id($full_name);
+					$fb_user_id = $this->Db_model->fetch_fb_user_id($full_name);
 					if(strlen($fb_user_id)>10){
 						//Found it! lets add them to the list!
 						array_push($valid_users,$fb_user_id);
@@ -482,7 +476,7 @@ class Bot extends CI_Controller {
 									$success_count++;
 								} else {
 									//Ooops, this should not happen
-									log_error('FB Message "'.$msg.'" could not be sent to user ID "'.$fb_user_id.'" using the quick_message() function.');
+									log_error('FB Message "'.$msg.'" could not be sent to user ID "'.$fb_user_id.'" using the quick_message() function.',null,2);
 								}
 							}
 						}
@@ -566,7 +560,7 @@ class Bot extends CI_Controller {
 					
 				} else {
 					//This is a new user that needs to be registered!
-					$eng_data['us_id'] = $this->Us_model->create_user_from_fb($fb_user_id);
+					$eng_data['e_creator_id'] = $this->Db_model->create_user_from_fb($fb_user_id);
 					
 					if(!$eng_data['us_id']){
 						//There was an error fetching the user profile from Facebook:

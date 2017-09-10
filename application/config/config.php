@@ -23,6 +23,33 @@ $config['aws_credentials'] = [
 		'secret' => 'ZU1paNBAqps2A4XgLjNVAYbdmgcpT5BIwn6DJ/VU',
 ];
 
+//Engagement mediums and corresponding actions that result in a new engagement
+$config['e_mediums'] = array(
+		1 => array(
+				'name' => 'Mench Dashboard',
+				'actions' => array(
+						0 => 'Error',
+						1 => 'Create',
+						2 => 'Read',
+						3 => 'Edit',
+						4 => 'Delete',
+				),
+		),
+		2 => array(
+				'name' => 'Mench Messenger Bot',
+				'actions' => array(
+						0 => 'Error',
+						1 => 'Message Read',
+						2 => 'Message Delivered',
+						3 => 'Postback',
+						4 => 'Referral',
+						5 => 'Optin',
+						6 => 'Inbound Message',
+						7 => 'Outbound Message',
+				),
+		),
+);
+
 
 
 
