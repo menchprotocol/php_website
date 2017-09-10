@@ -58,8 +58,19 @@ class Bot extends CI_Controller {
 		//Fetch input data:
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
+		
+		
 		//This is for local testing only:
-		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"'.$website['fb_page_id'].'","time":1500335488255,"messaging":[{"sender":{"id":"1371860399579444"},"recipient":{"id":"'.$website['fb_page_id'].'"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
+		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"'.$website['fb_page_id'].'","time":1500335488255,"messaging":[{"sender":{"id":"10155280412130033"},"recipient":{"id":"'.$website['fb_page_id'].'"},"timestamp":1500335488096,"message":{"mid":"mid.$cAAZVbLheHRBjhDwEYFdUva5X8KT_","seq":29782,"attachments":[{"type":"audio","payload":{"url":"https:\/\/cdn.fbsbx.com\/v\/t59.3654-21\/19359558_10158969505640587_4006997452564463616_n.aac\/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95"}}]}}]}],"api_ai":[]}'));
+		
+		$this->Db_model->log_engagement(array(
+				'e_creator_id' => 1122,
+				'e_medium_id' => 2, //Messenger Bot
+				'e_medium_action_id' => 1, //read
+				'e_json' => json_encode($json_data),
+		));
+		
+		exit;
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
