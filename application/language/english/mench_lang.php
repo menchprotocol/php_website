@@ -6,26 +6,27 @@
  ****************************** */
 //Object Names & Descriptions:
 $lang['m_name'] = 'Marketplace';
-$lang['m_desc'] = 'Challenges developed by our community of leader entrepenuers.';
+$lang['m_desc'] = 'Bootcamps developed by our community of experts.';
 
-$lang['c_name'] = 'Challenge';
-$lang['c_pname'] = 'Challenges';
+$lang['c_name'] = 'Bootcamp';
+$lang['c_pname'] = 'Bootcamps';
 $lang['c_icon'] = '<i class="fa fa-rocket" aria-hidden="true"></i>';
 
+//TODO Remove
 $lang['r_name'] = 'Run';
 $lang['r_pname'] = 'Runs';
 $lang['r_icon'] = '<i class="fa fa-code-fork"></i>';
 $lang['r_none_message'] = 'No Runs created yet!';
-$lang['r_desc'] = 'Runs represent an operational cycle for a challenge. The goal is to optimize each run (content, flow, price) using the user feedback of the previous run. Users can only join runs that are open for registration.';
+$lang['r_desc'] = 'Runs represent an operational cycle for a bootcamp. The goal is to optimize each run (content, flow, price) using the user feedback of the previous run. Users can only join runs that are open for registration.';
+
 
 $lang['i_name'] = 'Drip Media';
 $lang['i_pname'] = 'Drip Media';
 $lang['i_icon'] = '<i class="fa fa-comments" aria-hidden="true"></i>';
 $lang['i_missing'] = 'No drop media found.';
-$lang['i_desc'] = 'Content that would be gradually distributed to users via Facebook Messenger when the user reaches this specific challenge. The content should help users execute effectively to build the challenge deliverables.';
+$lang['i_desc'] = 'Content that would be gradually distributed to users via Facebook Messenger when the user reaches this specific bootcamp. The content should help users execute effectively to build the bootcamp deliverables.';
 
 //Run Sub-Menu Names:
-$lang['r_d_name'] = 'Dashboard';
 $lang['r_s_name'] = 'Settings';
 
 $lang['r_a_name'] = 'Activity';
@@ -40,7 +41,7 @@ $lang['cr_name'] = 'Curriculum';
 $lang['cr_pname'] = 'Curriculum';
 $lang['cr_missing'] = 'No curriculum linked yet.';
 $lang['cr_icon'] = '<i class="fa fa-link" aria-hidden="true"></i>';
-$lang['cr_desc'] = 'Related, independant challenges that contribute to accomplishing this challenge.';
+$lang['cr_desc'] = 'Related, independant bootcamps that contribute to accomplishing this bootcamp.';
 $lang['u_name'] = 'User';
 $lang['u_pname'] = 'Users';
 $lang['ru_name'] = 'Run User';
@@ -59,53 +60,53 @@ $lang['u_level_3'] = 'Admin';
  * Buttons & Call to Actions
  ****************************** */
 
-$lang['signup'] = 'Get Early Access';
-$lang['login'] = 'Login as Partner';
+$lang['signup'] = 'Signup As Expert';
+$lang['login'] = 'Login as Expert';
 $lang['logout'] = 'Logout';
 $lang['my_profile'] = 'My Profile';
 $lang['contact_us'] = 'Contact Us';
 $lang['terms'] = 'Terms';
 $lang['no_account'] = 'No Account?';
-$lang['no_clue'] = 'Anything we can help?';
+$lang['forgot_pass'] = 'Forgot Password?';
 
 
 /* ******************************
  * Home Page
  ****************************** */
 
-$lang['headline_primary'] = 'Run Online Challenges.';
-$lang['headline_secondary'] = 'Empower your audience to achieve their goals by taking action.';
+$lang['headline_primary'] = 'A Marketplace for Online Bootcamps.';
+$lang['headline_secondary'] = 'Accomplish goals with 2-12 week group challenges lead by experts.';
 
 
 //How it Works?
 $lang['how_heading'] = 'How Mench Works';
 
-$lang['how_1_title'] = 'Create A Challenge';
+$lang['how_1_title'] = 'Create A Bootcamp';
 $lang['how_1_desc'] = 'What\'s something your fans are struggling to achieve? Launch a website, podcast or Youtube channel? Create an app or write a book? With Mench you can help them make it happen once and for all.';
 $lang['how_1_icon'] = '<i class="material-icons">filter_1</i>';
 
 $lang['how_2_title'] = 'Invite Your Audience';
-$lang['how_2_desc'] = 'Set a launch date and announce your challenge. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We automate these workflows.';
+$lang['how_2_desc'] = 'Set a launch date and announce your bootcamp. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We automate these workflows.';
 $lang['how_2_icon'] = '<i class="material-icons">filter_2</i>';
 
 $lang['how_3_title'] = 'Guide Them To Success';
-$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and email reminders to motivate participants to complete the entire challenge. Use our analytics and leaderboard to monitor their progress and help everyone get to the finish line.';
+$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and email reminders to motivate participants to complete the entire bootcamp. Use our analytics and leaderboard to monitor their progress and help everyone get to the finish line.';
 $lang['how_3_icon'] = '<i class="material-icons">filter_3</i>';
 
 
 //Why Mench?
 $lang['why_heading'] = 'Why Mench?';
 $lang['why_1_title'] = 'Expand Your Reach';
-$lang['why_1_desc'] = 'People love challenges, especially when their friends join. You know what that means right? more participants, more reach, more business for you. Challenges are one of the most effective lead generation solutions available.';
+$lang['why_1_desc'] = 'People love challenges, especially when their friends join. You know what that means right? more participants, more reach, more business for you. Bootcamps are one of the most effective lead generation solutions available.';
 $lang['why_1_icon'] = '<i class="material-icons">blur_on</i>';
 
 
 $lang['why_2_title'] = 'Make an Impact';
-$lang['why_2_desc'] = 'A challenge is all about getting your audience tangible results via execution. With Mench we help you raise the stakes so people actually take action and accomplish their goals once and for all. Only through action we can change the world!';
+$lang['why_2_desc'] = 'A bootcamp is all about getting your audience tangible results via execution. With Mench we help you raise the stakes so people actually take action and accomplish their goals once and for all. Only through action we can change the world!';
 $lang['why_2_icon'] = '<i class="material-icons">flash_on</i>';
 
 $lang['why_3_title'] = 'Grow Your Business';
-$lang['why_3_desc'] = 'When you run a challenge you\'re helping a group of like-minded people achieve tangible results. Those results will bring them closer to their goals and help them grow. When you help your audience grow, your business will grow along.';
+$lang['why_3_desc'] = 'When you run a bootcamp you\'re helping a group of like-minded people achieve tangible results. Those results will bring them closer to their goals and help them grow. When you help your audience grow, your business will grow along.';
 $lang['why_3_icon'] = '<i class="material-icons">monetization_on</i>';
 
 

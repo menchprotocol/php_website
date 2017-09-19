@@ -64,8 +64,7 @@ $route['features'] 					= "front/features";
 $route['pricing'] 					= "front/pricing";
 $route['aboutus'] 					= "front/aboutus";
 $route['ses'] 						= "front/ses"; //Raw session logs
-$route['missing_access'] 			= "front/missing_access";
-$route['signup_pending'] 			= "front/signup_pending"; //After signup
+$route['login']						= "front/login";
 
 //Challenges PUBLIC:
 $route['challenge/(:any)/join']		= "front/challenge_join/$1"; //Checkout
@@ -83,8 +82,8 @@ $route['guides/status_bible'] 						= "marketplace/status_bible";
 $route['guides/showdown_markup'] 					= "marketplace/showdown_markup";
 
 //Users & Authentication:
-$route['user/login'] 								= "marketplace/login";
-$route['user/logout'] 								= "marketplace/logout";
+$route['login_process'] 							= "marketplace/login_process";
+$route['logout'] 									= "marketplace/logout";
 $route['user/(:any)/edit'] 							= "marketplace/user_edit/$1"; //Admin Only
 $route['user/(:any)'] 								= "marketplace/user_view/$1"; //PUBLIC & HYBRID
 

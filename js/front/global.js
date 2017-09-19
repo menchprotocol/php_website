@@ -35,74 +35,6 @@ client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
 algolia_index = client.initIndex('challenges');
 
 
-function checkLoginState(){
-	//Also called when user clicks on FB Login Button
-	FB.getLoginStatus(function(response) {
-		if(response.status=='connected'){
-			//We're in! Redirect and log in the user:
-			$.ajax({
-		        type: "POST",
-		        url: "/user/login",
-		        data:{ response:response },
-		        success: function(data){
-		        	//Refresh page:
-		        	window.location = "/marketplace";
-		        }
-		    });
-		}
-    });
-}
-
-
-window.fbAsyncInit = function() {
-	
-	//Initiate:
-    FB.init({
-      appId      : '1782431902047009',
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v2.8'
-    });
-    
-    //Log page view:
-    FB.AppEvents.logPageView();
-    
-    //Check FB status:
-    if($("#isloggedin").length==0){
-    	
-    	//See if user is already logged in, and refresh if so:
-    	checkLoginState();
-    	
-    } else {
-    	
-    	//Look for logout click:
-	    $( "#logoutbutton" ).click(function() {
-        	//lets log them out from Facebook:
-	    	FB.getLoginStatus(function(response) {
-	        	if(response.status=='connected'){
-	        		//Logout on Facebook:
-	        		FB.logout(function(response2) {
-	        			//Delay the logout & redirect to allow facebook to log them out
-	        			//If not, the user logs back in!
-	        			setTimeout(function() {
-	        				$.ajax({
-		        		        type: "POST",
-		        		        url: "/user/logout", //Removes their session variables
-		        		        success: function(data){
-		        		        	//Go to Home Page:
-		        			    	window.location = "/";
-		        		        }
-		        		    });
-	        			}, 1000);
-	        			alert('Logout successful. See you soon ;)');
-	    	    	});
-	        	}
-	        });
-	    });
-	    
-    }
-};
-
 function update_showdown(target,text){
 	//First detect manuall conversions like YouTube Embed:
 	//Start core convertor:
@@ -478,7 +410,6 @@ $(document).ready(function() {
 			load_sortable('inbound');
 		}
 	}
-		
 
 	
 	//Load Algolia:

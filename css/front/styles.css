@@ -56,7 +56,7 @@ p a, td a { text-decoration:underline; }
 .main-plain .container{ padding:30px; }
 .landing-page .page-header { min-height: 100vh; }
 .page-header .container { padding-top: 90px; padding-left:40px; }
-.home-p{ max-width:350px; }
+.home-p{ max-width:630px; }
 .dashboard-logo{ padding:8px 0 0 0 !important; }
 .landing-page .navbar-header { padding:0 0 0 0;}
 .navbar .navbar-brand { padding:7px 10px 7px 27px; }
@@ -148,7 +148,7 @@ p a, td a { text-decoration:underline; }
 	.listtabs li { display:block; float: none; text-align: left; }
 	.btn { padding: 6px 12px; }
 	.contactleft{padding-top:70px;}
-	.home-p{ max-width:270px; }
+	.home-p{ max-width:320px; }
 	
 	.navbar-brand img{
 	    width: 30px;
@@ -268,7 +268,7 @@ p a, td a { text-decoration:underline; }
 	text-decoration:underline;
 }
 .sub-button a:hover{
-	color:#FFF;
+	color:#ABABAB;
 	text-decoration:none;
 }
 .fa-ellipsis-v {color:#bbb;}
@@ -328,3 +328,22 @@ p a, td a { text-decoration:underline; }
   font-weight: bold;
   font-style: normal;
 }
+
+.login-content {
+	max-width:300px;
+}
+.login-content .input-group-addon {
+	padding: 0 5px 0 15px;
+}
+.login-content .submit-btn {
+	margin-left:40px;
+}
+.login-content .extra-info {
+	margin:20px 0 0 40px;
+	color:#999;
+	font-size:0.8em;
+}
+
+
+
+

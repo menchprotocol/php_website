@@ -223,9 +223,6 @@ class Db_model extends CI_Model {
 			return false;
 		}
 		
-		//Notify Admin:
-		ping_admin("Welcoming new user: ".$fb_profile['first_name'].' '.$fb_profile['last_name']);
-		
 		//Do we already have this person?
 		$matching_users = $this->users_fetch(array(
 				'u_fb_id' => $u_fb_id,
@@ -236,6 +233,7 @@ class Db_model extends CI_Model {
 			if(count($matching_users)>=2){
 				log_error('Found multiple users for Facebook ID ['.$u_fb_id.']',$matching_users,2);
 			}
+			
 			//Yes, just assume the user is the first result:
 			return $matching_users[0]['u_id'];
 		}

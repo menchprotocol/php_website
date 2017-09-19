@@ -247,7 +247,8 @@ function auth($min_level,$force_redirect=0){
 			return false;
 		} else {
 			//Block access:
-			header( 'Location: /missing_access?url='.$_SERVER['REQUEST_URI'] );
+			$CI->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Missing access or session expired. Login to continue.</div>');
+			header( 'Location: /login?url='.urlencode($_SERVER['REQUEST_URI']) );
 		}
 	}
 	
@@ -258,7 +259,9 @@ function can_modify($object,$object_id){
 	$CI =& get_instance();
 	$udata = $CI->session->userdata('user');
 	
-	//Validate:
+	//TODO Validate:
+	return true;
+	
 	if(isset($udata['u_status']) && $udata['u_status']>=2){
 		if(in_array($object,array('c','r'))){
 			
@@ -329,22 +332,6 @@ function save_file($file_url,$json_data){
 	}		
 }
 
-function ping_admin($message , $from_log_error=false){
-	return false;
-	//TODO Build latar...
-	$CI =& get_instance();
-	$CI->Facebook_model->send_message(array(
-			'recipient' => array(
-					'id' => '1344093838979504', //Shervin
-			),
-			'message' => array(
-					'text' => $message,
-					'metadata' => 'SKIP_ECHO_LOGGING', //Prevent further impression logging on this.
-			),
-			'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-	) , $from_log_error );
-}
-
 function log_error($error_message, $json_data=array(), $e_medium_id=1){
 	$CI =& get_instance();
 	
@@ -355,8 +342,6 @@ function log_error($error_message, $json_data=array(), $e_medium_id=1){
 			'e_medium_action_id' => 0, //Reserved for errors
 	));
 	
-	//Notifty admin via Messenger:
-	ping_admin('Error #'.$res['e_id'].': '.$error_message, true);
 	//Return error ID:
 	return $res['e_id'];
 }

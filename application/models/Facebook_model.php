@@ -23,7 +23,133 @@ class Facebook_model extends CI_Model {
 	}
 	
 	
-	function send_message($payload , $from_log_error=false){
+	function fetch_settings(){
+		$ch = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?fields=persistent_menu,get_started,greeting,whitelisted_domains&access_token='.$this->page_access_token);
+		curl_setopt_array($ch, array(
+				CURLOPT_CUSTOMREQUEST => 'GET',
+				CURLOPT_RETURNTRANSFER => TRUE,
+		));
+		// Send the request
+		return objectToArray(json_decode(curl_exec($ch)));
+	}
+	
+	function set_settings(){
+		
+		$payload = array(
+				'get_started' => array(
+						'payload' => 'GET_STARTED',
+				),
+				'greeting' => array(
+						array(
+								'locale' => 'default',
+								'text' => 'Hi {{user_first_name}}, Welcome to Mench!',
+						),
+				),
+				'whitelisted_domains' => array(
+						'http://local.mench.co',
+						'http://mench.co',
+						'https://mench.co',
+						'https://us.foundation',
+						'http://us.foundation',
+				),
+				'persistent_menu' => array(
+						array(
+								'locale' => 'default',
+								'composer_input_disabled' => false,
+								'call_to_actions' => array(
+										array(
+												'title' => 'My Account',
+												'type' => 'nested',
+												'call_to_actions' => array(
+														array(
+																'title' => 'Progress Report',
+																'type' => 'postback',
+																'payload' => 'HISTORY_PAYLOAD',
+														),
+														array(
+																'title' => 'My Profile',
+																'type' => 'web_url',
+																'url' => 'http://mench.co/bootcamps',
+																'webview_share_button' => 'hide',
+																'webview_height_ratio' => 'tall',
+														),
+												),
+										),
+										array(
+												'title' => 'Marketplace',
+												'type' => 'nested',
+												'call_to_actions' => array(
+														array(
+																'title' => 'Bootcamps',
+																'type' => 'web_url',
+																'url' => 'http://mench.co/bootcamps',
+																'webview_height_ratio' => 'tall',
+														),
+														array(
+																'title' => 'Mentors',
+																'type' => 'web_url',
+																'url' => 'http://mench.co/mentors',
+																'webview_height_ratio' => 'tall',
+														),
+														/*
+														array(
+																'title' => 'Another Nest',
+																'type' => 'nested',
+																'call_to_actions' => array(
+																		array(
+																				'title' => 'Pay Bill',
+																				'type' => 'postback',
+																				'payload' => 'PAYBILL_PAYLOAD',
+																		),
+																		array(
+																				'title' => 'History',
+																				'type' => 'postback',
+																				'payload' => 'HISTORY_PAYLOAD',
+																		),
+																),
+														),
+														*/
+												),
+										),
+										
+										/*
+										array(
+												'title' => 'Browse',
+												'type' => 'web_url',
+												'url' => 'http://mench.co',
+												'webview_share_button' => 'hide',
+												'webview_height_ratio' => 'tall',
+										),
+										*/
+								),
+						),
+				),
+		);
+		
+		//Make the call for add/update
+		$ch = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='.$this->page_access_token);
+		curl_setopt_array($ch, array(
+				CURLOPT_CUSTOMREQUEST => 'POST',
+				CURLOPT_RETURNTRANSFER => TRUE,
+				CURLOPT_HTTPHEADER => array(
+						'Content-Type: application/json; charset=utf-8'
+				),
+				CURLOPT_POSTFIELDS => json_encode($payload)
+		));
+		
+		// Send the request
+		$response = curl_exec($ch);
+		
+		// Check for CURL errors
+		if($response === FALSE){
+			log_error('Facebook set_settings() failed to update.',$payload,2);
+		}
+				
+		return objectToArray(json_decode($response));
+	}
+	
+	
+	function send_message($payload){
 
 		//Make the call for add/update
 		$ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token='.$this->page_access_token);
@@ -41,23 +167,10 @@ class Facebook_model extends CI_Model {
 		
 		// Check for CURL errors
 		if($response === FALSE){
-			log_error('CURL Failed in sending message via Messenger.',$payload);
+			log_error('CURL Failed in sending message via Messenger.',$payload,2);
 		}
 		
-		$res_array = objectToArray(json_decode($response));
-		
-		//This prevents the function getting into an endless loop
-		if(!$from_log_error){
-			//Do we have any errors here?
-			if(isset($res_array['error'])){
-				log_error($res_array['error']['message'], array(
-						'input_payload' => $payload,
-						'error_content' => $res_array,
-				));
-			}
-		}
-		
-		return $res_array;
+		return objectToArray(json_decode($response));
 	}
 	
 	

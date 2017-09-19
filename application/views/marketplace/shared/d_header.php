@@ -69,7 +69,7 @@ $website = $this->config->item('website');
 								<li><a href="/guides/status_bible">Status Bible</a></li>
 							</ul>
 						</li>
-						<li id="isloggedin"><a href="#" id="logoutbutton"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
+						<li id="isloggedin"><a href="/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
 					</ul>
 					<?php /*
 					<form class="navbar-form navbar-right" role="search">
@@ -90,49 +90,20 @@ $website = $this->config->item('website');
 	    	<div class="sidebar-wrapper">
 	            <ul class="nav">
 	            	<?php
-	            	if(isset($challenge) && $challenge && 0){
-            			//Challenge Nav:
-	            		echo '<li'.( '/marketplace/'.$challenge['c_id']==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'">'.$this->lang->line('c_icon').'<p>'.$this->lang->line('c_name').'</p></a></li>';
-            			?>
-            			<li>
-	                        <a data-toggle="collapse" href="#pagesExamples" class="collapsed" aria-expanded="false">
-	                            <?= ( isset($run) ? run_icon($run['r_version']).'<p> '.time_format($run['r_kickoff_time'],true).' '.$this->lang->line('r_name') : $this->lang->line('r_icon').'<p> '.$this->lang->line('r_pname') ) ?>
-	                                <b class="caret"></b>
-	                            </p>
-	                        </a>
-	                        <div class="collapse" id="pagesExamples" aria-expanded="false" style="height: 0px;">
-	                            <ul class="nav">
-	                           		<?php
-	                           		//Display Challenges, which MUST be here, if any!
-									if(count($challenge['runs'])>0){
-										foreach($challenge['runs'] as $r){
-											//if(isset($run) && $run['r_version']==$r['r_version']){continue;}
-											echo '<li class="'.( isset($run) && $run['r_version']==$r['r_version'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$r['r_version'].'">'.run_icon($r['r_version']).' '.time_format($r['r_kickoff_time'],true).' '.status_bible('r',$r['r_status']).'</a></li>';
-										}
-									} else {
-										echo '<li class="li-notify"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.$this->lang->line('r_none_message').'</li>';
-									}
-									
-									if(can_modify('c',$challenge['c_id'])){
-										echo '<li class="'.( '/marketplace/'.$challenge['c_id'].'/new'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/new"><i class="fa fa-plus"></i> '.$this->lang->line('new').' '.$this->lang->line('r_name').'</a></li>';
-									}
-									?>
-	                            </ul>
-	                        </div>
-	                    </li>
-	                   
-	                    
-	                    
-	                    <?php
-	                    //Run Nav:
-						if(isset($run) && $run){
-							//Run:
-							echo '<li class="submenu '.( '/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version']==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'">'.'<p>'.$this->lang->line('r_d_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-							//Run Sub-menu
-							echo '<li class="submenu '.( '/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/activity'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/activity'.'">'.'<p>'.$this->lang->line('r_a_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-							echo '<li class="submenu '.( '/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/leaderboard'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/leaderboard'.'">'.'<p>'.$this->lang->line('r_l_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-							echo '<li class="submenu '.( '/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/settings'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$challenge['c_id'].'/run/'.$run['r_version'].'/settings'.'">'.'<p>'.$this->lang->line('r_s_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-						}
+	            	if(isset($challenge) && $challenge){
+	            		
+	            		echo '<li'.( '/marketplace/'.$challenge['c_id']==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
+	            		
+	            		echo '<li'.( '/marketplace/'.$challenge['c_id'].'/sprints'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'/sprints"><i class="fa fa-list-ul" aria-hidden="true"></i><p>Weekly Sprints</p></a></li>';
+	            		
+	            		echo '<li'.( '/marketplace/'.$challenge['c_id'].'/users'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'/users"><i class="fa fa-users" aria-hidden="true"></i><p>Users</p></a></li>';
+	            		
+	            		
+	            		echo '<li'.( '/marketplace/'.$challenge['c_id'].'/activity'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'/activity"><i class="fa fa-history" aria-hidden="true"></i><p>Activity</p></a></li>';
+	            		
+	            		echo '<li'.( '/marketplace/'.$challenge['c_id'].'/settings'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$challenge['c_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
+	            		
+	            		echo '<li><a href="/bootcamp/'.$challenge['c_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page <i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
             		}
 	            	?>
 	            </ul>

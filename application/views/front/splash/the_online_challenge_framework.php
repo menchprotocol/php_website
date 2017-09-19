@@ -14,7 +14,7 @@ $udata = $this->session->userdata('user');
     					echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
     				} else {
     					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i></a>';
-    					echo '<p class="sub-button">'.$this->lang->line('or').' <a href="#" data-toggle="modal" data-target="#loginModal">'.$this->lang->line('login').'</a></p>';
+    					echo '<p class="sub-button">'.$this->lang->line('or').' <a href="/login">'.$this->lang->line('login').'</a></p>';
     				}
     				?>
 				</div>

@@ -24,6 +24,14 @@ class Front extends CI_Controller {
 		$this->load->view('front/shared/f_footer');
 	}
 	
+	function login(){
+		$this->load->view('front/shared/f_header' , array(
+				'title' => $this->lang->line('login'),
+		));
+		$this->load->view('front/partner_login');
+		$this->load->view('front/shared/f_footer');
+	}
+	
 	function features(){
 		$this->load->view('front/shared/f_header' , array(
 				'title' => 'Features',
@@ -40,14 +48,6 @@ class Front extends CI_Controller {
 		$this->load->view('front/shared/f_footer');
 	}
 	
-	function pricing(){
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Pricing',
-		));
-		$this->load->view('front/pricing');
-		$this->load->view('front/shared/f_footer');
-	}
-	
 	function terms(){
 		$this->load->view('front/shared/f_header' , array(
 				'title' => 'Terms & Privacy Policy',
@@ -61,25 +61,6 @@ class Front extends CI_Controller {
 				'title' => $this->lang->line('contact_us'),
 		));
 		$this->load->view('front/contact');
-		$this->load->view('front/shared/f_footer');
-	}
-	
-	function missing_access(){
-		//Informs the user that they cannot access that page:
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Missing Access'.( isset($_GET['url']) ? ' for '.$_GET['url'] : '' ),
-		));
-		$this->load->view('front/missing_access');
-		$this->load->view('front/shared/f_footer');
-	}
-	
-	function signup_pending(){
-		auth(1,1);
-		//Inform them that they have a basic account:
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Signup Pending'.( isset($_GET['url']) ? ' for '.$_GET['url'] : '' ),
-		));
-		$this->load->view('front/signup_pending');
 		$this->load->view('front/shared/f_footer');
 	}
 	

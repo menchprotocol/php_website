@@ -168,7 +168,7 @@ $udata = $this->session->userdata('user');
     			echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">MARKETPLACE <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
     		} else {
     			echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">Get Early Access <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
-    			echo '<p class="sub-button">Or <a href="#" data-toggle="modal" data-target="#loginModal">Login as Partner</a></p>';
+    			echo '<p class="sub-button">Or <a href="/login">Login as Partner</a></p>';
     		}
     		?>
 		</div>

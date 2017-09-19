@@ -98,7 +98,7 @@ class Users extends CI_Controller {
 			} else {
 				
 				//Ooops, this should never happen!
-				ping_admin('Found multiple users with the same Facebook ID ['.$res['userID'].']');
+				log_error('Found multiple users with the same Facebook ID ['.$res['userID'].']',$_POST,2);
 				
 			}
 			

@@ -55,76 +55,47 @@ class Marketplace extends CI_Controller {
 	/* ******************************
 	 * Users & Authentication
 	 ****************************** */
-
-	function login(){
-		//Called via AJAX to validate the user's Facebook login status and assign session variable:
-		if(isset($_POST['response']['authResponse']) && $_POST['response']['status']=='connected'){
-			
-			//User is logged in on Facebook. Let's check their local profile:
-			$res = $_POST['response']['authResponse'];
-			$users = $this->Db_model->users_fetch(array(
-					'u_fb_id' => $res['userID']
+	
+	function login_process(){
+		
+		if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+			redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
+		} elseif(!isset($_POST['u_password'])){
+			redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
+		}
+		
+		//Fetch user data:
+		$users = $this->Db_model->users_fetch(array(
+				'u_email' => strtolower($_POST['u_email']),
+				'u_status >=' => 2,
+		));
+		
+		if(count($users)==0){
+			//Not found!
+			redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not registered as a partner.</div>');
+		} elseif(!($users[0]['u_password']==md5($_POST['u_password']))){
+			//Bad password
+			redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
+		} else {
+			//All good to go!
+			//Load session and redirect:
+			$this->session->set_userdata(array(
+					'user' => $users[0],
 			));
 			
-			//Were they already registered?
-			if(count($users)==0){
-				
-				//Fetch user profile from Facebook:
-				$profile = $this->Facebook_model->fetch_profile($res['userID']);
-				
-				//This is a new user! Create their account:
-				$name = explode(' ',$profile['name'],2);
-				$udata = $this->Db_model->user_create(array(
-						'u_fb_id' => $res['userID'],
-						'u_fb_token' => $res['accessToken'],
-						'u_fname' => $name[0],
-						'u_lname' => $name[1],
-						'u_url_key' => preg_replace("/[^a-z0-9]/", '', strtolower($profile['name'])),
-				));
-				
-			} elseif(count($users)==1){
-				
-				//Found this user:
-				$udata = $users[0];
-				
-				//Check to see if access token has been updated:
-				if(!($res['accessToken']==$udata['u_fb_token']) || !($res['userID']==$udata['u_fb_id'])){
-					//Let's update:
-					$udata = $this->Db_model->user_update( $udata['u_id'] , array(
-							'u_fb_id' => $res['userID'],
-							'u_fb_token' => $res['accessToken'],
-					));
-				}
-				
+			if(isset($_POST['url']) && strlen($_POST['url'])>0){
+				header( 'Location: '.$_POST['url'] );
 			} else {
-				
-				//Ooops, this should never happen!
-				ping_admin('Found multiple users with the same Facebook ID ['.$res['userID'].']');
-				
+				//Default:
+				header( 'Location: /marketplace' );
 			}
-			
-			//Assign session and login:
-			if(isset($udata)){
-				//Set session:
-				$udata['access'] = $this->Db_model->fetch_user_access($udata['u_id']);
-				$this->session->set_userdata(array(
-						'user' => $udata, //This has the user's top link data
-				));
-				//Display user data:
-				header('Content-Type: application/json');
-				echo json_encode($udata);
-			}
-			
-		} else {
-			//Ooops, they do not seem to be logged in!
-			die('Missing parameters for login');
 		}
-		//print_r($_POST['response']);
 	}
 	
 	function logout(){
 		//Called via AJAX to destroy user session:
 		$this->session->sess_destroy();
+		header( 'Location: /' );
 	}
 	
 	function user_view($u_url_key){

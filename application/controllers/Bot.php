@@ -11,8 +11,9 @@ class Bot extends CI_Controller {
 	}
 	
 	
-	function t($id){
-		print_r($this->Facebook_model->fetch_profile($id));
+	function t(){
+		print_r($this->Facebook_model->set_settings());
+		//print_r($this->Facebook_model->fetch_settings());
 	}
 	
 	function fetch_entity($apiai_id){
@@ -193,7 +194,6 @@ class Bot extends CI_Controller {
 						$challenges = $this->Db_model->c_fetch(array(
 								'c_id' => intval($referral_array['ref']),
 						));
-						
 						
 						if(count($challenges)==1){
 							//We found this!
@@ -530,7 +530,6 @@ class Bot extends CI_Controller {
 		//Facebook Messenger send the data to api.ai, they attempt to detect #intents/@entities.
 		//And then they send the results to Us here.
 		//Data from api.ai
-		//Shervin facebook User ID is 1344093838979504
 		
 		$json_data = json_decode(file_get_contents('php://input'), true);
 		
