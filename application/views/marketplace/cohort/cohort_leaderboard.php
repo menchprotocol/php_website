@@ -2,7 +2,7 @@
 	<div><a href="/marketplace/<?= $challenge['c_id'] ?>"><span class="label label-default"><?= $challenge['c_objective'] ?></span></a></div>
 </div>
 
-<h1>Run #<?= $run['r_version'] ?> <?= $this->lang->line('r_l_name') ?> <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="<?= $this->lang->line('r_l_desc') ?>"></i></h1>
+<h1>Run #<?= $run['r_id'] ?> <?= $this->lang->line('r_l_name') ?> <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="<?= $this->lang->line('r_l_desc') ?>"></i></h1>
 
 
 <table class="table" style="margin-top:50px;">
@@ -19,7 +19,7 @@
 		<?php 
 		//Attempt to fetch session variables:
 		$leaderboard = $this->Db_model->u_leaderboard(array(
-			'r.r_id' => $run['r_version'],
+			'r.r_id' => $run['r_id'],
 		));
 		foreach($leaderboard as $user){
 			?>

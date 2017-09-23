@@ -21,14 +21,14 @@ class Bot extends CI_Controller {
 		echo json_encode($this->Apiai_model->fetch_entity($apiai_id));
 	}
 	
-	function fetch_intent($apiai_id){
+	function fetch_bootcamp($apiai_id){
 		header('Content-Type: application/json');
-		echo json_encode($this->Apiai_model->fetch_intent($apiai_id));
+		echo json_encode($this->Apiai_model->fetch_bootcamp($apiai_id));
 	}
 	
-	function prep_intent($pid){
+	function prep_bootcamp($pid){
 		header('Content-Type: application/json');
-		echo json_encode($this->Apiai_model->prep_intent($pid));
+		echo json_encode($this->Apiai_model->prep_bootcamp($pid));
 	}
 	
 	

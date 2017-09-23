@@ -32,7 +32,7 @@ function change_direction(){
 
 //Loadup Algolia:
 client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-algolia_index = client.initIndex('challenges');
+algolia_index = client.initIndex('bootcamps');
 
 
 function update_showdown(target,text){
@@ -61,20 +61,37 @@ function adj(){
 }
 
 function save_c(){
-	//Save the object and its overview:
+	
+	var is_on_marketplace = document.getElementById('c_is_grandpa').checked;
+	
+	//JS Check for the required fields:
 	if(!$('#save_c_objective').val().length){
 		alert('Objective is required.');
+		return false;
+	} else if(is_on_marketplace && !$('#save_c_url_key').val().length){
+		alert('Marketplace URL is required when bootcamp is listed on the marketplace.');
+		return false;
+	} else if(!$('#save_c_status').val().length){
+		alert('Status is required.');
 		return false;
 	}
 	
 	//Show spinner:
 	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
-	$.post("/marketplace/challenge_modify", {
+	$.post("/marketplace/bootcamp_edit_process", {
 		save_c_id:$('#save_c_id').val(),
 		save_c_objective:$('#save_c_objective').val(),
-		save_c_description:$('#save_c_description').val(),
-	}, function(data) {
+		save_c_url_key:$('#save_c_url_key').val(),
+		save_c_time_estimate:$('#save_c_time_estimate').val(),
+		save_c_is_grandpa:( is_on_marketplace ? 1 : 0 ),
+		save_c_status:$('#save_c_status').val(),
+		save_c_additional_goals:$('#save_c_additional_goals').val(),
+		save_c_todo_overview:$('#save_c_todo_overview').val(),
+		save_c_todo_bible:$('#save_c_todo_bible').val(),
+		save_c_prerequisites:$('#save_c_prerequisites').val(),
+		save_c_user_says_statements:$('#save_c_user_says_statements').val(),
+	} , function(data) {
 		//Update UI to confirm with user:
 		$('#save_c_results').html(data).hide().fadeIn();
 		
@@ -82,7 +99,7 @@ function save_c(){
 		setTimeout(function() {
 			$('#save_c_results').fadeOut();
 	    }, 5000);
-    });	
+    });
 }
 
 
@@ -109,6 +126,15 @@ function new_challenge(c_objective){
 	});
 }
 
+//To update the dropdown:
+function update_dropdown(name,intvalue,count){
+	//Update hidden field with value:
+	$('#'+name).val(intvalue);
+	//Update dropdown UI:
+	$('#ui_'+name).html( $('#'+name+'_'+count).html() + '<b class="caret"></b>' );
+	//Reload tooldip:
+	$('[data-toggle="tooltip"]').addClass('').tooltip();
+}
 
 //Triggered when clicked on the toggle direction
 function link_challenge(target_id){
@@ -367,12 +393,14 @@ function msg_save_edit(i_id){
 
 $(document).ready(function() {
 	
-	$('#save_c_description').bind('input propertychange', function() {
-		update_showdown($('#main_desc'),this.value);
-	});
-	$('#save_c_objective').bind('input propertychange', function() {
-		update_showdown($('.c_objective'),this.value);
-	});
+	//Bootcamp Wiki section:
+	$('#c_is_grandpa').change(function() {
+        if($(this).is(":checked")) {
+        	$('.req_c_is_grandpa').fadeIn();
+        } else {
+        	$('.req_c_is_grandpa').fadeOut();
+        }        
+    });
 	
 	
 	$('#i_message').keydown(function (e) {

@@ -1,47 +1,47 @@
 <?php
-/* <?= $this->lang->line('cr_name') ?> */
+/* <?= $this->lang->line('c_name') ?> */
 
 /* ******************************
  * Main Objects
  ****************************** */
 //Object Names & Descriptions:
-$lang['m_name'] = 'Marketplace';
-$lang['m_desc'] = 'Bootcamps developed by our community of experts.';
+$lang['m_name'] = 'Bootcamp Marketplace';
+$lang['m_desc'] = 'Bootcamps created and operated by our community of bootcamp operators.';
 
 $lang['c_name'] = 'Bootcamp';
 $lang['c_pname'] = 'Bootcamps';
-$lang['c_icon'] = '<i class="fa fa-rocket" aria-hidden="true"></i>';
+$lang['c_icon'] = '<i class="fa fa-trophy" aria-hidden="true"></i>';
 
 //TODO Remove
-$lang['r_name'] = 'Run';
-$lang['r_pname'] = 'Runs';
-$lang['r_icon'] = '<i class="fa fa-code-fork"></i>';
-$lang['r_none_message'] = 'No Runs created yet!';
+$lang['r_name'] = 'Cohort';
+$lang['r_pname'] = 'Cohorts';
+$lang['r_icon'] = '<i class="fa fa-calendar" aria-hidden="true"></i>';
+$lang['r_none_message'] = 'No cohorts found.';
 $lang['r_desc'] = 'Runs represent an operational cycle for a bootcamp. The goal is to optimize each run (content, flow, price) using the user feedback of the previous run. Users can only join runs that are open for registration.';
 
 
-$lang['i_name'] = 'Drip Media';
-$lang['i_pname'] = 'Drip Media';
-$lang['i_icon'] = '<i class="fa fa-comments" aria-hidden="true"></i>';
-$lang['i_missing'] = 'No drop media found.';
-$lang['i_desc'] = 'Content that would be gradually distributed to users via Facebook Messenger when the user reaches this specific bootcamp. The content should help users execute effectively to build the bootcamp deliverables.';
+$lang['i_name'] = 'Learning Media';
+$lang['i_pname'] = 'Learning Media';
+$lang['i_icon'] = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
+$lang['i_missing'] = 'No insights found.';
+$lang['i_desc'] = 'Videos, audio files, images or text snippets shared with students to learn the best principles on how to execute this bootcamp.';
 
 //Run Sub-Menu Names:
 $lang['r_s_name'] = 'Settings';
 
 $lang['r_a_name'] = 'Activity';
-$lang['r_a_desc'] = 'The Run activity lists all engagements done by the members of this run. It helps the leader stay up to date of the overall activity.';
+$lang['r_a_desc'] = 'The Run activity lists all engagements done by the students of this run. It helps bootcamp operators stay up to date of the overall activity.';
 $lang['r_a_none'] = 'No activity for this run yet.'; //For new runs with no activity
 
 $lang['r_l_name'] = 'Leaderboard';
-$lang['r_l_desc'] = 'The Run leaderboard ranks run members based on their performance for deliverying each milestone. It also helps leaders detect members who might need extra help.';
-$lang['r_l_none'] = 'No members registered for this run yet.';
+$lang['r_l_desc'] = 'The Run leaderboard ranks students based on their performance for deliverying each bootcamp. It helps bootcamp operators detect students who might need extra help.';
+$lang['r_l_none'] = 'No students registered for this bootcamp run yet.';
 
-$lang['cr_name'] = 'Curriculum';
-$lang['cr_pname'] = 'Curriculum';
-$lang['cr_missing'] = 'No curriculum linked yet.';
-$lang['cr_icon'] = '<i class="fa fa-link" aria-hidden="true"></i>';
-$lang['cr_desc'] = 'Related, independant bootcamps that contribute to accomplishing this bootcamp.';
+$lang['cr_name'] = 'Bootcamp Wiki';
+$lang['cr_pname'] = 'Bootcamps Wiki';
+$lang['cr_missing'] = 'No links to other bootcamps found.';
+$lang['cr_icon'] = '<i class="fa fa-graduation-cap" aria-hidden="true"></i>';
+$lang['cr_desc'] = 'Bootcamp Wiki is our open-source content library to rapidly build/iterate your bootcamp\'s content by referencing other bootcamps that contribute to this bootcamp\'s primary outcome.';
 $lang['u_name'] = 'User';
 $lang['u_pname'] = 'Users';
 $lang['ru_name'] = 'Run User';
@@ -60,8 +60,8 @@ $lang['u_level_3'] = 'Admin';
  * Buttons & Call to Actions
  ****************************** */
 
-$lang['signup'] = 'Signup As Expert';
-$lang['login'] = 'Login as Expert';
+$lang['signup'] = 'Signup As Operator';
+$lang['login'] = 'Login as Operator';
 $lang['logout'] = 'Logout';
 $lang['my_profile'] = 'My Profile';
 $lang['contact_us'] = 'Contact Us';

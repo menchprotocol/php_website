@@ -6,9 +6,9 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.192,
+		'version' => 0.195,
 		'legaL_name' => 'Mench Media Inc.',
-		'url' => 'http://mench.co/', //Important to end with / as other links depend on this.
+		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
 		'email' => 'shervin@mench.co',
 		'fb_page_id' => '381488558920384',
@@ -16,6 +16,14 @@ $config['website'] = array(
 		'bot_ref_url' => 'https://m.me/381488558920384',
 		'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
 );
+
+//What would be auto replaced in the bootcamp titles for a more clear UI. Checkout echo_title() in general_helper
+$config['title_replacements'] = array(
+    'within' => '<i class="fa fa-calendar" aria-hidden="true"></i>',
+    'requiring' => '<i class="fa fa-graduation-cap" aria-hidden="true"></i> Requires',
+);
+//based on the fibonacci sequence for more realistic estimates
+$config['c_time_options'] = array('0','0.25','0.5','1','2','3','5','8','13','21');
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
@@ -47,31 +55,6 @@ $config['e_mediums'] = array(
 						6 => 'Inbound Message',
 						7 => 'Outbound Message',
 				),
-		),
-);
-
-
-
-
-
-//TODO Develop further?
-$config['objects'] = array(
-		'c' => array(
-				'name_s' => 'Challenge',
-				'name_p' => 'Challenges',
-				'desc' => 'Challenges',
-				'url' => '/marketplace',
-				'dbname' => 'v5_challenges',
-		),
-		'i' => array(
-				'name_s' => 'Patterns',
-				'name_p' => 'Patterns',
-				'dbname' => 'v5_insights',
-		),
-		'cr' => array(
-				'name_s' => 'Reference',
-				'name_p' => 'References',
-				'dbname' => 'v5_insights',
 		),
 );
 

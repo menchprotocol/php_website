@@ -27,7 +27,7 @@ class Db_model extends CI_Model {
 		
 		//Fetch Runs:
 		$this->db->select('ru.ru_r_id');
-		$this->db->from('v5_challenge_run_users ru');
+		$this->db->from('v5_cohort_users ru');
 		$this->db->where('ru.ru_u_id',$u_id);
 		$this->db->where('ru.ru_status >=',2); //Leader or Admin
 		$q = $this->db->get();
@@ -41,7 +41,7 @@ class Db_model extends CI_Model {
 		if(count($user_access['r'])>0){
 			//Now fetch unique challenges:
 			$this->db->select('r.r_c_id');
-			$this->db->from('v5_challenge_runs r');
+			$this->db->from('v5_cohorts r');
 			$this->db->where_in('r.r_id',$user_access['r']);
 			$this->db->or_where('r.r_creator_id',$u_id);
 			$q = $this->db->get();
@@ -55,13 +55,13 @@ class Db_model extends CI_Model {
 		
 		//Any challenges they directly created?
 		$this->db->select('c.c_id');
-		$this->db->from('v5_challenges c');
+		$this->db->from('v5_bootcamps c');
 		$this->db->where('c.c_creator_id',$u_id); //Challenges they created them selves
 		$this->db->where('c.c_status >=',-1); //Deleted by user, but not removed by moderator.
 		$this->db->where('c.c_is_grandpa',true); //necessary here since we have many none-grandpa challenges
 		$q = $this->db->get();
-		$challenges = $q->result_array();
-		foreach($challenges as $c){
+		$bootcamps = $q->result_array();
+		foreach($bootcamps as $c){
 			if(!in_array($c['c_id'], $user_access['c'], true)){
 				array_push($user_access['c'] , $c['c_id']);
 			}
@@ -267,7 +267,7 @@ class Db_model extends CI_Model {
 	
 	function i_fetch($match_columns){
 		$this->db->select('*');
-		$this->db->from('v5_challenge_insights');
+		$this->db->from('v5_learning_media');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -298,7 +298,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_challenge_insights', $insert_columns);
+		$this->db->insert('v5_learning_media', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
@@ -308,7 +308,7 @@ class Db_model extends CI_Model {
 	
 	function i_update($i_id,$update_columns){
 		$this->db->where('i_id', $i_id);
-		$this->db->update('v5_challenge_insights', $update_columns);
+		$this->db->update('v5_learning_media', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -319,13 +319,13 @@ class Db_model extends CI_Model {
 	function r_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('r.*');
-		$this->db->from('v5_challenge_runs r');
-		$this->db->join('v5_challenge_run_users ru', 'ru.ru_r_id = r.r_id', 'left');
+		$this->db->from('v5_cohorts r');
+		$this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
 		$this->db->group_by('r.r_id');
-		$this->db->order_by('r.r_version','ASC');
+		$this->db->order_by('r.r_start_time','ASC');
 		$q = $this->db->get();
 		$runs = $q->result_array();
 		
@@ -349,8 +349,8 @@ class Db_model extends CI_Model {
 	
 	function c_users_fetch($match_columns){
 		$this->db->select('u.*');
-		$this->db->from('v5_challenge_runs r');
-		$this->db->join('v5_challenge_run_users ru', 'ru.ru_r_id = r.r_id','left');
+		$this->db->from('v5_cohorts r');
+		$this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id','left');
 		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id','left');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
@@ -364,9 +364,9 @@ class Db_model extends CI_Model {
 	function c_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('c.*, COUNT(DISTINCT r.r_id) AS count_runs, COUNT(DISTINCT ru.ru_u_id) AS count_users');
-		$this->db->from('v5_challenges c');
-		$this->db->join('v5_challenge_runs r', 'r.r_c_id = c.c_id', 'left');
-		$this->db->join('v5_challenge_run_users ru', 'ru.ru_r_id = r.r_id', 'left');
+		$this->db->from('v5_bootcamps c');
+		$this->db->join('v5_cohorts r', 'r.r_c_id = c.c_id', 'left');
+		$this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
 		$this->db->group_by('c.c_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
@@ -378,7 +378,7 @@ class Db_model extends CI_Model {
 	function c_plain_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('c.*');
-		$this->db->from('v5_challenges c');
+		$this->db->from('v5_bootcamps c');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -390,8 +390,8 @@ class Db_model extends CI_Model {
 	function cr_outbound_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('*');
-		$this->db->from('v5_challenges c');
-		$this->db->join('v5_challenge_relations cr', 'cr.cr_outbound_id = c.c_id');
+		$this->db->from('v5_bootcamps c');
+		$this->db->join('v5_bootcamp_wiki cr', 'cr.cr_outbound_id = c.c_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -403,8 +403,8 @@ class Db_model extends CI_Model {
 	function cr_inbound_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('*');
-		$this->db->from('v5_challenges c');
-		$this->db->join('v5_challenge_relations cr', 'cr.cr_inbound_id = c.c_id');
+		$this->db->from('v5_bootcamps c');
+		$this->db->join('v5_bootcamp_wiki cr', 'cr.cr_inbound_id = c.c_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -416,13 +416,13 @@ class Db_model extends CI_Model {
 	
 	function challenge_update($c_id,$update_columns){
 		$this->db->where('c_id', $c_id);
-		$this->db->update('v5_challenges', $update_columns);
+		$this->db->update('v5_bootcamps', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
 	function cr_update($cr_id,$update_columns,$column='cr_id'){
 		$this->db->where($column, $cr_id);
-		$this->db->update('v5_challenge_relations', $update_columns);
+		$this->db->update('v5_bootcamp_wiki', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -461,7 +461,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_challenge_relations', $insert_columns);
+		$this->db->insert('v5_bootcamp_wiki', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['cr_id'] = $this->db->insert_id();
@@ -471,7 +471,7 @@ class Db_model extends CI_Model {
 	
 	function c_update($c_id,$update_columns){
 		$this->db->where('c_id', $c_id);
-		$this->db->update('v5_challenges', $update_columns);
+		$this->db->update('v5_bootcamps', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -495,7 +495,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_challenges', $insert_columns);
+		$this->db->insert('v5_bootcamps', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['c_id'] = $this->db->insert_id();
@@ -569,14 +569,16 @@ class Db_model extends CI_Model {
 		
 		boost_power();
 		
+		$website = $this->config->item('website');
+		
 		if(is_dev()){
-			return file_get_contents("http://mench.co/marketplace/algolia/".$c_id);
+		    return file_get_contents($website['url']."marketplace/algolia/".$c_id);
 		}
 		
 		//Include PHP library:
 		require_once('application/libraries/algoliasearch.php');
 		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-		$index = $client->initIndex('challenges');
+		$index = $client->initIndex('bootcamps');
 		
 		//Fetch all nodes:
 		$limits = array(
@@ -587,24 +589,24 @@ class Db_model extends CI_Model {
 		} else {
 			$index->clearIndex();
 		}
-		$challenges = $this->c_fetch($limits);
+		$bootcamps = $this->c_fetch($limits);
 		
-		if(count($challenges)<=0){
+		if(count($bootcamps)<=0){
 			//Nothing found here!
 			return false;
 		}
 		
 		//Buildup this array to save to search index
 		$return = array();
-		foreach($challenges as $challenge){
+		foreach($bootcamps as $bootcamp){
 			//Adjust Algolia ID:
-			if(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0){
-				$challenge['objectID'] = intval($challenge['c_algolia_id']);
+			if(isset($bootcamp['c_algolia_id']) && intval($bootcamp['c_algolia_id'])>0){
+				$bootcamp['objectID'] = intval($bootcamp['c_algolia_id']);
 			}
-			unset($challenge['c_algolia_id']);
+			unset($bootcamp['c_algolia_id']);
 			
 			//Add to main array
-			array_push( $return , $challenge);
+			array_push( $return , $bootcamp);
 		}
 		
 		//$obj = json_decode(json_encode($return), FALSE);
@@ -612,9 +614,9 @@ class Db_model extends CI_Model {
 		
 		if($c_id){
 			
-			if($challenge['c_status']>=0){
+			if($bootcamp['c_status']>=0){
 				
-				if(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0){
+				if(isset($bootcamp['c_algolia_id']) && intval($bootcamp['c_algolia_id'])>0){
 					//Update existing
 					$obj_add_message = $index->saveObjects($return);
 				} else {
@@ -631,9 +633,9 @@ class Db_model extends CI_Model {
 					}
 				}
 				
-			} elseif(isset($challenge['c_algolia_id']) && intval($challenge['c_algolia_id'])>0) {
+			} elseif(isset($bootcamp['c_algolia_id']) && intval($bootcamp['c_algolia_id'])>0) {
 				//Delete object:
-				$index->deleteObject($challenge['c_algolia_id']);
+				$index->deleteObject($bootcamp['c_algolia_id']);
 			}
 			
 		} else {
@@ -653,7 +655,7 @@ class Db_model extends CI_Model {
 		
 		return array(
 				'c_id' => $c_id,
-				'challenges' => $challenges,
+				'bootcamps' => $bootcamps,
 				'output' => $obj_add_message['objectIDs'],
 		);
 	}

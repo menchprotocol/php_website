@@ -313,7 +313,7 @@ class Apiai_model extends CI_Model {
 	 * #Intent Functions
 	 *
 	 */
-	function prep_intent($GEMs){
+	function prep_bootcamp($GEMs){
 		
 		if(!isset($GEMs[0]['id'])){
 			//Invalid ID
@@ -559,7 +559,7 @@ class Apiai_model extends CI_Model {
 		
 		//This functions takes a pattern ID, and prepares the JSON data for api.ai
 		$GEMs = $this->Us_model->fetch_full_node(intval($pid));
-		$intent = $this->prep_intent($GEMs);
+		$intent = $this->prep_bootcamp($GEMs);
 		
 		if(!$intent){
 			return array(
@@ -684,7 +684,7 @@ class Apiai_model extends CI_Model {
 	
 	
 	
-	function fetch_intent($apiai_obj_id){
+	function fetch_bootcamp($apiai_obj_id){
 		$ch = curl_init('https://api.api.ai/v1/intents/'.$apiai_obj_id.'?v=20150910');
 		curl_setopt_array($ch, array(
 				CURLOPT_POST => FALSE,

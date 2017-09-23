@@ -12,10 +12,24 @@ if($is_new){
 	<?php
 } else {
 	?>
-	<h1><?= $this->lang->line('r_name') ?> #<?= $run['r_version'] ?> <?= $this->lang->line('r_s_name') ?></h1>
+	<h1><?= $this->lang->line('r_name') ?> #<?= $run['r_id'] ?> <?= $this->lang->line('r_s_name') ?></h1>
 	<?php
 }
 ?>
+
+
+
+<div class="title"><h4>Enrollment Price <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The amount the student should pay to enroll in this bootcamp."></i></h4></div>
+<div class="col-sm-4">
+	<div class="input-group input-mini">
+		<span class="input-group-addon">
+			USD $
+		</span>
+		<input type="number" min="0" step="1" class="form-control" placeholder="0.00" value="<?= $run['r_usd_price'] ?>" />
+	</div>
+</div>
+            
+            
 
 
 <form>

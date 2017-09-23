@@ -153,27 +153,27 @@ class Marketplace extends CI_Controller {
 		$this->load->view('marketplace/shared/d_header' , array(
 				'title' => 'Challenge Marketplace',
 		));
-		$this->load->view('marketplace/challenge/challenge_marketplace' , array(
+		$this->load->view('marketplace/bootcamp/bootcamp_marketplace' , array(
 				'challenges' => $this->Db_model->c_fetch(array(
-						'c.c_status >=' => 0,
-						'c.c_is_grandpa' => true, //Not sub challenges
+				    'c.c_status >=' => 0,
+					'c.c_is_grandpa' => true, //Not sub challenges
 				)),
 		));
 		$this->load->view('marketplace/shared/d_footer');
 	}
 	
 	
-	function challenge_framework($c_id,$pid=null){
+	function bootcamp_wiki($c_id,$pid=null){
 		
 		$udata = auth(2,1);
-		$challenge = load_object('c' , array(
+		$bootcamp = load_object('c' , array(
 				'c.c_id' => $c_id,
 				'c.c_is_grandpa' => true,
 		));
-		$pid = ( isset($pid) && intval($pid)>0 ? $pid : $challenge['c_id'] );
+		$pid = ( isset($pid) && intval($pid)>0 ? $pid : $bootcamp['c_id'] );
 		//Construct data:
 		$view_data = array(
-				'challenge' => $challenge,
+				'bootcamp' => $bootcamp,
 				'pid' => $pid,
 				'cr' => array(
 						'c' => $this->Db_model->c_plain_fetch(array(
@@ -202,17 +202,9 @@ class Marketplace extends CI_Controller {
 		//Append Title:
 		$view_data['title'] = $view_data['cr']['c']['c_objective'];
 		
-		//Do we have a run loaded in session?
-		if($this->session->userdata('r_focus_version')) {
-			$temp = explode('_',$this->session->userdata('r_focus_version'),2);
-			if($temp[0]==$challenge['c_id']){
-				$view_data['run'] = filter($challenge['runs'],'r_version',$temp[1]);
-			}
-		}
-		
 		//Show View
 		$this->load->view('marketplace/shared/d_header' , $view_data);
-		$this->load->view('marketplace/challenge/challenge_framework' , $view_data);
+		$this->load->view('marketplace/bootcamp/bootcamp_wiki' , $view_data);
 		$this->load->view('marketplace/shared/d_footer');
 	}
 	
@@ -243,7 +235,7 @@ class Marketplace extends CI_Controller {
 				'i_creator_id' => $udata['u_id'],
 				'i_c_id' => $f_challenge['c_id'],
 				'i_message' => trim($_POST['i_message']),
-				'i_rank' => 1 + $this->Db_model->max_value('v5_challenge_insights','i_rank', array(
+				'i_rank' => 1 + $this->Db_model->max_value('v5_learning_media','i_rank', array(
 						'i_status >=' => 0,
 						'i_c_id' => $f_challenge['c_id'],
 				)),
@@ -281,7 +273,7 @@ class Marketplace extends CI_Controller {
 		
 		//Create challenge:
 		$is_outbound = ($_POST['direction']=='outbound');
-		$challenge = $this->Db_model->c_create(array(
+		$bootcamp = $this->Db_model->c_create(array(
 				'c_creator_id' => $udata['u_id'],
 				'c_objective' => trim($_POST['c_objective']),
 		));
@@ -291,15 +283,15 @@ class Marketplace extends CI_Controller {
 				'cr_creator_id' => $udata['u_id'],
 				
 				//Linking:
-				'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $challenge['c_id'] ),
-				'cr_outbound_id' => ( $is_outbound ? $challenge['c_id'] : $f_challenge['c_id'] ),
+				'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $bootcamp['c_id'] ),
+				'cr_outbound_id' => ( $is_outbound ? $bootcamp['c_id'] : $f_challenge['c_id'] ),
 				
 				//Fetch ranks:
-				'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_inbound_rank', array(
+				'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_bootcamp_wiki','cr_inbound_rank', array(
 						'cr_status >=' => 0,
 						'cr_outbound_id' => $f_challenge['c_id'],
 				)),
-				'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_outbound_rank', array(
+				'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_bootcamp_wiki','cr_outbound_rank', array(
 						'cr_status >=' => 0,
 						'cr_inbound_id' => $f_challenge['c_id'],
 				)),
@@ -317,7 +309,7 @@ class Marketplace extends CI_Controller {
 		}
 		
 		//Update Algolia:
-		$this->Db_model->sync_algolia($challenge['c_id']);
+		$this->Db_model->sync_algolia($bootcamp['c_id']);
 		
 		//Return result:
 		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction']);
@@ -348,7 +340,7 @@ class Marketplace extends CI_Controller {
 		
 		//Create challenge:
 		$is_outbound = ($_POST['direction']=='outbound');
-		$challenge = load_object('c' , array(
+		$bootcamp = load_object('c' , array(
 				'c.c_id' => $_POST['target_id'],
 				'c.c_status >=' => 0,
 		));
@@ -360,15 +352,15 @@ class Marketplace extends CI_Controller {
 				'cr_creator_id' => $udata['u_id'],
 				
 				//Linking:
-				'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $challenge['c_id'] ),
-				'cr_outbound_id' => ( $is_outbound ? $challenge['c_id'] : $f_challenge['c_id'] ),
+				'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $bootcamp['c_id'] ),
+				'cr_outbound_id' => ( $is_outbound ? $bootcamp['c_id'] : $f_challenge['c_id'] ),
 				
 				//Fetch ranks:
-				'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_inbound_rank', array(
+				'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_bootcamp_wiki','cr_inbound_rank', array(
 						'cr_status >=' => 0,
 						'cr_outbound_id' => $f_challenge['c_id'],
 				)),
-				'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_challenge_relations','cr_outbound_rank', array(
+				'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_bootcamp_wiki','cr_outbound_rank', array(
 						'cr_status >=' => 0,
 						'cr_inbound_id' => $f_challenge['c_id'],
 				)),
@@ -559,26 +551,57 @@ class Marketplace extends CI_Controller {
 		die('<span style="color:#00CC00;">Saved</span>');
 	}
 	
-	function challenge_modify(){
-		//Auth user and Load object:
+	function bootcamp_edit_process(){
+	    
+	    //Auth user and check required variables:
 		$udata = auth(2);
-		
 		if(!$udata){
 			die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 		} elseif(!isset($_POST['save_c_id']) || intval($_POST['save_c_id'])<=0){
 			die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
 		} elseif(!isset($_POST['save_c_objective']) || strlen($_POST['save_c_objective'])<=0){
-			die('<span style="color:#FF0000;">Error: Objective is Required.</span>');
-		} elseif(!isset($_POST['save_c_description'])){
-			$_POST['save_c_description'] = ''; //Not required
+		    die('<span style="color:#FF0000;">Error: Objective is Required.</span>');
+		} elseif(!isset($_POST['save_c_time_estimate']) || floatval($_POST['save_c_time_estimate'])<0){
+		    die('<span style="color:#FF0000;">Error: Time estimate is Required.</span>');
+		} elseif(!isset($_POST['save_c_is_grandpa'])){
+		    die('<span style="color:#FF0000;">Error: Marketplace listed status is required.</span>');
+		} elseif(!isset($_POST['save_c_status'])){
+		    die('<span style="color:#FF0000;">Error: Bootcamp status is Required.</span>');
+		} elseif(!isset($_POST['save_c_url_key'])  || ($_POST['save_c_is_grandpa'] && strlen($_POST['save_c_url_key'])<=0)){
+		    die('<span style="color:#FF0000;">Error: URL Key is Required.</span>');
+		}
+		
+		//Not required variables:
+		if(!isset($_POST['save_c_additional_goals'])){
+		    $_POST['save_c_additional_goals'] = '';
+		}
+		if(!isset($_POST['save_c_todo_overview'])){
+		    $_POST['save_c_todo_overview'] = '';
+		}
+		if(!isset($_POST['save_c_todo_bible'])){
+		    $_POST['save_c_todo_bible'] = '';
+		}
+		if(!isset($_POST['save_c_prerequisites'])){
+		    $_POST['save_c_prerequisites'] = '';
+		}
+		if(!isset($_POST['save_c_user_says_statements'])){
+		    $_POST['save_c_user_says_statements'] = '';
 		}
 		
 		//Now update the DB:
 		$this->Db_model->challenge_update(intval($_POST['save_c_id']) , array(
-				'c_creator_id' => $udata['u_id'],
-				'c_timestamp' => date("Y-m-d H:i:s"),
-				'c_objective' => trim($_POST['save_c_objective']),
-				'c_description' => $_POST['save_c_description'],
+			'c_creator_id' => $udata['u_id'],
+			'c_timestamp' => date("Y-m-d H:i:s"),
+		    'c_objective' => trim($_POST['save_c_objective']),
+		    'c_url_key' => trim(strtolower($_POST['save_c_url_key'])),
+		    'c_additional_goals' => $_POST['save_c_additional_goals'],
+		    'c_todo_bible' => $_POST['save_c_todo_bible'],
+		    'c_todo_overview' => $_POST['save_c_todo_overview'],
+		    'c_prerequisites' => $_POST['save_c_prerequisites'],
+		    'c_user_says_statements' => $_POST['save_c_user_says_statements'],
+		    'c_time_estimate' => floatval($_POST['save_c_time_estimate']),
+		    'c_is_grandpa' => ( $_POST['save_c_is_grandpa'] ? 't' : 'f' ),
+		    'c_status' => intval($_POST['save_c_status']),
 		));
 		
 		//Update Algolia:
@@ -590,14 +613,14 @@ class Marketplace extends CI_Controller {
 		die('<span style="color:#00CC00;">Saved</span>');
 	}
 	
-	function run_save($c_id=null){
+	function cohort_save($c_id=null){
 		//Auth user and Load object:
 		$udata = auth(2,1);
 		
 		//Are we updating an existing challenge or creating a new one?
 		if($c_id){
 			//Updating
-			$challenge = load_object('c' , array(
+			$bootcamp = load_object('c' , array(
 					'c.c_id' => $c_id,
 					'c.c_is_grandpa' => true,
 			));
@@ -610,133 +633,128 @@ class Marketplace extends CI_Controller {
 	
 	
 	/* ******************************
-	 * Runs
+	 * Cohorts
 	 ****************************** */
 	
-	function run_dashboard($c_id,$r_version){
+	function cohort_dashboard($c_id,$r_id){
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
-		$challenge = load_object('c' , array(
+		$bootcamp = load_object('c' , array(
 				'c.c_id' => $c_id,
 				'c.c_is_grandpa' => true,
 		));
 		
 		//Fetch & Validate Run:
-		$run = filter($challenge['runs'],'r_version',$r_version);
-		if(!$run){
-			redirect_message('/marketplace/'.$c_id , '<div class="alert alert-danger" role="alert">Invalid run number.</div>');
-		}
-		
-		//Load into session:
-		$this->session->set_userdata(array(
-				'r_focus_version' => $challenge['c_id'].'_'.$r_version, //To presistently keep the loaded Run menu open
-		));
-		
-		//Load view
-		$this->load->view('marketplace/shared/d_header' , array(
-				'title' => 'Run #'.$r_version.' | '.$challenge['c_objective'],
-				'challenge' => $challenge,
-				'run' => $run,
-		));
-		$this->load->view('marketplace/run/run_dashboard' , array(
-				'challenge' => $challenge,
-				'run' => $run,
-		));
-		$this->load->view('marketplace/shared/d_footer');
-	}
-	
-	
-	function run_leaderboard($c_id,$r_version){
-		//Authenticate level 2 or higher, redirect if not:
-		$udata = auth(2,1);
-		
-		$challenge = load_object('c' , array(
-				'c.c_id' => $c_id,
-				'c.c_is_grandpa' => true,
-		));
-		
-		//Fetch & Validate Run:
-		$run = filter($challenge['runs'],'r_version',$r_version);
+		$run = filter($bootcamp['runs'],'r_id',$r_id);
 		if(!$run){
 			redirect_message('/marketplace/'.$c_id , '<div class="alert alert-danger" role="alert">Invalid run number.</div>');
 		}
 		
 		//Load view
 		$this->load->view('marketplace/shared/d_header' , array(
-				'title' => 'Leaderboard | Run #'.$r_version.' | '.$challenge['c_objective'],
-				'challenge' => $challenge,
+				'title' => 'Run #'.$r_id.' | '.$bootcamp['c_objective'],
+				'bootcamp' => $bootcamp,
 				'run' => $run,
 		));
-		$this->load->view('marketplace/run/run_leaderboard' , array(
-				'challenge' => $challenge,
+		$this->load->view('marketplace/cohort/cohort_dashboard' , array(
+				'bootcamp' => $bootcamp,
 				'run' => $run,
 		));
 		$this->load->view('marketplace/shared/d_footer');
 	}
 	
-	function run_activity($c_id,$r_version){
+	
+	function cohort_leaderboard($c_id,$r_id){
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
-		$challenge = load_object('c' , array(
+		$bootcamp = load_object('c' , array(
 				'c.c_id' => $c_id,
 				'c.c_is_grandpa' => true,
 		));
 		
 		//Fetch & Validate Run:
-		$run = filter($challenge['runs'],'r_version',$r_version);
+		$run = filter($bootcamp['runs'],'r_id',$r_id);
 		if(!$run){
 			redirect_message('/marketplace/'.$c_id , '<div class="alert alert-danger" role="alert">Invalid run number.</div>');
 		}
 		
 		//Load view
 		$this->load->view('marketplace/shared/d_header' , array(
-				'title' => 'Timeline | Run #'.$r_version.' | '.$challenge['c_objective'],
-				'challenge' => $challenge,
+				'title' => 'Leaderboard | Run #'.$r_id.' | '.$bootcamp['c_objective'],
+				'bootcamp' => $bootcamp,
 				'run' => $run,
 		));
-		$this->load->view('marketplace/run/run_activity' , array(
-				'challenge' => $challenge,
+		$this->load->view('marketplace/cohort/cohort_leaderboard' , array(
+				'bootcamp' => $bootcamp,
 				'run' => $run,
 		));
 		$this->load->view('marketplace/shared/d_footer');
 	}
 	
-	//challenge modification wizard:
-	function run_settings($c_id,$r_version=null){
+	function cohort_activity($c_id,$r_id){
+		//Authenticate level 2 or higher, redirect if not:
+		$udata = auth(2,1);
+		
+		$bootcamp = load_object('c' , array(
+				'c.c_id' => $c_id,
+				'c.c_is_grandpa' => true,
+		));
+		
+		//Fetch & Validate Run:
+		$run = filter($bootcamp['runs'],'r_id',$r_id);
+		if(!$run){
+			redirect_message('/marketplace/'.$c_id , '<div class="alert alert-danger" role="alert">Invalid run number.</div>');
+		}
+		
+		//Load view
+		$this->load->view('marketplace/shared/d_header' , array(
+				'title' => 'Timeline | Run #'.$r_id.' | '.$bootcamp['c_objective'],
+				'bootcamp' => $bootcamp,
+				'run' => $run,
+		));
+		$this->load->view('marketplace/cohort/cohort_activity' , array(
+				'bootcamp' => $bootcamp,
+				'run' => $run,
+		));
+		$this->load->view('marketplace/shared/d_footer');
+	}
+	
+
+	function cohort_settings($c_id,$r_id=null){
 		//Authenticate:
 		$udata = auth(2,1);
 		
-		$challenge = load_object('c' , array(
+		$bootcamp = load_object('c' , array(
 				'c.c_id' => $c_id,
 				'c.c_is_grandpa' => true,
 		));
 		
 		//This could be a new run, or editing an existing run:
-		if($r_version){
+		if($r_id){
 			//This is an edit, not a new run. Fetch & Validate Run:
-			$run = filter($challenge['runs'],'r_version',$r_version);
+			$run = filter($bootcamp['runs'],'r_id',$r_id);
 			if(!$run){
 				redirect_message('/marketplace/'.$c_id , '<div class="alert alert-danger" role="alert">Invalid run.</div>');
 			}
 			
 			$view_data = array(
-					'title' => 'Run #'.$r_version.' Settings | '.$challenge['c_objective'],
-					'challenge' => $challenge,
+					'title' => 'Run #'.$r_id.' Settings | '.$bootcamp['c_objective'],
+					'bootcamp' => $bootcamp,
 					'run' => $run,
 			);
 		} else {
 			//Creating a new run:
 			$view_data = array(
-					'title' => 'Add Run | '.$challenge['c_objective'],
-					'challenge' => $challenge,
+					'title' => 'Add Run | '.$bootcamp['c_objective'],
+					'bootcamp' => $bootcamp,
 			);
 		}
 		
 		//Load view
 		$this->load->view('marketplace/shared/d_header' , $view_data);
-		$this->load->view('marketplace/run/run_settings' , $view_data);
+		$this->load->view('marketplace/cohort/cohort_settings' , $view_data);
 		$this->load->view('marketplace/shared/d_footer');
 	}
 }

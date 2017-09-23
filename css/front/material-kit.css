@@ -1303,7 +1303,7 @@ fieldset[disabled] .form-group.is-focused .checkbox label {
   opacity: 0.2;
 }
 .checkbox input[type=checkbox]:checked + .checkbox-material .check {
-  background: #fedd16;
+  background: #2f2639;
 }
 .checkbox input[type=checkbox]:checked + .checkbox-material .check:before {
   color: #FFFFFF;
@@ -1349,7 +1349,8 @@ fieldset[disabled] .checkbox, fieldset[disabled] .checkbox input[type=checkbox],
 }
 .checkbox input[type=checkbox][disabled] ~ .checkbox-material .check {
   border-color: #2f2639;
-  opacity: .26;
+  opacity: 0.40;
+  background: #2f2639;
 }
 .checkbox input[type=checkbox][disabled] + .checkbox-material .check:after {
   background-color: rgba(0,0,0, 0.87);
@@ -1453,7 +1454,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   left: 15px;
 }
 .togglebutton label input[type=checkbox]:checked + .toggle {
-  background-color:#b5b4b2;
+  background-color:#fedd16;
 }
 .togglebutton label input[type=checkbox]:checked + .toggle:after {
   border-color: #fedd16;
@@ -1953,10 +1954,10 @@ output {
 .checkbox label,
 .radio label,
 label {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.42857;
-  color: #AAAAAA;
-  font-weight: 400;
+  color: #888 !important;
+  font-weight: bold;
 }
 
 label.control-label {
@@ -2188,7 +2189,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 .input-group .input-group-addon {
   border: 0;
   background: transparent;
-  padding: 0 0 0 15px;
+  padding: 0 5px 0 0;
 }
 
 .form-group input[type=file] {

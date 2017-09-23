@@ -12,7 +12,31 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-
+function echo_title($title_string){
+    $peaces = explode(' ',$title_string);
+    
+    $CI =& get_instance();
+    $title_key_icons = $CI->config->item('title_replacements');
+    
+    $return_title = '';
+    $return_title .= '<span class="title-main">';
+    foreach($peaces as $p){
+        //Look for trigger keywords that would end the main title and start a new sub-section:
+        if(array_key_exists(strtolower($p),$title_key_icons)){
+            //End previous section:
+            $return_title .= '</span>';
+            //Start new section:
+            $return_title .= '<span class="title-sub">'.$title_key_icons[strtolower($p)].' ';
+        } else {
+            //Not trigger word, Append:
+            $return_title .= $p.' ';
+        }
+    }
+    //Close last span:
+    $return_title .= '</span>';
+    //Return:
+    return $return_title;
+}
 
 function echo_message($i){
 	//Fetch current Challenge:
@@ -92,20 +116,6 @@ function load_object($object,$obj_limits){
 		
 }
 
-function run_icon($run_version){
-	if($run_version==1){
-		return '<i class="material-icons">looks_one</i>';
-	} elseif($run_version==2){
-		return '<i class="material-icons">looks_two</i>';
-	} elseif($run_version>2 && $run_version<=6){
-		return '<i class="material-icons">looks_'.$run_version.'</i>';
-	} else {
-		//Ooops, no option here!
-		return $run_version;
-	}
-}
-
-
 
 function status_bible($object=null,$status=null){
 	
@@ -160,10 +170,10 @@ function status_bible($object=null,$status=null){
 			 * OBJECTS
 			 ****************************** */
 			'c' => array( //Challenges
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-2].'">'.$o_name[-2].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-1].'">'.$o_name[-1].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[0].'">'.$o_name[0].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[1].'">'.$o_name[1].' Challenge <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+				0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[0].'">'.$o_name[0].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+				1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[1].'">'.$o_name[1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-1].'">'.$o_name[-1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-2].'">'.$o_name[-2].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'r' => array( //Runs
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',

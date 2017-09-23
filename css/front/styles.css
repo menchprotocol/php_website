@@ -20,10 +20,31 @@
     border-top: 0px solid #ddd;
 }
 
+.extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
+
+.title-main { display:block; padding-bottom:5px; font-size:1.2em; font-weight:bold; }
+.title-sub { display:inline-block; color:#999; margin-right:10px; }
+.title-sub i { width:20px; text-align:center; }
+
+
+.req_c_is_grandpa { display:none; }
+.c_objective { line-height:100%; }
+.c_objective .title-main { display:block; padding:0 !important; font-size:0.45em; line-height:110% !important; }
+.c_objective .title-sub { display:block; font-size:0.3em; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 !important; }
+.c_objective .title-sub i { width:20px; text-align:center; }
+
+
 .submenu { padding:0 0 0 45px; }
 .submenu a { padding-top:7px; padding-bottom:7px; }
 .submenu p { font-size:0.9em !important;}
 
+input { font-size:16px !important; }
+.togglebutton { padding-left:15px; }
+.input-mini { max-width:175px; }
+.input-group-addon { font-size: 16px; font-weight: bold; }
+.dropdown { padding:0; clear:both; diaplay:block; padding-bottom:20px; }
+.dropdown>a { padding-left:10px; padding-right:10px; } 
+.text-edit { min-height:80px; resize: both !important; }
 .showdown { display:none; }
 .showdown table th { padding:5px 10px; border:1px solid #ccc; background-color:#333; color:#FFF; }
 .showdown table td { padding:5px 10px; border:1px solid #ccc; }
@@ -83,6 +104,7 @@ p a, td a { text-decoration:underline; }
     padding:0;
 }
 
+.title { clear:both; diaplay:block; }
 .title p {
 	font-size: 0.8em;
     font-weight: normal;
