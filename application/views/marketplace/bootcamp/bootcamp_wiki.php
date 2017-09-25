@@ -17,14 +17,14 @@ if(isset($cr['inbound']) && count($cr['inbound'])>0){
 echo '</div>';
 
 if(!($cr['c']['c_id']==$bootcamp['c_id'])){
-    echo '<h1 class="c_objective">'.echo_title($cr['c']['c_objective']).'</h1>';
+    echo '<h1 class="c_objective_body">'.echo_title($cr['c']['c_objective']).'</h1>';
 }
 ?>
 
 <ul class="nav nav-pills nav-pills-primary" style="margin-top:10px;">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-link" aria-hidden="true"></i> Linked Bootcamps</a></li>
+  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-link" aria-hidden="true"></i> Links</a></li>
   <li><a href="#pill2" data-toggle="tab" onclick="load_message_sorting()"><?= $this->lang->line('i_icon') ?> <?= $this->lang->line('i_pname') ?></a></li>
-  <li><a href="#pill4" data-toggle="tab"><i class="fa fa-pencil" aria-hidden="true"></i> <?= $this->lang->line('edit') ?> <?= $this->lang->line('c_name') ?></a></li>
+  <li><a href="#pill4" data-toggle="tab"><i class="fa fa-pencil" aria-hidden="true"></i> <?= $this->lang->line('edit').' '.str_replace('data-toggle="tooltip"','',status_bible('c',$cr['c']['c_status'],1)) ?></a></li>
 </ul>
 
 
@@ -49,9 +49,9 @@ if(!($cr['c']['c_id']==$bootcamp['c_id'])){
 			echo '<div class="list-group-item list_input">';
 			?>
 				<div class="input-group">
-					<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add Bootcamp Goal"></div>
+					<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Bootcamp"></div>
 					<span class="input-group-addon">
-						<span id="dir_handle" class="label label-primary pull-right">
+						<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_challenge($('#addnode').val());">
 							<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
 							<div class="togglebutton" style="margin-top:5px; display:none;">
 				            	<label>
@@ -119,18 +119,30 @@ if(!($cr['c']['c_id']==$bootcamp['c_id'])){
 			<div class="form-group label-floating is-empty">
 			    <input type="text" id="save_c_objective" value="<?= $cr['c']['c_objective'] ?>" class="form-control">
 			    <span class="material-input"></span>
-			    <p class="extra-info" data-toggle="tooltip" title="Keyword replacements make the title of the bootcamps easier to read/understand with UI modification & icon addition."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Note replacements:
+			    <p class="extra-info" style="margin-bottom: 0; padding-bottom: 0;"><span data-toggle="tooltip" title="First word replacements would replace matched words only if placed as the very first word to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> First word replacements:
 			    <?php
 			    $title_replacements = $this->config->item('title_replacements');
 			    $count = 0;
-			    foreach($title_replacements as $key=>$value){
+			    foreach($title_replacements['prepend'] as $key=>$value){
 			        $count++;
 			        if($count>1){
 			            echo ' , ';
 			        }
-			        echo '"'.$key.'" = "'.$value.'"';
+			        echo '['.$key.'] = ['.$value.']';
 			    }
-			    ?></p>
+			    ?></span></p>
+			    
+			    <p class="extra-info"><span data-toggle="tooltip" title="Statement replacements would replace matched words with block text that contain the rest of the title, usually at the end of the title, to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Statement replacements:
+			    <?php
+			    $count = 0;
+			    foreach($title_replacements['append'] as $key=>$value){
+			        $count++;
+			        if($count>1){
+			            echo ' , ';
+			        }
+			        echo '['.$key.' ...] = ['.$value.' ...]';
+			    }
+			    ?></span></p>
 			</div>
 			
 			
@@ -215,7 +227,7 @@ if(!($cr['c']['c_id']==$bootcamp['c_id'])){
             
             <div class="checkbox">
             	<label>
-            		<input type="checkbox" id="c_is_grandpa" <?= ($cr['c']['c_is_grandpa']=='t' ? ' checked' : '') /*disabled*/ ?> />
+            		<input type="checkbox" id="c_is_grandpa" <?= ($cr['c']['c_is_grandpa']=='t' ? 'disabled checked' : '') ?> />
             		List on Marketplace <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Listing on the marketplace would enhance this bootcamp with the cohorts module which enables student registration, reporting & more."></i>
             	</label>
             </div>

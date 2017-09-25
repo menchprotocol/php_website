@@ -58,7 +58,6 @@ $website = $this->config->item('website');
     				//<li><a href="/pricing">Pricing</a></li>
     				if(isset($udata['u_id'])){
     					echo '<li id="isloggedin"><a href="/marketplace">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
-    					echo '<li><a href="/logout">'.$this->lang->line('logout').' <i class="fa fa-power-off" aria-hidden="true"></i></a></li>';
     				} else {
     					echo '<li><a href="https://mench.typeform.com/to/nh4s2u">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i></a></li>';
     				}

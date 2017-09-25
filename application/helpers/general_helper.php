@@ -20,13 +20,19 @@ function echo_title($title_string){
     
     $return_title = '';
     $return_title .= '<span class="title-main">';
-    foreach($peaces as $p){
+    foreach($peaces as $count=>$p){
         //Look for trigger keywords that would end the main title and start a new sub-section:
-        if(array_key_exists(strtolower($p),$title_key_icons)){
+        if($count==0 && array_key_exists(strtolower($p),$title_key_icons['prepend'])){
+            
+            $return_title .= $title_key_icons['prepend'][strtolower($p)].' ';
+            
+        } elseif($count>0 && array_key_exists(strtolower($p),$title_key_icons['append'])){
+            
             //End previous section:
             $return_title .= '</span>';
             //Start new section:
-            $return_title .= '<span class="title-sub">'.$title_key_icons[strtolower($p)].' ';
+            $return_title .= '<span class="title-sub">'.$title_key_icons['append'][strtolower($p)].' ';
+            
         } else {
             //Not trigger word, Append:
             $return_title .= $p.' ';
@@ -59,12 +65,16 @@ function echo_message($i){
 	echo '</div>';
 }
 
+function echo_time($c_time_estimate){
+    return ( $c_time_estimate>0 ? ' <span class="title-sub" data-toggle="tooltip" title="Estimated time investment to complete is '.$c_time_estimate.' Hour'.($c_time_estimate>1?'s':'').'"><i class="fa fa-clock-o" aria-hidden="true"></i>'.$c_time_estimate.' Hour'.($c_time_estimate>1?'s':'').'</span>' : '' );
+}
+
 function echo_cr($c_id,$relation,$direction){
 	//Fetch current Challenge:
 	if($direction=='outbound'){
-		return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i><span class="pull-right"><i class="fa fa-trash btn-adj" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.$relation['c_objective'].' <span class="srt-'.$direction.'"></span></a>';
+	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i><span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).' <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).' <span class="srt-'.$direction.'"></span></a>';
 	} else {
-		return '<a href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span> '.$relation['c_objective'].'</a>';
+	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).'</span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).'</a>';
 	}
 }
 
@@ -117,7 +127,7 @@ function load_object($object,$obj_limits){
 }
 
 
-function status_bible($object=null,$status=null){
+function status_bible($object=null,$status=null,$micro_status=false){
 	
 	$CI =& get_instance();
 	
@@ -133,9 +143,9 @@ function status_bible($object=null,$status=null){
 	);
 	$o_desc = array( //Insight
 			-2 	=> 'removed because it did meet our community guidelines.',
-			-1 	=> 'deleted by user.',
-			0 	=> 'created and being prepared to be published live. Users cannot see challenges until they are published live.', //Normally Default
-			1	=> 'is live and visible to the Mench community.',
+			-1 	=> 'deleted by operator.',
+			0 	=> 'being drafted to be published live. Students cannot see bootcamp until published live.', //Normally Default
+			1	=> 'visible to all students.',
 			2	=> 'finished and completed.',
 	);
 	
@@ -163,7 +173,18 @@ function status_bible($object=null,$status=null){
 	);
 	
 	
-	//Ok draft bible:
+	//For micro statuses
+	$status_micro_bible = array(
+	    'c' => array( //Challenges
+	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
+	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
+	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
+	        -2	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[-2].': '.$o_desc[-2].'" aria-hidden="true"></i>',
+	    ),
+	);
+	
+	
+	
 	$status_bible = array(
 			
 			/* ******************************
@@ -228,7 +249,12 @@ function status_bible($object=null,$status=null){
 		return $status_bible[$object];
 	} else {
 		//Object & Status Specific
-		return $status_bible[$object][intval($status)];
+	    if($micro_status){
+	        return $status_micro_bible[$object][intval($status)];
+		} else {
+		    return $status_bible[$object][intval($status)];
+		}
+		
 	}
 }
 

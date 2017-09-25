@@ -335,14 +335,14 @@ class Marketplace extends CI_Controller {
 		//Fetch existing challenge:
 		$f_challenge = load_object('c' , array(
 				'c.c_id' => $_POST['pid'],
-				'c.c_status >=' => 0,
+				'c.c_status >=' => -1,
 		));
 		
 		//Create challenge:
 		$is_outbound = ($_POST['direction']=='outbound');
 		$bootcamp = load_object('c' , array(
 				'c.c_id' => $_POST['target_id'],
-				'c.c_status >=' => 0,
+		        'c.c_status >=' => -1,
 		));
 		
 		//TODO Check to make sure not duplicate
@@ -523,7 +523,7 @@ class Marketplace extends CI_Controller {
 		//TODO Save change history
 		
 		//Show result:
-		die('<span style="color:#00CC00;">Deleted</span>');
+		die('<span style="color:#00CC00;">Unlinked</span>');
 	}
 	
 	function i_edit(){

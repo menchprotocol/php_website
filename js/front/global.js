@@ -104,6 +104,12 @@ function save_c(){
 
 
 function new_challenge(c_objective){
+	
+	if(c_objective.length<1){
+		alert('Missing name. Try again.');
+		$('#addnode').focus();
+		return false;
+	}
 	//Fetch needed vars:
 	pid = $('#save_c_id').val();
 	c_id = $('#c_id').val();
@@ -123,6 +129,9 @@ function new_challenge(c_objective){
 		
 		//Resort:
 		load_sortable(direction);
+		
+		//Tooltips:
+		$('[data-toggle="tooltip"]').addClass('').tooltip();
 	});
 }
 
@@ -157,6 +166,9 @@ function link_challenge(target_id){
 		
 		//Resort:
 		load_sortable(direction);
+		
+		//Tooltips:
+		$('[data-toggle="tooltip"]').addClass('').tooltip();
 	});
 }
 
@@ -243,7 +255,7 @@ function cr_delete(cr_id,cr_title){
 	$('#cr_'+cr_id).attr("href", "#");
 	
 	//Double check:
-	var r = confirm("Delete Dependency: "+cr_title+"?");
+	var r = confirm("Unlink "+cr_title+"?");
 	if (r == true) {
 	    //Delete and remove:
 		$.post("/marketplace/cr_delete", {cr_id:cr_id}, function(data) {

@@ -20,19 +20,28 @@
     border-top: 0px solid #ddd;
 }
 
+.fa-chain-broken { color:#999; margin-right:5px; font-size:0.8em; } 
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
+.req_c_is_grandpa { display:none; }
+
 
 .title-main { display:block; padding-bottom:5px; font-size:1.2em; font-weight:bold; }
 .title-sub { display:inline-block; color:#999; margin-right:10px; }
 .title-sub i { width:20px; text-align:center; }
 
-
-.req_c_is_grandpa { display:none; }
 .c_objective { line-height:100%; }
 .c_objective .title-main { display:block; padding:0 !important; font-size:0.45em; line-height:110% !important; }
 .c_objective .title-sub { display:block; font-size:0.3em; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 !important; }
 .c_objective .title-sub i { width:20px; text-align:center; }
 
+.c_objective_body { line-height:100%; }
+.c_objective_body .title-main { display:block; padding:0 !important; font-size:0.8em; line-height:110% !important; }
+.c_objective_body .title-sub { display:block; font-size:0.4em; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 !important; }
+.c_objective_body .title-sub i { width:25px; text-align:center; }
+
+
+
+.list-group-item .title-main { display:inline; }
 
 .submenu { padding:0 0 0 45px; }
 .submenu a { padding-top:7px; padding-bottom:7px; }
@@ -72,7 +81,7 @@ p a, td a { text-decoration:underline; }
 .fa-info-circle{
 	text-decoration-line:none !important;
 }
-#marketplace h1 { font-size:2.8em; margin-bottom:15px; margin-top:10px; line-height: 100%; }
+#marketplace h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height: 100%; }
 .main-plain{ margin-top:100px; }
 .main-plain .container{ padding:30px; }
 .landing-page .page-header { min-height: 100vh; }
@@ -295,7 +304,7 @@ p a, td a { text-decoration:underline; }
 }
 .fa-ellipsis-v {color:#bbb;}
 .fa-sort  {
-	color:#bbb;
+	color:#CDCDCD;
 	cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     cursor: -moz-grab;
@@ -307,6 +316,10 @@ p a, td a { text-decoration:underline; }
 .action-right a{color:#f57171;    margin-top: 15px;    display: inline-block;}
 .action-right span{color:#bbb;    margin-top: 15px;    display: inline-block;}
 
+.list-group-item .fa-circle {
+    font-size: 0.9em;
+    margin-right: 5px;
+}
 
 /* Search CSS */
 .add_node{

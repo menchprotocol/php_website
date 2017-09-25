@@ -60,13 +60,11 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] 		= "front"; // index() Landing page
 $route['terms'] 					= "front/terms";
 $route['contact'] 					= "front/contact";
-$route['how'] 					    = "front/features";
-$route['story'] 					= "front/story";
 $route['faq'] 					    = "front/faq";
 $route['ses'] 						= "front/ses"; //Raw session logs
-$route['login']						= "front/login"; //Menor login
+$route['login']						= "front/login"; //Bootcamp Operator login
 
-$route['bootcamps/(:any)/join'] 	= "front/bootcamp_join/$1";
+$route['bootcamps/(:any)/enroll'] 	= "front/bootcamp_enroll/$1";
 $route['bootcamps/(:any)']	        = "front/bootcamp_load/$1";
 $route['bootcamps'] 				= "front/bootcamps_browse";
 

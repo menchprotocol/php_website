@@ -55,7 +55,7 @@ $website = $this->config->item('website');
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="/user/<?= $udata['u_url_key'] ?>"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
-						<li><a href="/marketplace/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
+						<!-- <li><a href="/marketplace/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li> -->
 						<li id="isloggedin"><a href="/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
 					</ul>
 					<?php /*
@@ -78,73 +78,19 @@ $website = $this->config->item('website');
             	<?php
             	if(isset($bootcamp) && $bootcamp){
             	    
-            	    echo '<h1 class="c_objective" style="margin:15px 10px 10px 15px;">'.echo_title($cr['c']['c_objective']).'</h1>';
+            	    echo '<h1 class="c_objective" style="margin:15px 10px 10px 15px;">'.echo_title($bootcamp['c_objective']).'</h1>';
             	    echo '<input type="hidden" id="c_id" value="'.$this->uri->segment(2, 0).'" />';
             	    
             	    echo '<ul class="nav">';
-            		
-            	    echo '<li'.( '/marketplace/'.$bootcamp['c_id']==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
-            	    
-            	    echo '<li'.( '/marketplace/'.$bootcamp['c_id'].'/users'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/community"><i class="fa fa-users" aria-hidden="true"></i><p>Community</p></a></li>';
-            	    
-            	    
-            	    echo '<li'.( '/marketplace/'.$bootcamp['c_id'].'/activity'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/activity"><i class="fa fa-history" aria-hidden="true"></i><p>Activity Stream</p></a></li>';
-            	    
-            	    echo '<li><a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
-            	    
-            	    ?>
-            	    
-            	    <li>
-            	    <a data-toggle="collapse" href="#cohortList" class="collapsed" aria-expanded="false">
-                            <?= ( isset($run) ? '<i class="fa fa-calendar" aria-hidden="true"></i><p> '.time_format($run['r_start_time'],true).' '.$this->lang->line('r_name') : $this->lang->line('r_icon').'<p> '.$this->lang->line('r_pname') ) ?>
-                                <b class="caret"></b>
-                            </p>
-                        </a>
-                        <div class="collapse" id="cohortList" aria-expanded="false" style="height: 0px;">
-                            <ul class="nav">
-                           		<?php
-                           		//Display Challenges, which MUST be here, if any!
-								if(count($bootcamp['runs'])>0){
-									foreach($bootcamp['runs'] as $r){
-										//if(isset($run) && $run['r_id']==$r['r_id']){continue;}
-										echo '<li class="'.( isset($run) && $run['r_id']==$r['r_id'] ? 'active' : '' ).'"><a href="/marketplace/'.$bootcamp['c_id'].'/cohort/'.$r['r_id'].'"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($r['r_start_time'],true).' '.status_bible('r',$r['r_status']).'</a></li>';
-									}
-								} else {
-									echo '<li class="li-notify" style="padding:0 0 0 36px; color:#f44336;"><i class="fa fa-exclamation-triangle" style="margin-right:16px;" aria-hidden="true"></i> '.$this->lang->line('r_none_message').'</li>';
-								}
-								
-								if(can_modify('c',$bootcamp['c_id'])){
-									echo '<li class="'.( '/marketplace/'.$bootcamp['c_id'].'/new'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$bootcamp['c_id'].'/cohort/new"><i class="fa fa-plus"></i> '.$this->lang->line('new').' '.$this->lang->line('r_name').'</a></li>';
-								}
-								?>
-                            </ul>
-                        </div>
-                    </li>
-                   
-                    
-                    
-                    <?php
-                    //Run Nav:
-					if(isset($run) && $run){
-						//Run:
-						echo '<li class="submenu '.( '/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id']==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'">'.'<p>'.$this->lang->line('r_d_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-						//Run Sub-menu
-						/*
-						echo '<li class="submenu '.( '/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'/activity'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'/activity'.'">'.'<p>'.$this->lang->line('r_a_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-						echo '<li class="submenu '.( '/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'/leaderboard'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'/leaderboard'.'">'.'<p>'.$this->lang->line('r_l_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-						echo '<li class="submenu '.( '/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'/settings'==$_SERVER['REQUEST_URI'] ? 'active' : '' ).'"><a href="/marketplace/'.$bootcamp['c_id'].'/cohort/'.$run['r_id'].'/settings'.'">'.'<p>'.$this->lang->line('r_s_name').' <i class="fa fa-chevron-right" aria-hidden="true"></i></p>'.'</a></li>';
-						*/
-						
-						echo '<li'.( '/marketplace/'.$bootcamp['c_id'].'/users'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/users"><i class="fa fa-users" aria-hidden="true"></i><p>Users</p></a></li>';
-						
-						
-						echo '<li'.( '/marketplace/'.$bootcamp['c_id'].'/activity'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/activity"><i class="fa fa-history" aria-hidden="true"></i><p>Activity</p></a></li>';
-						
-						echo '<li'.( '/marketplace/'.$bootcamp['c_id'].'/settings'==$_SERVER['REQUEST_URI'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
-						
-						
-					}
-					
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/'.$bootcamp['c_id'])>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
+                	    
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/cohorts')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
+                	    
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/community')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/community"><i class="fa fa-users" aria-hidden="true"></i><p>Community</p></a></li>';
+                	    
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/timeline')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/timeline"><i class="material-icons">timeline</i><p>Timeline</p></a></li>';
+                	    
+                	    echo '<li><a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
             		echo '</ul>';
         		}
             	?>

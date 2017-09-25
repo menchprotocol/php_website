@@ -490,9 +490,6 @@ class Db_model extends CI_Model {
 		if(!isset($insert_columns['c_algolia_id'])){
 			$insert_columns['c_algolia_id'] = 0;
 		}
-		if(!isset($insert_columns['c_description'])){
-			$insert_columns['c_description'] = '';
-		}
 		
 		//Lets now add:
 		$this->db->insert('v5_bootcamps', $insert_columns);

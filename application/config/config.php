@@ -17,11 +17,24 @@ $config['website'] = array(
 		'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
 );
 
+
 //What would be auto replaced in the bootcamp titles for a more clear UI. Checkout echo_title() in general_helper
 $config['title_replacements'] = array(
-    'within' => '<i class="fa fa-calendar" aria-hidden="true"></i>',
-    'requiring' => '<i class="fa fa-graduation-cap" aria-hidden="true"></i> Requires',
+    //These words would be exactly replace with their array value:
+    'prepend' => array(
+        'understand' => '<i class="fa fa-lightbulb-o" aria-hidden="true"></i>',
+        'build' => '<i class="fa fa-wrench" aria-hidden="true"></i>',
+        'connect' => '<i class="fa fa-handshake-o" aria-hidden="true"></i> Connect',
+        'test' => '<i class="fa fa-question-circle" aria-hidden="true"></i> Test',
+    ),
+    //These phrases would be replaced with a <span> block, usually at the end of the statements:
+    'append' => array(
+        'within' => '<i class="fa fa-calendar" aria-hidden="true"></i>',
+        'requiring' => '<i class="fa fa-graduation-cap" aria-hidden="true"></i> Requires',
+    ),
 );
+
+
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0','0.25','0.5','1','2','3','5','8','13','21');
 
@@ -31,31 +44,38 @@ $config['aws_credentials'] = [
 		'secret' => 'ZU1paNBAqps2A4XgLjNVAYbdmgcpT5BIwn6DJ/VU',
 ];
 
+$config['p_objects'] = array(
+    1 => array(
+        'o_name' => 'Mench Dashboard',
+        'o_code' => 'Mench Dashboard',
+    ),
+);
+
 //Engagement mediums and corresponding actions that result in a new engagement
 $config['e_mediums'] = array(
-		1 => array(
-				'name' => 'Mench Dashboard',
-				'actions' => array(
-						0 => 'Error',
-						1 => 'Create',
-						2 => 'Read',
-						3 => 'Edit',
-						4 => 'Delete',
-				),
-		),
-		2 => array(
-				'name' => 'Mench Messenger Bot',
-				'actions' => array(
-						0 => 'Error',
-						1 => 'Message Read',
-						2 => 'Message Delivered',
-						3 => 'Postback',
-						4 => 'Referral',
-						5 => 'Optin',
-						6 => 'Inbound Message',
-						7 => 'Outbound Message',
-				),
-		),
+    1 => array(
+        'name' => 'Mench Dashboard',
+        'actions' => array(
+            0 => 'Error',
+            1 => 'Create',
+            2 => 'Read',
+            3 => 'Edit',
+            4 => 'Delete',
+        ),
+    ),
+    2 => array(
+        'name' => 'Mench Messenger Bot',
+        'actions' => array(
+            0 => 'Error',
+            1 => 'Message Read',
+            2 => 'Message Delivered',
+            3 => 'Postback',
+            4 => 'Referral',
+            5 => 'Optin',
+            6 => 'Inbound Message',
+            7 => 'Outbound Message',
+        ),
+    ),
 );
 
 

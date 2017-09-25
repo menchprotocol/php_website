@@ -5,7 +5,7 @@
   RewriteRule ^(.*)$ https://%1/$1 [R=301]
 
 
-  RewriteCond %{HTTP_HOST} ^us\.foundation [NC]
+  RewriteCond %{HTTP_HOST} ^mench\.co [NC]
   RewriteCond %{HTTPS} off
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 

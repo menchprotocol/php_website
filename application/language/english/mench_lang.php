@@ -5,7 +5,7 @@
  * Main Objects
  ****************************** */
 //Object Names & Descriptions:
-$lang['m_name'] = 'Bootcamp Marketplace';
+$lang['m_name'] = 'Marketplace';
 $lang['m_desc'] = 'Bootcamps created and operated by our community of bootcamp operators.';
 
 $lang['c_name'] = 'Bootcamp';
@@ -20,10 +20,10 @@ $lang['r_none_message'] = 'No cohorts found.';
 $lang['r_desc'] = 'Runs represent an operational cycle for a bootcamp. The goal is to optimize each run (content, flow, price) using the user feedback of the previous run. Users can only join runs that are open for registration.';
 
 
-$lang['i_name'] = 'Learning Media';
-$lang['i_pname'] = 'Learning Media';
+$lang['i_name'] = 'Media';
+$lang['i_pname'] = 'Media';
 $lang['i_icon'] = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
-$lang['i_missing'] = 'No insights found.';
+$lang['i_missing'] = 'No media found.';
 $lang['i_desc'] = 'Videos, audio files, images or text snippets shared with students to learn the best principles on how to execute this bootcamp.';
 
 //Run Sub-Menu Names:
@@ -75,7 +75,7 @@ $lang['forgot_pass'] = 'Forgot Password?';
  ****************************** */
 
 $lang['headline_primary'] = 'A Marketplace for Online Bootcamps.';
-$lang['headline_secondary'] = 'Accomplish goals with 2-12 week group challenges lead by experts.';
+$lang['headline_secondary'] = 'Join bootcamps lead by passionate experts who guarantee results, or your money-back.';
 
 
 //How it Works?
