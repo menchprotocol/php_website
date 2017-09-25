@@ -12,6 +12,38 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
+function echo_price($r_usd_price){
+    return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
+}
+function echo_hours($int_time){
+    return '~'.( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : $int_time.' Hour'.($int_time>1?'s':'') );
+}
+
+function echo_video($video_url){
+    //Support youtube and direct video URLs
+    if(substr_count($video_url,'youtube.com/watch?v=')==1){
+        //This is youtube:
+        return '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.one_two_explode('youtube.com/watch?v=','&',$video_url).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+    } else {
+        //This is a direct video URL:
+        return '<video width="100%" controls><source src="'.$video_url.'" type="video/mp4">Your browser does not support the video tag.</video>';
+    }
+}
+
+function echo_pace($c_full,$cohort_id=0){
+    //Fetch the first pace:
+    $r_pace_id = $c_full['c__cohorts'][$cohort_id]['r_pace_id'];
+    //Figure out length:
+    if($c_full['c__cohorts'][$cohort_id]['r_start_time'] && $c_full['c__cohorts'][$cohort_id]['r_end_time']){
+        $time_diff = time_diff($c_full['c__cohorts'][$cohort_id]['r_start_time'],$c_full['c__cohorts'][$cohort_id]['r_end_time']).' ';
+    } else {
+        $time_diff = null;
+    }
+    $CI =& get_instance();
+    $r_pace_options = $CI->config->item('r_pace_options');
+    return '<span '.( $r_pace_options[$r_pace_id]['p_hours'] ? 'data-toggle="tooltip" class="underdot" title="'.$r_pace_options[$r_pace_id]['p_name'].' requires a commitment of '.$r_pace_options[$r_pace_id]['p_hours'].'"' : '' ).'><i class="fa fa-clock-o" aria-hidden="true"></i> '.$time_diff.$r_pace_options[$r_pace_id]['p_name'].' '.( $r_pace_options[$r_pace_id]['p_hours'] ? '' : echo_hours($c_full['c_time_estimate']) );
+}
+
 function echo_title($title_string){
     $peaces = explode(' ',$title_string);
     
@@ -447,23 +479,34 @@ function time_format($t,$date_only=false){
 	
 }
 
-function time_diff($t){
-	$time = time() - strtotime(substr($t,0,19)); // to get the time since that moment
+function time_diff($t,$second_tiome=null){
+    if(!$second_tiome){
+        $second_tiome = time(); //Now
+    } else {
+        $second_tiome = strtotime(substr($second_tiome,0,19));
+    }
+    $time = $second_tiome - strtotime(substr($t,0,19)); // to get the time since that moment
 	$is_future = ( $time<0 );
 	$time = abs($time);
 	$tokens = array (
-			31536000 => 'year',
-			2592000 => 'month',
-			604800 => 'week',
-			86400 => 'day',
-			3600 => 'hr',
-			60 => 'min',
-			1 => 'sec'
+			31536000 => 'Year',
+			2592000 => 'Month',
+			604800 => 'Week',
+			86400 => 'Day',
+			3600 => 'Hr',
+			60 => 'Min',
+			1 => 'Sec'
 	);
 	
 	foreach ($tokens as $unit => $text) {
 		if ($time < $unit) continue;
-		$numberOfUnits = floor($time / $unit);
+		if($unit>=2592000 && fmod(($time / $unit),1)>=0.33 && fmod(($time / $unit),1)<=.67){
+		    $numberOfUnits = number_format(($time / $unit),1);
+		} else {
+		    $numberOfUnits = number_format(($time / $unit),0);
+		}
+		
+		
 		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
 	}
 }

@@ -142,7 +142,7 @@ class Marketplace extends CI_Controller {
 	
 	
 	/* ******************************
-	 * Challenges
+	 * Bootcamps
 	 ****************************** */
 	
 	function challenge_marketplace(){

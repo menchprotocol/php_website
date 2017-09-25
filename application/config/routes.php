@@ -59,6 +59,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['default_controller'] 		= "front"; // index() Landing page
 $route['terms'] 					= "front/terms";
+$route['start'] 					= "front/start_bootcamp";
 $route['contact'] 					= "front/contact";
 $route['faq'] 					    = "front/faq";
 $route['ses'] 						= "front/ses"; //Raw session logs

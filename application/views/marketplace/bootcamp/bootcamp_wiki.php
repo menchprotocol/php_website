@@ -119,7 +119,7 @@ if(!($cr['c']['c_id']==$bootcamp['c_id'])){
 			<div class="form-group label-floating is-empty">
 			    <input type="text" id="save_c_objective" value="<?= $cr['c']['c_objective'] ?>" class="form-control">
 			    <span class="material-input"></span>
-			    <p class="extra-info" style="margin-bottom: 0; padding-bottom: 0;"><span data-toggle="tooltip" title="First word replacements would replace matched words only if placed as the very first word to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> First word replacements:
+			    <p class="extra-info"><span data-toggle="tooltip" title="First word replacements would replace matched words only if placed as the very first word to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> First word replacements:
 			    <?php
 			    $title_replacements = $this->config->item('title_replacements');
 			    $count = 0;
@@ -129,18 +129,6 @@ if(!($cr['c']['c_id']==$bootcamp['c_id'])){
 			            echo ' , ';
 			        }
 			        echo '['.$key.'] = ['.$value.']';
-			    }
-			    ?></span></p>
-			    
-			    <p class="extra-info"><span data-toggle="tooltip" title="Statement replacements would replace matched words with block text that contain the rest of the title, usually at the end of the title, to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Statement replacements:
-			    <?php
-			    $count = 0;
-			    foreach($title_replacements['append'] as $key=>$value){
-			        $count++;
-			        if($count>1){
-			            echo ' , ';
-			        }
-			        echo '['.$key.' ...] = ['.$value.' ...]';
 			    }
 			    ?></span></p>
 			</div>
@@ -188,7 +176,7 @@ if(!($cr['c']['c_id']==$bootcamp['c_id'])){
         		<?php 
         		$times = $this->config->item('c_time_options');
             	foreach($times as $time){
-            	    echo '<option value="'.$time.'" '.( $cr['c']['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.$time.' Hour'.($time>1?'s':'').'</option>';
+            	    echo '<option value="'.$time.'" '.( $cr['c']['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).'</option>';
             	}
             	?>
             </select>

@@ -9,19 +9,15 @@ $udata = $this->session->userdata('user');
 					<h1 class="home-p"><?= $this->lang->line('headline_primary') ?></h1>
                     <h4 class="home-p"><?= $this->lang->line('headline_secondary') ?></h4>
                     
-                    <?php
-    				if(isset($udata['u_id'])){
-    					echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
-    				} else {
-    					echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i></a>';
-    					echo '<p class="sub-button">'.$this->lang->line('or').' <a href="/login">'.$this->lang->line('login').'</a></p>';
-    				}
-    				?>
+                    <a href="/bootcamps" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Browse Bootcamps <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
 				</div>
 				<div class="col-sm-3">&nbsp;</div>
             </div>
         </div>
     </div>
+    
+    <div class="main main-raised">
+	<div class="container body-container">
     
     <script>
     $( document ).ready(function() {

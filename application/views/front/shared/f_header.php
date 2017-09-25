@@ -56,10 +56,11 @@ $website = $this->config->item('website');
     				<?php
     				//<li><a href="/features">Features</a></li>
     				//<li><a href="/pricing">Pricing</a></li>
+    				echo '<li><a href="/bootcamps"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>';
     				if(isset($udata['u_id'])){
     					echo '<li id="isloggedin"><a href="/marketplace">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
     				} else {
-    					echo '<li><a href="https://mench.typeform.com/to/nh4s2u">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i></a></li>';
+    				    echo '<li><a href="/start"><i class="fa fa-plus-square" aria-hidden="true"></i> Start a Bootcamp</a></li>';
     				}
     				?>
         		</ul>
@@ -70,12 +71,10 @@ $website = $this->config->item('website');
 <?php
 //Any landing pages?
 if(isset($landing_page)){
+    
 	//Yes, load the page:
-	$this->load->view($landing_page);
-	
-	//Load landing page containers:
-	echo '<div class="main main-raised">';
-	echo '<div class="container body-container">';
+    $this->load->view($landing_page , ( isset($lp_variables) ? $lp_variables : null ) );
+    
 } else {
 	//Regular content page:
 	echo '<div class="main main-raised main-plain">';

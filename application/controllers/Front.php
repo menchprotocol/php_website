@@ -76,18 +76,53 @@ class Front extends CI_Controller {
 	 ****************************** */
 	
 	function bootcamps_browse(){
-		//The public list of challenges:
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Browse Bootcamps',
-		));
-		$this->load->view('front/bootcamp/browse' , array(
-		    'bootcamps' => $this->Db_model->c_full_fetch(array(
-		        'c.c_status >=' => 1,
-		        'c.c_is_grandpa' => true, //Not sub challenges
-		    )),
-		));
-		$this->load->view('front/shared/f_footer');
+	    //The public list of challenges:
+	    $this->load->view('front/shared/f_header' , array(
+	        'title' => 'Browse Bootcamps',
+	    ));
+	    $this->load->view('front/bootcamp/browse' , array(
+	        'bootcamps' => $this->Db_model->c_full_fetch(array(
+	            'c.c_status >=' => 1,
+	            'c.c_is_grandpa' => true, //Not sub challenges
+	        )),
+	    ));
+	    $this->load->view('front/shared/f_footer');
 	}
+	
+	function bootcamp_load($c_url_key){
+	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	        'c.c_url_key' => $c_url_key,
+	        'c.c_status >=' => 1,
+	        'c.c_is_grandpa' => true, //Not sub challenges
+	    ));
+	    if(!isset($bootcamps[0])){
+	        //Invalid key, redirect back:
+	        redirect_message('/bootcamps','Invalid bootcamp URL.');
+	    }
+	    //Load home page:
+	    $this->load->view('front/shared/f_header' , array(
+	        'landing_page' => 'front/splash/product_splash',
+	        'lp_variables' => array(
+	            'c_image_url' => $bootcamps[0]['c_image_url'],
+	        ),
+	        'title' => $bootcamps[0]['c_objective'],
+	    ));
+	    $this->load->view('front/bootcamp/bootcamp_landing_page' , array(
+	        'c' => $bootcamps[0],
+	    ));
+	    $this->load->view('front/shared/f_footer');
+	}
+	
+	function start_bootcamp(){
+	    //The public list of challenges:
+	    $this->load->view('front/shared/f_header' , array(
+	        'title' => 'Start A Bootcamp',
+	    ));
+	    $this->load->view('front/for_mentors');
+	    $this->load->view('front/shared/f_footer');
+	}
+	
+	
 	
 	function challenge_landing_page($challenge_key){
 		//Challenge Landing Page:

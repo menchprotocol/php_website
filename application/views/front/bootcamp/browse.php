@@ -17,6 +17,9 @@ foreach($bootcamps as $count=>$c){
                 echo '<h4 class="card-title">
 						<a href="/bootcamps/'.$c['c_url_key'].'">'.echo_title($c['c_objective']).'</a>
 					</h4>
+
+
+                    <div class="card-description">'.echo_pace($c).'</div>
 					<div class="card-description">By ';
     
     //Print admins:
@@ -29,11 +32,9 @@ foreach($bootcamps as $count=>$c){
                      echo '</div>
 					<div class="footer">
                         <div class="price">
-							<h4>'.($c['c__cohorts'][0]['r_usd_price']>0?'$'.number_format($c['c__cohorts'][0]['r_usd_price'],0).' <span>USD</span>':'FREE').'</h4>
+							<h4>'.echo_price($c['c__cohorts'][0]['r_usd_price']).'</h4>
 						</div>
-                    	<div class="stats">
-							Starts <b>'.time_format($c['c__cohorts'][0]['r_start_time'],1).'</b>
-                    	</div>
+                    	<div class="stats"><span '.( $c['c__cohorts'][0]['r_end_time'] ? 'data-toggle="tooltip" class="underdot" title="Ends '.time_format($c['c__cohorts'][0]['r_end_time'],1).(strlen($c['c__cohorts'][0]['r_closed_dates'])>0?' excluding '.$c['c__cohorts'][0]['r_closed_dates']:'').'"' : '' ).'>Starts <b>'.time_format($c['c__cohorts'][0]['r_start_time'],1).'</b></span></div>
                     </div>
 
 				</div>
@@ -43,3 +44,13 @@ foreach($bootcamps as $count=>$c){
 }
 ?>
 </div>
+
+</div>
+</div>
+
+
+<div>
+<div class="container">
+
+<?php $this->load->view('front/shared/all_bootcamps'); ?>
+<br /><br />

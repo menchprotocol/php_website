@@ -2,97 +2,32 @@
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
 ?>
-	    <div class="section text-center">
-    		<!-- How? -->
-			<div class="features">
-				<div class="row">
-					<div class="col-md-12">
-						<h2 class="title"><?= $this->lang->line('how_heading') ?></h2>
-					</div>
-				</div>
+<div class="section text-center">				
+	<div class="features">
+		<div class="row">
+			<div class="col-md-12">
 				
-				<div class="row">
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><?= $this->lang->line('how_1_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('how_1_title') ?></h4>
-							<p><?= $this->lang->line('how_1_desc') ?></p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><?= $this->lang->line('how_2_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('how_2_title') ?></h4>
-							<p><?= $this->lang->line('how_2_desc') ?></p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><?= $this->lang->line('how_3_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('how_3_title') ?></h4>
-							<p><?= $this->lang->line('how_3_desc') ?></p>
-						</div>
-					</div>
-				</div>
-			</div>		
-				
-			<div class="features">
-				<div class="row">
-					<div class="col-md-12">
-						<h2 class="title" style="margin-top:70px;"><?= $this->lang->line('why_heading') ?></h2>
-					</div>
-				</div>
+			</div>
+		</div>
 
-				<div class="row">
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><?= $this->lang->line('why_1_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('why_1_title') ?></h4>
-							<p><?= $this->lang->line('why_1_desc') ?></p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><?= $this->lang->line('why_2_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('why_2_title') ?></h4>
-							<p><?= $this->lang->line('why_2_desc') ?></p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="info">
-							<div class="icon icon-primary mtweak"><?= $this->lang->line('why_3_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('why_3_title') ?></h4>
-							<p><?= $this->lang->line('why_3_desc') ?></p>
-						</div>
-					</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="info">
+					<div class="icon icon-primary mtweak"><i class="material-icons">flash_on</i></div>
+					<h2 class="title" style="margin-top:30px;">For Do-ers</h2>
+					<p style="min-height:200px;">Is there a goal that you've been trying to accomplish for a while and it just ain't happening? Have you tried learning from online courses only to realize you're not getting anything done? If so, you're in luck as we're about to whoop your a** to get you the results you need. You're welcome.</p>
+					<a href="/bootcamps" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-search" aria-hidden="true"></i> Browse Bootcamps</a>
 				</div>
 			</div>
-			
-			
-			<!-- Get Started -->
-			<div class="section section-contacts" style="padding-top:20px;">
-				<div class="row">
-					<div class="col-md-8 col-md-offset-2" style="text-align:center;">
-						<?php
-			    		if(isset($udata['u_id'])){
-			    			echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
-			    		} else {
-			    			echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
-			    			echo '<p class="sub-button">'.$this->lang->line('or').' <a href="/login">'.$this->lang->line('login').'</a></p>';
-			    		}
-			    		?>
-					</div>
+			<div class="col-md-6">
+				<div class="info">
+					<div class="icon icon-primary mtweak"><i class="material-icons">blur_on</i></div>
+					<h2 class="title" style="margin-top:30px;">For Mentors</h2>
+					<p style="min-height:200px;">Do you have a gifted talent with tangible results that came from years of trial and error and f***ing up? Do you enjoy helping others unleash their full potential? Well, you're also in luck because we've built an entire platform to help you spread the love (and your skills) to those seeking them.</p>
+					<a href="/start" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-plus-square" aria-hidden="true"></i> Start A Bootcamp</a>
 				</div>
 			</div>
-
-			<?php /*
-        	<div class="section section-contacts">
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2" style="text-align:center;">
-                        <a href="/features" class="btn btn-danger btn-raised btn-lg bg-glow">See Features</a>
-                    </div>
-                </div>
-            </div>
-            */ ?>
-             
-          </div>
+		</div>
+	</div>             
+</div>
+<br />

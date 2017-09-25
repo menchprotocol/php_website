@@ -20,7 +20,10 @@
     border-top: 0px solid #ddd;
 }
 
-
+.panel-title{
+	font-size: 1.2em !important;
+    font-weight: bold !important;
+}
 
 .navbar-form{
 	width:200px;
@@ -82,10 +85,13 @@
 .yellow { color:rgba(254, 221, 22, 0.91) !important; }
 .list-group-item .title-main { display:inline; }
 .card-description img { width:28px; height:28px; margin-top:-2px; border-radius: 50%; }
+.userheader { line-height:110%; margin-bottom:15px; }
+.userheader span { display:block; font-size:0.8em; font-weight:normal; margin:-8px 0 0 59px; }
+.userheader img { width:48px; height:48px; margin:0px 5px -15px 0; border-radius: 50%; }
 .submenu { padding:0 0 0 45px; }
 .submenu a { padding-top:7px; padding-bottom:7px; }
 .submenu p { font-size:0.9em !important;}
-
+.legal-name img { width:20px; margin:-3px 2px 0 0; }
 input { font-size:16px !important; }
 .togglebutton { padding-left:15px; }
 .input-mini { max-width:175px; }
@@ -98,10 +104,11 @@ input { font-size:16px !important; }
 .showdown table td { padding:5px 10px; border:1px solid #ccc; }
 .showdown h3, .showdown h4, .showdown h5, .showdown h6 { margin:10px 0; }
 .mini-label {display:block; margin-bottom:-3px;margin-top:10px;}
-
+.underdot{ border-bottom: 1px dotted #BBB; cursor:help; }
 body { font-size:18px; }
 p a, td a { text-decoration:underline; }
 .mono { font-family:monospace; background-color:#EFEFEF; padding:10px; line-height:180%; border-radius:3px; }
+.panel-body img { max-width:100%; }
 
 .subhead{
 	margin:0;
@@ -121,7 +128,18 @@ p a, td a { text-decoration:underline; }
 	text-decoration-line:none !important;
 }
 #marketplace h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height: 100%; }
-.main-plain{ margin-top:100px; }
+.main-raised{
+	max-width: 1150px;
+	margin: -60px auto 0 !important;
+}
+.product-splash{margin-top:-450px !important;}
+.main-plain{
+    margin: 0px auto 0 !important;
+    padding-top: 50px;
+    border-top-left-radius:0;
+    border-top-right-radius:0;
+}
+
 .main-plain .container{ padding:30px; }
 .landing-page .page-header { min-height: 100vh; }
 .page-header .container { padding-top: 90px; padding-left:40px; }
@@ -152,6 +170,7 @@ p a, td a { text-decoration:underline; }
     padding:0;
 }
 
+.video-player { margin-top:35px; }
 .title { clear:both; diaplay:block; }
 .title p {
 	font-size: 0.8em;
@@ -163,6 +182,20 @@ p a, td a { text-decoration:underline; }
 }
 .title h4 {
 	margin-bottom:5px;
+}
+
+.yt-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+}
+.yt-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .msg-nav {list-style-type: none; margin: 0; padding:5px 0 0 0; }
@@ -210,6 +243,7 @@ p a, td a { text-decoration:underline; }
 }
 
 @media (max-width: 767px){
+	
 	body { font-size:15px; }
 	.main-plain{ margin-top:70px; }
 	.main-plain .container{ padding:15px; }
@@ -249,8 +283,22 @@ p a, td a { text-decoration:underline; }
 	.list-messages>div>div { max-width:100%; }
 	.add-msg { width:100%; }
 	.card .card-content {padding: 5px 15px 15px;}
+	.footer .pull-right, .footer .pull-left{ float:none !important; margin: 0 auto; }
+	
+	.main-raised {
+	    margin-left:5px !important;
+	    margin-right:5px !important;
+	}
 }
 
+@media (max-width:1150px){
+	.main-raised {
+	    margin-left:15px !important;
+	    margin-right:15px !important;
+	}
+}
+
+.info { margin-top: 30px; }
 .morphext > .animated {
     display: inline-block;
 }

@@ -60,8 +60,8 @@ $lang['u_level_3'] = 'Admin';
  * Buttons & Call to Actions
  ****************************** */
 
-$lang['signup'] = 'Signup As Operator';
-$lang['login'] = 'Login as Operator';
+$lang['signup'] = 'Signup As Mentor';
+$lang['login'] = 'Mentor Login';
 $lang['logout'] = 'Logout';
 $lang['my_profile'] = 'My Profile';
 $lang['contact_us'] = 'Contact Us';
@@ -75,7 +75,7 @@ $lang['forgot_pass'] = 'Forgot Password?';
  ****************************** */
 
 $lang['headline_primary'] = 'A Marketplace for Online Bootcamps.';
-$lang['headline_secondary'] = 'Bootcamps are group challenges lead by passionate experts who guarantee you results, or your money-back.';
+$lang['headline_secondary'] = 'Bootcamps are group challenges lead by passionate experts who guarantee you results, or your money-back. Ohhhh yeaaaa...';
 
 
 //How it Works?
@@ -90,7 +90,7 @@ $lang['how_2_desc'] = 'Set a launch date and announce your bootcamp. Make it ope
 $lang['how_2_icon'] = '<i class="material-icons">filter_2</i>';
 
 $lang['how_3_title'] = 'Guide Them To Success';
-$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and email reminders to motivate participants to complete the entire bootcamp. Use our analytics and leaderboard to monitor their progress and help everyone get to the finish line.';
+$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and help everyone get to the finish line.';
 $lang['how_3_icon'] = '<i class="material-icons">filter_3</i>';
 
 
