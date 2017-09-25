@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.195,
+		'version' => 0.196,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -30,7 +30,7 @@ $config['title_replacements'] = array(
     //These phrases would be replaced with a <span> block, usually at the end of the statements:
     'append' => array(
         'within' => '<i class="fa fa-calendar" aria-hidden="true"></i>',
-        'requiring' => '<i class="fa fa-graduation-cap" aria-hidden="true"></i> Requires',
+        'requires' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Requires',
     ),
 );
 

@@ -20,6 +20,41 @@
     border-top: 0px solid #ddd;
 }
 
+
+
+.navbar-form{
+	width:200px;
+    margin: 7px 0 0 5px !important;
+    padding:0 !important;
+}
+.navbar-form>div, .navbar-form>div>input{
+	width:100%;
+	margin:0 !important;
+    padding:0 !important;
+}
+.navbar-form>div>input::placeholder {
+  color:#FFFFFF !important;
+  font-size:16px !important;
+}
+
+
+
+.sidebar-wrapper .navbar-form{
+	width:84% !important;
+    margin:0 auto !important;
+    padding:0 !important;
+}
+.sidebar-wrapper .navbar-form>div, .sidebar-wrapper .navbar-form>div>input{
+	width:100%;
+	margin:0 !important;
+    padding:0 !important;
+}
+.sidebar-wrapper .navbar-form>div>input::placeholder {
+  color:#3C4858 !important;
+  font-size:16px !important;
+}
+
+
 .fa-chain-broken { color:#999; margin-right:5px; font-size:0.8em; } 
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 .req_c_is_grandpa { display:none; }
@@ -365,7 +400,7 @@ p a, td a { text-decoration:underline; }
 }
 
 .login-content {
-	max-width:300px;
+	max-width:380px;
 }
 .login-content .input-group-addon {
 	padding: 0 5px 0 15px;

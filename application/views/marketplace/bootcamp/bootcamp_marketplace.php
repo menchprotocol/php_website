@@ -1,6 +1,5 @@
-<h1><?= $this->lang->line('m_name') ?> <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="<?= $this->lang->line('m_desc') ?>"></i></h1>
-
-
+<h1><?= $this->lang->line('m_name') ?></h1>
+<p><?= $this->lang->line('m_desc') ?></p>
 <?php 
 //Attempt to fetch session variables:
 echo '<div class="list-group" style="margin-top:30px;">';

@@ -7408,6 +7408,12 @@ select.selectpicker {
   border-radius: inherit;
   pointer-events: none;
 }
+
+.card-image .ripple-container {
+	width: 0% !important;
+	height: 0% !important;
+}
+
 .disabled .ripple-container {
   display: none;
 }

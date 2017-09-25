@@ -75,12 +75,17 @@ class Front extends CI_Controller {
 	 * Challenges PUBLIC
 	 ****************************** */
 	
-	function challenge_browse($challenge_key){
+	function bootcamps_browse(){
 		//The public list of challenges:
 		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Challenges',
+				'title' => 'Browse Bootcamps',
 		));
-		//$this->load->view('front/terms');
+		$this->load->view('front/bootcamp/browse' , array(
+		    'bootcamps' => $this->Db_model->c_full_fetch(array(
+		        'c.c_status >=' => 1,
+		        'c.c_is_grandpa' => true, //Not sub challenges
+		    )),
+		));
 		$this->load->view('front/shared/f_footer');
 	}
 	

@@ -330,10 +330,15 @@ class Db_model extends CI_Model {
 		$runs = $q->result_array();
 		
 		foreach($runs as $key=>$value){
-			$runs[$key]['admins'] = $this->Db_model->c_users_fetch(array(
-					'r.r_id' 			=> $value['r_id'],
-					'ru.ru_status >='	=> 2, //2 & above are admins
-					'u.u_status >='		=> 2, //Admin users
+		    $runs[$key]['r__enrolled_students'] = $this->Db_model->c_users_fetch(array(
+		        'ru.ru_r_id'	    => $value['r_id'],
+		        'ru.ru_status <'	=> 2, //TODO Review: Regular students
+		        'u.u_status <'		=> 2, //TODO Review: Regular students
+		    ));
+			$runs[$key]['r__admins'] = $this->Db_model->c_users_fetch(array(
+    			'ru.ru_r_id'	    => $value['r_id'],
+				'ru.ru_status >='	=> 2, //TODO Review: 2 & above are admins
+			    'u.u_status >='		=> 2, //TODO Review: Admin users
 			));
 		}
 		
@@ -344,35 +349,56 @@ class Db_model extends CI_Model {
 	
 	
 	/* ******************************
-	 * Challenge
+	 * Bootcamps
 	 ****************************** */
 	
 	function c_users_fetch($match_columns){
-		$this->db->select('u.*');
-		$this->db->from('v5_cohorts r');
-		$this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id','left');
-		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id','left');
+		$this->db->select('*');
+		$this->db->from('v5_cohort_users ru');
+		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
-		$this->db->group_by('u.u_id');
 		$q = $this->db->get();
 		return $q->result_array();
 	}
 	
 	
+	function c_full_fetch($match_columns){
+	    //Missing anything?
+	    $this->db->select('*');
+	    $this->db->from('v5_bootcamps c');
+	    $this->db->join('v5_categories ct', 'ct.ct_id = c.c_ct_id', 'left');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $this->db->order_by('ct.ct_order','ASC');
+	    $q = $this->db->get();
+	    $bootcamps = $q->result_array();
+	    
+	    //Now append the runs and count users per run:
+	    foreach($bootcamps as $key=>$c){
+	        $bootcamps[$key]['c__cohorts'] = $this->r_fetch(array(
+	            'r.r_c_id' => $c['c_id'],
+	            'r.r_status >=' => 0,
+	        ));
+	    }
+	    
+	    return $bootcamps;
+	}
+	
 	function c_fetch($match_columns){
-		//Missing anything?
-		$this->db->select('c.*, COUNT(DISTINCT r.r_id) AS count_runs, COUNT(DISTINCT ru.ru_u_id) AS count_users');
-		$this->db->from('v5_bootcamps c');
-		$this->db->join('v5_cohorts r', 'r.r_c_id = c.c_id', 'left');
-		$this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
-		$this->db->group_by('c.c_id');
-		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
-		}
-		$q = $this->db->get();
-		return $q->result_array();
+	    //Missing anything?
+	    $this->db->select('c.*, COUNT(DISTINCT r.r_id) AS count_runs, COUNT(DISTINCT ru.ru_u_id) AS count_users');
+	    $this->db->from('v5_bootcamps c');
+	    $this->db->join('v5_cohorts r', 'r.r_c_id = c.c_id', 'left');
+	    $this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
+	    $this->db->group_by('c.c_id');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    return $q->result_array();
 	}
 	
 	function c_plain_fetch($match_columns){

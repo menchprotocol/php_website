@@ -66,7 +66,7 @@ $lang['logout'] = 'Logout';
 $lang['my_profile'] = 'My Profile';
 $lang['contact_us'] = 'Contact Us';
 $lang['terms'] = 'Terms';
-$lang['no_account'] = 'No Account?';
+$lang['no_account'] = 'Want to Run a Bootcamp?';
 $lang['forgot_pass'] = 'Forgot Password?';
 
 
@@ -75,7 +75,7 @@ $lang['forgot_pass'] = 'Forgot Password?';
  ****************************** */
 
 $lang['headline_primary'] = 'A Marketplace for Online Bootcamps.';
-$lang['headline_secondary'] = 'Join bootcamps lead by passionate experts who guarantee results, or your money-back.';
+$lang['headline_secondary'] = 'Bootcamps are group challenges lead by passionate experts who guarantee you results, or your money-back.';
 
 
 //How it Works?

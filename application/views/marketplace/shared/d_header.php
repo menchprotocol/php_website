@@ -56,17 +56,14 @@ $website = $this->config->item('website');
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="/user/<?= $udata['u_url_key'] ?>"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
 						<!-- <li><a href="/marketplace/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li> -->
-						<li id="isloggedin"><a href="/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
+						<li><a href="/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
 					</ul>
 					<?php /*
-					<form class="navbar-form navbar-right" role="search">
+					<form class="navbar-form navbar-left" role="search">
 						<div class="form-group  is-empty">
                         	<input type="text" class="form-control" placeholder="Search">
                         	<span class="material-input"></span>
 						</div>
-						<button type="submit" class="btn btn-white btn-round btn-just-icon">
-							<i class="material-icons">search</i><div class="ripple-container"></div>
-						</button>
                     </form>
                     */ ?>
 				</div>
@@ -92,6 +89,9 @@ $website = $this->config->item('website');
                 	    
                 	    echo '<li><a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
             		echo '</ul>';
+        		} else {
+        		    //This enables the collapsed menu to show:
+        		    echo '<ul class="nav"></ul>';
         		}
             	?>
 	    	</div>
