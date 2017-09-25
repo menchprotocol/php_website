@@ -1,5 +1,5 @@
 <h1>Online Bootcamps</h1>
-<br /><br />
+<br />
 <div class="row">
 <?php 
 foreach($bootcamps as $count=>$c){
@@ -12,24 +12,27 @@ foreach($bootcamps as $count=>$c){
 					<img class="img" src="'.$c['c_image_url'].'">
 				</div>
 
-				<div class="card-content">
-					<h6 class="category text-rose">'.$c['ct_name'].'</h6>
-					<h4 class="card-title">
+				<div class="card-content">';
+                //echo '<h6 class="category text-muted">'.$c['ct_icon'].' '.$c['ct_name'].'</h6>';
+                echo '<h4 class="card-title">
 						<a href="/bootcamps/'.$c['c_url_key'].'">'.echo_title($c['c_objective']).'</a>
 					</h4>
-					<div class="card-description">';
+					<div class="card-description">By ';
     
     //Print admins:
-    foreach($c['c__cohorts'][0]['r__admins'] as $admins){
-        echo '<a href="/users/'.$admins['u_url_key'].'">'.$admins['u_fname'].' '.$admins['u_lname'].'</a>';
+    foreach($c['c__cohorts'][0]['r__admins'] as $count2=>$admins){
+        if($count2>0){
+            echo ' & ';
+        }
+        echo '<img src="'.$admins['u_image_url'].'" /> '.$admins['u_fname'].' '.$admins['u_lname'];
     }
                      echo '</div>
 					<div class="footer">
                         <div class="price">
-							<h4>'.($c['c__cohorts'][0]['r_usd_price']>0?'$'.number_format($c['c__cohorts'][0]['r_usd_price'],0):'FREE').'</h4>
+							<h4>'.($c['c__cohorts'][0]['r_usd_price']>0?'$'.number_format($c['c__cohorts'][0]['r_usd_price'],0).' <span>USD</span>':'FREE').'</h4>
 						</div>
                     	<div class="stats">
-							Starts <b>July 5th</b>
+							Starts <b>'.time_format($c['c__cohorts'][0]['r_start_time'],1).'</b>
                     	</div>
                     </div>
 

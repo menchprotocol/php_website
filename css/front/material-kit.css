@@ -3400,7 +3400,7 @@ h2.title {
   color: #999999;
 }
 .card .card-content {
-  padding: 15px 30px;
+  padding: 5px 30px 15px;
 }
 .card .card-body {
   height: 30%;
@@ -3868,7 +3868,7 @@ h2.title {
   margin-bottom: 0;
 }
 .card-product .footer .stats {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 .card-product .card-title,
 .card-product .category,

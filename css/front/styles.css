@@ -74,10 +74,14 @@
 .c_objective_body .title-sub { display:block; font-size:0.4em; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 !important; }
 .c_objective_body .title-sub i { width:25px; text-align:center; }
 
+.card-title .title-main { display:block; padding:0 !important; font-size:1.2em; line-height:110% !important; margin: 5px 0 10px; }
+.card-title .title-sub { display:block; font-size:0.8em; font-family:Lato; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 10px !important; }
+.card-title .title-sub i { width:20px; text-align:center; }
 
-
+.price>h4>span{ font-size:0.6em; }
+.yellow { color:rgba(254, 221, 22, 0.91) !important; }
 .list-group-item .title-main { display:inline; }
-
+.card-description img { width:28px; height:28px; margin-top:-2px; border-radius: 50%; }
 .submenu { padding:0 0 0 45px; }
 .submenu a { padding-top:7px; padding-bottom:7px; }
 .submenu p { font-size:0.9em !important;}
@@ -244,6 +248,7 @@ p a, td a { text-decoration:underline; }
 	.nav-pills:not(.nav-pills-icons) > li > a { font-size: 0.8em; }
 	.list-messages>div>div { max-width:100%; }
 	.add-msg { width:100%; }
+	.card .card-content {padding: 5px 15px 15px;}
 }
 
 .morphext > .animated {

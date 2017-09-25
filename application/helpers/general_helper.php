@@ -435,6 +435,9 @@ function time_ispast($t){
 }
 
 function time_format($t,$date_only=false){
+    if(!$t){
+        return 'NOW';
+    }
 	$this_year = ( date("Y")==date("Y",strtotime(substr($t,0,19))) );
 	if($date_only){
 		return date(( $this_year ? "M j" : "M j, Y" ),strtotime(substr($t,0,19)));
