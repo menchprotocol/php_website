@@ -14,8 +14,8 @@ $udata = $this->session->userdata('user');
 			<div class="col-md-6">
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">flash_on</i></div>
-					<h2 class="title" style="margin-top:30px;">For Do-ers</h2>
-					<p style="min-height:200px;">Is there a goal that you've been trying to accomplish for a while and it just ain't happening? Have you tried learning from online courses only to realize you're not getting anything done? If so, you're in luck as we're about to whoop your a** to get you the results you need. You're welcome.</p>
+					<h2 class="title" style="margin-top:30px;">For Doers</h2>
+					<p style="min-height:200px;">Are you struggling finding the time and motivation to accomplish your goals? Have you read tons of books or taken a bunch of courses only to be overwhelmed and confused as to how to implement what you've learned? Join one of our bootcamps to take action once and for all!</p>
 					<a href="/bootcamps" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-search" aria-hidden="true"></i> Browse Bootcamps</a>
 				</div>
 			</div>
@@ -23,7 +23,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">blur_on</i></div>
 					<h2 class="title" style="margin-top:30px;">For Mentors</h2>
-					<p style="min-height:200px;">Do you have a gifted talent with tangible results that came from years of trial and error and f***ing up? Do you enjoy helping others unleash their full potential? Well, you're also in luck because we've built an entire platform to help you spread the love (and your skills) to those seeking them.</p>
+					<p style="min-height:200px;">Do you enjoy helping others get unstuck and take action? If you're looking for an innovative way monetize your expertise and help your audience achive their goals then Mench is for you. We'll provide you with all the tools to make it happen. Join Mench and run your own bootcamp today!</p>
 					<a href="/start" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-plus-square" aria-hidden="true"></i> Start A Bootcamp</a>
 				</div>
 			</div>

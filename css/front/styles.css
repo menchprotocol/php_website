@@ -108,7 +108,7 @@ input { font-size:16px !important; }
 body { font-size:18px; }
 p a, td a { text-decoration:underline; }
 .mono { font-family:monospace; background-color:#EFEFEF; padding:10px; line-height:180%; border-radius:3px; }
-.panel-body img { max-width:100%; }
+.panel-body img { max-width:100% !important; }
 
 .subhead{
 	margin:0;

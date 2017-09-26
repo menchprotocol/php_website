@@ -75,7 +75,7 @@ $lang['forgot_pass'] = 'Forgot Password?';
  ****************************** */
 
 $lang['headline_primary'] = 'A Marketplace for Online Bootcamps.';
-$lang['headline_secondary'] = 'Bootcamps are group challenges lead by passionate experts who guarantee you results, or your money-back. Ohhhh yeaaaa...';
+$lang['headline_secondary'] = 'We help ambitious people accomplish their goals much faster by giving them a clear weekly action plan designed by top industry experts.';
 
 
 //How it Works?
