@@ -1,5 +1,6 @@
 <h1>Online Bootcamps</h1>
 <br />
+
 <div class="row">
 <?php 
 foreach($bootcamps as $count=>$c){

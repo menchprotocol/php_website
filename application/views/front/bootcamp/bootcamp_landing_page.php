@@ -1,3 +1,5 @@
+<div class="alert alert-danger" role="alert" style="margin-top:30px; border-radius:3px;"><span style="font-weight:bold;display:block; padding-bottom:7px;">WARNING:</span>We're currently in private Beta, and the following bootcamps are created as a sample set for our customer discovery process. They are not meant for real-world enrollment.</div>
+
 <div class="row">
     <div class="col-md-4 col-sm-4">
        <div class="video-player"><?= echo_video($c['c_video_url']); ?></div>
