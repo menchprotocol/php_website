@@ -11,7 +11,6 @@
             <div class="panel-group" id="accordion">
             
           
-          
           <?php if(strlen($c['c_todo_overview'])>0){ ?>
           <div class="panel panel-border panel-default">
             <div class="panel-heading" role="tab">
@@ -74,7 +73,7 @@
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOutline" aria-controls="collapseOutline">
                     <h4 class="panel-title">
-                    Bootcamp Outline
+                    Syllabus
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>

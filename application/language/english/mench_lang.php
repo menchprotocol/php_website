@@ -24,7 +24,7 @@ $lang['i_name'] = 'Media';
 $lang['i_pname'] = 'Media';
 $lang['i_icon'] = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
 $lang['i_missing'] = 'No media found.';
-$lang['i_desc'] = 'Videos, audio files, images or text snippets shared with students to learn the best principles on how to execute this bootcamp.';
+$lang['i_desc'] = 'Videos, audio files, images or text snippets that communicates best principles for execution.';
 
 //Run Sub-Menu Names:
 $lang['r_s_name'] = 'Settings';
@@ -37,11 +37,11 @@ $lang['r_l_name'] = 'Leaderboard';
 $lang['r_l_desc'] = 'The Run leaderboard ranks students based on their performance for deliverying each bootcamp. It helps bootcamp operators detect students who might need extra help.';
 $lang['r_l_none'] = 'No students registered for this bootcamp run yet.';
 
-$lang['cr_name'] = 'Bootcamp Wiki';
-$lang['cr_pname'] = 'Bootcamps Wiki';
-$lang['cr_missing'] = 'No links to other bootcamps found.';
-$lang['cr_icon'] = '<i class="fa fa-graduation-cap" aria-hidden="true"></i>';
-$lang['cr_desc'] = 'Bootcamp Wiki is our open-source content library to rapidly build/iterate your bootcamp\'s content by referencing other bootcamps that contribute to this bootcamp\'s primary outcome.';
+$lang['cr_name'] = 'Content Library';
+$lang['cr_pname'] = 'Content Library';
+$lang['cr_missing'] = 'No content found.';
+$lang['cr_icon'] = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
+$lang['cr_desc'] = 'Content Library is where you create, edit and organize your bootcamp\'s content into weekly sprints and sprint objectives.';
 $lang['u_name'] = 'User';
 $lang['u_pname'] = 'Users';
 $lang['ru_name'] = 'Run User';
@@ -63,7 +63,7 @@ $lang['u_level_3'] = 'Admin';
 $lang['signup'] = 'Signup As Mentor';
 $lang['login'] = 'Mentor Login';
 $lang['logout'] = 'Logout';
-$lang['my_profile'] = 'My Profile';
+$lang['my_profile'] = 'My Account';
 $lang['contact_us'] = 'Contact Us';
 $lang['terms'] = 'Terms';
 $lang['no_account'] = 'Want to Run a Bootcamp?';

@@ -81,19 +81,18 @@ $route['guides/showdown_markup'] 					= "marketplace/showdown_markup";
 //Users & Authentication:
 $route['login_process'] 							= "marketplace/login_process";
 $route['logout'] 									= "marketplace/logout";
-$route['user/(:any)/edit'] 							= "marketplace/user_edit/$1"; //Admin Only
-$route['user/(:any)'] 								= "marketplace/user_view/$1"; //PUBLIC & HYBRID
-
-//Cohorts:
-$route['marketplace/(:num)/cohort/(:num)'] 			    = "marketplace/cohort_dashboard/$1/$2";
-$route['marketplace/(:num)/cohort/(:num)/leaderboard']	= "marketplace/cohort_leaderboard/$1/$2";
-$route['marketplace/(:num)/cohort/(:num)/activity'] 	= "marketplace/cohort_activity/$1/$2";
-$route['marketplace/(:num)/cohort/(:num)/settings'] 	= "marketplace/cohort_settings/$1/$2";
-$route['marketplace/(:num)/cohort/new'] 				= "marketplace/cohort_settings/$1";
+$route['account'] 								    = "marketplace/account_manage";
 
 //Bootcamps:
-$route['marketplace/(:num)/(:num)'] 				    = "marketplace/bootcamp_wiki/$1/$2";
-$route['marketplace/(:num)'] 				            = "marketplace/bootcamp_wiki/$1";
-$route['marketplace/new'] 					            = "marketplace/challenge_create";
-$route['marketplace'] 								    = "marketplace/challenge_marketplace";
+$route['marketplace/(:num)'] 			            = "marketplace/bootcamp_dashboard/$1";
+$route['marketplace/(:num)/content/(:num)'] 		= "marketplace/content_lib/$1/$2";
+$route['marketplace/(:num)/content'] 				= "marketplace/content_lib/$1";
+$route['marketplace/(:num)/cohorts/(:num)'] 		= "marketplace/cohort_view/$1/$2";
+$route['marketplace/(:num)/cohorts/new'] 			= "marketplace/cohort_create/$1";
+$route['marketplace/(:num)/cohorts'] 				= "marketplace/cohorts_browse/$1";
+$route['marketplace/(:num)/community'] 				= "marketplace/community_browse/$1";
+$route['marketplace/(:num)/timeline'] 				= "marketplace/timeline_view/$1";
+$route['marketplace/new'] 					        = "marketplace/bootcamp_create";
+$route['marketplace'] 								= "marketplace/bootcamps_browse";
+
 

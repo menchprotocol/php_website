@@ -98,46 +98,123 @@ class Marketplace extends CI_Controller {
 		header( 'Location: /' );
 	}
 	
-	function user_view($u_url_key){
+	function account_manage(){
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
-		//Fetch user:
-		$view_data['user'] = load_object('u' , array(
-				'u.u_url_key' => $u_url_key,
-		));
 		//Append title:
-		$view_data['title'] = $view_data['user']['u_fname'].' '.$view_data['user']['u_lname'];
+		$view_data['title'] = 'Manage My Account';
 		
 		//This lists all users based on the permissions of the user
 		$this->load->view('marketplace/shared/d_header', $view_data);
-		$this->load->view('marketplace/user/user_view', $view_data);
+		$this->load->view('marketplace/account_manage');
 		$this->load->view('marketplace/shared/d_footer');
 	}
 	
-	
-	function user_edit($u_url_key){
-		//Authenticate level 2 or higher, redirect if not:
-		$udata = auth(2,1);
-		
-		//Fetch user:
-		$view_data['user'] = load_object('u' , array(
-				'u.u_url_key' => $u_url_key,
-				'u.u_status >=' => 1,
-		));
-		
-		//Can this user edit?
-		if(!can_modify('u',$view_data['user']['u_id'])){
-			redirect_message('/user/'.$u_url_key,'<div class="alert alert-danger" role="alert">You do not have the permission to edit this profile.</div>');
-		}
-		
-		//Append title:
-		$view_data['title'] = 'Edit Profile | '.$view_data['user']['u_fname'].' '.$view_data['user']['u_lname'];
-		
-		//This lists all users based on the permissions of the user
-		$this->load->view('marketplace/shared/d_header', $view_data);
-		$this->load->view('marketplace/user/user_edit', $view_data);
-		$this->load->view('marketplace/shared/d_footer');
+	function account_update_process(){
+	    
+	    //Auth user and check required variables:
+	    $udata = auth(2);
+	    $countries_all = $this->config->item('countries_all');
+	    $timezones = $this->config->item('timezones');
+	    
+	    if(!$udata){
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the page and try again.</span>');
+	    } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
+	    } elseif(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
+	    } elseif(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
+	    } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+	        die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
+	    } elseif(!isset($_POST['u_image_url']) || !filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://' || !url_exists($_POST['u_image_url'])){
+	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
+	    } elseif(!isset($_POST['u_gender']) || !in_array($_POST['u_gender'],array('m','f'))){
+	        die('<span style="color:#FF0000;">Error: Missing gender. Try again.</span>');
+	    } elseif(!isset($_POST['u_country_code']) || !array_key_exists($_POST['u_country_code'], $countries_all)){
+	        die('<span style="color:#FF0000;">Error: Missing country. Try again.</span>');
+	    } elseif(!isset($_POST['u_timezone']) || !array_key_exists($_POST['u_timezone'], $timezones)){
+	        die('<span style="color:#FF0000;">Error: Missing timezone.</span>');
+	    } elseif(!isset($_POST['u_language']) || count($_POST['u_language'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing language. Try again.</span>');
+	    }
+	    
+	    //validate current password:
+	    $u_current = $this->Db_model->users_fetch(array(
+	        'u_id' => intval($_POST['u_id']),
+	    ));
+	    
+	    $u_update = array(
+	        'u_fname' => trim($_POST['u_fname']),
+	        'u_lname' => trim($_POST['u_lname']),
+	        'u_email' => $_POST['u_email'],
+	        'u_image_url' => $_POST['u_image_url'],
+	        'u_gender' => $_POST['u_gender'],
+	        'u_country_code' => $_POST['u_country_code'],
+	        'u_current_city' => $_POST['u_current_city'],
+	        'u_timezone' => $_POST['u_timezone'],
+	        'u_language' => join(',',$_POST['u_language']),
+	        'u_bio' => trim($_POST['u_bio']),
+	        'u_tangible_experience' => trim($_POST['u_tangible_experience']),
+	    );
+	    
+	    //Some more checks:
+	    if(!(count($u_current)==1)){
+	        die('<span style="color:#FF0000;">Error: Invalid user ID.</span>');
+	    } elseif(strlen($_POST['u_password_new'])>0 || strlen($_POST['u_password_current'])>0){
+	        //Password update attempt, lets check:
+	        if(strlen($_POST['u_password_new'])<=0){
+	            die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
+	        } elseif(strlen($_POST['u_password_current'])<=0){
+	            die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
+	        } elseif(!(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
+	            die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
+	        } elseif($_POST['u_password_new']==$_POST['u_password_current']){
+	            die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
+	        } elseif(strlen($_POST['u_password_new'])<6){
+	            die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
+	        } else {
+	            //Set password for updating:
+	            $u_update['u_password'] = md5($_POST['u_password_new']);
+	            //Reset both fields:
+	            echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
+	        }
+	    }
+	    $warning = NULL;
+	    
+	    //Check social links:
+	    if(strlen($_POST['u_website_url'])>0 && $_POST['u_website_url']!==$u_current[0]['u_website_url']){
+	        //Validate it:
+	        if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL) && url_exists($_POST['u_website_url'])){
+	            $u_update['u_website_url'] = $_POST['u_website_url'];
+	            echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
+	        } else {
+	            $warning .= 'Invalid website URL. ';
+	        }
+	    }
+	    
+	    $u_social_account = $this->config->item('u_social_account');
+	    foreach($u_social_account as $sa_key=>$sa_value){
+	        if(strlen($_POST[$sa_key])>0 && $_POST[$sa_key]!==$u_current[0][$sa_key]){
+	            //User has attempted to update it, lets validate it:
+	            $full_url = 'https://'.$sa_value['sa_prefix'].trim($_POST[$sa_key]);
+	            if(url_exists($full_url)){
+	                $u_update[$sa_key] = trim($_POST[$sa_key]);
+	            } else {
+	                $warning .= 'Invalid '.$sa_value['sa_name'].' username. ';
+	            }
+	        }
+	    }
+	    
+	    //Now update the DB:
+	    $this->Db_model->user_update(intval($_POST['u_id']) , $u_update);
+	    
+	    //TODO Save change history
+	    //TODO update algolia?
+	    
+	    //Show result:
+	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span style="color:#00CC00;">Saved</span>');
 	}
 	
 	
@@ -145,7 +222,7 @@ class Marketplace extends CI_Controller {
 	 * Bootcamps
 	 ****************************** */
 	
-	function challenge_marketplace(){
+	function bootcamps_browse(){
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
@@ -153,7 +230,7 @@ class Marketplace extends CI_Controller {
 		$this->load->view('marketplace/shared/d_header' , array(
 				'title' => 'Challenge Marketplace',
 		));
-		$this->load->view('marketplace/bootcamp/bootcamp_marketplace' , array(
+		$this->load->view('marketplace/bootcamp_marketplace' , array(
 				'challenges' => $this->Db_model->c_fetch(array(
 				    'c.c_status >=' => 0,
 					'c.c_is_grandpa' => true, //Not sub challenges
@@ -163,7 +240,7 @@ class Marketplace extends CI_Controller {
 	}
 	
 	
-	function bootcamp_wiki($c_id,$pid=null){
+	function content_lib($c_id,$pid=null){
 		
 		$udata = auth(2,1);
 		$bootcamp = load_object('c' , array(
@@ -204,7 +281,7 @@ class Marketplace extends CI_Controller {
 		
 		//Show View
 		$this->load->view('marketplace/shared/d_header' , $view_data);
-		$this->load->view('marketplace/bootcamp/bootcamp_wiki' , $view_data);
+		$this->load->view('marketplace/content_lib' , $view_data);
 		$this->load->view('marketplace/shared/d_footer');
 	}
 	
@@ -249,7 +326,7 @@ class Marketplace extends CI_Controller {
 	}
 	
 	
-	function challenge_create(){
+	function intent_create(){
 		
 		$udata = auth(2);
 		
@@ -312,11 +389,11 @@ class Marketplace extends CI_Controller {
 		$this->Db_model->sync_algolia($bootcamp['c_id']);
 		
 		//Return result:
-		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction']);
+		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction'],$_POST['next_level']);
 	}
 	
 	
-	function challenge_link(){
+	function intent_link(){
 		
 		$udata = auth(2);
 		
@@ -378,7 +455,7 @@ class Marketplace extends CI_Controller {
 		}
 		
 		//Return result:
-		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction']);
+		echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction'],$_POST['next_level']);
 	}
 	
 	function delete_c($grandpa_id,$c_id){
@@ -551,7 +628,7 @@ class Marketplace extends CI_Controller {
 		die('<span style="color:#00CC00;">Saved</span>');
 	}
 	
-	function bootcamp_edit_process(){
+	function intent_edit_process(){
 	    
 	    //Auth user and check required variables:
 		$udata = auth(2);
@@ -589,7 +666,7 @@ class Marketplace extends CI_Controller {
 		}
 		
 		//Now update the DB:
-		$this->Db_model->challenge_update(intval($_POST['save_c_id']) , array(
+		$this->Db_model->c_update(intval($_POST['save_c_id']) , array(
 			'c_creator_id' => $udata['u_id'],
 			'c_timestamp' => date("Y-m-d H:i:s"),
 		    'c_objective' => trim($_POST['save_c_objective']),

@@ -54,7 +54,7 @@ $website = $this->config->item('website');
 				
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/user/<?= $udata['u_url_key'] ?>"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
+						<li><a href="/account"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
 						<!-- <li><a href="/marketplace/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li> -->
 						<li><a href="/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
 					</ul>
@@ -79,8 +79,10 @@ $website = $this->config->item('website');
             	    echo '<input type="hidden" id="c_id" value="'.$this->uri->segment(2, 0).'" />';
             	    
             	    echo '<ul class="nav">';
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/'.$bootcamp['c_id'])>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
-                	    
+            	    echo '<li'.( $_SERVER['REQUEST_URI'] == '/marketplace/'.$bootcamp['c_id'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
+            	    
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/'.$bootcamp['c_id'].'/content')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/content" data-toggle="tooltip" title="'.$this->lang->line('cr_desc').'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
+            	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/cohorts')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/community')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/community"><i class="fa fa-users" aria-hidden="true"></i><p>Community</p></a></li>';

@@ -440,11 +440,6 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function challenge_update($c_id,$update_columns){
-		$this->db->where('c_id', $c_id);
-		$this->db->update('v5_bootcamps', $update_columns);
-		return $this->db->affected_rows();
-	}
 	
 	function cr_update($cr_id,$update_columns,$column='cr_id'){
 		$this->db->where($column, $cr_id);

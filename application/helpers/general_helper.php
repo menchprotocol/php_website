@@ -101,12 +101,22 @@ function echo_time($c_time_estimate){
     return ( $c_time_estimate>0 ? ' <span class="title-sub" data-toggle="tooltip" title="Estimated time investment to complete is '.$c_time_estimate.' Hour'.($c_time_estimate>1?'s':'').'"><i class="fa fa-clock-o" aria-hidden="true"></i>'.$c_time_estimate.' Hour'.($c_time_estimate>1?'s':'').'</span>' : '' );
 }
 
-function echo_cr($c_id,$relation,$direction){
+function echo_level($level, $rank){
+    if($level==2){
+        return '<span class="inline-level">Week #'.$rank.'</span>';
+    } elseif($level==3){
+        return '<span class="inline-level">Objective #'.$rank.'</span>';
+    } else {
+        return false;
+    }
+}
+
+function echo_cr($c_id,$relation,$direction,$level=0){
 	//Fetch current Challenge:
 	if($direction=='outbound'){
-	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i><span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).' <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).' <span class="srt-'.$direction.'"></span></a>';
+	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/content/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>'.echo_level($level, $relation['cr_outbound_rank']).'<span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).' <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).' <span class="srt-'.$direction.'"></span></a>';
 	} else {
-	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).'</span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).'</a>';
+	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/content/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).'</span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).'</a>';
 	}
 }
 
@@ -176,7 +186,7 @@ function status_bible($object=null,$status=null,$micro_status=false){
 	$o_desc = array( //Insight
 			-2 	=> 'removed because it did meet our community guidelines.',
 			-1 	=> 'deleted by operator.',
-			0 	=> 'being drafted to be published live. Students cannot see bootcamp until published live.', //Normally Default
+			0 	=> 'being drafted to be published live. Students cannot access until published live.', //Normally Default
 			1	=> 'visible to all students.',
 			2	=> 'finished and completed.',
 	);
@@ -208,10 +218,10 @@ function status_bible($object=null,$status=null,$micro_status=false){
 	//For micro statuses
 	$status_micro_bible = array(
 	    'c' => array( //Challenges
-	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
-	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
-	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
-	        -2	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="'.$CI->lang->line('c_name').' Status is '.$o_name[-2].': '.$o_desc[-2].'" aria-hidden="true"></i>',
+	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
+	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
+	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
+	        -2	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[-2].': '.$o_desc[-2].'" aria-hidden="true"></i>',
 	    ),
 	);
 	
@@ -223,10 +233,10 @@ function status_bible($object=null,$status=null,$micro_status=false){
 			 * OBJECTS
 			 ****************************** */
 			'c' => array( //Challenges
-				0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[0].'">'.$o_name[0].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-				1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[1].'">'.$o_name[1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-1].'">'.$o_name[-1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('c_name').' '.$o_desc[-2].'">'.$o_name[-2].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+				0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$o_desc[0].'">'.$o_name[0].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+				1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$o_desc[1].'">'.$o_name[1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-1].'">'.$o_name[-1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-2].'">'.$o_name[-2].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'r' => array( //Runs
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
@@ -344,6 +354,11 @@ function can_modify($object,$object_id){
 	
 	//No access:
 	return false;
+}
+
+function url_exists($url){
+    $file_headers = @get_headers($url);
+    return !(!$file_headers || substr_count($file_headers[0],'404')>0);
 }
 
 function redirect_message($url,$message){

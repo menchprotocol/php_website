@@ -60,6 +60,93 @@ function adj(){
     }
 }
 
+function trigger_link_watch(link_id,prepend_url){
+	
+	if($( "#"+link_id ).val().length>0){
+		$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fa fa-external-link" aria-hidden="true"></i></a>');
+    } else {
+    	$( "#ph_"+link_id ).html('');
+    }
+	
+	$( "#"+link_id ).bind('change keyup', function () {
+		if($( "#"+link_id ).val().length>0){
+			$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fa fa-external-link" aria-hidden="true"></i></a>');
+        } else {
+        	$( "#ph_"+link_id ).html('');
+        }
+	});
+}
+
+function update_account(){
+	
+	if(!$('#u_fname').val().length){
+		alert('Missing first name.');
+		return false;
+	} else if(!$('#u_lname').val().length){
+		alert('Missing last name.');
+		return false;
+	} else if(!$('#u_email').val().length){
+		alert('Missing email.');
+		return false;
+	} else if(!$('#u_image_url').val().length){
+		alert('Missing profile picture url.');
+		return false;
+	} else if(!$('#u_gender').val().length){
+		alert('Missing gender.');
+		return false;
+	} else if(!$('#u_country_code').val().length){
+		alert('Missing country.');
+		return false;
+	} else if(!$('#u_timezone').val().length){
+		alert('Missing time zone.');
+		return false;
+	} else if(!$('#u_language').val().length){
+		alert('Missing language.');
+		return false;
+	}
+	
+	//Show spinner:
+	$('.update_u_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
+	
+	$.post("/marketplace/account_update_process", {
+		
+		u_id:$('#u_id').val(),
+		u_fname:$('#u_fname').val(),
+		u_lname:$('#u_lname').val(),
+		u_email:$('#u_email').val(),
+		u_image_url:$('#u_image_url').val(),
+		u_gender:$('#u_gender').val(),
+		u_country_code:$('#u_country_code').val(),
+		u_current_city:$('#u_current_city').val(),
+		u_timezone:$('#u_timezone').val(),
+		u_language:$('#u_language').val(),
+		u_bio:$('#u_bio').val(),
+		u_tangible_experience:$('#u_tangible_experience').val(),
+		
+		u_password_current:$('#u_password_current').val(),
+		u_password_new:$('#u_password_new').val(),
+		
+		u_website_url:$('#u_website_url').val(),
+		u_linkedin_username:$('#u_linkedin_username').val(),
+		u_github_username:$('#u_github_username').val(),
+		u_twitter_username:$('#u_twitter_username').val(),
+		u_youtube_username:$('#u_youtube_username').val(),
+		u_fb_username:$('#u_fb_username').val(),
+		u_instagram_username:$('#u_instagram_username').val(),
+		u_quora_username:$('#u_quora_username').val(),
+		u_stackoverflow_username:$('#u_stackoverflow_username').val(),
+		
+	} , function(data) {
+		//Update UI to confirm with user:
+		$('.update_u_results').html(data).hide().fadeIn();
+		
+		//Disapper in a while:
+		setTimeout(function() {
+			$('.update_u_results').fadeOut();
+	    }, 15000);
+    });
+}
+
 function save_c(){
 	
 	var is_on_marketplace = document.getElementById('c_is_grandpa').checked;
@@ -79,7 +166,7 @@ function save_c(){
 	//Show spinner:
 	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
-	$.post("/marketplace/bootcamp_edit_process", {
+	$.post("/marketplace/intent_edit_process", {
 		save_c_id:$('#save_c_id').val(),
 		save_c_objective:$('#save_c_objective').val(),
 		save_c_url_key:$('#save_c_url_key').val(),
@@ -98,7 +185,7 @@ function save_c(){
 		//Disapper in a while:
 		setTimeout(function() {
 			$('#save_c_results').fadeOut();
-	    }, 5000);
+	    }, 15000);
     });
 }
 
@@ -114,6 +201,7 @@ function new_challenge(c_objective){
 	pid = $('#save_c_id').val();
 	c_id = $('#c_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
+	var next_level = $( "#next_level" ).val();
 	
 	//Set processing status:
     $( "#list-"+direction ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
@@ -122,7 +210,7 @@ function new_challenge(c_objective){
 	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/challenge_create", {c_id:c_id, pid:pid, c_objective:c_objective, direction:direction}, function(data) {
+	$.post("/marketplace/intent_create", {c_id:c_id, pid:pid, c_objective:c_objective, direction:direction, next_level:next_level}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#list-"+direction ).append(data);
@@ -151,6 +239,7 @@ function link_challenge(target_id){
 	pid = $('#save_c_id').val();
 	c_id = $('#c_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
+	var next_level = $( "#next_level" ).val();
 	
 	//Set processing status:
     $( "#list-"+direction ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
@@ -159,7 +248,7 @@ function link_challenge(target_id){
 	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/challenge_link", {c_id:c_id, pid:pid, target_id:target_id, direction:direction}, function(data) {
+	$.post("/marketplace/intent_link", {c_id:c_id, pid:pid, target_id:target_id, direction:direction, next_level:next_level}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#list-"+direction ).append(data);
@@ -206,6 +295,36 @@ function load_message_sorting(){
 }
 
 
+function update_sort(direction){
+	//Set processing status:
+    $( "#list-"+direction+" .srt-"+direction ).html(' <img src="/img/loader.gif" />');
+  
+    //Fetch new sort:
+    var new_sort = [];
+	var sort_rank = 0;
+	$( "#list-"+direction+">a" ).each(function() {
+		sort_rank++;
+		var cr_id = $( this ).attr('data-link-id');
+		new_sort[sort_rank] = cr_id;
+		
+		//Update sort handler:
+		var current_handler = $( "#cr_"+cr_id+" .inline-level" ).text();
+		var handler_parts = current_handler.split("#");
+		$( "#cr_"+cr_id+" .inline-level" ).text(handler_parts[0]+'#'+sort_rank);
+	});
+	
+	//Update backend:
+	$.post("/marketplace/update_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
+		//Update UI to confirm with user:
+		$( "#list-"+direction+" .srt-"+direction ).html(data);
+		
+		//Disapper in a while:
+		setTimeout(function() {
+	        $("#list-"+direction+" .srt-"+direction+">span").fadeOut();
+	    }, 3000);
+	});
+}
+
 function load_sortable(direction){
 	if(direction=='inbound'){return false;}
 	var thelist = document.getElementById("list-"+direction);
@@ -214,27 +333,7 @@ function load_sortable(direction){
 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
 		  onUpdate: function (evt/**Event*/){
-			    //Set processing status:
-			    $( "#list-"+direction+" .srt-"+direction ).html(' <img src="/img/loader.gif" />');
-			  
-			    //Fetch new sort:
-			    var new_sort = [];
-				var sort_rank = 0;
-				$( "#list-"+direction+">a" ).each(function() {
-					sort_rank++;
-					new_sort[sort_rank] = $( this ).attr('data-link-id');
-				});
-				
-				//Update backend:
-				$.post("/marketplace/update_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
-					//Update UI to confirm with user:
-					$( "#list-"+direction+" .srt-"+direction ).html(data);
-					
-					//Disapper in a while:
-					setTimeout(function() {
-				        $("#list-"+direction+" .srt-"+direction+">span").fadeOut();
-				    }, 3000);
-				});
+			  update_sort(direction);
 		  }
 	});
 }
@@ -260,13 +359,15 @@ function cr_delete(cr_id,cr_title){
 	    //Delete and remove:
 		$.post("/marketplace/cr_delete", {cr_id:cr_id}, function(data) {
 			//Update UI to confirm with user:
+			$( "#cr_"+cr_id ).html(data);			
 			
-			$( "#cr_"+cr_id ).html(data);
-			
-			//Disapper in a while:
 			setTimeout(function() {
+				//Disapper:
 				$( "#cr_"+cr_id ).fadeOut().remove();
-		    }, 3000);
+				
+				//Update sort:
+				update_sort('outbound');
+		    }, 1000);
 		});
 	} else {
 		//Put link back in:
