@@ -14,7 +14,7 @@
           <?php if(strlen($c['c_todo_overview'])>0){ ?>
           <div class="panel panel-border panel-default" name="collapseOverview">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseOverview')" href="#collapseOverview" aria-expanded="true" aria-controls="collapseOverview">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="true" aria-controls="collapseOverview">
                     <h4 class="panel-title">
                     Overview
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -32,7 +32,7 @@
           
           <div class="panel panel-border panel-default" name="collapsePrerequisites">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapsePrerequisites')" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                     <h4 class="panel-title">
                     Prerequisites
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -49,7 +49,7 @@
           
           <div class="panel panel-border panel-default" name="collapseMentors">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseMentors')" href="#collapseMentors" aria-controls="collapseMentors">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMentors" aria-controls="collapseMentors">
                     <h4 class="panel-title">
                     Mentors
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -101,7 +101,7 @@
           
           <div class="panel panel-border panel-default" name="collapseOutline">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseOutline')" href="#collapseOutline" aria-controls="collapseOutline">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOutline" aria-controls="collapseOutline">
                     <h4 class="panel-title">
                     Bootcamp Outline
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -118,7 +118,7 @@
           
           <div class="panel panel-border panel-default" name="collapseTimetable">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseTimetable')" href="#collapseTimetable" aria-controls="collapseTimetable">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTimetable" aria-controls="collapseTimetable">
                     <h4 class="panel-title">
                     Tuition & Dates
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -139,7 +139,7 @@
           
           <div class="panel panel-border panel-default" name="collapseFAQ">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFAQ" onclick="move('collapseFAQ')" aria-controls="collapseFAQ">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFAQ" aria-controls="collapseFAQ">
                     <h4 class="panel-title">
                     FAQ
                     <i class="material-icons">keyboard_arrow_down</i>

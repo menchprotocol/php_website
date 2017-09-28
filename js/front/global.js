@@ -508,14 +508,6 @@ function msg_save_edit(i_id){
 	});
 }
 
-function move(element){
-	setTimeout(function() {
-		$('html,body').animate({
-			scrollTop: $('[name=' + element +']').offset().top - 40
-		}, 200);
-    }, 500);
-}
-
 $(document).ready(function() {
 	
 	//Bootcamp Wiki section:
@@ -524,8 +516,15 @@ $(document).ready(function() {
         	$('.req_c_is_grandpa').fadeIn();
         } else {
         	$('.req_c_is_grandpa').fadeOut();
-        }        
+        }
     });
+	
+	//Adjust #accordion after open/close to proper view point:
+	$('#accordion').on('shown.bs.collapse', function (e) {
+		$('html,body').animate({
+			scrollTop: $('[name=' + e.target.id +']').offset().top - 40
+		}, 150);
+	});
 	
 	
 	$('#i_message').keydown(function (e) {
