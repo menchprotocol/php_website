@@ -1,10 +1,10 @@
 <?php
 $uses = $this->session->userdata('user');
-$ufetch = $this->Db_model->users_fetch(array(
+$ufetch = $this->Db_model->u_fetch(array(
     'u_id' => $uses['u_id'],
 ));
 if(!(count($ufetch)==1)){
-    redirect_message('/marketplace','Session expired.');
+    redirect_message('/console','Session expired.');
 }
 $udata = $ufetch[0];
 ?>
@@ -120,14 +120,14 @@ $udata = $ufetch[0];
         	<span class="material-input"></span>
         </div>
         
-        <div class="title"><h4>Tangible Accomplishments <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Provide a list of your top 3-7 professional accomplishments as the first thing that would be displayed on your profile. You are encouraged to use actual numbers and metrics."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
+        <div class="title"><h4>Tangible Accomplishments <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Provide a list of your top 3-7 professional accomplishments as the first thing that would be displayed on your profile. You are encouraged to use actual numbers and metrics."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/console/help/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 		<div class="form-group label-floating is-empty">
 		    <textarea class="form-control text-edit" rows="2" id="u_tangible_experience"><?= $udata['u_tangible_experience'] ?></textarea>
 		    <span class="material-input"></span>
 		</div>
 		
 		
-		<div class="title"><h4>Biography <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Would be displayer below your tangible accomplishments on your profile."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
+		<div class="title"><h4>Biography <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Would be displayer below your tangible accomplishments on your profile."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/console/help/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 		<div class="form-group label-floating is-empty">
 		    <textarea class="form-control text-edit" rows="2" id="u_bio"><?= $udata['u_bio'] ?></textarea>
 		    <span class="material-input"></span>

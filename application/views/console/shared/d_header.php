@@ -19,17 +19,17 @@ $website = $this->config->item('website');
 	<!-- CSS -->
     <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/lib/animate.css" rel="stylesheet" />
-    <link href="/css/marketplace/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
+    <link href="/css/console/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     
     
     <!-- Core JS Files -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
-	<script src="/js/marketplace/jquery-3.1.0.min.js" type="text/javascript"></script>
-	<script src="/js/marketplace/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/js/marketplace/material.min.js" type="text/javascript"></script>
-	<script src="/js/marketplace/material-dashboard.js" type="text/javascript"></script>
+	<script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
+	<script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/js/console/material.min.js" type="text/javascript"></script>
+	<script src="/js/console/material-dashboard.js" type="text/javascript"></script>
 	<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
@@ -38,7 +38,7 @@ $website = $this->config->item('website');
 </head>
 <body>
 
-	<div class="wrapper" id="marketplace">
+	<div class="wrapper" id="console">
 	
 		<nav class="navbar navbar-transparent navbar-absolute" style="background-color:#8d8d8b !important;">
 			<div class="container-fluid">
@@ -49,14 +49,14 @@ $website = $this->config->item('website');
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<span class="navbar-brand dashboard-logo"><a href="/marketplace"><img src="/img/bp_48.png" /><span><?= $website['name'] ?></span></a></span>
+					<span class="navbar-brand dashboard-logo"><a href="/console"><img src="/img/bp_48.png" /><span><?= $website['name'] ?></span></a></span>
 				</div>
 				
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/account"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
-						<!-- <li><a href="/marketplace/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li> -->
-						<li><a href="/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
+						<li><a href="/console/account"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
+						<!-- <li><a href="/console/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li> -->
+						<li><a href="/process/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
 					</ul>
 					<?php /*
 					<form class="navbar-form navbar-left" role="search">
@@ -79,15 +79,15 @@ $website = $this->config->item('website');
             	    echo '<input type="hidden" id="c_id" value="'.$this->uri->segment(2, 0).'" />';
             	    
             	    echo '<ul class="nav">';
-            	    echo '<li'.( $_SERVER['REQUEST_URI'] == '/marketplace/'.$bootcamp['c_id'] ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
+            	    echo '<li'.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['c_id'] ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/'.$bootcamp['c_id'].'/content')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/content" data-toggle="tooltip" title="'.$this->lang->line('cr_desc').'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/content')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/content" data-toggle="tooltip" title="'.$this->lang->line('cr_desc').'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/cohorts')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/community')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/community"><i class="fa fa-users" aria-hidden="true"></i><p>Community</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/community')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/community"><i class="fa fa-users" aria-hidden="true"></i><p>Community</p></a></li>';
                 	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/marketplace/timeline')>0 ? ' class="active"' : '' ).'><a href="/marketplace/'.$bootcamp['c_id'].'/timeline"><i class="material-icons">timeline</i><p>Timeline</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/timeline')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/timeline"><i class="material-icons">timeline</i><p>Timeline</p></a></li>';
                 	    
                 	    echo '<li><a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
             		echo '</ul>';

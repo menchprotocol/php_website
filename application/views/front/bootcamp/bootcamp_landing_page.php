@@ -14,14 +14,14 @@
           <?php if(strlen($c['c_todo_overview'])>0){ ?>
           <div class="panel panel-border panel-default" name="collapseOverview">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="true" aria-controls="collapseOverview">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="false" aria-controls="collapseOverview">
                     <h4 class="panel-title">
                     Overview
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
             </div>
-            <div id="collapseOverview" class="panel-collapse collapse in">
+            <div id="collapseOverview" class="panel-collapse collapse"> <!-- collapse in -->
               <div class="panel-body">
                 <p id="c_todo_overview"><?= $c['c_todo_overview'] ?></p>
               </div>

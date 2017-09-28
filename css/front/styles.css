@@ -63,7 +63,7 @@
 .req_c_is_grandpa { display:none; }
 
 
-.title-main { display:block; padding-bottom:5px; font-size:1.2em; font-weight:bold; }
+.title-main { display:block; line-height:100%; padding-bottom:5px; font-size:1em; font-weight:bold; }
 .title-sub { display:inline-block; color:#999; margin-right:10px; }
 .title-sub i { width:20px; text-align:center; }
 
@@ -71,11 +71,6 @@
 .c_objective .title-main { display:block; padding:0 !important; font-size:0.45em; line-height:110% !important; }
 .c_objective .title-sub { display:block; font-size:0.3em; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 !important; }
 .c_objective .title-sub i { width:20px; text-align:center; }
-
-.c_objective_body { line-height:100%; }
-.c_objective_body .title-main { display:block; padding:0 !important; font-size:0.8em; line-height:110% !important; }
-.c_objective_body .title-sub { display:block; font-size:0.4em; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 !important; }
-.c_objective_body .title-sub i { width:25px; text-align:center; }
 
 .card-title .title-main { display:block; padding:0 !important; font-size:1.2em; line-height:110% !important; margin: 5px 0 10px; }
 .card-title .title-sub { display:block; font-size:0.8em; font-family:Lato; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 10px !important; }
@@ -150,7 +145,7 @@ h5, .h5 {
 .fa-info-circle{
 	text-decoration-line:none !important;
 }
-#marketplace h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height: 100%; }
+#console h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height:100%; }
 .main-raised{
 	max-width: 1150px;
 	margin: -60px auto 0 !important;
@@ -162,7 +157,9 @@ h5, .h5 {
     border-top-left-radius:0;
     border-top-right-radius:0;
 }
-
+.dashboard .row {
+	margin-bottom:10px;
+}
 .main-plain .container{ padding:30px; }
 .landing-page .page-header { min-height: 100vh; }
 .page-header .container { padding-top: 90px; padding-left:40px; }

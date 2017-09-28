@@ -1,7 +1,7 @@
 <h2 class="title"><?= $this->lang->line('login') ?></h2>
 
 <div class="login-content">
-	<form method="post" action="/login_process">
+	<form method="post" action="/process/login">
 		<input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
 		<div class="input-group">
 			<span class="input-group-addon">

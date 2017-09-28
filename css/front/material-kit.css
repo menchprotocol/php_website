@@ -2965,8 +2965,8 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   color: #ffffff;
 }
 .alert.alert-info {
-  background-color: #00cae3;
-  color: #ffffff;
+  background-color: #cac9c5;
+  color: #000;
 }
 .alert.alert-info a, .alert.alert-info .alert-link {
   color: #ffffff;

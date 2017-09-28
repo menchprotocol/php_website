@@ -24,7 +24,7 @@ if($cr['c']['c_id']==$bootcamp['c_id'] || !isset($cr['inbound'])){
         if($relation['cr_outbound_id']==$cr['c']['c_id'] && ($relation['cr_inbound_id']==$bootcamp['c_id'])){
             //Found this as level 2:
             $level = 2;
-            echo '<ol class="breadcrumb"><li><a href="/marketplace/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_name').'</a></li><li>'.echo_level(2, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
+            echo '<ol class="breadcrumb"><li><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_name').'</a></li><li>'.echo_level(2, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
             break;
         }
     }    
@@ -47,7 +47,7 @@ if($cr['c']['c_id']==$bootcamp['c_id'] || !isset($cr['inbound'])){
                 ));
                 
                 //Print breadcrumb:
-                echo '<ol class="breadcrumb"><li><a href="/marketplace/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_name').'</a></li><li><a href="/marketplace/'.$bootcamp['c_id'].'/content/'.$relation['cr_inbound_id'].'">'.echo_level(2, $level_2_relation[0]['cr_outbound_rank']).': '.$level_2[0]['c_objective'].'</a></li><li>'.echo_level(3, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
+                echo '<ol class="breadcrumb"><li><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_name').'</a></li><li><a href="/console/'.$bootcamp['c_id'].'/content/'.$relation['cr_inbound_id'].'">'.echo_level(2, $level_2_relation[0]['cr_outbound_rank']).': '.$level_2[0]['c_objective'].'</a></li><li>'.echo_level(3, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
                 
                 break;
             }
@@ -55,7 +55,7 @@ if($cr['c']['c_id']==$bootcamp['c_id'] || !isset($cr['inbound'])){
     }
 }
 
-echo '<h1 class="c_objective_body">'.echo_title($cr['c']['c_objective']).'</h1>';
+echo '<h1>'.echo_title($cr['c']['c_objective']).'</h1>';
 echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
 
 ?>
@@ -132,7 +132,7 @@ echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
 		    		echo '<textarea id="i_message" placeholder="+ Add Media"></textarea>';
 		    		echo '<ul class="msg-nav">';
 		    			echo '<li><a href="javascript:msg_create();" data-toggle="tooltip" title="Ctrl + Enter ;)"><i class="fa fa-plus"></i> Add</a></li>';
-		    			echo '<li class="pull-right"><a href="/guides/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Markup Support</a></li>';
+		    			echo '<li class="pull-right"><a href="/console/help/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Markup Support</a></li>';
 		    		echo '</ul>';
 		    		echo '</div>';
 	    		echo '</div>';
@@ -165,28 +165,28 @@ echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
 			</div>
 			
 			
-			<div class="title"><h4>Additional Objectives <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="A list of what the student should expect to accomplish on top of the primary goal if they execute on this bootcamp. Listed goals should be measurable, attainable, relevant, rewarding & trackable."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
+			<div class="title"><h4>Additional Objectives <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="A list of what the student should expect to accomplish on top of the primary goal if they execute on this bootcamp. Listed goals should be measurable, attainable, relevant, rewarding & trackable."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/console/help/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 			<div class="form-group label-floating is-empty">
 			    <textarea class="form-control text-edit" rows="2" id="save_c_additional_goals"><?= $cr['c']['c_additional_goals'] ?></textarea>
 			    <span class="material-input"></span>
 			</div>
 			
 			
-			<div class="title"><h4>Prerequisites <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="A list of what is required from the students *before* starting to execute on this bootcamp."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
+			<div class="title"><h4>Prerequisites <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="A list of what is required from the students *before* starting to execute on this bootcamp."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/console/help/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 			<div class="form-group label-floating is-empty">
 			    <textarea class="form-control text-edit" rows="2" id="save_c_prerequisites"><?= $cr['c']['c_prerequisites'] ?></textarea>
 			    <span class="material-input"></span>
 			</div>
 			
 			
-			<div class="title"><h4>Todo Overview <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="An overview (Not detail) of what the students should do to accomplish the guaranteed outcome. Meetings, projects, etc..."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
+			<div class="title"><h4>Todo Overview <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="An overview (Not detail) of what the students should do to accomplish the guaranteed outcome. Meetings, projects, etc..."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/console/help/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 			<div class="form-group label-floating is-empty">
 			    <textarea class="form-control text-edit" rows="2" id="save_c_todo_overview"><?= $cr['c']['c_todo_overview'] ?></textarea>
 			    <span class="material-input"></span>
 			</div>
 			
 			
-			<div class="title"><h4>Todo Detailed Instructions <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="A list of detailed instructions on what the student should exactly do to accomplish this bootcamp. It would be shared with them on the week of this bootcamp"></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
+			<div class="title"><h4>Todo Detailed Instructions <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="A list of detailed instructions on what the student should exactly do to accomplish this bootcamp. It would be shared with them on the week of this bootcamp"></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/console/help/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 			<div class="form-group label-floating is-empty">
 			    <textarea class="form-control text-edit" rows="2" id="save_c_todo_bible"><?= $cr['c']['c_todo_bible'] ?></textarea>
 			    <span class="material-input"></span>
@@ -242,12 +242,12 @@ echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
             
             
             
-            <div class="title"><h4>Marketplace Listing</h4></div>
+            <div class="title"><h4>Mench Marketplace</h4></div>
             
             <div class="checkbox">
             	<label>
             		<input type="checkbox" id="c_is_grandpa" <?= ($cr['c']['c_is_grandpa']=='t' ? 'disabled checked' : '') ?> />
-            		List on Marketplace <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Listing on the marketplace would enhance this bootcamp with the cohorts module which enables student registration, reporting & more."></i>
+            		Publish to Marketplace <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Listing on the marketplace would enhance this bootcamp with the cohorts module which enables student registration, reporting & more."></i>
             	</label>
             </div>
             

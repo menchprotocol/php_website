@@ -96,7 +96,7 @@ class Bot extends CI_Controller {
 					//The watermark field is used to determine which messages were read.
 					//It represents a timestamp indicating that all messages with a timestamp before watermark were read by the recipient.
 					$this->Db_model->log_engagement(array(
-							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => 1, //read
 							'e_json' => json_encode($json_data),
@@ -107,7 +107,7 @@ class Bot extends CI_Controller {
 					//This callback will occur when a message a page has sent has been delivered.
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
 					$this->Db_model->log_engagement(array(
-							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => 2, //delivery
 							'e_json' => json_encode($json_data),
@@ -174,7 +174,7 @@ class Bot extends CI_Controller {
 					
 					
 					$eng_data = array(
-							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => (isset($im['referral']) ? 4 : 3), //referral or postback
 							'e_json' => json_encode($json_data),
@@ -242,7 +242,7 @@ class Bot extends CI_Controller {
 					//This parameter is set by the data-ref field on the "Send to Messenger" plugin.
 					//This field can be used by the developer to associate a click event on the plugin with a callback.
 					$eng_data = array(
-							'e_creator_id' => $this->Db_model->put_fb_user($im['sender']['id']),
+							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => 5, //optin
 							'e_json' => json_encode($json_data),
@@ -269,7 +269,7 @@ class Bot extends CI_Controller {
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					
 					$eng_data = array(
-							'e_creator_id' => ( $sent_from_us ? 0 : $this->Db_model->put_fb_user($im['sender']['id'])),
+							'e_creator_id' => ( $sent_from_us ? 0 : $this->Db_model->u_fb_search($im['sender']['id'])),
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => ( $sent_from_us ? 7 : 6 ), //Inbound or Outbound Message
 							'e_json' => json_encode($json_data),
@@ -464,7 +464,7 @@ class Bot extends CI_Controller {
 				//Now see if we can find the recipient(s):
 				$valid_users = array();
 				foreach($people as $full_name){
-					$fb_user_id = $this->Db_model->fetch_fb_user_id($full_name);
+				    $fb_user_id = $this->Db_model->u_fb_fetch($full_name);
 					if(strlen($fb_user_id)>10){
 						//Found it! lets add them to the list!
 						array_push($valid_users,$fb_user_id);
@@ -581,7 +581,7 @@ class Bot extends CI_Controller {
 					
 				} else {
 					//This is a new user that needs to be registered!
-					$eng_data['e_creator_id'] = $this->Db_model->create_user_from_fb($fb_user_id);
+				    $eng_data['e_creator_id'] = $this->Db_model->u_fb_create($fb_user_id);
 					
 					if(!$eng_data['us_id']){
 						//There was an error fetching the user profile from Facebook:

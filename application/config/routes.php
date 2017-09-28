@@ -71,28 +71,21 @@ $route['bootcamps'] 				= "front/bootcamps_browse";
 
 
 /* ******************************
- * Marketplace ADMIN-ONLY
+ * Console for Operators
  ****************************** */
 
 //Admin Guides:
-$route['guides/status_bible'] 						= "marketplace/status_bible";
-$route['guides/showdown_markup'] 					= "marketplace/showdown_markup";
+$route['console/help/status_bible'] 			= "console/status_bible";
+$route['console/help/showdown_markup'] 			= "console/showdown_markup";
 
-//Users & Authentication:
-$route['login_process'] 							= "marketplace/login_process";
-$route['logout'] 									= "marketplace/logout";
-$route['account'] 								    = "marketplace/account_manage";
-
-//Bootcamps:
-$route['marketplace/(:num)'] 			            = "marketplace/bootcamp_dashboard/$1";
-$route['marketplace/(:num)/content/(:num)'] 		= "marketplace/content_lib/$1/$2";
-$route['marketplace/(:num)/content'] 				= "marketplace/content_lib/$1";
-$route['marketplace/(:num)/cohorts/(:num)'] 		= "marketplace/cohort_view/$1/$2";
-$route['marketplace/(:num)/cohorts/new'] 			= "marketplace/cohort_create/$1";
-$route['marketplace/(:num)/cohorts'] 				= "marketplace/cohorts_browse/$1";
-$route['marketplace/(:num)/community'] 				= "marketplace/community_browse/$1";
-$route['marketplace/(:num)/timeline'] 				= "marketplace/timeline_view/$1";
-$route['marketplace/new'] 					        = "marketplace/bootcamp_create";
-$route['marketplace'] 								= "marketplace/bootcamps_browse";
+$route['console/account'] 						= "console/v_account";
+$route['console/(:num)/content/(:num)'] 		= "console/v_content/$1/$2";
+$route['console/(:num)/content'] 				= "console/v_content/$1";
+$route['console/(:num)/community'] 				= "console/v_community/$1";
+$route['console/(:num)/timeline'] 				= "console/v_timeline/$1";
+$route['console/(:num)/cohorts/(:num)'] 		= "console/v_cohort/$1/$2";
+$route['console/(:num)/cohorts'] 				= "console/v_all_cohorts/$1";
+$route['console/(:num)'] 			            = "console/v_dashboard/$1";
+$route['console'] 								= "console/v_all_bootcamps";
 
 

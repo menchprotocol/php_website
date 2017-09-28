@@ -14,7 +14,7 @@ class Db_model extends CI_Model {
 	 ****************************** */
 	
 	//Called upon user login to save their Challenges/Runs into the session:
-	function fetch_user_access($u_id){
+	function u_privileges($u_id){
 		
 		if(intval($u_id)<=0){
 			return false;
@@ -55,7 +55,7 @@ class Db_model extends CI_Model {
 		
 		//Any challenges they directly created?
 		$this->db->select('c.c_id');
-		$this->db->from('v5_bootcamps c');
+		$this->db->from('v5_intents c');
 		$this->db->where('c.c_creator_id',$u_id); //Challenges they created them selves
 		$this->db->where('c.c_status >=',-1); //Deleted by user, but not removed by moderator.
 		$this->db->where('c.c_is_grandpa',true); //necessary here since we have many none-grandpa challenges
@@ -70,7 +70,7 @@ class Db_model extends CI_Model {
 		return $user_access;
 	}
 	
-	function users_fetch($match_columns){
+	function u_fetch($match_columns){
 		//Fetch the target gems:
 		$this->db->select('*');
 		$this->db->from('v5_users u');
@@ -81,17 +81,17 @@ class Db_model extends CI_Model {
 		return $q->result_array();
 	}
 	
-	function user_create($insert_columns){
+	function u_create($insert_columns){
 		
 		//Make sure required fields are here:
 		if(!isset($insert_columns['u_fname'])){
-			log_error('user_create() Missing u_fname.',$insert_columns,2);
+			log_error('u_create() Missing u_fname.',$insert_columns,2);
 			return false;
 		} elseif(!isset($insert_columns['u_lname'])){
-			log_error('user_create() Missing u_lname.',$insert_columns,2);
+			log_error('u_create() Missing u_lname.',$insert_columns,2);
 			return false;
 		} elseif(!isset($insert_columns['u_fb_id'])){
-			log_error('user_create() Missing u_fb_id.',$insert_columns,2);
+			log_error('u_create() Missing u_fb_id.',$insert_columns,2);
 			return false;
 		}
 		
@@ -113,7 +113,7 @@ class Db_model extends CI_Model {
 		$is_duplicate = true;
 		$increment = 0;
 		while($is_duplicate){
-			$matching_users = $this->users_fetch(array(
+			$matching_users = $this->u_fetch(array(
 					'u_url_key' => $insert_columns['u_url_key'],
 			));
 			
@@ -137,23 +137,23 @@ class Db_model extends CI_Model {
 		return $insert_columns;
 	}
 	
-	function user_update($user_id,$update_columns){
+	function u_update($user_id,$update_columns){
 		//Update first
 		$this->db->where('u_id', $user_id);
 		$this->db->update('v5_users', $update_columns);
 		//Return new row:
-		$users = $this->users_fetch(array(
+		$users = $this->u_fetch(array(
 				'u_id' => $user_id
 		));
 		return $users[0];
 	}
 	
 	
-	function put_fb_user($u_fb_id){
+	function u_fb_search($u_fb_id){
 		//A function to check or create a new user using FB id:
 		
 		//Search for current users:
-		$matching_users = $this->users_fetch(array(
+		$matching_users = $this->u_fetch(array(
 				'u_fb_id' => $u_fb_id,
 		));
 		
@@ -168,7 +168,7 @@ class Db_model extends CI_Model {
 		} elseif(count($matching_users) <= 0){
 			
 			//This is a new user that needs to be registered!
-			$u_id = $this->create_user_from_fb($u_fb_id);
+			$u_id = $this->u_fb_create($u_fb_id);
 			
 		} else {
 			//Inconsistent data:
@@ -187,7 +187,7 @@ class Db_model extends CI_Model {
 		}
 	}
 	
-	function fetch_fb_user_id($full_name){		
+	function u_fb_fetch($full_name){		
 		//Fetch the user using their full name
 		$this->db->select('u_fb_id, LOWER(CONCAT(u_fname," ",u_lname)) AS full_name');
 		$this->db->from('v5_users u');
@@ -212,7 +212,7 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function create_user_from_fb($u_fb_id){
+	function u_fb_create($u_fb_id){
 		
 		//Call facebook messenger API and get user details
 		//https://developers.facebook.com/docs/messenger-platform/user-profile/
@@ -224,7 +224,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Do we already have this person?
-		$matching_users = $this->users_fetch(array(
+		$matching_users = $this->u_fetch(array(
 				'u_fb_id' => $u_fb_id,
 		));
 		
@@ -242,7 +242,7 @@ class Db_model extends CI_Model {
 		$locale = explode('_',$fb_profile['locale'],2);
 		
 		//Create user
-		$udata = $this->user_create(array(
+		$udata = $this->u_create(array(
 				'u_fb_id' 			=> $u_fb_id,
 				'u_fname' 			=> $fb_profile['first_name'],
 				'u_lname' 			=> $fb_profile['last_name'],
@@ -267,7 +267,7 @@ class Db_model extends CI_Model {
 	
 	function i_fetch($match_columns){
 		$this->db->select('*');
-		$this->db->from('v5_learning_media');
+		$this->db->from('v5_media');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -298,7 +298,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_learning_media', $insert_columns);
+		$this->db->insert('v5_media', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
@@ -308,7 +308,7 @@ class Db_model extends CI_Model {
 	
 	function i_update($i_id,$update_columns){
 		$this->db->where('i_id', $i_id);
-		$this->db->update('v5_learning_media', $update_columns);
+		$this->db->update('v5_media', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -330,12 +330,12 @@ class Db_model extends CI_Model {
 		$runs = $q->result_array();
 		
 		foreach($runs as $key=>$value){
-		    $runs[$key]['r__enrolled_students'] = $this->Db_model->c_users_fetch(array(
+		    $runs[$key]['r__enrolled_students'] = $this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
 		        'ru.ru_status <'	=> 2, //TODO Review: Regular students
 		        'u.u_status <'		=> 2, //TODO Review: Regular students
 		    ));
-			$runs[$key]['r__admins'] = $this->Db_model->c_users_fetch(array(
+		    $runs[$key]['r__admins'] = $this->Db_model->ru_fetch(array(
     			'ru.ru_r_id'	    => $value['r_id'],
 				'ru.ru_status >='	=> 2, //TODO Review: 2 & above are admins
 			    'u.u_status >='		=> 2, //TODO Review: Admin users
@@ -352,7 +352,7 @@ class Db_model extends CI_Model {
 	 * Bootcamps
 	 ****************************** */
 	
-	function c_users_fetch($match_columns){
+	function ru_fetch($match_columns){
 		$this->db->select('*');
 		$this->db->from('v5_cohort_users ru');
 		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
@@ -367,7 +367,7 @@ class Db_model extends CI_Model {
 	function c_full_fetch($match_columns){
 	    //Missing anything?
 	    $this->db->select('*');
-	    $this->db->from('v5_bootcamps c');
+	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_categories ct', 'ct.ct_id = c.c_ct_id', 'left');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
@@ -390,7 +390,7 @@ class Db_model extends CI_Model {
 	function c_fetch($match_columns){
 	    //Missing anything?
 	    $this->db->select('c.*, COUNT(DISTINCT r.r_id) AS count_runs, COUNT(DISTINCT ru.ru_u_id) AS count_users');
-	    $this->db->from('v5_bootcamps c');
+	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_cohorts r', 'r.r_c_id = c.c_id', 'left');
 	    $this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
 	    $this->db->group_by('c.c_id');
@@ -404,7 +404,7 @@ class Db_model extends CI_Model {
 	function c_plain_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('c.*');
-		$this->db->from('v5_bootcamps c');
+		$this->db->from('v5_intents c');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -416,8 +416,8 @@ class Db_model extends CI_Model {
 	function cr_outbound_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('*');
-		$this->db->from('v5_bootcamps c');
-		$this->db->join('v5_bootcamp_wiki cr', 'cr.cr_outbound_id = c.c_id');
+		$this->db->from('v5_intents c');
+		$this->db->join('v5_intent_links cr', 'cr.cr_outbound_id = c.c_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -429,8 +429,8 @@ class Db_model extends CI_Model {
 	function cr_inbound_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('*');
-		$this->db->from('v5_bootcamps c');
-		$this->db->join('v5_bootcamp_wiki cr', 'cr.cr_inbound_id = c.c_id');
+		$this->db->from('v5_intents c');
+		$this->db->join('v5_intent_links cr', 'cr.cr_inbound_id = c.c_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -443,7 +443,7 @@ class Db_model extends CI_Model {
 	
 	function cr_update($cr_id,$update_columns,$column='cr_id'){
 		$this->db->where($column, $cr_id);
-		$this->db->update('v5_bootcamp_wiki', $update_columns);
+		$this->db->update('v5_intent_links', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -482,7 +482,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_bootcamp_wiki', $insert_columns);
+		$this->db->insert('v5_intent_links', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['cr_id'] = $this->db->insert_id();
@@ -492,7 +492,7 @@ class Db_model extends CI_Model {
 	
 	function c_update($c_id,$update_columns){
 		$this->db->where('c_id', $c_id);
-		$this->db->update('v5_bootcamps', $update_columns);
+		$this->db->update('v5_intents', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -513,7 +513,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_bootcamps', $insert_columns);
+		$this->db->insert('v5_intents', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['c_id'] = $this->db->insert_id();
@@ -590,7 +590,7 @@ class Db_model extends CI_Model {
 		$website = $this->config->item('website');
 		
 		if(is_dev()){
-		    return file_get_contents($website['url']."marketplace/algolia/".$c_id);
+		    return file_get_contents($website['url']."process/algolia/".$c_id);
 		}
 		
 		//Include PHP library:

@@ -5,8 +5,8 @@
  * Main Objects
  ****************************** */
 //Object Names & Descriptions:
-$lang['m_name'] = 'Marketplace';
-$lang['m_desc'] = 'Bootcamps created and operated by our community of bootcamp operators.';
+$lang['m_name'] = 'Console';
+$lang['m_desc'] = 'Manage your bootcamps.';
 
 $lang['c_name'] = 'Bootcamp';
 $lang['c_pname'] = 'Bootcamps';

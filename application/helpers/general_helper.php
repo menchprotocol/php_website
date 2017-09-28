@@ -90,8 +90,8 @@ function echo_message($i){
 			    echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
 			    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
 			    echo '<li class="edit-updates"></li>';
-			    echo '<li class="pull-right"><a href="javascript:msg_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
-			    echo '<li class="edit-on pull-right"><a href="/guides/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Syntax</a></li>';
+			    echo '<li class="pull-right"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+			    echo '<li class="edit-on pull-right"><a href="/console/help/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Syntax</a></li>';
 			    echo '</ul>';
 		echo '</div>';
 	echo '</div>';
@@ -114,9 +114,9 @@ function echo_level($level, $rank){
 function echo_cr($c_id,$relation,$direction,$level=0){
 	//Fetch current Challenge:
 	if($direction=='outbound'){
-	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/content/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>'.echo_level($level, $relation['cr_outbound_rank']).'<span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).' <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).' <span class="srt-'.$direction.'"></span></a>';
+	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/console/'.$c_id.'/content/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>'.echo_level($level, $relation['cr_outbound_rank']).'<span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).' <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).' <span class="srt-'.$direction.'"></span></a>';
 	} else {
-	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/marketplace/'.$c_id.'/content/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="cr_delete('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).'</span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).'</a>';
+	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/console/'.$c_id.'/content/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i> '.status_bible('c',$relation['c_status'],1).'</span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).'</a>';
 	}
 }
 
@@ -139,7 +139,7 @@ function load_object($object,$obj_limits){
 		
 		//Valid challenge key?
 		if(!count($fetch_challenges)==1){
-			redirect_message('/marketplace','<div class="alert alert-danger" role="alert">Invalid challenge key.</div>');
+			redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid challenge key.</div>');
 		}
 		
 		//Append more data:
@@ -152,16 +152,16 @@ function load_object($object,$obj_limits){
 	} elseif($object=='u'){
 		
 		//Fetch users:
-		$users = $CI->Db_model->users_fetch($obj_limits);
+	    $users = $CI->Db_model->u_fetch($obj_limits);
 		
 		if(!count($users)==1){
 			//Ooops, something wrong:
 			//TODO Redirect to a user index instead of the marketpace
-			redirect_message('/marketplace','<div class="alert alert-danger" role="alert">Invalid username.</div>');
+			redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid username.</div>');
 		}
 		
 		//Append permissions:
-		$users[0]['access'] = $CI->Db_model->fetch_user_access($users[0]['u_id']);
+		$users[0]['access'] = $CI->Db_model->u_privileges($users[0]['u_id']);
 		
 		return $users[0];
 	}

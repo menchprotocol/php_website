@@ -75,7 +75,7 @@ $udata = $this->session->userdata('user');
 					<div class="col-md-8 col-md-offset-2" style="text-align:center;">
 						<?php
 			    		if(isset($udata['u_id'])){
-			    			echo '<a href="/marketplace" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+			    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
 			    		} else {
 			    			echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
 			    			echo '<p class="sub-button">'.$this->lang->line('or').' <a href="/login">'.$this->lang->line('login').'</a></p>';

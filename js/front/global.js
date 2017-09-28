@@ -110,7 +110,7 @@ function update_account(){
 	//Show spinner:
 	$('.update_u_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
-	$.post("/marketplace/account_update_process", {
+	$.post("/process/account_update", {
 		
 		u_id:$('#u_id').val(),
 		u_fname:$('#u_fname').val(),
@@ -172,7 +172,7 @@ function save_c(){
 	//Show spinner:
 	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
-	$.post("/marketplace/intent_edit_process", {
+	$.post("/process/intent_edit", {
 		save_c_id:$('#save_c_id').val(),
 		save_c_objective:$('#save_c_objective').val(),
 		save_c_url_key:$('#save_c_url_key').val(),
@@ -216,7 +216,7 @@ function new_challenge(c_objective){
 	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/intent_create", {c_id:c_id, pid:pid, c_objective:c_objective, direction:direction, next_level:next_level}, function(data) {
+	$.post("/process/intent_create", {c_id:c_id, pid:pid, c_objective:c_objective, direction:direction, next_level:next_level}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#list-"+direction ).append(data);
@@ -254,7 +254,7 @@ function link_challenge(target_id){
 	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/intent_link", {c_id:c_id, pid:pid, target_id:target_id, direction:direction, next_level:next_level}, function(data) {
+	$.post("/process/intent_link", {c_id:c_id, pid:pid, target_id:target_id, direction:direction, next_level:next_level}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#list-"+direction ).append(data);
@@ -287,7 +287,7 @@ function load_message_sorting(){
 				});
 				
 				//Update backend:
-				$.post("/marketplace/update_msg_sort", {new_sort:new_sort}, function(data) {
+				$.post("/process/media_sort", {new_sort:new_sort}, function(data) {
 					//Update UI to confirm with user:
 					$( ".edit-updates" ).html(data);
 					
@@ -301,7 +301,7 @@ function load_message_sorting(){
 }
 
 
-function update_sort(direction){
+function intents_sort(direction){
 	//Set processing status:
     $( "#list-"+direction+" .srt-"+direction ).html(' <img src="/img/loader.gif" />');
   
@@ -320,7 +320,7 @@ function update_sort(direction){
 	});
 	
 	//Update backend:
-	$.post("/marketplace/update_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
+	$.post("/process/intents_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
 		//Update UI to confirm with user:
 		$( "#list-"+direction+" .srt-"+direction ).html(data);
 		
@@ -339,22 +339,24 @@ function load_sortable(direction){
 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
 		  onUpdate: function (evt/**Event*/){
-			  update_sort(direction);
+			  intents_sort(direction);
 		  }
 	});
 }
 
-function delete_c(grandpa_id,c_id,c_title){
+function intent_delete(grandpa_id,c_id,c_title){
+	alert('disabled for now');
+	return false;
 	//Double check:
 	var r = confirm("Delete Challenge: "+c_title+"?");
 	if (r == true) {
 	    //Redirect to delete:
-		window.location = "/marketplace/delete_c/"+grandpa_id+"/"+c_id;
+		window.location = "/process/intent_delete/"+grandpa_id+"/"+c_id;
 	}
 }
 
 
-function cr_delete(cr_id,cr_title){
+function intent_unlink(cr_id,cr_title){
 	//Stop href:
 	var current_href = $('#cr_'+cr_id).attr("href");
 	$('#cr_'+cr_id).attr("href", "#");
@@ -363,7 +365,7 @@ function cr_delete(cr_id,cr_title){
 	var r = confirm("Unlink "+cr_title+"?");
 	if (r == true) {
 	    //Delete and remove:
-		$.post("/marketplace/cr_delete", {cr_id:cr_id}, function(data) {
+		$.post("/process/intent_unlink", {cr_id:cr_id}, function(data) {
 			//Update UI to confirm with user:
 			$( "#cr_"+cr_id ).html(data);			
 			
@@ -372,7 +374,7 @@ function cr_delete(cr_id,cr_title){
 				$( "#cr_"+cr_id ).fadeOut().remove();
 				
 				//Update sort:
-				update_sort('outbound');
+				intents_sort('outbound');
 		    }, 1000);
 		});
 	} else {
@@ -412,7 +414,7 @@ function msg_create(){
 	$( "#i_message" ).val("").focus();
 	
 	//Update backend:
-	$.post("/marketplace/msg_create", {pid:pid, i_message:i_message}, function(data) {
+	$.post("/process/media_create", {pid:pid, i_message:i_message}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#message-sorting" ).append(data);
@@ -425,12 +427,12 @@ function msg_create(){
 	});
 }
 
-function msg_delete(i_id){
+function media_delete(i_id){
 	//Double check:
 	var r = confirm("Delete Message?");
 	if (r == true) {
 	    //Delete and remove:
-		$.post("/marketplace/i_delete", {i_id:i_id}, function(data) {
+		$.post("/process/media_delete", {i_id:i_id}, function(data) {
 			//Update UI to confirm with user:
 			
 			$("#ul-nav-"+i_id).html('<div>'+data+'</div>');
@@ -494,7 +496,7 @@ function msg_save_edit(i_id){
 	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/loader.gif" /></div>');
 	
 	//Update message:
-	$.post("/marketplace/i_edit", {i_id:i_id, i_message:i_message}, function(data) {
+	$.post("/process/media_edit", {i_id:i_id, i_message:i_message}, function(data) {
 		//Update UI to confirm with user:
 		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
 		

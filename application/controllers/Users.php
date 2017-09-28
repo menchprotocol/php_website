@@ -61,7 +61,7 @@ class Users extends CI_Controller {
 			
 			//User is logged in on Facebook. Let's check their local profile:
 			$res = $_POST['response']['authResponse'];
-			$users = $this->Db_model->users_fetch(array(
+			$users = $this->Db_model->u_fetch(array(
 					'fb_id' => $res['userID']
 			));
 			
@@ -73,7 +73,7 @@ class Users extends CI_Controller {
 				
 				//This is a new user! Create their account:
 				$name = explode(' ',$profile['name'],2);
-				$user = $this->Db_model->user_create(array(
+				$user = $this->Db_model->u_create(array(
 						'fb_id' => $res['userID'],
 						'fb_token' => $res['accessToken'],
 						'first_name' => $name[0],
@@ -89,7 +89,7 @@ class Users extends CI_Controller {
 				//Check to see if access token has been updated:
 				if(!($res['accessToken']==$user['fb_token']) || !($res['userID']==$user['fb_id'])){
 					//Let's update:
-					$user = $this->Db_model->user_update( $user['id'] , array(
+				    $user = $this->Db_model->u_update( $user['id'] , array(
 							'fb_id' => $res['userID'],
 							'fb_token' => $res['accessToken'],
 					));
