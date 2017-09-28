@@ -16,6 +16,8 @@ ga('send', 'pageview');
 }(document, 'script', 'facebook-jssdk'));
 
 
+
+
 //Load direction:
 var is_outbound = true;
 function change_direction(){
@@ -506,7 +508,13 @@ function msg_save_edit(i_id){
 	});
 }
 
-
+function move(element){
+	setTimeout(function() {
+		$('html,body').animate({
+			scrollTop: $('[name=' + element +']').offset().top - 40
+		}, 200);
+    }, 500);
+}
 
 $(document).ready(function() {
 	

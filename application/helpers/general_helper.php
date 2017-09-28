@@ -179,7 +179,7 @@ function status_bible($object=null,$status=null,$micro_status=false){
 	$o_name = array( //Name
 			-2 	=> 'DISQUALIFIED',
 			-1 	=> 'DELETED',
-			0 	=> 'PREPPING', //Normally Default
+			0 	=> 'DRAFTING', //Normally Default
 			1	=> 'LIVE',
 			2	=> 'DONE', //Not for all objects
 	);
@@ -233,10 +233,10 @@ function status_bible($object=null,$status=null,$micro_status=false){
 			 * OBJECTS
 			 ****************************** */
 			'c' => array( //Challenges
-				0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$o_desc[0].'">'.$o_name[0].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-				1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$o_desc[1].'">'.$o_name[1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-1].'">'.$o_name[-1].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-2].'">'.$o_name[-2].' Bootcamp <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+				0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+				1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'r' => array( //Runs
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',

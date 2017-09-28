@@ -119,7 +119,20 @@ h5, .h5 {
     margin-bottom:5px;
 }
 .flag { width:22px; height:14px; border-radius:3px; border:1px solid #CCC; }
-
+.social-input{
+	padding: 0 !important;
+    line-height: 100%;
+    font-size: 18px !important;
+    margin: 0 0 -2px 0 !important;
+}
+.ic-lrg, .public-profiles>a{
+	color:#3C4858 !important;
+	font-size:24px !important;
+	margin-right:10px;
+}
+.public-profiles>a:hover{
+	color:#fedd16 !important;
+}
 .subhead{
 	margin:0;
 	padding:0;

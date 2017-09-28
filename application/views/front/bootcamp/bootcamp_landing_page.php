@@ -12,9 +12,9 @@
             
           
           <?php if(strlen($c['c_todo_overview'])>0){ ?>
-          <div class="panel panel-border panel-default">
+          <div class="panel panel-border panel-default" name="collapseOverview">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="true" aria-controls="collapseOverview">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseOverview')" href="#collapseOverview" aria-expanded="true" aria-controls="collapseOverview">
                     <h4 class="panel-title">
                     Overview
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -30,9 +30,9 @@
           <?php } ?>
           
           
-          <div class="panel panel-border panel-default">
+          <div class="panel panel-border panel-default" name="collapsePrerequisites">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapsePrerequisites')" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                     <h4 class="panel-title">
                     Prerequisites
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -47,9 +47,9 @@
           </div>
           
           
-          <div class="panel panel-border panel-default">
+          <div class="panel panel-border panel-default" name="collapseMentors">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMentors" aria-controls="collapseMentors">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseMentors')" href="#collapseMentors" aria-controls="collapseMentors">
                     <h4 class="panel-title">
                     Mentors
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -63,6 +63,35 @@
                     echo '<h4 class="userheader"><img src="'.$admins['u_image_url'].'" /> '.$admins['u_fname'].' '.$admins['u_lname'].'<span><img src="/img/flags/'.strtolower($admins['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admins['u_current_city'].'</span></h4>';
                     echo '<p id="u_tangible_experience">'.$admins['u_tangible_experience'].'</p>';
                     echo '<p id="u_bio">'.$admins['u_bio'].'</p>';
+                    
+                    //Any languages other than English?
+                    if(strlen($admins['u_language'])>0 && $admins['u_language']!=='en'){
+                        $all_languages = $this->config->item('languages');
+                        //They know more than enligh!
+                        $langs = explode(',',$admins['u_language']);
+                        echo '<i class="fa fa-language ic-lrg" aria-hidden="true"></i>';
+                        $count = 0;
+                        foreach($langs as $lang){
+                            if($count>0){
+                                echo ', ';
+                            }
+                            echo $all_languages[$lang];
+                            $count++;
+                        }
+                    }
+                    
+                    //Public profiles:
+                    echo '<div class="public-profiles" style="margin-top:10px;">';
+                    if(strlen($admins['u_website_url'])>0){
+                        echo '<a href="'.$admins['u_website_url'].'" data-toggle="tooltip" title="Visit Website" target="_blank"><i class="fa fa-chrome" aria-hidden="true"></i></a>';
+                    }
+                    $u_social_account = $this->config->item('u_social_account');
+                    foreach($u_social_account as $sa_key=>$sa){
+                        if(strlen($admins[$sa_key])>0){
+                            echo '<a href="'.$sa['sa_prefix'].$admins[$sa_key].$sa['sa_postfix'].'" data-toggle="tooltip" title="'.$sa['sa_name'].'" target="_blank">'.$sa['sa_icon'].'</a>';
+                        }
+                    }
+                    echo '</div>';
                 }
                 ?>
               </div>
@@ -70,26 +99,26 @@
           </div>
           
           
-          <div class="panel panel-border panel-default">
+          <div class="panel panel-border panel-default" name="collapseOutline">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOutline" aria-controls="collapseOutline">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseOutline')" href="#collapseOutline" aria-controls="collapseOutline">
                     <h4 class="panel-title">
-                    Syllabus
+                    Bootcamp Outline
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
             </div>
             <div id="collapseOutline" class="panel-collapse collapse">
               <div class="panel-body">
-                Syllabus here...
+                Bootcamp Outline here...
               </div>
             </div>
           </div>
           
           
-          <div class="panel panel-border panel-default">
+          <div class="panel panel-border panel-default" name="collapseTimetable">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTimetable" aria-controls="collapseTimetable">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" onclick="move('collapseTimetable')" href="#collapseTimetable" aria-controls="collapseTimetable">
                     <h4 class="panel-title">
                     Tuition & Dates
                     <i class="material-icons">keyboard_arrow_down</i>
@@ -108,9 +137,9 @@
           
           
           
-          <div class="panel panel-border panel-default">
+          <div class="panel panel-border panel-default" name="collapseFAQ">
             <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFAQ" aria-controls="collapseFAQ">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFAQ" onclick="move('collapseFAQ')" aria-controls="collapseFAQ">
                     <h4 class="panel-title">
                     FAQ
                     <i class="material-icons">keyboard_arrow_down</i>

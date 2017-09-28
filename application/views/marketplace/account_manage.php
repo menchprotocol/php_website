@@ -13,10 +13,10 @@ $udata = $ufetch[0];
 <h1>My Account</h1>
 
 <ul class="nav nav-pills nav-pills-primary" style="margin-top:10px;">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-id-card" aria-hidden="true"></i> Overview</a></li>
+  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
   <li><a href="#pill2" data-toggle="tab"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
-  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-comments" aria-hidden="true"></i> Social Links</a></li>
-  <li><a href="#pill4" data-toggle="tab"><i class="fa fa-university" aria-hidden="true"></i> Wire Payments</a></li>
+  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-comments" aria-hidden="true"></i> Social</a></li>
+  <li><a href="#pill4" data-toggle="tab"><i class="fa fa-university" aria-hidden="true"></i> Banking</a></li>
 </ul>
 
 
@@ -171,8 +171,7 @@ $udata = $ufetch[0];
         foreach($u_social_account as $sa_key=>$sa){
             echo '<div class="title"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' Username <span id="ph_'.$sa_key.'"></span></h4></div>
     	<div class="input-group">
-          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span>
-          <input type="text" class="form-control" id="'.$sa_key.'" maxlength="100" value="'.$udata[$sa_key].'" />
+          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span><input type="text" class="form-control social-input" id="'.$sa_key.'" maxlength="100" value="'.$udata[$sa_key].'" />
         </div>';
             echo '<script>trigger_link_watch("'.$sa_key.'","'.$sa['sa_prefix'].'");</script>';
         }
