@@ -60,8 +60,9 @@
               <div class="panel-body">
                 <?php
                 foreach($c['c__cohorts'][0]['r__admins'] as $count2=>$admins){
-                    echo '<h4 class="userheader"><img src="'.$admins['u_image_url'].'" /> '.$admins['u_fname'].' '.$admins['u_lname'].'<span>'.$admins['u_current_city'].'</span></h4>';
+                    echo '<h4 class="userheader"><img src="'.$admins['u_image_url'].'" /> '.$admins['u_fname'].' '.$admins['u_lname'].'<span><img src="/img/flags/'.strtolower($admins['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admins['u_current_city'].'</span></h4>';
                     echo '<p id="u_tangible_experience">'.$admins['u_tangible_experience'].'</p>';
+                    echo '<p id="u_bio">'.$admins['u_bio'].'</p>';
                 }
                 ?>
               </div>
@@ -140,7 +141,7 @@
 
 <script>
 $( document ).ready(function() {
-    var showdowns = ["c_additional_goals","c_prerequisites","c_todo_overview","u_tangible_experience"];
+    var showdowns = ["c_additional_goals","c_prerequisites","c_todo_overview","u_tangible_experience","u_bio"];
     var arrayLength = showdowns.length;
     for (var i = 0; i < arrayLength; i++) {
     	update_showdown($('#'+showdowns[i]),$('#'+showdowns[i]).html());

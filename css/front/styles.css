@@ -87,8 +87,8 @@
 .card-description img { width:28px; height:28px; margin-top:-2px; border-radius: 50%; }
 .profile-pic { width:50px; height:50px; margin:0 0 0 15px; border-radius: 50%; border:1px solid #CCC; }
 .userheader { line-height:110%; margin-bottom:15px; }
-.userheader span { display:block; font-size:0.8em; font-weight:normal; margin:-8px 0 0 59px; }
-.userheader img { width:48px; height:48px; margin:0px 5px -15px 0; border-radius: 50%; }
+.userheader>span { display:block; font-size:0.8em; font-weight:normal; margin:-8px 0 0 59px; }
+.userheader>img { width:48px; height:48px; margin:0px 5px -15px 0; border-radius: 50%; }
 .submenu { padding:0 0 0 45px; }
 .submenu a { padding-top:7px; padding-bottom:7px; }
 .submenu p { font-size:0.9em !important;}

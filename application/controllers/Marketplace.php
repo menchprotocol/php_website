@@ -149,6 +149,7 @@ class Marketplace extends CI_Controller {
 	        'u_fname' => trim($_POST['u_fname']),
 	        'u_lname' => trim($_POST['u_lname']),
 	        'u_email' => $_POST['u_email'],
+	        'u_phone' => $_POST['u_phone'],
 	        'u_image_url' => $_POST['u_image_url'],
 	        'u_gender' => $_POST['u_gender'],
 	        'u_country_code' => $_POST['u_country_code'],
@@ -157,6 +158,7 @@ class Marketplace extends CI_Controller {
 	        'u_language' => join(',',$_POST['u_language']),
 	        'u_bio' => trim($_POST['u_bio']),
 	        'u_tangible_experience' => trim($_POST['u_tangible_experience']),
+	        'u_skype_username' => trim($_POST['u_skype_username']),
 	    );
 	    
 	    //Some more checks:
@@ -184,25 +186,34 @@ class Marketplace extends CI_Controller {
 	    $warning = NULL;
 	    
 	    //Check social links:
-	    if(strlen($_POST['u_website_url'])>0 && $_POST['u_website_url']!==$u_current[0]['u_website_url']){
-	        //Validate it:
-	        if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL) && url_exists($_POST['u_website_url'])){
-	            $u_update['u_website_url'] = $_POST['u_website_url'];
-	            echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
+	    if($_POST['u_website_url']!==$u_current[0]['u_website_url']){
+	        if(strlen($_POST['u_website_url'])>0){
+	            //Validate it:
+	            if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL) && url_exists($_POST['u_website_url'])){
+	                $u_update['u_website_url'] = $_POST['u_website_url'];
+	                echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
+	            } else {
+	                $warning .= 'Invalid website URL. ';
+	            }
 	        } else {
-	            $warning .= 'Invalid website URL. ';
+	            $u_update['u_website_url'] = '';
 	        }
 	    }
+    	    
 	    
 	    $u_social_account = $this->config->item('u_social_account');
 	    foreach($u_social_account as $sa_key=>$sa_value){
-	        if(strlen($_POST[$sa_key])>0 && $_POST[$sa_key]!==$u_current[0][$sa_key]){
-	            //User has attempted to update it, lets validate it:
-	            $full_url = 'https://'.$sa_value['sa_prefix'].trim($_POST[$sa_key]);
-	            if(url_exists($full_url)){
-	                $u_update[$sa_key] = trim($_POST[$sa_key]);
+	        if($_POST[$sa_key]!==$u_current[0][$sa_key]){
+	            if(strlen($_POST[$sa_key])>0){
+	                //User has attempted to update it, lets validate it:
+	                $full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
+	                if(url_exists($full_url)){
+	                    $u_update[$sa_key] = trim($_POST[$sa_key]);
+	                } else {
+	                    $warning .= 'Invalid '.$sa_value['sa_name'].' username. ';
+	                }
 	            } else {
-	                $warning .= 'Invalid '.$sa_value['sa_name'].' username. ';
+	                $u_update[$sa_key] = '';
 	            }
 	        }
 	    }

@@ -114,6 +114,7 @@ function update_account(){
 		u_fname:$('#u_fname').val(),
 		u_lname:$('#u_lname').val(),
 		u_email:$('#u_email').val(),
+		u_phone:$('#u_phone').val(),
 		u_image_url:$('#u_image_url').val(),
 		u_gender:$('#u_gender').val(),
 		u_country_code:$('#u_country_code').val(),
@@ -135,6 +136,9 @@ function update_account(){
 		u_instagram_username:$('#u_instagram_username').val(),
 		u_quora_username:$('#u_quora_username').val(),
 		u_stackoverflow_username:$('#u_stackoverflow_username').val(),
+		u_skype_username:$('#u_skype_username').val(),
+		u_medium_username:$('#u_medium_username').val(),
+		u_dribbble_username:$('#u_dribbble_username').val(),
 		
 	} , function(data) {
 		//Update UI to confirm with user:

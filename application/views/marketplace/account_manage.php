@@ -15,7 +15,7 @@ $udata = $ufetch[0];
 <ul class="nav nav-pills nav-pills-primary" style="margin-top:10px;">
   <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-id-card" aria-hidden="true"></i> Overview</a></li>
   <li><a href="#pill2" data-toggle="tab"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
-  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-link" aria-hidden="true"></i> Social Links</a></li>
+  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-comments" aria-hidden="true"></i> Social Links</a></li>
   <li><a href="#pill4" data-toggle="tab"><i class="fa fa-university" aria-hidden="true"></i> Wire Payments</a></li>
 </ul>
 
@@ -35,11 +35,20 @@ $udata = $ufetch[0];
         </div>
         
         
-        <div class="title"><h4>Email</h4></div>
+        <div class="title"><h4>Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from community."></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="email" required id="u_email" value="<?= $udata['u_email'] ?>" class="form-control">
             <span class="material-input"></span>
         </div>
+        
+        
+        <div class="title"><h4>Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from community."></i></h4></div>
+        <div class="form-group label-floating is-empty">
+            <input type="tel" maxlength="30" required id="u_phone" value="<?= $udata['u_phone'] ?>" class="form-control">
+            <span class="material-input"></span>
+        </div>
+        
+        
         
         
         <div class="title"><h4>Profile Picture URL</h4></div>
@@ -111,7 +120,6 @@ $udata = $ufetch[0];
         	<span class="material-input"></span>
         </div>
         
-        
         <div class="title"><h4>Tangible Accomplishments <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Provide a list of your top 3-7 professional accomplishments as the first thing that would be displayed on your profile. You are encouraged to use actual numbers and metrics."></i> <span style="font-size:0.6em; color:#AAA;">(<a href="/guides/showdown_markup" target="_blank">Markup Support <i class="fa fa-info-circle"></i></a>)</span></h4></div>
 		<div class="form-group label-floating is-empty">
 		    <textarea class="form-control text-edit" rows="2" id="u_tangible_experience"><?= $udata['u_tangible_experience'] ?></textarea>
@@ -151,22 +159,27 @@ $udata = $ufetch[0];
     <div class="tab-pane" id="pill3" style="max-width:500px;">
     	
     	<p>Link social accounts you wish to share on your bootcamp page to allow student to learn more about you.</p>
+    	
+    	
         <div class="title"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Your Website <span id="ph_u_website_url"></span></h4></div>
         <p>Start with http:// or https://</p>
     	<input type="url" class="form-control" id="u_website_url" maxlength="255" value="<?= $udata['u_website_url'] ?>" />
         <script>trigger_link_watch('u_website_url','');</script>
-        <?php
+        
+                <?php
         $u_social_account = $this->config->item('u_social_account');
         foreach($u_social_account as $sa_key=>$sa){
             echo '<div class="title"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' Username <span id="ph_'.$sa_key.'"></span></h4></div>
     	<div class="input-group">
-          <span class="input-group-addon addon-lean">https://'.$sa['sa_prefix'].'</span>
+          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span>
           <input type="text" class="form-control" id="'.$sa_key.'" maxlength="100" value="'.$udata[$sa_key].'" />
         </div>';
-            echo '<script>trigger_link_watch("'.$sa_key.'","https://'.$sa['sa_prefix'].'");</script>';
+            echo '<script>trigger_link_watch("'.$sa_key.'","'.$sa['sa_prefix'].'");</script>';
         }
         ?>
         
+        <div class="title"><h4><i class="fa fa-skype" aria-hidden="true"></i> Skype Username</h4></div>
+    	<input type="text" class="form-control" id="u_skype_username" maxlength="100" value="<?= $udata['u_skype_username'] ?>" />
         
         
         <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></td></tr></table>
