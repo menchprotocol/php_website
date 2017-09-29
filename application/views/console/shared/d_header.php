@@ -83,7 +83,7 @@ $website = $this->config->item('website');
             	    echo '<ul class="nav">';
             	    echo '<li'.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['c_id'] ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/content')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/content" data-toggle="tooltip" title="'.$this->lang->line('cr_desc').'">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/content')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
