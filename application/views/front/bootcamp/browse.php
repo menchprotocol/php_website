@@ -24,18 +24,23 @@ foreach($bootcamps as $count=>$c){
 					<div class="card-description">By ';
     
     //Print admins:
-    foreach($c['c__cohorts'][0]['r__admins'] as $count2=>$admins){
-        if($count2>0){
+    $admin_count = 0;
+    foreach($c['c__admins'] as $admin){
+        if($admin['ba_team_display']!=='t'){
+            continue;
+        }
+        if($admin_count>0){
             echo ' & ';
         }
-        echo '<img src="'.$admins['u_image_url'].'" /> '.$admins['u_fname'].' '.$admins['u_lname'];
+        echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
+        $admin_count++;
     }
                      echo '</div>
 					<div class="footer">
                         <div class="price">
 							<h4>'.echo_price($c['c__cohorts'][0]['r_usd_price']).'</h4>
 						</div>
-                    	<div class="stats"><span '.( $c['c__cohorts'][0]['r_end_time'] ? 'data-toggle="tooltip" class="underdot" title="Ends '.time_format($c['c__cohorts'][0]['r_end_time'],1).(strlen($c['c__cohorts'][0]['r_closed_dates'])>0?' excluding '.$c['c__cohorts'][0]['r_closed_dates']:'').'"' : '' ).'>Starts <b>'.time_format($c['c__cohorts'][0]['r_start_time'],1).'</b></span></div>
+                    	<div class="stats"><span>Starts <b>'.time_format($c['c__cohorts'][0]['r_start_date'],1).'</b></span></div>
                     </div>
 
 				</div>

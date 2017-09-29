@@ -19,6 +19,7 @@ $website = $this->config->item('website');
 	<!-- CSS -->
     <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/lib/animate.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="/css/console/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
@@ -28,6 +29,7 @@ $website = $this->config->item('website');
 	<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
 	<script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
 	<script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="/js/console/material.min.js" type="text/javascript"></script>
 	<script src="/js/console/material-dashboard.js" type="text/javascript"></script>
 	<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
@@ -85,7 +87,7 @@ $website = $this->config->item('website');
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/community')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/community"><i class="fa fa-users" aria-hidden="true"></i><p>Community</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/students')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/students"><i class="fa fa-users" aria-hidden="true"></i><p>Students</p></a></li>';
                 	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/timeline')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/timeline"><i class="material-icons">timeline</i><p>Timeline</p></a></li>';
                 	    

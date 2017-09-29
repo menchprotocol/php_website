@@ -33,15 +33,10 @@ function echo_video($video_url){
 function echo_pace($c_full,$cohort_id=0){
     //Fetch the first pace:
     $r_pace_id = $c_full['c__cohorts'][$cohort_id]['r_pace_id'];
-    //Figure out length:
-    if($c_full['c__cohorts'][$cohort_id]['r_start_time'] && $c_full['c__cohorts'][$cohort_id]['r_end_time']){
-        $time_diff = time_diff($c_full['c__cohorts'][$cohort_id]['r_start_time'],$c_full['c__cohorts'][$cohort_id]['r_end_time']).' ';
-    } else {
-        $time_diff = null;
-    }
+    
     $CI =& get_instance();
     $r_pace_options = $CI->config->item('r_pace_options');
-    return '<span '.( $r_pace_options[$r_pace_id]['p_hours'] ? 'data-toggle="tooltip" class="underdot" title="'.$r_pace_options[$r_pace_id]['p_name'].' requires a commitment of '.$r_pace_options[$r_pace_id]['p_hours'].'"' : '' ).'><i class="fa fa-clock-o" aria-hidden="true"></i> '.$time_diff.$r_pace_options[$r_pace_id]['p_name'].' '.( $r_pace_options[$r_pace_id]['p_hours'] ? '' : echo_hours($c_full['c_time_estimate']) );
+    return '<span '.( $r_pace_options[$r_pace_id]['p_hours'] ? 'data-toggle="tooltip" class="underdot" title="'.$r_pace_options[$r_pace_id]['p_name'].' requires a commitment of '.$r_pace_options[$r_pace_id]['p_hours'].'"' : '' ).'><i class="fa fa-clock-o" aria-hidden="true"></i> '.$c_full['c__cohorts'][$cohort_id]['r__sprint_count'].' Weeks '.$r_pace_options[$r_pace_id]['p_name'].' '.( $r_pace_options[$r_pace_id]['p_hours'] ? '' : echo_hours($c_full['c_time_estimate']) );
 }
 
 function echo_title($title_string){
@@ -168,6 +163,28 @@ function load_object($object,$obj_limits){
 		
 }
 
+function echo_status_dropdown($object,$input_name,$current_status_id){
+    ?>
+    <input type="hidden" id="<?= $input_name ?>" value="<?= $current_status_id ?>" /> 
+    <div class="col-md-3 dropdown">
+    	<a href="#" class="btn btn-simple dropdown-toggle" id="ui_<?= $input_name ?>" data-toggle="dropdown">
+        	<?= status_bible($object,$current_status_id) ?>
+        	<b class="caret"></b>
+    	</a>
+    	<ul class="dropdown-menu">
+    		<?php 
+    		$statuses = status_bible($object);
+    		$count = 0;
+    		foreach($statuses as $intval=>$status){
+    		    $count++;
+    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.$status.'</a></li>';
+    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.$status.'</li>'; //For UI replacement
+    		}
+    		?>
+    	</ul>
+    </div>
+    <?php 
+}
 
 function status_bible($object=null,$status=null,$micro_status=false){
 	
@@ -217,7 +234,13 @@ function status_bible($object=null,$status=null,$micro_status=false){
 	
 	//For micro statuses
 	$status_micro_bible = array(
-	    'c' => array( //Challenges
+	    'c' => array( //Bootcamps
+	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
+	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
+	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
+	        -2	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[-2].': '.$o_desc[-2].'" aria-hidden="true"></i>',
+	    ),
+	    'r' => array( //Cohorts
 	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
 	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
 	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="left" title="Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
@@ -239,11 +262,10 @@ function status_bible($object=null,$status=null,$micro_status=false){
 			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'r' => array( //Runs
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					2	=> '<span class="label label-info" 		data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[2].'">'.$o_name[2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+				0 	=> '<span class="label label-default" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
+				1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+			    -2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
 			'i' => array( //Insights
 					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('i_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
@@ -256,6 +278,13 @@ function status_bible($object=null,$status=null,$micro_status=false){
 					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' was replaced by a new reference or '.$o_desc[-1].'">'.$o_name[-1].'</span>',
 					1	=> '<span class="label label-success" 	data-toggle="tooltip" title="'.$CI->lang->line('cr_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
 			),
+	    
+	       
+	    'ba' => array( //Bootcamp admins:
+    	    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" title="Access has been revoked">Revoke <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+    	    1 	=> '<span class="label label-default" 	data-toggle="tooltip" title="Contributors can grow the content library, answer student inquiries and view upcoming cohorts. They cannot modify bootcamp or cohort settings.">Contributor <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+	        2	=> '<span class="label label-success" 	data-toggle="tooltip" title="Admins have full access to all bootcamp features.">Admin <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
+    	),
 			
 			
 			/* ******************************
@@ -530,8 +559,26 @@ function time_diff($t,$second_tiome=null){
 
 
 function url_name($text){
-	//Cleans text and
-	return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,30);
+    //Cleans text and
+    return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,30);
+}
+
+function url_key($text){
+    //Cleans text:
+    $generated_key = str_replace(' ','',preg_replace("/[^a-zA-Z0\-]+/", "", str_replace(' ','-',strtolower($text))));
+
+    //Check for duplicates:
+    $CI =& get_instance();
+    $bootcamps = $CI->Db_model->c_full_fetch(array(
+        'c.c_url_key' => $generated_key,
+    ));
+    
+    if(count($bootcamps)>0){
+        //Ooops, we have a duplicate:
+        $generated_key = $generated_key.'-'.rand(0,99999);
+    }
+    
+    return $generated_key;
 }
 
 function one_two_explode($one,$two,$content){

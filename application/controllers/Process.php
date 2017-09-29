@@ -192,30 +192,155 @@ class Process extends CI_Controller {
 	 * r Cohorts
 	 ****************************** */
 	
-	//TODO...
-	function cohort_create($c_id=null){
-	    //Auth user and Load object:
-	    $udata = auth(2,1);
-	    
-	    //Are we updating an existing challenge or creating a new one?
-	    if($c_id){
-	        //Updating
-	        $bootcamp = load_object('c' , array(
-	            'c.c_id' => $c_id,
-	            'c.c_is_grandpa' => true,
+	
+	function cohort_create(){
+	    $udata = auth(2);
+	    if(!$udata){
+	        //Display error:
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
+	        //TODO make sure its monday
+	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
+	    } elseif(!isset($_POST['r_pace_id']) || intval($_POST['r_pace_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Select pace ID of light or higher.</span>');
+	    } elseif(!isset($_POST['r_c_id']) || intval($_POST['r_c_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing bootcamp ID.</span>');
+	    } else {
+	        
+	        if(!isset($_POST['r_usd_price']) || intval($_POST['r_usd_price'])<0){
+	            $_POST['r_usd_price'] = 0;
+	        }
+	        	        
+	        //Create new cohort:
+	        $cohort = $this->Db_model->r_create(array(
+	            'r_c_id' => intval($_POST['r_c_id']),
+	            'r_status' => 0, //Drafting
+	            'r_min_students' => 1, //Default
+	            'r_max_students' => 20, //Default
+	            'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
+	            'r_pace_id' => intval($_POST['r_pace_id']),
+	            'r_usd_price' => floatval($_POST['r_usd_price']),
 	        ));
 	        
-	    } else {
-	        //Creating a new challenge:
-	        
+	        if($cohort['r_id']>0){
+	            //Redirect:
+	            echo '<script> window.location = "/console/'.intval($_POST['r_c_id']).'/cohorts/'.$cohort['r_id'].'" </script>';
+	        } else {
+	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this bootcamp.</span>');
+	        }
 	    }
 	}
+	
+	/*
+	 *  r_start_date:$('#r_start_date').val(),
+	 r_pace_id:$('#r_pace_id').val(),
+	 r_usd_price:$('#r_usd_price').val(),
+	 
+	 r_id:$('#r_id').val(),
+	 :$('#r_min_students').val(),
+	 :$('#r_max_students').val(),
+	 :$('#r_closed_dates').val(),
+	 :$('#r_status').val(),
+	 
+	 * */
+	function cohort_edit(){
+	    
+	    //Auth user and check required variables:
+	    $udata = auth(2);
+	    if(!$udata){
+	        //Display error:
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
+	        //TODO make sure its monday
+	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
+	    } elseif(!isset($_POST['r_pace_id']) || intval($_POST['r_pace_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Select pace ID of light or higher.</span>');
+	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing cohort ID.</span>');
+	    } elseif(!isset($_POST['r_status'])){
+	        die('<span style="color:#FF0000;">Error: Missing status.</span>');
+	    }
+	    
+	    
+	    if(!isset($_POST['r_usd_price']) || intval($_POST['r_usd_price'])<0){
+	        $_POST['r_usd_price'] = 0;
+	    }
+	    if(!isset($_POST['r_min_students'])){
+	        $_POST['r_min_students'] = 1;
+	    }
+	    if(!isset($_POST['r_max_students'])){
+	        $_POST['r_max_students'] = 20;
+	    }
+	    if(!isset($_POST['r_closed_dates'])){
+	        $_POST['r_closed_dates'] = '';
+	    }
+	        
+	    
+	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
+	        'r_status' => intval($_POST['r_status']),
+	        'r_min_students' => intval($_POST['r_min_students']),
+	        'r_max_students' => intval($_POST['r_max_students']),
+	        'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
+	        'r_pace_id' => intval($_POST['r_pace_id']),
+	        'r_usd_price' => floatval($_POST['r_usd_price']),
+	        'r_closed_dates' => $_POST['r_closed_dates'],
+	    ));
+	    
+	    //TODO Save change history
+	    
+	    //Show result:
+	    die('<span style="color:#00CC00;">Saved</span>');
+	}
+	
+	
 	
 	
 	
 	/* ******************************
 	 * c Intents
 	 ****************************** */
+	
+	function bootcamp_create(){
+	    $udata = auth(2);
+	    if(!$udata){
+	        //Display error:
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['c_primary_objective']) || strlen($_POST['c_primary_objective'])<10){
+	        die('<span style="color:#FF0000;">Error: Primary objective must be 10 characters or longer.</span>');
+	    } else {
+	        
+	        //Create new bootcamp:
+	        $bootcamp = $this->Db_model->c_create(array(
+	            'c_creator_id' => $udata['u_id'],
+	            'c_url_key' => url_key(trim($_POST['c_primary_objective'])),
+	            'c_is_grandpa' => 't',
+	            'c_status' => 0, //Drafting
+	            'c_objective' => trim($_POST['c_primary_objective']),
+	        ));
+	        
+	        if(intval($bootcamp['c_id'])>0){
+	            
+	            //Assign permissions for this user:
+	            $admin_status = $this->Db_model->ba_create(array(
+	                'ba_creator_id' => $udata['u_id'],
+	                'ba_u_id' => $udata['u_id'],
+	                'ba_status' => 2, //Admin
+	                'ba_c_id' => $bootcamp['c_id'],
+	                'ba_team_display' => 't', //Show on landing page
+	            ));
+	            
+	            if(intval($admin_status['ba_id'])<=0){
+	                echo '<script> alert("There was an error while trying to add you as the bootcamp admin."); </script>';
+	            }
+	            
+	            //Redirect:
+	            echo '<script> window.location = "/console/'.$bootcamp['c_id'].'/content" </script>';
+	            
+	        } else {
+	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this bootcamp.</span>');
+	        }
+	    }
+	}
 	
 	function intent_create(){
 	    
@@ -285,6 +410,10 @@ class Process extends CI_Controller {
 	
 	function intent_edit(){
 	    
+	    if(!isset($_POST['save_c_url_key'])){
+	        $_POST['save_c_url_key'] = '';
+	    }
+	    
 	    //Auth user and check required variables:
 	    $udata = auth(2);
 	    if(!$udata){
@@ -299,11 +428,14 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Status is required.</span>');
 	    } elseif(!isset($_POST['save_c_status'])){
 	        die('<span style="color:#FF0000;">Error: Bootcamp status is Required.</span>');
-	    } elseif(!isset($_POST['save_c_url_key'])  || ($_POST['save_c_is_grandpa'] && strlen($_POST['save_c_url_key'])<=0)){
+	    } elseif($_POST['save_c_is_grandpa'] && strlen($_POST['save_c_url_key'])<=0){
 	        die('<span style="color:#FF0000;">Error: URL Key is Required.</span>');
 	    }
 	    
 	    //Not required variables:
+	    if(!isset($_POST['save_c_additional_goals'])){
+	        $_POST['save_c_additional_goals'] = '';
+	    }
 	    if(!isset($_POST['save_c_additional_goals'])){
 	        $_POST['save_c_additional_goals'] = '';
 	    }
@@ -319,9 +451,15 @@ class Process extends CI_Controller {
 	    if(!isset($_POST['save_c_user_says_statements'])){
 	        $_POST['save_c_user_says_statements'] = '';
 	    }
+	    if(!isset($_POST['save_c_image_url'])){
+	        $_POST['save_c_image_url'] = '';
+	    }
+	    if(!isset($_POST['save_c_video_url'])){
+	        $_POST['save_c_video_url'] = '';
+	    }
 	    
-	    //Now update the DB:
-	    $this->Db_model->c_update(intval($_POST['save_c_id']) , array(
+	    
+	    $save_array = array(
 	        'c_creator_id' => $udata['u_id'],
 	        'c_timestamp' => date("Y-m-d H:i:s"),
 	        'c_objective' => trim($_POST['save_c_objective']),
@@ -334,7 +472,12 @@ class Process extends CI_Controller {
 	        'c_time_estimate' => floatval($_POST['save_c_time_estimate']),
 	        'c_is_grandpa' => ( $_POST['save_c_is_grandpa'] ? 't' : 'f' ),
 	        'c_status' => intval($_POST['save_c_status']),
-	    ));
+	        'c_image_url' => trim($_POST['save_c_image_url']),
+	        'c_video_url' => trim($_POST['save_c_video_url']),
+	    );
+	    
+	    //Now update the DB:
+	    $this->Db_model->c_update(intval($_POST['save_c_id']) , $save_array );
 	    
 	    //Update Algolia:
 	    $this->Db_model->sync_algolia(intval($_POST['save_c_id']));

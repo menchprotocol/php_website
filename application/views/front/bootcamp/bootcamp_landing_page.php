@@ -2,7 +2,11 @@
 
 <div class="row">
     <div class="col-md-4 col-sm-4">
-       <div class="video-player"><?= echo_video($c['c_video_url']); ?></div>
+    	<?php if(strlen($c['c_video_url'])>0){ ?>
+        	<div class="video-player"><?= echo_video($c['c_video_url']); ?></div>
+        <?php } elseif(strlen($c['c_image_url'])>0){ ?>
+        	<div class="video-player"><img src="<?= $c['c_image_url'] ?>" style="width:100%;" /></div>
+        <?php } ?>
     </div>
     <div class="col-md-8 col-sm-8">
 		<h2 class="title" style="line-height:130%; margin-bottom:15px;"><?= echo_title($c['c_objective']) ?></h2>
@@ -59,16 +63,24 @@
             <div id="collapseMentors" class="panel-collapse collapse">
               <div class="panel-body">
                 <?php
-                foreach($c['c__cohorts'][0]['r__admins'] as $count2=>$admins){
-                    echo '<h4 class="userheader"><img src="'.$admins['u_image_url'].'" /> '.$admins['u_fname'].' '.$admins['u_lname'].'<span><img src="/img/flags/'.strtolower($admins['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admins['u_current_city'].'</span></h4>';
-                    echo '<p id="u_tangible_experience">'.$admins['u_tangible_experience'].'</p>';
-                    echo '<p id="u_bio">'.$admins['u_bio'].'</p>';
+                $admin_count = 0;
+                foreach($c['c__admins'] as $admin){
+                    if($admin['ba_team_display']!=='t'){
+                        continue;
+                    }
+                    if($admin_count>0){
+                        echo '<hr />';
+                    }
+                    
+                    echo '<h4 class="userheader"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
+                    echo '<p id="u_tangible_experience">'.$admin['u_tangible_experience'].'</p>';
+                    echo '<p id="u_bio">'.$admin['u_bio'].'</p>';
                     
                     //Any languages other than English?
-                    if(strlen($admins['u_language'])>0 && $admins['u_language']!=='en'){
+                    if(strlen($admin['u_language'])>0 && $admin['u_language']!=='en'){
                         $all_languages = $this->config->item('languages');
                         //They know more than enligh!
-                        $langs = explode(',',$admins['u_language']);
+                        $langs = explode(',',$admin['u_language']);
                         echo '<i class="fa fa-language ic-lrg" aria-hidden="true"></i>';
                         $count = 0;
                         foreach($langs as $lang){
@@ -82,16 +94,18 @@
                     
                     //Public profiles:
                     echo '<div class="public-profiles" style="margin-top:10px;">';
-                    if(strlen($admins['u_website_url'])>0){
-                        echo '<a href="'.$admins['u_website_url'].'" data-toggle="tooltip" title="Visit Website" target="_blank"><i class="fa fa-chrome" aria-hidden="true"></i></a>';
+                    if(strlen($admin['u_website_url'])>0){
+                        echo '<a href="'.$admin['u_website_url'].'" data-toggle="tooltip" title="Visit Website" target="_blank"><i class="fa fa-chrome" aria-hidden="true"></i></a>';
                     }
                     $u_social_account = $this->config->item('u_social_account');
                     foreach($u_social_account as $sa_key=>$sa){
-                        if(strlen($admins[$sa_key])>0){
-                            echo '<a href="'.$sa['sa_prefix'].$admins[$sa_key].$sa['sa_postfix'].'" data-toggle="tooltip" title="'.$sa['sa_name'].'" target="_blank">'.$sa['sa_icon'].'</a>';
+                        if(strlen($admin[$sa_key])>0){
+                            echo '<a href="'.$sa['sa_prefix'].$admin[$sa_key].$sa['sa_postfix'].'" data-toggle="tooltip" title="'.$sa['sa_name'].'" target="_blank">'.$sa['sa_icon'].'</a>';
                         }
                     }
                     echo '</div>';
+                    
+                    $admin_count++;
                 }
                 ?>
               </div>
@@ -127,7 +141,6 @@
             </div>
             <div id="collapseTimetable" class="panel-collapse collapse">
               <div class="panel-body">
-                <p><?= '<span '.( $c['c__cohorts'][0]['r_end_time'] ? 'data-toggle="tooltip" class="underdot" title="Ends '.time_format($c['c__cohorts'][0]['r_end_time'],1).(strlen($c['c__cohorts'][0]['r_closed_dates'])>0?' excluding '.$c['c__cohorts'][0]['r_closed_dates']:'').'"' : '' ).'>Starts <b>'.time_format($c['c__cohorts'][0]['r_start_time'],1).'</b></span>' ?></p>
                 <p><?= echo_pace($c) ?></p>
                 <p><?= echo_price($c['c__cohorts'][0]['r_usd_price']); ?></p>
               </div>
@@ -135,8 +148,7 @@
           </div>
           
           
-          
-          
+          <?php /*
           <div class="panel panel-border panel-default" name="collapseFAQ">
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFAQ" aria-controls="collapseFAQ">
@@ -152,7 +164,9 @@
               </div>
             </div>
           </div>
-
+          */?>
+          
+          
         </div>
         </div><!--  end acordeon -->
 
@@ -161,7 +175,7 @@
                 
             </div>
             <div class="col-md-6 col-sm-6">
-                <a href="javascript:alert('This takes user to final enrollment confirmation page with stripe payment to finalize checkout.');" href2="/<?= $c['c_url_key'] ?>/enroll" class="btn btn-primary btn-round pull-right">Enroll <u><?= time_format($c['c__cohorts'][0]['r_start_time'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+                <a href="javascript:alert('This takes user to final enrollment confirmation page with stripe payment to finalize checkout.');" href2="/<?= $c['c_url_key'] ?>/enroll" class="btn btn-primary btn-round pull-right">Enroll <u><?= time_format($c['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
             </div>
         </div>
     </div>

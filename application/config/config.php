@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.1992,
+		'version' => 0.20,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -575,7 +575,7 @@ $config['r_pace_options'] = array(
     ),
     4 => array(
         'p_name' => 'Intense Pace',
-        'p_hours' => '40+ hours/week',
+        'p_hours' => '~48 hours/week',
     ),
 );
 

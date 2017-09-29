@@ -12,9 +12,16 @@ if(isset($cr['inbound']) && count($cr['inbound'])>0){
 echo '</div>';
 */
 
+$edit_level_name = array(
+    1 => 'Bootcamp',
+    2 => 'Sprint',
+    3 => 'Objective',
+);
+
 if($cr['c']['c_id']==$bootcamp['c_id'] || !isset($cr['inbound'])){
     $level = 1;
-    echo '<ol class="breadcrumb"><li>'.$this->lang->line('cr_name').'</li></ol>';
+    echo '<ol class="breadcrumb"><li>'.$this->lang->line('c_name').'</li></ol>';
+    echo '<h1>'.echo_title($cr['c']['c_objective']).'</h1>';
 } else {
     
     //print_r($cr['inbound']);
@@ -24,7 +31,7 @@ if($cr['c']['c_id']==$bootcamp['c_id'] || !isset($cr['inbound'])){
         if($relation['cr_outbound_id']==$cr['c']['c_id'] && ($relation['cr_inbound_id']==$bootcamp['c_id'])){
             //Found this as level 2:
             $level = 2;
-            echo '<ol class="breadcrumb"><li><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_name').'</a></li><li>'.echo_level(2, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
+            echo '<ol class="breadcrumb"><li><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('c_name').'</a></li><li>'.echo_level(2, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
             break;
         }
     }    
@@ -47,15 +54,17 @@ if($cr['c']['c_id']==$bootcamp['c_id'] || !isset($cr['inbound'])){
                 ));
                 
                 //Print breadcrumb:
-                echo '<ol class="breadcrumb"><li><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_name').'</a></li><li><a href="/console/'.$bootcamp['c_id'].'/content/'.$relation['cr_inbound_id'].'">'.echo_level(2, $level_2_relation[0]['cr_outbound_rank']).': '.$level_2[0]['c_objective'].'</a></li><li>'.echo_level(3, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
+                echo '<ol class="breadcrumb"><li><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('c_name').'</a></li><li><a href="/console/'.$bootcamp['c_id'].'/content/'.$relation['cr_inbound_id'].'">'.echo_level(2, $level_2_relation[0]['cr_outbound_rank']).': '.$level_2[0]['c_objective'].'</a></li><li>'.echo_level(3, $relation['cr_outbound_rank']).': '.$cr['c']['c_objective'].'</li></ol>';
                 
                 break;
             }
         }
     }
+    
+    echo '<h1>'.echo_title($cr['c']['c_objective']).'</h1>';
 }
 
-echo '<h1>'.echo_title($cr['c']['c_objective']).'</h1>';
+
 echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
 
 ?>
@@ -63,7 +72,7 @@ echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
 <ul class="nav nav-pills nav-pills-primary" style="margin-top:10px;">
   <?= ( $level<3 ? '<li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-list-ol" aria-hidden="true"></i> '.( $level==1 ? 'Weekly Sprints' : 'Sprint Objectives' ).'</a></li>' : '' ) ?>
   <!-- <li><a href="#pill2" data-toggle="tab" onclick="load_message_sorting()"><?= $this->lang->line('i_icon') ?> <?= $this->lang->line('i_pname') ?></a></li> -->
-  <li <?= ( $level==3 ? 'class="active"' : '' ) ?>><a href="#pill4" data-toggle="tab"><i class="fa fa-pencil" aria-hidden="true"></i> <?= $this->lang->line('edit').' '.str_replace('data-toggle="tooltip"','',status_bible('c',$cr['c']['c_status'],1)) ?></a></li>
+  <li <?= ( $level==3 ? 'class="active"' : '' ) ?>><a href="#pill4" data-toggle="tab"><i class="fa fa-pencil" aria-hidden="true"></i> <?= $this->lang->line('edit').' '.$edit_level_name[$level].' '.str_replace('data-toggle="tooltip"','',status_bible('c',$cr['c']['c_status'],1)) ?></a></li>
 </ul>
 
 
@@ -214,52 +223,68 @@ echo '<input type="hidden" id="next_level" value="'.($level+1).'" >';
             
             
             <div class="title"><h4>Status</h4></div>
-            <input type="hidden" id="save_c_status" value="<?= $cr['c']['c_status'] ?>" /> 
-            <div class="col-md-3 dropdown">
-            	<a href="#" class="btn btn-simple dropdown-toggle" id="ui_save_c_status" data-toggle="dropdown">
-                	<?= status_bible('c',$cr['c']['c_status']) ?>
-                	<b class="caret"></b>
-            	</a>
-            	<ul class="dropdown-menu">
-            		<?php 
-            		$statuses = status_bible('c');
-            		$count = 0;
-            		foreach($statuses as $intval=>$status){
-            		    $count++;
-            		    echo '<li><a href="javascript:update_dropdown(\'save_c_status\','.$intval.','.$count.');">'.$status.'</a></li>';
-            		    echo '<li style="display:none;" id="save_c_status_'.$count.'">'.$status.'</li>'; //For UI replacement
-            		}
-            		?>
-            	</ul>
-            </div>
-            
-            
-            
-            
+            <?php echo_status_dropdown('c','save_c_status',$cr['c']['c_status']); ?>
            
             
             
             
             
-            
-            <div class="title"><h4>Mench Marketplace</h4></div>
-            
-            <div class="checkbox">
+            <?php if($cr['c']['c_is_grandpa']=='t'){ ?>
+            <div class="checkbox" style="display:none;">
             	<label>
             		<input type="checkbox" id="c_is_grandpa" <?= ($cr['c']['c_is_grandpa']=='t' ? 'disabled checked' : '') ?> />
             		Publish to Marketplace <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Listing on the marketplace would enhance this bootcamp with the cohorts module which enables student registration, reporting & more."></i>
             	</label>
             </div>
             
-            <div class="title req_c_is_grandpa" style="margin-top:30px; <?= ($cr['c']['c_is_grandpa']=='t' ? 'display:block;' : '') ?>"><h4>Marketplace URL <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Used as the URL of this bootcamp for students to view and register."></i></h4></div>
+            <div class="title req_c_is_grandpa" style="margin-top:30px; <?= ($cr['c']['c_is_grandpa']=='t' ? 'display:block;' : '') ?>"><h4>Bootcamp URL Key <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Used as the URL of this bootcamp for students to view and register."></i></h4></div>
 			<div class="form-group label-floating is-empty req_c_is_grandpa" style="<?= ($cr['c']['c_is_grandpa']=='t' ? 'display:block;' : '') ?>">
 			    <input type="text" id="save_c_url_key" style="text-transform: lowercase;" value="<?= $cr['c']['c_url_key'] ?>" class="form-control">
 			    <span class="material-input"></span>
 			    <p class="extra-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Warning: URL changes break previously shared links.</p>
 			</div>
-            
-		
-		  
+			
+			
+			<div class="title"><h4>Bootcamp Image URL (w/h ratio of 1.78) <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The image for the marketplace."></i></h4></div>
+			<div class="form-group label-floating is-empty">
+			    <input type="url" id="c_image_url" value="<?= $cr['c']['c_image_url'] ?>" class="form-control">
+			    <span class="material-input"></span>
+			</div>
+			
+			<div class="title"><h4>Bootcamp Video URL (2-3 minutes max) <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The video that would be displayed on the landing page of the bootcamp that explains why students should join your bootcamp."></i></h4></div>
+			<div class="form-group label-floating is-empty">
+			    <input type="url" id="c_video_url" value="<?= $cr['c']['c_video_url'] ?>" class="form-control">
+			    <span class="material-input"></span>
+			</div>
+			
+			
+			<div class="title"><h4>Bootcamp Admins <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Define who can access and manage this bootcamp."></i></h4></div>
+			
+			<table class="table">
+    			<thead>
+        			<tr>
+        				<th>Person</th>
+        				<th>Role</th>
+        				<th>Team Display <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Whether this person is shown in the bootcamp landing page as a team member."></i></th>
+        				<th>Actions</th>
+        			</tr>
+    			</thead>
+    			<tbody>
+    			<?php 
+    			$admins = $this->Db_model->c_admins($bootcamp['c_id']);
+    			foreach($admins as $admin){
+    			    echo '<tr> <td>'.$admin['u_fname'].' '.$admin['u_lname'].'</td> <td>'.status_bible('ba',$admin['ba_status']).'</td> <td>'.( $admin['ba_team_display']=='t' ? 'Yes' : 'No' ).'</td> <td><a href="javascript:ba_open_modify('.$admin['ba_id'].')" data-toggle="tooltip" title="Modify admin role and team display status"><i class="fa fa-pencil-square" aria-hidden="true"></i></a> &nbsp; &nbsp; <a href="javascript:ba_initiate_revoke('.$admin['ba_id'].')" data-toggle="tooltip" title="Revoke admin status"><i class="fa fa-ban" aria-hidden="true"></i></a></td> </tr>';
+    			}
+    			
+    			echo '<tr> <td><input type="email" id="new_admin_email" class="form-control" placeholder="New admin email" /></td> <td>';
+    			echo_status_dropdown('ba','new_admin_role',2);
+    			echo '</td> <td><div class="checkbox"><label><input type="checkbox" id="new_admin_team_display"></label></div></td> <td><a href="javascript:ba_add()"><i class="fa fa-plus" aria-hidden="true"></i> Add Admin</a></td> </tr>';
+    			?>
+    			</tbody>
+    		</table>
+
+            <?php } ?>
+
 		    <div class="row" style="clear:both;">
 			  <div class="col-xs-6"><a href="javascript:save_c();" class="btn btn-primary">Save</a> <span id="save_c_results"></span></div>
 			  <div class="col-xs-6 action-right">

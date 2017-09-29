@@ -81,10 +81,11 @@ $route['console/help/showdown_markup'] 			= "console/showdown_markup";
 $route['console/account'] 						= "console/v_account";
 $route['console/(:num)/content/(:num)'] 		= "console/v_content/$1/$2";
 $route['console/(:num)/content'] 				= "console/v_content/$1";
-$route['console/(:num)/community'] 				= "console/v_community/$1";
+$route['console/(:num)/students'] 				= "console/v_students/$1";
 $route['console/(:num)/timeline'] 				= "console/v_timeline/$1";
 $route['console/(:num)/cohorts/(:num)'] 		= "console/v_cohort/$1/$2";
 $route['console/(:num)/cohorts'] 				= "console/v_all_cohorts/$1";
+$route['console/(:num)/raw'] 				    = "console/raw/$1"; //For dev purposes
 $route['console/(:num)'] 			            = "console/v_dashboard/$1";
 $route['console'] 								= "console/v_all_bootcamps";
 

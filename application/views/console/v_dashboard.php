@@ -1,4 +1,3 @@
-<ol class="breadcrumb"><li>Dashboard</li></ol>
 <h1>Dashboard</h1>
 <br />
 
@@ -26,7 +25,7 @@
     
     <div class="row">
       <div class="col-md-3"><b>Next Cohort Start</b></div>
-      <div class="col-md-9"><?= ( isset($bootcamp['runs'][0]['r_start_time']) ? time_format($bootcamp['runs'][0]['r_start_time'],1) : '---'  )  ?></div>
+      <div class="col-md-9"><?= ( isset($bootcamp['runs'][0]['r_start_date']) ? time_format($bootcamp['runs'][0]['r_start_date'],1) : '---'  )  ?></div>
     </div>
     
     <div class="row">

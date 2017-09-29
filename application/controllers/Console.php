@@ -9,6 +9,13 @@ class Console extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
+	function raw($c_id){
+	    print_r(load_object('c' , array(
+	        'c.c_id' => $c_id,
+	        'c.c_is_grandpa' => true,
+	    )));
+	}
+	
 	/* ******************************
 	 * User & Help
 	 ****************************** */
@@ -66,15 +73,19 @@ class Console extends CI_Controller {
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
-				'title' => 'Bootcamps',
+			'title' => 'My Bootcamps',
 		));
 		$this->load->view('console/v_all_bootcamps' , array(
-				'challenges' => $this->Db_model->c_fetch(array(
-				    'c.c_status >=' => 0,
-					'c.c_is_grandpa' => true, //Not sub challenges
-				)),
+		    'bootcamps' => $this->Db_model->u_bootcamps(array(
+		        'ba.ba_u_id' => $udata['u_id'],
+		        'ba.ba_status >=' => 0,
+		        'c.c_status >=' => 0,
+		        'c.c_is_grandpa' => true, //Not sub challenges
+		    )),
 		));
-		$this->load->view('console/shared/d_footer');
+		$this->load->view('console/shared/d_footer' , array(
+		    'load_view' => 'console/modals/new_bootcamp',
+		));
 	}
 	
 	
@@ -163,12 +174,16 @@ class Console extends CI_Controller {
 	    //Load view
 	    $this->load->view('console/shared/d_header' , $view_data);
 	    $this->load->view('console/v_all_cohorts' , $view_data);
-	    $this->load->view('console/shared/d_footer');
+	    $this->load->view('console/shared/d_footer' , array(
+	        'load_view' => 'console/modals/new_cohort',
+	        'bootcamp' => $bootcamp,
+	    ));
 	}
 	
 
 	
 	function v_cohort($c_id,$r_id){
+	    
 		//Authenticate:
 		$udata = auth(2,1);
 		
@@ -180,11 +195,11 @@ class Console extends CI_Controller {
 		//This could be a new run, or editing an existing run:
 		$run = filter($bootcamp['runs'],'r_id',$r_id);
 		if(!$run){
-		    redirect_message('/console/'.$c_id , '<div class="alert alert-danger" role="alert">Invalid run.</div>');
+		    redirect_message('/console/'.$c_id.'/cohorts' , '<div class="alert alert-danger" role="alert">Invalid cohort ID.</div>');
 		}
 		
 		$view_data = array(
-		    'title' => 'Cohort #'.$r_id.' | '.$bootcamp['c_objective'],
+		    'title' => time_format($run['r_start_date'],1).' Cohort Settings | '.$bootcamp['c_objective'],
 		    'bootcamp' => $bootcamp,
 		    'run' => $run,
 		);
@@ -197,7 +212,7 @@ class Console extends CI_Controller {
 	
 	
 	
-	function v_community($c_id){
+	function v_students($c_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(2,1);
 	    
@@ -208,10 +223,10 @@ class Console extends CI_Controller {
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Community | '.$bootcamp['c_objective'],
+	        'title' => 'Students | '.$bootcamp['c_objective'],
 	        'bootcamp' => $bootcamp,
 	    ));
-	    $this->load->view('console/v_community' , array(
+	    $this->load->view('console/v_students' , array(
 	        'bootcamp' => $bootcamp,
 	    ));
 	    $this->load->view('console/shared/d_footer');

@@ -153,9 +153,25 @@ function update_account(){
     });
 }
 
+//Bootcamp admin management features
+function ba_add(){
+	alert('feature under development');
+}
+function ba_open_modify(){
+	alert('feature under development');
+}
+function ba_initiate_revoke(){
+	alert('feature under development');
+}
+  
+
 function save_c(){
 	
-	var is_on_marketplace = document.getElementById('c_is_grandpa').checked;
+	if($("#c_is_grandpa").length == 0) {
+		var is_on_marketplace = false;
+	} else {
+		var is_on_marketplace = document.getElementById('c_is_grandpa').checked;
+	}	
 	
 	//JS Check for the required fields:
 	if(!$('#save_c_objective').val().length){
@@ -179,6 +195,8 @@ function save_c(){
 		save_c_time_estimate:$('#save_c_time_estimate').val(),
 		save_c_is_grandpa:( is_on_marketplace ? 1 : 0 ),
 		save_c_status:$('#save_c_status').val(),
+		save_c_image_url:$('#c_image_url').val(),
+		save_c_video_url:$('#c_video_url').val(),
 		save_c_additional_goals:$('#save_c_additional_goals').val(),
 		save_c_todo_overview:$('#save_c_todo_overview').val(),
 		save_c_todo_bible:$('#save_c_todo_bible').val(),
@@ -191,6 +209,65 @@ function save_c(){
 		//Disapper in a while:
 		setTimeout(function() {
 			$('#save_c_results').fadeOut();
+	    }, 15000);
+    });
+}
+
+
+function c_process_create(){
+	//Show processing:
+	$( "#new_bootcam_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
+	
+	//Send for processing:
+	$.post("/process/bootcamp_create", {c_primary_objective:$('#c_primary_objective').val()}, function(data) {
+		//Append data to view:
+		$( "#new_bootcam_result" ).html(data).hide().fadeIn();
+	});
+}
+
+
+
+function r_process_create(){
+	//Show processing:
+	$( "#new_cohort_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
+	
+	//Send for processing:
+	$.post("/process/cohort_create", {
+		
+		r_c_id:$('#r_c_id').val(), 
+		r_start_date:$('#r_start_date').val(), 
+		r_pace_id:$('#r_pace_id').val(), 
+		r_usd_price:$('#r_usd_price').val(),
+		
+	}, function(data) {
+		//Append data to view:
+		$( "#new_cohort_result" ).html(data).hide().fadeIn();
+	});
+}
+
+function save_r(){
+	//Show spinner:
+	$('#save_r_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
+	
+	$.post("/process/cohort_edit", {
+		
+		r_start_date:$('#r_start_date').val(), 
+		r_pace_id:$('#r_pace_id').val(), 
+		r_usd_price:$('#r_usd_price').val(),
+		
+		r_id:$('#r_id').val(),
+		r_min_students:$('#r_min_students').val(),
+		r_max_students:$('#r_max_students').val(),
+		r_closed_dates:$('#r_closed_dates').val(),
+		r_status:$('#r_status').val(),
+		
+	} , function(data) {
+		//Update UI to confirm with user:
+		$('#save_r_results').html(data).hide().fadeIn();
+		
+		//Disapper in a while:
+		setTimeout(function() {
+			$('#save_r_results').fadeOut();
 	    }, 15000);
     });
 }
@@ -510,6 +587,8 @@ function msg_save_edit(i_id){
 	});
 }
 
+
+
 $(document).ready(function() {
 	
 	//Bootcamp Wiki section:
@@ -520,6 +599,17 @@ $(document).ready(function() {
         	$('.req_c_is_grandpa').fadeOut();
         }
     });
+	
+	//Start date picker:
+	$( function() {
+	    $( "#r_start_date" ).datepicker({
+	    	minDate : 2,
+	    	beforeShowDay: function(date){ 
+	    		  var day = date.getDay(); 
+	    		  return [day == 1,""];
+	    	}
+		});
+	});
 	
 	//Adjust #accordion after open/close to proper view point:
 	$('#accordion').on('shown.bs.collapse', function (e) {

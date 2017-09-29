@@ -138,14 +138,41 @@ class Db_model extends CI_Model {
 	}
 	
 	function u_update($user_id,$update_columns){
-		//Update first
-		$this->db->where('u_id', $user_id);
-		$this->db->update('v5_users', $update_columns);
-		//Return new row:
-		$users = $this->u_fetch(array(
-				'u_id' => $user_id
-		));
-		return $users[0];
+	    //Update first
+	    $this->db->where('u_id', $user_id);
+	    $this->db->update('v5_users', $update_columns);
+	    //Return new row:
+	    $users = $this->u_fetch(array(
+	        'u_id' => $user_id
+	    ));
+	    return $users[0];
+	}
+	
+	
+	function c_admins($c_id){
+	    //Fetch the admins of the bootcamps
+	    $this->db->select('*');
+	    $this->db->from('v5_users u');
+	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_u_id = u.u_id');
+	    $this->db->where('ba.ba_status >=',0);
+	    $this->db->where('ba.ba_c_id',$c_id);
+	    $this->db->where('u.u_status >=',0);
+	    $this->db->order_by('ba.ba_status','DESC');
+	    $this->db->order_by('ba.ba_team_display','DESC');
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
+	
+	function u_bootcamps($match_columns){
+	    $this->db->select('*');
+	    $this->db->from('v5_intents c');
+	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_c_id = c.c_id');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    return $q->result_array();
 	}
 	
 	
@@ -325,7 +352,7 @@ class Db_model extends CI_Model {
 			$this->db->where($key,$value);
 		}
 		$this->db->group_by('r.r_id');
-		$this->db->order_by('r.r_start_time','ASC');
+		$this->db->order_by('r.r_start_date','ASC');
 		$q = $this->db->get();
 		$runs = $q->result_array();
 		
@@ -335,11 +362,11 @@ class Db_model extends CI_Model {
 		        'ru.ru_status <'	=> 2, //TODO Review: Regular students
 		        'u.u_status <'		=> 2, //TODO Review: Regular students
 		    ));
-		    $runs[$key]['r__admins'] = $this->Db_model->ru_fetch(array(
-    			'ru.ru_r_id'	    => $value['r_id'],
-				'ru.ru_status >='	=> 2, //TODO Review: 2 & above are admins
-			    'u.u_status >='		=> 2, //TODO Review: Admin users
-			));
+		    
+		    $runs[$key]['r__sprint_count'] = count($this->Db_model->cr_outbound_fetch(array(
+		        'cr.cr_inbound_id' => $value['r_c_id'],
+		        'cr.cr_status >=' => 0,
+		    )));
 		}
 		
 		return $runs;
@@ -378,10 +405,13 @@ class Db_model extends CI_Model {
 	    
 	    //Now append the runs and count users per run:
 	    foreach($bootcamps as $key=>$c){
+	        //Fetch cohorts:
 	        $bootcamps[$key]['c__cohorts'] = $this->r_fetch(array(
 	            'r.r_c_id' => $c['c_id'],
 	            'r.r_status >=' => 0,
 	        ));
+	        //Fetch admins:
+	        $bootcamps[$key]['c__admins'] =  $this->Db_model->c_admins($c['c_id']);
 	    }
 	    
 	    return $bootcamps;
@@ -491,9 +521,28 @@ class Db_model extends CI_Model {
 	}
 	
 	function c_update($c_id,$update_columns){
-		$this->db->where('c_id', $c_id);
-		$this->db->update('v5_intents', $update_columns);
-		return $this->db->affected_rows();
+	    $this->db->where('c_id', $c_id);
+	    $this->db->update('v5_intents', $update_columns);
+	    return $this->db->affected_rows();
+	}
+	
+	function r_update($r_id,$update_columns){
+	    $this->db->where('r_id', $r_id);
+	    $this->db->update('v5_cohorts', $update_columns);
+	    return $this->db->affected_rows();
+	}
+	
+	
+	
+	function r_create($insert_columns){
+	    
+	    //Lets now add:
+	    $this->db->insert('v5_cohorts', $insert_columns);
+	    
+	    //Fetch inserted id:
+	    $insert_columns['r_id'] = $this->db->insert_id();
+	    
+	    return $insert_columns;
 	}
 	
 	function c_create($insert_columns){
@@ -509,7 +558,10 @@ class Db_model extends CI_Model {
 			$insert_columns['c_is_grandpa'] = 'f';
 		}
 		if(!isset($insert_columns['c_algolia_id'])){
-			$insert_columns['c_algolia_id'] = 0;
+		    $insert_columns['c_algolia_id'] = 0;
+		}
+		if(!isset($insert_columns['c_ct_id'])){
+		    $insert_columns['c_ct_id'] = 0;
 		}
 		
 		//Lets now add:
@@ -525,6 +577,30 @@ class Db_model extends CI_Model {
 	/* ******************************
 	 * Other
 	 ****************************** */
+	
+	function ba_create($insert_columns){
+	    
+	    //Missing anything?
+	    if(!isset($insert_columns['ba_timestamp'])){
+	        $insert_columns['ba_timestamp'] = date("Y-m-d H:i:s");
+	    }
+	    if(!isset($insert_columns['ba_status'])){
+	        $insert_columns['ba_status'] = 2; //Admin
+	    }
+	    if(!isset($insert_columns['ba_team_display'])){
+	        $insert_columns['ba_team_display'] = 't'; //Show this person
+	    }
+	    
+	    //TODO Validate required fields here... (like ba_c_id, etc...)
+	    
+	    //Lets now add:
+	    $this->db->insert('v5_bootcamp_admins', $insert_columns);
+	    
+	    //Fetch inserted id:
+	    $insert_columns['ba_id'] = $this->db->insert_id();
+	    
+	    return $insert_columns;
+	}
 	
 	function log_engagement($link_data){
 		

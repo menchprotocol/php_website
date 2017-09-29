@@ -1,0 +1,40 @@
+<!-- Modal Core -->
+<div class="modal fade" id="newBootcampModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">New Bootcamp</h3>
+      </div>
+      <div class="modal-body">
+        	<div class="title"><h4>Primary Objective</h4></div>
+			<div class="form-group label-floating is-empty">
+			    <input type="text" id="c_primary_objective" placeholder="Get hired as entry-level web developer" class="form-control" />
+			    <span class="material-input"></span>
+			</div>
+			<div id="new_bootcam_result"></div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:c_process_create()" type="button" class="btn btn-primary">Create</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+	$('#newBootcampModal').on('shown.bs.modal', function () {
+		$('#c_primary_objective').focus();
+	});
+});
+
+$('#c_primary_objective').bind("enterKey",function(e){
+	c_process_create();
+});
+$('#c_primary_objective').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+    	c_process_create();
+    }
+});
+</script>

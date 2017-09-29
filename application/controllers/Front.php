@@ -97,8 +97,10 @@ class Front extends CI_Controller {
 	    ));
 	    if(!isset($bootcamps[0])){
 	        //Invalid key, redirect back:
-	        redirect_message('/bootcamps','Invalid bootcamp URL.');
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
+
+
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'landing_page' => 'front/splash/product_splash',
