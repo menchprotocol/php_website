@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.20,
+		'version' => 0.22,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -556,6 +556,13 @@ $config['countries_all'] = array(
     "ZW" => "Zimbabwe"
 );
 
+
+$config['level_names'] = array(
+    1 => 'Bootcamp',
+    2 => 'Sprint',
+    3 => 'Week Tasks',
+);
+
 $config['r_pace_options'] = array(
     0 => array(
         'p_name' => 'Instant',
@@ -570,19 +577,12 @@ $config['r_pace_options'] = array(
         'p_hours' => '~12 hours/week',
     ),
     3 => array(
-        'p_name' => 'Part Time Pace',
+        'p_name' => 'Part Time',
         'p_hours' => '~24 hours/week',
     ),
     4 => array(
-        'p_name' => 'Intense Pace',
+        'p_name' => 'Immersive',
         'p_hours' => '~48 hours/week',
-    ),
-);
-
-$config['p_objects'] = array(
-    1 => array(
-        'o_name' => 'Mench Dashboard',
-        'o_code' => 'Mench Dashboard',
     ),
 );
 

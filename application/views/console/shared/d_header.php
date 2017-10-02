@@ -19,7 +19,7 @@ $website = $this->config->item('website');
 	<!-- CSS -->
     <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/lib/animate.css" rel="stylesheet" />
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="/css/lib/jquery-ui.min.css" rel="stylesheet" />
     <link href="/css/console/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
     <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
@@ -28,8 +28,8 @@ $website = $this->config->item('website');
     <!-- Core JS Files -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
 	<script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
+	<script src="/js/lib/jquery-ui.min.js" type="text/javascript"></script>
 	<script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script src="/js/console/material.min.js" type="text/javascript"></script>
 	<script src="/js/console/material-dashboard.js" type="text/javascript"></script>
 	<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
@@ -42,7 +42,7 @@ $website = $this->config->item('website');
 
 	<div class="wrapper" id="console">
 	
-		<nav class="navbar navbar-transparent navbar-absolute" style="background-color:#8d8d8b !important;">
+		<nav class="navbar navbar-transparent navbar-absolute">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse">
@@ -51,62 +51,113 @@ $website = $this->config->item('website');
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<span class="navbar-brand dashboard-logo"><a href="/console"><img src="/img/bp_48.png" /><span><?= $website['name'] ?></span></a></span>
+					<span class="navbar-brand dashboard-logo">
+						<a href="/console">
+						<img src="/img/bp_48.png" style="margin-top:-11px !important;" />
+						<span><?= $website['name'] ?></span>
+						</a>
+						<!-- <input type="text" placeholder="Search"> -->
+					</span>
 				</div>
 				
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/console/account"><i class="fa fa-user" aria-hidden="true"></i> <?= $this->lang->line('my_profile') ?></a></li>
-						<!-- <li><a href="/console/support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li> -->
-						<li><a href="/process/logout"><i class="fa fa-power-off" aria-hidden="true"></i> <?= $this->lang->line('logout') ?></a></li>
+						<!-- <li><a href="/console/support"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Support</span></a></li> -->
+						<li><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> Account</a></li>
+						<li><a href="/process/logout"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></li>
 					</ul>
-					<?php /*
-					<form class="navbar-form navbar-left" role="search">
-						<div class="form-group  is-empty">
-                        	<input type="text" class="form-control" placeholder="Search">
-                        	<span class="material-input"></span>
-						</div>
-                    </form>
-                    */ ?>
 				</div>
 			</div>
 		</nav>
 		
 	    <div class="sidebar" id="mainsidebar" data-color="purple">
 	    	<div class="sidebar-wrapper">
+	    	
+	    		<?php 
+	    		if(isset($bootcamp)){
+	    		    echo '<div class="left-li-title">'.status_bible('c',$bootcamp['c_status'],1).' '.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
+	    		}
+	    		?>
+	    		<ul class="nav">
+	    		
+	    			
+	    			<?php /*
+	    			<li>
+                        <a data-toggle="collapse" href="#bootcampList" class="left-navi-title collapsed" aria-expanded="false">
+                            <?= (isset($bootcamp) ? $bootcamp['c_objective'] : 'Select Bootcamp' ) ?>
+                            <b class="caret"></b>
+                        </a>
+                        <div class="collapse" id="bootcampList" aria-expanded="false" style="height: 0px;">
+                            <ul class="nav">
+                           		<?php
+                           		//Fetch all bootcamps for this user:
+                           		$u_bootcamps = $this->Db_model->u_bootcamps(array(
+                               		'ba.ba_u_id' => $udata['u_id'],
+                               		'ba.ba_status >=' => 0,
+                               		'c.c_status >=' => 0,
+                               		'c.c_is_grandpa' => true, //Not sub challenges
+                           		));
+                           		
+                           		foreach($u_bootcamps as $ub){
+                           		    if(isset($bootcamp) && $ub['c_id']==$bootcamp['c_id']){
+                           		        continue;
+                           		    }
+                           		    
+                           		    echo '<li><a href="/console/'.$ub['c_id'].'" class="left-navi-title">'.$ub['c_objective'].'</a></li>';
+                           		}
+								
+								echo '<li><a href="/marketplace/run/new"><i class="fa fa-plus"></i> New Bootcamp</a></li>';
+								?>
+                            </ul>
+                        </div>
+                    </li>
+                    */?>
+                    
             	<?php
-            	if(isset($bootcamp) && $bootcamp){
+            	if(isset($bootcamp)){
             	    
-            	    echo '<h1 class="c_objective" style="margin:15px 10px 10px 15px;">'.echo_title($bootcamp['c_objective']).'</h1>';
-            	    echo '<input type="hidden" id="c_id" value="'.$this->uri->segment(2, 0).'" />';
+            	    echo '<li  class="li-sep '.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['c_id'] ? 'active' : '' ).'"><a href="/console/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<ul class="nav">';
-            	    echo '<li'.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['c_id'] ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
-            	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/content')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/content">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/curriculum')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/curriculum">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/students')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/students"><i class="fa fa-users" aria-hidden="true"></i><p>Students</p></a></li>';
                 	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/timeline')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/timeline"><i class="material-icons">timeline</i><p>Timeline</p></a></li>';
-                	    
-                	    echo '<li><a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
-            		echo '</ul>';
-        		} else {
-        		    //This enables the collapsed menu to show:
-        		    echo '<ul class="nav"></ul>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
+            	    
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/settings"><i class="material-icons">settings</i><p>Settings</p></a></li>';
+            	    
         		}
             	?>
+            	</ul>
 	    	</div>
 		</div>
 
 
 	    <div class="main-panel">
 	        <div class="content dash">
+	        
+    	        <?php 
+    	        if(isset($breadcrumb)){
+    	            echo '<ol class="breadcrumb">';
+    	            foreach($breadcrumb as $link){
+    	                if($link['link']){
+    	                    echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
+    	                } else {
+    	                    echo '<li>'.$link['anchor'].'</li>';
+    	                }
+    	            }
+    	            echo '</ol>';
+    	        }
+    	        ?>
+    	        
+    	        
 	            <div class="container-fluid">
-	            
 	            <?php 
+	            if(isset($message)){
+	                echo $message;
+	            }
 	            $hm = $this->session->flashdata('hm');
 	            if($hm){
 	            	echo $hm;

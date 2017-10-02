@@ -201,25 +201,20 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-	    } elseif(!isset($_POST['r_pace_id']) || intval($_POST['r_pace_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Select pace ID of light or higher.</span>');
 	    } elseif(!isset($_POST['r_c_id']) || intval($_POST['r_c_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing bootcamp ID.</span>');
 	    } else {
-	        
-	        if(!isset($_POST['r_usd_price']) || intval($_POST['r_usd_price'])<0){
-	            $_POST['r_usd_price'] = 0;
-	        }
 	        	        
 	        //Create new cohort:
 	        $cohort = $this->Db_model->r_create(array(
 	            'r_c_id' => intval($_POST['r_c_id']),
 	            'r_status' => 0, //Drafting
-	            'r_min_students' => 1, //Default
-	            'r_max_students' => 20, //Default
 	            'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	            'r_pace_id' => intval($_POST['r_pace_id']),
-	            'r_usd_price' => floatval($_POST['r_usd_price']),
+	            //Set some defaults:
+	            'r_min_students' => 1,
+	            'r_max_students' => 20,
+	            'r_pace_id' => 0,
+	            'r_usd_price' => 0,
 	        ));
 	        
 	        if($cohort['r_id']>0){
@@ -305,8 +300,8 @@ class Process extends CI_Controller {
 	    if(!$udata){
 	        //Display error:
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_primary_objective']) || strlen($_POST['c_primary_objective'])<10){
-	        die('<span style="color:#FF0000;">Error: Primary objective must be 10 characters or longer.</span>');
+	    } elseif(!isset($_POST['c_primary_objective']) || strlen($_POST['c_primary_objective'])<5){
+	        die('<span style="color:#FF0000;">Error: Primary objective must be 5 characters or longer.</span>');
 	    } else {
 	        
 	        //Create new bootcamp:
@@ -314,7 +309,7 @@ class Process extends CI_Controller {
 	            'c_creator_id' => $udata['u_id'],
 	            'c_url_key' => url_key(trim($_POST['c_primary_objective'])),
 	            'c_is_grandpa' => 't',
-	            'c_status' => 0, //Drafting
+	            'c_status' => 0, //Drafting status for Bootcamp
 	            'c_objective' => trim($_POST['c_primary_objective']),
 	        ));
 	        
@@ -334,7 +329,7 @@ class Process extends CI_Controller {
 	            }
 	            
 	            //Redirect:
-	            echo '<script> window.location = "/console/'.$bootcamp['c_id'].'/content" </script>';
+	            echo '<script> window.location = "/console/'.$bootcamp['c_id'].'" </script>';
 	            
 	        } else {
 	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this bootcamp.</span>');
@@ -361,14 +356,15 @@ class Process extends CI_Controller {
 	    //Fetch existing challenge:
 	    $f_challenge = load_object('c' , array(
 	        'c.c_id' => $_POST['pid'],
-	        'c.c_status >=' => 0,
+	        'c.c_status >=' => 0, //Drafting or higher
 	    ));
 	    
-	    //Create challenge:
+	    //Create intent:
 	    $is_outbound = ($_POST['direction']=='outbound');
 	    $bootcamp = $this->Db_model->c_create(array(
 	        'c_creator_id' => $udata['u_id'],
 	        'c_objective' => trim($_POST['c_objective']),
+	        'c_status' => 1, //Create intents with live status by default
 	    ));
 	    
 	    //Create Link:
@@ -410,77 +406,50 @@ class Process extends CI_Controller {
 	
 	function intent_edit(){
 	    
-	    if(!isset($_POST['save_c_url_key'])){
-	        $_POST['save_c_url_key'] = '';
-	    }
-	    
 	    //Auth user and check required variables:
 	    $udata = auth(2);
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['save_c_id']) || intval($_POST['save_c_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
-	    } elseif(!isset($_POST['save_c_objective']) || strlen($_POST['save_c_objective'])<=0){
-	        die('<span style="color:#FF0000;">Error: Objective is Required.</span>');
-	    } elseif(!isset($_POST['save_c_time_estimate']) || floatval($_POST['save_c_time_estimate'])<0){
-	        die('<span style="color:#FF0000;">Error: Time estimate is Required.</span>');
-	    } elseif(!isset($_POST['save_c_is_grandpa'])){
-	        die('<span style="color:#FF0000;">Error: Status is required.</span>');
-	    } elseif(!isset($_POST['save_c_status'])){
-	        die('<span style="color:#FF0000;">Error: Bootcamp status is Required.</span>');
-	    } elseif($_POST['save_c_is_grandpa'] && strlen($_POST['save_c_url_key'])<=0){
-	        die('<span style="color:#FF0000;">Error: URL Key is Required.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing pid.</span>');
+	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=5){
+	        die('<span style="color:#FF0000;">Error: Objective must be longer than 5 characters.</span>');
 	    }
 	    
 	    //Not required variables:
-	    if(!isset($_POST['save_c_additional_goals'])){
-	        $_POST['save_c_additional_goals'] = '';
+	    if(!isset($_POST['c_additional_goals'])){
+	        $_POST['c_additional_goals'] = '';
 	    }
-	    if(!isset($_POST['save_c_additional_goals'])){
-	        $_POST['save_c_additional_goals'] = '';
+	    if(!isset($_POST['c_todo_overview'])){
+	        $_POST['c_todo_overview'] = '';
 	    }
-	    if(!isset($_POST['save_c_todo_overview'])){
-	        $_POST['save_c_todo_overview'] = '';
+	    if(!isset($_POST['c_prerequisites'])){
+	        $_POST['c_prerequisites'] = '';
 	    }
-	    if(!isset($_POST['save_c_todo_bible'])){
-	        $_POST['save_c_todo_bible'] = '';
+	    if(!isset($_POST['c_todo_bible'])){
+	        $_POST['c_todo_bible'] = '';
 	    }
-	    if(!isset($_POST['save_c_prerequisites'])){
-	        $_POST['save_c_prerequisites'] = '';
-	    }
-	    if(!isset($_POST['save_c_user_says_statements'])){
-	        $_POST['save_c_user_says_statements'] = '';
-	    }
-	    if(!isset($_POST['save_c_image_url'])){
-	        $_POST['save_c_image_url'] = '';
-	    }
-	    if(!isset($_POST['save_c_video_url'])){
-	        $_POST['save_c_video_url'] = '';
+	    if(!isset($_POST['c_time_estimate'])){
+	        $_POST['c_time_estimate'] = 0;
 	    }
 	    
 	    
 	    $save_array = array(
 	        'c_creator_id' => $udata['u_id'],
 	        'c_timestamp' => date("Y-m-d H:i:s"),
-	        'c_objective' => trim($_POST['save_c_objective']),
-	        'c_url_key' => trim(strtolower($_POST['save_c_url_key'])),
-	        'c_additional_goals' => $_POST['save_c_additional_goals'],
-	        'c_todo_bible' => $_POST['save_c_todo_bible'],
-	        'c_todo_overview' => $_POST['save_c_todo_overview'],
-	        'c_prerequisites' => $_POST['save_c_prerequisites'],
-	        'c_user_says_statements' => $_POST['save_c_user_says_statements'],
-	        'c_time_estimate' => floatval($_POST['save_c_time_estimate']),
-	        'c_is_grandpa' => ( $_POST['save_c_is_grandpa'] ? 't' : 'f' ),
-	        'c_status' => intval($_POST['save_c_status']),
-	        'c_image_url' => trim($_POST['save_c_image_url']),
-	        'c_video_url' => trim($_POST['save_c_video_url']),
+	        'c_objective' => trim($_POST['c_objective']),
+	        'c_additional_goals' => $_POST['c_additional_goals'],
+	        'c_todo_bible' => $_POST['c_todo_bible'],
+	        'c_todo_overview' => $_POST['c_todo_overview'],
+	        'c_prerequisites' => $_POST['c_prerequisites'],
+	        'c_time_estimate' => floatval($_POST['c_time_estimate']),
 	    );
 	    
 	    //Now update the DB:
-	    $this->Db_model->c_update(intval($_POST['save_c_id']) , $save_array );
+	    $this->Db_model->c_update( intval($_POST['pid']) , $save_array );
 	    
 	    //Update Algolia:
-	    $this->Db_model->sync_algolia(intval($_POST['save_c_id']));
+	    $this->Db_model->sync_algolia(intval($_POST['pid']));
 	    
 	    //TODO Save change history
 	    
@@ -584,7 +553,7 @@ class Process extends CI_Controller {
 	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['save_c_id']) || intval($_POST['save_c_id'])<=0){
+	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
 	    } elseif(!isset($_POST['sort_direction']) || !in_array($_POST['sort_direction'],array('outbound','inbound'))){
 	        die('<span style="color:#FF0000;">Error: Invalid sort direction.</span>');

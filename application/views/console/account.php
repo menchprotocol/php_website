@@ -9,10 +9,7 @@ if(!(count($ufetch)==1)){
 $udata = $ufetch[0];
 ?>
 
-
-<h1>My Account</h1>
-
-<ul class="nav nav-pills nav-pills-primary" style="margin-top:10px;">
+<ul class="nav nav-pills nav-pills-primary">
   <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
   <li><a href="#pill2" data-toggle="tab"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
   <li><a href="#pill3" data-toggle="tab"><i class="fa fa-comments" aria-hidden="true"></i> Social</a></li>
@@ -135,7 +132,7 @@ $udata = $ufetch[0];
         
         
         
-        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></td></tr></table>
+        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
     
@@ -152,7 +149,7 @@ $udata = $ufetch[0];
             <span class="material-input"></span>
         </div>
         
-        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></td></tr></table>
+        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
     
@@ -181,7 +178,7 @@ $udata = $ufetch[0];
     	<input type="text" class="form-control" id="u_skype_username" maxlength="100" value="<?= $udata['u_skype_username'] ?>" />
         
         
-        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></td></tr></table>
+        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
     <div class="tab-pane" id="pill4" style="max-width:500px;">

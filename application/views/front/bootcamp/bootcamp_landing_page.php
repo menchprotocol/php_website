@@ -1,21 +1,21 @@
-<div class="alert alert-danger" role="alert" style="margin-top:30px; border-radius:3px;"><span style="font-weight:bold;display:block; padding-bottom:7px;">WARNING:</span>We're currently in private Beta, and the following bootcamps are created as a sample set for our customer discovery process. They are not meant for real-world enrollment.</div>
+<?php 
+
+if(!isset($bootcamp['c__cohorts'][0])){
+    
+}
+?>
+
+<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Alpha Version:</span>We're currently building our product prototypes, and the following bootcamp is created as a sample for our customer discovery process. It's not meant for real-world enrollment.</div>
 
 <div class="row">
-    <div class="col-md-4 col-sm-4">
-    	<?php if(strlen($c['c_video_url'])>0){ ?>
-        	<div class="video-player"><?= echo_video($c['c_video_url']); ?></div>
-        <?php } elseif(strlen($c['c_image_url'])>0){ ?>
-        	<div class="video-player"><img src="<?= $c['c_image_url'] ?>" style="width:100%;" /></div>
-        <?php } ?>
-    </div>
     <div class="col-md-8 col-sm-8">
-		<h2 class="title" style="line-height:130%; margin-bottom:15px;"><?= echo_title($c['c_objective']) ?></h2>
-		<p id="c_additional_goals"><?= $c['c_additional_goals'] ?></p>
+		<h2 class="title" style="line-height:130%; margin-bottom:15px;"><?= echo_title($bootcamp['c_objective']) ?></h2>
+		<p id="c_additional_goals"><?= $bootcamp['c_additional_goals'] ?></p>
 		<div id="acordeon">
             <div class="panel-group" id="accordion">
             
           
-          <?php if(strlen($c['c_todo_overview'])>0){ ?>
+          <?php if(strlen($bootcamp['c_todo_overview'])>0){ ?>
           <div class="panel panel-border panel-default" name="collapseOverview">
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="false" aria-controls="collapseOverview">
@@ -27,7 +27,7 @@
             </div>
             <div id="collapseOverview" class="panel-collapse collapse"> <!-- collapse in -->
               <div class="panel-body">
-                <p id="c_todo_overview"><?= $c['c_todo_overview'] ?></p>
+                <p id="c_todo_overview"><?= $bootcamp['c_todo_overview'] ?></p>
               </div>
             </div>
           </div>
@@ -45,10 +45,32 @@
             </div>
             <div id="collapsePrerequisites" class="panel-collapse collapse">
               <div class="panel-body">
-                <p id="c_prerequisites"><?= ( strlen($c['c_prerequisites'])>0 ? $c['c_prerequisites'] : 'None' ) ?></p>
+                <p id="c_prerequisites"><?= ( strlen($bootcamp['c_prerequisites'])>0 ? $bootcamp['c_prerequisites'] : 'None' ) ?></p>
               </div>
             </div>
           </div>
+          
+          
+          
+          
+          <div class="panel panel-border panel-default" name="collapseWeeklySprints">
+            <div class="panel-heading" role="tab">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseWeeklySprints" aria-controls="collapseWeeklySprints">
+                    <h4 class="panel-title">
+                    Weekly Sprints
+                    <i class="material-icons">keyboard_arrow_down</i>
+                    </h4>
+                </a>
+            </div>
+            <div id="collapseWeeklySprints" class="panel-collapse collapse">
+              <div class="panel-body">
+                Bootcamp Outline here...
+              </div>
+            </div>
+          </div>
+          
+          
+          
           
           
           <div class="panel panel-border panel-default" name="collapseMentors">
@@ -64,7 +86,7 @@
               <div class="panel-body">
                 <?php
                 $admin_count = 0;
-                foreach($c['c__admins'] as $admin){
+                foreach($bootcamp['c__admins'] as $admin){
                     if($admin['ba_team_display']!=='t'){
                         continue;
                     }
@@ -113,21 +135,7 @@
           </div>
           
           
-          <div class="panel panel-border panel-default" name="collapseOutline">
-            <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOutline" aria-controls="collapseOutline">
-                    <h4 class="panel-title">
-                    Bootcamp Outline
-                    <i class="material-icons">keyboard_arrow_down</i>
-                    </h4>
-                </a>
-            </div>
-            <div id="collapseOutline" class="panel-collapse collapse">
-              <div class="panel-body">
-                Bootcamp Outline here...
-              </div>
-            </div>
-          </div>
+          
           
           
           <div class="panel panel-border panel-default" name="collapseTimetable">
@@ -141,11 +149,13 @@
             </div>
             <div id="collapseTimetable" class="panel-collapse collapse">
               <div class="panel-body">
-                <p><?= echo_pace($c) ?></p>
-                <p><?= echo_price($c['c__cohorts'][0]['r_usd_price']); ?></p>
+                <p><?= echo_pace($bootcamp) ?></p>
+                <p><?= echo_price($bootcamp['c__cohorts'][0]['r_usd_price']); ?></p>
               </div>
             </div>
           </div>
+          
+          
           
           
           <?php /*
@@ -175,10 +185,19 @@
                 
             </div>
             <div class="col-md-6 col-sm-6">
-                <a href="javascript:alert('This takes user to final enrollment confirmation page with stripe payment to finalize checkout.');" href2="/<?= $c['c_url_key'] ?>/enroll" class="btn btn-primary btn-round pull-right">Enroll <u><?= time_format($c['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+                <a href="javascript:alert('This takes user to final enrollment confirmation page with stripe payment to finalize checkout.');" href2="/<?= $bootcamp['c_url_key'] ?>/enroll" class="btn btn-primary btn-round pull-right">Enroll <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
             </div>
         </div>
     </div>
+    
+    <div class="col-md-4 col-sm-4">
+    	<?php if(strlen($bootcamp['c_video_url'])>0){ ?>
+        	<div class="video-player"><?= echo_video($bootcamp['c_video_url']); ?></div>
+        <?php } elseif(strlen($bootcamp['c_image_url'])>0){ ?>
+        	<div class="video-player"><img src="<?= $bootcamp['c_image_url'] ?>" style="width:100%;" /></div>
+        <?php } ?>
+    </div>
+    
 </div>
 
 
@@ -191,9 +210,6 @@ $( document ).ready(function() {
     }
 });
 </script>
-
-
-
 
 
 

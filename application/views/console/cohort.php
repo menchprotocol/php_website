@@ -1,7 +1,28 @@
-<h1><?= time_format($run['r_start_date'],1) ?> Cohort Settings</h1>
 
-<br />
 <input type="hidden" id="r_id" value="<?= $run['r_id'] ?>" />
+
+<div class="title"><h4>Starting Week Of</h4></div>
+<div class="form-group label-floating is-empty">
+    <input type="text" id="r_start_date" value="<?= date("m/d/Y" , strtotime($run['r_start_date']) ) ?>" style="width:233px;" class="form-control" />
+    <span class="material-input"></span>
+</div>
+
+
+<div class="title"><h4>Ending Week</h4></div>
+<?php 
+$outbound = $this->Db_model->cr_outbound_fetch(array(
+    'cr.cr_inbound_id' => $bootcamp['c_id'],
+    'cr.cr_status >=' => 0,
+));
+echo '<p style="padding-left:25px;"><b>'.count($outbound).' Weeks Later</b> based on the <a href="/console/'.$bootcamp['c_id'].'/curriculum">Bootcamp Curriculum</a>.<br />You can modify the curriculum before publishing this cohort live.</p>';
+?>
+<br />
+
+
+<div class="title"><h4>Status</h4></div>
+<?php echo_status_dropdown('r','r_status',$run['r_status']); ?>
+<br />
+
 
 <div class="title"><h4>Student Commitment Level</h4></div>
 <select id="r_pace_id" style="margin-top:9px;">
@@ -17,20 +38,6 @@
 </select><br /><br />
 
 
-<div class="title"><h4>Starting Week (Monday)</h4></div>
-<div class="form-group label-floating is-empty">
-    <input type="text" id="r_start_date" value="<?= date("m/d/Y" , strtotime($run['r_start_date']) ) ?>" style="width:233px;" class="form-control" />
-    <span class="material-input"></span>
-</div>
-
-<div class="title"><h4>Ending Week (Sunday)</h4></div>
-<?php 
-$outbound = $this->Db_model->cr_outbound_fetch(array(
-    'cr.cr_inbound_id' => $bootcamp['c_id'],
-    'cr.cr_status >=' => 0,
-));
-echo '<p style="padding-left:25px;"><b>'.count($outbound).' Weeks Later</b> based on <a href="/console/'.$bootcamp['c_id'].'/content">weekly sprints</a>.<br />You can modify sprints before publishing this cohort.</p>';
-?>
 
 
 <div class="title"><h4>Enrollment Price</h4></div>
@@ -58,13 +65,7 @@ echo '<p style="padding-left:25px;"><b>'.count($outbound).' Weeks Later</b> base
 </div>
 
 
-<div class="title"><h4>Status</h4></div>
-<?php echo_status_dropdown('r','r_status',$run['r_status']); ?>
+
           
 
-
-<div class="row" style="clear:both;">
-  <div class="col-xs-6"><a href="javascript:save_r();" class="btn btn-primary">Save</a> <span id="save_r_results"></span></div>
-  <div class="col-xs-6 action-right">
-  </div>
-</div>
+<table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span id="save_r_results"></span></td></tr></table>

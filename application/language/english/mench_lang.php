@@ -1,5 +1,5 @@
 <?php
-/* <?= $this->lang->line('c_name') ?> */
+/* <?= $this->lang->line('cr_name') ?> */
 
 /* ******************************
  * Main Objects
@@ -37,11 +37,8 @@ $lang['r_l_name'] = 'Leaderboard';
 $lang['r_l_desc'] = 'The Run leaderboard ranks students based on their performance for deliverying each bootcamp. It helps bootcamp operators detect students who might need extra help.';
 $lang['r_l_none'] = 'No students registered for this bootcamp run yet.';
 
-$lang['cr_name'] = 'Content Library';
-$lang['cr_pname'] = 'Content Library';
-$lang['cr_missing'] = 'No content found.';
-$lang['cr_icon'] = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
-$lang['cr_desc'] = 'Content Library is where you create, edit and organize your bootcamp\'s content into weekly sprints and sprint objectives.';
+$lang['cr_name'] = 'Curriculum';
+$lang['cr_icon'] = '<i class="material-icons">format_list_numbered</i>';
 $lang['u_name'] = 'User';
 $lang['u_pname'] = 'Users';
 $lang['ru_name'] = 'Run User';
@@ -62,8 +59,6 @@ $lang['u_level_3'] = 'Admin';
 
 $lang['signup'] = 'Signup As Mentor';
 $lang['login'] = 'Mentor Login';
-$lang['logout'] = 'Logout';
-$lang['my_profile'] = 'My Account';
 $lang['contact_us'] = 'Contact Us';
 $lang['terms'] = 'Terms';
 $lang['no_account'] = 'Want to Run a Bootcamp?';

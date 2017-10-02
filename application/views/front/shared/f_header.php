@@ -81,9 +81,11 @@ if(isset($landing_page)){
 	echo '<div class="container body-container">';
 }
 
-
+if(isset($message)){
+    echo $message;
+}
 $hm = $this->session->flashdata('hm');
 if($hm){
-	echo $hm;
+    echo $hm;
 }
 ?>

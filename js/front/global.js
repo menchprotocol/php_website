@@ -149,7 +149,7 @@ function update_account(){
 		//Disapper in a while:
 		setTimeout(function() {
 			$('.update_u_results').fadeOut();
-	    }, 15000);
+	    }, 10000);
     });
 }
 
@@ -167,49 +167,36 @@ function ba_initiate_revoke(){
 
 function save_c(){
 	
-	if($("#c_is_grandpa").length == 0) {
-		var is_on_marketplace = false;
-	} else {
-		var is_on_marketplace = document.getElementById('c_is_grandpa').checked;
-	}	
-	
 	//JS Check for the required fields:
-	if(!$('#save_c_objective').val().length){
-		alert('Objective is required.');
+	if(!$('#c_objective').val().length){
+		alert('ERROR: Primary Objective is required.');
 		return false;
-	} else if(is_on_marketplace && !$('#save_c_url_key').val().length){
-		alert('Marketplace URL is required when bootcamp is listed on the marketplace.');
-		return false;
-	} else if(!$('#save_c_status').val().length){
-		alert('Status is required.');
+	} else if(!$('#pid').val().length){
+		alert('ERROR: Missing pid.');
 		return false;
 	}
+	
+	var postData = {
+		pid:$('#pid').val(),
+		c_objective:$('#c_objective').val(),
+		c_additional_goals:$('#c_additional_goals').val(),
+		c_todo_overview:$('#c_todo_overview').val(),
+		c_prerequisites:$('#c_prerequisites').val(),
+		c_todo_bible:$('#c_todo_bible').val(),
+		c_time_estimate:$('#c_time_estimate').val(),
+	};
 	
 	//Show spinner:
 	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
-	$.post("/process/intent_edit", {
-		save_c_id:$('#save_c_id').val(),
-		save_c_objective:$('#save_c_objective').val(),
-		save_c_url_key:$('#save_c_url_key').val(),
-		save_c_time_estimate:$('#save_c_time_estimate').val(),
-		save_c_is_grandpa:( is_on_marketplace ? 1 : 0 ),
-		save_c_status:$('#save_c_status').val(),
-		save_c_image_url:$('#c_image_url').val(),
-		save_c_video_url:$('#c_video_url').val(),
-		save_c_additional_goals:$('#save_c_additional_goals').val(),
-		save_c_todo_overview:$('#save_c_todo_overview').val(),
-		save_c_todo_bible:$('#save_c_todo_bible').val(),
-		save_c_prerequisites:$('#save_c_prerequisites').val(),
-		save_c_user_says_statements:$('#save_c_user_says_statements').val(),
-	} , function(data) {
+	$.post("/process/intent_edit", postData , function(data) {
 		//Update UI to confirm with user:
 		$('#save_c_results').html(data).hide().fadeIn();
 		
 		//Disapper in a while:
 		setTimeout(function() {
 			$('#save_c_results').fadeOut();
-	    }, 15000);
+	    }, 10000);
     });
 }
 
@@ -225,6 +212,10 @@ function c_process_create(){
 	});
 }
 
+function save_settings(){
+	alert('Saving settings not yet wired in. Will be done by end of this week.');
+}
+
 
 
 function r_process_create(){
@@ -235,9 +226,7 @@ function r_process_create(){
 	$.post("/process/cohort_create", {
 		
 		r_c_id:$('#r_c_id').val(), 
-		r_start_date:$('#r_start_date').val(), 
-		r_pace_id:$('#r_pace_id').val(), 
-		r_usd_price:$('#r_usd_price').val(),
+		r_start_date:$('#r_start_date').val(),
 		
 	}, function(data) {
 		//Append data to view:
@@ -268,7 +257,7 @@ function save_r(){
 		//Disapper in a while:
 		setTimeout(function() {
 			$('#save_r_results').fadeOut();
-	    }, 15000);
+	    }, 10000);
     });
 }
 
@@ -281,7 +270,7 @@ function new_challenge(c_objective){
 		return false;
 	}
 	//Fetch needed vars:
-	pid = $('#save_c_id').val();
+	pid = $('#pid').val();
 	c_id = $('#c_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
 	var next_level = $( "#next_level" ).val();
@@ -319,7 +308,7 @@ function update_dropdown(name,intvalue,count){
 //Triggered when clicked on the toggle direction
 function link_challenge(target_id){
 	//Fetch needed vars:
-	pid = $('#save_c_id').val();
+	pid = $('#pid').val();
 	c_id = $('#c_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
 	var next_level = $( "#next_level" ).val();
@@ -397,7 +386,7 @@ function intents_sort(direction){
 	});
 	
 	//Update backend:
-	$.post("/process/intents_sort", {save_c_id:$('#save_c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
+	$.post("/process/intents_sort", {c_id:$('#c_id').val(), new_sort:new_sort, sort_direction:direction}, function(data) {
 		//Update UI to confirm with user:
 		$( "#list-"+direction+" .srt-"+direction ).html(data);
 		
@@ -478,7 +467,7 @@ function msg_create(){
 	
 	//Fetch needed vars:
 	var i_message = $('#i_message').val();
-	var pid = $('#save_c_id').val();
+	var pid = $('#pid').val();
 	
 	if(i_message.length<1 || pid<1){
 		return false;
@@ -604,10 +593,10 @@ $(document).ready(function() {
 	$( function() {
 	    $( "#r_start_date" ).datepicker({
 	    	minDate : 2,
-	    	beforeShowDay: function(date){ 
+	    	beforeShowDay: function(date){
 	    		  var day = date.getDay(); 
 	    		  return [day == 1,""];
-	    	}
+	    	},
 		});
 	});
 	
