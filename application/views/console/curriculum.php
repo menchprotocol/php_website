@@ -199,7 +199,7 @@ $level_names = $this->config->item('level_names');
         
         
         
-        
+        <table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span id="save_c_results"></span></td></tr></table>
         
         
         
@@ -295,6 +295,4 @@ echo '</div>';
 */
 ?>
 
-
-<table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span id="save_c_results"></span></td></tr></table>
 
