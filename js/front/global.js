@@ -238,12 +238,16 @@ function save_r(){
 	//Show spinner:
 	$('#save_r_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
 	
+	//Save Scheduling iFrame content:
+	document.getElementById('weekschedule').contentWindow.save_hours();
+	
+	//Save the rest of the content:
 	$.post("/process/cohort_edit", {
 		
 		r_start_date:$('#r_start_date').val(), 
 		r_pace_id:$('#r_pace_id').val(), 
 		r_usd_price:$('#r_usd_price').val(),
-		
+		r_application_fee:$('#r_application_fee').val(),
 		r_id:$('#r_id').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),

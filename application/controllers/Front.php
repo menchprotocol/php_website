@@ -72,7 +72,21 @@ class Front extends CI_Controller {
 	
 	
 	/* ******************************
-	 * Challenges PUBLIC
+	 * Pitch Pages
+	 ****************************** */
+	
+	function start_bootcamp(){
+	    //The public list of challenges:
+	    $this->load->view('front/shared/f_header' , array(
+	        'title' => 'Start A Bootcamp',
+	    ));
+	    $this->load->view('front/for_mentors');
+	    $this->load->view('front/shared/f_footer');
+	}
+	
+	
+	/* ******************************
+	 * Bootcamp PUBLIC
 	 ****************************** */
 	
 	function bootcamps_browse(){
@@ -108,7 +122,7 @@ class Front extends CI_Controller {
 	        //Bootcamp not yet published:
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
-
+	    
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'landing_page' => 'front/splash/product_splash',
@@ -118,39 +132,72 @@ class Front extends CI_Controller {
 	        'title' => $bootcamp['c_objective'],
 	        'message' => ( $bootcamp['c_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
 	    ));
-	    $this->load->view('front/bootcamp/bootcamp_landing_page' , array(
+	    $this->load->view('front/bootcamp/landing_page' , array(
 	        'bootcamp' => $bootcamp,
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
 	
-	function start_bootcamp(){
-	    //The public list of challenges:
-	    $this->load->view('front/shared/f_header' , array(
-	        'title' => 'Start A Bootcamp',
+	
+	
+	function bootcamp_apply($c_url_key){
+	    
+	    //Fetch data:
+	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	        'c.c_url_key' => $c_url_key,
+	        'c.c_is_grandpa' => true, //Not sub challenges
 	    ));
-	    $this->load->view('front/for_mentors');
+	    
+	    //Validate bootcamp:
+	    if(!isset($bootcamps[0])){
+	        //Invalid key, redirect back:
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+	    }
+	    
+	    //Validate status:
+	    $udata = $this->session->userdata('user');
+	    $bootcamp = $bootcamps[0];
+	    if($bootcamp['c_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
+	        //Bootcamp not yet published:
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+	    }
+	    
+	    //Load apply page:
+	    $this->load->view('front/shared/f_header' , array(
+	        'landing_page' => 'front/splash/product_splash',
+	        'lp_variables' => array(
+	            'c_image_url' => $bootcamp['c_image_url'],
+	        ),
+	        'title' => 'Apply to '.$bootcamp['c_objective'],
+	        'message' => ( $bootcamp['c_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
+	    ));
+	    $this->load->view('front/bootcamp/apply' , array(
+	        'bootcamp' => $bootcamp,
+	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
 	
 	
+	/* ******************************
+	 * Paypal payment statuses
+	 ****************************** */
 	
-	function challenge_landing_page($challenge_key){
-		//Challenge Landing Page:
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Challenges',
-		));
-		//$this->load->view('front/terms');
-		$this->load->view('front/shared/f_footer');
+	
+	function paypal_success(){
+	    $this->load->view('front/shared/f_header' , array(
+	        'title' => 'Payment Success',
+	    ));
+	    $this->load->view('front/bootcamp/success');
+	    $this->load->view('front/shared/f_footer');
 	}
 	
-	function challenge_join($challenge_key){
-		//Challenge Signup Page
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Challenges',
-		));
-		//$this->load->view('front/terms');
-		$this->load->view('front/shared/f_footer');
+	function paypal_cancel(){
+	    $this->load->view('front/shared/f_header' , array(
+	        'title' => 'Payment Cancelled',
+	    ));
+	    $this->load->view('front/bootcamp/cancel');
+	    $this->load->view('front/shared/f_footer');
 	}
+	
 	
 }

@@ -1,4 +1,7 @@
 <?php 
+if(isset($_GET['email'])){
+    send_email();
+}
 //Attempt to fetch session variables:
 if(count($bootcamps)>0){
     echo '<div class="list-group">';
@@ -13,3 +16,4 @@ if(count($bootcamps)>0){
 ?>
 
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newBootcampModal">New</a>
+

@@ -221,7 +221,7 @@ $( document ).ready(function() {
 <div>
 <div class="container">
 	
-<?php $this->load->view('front/shared/all_bootcamps'); ?>
+<?php $this->load->view('front/shared/bootcamps_inlcude'); ?>
 <br /><br />
 
 

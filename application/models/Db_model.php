@@ -168,6 +168,8 @@ class Db_model extends CI_Model {
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_c_id = c.c_id');
+	    $this->db->order_by('c.c_status', 'DESC');
+	    $this->db->order_by('c.c_objective', 'ASC');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }

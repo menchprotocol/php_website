@@ -14,7 +14,7 @@ $udata = $this->session->userdata('user');
 			<div class="col-md-6">
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">flash_on</i></div>
-					<h2 class="title" style="margin-top:30px;">For Doers</h2>
+					<h2 class="title" style="margin-top:30px;">For Students</h2>
 					<p style="min-height:200px;">Are you struggling finding the time and motivation to accomplish your goals? Have you read tons of books or taken a bunch of courses only to be overwhelmed and confused as to how to implement what you've learned? Join one of our bootcamps to take action once and for all!</p>
 					<a href="/bootcamps" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-search" aria-hidden="true"></i> Browse Bootcamps</a>
 				</div>

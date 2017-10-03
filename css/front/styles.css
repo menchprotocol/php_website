@@ -34,7 +34,13 @@
 
 .breadcrumb a { font-weight:bold; }
 
-
+.scheduler-iframe {
+    width: 100%;
+    height: 1020px;
+    border: 0;
+    overflow: hidden;
+}
+}
 .tab-space { padding-bottom:0px !important; }
 .dir-sign {display:none !important;}
 .navbar-brand span{
@@ -64,6 +70,8 @@
 .landing-page .no-adj .dashboard-logo>span {
 	padding-top:5px;
 }
+
+
 
 .product-splash .alert{ margin-top:30px; border-radius:3px; }
 .product-splash .alert>span, #console .alert>span{ font-weight:bold;display:block; padding-bottom:7px; text-transform: uppercase; }

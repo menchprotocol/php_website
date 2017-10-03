@@ -392,51 +392,107 @@ function redirect_message($url,$message){
 }
 
 function save_file($file_url,$json_data){
-	$CI =& get_instance();
-	
-	$file_name = md5($file_url.time().'someSa!t').'.'.fetch_file_ext($file_url);
-	$file_path = 'application/cache/temp_files/';
-	
-	//Fetch Remote:
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $file_url);
-	curl_setopt($ch, CURLOPT_VERBOSE, 1);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-	curl_setopt($ch, CURLOPT_HEADER, 0);
-	$result = curl_exec($ch);
-	curl_close($ch);
-	
-	//Write in directory:
-	$fp = fopen( $file_path.$file_name , 'w');
-	fwrite($fp, $result);
-	fclose($fp);
-	
-	//Then upload to AWS S3:
-	if(@include( '/var/www/us/application/libraries/aws/aws-autoloader.php' )){
-		$s3 = new Aws\S3\S3Client([
-				'version' 		=> 'latest',
-				'region'  		=> 'us-west-2',
-				'credentials' 	=> $CI->config->item('aws_credentials'),
-		]);
-		$result = $s3->putObject(array(
-				'Bucket'       => 's3foundation', //Same bucket for now
-				'Key'          => $file_name,
-				'SourceFile'   => $file_path.$file_name,
-				'ACL'          => 'public-read'
-		));
-		
-		if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
-			@unlink($file_path.$file_name);
-			return $result['ObjectURL'];
-		} else {
-			log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data, 2);
-			return false;
-		}
-	} else {
-		//Probably local, ignore this!
-		return false;
-	}		
+    $CI =& get_instance();
+    
+    $file_name = md5($file_url.time().'someSa!t').'.'.fetch_file_ext($file_url);
+    $file_path = 'application/cache/temp_files/';
+    
+    //Fetch Remote:
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $file_url);
+    curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    
+    //Write in directory:
+    $fp = fopen( $file_path.$file_name , 'w');
+    fwrite($fp, $result);
+    fclose($fp);
+    
+    //Then upload to AWS S3:
+    if(@include( 'application/libraries/aws/aws-autoloader.php' )){
+        $s3 = new Aws\S3\S3Client([
+            'version' 		=> 'latest',
+            'region'  		=> 'us-west-2',
+            'credentials' 	=> $CI->config->item('aws_credentials'),
+        ]);
+        $result = $s3->putObject(array(
+            'Bucket'       => 's3foundation', //Same bucket for now
+            'Key'          => $file_name,
+            'SourceFile'   => $file_path.$file_name,
+            'ACL'          => 'public-read'
+        ));
+        
+        if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
+            @unlink($file_path.$file_name);
+            return $result['ObjectURL'];
+        } else {
+            log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data, 2);
+            return false;
+        }
+    } else {
+        //Probably local, ignore this!
+        return false;
+    }
+}
+
+
+function send_email($to=null,$subject=null,$message=null){
+    $CI =& get_instance();
+    
+    //Then upload to AWS S3:
+    if(@include( 'application/libraries/aws/aws-autoloader.php' )){
+        
+        $client = new Aws\Ses\SesClient([
+            'version' 	    => 'latest',
+            'region'  	    => 'us-west-2',
+            'credentials'   => $CI->config->item('aws_credentials'),
+        ]);
+        
+        $result = $client->sendEmail(array(
+            // Source is required
+            'Source' => 'support@mench.co',
+            // Destination is required
+            'Destination' => array(
+                'ToAddresses' => array('shervin@lazymeal.com' ),
+                'CcAddresses' => array(),
+                'BccAddresses' => array(),
+            ),
+            // Message is required
+            'Message' => array(
+                // Subject is required
+                'Subject' => array(
+                    // Data is required
+                    'Data' => 'Hello World',
+                    'Charset' => 'UTF-8',
+                ),
+                // Body is required
+                'Body' => array(
+                    'Text' => array(
+                        // Data is required
+                        'Data' => 'Hello, this is shervin.',
+                        'Charset' => 'UTF-8',
+                    ),
+                    'Html' => array(
+                        // Data is required
+                        'Data' => '<b>bold</b> move ha?',
+                        'Charset' => 'UTF-8',
+                    ),
+                ),
+            ),
+            'ReplyToAddresses' => array('support@mench.co'),
+            'ReturnPath' => 'support@mench.co', //The email address to which bounces and complaints are to be forwarded when feedback forwarding is enabled. If the message cannot be delivered to the recipient, then an error message will be returned from the recipient's ISP; this message will then be forwarded to the email address specified by the ReturnPath parameter. The ReturnPath parameter is never overwritten. This email address must be either individually verified with Amazon SES, or from a domain that has been verified with Amazon SES.
+            //'SourceArn' => 'string',
+            //'ReturnPathArn' => 'string',
+        ));
+        
+    } else {
+        //Probably local, ignore this!
+        return false;
+    }
 }
 
 function log_error($error_message, $json_data=array(), $e_medium_id=1){

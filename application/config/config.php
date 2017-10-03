@@ -175,74 +175,88 @@ $config['timezones'] = array(
 
 $config['languages'] = array(
     'en' => 'English' ,
+    
+    'ar' => 'Arabic' ,
     'aa' => 'Afar' ,
     'ab' => 'Abkhazian' ,
     'af' => 'Afrikaans' ,
     'am' => 'Amharic' ,
-    'ar' => 'Arabic' ,
     'as' => 'Assamese' ,
     'ay' => 'Aymara' ,
     'az' => 'Azerbaijani' ,
+    'sq' => 'Albanian' ,
+    'hy' => 'Armenian' ,
+    
     'ba' => 'Bashkir' ,
     'be' => 'Byelorussian' ,
     'bg' => 'Bulgarian' ,
     'bh' => 'Bihari' ,
     'bi' => 'Bislama' ,
     'bn' => 'Bengali' ,
-    'bo' => 'Tibetan' ,
     'br' => 'Breton' ,
+    'dz' => 'Bhutani' ,
+    'eu' => 'Basque' ,
+    'my' => 'Burmese' ,
+    
+    'zh' => 'Chinese' ,
     'ca' => 'Catalan' ,
     'co' => 'Corsican' ,
     'cs' => 'Czech' ,
-    'cy' => 'Welsh' ,
+    'hr' => 'Croatian' ,
+    'km' => 'Cambodian' ,
+    
     'da' => 'Danish' ,
-    'de' => 'German' ,
-    'dz' => 'Bhutani' ,
-    'el' => 'Greek' ,
+    'nl' => 'Dutch' ,
+    
     'eo' => 'Esperanto' ,
-    'es' => 'Spanish' ,
     'et' => 'Estonian' ,
-    'eu' => 'Basque' ,
+    
     'fa' => 'Farsi' ,
     'fi' => 'Finnish' ,
     'fj' => 'Fiji' ,
     'fo' => 'Faeroese' ,
     'fr' => 'French' ,
     'fy' => 'Frisian' ,
-    'ga' => 'Irish' ,
-    'gd' => 'Scots' ,
+    
+    'de' => 'German' ,
+    'el' => 'Greek' ,
     'gl' => 'Galician' ,
     'gn' => 'Guarani' ,
     'gu' => 'Gujarati' ,
+    'ka' => 'Georgian' ,
+    'kl' => 'Greenlandic' ,
+    
     'ha' => 'Hausa' ,
     'hi' => 'Hindi' ,
-    'hr' => 'Croatian' ,
     'hu' => 'Hungarian' ,
-    'hy' => 'Armenian' ,
+    'iw' => 'Hebrew' ,
+    
+    'it' => 'Italian' ,
+    'ga' => 'Irish' ,
     'ia' => 'Interlingua' ,
     'ie' => 'Interlingue' ,
     'ik' => 'Inupiak' ,
     'in' => 'Indonesian' ,
     'is' => 'Icelandic' ,
-    'it' => 'Italian' ,
-    'iw' => 'Hebrew' ,
+    
     'ja' => 'Japanese' ,
-    'ji' => 'Yiddish' ,
     'jw' => 'Javanese' ,
-    'ka' => 'Georgian' ,
+    
     'kk' => 'Kazakh' ,
-    'kl' => 'Greenlandic' ,
-    'km' => 'Cambodian' ,
+    'rn' => 'Kirundi' ,
     'kn' => 'Kannada' ,
     'ko' => 'Korean' ,
     'ks' => 'Kashmiri' ,
     'ku' => 'Kurdish' ,
     'ky' => 'Kirghiz' ,
+    'rw' => 'Kinyarwanda' ,
+    
     'la' => 'Latin' ,
     'ln' => 'Lingala' ,
     'lo' => 'Laothian' ,
     'lt' => 'Lithuanian' ,
     'lv' => 'Latvian' ,
+    
     'mg' => 'Malagasy' ,
     'mi' => 'Maori' ,
     'mk' => 'Macedonian' ,
@@ -252,23 +266,27 @@ $config['languages'] = array(
     'mr' => 'Marathi' ,
     'ms' => 'Malay' ,
     'mt' => 'Maltese' ,
-    'my' => 'Burmese' ,
+    
     'na' => 'Nauru' ,
     'ne' => 'Nepali' ,
-    'nl' => 'Dutch' ,
     'no' => 'Norwegian' ,
+    
     'oc' => 'Occitan' ,
     'om' => 'Oromoor' ,
+    
     'pa' => 'Punjabi' ,
     'pl' => 'Polish' ,
     'ps' => 'Pashto' ,
     'pt' => 'Portuguese' ,
+    
     'qu' => 'Quechua' ,
+    
     'rm' => 'Rhaeto-Romance' ,
-    'rn' => 'Kirundi' ,
     'ro' => 'Romanian' ,
     'ru' => 'Russian' ,
-    'rw' => 'Kinyarwanda' ,
+    
+    'es' => 'Spanish' ,
+    'gd' => 'Scots' ,
     'sa' => 'Sanskrit' ,
     'sd' => 'Sindhi' ,
     'sg' => 'Sangro' ,
@@ -279,13 +297,15 @@ $config['languages'] = array(
     'sm' => 'Samoan' ,
     'sn' => 'Shona' ,
     'so' => 'Somali' ,
-    'sq' => 'Albanian' ,
     'sr' => 'Serbian' ,
     'ss' => 'Siswati' ,
     'st' => 'Sesotho' ,
     'su' => 'Sundanese' ,
     'sv' => 'Swedish' ,
     'sw' => 'Swahili' ,
+    'tn' => 'Setswana' ,
+    
+    'bo' => 'Tibetan' ,
     'ta' => 'Tamil' ,
     'te' => 'Tegulu' ,
     'tg' => 'Tajik' ,
@@ -293,21 +313,27 @@ $config['languages'] = array(
     'ti' => 'Tigrinya' ,
     'tk' => 'Turkmen' ,
     'tl' => 'Tagalog' ,
-    'tn' => 'Setswana' ,
     'to' => 'Tonga' ,
     'tr' => 'Turkish' ,
     'ts' => 'Tsonga' ,
     'tt' => 'Tatar' ,
     'tw' => 'Twi' ,
+    
     'uk' => 'Ukrainian' ,
     'ur' => 'Urdu' ,
     'uz' => 'Uzbek' ,
+    
     'vi' => 'Vietnamese' ,
     'vo' => 'Volapuk' ,
+    
+    'cy' => 'Welsh' ,
     'wo' => 'Wolof' ,
+    
     'xh' => 'Xhosa' ,
+    
     'yo' => 'Yoruba' ,
-    'zh' => 'Chinese' ,
+    'ji' => 'Yiddish' ,
+    
     'zu' => 'Zulu' ,
 );
 
@@ -563,10 +589,17 @@ $config['level_names'] = array(
     3 => 'Week Tasks',
 );
 
+
+$config['application_questions'] = array(
+    'why_join' => 'Why are you joining this bootcamp?',
+    'why_you'  => 'Considering limited availability and high demand, why should you be choosen for this bootcamp?',
+    'why_now'  => 'Why is now the right time for you to join this bootcamp?',
+);
+
 $config['r_pace_options'] = array(
     0 => array(
-        'p_name' => 'Instant',
-        'p_hours' => null, //Defined via the bootcamp itself
+        'p_name' => 'Flexible',
+        'p_hours' => 'No set hours/week',
     ),
     1 => array(
         'p_name' => 'Light Pace',
@@ -585,6 +618,9 @@ $config['r_pace_options'] = array(
         'p_hours' => '~48 hours/week',
     ),
 );
+
+$config['r_response_options'] = array('1','2','3','4','12','24','48','72');
+$config['r_weekly_pomodoro_options'] = array('1','2','3','4','5','6','7','8','10','12','14');
 
 //Engagement mediums and corresponding actions that result in a new engagement
 $config['e_mediums'] = array(

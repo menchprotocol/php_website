@@ -238,6 +238,33 @@ class Process extends CI_Controller {
 	 :$('#r_status').val(),
 	 
 	 * */
+	
+	function update_schedule(){
+	    $udata = auth(2);
+	    if(!$udata){
+	        //Display error:
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['hours']) || !is_array($_POST['hours'])){
+	        //TODO make sure its monday
+	        die('<span style="color:#FF0000;">Error: Missing hours.</span>');
+	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing r_id.</span>');
+	    }
+	    
+	    
+	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
+	        'r_live_office_hours' => serialize($_POST['hours']),
+	    ));
+	    
+	    //TODO Save change history
+	    
+	    //Show result:
+	    die('<span style="color:#00CC00;">Saved</span>');
+	    
+	}
+	
+	
+	
 	function cohort_edit(){
 	    
 	    //Auth user and check required variables:
@@ -248,7 +275,7 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-	    } elseif(!isset($_POST['r_pace_id']) || intval($_POST['r_pace_id'])<=0){
+	    } elseif(!isset($_POST['r_pace_id'])){
 	        die('<span style="color:#FF0000;">Error: Select pace ID of light or higher.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing cohort ID.</span>');
@@ -269,6 +296,13 @@ class Process extends CI_Controller {
 	    if(!isset($_POST['r_closed_dates'])){
 	        $_POST['r_closed_dates'] = '';
 	    }
+	    
+	    if(!isset($_POST['r_response_time_hours'])){
+	        $_POST['r_response_time_hours'] = 24;
+	    }
+	    if(!isset($_POST['r_weekly_1on1_pomodoros'])){
+	        $_POST['r_weekly_1on1_pomodoros'] = 0;
+	    }
 	        
 	    
 	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
@@ -279,6 +313,8 @@ class Process extends CI_Controller {
 	        'r_pace_id' => intval($_POST['r_pace_id']),
 	        'r_usd_price' => floatval($_POST['r_usd_price']),
 	        'r_closed_dates' => $_POST['r_closed_dates'],
+	        'r_response_time_hours' => $_POST['r_response_time_hours'],
+	        'r_weekly_1on1_pomodoros' => $_POST['r_weekly_1on1_pomodoros'],
 	    ));
 	    
 	    //TODO Save change history

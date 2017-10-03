@@ -58,5 +58,5 @@ foreach($bootcamps as $count=>$c){
 <div>
 <div class="container">
 
-<?php $this->load->view('front/shared/all_bootcamps'); ?>
+<?php $this->load->view('front/shared/bootcamps_inlcude'); ?>
 <br /><br />

@@ -127,7 +127,6 @@ class Console extends CI_Controller {
 	}
 	
 	
-	
 	function curriculum($c_id,$pid=null){
 		
 		$udata = auth(2,1);
@@ -292,7 +291,29 @@ class Console extends CI_Controller {
 	    ));
 	}
 	
-
+	
+	function scheduler($c_id,$r_id){
+	    //Authenticate:
+	    $udata = auth(2,1);
+	    
+	    $bootcamp = load_object('c' , array(
+	        'c.c_id' => $c_id,
+	        'c.c_is_grandpa' => true,
+	    ));
+	    
+	    //This could be a new run, or editing an existing run:
+	    $cohort = filter($bootcamp['runs'],'r_id',$r_id);
+	    if(!$cohort){
+	        die('<div class="alert alert-danger" role="alert">Invalid cohort ID.</div>');
+	    }
+	    
+	    //Load in iFrame
+	    $this->load->view('console/frames/scheduler' , array( 
+	        'title' => 'Edit Schedule | '.time_format($cohort['r_start_date'],1).' Cohort | '.$bootcamp['c_objective'],
+	        'bootcamp' => $bootcamp,
+	        'cohort' => $cohort
+	    ));
+	}
 	
 	function cohort($c_id,$r_id){
 		//Authenticate:
