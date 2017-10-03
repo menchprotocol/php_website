@@ -440,7 +440,7 @@ function save_file($file_url,$json_data){
 }
 
 
-function send_email($to=null,$subject=null,$message=null){
+function send_email($to,$subject=null,$message=null){
     $CI =& get_instance();
     
     //Then upload to AWS S3:
@@ -457,7 +457,7 @@ function send_email($to=null,$subject=null,$message=null){
             'Source' => 'support@mench.co',
             // Destination is required
             'Destination' => array(
-                'ToAddresses' => array('shervin@lazymeal.com' ),
+                'ToAddresses' => $to,
                 'CcAddresses' => array(),
                 'BccAddresses' => array(),
             ),
@@ -485,8 +485,8 @@ function send_email($to=null,$subject=null,$message=null){
             ),
             'ReplyToAddresses' => array('support@mench.co'),
             'ReturnPath' => 'support@mench.co', //The email address to which bounces and complaints are to be forwarded when feedback forwarding is enabled. If the message cannot be delivered to the recipient, then an error message will be returned from the recipient's ISP; this message will then be forwarded to the email address specified by the ReturnPath parameter. The ReturnPath parameter is never overwritten. This email address must be either individually verified with Amazon SES, or from a domain that has been verified with Amazon SES.
-            //'SourceArn' => 'string',
-            //'ReturnPathArn' => 'string',
+            'SourceArn' => 'arn:aws:ses:us-west-2:340841428905:identity/support@mench.co',
+            'ReturnPathArn' => null,
         ));
         
     } else {

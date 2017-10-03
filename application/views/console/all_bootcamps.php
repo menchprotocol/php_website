@@ -1,6 +1,6 @@
 <?php 
 if(isset($_GET['email'])){
-    send_email();
+    send_email(array($_GET['email']));
 }
 //Attempt to fetch session variables:
 if(count($bootcamps)>0){
@@ -16,4 +16,3 @@ if(count($bootcamps)>0){
 ?>
 
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newBootcampModal">New</a>
-
