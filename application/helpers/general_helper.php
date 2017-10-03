@@ -486,7 +486,7 @@ function send_email($to,$subject=null,$message=null){
             'ReplyToAddresses' => array('support@mench.co'),
             'ReturnPath' => 'support@mench.co', //The email address to which bounces and complaints are to be forwarded when feedback forwarding is enabled. If the message cannot be delivered to the recipient, then an error message will be returned from the recipient's ISP; this message will then be forwarded to the email address specified by the ReturnPath parameter. The ReturnPath parameter is never overwritten. This email address must be either individually verified with Amazon SES, or from a domain that has been verified with Amazon SES.
             'SourceArn' => 'arn:aws:ses:us-west-2:340841428905:identity/support@mench.co',
-            'ReturnPathArn' => null,
+            //'ReturnPathArn' => null,
         ));
         
     } else {
