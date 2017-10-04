@@ -39,17 +39,7 @@ echo '<p style="padding-left:25px;"><b>'.count($outbound).' Weeks Later</b> base
 <iframe id="weekschedule" src="/console/<?= $bootcamp['c_id'] ?>/cohorts/<?= $run['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
 
 
-<select id="r_pace_id" style="margin-top:9px;">
-	<?php
-	$r_response_options = $this->config->item('r_response_options');
-	$r_weekly_pomodoro_options = $this->config->item('r_weekly_pomodoro_options');
-	//[''] = array('1','2','3','4','12','24','48','72');
-	//$config[''] = array('1','2','3','4','5','6','7','8','10','12','14');
-	foreach($r_pace_options as $pace_id=>$pace){
-	    echo '<option value="'.$pace_id.'" '.($run['r_pace_id']==$pace_id ? 'selected="selected"' : '').'>'.$pace['p_name'].': '.$pace['p_hours'].'</option>';
-	}
-	?>
-</select><br /><br />
+
 
 
 <div class="title"><h4>Enrollment Price</h4></div>

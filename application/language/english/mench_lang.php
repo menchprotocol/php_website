@@ -81,11 +81,11 @@ $lang['how_1_desc'] = 'What\'s something your fans are struggling to achieve? La
 $lang['how_1_icon'] = '<i class="material-icons">filter_1</i>';
 
 $lang['how_2_title'] = 'Invite Your Audience';
-$lang['how_2_desc'] = 'Set a launch date and announce your bootcamp. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We automate these workflows.';
+$lang['how_2_desc'] = 'Set a launch date and announce your bootcamp. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We take care of the technology.';
 $lang['how_2_icon'] = '<i class="material-icons">filter_2</i>';
 
 $lang['how_3_title'] = 'Guide Them To Success';
-$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and help everyone get to the finish line.';
+$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and identify who needs help the most.';
 $lang['how_3_icon'] = '<i class="material-icons">filter_3</i>';
 
 
@@ -97,11 +97,11 @@ $lang['why_1_icon'] = '<i class="material-icons">blur_on</i>';
 
 
 $lang['why_2_title'] = 'Make an Impact';
-$lang['why_2_desc'] = 'A bootcamp is all about getting your audience tangible results via execution. With Mench we help you raise the stakes so people actually take action and accomplish their goals once and for all. Only through action we can change the world!';
+$lang['why_2_desc'] = 'A bootcamp is all about getting your audience tangible results via execution. At Mench we provide you with all the tools to help your students take action and accomplish their goals once and for all. Only through action we can change the world!';
 $lang['why_2_icon'] = '<i class="material-icons">flash_on</i>';
 
 $lang['why_3_title'] = 'Grow Your Business';
-$lang['why_3_desc'] = 'When you run a bootcamp you\'re helping a group of like-minded people achieve tangible results. Those results will bring them closer to their goals and help them grow. When you help your audience grow, your business will grow along.';
+$lang['why_3_desc'] = 'A bootcamp allows you to add an lucrative source of income. People are willing to pay a premiun for content that helps them get actual results. At Mench you\'ll be able to command higher prices than for information only products.';
 $lang['why_3_icon'] = '<i class="material-icons">monetization_on</i>';
 
 
