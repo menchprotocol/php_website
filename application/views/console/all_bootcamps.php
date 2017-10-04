@@ -1,7 +1,4 @@
-<?php 
-if(isset($_GET['email'])){
-    send_email(array($_GET['email']));
-}
+<?php
 //Attempt to fetch session variables:
 if(count($bootcamps)>0){
     echo '<div class="list-group">';

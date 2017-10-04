@@ -5,10 +5,20 @@ if(!isset($bootcamp['c__cohorts'][0])){
 }
 ?>
 
-<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Alpha Version:</span>We're currently building our product prototypes, and the following bootcamp is created as a sample for our customer discovery process. It's not meant for real-world enrollment.</div>
+<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Alpha Version:</span>We're currently building our product prototypes, and the following bootcamp is created as a sample for our customer discovery process. It's not meant for real-world enrollment just yet. We would be launching our next bootcamp around mid-October.</div>
 
 <div class="row">
-    <div class="col-md-8 col-sm-8">
+
+	<div class="col-sm-4">
+    	<?php if(strlen($bootcamp['c_video_url'])>0){ ?>
+        	<div class="video-player"><?= echo_video($bootcamp['c_video_url']); ?></div>
+        <?php } elseif(strlen($bootcamp['c_image_url'])>0){ ?>
+        	<div class="video-player"><img src="<?= $bootcamp['c_image_url'] ?>" style="width:100%;" /></div>
+        <?php } ?>
+    </div>
+    
+    
+    <div class="col-sm-8">
 		<h2 class="title" style="line-height:130%; margin-bottom:15px;"><?= echo_title($bootcamp['c_objective']) ?></h2>
 		<p id="c_additional_goals"><?= $bootcamp['c_additional_goals'] ?></p>
 		<div id="acordeon">
@@ -190,13 +200,6 @@ if(!isset($bootcamp['c__cohorts'][0])){
         </div>
     </div>
     
-    <div class="col-md-4 col-sm-4">
-    	<?php if(strlen($bootcamp['c_video_url'])>0){ ?>
-        	<div class="video-player"><?= echo_video($bootcamp['c_video_url']); ?></div>
-        <?php } elseif(strlen($bootcamp['c_image_url'])>0){ ?>
-        	<div class="video-player"><img src="<?= $bootcamp['c_image_url'] ?>" style="width:100%;" /></div>
-        <?php } ?>
-    </div>
     
 </div>
 

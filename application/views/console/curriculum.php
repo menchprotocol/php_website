@@ -23,7 +23,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrimaryObjective" aria-expanded="false" aria-controls="collapsePrimaryObjective">
                         <h4 class="panel-title">
-                        Primary Objective
+                        <?= $level_names[$level] ?> Title
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -31,8 +31,7 @@ $level_names = $this->config->item('level_names');
                 <div id="collapsePrimaryObjective" class="panel-collapse collapse"> <!-- collapse in -->
                   <div class="panel-body">
                   
-                  
-                    	<p>Make it SMART: Specific, Measurable, Achievable, Relevant & Trackable.</p>
+                    	<p>The title is the <b>primary objective</b> of this <?= $level_names[$level] ?> that must be defined as a S.M.A.R.T. goal: Specific, Measurable, Achievable, Relevant & Trackable.</p>
                         <div class="form-group label-floating is-empty">
                             <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control">
                             <span class="material-input"></span>
@@ -152,7 +151,7 @@ $level_names = $this->config->item('level_names');
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExecHandout" aria-controls="collapseExecHandout">
                     <h4 class="panel-title">
-                    Execution Manual & Time
+                    Execution Guide + Estimated Time
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
@@ -160,13 +159,13 @@ $level_names = $this->config->item('level_names');
             <div id="collapseExecHandout" class="panel-collapse collapse">
               <div class="panel-body">
         
-                	<p><b>Execution Manual</b> contains detailed instructions and media references on what needs to be read and done to execute this <?= $level_names[$level] ?>. This would be shared with the student only on the week of execution. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
+                	<p><b>Execution Guide</b> contains detailed instructions and media references on what needs to be read and done to execute this <?= $level_names[$level] ?>. The Execution Guide is kept private until the week of execution, when we share it with students. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
                     <div class="form-group label-floating is-empty">
                         <textarea class="form-control text-edit" rows="2" id="c_todo_bible"><?= $intent['c_todo_bible'] ?></textarea>
                         <span class="material-input"></span>
                     </div>
                     
-                    <p><b>Execution Time</b> is an estimat of how long it takes to review and execute the instructions in the Execution Manual. If you estimate more than 21 hours of work, then break this down into smaller sprints/objectives.</p>
+                    <p><b>Estimated Time</b> is an estimat of how long it takes to review and execute the Execution Guide. If you estimate more than 21 hours of work, then break this down into smaller sprints/tasks.</p>
                     <select class="form-control input-mini" id="c_time_estimate">
                     	<?php 
                     	$times = $this->config->item('c_time_options');
@@ -175,9 +174,6 @@ $level_names = $this->config->item('level_names');
                     	}
                     	?>
                     </select>
-                    <br />
-                    <p>Execution Manual can be defined on 3 levels: Bootcamp, Weekly Sprints, and Week Tasks. So only include what the manual and estimate time for this specific section, and use other levels to break down the execution manual.</p>
-                    
               </div>
             </div>
           </div>
@@ -226,8 +222,7 @@ $level_names = $this->config->item('level_names');
                 <div id="collapseWeeklySprints" class="panel-collapse collapse in">
                   <div class="panel-body">
                   
-                    	<?= '<p>'.($level==1 ? 'Add weekly sprint by defining a SMART objective for each week:' : 'Define the tasks necessary to effectively execute <b>'.$intent['c_objective'].'</b>:' ).'</p>'; ?>
-                    	
+                    	<?= '<p>'.($level==1 ? 'Add weekly sprint by defining a SMART objective for each week:' : 'Define tasks that contribute to accomplishing the primary objective of this '.$level_names[$level].':'); ?>
                     	<?php
                     	echo '<div id="list-outbound" class="list-group">';
                 			if(isset($cr['outbound']) && count($cr['outbound'])>0){

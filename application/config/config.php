@@ -585,8 +585,8 @@ $config['countries_all'] = array(
 
 $config['level_names'] = array(
     1 => 'Bootcamp',
-    2 => 'Sprint',
-    3 => 'Week Tasks',
+    2 => 'Week',
+    3 => 'Task',
 );
 
 

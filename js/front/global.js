@@ -606,9 +606,11 @@ $(document).ready(function() {
 	
 	//Adjust #accordion after open/close to proper view point:
 	$('#accordion').on('shown.bs.collapse', function (e) {
-		$('html,body').animate({
-			scrollTop: $('[name=' + e.target.id +']').offset().top - 40
-		}, 150);
+		if (typeof $('[name=' + e.target.id +']').offset() !== 'undefined') {
+			$('html,body').animate({
+				scrollTop: $('[name=' + e.target.id +']').offset().top - 40
+			}, 150);			
+		}
 	});
 	
 	
