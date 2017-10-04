@@ -48,7 +48,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                     <h4 class="panel-title">
-                    Prerequisites
+                    Requirements
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
@@ -82,7 +82,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
                 foreach($sprints as $sprint){
                     echo '<div>';
                         echo '<h4>Week #'.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</h4>';
-                        echo '<p>'.nl2br(trim($sprint['c_todo_overview'])).'</p>';
+                        echo '<p class="curriculum_p">'.nl2br(trim($sprint['c_todo_overview'])).'</p>';
                     echo '</div>';
                 }
                 ?>
@@ -217,7 +217,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
 
 <script>
 $( document ).ready(function() {
-    var showdowns = ["c_additional_goals","c_prerequisites","c_todo_overview","u_tangible_experience","u_bio"];
+    var showdowns = ["c_additional_goals","c_prerequisites","c_todo_overview","u_tangible_experience","u_bio","curriculum_p"];
     var arrayLength = showdowns.length;
     for (var i = 0; i < arrayLength; i++) {
     	update_showdown($('#'+showdowns[i]),$('#'+showdowns[i]).html());

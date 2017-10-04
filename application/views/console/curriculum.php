@@ -126,7 +126,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                         <h4 class="panel-title">
-                        Prerequisites
+                        Requirements
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
