@@ -217,10 +217,10 @@ if(!isset($bootcamp['c__cohorts'][0])){
 
 <script>
 $( document ).ready(function() {
-    var showdowns = ["c_additional_goals","c_prerequisites","c_todo_overview","u_tangible_experience","u_bio","curriculum_p"];
+    var showdowns = ["#c_additional_goals","#c_prerequisites","#c_todo_overview","#u_tangible_experience","#u_bio",".curriculum_p"];
     var arrayLength = showdowns.length;
     for (var i = 0; i < arrayLength; i++) {
-    	update_showdown($('#'+showdowns[i]),$('#'+showdowns[i]).html());
+    	update_showdown($(showdowns[i]),$(showdowns[i]).html());
     }
 });
 </script>
