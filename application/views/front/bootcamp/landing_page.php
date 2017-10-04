@@ -67,14 +67,25 @@ if(!isset($bootcamp['c__cohorts'][0])){
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseWeeklySprints" aria-controls="collapseWeeklySprints">
                     <h4 class="panel-title">
-                    Weekly Sprints
+                    Curriculum
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
             </div>
             <div id="collapseWeeklySprints" class="panel-collapse collapse">
               <div class="panel-body">
-                Bootcamp Outline here...
+                <?php 
+                $sprints = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_id' => $bootcamp['c_id'],
+                    'cr.cr_status >=' => 0,
+                ));
+                foreach($sprints as $sprint){
+                    echo '<div>';
+                        echo '<h4>Week #'.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</h4>';
+                        echo '<p>'.nl2br(trim($sprint['c_todo_overview'])).'</p>';
+                    echo '</div>';
+                }
+                ?>
               </div>
             </div>
           </div>
@@ -87,7 +98,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMentors" aria-controls="collapseMentors">
                     <h4 class="panel-title">
-                    Mentors
+                    Experts
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
@@ -195,7 +206,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
                 
             </div>
             <div class="col-md-6 col-sm-6">
-                <a href="javascript:alert('This takes user to final enrollment confirmation page with stripe payment to finalize checkout.');" href2="/<?= $bootcamp['c_url_key'] ?>/enroll" class="btn btn-primary btn-round pull-right">Enroll <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+                <a href="javascript:alert('Currently in private Beta. Content us to learn more.');" href2="/<?= $bootcamp['c_url_key'] ?>/enroll" class="btn btn-primary btn-round pull-right">Apply For <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
             </div>
         </div>
     </div>

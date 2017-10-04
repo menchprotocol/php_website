@@ -57,8 +57,8 @@ $lang['u_level_3'] = 'Admin';
  * Buttons & Call to Actions
  ****************************** */
 
-$lang['signup'] = 'Signup As Mentor';
-$lang['login'] = 'Mentor Login';
+$lang['signup'] = 'Signup As Expert';
+$lang['login'] = 'Expert Login';
 $lang['contact_us'] = 'Contact Us';
 $lang['terms'] = 'Terms';
 $lang['no_account'] = 'Want to Run a Bootcamp?';
