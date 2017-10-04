@@ -69,14 +69,14 @@ $lang['forgot_pass'] = 'Forgot Password?';
  * Home Page
  ****************************** */
 
-$lang['headline_primary'] = 'A Marketplace for Online Bootcamps.';
-$lang['headline_secondary'] = 'We help ambitious people accomplish their goals much faster by giving them a clear weekly action plan designed by top industry experts.';
+$lang['headline_primary'] = 'Online Bootcamps for the Ambitious.';
+$lang['headline_secondary'] = 'We help students accomplish their goals faster by working with experts that hold them accountable in executing a weekly action plan.';
 
 
 //How it Works?
 $lang['how_heading'] = 'How Mench Works';
 
-$lang['how_1_title'] = 'Create A Bootcamp';
+$lang['how_1_title'] = 'Create Your Bootcamp';
 $lang['how_1_desc'] = 'What\'s something your fans are struggling to achieve? Launch a website, podcast or Youtube channel? Create an app or write a book? With Mench you can help them make it happen once and for all.';
 $lang['how_1_icon'] = '<i class="material-icons">filter_1</i>';
 

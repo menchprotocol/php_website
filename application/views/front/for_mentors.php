@@ -15,21 +15,21 @@ $udata = $this->session->userdata('user');
 					<div class="col-md-4">
 						<div class="info">
 							<div class="icon icon-primary mtweak"><?= $this->lang->line('how_1_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('how_1_title') ?></h4>
+							<h3 class="info-title"><?= $this->lang->line('how_1_title') ?></h3>
 							<p><?= $this->lang->line('how_1_desc') ?></p>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="info">
 							<div class="icon icon-primary mtweak"><?= $this->lang->line('how_2_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('how_2_title') ?></h4>
+							<h3 class="info-title"><?= $this->lang->line('how_2_title') ?></h3>
 							<p><?= $this->lang->line('how_2_desc') ?></p>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="info">
 							<div class="icon icon-primary mtweak"><?= $this->lang->line('how_3_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('how_3_title') ?></h4>
+							<h3 class="info-title"><?= $this->lang->line('how_3_title') ?></h3>
 							<p><?= $this->lang->line('how_3_desc') ?></p>
 						</div>
 					</div>
@@ -47,21 +47,21 @@ $udata = $this->session->userdata('user');
 					<div class="col-md-4">
 						<div class="info">
 							<div class="icon icon-primary mtweak"><?= $this->lang->line('why_1_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('why_1_title') ?></h4>
+							<h3 class="info-title"><?= $this->lang->line('why_1_title') ?></h3>
 							<p><?= $this->lang->line('why_1_desc') ?></p>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="info">
 							<div class="icon icon-primary mtweak"><?= $this->lang->line('why_2_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('why_2_title') ?></h4>
+							<h3 class="info-title"><?= $this->lang->line('why_2_title') ?></h3>
 							<p><?= $this->lang->line('why_2_desc') ?></p>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="info">
 							<div class="icon icon-primary mtweak"><?= $this->lang->line('why_3_icon') ?></div>
-							<h4 class="info-title"><?= $this->lang->line('why_3_title') ?></h4>
+							<h3 class="info-title"><?= $this->lang->line('why_3_title') ?></h3>
 							<p><?= $this->lang->line('why_3_desc') ?></p>
 						</div>
 					</div>

@@ -5,7 +5,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
 }
 ?>
 
-<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Alpha Version:</span>We're currently building our product prototypes, and the following bootcamp is created as a sample for our customer discovery process. It's not meant for real-world enrollment just yet. We would be launching our next bootcamp around mid-October.</div>
+<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Private Beta</span>We're currently in private beta. This is a sample bootcamp for prototyping and customer discovery. It's not meant for real-world enrollment just yet. We would be launching our next bootcamp around mid-October.</div>
 
 <div class="row">
 

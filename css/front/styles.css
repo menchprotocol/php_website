@@ -381,7 +381,7 @@ h5, .h5 {
 }
 
 .tab-pane p {text-align:left;}
-.mtweak {margin: 50px 0 -25px;}
+.mtweak {margin: 50px 0 0;}
 
 .bootstrap-select.btn-group .dropdown-menu li:first-child{
 	border:0;
