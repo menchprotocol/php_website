@@ -440,7 +440,7 @@ function save_file($file_url,$json_data){
 }
 
 
-function send_email($to,$subject=null,$message=null){
+function send_email($to,$subject,$message){
     $CI =& get_instance();
     
     if(is_dev()){
@@ -471,19 +471,19 @@ function send_email($to,$subject=null,$message=null){
                 // Subject is required
                 'Subject' => array(
                     // Data is required
-                    'Data' => 'Hello World',
+                    'Data' => $subject,
                     'Charset' => 'UTF-8',
                 ),
                 // Body is required
                 'Body' => array(
                     'Text' => array(
                         // Data is required
-                        'Data' => 'Hello, this is shervin.',
+                        'Data' => strip_tags($message),
                         'Charset' => 'UTF-8',
                     ),
                     'Html' => array(
                         // Data is required
-                        'Data' => '<b>bold</b> move ha?',
+                        'Data' => $message,
                         'Charset' => 'UTF-8',
                     ),
                 ),

@@ -580,7 +580,30 @@ function msg_save_edit(i_id){
 	});
 }
 
-
+function contact_us(){
+	
+	//Show loader:
+	$("#contact_results").html('<div><img src="/img/loader.gif" /></div>');
+	
+	//Update message:
+	$.post("/process/contact_us", {
+		your_name:$('#your_name').val(), 
+		your_email:$('#your_email').val(), 
+		your_message:$('#your_message').val()
+	}, function(data) {
+		
+		if (data.indexOf('Error') <= -1)  {
+			//No error was detected, empty fields:
+			$('#your_name').val('');
+			$('#your_email').val('');
+			$('#your_message').val('');
+		}
+		
+		//Update UI to confirm with user:
+		$("#contact_results").html(data).hide().fadeIn();
+		
+	});
+}
 
 $(document).ready(function() {
 	

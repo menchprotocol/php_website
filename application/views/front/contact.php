@@ -5,19 +5,18 @@
 						<form role="form" id="contact-form" method="post">
 							<div class="form-group label-floating is-empty">
 								<label class="control-label">Your Name</label>
-								<input type="text" name="name" class="form-control">
+								<input type="text" id="your_name" class="form-control">
 							<span class="material-input"></span></div>
 							<div class="form-group label-floating is-empty">
 								<label class="control-label">Your Email</label>
-								<input type="email" name="email" class="form-control">
+								<input type="email" id="your_email" class="form-control">
 							<span class="material-input"></span></div>
 							<div class="form-group label-floating is-empty">
 								<label class="control-label">Your Message</label>
-								<textarea name="message" class="form-control" id="message" rows="6"></textarea>
+								<textarea class="form-control" id="your_message" rows="6"></textarea>
 							<span class="material-input"></span></div>
-							<div class="submit">
-								<input type="submit" class="btn btn-primary btn-raised btn-round" value="Send Message" />
-							</div>
+							
+							<table width="100%"><tr><td class="save-td"><a href="javascript:contact_us();" class="btn btn-primary btn-raised btn-round">Send Message</a></td><td><span id="contact_results"></span></td></tr></table>
 						</form>
 					</div>
                 	<div class="col-md-4 col-md-offset-2 contactleft" style="margin-top:50px;">

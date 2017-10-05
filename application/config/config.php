@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.23,
+		'version' => 0.24,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -587,13 +587,6 @@ $config['level_names'] = array(
     1 => 'Bootcamp',
     2 => 'Week',
     3 => 'Task',
-);
-
-
-$config['application_questions'] = array(
-    'why_join' => 'Why are you joining this bootcamp?',
-    'why_you'  => 'Considering limited availability and high demand, why should you be choosen for this bootcamp?',
-    'why_now'  => 'Why is now the right time for you to join this bootcamp?',
 );
 
 $config['r_pace_options'] = array(
