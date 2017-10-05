@@ -34,89 +34,14 @@ class Process extends CI_Controller {
 	        echo '<span style="color:#FF0000;">Error: Message required.</span>';
 	    } else {
 	        
-	        require( 'application/libraries/aws/aws-autoloader.php' );
-	        $client = new Aws\Ses\SesClient([
-	            'version' 	    => 'latest',
-	            'region'  	    => 'us-west-2',
-	            'credentials'   => $this->config->item('aws_credentials'),
-	        ]);
+	        $this->load->model("Email_model");
+	        if($this->Email_model->contact_us($_POST['your_name'],$_POST['your_email'],$_POST['your_message'])){
+	            //Display confirmation:
+	            echo '<span style="color:#00CC00;">Message received. We will get back to you shortly.</span>';
+	        } else {
+	            echo '<span style="color:#FF0000;">Error: Unknown email error. Please contact us directly at support@mench.co</span>';
+	        }
 	        
-	        $message1 = 'A new message has been received: <br /><br />Name: '.$_POST['your_name'].'<br />Email: '.$_POST['your_email'].'<br /> Message: '.$_POST['your_message'];
-	        $result1 = $client->sendEmail(array(
-	            // Source is required
-	            'Source' => 'support@mench.co',
-	            // Destination is required
-	            'Destination' => array(
-	                'ToAddresses' => array('shervin@mench.co','miguel@mench.co'),
-	                'CcAddresses' => array(),
-	                'BccAddresses' => array(),
-	            ),
-	            // Message is required
-	            'Message' => array(
-	                // Subject is required
-	                'Subject' => array(
-	                    // Data is required
-	                    'Data' => 'New Message - mench.co',
-	                    'Charset' => 'UTF-8',
-	                ),
-	                // Body is required
-	                'Body' => array(
-	                    'Text' => array(
-	                        // Data is required
-	                        'Data' => strip_tags($message1),
-	                        'Charset' => 'UTF-8',
-	                    ),
-	                    'Html' => array(
-	                        // Data is required
-	                        'Data' => $message1,
-	                        'Charset' => 'UTF-8',
-	                    ),
-	                ),
-	            ),
-	            'ReplyToAddresses' => array('support@mench.co'),
-	            'ReturnPath' => 'support@mench.co',
-	        ));
-	        
-	        
-	        
-	        $message2 = 'A new message has been received: <br /><br />Name: '.$_POST['your_name'].'<br />Email: '.$_POST['your_email'].'<br /> Message: '.$_POST['your_message'];
-	        $result2 = $client->sendEmail(array(
-	            // Source is required
-	            'Source' => 'support@mench.co',
-	            // Destination is required
-	            'Destination' => array(
-	                'ToAddresses' => array($_POST['your_email']),
-	                'CcAddresses' => array(),
-	                'BccAddresses' => array(),
-	            ),
-	            // Message is required
-	            'Message' => array(
-	                // Subject is required
-	                'Subject' => array(
-	                    // Data is required
-	                    'Data' => 'Message Confirmation - mench.co',
-	                    'Charset' => 'UTF-8',
-	                ),
-	                // Body is required
-	                'Body' => array(
-	                    'Text' => array(
-	                        // Data is required
-	                        'Data' => strip_tags($message2),
-	                        'Charset' => 'UTF-8',
-	                    ),
-	                    'Html' => array(
-	                        // Data is required
-	                        'Data' => $message2,
-	                        'Charset' => 'UTF-8',
-	                    ),
-	                ),
-	            ),
-	            'ReplyToAddresses' => array('support@mench.co'),
-	            'ReturnPath' => 'support@mench.co',
-	        ));
-	        
-	        //Display confirmation:
-	        echo '<span style="color:#00CC00;">Message received. We will get back to you shortly.</span>';
 	    }
 	}
 	
