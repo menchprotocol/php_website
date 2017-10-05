@@ -33,11 +33,14 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['your_message']) || strlen($_POST['your_message'])<=0){
 	        echo '<span style="color:#FF0000;">Error: Message required.</span>';
 	    } else {
-	        //Send confirmation email to user:
-	        send_email(array($_POST['your_email']),'Message Confirmation - mench.co','Hi '.$_POST['your_name'].', <br /><br />This is a confirmation that we have received your message and will get back to your shortly. <br /><br />Team Mench.');
+	        
+	        //'A new message has been received: <br /><br />Name: '.$_POST['your_name'].'<br />Email: '.$_POST['your_email'].'<br /> Message: '.$_POST['your_message']
 	        
 	        //Send email to admin:
-	        send_email(array('shervin@mench.co','miguel@mench.co'),'New Message - mench.co','A new message has been received: <br /><br />Name: '.$_POST['your_name'].'<br />Email: '.$_POST['your_email'].'<br /> Message: '.$_POST['your_message']);
+	        send_email(array('shervin@mench.co','miguel@mench.co'),'New Message - mench.co','hiii');
+	        
+	        //Send confirmation email to user:
+	        send_email(array($_POST['your_email']),'Message Confirmation - mench.co','Hi '.$_POST['your_name'].', <br /><br />This is a confirmation that we have received your message and will get back to your shortly. <br /><br />Team Mench.');
 	        
 	        //Display confirmation:
 	        echo '<span style="color:#00CC00;">Message received. We will get back to you shortly.</span>';
