@@ -10,31 +10,7 @@ $website = $this->config->item('website');
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
-	<!-- Fonts/Icons -->
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-
-	<!-- CSS -->
-    <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/lib/animate.css" rel="stylesheet" />
-    <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet"/>
-    <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet"/>
-    
-    <!-- JS -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
-	<script src="/js/lib/jquery.min.js" type="text/javascript"></script>
-	<script src="/js/lib/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/js/lib/material.min.js"></script>	
-	<script src="/js/lib/moment.min.js"></script>
-	<script src="/js/lib/jasny-bootstrap.min.js"></script>
-	<script src="/js/lib/morphext.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-    <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-	<script src="/js/front/material-kit.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
-	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
-	<script type="text/javascript"> var u_status = <?= @intval($udata['u_status']) ?>; </script>
+	<?php $this->load->view('console/shared/header_resources' ); ?>
 </head>
 
 <body class="landing-page">

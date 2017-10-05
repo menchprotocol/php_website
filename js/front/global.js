@@ -663,15 +663,15 @@ $(document).ready(function() {
 		  $('[data-toggle="tooltip"]').addClass('').tooltip();
 	});
 	
-	//Load Sortable, IF ADMIN:
-	if(u_status>=2){
-		if($('#list-outbound').length){
-			load_sortable('outbound');
-		}
-		if($('#list-inbound').length){
-			load_sortable('inbound');
-		}
+	//Load Sortable:
+	if($('#list-inbound').length){
+		load_sortable('inbound');
 	}
+	/*
+	if($('#list-outbound').length){
+		load_sortable('outbound');
+	}
+	*/
 
 	
 	//Load Algolia:
