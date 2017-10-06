@@ -105,13 +105,12 @@
   color:#AAA !important;
 }
 
-
 .fa-chain-broken { color:#999; margin-right:5px; font-size:0.8em; } 
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 .req_c_is_grandpa { display:none; }
 
 .title-main { display:block; line-height:100%; padding-bottom:5px; font-size:1em; font-weight:bold; }
-.title-sub { display:inline-block; color:#999; margin-right:10px; }
+.title-sub { display:inline-block; color:#999; margin-right:5px; font-weight:normal; }
 .title-sub i { width:20px; text-align:center; }
 
 .c_objective { line-height:100%; }
@@ -217,7 +216,6 @@ h5, .h5 {
 .container-fluid .alert { margin-top:10px; }
 
 
-.list_input{padding-top:5px; padding-bottom:5px;}
 .typicalform {max-width:50%;}
 .nav-pills:not(.nav-pills-icons) > li > a {
     font-weight: bold;
@@ -304,6 +302,8 @@ h5, .h5 {
 .save-td { width:120px; vertical-align: text-top; }
 .link-view { font-size:0.7em; color:#d6ba14 !important; margin-left:5px; }
 #console .navbar-header { min-width:700px; }
+.dash input, .dash textarea, .dash select, .list_input { background-color:#EFEFEF !important; }
+.list_input {padding-top:5px; padding-bottom:5px;}
 
 @media (max-width:1150px){
 	#console .navbar-header { min-width:600px; }

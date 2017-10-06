@@ -105,8 +105,8 @@
                 	    echo '<tr> <td>'.$admin['u_fname'].' '.$admin['u_lname'].'</td> <td>'.status_bible('ba',$admin['ba_status']).'</td> <td>'.( $admin['ba_team_display']=='t' ? 'Yes' : 'No' ).'</td> <td><a href="javascript:ba_open_modify('.$admin['ba_id'].')" data-toggle="tooltip" title="Modify admin role and team display status"><i class="fa fa-pencil-square" aria-hidden="true"></i></a> &nbsp; &nbsp; <a href="javascript:ba_initiate_revoke('.$admin['ba_id'].')" data-toggle="tooltip" title="Revoke admin status"><i class="fa fa-ban" aria-hidden="true"></i></a></td> </tr>';
                 	}
                 	
-                	echo '<tr> <td><input type="email" id="new_admin_email" class="form-control" placeholder="New admin email" /></td> <td>';
-                	echo_status_dropdown('ba','new_admin_role',2);
+                	echo '<tr style="background-color:#EFEFEF;"> <td><input type="email" id="new_admin_email" class="form-control" placeholder="New admin email" /></td> <td>';
+                	//echo_status_dropdown('ba','new_admin_role',2);
                 	echo '</td> <td><div class="checkbox"><label><input type="checkbox" id="new_admin_team_display"></label></div></td> <td><a href="javascript:ba_add()"><i class="fa fa-plus" aria-hidden="true"></i> Add Admin</a></td> </tr>';
                 	?>
                 	</tbody>

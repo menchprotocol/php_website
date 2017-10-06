@@ -346,6 +346,7 @@ class Db_model extends CI_Model {
 	 ****************************** */
 	
 	function r_fetch($match_columns){
+	    
 		//Missing anything?
 		$this->db->select('r.*');
 		$this->db->from('v5_cohorts r');
@@ -356,19 +357,17 @@ class Db_model extends CI_Model {
 		$this->db->group_by('r.r_id');
 		$this->db->order_by('r.r_start_date','ASC');
 		$q = $this->db->get();
-		$runs = $q->result_array();
 		
+		$runs = $q->result_array();
 		foreach($runs as $key=>$value){
+		    /*
+		     * //TODO: Determine enrolled students and apply potential registration limitations
 		    $runs[$key]['r__enrolled_students'] = $this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
 		        'ru.ru_status <'	=> 2, //TODO Review: Regular students
 		        'u.u_status <'		=> 2, //TODO Review: Regular students
 		    ));
-		    
-		    $runs[$key]['r__sprint_count'] = count($this->Db_model->cr_outbound_fetch(array(
-		        'cr.cr_inbound_id' => $value['r_c_id'],
-		        'cr.cr_status >=' => 0,
-		    )));
+		    */
 		}
 		
 		return $runs;
@@ -405,13 +404,45 @@ class Db_model extends CI_Model {
 	    $q = $this->db->get();
 	    $bootcamps = $q->result_array();
 	    
-	    //Now append the runs and count users per run:
+	    //Now append more data:
 	    foreach($bootcamps as $key=>$c){
+	        //Start estimating hours calculation:
+	        $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
+	        
+	        //Fetch Curriculum:
+	        $bootcamps[$key]['c__task_count'] = 0;
+	        $bootcamps[$key]['c__sprints'] = $this->Db_model->cr_outbound_fetch(array(
+	            'cr.cr_inbound_id' => $c['c_id'],
+	            'cr.cr_status >=' => 0,
+	        ));
+	        
+	        foreach($bootcamps[$key]['c__sprints'] as $sprint_key=>$sprint_value){
+	            //Addup sprint estimated time:
+	            $bootcamps[$key]['c__estimated_hours'] += $sprint_value['c_time_estimate'];
+	            //Introduce sprint total time:
+	            $bootcamps[$key]['c__sprints'][$sprint_key]['r__estimated_hours'] = $sprint_value['c_time_estimate'];
+	            
+	            //Fetch sprint tasks at level 3:
+	            $bootcamps[$key]['c__sprints'][$sprint_key]['c__tasks'] = $this->Db_model->cr_outbound_fetch(array(
+	                'cr.cr_inbound_id' => $sprint_value['c_id'],
+	                'cr.cr_status >=' => 0,
+	            ));
+	            
+	            //Addup task values:
+	            foreach($bootcamps[$key]['c__sprints'][$sprint_key]['c__tasks'] as $task_key=>$task_value){
+	                //Addup task estimated time:
+	                $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+	                $bootcamps[$key]['c__sprints'][$sprint_key]['r__estimated_hours'] += $task_value['c_time_estimate'];
+	                $bootcamps[$key]['c__task_count']++;
+	            }
+	        }
+	        
 	        //Fetch cohorts:
 	        $bootcamps[$key]['c__cohorts'] = $this->r_fetch(array(
 	            'r.r_c_id' => $c['c_id'],
 	            'r.r_status >=' => 0,
 	        ));
+	        
 	        //Fetch admins:
 	        $bootcamps[$key]['c__admins'] =  $this->Db_model->c_admins($c['c_id']);
 	    }

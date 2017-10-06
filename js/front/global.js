@@ -401,6 +401,7 @@ function intents_sort(direction){
 	});
 }
 
+
 function load_sortable(direction){
 	if(direction=='inbound'){return false;}
 	var thelist = document.getElementById("list-"+direction);
@@ -664,14 +665,15 @@ $(document).ready(function() {
 	});
 	
 	//Load Sortable:
+	/*
 	if($('#list-inbound').length){
 		load_sortable('inbound');
 	}
-	/*
+	*/
 	if($('#list-outbound').length){
 		load_sortable('outbound');
 	}
-	*/
+	
 
 	
 	//Load Algolia:

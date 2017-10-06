@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.24,
+		'version' => 0.25,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -40,7 +40,7 @@ $config['title_replacements'] = array(
 
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13','21');
+$config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13');
 
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
@@ -587,29 +587,6 @@ $config['level_names'] = array(
     1 => 'Bootcamp',
     2 => 'Week',
     3 => 'Task',
-);
-
-$config['r_pace_options'] = array(
-    0 => array(
-        'p_name' => 'Flexible',
-        'p_hours' => 'No set hours/week',
-    ),
-    1 => array(
-        'p_name' => 'Light Pace',
-        'p_hours' => '~6 hours/week',
-    ),
-    2 => array(
-        'p_name' => 'Normal Pace',
-        'p_hours' => '~12 hours/week',
-    ),
-    3 => array(
-        'p_name' => 'Part Time',
-        'p_hours' => '~24 hours/week',
-    ),
-    4 => array(
-        'p_name' => 'Immersive',
-        'p_hours' => '~48 hours/week',
-    ),
 );
 
 $config['r_response_options'] = array('1','2','3','4','12','24','48','72');

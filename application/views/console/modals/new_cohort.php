@@ -37,10 +37,10 @@ $(document).ready(function() {
 	});
 });
 
-$('#r_start_date, #r_usd_price, #r_pace_id').bind("enterKey",function(e){
+$('#r_start_date').bind("enterKey",function(e){
 	r_process_create();
 });
-$('#r_start_date, #r_usd_price, #r_pace_id').keyup(function(e){
+$('#r_start_date').keyup(function(e){
     if(e.keyCode == 13)
     {
     	r_process_create();

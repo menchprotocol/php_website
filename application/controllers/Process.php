@@ -234,7 +234,6 @@ class Process extends CI_Controller {
 	            //Set some defaults:
 	            'r_min_students' => 1,
 	            'r_max_students' => 20,
-	            'r_pace_id' => 0,
 	            'r_usd_price' => 0,
 	        ));
 	        
@@ -247,18 +246,6 @@ class Process extends CI_Controller {
 	    }
 	}
 	
-	/*
-	 *  r_start_date:$('#r_start_date').val(),
-	 r_pace_id:$('#r_pace_id').val(),
-	 r_usd_price:$('#r_usd_price').val(),
-	 
-	 r_id:$('#r_id').val(),
-	 :$('#r_min_students').val(),
-	 :$('#r_max_students').val(),
-	 :$('#r_closed_dates').val(),
-	 :$('#r_status').val(),
-	 
-	 * */
 	
 	function update_schedule(){
 	    $udata = auth(2);
@@ -296,8 +283,6 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-	    } elseif(!isset($_POST['r_pace_id'])){
-	        die('<span style="color:#FF0000;">Error: Select pace ID of light or higher.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing cohort ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
@@ -331,7 +316,6 @@ class Process extends CI_Controller {
 	        'r_min_students' => intval($_POST['r_min_students']),
 	        'r_max_students' => intval($_POST['r_max_students']),
 	        'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	        'r_pace_id' => intval($_POST['r_pace_id']),
 	        'r_usd_price' => floatval($_POST['r_usd_price']),
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        'r_response_time_hours' => $_POST['r_response_time_hours'],
@@ -357,8 +341,8 @@ class Process extends CI_Controller {
 	    if(!$udata){
 	        //Display error:
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_primary_objective']) || strlen($_POST['c_primary_objective'])<5){
-	        die('<span style="color:#FF0000;">Error: Primary objective must be 5 characters or longer.</span>');
+	    } elseif(!isset($_POST['c_primary_objective']) || strlen($_POST['c_primary_objective'])<2){
+	        die('<span style="color:#FF0000;">Error: Title must be 2 characters or longer.</span>');
 	    } else {
 	        
 	        //Create new bootcamp:
@@ -469,14 +453,11 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing pid.</span>');
-	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=5){
-	        die('<span style="color:#FF0000;">Error: Objective must be longer than 5 characters.</span>');
+	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=2){
+	        die('<span style="color:#FF0000;">Error: Title be longer than 2 characters.</span>');
 	    }
 	    
 	    //Not required variables:
-	    if(!isset($_POST['c_additional_goals'])){
-	        $_POST['c_additional_goals'] = '';
-	    }
 	    if(!isset($_POST['c_todo_overview'])){
 	        $_POST['c_todo_overview'] = '';
 	    }
@@ -495,7 +476,6 @@ class Process extends CI_Controller {
 	        'c_creator_id' => $udata['u_id'],
 	        'c_timestamp' => date("Y-m-d H:i:s"),
 	        'c_objective' => trim($_POST['c_objective']),
-	        'c_additional_goals' => $_POST['c_additional_goals'],
 	        'c_todo_bible' => $_POST['c_todo_bible'],
 	        'c_todo_overview' => $_POST['c_todo_overview'],
 	        'c_prerequisites' => $_POST['c_prerequisites'],

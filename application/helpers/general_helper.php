@@ -30,15 +30,6 @@ function echo_video($video_url){
     }
 }
 
-function echo_pace($c_full,$cohort_id=0){
-    //Fetch the first pace:
-    $r_pace_id = $c_full['c__cohorts'][$cohort_id]['r_pace_id'];
-    
-    $CI =& get_instance();
-    $r_pace_options = $CI->config->item('r_pace_options');
-    return '<span '.( $r_pace_options[$r_pace_id]['p_hours'] ? 'data-toggle="tooltip" class="underdot" title="'.$r_pace_options[$r_pace_id]['p_name'].' requires a commitment of '.$r_pace_options[$r_pace_id]['p_hours'].'"' : '' ).'><i class="fa fa-clock-o" aria-hidden="true"></i> '.$c_full['c__cohorts'][$cohort_id]['r__sprint_count'].' Weeks '.$r_pace_options[$r_pace_id]['p_name'].' '.( $r_pace_options[$r_pace_id]['p_hours'] ? '' : echo_hours($c_full['c_time_estimate']) );
-}
-
 function echo_title($title_string){
     $peaces = explode(' ',$title_string);
     
@@ -93,20 +84,56 @@ function echo_message($i){
 }
 
 function echo_time($c_time_estimate){
-    return ( $c_time_estimate>0 ? ' <span class="title-sub" data-toggle="tooltip" title="Estimated time investment to complete is '.$c_time_estimate.' Hour'.($c_time_estimate>1?'s':'').'"><i class="fa fa-clock-o" aria-hidden="true"></i>'.$c_time_estimate.' Hour'.($c_time_estimate>1?'s':'').'</span>' : '' );
+    if($c_time_estimate>0){
+        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated total time investment"><i class="fa fa-clock-o" aria-hidden="true"></i>';
+        if($c_time_estimate<1){
+            //Minutes:
+            $ui .= round($c_time_estimate*60).'M';
+        } else {
+            //Hours:
+            $ui .= round($c_time_estimate,1).'H';
+        }
+        $ui .= '</span>';
+        return $ui;
+    }
+    //No time:
+    return false;
 }
 
-function echo_cr($c_id,$relation,$direction,$level=0){
+function echo_cr($c_id,$intent,$direction,$level=0){
     $CI =& get_instance();
     $level_names = $CI->config->item('level_names');
     
-	//Fetch current Challenge:
+    
 	if($direction=='outbound'){
-	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/console/'.$c_id.'/curriculum/'.$relation['c_id'].'" class="list-group-item is_sortable"><i class="fa fa-sort" aria-hidden="true" style="padding-right:10px;"></i>'
-	       .( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$relation['cr_outbound_rank'].'</span>' : '' )
-	       .'<span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> <span class="label label-'.($direction=='outbound'?'primary':'default').'"><span class="dir-sign">'.$direction.'</span> <i class="fa fa-chevron-right" aria-hidden="true"></i></span></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).' <span class="srt-'.$direction.'"></span></a>';
+	    
+	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$c_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item is_sortable">';
+	        //Right content
+    	    $ui .= '<span class="pull-right">';
+    	        $ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
+        	    $ui .= '<span class="label label-primary">';
+        	       $ui .= '<span class="dir-sign">'.$direction.'</span> ';
+        	       $ui .= '<i class="fa fa-chevron-right" aria-hidden="true"></i>';
+        	    $ui .= '</span>';
+    	    $ui .= '</span> ';
+    	    
+    	    //Left content
+    	    $ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i>';
+    	    $ui .= ( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$intent['cr_outbound_rank'].'</span>' : '' );
+    	    $ui .= echo_title($intent['c_objective']);
+    	    $ui .= echo_time($intent[($level==2?'r__estimated_hours':'c_time_estimate')]);
+    	    if($level==2 && count($intent['c__tasks'])>0){
+    	        //This sprint has tasks:
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of tasks for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__tasks']).'</span>';
+    	    }
+    	    $ui .= ' <span class="srt-'.$direction.'"></span>'; //For the status of sorting
+    	    
+	    $ui .= '</a>';
+	    return $ui;
+	    
 	} else {
-	    return '<a id="cr_'.$relation['cr_id'].'" data-link-id="'.$relation['cr_id'].'" href="/console/'.$c_id.'/curriculum/'.$relation['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$relation['cr_id'].',\''.str_replace('\'','',str_replace('"','',$relation['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.echo_title($relation['c_objective']).echo_time($relation['c_time_estimate']).'</a>';
+	    //Not really being used for now...
+	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$c_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.echo_title($intent['c_objective']).echo_time($intent['c_time_estimate']).'</a>';
 	}
 }
 
@@ -439,66 +466,6 @@ function save_file($file_url,$json_data){
     }
 }
 
-
-function send_email($to,$subject,$message){
-    $CI =& get_instance();
-    
-    if(is_dev()){
-        echo 'Cannot send email from local server.';
-        return false;
-    }
-    
-    //Then upload to AWS S3:
-    if(@include( 'application/libraries/aws/aws-autoloader.php' )){
-        
-        $client = new Aws\Ses\SesClient([
-            'version' 	    => 'latest',
-            'region'  	    => 'us-west-2',
-            'credentials'   => $CI->config->item('aws_credentials'),
-        ]);
-        
-        $result = $client->sendEmail(array(
-            // Source is required
-            'Source' => 'support@mench.co',
-            // Destination is required
-            'Destination' => array(
-                'ToAddresses' => $to,
-                'CcAddresses' => array(),
-                'BccAddresses' => array(),
-            ),
-            // Message is required
-            'Message' => array(
-                // Subject is required
-                'Subject' => array(
-                    // Data is required
-                    'Data' => $subject,
-                    'Charset' => 'UTF-8',
-                ),
-                // Body is required
-                'Body' => array(
-                    'Text' => array(
-                        // Data is required
-                        'Data' => strip_tags($message),
-                        'Charset' => 'UTF-8',
-                    ),
-                    'Html' => array(
-                        // Data is required
-                        'Data' => $message,
-                        'Charset' => 'UTF-8',
-                    ),
-                ),
-            ),
-            'ReplyToAddresses' => array('support@mench.co'),
-            'ReturnPath' => 'support@mench.co',
-            //'SourceArn' => 'arn:aws:ses:us-west-2:340841428905:identity/support@mench.co',
-            //'ReturnPathArn' => null,
-        ));
-        
-    } else {
-        //Probably local, ignore this!
-        return false;
-    }
-}
 
 function log_error($error_message, $json_data=array(), $e_medium_id=1){
 	$CI =& get_instance();

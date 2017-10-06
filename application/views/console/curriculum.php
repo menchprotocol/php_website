@@ -54,44 +54,6 @@ $level_names = $this->config->item('level_names');
                   </div>
                 </div>
               </div>
-              
-              
-              
-
-                        
-                        
-          	  <?php if($level==1 || $level==3 || 1){ ?>
-              <div class="panel panel-border panel-default" name="collapseObjectives">
-                <div class="panel-heading" role="tab">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseObjectives" aria-expanded="false" aria-controls="collapseObjectives">
-                        <h4 class="panel-title">
-                        Additional Objectives
-                        <i class="material-icons">keyboard_arrow_down</i>
-                        </h4>
-                    </a>
-                </div>
-                <div id="collapseObjectives" class="panel-collapse collapse"> <!-- collapse in -->
-                  <div class="panel-body">
-                  
-                  		<p>An optional list of additional objectives that would be accomplished on top of the primary objective. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
-                        <div class="form-group label-floating is-empty">
-                            <textarea class="form-control text-edit" rows="2" id="c_additional_goals"><?= $intent['c_additional_goals'] ?></textarea>
-                            <span class="material-input"></span>
-                        </div>
-                    
-                  </div>
-                </div>
-              </div>
-              
-              <?php } else { ?>
-              <!-- JS Placeholder -->
-              <input type="hidden" id="c_additional_goals" value="" />
-              <?php } ?>
-              
-              
-              
-              
-              
     		
               
               
@@ -103,7 +65,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="false" aria-controls="collapseOverview">
                         <h4 class="panel-title">
-                        Overview
+                        <?= $level_names[$level] ?> Overview
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -126,7 +88,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                         <h4 class="panel-title">
-                        Requirements
+                        <?= $level_names[$level] ?> Requirements
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -146,26 +108,27 @@ $level_names = $this->config->item('level_names');
               
               
           
-          <?php if($level>1){ ?>
           <div class="panel panel-border panel-default" name="collapseOutline">
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExecHandout" aria-controls="collapseExecHandout">
                     <h4 class="panel-title">
-                    Execution Guide + Estimated Time
+                    <?= $level_names[$level] ?> Action Plan & Estimated Time
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
             </div>
             <div id="collapseExecHandout" class="panel-collapse collapse">
               <div class="panel-body">
-        
-                	<p><b>Execution Guide</b> contains detailed instructions and media references on what needs to be read and done to execute this <?= $level_names[$level] ?>. The Execution Guide is kept private until the week of execution, when we share it with students. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
+        				
+        			<div class="title"><h4>Action Plan</h4></div>
+                	<p>Unlike the overview, the action plan contains detailed instructions for execution. The action plan is kept private until the week of execution, when we share it with students so they know what exactly they need to do. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
                     <div class="form-group label-floating is-empty">
-                        <textarea class="form-control text-edit" rows="2" id="c_todo_bible"><?= $intent['c_todo_bible'] ?></textarea>
+                        <textarea class="form-control text-edit" rows="2" placeholder="Execution tips, media references, examples, etc..." id="c_todo_bible"><?= $intent['c_todo_bible'] ?></textarea>
                         <span class="material-input"></span>
                     </div>
                     
-                    <p><b>Estimated Time</b> is an estimat of how long it takes to review and execute the Execution Guide. If you estimate more than 21 hours of work, then break this down into smaller sprints/tasks.</p>
+                    <div class="title"><h4>Estimated Time</h4></div>
+                    <p>An estimat of how long it takes to review and execute the action plan. If you estimate more than 13 hours of work, then break this down into smaller sprints/tasks.</p>
                     <select class="form-control input-mini" id="c_time_estimate">
                     	<?php 
                     	$times = $this->config->item('c_time_options');
@@ -177,11 +140,6 @@ $level_names = $this->config->item('level_names');
               </div>
             </div>
           </div>
-          <?php } else { ?>
-          <!-- JS Placeholder -->
-          <input type="hidden" id="c_todo_bible" value="" />
-          <input type="hidden" id="c_time_estimate" value="0" />
-          <?php } ?>
           
           
        
@@ -225,11 +183,9 @@ $level_names = $this->config->item('level_names');
                     	<?= '<p>'.($level==1 ? 'Add weekly sprint by defining a SMART objective for each week:' : 'Define tasks that contribute to accomplishing the primary objective of this '.$level_names[$level].':'); ?>
                     	<?php
                     	echo '<div id="list-outbound" class="list-group">';
-                			if(isset($cr['outbound']) && count($cr['outbound'])>0){
-                				foreach($cr['outbound'] as $relation){
-                				    echo echo_cr($this->uri->segment(2, 0),$relation,'outbound',($level+1));
-                				}
-                			}
+                    	foreach($intent[( $level==1 ? 'c__sprints' : 'c__tasks' )] as $sub_intent){
+                    	    echo echo_cr($bootcamp['c_id'],$sub_intent,'outbound',($level+1));
+                    	}
                 		echo '</div>';
                 		?>
                 		

@@ -22,6 +22,28 @@
                 	<div class="col-md-4 col-md-offset-2 contactleft" style="margin-top:50px;">
     		        	<div class="info info-horizontal">
     						<div class="icon icon-primary">
+    							<i class="material-icons">email</i>
+    						</div>
+    						<div class="description">
+    							<h4 class="info-title">Email us</h4>
+    							<p>support@mench.co</p>
+    						</div>
+    		        	</div>
+    		        	
+    		        	<div class="info info-horizontal">
+    						<div class="icon icon-primary">
+    							<i class="material-icons">phone</i>
+    						</div>
+    						<div class="description">
+    							<h4 class="info-title">Give us a ring</h4>
+    							<p><a href="tel:1-778-882-6962">778-882-6962</a><br />
+                                    Mon-Fri, 9A-6P
+    							</p>
+    						</div>
+    		        	</div>
+    		        	
+    		        	<div class="info info-horizontal">
+    						<div class="icon icon-primary">
     							<i class="material-icons">pin_drop</i>
     						</div>
     						<div class="description">
@@ -32,18 +54,8 @@
     							</p>
     						</div>
     		        	</div>
-                        <div class="info info-horizontal">
-    						<div class="icon icon-primary">
-    							<i class="material-icons">phone</i>
-    						</div>
-    						<div class="description">
-    							<h4 class="info-title">Give us a ring</h4>
-    							<p>Shervin Enayati<br />
-                                    <a href="tel:1-778-882-6962">778-882-6962</a><br />
-                                    Mon-Fri, 8A-8P
-    							</p>
-    						</div>
-    		        	</div>
+    		        	
+    		        	
 				    </div>
                </div>
 		</div>

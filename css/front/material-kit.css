@@ -4177,7 +4177,7 @@ h2.title {
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-.panel .panel-heading i {
+.panel .panel-heading .material-icons {
   float: right;
 }
 .panel .panel-body {
