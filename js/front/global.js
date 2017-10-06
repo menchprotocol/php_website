@@ -415,6 +415,29 @@ function load_sortable(direction){
 	});
 }
 
+function toggleview(object_key){
+	
+	if($('#'+object_key+' .pointer').hasClass('fa-caret-right')){
+		
+		//Opening an item!
+		//Make sure all other items are closed:
+		$('.pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
+		$('.toggleview').hide();
+		//Now show this item:
+		$('#'+object_key+' .pointer').removeClass('fa-caret-right').addClass('fa-caret-down');
+		update_showdown($('.'+object_key),$('.'+object_key).html());
+		
+	} else if($('#'+object_key+' .pointer').hasClass('fa-caret-down')){
+		//Close this specific item:
+		$('#'+object_key+' .pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
+		$('.'+object_key).hide();
+	}
+	
+	
+	
+	
+}
+
 function intent_delete(grandpa_id,c_id,c_title){
 	alert('disabled for now');
 	return false;

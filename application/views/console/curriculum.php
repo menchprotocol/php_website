@@ -23,7 +23,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrimaryObjective" aria-expanded="false" aria-controls="collapsePrimaryObjective">
                         <h4 class="panel-title">
-                        <?= $level_names[$level] ?> Title
+                        Objective
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -31,10 +31,14 @@ $level_names = $this->config->item('level_names');
                 <div id="collapsePrimaryObjective" class="panel-collapse collapse"> <!-- collapse in -->
                   <div class="panel-body">
                   
-                    	<p>The title is the <b>primary objective</b> of this <?= $level_names[$level] ?> that must be defined as a S.M.A.R.T. goal: Specific, Measurable, Achievable, Relevant & Trackable.</p>
+                    	<p>The objective is also the title of this <?= $level_names[$level] ?> that must be defined as a S.M.A.R.T. goal: Specific, Measurable, Achievable, Relevant & Trackable.</p>
                         <div class="form-group label-floating is-empty">
                             <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control">
-                            <span class="material-input"></span>
+							
+							<?php if($level==1){ ?>
+							<div class="alert alert-warning" role="alert"><div><b>REMINDER:</b></div>The primary bootcamp objective sets the guideline for the Tuition Reimbursement Guarantee included in all Mench bootcamps. It basically means that if students execute the entire curriculum and fail to achieve this primary objective, they would get their tuition fully reimbursed.</div>                            
+							<?php } ?>
+							
                             <?php if($level>1 && 0){ ?>
                                 <p class="extra-info"><span data-toggle="tooltip" title="First word replacements would replace matched words only if placed as the very first word to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> First word replacements:
                                 <?php
@@ -54,9 +58,6 @@ $level_names = $this->config->item('level_names');
                   </div>
                 </div>
               </div>
-    		
-              
-              
               
               
               
@@ -65,7 +66,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="false" aria-controls="collapseOverview">
                         <h4 class="panel-title">
-                        <?= $level_names[$level] ?> Overview
+                        Overview
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -88,7 +89,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                         <h4 class="panel-title">
-                        <?= $level_names[$level] ?> Requirements
+                        Requirements
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -112,7 +113,7 @@ $level_names = $this->config->item('level_names');
             <div class="panel-heading" role="tab">
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExecHandout" aria-controls="collapseExecHandout">
                     <h4 class="panel-title">
-                    <?= $level_names[$level] ?> Action Plan & Estimated Time
+                    Action Plan with Time Estimate
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>

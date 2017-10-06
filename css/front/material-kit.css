@@ -2932,9 +2932,8 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   line-height: 20px;
 }
 .alert b {
-  font-weight: 500;
+  font-weight: 700;
   text-transform: uppercase;
-  font-size: 12px;
 }
 .alert, .alert.alert-default {
   background-color: white;
@@ -2973,8 +2972,8 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   font-weight:bold;
 }
 .alert.alert-warning {
-  background-color: #fff;
-  color: #AAA;
+  background-color: #fff2a4;
+  color: #2f2639;
   box-shadow:none;
 }
 .alert.alert-warning a, .alert.alert-warning .alert-link {
@@ -3361,6 +3360,7 @@ h2.title {
   margin-right: 15px;
   margin-top: -30px;
   border-radius: 6px;
+  cursor:pointer;
 }
 .card .card-image img {
   width: 100%;

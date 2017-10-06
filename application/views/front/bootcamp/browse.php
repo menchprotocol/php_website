@@ -9,7 +9,7 @@ foreach($bootcamps as $count=>$bootcamp){
     }
     echo '<div class="col-sm-6 col-md-4">
 			<div class="card card-product">
-				<div class="card-image">
+				<div class="card-image" goto="/bootcamps/'.$bootcamp['c_url_key'].'">
 					<img class="img" src="'.$bootcamp['c_image_url'].'">
 				</div>
 
@@ -60,3 +60,10 @@ foreach($bootcamps as $count=>$bootcamp){
 
 <?php $this->load->view('front/shared/bootcamps_inlcude'); ?>
 <br /><br />
+
+
+<script>
+$( ".card-image" ).click(function() {
+	window.location = $(this).attr('goto');
+});
+</script>

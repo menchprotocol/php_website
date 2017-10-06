@@ -420,7 +420,7 @@ class Db_model extends CI_Model {
 	            //Addup sprint estimated time:
 	            $bootcamps[$key]['c__estimated_hours'] += $sprint_value['c_time_estimate'];
 	            //Introduce sprint total time:
-	            $bootcamps[$key]['c__sprints'][$sprint_key]['r__estimated_hours'] = $sprint_value['c_time_estimate'];
+	            $bootcamps[$key]['c__sprints'][$sprint_key]['c__estimated_hours'] = $sprint_value['c_time_estimate'];
 	            
 	            //Fetch sprint tasks at level 3:
 	            $bootcamps[$key]['c__sprints'][$sprint_key]['c__tasks'] = $this->Db_model->cr_outbound_fetch(array(
@@ -432,7 +432,7 @@ class Db_model extends CI_Model {
 	            foreach($bootcamps[$key]['c__sprints'][$sprint_key]['c__tasks'] as $task_key=>$task_value){
 	                //Addup task estimated time:
 	                $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-	                $bootcamps[$key]['c__sprints'][$sprint_key]['r__estimated_hours'] += $task_value['c_time_estimate'];
+	                $bootcamps[$key]['c__sprints'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
 	                $bootcamps[$key]['c__task_count']++;
 	            }
 	        }

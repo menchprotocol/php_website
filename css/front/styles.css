@@ -298,6 +298,15 @@ h5, .h5 {
     margin:10px 0 3px 0;
     border-radius:3px;
 }
+
+
+.pointer{
+	width:8px;
+}
+.toggleview { 
+	display:none;
+	margin:0 0 15px 15px;
+}
 .addon-lean{ padding-left:25px !important; font-weight:normal; font-size:1.0em; }
 .save-td { width:120px; vertical-align: text-top; }
 .link-view { font-size:0.7em; color:#d6ba14 !important; margin-left:5px; }
@@ -315,6 +324,8 @@ h5, .h5 {
 
 @media (max-width: 767px){
 	
+	.container { padding-right:0; padding-left:0; }
+	.navbar-header{ padding-right:10px !important; padding-left:10px !important; }
 	.dashboard-logo img{ margin-left:8px !important; }
 	#console .navbar-header { min-width:auto; }
 	.dash { border-radius:0 !important; margin-right:0 !important; }
@@ -330,7 +341,7 @@ h5, .h5 {
 	
 	.navbar-brand img { width:38px; }
 	.navbar-brand span { font-size: 28px; }
-	.navbar .navbar-brand { padding:10px 10px 7px 12px; }
+	.navbar .navbar-brand { padding:15px 10px 7px 12px; }
 	
 	.btn.btn-lg, .btn-group-lg .btn,
 	.navbar .navbar-nav > li > a.btn.btn-lg, .btn-group-lg
@@ -341,7 +352,7 @@ h5, .h5 {
 	.navbar.navbar-transparent { padding:0;}
 	.landing-page .navbar-nav { padding-top:20px;}
 	.navbar { padding:0; }
-	.landing-page .navbar-header { padding:5px 0 0 0;}
+	.landing-page .navbar-header { padding:0;}
 	
 	.container-fluid {
 	    padding-right: 10px;

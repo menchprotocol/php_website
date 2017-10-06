@@ -62,12 +62,10 @@ if(!isset($bootcamp['c__cohorts'][0])){
                   <div class="panel-body">
                     <?php 
                     foreach($bootcamp['c__sprints'] as $sprint){
-                        echo '<div>';
-                            echo '<h4>Week #'.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</h4>';
-                            echo '<p id="week_'.$sprint['cr_outbound_rank'].'">'.$sprint['c_todo_overview'].'</p>';
+                        echo '<div id="c_'.$sprint['c_id'].'">';
+                        echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].' '.echo_time($sprint['c__estimated_hours']).'</a></h4>';
+                            echo '<p class="toggleview c_'.$sprint['c_id'].'">'.$sprint['c_todo_overview'].'</p>';
                         echo '</div>';
-                        //JS Showdown update:
-                        echo '<script> update_showdown($("#week_'.$sprint['cr_outbound_rank'].'"),$("#week_'.$sprint['cr_outbound_rank'].'").html()); </script>';
                     }
                     ?>
                   </div>
@@ -186,7 +184,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
         </div><!--  end acordeon -->
 
         
-		<div style="padding:5px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Content us to learn more.');" href2="/<?= $bootcamp['c_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+		<div style="padding:5px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/<?= $bootcamp['c_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
 		
 		
 		

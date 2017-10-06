@@ -85,7 +85,7 @@ function echo_message($i){
 
 function echo_time($c_time_estimate){
     if($c_time_estimate>0){
-        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated total time investment"><i class="fa fa-clock-o" aria-hidden="true"></i>';
+        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Time Investment"><i class="fa fa-clock-o" aria-hidden="true"></i>';
         if($c_time_estimate<1){
             //Minutes:
             $ui .= round($c_time_estimate*60).'M';
@@ -121,7 +121,7 @@ function echo_cr($c_id,$intent,$direction,$level=0){
     	    $ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i>';
     	    $ui .= ( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$intent['cr_outbound_rank'].'</span>' : '' );
     	    $ui .= echo_title($intent['c_objective']);
-    	    $ui .= echo_time($intent[($level==2?'r__estimated_hours':'c_time_estimate')]);
+    	    $ui .= echo_time($intent[($level==2?'c__estimated_hours':'c_time_estimate')]);
     	    if($level==2 && count($intent['c__tasks'])>0){
     	        //This sprint has tasks:
     	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of tasks for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__tasks']).'</span>';
