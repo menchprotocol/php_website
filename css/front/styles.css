@@ -105,13 +105,14 @@
   color:#AAA !important;
 }
 
-.fa-chain-broken { color:#999; margin-right:5px; font-size:0.8em; } 
+.list-group-item { padding: 10px 10px; }
+.fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; } 
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 .req_c_is_grandpa { display:none; }
 
 .title-main { display:block; line-height:100%; padding-bottom:5px; font-size:1em; font-weight:bold; }
 .title-sub { display:inline-block; color:#999; margin-right:5px; font-weight:normal; }
-.title-sub i { width:20px; text-align:center; }
+.title-sub i { width:auto; margin-right:2px; text-align:center; }
 
 .c_objective { line-height:100%; }
 .c_objective .title-main { display:block; padding:0 !important; font-size:0.45em; line-height:110% !important; }

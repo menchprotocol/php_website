@@ -88,10 +88,10 @@ function echo_time($c_time_estimate){
         $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Time Investment"><i class="fa fa-clock-o" aria-hidden="true"></i>';
         if($c_time_estimate<1){
             //Minutes:
-            $ui .= round($c_time_estimate*60).'M';
+            $ui .= round($c_time_estimate*60).'m';
         } else {
             //Hours:
-            $ui .= round($c_time_estimate,1).'H';
+            $ui .= round($c_time_estimate,1).'h';
         }
         $ui .= '</span>';
         return $ui;
@@ -111,18 +111,37 @@ function echo_cr($c_id,$intent,$direction,$level=0){
 	        //Right content
     	    $ui .= '<span class="pull-right">';
     	        $ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
+    	        /*
         	    $ui .= '<span class="label label-primary">';
         	       $ui .= '<span class="dir-sign">'.$direction.'</span> ';
         	       $ui .= '<i class="fa fa-chevron-right" aria-hidden="true"></i>';
         	    $ui .= '</span>';
+        	    */
     	    $ui .= '</span> ';
     	    
     	    //Left content
     	    $ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i>';
     	    $ui .= ( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$intent['cr_outbound_rank'].'</span>' : '' );
-    	    $ui .= echo_title($intent['c_objective']);
-    	    $ui .= echo_time($intent[($level==2?'c__estimated_hours':'c_time_estimate')]);
-    	    if($level==2 && count($intent['c__tasks'])>0){
+    	    $ui .= echo_title($intent['c_objective']).'&nbsp;';
+    	    
+    	    //Other settings:
+    	    if(strlen($intent['c_todo_overview'])>0){
+    	        $ui .= '<i class="fa fa-search title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
+    	    }
+    	    if(strlen($intent['c_prerequisites'])>0){
+    	        $ui .= '<i class="fa fa-exclamation-circle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Requirements"></i>';
+    	    }
+    	    if(strlen($intent['c_todo_bible'])>0){
+    	        $ui .= '<i class="fa fa-wrench title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>';
+    	    }
+    	    
+    	    if($level==2 && isset($intent['c__estimated_hours'])){
+    	        $ui .= echo_time($intent['c__estimated_hours']);
+    	    } elseif($level==3 && isset($intent['c_time_estimate'])){
+    	        $ui .= echo_time($intent['c_time_estimate']);
+    	    }
+    	    
+    	    if($level==2 && isset($intent['c__tasks']) && count($intent['c__tasks'])>0){
     	        //This sprint has tasks:
     	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of tasks for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__tasks']).'</span>';
     	    }

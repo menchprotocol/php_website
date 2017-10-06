@@ -50,43 +50,10 @@ $website = $this->config->item('website');
 	    	
 	    		<?php 
 	    		if(isset($bootcamp)){
-	    		    echo '<div class="left-li-title">'.status_bible('c',$bootcamp['c_status'],1).' '.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
+	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
 	    		}
 	    		?>
 	    		<ul class="nav">
-	    		
-	    			
-	    			<?php /*
-	    			<li>
-                        <a data-toggle="collapse" href="#bootcampList" class="left-navi-title collapsed" aria-expanded="false">
-                            <?= (isset($bootcamp) ? $bootcamp['c_objective'] : 'Select Bootcamp' ) ?>
-                            <b class="caret"></b>
-                        </a>
-                        <div class="collapse" id="bootcampList" aria-expanded="false" style="height: 0px;">
-                            <ul class="nav">
-                           		<?php
-                           		//Fetch all bootcamps for this user:
-                           		$u_bootcamps = $this->Db_model->u_bootcamps(array(
-                               		'ba.ba_u_id' => $udata['u_id'],
-                               		'ba.ba_status >=' => 0,
-                               		'c.c_status >=' => 0,
-                               		'c.c_is_grandpa' => true, //Not sub challenges
-                           		));
-                           		
-                           		foreach($u_bootcamps as $ub){
-                           		    if(isset($bootcamp) && $ub['c_id']==$bootcamp['c_id']){
-                           		        continue;
-                           		    }
-                           		    
-                           		    echo '<li><a href="/console/'.$ub['c_id'].'" class="left-navi-title">'.$ub['c_objective'].'</a></li>';
-                           		}
-								
-								echo '<li><a href="/marketplace/run/new"><i class="fa fa-plus"></i> New Bootcamp</a></li>';
-								?>
-                            </ul>
-                        </div>
-                    </li>
-                    */?>
                     
             	<?php
             	if(isset($bootcamp)){
@@ -101,7 +68,7 @@ $website = $this->config->item('website');
                 	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/settings"><i class="material-icons">settings</i><p>Settings</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/settings"><i class="material-icons">settings</i><p>Settings &nbsp;'.status_bible('c',$bootcamp['c_status'],1).'</p></a></li>';
             	    
         		}
             	?>

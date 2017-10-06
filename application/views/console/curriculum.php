@@ -66,7 +66,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="false" aria-controls="collapseOverview">
                         <h4 class="panel-title">
-                        Overview
+                        Overview <?= (strlen($intent['c_todo_overview'])>0 ? '<i class="fa fa-search title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>' : '') ?>
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -85,11 +85,13 @@ $level_names = $this->config->item('level_names');
               
               
               
+              
+              
               <div class="panel panel-border panel-default" name="collapsePrerequisites">
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                         <h4 class="panel-title">
-                        Requirements
+                        Requirements <?= (strlen($intent['c_prerequisites'])>0 ? '<i class="fa fa-exclamation-circle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Requirements"></i>' : '') ?>
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -114,6 +116,8 @@ $level_names = $this->config->item('level_names');
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExecHandout" aria-controls="collapseExecHandout">
                     <h4 class="panel-title">
                     Action Plan with Time Estimate
+                    <?= (strlen($intent['c_todo_bible'])>0 ? '<i class="fa fa-wrench title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>' : '') ?>
+              		<?= ($intent['c_time_estimate']>0 ? echo_time($intent['c_time_estimate']) : '') ?>
                     <i class="material-icons">keyboard_arrow_down</i>
                     </h4>
                 </a>
