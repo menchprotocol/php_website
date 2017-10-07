@@ -5,16 +5,10 @@ class Front extends CI_Controller {
 	
 	function __construct() {
 		parent::__construct();
-		
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	function index(){
-		//Redirect for our secondary domains:
-		if(in_array($_SERVER['HTTP_HOST'],array('us.foundation','brainplugins.com','askmench.com','mench.ai'))){
-			header("Location: http://mench.co");
-		}
-		
+	function index(){		
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
 				'landing_page' => 'front/splash/the_online_challenge_framework',

@@ -4,9 +4,9 @@
 <?php
 $status_bible = status_bible();
 foreach($status_bible as $table=>$statuses){
-	echo '<h2>'.$this->lang->line($table.'_pname').'</h2>';
+    echo '<h2>Object: '.$table.'</h2>';
 	foreach($statuses as $intval=>$status){
-		echo '<p style="padding-left:60px;"><span style="width:60px; display:inline-block;">'.$intval.'</span>'.$status.'</p>';
+	    echo '<p style="padding-left:60px;"><span style="width:60px; display:inline-block;">'.$intval.'</span><span style="width:40px; display:inline-block;">'.status_bible($table,$intval,1).'</span>'.status_bible($table,$intval).'</p>';
 	}
 	echo '<br />';
 }

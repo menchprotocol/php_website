@@ -205,6 +205,8 @@ function load_object($object,$obj_limits){
 }
 
 function echo_status_dropdown($object,$input_name,$current_status_id){
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
     ?>
     <input type="hidden" id="<?= $input_name ?>" value="<?= $current_status_id ?>" /> 
     <div class="col-md-3 dropdown">
@@ -217,9 +219,13 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     		$statuses = status_bible($object);
     		$count = 0;
     		foreach($statuses as $intval=>$status){
+    		    if($udata['u_status']<$status['u_min_status']){
+    		        //Do not enable this user to modify to this status:
+    		        continue;
+    		    }
     		    $count++;
-    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.$status.'</a></li>';
-    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.$status.'</li>'; //For UI replacement
+    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval).'</a></li>';
+    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval).'</li>'; //For UI replacement
     		}
     		?>
     	</ul>
@@ -229,144 +235,241 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
 
 function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
 	
-	$CI =& get_instance();
-	
-	/* ******************************
-	 * OBJECTS
-	 ****************************** */
-	$o_name = array( //Name
-			-2 	=> 'DISQUALIFIED',
-			-1 	=> 'DELETED',
-			0 	=> 'DRAFTING', //Normally Default
-			1	=> 'LIVE',
-			2	=> 'DONE', //Not for all objects
-	);
-	$o_desc = array( //Insight
-			-2 	=> 'removed because it did meet our community guidelines.',
-			-1 	=> 'deleted by operator.',
-			0 	=> 'being drafted to be published live.', //Normally Default
-			1	=> 'visible to all students.',
-			2	=> 'finished and completed.',
-	);
-	
-	
-	/* ******************************
-	 * USERS
-	 ****************************** */
-	$u_name = array( //Name
-			-2 	=> 'DISQUALIFIED',
-			-1 	=> 'DELETED',
-			0 	=> 'INVITED',
-			1 	=> 'MEMBER',
-			2	=> 'CONTRIBUTOR',
-			3	=> 'LEADER',
-			4	=> 'ADMIN',
-	);
-	$u_desc = array( //Name
-			-2 	=> 'removed because it did meet our community guidelines.',
-			-1 	=> 'deleted their account by their own will.',
-			0 	=> 'has been invited through a friend.',
-			1 	=> 'is an active member.',
-			2	=> 'is an Mench researcher and content contributor.',
-			3	=> 'is an leader in one or more runs.',
-			4	=> 'is an Mench administrator.',
-	);
-	
-	
-	//For micro statuses
-	$status_micro_bible = array(
-	    'c' => array( //Bootcamps
-	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
-	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
-	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
-	        //-2	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[-2].': '.$o_desc[-2].'" aria-hidden="true"></i>',
+	$status_index = array(
+	    'c' => array(
+	        -1 => array(
+	            's_name'  => 'Deleted',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Removed by Bootcamp admin.',
+	            'u_min_status'  => 1,
+	        ),
+	        0 => array(
+	            's_name'  => 'Drafting',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Not visible to students until published live',
+	            'u_min_status'  => 1,
+	        ),
+	        1 => array(
+	            's_name'  => 'Submit For Live',
+	            's_color' => '#8dd08f', //light green
+	            's_desc'  => 'Submit to be reviewed by Mench moderators to go live. Usually takes 1-2 business days.',
+	            'u_min_status'  => 1,
+	        ),
+	        2 => array(
+	            's_name'  => 'Live',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Active and visible to all students.',
+	            'u_min_status'  => 3, //Can only be done by admin
+	        ),
 	    ),
-	    'r' => array( //Cohorts
-	        0 	=> '<i class="fa fa-circle" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[0].': '.$o_desc[0].'" aria-hidden="true"></i>',
-	        1	=> '<i class="fa fa-circle" style="color:#4caf50;" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[1].': '.$o_desc[1].'" aria-hidden="true"></i>',
-	        -1	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[-1].': '.$o_desc[-1].'" aria-hidden="true"></i>',
-	        //-2	=> '<i class="fa fa-circle" style="color:#f44336;" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$o_name[-2].': '.$o_desc[-2].'" aria-hidden="true"></i>',
+	    'r' => array(
+	        -1 => array(
+	            's_name'  => 'Deleted',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Removed by Bootcamp admin.',
+	            'u_min_status'  => 1,
+	        ),
+	        0 => array(
+	            's_name'  => 'Drafting',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Not visible to students until published live',
+	            'u_min_status'  => 1,
+	        ),
+	        /*
+	        1 => array(
+	            's_name'  => 'Submit For Live',
+	            's_color' => '#8dd08f', //light green
+	            's_desc'  => 'Submit to be reviewed by Mench moderators to go live. Usually takes 1-2 business days.',
+	            'u_min_status'  => 1,
+	        ),
+	        */
+	        2 => array(
+	            's_name'  => 'Live',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Open for enrollment (As long as Bootcamp status is also Live).',
+	            'u_min_status'  => 1,
+	        ),
 	    ),
-	);
-	
-	
-	
-	$status_bible = array(
-			
-			/* ******************************
-			 * OBJECTS
-			 ****************************** */
-			'c' => array( //Challenges
-				0 	=> '<span class="label label-default" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-				1	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			    //-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			),
-			'r' => array( //Runs
-				0 	=> '<span class="label label-default" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('r_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-				1	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('r_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('r_name').' '.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			    //-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('r_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			),
-			'i' => array( //Insights
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('i_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('i_name').' '.$o_desc[-1].'">'.$o_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('i_name').' '.$o_desc[0].'">'.$o_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('i_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			),
-			'cr' => array( //Challenge Relations (to Insights)
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('cr_name').' '.$o_desc[-2].'">'.$o_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('cr_name').' was replaced by a new reference or '.$o_desc[-1].'">'.$o_name[-1].'</span>',
-					1	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('cr_name').' '.$o_desc[1].'">'.$o_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			),
+	    'i' => array(
+	        -1 => array(
+	            's_name'  => 'Deleted',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Removed by Bootcamp admin.',
+	            'u_min_status'  => 1,
+	        ),
+	        2 => array(
+	            's_name'  => 'Live',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Open for enrollment (As long as Bootcamp status is also Live).',
+	            'u_min_status'  => 1,
+	        ),
+	    ),
 	    
-	       
-	    'ba' => array( //Bootcamp admins:
-    	    -1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="Access has been revoked">Revoke <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-    	    1 	=> '<span class="label label-default" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="Contributors can modify the curriculum, answer student inquiries and view upcoming cohorts. They cannot modify bootcamp or cohort settings.">Contributor <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-	        2	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="Admins have full access to all bootcamp features.">Admin <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-    	),
-			
-			
-			/* ******************************
-			 * USERS
-			 ****************************** */
-			'u' => array( //Users
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[-2].'">'.$u_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[-1].'">'.$u_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					0 	=> '<span class="label label-default" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[0].'">'.$u_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					1 	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[1].'">'.$u_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					2	=> '<span class="label label-rose" 		data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[2].'">'.$u_name[2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					3	=> '<span class="label label-rose" 		data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[3].'">'.$u_name[3].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					4	=> '<span class="label label-rose" 		data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('u_name').' '.$u_desc[4].'">'.$u_name[4].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			),
-			'ru' => array( //Users who joined a particular run, either as Admin or Participants
-					-2 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[-2].'">'.$u_name[-2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					-1 	=> '<span class="label label-danger" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[-1].'">'.$u_name[-1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					0 	=> '<span class="label label-default"	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[0].'">'.$u_name[0].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					1 	=> '<span class="label label-success" 	data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[1].'">'.$u_name[1].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>', //Default
-					2	=> '<span class="label label-rose" 		data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[2].'">'.$u_name[2].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-					3	=> '<span class="label label-rose" 		data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$CI->lang->line('ru_name').' status is '.$u_desc[3].'">'.$u_name[3].' <i class="fa fa-info-circle" aria-hidden="true"></i></span>',
-			),
-	);
+	    'cr' => array(
+	        -1 => array(
+	            's_name'  => 'Deleted',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Removed by Bootcamp admin.',
+	            'u_min_status'  => 1,
+	        ),
+	        2 => array(
+	            's_name'  => 'Live',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Media ready for distribution.',
+	            'u_min_status'  => 1,
+	        ),
+	    ),
+	    
+	    //User related statuses:
+	    
+	    'ba' => array(
+	        -1 => array(
+	            's_name'  => 'Revoked',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Bootcamp access revoked by another Bootcamp admin.',
+	            'u_min_status'  => 1,
+	        ),
+	        1 => array(
+	            's_name'  => 'Contributor',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Contributors can modify the curriculum, answer student inquiries and view upcoming cohorts. They cannot manage bootcamp or cohort settings.',
+	            'u_min_status'  => 1,
+	        ),
+	        2 => array(
+	            's_name'  => 'Mentor',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Mentors can manage the entire bootcamp, cohorts & curriculum but are NOT responsible for the outcome of the bootcamp.',
+	            'u_min_status'  => 1,
+	        ),
+	        3 => array(
+	            's_name'  => 'Leader',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'The leader is the CEO of the bootcamp who is solely responsible for the outcome calculated based on student completion rates.',
+	            'u_min_status'  => 1,
+	        ),
+	    ),
+	    
+	    'u' => array(
+	        -1 => array(
+	            's_name'  => 'Deleted',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Account deleted and no longer active.',
+	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
+	        ),
+	        0 => array(
+	            's_name'  => 'Pending',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Users that are pending registration because they have been invited to Mench but have not yet completed their registration.',
+	            'u_min_status'  => 999, //System only
+	        ),
+	        1 => array(
+	            's_name'  => 'Active User',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Regular Mench user including students and Bootcamp Admins (As long as they have been added to a bootcamp).',
+	            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
+	        ),
+	        2 => array(
+	            's_name'  => 'Bootcamp Leader',
+	            's_color' => '#e91e63', //Rose
+	            's_desc'  => 'Users that have been onboarded as a bootcamp leader and can create and manage bootcamps.',
+	            'u_min_status'  => 3, //Only admins can approve leaders
+	        ),
+	        3 => array(
+	            's_name'  => 'Mench Admin',
+	            's_color' => '#e91e63', //Rose
+	            's_desc'  => 'Admins have full access to all bootcamp features.',
+	            'u_min_status'  => 3, //Only admins can create other admins
+	        ),
+	    ),
+	    
+	    'ru' => array(
+	        
+	        //Withrew after course has started:
+	        -4 => array(
+	            's_name'  => 'Dispelled by Admin',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Bootcamp admin dispelled student after Bootcamp start date due to student misconduct.',
+	            'u_min_status'  => 1,
+	        ),
+	        -3 => array(
+	            's_name'  => 'Post Grace Period Withdrawal',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Student decided to withdraw from the bootcamp after free withdrawal deadline. Refund at the discretion of Bootcamp Admin.',
+	            'u_min_status'  => 999, //Only done by Student themselves
+	        ),
+	        
+	        //Withrew prior to course has started:
+	        -2 => array(
+	            's_name'  => 'Graceful Withdrawal',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Student decided to withdraw from the bootcamp prior to free withdrawal deadline. They will receive a full refund.',
+	            'u_min_status'  => 999, //Only done by Student themselves
+	        ),
+	        -1 => array(
+	            's_name'  => 'Application Rejected',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Bootcamp admin rejected the student application prior to Bootcamp start date.',
+	            'u_min_status'  => 1,
+	        ),
+	        
+	        //Applied
+	        /*
+	        0 => array(
+	            's_name'  => 'Applied - Pending Full Payment',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Student has applied but has not paid in full yet, pending Bootcamp admin approval before paying in full.',
+	            'u_min_status'  => 999, //System insertion only
+	        ),
+	        */
+	        1 => array(
+	            's_name'  => 'Application Pending',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Student has paid in full and applied for the bootcamp, pending Bootcamp admin approval.',
+	            'u_min_status'  => 999, //System insertion only
+	        ),
+	        
+	        //Enrolled
+	        /*
+	        2 => array(
+	            's_name'  => 'Application Approved - Pending Payment',
+	            's_color' => '#8dd08f', //light green
+	            's_desc'  => 'Admins have full access to all bootcamp features.',
+	            'u_min_status'  => 1,
+	        ),
+	        */
+	        3 => array(
+	            's_name'  => 'Enrollment Accepted',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Student paid in full and their application has been approved by Bootcamp Admin, making them fully enrolled in the Bootcamp.',
+	            'u_min_status'  => 1,
+	        ),
+	        
+	        //Completion
+	        4 => array(
+	            's_name'  => 'Bootcamp Completed',
+	            's_color' => '#e91e63', //Rose
+	            's_desc'  => 'Student completed the cohort and their assignments was fully approved by the Bootcamp Admin.',
+	            'u_min_status'  => 1,
+	        ),
+	    ),
+	);	
 	
 	
-	
-	//Return what's asked for:
-	if($object==null){
+	//Return results:
+	if(is_null($object)){
 		//Everything
-		return $status_bible;
-	} elseif($status==null){
+	    return $status_index;
+	} elseif(is_null($status)){
 		//Object Specific
-		return $status_bible[$object];
+	    return $status_index[$object];
 	} else {
-		//Object & Status Specific
+	    $status = intval($status);
+		//We have two skins for displaying statuses:
 	    if($micro_status){
-	        return $status_micro_bible[$object][intval($status)];
+	        return '<i class="fa fa-circle" style="color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$status_index[$object][$status]['s_name'].': '.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"></i>';
 		} else {
-		    return $status_bible[$object][intval($status)];
+		    return '<span class="label label-default" style="background-color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_desc'].'">'.strtoupper($status_index[$object][$status]['s_name']).' <i class="fa fa-info-circle" aria-hidden="true"></i></span>';
 		}
-		
 	}
 }
 

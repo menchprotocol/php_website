@@ -27,7 +27,7 @@ class Db_model extends CI_Model {
 		
 		//Fetch Runs:
 		$this->db->select('ru.ru_r_id');
-		$this->db->from('v5_cohort_users ru');
+		$this->db->from('v5_cohort_students ru');
 		$this->db->where('ru.ru_u_id',$u_id);
 		$this->db->where('ru.ru_status >=',2); //Leader or Admin
 		$q = $this->db->get();
@@ -350,7 +350,7 @@ class Db_model extends CI_Model {
 		//Missing anything?
 		$this->db->select('r.*');
 		$this->db->from('v5_cohorts r');
-		$this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
+		$this->db->join('v5_cohort_students ru', 'ru.ru_r_id = r.r_id', 'left');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -382,7 +382,7 @@ class Db_model extends CI_Model {
 	
 	function ru_fetch($match_columns){
 		$this->db->select('*');
-		$this->db->from('v5_cohort_users ru');
+		$this->db->from('v5_cohort_students ru');
 		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
@@ -396,11 +396,9 @@ class Db_model extends CI_Model {
 	    //Missing anything?
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
-	    $this->db->join('v5_categories ct', 'ct.ct_id = c.c_ct_id', 'left');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
-	    $this->db->order_by('ct.ct_order','ASC');
 	    $q = $this->db->get();
 	    $bootcamps = $q->result_array();
 	    
@@ -455,7 +453,7 @@ class Db_model extends CI_Model {
 	    $this->db->select('c.*, COUNT(DISTINCT r.r_id) AS count_runs, COUNT(DISTINCT ru.ru_u_id) AS count_users');
 	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_cohorts r', 'r.r_c_id = c.c_id', 'left');
-	    $this->db->join('v5_cohort_users ru', 'ru.ru_r_id = r.r_id', 'left');
+	    $this->db->join('v5_cohort_students ru', 'ru.ru_r_id = r.r_id', 'left');
 	    $this->db->group_by('c.c_id');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
@@ -592,9 +590,6 @@ class Db_model extends CI_Model {
 		}
 		if(!isset($insert_columns['c_algolia_id'])){
 		    $insert_columns['c_algolia_id'] = 0;
-		}
-		if(!isset($insert_columns['c_ct_id'])){
-		    $insert_columns['c_ct_id'] = 0;
 		}
 		
 		//Lets now add:

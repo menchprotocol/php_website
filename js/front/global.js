@@ -179,7 +179,6 @@ function save_c(){
 	var postData = {
 		pid:$('#pid').val(),
 		c_objective:$('#c_objective').val(),
-		c_additional_goals:$('#c_additional_goals').val(),
 		c_todo_overview:$('#c_todo_overview').val(),
 		c_prerequisites:$('#c_prerequisites').val(),
 		c_todo_bible:$('#c_todo_bible').val(),

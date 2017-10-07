@@ -103,6 +103,9 @@ $level_names = $this->config->item('level_names');
                             <textarea class="form-control text-edit" rows="2" id="c_prerequisites"><?= $intent['c_prerequisites'] ?></textarea>
                             <span class="material-input"></span>
                         </div>
+                        <?php if($level>1){ ?>
+							<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> requirements until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['c_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
+						<?php } ?>
                   </div>
                 </div>
               </div>

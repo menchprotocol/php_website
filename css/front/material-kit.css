@@ -2977,7 +2977,8 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   box-shadow:none;
 }
 .alert.alert-warning a, .alert.alert-warning .alert-link {
-  color: #ffffff;
+  color: #000;
+  font-weight:bold;
 }
 .alert.alert-danger {
   background-color: #f55145;
