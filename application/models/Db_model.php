@@ -13,63 +13,6 @@ class Db_model extends CI_Model {
 	 * Users
 	 ****************************** */
 	
-	//Called upon user login to save their Challenges/Runs into the session:
-	function u_privileges($u_id){
-		
-		if(intval($u_id)<=0){
-			return false;
-		}
-		
-		//The framework:
-		$user_access = array(
-				'c' => array(), //Challenges
-		);
-		
-		//Fetch Runs:
-		$this->db->select('ru.ru_r_id');
-		$this->db->from('v5_cohort_students ru');
-		$this->db->where('ru.ru_u_id',$u_id);
-		$this->db->where('ru.ru_status >=',2); //Leader or Admin
-		$q = $this->db->get();
-		$run_users = $q->result_array();
-		foreach($run_users as $ru){
-			if(!in_array($ru['ru_r_id'], $user_access['r'], true)){
-				array_push($user_access['r'] , $ru['ru_r_id']);
-			}
-		}
-		
-		if(count($user_access['r'])>0){
-			//Now fetch unique challenges:
-			$this->db->select('r.r_c_id');
-			$this->db->from('v5_cohorts r');
-			$this->db->where_in('r.r_id',$user_access['r']);
-			$this->db->or_where('r.r_creator_id',$u_id);
-			$q = $this->db->get();
-			$runs = $q->result_array();
-			foreach($runs as $r){
-				if(!in_array($r['r_c_id'], $user_access['c'], true)){
-					array_push($user_access['c'] , $r['r_c_id']);
-				}
-			}
-		}
-		
-		//Any challenges they directly created?
-		$this->db->select('c.c_id');
-		$this->db->from('v5_intents c');
-		$this->db->where('c.c_creator_id',$u_id); //Challenges they created them selves
-		$this->db->where('c.c_status >=',-1); //Deleted by user, but not removed by moderator.
-		$this->db->where('c.c_is_grandpa',true); //necessary here since we have many none-grandpa challenges
-		$q = $this->db->get();
-		$bootcamps = $q->result_array();
-		foreach($bootcamps as $c){
-			if(!in_array($c['c_id'], $user_access['c'], true)){
-				array_push($user_access['c'] , $c['c_id']);
-			}
-		}
-		
-		return $user_access;
-	}
-	
 	function u_fetch($match_columns){
 		//Fetch the target gems:
 		$this->db->select('*');
@@ -149,13 +92,13 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function c_admins($c_id){
+	function c_admins($b_id){
 	    //Fetch the admins of the bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
 	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_u_id = u.u_id');
 	    $this->db->where('ba.ba_status >=',0);
-	    $this->db->where('ba.ba_c_id',$c_id);
+	    $this->db->where('ba.ba_b_id',$b_id);
 	    $this->db->where('u.u_status >=',0);
 	    $this->db->order_by('ba.ba_status','DESC');
 	    $this->db->order_by('ba.ba_team_display','DESC');
@@ -167,8 +110,9 @@ class Db_model extends CI_Model {
 	function u_bootcamps($match_columns){
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
-	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_c_id = c.c_id');
-	    $this->db->order_by('c.c_status', 'DESC');
+	    $this->db->join('v5_bootcamps b', 'b.b_c_id = c.c_id');
+	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_b_id = b.b_id');
+	    $this->db->order_by('b.b_status', 'DESC');
 	    $this->db->order_by('c.c_objective', 'ASC');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
@@ -395,7 +339,8 @@ class Db_model extends CI_Model {
 	function c_full_fetch($match_columns){
 	    //Missing anything?
 	    $this->db->select('*');
-	    $this->db->from('v5_intents c');
+	    $this->db->from('v5_bootcamps b');
+	    $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -409,40 +354,40 @@ class Db_model extends CI_Model {
 	        
 	        //Fetch Curriculum:
 	        $bootcamps[$key]['c__task_count'] = 0;
-	        $bootcamps[$key]['c__sprints'] = $this->Db_model->cr_outbound_fetch(array(
+	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
 	            'cr.cr_status >=' => 0,
 	        ));
 	        
-	        foreach($bootcamps[$key]['c__sprints'] as $sprint_key=>$sprint_value){
+	        foreach($bootcamps[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
 	            //Addup sprint estimated time:
 	            $bootcamps[$key]['c__estimated_hours'] += $sprint_value['c_time_estimate'];
 	            //Introduce sprint total time:
-	            $bootcamps[$key]['c__sprints'][$sprint_key]['c__estimated_hours'] = $sprint_value['c_time_estimate'];
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = $sprint_value['c_time_estimate'];
 	            
 	            //Fetch sprint tasks at level 3:
-	            $bootcamps[$key]['c__sprints'][$sprint_key]['c__tasks'] = $this->Db_model->cr_outbound_fetch(array(
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                'cr.cr_inbound_id' => $sprint_value['c_id'],
 	                'cr.cr_status >=' => 0,
 	            ));
 	            
 	            //Addup task values:
-	            foreach($bootcamps[$key]['c__sprints'][$sprint_key]['c__tasks'] as $task_key=>$task_value){
+	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
 	                //Addup task estimated time:
 	                $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-	                $bootcamps[$key]['c__sprints'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
 	                $bootcamps[$key]['c__task_count']++;
 	            }
 	        }
 	        
 	        //Fetch cohorts:
 	        $bootcamps[$key]['c__cohorts'] = $this->r_fetch(array(
-	            'r.r_c_id' => $c['c_id'],
+	            'r.r_b_id' => $c['b_id'],
 	            'r.r_status >=' => 0,
 	        ));
 	        
 	        //Fetch admins:
-	        $bootcamps[$key]['c__admins'] =  $this->Db_model->c_admins($c['c_id']);
+	        $bootcamps[$key]['b__admins'] =  $this->Db_model->c_admins($c['b_id']);
 	    }
 	    
 	    return $bootcamps;
@@ -450,11 +395,8 @@ class Db_model extends CI_Model {
 	
 	function c_fetch($match_columns){
 	    //Missing anything?
-	    $this->db->select('c.*, COUNT(DISTINCT r.r_id) AS count_runs, COUNT(DISTINCT ru.ru_u_id) AS count_users');
+	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
-	    $this->db->join('v5_cohorts r', 'r.r_c_id = c.c_id', 'left');
-	    $this->db->join('v5_cohort_students ru', 'ru.ru_r_id = r.r_id', 'left');
-	    $this->db->group_by('c.c_id');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -495,7 +437,6 @@ class Db_model extends CI_Model {
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
-		$this->db->order_by('cr.cr_inbound_rank','ASC');
 		$q = $this->db->get();
 		return $q->result_array();
 	}
@@ -507,9 +448,6 @@ class Db_model extends CI_Model {
 		$this->db->update('v5_intent_links', $update_columns);
 		return $this->db->affected_rows();
 	}
-	
-	
-	
 	
 	
 	function max_value($table,$column,$match_columns){
@@ -526,9 +464,7 @@ class Db_model extends CI_Model {
 	function cr_create($insert_columns){
 		
 		//Missing anything?
-		if(!isset($insert_columns['cr_inbound_id']) || !isset($insert_columns['cr_inbound_rank'])){
-			return false;
-		} elseif(!isset($insert_columns['cr_outbound_id']) || !isset($insert_columns['cr_outbound_rank'])){
+		if(!isset($insert_columns['cr_outbound_id']) || !isset($insert_columns['cr_outbound_rank'])){
 			return false;
 		} elseif(!isset($insert_columns['cr_creator_id'])){
 			return false;
@@ -576,17 +512,50 @@ class Db_model extends CI_Model {
 	    return $insert_columns;
 	}
 	
+	function b_create($insert_columns){
+	    
+	    if(!isset($insert_columns['b_c_id'])){
+	        return false;
+	    } elseif(!isset($insert_columns['b_creator_id'])){
+	        return false;
+	    } elseif(!isset($insert_columns['b_url_key'])){
+	        return false;
+	    }
+	    
+	    //Missing anything?
+	    if(!isset($insert_columns['b_timestamp'])){
+	        $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
+	    }
+	    if(!isset($insert_columns['b_status'])){
+	        $insert_columns['b_status'] = 0; //On Hold by default
+	    }
+	    if(!isset($insert_columns['b_algolia_id'])){
+	        $insert_columns['b_algolia_id'] = 0;
+	    }
+	    
+	    //Lets now add:
+	    $this->db->insert('v5_bootcamps', $insert_columns);
+	    
+	    //Fetch inserted id:
+	    $insert_columns['b_id'] = $this->db->insert_id();
+	    
+	    return $insert_columns;
+	}
+	
 	function c_create($insert_columns){
+	    
+	    if(!isset($insert_columns['c_objective'])){
+	        return false;
+	    } elseif(!isset($insert_columns['c_creator_id'])){
+	        return false;
+	    }
 		
 		//Missing anything?
 		if(!isset($insert_columns['c_timestamp'])){
 			$insert_columns['c_timestamp'] = date("Y-m-d H:i:s");
 		}
 		if(!isset($insert_columns['c_status'])){
-			$insert_columns['c_status'] = 0; //Being prepared
-		}
-		if(!isset($insert_columns['c_is_grandpa'])){
-			$insert_columns['c_is_grandpa'] = 'f';
+			$insert_columns['c_status'] = 1; //Live by default
 		}
 		if(!isset($insert_columns['c_algolia_id'])){
 		    $insert_columns['c_algolia_id'] = 0;
@@ -608,18 +577,23 @@ class Db_model extends CI_Model {
 	
 	function ba_create($insert_columns){
 	    
+	    //TODO Do better check on required fields:
+	    if(!isset($insert_columns['ba_u_id'])){
+	        return false;
+	    } elseif(!isset($insert_columns['ba_b_id'])){
+	        return false;
+	    } elseif(!isset($insert_columns['ba_creator_id'])){
+	        return false;
+	    } elseif(!isset($insert_columns['ba_status'])){
+	        return false;
+	    } elseif(!isset($insert_columns['ba_team_display'])){
+	        return false;
+	    }
+	    
 	    //Missing anything?
 	    if(!isset($insert_columns['ba_timestamp'])){
 	        $insert_columns['ba_timestamp'] = date("Y-m-d H:i:s");
 	    }
-	    if(!isset($insert_columns['ba_status'])){
-	        $insert_columns['ba_status'] = 2; //Admin
-	    }
-	    if(!isset($insert_columns['ba_team_display'])){
-	        $insert_columns['ba_team_display'] = 't'; //Show this person
-	    }
-	    
-	    //TODO Validate required fields here... (like ba_c_id, etc...)
 	    
 	    //Lets now add:
 	    $this->db->insert('v5_bootcamp_admins', $insert_columns);
@@ -658,12 +632,6 @@ class Db_model extends CI_Model {
 		if(!isset($link_data['e_timestamp'])){
 			$link_data['e_timestamp'] = date("Y-m-d H:i:s");
 		}
-		if(!isset($link_data['e_c_id'])){
-			$link_data['e_c_id'] = 0;
-		}
-		if(!isset($link_data['e_i_id'])){
-			$link_data['e_i_id'] = 0;
-		}
 		if(!isset($link_data['e_json'])){
 			$link_data['e_json'] = '';
 		}
@@ -683,9 +651,7 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	
-	
-	
+
 	
 	function sync_algolia($c_id=null){
 		
@@ -711,24 +677,24 @@ class Db_model extends CI_Model {
 		} else {
 			$index->clearIndex();
 		}
-		$bootcamps = $this->c_fetch($limits);
+		$intents = $this->c_fetch($limits);
 		
-		if(count($bootcamps)<=0){
+		if(count($intents)<=0){
 			//Nothing found here!
 			return false;
 		}
 		
 		//Buildup this array to save to search index
 		$return = array();
-		foreach($bootcamps as $bootcamp){
+		foreach($intents as $intent){
 			//Adjust Algolia ID:
-			if(isset($bootcamp['c_algolia_id']) && intval($bootcamp['c_algolia_id'])>0){
-				$bootcamp['objectID'] = intval($bootcamp['c_algolia_id']);
+			if(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0){
+				$intent['objectID'] = intval($intent['c_algolia_id']);
 			}
-			unset($bootcamp['c_algolia_id']);
+			unset($intent['c_algolia_id']);
 			
 			//Add to main array
-			array_push( $return , $bootcamp);
+			array_push( $return , $intent);
 		}
 		
 		//$obj = json_decode(json_encode($return), FALSE);
@@ -736,9 +702,9 @@ class Db_model extends CI_Model {
 		
 		if($c_id){
 			
-			if($bootcamp['c_status']>=0){
+			if($intent['c_status']>=0){
 				
-				if(isset($bootcamp['c_algolia_id']) && intval($bootcamp['c_algolia_id'])>0){
+				if(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0){
 					//Update existing
 					$obj_add_message = $index->saveObjects($return);
 				} else {
@@ -755,9 +721,9 @@ class Db_model extends CI_Model {
 					}
 				}
 				
-			} elseif(isset($bootcamp['c_algolia_id']) && intval($bootcamp['c_algolia_id'])>0) {
+			} elseif(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0) {
 				//Delete object:
-				$index->deleteObject($bootcamp['c_algolia_id']);
+				$index->deleteObject($intent['c_algolia_id']);
 			}
 			
 		} else {
@@ -777,7 +743,7 @@ class Db_model extends CI_Model {
 		
 		return array(
 				'c_id' => $c_id,
-				'bootcamps' => $bootcamps,
+				'intents' => $intents,
 				'output' => $obj_add_message['objectIDs'],
 		);
 	}

@@ -85,7 +85,7 @@ class Bot extends CI_Controller {
 				log_error('Facebook webhook call without the Messaging Array().',$json_data,2);
 				continue;
 			}
-			
+
 			//loop though the messages:
 			foreach($entry['messaging'] as $im){
 				
@@ -178,7 +178,6 @@ class Bot extends CI_Controller {
 							'e_medium_id' => 2, //Messenger Bot
 							'e_medium_action_id' => (isset($im['referral']) ? 4 : 3), //referral or postback
 							'e_json' => json_encode($json_data),
-							'e_c_id' => 0, //We assume no referral here...
 					);
 					
 					
@@ -190,15 +189,13 @@ class Bot extends CI_Controller {
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
 						
-						//Validate ref ID:
-						$challenges = $this->Db_model->c_fetch(array(
-								'c_id' => intval($referral_array['ref']),
-						));
+						//TODO Validate ref ID
 						
 						if(count($challenges)==1){
 							//We found this!
 							//Decode ref variable:
-							$eng_data['e_c_id'] = $challenges[0]['c_id'];
+						    $eng_data['e_obj_type'] = 'c';
+						    $eng_data['e_obj_id'] = $challenges[0]['c_id'];
 						}
 						
 						
@@ -222,11 +219,7 @@ class Bot extends CI_Controller {
 					//General variables:
 					$this->Db_model->log_engagement($eng_data);
 					
-					if($eng_data['e_c_id']>0){
-						//They had a valid referral, let them know which challenge they are joining:
-						quick_message($im['sender']['id'],'Welcome to Mench!');
-						quick_message($im['sender']['id'],'It seems you are interested to '.$challenges[0]['c_objective']);
-					}
+					//TODO implement some response?
 					
 				} elseif(isset($im['optin'])) {
 					
@@ -250,8 +243,7 @@ class Bot extends CI_Controller {
 					
 					
 					//TODO Validate the ref ID and log error if not valid.
-					//Decode ref variable:
-					$eng_data['e_c_id'] = intval($im['optin']['ref']);
+					//Decode ref variable intval($im['optin']['ref'])
 					
 					//Log engagement:
 					$new = $this->Db_model->log_engagement($eng_data);
@@ -398,8 +390,7 @@ class Bot extends CI_Controller {
 								'text' => 'You had unsubscribed from Us. Would you like to re-join?',
 							);
 						} else {
-							//Now figure out the response:
-							$response = $this->Us_model->generate_response($eng_data['e_c_id'],$setting);
+							//TODO Now figure out the response
 						}
 						 
 						//Send message back to user:

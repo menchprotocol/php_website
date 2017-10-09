@@ -2,8 +2,8 @@
 //Attempt to fetch session variables:
 if(count($bootcamps)>0){
     echo '<div class="list-group">';
-    foreach($bootcamps as $c){
-        echo '<a href="/console/'.$c['c_id'].'" class="list-group-item"><span class="pull-right"><span class="label label-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.status_bible('c',$c['c_status'],1,'right').' <b>'.$c['c_objective'].'</b></a>';
+    foreach($bootcamps as $bootcamp){
+        echo '<a href="/console/'.$bootcamp['b_id'].'" class="list-group-item"><span class="pull-right"><span class="label label-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>'.status_bible('b',$bootcamp['b_status'],1,'right').' <b>'.$bootcamp['c_objective'].'</b></a>';
     }
     echo '</div>';
 } else {

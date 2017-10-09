@@ -1,13 +1,6 @@
-<?php 
-$outbound = $this->Db_model->cr_outbound_fetch(array(
-    'cr.cr_inbound_id' => $bootcamp['c_id'],
-    'cr.cr_status >=' => 0,
-));
-?>
+
 <input type="hidden" id="r_id" value="<?= $cohort['r_id'] ?>" />
-<input type="hidden" id="week_count" value="<?= count($outbound) ?>" />
-
-
+<input type="hidden" id="week_count" value="<?= count($bootcamp['c__child_intents']) ?>" />
 
 <div id="acordeon">
     <div class="panel-group" id="accordion">
@@ -38,26 +31,32 @@ $outbound = $this->Db_model->cr_outbound_fetch(array(
                 <hr />
                 <div class="row">
                 	<div class="col-sm-3">Registration Starts:</div>
-                    <div class="col-sm-3"><b>June 5th 8:00P</b></div>
+                    <div class="col-sm-3"><b>NOW</b></div>
                     <div class="col-sm-6">As soon as Bootcamp AND Cohort status are live. Once students start registering, you will review applications, conduct interview to validate qualifications and accept students one by one. If rejected, students will receive a full refund.</div>
                 </div>
                 <hr />
                 <div class="row">
                 	<div class="col-sm-3">Registration Ends:</div>
-                    <div class="col-sm-3"><b><span id="time_register_end">June 5th 8:00P</span></b></div>
+                    <div class="col-sm-3"><b><span id="r_time_register_end">June 5th 8:00P</span></b></div>
                     <div class="col-sm-6">Students who plan to join must have paid in full by this time. This is when the registration for the next cohort starts.</div>
                 </div>
                 <hr />
                 <div class="row">
                 	<div class="col-sm-3">Bootcamp Starts:</div>
-                    <div class="col-sm-3"><b><span id="time_cohort_start">June 5th 8:00P</span></b></div>
-                    <div class="col-sm-6">Interested students must have paid in full by this time. During the bootcamp students work on the weekly sprints as defined in the <a href="/console/<?= $bootcamp['c_id'] ?>/curriculum">curriculum</a>.</div>
+                    <div class="col-sm-3"><b><span id="r_time_cohort_start">June 5th 8:00P</span></b></div>
+                    <div class="col-sm-6">Interested students must have paid in full by this time. During the bootcamp students work on the weekly sprints as defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
+                </div>
+                <hr />
+                <div class="row">
+                	<div class="col-sm-3">Free Withdrawal Ends:</div>
+                    <div class="col-sm-3"><b><span id="r_time_free_end">June 5th 8:00P</span></b></div>
+                    <div class="col-sm-6">Interested students must have paid in full by this time. During the bootcamp students work on the weekly sprints as defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
                 </div>
                 <hr />
                 <div class="row">
                 	<div class="col-sm-3">Bootcamp Ends:</div>
-                    <div class="col-sm-3"><b><span id="time_cohort_end">June 5th 8:00P</span></b></div>
-                    <div class="col-sm-6">This has been calculated based on the <?= count($outbound) ?> weekly sprints defined in the <a href="/console/<?= $bootcamp['c_id'] ?>/curriculum">curriculum</a>.</div>
+                    <div class="col-sm-3"><b><span id="r_time_cohort_end">June 5th 8:00P</span></b></div>
+                    <div class="col-sm-6">This has been calculated based on the <?= count($bootcamp['c__child_intents']) ?> weekly sprints defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
                 </div>
                 
           </div>
@@ -88,7 +87,7 @@ $outbound = $this->Db_model->cr_outbound_fetch(array(
 					<li>Office hours are set in GMT -8:00 Pacific Standard Time. We will adjust this based on each student's time zone.</li>
 					<li>Single click on the schedule to drop a time box, and then drag and expand it to represent your hours.</li>
 				</ul>
-				<iframe id="weekschedule" src="/console/<?= $bootcamp['c_id'] ?>/cohorts/<?= $cohort['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
+				<iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/cohorts/<?= $cohort['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
           
           
           		<div class="title"><h4>Office Contact Method</h4></div>

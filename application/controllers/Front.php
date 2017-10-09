@@ -90,18 +90,16 @@ class Front extends CI_Controller {
 	    ));
 	    $this->load->view('front/bootcamp/browse' , array(
 	        'bootcamps' => $this->Db_model->c_full_fetch(array(
-	            'c.c_status >=' => 1,
-	            'c.c_is_grandpa' => true, //Not sub challenges
+	            'b.b_status' => 2,
 	        )),
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
 	
-	function bootcamp_load($c_url_key){
+	function bootcamp_load($b_url_key){
 	    //Fetch data:
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_url_key' => $c_url_key,
-	        'c.c_is_grandpa' => true, //Not sub challenges
+	        'b.b_url_key' => $b_url_key,
 	    ));
 	    
 	    //Validate bootcamp:
@@ -112,7 +110,7 @@ class Front extends CI_Controller {
 	    //Validate status:
 	    $udata = $this->session->userdata('user');
 	    $bootcamp = $bootcamps[0];
-	    if($bootcamp['c_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
+	    if($bootcamp['b_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
 	        //Bootcamp not yet published:
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
@@ -121,10 +119,10 @@ class Front extends CI_Controller {
 	    $this->load->view('front/shared/f_header' , array(
 	        'landing_page' => 'front/splash/product_splash',
 	        'lp_variables' => array(
-	            'c_image_url' => $bootcamp['c_image_url'],
+	            'b_image_url' => $bootcamp['b_image_url'],
 	        ),
 	        'title' => $bootcamp['c_objective'],
-	        'message' => ( $bootcamp['c_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
+	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(
 	        'bootcamp' => $bootcamp,
@@ -134,12 +132,11 @@ class Front extends CI_Controller {
 	
 	
 	
-	function bootcamp_apply($c_url_key){
+	function bootcamp_apply($b_url_key){
 	    
 	    //Fetch data:
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_url_key' => $c_url_key,
-	        'c.c_is_grandpa' => true, //Not sub challenges
+	        'c.b_url_key' => $b_url_key,
 	    ));
 	    
 	    //Validate bootcamp:
@@ -151,7 +148,7 @@ class Front extends CI_Controller {
 	    //Validate status:
 	    $udata = $this->session->userdata('user');
 	    $bootcamp = $bootcamps[0];
-	    if($bootcamp['c_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
+	    if($bootcamp['b_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
 	        //Bootcamp not yet published:
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
@@ -160,10 +157,10 @@ class Front extends CI_Controller {
 	    $this->load->view('front/shared/f_header' , array(
 	        'landing_page' => 'front/splash/product_splash',
 	        'lp_variables' => array(
-	            'c_image_url' => $bootcamp['c_image_url'],
+	            'b_image_url' => $bootcamp['b_image_url'],
 	        ),
 	        'title' => 'Apply to '.$bootcamp['c_objective'],
-	        'message' => ( $bootcamp['c_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
+	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
 	    ));
 	    $this->load->view('front/bootcamp/apply' , array(
 	        'bootcamp' => $bootcamp,

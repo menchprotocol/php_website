@@ -76,6 +76,8 @@ class Process extends CI_Controller {
 	            'user' => $users[0],
 	        ));
 	        
+	        //TODO login engagement
+	        
 	        if(isset($_POST['url']) && strlen($_POST['url'])>0){
 	            header( 'Location: '.$_POST['url'] );
 	        } else {
@@ -222,13 +224,13 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-	    } elseif(!isset($_POST['r_c_id']) || intval($_POST['r_c_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing bootcamp ID.</span>');
+	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid bootcamp ID.</span>');
 	    } else {
 	        	        
 	        //Create new cohort:
 	        $cohort = $this->Db_model->r_create(array(
-	            'r_c_id' => intval($_POST['r_c_id']),
+	            'r_b_id' => intval($_POST['r_b_id']),
 	            'r_status' => 0, //Drafting
 	            'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
 	            //Set some defaults:
@@ -239,7 +241,7 @@ class Process extends CI_Controller {
 	        
 	        if($cohort['r_id']>0){
 	            //Redirect:
-	            echo '<script> window.location = "/console/'.intval($_POST['r_c_id']).'/cohorts/'.$cohort['r_id'].'" </script>';
+	            echo '<script> window.location = "/console/'.intval($_POST['r_b_id']).'/cohorts/'.$cohort['r_id'].'" </script>';
 	        } else {
 	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this bootcamp.</span>');
 	        }
@@ -256,7 +258,7 @@ class Process extends CI_Controller {
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Missing hours.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing r_id.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    }
 	    
 	    
@@ -265,6 +267,7 @@ class Process extends CI_Controller {
 	    ));
 	    
 	    //TODO Save change history
+	    
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Saved</span>');
@@ -284,9 +287,9 @@ class Process extends CI_Controller {
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing cohort ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
-	        die('<span style="color:#FF0000;">Error: Missing status.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
 	    }
 	    
 	    
@@ -343,92 +346,83 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['c_primary_objective']) || strlen($_POST['c_primary_objective'])<2){
 	        die('<span style="color:#FF0000;">Error: Title must be 2 characters or longer.</span>');
-	    } else {
-	        
-	        //Create new bootcamp:
-	        $bootcamp = $this->Db_model->c_create(array(
-	            'c_creator_id' => $udata['u_id'],
-	            'c_url_key' => url_key(trim($_POST['c_primary_objective'])),
-	            'c_is_grandpa' => 't',
-	            'c_status' => 0, //Drafting status for Bootcamp
-	            'c_objective' => trim($_POST['c_primary_objective']),
-	        ));
-	        
-	        if(intval($bootcamp['c_id'])>0){
-	            
-	            //Assign permissions for this user:
-	            $admin_status = $this->Db_model->ba_create(array(
-	                'ba_creator_id' => $udata['u_id'],
-	                'ba_u_id' => $udata['u_id'],
-	                'ba_status' => 2, //Admin
-	                'ba_c_id' => $bootcamp['c_id'],
-	                'ba_team_display' => 't', //Show on landing page
-	            ));
-	            
-	            if(intval($admin_status['ba_id'])<=0){
-	                echo '<script> alert("There was an error while trying to add you as the bootcamp admin."); </script>';
-	            }
-	            
-	            //Redirect:
-	            echo '<script> window.location = "/console/'.$bootcamp['c_id'].'" </script>';
-	            
-	        } else {
-	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this bootcamp.</span>');
-	        }
 	    }
+	        
+        //Create new intent:
+        $intent = $this->Db_model->c_create(array(
+            'c_creator_id' => $udata['u_id'],
+            'c_objective' => trim($_POST['c_primary_objective']),
+        ));
+        if(intval($intent['c_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Unkown error while trying to create intent.</span>');
+        }
+        
+        //Create new bootcamp:
+        $bootcamp = $this->Db_model->b_create(array(
+            'b_creator_id' => $udata['u_id'],
+            'b_url_key' => url_key(trim($_POST['c_primary_objective'])),
+            'b_status' => 0, //Bootcamp on Hold
+            'b_c_id' => $intent['c_id'],
+        ));
+        if(intval($bootcamp['b_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Unkown error while trying to create bootcamp.</span>');
+        }
+        
+        //Assign permissions for this user:
+        $admin_status = $this->Db_model->ba_create(array(
+            'ba_creator_id' => $udata['u_id'],
+            'ba_u_id' => $udata['u_id'],
+            'ba_status' => 3, //Leader - As this is the first person to create
+            'ba_b_id' => $bootcamp['b_id'],
+            'ba_team_display' => 't', //Show on landing page
+        ));
+        if(intval($admin_status['ba_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Unkown error while trying to set bootcamp leader.</span>');
+        }
+        
+        //Redirect:
+        echo '<script> window.location = "/console/'.$bootcamp['b_id'].'" </script>';
+            
 	}
+	
+	
 	
 	function intent_create(){
 	    
 	    $udata = auth(2);
-	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid c_id.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['direction']) || !in_array($_POST['direction'],array('outbound','inbound'))){
-	        die('<span style="color:#FF0000;">Error: Invalid direction.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Linking Direction.</span>');
 	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing name.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Intent Objective.</span>');
 	    }
 	    
-	    //Fetch existing challenge:
-	    $f_challenge = load_object('c' , array(
-	        'c.c_id' => $_POST['pid'],
-	        'c.c_status >=' => 0, //Drafting or higher
-	    ));
-	    
 	    //Create intent:
-	    $is_outbound = ($_POST['direction']=='outbound');
-	    $bootcamp = $this->Db_model->c_create(array(
+	    $new_intent = $this->Db_model->c_create(array(
 	        'c_creator_id' => $udata['u_id'],
 	        'c_objective' => trim($_POST['c_objective']),
-	        'c_status' => 1, //Create intents with live status by default
 	    ));
 	    
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
 	        'cr_creator_id' => $udata['u_id'],
-	        
-	        //Linking:
-	        'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $bootcamp['c_id'] ),
-	        'cr_outbound_id' => ( $is_outbound ? $bootcamp['c_id'] : $f_challenge['c_id'] ),
-	        
-	        //Fetch ranks:
-	        'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_intent_links','cr_inbound_rank', array(
-	            'cr_status >=' => 0,
-	            'cr_outbound_id' => $f_challenge['c_id'],
-	        )),
+	        'cr_inbound_id'  => ( $_POST['direction']=='outbound' ? intval($_POST['pid']) : $new_intent['c_id'] ),
+	        'cr_outbound_id' => ( $_POST['direction']=='outbound' ? $new_intent['c_id'] : intval($_POST['pid']) ),
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
 	            'cr_status >=' => 0,
-	            'cr_inbound_id' => $f_challenge['c_id'],
+	            'cr_inbound_id' => intval($_POST['pid']),
 	        )),
 	    ));
 	    
 	    //Fetch full link package:
-	    if($is_outbound){
+	    if($_POST['direction']=='outbound'){
 	        $relations = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_id' => $relation['cr_id'],
 	        ));
@@ -439,10 +433,10 @@ class Process extends CI_Controller {
 	    }
 	    
 	    //Update Algolia:
-	    $this->Db_model->sync_algolia($bootcamp['c_id']);
+	    $this->Db_model->sync_algolia($new_intent['c_id']);
 	    
 	    //Return result:
-	    echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction'],$_POST['next_level']);
+	    echo echo_cr($_POST['b_id'],$relations[0],$_POST['direction'],$_POST['next_level']);
 	}
 	
 	function intent_edit(){
@@ -451,10 +445,10 @@ class Process extends CI_Controller {
 	    $udata = auth(2);
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing pid.</span>');
-	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=2){
-	        die('<span style="color:#FF0000;">Error: Title be longer than 2 characters.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
+	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Intent Objective.</span>');
 	    }
 	    
 	    //Not required variables:
@@ -473,8 +467,6 @@ class Process extends CI_Controller {
 	    
 	    
 	    $save_array = array(
-	        'c_creator_id' => $udata['u_id'],
-	        'c_timestamp' => date("Y-m-d H:i:s"),
 	        'c_objective' => trim($_POST['c_objective']),
 	        'c_todo_bible' => $_POST['c_todo_bible'],
 	        'c_todo_overview' => $_POST['c_todo_overview'],
@@ -490,6 +482,7 @@ class Process extends CI_Controller {
 	    
 	    //TODO Save change history
 	    
+	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Saved</span>');
 	}
@@ -500,52 +493,33 @@ class Process extends CI_Controller {
 	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid c_id.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['direction']) || !in_array($_POST['direction'],array('outbound','inbound'))){
-	        die('<span style="color:#FF0000;">Error: Invalid direction.</span>');
-	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Link Direction.</span>');
+	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0 || !is_valid_intent($_POST['target_id'])){
 	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
 	    }
-	    
-	    //Fetch existing challenge:
-	    $f_challenge = load_object('c' , array(
-	        'c.c_id' => $_POST['pid'],
-	        'c.c_status >=' => -1,
-	    ));
-	    
-	    //Create challenge:
-	    $is_outbound = ($_POST['direction']=='outbound');
-	    $bootcamp = load_object('c' , array(
-	        'c.c_id' => $_POST['target_id'],
-	        'c.c_status >=' => -1,
-	    ));
-	    
 	    //TODO Check to make sure not duplicate
 	    
-	    //Create Link:
+	    
+	    //Create Link only:
 	    $relation = $this->Db_model->cr_create(array(
 	        'cr_creator_id' => $udata['u_id'],
-	        
-	        //Linking:
-	        'cr_inbound_id'  => ( $is_outbound ? $f_challenge['c_id'] : $bootcamp['c_id'] ),
-	        'cr_outbound_id' => ( $is_outbound ? $bootcamp['c_id'] : $f_challenge['c_id'] ),
-	        
-	        //Fetch ranks:
-	        'cr_inbound_rank'  => 1 + $this->Db_model->max_value('v5_intent_links','cr_inbound_rank', array(
-	            'cr_status >=' => 0,
-	            'cr_outbound_id' => $f_challenge['c_id'],
-	        )),
+	        'cr_inbound_id'  => ( $_POST['direction']=='outbound' ? intval($_POST['pid']) : intval($_POST['target_id']) ),
+	        'cr_outbound_id' => ( $_POST['direction']=='outbound' ? intval($_POST['target_id']) : intval($_POST['pid']) ),
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
 	            'cr_status >=' => 0,
-	            'cr_inbound_id' => $f_challenge['c_id'],
+	            'cr_inbound_id' => intval($_POST['pid']),
 	        )),
 	    ));
 	    
 	    //Fetch full link package:
-	    if($is_outbound){
+	    if($_POST['direction']=='outbound'){
 	        $relations = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_id' => $relation['cr_id'],
 	        ));
@@ -556,41 +530,37 @@ class Process extends CI_Controller {
 	    }
 	    
 	    //Return result:
-	    echo echo_cr($_POST['c_id'],$relations[0],$_POST['direction'],$_POST['next_level']);
+	    echo echo_cr($_POST['b_id'],$relations[0],$_POST['direction'],$_POST['next_level']);
 	}
 	
 	
 	function intent_unlink(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
-	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['cr_id']) || intval($_POST['cr_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid cr_id.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Link ID.</span>');
 	    }
 	    
 	    //Now update the DB:
 	    $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_timestamp' => date("Y-m-d H:i:s"),
 	        'cr_status' => -1, //Deleted by user
 	    ));
 	    
-	    //TODO Save change history
+	    //TODO Save to change history
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Unlinked</span>');
+	    die('<span style="color:#00CC00;">Removed Link</span>');
 	}
 	
 	
 	function intents_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
-	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
 	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
 	    } elseif(!isset($_POST['sort_direction']) || !in_array($_POST['sort_direction'],array('outbound','inbound'))){
 	        die('<span style="color:#FF0000;">Error: Invalid sort direction.</span>');
@@ -612,52 +582,6 @@ class Process extends CI_Controller {
 	}
 	
 	
-	function intent_delete($grandpa_id,$c_id){
-	    die('disabled for now');
-	    $udata = auth(2,1);
-	    $main_challenge = load_object('c' , array(
-	        'c.c_id' => $grandpa_id,
-	        'c.c_status >=' => 0,
-	    ));
-	    $sub_challenge = load_object('c' , array(
-	        'c.c_id' => $c_id,
-	        'c.c_status >=' => 0,
-	    ));
-	    
-	    if(!can_modify('c',$c_id)){
-	        redirect_message('/console/'.$grandpa_id.'/'.$c_id, '<div class="alert alert-danger" role="alert">You dont have the permission to delete this challenge.</div>');
-	    }
-	    
-	    //Delete links:
-	    $links_deleted = 0;
-	    $links_deleted += $this->Db_model->cr_update( intval($cr_id) , array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_timestamp' => date("Y-m-d H:i:s"),
-	        'cr_status' => -1,
-	    ) , 'cr_inbound_id' );
-	    $links_deleted += $this->Db_model->cr_update( intval($cr_id) , array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_timestamp' => date("Y-m-d H:i:s"),
-	        'cr_status' => -1,
-	    ) , 'cr_outbound_id' );
-	    
-	    
-	    //Delete challenge:
-	    $this->Db_model->c_update( intval($cr_id) , array(
-	        'c_creator_id' => $udata['u_id'],
-	        'c_timestamp' => date("Y-m-d H:i:s"),
-	        'c_status' => -1,
-	    ));
-	    
-	    //Update Algolia:
-	    $this->Db_model->sync_algolia(intval($cr_id));
-	    
-	    //TODO Log activity
-	    
-	    //Redirect and show susccess message:
-	    redirect_message('/console/'.$grandpa_id, '<div class="alert alert-success" role="alert">Challenge <b>'.$sub_challenge['c_objective'].'</b> deleted with '.$links_deleted.' dependencies.</div>');
-	}
-	
 	
 	/* ******************************
 	 * i Media
@@ -666,33 +590,26 @@ class Process extends CI_Controller {
 	function media_create(){
 	    
 	    $udata = auth(2);
-	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh to Continue.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing message.</span>');
 	    }
 	    
-	    //Fetch existing challenge:
-	    $f_challenge = load_object('c' , array(
-	        'c.c_id' => $_POST['pid'],
-	        'c.c_status >=' => 0,
-	    ));
-	    
 	    //Create Link:
 	    $i = $this->Db_model->i_create(array(
 	        'i_creator_id' => $udata['u_id'],
-	        'i_c_id' => $f_challenge['c_id'],
+	        'i_c_id' => intval($_POST['pid']),
 	        'i_message' => trim($_POST['i_message']),
 	        'i_rank' => 1 + $this->Db_model->max_value('v5_media','i_rank', array(
 	            'i_status >=' => 0,
-	            'i_c_id' => $f_challenge['c_id'],
+	            'i_c_id' => intval($_POST['pid']),
 	        )),
 	    ));
 	    
-	    //TODO Integrate Message & Update Algolia:
+	    //TODO Log engagement
 	    
 	    
 	    //Print the challenge:

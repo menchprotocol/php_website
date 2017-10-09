@@ -9,9 +9,9 @@ class Console extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	function raw($c_id){
+	function raw($b_id){
 	    print_r($this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id
+	        'b.b_id' => $b_id
 	    )));
 	}
 	
@@ -89,8 +89,7 @@ class Console extends CI_Controller {
 		    'bootcamps' => $this->Db_model->u_bootcamps(array(
 		        'ba.ba_u_id' => $udata['u_id'],
 		        'ba.ba_status >=' => 0,
-		        'c.c_status >=' => 0,
-		        'c.c_is_grandpa' => true,
+		        'b.b_status >=' => 0,
 		    )),
 		));
 		$this->load->view('console/shared/d_footer' , array(
@@ -99,16 +98,15 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function dashboard($c_id){
+	function dashboard($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id,
-	        'c.c_is_grandpa' => true,
+	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
-	    }
+	    }	    
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
@@ -128,22 +126,19 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function curriculum($c_id,$pid=null){
+	function curriculum($b_id,$pid=null){
 		
 		$udata = auth(2,1);
-		$pid = ( (isset($pid) && intval($pid)>0) ? $pid : $c_id );
-		$level_names = $this->config->item('level_names');
 		$bootcamps = $this->Db_model->c_full_fetch(array(
-		    'c.c_id' => $c_id,
-		    'c.c_is_grandpa' => true,
+		    'b.b_id' => $b_id,
 		));
-		
 		if(!isset($bootcamps[0])){
 		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
 		}
 		
-		
 		//Construct data:
+		$pid = ( (isset($pid) && intval($pid)>0) ? $pid : $bootcamps[0]['c_id'] );
+		$level_names = $this->config->item('level_names');
 		$view_data = array(
 		    'pid' => $pid,
 		    'bootcamp' => $bootcamps[0],
@@ -162,7 +157,7 @@ class Console extends CI_Controller {
 		 * the main bootcamp, and construct the breadcrumb accordingly:
 		 * 
 		 * */
-		if($c_id==$pid){
+		if($bootcamps[0]['c_id']==$pid){
 		    
 		    //Level 1 (The bootcamp itself)
 		    $view_data['level'] = 1;
@@ -177,7 +172,7 @@ class Console extends CI_Controller {
 		    
 		} else {
 		    
-		    foreach($bootcamps[0]['c__sprints'] as $sprint){
+		    foreach($bootcamps[0]['c__child_intents'] as $sprint){
 		        
 		        if($sprint['c_id']==$pid){
 		            //Found this as level 2:
@@ -186,7 +181,7 @@ class Console extends CI_Controller {
 		            $view_data['title'] = 'Curriculum | '.$level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
 		            $view_data['breadcrumb'] = array(
 		                array(
-		                    'link' => '/console/'.$c_id.'/curriculum',
+		                    'link' => '/console/'.$b_id.'/curriculum',
 		                    'anchor' => 'Curriculum',
 		                ),
 		                array(
@@ -199,7 +194,7 @@ class Console extends CI_Controller {
 		        }
 		        
 		        //Maybe the tasks of this sprint match?
-		        foreach($sprint['c__tasks'] as $task){
+		        foreach($sprint['c__child_intents'] as $task){
 		            if($task['c_id']==$pid){
 		                //This is level 3:
 		                $view_data['level'] = 3;
@@ -207,11 +202,11 @@ class Console extends CI_Controller {
 		                $view_data['title'] = 'Curriculum | '.$level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$level_names[3].' #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
 		                $view_data['breadcrumb'] = array(
 		                    array(
-		                        'link' => '/console/'.$c_id.'/curriculum',
+		                        'link' => '/console/'.$b_id.'/curriculum',
 		                        'anchor' => 'Curriculum',
 		                    ),
 		                    array(
-		                        'link' => '/console/'.$c_id.'/curriculum/'.$sprint['c_id'],
+		                        'link' => '/console/'.$b_id.'/curriculum/'.$sprint['c_id'],
 		                        'anchor' => $level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
 		                    ),
 		                    array(
@@ -231,7 +226,7 @@ class Console extends CI_Controller {
 		    
 		    //Did we find the sprint or task that matched $pid?
 		    if(!isset($view_data['intent'])){
-		        redirect_message('/console/'.$c_id.'/curriculum','<div class="alert alert-danger" role="alert">Invalid framework ID. Select another framework to continue.</div>');
+		        redirect_message('/console/'.$b_id.'/curriculum','<div class="alert alert-danger" role="alert">Invalid intent ID. Select another intent to continue.</div>');
 		    }
 		}
 		
@@ -244,12 +239,11 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function all_cohorts($c_id){
+	function all_cohorts($b_id){
 	    //Authenticate:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id,
-	        'c.c_is_grandpa' => true,
+	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
@@ -276,12 +270,11 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function scheduler($c_id,$r_id){
+	function scheduler($b_id,$r_id){
 	    //Authenticate:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id,
-	        'c.c_is_grandpa' => true,
+	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
@@ -301,12 +294,11 @@ class Console extends CI_Controller {
 	    ));
 	}
 	
-	function cohort($c_id,$r_id){
+	function cohort($b_id,$r_id){
 		//Authenticate:
 		$udata = auth(2,1);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
-		    'c.c_id' => $c_id,
-		    'c.c_is_grandpa' => true,
+		    'b.b_id' => $b_id,
 		));
 		if(!isset($bootcamps[0])){
 		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
@@ -315,7 +307,7 @@ class Console extends CI_Controller {
 		//This could be a new run, or editing an existing run:
 		$cohort = filter($bootcamps[0]['c__cohorts'],'r_id',$r_id);
 		if(!$cohort){
-		    redirect_message('/console/'.$c_id.'/cohorts' , '<div class="alert alert-danger" role="alert">Invalid cohort ID.</div>');
+		    redirect_message('/console/'.$b_id.'/cohorts' , '<div class="alert alert-danger" role="alert">Invalid cohort ID.</div>');
 		}
 		
 		$view_data = array(
@@ -324,7 +316,7 @@ class Console extends CI_Controller {
 		    'cohort' => $cohort,
 		    'breadcrumb' => array(
 		        array(
-		            'link' => '/console/'.$c_id.'/cohorts',
+		            'link' => '/console/'.$b_id.'/cohorts',
 		            'anchor' => 'Cohorts',
 		        ),
 		        array(
@@ -342,12 +334,11 @@ class Console extends CI_Controller {
 	
 	
 	
-	function students($c_id){
+	function students($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id,
-	        'c.c_is_grandpa' => true,
+	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
@@ -372,12 +363,11 @@ class Console extends CI_Controller {
 	
 	
 	
-	function stream($c_id){
+	function stream($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id,
-	        'c.c_is_grandpa' => true,
+	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
@@ -401,12 +391,11 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function settings($c_id){
+	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.c_id' => $c_id,
-	        'c.c_is_grandpa' => true,
+	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');

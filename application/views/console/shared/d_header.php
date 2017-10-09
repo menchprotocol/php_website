@@ -50,7 +50,7 @@ $website = $this->config->item('website');
 	    	
 	    		<?php 
 	    		if(isset($bootcamp)){
-	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['c_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
+	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
 	    		}
 	    		?>
 	    		<ul class="nav">
@@ -58,17 +58,17 @@ $website = $this->config->item('website');
             	<?php
             	if(isset($bootcamp)){
             	    
-            	    echo '<li  class="li-sep '.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['c_id'] ? 'active' : '' ).'"><a href="/console/'.$bootcamp['c_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
+            	    echo '<li  class="li-sep '.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['b_id'] ? 'active' : '' ).'"><a href="/console/'.$bootcamp['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/curriculum')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/curriculum">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/curriculum')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/curriculum">'.$this->lang->line('cr_icon').'<p>'.$this->lang->line('cr_name').'</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/students')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/students"><i class="fa fa-users" aria-hidden="true"></i><p>Students</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/students')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/students"><i class="fa fa-users" aria-hidden="true"></i><p>Students</p></a></li>';
                 	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['c_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['c_id'].'/settings"><i class="material-icons">settings</i><p>Settings &nbsp;'.status_bible('c',$bootcamp['c_status'],1).'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/settings"><i class="material-icons">settings</i><p>Settings &nbsp;'.status_bible('b',$bootcamp['b_status'],1).'</p></a></li>';
             	    
         		}
             	?>

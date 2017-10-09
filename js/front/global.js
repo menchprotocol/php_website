@@ -200,7 +200,7 @@ function save_c(){
 }
 
 
-function c_process_create(){
+function bootcamp_create(){
 	//Show processing:
 	$( "#new_bootcam_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
 	
@@ -224,7 +224,7 @@ function r_process_create(){
 	//Send for processing:
 	$.post("/process/cohort_create", {
 		
-		r_c_id:$('#r_c_id').val(), 
+		r_b_id:$('#r_b_id').val(), 
 		r_start_date:$('#r_start_date').val(),
 		
 	}, function(data) {
@@ -244,9 +244,7 @@ function save_r(){
 	$.post("/process/cohort_edit", {
 		
 		r_start_date:$('#r_start_date').val(), 
-		r_pace_id:$('#r_pace_id').val(), 
 		r_usd_price:$('#r_usd_price').val(),
-		r_application_fee:$('#r_application_fee').val(),
 		r_id:$('#r_id').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),
@@ -265,7 +263,7 @@ function save_r(){
 }
 
 
-function new_challenge(c_objective){
+function new_intent(c_objective){
 	
 	if(c_objective.length<1){
 		alert('Missing name. Try again.');
@@ -275,6 +273,7 @@ function new_challenge(c_objective){
 	//Fetch needed vars:
 	pid = $('#pid').val();
 	c_id = $('#c_id').val();
+	b_id = $('#b_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
 	var next_level = $( "#next_level" ).val();
 	
@@ -285,13 +284,16 @@ function new_challenge(c_objective){
 	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/process/intent_create", {c_id:c_id, pid:pid, c_objective:c_objective, direction:direction, next_level:next_level}, function(data) {
+	$.post("/process/intent_create", {b_id:b_id, c_id:c_id, pid:pid, c_objective:c_objective, direction:direction, next_level:next_level}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#list-"+direction ).append(data);
 		
 		//Resort:
-		load_sortable(direction);
+		if(direction=='outbound'){
+			load_sortable(direction);
+		}
+		
 		
 		//Tooltips:
 		$('[data-toggle="tooltip"]').addClass('').tooltip();
@@ -309,10 +311,11 @@ function update_dropdown(name,intvalue,count){
 }
 
 //Triggered when clicked on the toggle direction
-function link_challenge(target_id){
+function link_lintent(target_id){
 	//Fetch needed vars:
 	pid = $('#pid').val();
 	c_id = $('#c_id').val();
+	b_id = $('#b_id').val();
 	var direction = ( is_outbound ? 'outbound' : 'inbound' );
 	var next_level = $( "#next_level" ).val();
 	
@@ -323,13 +326,15 @@ function link_challenge(target_id){
 	$( "#addnode" ).val("").focus();
 	
 	//Update backend:
-	$.post("/process/intent_link", {c_id:c_id, pid:pid, target_id:target_id, direction:direction, next_level:next_level}, function(data) {
+	$.post("/process/intent_link", {b_id:b_id, c_id:c_id, pid:pid, target_id:target_id, direction:direction, next_level:next_level}, function(data) {
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#list-"+direction ).append(data);
 		
 		//Resort:
-		load_sortable(direction);
+		if(direction=='outbound'){
+			load_sortable(direction);
+		}
 		
 		//Tooltips:
 		$('[data-toggle="tooltip"]').addClass('').tooltip();
@@ -402,7 +407,10 @@ function intents_sort(direction){
 
 
 function load_sortable(direction){
+	
+	//We do not support inbound sorting for now...
 	if(direction=='inbound'){return false;}
+	
 	var thelist = document.getElementById("list-"+direction);
 	var sort = Sortable.create( thelist , {
 		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
@@ -435,17 +443,6 @@ function toggleview(object_key){
 	
 	
 	
-}
-
-function intent_delete(grandpa_id,c_id,c_title){
-	alert('disabled for now');
-	return false;
-	//Double check:
-	var r = confirm("Delete Challenge: "+c_title+"?");
-	if (r == true) {
-	    //Redirect to delete:
-		window.location = "/process/intent_delete/"+grandpa_id+"/"+c_id;
-	}
 }
 
 
@@ -630,15 +627,6 @@ function contact_us(){
 
 $(document).ready(function() {
 	
-	//Bootcamp Wiki section:
-	$('#c_is_grandpa').change(function() {
-        if($(this).is(":checked")) {
-        	$('.req_c_is_grandpa').fadeIn();
-        } else {
-        	$('.req_c_is_grandpa').fadeOut();
-        }
-    });
-	
 	//Start date picker:
 	$( function() {
 	    $( "#r_start_date" ).datepicker({
@@ -687,11 +675,6 @@ $(document).ready(function() {
 	});
 	
 	//Load Sortable:
-	/*
-	if($('#list-inbound').length){
-		load_sortable('inbound');
-	}
-	*/
 	if($('#list-outbound').length){
 		load_sortable('outbound');
 	}
@@ -701,7 +684,7 @@ $(document).ready(function() {
 	//Load Algolia:
 	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 		
-		link_challenge(suggestion.c_id);
+		link_lintent(suggestion.c_id);
 		
 	}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
 	    source: function(q, cb) {
@@ -721,17 +704,17 @@ $(document).ready(function() {
 		      },
 		      header: function(data) {
 		    	  if(!data.isEmpty){
-		    		  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+		    		  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
 		    	  }
 		      },
 		      empty: function(data) {
-	    		  	  return '<a href="javascript:new_challenge(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+	    		  	  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
 		      },
 		    }
 	}]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-        	new_challenge($( "#addnode" ).val());
+        	new_intent($( "#addnode" ).val());
             return true;
         }
     });

@@ -1,12 +1,22 @@
 <h1>Status Bible</h1>
-<p>A comprehensive list of all statuses for all database tables. First column is the integer value stored in the table, while second column is the title and description. Hover over titles to see descriptions.</p>
+<p>A comprehensive list of all statuses for primary objects throughout the Mench platform. First column is the integer value stored in the table, second column is the condensed view of status and the third column is the full status view.</p>
 <br /><br />
 <?php
-$status_bible = status_bible();
-foreach($status_bible as $table=>$statuses){
-    echo '<h2>Object: '.$table.'</h2>';
+$table_names = array(
+    'u' => 'Users',
+    'b' => 'Bootcamps',
+    'ba' => 'Bootcamp Team',
+    'c' => 'Intents (Nodes)',
+    'cr' => 'Intent Connections (Links)',
+    'r' => 'Cohorts',
+    'ru' => 'Cohort Enrollments',
+    'i' => 'Intent References (Upcoming)',
+);
+foreach($table_names as $table=>$object_name){
+    echo '<h2>'.$object_name.'</h2>';
+    $statuses = status_bible($table);
 	foreach($statuses as $intval=>$status){
-	    echo '<p style="padding-left:60px;"><span style="width:60px; display:inline-block;">'.$intval.'</span><span style="width:40px; display:inline-block;">'.status_bible($table,$intval,1).'</span>'.status_bible($table,$intval).'</p>';
+	    echo '<p style="padding-left:10px;"><span style="width:30px; display:inline-block;">'.$intval.'</span><span style="width:30px; display:inline-block;">'.status_bible($table,$intval,1,'right').'</span>'.status_bible($table,$intval,0,'right').' '.$status['s_desc'].'</p>';
 	}
 	echo '<br />';
 }

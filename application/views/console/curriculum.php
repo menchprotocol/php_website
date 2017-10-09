@@ -6,6 +6,7 @@ if(!isset($level)){
 $level_names = $this->config->item('level_names');
 ?>
 
+<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $bootcamp['c_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
 <input type="hidden" id="next_level" value="<?= $level+1 ?>" />
@@ -104,7 +105,7 @@ $level_names = $this->config->item('level_names');
                             <span class="material-input"></span>
                         </div>
                         <?php if($level>1){ ?>
-							<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> requirements until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['c_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
+							<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> requirements until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
 						<?php } ?>
                   </div>
                 </div>
@@ -191,8 +192,8 @@ $level_names = $this->config->item('level_names');
                     	<?= '<p>'.($level==1 ? 'Add weekly sprint by defining a SMART objective for each week:' : 'Define tasks that contribute to accomplishing the primary objective of this '.$level_names[$level].':'); ?>
                     	<?php
                     	echo '<div id="list-outbound" class="list-group">';
-                    	foreach($intent[( $level==1 ? 'c__sprints' : 'c__tasks' )] as $sub_intent){
-                    	    echo echo_cr($bootcamp['c_id'],$sub_intent,'outbound',($level+1));
+                    	foreach($intent['c__child_intents'] as $sub_intent){
+                    	    echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1));
                     	}
                 		echo '</div>';
                 		?>
@@ -202,7 +203,7 @@ $level_names = $this->config->item('level_names');
                 				<div class="input-group">
                 					<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add <?= ($level==1 ? 'Sprint' : 'Objective') ?>"></div>
                 					<span class="input-group-addon" style="padding-right:0;">
-                						<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_challenge($('#addnode').val());">
+                						<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
                 							<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
                 							<div class="togglebutton" style="margin-top:5px; display:none;">
                 				            	<label>

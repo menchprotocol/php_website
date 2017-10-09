@@ -15,7 +15,7 @@
 			<div id="new_bootcam_result"></div>
       </div>
       <div class="modal-footer">
-        <a href="javascript:c_process_create()" type="button" class="btn btn-primary">Create</a>
+        <a href="javascript:bootcamp_create()" type="button" class="btn btn-primary">Create</a>
       </div>
     </div>
   </div>
@@ -29,12 +29,12 @@ $(document).ready(function() {
 });
 
 $('#c_primary_objective').bind("enterKey",function(e){
-	c_process_create();
+	bootcamp_create();
 });
 $('#c_primary_objective').keyup(function(e){
     if(e.keyCode == 13)
     {
-    	c_process_create();
+    	bootcamp_create();
     }
 });
 </script>

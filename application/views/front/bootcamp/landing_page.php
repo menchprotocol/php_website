@@ -10,10 +10,10 @@ if(!isset($bootcamp['c__cohorts'][0])){
 <div class="row">
 
 	<div class="col-sm-4">
-    	<?php if(strlen($bootcamp['c_video_url'])>0){ ?>
-        	<div class="video-player"><?= echo_video($bootcamp['c_video_url']); ?></div>
-        <?php } elseif(strlen($bootcamp['c_image_url'])>0){ ?>
-        	<div class="video-player"><img src="<?= $bootcamp['c_image_url'] ?>" style="width:100%;" /></div>
+    	<?php if(strlen($bootcamp['b_video_url'])>0){ ?>
+        	<div class="video-player"><?= echo_video($bootcamp['b_video_url']); ?></div>
+        <?php } elseif(strlen($bootcamp['b_image_url'])>0){ ?>
+        	<div class="video-player"><img src="<?= $bootcamp['b_image_url'] ?>" style="width:100%;" /></div>
         <?php } ?>
     </div>
     
@@ -61,7 +61,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
                 <div id="collapseWeeklySprints" class="panel-collapse collapse">
                   <div class="panel-body">
                     <?php 
-                    foreach($bootcamp['c__sprints'] as $sprint){
+                    foreach($bootcamp['c__child_intents'] as $sprint){
                         echo '<div id="c_'.$sprint['c_id'].'">';
                         echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].' '.echo_time($sprint['c__estimated_hours']).'</a></h4>';
                             echo '<p class="toggleview c_'.$sprint['c_id'].'">'.$sprint['c_todo_overview'].'</p>';
@@ -89,7 +89,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
                   <div class="panel-body">
                     <?php
                     $admin_count = 0;
-                    foreach($bootcamp['c__admins'] as $admin){
+                    foreach($bootcamp['b__admins'] as $admin){
                         if($admin['ba_team_display']!=='t'){
                             continue;
                         }
@@ -152,7 +152,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
                 </div>
                 <div id="collapseTimetable" class="panel-collapse collapse">
                   <div class="panel-body">
-                    <p><i class="fa fa-calendar" aria-hidden="true"></i> <?= count($bootcamp['c__sprints']) ?> Weeks</p>
+                    <p><i class="fa fa-calendar" aria-hidden="true"></i> <?= count($bootcamp['c__child_intents']) ?> Weeks</p>
                     <p><?= echo_price($bootcamp['c__cohorts'][0]['r_usd_price']); ?></p>
                   </div>
                 </div>
@@ -184,7 +184,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
         </div><!--  end acordeon -->
 
         
-		<div style="padding:5px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/<?= $bootcamp['c_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+		<div style="padding:5px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/bootcamps/<?= $bootcamp['b_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($bootcamp['c__cohorts'][0]['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
 		
 		
 		

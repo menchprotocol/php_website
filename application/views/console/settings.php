@@ -1,4 +1,4 @@
-<input type="hidden" id="c_id" value="<?= $bootcamp['c_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
 
 
 <div class="alert alert-info" role="alert"><span>For Your Information:</span>Some bootcamp settings including its name, objectives, overview and prerequisites are managed using the <a href="/console/79/curriculum">Bootcamp Curriculum</a>.</div>
@@ -19,7 +19,7 @@
         </div>
         <div id="collapseGeneral" class="panel-collapse collapse">
           <div class="panel-body">
-    			<?php echo_status_dropdown('c','c_status',$bootcamp['c_status']); ?>
+    			<?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@
     
                 <div class="title" style="margin-top:30px;"><h4>Bootcamp URL Key <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Used as the URL of this bootcamp for students to view and register."></i></h4></div>
                 <div class="form-group label-floating is-empty">
-                    <input type="text" id="c_url_key" style="text-transform:lowercase;" value="<?= $bootcamp['c_url_key'] ?>" class="form-control">
+                    <input type="text" id="b_url_key" style="text-transform:lowercase;" value="<?= $bootcamp['b_url_key'] ?>" class="form-control">
                     <span class="material-input"></span>
                     <p class="extra-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Warning: URL changes break previously shared links.</p>
                 </div>
@@ -52,7 +52,7 @@
                 
                 <div class="title"><h4>Featured Image URL (w/h ratio of 1.78) <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The image for the marketplace."></i></h4></div>
                 <div class="form-group label-floating is-empty">
-                    <input type="url" id="c_image_url" value="<?= $bootcamp['c_image_url'] ?>" class="form-control">
+                    <input type="url" id="b_image_url" value="<?= $bootcamp['b_image_url'] ?>" class="form-control">
                     <span class="material-input"></span>
                 </div>
                 
@@ -60,11 +60,11 @@
                 
                 <div class="title"><h4>Featured Video URL (2-3 minutes max) <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The video that would be displayed on the landing page of the bootcamp that explains why students should join your bootcamp."></i></h4></div>
                 <div class="form-group label-floating is-empty">
-                    <input type="url" id="c_video_url" value="<?= $bootcamp['c_video_url'] ?>" class="form-control">
+                    <input type="url" id="b_video_url" value="<?= $bootcamp['b_video_url'] ?>" class="form-control">
                     <span class="material-input"></span>
                 </div>
                 
-                <p><a href="/bootcamps/<?= $bootcamp['c_url_key'] ?>" target="_blank" class="btn btn-default">Open Landing Page <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></p>
+                <p><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-default">Open Landing Page <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></p>
                 
           </div>
         </div>
@@ -100,8 +100,7 @@
                 	</thead>
                 	<tbody>
                 	<?php 
-                	$admins = $this->Db_model->c_admins($bootcamp['c_id']);
-                	foreach($admins as $admin){
+                	foreach($bootcamp['b__admins'] as $admin){
                 	    echo '<tr> <td>'.$admin['u_fname'].' '.$admin['u_lname'].'</td> <td>'.status_bible('ba',$admin['ba_status']).'</td> <td>'.( $admin['ba_team_display']=='t' ? 'Yes' : 'No' ).'</td> <td><a href="javascript:ba_open_modify('.$admin['ba_id'].')" data-toggle="tooltip" title="Modify admin role and team display status"><i class="fa fa-pencil-square" aria-hidden="true"></i></a> &nbsp; &nbsp; <a href="javascript:ba_initiate_revoke('.$admin['ba_id'].')" data-toggle="tooltip" title="Revoke admin status"><i class="fa fa-ban" aria-hidden="true"></i></a></td> </tr>';
                 	}
                 	

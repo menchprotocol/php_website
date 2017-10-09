@@ -8,9 +8,9 @@
       </div>
       <div class="modal-body">
       		
-      		<div class="alert alert-info" role="alert">It's best to define your <a href="/console/<?= $bootcamp['c_id'] ?>/curriculum">Bootcamp Curriculum</a> before creating a cohort. This gives you a better idea of how much time students should commit and what price you should charge them.</div>
+      		<div class="alert alert-info" role="alert">It's best to define your <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">Bootcamp Curriculum</a> before creating a cohort. This gives you a better idea of how much time students should commit and what price you should charge them.</div>
       		
-      		<input type="hidden" id="r_c_id" value="<?= $bootcamp['c_id'] ?>" />
+      		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
       		
         	<div class="title"><h4>Starting Week Of</div>

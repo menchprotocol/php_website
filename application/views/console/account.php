@@ -104,6 +104,7 @@ $udata = $ufetch[0];
         
         
         <div class="title"><h4>Fluent Languages</h4></div>
+        <p>Hold down Ctrl to select multiple:</p>
         <div class="form-group label-floating is-empty">
         	<select multiple id="u_language" style="height:150px;">
             	<?php

@@ -100,14 +100,14 @@ function echo_time($c_time_estimate){
     return false;
 }
 
-function echo_cr($c_id,$intent,$direction,$level=0){
+function echo_cr($b_id,$intent,$direction,$level=0){
     $CI =& get_instance();
     $level_names = $CI->config->item('level_names');
     
     
 	if($direction=='outbound'){
 	    
-	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$c_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item is_sortable">';
+	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item is_sortable">';
 	        //Right content
     	    $ui .= '<span class="pull-right">';
     	        $ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
@@ -141,9 +141,9 @@ function echo_cr($c_id,$intent,$direction,$level=0){
     	        $ui .= echo_time($intent['c_time_estimate']);
     	    }
     	    
-    	    if($level==2 && isset($intent['c__tasks']) && count($intent['c__tasks'])>0){
+    	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
     	        //This sprint has tasks:
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of tasks for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__tasks']).'</span>';
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of tasks for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
     	    $ui .= ' <span class="srt-'.$direction.'"></span>'; //For the status of sorting
     	    
@@ -152,7 +152,7 @@ function echo_cr($c_id,$intent,$direction,$level=0){
 	    
 	} else {
 	    //Not really being used for now...
-	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$c_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.echo_title($intent['c_objective']).echo_time($intent['c_time_estimate']).'</a>';
+	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.echo_title($intent['c_objective']).echo_time($intent['c_time_estimate']).'</a>';
 	}
 }
 
@@ -165,44 +165,15 @@ function echo_users($users){
 	}
 }
 
-function load_object($object,$obj_limits){
-	
-	$CI =& get_instance();
-	
-	if($object=='c'){
-		//Fetch Challenge:
-		$fetch_challenges = $CI->Db_model->c_fetch($obj_limits);
-		
-		//Valid challenge key?
-		if(!count($fetch_challenges)==1){
-			redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid challenge key.</div>');
-		}
-		
-		//Append more data:
-		$fetch_challenges[0]['runs'] = $CI->Db_model->r_fetch(array(
-				'r.r_c_id' => $fetch_challenges[0]['c_id'],
-				'r.r_status >=' => 0,
-		));
-		
-		return $fetch_challenges[0];
-	} elseif($object=='u'){
-		
-		//Fetch users:
-	    $users = $CI->Db_model->u_fetch($obj_limits);
-		
-		if(!count($users)==1){
-			//Ooops, something wrong:
-			//TODO Redirect to a user index instead of the marketpace
-			redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid username.</div>');
-		}
-		
-		//Append permissions:
-		$users[0]['access'] = $CI->Db_model->u_privileges($users[0]['u_id']);
-		
-		return $users[0];
-	}
-		
+function is_valid_intent($c_id){
+    $CI =& get_instance();
+    $intents = $CI->Db_model->c_fetch(array(
+        'c.c_id' => intval($c_id),
+        'c.c_status >=' => 0, //Drafting or higher
+    ));
+    return (count($intents)==1);
 }
+
 
 function echo_status_dropdown($object,$input_name,$current_status_id){
     $CI =& get_instance();
@@ -233,60 +204,74 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     <?php 
 }
 
+
 function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
 	
+    //IF you make any changes, make sure to also reflect in the view/console/guides/status_bible.php as well
 	$status_index = array(
-	    'c' => array(
+	    'b' => array(
 	        -1 => array(
 	            's_name'  => 'Deleted',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Removed by Bootcamp admin.',
+	            's_desc'  => 'Bootcamp removed.',
 	            'u_min_status'  => 1,
 	        ),
 	        0 => array(
-	            's_name'  => 'Drafting',
+	            's_name'  => 'On Hold',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Not visible to students until published live',
+	            's_desc'  => 'Bootcamp not listed in marketplace until published live',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
 	            's_name'  => 'Submit For Live',
 	            's_color' => '#8dd08f', //light green
-	            's_desc'  => 'Submit to be reviewed by Mench moderators to go live. Usually takes 1-2 business days.',
+	            's_desc'  => 'Bootcamp submit to be reviewed by Mench team to be listed on marketplace.',
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
 	            's_name'  => 'Live',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Active and visible to all students.',
+	            's_desc'  => 'Bootcamp is listed on marketplace.',
 	            'u_min_status'  => 3, //Can only be done by admin
+	        ),
+	    ),
+	    'c' => array(
+	        -1 => array(
+	            's_name'  => 'Deleted',
+	            's_color' => '#f44336', //red
+	            's_desc'  => 'Intent removed.',
+	            'u_min_status'  => 1,
+	        ),
+	        0 => array(
+	            's_name'  => 'On Hold',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Intent not accessible by community until published live',
+	            'u_min_status'  => 1,
+	        ),
+	        1 => array(
+	            's_name'  => 'Live',
+	            's_color' => '#4caf50', //green
+	            's_desc'  => 'Intent is active and accessible by community.',
+	            'u_min_status'  => 1,
 	        ),
 	    ),
 	    'r' => array(
 	        -1 => array(
 	            's_name'  => 'Deleted',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Removed by Bootcamp admin.',
+	            's_desc'  => 'Cohort removed by bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
 	        0 => array(
-	            's_name'  => 'Drafting',
+	            's_name'  => 'On Hold',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Not visible to students until published live',
+	            's_desc'  => 'Cohort not displayed on landing page until published live',
 	            'u_min_status'  => 1,
 	        ),
-	        /*
 	        1 => array(
-	            's_name'  => 'Submit For Live',
-	            's_color' => '#8dd08f', //light green
-	            's_desc'  => 'Submit to be reviewed by Mench moderators to go live. Usually takes 1-2 business days.',
-	            'u_min_status'  => 1,
-	        ),
-	        */
-	        2 => array(
 	            's_name'  => 'Live',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Open for enrollment (As long as Bootcamp status is also Live).',
+	            's_desc'  => 'Cohort is open for enrollment.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -294,13 +279,19 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Deleted',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Removed by Bootcamp admin.',
+	            's_desc'  => 'Reference removed by bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
-	        2 => array(
+	        0 => array(
+	            's_name'  => 'On Hold',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Reference not visible to community until published live',
+	            'u_min_status'  => 1,
+	        ),
+	        1 => array(
 	            's_name'  => 'Live',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Open for enrollment (As long as Bootcamp status is also Live).',
+	            's_desc'  => 'Reference ready for distribution during weekly sprint.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -309,13 +300,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Deleted',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Removed by Bootcamp admin.',
+	            's_desc'  => 'Intent link removed.',
 	            'u_min_status'  => 1,
 	        ),
-	        2 => array(
+	        1 => array(
 	            's_name'  => 'Live',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Media ready for distribution.',
+	            's_desc'  => 'Intent link is active.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -326,25 +317,25 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Revoked',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Bootcamp access revoked by another Bootcamp admin.',
+	            's_desc'  => 'Bootcamp access revoked.',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
-	            's_name'  => 'Contributor',
+	            's_name'  => 'Assistant',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Contributors can modify the curriculum, answer student inquiries and view upcoming cohorts. They cannot manage bootcamp or cohort settings.',
+	            's_desc'  => 'Can modify curriculum, view cohorts & answer student inquiries. Cannot modify bootcamp or cohorts.',
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
 	            's_name'  => 'Mentor',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Mentors can manage the entire bootcamp, cohorts & curriculum but are NOT responsible for the outcome of the bootcamp.',
+	            's_desc'  => 'Can modify bootcamp, cohorts & curriculum. NOT responsible for bootcamp outcome & performance.',
 	            'u_min_status'  => 1,
 	        ),
 	        3 => array(
 	            's_name'  => 'Leader',
-	            's_color' => '#4caf50', //green
-	            's_desc'  => 'The leader is the CEO of the bootcamp who is solely responsible for the outcome calculated based on student completion rates.',
+	            's_color' => '#e91e63', //Rose
+	            's_desc'  => 'The bootcamp CEO who is responsible for outcome & performance based on student completion rates.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -353,31 +344,31 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Deleted',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Account deleted and no longer active.',
+	            's_desc'  => 'User account deleted and no longer active.',
 	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
 	        ),
 	        0 => array(
 	            's_name'  => 'Pending',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Users that are pending registration because they have been invited to Mench but have not yet completed their registration.',
+	            's_desc'  => 'User added by the community but has not yet claimed their account.',
 	            'u_min_status'  => 999, //System only
 	        ),
 	        1 => array(
-	            's_name'  => 'Active User',
+	            's_name'  => 'Active',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Regular Mench user including students and Bootcamp Admins (As long as they have been added to a bootcamp).',
+	            's_desc'  => 'User active.',
 	            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
 	        ),
 	        2 => array(
-	            's_name'  => 'Bootcamp Leader',
+	            's_name'  => 'Leader',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'Users that have been onboarded as a bootcamp leader and can create and manage bootcamps.',
+	            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
 	            'u_min_status'  => 3, //Only admins can approve leaders
 	        ),
 	        3 => array(
-	            's_name'  => 'Mench Admin',
+	            's_name'  => 'Super Admin',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'Admins have full access to all bootcamp features.',
+	            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
 	            'u_min_status'  => 3, //Only admins can create other admins
 	        ),
 	    ),
@@ -388,13 +379,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -4 => array(
 	            's_name'  => 'Dispelled by Admin',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Bootcamp admin dispelled student after Bootcamp start date due to student misconduct.',
+	            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
 	        -3 => array(
 	            's_name'  => 'Post Grace Period Withdrawal',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student decided to withdraw from the bootcamp after free withdrawal deadline. Refund at the discretion of Bootcamp Admin.',
+	            's_desc'  => 'Student withdrew after free withdrawal deadline. Refund at the discretion of bootcamp leader.',
 	            'u_min_status'  => 999, //Only done by Student themselves
 	        ),
 	        
@@ -402,13 +393,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -2 => array(
 	            's_name'  => 'Graceful Withdrawal',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student decided to withdraw from the bootcamp prior to free withdrawal deadline. They will receive a full refund.',
+	            's_desc'  => 'Student withdrew prior to free withdrawal deadline. Full refund will be given.',
 	            'u_min_status'  => 999, //Only done by Student themselves
 	        ),
 	        -1 => array(
 	            's_name'  => 'Application Rejected',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Bootcamp admin rejected the student application prior to Bootcamp start date.',
+	            's_desc'  => 'Student application rejected by bootcamp leader before start date.',
 	            'u_min_status'  => 1,
 	        ),
 	        
@@ -417,14 +408,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        0 => array(
 	            's_name'  => 'Applied - Pending Full Payment',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student has applied but has not paid in full yet, pending Bootcamp admin approval before paying in full.',
+	            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full.',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
 	        */
 	        1 => array(
 	            's_name'  => 'Application Pending',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student has paid in full and applied for the bootcamp, pending Bootcamp admin approval.',
+	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
 	        
@@ -438,17 +429,17 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        3 => array(
-	            's_name'  => 'Enrollment Accepted',
+	            's_name'  => 'Enrolled',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Student paid in full and their application has been approved by Bootcamp Admin, making them fully enrolled in the Bootcamp.',
+	            's_desc'  => 'Student application approved and full payment collected, making them ready to participate in bootcamp.',
 	            'u_min_status'  => 1,
 	        ),
 	        
 	        //Completion
 	        4 => array(
-	            's_name'  => 'Bootcamp Completed',
+	            's_name'  => 'Completed',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'Student completed the cohort and their assignments was fully approved by the Bootcamp Admin.',
+	            's_desc'  => 'Student completed cohort and had all their assignments approved by bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -715,7 +706,7 @@ function url_key($text){
     //Check for duplicates:
     $CI =& get_instance();
     $bootcamps = $CI->Db_model->c_full_fetch(array(
-        'c.c_url_key' => $generated_key,
+        'b.b_url_key' => $generated_key,
     ));
     
     if(count($bootcamps)>0){
