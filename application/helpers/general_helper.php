@@ -16,7 +16,7 @@ function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
 function echo_hours($int_time){
-    return '~'.( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : $int_time.' Hour'.($int_time>1?'s':'') );
+    return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : $int_time.' Hour'.($int_time>1?'s':'') );
 }
 
 function echo_video($video_url){
@@ -98,6 +98,34 @@ function echo_time($c_time_estimate){
     }
     //No time:
     return false;
+}
+
+function echo_br($admin){
+    $ui = '<a id="ba_'.$admin['ba_id'].'" data-link-id="'.$admin['ba_id'].'" href="javascript:ba_open_modify('.$admin['ba_id'].')" class="list-group-item is_sortable">';
+        //Right content
+        $ui .= '<span class="pull-right">';
+            $ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
+            $ui .= '<i class="fa fa-cog" aria-hidden="true"></i>';
+            $ui .= '</span>';
+        $ui .= '</span> ';
+        
+        
+        //Left content
+        //$ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i> ';
+        $ui .= $admin['u_fname'].' '.$admin['u_lname'].' &nbsp;';
+        $ui .= status_bible('ba',$admin['ba_status']).' &nbsp;';
+        
+        //Other settings:
+        if($admin['ba_team_display']=='t'){
+            $ui .= '<i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member listed on Bootcamp Landing Page"></i>';
+        } else {
+            $ui .= '<i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member NOT listed on Bootcamp Landing Page"></i>';
+        }
+        
+        $ui .= ' <span class="srt-admins"></span>'; //For the status of sorting
+    
+    $ui .= '</a>';
+    return $ui;
 }
 
 function echo_cr($b_id,$intent,$direction,$level=0){

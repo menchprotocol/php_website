@@ -142,7 +142,7 @@ $level_names = $this->config->item('level_names');
                     	<?php 
                     	$times = $this->config->item('c_time_options');
                     	foreach($times as $time){
-                    	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).'</option>';
+                    	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).'</option>';
                     	}
                     	?>
                     </select>

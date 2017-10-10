@@ -590,7 +590,7 @@ $config['level_names'] = array(
 );
 
 $config['r_response_options'] = array('1','2','3','4','12','24','48','72');
-$config['r_weekly_pomodoro_options'] = array('1','2','3','4','5','6','7','8','10','12','14');
+$config['r_weekly_1on1s_options'] = array('0','0.5','1','1.5','2','2.5','3','4','5','6','7','8','10','12','14','21');
 
 //Engagement mediums and corresponding actions that result in a new engagement
 $config['e_mediums'] = array(

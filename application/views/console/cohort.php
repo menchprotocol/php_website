@@ -26,8 +26,7 @@
                     <span class="material-input"></span>
                 </div>
                 
-                
-                
+                <!--
                 <hr />
                 <div class="row">
                 	<div class="col-sm-3">Registration Starts:</div>
@@ -58,6 +57,7 @@
                     <div class="col-sm-3"><b><span id="r_time_cohort_end">June 5th 8:00P</span></b></div>
                     <div class="col-sm-6">This has been calculated based on the <?= count($bootcamp['c__child_intents']) ?> weekly sprints defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
                 </div>
+                -->
                 
           </div>
         </div>
@@ -80,6 +80,32 @@
         <div id="collapseMentorship" class="panel-collapse collapse">
           <div class="panel-body">
 				
+				
+				<div class="title"><h4>Weekly 1-on-1 Video Meetings</h4></div>
+                <p>The time you would commit to each student for weekly 1-on-1 meetings:</p>
+                <select class="form-control input-mini" id="r_weekly_1on1s">
+                	<?php 
+                	$weekly_1on1s_options = $this->config->item('r_weekly_1on1s_options');
+                	foreach($weekly_1on1s_options as $time){
+                	    echo '<option value="'.$time.'" '.( $cohort['r_weekly_1on1s']==$option ? 'selected="selected"' : '' ).'>'.echo_hours($time).'/week</option>';
+                	}
+                	?>
+                </select>
+                
+                
+                
+                
+                <div class="title"><h4>Inquiry Response Time</h4></div>
+                <p>How fast would you commit to responding to students inquiries outside of office hours:</p>
+                <select class="form-control input-mini" id="r_response_time_hours">
+                	<?php 
+                	$r_response_options = $this->config->item('r_response_options');
+                	foreach($r_response_options as $time){
+                	    echo '<option value="'.$time.'" '.( $cohort['r_response_time_hours']==$option ? 'selected="selected"' : '' ).'>Under '.echo_hours($time).'</option>';
+                	}
+                	?>
+                </select>
+                
 				
 				<div class="title"><h4>Office Hours</h4></div>
 				<p>Office hours enable students to contact you or your team online (usually using live video chat) and get immediate support for their bootcamp related questions. A few notes:</p>

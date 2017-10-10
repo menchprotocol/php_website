@@ -309,8 +309,8 @@ class Process extends CI_Controller {
 	    if(!isset($_POST['r_response_time_hours'])){
 	        $_POST['r_response_time_hours'] = 24;
 	    }
-	    if(!isset($_POST['r_weekly_1on1_pomodoros'])){
-	        $_POST['r_weekly_1on1_pomodoros'] = 0;
+	    if(!isset($_POST['r_weekly_1on1s'])){
+	        $_POST['r_weekly_1on1s'] = 0;
 	    }
 	        
 	    
@@ -322,7 +322,7 @@ class Process extends CI_Controller {
 	        'r_usd_price' => floatval($_POST['r_usd_price']),
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        'r_response_time_hours' => $_POST['r_response_time_hours'],
-	        'r_weekly_1on1_pomodoros' => $_POST['r_weekly_1on1_pomodoros'],
+	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
 	    ));
 	    
 	    //TODO Save change history

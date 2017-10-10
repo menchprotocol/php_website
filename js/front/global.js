@@ -155,13 +155,10 @@ function update_account(){
 
 //Bootcamp admin management features
 function ba_add(){
-	alert('feature under development');
+	alert('Contact us at support@mench.co to modify team members.');
 }
 function ba_open_modify(){
-	alert('feature under development');
-}
-function ba_initiate_revoke(){
-	alert('feature under development');
+	alert('Contact us at support@mench.co to modify team members.');
 }
   
 
