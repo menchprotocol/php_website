@@ -11,7 +11,23 @@ $website = $this->config->item('website');
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 	<title>Mench<?= ( isset($title) ? ' | '.$title : '' ) ?></title>
-	<?php $this->load->view('console/shared/header_resources' ); ?>
+	
+	<!-- Console-specific resources -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
+    <link href="//cdn.quilljs.com/1.3.3/quill.snow.css" rel="stylesheet">
+    
+	<?php $this->load->view('front/shared/header_resources' ); ?>    
+    
+    <script src="/js/console/material-dashboard.js" type="text/javascript"></script>
+    <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdn.quilljs.com/1.3.3/quill.min.js"></script>
+    
+    <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+    <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+
 </head>
 <body>
 
@@ -50,7 +66,7 @@ $website = $this->config->item('website');
 	    	
 	    		<?php 
 	    		if(isset($bootcamp)){
-	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
+	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page" class="landing_page_url"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
 	    		}
 	    		?>
 	    		<ul class="nav">
@@ -68,7 +84,7 @@ $website = $this->config->item('website');
                 	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/settings"><i class="material-icons">settings</i><p>Settings &nbsp;'.status_bible('b',$bootcamp['b_status'],1).'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/settings"><i class="material-icons">settings</i><p>Settings &nbsp;'.status_bible('b',$bootcamp['b_status'],1,'top').'</p></a></li>';
             	    
         		}
             	?>

@@ -30,37 +30,7 @@ function echo_video($video_url){
     }
 }
 
-function echo_title($title_string){
-    $peaces = explode(' ',$title_string);
-    
-    $CI =& get_instance();
-    $title_key_icons = $CI->config->item('title_replacements');
-    
-    $return_title = '';
-    $return_title .= '<span class="title-main">';
-    foreach($peaces as $count=>$p){
-        //Look for trigger keywords that would end the main title and start a new sub-section:
-        if($count==0 && array_key_exists(strtolower($p),$title_key_icons['prepend'])){
-            
-            $return_title .= $title_key_icons['prepend'][strtolower($p)].' ';
-            
-        } elseif($count>0 && array_key_exists(strtolower($p),$title_key_icons['append'])){
-            
-            //End previous section:
-            $return_title .= '</span>';
-            //Start new section:
-            $return_title .= '<span class="title-sub">'.$title_key_icons['append'][strtolower($p)].' ';
-            
-        } else {
-            //Not trigger word, Append:
-            $return_title .= $p.' ';
-        }
-    }
-    //Close last span:
-    $return_title .= '</span>';
-    //Return:
-    return $return_title;
-}
+
 
 function echo_message($i){
 	//Fetch current Challenge:
@@ -77,7 +47,6 @@ function echo_message($i){
 			    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
 			    echo '<li class="edit-updates"></li>';
 			    echo '<li class="pull-right"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
-			    echo '<li class="edit-on pull-right"><a href="/console/help/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Syntax</a></li>';
 			    echo '</ul>';
 		echo '</div>';
 	echo '</div>';
@@ -150,7 +119,7 @@ function echo_cr($b_id,$intent,$direction,$level=0){
     	    //Left content
     	    $ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i>';
     	    $ui .= ( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$intent['cr_outbound_rank'].'</span>' : '' );
-    	    $ui .= echo_title($intent['c_objective']).'&nbsp;';
+    	    $ui .= $intent['c_objective'].' ';
     	    
     	    //Other settings:
     	    if(strlen($intent['c_todo_overview'])>0){
@@ -180,7 +149,7 @@ function echo_cr($b_id,$intent,$direction,$level=0){
 	    
 	} else {
 	    //Not really being used for now...
-	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.echo_title($intent['c_objective']).echo_time($intent['c_time_estimate']).'</a>';
+	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.$intent['c_objective'].' '.echo_time($intent['c_time_estimate']).'</a>';
 	}
 }
 
@@ -209,7 +178,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     ?>
     <input type="hidden" id="<?= $input_name ?>" value="<?= $current_status_id ?>" /> 
     <div class="col-md-3 dropdown">
-    	<a href="#" class="btn btn-simple dropdown-toggle" id="ui_<?= $input_name ?>" data-toggle="dropdown">
+    	<a href="#" class="btn btn-simple dropdown-toggle border" id="ui_<?= $input_name ?>" data-toggle="dropdown">
         	<?= status_bible($object,$current_status_id) ?>
         	<b class="caret"></b>
     	</a>
@@ -550,13 +519,14 @@ function can_modify($object,$object_id){
 
 function url_exists($url){
     $file_headers = @get_headers($url);
-    return !(!$file_headers || substr_count($file_headers[0],'404')>0);
+    return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'403')>0 || substr_count($file_headers[0],'404')>0);
 }
 
 function redirect_message($url,$message){
 	$CI =& get_instance();
 	$CI->session->set_flashdata('hm', $message);
 	header("Location: ".$url);
+	return false;
 }
 
 function save_file($file_url,$json_data){
@@ -724,25 +694,11 @@ function time_diff($t,$second_tiome=null){
 
 function url_name($text){
     //Cleans text and
-    return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", $text)),0,30);
+    return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", trim($text))),0,30);
 }
 
-function url_key($text){
-    //Cleans text:
-    $generated_key = str_replace(' ','',preg_replace("/[^a-zA-Z0\-]+/", "", str_replace(' ','-',strtolower($text))));
-
-    //Check for duplicates:
-    $CI =& get_instance();
-    $bootcamps = $CI->Db_model->c_full_fetch(array(
-        'b.b_url_key' => $generated_key,
-    ));
-    
-    if(count($bootcamps)>0){
-        //Ooops, we have a duplicate:
-        $generated_key = $generated_key.'-'.rand(0,99999);
-    }
-    
-    return $generated_key;
+function clean_urlkey($text){
+    return str_replace(' ','',preg_replace("/[^a-zA-Z0\-]+/", "", str_replace(' ','-',strtolower($text))));
 }
 
 function one_two_explode($one,$two,$content){

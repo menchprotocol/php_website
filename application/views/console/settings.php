@@ -1,16 +1,55 @@
-<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
+<script>
+//Bootcamp admin management features
+function ba_add(){
+	alert('Contact us at support@mench.co to modify team members.');
+}
+function ba_open_modify(){
+	alert('Contact us at support@mench.co to modify team members.');
+}
 
+
+function save_settings(){
+	//Show spinner:
+	$('#save_setting_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
+	
+	//Save the rest of the content:
+	$.post("/process/bootcamp_edit", {
+		
+		b_id:$('#b_id').val(),
+		b_status:$('#b_status').val(),
+		b_url_key:$('#b_url_key').val(),
+		b_video_url:$('#b_video_url').val(),
+		b_image_url:$('#b_image_url').val(),
+		
+	} , function(data) {
+		
+		//Update UI to confirm with user:
+		$('#save_setting_results').html(data).hide().fadeIn();
+		
+		//Disapper in a while:
+		setTimeout(function() {
+			$('#save_setting_results').fadeOut();
+	    }, 10000);
+    });
+}
+</script>
+
+
+
+
+<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
 
    	
 <div id="acordeon">
     <div class="panel-group" id="accordion">
-          
-          
+      
+      
+      
       <div class="panel panel-border panel-default" name="collapseLandingPage">
         <div class="panel-heading" role="tab">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLandingPage" aria-controls="collapseLandingPage">
                 <h4 class="panel-title">
-                Landing Page
+                Status & Landing Page
                 <i class="material-icons">keyboard_arrow_down</i>
                 </h4>
             </a>
@@ -18,15 +57,16 @@
         <div id="collapseLandingPage" class="panel-collapse collapse">
           <div class="panel-body">
     
-    			<div class="title" style="margin-top:0;"><h4>Status</h4></div>
+    			<div class="title" style="margin-top:0;"><h4>Bootcamp Status</h4></div>
     			<?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
     			<div style="clear:both; margin:0; padding:0;"></div>
     			
-                <div class="title" style="margin-top:30px;"><h4>Bootcamp URL Key <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Used as the URL of this bootcamp for students to view and register."></i></h4></div>
+                <div class="title" style="margin-top:30px;"><h4>Landing Page URL Key <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Used as the URL of this bootcamp for students to view and register."></i></h4></div>
                 <div class="form-group label-floating is-empty">
                     <input type="text" id="b_url_key" style="text-transform:lowercase;" value="<?= $bootcamp['b_url_key'] ?>" class="form-control">
                     <span class="material-input"></span>
-                    <p class="extra-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Warning: URL changes break previously shared links.</p>
+                    <p class="extra-info" style="margin-bottom:0; padding-bottom:0;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Warning: URL changes break previously shared links.</p>
+                    <div style="margin-bottom:20px;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-default landing_page_url">View Landing Page <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></div>
                 </div>
                 
                 
@@ -44,10 +84,8 @@
                     <span class="material-input"></span>
                 </div>
                 
-                <table width="100%"><tr><td class="save-td" style="width:230px;">
-                	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-default">Open <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a>
-                	<a href="javascript:save_settings();" class="btn btn-primary">Save</a>
-                </td><td><span id="save_c_results"></span></td></tr></table>
+                
+                <table width="100%"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span id="save_setting_results"></span></td></tr></table>
                 
           </div>
         </div>
@@ -109,5 +147,3 @@
 	</div>
 </div><!--  end acordeon -->
         
-    
-

@@ -53,18 +53,6 @@ class Console extends CI_Controller {
 	    $this->load->view('console/shared/d_footer');
 	}
 	
-	function showdown_markup(){
-	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(1,1);
-	    
-	    //Load views
-	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Guides | Showdown Markup Syntax',
-	    ));
-	    $this->load->view('console/guides/showdown_markup');
-	    $this->load->view('console/shared/d_footer');
-	}
-	
 	
 	
 	/* ******************************

@@ -136,7 +136,7 @@
 .legal-name img { width:20px; margin:-3px 2px 0 0; }
 input { font-size:16px !important; }
 .togglebutton { padding-left:15px; }
-.input-mini { max-width:175px; }
+.input-mini { max-width:250px; }
 .input-group-addon { font-size: 16px; font-weight: bold; }
 .dropdown { padding:0; clear:both; diaplay:block; padding-bottom:20px; }
 .dropdown>a { padding-left:10px; padding-right:10px; } 
@@ -307,13 +307,24 @@ h5, .h5 {
 	display:none;
 	margin:0 0 15px 15px;
 }
-.addon-lean{ padding-left:25px !important; font-weight:normal; font-size:1.0em; }
+
+.has_office_hours { margin-left:17px; padding-left:8px; border-left:3px solid #ccc; }
+.addon-lean{ font-weight:normal; font-size:1.0em; }
 .save-td { width:120px; vertical-align: text-top; }
 .link-view { font-size:0.7em; color:#d6ba14 !important; margin-left:5px; }
 #console .navbar-header { min-width:700px; }
-.dash input, .dash textarea, .dash select, .list_input { background-color:#EFEFEF !important; }
-.list_input {padding-top:5px; padding-bottom:5px;}
-
+.border { border: 1px solid #ccc !important;  border-radius:4px !important; }
+input.form-control, textarea.form-control, select { padding:3px 7px 5px !important; }
+.list-group-item { border: 1px solid #ccc; }
+.list_input{ padding: 0 7px; }
+.ql-toolbar{
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.ql-container{
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
 @media (max-width:1150px){
 	#console .navbar-header { min-width:600px; }
 	.main-raised {

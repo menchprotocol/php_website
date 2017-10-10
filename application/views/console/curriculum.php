@@ -1,3 +1,4 @@
+
 <?php
 if(!isset($level)){
     die('$level not set.');
@@ -14,7 +15,6 @@ $level_names = $this->config->item('level_names');
 
 <div class="row">
     <div class="col-md-6">
-    
     	
     	<div id="acordeon">
             <div class="panel-group" id="accordion">
@@ -24,7 +24,7 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrimaryObjective" aria-expanded="false" aria-controls="collapsePrimaryObjective">
                         <h4 class="panel-title">
-                        Objective
+                        Primary Objective
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
@@ -32,28 +32,14 @@ $level_names = $this->config->item('level_names');
                 <div id="collapsePrimaryObjective" class="panel-collapse collapse"> <!-- collapse in -->
                   <div class="panel-body">
                   
-                    	<p>The objective is also the title of this <?= $level_names[$level] ?> that must be defined as a S.M.A.R.T. goal: Specific, Measurable, Achievable, Relevant & Trackable.</p>
+                    	<p>Also the title of this <?= $level_names[$level] ?>, the primary objective should be a S.M.A.R.T. goal: Specific, Measurable, Achievable, Relevant & Trackable.</p>
                         <div class="form-group label-floating is-empty">
-                            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control">
+                            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">
 							
 							<?php if($level==1){ ?>
 							<div class="alert alert-warning" role="alert"><div><b>REMINDER:</b></div>The primary bootcamp objective sets the guideline for the Tuition Reimbursement Guarantee included in all Mench bootcamps. It basically means that if students execute the entire curriculum and fail to achieve this primary objective, they would get their tuition fully reimbursed.</div>                            
 							<?php } ?>
 							
-                            <?php if($level>1 && 0){ ?>
-                                <p class="extra-info"><span data-toggle="tooltip" title="First word replacements would replace matched words only if placed as the very first word to enhance & simplify the title."><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> First word replacements:
-                                <?php
-                                $title_replacements = $this->config->item('title_replacements');
-                                $count = 0;
-                                foreach($title_replacements['prepend'] as $key=>$value){
-                                    $count++;
-                                    if($count>1){
-                                        echo ' , ';
-                                    }
-                                    echo '['.$key.'] = ['.$value.']';
-                                }
-                                ?></span></p>
-                            <?php } ?>
                         </div>
                         
                   </div>
@@ -74,11 +60,10 @@ $level_names = $this->config->item('level_names');
                 </div>
                 <div id="collapseOverview" class="panel-collapse collapse"> <!-- collapse in -->
                   <div class="panel-body">
-                    	<p>An overview of operations and what to expect. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
-                        <div class="form-group label-floating is-empty">
-                            <textarea class="form-control text-edit" rows="2" id="c_todo_overview"><?= $intent['c_todo_overview'] ?></textarea>
-                            <span class="material-input"></span>
-                        </div>
+                    	<p>An overview of what to be expected:</p>
+                    	
+                        <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
+                        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
                   </div>
                 </div>
               </div>
@@ -92,18 +77,18 @@ $level_names = $this->config->item('level_names');
                 <div class="panel-heading" role="tab">
                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
                         <h4 class="panel-title">
-                        Requirements <?= (strlen($intent['c_prerequisites'])>0 ? '<i class="fa fa-exclamation-circle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Requirements"></i>' : '') ?>
+                        Requirements List <?= (strlen($intent['c_prerequisites'])>0 ? '<i class="fa fa-exclamation-circle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Requirements"></i>' : '') ?>
                         <i class="material-icons">keyboard_arrow_down</i>
                         </h4>
                     </a>
                 </div>
                 <div id="collapsePrerequisites" class="panel-collapse collapse">
                   <div class="panel-body">
-                    	<p>An optional list of requirements students must meet to achieve the primary objective. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
-                        <div class="form-group label-floating is-empty">
-                            <textarea class="form-control text-edit" rows="2" id="c_prerequisites"><?= $intent['c_prerequisites'] ?></textarea>
-                            <span class="material-input"></span>
-                        </div>
+                    	<p>An optional list of requirements that students must meet to achieve the primary objective.</p>
+                    	
+                    	<div id="c_prerequisites"><?= $intent['c_prerequisites'] ?></div>
+                        <script> var c_prerequisites_quill = new Quill('#c_prerequisites', setting_listo); </script>
+
                         <?php if($level>1){ ?>
 							<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> requirements until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
 						<?php } ?>
@@ -129,16 +114,17 @@ $level_names = $this->config->item('level_names');
             <div id="collapseExecHandout" class="panel-collapse collapse">
               <div class="panel-body">
         				
-        			<div class="title"><h4>Action Plan</h4></div>
-                	<p>Unlike the overview, the action plan contains detailed instructions for execution. The action plan is kept private until the week of execution, when we share it with students so they know what exactly they need to do. <a href="/console/help/showdown_markup" target="_blank">Markup Supported <i class="fa fa-info-circle"></i></a></p>
-                    <div class="form-group label-floating is-empty">
-                        <textarea class="form-control text-edit" rows="2" placeholder="Execution tips, media references, examples, etc..." id="c_todo_bible"><?= $intent['c_todo_bible'] ?></textarea>
-                        <span class="material-input"></span>
-                    </div>
+        			<div class="title"><h4><i class="fa fa-wrench"></i> Action Plan</h4></div>
+                	<p>Unlike the overview the action plan contains detailed instructions for execution which is kept private until the week of execution, when we share it with students so they know what exactly they need to do.</p>
+                	
+                	
+                	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
+                    <script> var c_todo_bible_quill = new Quill('#c_todo_bible', setting_full); </script>
                     
-                    <div class="title"><h4>Estimated Time</h4></div>
-                    <p>An estimat of how long it takes to review and execute the action plan. If you estimate more than 13 hours of work, then break this down into smaller sprints/tasks.</p>
-                    <select class="form-control input-mini" id="c_time_estimate">
+                    
+                    <div class="title"><h4><i class="fa fa-clock-o"></i> Estimated Time</h4></div>
+                    <p>An estimate of how long it takes to review and execute the action plan. If you estimate more than 13 hours of work, then break this down into smaller sprints/tasks.</p>
+                    <select class="form-control input-mini border" id="c_time_estimate">
                     	<?php 
                     	$times = $this->config->item('c_time_options');
                     	foreach($times as $time){
@@ -198,10 +184,10 @@ $level_names = $this->config->item('level_names');
                 		echo '</div>';
                 		?>
                 		
-                		<div id="list-outbound" class="list-group">
+                		<div class="list-group">
                     		<div class="list-group-item list_input">
                 				<div class="input-group">
-                					<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Add <?= ($level==1 ? 'Sprint' : 'Objective') ?>"></div>
+                					<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ New"></div>
                 					<span class="input-group-addon" style="padding-right:0;">
                 						<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
                 							<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
@@ -215,12 +201,11 @@ $level_names = $this->config->item('level_names');
                 				</div>
             				</div>
         				</div>
+
                   </div>
                 </div>
            </div>
 		<?php } ?>
-        
-        
         
     </div>
 </div>
@@ -247,7 +232,6 @@ echo '<div class="list-group list-messages">';
 		echo '<textarea id="i_message" placeholder="+ Add Media"></textarea>';
 		echo '<ul class="msg-nav">';
 			echo '<li><a href="javascript:msg_create();" data-toggle="tooltip" title="Ctrl + Enter ;)"><i class="fa fa-plus"></i> Add</a></li>';
-			echo '<li class="pull-right"><a href="/console/help/showdown_markup" target="_blank"><i class="fa fa-info-circle"></i> Markup Support</a></li>';
 		echo '</ul>';
 		echo '</div>';
 	echo '</div>';
@@ -255,4 +239,396 @@ echo '</div>';
 */
 ?>
 
+
+
+
+<script>
+
+
+
+$(document).ready(function() {
+	//Load Sortable:
+	load_intent_sort();
+
+
+	//Watch for message creation:
+	$('#i_message').keydown(function (e) {
+		  if (e.ctrlKey && e.keyCode == 13) {
+			  msg_create();
+		  }
+	});
+
+	
+	//Load Algolia:
+	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+		
+		link_lintent(suggestion.c_id);
+		
+	}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+	    source: function(q, cb) {
+		      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+		        if (error) {
+		          cb([]);
+		          return;
+		        }
+		        
+		        cb(content.hits, content);
+		      });
+		    },
+		    displayKey: function(suggestion) { return "" },
+		    templates: {
+		      suggestion: function(suggestion) {
+		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
+		      },
+		      header: function(data) {
+		    	  if(!data.isEmpty){
+		    		  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+		    	  }
+		      },
+		      empty: function(data) {
+	    		  	  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+		      },
+		    }
+	}]).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+        	new_intent($( "#addnode" ).val());
+            return true;
+        }
+    });
+});
+
+/*
+ * 
+ * Intent functions 
+ * 
+ */
+
+
+function save_c(){
+ 	
+ 	//JS Check for the required fields:
+ 	if(!$('#c_objective').val().length){
+ 		alert('ERROR: Primary Objective is required.');
+ 		return false;
+ 	} else if(!$('#pid').val().length){
+ 		alert('ERROR: Missing pid.');
+ 		return false;
+ 	}
+ 	
+ 	var postData = {
+ 		pid:$('#pid').val(),
+ 		c_objective:$('#c_objective').val(),
+ 		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
+ 		c_prerequisites:( c_prerequisites_quill.getLength()>1 ? $('#c_prerequisites .ql-editor').html() : "" ),
+ 		c_todo_bible:( c_todo_bible_quill.getLength()>1 ? $('#c_todo_bible .ql-editor').html() : "" ),
+ 		c_time_estimate:$('#c_time_estimate').val(),
+ 	};
+ 	
+ 	//Show spinner:
+ 	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
+ 	
+ 	$.post("/process/intent_edit", postData , function(data) {
+ 		//Update UI to confirm with user:
+ 		$('#save_c_results').html(data).hide().fadeIn();
+ 		
+ 		//Disapper in a while:
+ 		setTimeout(function() {
+ 			$('#save_c_results').fadeOut();
+ 	    }, 10000);
+     });
+}
+
+
+function new_intent(c_objective){
+ 	
+ 	if(c_objective.length<1){
+ 		alert('Missing name. Try again.');
+ 		$('#addnode').focus();
+ 		return false;
+ 	}
+ 	//Fetch needed vars:
+ 	pid = $('#pid').val();
+ 	c_id = $('#c_id').val();
+ 	b_id = $('#b_id').val();
+ 	var next_level = $( "#next_level" ).val();
+ 	
+ 	//Set processing status:
+     $( "#list-outbound").append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
+ 	
+     //Empty Input:
+ 	$( "#addnode" ).val("").focus();
+ 	
+ 	//Update backend:
+ 	$.post("/process/intent_create", {b_id:b_id, c_id:c_id, pid:pid, c_objective:c_objective, next_level:next_level}, function(data) {
+ 		//Update UI to confirm with user:
+ 		$( "#temp" ).remove();
+ 		$( "#list-outbound" ).append(data);
+ 		
+ 		//Resort:
+ 		load_intent_sort();
+ 		
+ 		
+ 		//Tooltips:
+ 		$('[data-toggle="tooltip"]').addClass('').tooltip();
+ 	});
+}
+
+function link_lintent(target_id){
+ 	//Fetch needed vars:
+ 	pid = $('#pid').val();
+ 	c_id = $('#c_id').val();
+ 	b_id = $('#b_id').val();
+ 	var next_level = $( "#next_level" ).val();
+ 	
+ 	//Set processing status:
+     $( "#list-outbound" ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
+ 	
+     //Empty Input:
+ 	$( "#addnode" ).val("").focus();
+ 	
+ 	//Update backend:
+ 	$.post("/process/intent_link", {b_id:b_id, c_id:c_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
+ 		//Update UI to confirm with user:
+ 		$( "#temp" ).remove();
+ 		$( "#list-outbound" ).append(data);
+ 		
+ 		//Resort:
+ 		load_intent_sort();
+ 		
+ 		//Tooltips:
+ 		$('[data-toggle="tooltip"]').addClass('').tooltip();
+ 	});
+}
+
+
+
+function intents_sort(){
+ 	//This function sorts the OUTBOUND intents
+    $( "#list-outbound .srt-outbound").html(' <img src="/img/loader.gif" />');
+   
+    //Fetch new sort:
+    var new_sort = [];
+ 	var sort_rank = 0;
+ 	$( "#list-outbound>a" ).each(function() {
+ 		sort_rank++;
+ 		var cr_id = $( this ).attr('data-link-id');
+ 		new_sort[sort_rank] = cr_id;
+ 		
+ 		//Update sort handler:
+ 		var current_handler = $( "#cr_"+cr_id+" .inline-level" ).text();
+ 		var handler_parts = current_handler.split("#");
+ 		$( "#cr_"+cr_id+" .inline-level" ).text(handler_parts[0]+'#'+sort_rank);
+ 	});
+ 	
+ 	//Update backend:
+ 	$.post("/process/intents_sort", {c_id:$('#c_id').val(), new_sort:new_sort}, function(data) {
+ 		//Update UI to confirm with user:
+ 		$( "#list-outbound .srt-outbound").html(data);
+ 		
+ 		//Disapper in a while:
+ 		setTimeout(function() {
+ 	        $("#list-outbound .srt-outbound>span").fadeOut();
+ 	    }, 3000);
+ 	});
+}
+
+
+function load_intent_sort(){
+	if(!($('#list-outbound').length)){
+		return false;
+	}
+	var theobject = document.getElementById("list-outbound");
+ 	var sort = Sortable.create( theobject , {
+ 		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+ 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+ 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+ 		  onUpdate: function (evt/**Event*/){
+ 			  intents_sort();
+ 		  }
+ 	});
+}
+
+
+ 
+function intent_unlink(cr_id,cr_title){
+ 	//Stop href:
+ 	var current_href = $('#cr_'+cr_id).attr("href");
+ 	$('#cr_'+cr_id).attr("href", "#");
+ 	
+ 	//Double check:
+ 	var r = confirm("Unlink "+cr_title+"?");
+ 	if (r == true) {
+ 	    //Delete and remove:
+ 		$.post("/process/intent_unlink", {cr_id:cr_id}, function(data) {
+ 			//Update UI to confirm with user:
+ 			$( "#cr_"+cr_id ).html(data);			
+ 			
+ 			setTimeout(function() {
+ 				//Disapper:
+ 				$( "#cr_"+cr_id ).fadeOut().remove();
+ 				
+ 				//Update sort:
+ 				intents_sort();
+ 		    }, 1000);
+ 		});
+ 	} else {
+ 		//Put link back in:
+ 		setTimeout(function() {
+ 			$('#cr_'+cr_id).attr("href", "#").attr("href", current_href);
+ 	    }, 1000);
+ 	}
+}
+
+
+ 
+
+/*
+ * 
+ * Message functions 
+ * 
+ */
+
+
+function load_message_sorting(){
+	var theobject = document.getElementById("message-sorting");
+	var sort_msg = Sortable.create( theobject , {
+		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+		  onUpdate: function (evt/**Event*/){
+			    //Set processing status:
+			    $( ".edit-updates" ).html('<img src="/img/loader.gif" />');
+			  
+			    //Fetch new sort:
+			    var new_sort = [];
+				var sort_rank = 0;
+				$( "#message-sorting>div" ).each(function() {
+					sort_rank++;
+					new_sort[sort_rank] = $( this ).attr('iid');
+				});
+				
+				//Update backend:
+				$.post("/process/media_sort", {new_sort:new_sort}, function(data) {
+					//Update UI to confirm with user:
+					$( ".edit-updates" ).html(data);
+					
+					//Disapper in a while:
+					setTimeout(function() {
+				        $(".edit-updates>span").fadeOut();
+				    }, 3000);
+				});
+		  }
+	});
+}
+	
+function msg_create(){
+	
+	//Fetch needed vars:
+	var i_message = $('#i_message').val();
+	var pid = $('#pid').val();
+	
+	if(i_message.length<1 || pid<1){
+		return false;
+	}
+	
+	//Set processing status:
+    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/loader.gif" /> Adding... </div></div>');
+	
+    //Empty Input:
+	$( "#i_message" ).val("").focus();
+	
+	//Update backend:
+	$.post("/process/media_create", {pid:pid, i_message:i_message}, function(data) {
+		//Update UI to confirm with user:
+		$( "#temp" ).remove();
+		$( "#message-sorting" ).append(data);
+		
+		//Resort:
+		load_message_sorting();
+	});
+}
+
+
+
+function media_delete(i_id){
+	//Double check:
+	var r = confirm("Delete Message?");
+	if (r == true) {
+	    //Delete and remove:
+		$.post("/process/media_delete", {i_id:i_id}, function(data) {
+			//Update UI to confirm with user:
+			
+			$("#ul-nav-"+i_id).html('<div>'+data+'</div>');
+			
+			//Disapper in a while:
+			setTimeout(function() {
+				$("#ul-nav-"+i_id).fadeOut().remove();
+		    }, 3000);
+		});
+	}
+}
+
+function msg_start_edit(i_id){
+	
+	//Start editing:
+	$("#ul-nav-"+i_id+" .edit-off").hide();
+	$("#ul-nav-"+i_id+" .edit-on").fadeIn().css("display","inline-block");
+	$("#ul-nav-"+i_id+">div").css('width','100%');
+	
+	//Watch typing:
+	$(document).keyup(function(e) {		
+		//Watch for action keys:
+		if (e.ctrlKey && e.keyCode === 13){
+			msg_save_edit(i_id);
+		} else if (e.keyCode === 27) {
+			msg_cancel_edit(i_id);
+		}
+	});
+}
+
+function msg_cancel_edit(i_id,success=0){
+	//Revert editing:
+	$("#ul-nav-"+i_id+" .edit-off").fadeIn().css("display","inline-block");
+	$("#ul-nav-"+i_id+" .edit-on").hide();
+	$("#ul-nav-"+i_id+">div").css('width','inherit');
+	
+	if(!success){
+		//Revert text changes to original:
+		var original = $("#ul-nav-"+i_id+" .original").text(); //Original content
+		$("#ul-nav-"+i_id+" textarea").val(original); //Revert Textarea
+	}
+}
+
+function msg_save_edit(i_id){
+	//Make sure there is some value:
+	var i_message = $("#ul-nav-"+i_id+" textarea").val();
+	if(i_message.length<1){
+		alert('Message is required. Try again.');
+		return false;
+	}
+	
+	//Revert View:
+	msg_cancel_edit(i_id,1);
+	
+	//Show loader:
+	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/loader.gif" /></div>');
+	
+	//Update message:
+	$.post("/process/media_edit", {i_id:i_id, i_message:i_message}, function(data) {
+		//Update UI to confirm with user:
+		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
+		
+		//Update original:
+		$("#ul-nav-"+i_id+" .original").text(i_message);
+		
+		//Disapper in a while:
+		setTimeout(function() {
+			$("#ul-nav-"+i_id+" .edit-updates>div").fadeOut();
+	    }, 3000);
+	});
+}
+
+
+</script>
 

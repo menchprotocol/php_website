@@ -16,7 +16,7 @@ foreach($bootcamps as $count=>$bootcamp){
 				<div class="card-content">';
                 //echo '<h6 class="category text-muted">'.$bootcamp['ct_icon'].' '.$bootcamp['ct_name'].'</h6>';
                 echo '<h4 class="card-title">
-						<a href="/bootcamps/'.$bootcamp['b_url_key'].'">'.echo_title($bootcamp['c_objective']).'</a>
+						<a href="/bootcamps/'.$bootcamp['b_url_key'].'">'.$bootcamp['c_objective'].'</a>
 					</h4>
 
 

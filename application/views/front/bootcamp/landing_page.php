@@ -1,11 +1,38 @@
-<?php 
-
-if(!isset($bootcamp['c__cohorts'][0])){
-    
+<script>
+function toggleview(object_key){
+	if($('#'+object_key+' .pointer').hasClass('fa-caret-right')){
+		
+		//Opening an item!
+		//Make sure all other items are closed:
+		$('.pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
+		$('.toggleview').hide();
+		//Now show this item:
+		$('#'+object_key+' .pointer').removeClass('fa-caret-right').addClass('fa-caret-down');
+		$('.'+object_key).fadeIn();
+		
+	} else if($('#'+object_key+' .pointer').hasClass('fa-caret-down')){
+		//Close this specific item:
+		$('#'+object_key+' .pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
+		$('.'+object_key).hide();
+	}
 }
-?>
+
+
+$( document ).ready(function() {
+    //Adjust #accordion after open/close to proper view point:
+	$('#accordion').on('shown.bs.collapse', function (e) {
+		if (typeof $('[name=' + e.target.id +']').offset() !== 'undefined') {
+			$('html,body').animate({
+				scrollTop: $('[name=' + e.target.id +']').offset().top - 40
+			}, 150);			
+		}
+	});
+});
+</script>
+
 
 <div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Private Beta</span>We're currently in private beta. This is a sample bootcamp for prototyping and customer discovery. It's not meant for real-world enrollment just yet. We would be launching our next bootcamp around mid-October.</div>
+
 
 <div class="row">
 
@@ -21,7 +48,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
     <div class="col-sm-8">
     
     
-		<h2 class="title" style="line-height:130%; margin-bottom:15px;"><?= echo_title($bootcamp['c_objective']) ?></h2>
+		<h2 class="title" style="line-height:130%; margin-bottom:15px;"><?= $bootcamp['c_objective'] ?></h2>
 		<p id="c_todo_overview"><?= $bootcamp['c_todo_overview'] ?></p>
 		
 		
@@ -64,7 +91,7 @@ if(!isset($bootcamp['c__cohorts'][0])){
                     foreach($bootcamp['c__child_intents'] as $sprint){
                         echo '<div id="c_'.$sprint['c_id'].'">';
                         echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].' '.echo_time($sprint['c__estimated_hours']).'</a></h4>';
-                            echo '<p class="toggleview c_'.$sprint['c_id'].'">'.$sprint['c_todo_overview'].'</p>';
+                            echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">'.$sprint['c_todo_overview'].'</div>';
                         echo '</div>';
                     }
                     ?>
@@ -192,18 +219,6 @@ if(!isset($bootcamp['c__cohorts'][0])){
     
     
 </div>
-
-
-<script>
-$( document ).ready(function() {
-    var showdowns = ["#c_prerequisites","#c_todo_overview","#u_tangible_experience","#u_bio"];
-    var arrayLength = showdowns.length;
-    for (var i = 0; i < arrayLength; i++) {
-    	update_showdown($(showdowns[i]),$(showdowns[i]).html());
-    }
-});
-</script>
-
 
 
 

@@ -9,7 +9,7 @@
       <div class="modal-body">
         	<div class="title"><h4>Primary Objective</h4></div>
 			<div class="form-group label-floating is-empty">
-			    <input type="text" id="c_primary_objective" placeholder="Get hired as entry-level web developer" class="form-control" />
+			    <input type="text" id="c_primary_objective" placeholder="Get hired as entry-level web developer" class="form-control border" />
 			    <span class="material-input"></span>
 			</div>
 			<div id="new_bootcam_result"></div>
@@ -22,6 +22,18 @@
 </div>
 
 <script>
+
+function bootcamp_create(){
+	//Show processing:
+	$( "#new_bootcam_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
+	
+	//Send for processing:
+	$.post("/process/bootcamp_create", {c_primary_objective:$('#c_primary_objective').val()}, function(data) {
+		//Append data to view:
+		$( "#new_bootcam_result" ).html(data).hide().fadeIn();
+	});
+}
+
 $(document).ready(function() {
 	$('#newBootcampModal').on('shown.bs.modal', function () {
 		$('#c_primary_objective').focus();

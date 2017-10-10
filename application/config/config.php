@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.27,
+		'version' => 0.30,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -16,28 +16,6 @@ $config['website'] = array(
 		'bot_ref_url' => 'https://m.me/381488558920384',
 		'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
 );
-
-
-//What would be auto replaced in the bootcamp titles for a more clear UI. Checkout echo_title() in general_helper
-$config['title_replacements'] = array(
-    //These words would be exactly replace with their array value:
-    'prepend' => array(
-        'understand' => '<i class="fa fa-lightbulb-o" aria-hidden="true"></i>',
-        'build' => '<i class="fa fa-wrench" aria-hidden="true"></i>',
-        'connect' => '<i class="fa fa-handshake-o" aria-hidden="true"></i> Connect',
-        'test' => '<i class="fa fa-question-circle" aria-hidden="true"></i> Test',
-    ),
-    //These phrases would be replaced with a <span> block, usually at the end of the statements:
-    'append' => array(
-        /*
-         * Too complex, removed for now
-        'within' => '<i class="fa fa-calendar" aria-hidden="true"></i>',
-        'requires' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Requires',
-        */
-    ),
-    
-);
-
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13');
@@ -113,33 +91,14 @@ $config['u_social_account'] = array(
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-dribbble" aria-hidden="true"></i>',
     ),
+    'u_dribbble_username' => array(
+        'sa_name' => 'dribbble',
+        'sa_prefix' => 'https://dribbble.com/',
+        'sa_postfix' => '',
+        'sa_icon' => '<i class="fa fa-dribbble" aria-hidden="true"></i>',
+    ),
 );
 
-$config['countries_stripe_support'] = array(
-    "AU" => "Australia",
-    "AT" => "Austria",
-    "BE" => "Belgium",
-    "CA" => "Canada",
-    "DK" => "Denmark",
-    "FI" => "Finland",
-    "FR" => "France",
-    "DE" => "Germany",
-    "HK" => "Hong Kong",
-    "IE" => "Ireland",
-    "IT" => "Italy",
-    "JP" => "Japan",
-    "LU" => "Luxembourg",
-    "NL" => "Netherlands",
-    "NZ" => "New Zealand",
-    "NO" => "Norway",
-    "PT" => "Portugal",
-    "SG" => "Singapore",
-    "ES" => "Spain",
-    "SE" => "Sweden",
-    "CH" => "Switzerland",
-    "GB" => "United Kingdom",
-    "US" => "United States",
-);
 
 $config['timezones'] = array(
     '-11'       => "(GMT-11:00) Midway Island, Samoa",
@@ -590,7 +549,7 @@ $config['level_names'] = array(
 );
 
 $config['r_response_options'] = array('1','2','3','4','12','24','48','72');
-$config['r_weekly_1on1s_options'] = array('0','0.5','1','1.5','2','2.5','3','4','5','6','7','8','10','12','14','21');
+$config['r_weekly_1on1s_options'] = array('0','0.5','1','1.5','2','2.5','3','3.5','4','5','6','7','10','12','14','15','21');
 
 //Engagement mediums and corresponding actions that result in a new engagement
 $config['e_mediums'] = array(

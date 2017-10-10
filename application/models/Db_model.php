@@ -499,7 +499,11 @@ class Db_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	
+	function b_update($b_id,$update_columns){
+	    $this->db->where('b_id', $b_id);
+	    $this->db->update('v5_bootcamps', $update_columns);
+	    return $this->db->affected_rows();
+	}
 	
 	function r_create($insert_columns){
 	    

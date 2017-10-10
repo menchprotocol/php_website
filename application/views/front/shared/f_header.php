@@ -10,7 +10,10 @@ $website = $this->config->item('website');
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-	<?php $this->load->view('console/shared/header_resources' ); ?>
+	
+	<?php $this->load->view('front/shared/header_resources' ); ?>
+	
+	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
 </head>
 
 <body class="landing-page">

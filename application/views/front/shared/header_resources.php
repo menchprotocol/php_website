@@ -17,13 +17,7 @@ $website = $this->config->item('website');
 
 
 <!-- Core JS Files -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/showdown/1.7.2/showdown.min.js" type="text/javascript"></script>
 <script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
 <script src="/js/lib/jquery-ui.min.js" type="text/javascript"></script>
 <script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
 <script src="/js/console/material.min.js" type="text/javascript"></script>
-<script src="/js/console/material-dashboard.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-<script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>

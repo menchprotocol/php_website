@@ -15,7 +15,7 @@
       		
         	<div class="title"><h4>Starting Week Of</div>
 			<div class="form-group label-floating is-empty">
-			    <input type="text" id="r_start_date" style="width:233px;" class="form-control" />
+			    <input type="text" id="r_start_date" style="width:233px;" class="form-control border" />
 			    <span class="material-input"></span>
 			</div>
             
@@ -31,11 +31,43 @@
 </div>
 
 <script>
+
+
+function r_process_create(){
+	//Show processing:
+	$( "#new_cohort_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
+	
+	//Send for processing:
+	$.post("/process/cohort_create", {
+		
+		r_b_id:$('#r_b_id').val(), 
+		r_start_date:$('#r_start_date').val(),
+		
+	}, function(data) {
+		//Append data to view:
+		$( "#new_cohort_result" ).html(data).hide().fadeIn();
+	});
+}
+
 $(document).ready(function() {
+
+	//Load date picker:
+	$( function() {
+	    $( "#r_start_date" ).datepicker({
+	    	minDate : 2,
+	    	beforeShowDay: function(date){
+	    		  var day = date.getDay(); 
+	    		  return [day == 1,""];
+	    	},
+		});
+	});
+
+	//Focus on the datepicker:
 	$('#newCohortModal').on('shown.bs.modal', function () {
 		$('#r_start_date').focus();
 	});
 });
+
 
 $('#r_start_date').bind("enterKey",function(e){
 	r_process_create();

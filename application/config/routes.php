@@ -78,7 +78,6 @@ $route['cancel'] 	                = "front/paypal_cancel";
 
 //Admin Guides:
 $route['console/help/status_bible'] 			       = "console/status_bible";
-$route['console/help/showdown_markup'] 			       = "console/showdown_markup";
 
 $route['console/account'] 						       = "console/account";
 $route['console/(:num)/curriculum/(:num)'] 		       = "console/curriculum/$1/$2";
