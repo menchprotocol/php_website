@@ -30,7 +30,7 @@ var setting_listo = {
 		syntax: false,
 		toolbar: [
 			[{ 'list': 'ordered'}],
-			['link', 'bold' ],
+			[ 'bold','link' ],
 		]
 	},
 	placeholder: 'List items here...',
@@ -41,7 +41,7 @@ var setting_listu = {
 		syntax: false,
 		toolbar: [
 			[{ 'list': 'bullet'}],
-			['link', 'bold' ],
+			[ 'bold','link' ],
 		]
 	},
 	placeholder: 'List items here...',

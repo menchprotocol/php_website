@@ -58,7 +58,7 @@ $website = $this->config->item('website');
 				
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<!-- <li><a href="/console/support"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Support</span></a></li> -->
+						<li><a href="https://support.mench.co" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Support <i class="fa fa-external-link" style="font-size: 0.95em;" aria-hidden="true"></i></span></a></li>
 						<li><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> Account</a></li>
 						<li><a href="/process/logout"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></li>
 					</ul>

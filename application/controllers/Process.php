@@ -23,27 +23,6 @@ class Process extends CI_Controller {
 	    //Used to update local host:
 	    print_r($this->Db_model->sync_algolia($pid));
 	}
-		
-	function contact_us(){
-	    
-	    if(!isset($_POST['your_name']) || strlen($_POST['your_name'])<=1){
-	        echo '<span style="color:#FF0000;">Error: Name required.</span>';
-	    } elseif(!isset($_POST['your_email']) || !filter_var($_POST['your_email'], FILTER_VALIDATE_EMAIL)){
-	        echo '<span style="color:#FF0000;">Error: Valid email required.</span>';
-	    } elseif(!isset($_POST['your_message']) || strlen($_POST['your_message'])<=0){
-	        echo '<span style="color:#FF0000;">Error: Message required.</span>';
-	    } else {
-	        
-	        $this->load->model("Email_model");
-	        if($this->Email_model->contact_us($_POST['your_name'],$_POST['your_email'],$_POST['your_message'])){
-	            //Display confirmation:
-	            echo '<span style="color:#00CC00;">Message received. We will get back to you shortly.</span>';
-	        } else {
-	            echo '<span style="color:#FF0000;">Error: Unknown email error. Please contact us directly at support@mench.co</span>';
-	        }
-	        
-	    }
-	}
 	
 	/* ******************************
 	 * Users
