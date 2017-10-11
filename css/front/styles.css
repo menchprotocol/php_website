@@ -312,7 +312,7 @@ h5, .h5 {
 .addon-lean{ font-weight:normal; font-size:1.0em; }
 .save-td { width:120px; vertical-align: text-top; }
 .link-view { font-size:0.7em; color:#d6ba14 !important; margin-left:5px; }
-#console .navbar-header { min-width:700px; }
+#console .navbar-header { min-width:500px; }
 .border { border: 1px solid #ccc !important;  border-radius:4px !important; }
 input.form-control, textarea.form-control, select { padding:3px 7px 5px !important; }
 .list-group-item { border: 1px solid #ccc; }
@@ -326,7 +326,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	border-bottom-right-radius: 4px;
 }
 @media (max-width:1150px){
-	#console .navbar-header { min-width:600px; }
+	#console .navbar-header { min-width:400px; }
 	.main-raised {
 	    margin-left:15px !important;
 	    margin-right:15px !important;

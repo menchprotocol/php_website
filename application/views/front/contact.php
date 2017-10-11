@@ -2,7 +2,7 @@
 
 	<h2 class="title">Let's Connect</h2>
 	
-	<a href="javascript:$zopim.livechat.window.show();" class="btn btn-primary btn-raised btn-round">Live Chat</a> &nbsp;&nbsp; or...
+	<p><b>Chat with us</b> using the chat/support button on the bottom-right of your screen, or:</p>
 	
 	
 	<div class="row" style="margin-top:30px;">
