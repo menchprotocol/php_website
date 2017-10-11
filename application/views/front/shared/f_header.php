@@ -14,6 +14,14 @@ $website = $this->config->item('website');
 	<?php $this->load->view('front/shared/header_resources' ); ?>
 	
 	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+	
+	<?php if(isset($udata['u_email'])){ ?>
+	<!-- Zendesk Autofill -->
+    <script>
+    zE( function () { zE.identify({name: '<?= $udata['u_fname'] ?> <?= $udata['u_lname'] ?>', email: '<?= $udata['u_email'] ?>'}); });
+	</script>
+	<?php } ?>
+	
 </head>
 
 <body class="landing-page">

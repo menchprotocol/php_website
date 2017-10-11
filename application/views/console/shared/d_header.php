@@ -27,6 +27,11 @@ $website = $this->config->item('website');
     
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
     <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
+    
+    <!-- Zendesk Autofill -->
+    <script>
+    zE( function () { zE.identify({name: '<?= $udata['u_fname'] ?> <?= $udata['u_lname'] ?>', email: '<?= $udata['u_email'] ?>'}); });
+	</script>
 
 </head>
 <body>

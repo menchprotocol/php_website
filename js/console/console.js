@@ -19,9 +19,8 @@ var setting_full = {
 		syntax: true,
 		toolbar: [
 		  [{ 'header': [1, 2, false] }],
-		  ['bold', 'italic', 'underline' ],
-		  ['link', 'blockquote', 'code-block'],
-		  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+		  ['bold', 'underline' ],
+		  ['link', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }],
 		]
 	},
 	theme: 'snow'
@@ -31,6 +30,7 @@ var setting_listo = {
 		syntax: false,
 		toolbar: [
 			[{ 'list': 'ordered'}],
+			['link', 'bold' ],
 		]
 	},
 	placeholder: 'List items here...',
@@ -41,7 +41,7 @@ var setting_listu = {
 		syntax: false,
 		toolbar: [
 			[{ 'list': 'bullet'}],
-			['bold', 'italic' ],
+			['link', 'bold' ],
 		]
 	},
 	placeholder: 'List items here...',
