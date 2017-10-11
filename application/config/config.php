@@ -548,7 +548,7 @@ $config['level_names'] = array(
     3 => 'Task',
 );
 
-$config['r_response_options'] = array('1','2','3','4','12','24','48','72');
+$config['r_response_options'] = array('1','2','3','4','12','24','48');
 $config['r_weekly_1on1s_options'] = array('0','0.5','1','1.5','2','2.5','3','3.5','4','5','6','7','10','12','14','15','21');
 
 //Engagement mediums and corresponding actions that result in a new engagement
