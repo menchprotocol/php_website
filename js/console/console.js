@@ -30,7 +30,6 @@ var setting_listo = {
 		syntax: false,
 		toolbar: [
 			[{ 'list': 'ordered'}],
-			[ 'bold','link' ],
 		]
 	},
 	placeholder: 'List items here...',

@@ -3,7 +3,7 @@
 $website = $this->config->item('website');
 ?>
 
-<!-- Fonts/Icons -->
+<!-- START SHARED RESOURCES -->
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
 
@@ -21,3 +21,5 @@ $website = $this->config->item('website');
 <script src="/js/lib/jquery-ui.min.js" type="text/javascript"></script>
 <script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
 <script src="/js/console/material.min.js" type="text/javascript"></script>
+<script src="/js/console/material-dashboard.js" type="text/javascript"></script>
+<!-- END SHARED RESOURCES -->

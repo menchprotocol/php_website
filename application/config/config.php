@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.33,
+		'version' => 0.34,
 		'legaL_name' => 'Mench Media Inc.',
 		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
 		'name' => 'Mench',
@@ -23,9 +23,15 @@ $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','1
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
-		'key'    => 'AKIAJOLBLKFSYCCYYDRA',
-		'secret' => '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',
+    'key'    => 'AKIAJOLBLKFSYCCYYDRA',
+    'secret' => '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',
 ];
+
+
+$config['default_cohort_questions'] = array(
+    'Why did you choose to join this bootcamp?',
+    'Why should the instructor choose you? (Considering limited bootcamp seats)',
+);
 
 
 //NOTE: If changed, also make corresponding changes to update_account() function in global.js file
@@ -50,7 +56,7 @@ $config['u_social_account'] = array(
     ),
     'u_youtube_username' => array(
         'sa_name' => 'YouTube',
-        'sa_prefix' => 'https://www.youtube.com/user/',
+        'sa_prefix' => 'https://www.youtube.com/',
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-youtube-play" aria-hidden="true"></i>',
     ),

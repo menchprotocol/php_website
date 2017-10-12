@@ -333,8 +333,15 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	}
 }
 
+.nav-pills>li>a{
+	min-width:auto;
+	padding:2px 10px;
+	border-radius:5px !important;
+}
+
 @media (max-width: 767px){
 	
+	.nav-pills>li>a{ padding:0 8px; line-height:22px; }
 	.container { padding-right:0; padding-left:0; }
 	.navbar-header{ padding-right:10px !important; padding-left:10px !important; }
 	.dashboard-logo img{ margin-left:8px !important; }
@@ -420,6 +427,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	display: inline-block;
 	margin-left:0;
 }
+
 
 .nav>li>a:focus, .nav>li>a:hover {
 	background-color:#FFF !important;

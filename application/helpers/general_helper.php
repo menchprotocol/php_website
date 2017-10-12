@@ -522,6 +522,21 @@ function url_exists($url){
     return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'403')>0 || substr_count($file_headers[0],'404')>0);
 }
 
+function filter_next_cohort($cohorts){
+    if(!$cohorts || count($cohorts)<=0){
+        return false;
+    }
+    
+    foreach($cohorts as $cohort){        
+        if($cohort['r_status']>=1 && strtotime($cohort['r_start_date'])>time()){
+            return $cohort;
+            break;
+        }
+    }
+    
+    return false;
+}
+
 function redirect_message($url,$message){
 	$CI =& get_instance();
 	$CI->session->set_flashdata('hm', $message);

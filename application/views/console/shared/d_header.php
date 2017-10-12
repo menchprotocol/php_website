@@ -18,7 +18,6 @@ $website = $this->config->item('website');
     
 	<?php $this->load->view('front/shared/header_resources' ); ?>    
     
-    <script src="/js/console/material-dashboard.js" type="text/javascript"></script>
     <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>

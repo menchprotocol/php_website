@@ -227,7 +227,10 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid bootcamp ID.</span>');
 	    } else {
-	        	        
+	        
+	        //Fetch default questions:
+	        $default_cohort_questions = $this->config->item('default_cohort_questions');
+	        
 	        //Create new cohort:
 	        $cohort = $this->Db_model->r_create(array(
 	            'r_b_id' => intval($_POST['r_b_id']),
@@ -239,6 +242,7 @@ class Process extends CI_Controller {
 	            'r_usd_price' => 0,
 	            'r_weekly_1on1s' => 0,
 	            'r_response_time_hours' => 24,
+	            'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
 	        ));
 	        
 	        if($cohort['r_id']>0){
@@ -311,6 +315,9 @@ class Process extends CI_Controller {
 	    if(!isset($_POST['r_office_hour_instructions'])){
 	        $_POST['r_office_hour_instructions'] = '';
 	    }
+	    if(!isset($_POST['r_application_questions'])){
+	        $_POST['r_application_questions'] = '';
+	    }
 	    if(!isset($_POST['r_response_time_hours'])){
 	        $_POST['r_response_time_hours'] = 24;
 	    }
@@ -325,6 +332,7 @@ class Process extends CI_Controller {
 	        'r_response_time_hours' => $_POST['r_response_time_hours'],
 	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
 	        'r_office_hour_instructions' => $_POST['r_office_hour_instructions'],
+	        'r_application_questions' => $_POST['r_application_questions'],
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        
 	        'r_status' => intval($_POST['r_status']),

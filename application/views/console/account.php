@@ -265,7 +265,7 @@ $udata = $ufetch[0];
         <?php
         $u_social_account = $this->config->item('u_social_account');
         foreach($u_social_account as $sa_key=>$sa){
-            echo '<div class="title"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' Username <span id="ph_'.$sa_key.'"></span></h4></div>
+            echo '<div class="title"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' URL <span id="ph_'.$sa_key.'"></span></h4></div>
     	<div class="input-group border">
           <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span><input type="text" class="form-control social-input" id="'.$sa_key.'" maxlength="100" value="'.$udata[$sa_key].'" />
         </div>';

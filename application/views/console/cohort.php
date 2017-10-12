@@ -52,6 +52,9 @@ function save_r(){
 		r_usd_price:$('#r_usd_price').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),
+
+		//Application:
+		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
 		
 	} , function(data) {
 		//Update UI to confirm with user:
@@ -62,6 +65,13 @@ function save_r(){
 			$('#save_r_results').fadeOut();
 	    }, 10000);
     });
+}
+
+
+function reset_default(){
+	<?php $default_cohort_questions = $this->config->item('default_cohort_questions'); ?>
+	$('#r_application_questions .ql-editor').html('<ol><li><?= join('</li><li>',$default_cohort_questions) ?></li></ol>');
+	alert('Questions reset successful. Remember to save your changes.');
 }
 </script>
 
@@ -145,22 +155,19 @@ function save_r(){
       
       
       
-      <div class="panel panel-border panel-default" name="collapseEnrollment">
+      <div class="panel panel-border panel-default" name="collapseLimitations">
         <div class="panel-heading" role="tab">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEnrollment" aria-expanded="false" aria-controls="collapseEnrollment">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLimitations" aria-expanded="false" aria-controls="collapseLimitations">
                 <h4 class="panel-title">
-                Price & Limits
+                Pricing & Limits
                 <i class="material-icons">keyboard_arrow_down</i>
                 </h4>
             </a>
         </div>
-        <div id="collapseEnrollment" class="panel-collapse collapse">
+        <div id="collapseLimitations" class="panel-collapse collapse">
           <div class="panel-body">
           
           
-            	
-        		
-        		
         		<div class="title"><h4>Enrollment Price</h4></div>
                 <div class="input-group">
                   <span class="input-group-addon addon-lean">USD $</span>
@@ -196,7 +203,7 @@ function save_r(){
         <div class="panel-heading" role="tab">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMentorship" aria-expanded="false" aria-controls="collapseMentorship">
                 <h4 class="panel-title">
-                Communication
+                Personalized Support <!-- Mentorship -->
                 <i class="material-icons">keyboard_arrow_down</i>
                 </h4>
             </a>
@@ -272,6 +279,36 @@ function save_r(){
 					
 				</div>
                 
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      <div class="panel panel-border panel-default" name="collapseEnrollment">
+        <div class="panel-heading" role="tab">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEnrollment" aria-expanded="false" aria-controls="collapseEnrollment">
+                <h4 class="panel-title">
+                Enrollment Questions
+                <i class="material-icons">keyboard_arrow_down</i>
+                </h4>
+            </a>
+        </div>
+        <div id="collapseEnrollment" class="panel-collapse collapse"> <!-- collapse in -->
+          <div class="panel-body">
+          		
+          		<p>What open-ended questions would you like to ask students during the enrolling application? A few notes:</p>
+          		<ul>
+          			<li>These questions can help you determine the level of desire, experience and suitability of the student to your bootcamp.</li>
+					<li>We ask students to re-confirm if they meet <b><a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">bootcamp requirements</a></b>, so no need to re-ask here.</li>
+					<li>Include one question per point</li>
+					<li>We ask these questions in the same order listed.</li>
+					<li>You can always <b><a href="javascript:reset_default();">reset to default questions</a></b> (and save).</li>
+				</ul>
+				
+          		<div id="r_application_questions"><?= $cohort['r_application_questions'] ?></div>
+                <script> var r_application_questions_quill = new Quill('#r_application_questions', setting_listo); </script>
+
           </div>
         </div>
       </div>

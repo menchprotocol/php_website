@@ -35,12 +35,16 @@ foreach($bootcamps as $count=>$bootcamp){
         echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
         $admin_count++;
     }
+    
+    //Fetch cohort:
+    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+    
                      echo '</div>
 					<div class="footer">
                         <div class="price">
-							<h4>'.echo_price($bootcamp['c__cohorts'][0]['r_usd_price']).'</h4>
+							<h4>'.echo_price($next_cohort['r_usd_price']).'</h4>
 						</div>
-                    	<div class="stats"><span>Starts <b>'.time_format($bootcamp['c__cohorts'][0]['r_start_date'],1).'</b></span></div>
+                    	<div class="stats"><span>Starts <b>'.time_format($next_cohort['r_start_date'],1).'</b></span></div>
                     </div>
 
 				</div>
