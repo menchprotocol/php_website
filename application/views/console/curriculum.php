@@ -425,7 +425,7 @@ function msg_save_edit(i_id){
 <div class="tab-content tab-space">
 
     <div class="tab-pane active" id="pill1">
-    	<p>Also the title of this <?= $level_names[$level] ?>, the goal should be <b>smart</b>: Specific, Measurable, Achievable, Relevant & Trackable.</p>
+    	<p>Define a <b>smart</b> goal: specific, measurable, achievable, relevant & trackable.</p>
         <div class="form-group label-floating is-empty">
             <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">
 			
@@ -496,10 +496,11 @@ if($level<3){
 			<li>Design weekly sprints that are more/less equal in workload.</li>
 			<li>You can easily add, remove and sort your weekly sprints below.</li>
 		</ul>
+		<br />
 		<?php
     } elseif($level==2){
-        echo '<h3>Checklist</h3>';
-        echo '<p class="maxout">You can break down the goal of the week into smaller goals to give students a step-by-step checklist of what they need to accomplish for this week:</p>';
+        echo '<h3>Week Tasks</h3>';
+        echo '<p class="maxout">Break down the week goal into smaller tasks to give students step-by-step checklist for the week:</p>';
     }
     
     //Print current sub-intents:
@@ -514,7 +515,7 @@ if($level<3){
     <div class="list-group">
     	<div class="list-group-item list_input">
     		<div class="input-group">
-    			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'Weekly Sprint' : 'Checklist') ?> Goal"></div>
+    			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'Weekly Sprint' : 'Week Tasks') ?> Goal"></div>
     			<span class="input-group-addon" style="padding-right:0;">
     				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
     					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
