@@ -2,7 +2,7 @@
 <script>
 function r_process_create(){
 	//Show processing:
-	$( "#new_cohort_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
+	$( "#new_cohort_result" ).html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Send for processing:
 	$.post("/process/cohort_create", {

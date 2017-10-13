@@ -2308,7 +2308,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   font-weight: 500;
   min-width: 100px;
   text-align: center;
-  color: #555555;
+  color: #2f2639;
   transition: all .3s;
 }
 .nav-pills > li > a:hover {
@@ -2351,7 +2351,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 }
 
 .tab-space {
-  padding: 20px 0 50px 0px;
+  padding: 20px 0 0 0px;
 }
 
 .navbar {

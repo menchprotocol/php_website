@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.36,
+    'version' => 0.37,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -16,6 +16,7 @@ $config['website'] = array(
     'bot_ref_url' => 'https://m.me/381488558920384',
     'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
 );
+
 
 //The core objects of the platform:
 $config['core_objects'] = array(
@@ -38,12 +39,13 @@ $config['core_objects'] = array(
         'o_name' => 'Cohort',
     ),
     'ru' => array(
-        'o_name' => 'Cohort Enrollment',
+        'o_name' => 'Enrollment',
     ),
     'i' => array(
         'o_name' => 'Intent Reference (Upcoming)',
     ),
 );
+
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13');

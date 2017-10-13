@@ -10,8 +10,16 @@ $(document).ready(function() {
 		  }
 	});
 
-	
+
+	$( "#addnode" ).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+        	new_intent($( "#addnode" ).val());
+            return true;
+        }
+    });
 	//Load Algolia:
+	/*
 	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 		
 		link_lintent(suggestion.c_id);
@@ -48,6 +56,7 @@ $(document).ready(function() {
             return true;
         }
     });
+    */
 });
 
 /*
@@ -84,7 +93,7 @@ function save_c(){
  	};
  	
  	//Show spinner:
- 	$('#save_c_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
+ 	$('#save_c_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
  	
  	$.post("/process/intent_edit", postData , function(data) {
  		//Update UI to confirm with user:
@@ -112,7 +121,7 @@ function new_intent(c_objective){
  	var next_level = $( "#next_level" ).val();
  	
  	//Set processing status:
-     $( "#list-outbound").append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
+     $( "#list-outbound").append('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
  	
      //Empty Input:
  	$( "#addnode" ).val("").focus();
@@ -139,7 +148,7 @@ function link_lintent(target_id){
  	var next_level = $( "#next_level" ).val();
  	
  	//Set processing status:
-     $( "#list-outbound" ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/loader.gif" /> Adding... </a>');
+     $( "#list-outbound" ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
  	
      //Empty Input:
  	$( "#addnode" ).val("").focus();
@@ -162,7 +171,7 @@ function link_lintent(target_id){
 
 function intents_sort(){
  	//This function sorts the OUTBOUND intents
-    $( "#list-outbound .srt-outbound").html(' <img src="/img/loader.gif" />');
+    $( "#list-outbound .srt-outbound").html(' <img src="/img/round_load.gif" class="loader" />');
    
     //Fetch new sort:
     var new_sort = [];
@@ -215,7 +224,7 @@ function intent_unlink(cr_id,cr_title){
  	$('#cr_'+cr_id).attr("href", "#");
  	
  	//Double check:
- 	var r = confirm("Unlink "+cr_title+"?");
+ 	var r = confirm("Remove "+cr_title+"?");
  	if (r == true) {
  	    //Delete and remove:
  		$.post("/process/intent_unlink", {cr_id:cr_id, b_id:b_id}, function(data) {
@@ -256,7 +265,7 @@ function load_message_sorting(){
 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
 		  onUpdate: function (evt/**Event*/){
 			    //Set processing status:
-			    $( ".edit-updates" ).html('<img src="/img/loader.gif" />');
+			    $( ".edit-updates" ).html('<img src="/img/round_load.gif" class="loader" />');
 			  
 			    //Fetch new sort:
 			    var new_sort = [];
@@ -291,7 +300,7 @@ function msg_create(){
 	}
 	
 	//Set processing status:
-    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/loader.gif" /> Adding... </div></div>');
+    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/round_load.gif" class="loader" /> Adding... </div></div>');
 	
     //Empty Input:
 	$( "#i_message" ).val("").focus();
@@ -370,7 +379,7 @@ function msg_save_edit(i_id){
 	msg_cancel_edit(i_id,1);
 	
 	//Show loader:
-	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/loader.gif" /></div>');
+	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
 	
 	//Update message:
 	$.post("/process/media_edit", {i_id:i_id, i_message:i_message}, function(data) {
@@ -401,202 +410,129 @@ function msg_save_edit(i_id){
 
 
 
-<div class="row">
-    <div class="col-md-6">
-    	
-    	<div id="acordeon">
-            <div class="panel-group" id="accordion">
-            
-          
-              <div class="panel panel-border panel-default" name="collapsePrimaryObjective">
-                <div class="panel-heading" role="tab">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrimaryObjective" aria-expanded="false" aria-controls="collapsePrimaryObjective">
-                        <h4 class="panel-title">
-                        Primary Objective
-                        <i class="material-icons">keyboard_arrow_down</i>
-                        </h4>
-                    </a>
-                </div>
-                <div id="collapsePrimaryObjective" class="panel-collapse collapse"> <!-- collapse in -->
-                  <div class="panel-body">
-                  
-                    	<p>Also the title of this <?= $level_names[$level] ?>, the primary objective should be a S.M.A.R.T. goal: Specific, Measurable, Achievable, Relevant & Trackable.</p>
-                        <div class="form-group label-floating is-empty">
-                            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">
-							
-							<?php if($level==1){ ?>
-							<div class="alert alert-warning" role="alert"><div><b>REMINDER:</b></div>The primary bootcamp objective sets the guideline for the Tuition Reimbursement Guarantee included in all Mench bootcamps. It basically means that if students execute the entire curriculum and fail to achieve this primary objective, they would get their tuition fully reimbursed.</div>                            
-							<?php } ?>
-							
-                        </div>
-                        
-                  </div>
-                </div>
-              </div>
-              
-              
-              
-              
-              <div class="panel panel-border panel-default" name="collapseOverview">
-                <div class="panel-heading" role="tab">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOverview" aria-expanded="false" aria-controls="collapseOverview">
-                        <h4 class="panel-title">
-                        Overview <?= (strlen($intent['c_todo_overview'])>0 ? '<i class="fa fa-search title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>' : '') ?>
-                        <i class="material-icons">keyboard_arrow_down</i>
-                        </h4>
-                    </a>
-                </div>
-                <div id="collapseOverview" class="panel-collapse collapse"> <!-- collapse in -->
-                  <div class="panel-body">
-                    	<p>An overview of what to be expected:</p>
-                    	
-                        <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
-                        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
-                  </div>
-                </div>
-              </div>
-              
-              
-              
-              
-              
-              
-              <div class="panel panel-border panel-default" name="collapsePrerequisites">
-                <div class="panel-heading" role="tab">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsePrerequisites" aria-controls="collapsePrerequisites">
-                        <h4 class="panel-title">
-                        Requirements List <?= (strlen($intent['c_prerequisites'])>0 ? '<i class="fa fa-exclamation-circle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Requirements"></i>' : '') ?>
-                        <i class="material-icons">keyboard_arrow_down</i>
-                        </h4>
-                    </a>
-                </div>
-                <div id="collapsePrerequisites" class="panel-collapse collapse">
-                  <div class="panel-body">
-                    	<p>An optional list of requirements that students must meet to achieve the primary objective.</p>
-                    	
-                    	<div id="c_prerequisites"><?= $intent['c_prerequisites'] ?></div>
-                        <script> var c_prerequisites_quill = new Quill('#c_prerequisites', setting_listo); </script>
 
-                        <?php if($level>1){ ?>
-							<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> requirements until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
-						<?php } ?>
-                  </div>
-                </div>
-              </div>
-            
-              
-              
-              
-          
-          <div class="panel panel-border panel-default" name="collapseOutline">
-            <div class="panel-heading" role="tab">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExecHandout" aria-controls="collapseExecHandout">
-                    <h4 class="panel-title">
-                    Action Plan with Time Estimate
-                    <?= (strlen($intent['c_todo_bible'])>0 ? '<i class="fa fa-wrench title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>' : '') ?>
-              		<?= ($intent['c_time_estimate']>0 ? echo_time($intent['c_time_estimate']) : '') ?>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                    </h4>
-                </a>
-            </div>
-            <div id="collapseExecHandout" class="panel-collapse collapse">
-              <div class="panel-body">
-        				
-        			<div class="title"><h4><i class="fa fa-wrench"></i> Action Plan</h4></div>
-                	<p>Unlike the overview the action plan contains detailed instructions for execution which is kept private until the week of execution, when we share it with students so they know what exactly they need to do.</p>
-                	
-                	
-                	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
-                    <script> var c_todo_bible_quill = new Quill('#c_todo_bible', setting_full); </script>
-                    
-                    
-                    <div class="title"><h4><i class="fa fa-clock-o"></i> Estimated Time</h4></div>
-                    <p>An estimate of how long it takes to review and execute the action plan. If you estimate more than 13 hours of work, then break this down into smaller sprints/tasks.</p>
-                    <select class="form-control input-mini border" id="c_time_estimate">
-                    	<?php 
-                    	$times = $this->config->item('c_time_options');
-                    	foreach($times as $time){
-                    	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).'</option>';
-                    	}
-                    	?>
-                    </select>
-              </div>
-            </div>
-          </div>
-          
-          
-       
-          
-          
+
+<ul class="nav nav-pills nav-pills-primary">
+  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Goal</a></li>
+  <li><a href="#pill2" data-toggle="tab" class="<?= ( strlen($intent['c_todo_overview'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</a></li>
+  <li><a href="#pill3" data-toggle="tab" class="<?= ( strlen($intent['c_prerequisites'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</a></li>
+  <?php if($level>1){ ?>
+  <li><a href="#pill4" data-toggle="tab" class="<?= ( strlen($intent['c_todo_bible'])>0 && $intent['c_time_estimate']>0 ? '' : 'is_empty') ?>"><i class="fa fa-book" aria-hidden="true"></i> Homework</a></li>
+  <?php } ?>
+</ul>
+
+
+<div class="tab-content tab-space">
+
+    <div class="tab-pane active" id="pill1">
+    	<p>Also the title of this <?= $level_names[$level] ?>, the goal should be <b>smart</b>: Specific, Measurable, Achievable, Relevant & Trackable.</p>
+        <div class="form-group label-floating is-empty">
+            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">
+			
+			<?php if($level==1 && 0){ ?>
+			<div class="alert alert-warning" role="alert"><div><b>REMINDER:</b></div>The primary bootcamp objective sets the guideline for the Tuition Reimbursement Guarantee included in all Mench bootcamps. It basically means that if students execute the entire curriculum and fail to achieve this primary objective, they would get their tuition fully reimbursed.</div>                            
+			<?php } ?>
+			
         </div>
-        </div><!--  end acordeon -->
-        
-        
-        
-        
-        
-        
-        <table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span id="save_c_results"></span></td></tr></table>
-        
-        
-        
-        
-        
-        
-       
-        
+    </div>
+    
+    
+    <div class="tab-pane" id="pill2">
+    
+		<p>An overview of what to be expected:</p>
+        <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
+        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
         
     </div>
-    <div class="col-md-6">
     
     
-    	<?php if($level<3){ ?>
-    		<div class="panel panel-border panel-default" name="collapseWeeklySprints">
-                <div class="panel-heading" role="tab">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseWeeklySprints" aria-expanded="true" aria-controls="collapseWeeklySprints">
-                        <h4 class="panel-title">
-                        <?= ($level==1 ? 'Weekly Sprints' : 'Week Tasks' ) ?>
-                        <i class="material-icons">keyboard_arrow_down</i>
-                        </h4>
-                    </a>
-                </div>
-                <div id="collapseWeeklySprints" class="panel-collapse collapse in">
-                  <div class="panel-body">
-                  
-                    	<?= '<p>'.($level==1 ? 'Add weekly sprint by defining a SMART objective for each week:' : 'Define tasks that contribute to accomplishing the primary objective of this '.$level_names[$level].':'); ?>
-                    	<?php
-                    	echo '<div id="list-outbound" class="list-group">';
-                    	foreach($intent['c__child_intents'] as $sub_intent){
-                    	    echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1));
-                    	}
-                		echo '</div>';
-                		?>
-                		
-                		<div class="list-group">
-                    		<div class="list-group-item list_input">
-                				<div class="input-group">
-                					<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ New"></div>
-                					<span class="input-group-addon" style="padding-right:0;">
-                						<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
-                							<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
-                							<div class="togglebutton" style="margin-top:5px; display:none;">
-                				            	<label>
-                				                	<input type="checkbox" onclick="change_direction()" />
-                				            	</label>
-                		            		</div>
-                						</span>
-                					</span>
-                				</div>
-            				</div>
-        				</div>
+    <div class="tab-pane" id="pill3">
+		<p>An optional list of requirements that students must meet <b>before</b> starting to execute towards this goal.</p>
+    	<div id="c_prerequisites"><?= $intent['c_prerequisites'] ?></div>
+        <script> var c_prerequisites_quill = new Quill('#c_prerequisites', setting_listo); </script>
 
-                  </div>
-                </div>
-           </div>
+        <?php if($level>1){ ?>
+			<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> prerequisites until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
 		<?php } ?>
-        
     </div>
+    
+    
+    <div class="tab-pane" id="pill4">
+    	<p>The homework is detailed instructions on <b>how to execute</b> towards the goal. It's shared with students on the Monday of the weekly sprint to keep students focused by only paying attention to what they need to do each week.</p>
+    	
+    	
+    	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
+        <script> var c_todo_bible_quill = new Quill('#c_todo_bible', setting_full); </script>
+        
+        
+        <div class="title"><h4><i class="fa fa-clock-o"></i> Estimated Time</h4></div>
+        <p>An estimate of how long it takes to complete this homework which includes watching/reading all videos/article and doing the required work. For time estimates longer than 13 hours you are required to break the goal down into smaller goals to reduce complexity.</p>
+        <select class="form-control input-mini border" id="c_time_estimate">
+        	<?php 
+        	$times = $this->config->item('c_time_options');
+        	foreach($times as $time){
+        	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).'</option>';
+        	}
+        	?>
+        </select>
+    </div>
+    
 </div>
+
+<table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span id="save_c_results"></span></td></tr></table>
+
+
+<?php
+
+if($level<3){
+    
+    if($level==1){
+        ?>
+        <h3>Weekly Sprints</h3>
+        <p class="maxout">Students will accomplish this bootcamp's primary goal with <b>weekly sprints</b>. Each week would focused on a specific sub-goal that helps them get closer to achieving the bootcamp goal. A few notes:</p>
+        <ul class="maxout">
+			<li>First consider how many hours students should spent per week on this bootcamp? Is this a 5 hours/week bootcamp or 60 hours/week?</li>
+			<li>Consider how many weeks is required to accomplish the primary bootcamp goal? This helps you with the breakdown process.</li>
+			<li>Design weekly sprints that are more/less equal in workload.</li>
+			<li>You can easily add, remove and sort your weekly sprints below.</li>
+		</ul>
+		<?php
+    } elseif($level==2){
+        echo '<h3>Checklist</h3>';
+        echo '<p class="maxout">You can break down the goal of the week into smaller goals to give students a step-by-step checklist of what they need to accomplish for this week:</p>';
+    }
+    
+    //Print current sub-intents:
+    echo '<div id="list-outbound" class="list-group">';
+    foreach($intent['c__child_intents'] as $sub_intent){
+        echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1));
+    }
+    echo '</div>';
+    
+    //Show add button:
+    ?>
+    <div class="list-group">
+    	<div class="list-group-item list_input">
+    		<div class="input-group">
+    			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'Weekly Sprint' : 'Checklist') ?> Goal"></div>
+    			<span class="input-group-addon" style="padding-right:0;">
+    				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
+    					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
+    					<div class="togglebutton" style="margin-top:5px; display:none;">
+    		            	<label>
+    		                	<input type="checkbox" onclick="change_direction()" />
+    		            	</label>
+                		</div>
+    				</span>
+    			</span>
+    		</div>
+    	</div>
+    </div>
+
+<?php } ?>
+
+
+
 
 <?php
 /*

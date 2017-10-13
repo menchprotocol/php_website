@@ -52,9 +52,9 @@ function echo_message($i){
 	echo '</div>';
 }
 
-function echo_time($c_time_estimate){
+function echo_time($c_time_estimate,$show_icon=1){
     if($c_time_estimate>0){
-        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Time Investment"><i class="fa fa-clock-o" aria-hidden="true"></i>';
+        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Time Investment">'.( $show_icon ? '<i class="fa fa-clock-o" aria-hidden="true"></i>' : '');
         if($c_time_estimate<1){
             //Minutes:
             $ui .= round($c_time_estimate*60).'m';
@@ -107,8 +107,10 @@ function echo_cr($b_id,$intent,$direction,$level=0){
 	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item is_sortable">';
 	        //Right content
     	    $ui .= '<span class="pull-right">';
-    	        $ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
-    	        /*
+
+    	       $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Delete" data-placement="left"></i> ';
+    	       //$ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
+/*
         	    $ui .= '<span class="label label-primary">';
         	       $ui .= '<span class="dir-sign">'.$direction.'</span> ';
         	       $ui .= '<i class="fa fa-chevron-right" aria-hidden="true"></i>';
@@ -120,23 +122,24 @@ function echo_cr($b_id,$intent,$direction,$level=0){
     	    $ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i>';
     	    $ui .= ( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$intent['cr_outbound_rank'].'</span>' : '' );
     	    $ui .= $intent['c_objective'].' ';
-    	    
+  
     	    //Other settings:
     	    if(strlen($intent['c_todo_overview'])>0){
-    	        $ui .= '<i class="fa fa-search title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
+    	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
     	    }
     	    if(strlen($intent['c_prerequisites'])>0){
-    	        $ui .= '<i class="fa fa-exclamation-circle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Requirements"></i>';
+    	        $ui .= '<i class="fa fa-exclamation-triangle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Prerequisites"></i>';
     	    }
     	    if(strlen($intent['c_todo_bible'])>0){
-    	        $ui .= '<i class="fa fa-wrench title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>';
+    	        $ui .= '<i class="fa fa-book title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>';
+    	        if($level==2 && isset($intent['c__estimated_hours'])){
+        	        $ui .= echo_time($intent['c__estimated_hours'],0);
+        	    } elseif($level==3 && isset($intent['c_time_estimate'])){
+        	        $ui .= echo_time($intent['c_time_estimate'],0);
+        	    }
     	    }
     	    
-    	    if($level==2 && isset($intent['c__estimated_hours'])){
-    	        $ui .= echo_time($intent['c__estimated_hours']);
-    	    } elseif($level==3 && isset($intent['c_time_estimate'])){
-    	        $ui .= echo_time($intent['c_time_estimate']);
-    	    }
+        	    
     	    
     	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
     	        //This sprint has tasks:

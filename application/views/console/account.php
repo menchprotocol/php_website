@@ -46,7 +46,7 @@ function update_account(){
 	}
 	
 	//Show spinner:
-	$('.update_u_results').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
+	$('.update_u_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 	
 	$.post("/process/account_update", {
 		
@@ -117,7 +117,7 @@ $udata = $ufetch[0];
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="pill1" style="max-width:500px;">
+    <div class="tab-pane active" id="pill1">
     	
     	<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
     	
@@ -228,14 +228,11 @@ $udata = $ufetch[0];
 		
 		<div class="title"><h4>Biography</h4></div>
 		<div id="u_bio"><?= $udata['u_bio'] ?></div>
-        <script> var u_bio_quill = new Quill('#u_bio', setting_full); </script>        
-        
-        
-        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
+        <script> var u_bio_quill = new Quill('#u_bio', setting_full); </script>
     </div>
     
     
-    <div class="tab-pane" id="pill2" style="max-width:500px;">
+    <div class="tab-pane" id="pill2">
     	<div class="title"><h4>Current Password</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="password" id="u_password_current" class="form-control border">
@@ -248,11 +245,10 @@ $udata = $ufetch[0];
             <span class="material-input"></span>
         </div>
         
-        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
     
-    <div class="tab-pane" id="pill3" style="max-width:500px;">
+    <div class="tab-pane" id="pill3">
     	
     	<p>Link social accounts you wish to share on your bootcamp page to allow student to learn more about you.</p>
     	
@@ -275,14 +271,14 @@ $udata = $ufetch[0];
         
         <div class="title"><h4><i class="fa fa-skype" aria-hidden="true"></i> Skype Username</h4></div>
     	<input type="text" class="form-control border" id="u_skype_username" maxlength="100" value="<?= $udata['u_skype_username'] ?>" />
-        
-        
-        <table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
-    <div class="tab-pane" id="pill4" style="max-width:500px;">
+    <div class="tab-pane" id="pill4">
     	<p><b>Coming soon.</b></p>
     	<p>Setup your bank account to receive direct deposits for each cohort payments via Paypal.</p>
     </div>
     
 </div>
+
+<br />
+<table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>

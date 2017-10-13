@@ -96,7 +96,7 @@ $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
                         <?php 
                         foreach($bootcamp['c__child_intents'] as $sprint){
                             echo '<div id="c_'.$sprint['c_id'].'">';
-                            echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].' '.echo_time($sprint['c__estimated_hours']).'</a></h4>';
+                            echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].' '.echo_time($sprint['c__estimated_hours'],1).'</a></h4>';
                                 echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">'.$sprint['c_todo_overview'].'</div>';
                             echo '</div>';
                         }

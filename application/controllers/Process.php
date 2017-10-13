@@ -260,7 +260,7 @@ class Process extends CI_Controller {
 	    //TODO update algolia
 	    
 	    //Show result:
-	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span style="color:#00CC00;">Saved</span>');
+	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	
@@ -398,7 +398,7 @@ class Process extends CI_Controller {
 	    }
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Saved</span>');
+	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	
@@ -468,7 +468,7 @@ class Process extends CI_Controller {
 	    
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Saved</span>');
+	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	
@@ -681,7 +681,7 @@ class Process extends CI_Controller {
 	    //Update Href for Landing page buttons:
 	    echo '<script> $(".landing_page_url").attr("href", "/bootcamps/'.$_POST['b_url_key'].'"); </script>';
 	    //Show result 
-	    die('<span style="color:#00CC00;">Saved</span>');
+	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	
@@ -839,7 +839,7 @@ class Process extends CI_Controller {
 	    ));
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Saved</span>');
+	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	
@@ -1101,7 +1101,7 @@ class Process extends CI_Controller {
 	    //TODO Save change history
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Saved</span>');
+	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	function media_delete(){

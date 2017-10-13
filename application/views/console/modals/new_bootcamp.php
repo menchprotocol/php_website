@@ -25,7 +25,7 @@
 
 function bootcamp_create(){
 	//Show processing:
-	$( "#new_bootcam_result" ).html('<img src="/img/loader.gif" /> Processing...').hide().fadeIn();
+	$( "#new_bootcam_result" ).html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Send for processing:
 	$.post("/process/bootcamp_create", {c_primary_objective:$('#c_primary_objective').val()}, function(data) {

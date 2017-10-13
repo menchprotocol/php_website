@@ -34,9 +34,6 @@
         vertical-align: middle;
         display:inline-block;
     }
-    .save_oa_update{
-        font-size:18px;
-    }
     </style>
 </head>
 <body style="margin:-15px -15px;">
@@ -44,9 +41,6 @@
 
 
 <table width="100%" style="display:none;"><tr>
-	<td style="text-align:left; padding-left:20px;">
-        <span class="save_oa_update"></span>
-	</td>
 	<td style="text-align:right; width:120px; padding-right:20px;">
 		<a href="javascript:$('#schedule').jqs('reset');" style="background-color: #CCC;">Clear All</a>
 	</td>
@@ -57,18 +51,10 @@
 
 
 <script>
-	function save_hours(){
-		//Show spinner:
-		$('.save_oa_update').html('<span><img src="/img/loader.gif" /></span>').hide().fadeIn();
-		
+	function save_hours(){		
 		$.post("/process/update_schedule", { r_id:<?= $cohort['r_id'] ?> , hours : jQuery.parseJSON( $("#schedule").jqs('export') ) } , function(data) {
 			//Update UI to confirm with user:
 			$('.save_oa_update').html(data).hide().fadeIn();
-			
-			//Disapper in a while:
-			setTimeout(function() {
-				$('.save_oa_update').fadeOut();
-		    }, 10000);
 	    });
 	}
 	
