@@ -6,15 +6,27 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-		'version' => 0.34,
-		'legaL_name' => 'Mench Media Inc.',
-		'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
-		'name' => 'Mench',
-		'email' => 'shervin@mench.co',
-		'fb_page_id' => '381488558920384',
-		'fb_app_id' => '1782431902047009',
-		'bot_ref_url' => 'https://m.me/381488558920384',
-		'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
+    'version' => 0.35,
+    'legaL_name' => 'Mench Media Inc.',
+    'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
+    'name' => 'Mench',
+    'email' => 'shervin@mench.co',
+    'fb_page_id' => '381488558920384',
+    'fb_app_id' => '1782431902047009',
+    'bot_ref_url' => 'https://m.me/381488558920384',
+    'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
+);
+
+//The core objects of the platform:
+$config['object_names'] = array(
+    'u' => 'User',
+    'b' => 'Bootcamp',
+    'ba' => 'Bootcamp Team Member',
+    'c' => 'Intent',
+    'cr' => 'Intent Link',
+    'r' => 'Cohort',
+    'ru' => 'Cohort Enrollment',
+    'i' => 'Intent Reference (Upcoming)',
 );
 
 //based on the fibonacci sequence for more realistic estimates

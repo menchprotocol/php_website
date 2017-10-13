@@ -100,6 +100,7 @@ function reset_default(){
           		
           		
           		<div class="title"><h4>Cohort Status</h4></div>
+          		<?= ($cohort['r_status']==0 ? '<p>Newly created cohorts are ON HOLD by default to give you time to edit and then publish live when ready:</p>' : '') ?>
        		 	<?php echo_status_dropdown('r','r_status',$cohort['r_status']); ?>
         		<br />
         		
@@ -155,50 +156,6 @@ function reset_default(){
       
       
       
-      <div class="panel panel-border panel-default" name="collapseLimitations">
-        <div class="panel-heading" role="tab">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLimitations" aria-expanded="false" aria-controls="collapseLimitations">
-                <h4 class="panel-title">
-                Pricing & Limits
-                <i class="material-icons">keyboard_arrow_down</i>
-                </h4>
-            </a>
-        </div>
-        <div id="collapseLimitations" class="panel-collapse collapse">
-          <div class="panel-body">
-          
-          
-        		<div class="title"><h4>Enrollment Price</h4></div>
-                <div class="input-group">
-                  <span class="input-group-addon addon-lean">USD $</span>
-                  <input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= $cohort['r_usd_price'] ?>" class="form-control border" />
-                </div>
-                
-                
-                <div class="title"><h4>Minimum Students</h4></div>
-                <p>Define the minimum number of students required to be registered to kick-start this cohort. If this number is not met, all existing registrants would be refunded and the cohort would not be started.</p>
-                <div class="input-group">
-                  <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= $cohort['r_min_students'] ?>" class="form-control border" />
-                </div>
-                
-                <div class="title"><h4>Maximum Students</h4></div>
-                <p>Define the maximum number of students that can enroll before cohort is full. 0 means no maximum.</p>
-                <div class="input-group">
-                  <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= $cohort['r_max_students'] ?>" class="form-control border" />
-                </div>
-                
-                
-                
-          </div>
-        </div>
-      </div>
-      
-      
-      
-      
-      
-      
-      
       <div class="panel panel-border panel-default" name="collapseMentorship">
         <div class="panel-heading" role="tab">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMentorship" aria-expanded="false" aria-controls="collapseMentorship">
@@ -224,8 +181,8 @@ function reset_default(){
                 </select>
                 
                 
-				<div class="title"><h4>Weekly 1-on-1 Video Meetings</h4></div>
-                <p>Optionally you can setup weekly 1-on-1 video meetings with each student. 1-on-1 Meetings are particularly helpful for more complex bootcamps where students need more personalized attention to succeed.</p>
+				<div class="title"><h4>Weekly Mentorship (1-on-1 Calls)</h4></div>
+                <p>Optionally you can setup weekly 1-on-1 mentorship with each student which is particularly helpful for complex bootcamps where students need more personalized attention to succeed. Mentorship calls are usually conducted via video chat and/or screen-share based on the nature of your bootcamp.</p>
                 <select class="form-control input-mini border" id="r_weekly_1on1s" style="width:300px;">
                 	<?php 
                 	$weekly_1on1s_options = $this->config->item('r_weekly_1on1s_options');
@@ -241,8 +198,8 @@ function reset_default(){
                 
                 
 				
-				<div class="title"><h4>Live Office Hours</h4></div>
-				<p>Live office hours enable students to contact you (or your team) online for immediate & on-demand support. A few notes:</p>
+				<div class="title"><h4>Weekly Office Hours (Group Calls)</h4></div>
+				<p>Office hours enable students to contact you (or your team) online for live/on-demand support. A few notes:</p>
 				<ul>
 					<li>Online office hours are usually live video calls done via Skype, Google Hangouts, etc...</li>
 					<li>You will set hours in GMT -8:00 (Pacific Standard Time) and will be adjust for each student based on their time zone.</li>
@@ -285,7 +242,10 @@ function reset_default(){
       
       
       
-      <div class="panel panel-border panel-default" name="collapseEnrollment">
+      
+      
+      
+      <div class="panel panel-border panel-default" name="collapseEnrollment" style="display:none;">
         <div class="panel-heading" role="tab">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseEnrollment" aria-expanded="false" aria-controls="collapseEnrollment">
                 <h4 class="panel-title">
@@ -309,6 +269,57 @@ function reset_default(){
           		<div id="r_application_questions"><?= $cohort['r_application_questions'] ?></div>
                 <script> var r_application_questions_quill = new Quill('#r_application_questions', setting_listo); </script>
 
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      
+      
+      
+      <div class="panel panel-border panel-default" name="collapseLimitations">
+        <div class="panel-heading" role="tab">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseLimitations" aria-expanded="false" aria-controls="collapseLimitations">
+                <h4 class="panel-title">
+                Pricing & Limits
+                <i class="material-icons">keyboard_arrow_down</i>
+                </h4>
+            </a>
+        </div>
+        <div id="collapseLimitations" class="panel-collapse collapse">
+          <div class="panel-body">
+          
+          
+        		<div class="title"><h4>Enrollment Price</h4></div>
+        		<p>Decide how much you like to charge students to join this bootcamp. A few notes:</p>
+          		<ul>
+          			<li>Your asking price is dependant on the level of personalized support and the number of weekly sprints.</li>
+					<li>Typically you want to charge abour $100/week for 30 Minutes of 1-on-1 mentorship.</li>
+					<li>Include one question per point</li>
+					<li>We ask these questions in the same order listed.</li>
+					<li>You can always <b><a href="javascript:reset_default();">reset to default questions</a></b> (and save).</li>
+				</ul>
+                <div class="input-group">
+                  <span class="input-group-addon addon-lean">USD $</span>
+                  <input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= $cohort['r_usd_price'] ?>" class="form-control border" />
+                </div>
+                
+                
+                <div class="title"><h4>Minimum Students</h4></div>
+                <p>Define the minimum number of students required to be registered to kick-start this cohort. If this number is not met, all existing registrants would be refunded and the cohort would not be started.</p>
+                <div class="input-group">
+                  <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= $cohort['r_min_students'] ?>" class="form-control border" />
+                </div>
+                
+                <div class="title"><h4>Maximum Students</h4></div>
+                <p>Define the maximum number of students that can enroll before cohort is full. 0 means no maximum.</p>
+                <div class="input-group">
+                  <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= $cohort['r_max_students'] ?>" class="form-control border" />
+                </div>
+                
+                
+                
           </div>
         </div>
       </div>

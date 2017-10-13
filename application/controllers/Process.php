@@ -49,10 +49,22 @@ class Process extends CI_Controller {
 	        return false;
 	    } elseif($users[0]['u_status']<=0){
 	        //Inactive account
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $users[0]['u_id'],
+	            'e_message' => 'login() denied because account is not active.',
+	            'e_json' => json_encode($_POST),
+	            'e_type_id' => 9, //Platform Expected Error
+	        ));
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us for more details.</div>');
 	        return false;
 	    } elseif(!($users[0]['u_password']==md5($_POST['u_password']))){
 	        //Bad password
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $users[0]['u_id'],
+	            'e_message' => 'login() denied because of incorrect password.',
+	            'e_json' => json_encode($_POST),
+	            'e_type_id' => 9, //Platform Expected Error
+	        ));
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
 	        return false;
 	    }
@@ -61,11 +73,17 @@ class Process extends CI_Controller {
             //Regular user, they are required to be assigned to at-least one bootcamp to be able to login:
             $bootcamps = $this->Db_model->u_bootcamps(array(
                 'ba.ba_u_id' => $users[0]['u_id'],
-                'ba.ba_status >=' => 0,
+                'ba.ba_status >=' => 1,
                 'b.b_status >=' => 0,
             ));
             
             if(count($bootcamps)<=0){
+                $this->Db_model->e_create(array(
+                    'e_creator_id' => $users[0]['u_id'],
+                    'e_message' => 'login() denied because user is not assigned to any bootcamps.',
+                    'e_json' => json_encode($_POST),
+                    'e_type_id' => 9, //Platform Expected Error
+                ));
                 redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You are not assigned to any bootcamps.</div>');
                 return false;
             }
@@ -77,7 +95,18 @@ class Process extends CI_Controller {
             'user' => $users[0],
         ));
         
-        //TODO login engagement
+        //Append user IP and agent information
+        unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
+        $users[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
+        $users[0]['get_browser'] = get_browser(null, true);
+        $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $users[0]['input_post_data'] = $_POST;
+        
+        //Log engagement
+        $this->Db_model->e_create(array(
+            'e_json' => json_encode($users[0]),
+            'e_type_id' => 10, //Admin login
+        ));
         
         if(isset($_POST['url']) && strlen($_POST['url'])>0){
             header( 'Location: '.$_POST['url'] );
@@ -88,10 +117,18 @@ class Process extends CI_Controller {
 	}
 	
 	function logout(){
+	    //Log engagement:
+	    $udata = $this->session->userdata('user');
+	    $this->Db_model->e_create(array(
+	        'e_json' => json_encode($udata),
+	        'e_type_id' => 11, //Admin Logout
+	    ));
+	    
 	    //Called via AJAX to destroy user session:
 	    $this->session->sess_destroy();
 	    header( 'Location: /' );
 	}
+	
 	
 	function account_update(){
 	    
@@ -122,7 +159,7 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing language. Try again.</span>');
 	    }
 	    
-	    //validate current password:
+	    //Fetch current data:
 	    $u_current = $this->Db_model->u_fetch(array(
 	        'u_id' => intval($_POST['u_id']),
 	    ));
@@ -203,8 +240,19 @@ class Process extends CI_Controller {
 	    //Now update the DB:
 	    $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
 	    
-	    //TODO Save change history
-	    //TODO update algolia?
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'], //The user that updated the account
+	        'e_message' => readable_updates($u_current[0],$u_update,'u_'),
+	        'e_json' => json_encode(array(
+	            'before' => $u_current[0],
+	            'after' => $u_update,
+	        )),
+	        'e_type_id' => 12, //Account Update
+	        'e_object_id' => intval($_POST['u_id']), //The user that their account was updated
+	    ));
+	    
+	    //TODO update algolia
 	    
 	    //Show result:
 	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span style="color:#00CC00;">Saved</span>');
@@ -226,24 +274,59 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid bootcamp ID.</span>');
+	    } elseif(!isset($_POST['copy_cohort_id']) || intval($_POST['copy_cohort_id'])<0){
+	        die('<span style="color:#FF0000;">Error: Missing Cohort Import Settings.</span>');
 	    } else {
 	        
-	        //Fetch default questions:
-	        $default_cohort_questions = $this->config->item('default_cohort_questions');
+	        //This is the variable we're building:
+	        $cohort_data = null;
+	        
+	        if(intval($_POST['copy_cohort_id'])>0){
+	            
+	            //Fetch default questions:
+	            $cohorts = $this->Db_model->r_fetch(array(
+	                'r.r_id' => intval($_POST['copy_cohort_id']),
+	                'r.r_b_id' => intval($_POST['r_b_id']),
+	            ));
+	            
+	            if(count($cohorts)==1){
+	                //Port the settings:
+	                $cohort_data = $cohorts[0];
+	                
+	                //Make some adjustments
+	                $cohort_data['r_start_date'] = date("Y-m-d",strtotime($_POST['r_start_date']));
+	                $cohort_data['r_status'] = 0; //Always Drafting
+	                unset($cohort_data['r_id']); //Remove as it would be assigned for this new cohort
+	            }
+	        }
+	        
+	        
+	        //Did we build it?
+	        if(!$cohort_data){
+	            
+	            //Fetch default questions:
+	            $default_cohort_questions = $this->config->item('default_cohort_questions');
+	            
+	            //Generate defaults:
+	            $cohort_data = array(
+	                'r_b_id' => intval($_POST['r_b_id']),
+	                'r_status' => 0, //Drafting
+	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
+	                'r_min_students' => 1,
+	                'r_max_students' => 20,
+	                'r_usd_price' => 0,
+	                'r_weekly_1on1s' => 0,
+	                'r_response_time_hours' => 24,
+	                'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
+	            );
+	        }
+	        
 	        
 	        //Create new cohort:
-	        $cohort = $this->Db_model->r_create(array(
-	            'r_b_id' => intval($_POST['r_b_id']),
-	            'r_status' => 0, //Drafting
-	            'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	            //Set some defaults:
-	            'r_min_students' => 1,
-	            'r_max_students' => 20,
-	            'r_usd_price' => 0,
-	            'r_weekly_1on1s' => 0,
-	            'r_response_time_hours' => 24,
-	            'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
-	        ));
+	        $cohort = $this->Db_model->r_create($cohort_data);
+	        
+	        //Log engagement:
+	        
 	        
 	        if($cohort['r_id']>0){
 	            //Redirect:
@@ -267,14 +350,35 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    }
 	    
+	    //Fetch for the record:
+	    $cohorts = $this->Db_model->r_fetch(array(
+	        'r.r_id' => intval($_POST['r_id']),
+	    ));
+	    if($cohorts<1){
+	        //Ooops, not found!
+	        die('<span style="color:#FF0000;">Error: Cohort ID not found.</span>');
+	    }
+	    
 	    
 	    $blank_template = 'a:7:{i:0;a:1:{s:3:"day";s:1:"0";}i:1;a:1:{s:3:"day";s:1:"1";}i:2;a:1:{s:3:"day";s:1:"2";}i:3;a:1:{s:3:"day";s:1:"3";}i:4;a:1:{s:3:"day";s:1:"4";}i:5;a:1:{s:3:"day";s:1:"5";}i:6;a:1:{s:3:"day";s:1:"6";}}';
-	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
+	    $r_update = array(
 	        'r_live_office_hours' => ( trim(serialize($_POST['hours']))==$blank_template ? '' : serialize($_POST['hours'])),
-	    ));
+	    );
+	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
 	    
-	    //TODO Save change history
-	    
+	    //Log engagement ONLY if different:
+	    if($r_update['r_live_office_hours']!==$cohorts[0]['r_live_office_hours']){
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $udata['u_id'], //The user
+	            'e_message' => readable_updates($cohorts[0],$r_update,'r_'),
+	            'e_json' => json_encode(array(
+	                'before' => @unserialize($cohorts[0]['r_live_office_hours']),
+	                'after' => @unserialize($r_update['r_live_office_hours']),
+	            )),
+	            'e_type_id' => 24, //Cohort Schedule Update
+	            'e_object_id' => intval($_POST['r_id']),
+	        ));
+	    }
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Saved</span>');
@@ -297,6 +401,16 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
+	    }
+	    
+	    
+	    //Fetch for the record:
+	    $cohorts = $this->Db_model->r_fetch(array(
+	        'r.r_id' => intval($_POST['r_id']),
+	    ));
+	    if($cohorts<1){
+	        //Ooops, not found!
+	        die('<span style="color:#FF0000;">Error: Cohort ID not found.</span>');
 	    }
 	    
 	    

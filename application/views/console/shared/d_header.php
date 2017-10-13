@@ -11,18 +11,12 @@ $website = $this->config->item('website');
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 	<title>Mench<?= ( isset($title) ? ' | '.$title : '' ) ?></title>
-	
-	<!-- Console-specific resources -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
-    <link href="//cdn.quilljs.com/1.3.3/quill.snow.css" rel="stylesheet">
     
 	<?php $this->load->view('front/shared/header_resources' ); ?>    
     
     <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <script src="//cdn.quilljs.com/1.3.3/quill.min.js"></script>
     
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
     <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>

@@ -142,7 +142,11 @@ class Facebook_model extends CI_Model {
 		
 		// Check for CURL errors
 		if($response === FALSE){
-			log_error('Facebook set_settings() failed to update.',$payload,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'set_settings() failed to update the settings on Facebook.',
+		        'e_json' => json_encode($payload),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 		}
 				
 		return objectToArray(json_decode($response));
@@ -167,7 +171,11 @@ class Facebook_model extends CI_Model {
 		
 		// Check for CURL errors
 		if($response === FALSE){
-			log_error('CURL Failed in sending message via Messenger.',$payload,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'send_message() CURL Failed in sending message via Messenger.',
+		        'e_json' => json_encode($payload),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 		}
 		
 		return objectToArray(json_decode($response));

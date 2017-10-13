@@ -61,26 +61,29 @@ function save_settings(){
     			<?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
     			<div style="clear:both; margin:0; padding:0;"></div>
     			
-                <div class="title" style="margin-top:30px;"><h4>Landing Page URL Key <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Used as the URL of this bootcamp for students to view and register."></i></h4></div>
+                <div class="title" style="margin-top:15px;"><h4>Landing Page URL Key</h4></div>
                 <div class="form-group label-floating is-empty">
-                    <input type="text" id="b_url_key" style="text-transform:lowercase;" value="<?= $bootcamp['b_url_key'] ?>" class="form-control">
-                    <span class="material-input"></span>
+                	<p>This is the URL of your bootcamp that would be shared with students to enroll:</p>
+                	<div class="input-group border">
+                      <span class="input-group-addon addon-lean" style="color:#CCC;"> &nbsp;&nbsp;https://mench.co/bootcamps/</span>
+                      <input type="text" id="b_url_key" style="text-transform:lowercase; margin:0 0 -2px -12px !important; font-size:18px !important; " value="<?= $bootcamp['b_url_key'] ?>" maxlength="255" class="form-control" />
+                    </div>
                     <p class="extra-info" style="margin-bottom:0; padding-bottom:0;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Warning: URL changes break previously shared links.</p>
                     <div style="margin-bottom:20px;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-default landing_page_url">View Landing Page <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></div>
                 </div>
                 
                 
                 <div class="title"><h4>Featured Image URL (w/h ratio of 1.78) <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The image for the marketplace."></i></h4></div>
-                <div class="form-group label-floating is-empty">
-                    <input type="url" id="b_image_url" value="<?= $bootcamp['b_image_url'] ?>" class="form-control">
+                <div class="form-group label-floating is-empty border" style="padding-bottom:0;">
+                    <input type="url" id="b_image_url" value="<?= $bootcamp['b_image_url'] ?>" style="margin-bottom:0;" class="form-control">
                     <span class="material-input"></span>
                 </div>
                 
                 
                 
                 <div class="title"><h4>Featured Video URL (2-3 minutes max) <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="The video that would be displayed on the landing page of the bootcamp that explains why students should join your bootcamp."></i></h4></div>
-                <div class="form-group label-floating is-empty">
-                    <input type="url" id="b_video_url" value="<?= $bootcamp['b_video_url'] ?>" class="form-control">
+                <div class="form-group label-floating is-empty border" style="padding-bottom:0;">
+                    <input type="url" id="b_video_url" value="<?= $bootcamp['b_video_url'] ?>" style="margin-bottom:0;" class="form-control">
                     <span class="material-input"></span>
                 </div>
                 

@@ -66,10 +66,18 @@ class Bot extends CI_Controller {
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
-			log_error('Facebook webhook call missing either object/entry variables.',$json_data,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
+		        'e_json' => json_encode($json_data),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 			return false;
 		} elseif(!$json_data['object']=='page'){
-			log_error('Facebook webhook call object value is not equal to [page], which is what was expected.',$json_data,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
+		        'e_json' => json_encode($json_data),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 			return false;
 		}
 		
@@ -79,10 +87,18 @@ class Bot extends CI_Controller {
 			
 			//check the page ID:
 			if(!isset($entry['id']) || $entry['id']!==$website['fb_page_id']){
-				log_error('Facebook webhook call with unknown page id ['.$entry['id'].'].',$json_data,2);
+			    $this->Db_model->e_create(array(
+			        'e_message' => 'facebook_webhook() unrecognized page id ['.$entry['id'].'].',
+			        'e_json' => json_encode($json_data),
+			        'e_type_id' => 8, //Platform Error
+			    ));
 				continue;
 			} elseif(!isset($entry['messaging'])){
-				log_error('Facebook webhook call without the Messaging Array().',$json_data,2);
+			    $this->Db_model->e_create(array(
+			        'e_message' => 'facebook_webhook() call missing messaging Array().',
+			        'e_json' => json_encode($json_data),
+			        'e_type_id' => 8, //Platform Error
+			    ));
 				continue;
 			}
 
@@ -92,26 +108,20 @@ class Bot extends CI_Controller {
 				if(isset($im['read'])){
 					
 					//This callback will occur when a message a page has sent has been read by the user.
-					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
-					//The watermark field is used to determine which messages were read.
-					//It represents a timestamp indicating that all messages with a timestamp before watermark were read by the recipient.
-					$this->Db_model->log_engagement(array(
-							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
-							'e_medium_id' => 2, //Messenger Bot
-							'e_medium_action_id' => 1, //read
-							'e_json' => json_encode($json_data),
-					));
+				    $this->Db_model->e_create(array(
+				        'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_json' => json_encode($json_data),
+				        'e_type_id' => 1, //Message Read
+				    ));
 					
 				} elseif(isset($im['delivery'])) {
 					
 					//This callback will occur when a message a page has sent has been delivered.
-					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
-					$this->Db_model->log_engagement(array(
-							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
-							'e_medium_id' => 2, //Messenger Bot
-							'e_medium_action_id' => 2, //delivery
-							'e_json' => json_encode($json_data),
-					));
+				    $this->Db_model->e_create(array(
+				        'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_json' => json_encode($json_data),
+				        'e_type_id' => 2, //Message Delivered
+				    ));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
 					
@@ -133,20 +143,9 @@ class Bot extends CI_Controller {
 						$payload = $im['postback']['payload']; //Maybe do something with this later?
 						
 						if(isset($im['postback']['referral'])){
-							/*
-							 * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback
-							 *
-							 * This section is present only if:
-							 *
-							 * - The user entered the thread via an m.me link with a ref parameter and tapped the Get Started button.
-							 * - The user entered the thread by scanning a parametric Messenger Code and tapped the Get Started button.
-							 * - This is the first postback after user came from a Messenger Conversation Ad.
-							 * - The user entered the thread via Discover tab and tapped the Get Started button. See here for more info.
-							 *
-							 * The information contained in this section follows that of the referral webhook.
-							 *
-							 * */
+						    
 							$referral_array = $im['postback']['referral'];
+							
 						} else {
 							//Postback without referral!
 							$referral_array = null;
@@ -154,30 +153,14 @@ class Bot extends CI_Controller {
 						
 					} elseif(isset($im['referral'])) {
 						
-						/*
-						 * This callback will occur when the user already has a thread with the
-						 * bot and user comes to the thread from:
-						 *
-						 *  - Following an m.me link with a referral parameter
-						 *  - Clicking on a Messenger Conversation Ad
-						 *  - Scanning a parametric Messenger Code.
-						 *
-						 *  Learn more:
-						 *  https://developers.facebook.com/docs/messenger-platform/webhook-reference/referral
-						 *
-						 * */
-						
 						$referral_array = $im['referral'];
 					}
 					
 					
-					
-					
 					$eng_data = array(
-							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
-							'e_medium_id' => 2, //Messenger Bot
-							'e_medium_action_id' => (isset($im['referral']) ? 4 : 3), //referral or postback
-							'e_json' => json_encode($json_data),
+						'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
+						'e_json' => json_encode($json_data),
 					);
 					
 					
@@ -188,17 +171,7 @@ class Bot extends CI_Controller {
 						$ref_source = $referral_array['source'];
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
-						
-						//TODO Validate ref ID
-						
-						if(count($challenges)==1){
-							//We found this!
-							//Decode ref variable:
-						    $eng_data['e_obj_type'] = 'c';
-						    $eng_data['e_obj_id'] = $challenges[0]['c_id'];
-						}
-						
-						
+						$eng_data['e_object_id'] = intval($referral_array['ref']); //TODO validate this before logging
 						
 						//Optional actions that may need to be taken on SOURCE:
 						if(strtoupper($ref_source)=='ADS' && $ad_id){
@@ -217,36 +190,20 @@ class Bot extends CI_Controller {
 					}
 					
 					//General variables:
-					$this->Db_model->log_engagement($eng_data);
+					$this->Db_model->e_create($eng_data);
 					
-					//TODO implement some response?
 					
 				} elseif(isset($im['optin'])) {
-					
-					/*
-					 * This callback will occur when the Send to Messenger plugin has been tapped, 
-					 * or when a user has accepted a message request using Customer Matching.
-					 * 
-					 * https://developers.facebook.com/docs/messenger-platform/webhook-reference/optins
-					 * 
-					 * 
-					 * */
-					
-					//This parameter is set by the data-ref field on the "Send to Messenger" plugin.
-					//This field can be used by the developer to associate a click event on the plugin with a callback.
-					$eng_data = array(
-							'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
-							'e_medium_id' => 2, //Messenger Bot
-							'e_medium_action_id' => 5, //optin
-							'e_json' => json_encode($json_data),
-					);
-					
 					
 					//TODO Validate the ref ID and log error if not valid.
 					//Decode ref variable intval($im['optin']['ref'])
 					
 					//Log engagement:
-					$new = $this->Db_model->log_engagement($eng_data);
+				    $this->Db_model->e_create(array(
+				        'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_json' => json_encode($json_data),
+				        'e_type_id' => 5, //Message Delivered
+				    ));
 					
 				} elseif(isset($im['message'])) {
 					
@@ -261,12 +218,11 @@ class Bot extends CI_Controller {
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					
 					$eng_data = array(
-							'e_creator_id' => ( $sent_from_us ? 0 : $this->Db_model->u_fb_search($im['sender']['id'])),
-							'e_medium_id' => 2, //Messenger Bot
-							'e_medium_action_id' => ( $sent_from_us ? 7 : 6 ), //Inbound or Outbound Message
-							'e_json' => json_encode($json_data),
-							'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
-					);					
+						'e_creator_id' => ( $sent_from_us ? 0 : $this->Db_model->u_fb_search($im['sender']['id'])),
+						'e_json' => json_encode($json_data),
+						'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
+					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
+					);
 					
 					//Some that are not used yet:
 					$is_mench = 0; //TODO
@@ -279,12 +235,16 @@ class Bot extends CI_Controller {
 					
 					//Do some checks:
 					if(!isset($im['message']['mid'])){
-						log_error('Received message without Facebook Message ID!',$json_data,2);
+					    $this->Db_model->e_create(array(
+					        'e_message' => 'facebook_webhook() Received message without Facebook Message ID.',
+					        'e_json' => json_encode($json_data),
+					        'e_type_id' => 8, //Platform Error
+					    ));
 					}
 					
 					//It may also have an attachment
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message
-					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-echo
+					//
 					$new_file_url = null; //Would be updated IF message is a file
 					if(isset($im['message']['attachments'])){
 						//We have some attachments, lets loops through them:
@@ -339,42 +299,22 @@ class Bot extends CI_Controller {
 								
 							} else {
 								//This should really not happen!
-								log_error('Received Facebook message with unknown attachment type ['.$att['type'].']',$json_data,2);
+							    $this->Db_model->e_create(array(
+							        'e_message' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
+							        'e_json' => json_encode($json_data),
+							        'e_type_id' => 8, //Platform Error
+							    ));
 							}
 						}
 					}
 					
 					
-					
-					/*
-					$quick_reply_pid = null;
-					if(isset($im['message']['quick_reply']) && isset($im['message']['quick_reply']['payload']) && intval($im['message']['quick_reply']['payload'])>0){
-						//This message has a quick reply in it:
-						$quick_reply_pid = fetch_grandchild( $im['message']['quick_reply']['payload'] , 3 , $json_data);
-						
-						//Lets expand the scope of $eng_data['intent_pid'] & have it store this PID
-						$eng_data['intent_pid'] = $quick_reply_pid;
-						
-						//TODO Lets see what type of pattern is this?
-						//IF grandpa_id=3, then > $eng_data['intent_pid'] = $quick_reply_pid;
-						
-					}
-					
-					//Do we need to detect any commands and auto-reply?
-					$mench_command_pid = null;
-					if($is_mench && !$quick_reply_pid && strlen($eng_data['message'])>0){
-						//Attempt detecting possible coach-related commands in chat:
-						$mench_command_pid = $this->run_mench_commands($eng_data['us_id'],$user_id,$eng_data['message']);
-						
-						$eng_data['intent_pid'] = $mench_command_pid;
-					}
-					*/
-					
 					//Log incoming engagement:
-					$this->Db_model->log_engagement($eng_data);
+					$this->Db_model->e_create($eng_data);
 					
 					
 					//Should we start talking?!
+					/*
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['e_message'])>0){
 						
 						//TODO disabled for now, build later
@@ -403,13 +343,17 @@ class Bot extends CI_Controller {
 						));
 						
 						
-						//TODO Log outgoing message:
-						//$eng_data = array();
-						//$new_out = $this->Us_model->log_engagement($eng_data);
+						//TODO Log outgoing message Engagement
 					}
+					*/
 					
 				} else {
-					log_error('We received an unrecognized Facebook webhook call.',$json_data,2);
+				    //This should really not happen!
+				    $this->Db_model->e_create(array(
+				        'e_message' => 'facebook_webhook() received unrecognized webhook call.',
+				        'e_json' => json_encode($json_data),
+				        'e_type_id' => 8, //Platform Error
+				    ));
 				}
 			}
 		}
@@ -417,101 +361,7 @@ class Bot extends CI_Controller {
 	
 	
 	
-	function run_mench_commands($from_us_id,$from_fb_id,$message){
-		
-		//Cleanup the message:
-		$message = trim(strtolower($message));
-		
-		//See if we can detect commands from this message:
-		if($message=='help' || substr($message,0,5)=='/help'){
-			
-			//We have a help menu for our coaches:
-			quick_message($from_fb_id,'Here are the commands that help you as a coach:
-					
-/send - Allows you to send messages to your student entrepenuers like: /send last 3 to Miguel Hernandez');
-			
-			return 1104; //help command PID
-			
-		} elseif(substr($message,0,6)=='/send '){
-			
-			/*
-			 * Used by Menches when they want to forward 1 or more messages to their clients.
-			 *
-			 * Format: [send] [last 4] [to] [Soroush Babaeian, Miguel Hernandez]
-			 *
-			 * [send] Required, activates command
-			 * [last 4] Optional, default is [last 1], if detected would search for last X messages sent to AskMench from Coach
-			 * [to] Required, de
-			 * [Soroush Babaeian] Required, comma separated full name of individuals that the message should be forwarded to!
-			 *
-			 * */
-			
-			if(substr_count($message,' to ')==1){
-				
-				//Awesome, we found the second required element:
-				$temp = explode(' to ',$message,2);
-				$people = explode(',',$temp[1]);
-				
-				//Now see if we can find the recipient(s):
-				$valid_users = array();
-				foreach($people as $full_name){
-				    $fb_user_id = $this->Db_model->u_fb_fetch($full_name);
-					if(strlen($fb_user_id)>10){
-						//Found it! lets add them to the list!
-						array_push($valid_users,$fb_user_id);
-					} else {
-						//Empty all results and return error:
-						unset($valid_users);
-						$valid_users = array();
-						quick_message($from_fb_id,'Error: "'.$full_name.'" is not a valid user with an active Facebook id. Command suspended; you may try again.');
-						break;
-					}
-				}
-				
-				if(count($valid_users)>0){
-					//We're ready to dispatch the last X messages to these users!
-					//How many messages are we sending over?
-					$last_msgs = 1; //Default
-					if(substr_count($temp[0],'last ')==1){
-						$temp2 = explode('last ',$temp[0],2);
-						$last_msgs = ( intval($temp2[1])>1 ? intval($temp2[1]) : 1 );
-					}
-					
-					//Go through the messages and see what we find:
-					$msgs = $this->Us_model->fetch_recent_messages($from_us_id,$last_msgs);
-					if(count($msgs)==$last_msgs){
-						
-						//All seems good, lets move on and send all messages to all users:
-						$success_count = 0; 
-						foreach($valid_users as $fb_user_id){
-							foreach($msgs as $msg){
-								//TODO: Don't send using quick_message(), instead send directly with meta_data and log engagement directly!
-								if(quick_message($fb_user_id,$msg['message'])){
-									$success_count++;
-								} else {
-									//Ooops, this should not happen
-									log_error('FB Message "'.$msg.'" could not be sent to user ID "'.$fb_user_id.'" using the quick_message() function.',null,2);
-								}
-							}
-						}
-						
-						//Notify Mench about the status of this command:
-						quick_message($from_fb_id, 'Success: '.$success_count.' messages sent to '.count($valid_users).' recipient(s).');
-						
-					} else {
-						//Was not able to find the number of sent messages as requested! Abandon...
-						quick_message($from_fb_id,'Error: Could not locate your '.$last_msgs.' most recent message(s). Command suspended; you may try again.');
-					}
-				}
-				
-			} else {
-				//Ooops, this is clearly an issue!
-				quick_message($from_fb_id,'Error: /send command requires " to " followed by the full recipient name.');
-			}
-			
-			return 1105; //send command PID
-		}
-	}
+	
 	
 	function apiai_webhook(){
 		
@@ -582,8 +432,7 @@ class Bot extends CI_Controller {
 				}
 				
 				
-				//Log incoming engagement:
-				$new = $this->Us_model->log_engagement($eng_data);
+				//Log incoming engagement
 				
 				//Fancy:
 				//sleep(1);
@@ -611,8 +460,7 @@ class Bot extends CI_Controller {
 			}
 			
 		} else {
-			//Log engagement:
-			$new = $this->Us_model->log_engagement($eng_data);
+			//TODO Log engagement
 			
 			//most likely this is the api.ai console.
 			header('Content-Type: application/json');

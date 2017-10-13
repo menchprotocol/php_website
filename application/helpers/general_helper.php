@@ -198,7 +198,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     		?>
     	</ul>
     </div>
-    <?php 
+    <?php
 }
 
 
@@ -208,7 +208,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	$status_index = array(
 	    'b' => array(
 	        -1 => array(
-	            's_name'  => 'Deleted',
+	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Bootcamp removed.',
 	            'u_min_status'  => 1,
@@ -226,15 +226,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
-	            's_name'  => 'Live',
-	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Bootcamp is listed on marketplace.',
-	            'u_min_status'  => 3, //Can only be done by admin
+    	        's_name'  => 'Live - Private',
+    	        's_color' => '#4caf50', //green
+    	        's_desc'  => 'Live, ready for enrollment using the private landing page URL.',
+    	        'u_min_status'  => 3, //Can only be done by admin
+	        ),
+	        3 => array(
+    	        's_name'  => 'Live On Marketplace',
+    	        's_color' => '#4caf50', //green
+    	        's_desc'  => 'Bootcamp is listed on marketplace.',
+    	        'u_min_status'  => 3, //Can only be done by admin
 	        ),
 	    ),
 	    'c' => array(
 	        -1 => array(
-	            's_name'  => 'Deleted',
+	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Intent removed.',
 	            'u_min_status'  => 1,
@@ -254,7 +260,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    ),
 	    'r' => array(
 	        -1 => array(
-	            's_name'  => 'Deleted',
+	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Cohort removed by bootcamp leader.',
 	            'u_min_status'  => 1,
@@ -274,7 +280,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    ),
 	    'i' => array(
 	        -1 => array(
-	            's_name'  => 'Deleted',
+	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Reference removed by bootcamp leader.',
 	            'u_min_status'  => 1,
@@ -295,7 +301,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    
 	    'cr' => array(
 	        -1 => array(
-	            's_name'  => 'Deleted',
+	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Intent link removed.',
 	            'u_min_status'  => 1,
@@ -339,7 +345,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    
 	    'u' => array(
 	        -1 => array(
-	            's_name'  => 'Deleted',
+	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'User account deleted and no longer active.',
 	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
@@ -363,7 +369,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 3, //Only admins can approve leaders
 	        ),
 	        3 => array(
-	            's_name'  => 'Super Admin',
+	            's_name'  => 'Mench Admin',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
 	            'u_min_status'  => 3, //Only admins can create other admins
@@ -583,28 +589,38 @@ function save_file($file_url,$json_data){
             @unlink($file_path.$file_name);
             return $result['ObjectURL'];
         } else {
-            log_error('Unable to upload Facebook Message Attachment ['.$file_url.'] to Internal Storage.' , $json_data, 2);
+            $CI->Db_model->e_create(array(
+                'e_message' => 'save_file() Unable to upload file ['.$file_url.'] to internal storage.',
+                'e_json' => json_encode($json_data),
+                'e_type_id' => 8, //Platform Error
+            ));
             return false;
         }
+        
     } else {
         //Probably local, ignore this!
         return false;
     }
 }
 
-
-function log_error($error_message, $json_data=array(), $e_medium_id=1){
-	$CI =& get_instance();
-	
-	//First log error in DB:
-	$res = $CI->Db_model->log_engagement(array(
-			'e_message' => $error_message,
-			'e_medium_id' => $e_medium_id, //Error logging
-			'e_medium_action_id' => 0, //Reserved for errors
-	));
-	
-	//Return error ID:
-	return $res['e_id'];
+function readable_updates($before,$after,$remove_prefix){
+    $message = null;
+    foreach($after as $key=>$after_value){
+        if(isset($before[$key]) && $before[$key]!==$after_value){
+            //Change detected!
+            if($message){
+                $message .= "\n";
+            }
+            $message .= '- Updated '.ucwords(str_replace('_',' ',str_replace($remove_prefix,'',$key))).' from ['.$before[$key].'] to ['.$after_value.']';
+        }
+    }
+    
+    if(!$message){
+        //No changes detected!
+        $message = 'Nothing updated!';
+    }
+    
+    return $message;
 }
 
 function fb_time($unix_time){

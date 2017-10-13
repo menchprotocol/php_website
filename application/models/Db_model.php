@@ -28,13 +28,25 @@ class Db_model extends CI_Model {
 		
 		//Make sure required fields are here:
 		if(!isset($insert_columns['u_fname'])){
-			log_error('u_create() Missing u_fname.',$insert_columns,2);
+			$this->Db_model->e_create(array(
+			    'e_message' => 'u_create() missing u_fname.',
+			    'e_json' => json_encode($insert_columns),
+			    'e_type_id' => 8, //Platform Error
+			));
 			return false;
 		} elseif(!isset($insert_columns['u_lname'])){
-			log_error('u_create() Missing u_lname.',$insert_columns,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'u_create() missing u_lname.',
+		        'e_json' => json_encode($insert_columns),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 			return false;
 		} elseif(!isset($insert_columns['u_fb_id'])){
-			log_error('u_create() Missing u_fb_id.',$insert_columns,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'u_create() missing u_fb_id.',
+		        'e_json' => json_encode($insert_columns),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 			return false;
 		}
 		
@@ -145,7 +157,11 @@ class Db_model extends CI_Model {
 			
 		} else {
 			//Inconsistent data:
-			log_error('Found multiple users for Facebook ID ['.$u_fb_id.']',$matching_users,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'u_fb_search() Found multiple users for Facebook ID ['.$u_fb_id.'].',
+		        'e_json' => json_encode($matching_users),
+		        'e_type_id' => 8, //Platform Error
+		    ));
 			return 0;
 		}
 		
@@ -155,7 +171,10 @@ class Db_model extends CI_Model {
 			return $u_id;
 		} else {
 			//Ooops, some error!
-			log_error('Failed to create/fetch user using their Facebook ID ['.$u_fb_id.']',null,2);
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'u_fb_search() Failed to create/fetch user using their Facebook ID ['.$u_fb_id.'].',
+		        'e_type_id' => 8, //Platform Error
+		    ));
 			return 0;
 		}
 	}
@@ -173,7 +192,11 @@ class Db_model extends CI_Model {
 			
 			if(count($matching_users)>=2){
 				//Multiple users found!
-				log_error('Found '.count($matching_users).' users with a full name of ['.$full_name.']. First result returned.',$matching_users,2);
+			    $this->Db_model->e_create(array(
+			        'e_message' => 'u_fb_fetch() Found '.count($matching_users).' users with a full name of ['.$full_name.']. First result returned.',
+			        'e_json' => json_encode($matching_users),
+			        'e_type_id' => 8, //Platform Error
+			    ));
 			}
 			
 			//Return first result:
@@ -204,7 +227,11 @@ class Db_model extends CI_Model {
 		//Is this user in our system already?
 		if(count($matching_users)>0){
 			if(count($matching_users)>=2){
-				log_error('Found multiple users for Facebook ID ['.$u_fb_id.']',$matching_users,2);
+			    $this->Db_model->e_create(array(
+			        'e_message' => 'u_fb_create() Found multiple users for Facebook ID ['.$u_fb_id.'].',
+			        'e_json' => json_encode($matching_users),
+			        'e_type_id' => 8, //Platform Error
+			    ));
 			}
 			
 			//Yes, just assume the user is the first result:
@@ -608,44 +635,63 @@ class Db_model extends CI_Model {
 	    return $insert_columns;
 	}
 	
-	function log_engagement($link_data){
+	
+	function e_fetch($match_columns=array()){
+	    $this->db->select('*');
+	    $this->db->from('v5_engagements e');
+	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
+	    $this->db->join('v5_users u', 'u.u_id=e.e_creator_id','left');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $this->db->order_by('e.e_id','DESC');
+	    $this->db->limit(100);
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
+	function e_create($link_data){
+	    
+	    //Sort out the optional fields first:
+	    if(!isset($link_data['e_creator_id'])){
+	        //Try to fetch user ID from session:
+	        $user_data = $this->session->userdata('user');
+	        if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
+	            $link_data['e_creator_id'] = $user_data['u_id'];
+	        } else {
+	            //Have no user:
+	            $link_data['e_creator_id'] = 0;
+	        }
+	    }
+	    if(!isset($link_data['e_timestamp'])){
+	        $link_data['e_timestamp'] = date("Y-m-d H:i:s");
+	    }
+	    if(!isset($link_data['e_json'])){
+	        $link_data['e_json'] = null;
+	    }
+	    if(!isset($link_data['e_message'])){
+	        $link_data['e_message'] = null;
+	    }
+	    if(!isset($link_data['e_object_id'])){
+	        $link_data['e_object_id'] = 0;
+	    }
 		
-		//These are required fields:
-		if(!isset($link_data['e_medium_id'])){
-			log_error('log_engagement Missing e_medium_id.' , $link_data);
+	    
+		//Now check required fields:
+		if(!isset($link_data['e_type_id'])){
+		    //Log this error:
+		    $this->Db_model->e_create(array(
+		        'e_creator_id' => $link_data['e_creator_id'],
+		        'e_message' => 'e_create() Function missing [e_type_id] variable.',
+		        'e_json' => json_encode($link_data),
+		        'e_type_id' => 8, //Platform Error
+		        'e_object_id' => $link_data['e_object_id'], //Maybe there!
+		    ));
 			return false;
-		} elseif(!isset($link_data['e_medium_action_id'])){
-			log_error('log_engagement Missing e_medium_action_id.' , $link_data, $link_data['e_medium_id']);
-			return false;
-		} elseif(!isset($link_data['e_creator_id'])){
-			//Try to fetch user ID from session:
-			$user_data = $this->session->userdata('user');
-			if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
-				$link_data['e_creator_id'] = $user_data['u_id'];
-			} elseif($link_data['e_medium_action_id']==0) {
-				//This is for error loggin, no need for a user...
-				$link_data['e_creator_id'] = 0;
-			} else {
-				//This should not happen, return error:
-				log_error('log_engagement Missing e_creator_id.' , $link_data, $link_data['e_medium_id']);
-				return false;
-			}
 		}
 		
-		//These are optional and could have defaults:
-		if(!isset($link_data['e_timestamp'])){
-			$link_data['e_timestamp'] = date("Y-m-d H:i:s");
-		}
-		if(!isset($link_data['e_json'])){
-			$link_data['e_json'] = '';
-		}
-		if(!isset($link_data['e_message'])){
-			$link_data['e_message'] = '';
-		}
-		
-		
-		//Lets now add:
-		$this->db->insert('v5_engagement', $link_data);
+		//Lets log:
+		$this->db->insert('v5_engagements', $link_data);
 		
 		//Fetch inserted id:
 		$link_data['e_id'] = $this->db->insert_id();
@@ -653,7 +699,6 @@ class Db_model extends CI_Model {
 		//Boya!
 		return $link_data;
 	}
-	
 	
 
 	

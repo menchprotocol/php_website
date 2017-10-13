@@ -98,7 +98,11 @@ class Users extends CI_Controller {
 			} else {
 				
 				//Ooops, this should never happen!
-				log_error('Found multiple users with the same Facebook ID ['.$res['userID'].']',$_POST,2);
+			    $this->Db_model->e_create(array(
+			        'e_message' => 'login_auth() matched multiple users with the same Facebook ID ['.$res['userID'].']',
+			        'e_json' => json_encode($_POST),
+			        'e_type_id' => 8, //Platform Error
+			    ));
 				
 			}
 			

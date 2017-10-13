@@ -90,7 +90,7 @@ class Front extends CI_Controller {
 	    ));
 	    $this->load->view('front/bootcamp/browse' , array(
 	        'bootcamps' => $this->Db_model->c_full_fetch(array(
-	            'b.b_status' => 2,
+	            'b.b_status' => 3,
 	        )),
 	    ));
 	    $this->load->view('front/shared/f_footer');

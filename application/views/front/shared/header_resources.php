@@ -14,7 +14,8 @@ $website = $this->config->item('website');
 <link href="/css/console/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
 <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
 <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
-
+<link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.3.3/quill.snow.css" rel="stylesheet">
 
 <!-- Core JS Files -->
 <script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
@@ -22,4 +23,6 @@ $website = $this->config->item('website');
 <script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
 <script src="/js/console/material.min.js" type="text/javascript"></script>
 <script src="/js/console/material-dashboard.js" type="text/javascript"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.quilljs.com/1.3.3/quill.min.js"></script>
 <!-- END SHARED RESOURCES -->
