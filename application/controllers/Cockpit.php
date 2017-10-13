@@ -16,11 +16,11 @@ class Cockpit extends CI_Controller {
 	    
 	    //This lists all users based on the permissions of the user
 	    $this->load->view('console/shared/d_header', array(
-	        'title' => 'All Engagements',
+	        'title' => 'Platform-Wide Engagements',
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'All Engagements',
+	                'anchor' => 'Platform-Wide Engagements',
 	            ),
 	        ),
 	    ));

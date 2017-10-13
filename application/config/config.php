@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.35,
+    'version' => 0.36,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -18,15 +18,31 @@ $config['website'] = array(
 );
 
 //The core objects of the platform:
-$config['object_names'] = array(
-    'u' => 'User',
-    'b' => 'Bootcamp',
-    'ba' => 'Bootcamp Team Member',
-    'c' => 'Intent',
-    'cr' => 'Intent Link',
-    'r' => 'Cohort',
-    'ru' => 'Cohort Enrollment',
-    'i' => 'Intent Reference (Upcoming)',
+$config['core_objects'] = array(
+    'u' => array(
+        'o_name' => 'User',
+    ),
+    'b' => array(
+        'o_name' => 'Bootcamp',
+    ),
+    'ba' => array(
+        'o_name' => 'Bootcamp Team Member',
+    ),
+    'c' => array(
+        'o_name' => 'Intent',
+    ),
+    'cr' => array(
+        'o_name' => 'Intent Link',
+    ),
+    'r' => array(
+        'o_name' => 'Cohort',
+    ),
+    'ru' => array(
+        'o_name' => 'Cohort Enrollment',
+    ),
+    'i' => array(
+        'o_name' => 'Intent Reference (Upcoming)',
+    ),
 );
 
 //based on the fibonacci sequence for more realistic estimates

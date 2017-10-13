@@ -431,6 +431,17 @@ class Db_model extends CI_Model {
 	    return $q->result_array();
 	}
 	
+	function b_fetch($match_columns){
+	    //Missing anything?
+	    $this->db->select('*');
+	    $this->db->from('v5_bootcamps b');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
 	function c_plain_fetch($match_columns){
 		//Missing anything?
 		$this->db->select('c.*');
@@ -641,6 +652,8 @@ class Db_model extends CI_Model {
 	    $this->db->from('v5_engagements e');
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_creator_id','left');
+	    $this->db->join('v5_bootcamps b', 'b.b_id=e.e_b_id','left');
+	    $this->db->join('v5_intents c', 'c.c_id=b.b_c_id','left');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }

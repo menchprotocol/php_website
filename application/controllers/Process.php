@@ -240,11 +240,16 @@ class Process extends CI_Controller {
 	    //Now update the DB:
 	    $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
 	    
+	    //Remove sensitive data before logging:
+	    unset($_POST['u_password_new']);
+	    unset($_POST['u_password_current']);
+	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_creator_id' => $udata['u_id'], //The user that updated the account
 	        'e_message' => readable_updates($u_current[0],$u_update,'u_'),
 	        'e_json' => json_encode(array(
+	            'input' => $_POST,
 	            'before' => $u_current[0],
 	            'after' => $u_update,
 	        )),
@@ -292,10 +297,11 @@ class Process extends CI_Controller {
 	            if(count($cohorts)==1){
 	                //Port the settings:
 	                $cohort_data = $cohorts[0];
+	                $eng_message = time_format($_POST['r_start_date'],1).' cohort created by copying '.time_format($cohorts[0]['r_start_date'],1).' cohort settings.';
 	                
 	                //Make some adjustments
 	                $cohort_data['r_start_date'] = date("Y-m-d",strtotime($_POST['r_start_date']));
-	                $cohort_data['r_status'] = 0; //Always Drafting
+	                unset($cohort_data['r_status']); //Use the system default for this
 	                unset($cohort_data['r_id']); //Remove as it would be assigned for this new cohort
 	            }
 	        }
@@ -307,18 +313,15 @@ class Process extends CI_Controller {
 	            //Fetch default questions:
 	            $default_cohort_questions = $this->config->item('default_cohort_questions');
 	            
-	            //Generate defaults:
+	            //Generate core data:
 	            $cohort_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
-	                'r_status' => 0, //Drafting
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	                'r_min_students' => 1,
-	                'r_max_students' => 20,
-	                'r_usd_price' => 0,
-	                'r_weekly_1on1s' => 0,
-	                'r_response_time_hours' => 24,
 	                'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
 	            );
+	            
+	            //Default message:
+	            $eng_message = time_format($_POST['r_start_date'],1).' cohort created form scratch.';
 	        }
 	        
 	        
@@ -326,6 +329,18 @@ class Process extends CI_Controller {
 	        $cohort = $this->Db_model->r_create($cohort_data);
 	        
 	        //Log engagement:
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $udata['u_id'], //The user that updated the account
+	            'e_message' => $eng_message,
+	            'e_json' => json_encode(array(
+	                'input' => $_POST,
+	                'before' => array(),
+	                'after' => $cohort,
+	            )),
+	            'e_type_id' => 14, //New Cohort
+	            'e_object_id' => $cohort['r_id'],
+	            'e_b_id' => intval($_POST['r_b_id']), //Share with bootcamp team
+	        ));
 	        
 	        
 	        if($cohort['r_id']>0){
@@ -354,7 +369,7 @@ class Process extends CI_Controller {
 	    $cohorts = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	    ));
-	    if($cohorts<1){
+	    if(count($cohorts)<1){
 	        //Ooops, not found!
 	        die('<span style="color:#FF0000;">Error: Cohort ID not found.</span>');
 	    }
@@ -372,17 +387,18 @@ class Process extends CI_Controller {
 	            'e_creator_id' => $udata['u_id'], //The user
 	            'e_message' => readable_updates($cohorts[0],$r_update,'r_'),
 	            'e_json' => json_encode(array(
+	                'input' => $_POST,
 	                'before' => @unserialize($cohorts[0]['r_live_office_hours']),
 	                'after' => @unserialize($r_update['r_live_office_hours']),
 	            )),
 	            'e_type_id' => 24, //Cohort Schedule Update
 	            'e_object_id' => intval($_POST['r_id']),
+	            'e_b_id' => $cohorts[0]['r_b_id'], //Share with bootcamp team
 	        ));
 	    }
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Saved</span>');
-	    
 	}
 	
 	
@@ -408,47 +424,19 @@ class Process extends CI_Controller {
 	    $cohorts = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	    ));
-	    if($cohorts<1){
+	    if(count($cohorts)<1){
 	        //Ooops, not found!
 	        die('<span style="color:#FF0000;">Error: Cohort ID not found.</span>');
 	    }
 	    
 	    
-	    if(!isset($_POST['r_usd_price']) || intval($_POST['r_usd_price'])<0){
-	        $_POST['r_usd_price'] = 0;
-	    }
-	    if(!isset($_POST['r_min_students'])){
-	        $_POST['r_min_students'] = 1;
-	    }
-	    if(!isset($_POST['r_max_students'])){
-	        $_POST['r_max_students'] = 20;
-	    }
-	    if(!isset($_POST['r_closed_dates'])){
-	        $_POST['r_closed_dates'] = '';
-	    }
-	    if(!isset($_POST['r_office_hour_instructions'])){
-	        $_POST['r_office_hour_instructions'] = '';
-	    }
-	    if(!isset($_POST['r_application_questions'])){
-	        $_POST['r_application_questions'] = '';
-	    }
-	    if(!isset($_POST['r_response_time_hours'])){
-	        $_POST['r_response_time_hours'] = 24;
-	    }
-	    if(!isset($_POST['r_weekly_1on1s'])){
-	        $_POST['r_weekly_1on1s'] = 0;
-	    }
-	    
-	    
-	    $update_data = array(
+	    $r_update = array(
 	        'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	        
 	        'r_response_time_hours' => $_POST['r_response_time_hours'],
 	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
 	        'r_office_hour_instructions' => $_POST['r_office_hour_instructions'],
 	        'r_application_questions' => $_POST['r_application_questions'],
 	        'r_closed_dates' => $_POST['r_closed_dates'],
-	        
 	        'r_status' => intval($_POST['r_status']),
 	        'r_usd_price' => floatval($_POST['r_usd_price']),
 	        'r_min_students' => intval($_POST['r_min_students']),
@@ -457,12 +445,27 @@ class Process extends CI_Controller {
 	    
 	    if(isset($_POST['r_live_office_hours_check']) && !intval($_POST['r_live_office_hours_check'])){
 	        //User the office schedule off, lets disable it:
-	        $update_data['r_live_office_hours'] = '';
+	        $r_update['r_live_office_hours'] = '';
 	    }	    
 	    
-	    $this->Db_model->r_update( intval($_POST['r_id']) , $update_data );
+	    //Save
+	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
 	    
-	    //TODO Save change history
+	    
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'], //The user
+	        'e_message' => readable_updates($cohorts[0],$r_update,'r_'),
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $cohorts[0],
+	            'after' => $r_update,
+	        )),
+	        'e_type_id' => ($r_update['r_status']<0 && $r_update['r_status']!=$cohorts[0]['r_status'] ? 16 : 13), //Cohort Setting Updated/Deleted
+	        'e_object_id' => intval($_POST['r_id']),
+	        'e_b_id' => $cohorts[0]['r_b_id'], //Share with bootcamp team
+	    ));
+	    
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Saved</span>');
@@ -491,8 +494,16 @@ class Process extends CI_Controller {
             'c_objective' => trim($_POST['c_primary_objective']),
         ));
         if(intval($intent['c_id'])<=0){
+            //Log this error:
+            $this->Db_model->e_create(array(
+                'e_creator_id' => $udata['u_id'],
+                'e_message' => 'bootcamp_create() Function failed to create intent ['.$_POST['c_primary_objective'].'].',
+                'e_json' => json_encode($_POST),
+                'e_type_id' => 8, //Platform Error
+            ));
+            //Display error:
             die('<span style="color:#FF0000;">Error: Unkown error while trying to create intent.</span>');
-        }
+        }        
         
         
         //Generaye URL Key:
@@ -514,10 +525,16 @@ class Process extends CI_Controller {
         $bootcamp = $this->Db_model->b_create(array(
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
-            'b_status' => 0, //Bootcamp on Hold
             'b_c_id' => $intent['c_id'],
         ));
         if(intval($bootcamp['b_id'])<=0){
+            //Log this error:
+            $this->Db_model->e_create(array(
+                'e_creator_id' => $udata['u_id'],
+                'e_message' => 'bootcamp_create() Function failed to create bootcamp for intent #'.$intent['c_id'],
+                'e_json' => json_encode($_POST),
+                'e_type_id' => 8, //Platform Error
+            ));
             die('<span style="color:#FF0000;">Error: Unkown error while trying to create bootcamp.</span>');
         }
         
@@ -530,12 +547,64 @@ class Process extends CI_Controller {
             'ba_team_display' => 't', //Show on landing page
         ));
         if(intval($admin_status['ba_id'])<=0){
+            //Log this error:
+            $this->Db_model->e_create(array(
+                'e_creator_id' => $udata['u_id'],
+                'e_message' => 'bootcamp_create() Function failed to grant permission for bootcamp #'.$bootcamp['b_id'],
+                'e_json' => json_encode($_POST),
+                'e_type_id' => 8, //Platform Error
+            ));
             die('<span style="color:#FF0000;">Error: Unkown error while trying to set bootcamp leader.</span>');
         }
+
+        
+        //Log Engagement for Intent Created:
+        $this->Db_model->e_create(array(
+            'e_creator_id' => $udata['u_id'],
+            'e_message' => '['.$intent['c_objective'].'] created as a new intent',
+            'e_json' => json_encode(array(
+                'input' => $_POST,
+                'before' => null,
+                'after' => $intent,
+            )),
+            'e_type_id' => 20, //Intent Created
+            'e_object_id' => $intent['c_id'],
+            'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+        ));
+        
+        
+        //Log Engagement for Bootcamp Created:
+        $this->Db_model->e_create(array(
+            'e_creator_id' => $udata['u_id'],
+            'e_message' => 'Bootcamp #'.$bootcamp['b_id'].' created for ['.$intent['c_objective'].'] intent',
+            'e_json' => json_encode(array(
+                'input' => $_POST,
+                'before' => null,
+                'after' => $bootcamp,
+            )),
+            'e_type_id' => 15, //Bootcamp Created
+            'e_object_id' => $bootcamp['b_id'],
+            'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+        ));
+        
+        
+        //Log Engagement for Permission Granted:
+        $this->Db_model->e_create(array(
+            'e_creator_id' => $udata['u_id'],
+            'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' assigned as Bootcamp Leader',
+            'e_json' => json_encode(array(
+                'input' => $_POST,
+                'before' => null,
+                'after' => $admin_status,
+            )),
+            'e_type_id' => 25, //Permission Granted
+            'e_object_id' => $udata['u_id'],
+            'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+        ));
+        
         
         //Redirect:
         echo '<script> window.location = "/console/'.$bootcamp['b_id'].'" </script>';
-            
 	}
 	
 	
@@ -553,41 +622,60 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing URL Key.</span>');
 	    }
 	    
+	    //Validate Bootcamp ID:
+	    $bootcamps = $this->Db_model->b_fetch(array(
+	        'b.b_id' => intval($_POST['b_id']),
+	    ));
+	    if(count($bootcamps)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    }
+	    
 	    //Cleanup the URL key:
 	    $_POST['b_url_key'] = clean_urlkey($_POST['b_url_key']);
 	    
 	    //Validate URL key to be unique:
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $duplicate_bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_url_key' => $_POST['b_url_key'],
 	        'b.b_id !=' => intval($_POST['b_id']),
 	    ));
-	    if(count($bootcamps)>0){
+	    if(count($duplicate_bootcamps)>0){
 	        //Ooops, we have a duplicate:
 	        die('<span style="color:#FF0000;">Error: Duplicate URL Key with <a href="/bootcamps/'.$_POST['b_url_key'].'" target="_blank">another bootcamp</a>.</span>');
 	    }
 	    
-	    //Cleanup other variables:
-	    if(!isset($_POST['b_video_url'])){
-	        $_POST['b_video_url'] = '';
-	    } elseif(strlen($_POST['b_video_url'])>0 && !url_exists($_POST['b_video_url'])){
+	    //Validate Video & Image URL:
+	    if(strlen($_POST['b_video_url'])>0 && !url_exists($_POST['b_video_url'])){
 	        die('<span style="color:#FF0000;">Error: <a href="'.$_POST['b_video_url'].'" target="_blank">Video URL</a> could not be verified.</span>');
 	    }
-	    
-	    if(!isset($_POST['b_image_url'])){
-	        $_POST['b_image_url'] = '';
-	    } elseif(strlen($_POST['b_image_url'])>0 && !url_exists($_POST['b_image_url'])){
+	    if(strlen($_POST['b_image_url'])>0 && !url_exists($_POST['b_image_url'])){
 	        die('<span style="color:#FF0000;">Error: <a href="'.$_POST['b_image_url'].'" target="_blank">Image URL</a> could not be verified.</span>');
 	    }
-
-	    //Updatye bootcamp:
-	    $this->Db_model->b_update( intval($_POST['b_id']) , array(	        
+	    
+	    //Generate update array:
+	    $b_update = array(
 	        'b_status' => intval($_POST['b_status']),
 	        'b_url_key' => $_POST['b_url_key'],
 	        'b_video_url' => $_POST['b_video_url'],
 	        'b_image_url' => $_POST['b_image_url'],
-	    ));
+	    );
+
+	    //Updatye bootcamp:
+	    $this->Db_model->b_update( intval($_POST['b_id']) , $b_update);
 	    
-	    //TODO Save change history
+	    
+	    //Log Engagement for Bootcamp Edited:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => readable_updates($bootcamps[0],$b_update,'b_'),
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $bootcamps[0],
+	            'after' => $b_update,
+	        )),
+	        'e_type_id' => ( $b_update['b_status']<0 && $b_update['b_status']!=$bootcamps[0]['b_status'] ? 17 : 18 ), //Bootcamp Deleted or Updated
+	        'e_object_id' => intval($_POST['b_id']),
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	    ));
 	    
 	    
 	    //Update Href for Landing page buttons:
@@ -595,6 +683,13 @@ class Process extends CI_Controller {
 	    //Show result 
 	    die('<span style="color:#00CC00;">Saved</span>');
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	/* ******************************
@@ -610,16 +705,46 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Intent Objective.</span>');
+	    }
+	    
+	    //Validate Original intent:
+	    $inbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['pid']),
+	    ));
+	    if(count($inbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
+	    }
+	    
+	    //Validate Bootcamp ID:
+	    $bootcamps = $this->Db_model->b_fetch(array(
+	        'b.b_id' => intval($_POST['b_id']),
+	    ));
+	    if(count($bootcamps)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    }
 	    
 	    //Create intent:
 	    $new_intent = $this->Db_model->c_create(array(
 	        'c_creator_id' => $udata['u_id'],
 	        'c_objective' => trim($_POST['c_objective']),
+	    ));
+	    
+	    //Log Engagement for New Intent:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => 'Intent ['.$new_intent['c_objective'].'] created',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => null,
+	            'after' => $new_intent,
+	        )),
+	        'e_type_id' => 20, //New Intent
+	        'e_object_id' => $new_intent['c_id'],
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
 	    ));
 	    
 	    //Create Link:
@@ -631,6 +756,20 @@ class Process extends CI_Controller {
 	            'cr_status >=' => 0,
 	            'cr_inbound_id' => intval($_POST['pid']),
 	        )),
+	    ));
+	    
+	    //Log Engagement for New Intent Link:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => null,
+	            'after' => $relation,
+	        )),
+	        'e_type_id' => 23, //New Intent Link
+	        'e_object_id' => $relation['cr_id'],
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
 	    ));
 	    
 	    //Fetch full link package:
@@ -645,34 +784,32 @@ class Process extends CI_Controller {
 	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level']);
 	}
 	
+	
+	
 	function intent_edit(){
 	    
 	    //Auth user and check required variables:
 	    $udata = auth(2);
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Intent Objective.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
 	    }
 	    
-	    //Not required variables:
-	    if(!isset($_POST['c_todo_overview'])){
-	        $_POST['c_todo_overview'] = '';
-	    }
-	    if(!isset($_POST['c_prerequisites'])){
-	        $_POST['c_prerequisites'] = '';
-	    }
-	    if(!isset($_POST['c_todo_bible'])){
-	        $_POST['c_todo_bible'] = '';
-	    }
-	    if(!isset($_POST['c_time_estimate'])){
-	        $_POST['c_time_estimate'] = 0;
+	    //Validate Original intent:
+	    $original_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['pid']),
+	    ));
+	    if(count($original_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
 	    }
 	    
-	    
-	    $save_array = array(
+	    //Generate Update Array
+	    $c_update = array(
 	        'c_objective' => trim($_POST['c_objective']),
 	        'c_todo_bible' => $_POST['c_todo_bible'],
 	        'c_todo_overview' => $_POST['c_todo_overview'],
@@ -681,17 +818,31 @@ class Process extends CI_Controller {
 	    );
 	    
 	    //Now update the DB:
-	    $this->Db_model->c_update( intval($_POST['pid']) , $save_array );
+	    $this->Db_model->c_update( intval($_POST['pid']) , $c_update);
 	    
 	    //Update Algolia:
 	    $this->Db_model->sync_algolia(intval($_POST['pid']));
 	    
-	    //TODO Save change history
 	    
+	    //Log Engagement for New Intent Link:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => readable_updates($original_intents[0],$c_update,'c_'),
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $original_intents[0],
+	            'after' => $c_update,
+	        )),
+	        'e_type_id' => 19, //Intent Updated
+	        'e_object_id' => intval($_POST['pid']),
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	    ));
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Saved</span>');
 	}
+	
+	
 	
 	function intent_link(){
 	    
@@ -699,19 +850,46 @@ class Process extends CI_Controller {
 	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
-	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
-	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0 || !is_valid_intent($_POST['target_id'])){
+	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
 	    }
-	    //TODO Check to make sure not duplicate
+	    
+	    //Validate outbound link:
+	    $outbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['target_id']),
+	    ));
+	    if(count($outbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid target_id.</span>');
+	    }
 	    
 	    
-	    //Create Link only:
+	    //Validate inbound link:
+	    $inbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['pid']),
+	    ));
+	    if(count($inbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
+	    }
+	    
+	    
+	    //Check to make sure not a duplicate link:
+	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_inbound_id' => intval($_POST['pid']),
+	        'cr.cr_status >=' => 0,
+	    ));
+	    foreach($current_outbounds as $co){
+	        if($co['cr_outbound_id']==intval($_POST['target_id'])){
+	            //Oops, we already have this!
+	            die('<script> alert("ERROR: Cannot create this link because it already exists."); </script>');
+	        }
+	    }
+	    
+	    
+	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
 	        'cr_creator_id' => $udata['u_id'],
 	        'cr_inbound_id'  => intval($_POST['pid']),
@@ -722,10 +900,27 @@ class Process extends CI_Controller {
 	        )),
 	    ));
 	    
+	    
+	    //Log Engagement for New Intent Link:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => 'Linked intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => null,
+	            'after' => $relation,
+	        )),
+	        'e_type_id' => 23, //New Intent Link
+	        'e_object_id' => $relation['cr_id'],
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	    ));
+	    
+	    
 	    //Fetch full OUTBOUND link package:
 	    $relations = $this->Db_model->cr_outbound_fetch(array(
 	        'cr.cr_id' => $relation['cr_id'],
 	    ));
+	    
 	    
 	    //Return result:
 	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level']);
@@ -739,18 +934,49 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['cr_id']) || intval($_POST['cr_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Link ID.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
 	    }
 	    
-	    //Now update the DB:
-	    $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
-	        'cr_status' => -1, //Deleted by user
+	    //Vaidate Link
+	    $outbound_intents = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_id' => intval($_POST['cr_id']),
+	    ));
+	    if(count($outbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Link ID.</span>');
+	    }
+	    
+	    //Fetch inbound
+	    $inbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => $outbound_intents[0]['cr_inbound_id'],
 	    ));
 	    
-	    //TODO Save to change history
+	    
+	    //Now update the DB:
+	    $cr_update = array(
+	        'cr_status' => -1, //Deleted by user
+	    );
+	    $this->Db_model->cr_update( intval($_POST['cr_id']) , $cr_update);
+	    
+	    
+	    //Log Engagement for Deleted Intent Link:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => 'Removed intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.(isset($inbound_intents[0]['c_objective']) ? $inbound_intents[0]['c_objective'] : 'Unknown!').']',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $outbound_intents[0],
+	            'after' => $cr_update,
+	        )),
+	        'e_type_id' => 21, //Deleted Link
+	        'e_object_id' => intval($_POST['cr_id']),
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	    ));
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Removed Link</span>');
 	}
+	
 	
 	
 	function intents_sort(){
@@ -758,11 +984,27 @@ class Process extends CI_Controller {
 	    $udata = auth(2);
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0 || !is_valid_intent($_POST['c_id'])){
-	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
 	    } elseif(!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort'])<=0){
 	        die('<span style="color:#FF0000;">Error: Nothing passed for sorting.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
 	    }
+	    
+	    //Validate Parent intent:
+	    $inbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['pid']),
+	    ));
+	    if(count($inbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
+	    }
+	    
+	    //Fetch for the record:
+	    $outbounds_before = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_inbound_id' => intval($_POST['pid']),
+	        'cr.cr_status >=' => 0,
+	    ));
 	    
 	    //Update them all:
 	    foreach($_POST['new_sort'] as $rank=>$cr_id){
@@ -773,9 +1015,34 @@ class Process extends CI_Controller {
 	        ));
 	    }
 	    
-	    //TODO Save change history
+	    //Fetch for the record:
+	    $outbounds_after = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_inbound_id' => intval($_POST['pid']),
+	        'cr.cr_status >=' => 0,
+	    ));
+	    
+	    //Log Engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_objective'].']',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $outbounds_before,
+	            'after' => $outbounds_after,
+	        )),
+	        'e_type_id' => 22, //Links Sorted
+	        'e_object_id' => intval($_POST['pid']),
+	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	    ));	    
+        
+	    //Display message:
 	    echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
 	}
+	
+	
+	
+	
+	
 	
 	
 	

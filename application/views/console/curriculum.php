@@ -66,15 +66,21 @@ function save_c(){
  	} else if(!$('#pid').val().length){
  		alert('ERROR: Missing pid.');
  		return false;
+ 	} else if(!$('#b_id').val().length){
+ 		alert('ERROR: Missing b_id.');
+ 		return false;
  	}
+
+ 	
  	
  	var postData = {
- 		pid:$('#pid').val(),
- 		c_objective:$('#c_objective').val(),
- 		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
- 		c_prerequisites:( c_prerequisites_quill.getLength()>1 ? $('#c_prerequisites .ql-editor').html() : "" ),
- 		c_todo_bible:( c_todo_bible_quill.getLength()>1 ? $('#c_todo_bible .ql-editor').html() : "" ),
- 		c_time_estimate:$('#c_time_estimate').val(),
+ 			b_id:$('#b_id').val(),
+ 	 		pid:$('#pid').val(),
+     		c_objective:$('#c_objective').val(),
+     		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
+     		c_prerequisites:( c_prerequisites_quill.getLength()>1 ? $('#c_prerequisites .ql-editor').html() : "" ),
+     		c_todo_bible:( c_todo_bible_quill.getLength()>1 ? $('#c_todo_bible .ql-editor').html() : "" ),
+     		c_time_estimate:$('#c_time_estimate').val(),
  	};
  	
  	//Show spinner:
@@ -100,9 +106,9 @@ function new_intent(c_objective){
  		return false;
  	}
  	//Fetch needed vars:
- 	pid = $('#pid').val();
- 	c_id = $('#c_id').val();
- 	b_id = $('#b_id').val();
+ 	var pid = $('#pid').val();
+ 	var c_id = $('#c_id').val();
+ 	var b_id = $('#b_id').val();
  	var next_level = $( "#next_level" ).val();
  	
  	//Set processing status:
@@ -128,9 +134,8 @@ function new_intent(c_objective){
 
 function link_lintent(target_id){
  	//Fetch needed vars:
- 	pid = $('#pid').val();
- 	c_id = $('#c_id').val();
- 	b_id = $('#b_id').val();
+ 	var pid = $('#pid').val();
+ 	var b_id = $('#b_id').val();
  	var next_level = $( "#next_level" ).val();
  	
  	//Set processing status:
@@ -140,7 +145,7 @@ function link_lintent(target_id){
  	$( "#addnode" ).val("").focus();
  	
  	//Update backend:
- 	$.post("/process/intent_link", {b_id:b_id, c_id:c_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
+ 	$.post("/process/intent_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
  		//Update UI to confirm with user:
  		$( "#temp" ).remove();
  		$( "#list-outbound" ).append(data);
@@ -174,7 +179,7 @@ function intents_sort(){
  	});
  	
  	//Update backend:
- 	$.post("/process/intents_sort", {c_id:$('#c_id').val(), new_sort:new_sort}, function(data) {
+ 	$.post("/process/intents_sort", {pid:$('#pid').val(), b_id:$('#b_id').val(), new_sort:new_sort}, function(data) {
  		//Update UI to confirm with user:
  		$( "#list-outbound .srt-outbound").html(data);
  		
@@ -206,13 +211,14 @@ function load_intent_sort(){
 function intent_unlink(cr_id,cr_title){
  	//Stop href:
  	var current_href = $('#cr_'+cr_id).attr("href");
+ 	var b_id = $('#b_id').val();
  	$('#cr_'+cr_id).attr("href", "#");
  	
  	//Double check:
  	var r = confirm("Unlink "+cr_title+"?");
  	if (r == true) {
  	    //Delete and remove:
- 		$.post("/process/intent_unlink", {cr_id:cr_id}, function(data) {
+ 		$.post("/process/intent_unlink", {cr_id:cr_id, b_id:b_id}, function(data) {
  			//Update UI to confirm with user:
  			$( "#cr_"+cr_id ).html(data);			
  			
@@ -383,7 +389,6 @@ function msg_save_edit(i_id){
 
 
 </script>
-
 
 
 

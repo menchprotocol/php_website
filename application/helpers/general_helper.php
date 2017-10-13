@@ -606,12 +606,12 @@ function save_file($file_url,$json_data){
 function readable_updates($before,$after,$remove_prefix){
     $message = null;
     foreach($after as $key=>$after_value){
-        if(isset($before[$key]) && $before[$key]!==$after_value){
+        if(isset($before[$key]) && !($before[$key]==$after_value)){
             //Change detected!
             if($message){
                 $message .= "\n";
             }
-            $message .= '- Updated '.ucwords(str_replace('_',' ',str_replace($remove_prefix,'',$key))).' from ['.$before[$key].'] to ['.$after_value.']';
+            $message .= '- Updated '.ucwords(str_replace('_',' ',str_replace($remove_prefix,'',$key))).' from ['.strip_tags($before[$key]).'] to ['.strip_tags($after_value).']';
         }
     }
     

@@ -7,29 +7,33 @@ td { padding:5px 0 !important; }
 <table class="table table-condensed table-striped">
 <thead>
 	<tr>
-		<th style="width:70px;">Time</th>
-		<th style="width:80px;">Initiator</th>
-		<th style="width:80px;">Type</th>
+		<th style="width:120px;">Time</th>
+		<th style="width:120px;">Initiator</th>
+		<th style="width:120px;">Action</th>
 		<th style="max-width:300px;">Message</th>
-		<th>Object</th>
-		<th>Bootcamp</th>
-		<th style="width:50px;">Data</th>
+		<!-- <th style="width:50px;">Data</th>  -->
+		<th style="width:110px;">Applied To</th>
+		<th style="width:140px;">Bootcamp <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="If Set, this means that the bootcamp team can also view this engagement in their Activity Timeline"></i></th>
 	</tr>
 </thead>
 <tbody>
 <?php 
 //Fetch objects
-$object_names = $this->config->item('object_names');
-
+$core_objects = $this->config->item('core_objects');
 foreach($engagements as $e){
     echo '<tr>';
-        echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'">'.time_format($e['e_timestamp']).'</span></td>';
+        echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
         echo '<td>'.( $e['e_creator_id']>0 ? $e['u_fname'].' '.$e['u_lname'] : 'System' ).'</td>';
-        echo '<td>'.$e['a_name'].( strlen($e['a_desc'])>0 ? ' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="'.$e['a_desc'].'"></i>' : '' ).( strlen($e['a_learn_more_url'])>0 ? ' <a href="'.$e['a_learn_more_url'].'" target="_blank"><i class="fa fa-external-link" aria-hidden="true" data-toggle="tooltip" title="Learn More (New Window)"></i></a>' : '' ).'</td>';
+        echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
         echo '<td>'.( strlen($e['e_message'])>0 ? nl2br($e['e_message']) : '' ).'</td>';
-        echo '<td>'.( $e['e_object_id']>0 || strlen($e['a_object_code'])>0 ? $object_names[$e['a_object_code']].' #'.$e['e_object_id'] : '' ).'</td>';
-        echo '<td>'.( $e['e_b_id']>0 ? $e['e_b_id'] : '' ).'</td>';
-        echo '<td>'.( strlen($e['e_json'])>0 ? '<a href="alert();">Inspect</a>' : '' ).'</td>';
+        //echo '<td>'.( strlen($e['e_json'])>0 ? '<a href="#" aria-hidden="true" data-toggle="tooltip" data-placement="left" style="color:#AAA;" title="Inspect Engagement Data" class="underdot"><i class="fa fa-search-plus" aria-hidden="true"></i></a>' : '' ).'</td>';
+        echo '<td>';
+            if($e['e_object_id']>0 || strlen($e['a_object_code'])>0){
+                //Is there a specific title to fetch?
+                echo $core_objects[$e['a_object_code']]['o_name'].' #'.$e['e_object_id'];
+            }
+        echo '</td>';
+        echo '<td>'.( $e['e_b_id']>0 ? '<a href="/console/'.$e['b_id'].'">'.$e['c_objective'].'</a>' : '' ).'</td>';
     echo '</tr>';
 }
 ?>
