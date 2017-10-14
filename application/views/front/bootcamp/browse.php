@@ -1,4 +1,4 @@
-<h1>Online Bootcamps</h1>
+<h1>Browse Online Bootcamps</h1>
 <br />
 
 <div class="row">

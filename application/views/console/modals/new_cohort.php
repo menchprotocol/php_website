@@ -76,7 +76,7 @@ $('#r_start_date').keyup(function(e){
             if(count($bootcamp['c__cohorts'])>0){
                 //We already have some cohorts, give user the option to copy settings:
                 ?>
-                <div class="title"><h4>Copy Cohort Settings</div>
+                <div class="title"><h4>Copy Settings</div>
     			<div class="form-group label-floating is-empty">
     			    <select class="form-control input-mini border" id="copy_cohort_id">
     			    	<option value="0">Do Not Copy Settings</option>

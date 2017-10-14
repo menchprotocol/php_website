@@ -11,7 +11,6 @@ $website = $this->config->item('website');
                 <ul class="pull-left">
                     <li><a href="/terms"><?= $this->lang->line('terms') ?></a></li>
                     <li><a href="/contact">Contact</a></li>
-                    <?= (!isset($udata['u_id']) ? '<li><a href="/login">'.$this->lang->line('login').'</a></li>' : ''); ?>
 				</ul>
 				<ul class="pull-right">
                     <li class="legal-name"><i><img src="/img/bp_128.png" /><?= $website['legaL_name'] ?></i></li>

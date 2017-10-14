@@ -422,8 +422,18 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	margin-right:15px;
 }
 
+.ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote, .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
+    margin: 0 0 12px 0 !important;
+    font-family:Lato;
+    font-size:1.4em; 
+    line-height:120%;
+    color: #000; 
+}
+.ql-editor li{
+	margin: 0 0 3px 0 !important;
+}
 .tab-pane p {text-align:left;}
-.mtweak {margin: 50px 0 0;}
+.mtweak {margin: 20px 0 0;}
 
 .bootstrap-select.btn-group .dropdown-menu li:first-child{
 	border:0;

@@ -3066,7 +3066,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
 }
 
 h1, .h1 {
-  font-size: 3.8em;
+  font-size: 3.2em;
   line-height: 1.15em;
 }
 
@@ -3077,7 +3077,7 @@ h2, .h2 {
 h3, .h3 {
   font-size: 1.825em;
   line-height: 1.4em;
-  margin: 35px 0 0;
+  margin: 45px 0 0;
 }
 
 h4, .h4 {

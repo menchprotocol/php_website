@@ -9,6 +9,10 @@ function toggleview(object_key){
 		//Now show this item:
 		$('#'+object_key+' .pointer').removeClass('fa-caret-right').addClass('fa-caret-down');
 		$('.'+object_key).fadeIn();
+		//Now adjust screen view port:
+		$('html,body').animate({
+			scrollTop: $('#'+object_key).offset().top - 65
+		}, 150);
 		
 	} else if($('#'+object_key+' .pointer').hasClass('fa-caret-down')){
 		//Close this specific item:
@@ -16,18 +20,6 @@ function toggleview(object_key){
 		$('.'+object_key).hide();
 	}
 }
-
-
-$( document ).ready(function() {
-    //Adjust #accordion after open/close to proper view point:
-	$('#accordion').on('shown.bs.collapse', function (e) {
-		if (typeof $('[name=' + e.target.id +']').offset() !== 'undefined') {
-			$('html,body').animate({
-				scrollTop: $('[name=' + e.target.id +']').offset().top - 40
-			}, 150);			
-		}
-	});
-});
 </script>
 
 

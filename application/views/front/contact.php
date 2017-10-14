@@ -1,6 +1,6 @@
 <div class="contact-content">
 
-	<h2 class="title">Let's Connect</h2>
+	<h1>Let's Connect</h1>
 	
 	<p><b>Chat with us</b> using the chat/support button on the bottom-right of your screen, or:</p>
 	

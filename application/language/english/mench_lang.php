@@ -57,53 +57,12 @@ $lang['u_level_3'] = 'Admin';
  * Buttons & Call to Actions
  ****************************** */
 
-$lang['signup'] = 'Signup As Expert';
-$lang['login'] = 'Expert Login';
+$lang['signup'] = 'Signup As Instructor';
+$lang['login'] = 'Login as Instructor';
 $lang['contact_us'] = 'Contact Us';
 $lang['terms'] = 'Terms';
 $lang['no_account'] = 'Want to Run a Bootcamp?';
 $lang['forgot_pass'] = 'Forgot Password?';
-
-
-/* ******************************
- * Home Page
- ****************************** */
-
-$lang['headline_primary'] = 'Online Bootcamps for the Ambitious.';
-$lang['headline_secondary'] = 'We help students accomplish their goals faster by working with experts that hold them accountable in executing a weekly Homework.';
-
-
-//How it Works?
-$lang['how_heading'] = 'How Mench Works';
-
-$lang['how_1_title'] = 'Create Your Bootcamp';
-$lang['how_1_desc'] = 'What\'s something your fans are struggling to achieve? Launch a website, podcast or Youtube channel? Create an app or write a book? With Mench you can help them make it happen once and for all.';
-$lang['how_1_icon'] = '<i class="material-icons">filter_1</i>';
-
-$lang['how_2_title'] = 'Invite Your Audience';
-$lang['how_2_desc'] = 'Set a launch date and announce your bootcamp. Make it open to anyone or create an application page to make sure participants meet a specific criteria. You set the rules and the cost. We take care of the technology.';
-$lang['how_2_icon'] = '<i class="material-icons">filter_2</i>';
-
-$lang['how_3_title'] = 'Guide Them To Success';
-$lang['how_3_desc'] = 'Ready, set, go! Set weekly milestones, completion prizes, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and identify who needs help the most.';
-$lang['how_3_icon'] = '<i class="material-icons">filter_3</i>';
-
-
-//Why Mench?
-$lang['why_heading'] = 'Why Mench?';
-$lang['why_1_title'] = 'Expand Your Reach';
-$lang['why_1_desc'] = 'People love challenges, especially when their friends join. You know what that means right? more participants, more reach, more business for you. Bootcamps are one of the most effective lead generation solutions available.';
-$lang['why_1_icon'] = '<i class="material-icons">blur_on</i>';
-
-
-$lang['why_2_title'] = 'Make an Impact';
-$lang['why_2_desc'] = 'A bootcamp is all about getting your audience tangible results via execution. At Mench we provide you with all the tools to help your students take action and accomplish their goals once and for all. Only through action we can change the world!';
-$lang['why_2_icon'] = '<i class="material-icons">flash_on</i>';
-
-$lang['why_3_title'] = 'Grow Your Business';
-$lang['why_3_desc'] = 'A bootcamp allows you to add an lucrative source of income. People are willing to pay a premiun for content that helps them get actual results. At Mench you\'ll be able to command higher prices than for information only products.';
-$lang['why_3_icon'] = '<i class="material-icons">monetization_on</i>';
-
 
 
 /* ******************************

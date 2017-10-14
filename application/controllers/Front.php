@@ -12,7 +12,7 @@ class Front extends CI_Controller {
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
 				'landing_page' => 'front/splash/the_online_challenge_framework',
-				'title' => $this->lang->line('headline_primary'),
+				'title' => 'Online Bootcamps for the Ambitious.',
 		));
 		$this->load->view('front/index');
 		$this->load->view('front/shared/f_footer');
@@ -69,12 +69,11 @@ class Front extends CI_Controller {
 	 * Pitch Pages
 	 ****************************** */
 	
-	function start_bootcamp(){
-	    //The public list of challenges:
+	function instructors(){
 	    $this->load->view('front/shared/f_header' , array(
-	        'title' => 'Start A Bootcamp',
+	        'title' => 'Launch A Bootcamp',
 	    ));
-	    $this->load->view('front/for_mentors');
+	    $this->load->view('front/instructors');
 	    $this->load->view('front/shared/f_footer');
 	}
 	

@@ -1,4 +1,5 @@
-<h2 class="title"><?= $this->lang->line('login') ?></h2>
+<h1><?= $this->lang->line('login') ?></h1>
+<br />
 
 <div class="login-content">
 	<form method="post" action="/process/login">
@@ -21,6 +22,7 @@
 			<input type="submit" class="btn btn-primary btn-raised btn-round" value="Login">
 		</div>
 	</form>
+	<br />
 	
 	<div class="extra-info">
 		<p><?= $this->lang->line('no_account') ?> <a href="https://mench.typeform.com/to/nh4s2u"><?= $this->lang->line('signup') ?> <i class="fa fa-sign-in"></i></a></p>
