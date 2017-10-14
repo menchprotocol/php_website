@@ -40,7 +40,8 @@
     border: 0;
     overflow: hidden;
 }
-}
+
+.video-player {margin-top:10px;}
 .tab-space { padding-bottom:0px !important; }
 .dir-sign {display:none !important;}
 .navbar-brand span{
@@ -229,7 +230,11 @@ h5, .h5 {
     padding:0;
 }
 
-.video-player { margin-top:35px; }
+#c_curriculum h4>a {
+ color:#3C4858;
+ padding-left:5px;
+}
+
 .title { clear:both; diaplay:block; margin-top:10px; }
 .title p {
 	font-size: 0.8em;

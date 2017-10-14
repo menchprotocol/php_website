@@ -131,7 +131,7 @@ function echo_cr($b_id,$intent,$direction,$level=0){
     	        $ui .= '<i class="fa fa-exclamation-triangle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Prerequisites"></i>';
     	    }
     	    if(strlen($intent['c_todo_bible'])>0){
-    	        $ui .= '<i class="fa fa-book title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>';
+    	        $ui .= '<i class="fa fa-book title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Homework"></i>';
     	        if($level==2 && isset($intent['c__estimated_hours'])){
         	        $ui .= echo_time($intent['c__estimated_hours'],0);
         	    } elseif($level==3 && isset($intent['c_time_estimate'])){

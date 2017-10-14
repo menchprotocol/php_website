@@ -70,7 +70,7 @@ $lang['forgot_pass'] = 'Forgot Password?';
  ****************************** */
 
 $lang['headline_primary'] = 'Online Bootcamps for the Ambitious.';
-$lang['headline_secondary'] = 'We help students accomplish their goals faster by working with experts that hold them accountable in executing a weekly action plan.';
+$lang['headline_secondary'] = 'We help students accomplish their goals faster by working with experts that hold them accountable in executing a weekly Homework.';
 
 
 //How it Works?

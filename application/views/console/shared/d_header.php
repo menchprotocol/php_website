@@ -51,7 +51,7 @@ $website = $this->config->item('website');
 				
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Help Center</i></span></a></li>
+						<li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Help Center</i></span></a></li>
 						<li><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> Account</a></li>
 						<li><a href="/process/logout"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></li>
 					</ul>
