@@ -182,7 +182,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     <input type="hidden" id="<?= $input_name ?>" value="<?= $current_status_id ?>" /> 
     <div class="col-md-3 dropdown">
     	<a href="#" class="btn btn-simple dropdown-toggle border" id="ui_<?= $input_name ?>" data-toggle="dropdown">
-        	<?= status_bible($object,$current_status_id) ?>
+        	<?= status_bible($object,$current_status_id,0,'top') ?>
         	<b class="caret"></b>
     	</a>
     	<ul class="dropdown-menu">
@@ -195,8 +195,8 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     		        continue;
     		    }
     		    $count++;
-    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval).'</a></li>';
-    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval).'</li>'; //For UI replacement
+    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,'top').'</a></li>';
+    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,0,'top').'</li>'; //For UI replacement
     		}
     		?>
     	</ul>

@@ -360,7 +360,9 @@ class Bot extends CI_Controller {
 	}
 	
 	
-	
+	function typeform_webhook(){
+	    echo 'hi';
+	}
 	
 	
 	function apiai_webhook(){

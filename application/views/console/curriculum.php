@@ -452,7 +452,7 @@ function msg_save_edit(i_id){
         <script> var c_prerequisites_quill = new Quill('#c_prerequisites', setting_listo); </script>
 
         <?php if($level>1){ ?>
-			<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> prerequisites until after they have enrolled. So if you are adding any critical requirements that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum requirements</a> section so students can make an informed decision when considering enrollment.</div>                            
+			<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> prerequisites until after they have enrolled. So if you are adding any critical prerequisites that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum prerequisites</a> section so students can make an informed decision when considering enrollment.</div>                            
 		<?php } ?>
     </div>
     

@@ -87,15 +87,17 @@ function reset_default(){
 
 
 <ul class="nav nav-pills nav-pills-primary">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-calendar" aria-hidden="true"></i> Timelime</a></li>
+  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-calendar" aria-hidden="true"></i> Enrollment</a></li>
   <li><a href="#pill2" data-toggle="tab"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-usd" aria-hidden="true"></i> Tuition</a></li>
+  <li><a href="#pill4" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
 
 <div class="tab-content tab-space">
 
     <div class="tab-pane active" id="pill1">
+        
     	<div class="title"><h4>Cohort Start Week</h4></div>
   		<p>The bootcamp kick-off week for this cohort is:</p>
         <div class="form-group label-floating is-empty">
@@ -135,6 +137,37 @@ function reset_default(){
             <div class="col-sm-6">This has been calculated based on the <?= count($bootcamp['c__child_intents']) ?> weekly sprints defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
         </div>
         -->
+        
+        
+        
+        <br />
+        <div class="title"><h4>Minimum Students</h4></div>
+        <p>Define the minimum number of students required to be registered to kick-start this cohort. If this number is not met, all existing registrants would be refunded and the cohort would not be started.</p>
+        <div class="input-group">
+          <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= $cohort['r_min_students'] ?>" class="form-control border" />
+        </div>
+        
+        
+        <br />
+        <div class="title"><h4>Maximum Students</h4></div>
+        <p>Define the maximum number of students that can enroll before cohort is full. 0 means no maximum.</p>
+        <div class="input-group">
+          <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= $cohort['r_max_students'] ?>" class="form-control border" />
+        </div>
+		
+		
+		<br />
+		<div class="title"><h4>Custom Enrollment Questions</h4></div>
+		<p>What open-ended questions would you like to ask students during the enrollment application? A few notes:</p>
+  		<ul>
+  			<li>These questions can help you determine their level of desire, experience and suitability for this bootcamp.</li>
+			<li>We ask students to confirm if they meet <b><a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">bootcamp prerequisites</a></b>, so no need to re-ask here.</li>
+			<li>Include one question per point & we'll ask them in the same order.</li>
+			<!-- <li>You can always <b><a href="javascript:reset_default();">reset to default questions</a></b> (and save).</li> -->
+		</ul>
+  		<div id="r_application_questions"><?= $cohort['r_application_questions'] ?></div>
+        <script> var r_application_questions_quill = new Quill('#r_application_questions', setting_listo); </script>
+        
     </div>
     
     
@@ -213,54 +246,39 @@ function reset_default(){
     
     <div class="tab-pane" id="pill3">
     
-		<div class="title"><h4>Cohort Status</h4></div>
-  		<?= ($cohort['r_status']==0 ? '<p>Newly created cohorts are ON HOLD by default to give you time to edit and then publish live when ready:</p>' : '') ?>
-	 	<?php echo_status_dropdown('r','r_status',$cohort['r_status']); ?>
-		<br />
-		
-		
-		<div class="title"><h4>Enrollment Price</h4></div>
+		<div class="title"><h4>Cohort Tuition</h4></div>
 		<p>Decide how much you like to charge students to join this bootcamp. A few notes:</p>
   		<ul>
   			<li>Your asking price is dependant on the level of personalized support and the number of weekly sprints.</li>
-			<li>Typically you want to charge abour $100/week for 30 Minutes of 1-on-1 mentorship.</li>
-			<li>Include one question per point</li>
-			<li>We ask these questions in the same order listed.</li>
-			<li>You can always <b><a href="javascript:reset_default();">reset to default questions</a></b> (and save).</li>
+			<li>You would typically charge ~$100/week for 30 Minutes of 1-on-1 mentorship. The more 1-on-1 you offer, the more you should charge/week.</li>
 		</ul>
         <div class="input-group">
           <span class="input-group-addon addon-lean">USD $</span>
           <input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= $cohort['r_usd_price'] ?>" class="form-control border" />
         </div>
         
-        <br />
-        <div class="title"><h4>Minimum Students</h4></div>
-        <p>Define the minimum number of students required to be registered to kick-start this cohort. If this number is not met, all existing registrants would be refunded and the cohort would not be started.</p>
-        <div class="input-group">
-          <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= $cohort['r_min_students'] ?>" class="form-control border" />
-        </div>
         
+        <div class="title"><h4>Money-Back Completion Rate</h4></div>
+		<p>All Mench Bootcamps offer a Money Back Promise as long as students maintain their elibility status. Part of this eligibility status is completing assignments </p>
+        <select class="form-control input-mini border" id="r_response_time_hours">
+        	<?php 
+        	$r_response_options = $this->config->item('r_response_options');
+        	foreach($r_response_options as $time){
+        	    echo '<option value="'.$time.'" '.( $cohort['r_response_time_hours']==$time ? 'selected="selected"' : '' ).'>Under '.echo_hours($time).'</option>';
+        	}
+        	?>
+        </select>
         
-        <br />
-        <div class="title"><h4>Maximum Students</h4></div>
-        <p>Define the maximum number of students that can enroll before cohort is full. 0 means no maximum.</p>
-        <div class="input-group">
-          <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= $cohort['r_max_students'] ?>" class="form-control border" />
-        </div>
-		
-		
+        		
+    </div>
+    
+    
+    <div class="tab-pane" id="pill4">
+    
+		<div class="title"><h4>Cohort Status</h4></div>
+  		<?= ($cohort['r_status']==0 ? '<p>Newly created cohorts are ON HOLD by default to give you time to edit and then publish live when ready. A Bootcamp must have at-least 1 live cohort to start enrolling students.</p>' : '') ?>
+	 	<?php echo_status_dropdown('r','r_status',$cohort['r_status']); ?>
 		<br />
-		<div class="title"><h4>Enrollment Questions</h4></div>
-		<p>What open-ended questions would you like to ask students during the enrolling application? A few notes:</p>
-  		<ul>
-  			<li>These questions can help you determine the level of desire, experience and suitability of the student to your bootcamp.</li>
-			<li>We ask students to re-confirm if they meet <b><a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">bootcamp requirements</a></b>, so no need to re-ask here.</li>
-			<li>Include one question per point & we'll ask them in the same order.</li>
-			<li>You can always <b><a href="javascript:reset_default();">reset to default questions</a></b> (and save).</li>
-		</ul>
-  		<div id="r_application_questions"><?= $cohort['r_application_questions'] ?></div>
-        <script> var r_application_questions_quill = new Quill('#r_application_questions', setting_listo); </script>
-		
 		
     </div>
 </div>
