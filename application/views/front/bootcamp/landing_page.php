@@ -62,7 +62,6 @@ foreach ($office_hours as $key=>$oa){
 
 <?php if($next_cohort){ ?>
 
-
 <h1 style="margin-bottom:30px;"><?= $bootcamp['c_objective'] ?></h1>
 
 <div class="row" id="landing_page">
@@ -74,22 +73,26 @@ foreach ($office_hours as $key=>$oa){
         	<div class="video-player"><img src="<?= $bootcamp['b_image_url'] ?>" style="width:100%;" /></div>
         <?php } ?>
         
-        <h3 style="margin-top:20px;">Bootcamp Snapshot</h3>
-        <ul style="list-style:none; margin-left:-30px;">
-        	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> Week<?= count($bootcamp['c__child_intents'])==1?'':'s' ?></b></li>
-        	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week)</li>
-        	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">We Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
-        	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
-        	<li>Average Homework: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
-        	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
-        	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/Week</b></li>
-        	<?php } ?>
-        	<?php if($total_hours>0){ ?>
-        	<li>Live Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
-        	<?php } ?>
-        </ul>
         
-        <div style="padding:10px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/bootcamps/<?= $bootcamp['b_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+        <div id="sidebar">
+        	<h3 style="margin-top:20px;">Bootcamp Snapshot</h3>
+        	
+            <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
+            	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> Week<?= count($bootcamp['c__child_intents'])==1?'':'s' ?></b></li>
+            	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week)</li>
+            	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">We Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
+            	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
+            	<li>Average Homework: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
+            	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
+            	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/Week</b></li>
+            	<?php } ?>
+            	<?php if($total_hours>0){ ?>
+            	<li>Live Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
+            	<?php } ?>
+            </ul>
+            
+            <div style="padding:10px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/bootcamps/<?= $bootcamp['b_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+        </div>
         
     </div>
     
