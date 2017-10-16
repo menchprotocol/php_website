@@ -50,6 +50,12 @@ $('body').keyup(function(e){
     	next_section();
     }
 });
+
+$( document ).ready(function() {
+	//Make focus:
+	$('.s1 input').focus(); //Focus on input
+});
+
 </script>
 
 

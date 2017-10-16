@@ -24,6 +24,13 @@ class Db_model extends CI_Model {
 		return $q->result_array();
 	}
 	
+	function ru_update($ru_id,$update_columns){
+	    //Update first
+	    $this->db->where('ru_id', $ru_id);
+	    $this->db->update('v5_cohort_students', $update_columns);
+	    return $this->db->affected_rows();
+	}
+	
 	function ru_create($insert_columns){
 	    //Make sure required fields are here:
 	    if(!isset($insert_columns['ru_r_id'])){
