@@ -198,9 +198,9 @@ foreach ($office_hours as $key=>$oa){
     		
     		<h4>Timeline</h4>
     		<ul style="list-style:none; margin-left:-20px;">
-    			<li><span style="width:170px; display:inline-block;">Registration Ends</span><b>Sunday Oct 22 @ 11:59pm PST</b></li>
-    			<li><span style="width:170px; display:inline-block;">Bootcamp Starts</span><b>Monday Oct 23</b></li>
-    			<li><span style="width:170px; display:inline-block;">Bootcamp Ends</span><b>Sunday Jan 14 2018</b></li>
+    			<li><span style="width:160px; display:inline-block;">Registration Ends</span><b>Sunday Oct 22 @ 11:59pm PST</b></li>
+    			<li><span style="width:160px; display:inline-block;">Bootcamp Starts</span><b>Monday Oct 23</b></li>
+    			<li><span style="width:160px; display:inline-block;">Bootcamp Ends</span><b>Sunday Jan 14 2018</b></li>
     		</ul>
     		
     		
@@ -209,9 +209,9 @@ foreach ($office_hours as $key=>$oa){
     		<h4>Cancellation Policy: <?= ucwords($next_cohort['r_cancellation_policy']); ?></h4>
     		<?php 
     		$cancellation_policies = $this->config->item('cancellation_policies');
-    		echo '<ul style="margin-left:-10px;">';
-    		echo '<li>Cancel before <b>1 Nov 2017 11:59pm PST</b> to receive a full refund.</li>';
-    		echo '<li>Cancel before <b>13 Dec 2017 11:59pm PST</b> to receive a pro-rated refund.</li>';
+    		echo '<ul style="list-style:none; margin-left:-20px;">';
+    		echo '<li><span style="width:160px; display:inline-block;">Full Refund</span>Before <b>1 Nov 2017 11:59pm PST</b></li>';
+    		echo '<li><span style="width:160px; display:inline-block;">Pro-Rated Refund</span>Before <b>13 Dec 2017 11:59pm PST</b></li>';
     		//foreach($cancellation_policies[$next_cohort['r_cancellation_policy']] as $policy){
     		    //echo '<li>'.$policy.'</li>';
     		//}
