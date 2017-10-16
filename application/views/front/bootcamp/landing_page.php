@@ -46,6 +46,7 @@ foreach ($office_hours as $key=>$oa){
         }
     }
     if($string){
+        $string .= ' PST';
         array_push($office_hours_ui,$string);
     }
 }
@@ -62,7 +63,7 @@ foreach ($office_hours as $key=>$oa){
 <?php if($next_cohort){ ?>
 
 
-<h1><?= $bootcamp['c_objective'] ?></h1>
+<h1 style="margin-bottom:30px;"><?= $bootcamp['c_objective'] ?></h1>
 
 <div class="row">
 
@@ -76,8 +77,9 @@ foreach ($office_hours as $key=>$oa){
         <h3 style="margin:20px 0 10px; padding:0;">Bootcamp Snapshot:</h3>
         <ul style="list-style:none; margin-left:-30px;">
         	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b></li>
-        	<li>Result Guaranteed! <a href="https://support.mench.co/hc/en-us/articles/115002080031"><b>Learn More&raquo;</b></a></li>
-        	<li>12 Weeks: <b>Oct 23 - Jan 14 2018</b></li>
+        	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive your full money back.">We Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
+        	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> Week<?= count($bootcamp['c__child_intents'])==1?'':'s' ?></b></li>
+        	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
         	<li>Average Homework: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
         	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
         	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/Week</b></li>
@@ -115,18 +117,14 @@ foreach ($office_hours as $key=>$oa){
     		</div>
     		
     		<h3>1-on-1 Support</h3>
-    		
-    		<h4>Response Time</h4>
-    		<p>You can ask unlimited questions from the instructors.</p>
-    		<p>Your questions will be answered within <b><?= echo_hours($next_cohort['r_response_time_hours']) ?></b>.</p>
-    		
     		<?php
     		if($next_cohort['r_weekly_1on1s']>0){
-    		    echo '<h4>1-on-1 Mentorship</h4>';
+    		    echo '<h4>'.echo_hours($next_cohort['r_weekly_1on1s']).'/Week of 1-on-1 Mentorship</h4>';
     		    echo '<p>You will receive <b>'.echo_hours($next_cohort['r_weekly_1on1s']).'/week</b> of 1-on-1 mentorship over a live video chat.</p>';
+    		    echo '<hr />';
     		}
-    		if(count($office_hours_ui)>0){
-    		    echo '<h4>Live Office Hours (PST)</h4>';
+    		if(count($office_hours_ui)>0 || $total_hours>0){
+    		    echo '<h4>'.echo_hours($total_hours).'/Week of Live Office Hours</h4>';
     		    echo '<p>You can connect with instructors live during these weekly timeslots:</p>';
     		    echo '<ul style="list-style:none; margin-left:-30px;">';
     		    foreach($office_hours_ui as $oa_ui){
@@ -136,8 +134,13 @@ foreach ($office_hours as $key=>$oa){
     		    if(strlen($next_cohort['r_closed_dates'])>0){
     		        echo '<p>Closed on '.$next_cohort['r_closed_dates'].'</p>';
     		    }
+    		    echo '<hr />';
     		}
     		?>
+    		
+    		<h4>Under <?= echo_hours($next_cohort['r_response_time_hours']) ?> Response Time</h4>
+    		<p>This bootcamp offers responses times of under <b><?= echo_hours($next_cohort['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructors.</p>
+    		
     		
     		
     		
@@ -198,31 +201,29 @@ foreach ($office_hours as $key=>$oa){
     		
     		<h4>Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
-    			<li>Registration Ends <b>Sunday 22 Oct 11:59pm PST</b></li>
-    			<li>Bootcamp Starts <b>Monday 23 Oct</b></li>
-    			<li>Bootcamp Ends <b>Sunday 14 Jan 2018</b></li>
+    			<li>Registration Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b></li>
+    			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
+    			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
     		</ul>
-    		
-    		
-    		
+    		<hr />
     		
     		<h4>Cancellation Policy: <?= ucwords($next_cohort['r_cancellation_policy']); ?></h4>
     		<?php 
     		$cancellation_policies = $this->config->item('cancellation_policies');
     		echo '<ul style="list-style:none; margin-left:-30px;">';
-    		echo '<li>Full Refund By <b>1 Nov 11:59pm PST</b></li>';
-    		echo '<li>Pro-Rated Refund By <b>13 Dec 11:59pm PST</b></li>';
+    		echo '<li>Full Refund By <b>'.time_format($next_cohort['r_start_date'],2,9).' 11:59pm PST</b></li>';
+    		echo '<li>Pro-Rated Refund By <b>'.time_format($next_cohort['r_start_date'],2,51).' 11:59pm PST</b></li>';
     		//foreach($cancellation_policies[$next_cohort['r_cancellation_policy']] as $policy){
     		    //echo '<li>'.$policy.'</li>';
     		//}
     		echo '</ul>';
     		?>
     		<p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Bootcamp Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
-    		
+    		<hr />
     		
     		
     		<h4>Tuition</h4>
-    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b></p>
+    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031" data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive your full money back."><u><b>Result Guarantee Promise &raquo;</b></u></a></p>
     		
     		
     		

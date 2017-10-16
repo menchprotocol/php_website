@@ -212,7 +212,7 @@ function hourformat($fancy_hour){
     } elseif(substr_count($fancy_hour,'pm')>0){
         $fancy_hour = str_replace('pm','',$fancy_hour);
         $temp = explode(':',$fancy_hour,2);
-        return (intval($temp[0]) + ( isset($temp[1]) ? (intval($temp[1])/60) : 0 ) + 12);
+        return (intval($temp[0]) + ( isset($temp[1]) ? (intval($temp[1])/60) : 0 ) + (intval($temp[0])==12?0:12) );
     }
 }
 
@@ -689,17 +689,20 @@ function time_ispast($t){
 	return ((time() - strtotime(substr($t,0,19))) > 0);
 }
 
-function time_format($t,$date_only=false){
+function time_format($t,$format=0,$plus_days=0){
     if(!$t){
         return 'NOW';
     }
-	$this_year = ( date("Y")==date("Y",strtotime(substr($t,0,19))) );
-	if($date_only){
-		return date(( $this_year ? "M j" : "M j, Y" ),strtotime(substr($t,0,19)));
-	} else {
-		return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),strtotime(substr($t,0,19)));
-	}
-	
+    
+    $timestamp = strtotime(substr($t,0,19)) + ($plus_days*24*3600);
+    $this_year = ( date("Y")==date("Y",$timestamp) );
+    if($format==0){
+        return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),$timestamp);
+    } elseif($format==1){
+        return date(( $this_year ? "j M" : "j M Y" ),$timestamp);
+    } elseif($format==2){
+        return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);	    
+	}	
 }
 
 function time_diff($t,$second_tiome=null){

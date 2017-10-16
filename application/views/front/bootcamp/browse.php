@@ -15,25 +15,19 @@ foreach($bootcamps as $count=>$bootcamp){
 
 				<div class="card-content">';
                 //echo '<h6 class="category text-muted">'.$bootcamp['ct_icon'].' '.$bootcamp['ct_name'].'</h6>';
-                echo '<h4 class="card-title">
+                echo '<h4 class="card-title" style="font-size: 1.4em; line-height:120%;">
 						<a href="/bootcamps/'.$bootcamp['b_url_key'].'">'.$bootcamp['c_objective'].'</a>
 					</h4>
 
 
-                    <div class="card-description"><i class="fa fa-calendar" aria-hidden="true"></i> '.count($bootcamp['c__child_intents']).' Weeks @ '.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/Week</div>
+                    <div class="card-description"><b><i class="fa fa-calendar" aria-hidden="true"></i> '.count($bootcamp['c__child_intents']).' Weeks @ '.echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))).'/Week</b></div>
 					<div class="card-description">By ';
     
-    //Print admins:
-    $admin_count = 0;
+    //Print lead admin:
     foreach($bootcamp['b__admins'] as $admin){
-        if($admin['ba_team_display']!=='t'){
-            continue;
+        if($admin['ba_status']==3){
+            echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
         }
-        if($admin_count>0){
-            echo ' & ';
-        }
-        echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
-        $admin_count++;
     }
     
     //Fetch cohort:
