@@ -65,7 +65,7 @@ foreach ($office_hours as $key=>$oa){
 
 <h1 style="margin-bottom:30px;"><?= $bootcamp['c_objective'] ?></h1>
 
-<div class="row">
+<div class="row" id="landing_page">
 
 	<div class="col-sm-4">
     	<?php if(strlen($bootcamp['b_video_url'])>0){ ?>
@@ -76,9 +76,9 @@ foreach ($office_hours as $key=>$oa){
         
         <h3 style="margin:20px 0 10px; padding:0;">Bootcamp Snapshot:</h3>
         <ul style="list-style:none; margin-left:-30px;">
-        	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b></li>
-        	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive your full money back.">We Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
         	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> Week<?= count($bootcamp['c__child_intents'])==1?'':'s' ?></b></li>
+        	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week)</li>
+        	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">We Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
         	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
         	<li>Average Homework: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
         	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
@@ -148,6 +148,7 @@ foreach ($office_hours as $key=>$oa){
     		<h3>Instructors</h3>
     		<?php
             $admin_count = 0;
+            $leader_fname = '';
             foreach($bootcamp['b__admins'] as $admin){
                 if($admin['ba_team_display']!=='t'){
                     continue;
@@ -156,6 +157,9 @@ foreach ($office_hours as $key=>$oa){
                     echo '<hr />';
                 }
                 
+                if($admin['ba_status']==3){
+                    $leader_fname = $admin['u_fname'];
+                }
                 echo '<h4 class="userheader"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
                 echo '<p id="u_tangible_experience">'.$admin['u_tangible_experience'].'</p>';
                 echo '<p id="u_bio">'.$admin['u_bio'].'</p>';
@@ -223,7 +227,7 @@ foreach ($office_hours as $key=>$oa){
     		
     		
     		<h4>Tuition</h4>
-    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031" data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive your full money back."><u><b>Result Guarantee Promise &raquo;</b></u></a></p>
+    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031" data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit."><u><b>Result Guarantee Promise</b></u></a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
     		
     		
     		
