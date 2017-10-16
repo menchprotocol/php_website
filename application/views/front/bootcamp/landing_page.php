@@ -66,7 +66,7 @@ foreach ($office_hours as $key=>$oa){
 
 <div class="row" id="landing_page">
 
-	<div class="col-sm-4">
+	<div class="col-md-4">
     	<?php if(strlen($bootcamp['b_video_url'])>0){ ?>
         	<div class="video-player"><?= echo_video($bootcamp['b_video_url']); ?></div>
         <?php } elseif(strlen($bootcamp['b_image_url'])>0){ ?>
@@ -80,7 +80,7 @@ foreach ($office_hours as $key=>$oa){
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> Week<?= count($bootcamp['c__child_intents'])==1?'':'s' ?></b></li>
             	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week)</li>
-            	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">We Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
+            	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
             	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
             	<li>Average Homework: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
             	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
@@ -96,7 +96,7 @@ foreach ($office_hours as $key=>$oa){
         
     </div>
     
-    <div class="col-sm-8">
+    <div class="col-md-8">
     
     		<h3 style="margin-top:0; padding-top:0;">Overview</h3>
     		<div id="c_todo_overview"><?= $bootcamp['c_todo_overview'] ?></div>
