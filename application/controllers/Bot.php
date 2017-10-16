@@ -363,12 +363,12 @@ class Bot extends CI_Controller {
 	
 	function typeform_webhook(){
 	    $json_data = json_decode(file_get_contents('php://input'), true);
-	    $application_status_salt = $CI->config->item('application_status_salt');
+	    $application_status_salt = $this->config->item('application_status_salt');
 	    
 	    if(!isset($json_data['form_response']['hidden']['u_id']) || !isset($json_data['form_response']['hidden']['u_key']) || !(md5($json_data['form_response']['hidden']['u_id'].$application_status_salt)==$json_data['form_response']['hidden']['u_key'])){
 	        //Log this error:
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $udata['u_id'],
+	            'e_creator_id' => 0,
 	            'e_message' => 'BOT/typeform_webhook() received application with invalid user credentials.',
 	            'e_json' => json_encode($json_data),
 	            'e_type_id' => 8, //Platform Error
@@ -381,7 +381,7 @@ class Bot extends CI_Controller {
 	    $users = $this->Db_model->u_fetch(array(
 	        'u_id' => $json_data['form_response']['hidden']['u_id'],
 	    ));
-	    $udata = $users[0];
+	    $udata = @$users[0];
 	    $cohorts = $this->Db_model->r_fetch(array(
 	        'r.r_typeform_id' => $json_data['form_response']['form_id'],
 	        'r.r_status' => 1,
@@ -389,14 +389,14 @@ class Bot extends CI_Controller {
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_id' => $cohorts[0]['r_b_id'],
 	    ));
-	    $bootcamp = $bootcamps[0];
+	    $bootcamp = @$bootcamps[0];
 	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
 	    $enrollments = $this->Db_model->ru_fetch(array(
 	        'ru.ru_r_id'	=> $next_cohort['r_id'],
 	        'ru.ru_u_id'	=> $udata['u_id'],
 	    ));
 	    
-	    if(!isset($udata['u_id']) || !isset($bootcamp['b_id']) || !isset($cohorts[0]['r_id']) || !isset($enrollments[0]['ru_id']) || !($next_cohort['r_id']==$cohorts[0]['r_id')){
+	    if(!isset($udata['u_id']) || !isset($bootcamp['b_id']) || !isset($cohorts[0]['r_id']) || !isset($enrollments[0]['ru_id']) || !($next_cohort['r_id']==$cohorts[0]['r_id'])){
 	        //Log this error:
 	        $this->Db_model->e_create(array(
 	            'e_creator_id' => $udata['u_id'],
