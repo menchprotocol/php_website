@@ -406,6 +406,7 @@ class Process extends CI_Controller {
 	function cohort_edit(){
 	    
 	    //Auth user and check required variables:
+	    $cancellation_policies = $this->config->item('cancellation_policies');
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:
@@ -417,7 +418,7 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
-	    } elseif(!isset($_POST['r_cancellation_policy']) || !in_array($_POST['r_cancellation_policy'],array('flexible','moderate','strict'))){
+	    } elseif(!isset($_POST['r_cancellation_policy']) || !array_key_exists($_POST['r_cancellation_policy'],$cancellation_policies)){
 	        die('<span style="color:#FF0000;">Error: Invalid Cancellation Policy.</span>');
 	    }
 	    

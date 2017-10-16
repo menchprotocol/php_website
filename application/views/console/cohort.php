@@ -1,4 +1,15 @@
 <script>
+function ucwords(str) {
+   return (str + '').replace(/^(.)|\s+(.)/g, function ($1) {
+      return $1.toUpperCase()
+   });
+}
+function js_mktime(hour,minute,month,day,year) {
+    return new Date(year, month-1, day, hour, minutes, 0).getTime() / 1000;
+}
+
+
+
 $(document).ready(function() {
 	//Load date picker:
 	$( function() {
@@ -10,6 +21,12 @@ $(document).ready(function() {
 	    	},
 		});
 	});
+
+	//Watch for changing cancellation policy:
+	$('input[name=r_cancellation_policy]').change(function() {
+		//$("#r_live_office_hours_val").val(ucwords(this.value));
+		//update_timeline();
+    });
 
 	//Watchout for changing office hours checkbox:
 	$("#r_live_office_hours_check").change(function() {
@@ -25,6 +42,68 @@ $(document).ready(function() {
 });
 
 
+
+
+function update_timeline(){
+
+	//Set base variables:
+	var week_count = parseInt($('#week_count').val());
+	var r_start_date = $('#r_start_date').val().split("/");
+	var cancellation_policy = $('input[name=r_cancellation_policy]:checked').val();
+	
+	//Define cancellation policy variables:
+	if(cancellation_policy=='flexible'){
+		var complete_refund_days = Math.ceil(week_count * 7 * 0.10);
+		var prorated_refund_days = Math.ceil(week_count * 7 * 0.60);
+	} else if(cancellation_policy=='moderate'){
+		var complete_refund_days = -1; //A day before the start date midnight
+		var prorated_refund_days = Math.ceil(week_count * 7 * 0.30);
+	} else if(cancellation_policy=='strict'){
+		var complete_refund_days = null;
+		var prorated_refund_days = null;
+	} else {
+		//Unknown?!
+		alert('Unrecognized cancellation policy ['+cancellation_policy+']. Cannot generate timeline.');
+		return false;
+	}
+
+
+	//Calculate times:
+	var r_cache_registration_end_time = new Date(parseInt(r_start_date[2]), parseInt(r_start_date[0]), parseInt(r_start_date[1]), 23, 59, 0, 0);
+	r_cache_registration_end_time.setDate(r_cache_registration_end_time.getDate() - 1);
+
+	console.log(r_cache_registration_end_time);
+	return false;
+	
+    var timeline = {
+			r_cache_registration_end_time : add_days(a,-1),
+			r_cache_cohort_first_day : null,
+			r_cache_full_refund_time : ( complete_refund_days===null ? null : add_days(a,complete_refund_days) ),
+			r_cache_pro_rated_refund_time : ( prorated_refund_days===null ? null : add_days(a,prorated_refund_days) ),
+			r_cache_cohort_last_day : null,
+	};
+
+	//Some examples:
+	var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var formatted_time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+	
+	//Update UI:
+	for (var key in timeline){
+		$('#'+key).val(timeline[key]);
+	}
+	
+	//Return raw dates:
+	return timeline;
+}
+
+
 function save_r(){
 	//Show spinner:
 	$('#save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
@@ -34,9 +113,7 @@ function save_r(){
 		document.getElementById('weekschedule').contentWindow.save_hours();
 	}
 	
-	//Save the rest of the content:
-	$.post("/process/cohort_edit", {
-		
+	var save_data = {	
 		r_id:$('#r_id').val(),
 		r_start_date:$('#r_start_date').val(),
 		
@@ -56,8 +133,16 @@ function save_r(){
 
 		//Application:
 		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
-		
-	} , function(data) {
+	};
+	
+	//Now merge into timeline dates:
+	//var timeline = update_timeline();
+	//for (var key in timeline){
+	//	save_data[key] = timeline[key];
+	//}
+	
+	//Save the rest of the content:
+	$.post("/process/cohort_edit", save_data , function(data) {
 		//Update UI to confirm with user:
 		$('#save_r_results').html(data).hide().fadeIn();
 		
@@ -95,6 +180,8 @@ function reset_default(){
 </ul>
 
 
+
+
 <div class="tab-content tab-space">
 
     <div class="tab-pane active" id="pill1">
@@ -102,38 +189,24 @@ function reset_default(){
         
         <div class="title"><h4>Cancellation Policy</h4></div>
 		<p>Choose from our three standardized cancellation policies:</p>
-		
-		<div class="radio">
+		<?php 
+		$cancellation_policies = $this->config->item('cancellation_policies');
+		foreach($cancellation_policies as $key=>$policies){
+		    echo '<div class="radio">
         	<label>
-        		<input type="radio" id="r_cancellation_policy_flexible" name="r_cancellation_policy" value="flexible" <?= ( $cohort['r_cancellation_policy']=='flexible' ? 'checked="true"' : '' )?> />
-        		Flexible
+        		<input type="radio" name="r_cancellation_policy" value="'.$key.'" '.( $cohort['r_cancellation_policy']==$key ? 'checked="true"' : '' ).' />
+        		'.ucwords($key).'
         	</label>
-        	<ul style="margin-left:15px;">
-        		<li>Full refund before 10% of the elapsed time.</li>
-        		<li>Pro-rated refund before 60% of the elapsed time.</li>
-        	</ul>
-        </div>
-       <div class="radio">
-        	<label>
-        		<input type="radio" id="r_cancellation_policy_moderate" name="r_cancellation_policy" value="moderate" <?= ( $cohort['r_cancellation_policy']=='moderate' ? 'checked="true"' : '' )?> />
-        		Moderate
-        	</label>
-        	<ul style="margin-left:15px;">
-        		<li>Full refund before bootcamp's start date.</li>
-        		<li>Pro-rated refund before 30% of the elapsed time.</li>
-        	</ul>
-        </div>
-        <div class="radio">
-        	<label>
-        		<input type="radio" id="r_cancellation_policy_strict" name="r_cancellation_policy" value="strict" <?= ( $cohort['r_cancellation_policy']=='strict' ? 'checked="true"' : '' )?> />
-        		Strict
-        	</label>
-        	<ul style="margin-left:15px;">
-        		<li>No refunds after enrollment.</li>
-        	</ul>
-        </div>
+        	<ul style="margin-left:15px;">';
+		    foreach($policies as $policy){
+		        echo '<li>'.$policy.'</li>';
+		    }
+        	echo '</ul></div>';
+		}
+		?>
         <p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Bootcamp Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
         <br />
+        
         
     	<div class="title"><h4>Cohort Start Date</h4></div>
   		<p>The bootcamp kick-off week for this cohort is:</p>
@@ -141,40 +214,17 @@ function reset_default(){
             <input type="text" id="r_start_date" value="<?= date("m/d/Y" , strtotime($cohort['r_start_date']) ) ?>" style="width:233px;" class="form-control border" />
             <span class="material-input"></span>
         </div>
-        
-        <!--
-        <hr />
-        <div class="row">
-        	<div class="col-sm-3">Registration Starts:</div>
-            <div class="col-sm-3"><b>NOW</b></div>
-            <div class="col-sm-6">As soon as Bootcamp AND Cohort status are live. Once students start registering, you will review applications, conduct interview to validate qualifications and accept students one by one. If rejected, students will receive a full refund.</div>
-        </div>
-        <hr />
-        <div class="row">
-        	<div class="col-sm-3">Registration Ends:</div>
-            <div class="col-sm-3"><b><span id="r_time_register_end">June 5th 8:00P</span></b></div>
-            <div class="col-sm-6">Students who plan to join must have paid in full by this time. This is when the registration for the next cohort starts.</div>
-        </div>
-        <hr />
-        <div class="row">
-        	<div class="col-sm-3">Bootcamp Starts:</div>
-            <div class="col-sm-3"><b><span id="r_time_cohort_start">June 5th 8:00P</span></b></div>
-            <div class="col-sm-6">Interested students must have paid in full by this time. During the bootcamp students work on the weekly sprints as defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
-        </div>
-        <hr />
-        <div class="row">
-        	<div class="col-sm-3">Free Withdrawal Ends:</div>
-            <div class="col-sm-3"><b><span id="r_time_free_end">June 5th 8:00P</span></b></div>
-            <div class="col-sm-6">Interested students must have paid in full by this time. During the bootcamp students work on the weekly sprints as defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
-        </div>
-        <hr />
-        <div class="row">
-        	<div class="col-sm-3">Bootcamp Ends:</div>
-            <div class="col-sm-3"><b><span id="r_time_cohort_end">June 5th 8:00P</span></b></div>
-            <div class="col-sm-6">This has been calculated based on the <?= count($bootcamp['c__child_intents']) ?> weekly sprints defined in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum</a>.</div>
-        </div>
-        -->
-        
+        <?php /*
+        <p>Timeline based on your <span class="dynamic" id="r_cache_cancellation_policy"><?= ucwords($cohort['r_cancellation_policy']) ?></span> cancellation policy and <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum"><?= count($bootcamp['c__child_intents']) ?> Week Curriculum</a>:</p>
+        <ul style="list-style:decimal;">
+  			<li>Registration Starts <span class="dynamic" id="r_cache_registration_start_time"></span></li>
+			<li>Registration Ends <span class="dynamic" id="r_cache_registration_end_time"></span></li>
+			<li>Bootcamp Begins <span class="dynamic" id="r_cache_cohort_first_day"></span></li>
+			<li>Full Refund By <span class="dynamic" id="r_cache_full_refund_time"></span></li>
+			<li>Pro-Rated Refund By <span class="dynamic" id="r_cache_pro_rated_refund_time"></span></li>
+			<li>Bootcamp Ends <span class="dynamic" id="r_cache_cohort_last_day"></span></li>
+		</ul>
+        */?>
         
         <br />
         <div class="title"><h4>Minimum Students</h4></div>
@@ -186,7 +236,7 @@ function reset_default(){
         
         <br />
         <div class="title"><h4>Maximum Students</h4></div>
-        <p>Define the maximum number of students that can enroll before cohort is full. 0 means no maximum.</p>
+        <p>Define the maximum number of students that can enroll before cohort is full. Remove the maximum limitation by setting this to "0".</p>
         <div class="input-group">
           <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= $cohort['r_max_students'] ?>" class="form-control border" />
         </div>
@@ -238,8 +288,8 @@ function reset_default(){
         
         
 		
-		<div class="title"><h4>Office Hours</h4></div>
-		<p>Office hours enable students to contact you (or your team) online for live/on-demand support. A few notes:</p>
+		<div class="title"><h4>Live Office Hours</h4></div>
+		<p>Office hours enable students to contact you (or your team) online for live and on-demand support. A few notes:</p>
 		<ul>
 			<li>Online office hours are usually live video calls done via Skype, Google Hangouts, etc...</li>
 			<li>You will set hours in GMT -8:00 (Pacific Standard Time) and will be adjust for each student based on their time zone.</li>
@@ -287,7 +337,7 @@ function reset_default(){
   		<ul>
   			<li>Your asking price is dependant on the length of the bootcamp (number of weeks) and the level of personalized support.</li>
 			<li>We recommend charging $100-$150/week with 30 Minutes of 1-on-1 mentorship. Charge more if you're offering more personalized support.</li>
-			<li>Mench collects 15% commission from each sale.</li>
+			<li>Mench collects a 15% commission from each successful sale.</li>
 		</ul>
         <div class="input-group">
           <span class="input-group-addon addon-lean">USD $</span>

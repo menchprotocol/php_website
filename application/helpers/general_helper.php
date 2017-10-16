@@ -16,7 +16,7 @@ function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
 function echo_hours($int_time){
-    return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : $int_time.' Hour'.($int_time>1?'s':'') );
+    return ( $int_time>0 && $int_time<1 ? round($int_time*60).'m' : $int_time.'h' );
 }
 
 function echo_video($video_url){
@@ -204,6 +204,17 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     <?php
 }
 
+function hourformat($fancy_hour){
+    if(substr_count($fancy_hour,'am')>0){
+        $fancy_hour = str_replace('am','',$fancy_hour);
+        $temp = explode(':',$fancy_hour,2);
+        return (intval($temp[0]) + ( isset($temp[1]) ? (intval($temp[1])/60) : 0 ));
+    } elseif(substr_count($fancy_hour,'pm')>0){
+        $fancy_hour = str_replace('pm','',$fancy_hour);
+        $temp = explode(':',$fancy_hour,2);
+        return (intval($temp[0]) + ( isset($temp[1]) ? (intval($temp[1])/60) : 0 ) + 12);
+    }
+}
 
 function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
 	
@@ -383,14 +394,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        
 	        //Withrew after course has started:
 	        -3 => array(
-	            's_name'  => 'Dispelled by Admin',
+	            's_name'  => 'Admin Dispelled',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
 	        //Withrew prior to course has started:
 	        -2 => array(
-	            's_name'  => 'Student Withdrawal',
+	            's_name'  => 'Student Withdrew',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Student withdrew from the bootcamp. Refund is based on cancellation policy & withdrawal date.',
 	            'u_min_status'  => 999, //Only done by Student themselves
@@ -398,7 +409,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Application Rejected',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student application rejected by bootcamp leader before bootcamp start date.',
+	            's_desc'  => 'Application rejected by bootcamp leader before start date. Students receives a full refund.',
 	            'u_min_status'  => 1,
 	        ),
 	        
@@ -406,7 +417,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        0 => array(
     	        's_name'  => 'Application Started',
     	        's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Student has started the bootcamp\'s application process but has not paid in full yet.',
+    	        's_desc'  => 'Student has started the application process but has not completed it yet.',
     	        'u_min_status'  => 999, //System insertion only
 	        ),
 	        
@@ -419,7 +430,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        2 => array(
-	            's_name'  => 'Application Received',
+	            's_name'  => 'Application Submitted',
 	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            'u_min_status'  => 999, //System insertion only

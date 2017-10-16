@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.391,
+    'version' => 0.392,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -50,6 +50,19 @@ $config['core_objects'] = array(
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13');
 
+$config['cancellation_policies'] = array(
+    'flexible' => array(
+        'Full refund before 10% of the elapsed time.',
+        'Pro-rated refund before 60% of the elapsed time.',
+    ),
+    'moderate' => array(
+        'Full refund before bootcamp\'s start date.',
+        'Pro-rated refund before 30% of the elapsed time.',
+    ),
+    'strict' => array(
+        'No refunds.',
+    ),
+);
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
 $config['aws_credentials'] = [
