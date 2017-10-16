@@ -361,7 +361,17 @@ class Bot extends CI_Controller {
 	
 	
 	function typeform_webhook(){
-	    echo 'hi';
+	    $json_data = json_decode(file_get_contents('php://input'), true);
+	    
+	    //Log Engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => 0, //TODO
+	        'e_message' => 'Submitted their application form.',
+	        'e_json' => json_encode($json_data),
+	        'e_type_id' => 26, //Typeform Application submitted
+	        'e_object_id' => 0, //TODO
+	        'e_b_id' => 0, //TODOShare with bootcamp team
+	    ));
 	}
 	
 	

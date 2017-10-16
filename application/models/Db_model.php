@@ -24,6 +24,39 @@ class Db_model extends CI_Model {
 		return $q->result_array();
 	}
 	
+	function ru_create($insert_columns){
+	    //Make sure required fields are here:
+	    if(!isset($insert_columns['ru_r_id'])){
+	        $this->Db_model->e_create(array(
+	            'e_message' => 'ru_create() missing ru_r_id.',
+	            'e_json' => json_encode($insert_columns),
+	            'e_type_id' => 8, //Platform Error
+	        ));
+	        return false;
+	    } elseif(!isset($insert_columns['ru_u_id'])){
+	        $this->Db_model->e_create(array(
+	            'e_message' => 'ru_create() missing ru_u_id.',
+	            'e_json' => json_encode($insert_columns),
+	            'e_type_id' => 8, //Platform Error
+	        ));
+	        return false;
+	    }	    
+	    
+	    //Missing anything?
+	    if(!isset($insert_columns['ru_timestamp'])){
+	        $insert_columns['ru_timestamp'] = date("Y-m-d H:i:s");
+	    }
+	    
+	    //Lets now add:
+	    $this->db->insert('v5_cohort_students', $insert_columns);
+	    
+	    //Fetch inserted id:
+	    $insert_columns['ru_id'] = $this->db->insert_id();
+	    
+	    return $insert_columns;
+	}
+	
+	
 	function u_create($insert_columns){
 		
 		//Make sure required fields are here:
@@ -41,22 +74,11 @@ class Db_model extends CI_Model {
 		        'e_type_id' => 8, //Platform Error
 		    ));
 			return false;
-		} elseif(!isset($insert_columns['u_fb_id'])){
-		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_create() missing u_fb_id.',
-		        'e_json' => json_encode($insert_columns),
-		        'e_type_id' => 8, //Platform Error
-		    ));
-			return false;
 		}
-		
 		
 		//Missing anything?
 		if(!isset($insert_columns['u_timestamp'])){
 			$insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
-		}
-		if(!isset($insert_columns['u_status'])){
-			$insert_columns['u_status'] = 1;
 		}
 		if(!isset($insert_columns['u_url_key'])){
 			$insert_columns['u_url_key'] = preg_replace("/[^A-Za-z0-9]/", '', $insert_columns['u_fname'].$insert_columns['u_lname']);

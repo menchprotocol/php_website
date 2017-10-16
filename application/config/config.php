@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.393,
+    'version' => 0.394,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -17,10 +17,12 @@ $config['website'] = array(
     'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
 );
 
+//Used to generate application status links:
+$config['application_status_salt'] = 'SALTs3cr3t777';
 
 //The core objects of the platform:
 $config['core_objects'] = array(
-    'u' => array(
+        'u' => array(
         'o_name' => 'User',
     ),
     'b' => array(

@@ -126,12 +126,11 @@ class Front extends CI_Controller {
 	}
 	
 	
-	
-	function bootcamp_apply($b_url_key){
+	function bootcamp_apply($b_url_key,$r_id){
 	    
 	    //Fetch data:
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'c.b_url_key' => $b_url_key,
+	        'b.b_url_key' => $b_url_key,
 	    ));
 	    
 	    //Validate bootcamp:
@@ -140,50 +139,77 @@ class Front extends CI_Controller {
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
 	    
-	    //Validate status:
-	    $udata = $this->session->userdata('user');
+	    //Validate Cohort ID that it's still the latest:
 	    $bootcamp = $bootcamps[0];
-	    if($bootcamp['b_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
-	        //Bootcamp not yet published:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+	    if(!($next_cohort['r_id']==$r_id)){
+	        //Invalid cohort ID, redirect back:
+	        redirect_message('/bootcamps/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Cohort is no longer active.</div>');
 	    }
 	    
+	    $data = array(
+	        'title' => 'Apply to '.$bootcamp['c_objective'].' Bootcamp Starting '.time_format($next_cohort['r_start_date'],1),
+	        'next_cohort' => $next_cohort,
+	    );
+	    
 	    //Load apply page:
-	    $this->load->view('front/shared/f_header' , array(
-	        'landing_page' => 'front/splash/product_splash',
-	        'lp_variables' => array(
-	            'b_image_url' => $bootcamp['b_image_url'],
+	    $this->load->view('front/shared/p_header' , $data);
+	    $this->load->view('front/bootcamp/apply' , $data);
+	    $this->load->view('front/shared/p_footer');
+	}	
+	
+	
+	function application_status(){
+	    
+	    die('Under Construction');
+	    
+	    //Validate inputs:
+	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(strlen($_GET['u_key'])==32)){
+	        //Invalid key, redirect back:
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
+	        exit;
+	    }
+	    
+	    //https://mench.typeform.com/to/STWqxU?u_key=xxxxx&u_id=xxxxx&u_email=xxxxx&u_fname=xxxxx&u_lname=xxxxx
+	    
+	    //We have the basic variables, lets search for this user:
+	    $u_key = $_GET['u_key'];
+	    $u_id = intval($_GET['u_id']);
+	    $application_steps = array(
+	        array(
+	            'name' => 'Account Created',
+	            'done' => 0,
 	        ),
-	        'title' => 'Apply to '.$bootcamp['c_objective'],
-	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a mentor. This bootcamp is hidden from the public until published live.</div>' : null ),
-	    ));
-	    $this->load->view('front/bootcamp/apply' , array(
+	        array(
+	            'name' => 'Application Submitted',
+	            'done' => 0,
+	        ),
+	        array(
+	            'name' => 'Paid Tuition',
+	            'done' => 0,
+	        ),
+	        array(
+	            'name' => 'Connected to MenchBrain',
+	            'done' => 0,
+	        ),
+	        array(
+	            'name' => 'Approved By Instructor',
+	            'done' => 0,
+	        ),
+	    );
+	    
+	    //Validate Cohort ID that it's still the latest:
+	    $data = array(
+	        'title' => 'My Application Status',
 	        'bootcamp' => $bootcamp,
-	    ));
-	    $this->load->view('front/shared/f_footer');
-	}
-	
-	
-	/* ******************************
-	 * Paypal payment statuses
-	 ****************************** */
-	
-	
-	function paypal_success(){
-	    $this->load->view('front/shared/f_header' , array(
-	        'title' => 'Payment Success',
-	    ));
-	    $this->load->view('front/bootcamp/success');
-	    $this->load->view('front/shared/f_footer');
-	}
-	
-	function paypal_cancel(){
-	    $this->load->view('front/shared/f_header' , array(
-	        'title' => 'Payment Cancelled',
-	    ));
-	    $this->load->view('front/bootcamp/cancel');
-	    $this->load->view('front/shared/f_footer');
-	}
-	
-	
+	        'next_cohort' => $next_cohort,
+	        'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
+	        'application_steps' => $application_steps,
+	    );
+	    
+	    //Load apply page:
+	    $this->load->view('front/shared/p_header' , $data);
+	    $this->load->view('front/bootcamp/application_status' , $data);
+	    $this->load->view('front/shared/p_footer');
+	}	
 }

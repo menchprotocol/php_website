@@ -4,7 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Process extends CI_Controller {
 	
     //Used for all JS processing calls
-    
 	function __construct() {
 		parent::__construct();
 		
@@ -27,6 +26,220 @@ class Process extends CI_Controller {
 	/* ******************************
 	 * Users
 	 ****************************** */
+	
+	function funnel_progress(){
+	    //Fetch inputs:
+	    $current_section = intval($_POST['current_section']);
+	    $cohorts = $this->Db_model->r_fetch(array(
+	        'r.r_id' => intval($_POST['r_id']),
+	        'r.r_status' => 1,
+	    ));
+	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	        'b.b_id' => $cohorts[0]['r_b_id'],
+	    ));
+	    $bootcamp = $bootcamps[0];
+	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+	    
+	    
+	    //Display results:
+	    header('Content-Type: application/json');
+	    if(!isset($bootcamp) || !isset($cohorts[0]) || $bootcamp['b_id']<1 || !($next_cohort['r_id']==intval($_POST['r_id']))){
+	        die(json_encode(array(
+	            'goto_section' => 0,
+	            'color' => '#FF0000',
+	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Cohort ID',
+	        )));
+	    }
+	    
+	    
+	    if($current_section==1){
+	        
+	        //EMAIL
+	        if(!isset($_POST['u_email']) || strlen($_POST['u_email'])<1 || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+	            //Invalid
+	            die(json_encode(array(
+	                'goto_section' => 0,
+	                'color' => '#FF0000',
+	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid email, try again.',
+	            )));
+	        }
+	        
+	        
+	        //Fetch user data to see if already registered:
+	        $users = $this->Db_model->u_fetch(array(
+	            'u_email' => strtolower($_POST['u_email']),
+	        ));
+	        if(count($users)==0){
+	            //Nope, lets continue:
+	            die(json_encode(array(
+	                'goto_section' => 2,
+	            )));
+	        }
+	        
+	        //This is a registered user!
+	        $udata = $users[0];
+	        
+	        //See if they are applied for this cohort:
+	        $enrollments = $this->Db_model->ru_fetch(array(
+	            'ru.ru_r_id'	=> $next_cohort['r_id'],
+	            'ru.ru_u_id'	=> $udata['u_id'],
+	        ));
+	        
+	        if(count($enrollments)==0){
+	            //Existing user that is never enrolled here:
+	            $enrollments[0] = $this->Db_model->ru_create(array(
+	                'ru_r_id' 	=> $next_cohort['r_id'],
+	                'ru_u_id' 	=> $udata['u_id'],
+	            ));
+	            
+	            //Assume all good, Log engagement:
+	            $this->Db_model->e_create(array(
+	                'e_creator_id' => $udata['u_id'],
+	                'e_json' => json_encode(array(
+	                    'input' => $_POST,
+	                    'udata' => $udata,
+	                    'rudata' => $enrollments[0],
+	                )),
+	                'e_type_id' => 29, //Joined Cohort
+	                'e_object_id' => $next_cohort['r_id'],
+	                'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	            ));
+	        }
+	        
+	        
+	        
+	        if(isset($enrollments[0]['ru_id']) && $enrollments[0]['ru_id']>0){
+	            //Yes they are in, lets email:
+	            //Send email and log engagement:
+	            if(email_application_url($udata)){
+	                //Log Engagement:
+	                $this->Db_model->e_create(array(
+	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                    'e_json' => json_encode(array(
+	                        'input' => $_POST,
+	                        'udata' => $udata,
+	                        'rudata' => $enrollments[0],
+	                    )),
+	                    'e_type_id' => 28, //Email sent
+	                    'e_object_id' => $next_cohort['r_id'],
+	                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                ));
+	                
+	                //Continue to last step:
+	                die(json_encode(array(
+	                    'goto_section' => 4,
+	                )));
+	            }
+	        }
+	        
+	    } elseif($current_section==2){
+	        
+	        if(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<2){
+	            //Invalid
+	            die(json_encode(array(
+	                'goto_section' => 0,
+	                'color' => '#FF0000',
+	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid first name, try again.',
+	            )));
+	        } else {
+	            //Nope, lets continue:
+	            die(json_encode(array(
+	                'goto_section' => 3,
+	            )));
+	        }
+	        
+	    } elseif($current_section==3){
+	        
+	        if(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<2){
+	            //Invalid
+	            die(json_encode(array(
+	                'goto_section' => 0,
+	                'color' => '#FF0000',
+	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid last name, try again.',
+	            )));
+	        } else {
+	            
+	            //Register User:
+	            $udata = $this->Db_model->u_create(array(
+	                'u_fb_id' 			=> 0,
+	                'u_status' 			=> 0, //Since nothing is yet validated
+	                'u_creator_id' 		=> 0, //They created their own account
+	                'u_language' 		=> 'en', //Since they answered initial questions in English
+	                'u_email' 			=> trim($_POST['u_email']),
+	                'u_fname' 			=> trim($_POST['u_fname']),
+	                'u_lname' 			=> trim($_POST['u_lname']),
+	            ));
+	            
+	            if($udata['u_id']>0){
+	                
+	                //Log Engagement for registration:
+	                $this->Db_model->e_create(array(
+	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                    'e_json' => json_encode(array(
+	                        'input' => $_POST,
+	                        'udata' => $udata,
+	                    )),
+	                    'e_type_id' => 27, //New Student Lead
+	                    'e_object_id' => $next_cohort['r_id'],
+	                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                ));
+	                
+	                
+	                //Insert Enrollment Status since they are new:
+	                $rudata = $this->Db_model->ru_create(array(
+	                    'ru_r_id' 	=> $next_cohort['r_id'],
+	                    'ru_u_id' 	=> $udata['u_id'],
+	                ));
+	                
+	                if($rudata['ru_id']>0){
+	                    
+	                    //Log Engagement:
+	                    $this->Db_model->e_create(array(
+	                        'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                        'e_json' => json_encode(array(
+	                            'input' => $_POST,
+	                            'udata' => $udata,
+	                            'rudata' => $rudata,
+	                        )),
+	                        'e_type_id' => 29, //Joined Cohort
+	                        'e_object_id' => $next_cohort['r_id'],
+	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                    ));
+	                    
+	                    //Send email and log engagement:
+	                    if(email_application_url($udata)){
+	                        //Log Engagement:
+	                        $this->Db_model->e_create(array(
+	                            'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                            'e_json' => json_encode(array(
+	                                'input' => $_POST,
+	                                'udata' => $udata,
+	                                'rudata' => $rudata,
+	                            )),
+	                            'e_type_id' => 28, //Email sent
+	                            'e_object_id' => $next_cohort['r_id'],
+	                            'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                        ));
+	                        
+	                        //Continue to last step:
+	                        die(json_encode(array(
+	                            'goto_section' => 4,
+	                        )));
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    
+	    
+	    //Ooops, what happened?
+	    die(json_encode(array(
+	        'goto_section' => 0,
+	        'color' => '#FF0000',
+	        'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Unknown error, try again.',
+	    )));
+	}
+	
 	
 	function login(){
 	    
@@ -351,7 +564,6 @@ class Process extends CI_Controller {
 	        }
 	    }
 	}
-	
 	
 	function update_schedule(){
 	    $udata = auth(2);

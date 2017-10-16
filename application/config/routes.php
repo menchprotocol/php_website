@@ -68,11 +68,10 @@ $route['login']						= "front/login"; //Bootcamp Operator login
 
 
 //Three steps of the signup process:
-$route['bootcamps/(:any)/apply'] 	= "front/bootcamp_apply/$1"; //Email, account registration & then typeform application
-$route['bootcamps/(:any)/pay'] 	    = "front/bootcamp_pay/$1"; //After typeform, see payment and cancellation and go to paypal. Back here if cancel/fail
-$route['bootcamps/(:any)/connect'] 	= "front/bootcamp_pay/$1"; //Once paid in paypal see confirmation and connect to Facebook Messenger
-$route['bootcamps/(:any)']	        = "front/bootcamp_load/$1"; //Landing page
-$route['bootcamps'] 				= "front/bootcamps_browse"; //Browse page
+$route['bootcamps/(:any)/(:num)/apply'] 	= "front/bootcamp_apply/$1/$2"; //Collects only Email, first & last name
+$route['application_status'] 	            = "front/application_status"; //Everything to do with their application.
+$route['bootcamps/(:any)']	                = "front/bootcamp_load/$1"; //Landing page
+$route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
 
 /* ******************************
  * Console for Operators

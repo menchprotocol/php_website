@@ -91,7 +91,7 @@ foreach ($office_hours as $key=>$oa){
             	<?php } ?>
             </ul>
             
-            <div style="padding:10px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/bootcamps/<?= $bootcamp['b_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+            <div style="padding:10px 0 30px; text-align:center;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
         </div>
         
     </div>
@@ -247,7 +247,7 @@ foreach ($office_hours as $key=>$oa){
 </div>
 
 
-<div style="padding:20px 0 30px; text-align:center;"><a href="javascript:alert('Currently in private Beta. Contact us to learn more.');" href2="/bootcamps/<?= $bootcamp['b_url_key'] ?>/enroll" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+<div style="padding:20px 0 30px; text-align:center;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
 
 <?php } else { ?>
 	<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Live Cohort</span>We cannot render this landing page because its missing a live cohort.</div>
