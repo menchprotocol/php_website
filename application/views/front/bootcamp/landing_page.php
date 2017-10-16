@@ -74,7 +74,7 @@ foreach ($office_hours as $key=>$oa){
         	<div class="video-player"><img src="<?= $bootcamp['b_image_url'] ?>" style="width:100%;" /></div>
         <?php } ?>
         
-        <h3 style="margin:20px 0 10px; padding:0;">Bootcamp Snapshot:</h3>
+        <h3 style="margin-top:20px;">Bootcamp Snapshot</h3>
         <ul style="list-style:none; margin-left:-30px;">
         	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> Week<?= count($bootcamp['c__child_intents'])==1?'':'s' ?></b></li>
         	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week)</li>
@@ -199,6 +199,13 @@ foreach ($office_hours as $key=>$oa){
     		
     		
     		
+    		<h3>Student Testimonials</h3>
+    		<ul style="margin-left:-15px;">
+    			<li>This bootcamp format is very motivating. I'm enjoying the process and I like the email updates as well. The content is well organized. Great job! <b>- Trisch Loren</b></li>
+    			<li>Thanks so much for lighting a fire under my butt with this bootcamp. I've been talking about doing this course for about five years. I'm so excited to finally be doing it!!! <b>- Linda Salazar</b></li>
+    			<li>I can't believe how much I've gotten done in your bootcamp. I thought for sure I'd run out of steam after 4 or 6 weeks, but you've actually created an environment that's giving me more and more energy every week you put forward a new challenge. Amazing. So much gratitude to you. <b>- Donna Barker</b></li>
+    		</ul>
+    		<p>You can <a href="https://support.mench.co/hc/en-us/articles/115002079731" target="_blank">Read More Testimonials <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a> from our first bootcamp.</p>
     
     		<h3>Enrollment</h3>
     		
@@ -207,6 +214,7 @@ foreach ($office_hours as $key=>$oa){
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Registration Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b></li>
     			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
+    			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> Week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?></b></li>
     			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
     		</ul>
     		<hr />
@@ -215,8 +223,8 @@ foreach ($office_hours as $key=>$oa){
     		<?php 
     		$cancellation_policies = $this->config->item('cancellation_policies');
     		echo '<ul style="list-style:none; margin-left:-30px;">';
-    		echo '<li>Full Refund By <b>'.time_format($next_cohort['r_start_date'],2,9).' 11:59pm PST</b></li>';
-    		echo '<li>Pro-Rated Refund By <b>'.time_format($next_cohort['r_start_date'],2,51).' 11:59pm PST</b></li>';
+    		echo '<li>Full Refund Before <b>'.time_format($next_cohort['r_start_date'],1,9).' 11:59pm PST</b></li>';
+    		echo '<li>Pro-Rated Refund Before <b>'.time_format($next_cohort['r_start_date'],1,51).' 11:59pm PST</b></li>';
     		//foreach($cancellation_policies[$next_cohort['r_cancellation_policy']] as $policy){
     		    //echo '<li>'.$policy.'</li>';
     		//}
@@ -228,6 +236,7 @@ foreach ($office_hours as $key=>$oa){
     		
     		<h4>Tuition</h4>
     		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031" data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit."><u><b>Result Guarantee Promise</b></u></a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
+    		<p>Ready to unleash your potential?</p>
     		
     		
     		
