@@ -204,11 +204,11 @@ foreach ($office_hours as $key=>$oa){
     		
     		<h3>Student Testimonials</h3>
     		<ul style="margin-left:-15px;">
-    			<li>This bootcamp format is very motivating. I'm enjoying the process and I like the email updates as well. The content is well organized. Great job! <b>- Trisch Loren</b></li>
-    			<li>Thanks so much for lighting a fire under my butt with this bootcamp. I've been talking about doing this course for about five years. I'm so excited to finally be doing it!!! <b>- Linda Salazar</b></li>
-    			<li>I can't believe how much I've gotten done in your bootcamp. I thought for sure I'd run out of steam after 4 or 6 weeks, but you've actually created an environment that's giving me more and more energy every week you put forward a new challenge. Amazing. So much gratitude to you. <b>- Donna Barker</b></li>
+    			<li>"This bootcamp format is very motivating. I'm enjoying the process and I like the email updates as well. The content is well organized. Great job!" <b>- Trisch Loren</b></li>
+    			<li>"Thanks so much for lighting a fire under my butt with this bootcamp. I've been talking about doing this course for about five years. I'm so excited to finally be doing it!!!" <b>- Linda Salazar</b></li>
+    			<li>"I can't believe how much I've gotten done in your bootcamp. I thought for sure I'd run out of steam after 4 or 6 weeks, but you've actually created an environment that's giving me more and more energy every week you put forward a new challenge. Amazing. So much gratitude to you." <b>- Donna Barker</b></li>
     		</ul>
-    		<p>You can <a href="https://support.mench.co/hc/en-us/articles/115002079731" target="_blank">Read More Testimonials <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a> from our first bootcamp.</p>
+    		<p>You can <a href="https://support.mench.co/hc/en-us/articles/115002079731">Read More Testimonials</a> from our first bootcamp.</p>
     
     		<h3>Enrollment</h3>
     		
@@ -233,12 +233,12 @@ foreach ($office_hours as $key=>$oa){
     		//}
     		echo '</ul>';
     		?>
-    		<p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Bootcamp Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
+    		<p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Bootcamp Cancellation Policies</a>.</p>
     		<hr />
     		
     		
     		<h4>Tuition</h4>
-    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031" data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit."><u><b>Result Guarantee Promise</b></u></a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
+    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031" data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">Result Guarantee Promise</a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
     		<p>Ready to unleash your potential?</p>
     		
     		
