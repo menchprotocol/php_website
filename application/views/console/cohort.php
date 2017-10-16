@@ -52,6 +52,7 @@ function save_r(){
 		r_usd_price:$('#r_usd_price').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),
+		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
 
 		//Application:
 		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
@@ -98,7 +99,43 @@ function reset_default(){
 
     <div class="tab-pane active" id="pill1">
         
-    	<div class="title"><h4>Cohort Start Week</h4></div>
+        
+        <div class="title"><h4>Cancellation Policy</h4></div>
+		<p>Choose from our three standardized cancellation policies:</p>
+		
+		<div class="radio">
+        	<label>
+        		<input type="radio" id="r_cancellation_policy_flexible" name="r_cancellation_policy" value="flexible" <?= ( $cohort['r_cancellation_policy']=='flexible' ? 'checked="true"' : '' )?> />
+        		Flexible
+        	</label>
+        	<ul style="margin-left:15px;">
+        		<li>Full refund before 10% of the elapsed time.</li>
+        		<li>Pro-rated refund before 60% of the elapsed time.</li>
+        	</ul>
+        </div>
+       <div class="radio">
+        	<label>
+        		<input type="radio" id="r_cancellation_policy_moderate" name="r_cancellation_policy" value="moderate" <?= ( $cohort['r_cancellation_policy']=='moderate' ? 'checked="true"' : '' )?> />
+        		Moderate
+        	</label>
+        	<ul style="margin-left:15px;">
+        		<li>Full refund before bootcamp's start date.</li>
+        		<li>Pro-rated refund before 30% of the elapsed time.</li>
+        	</ul>
+        </div>
+        <div class="radio">
+        	<label>
+        		<input type="radio" id="r_cancellation_policy_strict" name="r_cancellation_policy" value="strict" <?= ( $cohort['r_cancellation_policy']=='strict' ? 'checked="true"' : '' )?> />
+        		Strict
+        	</label>
+        	<ul style="margin-left:15px;">
+        		<li>No refunds after enrollment.</li>
+        	</ul>
+        </div>
+        <p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Bootcamp Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
+        <br />
+        
+    	<div class="title"><h4>Cohort Start Date</h4></div>
   		<p>The bootcamp kick-off week for this cohort is:</p>
         <div class="form-group label-floating is-empty">
             <input type="text" id="r_start_date" value="<?= date("m/d/Y" , strtotime($cohort['r_start_date']) ) ?>" style="width:233px;" class="form-control border" />
@@ -139,7 +176,6 @@ function reset_default(){
         -->
         
         
-        
         <br />
         <div class="title"><h4>Minimum Students</h4></div>
         <p>Define the minimum number of students required to be registered to kick-start this cohort. If this number is not met, all existing registrants would be refunded and the cohort would not be started.</p>
@@ -157,7 +193,7 @@ function reset_default(){
 		
 		
 		<br />
-		<div class="title"><h4>Custom Enrollment Questions</h4></div>
+		<div class="title"><h4>Enrollment Questions</h4></div>
 		<p>What open-ended questions would you like to ask students during the enrollment application? A few notes:</p>
   		<ul>
   			<li>These questions can help you determine their level of desire, experience and suitability for this bootcamp.</li>
@@ -245,31 +281,19 @@ function reset_default(){
     
     
     <div class="tab-pane" id="pill3">
-    
-		<div class="title"><h4>Cohort Tuition</h4></div>
-		<p>Decide how much you like to charge students to join this bootcamp. A few notes:</p>
+    	
+    	<div class="title"><h4>Cohort Tuition</h4></div>
+		<p>Define the cohort's tuition fee. A few notes:</p>
   		<ul>
-  			<li>Your asking price is dependant on the level of personalized support and the number of weekly sprints.</li>
-			<li>You would typically charge ~$100/week for 30 Minutes of 1-on-1 mentorship. The more 1-on-1 you offer, the more you should charge/week.</li>
+  			<li>Your asking price is dependant on the length of the bootcamp (number of weeks) and the level of personalized support.</li>
+			<li>We recommend charging $100-$150/week with 30 Minutes of 1-on-1 mentorship. Charge more if you're offering more personalized support.</li>
+			<li>Mench collects 15% commission from each sale.</li>
 		</ul>
         <div class="input-group">
           <span class="input-group-addon addon-lean">USD $</span>
           <input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= $cohort['r_usd_price'] ?>" class="form-control border" />
         </div>
-        
-        
-        <div class="title"><h4>Money-Back Completion Rate</h4></div>
-		<p>All Mench Bootcamps offer a Money Back Promise as long as students maintain their elibility status. Part of this eligibility status is completing assignments </p>
-        <select class="form-control input-mini border" id="r_response_time_hours">
-        	<?php 
-        	$r_response_options = $this->config->item('r_response_options');
-        	foreach($r_response_options as $time){
-        	    echo '<option value="'.$time.'" '.( $cohort['r_response_time_hours']==$time ? 'selected="selected"' : '' ).'>Under '.echo_hours($time).'</option>';
-        	}
-        	?>
-        </select>
-        
-        		
+
     </div>
     
     

@@ -417,6 +417,8 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
+	    } elseif(!isset($_POST['r_cancellation_policy']) || !in_array($_POST['r_cancellation_policy'],array('flexible','moderate','strict'))){
+	        die('<span style="color:#FF0000;">Error: Invalid Cancellation Policy.</span>');
 	    }
 	    
 	    
@@ -436,6 +438,7 @@ class Process extends CI_Controller {
 	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
 	        'r_office_hour_instructions' => $_POST['r_office_hour_instructions'],
 	        'r_application_questions' => $_POST['r_application_questions'],
+	        'r_cancellation_policy' => $_POST['r_cancellation_policy'],
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        'r_status' => intval($_POST['r_status']),
 	        'r_usd_price' => floatval($_POST['r_usd_price']),

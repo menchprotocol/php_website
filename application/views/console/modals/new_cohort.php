@@ -66,7 +66,7 @@ $('#r_start_date').keyup(function(e){
       		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
       		
-        	<div class="title"><h4>Starting Week Of</div>
+        	<div class="title"><h4>Cohort Start Date</div>
 			<div class="form-group label-floating is-empty">
 			    <input type="text" id="r_start_date" style="width:233px;" class="form-control border" />
 			    <span class="material-input"></span>

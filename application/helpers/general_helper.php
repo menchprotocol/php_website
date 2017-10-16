@@ -382,59 +382,59 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'ru' => array(
 	        
 	        //Withrew after course has started:
-	        -4 => array(
+	        -3 => array(
 	            's_name'  => 'Dispelled by Admin',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
-	        -3 => array(
-	            's_name'  => 'Post Grace Period Withdrawal',
-	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student withdrew after free withdrawal deadline. Refund at the discretion of bootcamp leader.',
-	            'u_min_status'  => 999, //Only done by Student themselves
-	        ),
-	        
 	        //Withrew prior to course has started:
 	        -2 => array(
-	            's_name'  => 'Graceful Withdrawal',
+	            's_name'  => 'Student Withdrawal',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student withdrew prior to free withdrawal deadline. Full refund will be given.',
+	            's_desc'  => 'Student withdrew from the bootcamp. Refund is based on cancellation policy & withdrawal date.',
 	            'u_min_status'  => 999, //Only done by Student themselves
 	        ),
 	        -1 => array(
 	            's_name'  => 'Application Rejected',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student application rejected by bootcamp leader before start date.',
+	            's_desc'  => 'Student application rejected by bootcamp leader before bootcamp start date.',
 	            'u_min_status'  => 1,
 	        ),
 	        
-	        //Applied
-	        /*
+	        //Post Application
 	        0 => array(
+    	        's_name'  => 'Application Started',
+    	        's_color' => '#2f2639', //dark
+    	        's_desc'  => 'Student has started the bootcamp\'s application process but has not paid in full yet.',
+    	        'u_min_status'  => 999, //System insertion only
+	        ),
+	        
+	        /*
+	        1 => array(
 	            's_name'  => 'Applied - Pending Full Payment',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full.',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
 	        */
-	        1 => array(
-	            's_name'  => 'Application Pending',
-	            's_color' => '#2f2639', //dark
+	        2 => array(
+	            's_name'  => 'Application Received',
+	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
 	        
 	        //Enrolled
 	        /*
-	        2 => array(
-	            's_name'  => 'Application Approved - Pending Payment',
+	        3 => array(
+	            's_name'  => 'Invitation Sent',
 	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Admins have full access to all bootcamp features.',
 	            'u_min_status'  => 1,
 	        ),
 	        */
-	        3 => array(
+	        4 => array(
 	            's_name'  => 'Enrolled',
 	            's_color' => '#4caf50', //green
 	            's_desc'  => 'Student application approved and full payment collected, making them ready to participate in bootcamp.',
@@ -442,7 +442,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        
 	        //Completion
-	        4 => array(
+	        5 => array(
 	            's_name'  => 'Completed',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'Student completed cohort and had all their assignments approved by bootcamp leader.',
