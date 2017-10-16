@@ -198,10 +198,9 @@ foreach ($office_hours as $key=>$oa){
     		
     		<h4>Timeline</h4>
     		<ul style="list-style:none; margin-left:-20px;">
-      			<li><span style="width:200px; display:inline-block;font-weight:bold;">Registration Starts</span>Currently Open</li>
-    			<li><span style="width:200px; display:inline-block;font-weight:bold;">Registration Ends</span>Sunday Oct 22 Midnight PST</li>
-    			<li><span style="width:200px; display:inline-block;font-weight:bold;">Bootcamp Starts</span>Monday Oct 23 Morning</li>
-    			<li><span style="width:200px; display:inline-block;font-weight:bold;">Bootcamp Ends</span>Sunday Jan 14 2018</li>
+    			<li><span style="width:170px; display:inline-block;">Registration Ends</span><b>Sunday Oct 22 @ 11:59pm PST</b></li>
+    			<li><span style="width:170px; display:inline-block;">Bootcamp Starts</span><b>Monday Oct 23</b></li>
+    			<li><span style="width:170px; display:inline-block;">Bootcamp Ends</span><b>Sunday Jan 14 2018</b></li>
     		</ul>
     		
     		
