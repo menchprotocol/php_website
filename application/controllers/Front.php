@@ -273,15 +273,6 @@ class Front extends CI_Controller {
 	    }
 	    
 	    
-	    if(isset($_POST) || isset($_GET['status']) && $_GET['status']){
-	        //This is likely paypal:
-	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $udata['u_id'],
-	            'e_json' => json_encode($_POST),
-	            'e_type_id' => 30, //Paypal payment
-	        ));
-	    }
-	    
 	    //Validate Cohort ID that it's still the latest:
 	    $data = array(
 	        'title' => 'My Application Status',
