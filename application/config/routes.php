@@ -71,6 +71,7 @@ $route['login']						= "front/login"; //Bootcamp Operator login
 $route['bootcamps/(:any)/(:num)/apply'] 	= "front/bootcamp_apply/$1/$2"; //Collects only Email, first & last name
 $route['application_status'] 	            = "front/application_status"; //Everything to do with their application.
 $route['bootcamps/(:any)']	                = "front/bootcamp_load/$1"; //Landing page
+$route['delayed_redirect'] 				    = "front/delayed_redirect"; //for Typeforms
 $route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
 
 /* ******************************
