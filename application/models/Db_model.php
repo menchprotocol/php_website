@@ -63,6 +63,17 @@ class Db_model extends CI_Model {
 	    return $insert_columns;
 	}
 	
+	function t_create($insert_columns){
+	    //TODO Add checks and protection
+	    
+	    //Lets now add:
+	    $this->db->insert('v5_transactions', $insert_columns);
+	    
+	    //Fetch inserted id:
+	    $insert_columns['t_id'] = $this->db->insert_id();
+	    
+	    return $insert_columns;
+	}
 	
 	function u_create($insert_columns){
 		

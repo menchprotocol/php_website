@@ -377,19 +377,38 @@ class Bot extends CI_Controller {
 	            ));
 	            
 	            if(count($cohorts)==1){
+	                
+	                //Define numbers:
+	                $amount = floatval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
+	                $fee = floatval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] ));
+	                
+	                //Insert transaction:
+	                $transaction = $this->Db_model->t_create(array(
+	                    't_ru_id' => $enrollments[0]['ru_id'],
+	                    't_timestamp' => date("Y-m-d H:i:s"),
+	                    't_creator_id' => $enrollments[0]['ru_u_id'],
+	                    't_paypal_id' => $_POST['txn_id'],
+	                    't_paypal_ipn' => json_encode($_POST),
+	                    't_currency' => $_POST['mc_currency'],
+	                    't_payment_type' => $_POST['payment_type'],
+	                    't_paypal_verified' => ( $_POST['payer_status']=='verified' ? 't' : 'f' ),
+	                    't_total' => $amount,
+	                    't_fees' => $fee,
+	                ));
+	                
 	                //Update student's payment status:
 	                $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
 	                    'ru_status' => 2, //For now this is the default since we don't accept partial payments
-	                    'ru_paid_sofar' => $_POST['payment_gross'],
+	                    'ru_paid_sofar' => ($enrollments[0]['ru_paid_sofar'] + $amount), //This supports partial payments though!
 	                ));
 	                
-	                //Log transaction
+	                //Log Engagement
 	                $this->Db_model->e_create(array(
 	                    'e_creator_id' => $enrollments[0]['ru_u_id'],
-	                    'e_message' => 'Received $'.$_POST['payment_gross'].' USD from '.$_POST['payer_email'],
+	                    'e_message' => 'Received $'.$amount.' USD via PayPal.',
 	                    'e_json' => json_encode($_POST),
 	                    'e_type_id' => 30, //Paypal Payment
-	                    'e_object_id' => $cohorts[0]['r_id'],
+	                    'e_object_id' => $transaction['t_id'],
 	                    'e_b_id' => $cohorts[0]['r_b_id'],
 	                ));
 	            }

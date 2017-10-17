@@ -1,7 +1,6 @@
 <?php 
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
-echo '<h3>Bootcamp Applications</h3>';
-echo '<p>Logged in as '.$udata['u_fname'].' '.$udata['u_lname'].'.</p>';
+echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamp Applications</h3>';
 
 foreach($enrollments as $enrollment){
     
@@ -48,7 +47,7 @@ foreach($enrollments as $enrollment){
             <input type="hidden" name="custom_r_id" value="<?= $enrollment['cohort']['r_id'] ?>">
             <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
             <input type="hidden" name="custom_u_key" value="<?= $u_key ?>">
-            <input type="hidden" name="amount" value="<?= ( $enrollment['cohort']['r_usd_price'] ? 1 : 1 ) ?>">
+            <input type="hidden" name="amount" value="<?= $enrollment['cohort']['r_usd_price'] ?>">
             <input type="hidden" name="currency_code" value="USD">
             <input type="hidden" name="button_subtype" value="services">
             <input type="hidden" name="no_note" value="1">

@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.394,
+    'version' => 0.400,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -42,6 +42,9 @@ $config['core_objects'] = array(
     ),
     'ru' => array(
         'o_name' => 'Enrollment',
+    ),
+    't' => array(
+        'o_name' => 'Transaction',
     ),
     'i' => array(
         'o_name' => 'Intent Reference (Upcoming)',
