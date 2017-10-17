@@ -159,52 +159,56 @@ class Front extends CI_Controller {
 	}	
 	
 	
+	
 	function application_status(){
 	    
-	    die('Under Construction');
-	    
-	    //Validate inputs:
-	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(strlen($_GET['u_key'])==32)){
-	        //Invalid key, redirect back:
+	    $application_status_salt = $this->config->item('application_status_salt');
+	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
+	        //Log this error:
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
-	    //https://mench.typeform.com/to/STWqxU?u_key=xxxxx&u_id=xxxxx&u_email=xxxxx&u_fname=xxxxx&u_lname=xxxxx
+	    //Search for cohort using form ID:
+	    $users = $this->Db_model->u_fetch(array(
+	        'u_id' => intval($_GET['u_id']),
+	    ));
+	    $udata = @$users[0];
+	    //Fetch all 
+	    $enrollments = $this->Db_model->ru_fetch(array(
+	        'ru.ru_u_id'	=> $udata['u_id'],
+	    ));
 	    
-	    //We have the basic variables, lets search for this user:
-	    $u_key = $_GET['u_key'];
-	    $u_id = intval($_GET['u_id']);
-	    $application_steps = array(
-	        array(
-	            'name' => 'Account Created',
-	            'done' => 0,
-	        ),
-	        array(
-	            'name' => 'Application Submitted',
-	            'done' => 0,
-	        ),
-	        array(
-	            'name' => 'Paid Tuition',
-	            'done' => 0,
-	        ),
-	        array(
-	            'name' => 'Connected to MenchBrain',
-	            'done' => 0,
-	        ),
-	        array(
-	            'name' => 'Approved By Instructor',
-	            'done' => 0,
-	        ),
-	    );
+	    //Fetch more data for each enrollment:
+	    foreach($enrollments as $key=>$enrollment){
+	        $cohorts = $this->Db_model->r_fetch(array(
+	            'r.r_id' => $enrollment['ru_r_id'],
+	        ));
+	        //Assume this was fetched:
+	        $enrollments[$key]['cohort'] = $cohorts[0];
+	        //Fetch bootcamp:
+	        $bootcamps = $this->Db_model->c_full_fetch(array(
+	            'b.b_id' => $cohorts[0]['r_b_id'],
+	        ));
+	        //Assume this was fetched:
+	        $enrollments[$key]['bootcamp'] = $bootcamps[0];
+	    }
+	    
+	    //Did we find at-least one enrollment?
+	    if(count($enrollments)<=0){
+	        //Log this error:
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">No Active Applications.</div>');
+	        exit;
+	    }
+	    
 	    
 	    //Validate Cohort ID that it's still the latest:
 	    $data = array(
 	        'title' => 'My Application Status',
-	        'bootcamp' => $bootcamp,
-	        'next_cohort' => $next_cohort,
+	        'u_id' => $_GET['u_id'],
+	        'u_key' => $_GET['u_key'],
+	        'enrollments' => $enrollments,
 	        'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
-	        'application_steps' => $application_steps,
 	    );
 	    
 	    //Load apply page:

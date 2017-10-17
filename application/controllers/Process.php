@@ -85,6 +85,7 @@ class Process extends CI_Controller {
 	            'ru.ru_u_id'	=> $udata['u_id'],
 	        ));
 	        
+	        
 	        if(count($enrollments)==0){
 	            //Existing user that is never enrolled here:
 	            $enrollments[0] = $this->Db_model->ru_create(array(
@@ -105,8 +106,7 @@ class Process extends CI_Controller {
 	                'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	            ));
 	        }
-	        
-	        
+	        	        
 	        
 	        if(isset($enrollments[0]['ru_id']) && $enrollments[0]['ru_id']>0){
 	            //Yes they are in, lets email:

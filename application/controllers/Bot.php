@@ -360,7 +360,6 @@ class Bot extends CI_Controller {
 	}
 	
 	
-	
 	function typeform_webhook(){
 	    $json_data = json_decode(file_get_contents('php://input'), true);
 	    $application_status_salt = $this->config->item('application_status_salt');
