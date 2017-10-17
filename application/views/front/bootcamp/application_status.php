@@ -1,5 +1,8 @@
 <?php 
+echo '<p><b>Welcome '.$udata['u_fname'].' '.$udata['u_lname'].'.</b></p>';
+
 foreach($enrollments as $enrollment){
+    echo '<hr />';
     echo '<p><b>'.$enrollment['bootcamp']['c_objective'].':</b></p>';
     
     //Account, always created at this point:
@@ -43,8 +46,5 @@ foreach($enrollments as $enrollment){
     
     //Instructor Approval:
     echo '<div class="checkbox"><label '.( $enrollment['ru_status']==4 ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $enrollment['ru_status']==4 ? 'checked' : '' ).'> '.( $enrollment['ru_status']==4 ? 'Approved By Instructor: You Are Enrolled!' : 'Pending Interview & Instructor Approval' ).'</label></div>';
-    
-    
-    echo '<hr />';
 }
 ?>
