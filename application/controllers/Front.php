@@ -159,7 +159,11 @@ class Front extends CI_Controller {
 	}	
 	
 	
-	
+	function delayed_redirect(){
+	    //To process webhook
+	    sleep(2);
+	    header( 'Location: /application_status?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'] );
+	}
 	function application_status(){
 	    
 	    $application_status_salt = $this->config->item('application_status_salt');

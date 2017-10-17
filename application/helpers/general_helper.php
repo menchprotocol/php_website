@@ -771,7 +771,7 @@ function email_application_url($udata){
     $html_message .= '<div><a href="'.$application_status_url.'" target="_blank">'.$application_status_url.'</a></div><br />';
     $html_message .= '<div>Talk soon.</div>';
     $html_message .= '<div>Team Mench</div>';
-    $CI->load->model('Email_model');
+    $CI->load->model('model_name');
     return $CI->Email_model->send_single_email($to_array,$subject,$html_message);
 }
 
