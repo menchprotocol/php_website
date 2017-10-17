@@ -29,7 +29,7 @@ class Process extends CI_Controller {
 	
 	function funnel_progress(){
 	    //Fetch inputs:
-	    $current_section = intval($_POST['current_section']);
+	    $current_section = intval(@$_POST['current_section']);
 	    $cohorts = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	        'r.r_status' => 1,
