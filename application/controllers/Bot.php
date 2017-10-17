@@ -363,16 +363,37 @@ class Bot extends CI_Controller {
 	
 	function paypal_webhook(){
 	    //Called when the paypal payment is complete:
-	    $json_data = json_decode(file_get_contents('php://input'), true);
-	    $this->Db_model->e_create(array(
-	        'e_creator_id' => 0,
-	        'e_json' => json_encode(array(
-	            'json' => $json_data,
-	            'post' => $_POST,
-	        )),
-	        'e_type_id' => 30, //Paypal Payment
-	    ));
-	    echo 'Done';
+	    if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
+	        //Seems like a valid Paypal IPN Call:
+	        //Fetch Enrollment row:
+	        $enrollments = $this->Db_model->ru_fetch(array(
+	            'ru.ru_id' => intval($_POST['item_number']),
+	        ));
+	        
+	        if(count($enrollments)==1){
+	            //Fetch cohort data to grab bootcamp ID:
+	            $cohorts = $this->Db_model->r_fetch(array(
+	                'r.r_id' => $enrollments[0]['ru_r_id'],
+	            ));
+	            
+	            if(count($cohorts)==1){
+	                //Update student's payment status:
+	                $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
+	                    'ru_paid_sofar' => $_POST['payment_gross'],
+	                ));
+	                
+	                //Log transaction
+	                $this->Db_model->e_create(array(
+	                    'e_creator_id' => $enrollments[0]['ru_u_id'],
+	                    'e_message' => 'Received $'.$_POST['payment_gross'].' USD from '.$_POST['payer_email'],
+	                    'e_json' => json_encode($_POST),
+	                    'e_type_id' => 30, //Paypal Payment
+	                    'e_object_id' => $cohorts[0]['r_id'],
+	                    'e_b_id' => $cohorts[0]['r_b_id'],
+	                ));
+	            }
+	        }
+	    }
 	}
 	
 	function typeform_webhook(){

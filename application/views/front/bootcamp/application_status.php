@@ -7,7 +7,7 @@ foreach($enrollments as $enrollment){
     
     //Determine the steps:
     $applied = (strlen($enrollment['ru_application_survey'])>0);
-    $paid = ($enrollment['ru_is_fully_paid']=='t');
+    $paid = ( $enrollment['ru_paid_sofar']>=$enrollment['cohort']['r_usd_price']);
     
     echo '<hr />';
     echo '<h4>'.$enrollment['bootcamp']['c_objective'].'</h4>';
@@ -43,7 +43,10 @@ foreach($enrollments as $enrollment){
             <input type="hidden" name="business" value="EYKXCMCJHEBA8">
             <input type="hidden" name="lc" value="US">
             <input type="hidden" name="item_name" value="Bootcamp Tuition: <?= $enrollment['bootcamp']['c_objective'] ?>">
-            <input type="hidden" name="item_number" value="<?= $enrollment['cohort']['r_id'] ?>">
+            <input type="hidden" name="item_number" value="<?= $enrollment['ru_id'] ?>">
+            <input type="hidden" name="custom_r_id" value="<?= $enrollment['cohort']['r_id'] ?>">
+            <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
+            <input type="hidden" name="custom_u_key" value="<?= $u_key ?>">
             <input type="hidden" name="amount" value="<?= ( $enrollment['cohort']['r_usd_price'] ? 1 : 1 ) ?>">
             <input type="hidden" name="currency_code" value="USD">
             <input type="hidden" name="button_subtype" value="services">
