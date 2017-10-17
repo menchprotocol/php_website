@@ -125,8 +125,17 @@ class Process extends CI_Controller {
 	                ));
 	                
 	                //Continue to last step:
+	                /*
 	                die(json_encode(array(
 	                    'goto_section' => 4,
+	                )));
+	                */
+	                
+	                //Redirect to typeform:
+	                $application_status_salt = $this->config->item('application_status_salt');
+	                $u_key = md5($udata['u_id'].$application_status_salt);
+	                die(json_encode(array(
+	                    'hard_redirect' => 'https://mench.typeform.com/to/'.$next_cohort['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']),
 	                )));
 	            }
 	        }
@@ -228,7 +237,7 @@ class Process extends CI_Controller {
 	                        */
 	                        
 	                        //Redirect to typeform:
-	                        $application_status_salt = $CI->config->item('application_status_salt');
+	                        $application_status_salt = $this->config->item('application_status_salt');
 	                        $u_key = md5($udata['u_id'].$application_status_salt);
 	                        die(json_encode(array(
 	                            'hard_redirect' => 'https://mench.typeform.com/to/'.$next_cohort['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']),
