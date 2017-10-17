@@ -188,7 +188,7 @@ class Front extends CI_Controller {
 	    $udata = @$users[0];
 	    //Fetch all
 	    $enrollments = $this->Db_model->ru_fetch(array(
-	        'ru.ru_r_id'	=> $udata['r_id'],
+	        'ru.ru_r_id'	=> $_GET['r_id'],
 	        'ru.ru_u_id'	=> $udata['u_id'],
 	    ));
 	    
@@ -207,6 +207,8 @@ class Front extends CI_Controller {
 	        $enrollments[$key]['bootcamp'] = $bootcamps[0];
 	    }
 	    
+	    //To give the typeform webhook enough time to update the DB status:
+	    sleep(1);
 	    
 	    //Make sure we got all this data:
 	    if(!(count($enrollments)==1) || !isset($enrollments[0]['cohort']['r_id']) || !isset($enrollments[0]['bootcamp']['b_id'])){
@@ -224,8 +226,6 @@ class Front extends CI_Controller {
 	    }
 	    
 	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
-	    sleep(1); //To give the typeform webhook enough time to update the DB status
-	    
 	    //The "pay_r_id" variable makes the next page redirect to paypal automatically:
 	    header( 'Location: /application_status?pay_r_id='.( $enrollments[0]['ru_is_fully_paid']=='t' ? $_GET['r_id'] : 0 ).'&u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'] );
 	}
