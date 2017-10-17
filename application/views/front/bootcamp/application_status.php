@@ -7,7 +7,8 @@ foreach($enrollments as $enrollment){
     
     //Determine the steps:
     $applied = (strlen($enrollment['ru_application_survey'])>0);
-    $paid = ( $enrollment['ru_paid_sofar']>=$enrollment['cohort']['r_usd_price']);
+    //$paid = ( $enrollment['ru_paid_sofar']>=$enrollment['cohort']['r_usd_price']); //The real deal
+    $paid = ( $enrollment['ru_paid_sofar']>0);
     
     echo '<hr />';
     echo '<h4>'.$enrollment['bootcamp']['c_objective'].'</h4>';

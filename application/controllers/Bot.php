@@ -379,7 +379,7 @@ class Bot extends CI_Controller {
 	            if(count($cohorts)==1){
 	                //Update student's payment status:
 	                $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
-	                    'ru_status' => ( floatval($_POST['payment_gross'])==floatval($cohorts[0]['r_usd_price']) ? 2 : 1 ),
+	                    'ru_status' => 2, //For now this is the default since we don't accept partial payments
 	                    'ru_paid_sofar' => $_POST['payment_gross'],
 	                ));
 	                
