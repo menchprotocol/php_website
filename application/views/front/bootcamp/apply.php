@@ -31,7 +31,11 @@ function next_section(){
     		
         	} , function(data) {
         		//Do we have a redirect URL?
-    			if(data.goto_section>0){
+        		if(typeof data.hard_redirect !== 'undefined'){
+            		//Time to go:
+        			window.location = data.hard_redirect;
+        			return false;
+            	} else if(data.goto_section>0){
 					ui_show(data.goto_section);
 				} else {
 					//Stop and show:

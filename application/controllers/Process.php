@@ -49,8 +49,7 @@ class Process extends CI_Controller {
 	            'color' => '#FF0000',
 	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Cohort ID',
 	        )));
-	    }
-	    
+	    }	    
 	    
 	    if($current_section==1){
 	        
@@ -222,8 +221,17 @@ class Process extends CI_Controller {
 	                        ));
 	                        
 	                        //Continue to last step:
+	                        /*
 	                        die(json_encode(array(
 	                            'goto_section' => 4,
+	                        )));
+	                        */
+	                        
+	                        //Redirect to typeform:
+	                        $application_status_salt = $CI->config->item('application_status_salt');
+	                        $u_key = md5($udata['u_id'].$application_status_salt);
+	                        die(json_encode(array(
+	                            'hard_redirect' => 'https://mench.typeform.com/to/'.$next_cohort['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']),
 	                        )));
 	                    }
 	                }
