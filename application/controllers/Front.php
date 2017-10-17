@@ -208,7 +208,7 @@ class Front extends CI_Controller {
 	    }
 	    
 	    //To give the typeform webhook enough time to update the DB status:
-	    sleep(1);
+	    sleep(2);
 	    
 	    //Make sure we got all this data:
 	    if(!(count($enrollments)==1) || !isset($enrollments[0]['cohort']['r_id']) || !isset($enrollments[0]['bootcamp']['b_id'])){
@@ -239,6 +239,13 @@ class Front extends CI_Controller {
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
+	    
+	    //Is this a paypal success?
+	    if(isset($_GET['status']) && intval($_GET['status'])){
+	        //Give the PayPal webhook enough time to update the DB status:
+	        sleep(2);
+	    }
+	    
 	    
 	    //Search for cohort using form ID:
 	    $users = $this->Db_model->u_fetch(array(
