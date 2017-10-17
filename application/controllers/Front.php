@@ -227,7 +227,7 @@ class Front extends CI_Controller {
 	    
 	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
 	    //The "pay_r_id" variable makes the next page redirect to paypal automatically:
-	    header( 'Location: /application_status?pay_r_id='.( $enrollments[0]['ru_is_fully_paid']=='t' ? $_GET['r_id'] : 0 ).'&u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'] );
+	    header( 'Location: /application_status?pay_r_id='.( $enrollments[0]['ru_is_fully_paid']=='t' ? 0 : $_GET['r_id'] ).'&u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'] );
 	}
 	
 	

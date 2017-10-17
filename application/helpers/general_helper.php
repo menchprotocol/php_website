@@ -762,12 +762,12 @@ function one_two_explode($one,$two,$content){
 function email_application_url($udata){
     $to_array = array($udata['u_email']);
     $CI =& get_instance();
-    $subject = 'Your mench.co Application URL';
+    $subject = 'mench.co Bootcamp Application';
     $application_status_salt = $CI->config->item('application_status_salt');
     $application_status_url = 'https://mench.co/application_status?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'];
     $html_message = null; //Start
     $html_message .= '<div>Hi '.$udata['u_fname'].',</div><br />';
-    $html_message .= '<div>Here is your unique mench.co application URL:</div><br />';
+    $html_message .= '<div>For your records, you can access your bootcamp application here:</div><br />';
     $html_message .= '<div><a href="'.$application_status_url.'" target="_blank">'.$application_status_url.'</a></div><br />';
     $html_message .= '<div>Talk soon.</div>';
     $html_message .= '<div>Team Mench</div>';

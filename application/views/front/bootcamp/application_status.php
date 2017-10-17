@@ -1,8 +1,5 @@
-<style> #funnel .container { text-align:left !important; padding-left:5px !important; } </style>
-
-
-
 <?php 
+echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
 echo '<h3>Bootcamp Applications</h3>';
 echo '<p>Logged in as '.$udata['u_fname'].' '.$udata['u_lname'].'.</p>';
 
@@ -35,6 +32,8 @@ foreach($enrollments as $enrollment){
         <script>
         $( document ).ready(function() {
         	$('#paypal_<?= $enrollment['ru_id'] ?>').submit();
+        	//Hide content from within the page:
+        	$('#application_status').html('<img src="/img/round_yellow_load.gif" class="loader" />');
         });
         </script>
         <?php } ?>
@@ -68,4 +67,5 @@ foreach($enrollments as $enrollment){
         echo status_bible('ru',$enrollment['ru_status'],0,'top');
     }
 }
+echo '</div>';
 ?>
