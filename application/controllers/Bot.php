@@ -366,10 +366,10 @@ class Bot extends CI_Controller {
 	    $json_data = json_decode(file_get_contents('php://input'), true);
 	    $this->Db_model->e_create(array(
 	        'e_creator_id' => 0,
-	        'e_json' => array(
-	            'json' => json_encode($json_data),
-	            'post' => json_encode($_POST),
-	        ),
+	        'e_json' => json_encode(array(
+	            'json' => $json_data,
+	            'post' => $_POST,
+	        )),
 	        'e_type_id' => 30, //Paypal Payment
 	    ));
 	    echo 'Done';
