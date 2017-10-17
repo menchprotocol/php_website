@@ -430,7 +430,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        2 => array(
-	            's_name'  => 'Application Submitted',
+	            's_name'  => 'Pending Enrollment',
 	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            'u_min_status'  => 999, //System insertion only

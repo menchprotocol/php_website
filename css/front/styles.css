@@ -19,6 +19,10 @@
 	text-align:center;
 }
 
+#funnel .checkbox label {
+  cursor: default;
+}
+
 #funnel .form-control {
 	max-width:300px;
 	margin:20px auto 0 !important;

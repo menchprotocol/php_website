@@ -360,7 +360,23 @@ class Bot extends CI_Controller {
 	}
 	
 	
+	
+	function paypal_webhook(){
+	    //Called when the paypal payment is complete:
+	    $json_data = json_decode(file_get_contents('php://input'), true);
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => 0,
+	        'e_json' => json_encode($json_data),
+	        'e_type_id' => 30, //Paypal Payment
+	    ));
+	    echo 'Done';
+	}
+	
 	function typeform_webhook(){
+	    
+	    //This function is called when a user submits a typeform to save its data
+	    //Note that the user would be redirected to the Controller Front/typeform_complete to determine their next call to action
+	    
 	    $json_data = json_decode(file_get_contents('php://input'), true);
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    
