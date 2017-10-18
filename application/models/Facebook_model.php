@@ -42,11 +42,13 @@ class Facebook_model extends CI_Model {
 				'greeting' => array(
 						array(
 								'locale' => 'default',
-								'text' => 'Hi {{user_first_name}}, I\'m your Personal Assistant Bot who would be at your service so you achieve the final goal of your Mench Bootcamp. I will:
+								'text' => 'I\'m your Personal Assistant Bot for Mench Bootcamps.
 
-- Assignment Updates
-- Notifications & Reminders
-- Answering Any Questions',
+Use me for:
+
+- Asking Questions
+- Managing Assignment
+- Notifications/Reminders',
 						),
 				),
 				'whitelisted_domains' => array(
