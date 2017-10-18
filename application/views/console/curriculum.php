@@ -414,10 +414,10 @@ function msg_save_edit(i_id){
 
 <ul class="nav nav-pills nav-pills-primary">
   <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Goal</a></li>
-  <li><a href="#pill2" data-toggle="tab" class="<?= ( strlen($intent['c_todo_overview'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</a></li>
+  <li><a href="#pill2" data-toggle="tab" class="<?= ( strlen($intent['c_todo_overview'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-binoculars" aria-hidden="true"></i> Description</a></li>
   <li><a href="#pill3" data-toggle="tab" class="<?= ( strlen($intent['c_prerequisites'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</a></li>
-  <?php if($level>1){ ?>
-  <li><a href="#pill4" data-toggle="tab" class="<?= ( strlen($intent['c_todo_bible'])>0 && $intent['c_time_estimate']>0 ? '' : 'is_empty') ?>"><i class="fa fa-book" aria-hidden="true"></i> Homework</a></li>
+  <?php if($level>2 || strlen($intent['c_todo_bible'])>0 || $intent['c_time_estimate']>0){ ?>
+  <li><a href="#pill4" data-toggle="tab" class="<?= ( strlen($intent['c_todo_bible'])>0 && $intent['c_time_estimate']>0 ? '' : 'is_empty') ?>"><i class="fa fa-check-square" aria-hidden="true"></i> Assignment</a></li>
   <?php } ?>
 </ul>
 
@@ -439,7 +439,7 @@ function msg_save_edit(i_id){
     
     <div class="tab-pane" id="pill2">
     
-		<p>An overview of what to be expected:</p>
+		<p>An overview of the goal and how you would go about executing it:</p>
         <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
         <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
         
@@ -458,7 +458,7 @@ function msg_save_edit(i_id){
     
     
     <div class="tab-pane" id="pill4">
-    	<p>The homework is detailed instructions on <b>how to execute</b> towards the goal. It's shared with students on the Monday of the weekly sprint to keep students focused by only paying attention to what they need to do each week.</p>
+    	<p>The assignment is detailed instructions on <b>how to accomplish</b> the goal. It's shared with students on the Monday of the weekly sprint to keep students focused by only paying attention to what they need to do each week.</p>
     	
     	
     	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
@@ -466,7 +466,7 @@ function msg_save_edit(i_id){
         
         
         <div class="title"><h4><i class="fa fa-clock-o"></i> Estimated Time</h4></div>
-        <p>An estimate of how long it takes to complete this homework which includes watching/reading all videos/article and doing the required work. For time estimates longer than 13 hours you are required to break the goal down into smaller goals to reduce complexity.</p>
+        <p>An estimate of how long it takes to complete this assignment which includes watching/reading all videos/article and doing the required work. For time estimates longer than 13 hours you are required to break the goal down into smaller goals to reduce complexity.</p>
         <select class="form-control input-mini border" id="c_time_estimate">
         	<?php 
         	$times = $this->config->item('c_time_options');
@@ -499,8 +499,8 @@ if($level<3){
 		<br />
 		<?php
     } elseif($level==2){
-        echo '<h3>Week Tasks</h3>';
-        echo '<p class="maxout">Break down the week goal into smaller tasks to give students step-by-step checklist for the week:</p>';
+        echo '<h3>Assignments</h3>';
+        echo '<p class="maxout">Break down the week goal into smaller Assignments to give students step-by-step checklist for the week:</p>';
     }
     
     //Print current sub-intents:
@@ -515,7 +515,7 @@ if($level<3){
     <div class="list-group">
     	<div class="list-group-item list_input">
     		<div class="input-group">
-    			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'Weekly Sprint' : 'Week Tasks') ?> Goal"></div>
+    			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Goal"></div>
     			<span class="input-group-addon" style="padding-right:0;">
     				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
     					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>

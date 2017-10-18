@@ -125,13 +125,13 @@ function echo_cr($b_id,$intent,$direction,$level=0){
   
     	    //Other settings:
     	    if(strlen($intent['c_todo_overview'])>0){
-    	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
+    	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Description"></i>';
     	    }
     	    if(strlen($intent['c_prerequisites'])>0){
     	        $ui .= '<i class="fa fa-exclamation-triangle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Prerequisites"></i>';
     	    }
     	    if(strlen($intent['c_todo_bible'])>0){
-    	        $ui .= '<i class="fa fa-book title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Homework"></i>';
+    	        $ui .= '<i class="fa fa-check-square title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Assignment"></i>';
     	        if($level==2 && isset($intent['c__estimated_hours'])){
         	        $ui .= echo_time($intent['c__estimated_hours'],0);
         	    } elseif($level==3 && isset($intent['c_time_estimate'])){
@@ -142,8 +142,8 @@ function echo_cr($b_id,$intent,$direction,$level=0){
         	    
     	    
     	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
-    	        //This sprint has tasks:
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of tasks for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+    	        //This sprint has Assignments:
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of Assignments for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
     	    $ui .= ' <span class="srt-'.$direction.'"></span>'; //For the status of sorting
     	    

@@ -599,7 +599,7 @@ $config['countries_all'] = array(
 $config['level_names'] = array(
     1 => 'Bootcamp',
     2 => 'Week',
-    3 => 'Task',
+    3 => 'Assignment',
 );
 
 $config['r_response_options'] = array('1','2','3','4','12','24','48');

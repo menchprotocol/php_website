@@ -3,7 +3,7 @@
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/curriculum"><b><i class="material-icons">format_list_numbered</i> Curriculum <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
       	<div><?= count($bootcamp['c__child_intents']) ?> Weeks</div>
-      	<div><?= $bootcamp['c__task_count'] ?> Tasks</div>
+      	<div><?= $bootcamp['c__task_count'] ?> Assignments</div>
       	<?= ( count($bootcamp['c__child_intents'])>0 ? '<div>'.round($bootcamp['c__estimated_hours'],1).' Hours</div><div>'.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/Week</div>' : '' ) ?>
       </div>
     </div>

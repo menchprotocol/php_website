@@ -29,27 +29,30 @@ $office_hours = unserialize($next_cohort['r_live_office_hours']);
 $days = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 $office_hours_ui = array();
 $total_hours = 0;
-foreach ($office_hours as $key=>$oa){
-    $string = null;
-    if(isset($oa['periods']) && count($oa['periods'])>0){
-        //Yes we have somehours for this day:
-        foreach($oa['periods'] as $period){
-            if(!$string){
-                $string = '<span style="width:100px; display:inline-block;font-weight:bold;">'.$days[$key].'</span>';
-            } else {
-                $string .= ' & ';
+if(isset($office_hours) && is_array($office_hours)){
+    foreach ($office_hours as $key=>$oa){
+        $string = null;
+        if(isset($oa['periods']) && count($oa['periods'])>0){
+            //Yes we have somehours for this day:
+            foreach($oa['periods'] as $period){
+                if(!$string){
+                    $string = '<span style="width:100px; display:inline-block;font-weight:bold;">'.$days[$key].'</span>';
+                } else {
+                    $string .= ' & ';
+                }
+                $string .= $period[0].' - '.$period[1];
+                
+                //Calculate hours for this period:
+                $total_hours += hourformat($period[1]) - hourformat($period[0]);
             }
-            $string .= $period[0].' - '.$period[1];
-            
-            //Calculate hours for this period:
-            $total_hours += hourformat($period[1]) - hourformat($period[0]);
+        }
+        if($string){
+            $string .= ' PST';
+            array_push($office_hours_ui,$string);
         }
     }
-    if($string){
-        $string .= ' PST';
-        array_push($office_hours_ui,$string);
-    }
 }
+
 
 /*
  * 'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
@@ -82,7 +85,7 @@ foreach ($office_hours as $key=>$oa){
             	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?></b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/Week)</li>
             	<li data-toggle="tooltip" title="If you did the work and did not Create and Launch an Online Course by 14 Jan 2018, you will receive a full account credit.">Promise: <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u><b>Result Guarantee &raquo;</b></u></a></li>
             	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
-            	<li>Average Homework: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
+            	<li>Assignment Time: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b></li>
             	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
             	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/Week</b></li>
             	<?php } ?>
@@ -98,7 +101,7 @@ foreach ($office_hours as $key=>$oa){
     
     <div class="col-md-8">
     
-    		<h3 style="margin-top:0; padding-top:0;">Overview</h3>
+    		<h3 style="margin-top:0; padding-top:0;">Description</h3>
     		<div id="c_todo_overview"><?= $bootcamp['c_todo_overview'] ?></div>
     		
     		
@@ -107,7 +110,7 @@ foreach ($office_hours as $key=>$oa){
     		
     		
     		<h3>Curriculum</h3>
-    		<p>This <?= count($bootcamp['c__child_intents']) ?> week bootcamp has <?= echo_time($bootcamp['c__estimated_hours']) ?>of homework, which is an average of <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b>:</p>
+    		<p>This <?= count($bootcamp['c__child_intents']) ?> week bootcamp has <?= echo_time($bootcamp['c__estimated_hours']) ?>of assignments, which is an average of <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/Week</b>:</p>
     		<div id="c_curriculum">
     		<?php 
             foreach($bootcamp['c__child_intents'] as $sprint){

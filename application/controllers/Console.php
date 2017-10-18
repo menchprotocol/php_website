@@ -182,7 +182,7 @@ class Console extends CI_Controller {
 		            break;
 		        }
 		        
-		        //Maybe the tasks of this sprint match?
+		        //Maybe the Assignment of this sprint match?
 		        foreach($sprint['c__child_intents'] as $task){
 		            if($task['c_id']==$pid){
 		                //This is level 3:
