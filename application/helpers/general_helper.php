@@ -701,8 +701,12 @@ function time_format($t,$format=0,$plus_days=0){
     } elseif($format==1){
         return date(( $this_year ? "j M" : "j M Y" ),$timestamp);
     } elseif($format==2){
-        return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);	    
-	}	
+        return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);
+    } elseif($format==3){
+        return $timestamp;
+    } elseif($format==4){
+        return date(( $this_year ? "M j" : "M j Y" ),$timestamp);
+    } 
 }
 
 function time_diff($t,$second_tiome=null){

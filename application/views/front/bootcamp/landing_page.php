@@ -1,27 +1,3 @@
-<script>
-function toggleview(object_key){
-	if($('#'+object_key+' .pointer').hasClass('fa-caret-right')){
-		//Opening an item!
-		//Make sure all other items are closed:
-		$('.pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
-		$('.toggleview').hide();
-		//Now show this item:
-		$('#'+object_key+' .pointer').removeClass('fa-caret-right').addClass('fa-caret-down');
-		$('.'+object_key).fadeIn();
-		//Now adjust screen view port:
-		$('html,body').animate({
-			scrollTop: $('#'+object_key).offset().top - 65
-		}, 150);
-		
-	} else if($('#'+object_key+' .pointer').hasClass('fa-caret-down')){
-		//Close this specific item:
-		$('#'+object_key+' .pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
-		$('.'+object_key).hide();
-	}
-}
-</script>
-
-
 <?php 
 $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
 //Calculate office hours:
@@ -52,15 +28,44 @@ if(isset($office_hours) && is_array($office_hours)){
         }
     }
 }
-
-
-/*
- * 'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	        
-	        'r_cancellation_policy' => $_POST['r_cancellation_policy'],
-	        'r_closed_dates' => $_POST['r_closed_dates'],
-	        */
 ?>
+
+
+<script src="/js/lib/jquery.countdownTimer.min.js" type="text/javascript"></script>
+<script>
+function toggleview(object_key){
+	if($('#'+object_key+' .pointer').hasClass('fa-caret-right')){
+		//Opening an item!
+		//Make sure all other items are closed:
+		$('.pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
+		$('.toggleview').hide();
+		//Now show this item:
+		$('#'+object_key+' .pointer').removeClass('fa-caret-right').addClass('fa-caret-down');
+		$('.'+object_key).fadeIn();
+		//Now adjust screen view port:
+		$('html,body').animate({
+			scrollTop: $('#'+object_key).offset().top - 65
+		}, 150);
+		
+	} else if($('#'+object_key+' .pointer').hasClass('fa-caret-down')){
+		//Close this specific item:
+		$('#'+object_key+' .pointer').removeClass('fa-caret-down').addClass('fa-caret-right');
+		$('.'+object_key).hide();
+	}
+}
+
+$( document ).ready(function() {
+	$(".registration_closes").countdowntimer({
+		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
+        dateAndTime : "<?php echo date('Y/m/d' , time_format($next_cohort['r_start_date'],3,-1)); ?> 23:59:00",
+		size : "lg",
+		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+      		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+	});
+});
+</script>
+
+
 
 
 <?php if($next_cohort){ ?>
@@ -78,6 +83,7 @@ if(isset($office_hours) && is_array($office_hours)){
         
         
         <div id="sidebar">
+        	
         	<h3 style="margin-top:20px;">Bootcamp Snapshot</h3>
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
@@ -89,12 +95,20 @@ if(isset($office_hours) && is_array($office_hours)){
             	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
             	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/Week</b></li>
             	<?php } ?>
+            	
             	<?php if($total_hours>0){ ?>
             	<li>Live Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
             	<?php } ?>
+            	
+            	<?php if($next_cohort['r_max_students']>0){ ?>
+            	<li>Maximum Capacity: <b><?= $next_cohort['r_max_students'] ?> Seats</b></li>
+            	<?php } ?>            	
             </ul>
             
-            <div style="padding:10px 0 30px; text-align:center;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+            <div style="padding:10px 0 30px; text-align:center;">
+            	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+            	<div>Enrollment Ends in <span class="registration_closes"></span></div>
+            </div>
         </div>
         
     </div>
@@ -218,7 +232,8 @@ if(isset($office_hours) && is_array($office_hours)){
     		
     		<h4>Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
-    			<li>Registration Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b></li>
+    			<li>Enrollment Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b></li>
+    			<li>Enrollment Ends in <span class="registration_closes"></span></li>
     			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> Week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?></b></li>
     			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
@@ -250,7 +265,11 @@ if(isset($office_hours) && is_array($office_hours)){
 </div>
 
 
-<div style="padding:20px 0 30px; text-align:center;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Apply For <u><?= time_format($next_cohort['r_start_date'],1) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a></div>
+<div style="padding:20px 0 30px; text-align:center;">
+	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+	<div>Enrollment Ends in <span class="registration_closes"></span></div>
+</div>
+
 
 <?php } else { ?>
 	<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Live Cohort</span>We cannot render this landing page because its missing a live cohort.</div>
