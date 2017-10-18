@@ -117,7 +117,7 @@ class Process extends CI_Controller {
 	                //Log Engagement:
 	                $this->Db_model->e_create(array(
 	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
-	                    'e_message' => 'https://mench.co/application_status?u_key='.$u_key.'&u_id='.$udata['u_id'],
+	                    'e_message' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
                         'e_json' => json_encode(array(
 	                        'input' => $_POST,
 	                        'udata' => $udata,
@@ -225,7 +225,7 @@ class Process extends CI_Controller {
 	                        //Log Engagement:
 	                        $this->Db_model->e_create(array(
 	                            'e_creator_id' => $udata['u_id'], //The user that updated the account
-	                            'e_message' => 'https://mench.co/application_status?u_key='.$u_key.'&u_id='.$udata['u_id'],
+	                            'e_message' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
 	                            'e_json' => json_encode(array(
 	                                'input' => $_POST,
 	                                'udata' => $udata,

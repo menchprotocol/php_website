@@ -4,11 +4,13 @@
 <?php
 $core_objects = $this->config->item('core_objects');
 foreach($core_objects as $object_id=>$co){
-    echo '<h2>'.$co['o_name'].'</h2>';
     $statuses = status_bible($object_id);
-	foreach($statuses as $intval=>$status){
-	    echo '<p style="padding-left:10px;"><span style="width:30px; display:inline-block;">'.$intval.'</span><span style="width:30px; display:inline-block;">'.status_bible($object_id,$intval,1,'right').'</span>'.status_bible($object_id,$intval,0,'right').' '.$status['s_desc'].'</p>';
-	}
+    if($statuses){
+        echo '<h2>'.$co['o_name'].'</h2>';
+        foreach($statuses as $intval=>$status){
+            echo '<p style="padding-left:10px;"><span style="width:30px; display:inline-block;">'.$intval.'</span><span style="width:30px; display:inline-block;">'.status_bible($object_id,$intval,1,'right').'</span>'.status_bible($object_id,$intval,0,'right').' '.$status['s_desc'].'</p>';
+        }
+    }
 	echo '<br />';
 }
 ?>

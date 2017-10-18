@@ -419,9 +419,7 @@ class Bot extends CI_Controller {
 	
 	function typeform_webhook(){
 	    
-	    //This function is called when a user submits a typeform to save its data
-	    //Note that the user would be redirected to the Controller Front/typeform_complete to determine their next call to action
-	    
+	    //This function is called when a user submits a typeform to save its data	    
 	    $json_data = json_decode(file_get_contents('php://input'), true);
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    

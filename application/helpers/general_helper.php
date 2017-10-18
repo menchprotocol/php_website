@@ -469,9 +469,12 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    return $status_index;
 	} elseif(is_null($status)){
 		//Object Specific
-	    return $status_index[$object];
+	    return ( isset($status_index[$object]) ? $status_index[$object] : false );
 	} else {
 	    $status = intval($status);
+	    if(!isset($status_index[$object][$status])){
+	        return false;
+	    }
 		//We have two skins for displaying statuses:
 	    if($micro_status){
 	        return '<i class="fa fa-circle" style="color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$status_index[$object][$status]['s_name'].': '.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"></i>';
@@ -768,7 +771,7 @@ function email_application_url($udata){
     $CI =& get_instance();
     $subject = 'mench.co Bootcamp Application';
     $application_status_salt = $CI->config->item('application_status_salt');
-    $application_status_url = 'https://mench.co/application_status?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'];
+    $application_status_url = 'https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'];
     $html_message = null; //Start
     $html_message .= '<div>Hi '.$udata['u_fname'].',</div><br />';
     $html_message .= '<div>For your records, you can access your bootcamp application here:</div><br />';
