@@ -13,8 +13,8 @@ $config['website'] = array(
     'email' => 'shervin@mench.co',
     'fb_page_id' => '381488558920384',
     'fb_app_id' => '1782431902047009',
-    'bot_ref_url' => 'https://m.me/381488558920384',
-    'access_token' => 'EAAZAVHMRbmyEBACGYGGVRog7OyFtm2Wdvm7kAWk4zdfGwVMJimu8Y6lbsZAlYs4IpnMZCE3X6kKYvSQqDmKBXDPlh2HNrjucZBfJ6MEbylOI07xPuOA4mXcdhwhOnggkTGCPJNKIjKqi0hDCjzZAnHzqT8MD5T1j8SZAkbkEBZA3gZDZD',
+    'bot_ref_url' => 'https://m.me/askmench',
+    'access_token' => 'EAAZAVHMRbmyEBAJET1DMKAAQPOoHZABRs9hXxTk6l7g0ETkwETgJatVIaMIXRJ9DclVB61xkNidUYZC512MJKpfNlIGGDaFzHuIq6JrfbOtZADlxH39cI2AIOYSMXEw7pg4W3faIFm5Ynq4nPTArSOUD3vQ2xNoGNh9TDT57BQZDZD',
 );
 
 //Used to generate application status links:

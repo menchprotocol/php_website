@@ -42,87 +42,61 @@ class Facebook_model extends CI_Model {
 				'greeting' => array(
 						array(
 								'locale' => 'default',
-								'text' => 'Hi {{user_first_name}}, Welcome to Mench!',
+								'text' => 'Hi {{user_first_name}}, I\'m your Personal Assistant Bot who would be at your service so you achieve the final goal of your Mench Bootcamp. I will:
+
+- Assignment Updates
+- Notifications & Reminders
+- Answering Any Questions',
 						),
 				),
 				'whitelisted_domains' => array(
-						'http://local.mench.co',
-						'http://mench.co',
-						'https://mench.co',
-						'https://us.foundation',
-						'http://us.foundation',
+					'http://local.mench.co',
+					'https://mench.co',
 				),
 				'persistent_menu' => array(
-						array(
-								'locale' => 'default',
-								'composer_input_disabled' => false,
-								'call_to_actions' => array(
-										array(
-												'title' => 'My Account',
-												'type' => 'nested',
-												'call_to_actions' => array(
-														array(
-																'title' => 'Progress Report',
-																'type' => 'postback',
-																'payload' => 'HISTORY_PAYLOAD',
-														),
-														array(
-																'title' => 'My Profile',
-																'type' => 'web_url',
-																'url' => 'http://mench.co/bootcamps',
-																'webview_share_button' => 'hide',
-																'webview_height_ratio' => 'tall',
-														),
-												),
-										),
-										array(
-												'title' => 'Marketplace',
-												'type' => 'nested',
-												'call_to_actions' => array(
-														array(
-																'title' => 'Bootcamps',
-																'type' => 'web_url',
-																'url' => 'http://mench.co/bootcamps',
-																'webview_height_ratio' => 'tall',
-														),
-														array(
-																'title' => 'Mentors',
-																'type' => 'web_url',
-																'url' => 'http://mench.co/mentors',
-																'webview_height_ratio' => 'tall',
-														),
-														/*
-														array(
-																'title' => 'Another Nest',
-																'type' => 'nested',
-																'call_to_actions' => array(
-																		array(
-																				'title' => 'Pay Bill',
-																				'type' => 'postback',
-																				'payload' => 'PAYBILL_PAYLOAD',
-																		),
-																		array(
-																				'title' => 'History',
-																				'type' => 'postback',
-																				'payload' => 'HISTORY_PAYLOAD',
-																		),
-																),
-														),
-														*/
-												),
-										),
-										
-										/*
-										array(
-												'title' => 'Browse',
-												'type' => 'web_url',
-												'url' => 'http://mench.co',
-												'webview_share_button' => 'hide',
-												'webview_height_ratio' => 'tall',
-										),
-										*/
-								),
+					array(
+						'locale' => 'default',
+						'composer_input_disabled' => false,
+						'call_to_actions' => array(
+						    array(
+						        'title' => 'My Dashboard',
+						        'type' => 'nested',
+						        'call_to_actions' => array(
+						            array(
+						                'title' => 'Leaderboard',
+						                'type' => 'web_url',
+						                'url' => 'https://mench.co/my/ledaerboard',
+						                'webview_height_ratio' => 'tall',
+						                'webview_share_button' => 'hide',
+						            ),
+						            array(
+						                'title' => 'Assignments',
+						                'type' => 'web_url',
+						                'url' => 'https://mench.co/my/assignments',
+						                'webview_height_ratio' => 'tall',
+						                'webview_share_button' => 'hide',
+						            ),
+						        ),
+						    ),
+						    array(
+						        'title' => 'Marketplace',
+						        'type' => 'nested',
+						        'call_to_actions' => array(
+						            array(
+						                'title' => 'Join a Bootcamp',
+						                'type' => 'web_url',
+						                'url' => 'https://mench.co/bootcamps',
+						                'webview_height_ratio' => 'tall',
+						            ),
+						        ),
+						    ),								    
+						    array(
+						        'title' => 'Help & Support',
+						        'type' => 'postback',
+						        'payload' => 'HISTORY_PAYLOAD',
+						    ),
 						),
+					),
 				),
 		);
 		
@@ -144,7 +118,9 @@ class Facebook_model extends CI_Model {
 		if($response === FALSE){
 		    $this->Db_model->e_create(array(
 		        'e_message' => 'set_settings() failed to update the settings on Facebook.',
-		        'e_json' => json_encode($payload),
+		        'e_json' => json_encode(array(
+		            'payload' => $payload,
+		        )),
 		        'e_type_id' => 8, //Platform Error
 		    ));
 		}
