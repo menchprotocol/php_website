@@ -148,7 +148,7 @@ class Front extends CI_Controller {
 	    }
 	    
 	    $data = array(
-	        'title' => 'Apply to '.$bootcamp['c_objective'].' Bootcamp Starting '.time_format($next_cohort['r_start_date'],1),
+	        'title' => 'Reserve Your Seat in '.$bootcamp['c_objective'].' Bootcamp Starting '.time_format($next_cohort['r_start_date'],4),
 	        'next_cohort' => $next_cohort,
 	    );
 	    
