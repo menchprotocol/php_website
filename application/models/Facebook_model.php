@@ -42,9 +42,7 @@ class Facebook_model extends CI_Model {
 				'greeting' => array(
 						array(
 								'locale' => 'default',
-								'text' => 'I\'m your Personal Assistant Bot for Mench Bootcamps.
-
-Use me for:
+								'text' => 'I\'m your Personal Assistant Bot for your Mench Bootcamps. Use me for:
 
 - Asking Questions
 - Managing Assignment
@@ -60,6 +58,21 @@ Use me for:
 						'locale' => 'default',
 						'composer_input_disabled' => false,
 						'call_to_actions' => array(
+						    array(
+						        'title' => 'Leaderboard',
+						        'type' => 'web_url',
+						        'url' => 'https://mench.co/my/ledaerboard',
+						        'webview_height_ratio' => 'tall',
+						        'webview_share_button' => 'hide',
+						    ),
+						    array(
+						        'title' => 'Assignments',
+						        'type' => 'web_url',
+						        'url' => 'https://mench.co/my/assignments',
+						        'webview_height_ratio' => 'tall',
+						        'webview_share_button' => 'hide',
+						    ),
+						    /*
 						    array(
 						        'title' => 'My Dashboard',
 						        'type' => 'nested',
@@ -80,18 +93,7 @@ Use me for:
 						            ),
 						        ),
 						    ),
-						    array(
-						        'title' => 'Marketplace',
-						        'type' => 'nested',
-						        'call_to_actions' => array(
-						            array(
-						                'title' => 'Join a Bootcamp',
-						                'type' => 'web_url',
-						                'url' => 'https://mench.co/bootcamps',
-						                'webview_height_ratio' => 'tall',
-						            ),
-						        ),
-						    ),								    
+						    */							    
 						    array(
 						        'title' => 'Help & Support',
 						        'type' => 'postback',

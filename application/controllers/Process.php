@@ -114,12 +114,10 @@ class Process extends CI_Controller {
 	                
 	                $application_status_salt = $this->config->item('application_status_salt');
 	                $u_key = md5($udata['u_id'].$application_status_salt);
-	                $url = 'https://mench.co/application_status?u_key='.$u_key.'&u_id='.$udata['u_id'];
-	                
 	                //Log Engagement:
 	                $this->Db_model->e_create(array(
 	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
-	                    'e_message' => '<a href="'.$url.'" target="_blank">Application URL</a>',
+	                    'e_message' => 'https://mench.co/application_status?u_key='.$u_key.'&u_id='.$udata['u_id'],
                         'e_json' => json_encode(array(
 	                        'input' => $_POST,
 	                        'udata' => $udata,
@@ -216,13 +214,18 @@ class Process extends CI_Controller {
 	                        'e_type_id' => 29, //Joined Cohort
 	                        'e_object_id' => $next_cohort['r_id'],
 	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
-	                    ));
-	                    
+	                    ));	                        
+	                        
 	                    //Send email and log engagement:
 	                    if(email_application_url($udata)){
+	                        //Fetch variables:
+	                        $application_status_salt = $this->config->item('application_status_salt');
+	                        $u_key = md5($udata['u_id'].$application_status_salt);
+	                        
 	                        //Log Engagement:
 	                        $this->Db_model->e_create(array(
 	                            'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                            'e_message' => 'https://mench.co/application_status?u_key='.$u_key.'&u_id='.$udata['u_id'],
 	                            'e_json' => json_encode(array(
 	                                'input' => $_POST,
 	                                'udata' => $udata,
@@ -241,8 +244,7 @@ class Process extends CI_Controller {
 	                        */
 	                        
 	                        //Redirect to typeform:
-	                        $application_status_salt = $this->config->item('application_status_salt');
-	                        $u_key = md5($udata['u_id'].$application_status_salt);
+	                        
 	                        die(json_encode(array(
 	                            'hard_redirect' => 'https://mench.typeform.com/to/'.$next_cohort['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']),
 	                        )));
