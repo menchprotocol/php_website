@@ -1,6 +1,3 @@
-assignments
-
-
 <script>
 (function(d, s, id){
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -14,6 +11,18 @@ assignments
 
 <script>
   window.extAsyncInit = function() {
+
+	  MessengerExtensions.getContext('1782431902047009', 
+    	  function success(result){
+      		  $('#me3').html('Succes3');
+    	  },
+    	  function error(result){
+    		  $('#me3').html('Fail3');
+    	  }
+    	);
+
+
+		
     // the Messenger Extensions JS SDK is done loading 
 	  MessengerExtensions.getUserID(function success(uids) {
 	  	// User ID was successfully obtained. 
@@ -21,6 +30,7 @@ assignments
 	      	$('#me2').html(psid);
 	    }, function error(err, errorMessage) {      
 	  	// Error handling code
+	    	$('#me2').html('Fail');
 	    });    
   };
 </script>
@@ -28,13 +38,15 @@ assignments
 
 <script>
 
-function close(){
+function close_webview(){
 	window.location = 'https://www.messenger.com/closeWindow/?display_text=Closing....';
 }
 </script>
 
-<a href="javascript:close();">Close</a>
+<a href="javascript:close_webview();">close_webview</a>
+<br /><br />
 
 This is it:
 <div id="me"></div>
 <div id="me2"></div>
+<div id="me3"></div>
