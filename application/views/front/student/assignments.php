@@ -14,7 +14,7 @@
 
 	  MessengerExtensions.getContext('1782431902047009', 
     	  function success(result){
-      		  $('#me3').html('Succes3');
+      		  $('#me3').html(result.psid);
     	  },
     	  function error(result){
     		  $('#me3').html('Fail3');
