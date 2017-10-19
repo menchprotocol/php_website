@@ -46,9 +46,7 @@ class Facebook_model extends CI_Model {
 
 - Managing Assignments
 - Reminder Notifications
-- Asking Questions
-
-Let\'s do it!',
+- Asking Questions',
 						),
 				),
 				'whitelisted_domains' => array(
