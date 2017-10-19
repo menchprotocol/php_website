@@ -24,8 +24,8 @@ foreach($engagements as $e){
     echo '<tr>';
         echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
         echo '<td>'.( $e['e_creator_id']>0 ? $e['u_fname'].' '.$e['u_lname'] : 'System' ).'</td>';
-        echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
-        echo '<td>'.( strlen($e['e_message'])>0 ? nl2br($e['e_message']) : '' ).'</td>';
+        echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].' (Type #'.$e['a_id'].')" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
+        echo '<td>'.( strlen($e['e_message'])>0 ? format_e_message($e['e_message']) : '' ).'</td>';
         //echo '<td>'.( strlen($e['e_json'])>0 ? '<a href="#" aria-hidden="true" data-toggle="tooltip" data-placement="left" style="color:#AAA;" title="Inspect Engagement Data" class="underdot"><i class="fa fa-search-plus" aria-hidden="true"></i></a>' : '' ).'</td>';
         echo '<td>';
             if($e['e_object_id']>0 || strlen($e['a_object_code'])>0){

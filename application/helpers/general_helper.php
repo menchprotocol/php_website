@@ -766,6 +766,41 @@ function one_two_explode($one,$two,$content){
 }
 
 
+function format_e_message($e_message){
+    
+    //Do replacements:
+    if(substr_count($e_message,'/attach ')>0){
+        $attachments = explode('/attach ',$e_message);
+        foreach($attachments as $key=>$attachment){
+            if($key==0){
+                //We're gonna start buiolding this message from scrach:
+                $e_message = $attachment;
+                continue;
+            }
+            $segments = explode(':',$attachment,2);
+            $sub_segments = preg_split('/[\s]+/', $segments[1] );
+            
+            if($segments[0]=='image'){
+                $e_message .= '<a href="'.$sub_segments[0].'" target="_blank"><img src="'.$sub_segments[0].'" style="width:50%" /></a>';
+            } elseif($segments[0]=='audio'){
+                $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
+            } elseif($segments[0]=='video'){
+                $e_message .= '<video width="300" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+            } elseif($segments[0]=='file'){
+                $e_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
+            }
+            
+            //Do we have any leftovers after the URL? If so, append:
+            if(isset($sub_segments[1])){
+                $e_message = ' '.$sub_segments[1];
+            }
+        }
+    }
+    $e_message = nl2br($e_message);
+    return $e_message;
+}
+
+
 function email_application_url($udata){
     $to_array = array($udata['u_email']);
     $CI =& get_instance();

@@ -12,8 +12,8 @@ class Bot extends CI_Controller {
 	
 	
 	function t(){
-	    echo 'hi';
-		print_r($this->Facebook_model->set_settings());
+	    header('Content-Type: application/json');
+	    echo json_encode($this->Facebook_model->set_settings());
 		//print_r($this->Facebook_model->fetch_settings());
 	}
 	
