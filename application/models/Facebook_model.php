@@ -62,6 +62,7 @@ class Facebook_model extends CI_Model {
 						        'title' => 'Leaderboard',
 						        'type' => 'web_url',
 						        'url' => 'https://mench.co/my/leaderboard',
+						        'messenger_extensions' => true,
 						        'webview_height_ratio' => 'tall',
 						        'webview_share_button' => 'hide',
 						    ),
@@ -71,6 +72,7 @@ class Facebook_model extends CI_Model {
 						        'url' => 'https://mench.co/my/assignments',
 						        'webview_height_ratio' => 'tall',
 						        'webview_share_button' => 'hide',
+						        'messenger_extensions' => true,
 						    ),
 						    /*
 						    array(
