@@ -13,9 +13,9 @@ window.extAsyncInit = function() {
     MessengerExtensions.getUserID(function success(uids) {
     	// User ID was successfully obtained.
       	var psid = uids.psid;
-      	$('#"page_content"').html(psid);
+      	$("#page_content").html(psid);
     }, function error(err, errorMessage) {
-    	$('#"page_content"').html('Unknown error while loading content.');
+    	$("#page_content").html('Unknown error while loading content.');
     });
 
 };
@@ -27,8 +27,6 @@ function close_webview(){
 </script>
 
 
-<h1>Assignments</h1>
 <h2>Assignments</h2>
-<h3>Assignments</h3>
 
 <div id="page_content"></div>
