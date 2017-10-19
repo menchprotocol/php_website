@@ -67,7 +67,7 @@ class Facebook_model extends CI_Model {
 						        'webview_share_button' => 'hide',
 						    ),
 						    array(
-						        'title' => 'Assignments',
+						        'title' => 'My Assignments',
 						        'type' => 'web_url',
 						        'url' => 'https://mench.co/my/assignments',
 						        'webview_height_ratio' => 'tall',
