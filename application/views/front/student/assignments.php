@@ -13,20 +13,6 @@ $( document ).ready(function() {
 	     js = d.createElement(s); js.id = id;
 	     js.src = "//connect.facebook.net/en_US/sdk.js";
 	     fjs.parentNode.insertBefore(js, fjs);
-
-	     $('#me2').html('success1');
-
-	     MessengerExtensions.getContext('1782431902047009', 
-		  function success(result){
-	    	 $('#me2').html('success2');
-	    	 $('#me').html(result.psid);
-		  },
-		  function error(result){
-			  $('#me2').html('fail1');
-			  $('#me').html(result);
-		  }
-		);
-
 	     /*
 	     MessengerExtensions.getUserID(function success(uids) {
        	// User ID was successfully obtained. 
@@ -40,7 +26,20 @@ $( document ).ready(function() {
          
 	}(document, 'script', 'facebook-jssdk'));
 
+	$('#me2').html('success1');
+
 	
+	
+    MessengerExtensions.getContext('1782431902047009', 
+	  function success(result){
+   	 $('#me2').html('success2');
+   	 $('#me').html(result.psid);
+	  },
+	  function error(result){
+		  $('#me2').html('fail1');
+		  $('#me').html(result);
+	  }
+	);
     	
 });
 
