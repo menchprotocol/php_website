@@ -42,7 +42,7 @@ class Facebook_model extends CI_Model {
 				'greeting' => array(
 						array(
 								'locale' => 'default',
-								'text' => 'Hi {{user_first_name}}, I\'m a Personal Assistant for your Mench Bootcamps. I can help with:
+								'text' => 'I\'m a Personal Assistant Bot for your Mench Bootcamps. I can help with:
 
 - Managing Assignments
 - Reminder Notifications
