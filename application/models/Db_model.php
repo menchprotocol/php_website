@@ -353,7 +353,7 @@ class Db_model extends CI_Model {
 	}
 	
 	/* ******************************
-	 * Runs
+	 * Cohorts
 	 ****************************** */
 	
 	function r_fetch($match_columns){
@@ -382,6 +382,35 @@ class Db_model extends CI_Model {
 		}
 		
 		return $runs;
+	}
+	
+	
+	
+	function fb_user_bootcamps($fb_psid){
+	    
+	    //Missing anything?
+	    $this->db->select('*');
+	    $this->db->from('v5_cohorts r');
+	    $this->db->join('v5_cohort_students ru', 'ru.ru_r_id = r.r_id');
+	    $this->db->join('v5_users u', 'u.id = ru.ru_u_id');
+	    $this->db->where('u.u_fb_id',1443101719058431);
+	    $this->db->group_by('r.r_id');
+	    $this->db->order_by('r.r_start_date','ASC');
+	    $q = $this->db->get();
+	    
+	    $runs = $q->result_array();
+	    foreach($runs as $key=>$value){
+	        /*
+	         * //TODO: Determine enrolled students and apply potential registration limitations
+	         $runs[$key]['r__enrolled_students'] = $this->Db_model->ru_fetch(array(
+	         'ru.ru_r_id'	    => $value['r_id'],
+	         'ru.ru_status <'	=> 2, //TODO Review: Regular students
+	         'u.u_status <'		=> 2, //TODO Review: Regular students
+	         ));
+	         */
+	    }
+	    
+	    return $runs;
 	}
 	
 	

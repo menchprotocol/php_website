@@ -55,7 +55,7 @@ function toggleview(object_key){
 }
 
 $( document ).ready(function() {
-	$(".registration_closes").countdowntimer({
+	$("#reg1, #reg2, #reg3").countdowntimer({
 		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
         dateAndTime : "<?php echo date('Y/m/d' , time_format($next_cohort['r_start_date'],3,-1)); ?> 23:59:00",
 		size : "lg",
@@ -107,7 +107,7 @@ $( document ).ready(function() {
             
             <div style="padding:10px 0 30px; text-align:center;">
             	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
-            	<div>Enrollment Ends in <span class="registration_closes"></span></div>
+            	<div>Enrollment Ends in <span id="reg1"></span></div>
             </div>
         </div>
         
@@ -233,7 +233,7 @@ $( document ).ready(function() {
     		<h4>Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Enrollment Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b></li>
-    			<li>Enrollment Ends in <span class="registration_closes"></span></li>
+    			<li>Enrollment Ends in <span id="reg2"></span></li>
     			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> Week<?= (count($bootcamp['c__child_intents'])==1?'':'s') ?></b></li>
     			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
@@ -267,7 +267,7 @@ $( document ).ready(function() {
 
 <div style="padding:20px 0 30px; text-align:center;">
 	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
-	<div>Enrollment Ends in <span class="registration_closes"></span></div>
+	<div>Enrollment Ends in <span id="reg3"></span></div>
 </div>
 
 
