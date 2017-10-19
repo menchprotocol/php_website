@@ -7,7 +7,9 @@ assignments
   		$('#me').html(psid);
     }, function error(err, errorMessage) {      
   	// Error handling code
+    	$('#me').html(err+':'+errorMessage);
     });    
 </script>
 
+This is it:
 <div id="me"></div>
