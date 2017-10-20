@@ -94,13 +94,13 @@ class Facebook_model extends CI_Model {
 						                'webview_share_button' => 'hide',
 						            ),
 						        ),
-						    ),
-						    */							    
+						    ),		    
 						    array(
 						        'title' => 'Help & Support',
 						        'type' => 'postback',
 						        'payload' => 'HISTORY_PAYLOAD',
 						    ),
+						    */
 						),
 					),
 				),
