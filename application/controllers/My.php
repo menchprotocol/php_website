@@ -91,7 +91,7 @@ class My extends CI_Controller {
 	    
 	    //By now we have a specific $c_id to load!
 	    if(!$assignments){
-	        $assignments = $this->Db_model->c_assignment_fetch($c_id);
+	        $assignments = $this->Db_model->c_newwww($c_id);
 	    }
 	    
 	    //Would not include this in the general_helper since this is the only instance of this UI:
@@ -164,28 +164,14 @@ class My extends CI_Controller {
 	        'u_id' => intval($_GET['u_id']),
 	    ));
 	    $udata = @$users[0];
-	    //Fetch all 
-	    $enrollments = $this->Db_model->ru_fetch(array(
+	    
+	    
+	    //Fetch all their addmissions:
+	    $admissions = $this->Db_model->remix_admissions(array(
 	        'ru.ru_u_id'	=> $udata['u_id'],
 	    ));
-	    
-	    //Fetch more data for each enrollment:
-	    foreach($enrollments as $key=>$enrollment){
-	        $cohorts = $this->Db_model->r_fetch(array(
-	            'r.r_id' => $enrollment['ru_r_id'],
-	        ));
-	        //Assume this was fetched:
-	        $enrollments[$key]['cohort'] = $cohorts[0];
-	        //Fetch bootcamp:
-	        $bootcamps = $this->Db_model->c_full_fetch(array(
-	            'b.b_id' => $cohorts[0]['r_b_id'],
-	        ));
-	        //Assume this was fetched:
-	        $enrollments[$key]['bootcamp'] = $bootcamps[0];
-	    }
-	    
-	    //Did we find at-least one enrollment?
-	    if(count($enrollments)<=0){
+	    //Did we find at-least one?
+	    if(count($admissions)<=0){
 	        //Log this error:
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">No Active Applications.</div>');
 	        exit;
@@ -198,7 +184,7 @@ class My extends CI_Controller {
 	        'udata' => $udata,
 	        'u_id' => $_GET['u_id'],
 	        'u_key' => $_GET['u_key'],
-	        'enrollments' => $enrollments,
+	        'admissions' => $admissions,
 	        'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
 	    );
 	    
@@ -241,32 +227,18 @@ class My extends CI_Controller {
 	        'u_id' => intval($_GET['u_id']),
 	    ));
 	    $udata = @$users[0];
-	    //Fetch all
-	    $enrollments = $this->Db_model->ru_fetch(array(
+	    
+	    //To give the typeform webhook some time to update the DB status:
+	    sleep(2);
+	    
+	    
+	    //Fetch all their admissions:
+	    $admissions = $this->Db_model->remix_admissions(array(
 	        'ru.ru_r_id'	=> $_GET['r_id'],
 	        'ru.ru_u_id'	=> $udata['u_id'],
 	    ));
-	    
-	    //Fetch more data for the target enrollment:
-	    foreach($enrollments as $key=>$enrollment){
-	        $cohorts = $this->Db_model->r_fetch(array(
-	            'r.r_id' => $enrollment['ru_r_id'],
-	        ));
-	        //Assume this was fetched:
-	        $enrollments[$key]['cohort'] = $cohorts[0];
-	        //Fetch bootcamp:
-	        $bootcamps = $this->Db_model->c_full_fetch(array(
-	            'b.b_id' => $cohorts[0]['r_b_id'],
-	        ));
-	        //Assume this was fetched:
-	        $enrollments[$key]['bootcamp'] = $bootcamps[0];
-	    }
-	    
-	    //To give the typeform webhook enough time to update the DB status:
-	    sleep(2);
-	    
 	    //Make sure we got all this data:
-	    if(!(count($enrollments)==1) || !isset($enrollments[0]['cohort']['r_id']) || !isset($enrollments[0]['bootcamp']['b_id'])){
+	    if(!(count($admissions)==1) || !isset($admissions[0]['cohort']['r_id']) || !isset($admissions[0]['bootcamp']['b_id'])){
 	        //Log this error:
 	        $this->Db_model->e_create(array(
 	            'e_creator_id' => $_GET['u_id'],

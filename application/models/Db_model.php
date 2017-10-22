@@ -10,6 +10,32 @@ class Db_model extends CI_Model {
 	
 	
 	/* ******************************
+	 * Remix functions that fetch a bunch of existing data:
+	 ****************************** */
+	
+	function remix_admissions($matching_criteria){
+	    $admissions = $this->Db_model->ru_fetch($matching_criteria);
+	    
+	    //Fetch more data for each enrollment:
+	    foreach($admissions as $key=>$enrollment){
+	        $cohorts = $this->Db_model->r_fetch(array(
+	            'r.r_id' => $enrollment['ru_r_id'],
+	        ));
+	        //Assume this was fetched:
+	        $admissions[$key]['cohort'] = $cohorts[0];
+	        //Fetch bootcamp:
+	        $bootcamps = $this->Db_model->c_full_fetch(array(
+	            'b.b_id' => $cohorts[0]['r_b_id'],
+	        ));
+	        //Assume this was fetched:
+	        $admissions[$key]['bootcamp'] = $bootcamps[0];
+	    }
+	    
+	    return $admissions;
+	}
+	
+	
+	/* ******************************
 	 * Users
 	 ****************************** */
 	

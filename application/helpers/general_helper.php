@@ -177,6 +177,15 @@ function is_valid_intent($c_id){
 }
 
 
+function echo_ordinal($number){
+    $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+    if (($number %100) >= 11 && ($number%100) <= 13){
+        return $number. 'th';
+    } else {
+        return $number. $ends[$number % 10];
+    }
+}
+
 function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array()){
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');

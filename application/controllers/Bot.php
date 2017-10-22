@@ -42,7 +42,6 @@ class Bot extends CI_Controller {
 	
 	
 	
-	
 	function facebook_webhook(){
 		
 		/*
@@ -160,11 +159,11 @@ class Bot extends CI_Controller {
 					} elseif(isset($im['referral'])) {
 						
 						$referral_array = $im['referral'];
+						
 					}
 					
 					
 					$eng_data = array(
-						'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => json_encode($json_data),
 					);
@@ -177,7 +176,74 @@ class Bot extends CI_Controller {
 						$ref_source = $referral_array['source'];
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
-						$eng_data['e_object_id'] = intval($referral_array['ref']); //TODO validate this before logging
+						//Referral key which currently equals the User ID
+						$eng_data['e_object_id'] = intval($referral_array['ref']); 
+						
+
+						if($eng_data['e_object_id']>0){
+						    
+						    //Link this account to their existing account:
+						    $matching_users = $this->Db_model->u_fetch(array(
+						        'u_id' => $eng_data['e_object_id'],
+						    ));
+						    
+						    //Did we find a single user without a linked Facebook account?
+						    if(count($matching_users)==1 && strlen($matching_users[0]['u_fb_id'])<5){
+						        
+						        //Link their profile:
+						        $this->Db_model->u_update( $matching_users[0]['u_id'] , array(
+						            'u_fb_id' => $im['sender']['id'],
+						        ));
+						        
+						        //Search for possible Bootcamps:
+						        $admissions = $this->Db_model->remix_admissions(array(
+						            'ru.ru_u_id'	=> $matching_users[0]['u_id'],
+						        ));
+						        
+						        //Log Engagement:
+						        $this->Db_model->e_create(array(
+						            'e_creator_id' => $matching_users[0]['u_id'],
+						            'e_json' => json_encode($json_data),
+						            'e_type_id' => 31, //Messenger Activated
+						            'e_object_id' => $matching_users[0]['u_id'],
+						            'e_b_id' => (count($admissions)==1 ? $admissions[0]['bootcamp']['b_id'] : 0),
+						        ));
+						        
+						        
+						        //Communicate the linking process with them ASAP:
+						        $this->Facebook_model->send_message(array(
+						            'recipient' => array(
+						                'id' => $im['sender']['id']
+						            ),
+						            'sender_action' => 'typing_on'
+						        ));
+						        $this->Facebook_model->send_message(array(
+						            'recipient' => array(
+						                'id' => $im['sender']['id'],
+						            ),
+						            'message' => array(
+						                'text' => 'I was able to successfully link Messenger to your Mench account 👍. I noticed you are our '.echo_ordinal($matching_users[0]['u_id']).' member, so welcome onboard! I also noticed you\'re involved with '.count($admissions).' bootcamp'.( count($admissions)==1 ? ': '.$admissions[0]['bootcamp']['c_objective'] : 's' ).'.',
+						            ),
+						            'notification_type' => 'NO_PUSH' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+						        ));
+						        $this->Facebook_model->send_message(array(
+						            'recipient' => array(
+						                'id' => $im['sender']['id'],
+						            ),
+						            'sender_action' => 'typing_on'
+						        ));
+						        $this->Facebook_model->send_message(array(
+						            'recipient' => array(
+						                'id' => $im['sender']['id'],
+						            ),
+						            'message' => array(
+						                'text' => 'I have no more updates for now. Is there anything you would like to know about us? 🤔',
+						            ),
+						            'notification_type' => 'NO_PUSH' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+						        ));
+						    }
+						}
+    						
 						
 						//Optional actions that may need to be taken on SOURCE:
 						if(strtoupper($ref_source)=='ADS' && $ad_id){
@@ -194,6 +260,9 @@ class Bot extends CI_Controller {
 							
 						}
 					}
+					
+					//Update the user ID now as we might have linked them:
+					$eng_data['e_creator_id'] = $this->Db_model->u_fb_search($im['sender']['id']);
 					
 					//General variables:
 					$this->Db_model->e_create($eng_data);
