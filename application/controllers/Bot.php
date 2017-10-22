@@ -217,6 +217,7 @@ class Bot extends CI_Controller {
 						            ),
 						            'sender_action' => 'typing_on'
 						        ));
+						        sleep(3);
 						        $this->Facebook_model->send_message(array(
 						            'recipient' => array(
 						                'id' => $im['sender']['id'],
@@ -226,12 +227,14 @@ class Bot extends CI_Controller {
 						            ),
 						            'notification_type' => 'NO_PUSH' //Can be REGULAR, SILENT_PUSH or NO_PUSH
 						        ));
+						        sleep(4);
 						        $this->Facebook_model->send_message(array(
 						            'recipient' => array(
 						                'id' => $im['sender']['id'],
 						            ),
 						            'sender_action' => 'typing_on'
 						        ));
+						        sleep(3);
 						        $this->Facebook_model->send_message(array(
 						            'recipient' => array(
 						                'id' => $im['sender']['id'],
