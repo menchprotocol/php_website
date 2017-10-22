@@ -74,14 +74,8 @@ $route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
 /* ******************************
  * Student Semi-Private URLs
  ****************************** */
-$route['typeform_complete'] 				= "student/typeform"; //Deprecated on 2017-10-18, give it 3-4 months before removing
-$route['application_status'] 	            = "student/applications"; //Deprecated on 2017-10-18, give it 3-4 months before removing
-
-$route['my/typeform'] 	                    = "student/typeform"; //Where typeform redirects students. We either take them to pay or to /me/applications
-$route['my/applications'] 	                = "student/applications"; //Everything to do with their applications
-$route['my/assignments'] 	                = "student/assignments"; //Via Facebook Bot
-$route['my/leaderboard'] 	                = "student/leaderboard"; //Via Facebook Bot
-$route['my'] 	                            = "student/index"; //Nothing here
+$route['typeform_complete'] 				= "my/typeform"; //Deprecated on 2017-10-18, give it 3-4 months before removing
+$route['application_status'] 	            = "my/applications"; //Deprecated on 2017-10-18, give it 3-4 months before removing
 
 
 /* ******************************
@@ -92,8 +86,8 @@ $route['my'] 	                            = "student/index"; //Nothing here
 $route['console/help/status_bible'] 			       = "console/status_bible";
 
 $route['console/account'] 						       = "console/account"; //Instructor account
-$route['console/(:num)/curriculum/(:num)'] 		       = "console/curriculum/$1/$2";
-$route['console/(:num)/curriculum'] 			       = "console/curriculum/$1";
+$route['console/(:num)/actionplan/(:num)'] 		       = "console/actionplan/$1/$2";
+$route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
 $route['console/(:num)/students'] 				       = "console/students/$1";
 $route['console/(:num)/stream'] 				       = "console/stream/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";

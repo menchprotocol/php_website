@@ -26,7 +26,7 @@ function echo_video($video_url){
         return '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.one_two_explode('youtube.com/watch?v=','&',$video_url).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
     } else {
         //This is a direct video URL:
-        return '<video width="100%" controls><source src="'.$video_url.'" type="video/mp4">Your browser does not support the video tag.</video>';
+        return '<video width="100%" onclick="this.play()" controls><source src="'.$video_url.'" type="video/mp4">Your browser does not support the video tag.</video>';
     }
 }
 
@@ -70,46 +70,49 @@ function echo_time($c_time_estimate,$show_icon=1){
 }
 
 function echo_br($admin){
-    $ui = '<a id="ba_'.$admin['ba_id'].'" data-link-id="'.$admin['ba_id'].'" href="javascript:ba_open_modify('.$admin['ba_id'].')" class="list-group-item is_sortable">';
+    //Removed for now: href="javascript:ba_open_modify('.$admin['ba_id'].')"
+    $ui = '<li id="ba_'.$admin['ba_id'].'" data-link-id="'.$admin['ba_id'].'" class="list-group-item is_sortable">';
         //Right content
         $ui .= '<span class="pull-right">';
-            $ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
-            $ui .= '<i class="fa fa-cog" aria-hidden="true"></i>';
-            $ui .= '</span>';
+            //$ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
+            //$ui .= '<i class="fa fa-cog" aria-hidden="true"></i>';
+            //$ui .= '</span>';
+            $ui .= status_bible('ba',$admin['ba_status']);
+        
         $ui .= '</span> ';
         
         
         //Left content
         //$ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i> ';
         $ui .= $admin['u_fname'].' '.$admin['u_lname'].' &nbsp;';
-        $ui .= status_bible('ba',$admin['ba_status']).' &nbsp;';
-        
-        //Other settings:
         if($admin['ba_team_display']=='t'){
-            $ui .= '<i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member listed on Bootcamp Landing Page"></i>';
+            $ui .= '<i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member listed on the Landing Page"></i>';
         } else {
-            $ui .= '<i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member NOT listed on Bootcamp Landing Page"></i>';
+            $ui .= '<i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member NOT listed on the Landing Page"></i>';
         }
         
         $ui .= ' <span class="srt-admins"></span>'; //For the status of sorting
     
-    $ui .= '</a>';
+    $ui .= '</li>';
     return $ui;
 }
 
-function echo_cr($b_id,$intent,$direction,$level=0){
+
+
+function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     $CI =& get_instance();
-    $level_names = $CI->config->item('level_names');
-    
-    
 	if($direction=='outbound'){
 	    
-	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item is_sortable">';
+	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item is_sortable">';
 	        //Right content
     	    $ui .= '<span class="pull-right">';
 
-    	       $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Delete" data-placement="left"></i> ';
-    	       //$ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
+    	    $ui .= '<i class="fa fa-sort" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left" aria-hidden="true"></i> &nbsp;';
+    	    
+    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Delete" data-placement="left"></i> &nbsp;';
+    	    
+    	    $ui .= status_bible('c',$intent['c_status'],1,'left');
+    	    //$ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
 /*
         	    $ui .= '<span class="label label-primary">';
         	       $ui .= '<span class="dir-sign">'.$direction.'</span> ';
@@ -119,31 +122,25 @@ function echo_cr($b_id,$intent,$direction,$level=0){
     	    $ui .= '</span> ';
     	    
     	    //Left content
-    	    $ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i>';
-    	    $ui .= ( $level>=2 ? '<span class="inline-level">'.$level_names[$level].' #'.$intent['cr_outbound_rank'].'</span>' : '' );
+    	    $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b_sprint_unit) : 'Task' ).' #'.$intent['cr_outbound_rank'].'</span>' : '' );
     	    $ui .= $intent['c_objective'].' ';
   
     	    //Other settings:
     	    if(strlen($intent['c_todo_overview'])>0){
     	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Description"></i>';
     	    }
-    	    if(strlen($intent['c_prerequisites'])>0){
-    	        $ui .= '<i class="fa fa-exclamation-triangle title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Prerequisites"></i>';
-    	    }
-    	    if(strlen($intent['c_todo_bible'])>0){
-    	        $ui .= '<i class="fa fa-check-square title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Assignment"></i>';
-    	        if($level==2 && isset($intent['c__estimated_hours'])){
-        	        $ui .= echo_time($intent['c__estimated_hours'],0);
-        	    } elseif($level==3 && isset($intent['c_time_estimate'])){
-        	        $ui .= echo_time($intent['c_time_estimate'],0);
-        	    }
+    	    
+    	    if($level==2 && isset($intent['c__estimated_hours'])){
+    	        $ui .= echo_time($intent['c__estimated_hours'],1);
+    	    } elseif($level==3 && isset($intent['c_time_estimate'])){
+    	        $ui .= echo_time($intent['c_time_estimate'],1);
     	    }
     	    
         	    
     	    
     	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
     	        //This sprint has Assignments:
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="The number of Assignments for this sprint"><i class="fa fa-check-square-o" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
     	    $ui .= ' <span class="srt-'.$direction.'"></span>'; //For the status of sorting
     	    
@@ -152,8 +149,13 @@ function echo_cr($b_id,$intent,$direction,$level=0){
 	    
 	} else {
 	    //Not really being used for now...
-	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/curriculum/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.$intent['c_objective'].' '.echo_time($intent['c_time_estimate']).'</a>';
+	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.$intent['c_objective'].' '.echo_time($intent['c_time_estimate']).'</a>';
 	}
+}
+
+function echo_json($array){
+    header('Content-Type: application/json');
+    echo json_encode($array);
 }
 
 function echo_users($users){
@@ -175,7 +177,7 @@ function is_valid_intent($c_id){
 }
 
 
-function echo_status_dropdown($object,$input_name,$current_status_id){
+function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array()){
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     ?>
@@ -190,7 +192,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id){
     		$statuses = status_bible($object);
     		$count = 0;
     		foreach($statuses as $intval=>$status){
-    		    if($udata['u_status']<$status['u_min_status']){
+    		    if($udata['u_status']<$status['u_min_status'] || in_array($intval,$exclude_ids)){
     		        //Do not enable this user to modify to this status:
     		        continue;
     		    }
@@ -228,27 +230,27 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	        ),
 	        0 => array(
-	            's_name'  => 'On Hold',
+	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Bootcamp not listed in marketplace until published live',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
-	            's_name'  => 'Submit For Live',
+	            's_name'  => 'Request To Publish',
 	            's_color' => '#8dd08f', //light green
-	            's_desc'  => 'Bootcamp submit to be reviewed by Mench team to be listed on marketplace.',
+	            's_desc'  => 'Bootcamp submit to be reviewed by Mench team to be published live.',
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
-    	        's_name'  => 'Live - Private',
+    	        's_name'  => 'Published as Unlisted',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Live, ready for enrollment using the private landing page URL.',
+    	        's_desc'  => 'Live, ready for admission using the sharable landing page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
 	        ),
 	        3 => array(
-    	        's_name'  => 'Live On Marketplace',
+    	        's_name'  => 'Published to Marketplace',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Bootcamp is listed on marketplace.',
+    	        's_desc'  => 'Bootcamp listed on marketplace and ready for admission.',
     	        'u_min_status'  => 3, //Can only be done by admin
 	        ),
 	    ),
@@ -256,19 +258,19 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Intent removed.',
-	            'u_min_status'  => 1,
+	            's_desc'  => 'Task removed.',
+	            'u_min_status'  => 999, //Not possible for now.
 	        ),
 	        0 => array(
-	            's_name'  => 'On Hold',
+	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Intent not accessible by community until published live',
+	            's_desc'  => 'Task being drafted and not accessible by students until published live',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
-	            's_name'  => 'Live',
+	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Intent is active and accessible by community.',
+	            's_desc'  => 'Task is active and accessible by students.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -280,15 +282,15 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	        ),
 	        0 => array(
-	            's_name'  => 'On Hold',
+	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Cohort not displayed on landing page until published live',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
-	            's_name'  => 'Live',
+	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Cohort is open for enrollment.',
+	            's_desc'  => 'Cohort is visible to students and ready for admission.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -296,19 +298,19 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Reference removed by bootcamp leader.',
+	            's_desc'  => 'Tip removed.',
 	            'u_min_status'  => 1,
 	        ),
 	        0 => array(
-	            's_name'  => 'On Hold',
+	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Reference not visible to community until published live',
+	            's_desc'  => 'Tip not visible to students until published.',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
-	            's_name'  => 'Live',
+	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Reference ready for distribution during weekly sprint.',
+	            's_desc'  => 'Tip ready to be shared with students.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -317,13 +319,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Intent link removed.',
+	            's_desc'  => 'Task link removed.',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
-	            's_name'  => 'Live',
+	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Intent link is active.',
+	            's_desc'  => 'Task link is active.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -340,19 +342,19 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        1 => array(
 	            's_name'  => 'Assistant',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Can modify curriculum, view cohorts & answer student inquiries. Cannot modify bootcamp or cohorts.',
+	            's_desc'  => 'View-only access to action plan, cohorts and activity stream. Can answer student inquiries but cannot make any changes.',
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
-	            's_name'  => 'Mentor',
+	            's_name'  => 'Instructor',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Can modify bootcamp, cohorts & curriculum. NOT responsible for bootcamp outcome & performance.',
+	            's_desc'  => 'Can modify action plan and cohort but not settings. Can also answer student inquiries and admit new students.',
 	            'u_min_status'  => 1,
 	        ),
 	        3 => array(
-	            's_name'  => 'Leader',
+	            's_name'  => 'Lead Instructor',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'The bootcamp CEO who is responsible for outcome & performance based on student completion rates.',
+	            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured based on completion rate.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -367,7 +369,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        0 => array(
 	            's_name'  => 'Pending',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User added by the community but has not yet claimed their account.',
+	            's_desc'  => 'User added by the students but has not yet claimed their account.',
 	            'u_min_status'  => 999, //System only
 	        ),
 	        1 => array(
@@ -377,7 +379,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
 	        ),
 	        2 => array(
-	            's_name'  => 'Leader',
+	            's_name'  => 'Lead Instructor',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
 	            'u_min_status'  => 3, //Only admins can approve leaders
@@ -394,7 +396,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        
 	        //Withrew after course has started:
 	        -3 => array(
-	            's_name'  => 'Admin Dispelled',
+	            's_name'  => 'Student Dispelled',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
 	            'u_min_status'  => 1,
@@ -407,7 +409,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 999, //Only done by Student themselves
 	        ),
 	        -1 => array(
-	            's_name'  => 'Application Rejected',
+	            's_name'  => 'Admission Rejected',
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Application rejected by bootcamp leader before start date. Students receives a full refund.',
 	            'u_min_status'  => 1,
@@ -415,7 +417,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        
 	        //Post Application
 	        0 => array(
-    	        's_name'  => 'Application Started',
+    	        's_name'  => 'Admission Initiated',
     	        's_color' => '#2f2639', //dark
     	        's_desc'  => 'Student has started the application process but has not completed it yet.',
     	        'u_min_status'  => 999, //System insertion only
@@ -430,13 +432,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        2 => array(
-	            's_name'  => 'Pending Enrollment',
+	            's_name'  => 'Pending Admission',
 	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
 	        
-	        //Enrolled
+	        
 	        /*
 	        3 => array(
 	            's_name'  => 'Invitation Sent',
@@ -446,21 +448,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        4 => array(
-	            's_name'  => 'Enrolled',
+	            's_name'  => 'Bootcamp Student',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Student application approved and full payment collected, making them ready to participate in bootcamp.',
+	            's_desc'  => 'Student admitted making them ready to participate in bootcamp.',
 	            'u_min_status'  => 1,
 	        ),
 	        
 	        //Completion
 	        5 => array(
-	            's_name'  => 'Completed',
+	            's_name'  => 'Bootcamp Graduate',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'Student completed cohort and had all their assignments approved by bootcamp leader.',
+	            's_desc'  => 'Student completed cohort and executed all their action plan as approved by bootcamp leader.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
-	);	
+	);
 	
 	
 	//Return results:

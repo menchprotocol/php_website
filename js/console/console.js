@@ -20,7 +20,7 @@ var setting_full = {
 		toolbar: [
 		  [{ 'header': [1, 2, false] }],
 		  ['bold', 'underline' ],
-		  ['link', 'image', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }],
+		  ['link', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }], //'image', 
 		]
 	},
 	theme: 'snow'

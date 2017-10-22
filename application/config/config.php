@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.400,
+    'version' => 0.45,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -32,22 +32,22 @@ $config['core_objects'] = array(
         'o_name' => 'Bootcamp Team Member',
     ),
     'c' => array(
-        'o_name' => 'Intent',
+        'o_name' => 'Task',
     ),
     'cr' => array(
-        'o_name' => 'Intent Link',
+        'o_name' => 'Task Link',
     ),
     'r' => array(
         'o_name' => 'Cohort',
     ),
     'ru' => array(
-        'o_name' => 'Enrollment',
+        'o_name' => 'Admission',
     ),
     't' => array(
         'o_name' => 'Transaction',
     ),
     'i' => array(
-        'o_name' => 'Intent Reference (Upcoming)',
+        'o_name' => 'Tip',
     ),
 );
 
@@ -57,15 +57,26 @@ $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','1
 
 $config['cancellation_policies'] = array(
     'flexible' => array(
-        'Full refund before 10% of the elapsed time.',
-        'Pro-rated refund before 60% of the elapsed time.',
+        'Full refund before 10% of the cohort\'s elapsed time.',
+        'Pro-rated refund before 60% of the cohort\'s elapsed time.',
     ),
     'moderate' => array(
-        'Full refund before bootcamp\'s start date.',
-        'Pro-rated refund before 30% of the elapsed time.',
+        'Full refund before cohort\'s start date.',
+        'Pro-rated refund before 30% of the cohort\'s elapsed time.',
     ),
     'strict' => array(
-        'No refunds.',
+        'No refunds after admission.',
+    ),
+);
+
+$config['sprint_units'] = array(
+    'day' => array(
+        'name' => 'Daily',
+        'desc' => 'Good for Bootcamps that take between 1-30 days to accomplish.',
+    ),
+    'week' => array(
+        'name' => 'Weekly',
+        'desc' => 'Good for Bootcamps that take 2 weeks or longer to accomplish.',
     ),
 );
 
@@ -593,13 +604,6 @@ $config['countries_all'] = array(
     "YE" => "Yemen",
     "ZM" => "Zambia",
     "ZW" => "Zimbabwe"
-);
-
-
-$config['level_names'] = array(
-    1 => 'Bootcamp',
-    2 => 'Week',
-    3 => 'Assignment',
 );
 
 $config['r_response_options'] = array('1','2','3','4','12','24','48');

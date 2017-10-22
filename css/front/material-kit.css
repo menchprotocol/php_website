@@ -8260,8 +8260,6 @@ select.selectpicker {
 
   .btn.btn-simple,
   .navbar .navbar-nav > li > a.btn.btn-simple {
-    padding-left: 0;
-    padding-right: 0;
     text-align: left;
   }
 

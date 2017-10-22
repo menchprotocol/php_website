@@ -82,7 +82,7 @@ class Console extends CI_Controller {
 		    )),
 		));
 		$this->load->view('console/shared/d_footer' , array(
-		    'load_view' => 'console/modals/new_bootcamp',
+		    'load_view' => 'console/modals/wizard_bootcamp',
 		));
 	}
 	
@@ -115,7 +115,7 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function curriculum($b_id,$pid=null){
+	function actionplan($b_id,$pid=null){
 		
 		$udata = auth(2,1);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
@@ -127,22 +127,19 @@ class Console extends CI_Controller {
 		
 		//Construct data:
 		$pid = ( (isset($pid) && intval($pid)>0) ? $pid : $bootcamps[0]['c_id'] );
-		$level_names = $this->config->item('level_names');
 		$view_data = array(
 		    'pid' => $pid,
 		    'bootcamp' => $bootcamps[0],
-		    /*
 			'i_messages' => $this->Db_model->i_fetch(array(
 				'i_status >=' => 0,
 				'i_c_id >=' => $pid,
 			)),
-		    */
 		);
 		
 		
 		/*
 		 * 
-		 * Now lets determine the level of this Curriculum compared to 
+		 * Now lets determine the level of this task compared to 
 		 * the main bootcamp, and construct the breadcrumb accordingly:
 		 * 
 		 * */
@@ -151,11 +148,11 @@ class Console extends CI_Controller {
 		    //Level 1 (The bootcamp itself)
 		    $view_data['level'] = 1;
 		    $view_data['intent'] = $bootcamps[0];
-		    $view_data['title'] = 'Curriculum | '.$bootcamps[0]['c_objective'];
+		    $view_data['title'] = 'Action Plan | '.$bootcamps[0]['c_objective'];
 		    $view_data['breadcrumb'] = array(
 		        array(
 		            'link' => null,
-		            'anchor' => 'Curriculum',
+		            'anchor' => $bootcamps[0]['c_objective'],
 		        ),
 		    );
 		    
@@ -166,41 +163,42 @@ class Console extends CI_Controller {
 		        if($sprint['c_id']==$pid){
 		            //Found this as level 2:
 		            $view_data['level'] = 2;
+		            $view_data['week_num'] = $sprint['cr_outbound_rank'];
 		            $view_data['intent'] = $sprint;
-		            $view_data['title'] = 'Curriculum | '.$level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
+		            $view_data['title'] = 'Action Plan | '.ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
 		            $view_data['breadcrumb'] = array(
 		                array(
-		                    'link' => '/console/'.$b_id.'/curriculum',
-		                    'anchor' => 'Curriculum',
+		                    'link' => '/console/'.$b_id.'/actionplan',
+		                    'anchor' => $bootcamps[0]['c_objective'],
 		                ),
 		                array(
 		                    'link' => null,
-		                    'anchor' => $level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+		                    'anchor' => ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
 		                ),
 		            );
 		            //Found it, Exit loop:
 		            break;
 		        }
 		        
-		        //Maybe the Assignment of this sprint match?
+		        //Perhaps a level 3?
 		        foreach($sprint['c__child_intents'] as $task){
 		            if($task['c_id']==$pid){
 		                //This is level 3:
 		                $view_data['level'] = 3;
 		                $view_data['intent'] = $task;
-		                $view_data['title'] = 'Curriculum | '.$level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$level_names[3].' #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
+		                $view_data['title'] = 'Action Plan | '.ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
 		                $view_data['breadcrumb'] = array(
 		                    array(
-		                        'link' => '/console/'.$b_id.'/curriculum',
-		                        'anchor' => 'Curriculum',
+		                        'link' => '/console/'.$b_id.'/actionplan',
+		                        'anchor' => $bootcamps[0]['c_objective'],
 		                    ),
 		                    array(
-		                        'link' => '/console/'.$b_id.'/curriculum/'.$sprint['c_id'],
-		                        'anchor' => $level_names[2].' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+		                        'link' => '/console/'.$b_id.'/actionplan/'.$sprint['c_id'],
+		                        'anchor' => ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
 		                    ),
 		                    array(
 		                        'link' => null,
-		                        'anchor' => $level_names[3].' #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+		                        'anchor' => 'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
 		                    ),
 		                );
 		                
@@ -215,14 +213,13 @@ class Console extends CI_Controller {
 		    
 		    //Did we find the sprint or task that matched $pid?
 		    if(!isset($view_data['intent'])){
-		        redirect_message('/console/'.$b_id.'/curriculum','<div class="alert alert-danger" role="alert">Invalid intent ID. Select another intent to continue.</div>');
+		        redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
 		    }
 		}
 		
-		
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/curriculum' , $view_data);
+		$this->load->view('console/actionplan' , $view_data);
 		$this->load->view('console/shared/d_footer');
 		
 	}

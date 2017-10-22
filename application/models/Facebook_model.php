@@ -59,7 +59,15 @@ class Facebook_model extends CI_Model {
 						'composer_input_disabled' => false,
 						'call_to_actions' => array(
 						    array(
-						        'title' => 'Leaderboard',
+						        'title' => '☑️ Action Plan',
+						        'type' => 'web_url',
+						        'url' => 'https://mench.co/my/actionplan',
+						        'webview_height_ratio' => 'tall',
+						        'webview_share_button' => 'hide',
+						        'messenger_extensions' => true,
+						    ),
+						    array(
+						        'title' => '🏆 Leaderboard',
 						        'type' => 'web_url',
 						        'url' => 'https://mench.co/my/leaderboard',
 						        'messenger_extensions' => true,
@@ -67,12 +75,12 @@ class Facebook_model extends CI_Model {
 						        'webview_share_button' => 'hide',
 						    ),
 						    array(
-						        'title' => 'Assignments',
+						        'title' => '😀 My Account',
 						        'type' => 'web_url',
-						        'url' => 'https://mench.co/my/assignments',
+						        'url' => 'https://mench.co/my/account',
+						        'messenger_extensions' => true,
 						        'webview_height_ratio' => 'tall',
 						        'webview_share_button' => 'hide',
-						        'messenger_extensions' => true,
 						    ),
 						    /*
 						    array(

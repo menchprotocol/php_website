@@ -1,3 +1,8 @@
+<?php
+//Fetch the sprint units from config:
+$sprint_units = $this->config->item('sprint_units');
+?>
+<style> .breadcrumb li { display:block; } </style>
 <script>
 $(document).ready(function() {
 	//Load Sortable:
@@ -87,21 +92,21 @@ function save_c(){
  	 		pid:$('#pid').val(),
      		c_objective:$('#c_objective').val(),
      		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
-     		c_prerequisites:( c_prerequisites_quill.getLength()>1 ? $('#c_prerequisites .ql-editor').html() : "" ),
      		c_todo_bible:( c_todo_bible_quill.getLength()>1 ? $('#c_todo_bible .ql-editor').html() : "" ),
+     		c_status:$('#c_status').val(),
      		c_time_estimate:$('#c_time_estimate').val(),
  	};
  	
  	//Show spinner:
- 	$('#save_c_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+ 	$('.save_c_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
  	
  	$.post("/process/intent_edit", postData , function(data) {
  		//Update UI to confirm with user:
- 		$('#save_c_results').html(data).hide().fadeIn();
+ 		$('.save_c_results').html(data).hide().fadeIn();
  		
  		//Disapper in a while:
  		setTimeout(function() {
- 			$('#save_c_results').fadeOut();
+ 			$('.save_c_results').fadeOut();
  	    }, 10000);
      });
 }
@@ -402,7 +407,6 @@ function msg_save_edit(i_id){
 
 
 
-<?php $level_names = $this->config->item('level_names'); ?>
 <input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $bootcamp['c_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
@@ -411,62 +415,119 @@ function msg_save_edit(i_id){
 
 
 
-
+<?php if($level>1){ ?>
 <ul class="nav nav-pills nav-pills-primary">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Goal</a></li>
-  <li><a href="#pill2" data-toggle="tab" class="<?= ( strlen($intent['c_todo_overview'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-binoculars" aria-hidden="true"></i> Description</a></li>
-  <li><a href="#pill3" data-toggle="tab" class="<?= ( strlen($intent['c_prerequisites'])>0 ? '' : 'is_empty') ?>"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</a></li>
-  <?php if($level>2 || strlen($intent['c_todo_bible'])>0 || $intent['c_time_estimate']>0){ ?>
-  <li><a href="#pill4" data-toggle="tab" class="<?= ( strlen($intent['c_todo_bible'])>0 && $intent['c_time_estimate']>0 ? '' : 'is_empty') ?>"><i class="fa fa-check-square" aria-hidden="true"></i> Assignment</a></li>
+  <?php if($level<=2){ ?>
+  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</a></li>
   <?php } ?>
+  <li class="<?= ($level>2 ? 'active' : '') ?>"><a href="#pill2" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
+  <li style="display:none;"><a href="#pill3" data-toggle="tab"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Tips</a></li>
 </ul>
+<?php } ?>
 
 
 <div class="tab-content tab-space">
-
-    <div class="tab-pane active" id="pill1">
-    	<p>Define a <b>smart</b> goal: specific, measurable, achievable, relevant & trackable.</p>
-        <div class="form-group label-floating is-empty">
-            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">
-			
-			<?php if($level==1 && 0){ ?>
-			<div class="alert alert-warning" role="alert"><div><b>REMINDER:</b></div>The primary bootcamp objective sets the guideline for the Tuition Reimbursement Guarantee included in all Mench bootcamps. It basically means that if students execute the entire curriculum and fail to achieve this primary objective, they would get their tuition fully reimbursed.</div>                            
-			<?php } ?>
-			
+	
+	<?php if($level<=2){ ?>
+    <div class="tab-pane <?= ($level>2 ? 'hidden' : 'active') ?>" id="pill1">
+    	<?php
+    	if($level==1){
+    	    ?>
+            <p class="maxout" style="margin-top:-30px;">Action Plan is your bootcamp's curriculum that guides your students to success:</p>
+        	<ul class="maxout">
+    			<li>Action Plan Frequency is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b> which can be modified in <a href="/console/<?= $bootcamp['b_id'] ?>/settings"><u>Settings</u></a>.</li>
+    			<li>Define <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Action Plans with more-or-less equal execution times.</li>
+    			<li>Each <?= $bootcamp['b_sprint_unit'] ?>'s Action Plan has its own task list for further instructions.</li>
+    			<li>You can easily add, remove and sort your Action Plan at any time.</li>
+    		</ul>
+    		<?php
+        } elseif($level==2){
+            echo '<p class="maxout">Define the tasks necessary to accomplish <b>'.$intent['c_objective'].'</b>:</p>';
+        }
+        
+        
+        //Print current sub-intents:
+        echo '<div id="list-outbound" class="list-group">';
+        foreach($intent['c__child_intents'] as $sub_intent){
+            echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
+        }
+        echo '</div>';
+        
+        //Show add button:
+        ?>
+        <div class="list-group">
+        	<div class="list-group-item list_input">
+        		<div class="input-group">
+        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'New Action Plan' : 'New Task') ?>"></div>
+        			<span class="input-group-addon" style="padding-right:0;">
+        				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
+        					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
+        					<div class="togglebutton" style="margin-top:5px; display:none;">
+        		            	<label>
+        		                	<input type="checkbox" onclick="change_direction()" />
+        		            	</label>
+                    		</div>
+        				</span>
+        			</span>
+        		</div>
+        	</div>
         </div>
     </div>
+    <?php } ?>
     
     
-    <div class="tab-pane" id="pill2">
     
-		<p>An overview of the goal and how you would go about executing it:</p>
+    
+    <div class="tab-pane <?= ($level>2 ? 'active' : '') ?>" id="pill2">
+    
+    
+    	<div class="title"><h4>Title</h4></div>
+    	<ul>
+            <li>The title is a goal that is both "Specific" and "Measurable".</li>
+            <li>Define execution instructions in the "Description" section below.</li>
+		</ul>
+        <div class="form-group label-floating is-empty">
+            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">			
+        </div>
+        
+        
+        
+        <div class="title"><h4>Description</h4></div>
+        <ul class="maxout">
+			<li>An overview of how to execute this task.</li>
+			<li>Publicly displayed on the landing page to help students review your action plan.</li>
+		</ul>
         <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
         <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
         
-    </div>
-    
-    
-    <div class="tab-pane" id="pill3">
-		<p>An optional list of requirements that students must meet <b>before</b> starting to execute towards this goal.</p>
-    	<div id="c_prerequisites"><?= $intent['c_prerequisites'] ?></div>
-        <script> var c_prerequisites_quill = new Quill('#c_prerequisites', setting_listo); </script>
-
-        <?php if($level>1){ ?>
-			<div class="alert alert-warning" role="alert"><div><b>WARNING:</b></div>Students cannot see <?= strtolower($level_names[$level]) ?> prerequisites until after they have enrolled. So if you are adding any critical prerequisites that need students attention, make sure to also specify them in the <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">curriculum prerequisites</a> section so students can make an informed decision when considering enrollment.</div>                            
-		<?php } ?>
-    </div>
-    
-    
-    <div class="tab-pane" id="pill4">
-    	<p>The assignment is detailed instructions on <b>how to accomplish</b> the goal. It's shared with students on the Monday of the weekly sprint to keep students focused by only paying attention to what they need to do each week.</p>
-    	
-    	
+        
+        
+        <div class="title"><h4>Status</h4></div>
+        <ul class="maxout">
+			<li>Default status is <?= status_bible('c',1) ?>.</li>
+			<li>To prevent this from being shown to students set status to <?= status_bible('c',0) ?>.</li>
+		</ul>
+        <?php echo_status_dropdown('c','c_status',$intent['c_status']); ?>
+        
+        
+        
+        
+        <!-- TODO Remove soon -->
+        <div style="display:<?= (strlen($intent['c_todo_bible'])>0 ? 'block' : 'none') ?>;">
+        <div class="title"><h4>Homework (Being Removed Soon...)</h4></div>
+		<p>Instructions for the students to execute towards this goal. Action Plans also include goal-related facts and reference to other content (Videos, Blog Posts, Udemy, images, etc...). Action Plans are "drip-fed" to students meaning they are unlocked with each <?= $sprint_units[$bootcamp['b_sprint_unit']]['name']?> goal.</p>
     	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
         <script> var c_todo_bible_quill = new Quill('#c_todo_bible', setting_full); </script>
+        </div>
         
         
-        <div class="title"><h4><i class="fa fa-clock-o"></i> Estimated Time</h4></div>
-        <p>An estimate of how long it takes to complete this assignment which includes watching/reading all videos/article and doing the required work. For time estimates longer than 13 hours you are required to break the goal down into smaller goals to reduce complexity.</p>
+        
+        <div class="title"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
+        <ul class="maxout">
+			<li>The estimated time to read/execute this task.</li>
+			<li>Don't consider sub-tasks as they have their own time estimate.</li>
+			<li>Break down tasks into smaller tasks for estimates more than 13 hours.</li>
+		</ul>
         <select class="form-control input-mini border" id="c_time_estimate">
         	<?php 
         	$times = $this->config->item('c_time_options');
@@ -475,89 +536,42 @@ function msg_save_edit(i_id){
         	}
         	?>
         </select>
+        
+        
+        <table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span class="save_c_results"></span></td></tr></table>
+		
+    </div>
+    
+    
+    
+    
+    
+    
+    <div class="tab-pane" id="pill3">
+    
+    	<?php 
+		echo '<p>'.$this->lang->line('i_desc').'</p>';
+		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
+		foreach($i_messages as $i){
+		    echo_message($i);
+		}
+		echo '</div>';
+		
+		
+		//TODO do_edits
+		echo '<div class="list-group list-messages">';
+		echo '<div class="list-group-item">';
+		echo '<div class="add-msg">';
+		echo '<textarea id="i_message" placeholder="+ Add Media"></textarea>';
+		echo '<ul class="msg-nav">';
+		echo '<li><a href="javascript:msg_create();" data-toggle="tooltip" title="Ctrl + Enter ;)"><i class="fa fa-plus"></i> Add</a></li>';
+		echo '</ul>';
+		echo '</div>';
+		echo '</div>';
+        echo '</div>';
+        ?>
+        
     </div>
     
 </div>
 
-<table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span id="save_c_results"></span></td></tr></table>
-
-
-<?php
-
-if($level<3){
-    
-    if($level==1){
-        ?>
-        <h3>Weekly Sprints</h3>
-        <p class="maxout">Students will accomplish this bootcamp's primary goal with <b>weekly sprints</b>. Each week would focused on a specific sub-goal that helps them get closer to achieving the bootcamp goal. A few notes:</p>
-        <ul class="maxout">
-			<li>First consider how many hours students should spent per week on this bootcamp? Is this a 5 hours/week bootcamp or 60 hours/week?</li>
-			<li>Consider how many weeks is required to accomplish the primary bootcamp goal? This helps you with the breakdown process.</li>
-			<li>Design weekly sprints that are more/less equal in workload.</li>
-			<li>You can easily add, remove and sort your weekly sprints below.</li>
-		</ul>
-		<br />
-		<?php
-    } elseif($level==2){
-        echo '<h3>Assignments</h3>';
-        echo '<p class="maxout">Break down the week goal into smaller Assignments to give students step-by-step checklist for the week:</p>';
-    }
-    
-    //Print current sub-intents:
-    echo '<div id="list-outbound" class="list-group">';
-    foreach($intent['c__child_intents'] as $sub_intent){
-        echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1));
-    }
-    echo '</div>';
-    
-    //Show add button:
-    ?>
-    <div class="list-group">
-    	<div class="list-group-item list_input">
-    		<div class="input-group">
-    			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ Goal"></div>
-    			<span class="input-group-addon" style="padding-right:0;">
-    				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
-    					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
-    					<div class="togglebutton" style="margin-top:5px; display:none;">
-    		            	<label>
-    		                	<input type="checkbox" onclick="change_direction()" />
-    		            	</label>
-                		</div>
-    				</span>
-    			</span>
-    		</div>
-    	</div>
-    </div>
-
-<?php } ?>
-
-
-
-
-<?php
-/*
- * i Messaging features / Disabled for now...
- * Note: Model calls are commented out form Controller as well
- * 
-echo '<p>'.$this->lang->line('i_desc').'</p>';
-echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
-	foreach($i_messages as $i){
-		echo_message($i);
-	}
-echo '</div>';
-
-
-//TODO do_edits
-echo '<div class="list-group list-messages">';
-	echo '<div class="list-group-item">';
-		echo '<div class="add-msg">';
-		echo '<textarea id="i_message" placeholder="+ Add Media"></textarea>';
-		echo '<ul class="msg-nav">';
-			echo '<li><a href="javascript:msg_create();" data-toggle="tooltip" title="Ctrl + Enter ;)"><i class="fa fa-plus"></i> Add</a></li>';
-		echo '</ul>';
-		echo '</div>';
-	echo '</div>';
-echo '</div>';
-*/
-?>

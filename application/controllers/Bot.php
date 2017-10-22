@@ -17,6 +17,11 @@ class Bot extends CI_Controller {
 		//print_r($this->Facebook_model->fetch_settings());
 	}
 	
+	function fetch(){
+	    header('Content-Type: application/json');
+	    echo json_encode($this->Db_model->b_fb_fetch('1443101719058431'));
+	}
+	
 	function fetch_entity($apiai_id){
 		header('Content-Type: application/json');
 		echo json_encode($this->Apiai_model->fetch_entity($apiai_id));

@@ -33,7 +33,7 @@ foreach($enrollments as $enrollment){
         $( document ).ready(function() {
         	$('#paypal_<?= $enrollment['ru_id'] ?>').submit();
         	//Hide content from within the page:
-        	$('#application_status').html('<img src="/img/round_yellow_load.gif" class="loader" style="text-align:center;" />');
+        	$('#application_status').html('<div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div>');
         });
         </script>
         <?php } ?>

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Student extends CI_Controller {
+class My extends CI_Controller {
     
     //This controller is usually accessed via the /my/ URL prefix via the Messenger Bot
     
@@ -19,26 +19,128 @@ class Student extends CI_Controller {
 	}
 	
 	
+	function fetch(){
+	    echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
+	}
+	
+	
 	function leaderboard(){
 	    $data = array(
-	        'title' => 'Leaderboard',
+	        'title' => '🏆 Leaderboard',
 	    );
 	    //Load apply page:
 	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/leaderboard' , $data);
+	    $this->load->view('front/student/my_leaderboard' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
 	
-	
-	function assignments(){
+	function account(){
 	    //Load apply page:
 	    $data = array(
-	        'title' => 'Assignments',
+	        'title' => '😀 My Account',
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/assignments' , $data);
+	    $this->load->view('front/student/my_account' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
+	
+	
+	function actionplan(){
+	    //Load apply page:
+	    $data = array(
+	        'title' => '☑️ Action Plan',
+	    );
+	    $this->load->view('front/shared/p_header' , $data);
+	    $this->load->view('front/student/my_actionplan' , $data);
+	    $this->load->view('front/shared/p_footer');
+	}
+	
+	function fetch_actionplan($c_id=null){
+	    
+	    //Fetch bootcamps for this user:
+	    $fb_psid = $_POST['psid'];
+	    if(strlen($fb_psid)<10){
+	        //There is an issue here!
+	        die('<div class="alert alert-danger" role="alert">Invalid user ID.</div>');
+	    }
+	    
+	    
+	    $assignments = null;
+	    
+	    if(!$c_id){
+	        
+	        //Fetch all cohorts for this user:
+	        $assignments = $this->Db_model->c_fb_fetch($fb_psid);
+	        
+	        //Does this student belong to any cohorts?
+	        if(count($assignments)==0){
+	            //Add notice to session:
+	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Join a bootcamp below to get started.</div>');
+	            //Nothing found for this user!
+	            die('<script> window.location = "/bootcamps"; </script>');
+	        }
+	        
+	        //This is the home page of assignments!
+	        if(count($assignments)==1){
+	            //Lets set the CID to this cohort:
+	            $this->fetch_assignments($assignments[0]['c_id']);
+	            //End function:
+	            return false;
+	        }
+	    }
+	    
+	    //By now we have a specific $c_id to load!
+	    if(!$assignments){
+	        $assignments = $this->Db_model->c_assignment_fetch($c_id);
+	    }
+	    
+	    //Would not include this in the general_helper since this is the only instance of this UI:
+	    //List their cohorts so they get to choose which c_id
+	    echo '<div class="list-group">';
+	    foreach($assignments as $c){
+	        echo '<a href="/my/assignments/'.$c['c_id'].'" class="list-group-item"><span class="pull-right"><span class="label label-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+	        echo $c['c_objective'].' ';
+	        echo '<i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($cohort['r_start_date'],1).' &nbsp; ';
+	        echo '<i class="fa fa-usd" aria-hidden="true"></i> '.number_format($cohort['r_usd_price']);
+	        
+	        //Other settings:
+	        if(strlen($intent['c_todo_overview'])>0){
+	            echo '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
+	        }
+	        if(strlen($intent['c_todo_bible'])>0){
+	            echo '<i class="fa fa-book title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>';
+	            
+	            if($level==2 && isset($intent['c__estimated_hours'])){
+	                echo echo_time($intent['c__estimated_hours'],0);
+	            } elseif($level==3 && isset($intent['c_time_estimate'])){
+	                echo echo_time($intent['c_time_estimate'],0);
+	            }
+	        }
+	        
+	        
+	        
+	        if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
+	            //This sprint has action plan:
+	            $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Sub-Goals"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+	        }
+	        
+	        
+	        
+	        echo '</a>';
+	    }
+	    echo '</div>';
+	    
+	    
+	    if(0){
+	        //A single bootcamp, load inner view:
+	    } elseif(count($assignments)>1){
+	        //List all their bootcamps so they choose which one to see:
+	        
+	    } 
+	}
+	
+	
+	
 	
 	
 	function applications(){
@@ -102,7 +204,7 @@ class Student extends CI_Controller {
 	    
 	    //Load apply page:
 	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/applications' , $data);
+	    $this->load->view('front/student/my_applications' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
 	

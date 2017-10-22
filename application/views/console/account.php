@@ -63,7 +63,6 @@ function update_account(){
 		u_language:$('#u_language').val(),
 
 		u_bio:( u_bio_quill.getLength()>1 ? $('#u_bio .ql-editor').html() : "" ),
-		u_tangible_experience:( u_tangible_experience_quill.getLength()>1 ? $('#u_tangible_experience .ql-editor').html() : "" ),		
 		
 		u_password_current:$('#u_password_current').val(),
 		u_password_new:$('#u_password_new').val(),
@@ -132,14 +131,14 @@ $udata = $ufetch[0];
         
         
         <div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-        	<div class="title"><h4>Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from community."></i></h4></div>
+        	<div class="title"><h4>Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
             <div class="form-group label-floating is-empty">
                 <input type="email" required id="u_email" value="<?= $udata['u_email'] ?>" class="form-control border">
                 <span class="material-input"></span>
             </div>
         </div>
         <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
-        	<div class="title"><h4>Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from community."></i></h4></div>
+        	<div class="title"><h4>Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
             <div class="form-group label-floating is-empty">
                 <input type="tel" maxlength="30" required id="u_phone" value="<?= $udata['u_phone'] ?>" class="form-control border">
                 <span class="material-input"></span>
@@ -218,15 +217,13 @@ $udata = $ufetch[0];
             </select>
         	<span class="material-input"></span>
         </div>
-        
-        
-        <div class="title"><h4>Accomplishments List</h4></div>
-		<p>List your top 3-7 tangible accomplishments. Use actual metrics and numbers for more credibility:</p>
-		<div id="u_tangible_experience"><?= $udata['u_tangible_experience'] ?></div>
-        <script> var u_tangible_experience_quill = new Quill('#u_tangible_experience', setting_listu); </script>
 		
 		
 		<div class="title"><h4>Biography</h4></div>
+		<ul class="maxout">
+			<li>Give students a background of your self and your tangible accomplishments.</li>
+			<li>Will be displayed on yor instrutor profile.</li>
+		</ul>
 		<div id="u_bio"><?= $udata['u_bio'] ?></div>
         <script> var u_bio_quill = new Quill('#u_bio', setting_full); </script>
     </div>

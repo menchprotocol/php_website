@@ -7,9 +7,15 @@
         <h3 class="modal-title">New Bootcamp</h3>
       </div>
       <div class="modal-body">
-        	<div class="title"><h4>Primary Objective</h4></div>
+        	<div class="title"><h4>Primary Goal</h4></div>
+        	<ul>
+    			<li>Describe your bootcamp's core offering in 70 characters or less.</li>
+                <li>Define a goal that is both "Specific" and "Measurable".</li>
+                <li>Sets the bar for our <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u>Tuition Reimbursement Guarantee <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+    			<li>Success is % of students who accomplish this when bootcamp ends.</li>
+    		</ul>
 			<div class="form-group label-floating is-empty">
-			    <input type="text" id="c_primary_objective" placeholder="Get hired as entry-level web developer" class="form-control border" />
+			    <input type="text" id="c_primary_objective" maxlength="70" placeholder="Get hired as entry-level web developer" class="form-control border" />
 			    <span class="material-input"></span>
 			</div>
 			<div id="new_bootcam_result"></div>

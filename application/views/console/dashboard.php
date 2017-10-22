@@ -1,10 +1,13 @@
+<?php
+$sprint_units = $this->config->item('sprint_units');
+?>
 <div class="dashboard">
     <div class="row">
-      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/curriculum"><b><i class="material-icons">format_list_numbered</i> Curriculum <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
+      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="material-icons">format_list_numbered</i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div><?= count($bootcamp['c__child_intents']) ?> Weeks</div>
-      	<div><?= $bootcamp['c__task_count'] ?> Assignments</div>
-      	<?= ( count($bootcamp['c__child_intents'])>0 ? '<div>'.round($bootcamp['c__estimated_hours'],1).' Hours</div><div>'.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/Week</div>' : '' ) ?>
+      	<div><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
+      	<div><?= $bootcamp['c__task_count'] ?> Tasks</div>
+      	<?= ( count($bootcamp['c__child_intents'])>0 ? '<div>'.round($bootcamp['c__estimated_hours'],1).' Hours</div><div>'.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']).'</div>' : '' ) ?>
       </div>
     </div>
     <hr />
@@ -20,8 +23,9 @@
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/students"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
       	<div>0 Total</div>
-      	<div>0 Pending Confirmation</div>
-      	<div>0 Need Attention</div>
+      	<div>0 Pending Admission</div>
+      	<div>0 Asked For Help</div>
+      	<div>0 Late on Assignments</div>
 	  </div>
     </div>
     <hr />

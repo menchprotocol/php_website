@@ -1,4 +1,7 @@
-
+<?php
+//Fetch the sprint units from config:
+$sprint_units = $this->config->item('sprint_units');
+?>
 <script>
 function r_process_create(){
 	//Show processing:
@@ -9,6 +12,7 @@ function r_process_create(){
 		
 		r_b_id:$('#r_b_id').val(),
 		r_start_date:$('#r_start_date').val(),
+		r_status:$('#r_status').val(),
 		copy_cohort_id:$('#copy_cohort_id').val(),
 		
 	}, function(data) {
@@ -22,17 +26,17 @@ $(document).ready(function() {
 	//Load date picker:
 	$( function() {
 	    $( "#r_start_date" ).datepicker({
-	    	minDate : 2,
+	    	minDate : 1,
 	    	beforeShowDay: function(date){
 	    		  var day = date.getDay(); 
-	    		  return [day == 1,""];
+	    		  return [ ( <?= $bootcamp['b_sprint_unit']=='week' ? 'day==1' : 'day==1 || day==2 || day==3 || day==4 || day==5 || day==6 || day==0' ?> ) ,""];
 	    	},
 		});
 	});
 
 	//Focus on the datepicker:
 	$('#newCohortModal').on('shown.bs.modal', function () {
-		$('#r_start_date').focus();
+		//$('#r_start_date').focus();
 	});
 });
 
@@ -61,18 +65,21 @@ $('#r_start_date').keyup(function(e){
       </div>
       <div class="modal-body">
       		
-      		<div class="alert alert-info" role="alert">It's best to create your <a href="/console/<?= $bootcamp['b_id'] ?>/curriculum">Bootcamp Curriculum</a> before creating a cohort. This gives you a better idea of how much time students should commit and what price you should charge them.</div>
+      		<div class="alert alert-info" role="alert">It's best to create your <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan">Action Plan</a> before creating a cohort. This gives you a better idea of how much time students should commit and what price you should charge them.</div>
       		
       		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
-      		
-        	<div class="title"><h4>Cohort Start Date</div>
+        	<div class="title"><h4>Cohort Start Day</div>
 			<div class="form-group label-floating is-empty">
 			    <input type="text" id="r_start_date" style="width:233px;" class="form-control border" />
 			    <span class="material-input"></span>
 			</div>
-            
-            <?php 
+			
+			
+			<div class="title"><h4>Cohort Status</div>
+			<?php echo_status_dropdown('r','r_status',1,array(-1)); ?>
+			
+			<?php 
             if(count($bootcamp['c__cohorts'])>0){
                 //We already have some cohorts, give user the option to copy settings:
                 ?>

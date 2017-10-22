@@ -412,7 +412,6 @@ class Process extends CI_Controller {
 	        'u_timezone' => $_POST['u_timezone'],
 	        'u_language' => join(',',$_POST['u_language']),
 	        'u_bio' => trim($_POST['u_bio']),
-	        'u_tangible_experience' => trim($_POST['u_tangible_experience']),
 	        'u_skype_username' => trim($_POST['u_skype_username']),
 	    );
 	    
@@ -515,6 +514,8 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid bootcamp ID.</span>');
+	    } elseif(!isset($_POST['r_status'])){
+	        die('<span style="color:#FF0000;">Error: Invalid cohort status.</span>');
 	    } elseif(!isset($_POST['copy_cohort_id']) || intval($_POST['copy_cohort_id'])<0){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Import Settings.</span>');
 	    } else {
@@ -537,7 +538,7 @@ class Process extends CI_Controller {
 	                
 	                //Make some adjustments
 	                $cohort_data['r_start_date'] = date("Y-m-d",strtotime($_POST['r_start_date']));
-	                unset($cohort_data['r_status']); //Use the system default for this
+	                $cohort_data['r_status'] = intval($_POST['r_status']); //Override with input status
 	                unset($cohort_data['r_id']); //Remove as it would be assigned for this new cohort
 	            }
 	        }
@@ -553,6 +554,8 @@ class Process extends CI_Controller {
 	            $cohort_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
+	                'r_status' => intval($_POST['r_status']),
+	                'r_prerequisites' => '<ol><li>An internet-connected computer</li><li>etc...</li></ol>',
 	                'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
 	            );
 	            
@@ -668,12 +671,15 @@ class Process extends CI_Controller {
 	    }
 	    
 	    
+	    
+	    
 	    $r_update = array(
 	        'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
 	        'r_response_time_hours' => $_POST['r_response_time_hours'],
 	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
 	        'r_office_hour_instructions' => $_POST['r_office_hour_instructions'],
 	        'r_application_questions' => $_POST['r_application_questions'],
+	        'r_prerequisites' => $_POST['r_prerequisites'],
 	        'r_cancellation_policy' => $_POST['r_cancellation_policy'],
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        'r_status' => intval($_POST['r_status']),
@@ -855,8 +861,12 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Task ID.</span>');
 	    } elseif(!isset($_POST['b_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Status.</span>');
+	    } elseif(!isset($_POST['b_sprint_unit'])){
+	        die('<span style="color:#FF0000;">Error: Missing Sprint Unit.</span>');
 	    } elseif(!isset($_POST['b_url_key']) || strlen($_POST['b_url_key'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing URL Key.</span>');
 	    }
@@ -867,6 +877,14 @@ class Process extends CI_Controller {
 	    ));
 	    if(count($bootcamps)<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    }
+	    
+	    //Validate Intent ID:
+	    $original_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['c_id']),
+	    ));
+	    if(count($original_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
 	    }
 	    
 	    //Cleanup the URL key:
@@ -886,16 +904,43 @@ class Process extends CI_Controller {
 	    if(strlen($_POST['b_video_url'])>0 && !url_exists($_POST['b_video_url'])){
 	        die('<span style="color:#FF0000;">Error: <a href="'.$_POST['b_video_url'].'" target="_blank">Video URL</a> could not be verified.</span>');
 	    }
-	    if(strlen($_POST['b_image_url'])>0 && !url_exists($_POST['b_image_url'])){
-	        die('<span style="color:#FF0000;">Error: <a href="'.$_POST['b_image_url'].'" target="_blank">Image URL</a> could not be verified.</span>');
+	    
+	    //Do we need to update the intent?
+	    if(!($original_intents[0]['c_objective']==$_POST['c_objective'] && $original_intents[0]['c_todo_overview']==$_POST['c_todo_overview'])){
+	        //Something has changed!
+	        $c_update = array(
+	            'c_objective' => trim($_POST['c_objective']),
+	            'c_todo_overview' => $_POST['c_todo_overview'],
+	        );
+	        
+	        //Now update the DB:
+	        $this->Db_model->c_update( intval($_POST['c_id']) , $c_update);
+	        
+	        //Update Algolia:
+	        $this->Db_model->sync_algolia(intval($_POST['c_id']));
+	        
+	        
+	        //Log Engagement for New Intent Link:
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $udata['u_id'],
+	            'e_message' => readable_updates($original_intents[0],$c_update,'c_'),
+	            'e_json' => json_encode(array(
+	                'input' => $_POST,
+	                'before' => $original_intents[0],
+	                'after' => $c_update,
+	            )),
+	            'e_type_id' => 19, //Intent Updated
+	            'e_object_id' => intval($_POST['c_id']),
+	            'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        ));
 	    }
 	    
-	    //Generate update array:
+	    //Generate update array for the bootcamp:
 	    $b_update = array(
 	        'b_status' => intval($_POST['b_status']),
 	        'b_url_key' => $_POST['b_url_key'],
 	        'b_video_url' => $_POST['b_video_url'],
-	        'b_image_url' => $_POST['b_image_url'],
+	        'b_sprint_unit' => $_POST['b_sprint_unit'],
 	    );
 
 	    //Updatye bootcamp:
@@ -1020,7 +1065,7 @@ class Process extends CI_Controller {
 	    $this->Db_model->sync_algolia($new_intent['c_id']);
 	    
 	    //Return result:
-	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level']);
+	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit']);
 	}
 	
 	
@@ -1037,7 +1082,10 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing Intent Objective.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['c_status'])){
+	        die('<span style="color:#FF0000;">Error: Missing Task Status.</span>');
 	    }
+	    
 	    
 	    //Validate Original intent:
 	    $original_intents = $this->Db_model->c_fetch(array(
@@ -1052,7 +1100,7 @@ class Process extends CI_Controller {
 	        'c_objective' => trim($_POST['c_objective']),
 	        'c_todo_bible' => $_POST['c_todo_bible'],
 	        'c_todo_overview' => $_POST['c_todo_overview'],
-	        'c_prerequisites' => $_POST['c_prerequisites'],
+	        'c_status' => intval($_POST['c_status']),
 	        'c_time_estimate' => floatval($_POST['c_time_estimate']),
 	    );
 	    
@@ -1095,6 +1143,14 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
+	    }
+	    
+	    //Validate Bootcamp ID:
+	    $bootcamps = $this->Db_model->b_fetch(array(
+	        'b.b_id' => intval($_POST['b_id']),
+	    ));
+	    if(count($bootcamps)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    }
 	    
 	    //Validate outbound link:
@@ -1162,7 +1218,7 @@ class Process extends CI_Controller {
 	    
 	    
 	    //Return result:
-	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level']);
+	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit']);
 	}
 	
 	

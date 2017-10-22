@@ -1,5 +1,5 @@
 <?php
-/* <?= $this->lang->line('cr_name') ?> */
+/* <?= $this->lang->line('c_name') ?> */
 
 /* ******************************
  * Main Objects
@@ -37,8 +37,7 @@ $lang['r_l_name'] = 'Leaderboard';
 $lang['r_l_desc'] = 'The Run leaderboard ranks students based on their performance for deliverying each bootcamp. It helps bootcamp operators detect students who might need extra help.';
 $lang['r_l_none'] = 'No students registered for this bootcamp run yet.';
 
-$lang['cr_name'] = 'Curriculum';
-$lang['cr_icon'] = '<i class="material-icons">format_list_numbered</i>';
+
 $lang['u_name'] = 'User';
 $lang['u_pname'] = 'Users';
 $lang['ru_name'] = 'Run User';

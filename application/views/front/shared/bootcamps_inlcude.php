@@ -4,31 +4,31 @@
 		
 		<div class="col-md-4">
 			<div class="info">
-				<div class="icon icon-rose">
-					<i class="material-icons yellow">favorite</i>
+				<div class="icon">
+					<i class="fa fa-comments" style="color:#3C4858;" aria-hidden="true"></i>
 				</div>
 				<h3 class="info-title">1-on-1 Support</h3>
-				<p>When you have the full attention of another human, something special starts to happen: you get s**t done! And if you don't believe us, you can ask your scientist friends about it.</p>
+				<p>Mench instructors are invested in your success. This is why all bootcamps include chat support and many include 1-on-1 mentorship calls and/or office hours. At Mench our ultimate goal is making sure you accomplish yours.</p>
 			</div>
 		</div>
 		
 		<div class="col-md-4">
 			<div class="info">
-				<div class="icon icon-info">
-					<img class="img" src="/img/bp_128.png" style="width:85px;" alt="Menchbot" />
+				<div class="icon">
+					<i class="fa fa-handshake-o" style="color:#3C4858;" aria-hidden="true"></i>
 				</div>
-				<h3 class="info-title">A Rockstar Chatbot</h3>
-				<p>Mench is your personal assistant on <a href="https://www.messenger.com/">Facebook Messenger</a>. You can whip him, or not, and he would lovingly give you the insider scoops you need to succeed at your bootcamp.</p>
+				<h3 class="info-title">Peer Accountability</h3>
+				<p>Learning alone sucks, that's why each bootcamp builds a micro community of like-minded people who share the same goal. You'll receive motivation and accountability from fellow participants. You'll never be alone!</p>
 			</div>
 		</div>
 
 		<div class="col-md-4">
 			<div class="info">
-				<div class="icon icon-success">
+				<div class="icon">
 					<i class="material-icons" style="color:#3C4858;">verified_user</i>
 				</div>
-				<h3 class="info-title">Result Guarantee</h3>
-				<p>Bootcamps are designed by folks who've been there, done that. If you didn't get results by the final day after following the intrusctions, you'll automatically receive a full refund.</p>
+				<h3 class="info-title" style="margin-top:8px;">Tuition Guarantee</h3>
+				<p>We'll bet that by following the bootcamp's action plan you'll get the results you signed up for. If you did the work and did not accomplish the end goal we'll give you a full refund with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Reimbursement Guarantee &raquo;</a></p>
 			</div>
 		</div>
 

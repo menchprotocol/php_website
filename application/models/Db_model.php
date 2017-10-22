@@ -385,32 +385,28 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	
-	function fb_user_bootcamps($fb_psid){
+
+	function c_fb_fetch($fb_psid){
+	    //Fetch user's active bootcamps
+	    $this->db->select('c.*');
 	    
-	    //Missing anything?
-	    $this->db->select('*');
-	    $this->db->from('v5_cohorts r');
-	    $this->db->join('v5_cohort_students ru', 'ru.ru_r_id = r.r_id');
-	    $this->db->join('v5_users u', 'u.id = ru.ru_u_id');
-	    $this->db->where('u.u_fb_id',1443101719058431);
-	    $this->db->group_by('r.r_id');
+	    $this->db->from('v5_cohort_students ru');
+	    $this->db->join('v5_cohorts r', 'r.r_id = ru.ru_r_id');
+	    $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
+	    $this->db->join('v5_bootcamps b', 'b.b_id = r.r_b_id');
+	    $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+	    
+	    $this->db->where('u.u_fb_id',$fb_psid);
+	    $this->db->where('ru.ru_status >=',0);
+	    $this->db->where('r.r_status >=',1);
+	    $this->db->where('u.u_status >=',0);
+	    $this->db->where('b.b_status >=',2);
+	    $this->db->where('c.c_status >=',1);
+	    
 	    $this->db->order_by('r.r_start_date','ASC');
 	    $q = $this->db->get();
 	    
-	    $runs = $q->result_array();
-	    foreach($runs as $key=>$value){
-	        /*
-	         * //TODO: Determine enrolled students and apply potential registration limitations
-	         $runs[$key]['r__enrolled_students'] = $this->Db_model->ru_fetch(array(
-	         'ru.ru_r_id'	    => $value['r_id'],
-	         'ru.ru_status <'	=> 2, //TODO Review: Regular students
-	         'u.u_status <'		=> 2, //TODO Review: Regular students
-	         ));
-	         */
-	    }
-	    
-	    return $runs;
+	    return $q->result_array();
 	}
 	
 	
@@ -448,7 +444,7 @@ class Db_model extends CI_Model {
 	        //Start estimating hours calculation:
 	        $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
 	        
-	        //Fetch Curriculum:
+	        //Fetch Sub-Goals:
 	        $bootcamps[$key]['c__task_count'] = 0;
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
