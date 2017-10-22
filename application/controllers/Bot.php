@@ -214,7 +214,7 @@ class Bot extends CI_Controller {
 						            'u_status'        => ( $matching_users[0]['u_status']==0 ? 1 : $matching_users[0]['u_status'] ), //Activate their profile as well
 						            'u_timezone'      => $fb_profile['timezone'],
 						            'u_gender'        => strtolower(substr($fb_profile['gender'],0,1)),
-						            'u_language'      => $locale[0],
+						            'u_language'      => ( $matching_users[0]['u_language']=='en' && !($matching_users[0]['u_language']==$locale[0]) ? $locale[0] : $matching_users[0]['u_language'] ),
 						            'u_country_code'  => $locale[1],
 						        );
 						        //Update their profile and link accounts:
