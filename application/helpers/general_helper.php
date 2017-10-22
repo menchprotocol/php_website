@@ -35,21 +35,26 @@ function echo_video($video_url){
 function echo_message($i){
 	//Fetch current Challenge:
 	echo '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
-		echo '<div>';
-			echo '<span class="showdown">'.$i['i_message'].'</span>';
-			echo '<textarea class="edit-on">'.$i['i_message'].'</textarea>';
-			echo '<div class="original">'.$i['i_message'].'</div>';
-			echo '<ul class="msg-nav">';
-			    echo '<li><i class="fa fa-sort"></i></li>';
-			    echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
-			    //echo '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
-			    echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
-			    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
-			    echo '<li class="edit-updates"></li>';
-			    echo '<li class="pull-right"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
-			    echo '</ul>';
-		echo '</div>';
-	echo '</div>';
+	echo '<div>';
+        //Tip content:
+    	echo '<span class="showdown edit-off">'.$i['i_message'].'</span>';
+    	echo '<textarea class="edit-on">'.$i['i_message'].'</textarea>';
+    	echo '<div class="original">'.$i['i_message'].'</div>';
+
+        //Editing menu:
+        echo '<ul class="msg-nav">';
+		    echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
+		    //echo '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
+		    echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
+		    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
+		    echo '<li class="edit-updates"></li>';
+		    echo '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>';
+		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Tip" data-placement="left"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+		    echo '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
+		    echo '</ul>';
+	    
+    echo '</div>';
+    echo '</div>';
 }
 
 function echo_time($c_time_estimate,$show_icon=1){
@@ -109,7 +114,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
 
     	    $ui .= '<i class="fa fa-sort" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left" aria-hidden="true"></i> &nbsp;';
     	    
-    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Delete" data-placement="left"></i> &nbsp;';
+    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Remove from Action Plan" data-placement="left"></i> &nbsp;';
     	    
     	    $ui .= status_bible('c',$intent['c_status'],1,'left');
     	    //$ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';

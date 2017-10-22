@@ -182,28 +182,60 @@ class Bot extends CI_Controller {
 
 						if($eng_data['e_object_id']>0){
 						    
-						    //Link this account to their existing account:
+						    //See if we can find a valid user with this account:
 						    $matching_users = $this->Db_model->u_fetch(array(
 						        'u_id' => $eng_data['e_object_id'],
+						        'u_status >=' => 0,
 						    ));
 						    
+						    //Users can only activate their accounts if/when they are missing their u_fb_id field
 						    //Did we find a single user without a linked Facebook account?
 						    if(count($matching_users)==1 && strlen($matching_users[0]['u_fb_id'])<5){
 						        
-						        //Link their profile:
-						        $this->Db_model->u_update( $matching_users[0]['u_id'] , array(
-						            'u_fb_id' => $im['sender']['id'],
-						        ));
+						        
+						        /* *************************************
+						         * Messenger Activation
+						         * *************************************
+						         */
+						        
+						        //Fetch their profile from Facebook:
+						        $fb_profile = $this->Facebook_model->fetch_profile($im['sender']['id']);
+						        
+						        //Split locale into language and country
+						        $locale = explode('_',$fb_profile['locale'],2);
+						        
+						        
+						        //Update necessary fields when Activating through Messenger:
+						        $update_profile = array(
+						            'u_fb_id'         => $im['sender']['id'],
+						            'u_fname'         => ( strlen($matching_users[0]['u_fname'])<=0 ? $fb_profile['first_name'] : $matching_users[0]['u_fname'] ),
+						            'u_lname'         => ( strlen($matching_users[0]['u_lname'])<=0 ? $fb_profile['last_name'] : $matching_users[0]['u_lname'] ),
+						            'u_image_url'     => ( strlen($matching_users[0]['u_image_url'])<5 ? $fb_profile['profile_pic'] : $matching_users[0]['u_image_url'] ),
+						            'u_status'        => ( $matching_users[0]['u_status']==0 ? 1 : $matching_users[0]['u_status'] ), //Activate their profile as well
+						            'u_timezone'      => $fb_profile['timezone'],
+						            'u_gender'        => strtolower(substr($fb_profile['gender'],0,1)),
+						            'u_language'      => $locale[0],
+						            'u_country_code'  => $locale[1],
+						        );
+						        //Update their profile and link accounts:
+						        $this->Db_model->u_update( $matching_users[0]['u_id'] , $update_profile );
+						        
 						        
 						        //Search for possible Bootcamps:
 						        $admissions = $this->Db_model->remix_admissions(array(
 						            'ru.ru_u_id'	=> $matching_users[0]['u_id'],
 						        ));
 						        
-						        //Log Engagement:
+						        
+						        //Log Activation Engagement:
 						        $this->Db_model->e_create(array(
 						            'e_creator_id' => $matching_users[0]['u_id'],
-						            'e_json' => json_encode($json_data),
+						            'e_json' => json_encode(array(
+						                'fb_webhook' => $json_data,
+						                'fb_profile' => $fb_profile,
+						                'u_update' => $update_profile,
+						                'admissions' => $admissions,
+						            )),
 						            'e_type_id' => 31, //Messenger Activated
 						            'e_object_id' => $matching_users[0]['u_id'],
 						            'e_b_id' => (count($admissions)==1 ? $admissions[0]['bootcamp']['b_id'] : 0),
@@ -211,38 +243,11 @@ class Bot extends CI_Controller {
 						        
 						        
 						        //Communicate the linking process with them ASAP:
-						        $this->Facebook_model->send_message(array(
-						            'recipient' => array(
-						                'id' => $im['sender']['id']
-						            ),
-						            'sender_action' => 'typing_on'
-						        ));
-						        sleep(3);
-						        $this->Facebook_model->send_message(array(
-						            'recipient' => array(
-						                'id' => $im['sender']['id'],
-						            ),
-						            'message' => array(
-						                'text' => 'I was able to successfully link Messenger to your Mench account 👍. I noticed you are our '.echo_ordinal($matching_users[0]['u_id']).' member, so welcome onboard! I also noticed you\'re involved with '.count($admissions).' bootcamp'.( count($admissions)==1 ? ': '.$admissions[0]['bootcamp']['c_objective'] : 's' ).'.',
-						            ),
-						            'notification_type' => 'NO_PUSH' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-						        ));
-						        sleep(4);
-						        $this->Facebook_model->send_message(array(
-						            'recipient' => array(
-						                'id' => $im['sender']['id'],
-						            ),
-						            'sender_action' => 'typing_on'
-						        ));
-						        sleep(3);
-						        $this->Facebook_model->send_message(array(
-						            'recipient' => array(
-						                'id' => $im['sender']['id'],
-						            ),
-						            'message' => array(
-						                'text' => 'I have no more updates for now. Is there anything you would like to know about us? 🤔',
-						            ),
-						            'notification_type' => 'NO_PUSH' //Can be REGULAR, SILENT_PUSH or NO_PUSH
+						        $this->Facebook_model->batch_messages( $im['sender']['id'] , 'NO_PUSH' /*REGULAR/SILENT_PUSH/NO_PUSH*/, array(
+						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
+						            array('text' => 'I was able to successfully find and activate your Mench account 👍'),
+						            array('text' => 'I noticed you\'re our '.echo_ordinal($matching_users[0]['u_id']).' member so welcome onboard! I also noticed you\'re involved with '.count($admissions).' bootcamp'.( count($admissions)==1 ? ': '.$admissions[0]['bootcamp']['c_objective'] : 's' ).'.'),
+						            array('text' => 'I have no more updates for now, but is there anything you would like to know about us? 🤔 Just so you know: I forward all your messages to your instructor to get back to you asap.'),
 						        ));
 						    }
 						}
