@@ -699,11 +699,12 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	color:#000;
 }
 #funnel .quill_content textarea{
-	width:100% !important;
-	height:100px !important;
-	font-size:18px !important;
-	padding:3px !important;
-	margin:0 !important;
+	width: 100% !important;
+    height: 200px !important;
+    font-size: 18px !important;
+    padding: 3px !important;
+    margin: 0 !important;
+    max-width: 100%;
 }
 #funnel .quill_content ul{
 	margin-left:-20px;
@@ -721,7 +722,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 .btn-black{
 	background-color: #2f2639;
-    font-size:1.3em;
+    font-size:1.1em;
     font-weight: bold;
     color: #FFF;
 }

@@ -181,10 +181,71 @@ class My extends CI_Controller {
 	        
 	        //Javascript:
 	        ?>
+	        <input type="hidden" id="b_id" value="" />
+	        <input type="hidden" id="c_id" value="" />
+	        <input type="hidden" id="u_id" value="" />
+	        
 	        <script>
 	        function mark_done(){
-		        alert('Boooya');
+	        	//Show spinner:
+	        	$('#save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
+	        	
+	        	//Save Scheduling iFrame content:
+	        	if(parseInt($('#r_live_office_hours_val').val())){
+	        		document.getElementById('weekschedule').contentWindow.save_hours();
+	        	}
+	        	
+	        	var save_data = {	
+	        		r_id:$('#r_id').val(),
+	        		r_start_date:$('#r_start_date').val(),
+	        		
+	        		//Communication:
+	        		r_response_time_hours:$('#r_response_time_hours').val(),
+	        		r_weekly_1on1s:$('#r_weekly_1on1s').val(),
+	        		r_live_office_hours_check:$('#r_live_office_hours_val').val(),
+	        		r_office_hour_instructions:$('#r_office_hour_instructions').val(),
+	        		r_closed_dates:$('#r_closed_dates').val(),
+	        		
+	        		//Cohort:
+	        		r_status:$('#r_status').val(),
+	        		r_usd_price:$('#r_usd_price').val(),
+	        		r_min_students:$('#r_min_students').val(),
+	        		r_max_students:$('#r_max_students').val(),
+	        		r_typeform_id:$('#r_typeform_id').val(),
+	        		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
+	        		
+	        		//Application:
+	        		r_prerequisites:( r_prerequisites_quill.getLength()>1 ? $('#r_prerequisites .ql-editor').html() : "" ),
+	        		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
+	        	};
+	        	
+	        	//Now merge into timeline dates:
+	        	//var timeline = update_timeline();
+	        	//for (var key in timeline){
+	        	//	save_data[key] = timeline[key];
+	        	//}
+	        	
+	        	//Save the rest of the content:
+	        	$.post("/process/cohort_edit", save_data , function(data) {
+	        		//Update UI to confirm with user:
+	        		$('#save_r_results').html(data).hide().fadeIn();
+	        		
+	        		//Disapper in a while:
+	        		setTimeout(function() {
+	        			$('#save_r_results').fadeOut();
+	        	    }, 10000);
+	            });
 		    }
+
+		    function start_report(){
+		    	$('.mark_done').toggle();
+		    	
+		    	$('html,body').animate({
+					scrollTop: $('#completio_report').offset().top
+				}, 150);
+
+		    	$('#us_notes').focus();
+			}
 	        </script>
 	        <?php
 	        
@@ -213,12 +274,11 @@ class My extends CI_Controller {
 	        
 	        
 	        //Mark Complete:
-	        echo '<div style="margin-top:40px;">&nbsp;</div>';//Need some blank space
-	        
-	        echo '<div class="quill_content mark_done"><a href="javascript:$(\'.mark_done\').toggle();$(\'#us_notes\').focus();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Mark Complete</a></div>';
+	        echo '<h4 id="completio_report"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Completion Report</h4>';
+	        echo '<div class="quill_content mark_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-pencil" aria-hidden="true"></i>Start Writing</a></div>';
 	        echo '<div class="quill_content mark_done" style="display:none;">';
-	           echo '<textarea id="us_notes" placeholder="Completion Notes, URLs, etc..." class="form-control"></textarea>';
-	           echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Submit For Review</a>';
+	           echo '<textarea id="us_notes" placeholder="Report on what you did, how it went, url submission, etc..." class="form-control"></textarea>';
+	           echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i>Submit</a>';
 	        echo '</div>';
 	        
 	    }
