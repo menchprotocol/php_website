@@ -23,7 +23,7 @@ foreach($admissions as $admission){
 
     
     //Payment
-    echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="'.($paid ? 'javascript:void(0)' : 'javascript:$(\'#paypal_'.$admission['ru_id'].'\').submit()').';">Step 3: Pay $'.$admission['r_usd_price'].' Tuition with CreditCard/Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+    echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="'.($paid ? 'javascript:void(0)' : 'javascript:$(\'#paypal_'.$admission['ru_id'].'\').submit()').';">Step 3: Initiate Payment for $'.$admission['r_usd_price'].' Tuition on <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
     if(!$paid){
         ?>
         
@@ -65,9 +65,12 @@ foreach($admissions as $admission){
     
     
     //Instructor Approval:
-    if($applied && $paid){
+    if($admission['ru_status']<4 && $applied && $paid){
         //Now let them know the status of their application:
         echo status_bible('ru',$admission['ru_status'],0,'top');
+    } elseif($admission['ru_status']>=4 && isset($_GET['show_action_plan'])) {
+        //The bootcamp has started, show the the link to it:
+        echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$admission['c_id'].'" class="btn btn-default" style="font-size:0.8em;">Go to Action Plan</a>';
     }
 }
 echo '</div>';

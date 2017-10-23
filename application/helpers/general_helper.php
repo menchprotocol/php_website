@@ -12,8 +12,8 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-function calculate_duration($bootcamp){
-    return ((count($bootcamp['c__child_intents'])*($bootcamp['b_sprint_unit']=='week'?7:1)));
+function calculate_duration($bootcamp,$current_week=null){
+    return ((($current_week ? $current_week : count($bootcamp['c__child_intents']))*($bootcamp['b_sprint_unit']=='week'?7:1)));
 }
 
 function calculate_refund($duration_days,$refund_type,$cancellation_policy){
@@ -264,35 +264,52 @@ function echo_c($b,$c,$level){
      * 
      * * */
     
-    $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-            
+    
+        $show_a = true; //Most cases
         //Left content
-        if($c['cr_outbound_rank']<=2){
-            $ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
-        } elseif($c['cr_outbound_rank']<=5){
+        if($level==0){
+            $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+            $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
+        } elseif($level==3 || $c['cr_outbound_rank']<=1){
+            $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
             $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+            
+            //if($c['cr_outbound_rank']<=1){
+            //$ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
+            //}
+            
         } else {
+            $show_a = false; //Not here, its locked
+            $ui = '<li class="list-group-item" style="background-color:#efefef;">';
             $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
         }
         
+        if($level>0){
+            $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b['b_sprint_unit']) : 'Task' ).' '.$c['cr_outbound_rank'].'</span>' : '' );
+        }
         
-        $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b['b_sprint_unit']) : 'Task' ).' '.$c['cr_outbound_rank'].'</span>' : '' );
         $ui .= $c['c_objective'].' ';
         
-        //Other settings:        
-        if($level==2 && isset($c['c__estimated_hours'])){
-            $ui .= echo_time($c['c__estimated_hours'],1);
-        } elseif($level==3 && isset($c['c_time_estimate'])){
-            $ui .= echo_time($c['c_time_estimate'],1);
-        }
         
+        $ui .= '<span class="sub-stats">';
+            
+            //Other settings:
+            if($level==2 && isset($c['c__estimated_hours'])){
+                $ui .= echo_time($c['c__estimated_hours'],1);
+            } elseif($level==3 && isset($c['c_time_estimate'])){
+                $ui .= echo_time($c['c_time_estimate'],1);
+            }
+            
+            if($show_a && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+                //This sprint has Assignments:
+                $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
+            }
+            
+            //TODO Need to somehow fetch cohorts in here...
+            //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($b['c__cohorts'][0]['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
+        $ui .= '</span>';
         
-        if($level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            //This sprint has Assignments:
-            $ui .= '&nbsp;<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
-        }
-        
-    $ui .= '</a>';
+        $ui .= ($show_a ? '</a>' : '</li>');
     return $ui;
 }
 
@@ -928,6 +945,8 @@ function time_format($t,$format=0,$plus_days=0){
         return $timestamp;
     } elseif($format==4){
         return date(( $this_year ? "M j" : "M j Y" ),$timestamp);
+    } elseif($format==5){
+        return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);
     } 
 }
 

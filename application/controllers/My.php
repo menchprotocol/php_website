@@ -102,8 +102,8 @@ class My extends CI_Controller {
 	            //List bootcamps:
 	            echo '<ol class="breadcrumb"><li>My Bootcamps</li></ol>';
 	            echo '<div id="list-outbound" class="list-group">';
-	            foreach($intent['c__child_intents'] as $sub_intent){
-	                echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
+	            foreach($admissions as $admission){
+	                echo echo_c($admission,$admission,0);
 	            }
 	            echo '</div>';
 	            echo '<p style="text-align:center;"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
@@ -135,6 +135,10 @@ class My extends CI_Controller {
 	        }
 	        
 	        
+	        //Fetch some variables:
+	        $application_status_salt = $this->config->item('application_status_salt');
+	        
+	        
 	        //Display Breadcrumb:
 	        echo '<ol class="breadcrumb">';
 	        foreach($view_data['breadcrumb_p'] as $link){
@@ -145,17 +149,26 @@ class My extends CI_Controller {
 	            }
 	        }
 	        echo '</ol>';
+	        
+	        
 
 	        //Display Action Plan list:
 	        if($view_data['level']<3){
 	            echo '<div id="list-outbound" class="list-group">';
+	            if($view_data['level']==1){
+	                //Show their successful admission to also train on UI:
+	                echo '<a href="/my/applications/?u_key='.md5($matching_users[0]['u_id'].$application_status_salt).'&u_id='.$matching_users[0]['u_id'].'&show_action_plan=1" class="list-group-item">';
+    	                echo '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
+    	                echo '<span class="inline-level">'.$view_data['bootcamp']['b_sprint_unit'].' 0</span>';
+    	                echo 'Completed Bootcamp Application';
+    	                //echo '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>3</span>';
+	                echo '</a>';
+	            }
 	            foreach($view_data['intent']['c__child_intents'] as $sub_intent){
 	                echo echo_c($view_data['bootcamp'],$sub_intent,($view_data['level']+1));
 	            }
 	            echo '</div>';
-	        }
-    	        
-	        
+	        }	        
 	        
 	        //Display Footer User:
 	        echo '<p style="text-align:center;"><img src="'.$matching_users[0]['u_image_url'].'" class="mini-image" /> '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</p>';

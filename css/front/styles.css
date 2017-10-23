@@ -1,104 +1,5 @@
 @CHARSET "ISO-8859-1";
 
-#funnel{
-	background-color:#FEDD16 !important;
-	color:#000000 !important;
-}
-
-#funnel .breadcrumb {
-	margin-top:-40px;
-	text-align:center;
-}
-#funnel .breadcrumb li{
-	line-height:110%;
-	font-size:0.8em;
-}
-
-#funnel .initial {
-	min-width:25px;
-}
-
-#funnel .list-group{
-	margin:0 auto 30px;
-	text-align:left;
-}
-
-
-#funnel .main{
-	margin-top:10px !important;
-	border-radius:0;
-	box-shadow:none;
-	background-color:transparent;
-}
-#funnel .body-container{
-	font-size:24px;
-	font-weight: normal;
-	width:100% !important;
-	margin:0 !important;
-	padding:20px 0 !important;
-	text-align:left;
-}
-
-#funnel .checkbox label {
-  cursor: default;
-}
-
-#funnel .form-control {
-	max-width:300px;
-	margin:20px auto 0 !important;
-	padding:21px 10px 25px !important;
-	background-color:#FFF;
-	border-radius:3px;
-	font-size:20px !important;
-}
-#funnel .form-control::placeholder {
-	font-size:20px !important;
-	color:#AAA !important;
-}
-
-.btn-funnel {
-	margin-top:25px;
-    background-color: #000000;
-    height:50px;
-    font-size: 25px;
-    font-weight: bold;
-    color: #b3b3b3;
-    padding: 5px 20px !important;
-    border-radius:4px;
-    line-height: 36px;
-    box-shadow:none;
-    display: inline-block;
-}
-.btn-funnel:hover {
-    background-color: #333;
-    color: #b3b3b3;
-    box-shadow:none;
-}
-.enter {
-	margin-top:0;
-	font-size:0.6em;
-	padding:0 0 0 10px;
-	display: inline-block;
-	width:120px;
-	text-align:left;
-	height:60px;
-	overflow:visible;
-}
-.enter img {
-	margin-top:6px;
-}
-
-.result {
-	height:30px;
-	margin: -10px 0 -5px 0;
-	font-size:18px;
-}
-
-#funnel h1, #funnel h2{
-	margin:0 0 10px 0 !important;
-	padding:0 !important;
-	line-height:130%;
-}
 
 #mainsidebar { margin-top:60px; padding-top:0; }
 .main-panel { background-color:transparent; }
@@ -708,6 +609,150 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	margin:20px 0 0 40px;
 	color:#999;
 	font-size:0.8em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#funnel{
+	background-color:#FEDD16 !important;
+	color:#000000 !important;
+}
+
+#funnel .breadcrumb {
+	margin-top:-30px;
+	text-align:center;
+}
+#funnel .breadcrumb li{
+	line-height:110%;
+	font-size:0.8em;
+}
+
+#funnel .initial {
+	min-width:20px;
+	text-align:center;
+	display:inline-block;
+}
+
+#funnel .list-group{
+	margin:0 auto 30px;
+	text-align:left;
+	font-size:0.8em;
+	line-height:110%;
+}
+
+
+#funnel .main{
+	margin-top:10px !important;
+	border-radius:0;
+	box-shadow:none;
+	background-color:transparent;
+}
+#funnel .body-container{
+	font-size:24px;
+	font-weight: normal;
+	width:100% !important;
+	margin:0 !important;
+	padding:20px 0 !important;
+	text-align:left;
+}
+
+#funnel .checkbox label {
+  cursor: default;
+}
+
+#funnel .form-control {
+	max-width:300px;
+	margin:20px auto 0 !important;
+	padding:21px 10px 25px !important;
+	background-color:#FFF;
+	border-radius:3px;
+	font-size:20px !important;
+}
+#funnel .form-control::placeholder {
+	font-size:20px !important;
+	color:#AAA !important;
+}
+
+.btn-funnel {
+	margin-top:25px;
+    background-color: #000000;
+    height:50px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #b3b3b3;
+    padding: 5px 20px !important;
+    border-radius:4px;
+    line-height: 36px;
+    box-shadow:none;
+    display: inline-block;
+}
+.btn-funnel:hover {
+    background-color: #333;
+    color: #b3b3b3;
+    box-shadow:none;
+}
+.enter {
+	margin-top:0;
+	font-size:0.6em;
+	padding:0 0 0 10px;
+	display: inline-block;
+	width:120px;
+	text-align:left;
+	height:60px;
+	overflow:visible;
+}
+.enter img {
+	margin-top:6px;
+}
+
+.result {
+	height:30px;
+	margin: -10px 0 -5px 0;
+	font-size:18px;
+}
+
+
+// #funnel .sub-stats{display: block; margin-left:3px;}
+// #funnel .sub-stats .title-sub{ display: inline-block; width:68px; }
+        
+#funnel h1, #funnel h2{
+	margin:0 0 10px 0 !important;
+	padding:0 !important;
+	line-height:130%;
+}
+
+#funnel .inline-level{
+	font-size:0.7em;
+	font-weight:bold;
 }
 
 
