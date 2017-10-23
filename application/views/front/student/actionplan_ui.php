@@ -101,7 +101,7 @@ echo '<div class="quill_content">'.$intent['c_todo_overview'].'</div>';
 
 //Tips:
 if($level>1){
-    echo '<h4>💡Tips</h4>';
+    echo '<h4><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Tips</h4>';
     echo '<div class="tips_content">';
     $displayed = 0;
     if(count($i_messages)>0){
@@ -124,6 +124,10 @@ if($level>1){
 
 //Mark Complete:
 echo '<h4 id="completio_report"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Completion Report</h4>';
+if($level==1 && 0){
+    echo '<div class="quill_content"><i class="fa fa-calendar" aria-hidden="true"></i> Due by '.time_format($admission['r_start_date'],5,(calculate_duration($admission,count($intent['c__child_intents']))-1)).' 11:59 PM PST</div>';
+}
+echo '';
 echo '<div id="save_report" class="quill_content">';
 if(isset($us_data[$intent['c_id']])){
     echo_us($us_data[$intent['c_id']]);
@@ -133,7 +137,7 @@ if(!isset($us_data[$intent['c_id']])){
     if($checklist_done){
         echo '<div class="quill_content mark_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-pencil" aria-hidden="true"></i>Start</a></div>';
         echo '<div class="quill_content mark_done" style="display:none;">';
-        echo '<textarea id="us_notes" placeholder="Report on what you did, how it went, url submission, etc..." class="form-control"></textarea>';
+        echo '<textarea id="us_notes" placeholder="A summary of what you did and the challenges you faced. You can also add URLs that reference your work..." class="form-control"></textarea>';
         echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i>Submit</a>';
         echo '</div>';
     } else {

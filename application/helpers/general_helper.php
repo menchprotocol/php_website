@@ -313,7 +313,7 @@ function echo_c($b,$c,$level,$us_data=null){
         }
         
         //TODO Need to somehow fetch cohorts in here...
-        //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($b['c__cohorts'][0]['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
+        //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($admission['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
         $ui .= '</span>';
         
         $ui .= ($show_a ? '</a>' : '</li>');
