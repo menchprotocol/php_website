@@ -280,7 +280,7 @@ function echo_c($b,$c,$level){
             
         } else {
             $show_a = false; //Not here, its locked
-            $ui = '<li class="list-group-item" style="background-color:#efefef;">';
+            $ui = '<li class="list-group-item">';
             $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
         }
         
@@ -293,20 +293,20 @@ function echo_c($b,$c,$level){
         
         $ui .= '<span class="sub-stats">';
             
-            //Other settings:
-            if($level==2 && isset($c['c__estimated_hours'])){
+        //Other settings:
+        if($show_a && $level==2 && isset($c['c__estimated_hours'])){
                 $ui .= echo_time($c['c__estimated_hours'],1);
-            } elseif($level==3 && isset($c['c_time_estimate'])){
+        } elseif($level==3 && isset($c['c_time_estimate'])){
                 $ui .= echo_time($c['c_time_estimate'],1);
-            }
+        }
             
-            if($show_a && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-                //This sprint has Assignments:
-                $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
-            }
-            
-            //TODO Need to somehow fetch cohorts in here...
-            //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($b['c__cohorts'][0]['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
+        if($show_a && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+            //This sprint has Assignments:
+            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
+        }
+        
+        //TODO Need to somehow fetch cohorts in here...
+        //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($b['c__cohorts'][0]['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
         $ui .= '</span>';
         
         $ui .= ($show_a ? '</a>' : '</li>');
@@ -615,6 +615,32 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 3, //Only admins can create other admins
 	        ),
 	    ),
+	    
+	    'us' => array(
+    	    -1 => array(
+        	    's_name'  => 'Requires Revision',
+        	    's_color' => '#f44336', //red
+        	    's_desc'  => 'Intructor has reviewed submission and found issues with it that requires student attention.',
+        	    'u_min_status'  => 1,
+        	    's_mini_icon' => 'fa-exclamation-circle',
+    	    ),
+    	    0 => array(
+        	    's_name'  => 'Pending Review',
+        	    's_color' => '#2f2639', //dark
+        	    's_desc'  => 'Student has submitted thier action plan and is pending instructor review.',
+        	    'u_min_status'  => 1,
+        	    's_mini_icon' => 'fa-check-circle-o',
+        	    
+    	    ),
+    	    1 => array(
+        	    's_name'  => 'Approved',
+        	    's_color' => '#4caf50', //green
+        	    's_desc'  => 'Intructor has reviewed & approved action plan submission.',
+        	    'u_min_status'  => 1,
+        	    's_mini_icon' => 'fa-check-circle',
+    	    ),
+	    ),
+	    
 	    
 	    'ru' => array(
 	        

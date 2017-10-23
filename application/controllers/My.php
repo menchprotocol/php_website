@@ -106,7 +106,7 @@ class My extends CI_Controller {
 	                echo echo_c($admission,$admission,0);
 	            }
 	            echo '</div>';
-	            echo '<p style="text-align:center;"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
+	            echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
 	        
 	        }
 	        
@@ -157,12 +157,13 @@ class My extends CI_Controller {
 	            echo '<div id="list-outbound" class="list-group">';
 	            if($view_data['level']==1){
 	                //Show their successful admission to also train on UI:
-	                echo '<a href="/my/applications/?u_key='.md5($matching_users[0]['u_id'].$application_status_salt).'&u_id='.$matching_users[0]['u_id'].'&show_action_plan=1" class="list-group-item">';
+	                //<a href="/my/applications/?u_key='.md5($matching_users[0]['u_id'].$application_status_salt).'&u_id='.$matching_users[0]['u_id'].'&show_action_plan=1"
+	                echo '<li class="list-group-item">';
     	                echo '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
-    	                echo '<span class="inline-level">'.$view_data['bootcamp']['b_sprint_unit'].' 0</span>';
-    	                echo 'Completed Bootcamp Application';
+    	                echo '<span class="inline-level">START</span>';
+    	                echo 'Complete Bootcamp Application';
     	                //echo '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>3</span>';
-	                echo '</a>';
+	                echo '</li>';
 	            }
 	            foreach($view_data['intent']['c__child_intents'] as $sub_intent){
 	                echo echo_c($view_data['bootcamp'],$sub_intent,($view_data['level']+1));
@@ -171,7 +172,7 @@ class My extends CI_Controller {
 	        }	        
 	        
 	        //Display Footer User:
-	        echo '<p style="text-align:center;"><img src="'.$matching_users[0]['u_image_url'].'" class="mini-image" /> '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</p>';
+	        echo '<p class="p_footer"><img src="'.$matching_users[0]['u_image_url'].'" class="mini-image" /> '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</p>';
 	        
 	    }
 	}

@@ -649,11 +649,15 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 
 #funnel .breadcrumb {
 	margin-top:-30px;
-	text-align:center;
+	margin-left:-4px;
+	text-align:left;
 }
 #funnel .breadcrumb li{
 	line-height:110%;
-	font-size:0.8em;
+	font-size:0.4em;
+	margin:0;
+	padding:3px 0;
+	display:block;
 }
 
 #funnel .initial {
@@ -662,11 +666,19 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	display:inline-block;
 }
 
+#funnel .p_footer{ font-size:0.8em; padding-left:8px;}
+
+@media (max-width: 767px){
+	#funnel .p_footer{ padding-left:0; text-align:center;}
+}
 #funnel .list-group{
-	margin:0 auto 30px;
 	text-align:left;
-	font-size:0.8em;
+	font-size:0.6em;
 	line-height:110%;
+}
+
+#funnel .list-group>li{
+	background-color:#efefef;
 }
 
 
@@ -751,8 +763,12 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 
 #funnel .inline-level{
-	font-size:0.7em;
-	font-weight:bold;
+	font-size: 0.7em;
+    font-weight: bold;
+    display: inline-block;
+    width: 52px;
+    text-align: center;
+    color:#999;
 }
 
 
