@@ -656,7 +656,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	line-height:110%;
 	font-size:0.4em;
 	margin:0;
-	padding:3px 0;
+	padding:6px 0;
 	display:block;
 }
 
@@ -683,7 +683,13 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 
 #funnel h4 {
 	font-size:0.7em;
-	margin:40px 3px 5px 10px;
+	margin:40px 3px 5px 5px;
+	border-bottom:2px solid #2f2639;
+	padding-left:5px
+}
+
+#funnel h4 .title-sub{
+	color:#2f2639 !important;
 }
 #funnel .quill_content {
 	font-size:0.7em;
