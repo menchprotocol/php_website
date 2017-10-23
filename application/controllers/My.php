@@ -37,7 +37,7 @@ class My extends CI_Controller {
 	function account(){
 	    //Load apply page:
 	    $data = array(
-	        'title' => '😀 My Account',
+	        'title' => '⚙ My Account',
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
 	    $this->load->view('front/student/my_account' , $data);
@@ -48,7 +48,7 @@ class My extends CI_Controller {
 	function actionplan(){
 	    //Load apply page:
 	    $data = array(
-	        'title' => '☑️ Action Plan',
+	        'title' => '✔️ Action Plan',
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
 	    $this->load->view('front/student/my_actionplan' , $data);

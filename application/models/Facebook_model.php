@@ -59,7 +59,7 @@ class Facebook_model extends CI_Model {
 						'composer_input_disabled' => false,
 						'call_to_actions' => array(
 						    array(
-						        'title' => '☑️ Action Plan',
+						        'title' => '✔️ Action Plan',
 						        'type' => 'web_url',
 						        'url' => 'https://mench.co/my/actionplan',
 						        'webview_height_ratio' => 'tall',
@@ -75,7 +75,7 @@ class Facebook_model extends CI_Model {
 						        'webview_share_button' => 'hide',
 						    ),
 						    array(
-						        'title' => '😀 My Account',
+						        'title' => '⚙ My Account',
 						        'type' => 'web_url',
 						        'url' => 'https://mench.co/my/account',
 						        'messenger_extensions' => true,

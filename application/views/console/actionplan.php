@@ -552,10 +552,10 @@ function msg_save_edit(i_id){
         <ul class="maxout">
 			<?php if($level==2){ ?>
 			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s Action Plan.</li>
-			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp.</li>
+			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp. Students get it again at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
 			<?php } elseif($level>2){ ?>
 			<li>Instructions on how to execute this task.</li>
-			<li>Task Overviews are private and only shared with students on the <?= $bootcamp['b_sprint_unit'] ?> of execution.</li>
+			<li>Overviews are private & only shared with students at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
 			<?php } ?>
 		</ul>
         <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
@@ -617,9 +617,9 @@ function msg_save_edit(i_id){
     	<ul class="maxout">
 			<li>Each tip focuses on a single point or concept.</li>
 			<li>Tips communicate facts & best-practices on how to take action.</li>
-			<li>Use <b>{first_name}</b> in a <b><?= strip_tags($i_media_type_names['text']) ?></b> tip for further personalization.</li>
 			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> tips to reference links, Youtube, etc...</li>
-			<li>You can send tips ASAP when action plan is released OR schedule for later.</li>
+			<li>You can use <b>{first_name}</b> in <b><?= strip_tags($i_media_type_names['text']) ?></b> tips for further personalization.</li>
+			<li>Tips are private & only shared with students during each <?= $bootcamp['b_sprint_unit'] ?>.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
