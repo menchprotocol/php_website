@@ -42,6 +42,11 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	}
 	
+	
+	function display_account(){
+	    
+	    echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
+	}
 	function account(){
 	    //Load apply page:
 	    $data = array(
@@ -106,8 +111,7 @@ class My extends CI_Controller {
 	                echo echo_c($admission,$admission,0);
 	            }
 	            echo '</div>';
-	            echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
-	        
+	            
 	        }
 	        
 	    } else {
@@ -150,10 +154,14 @@ class My extends CI_Controller {
 	        }
 	        echo '</ol>';
 	        
+    	        
+	        
+	        
 	        
 
 	        //Display Action Plan list:
 	        if($view_data['level']<3){
+	            echo '<h4><i class="fa fa-list-ul" aria-hidden="true"></i> '.( $view_data['level']==1 ? 'Action Plan' : 'Checklist' ).' <span class="sub-title">'.echo_time(($view_data['intent']['c__estimated_hours']-$view_data['intent']['c_time_estimate']),1).'</span></h4>';
 	            echo '<div id="list-outbound" class="list-group">';
 	            if($view_data['level']==1){
 	                //Show their successful admission to also train on UI:
@@ -169,10 +177,49 @@ class My extends CI_Controller {
 	                echo echo_c($view_data['bootcamp'],$sub_intent,($view_data['level']+1));
 	            }
 	            echo '</div>';
-	        }	        
+	        }
 	        
-	        //Display Footer User:
-	        echo '<p class="p_footer"><img src="'.$matching_users[0]['u_image_url'].'" class="mini-image" /> '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</p>';
+	        //Javascript:
+	        ?>
+	        <script>
+	        function mark_done(){
+		        alert('Boooya');
+		    }
+	        </script>
+	        <?php
+	        
+	        //Overview:
+	        echo '<h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview <span class="sub-title">'.echo_time($view_data['intent']['c_time_estimate'],1).'</span></h4>';
+	        echo '<div class="quill_content">'.$view_data['intent']['c_todo_overview'].'</div>';
+	        
+	        
+	        //Tips:
+	        echo '<h4>💡Tips</h4>';
+	        echo '<div class="tips_content">';
+	           $displayed = 0;
+	           if(count($view_data['i_messages'])>0){
+	               foreach($view_data['i_messages'] as $i){
+	                   //Do logic for ASAP/DRIP-FEED here:
+	                   
+	               }
+	           }
+	           
+	           if($displayed==0){
+	               //No tips for now:
+	               echo '<div class="quill_content">'.( count($view_data['i_messages'])>0 ? 'None yet but you will get some soon.' : 'None here.' ).'</div>';
+	           }
+	           //echo $view_data['intent']['c_todo_overview'];
+	        echo '</div>';
+	        
+	        
+	        //Mark Complete:
+	        echo '<div style="margin-top:40px;">&nbsp;</div>';//Need some blank space
+	        
+	        echo '<div class="quill_content mark_done"><a href="javascript:$(\'.mark_done\').toggle();$(\'#us_notes\').focus();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Mark Complete</a></div>';
+	        echo '<div class="quill_content mark_done" style="display:none;">';
+	           echo '<textarea id="us_notes" placeholder="Completion Notes, URLs, etc..." class="form-control"></textarea>';
+	           echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Submit For Review</a>';
+	        echo '</div>';
 	        
 	    }
 	}

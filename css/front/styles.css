@@ -673,7 +673,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 #funnel .list-group{
 	text-align:left;
-	font-size:0.6em;
+	font-size:0.7em;
 	line-height:110%;
 }
 
@@ -681,12 +681,47 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	background-color:#efefef;
 }
 
-
+#funnel h4 {
+	font-size:0.7em;
+	margin:40px 3px 5px 10px;
+}
+#funnel .quill_content {
+	font-size:0.7em;
+	line-height:110%;
+	font-weight:normal;
+	margin:0 3px 10px 5px;
+	color:#000;
+}
+#funnel .quill_content textarea{
+	width:100% !important;
+	height:100px !important;
+	font-size:18px !important;
+	padding:3px !important;
+	margin:0 !important;
+}
+#funnel .quill_content ul{
+	margin-left:-20px;
+}
+#funnel .sub-title {
+	font-size: 1.1em;
+	font-weight:bold;
+    margin: 0 0 2px 5px;
+}
 #funnel .main{
 	margin-top:10px !important;
 	border-radius:0;
 	box-shadow:none;
 	background-color:transparent;
+}
+.btn-black{
+	background-color: #2f2639;
+    font-size:1.3em;
+    font-weight: bold;
+    color: #FFF;
+}
+.btn-black .fa{
+	font-size:1.2em !important;
+	margin-right:22px !important;
 }
 #funnel .body-container{
 	font-size:24px;

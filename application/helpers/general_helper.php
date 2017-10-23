@@ -285,7 +285,7 @@ function echo_c($b,$c,$level){
         }
         
         if($level>0){
-            $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b['b_sprint_unit']) : 'Task' ).' '.$c['cr_outbound_rank'].'</span>' : '' );
+            $ui .= ( $level>=2 ? ( $level==2 ? '<span class="inline-level">'.ucwords($b['b_sprint_unit']).' '.$c['cr_outbound_rank'].'</span>' : '' ) : '' );
         }
         
         $ui .= $c['c_objective'].' ';

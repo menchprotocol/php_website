@@ -9,10 +9,6 @@
 
 //the Messenger Extensions JS SDK is done loading:
 window.extAsyncInit = function() {
-
-
-	//Update backend:
- 	
  	
 	//Get User ID:
     MessengerExtensions.getUserID(function success(uids) {
@@ -38,6 +34,4 @@ function close_webview(){
 }
 </script>
 
-
-<h2>My Account</h2>
 <div id="page_content"><div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div></div>
