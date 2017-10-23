@@ -7,7 +7,6 @@ $tips_count = count($this->Db_model->i_fetch(array(
 ?>
 <div class="dashboard">
 
-
 	<div class="row">
       <div class="col-sm-3"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>Primary Goal</b></div>
       <div class="col-sm-9"><?= $bootcamp['c_objective'] ?></div>

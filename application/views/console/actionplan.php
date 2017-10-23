@@ -617,6 +617,7 @@ function msg_save_edit(i_id){
     	<ul class="maxout">
 			<li>Each tip focuses on a single point or concept.</li>
 			<li>Tips communicate facts & best-practices on how to take action.</li>
+			<li>Use <b>{first_name}</b> in a <b><?= strip_tags($i_media_type_names['text']) ?></b> tip for further personalization.</li>
 			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> tips to reference links, Youtube, etc...</li>
 			<li>You can send tips ASAP when action plan is released OR schedule for later.</li>
 		</ul>
