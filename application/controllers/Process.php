@@ -1371,12 +1371,12 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['i_media_type']) || !array_key_exists($_POST['i_media_type'],$i_media_type_names)){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Media Type.</span>');
-	    } elseif($_POST['i_media_type']=='text' && (!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0)){
+	    } elseif($_POST['i_media_type']=='text' && (!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0) && (!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Missing message.</span>');
 	    } elseif(!($_POST['i_media_type']=='text') && (!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid URL.</span>');
-	    } elseif(!isset($_POST['i_deliver_asap']) || !in_array($_POST['i_deliver_asap'],array('t','f'))){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Delivery Method.</span>');
+	    } elseif(!isset($_POST['i_dispatch_minutes'])){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Dispatch Minutes.</span>');
 	    }
 	    
 	    //Create Link:
@@ -1387,12 +1387,8 @@ class Process extends CI_Controller {
 	        'i_media_type' => $_POST['i_media_type'],
 	        'i_message' => trim($_POST['i_message']),
 	        'i_url' => trim($_POST['i_url']),
-	        'i_deliver_asap' => $_POST['i_deliver_asap'],
+	        'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
 	        'i_status' => 1,
-	        'i_rank' => 1 + $this->Db_model->max_value('v5_media','i_rank', array(
-	            'i_status >=' => 0,
-	            'i_c_id' => intval($_POST['pid']),
-	        )),
 	    ));
 	    
 	    //TODO Log engagement
@@ -1401,9 +1397,6 @@ class Process extends CI_Controller {
 	    //Print the challenge:
 	    echo_message($i);
 	}
-	
-	
-	
 	
 	function media_edit(){
 	    //Auth user and Load object:
@@ -1452,29 +1445,6 @@ class Process extends CI_Controller {
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Deleted</span>');
-	}
-	
-	function media_sort(){
-	    //Auth user and Load object:
-	    $udata = auth(2);
-	    
-	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort'])<=0){
-	        die('<span style="color:#FF0000;">Error: Nothing to sort.</span>');
-	    }
-	    
-	    //Update them all:
-	    foreach($_POST['new_sort'] as $i_rank=>$i_id){
-	        $this->Db_model->i_update( intval($i_id) , array(
-	            'i_creator_id' => $udata['u_id'],
-	            'i_timestamp' => date("Y-m-d H:i:s"),
-	            'i_rank' => intval($i_rank),
-	        ));
-	    }
-	    
-	    //TODO Save change history
-	    echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
 	}
 	
 	

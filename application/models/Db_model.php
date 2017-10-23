@@ -337,7 +337,7 @@ class Db_model extends CI_Model {
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
-		$this->db->order_by('i_rank');
+		$this->db->order_by('i_dispatch_minutes');
 		$q = $this->db->get();
 		return $q->result_array();
 	}
@@ -356,9 +356,6 @@ class Db_model extends CI_Model {
 		}
 		if(!isset($insert_columns['i_status'])){
 			$insert_columns['i_status'] = 0; //Drafting...
-		}
-		if(!isset($insert_columns['i_rank'])){
-			$insert_columns['i_rank'] = 1;
 		}
 		
 		//Lets now add:

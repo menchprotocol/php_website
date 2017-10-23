@@ -47,12 +47,13 @@ function echo_message($i){
 	//Fetch current Challenge:
     $CI =& get_instance();
     $i_media_type_names = $CI->config->item('i_media_type_names');
+    $i_dispatch_minutes = $CI->config->item('i_dispatch_minutes');
     
 	echo '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
 	echo '<div>';
 	
 	    //Type & Delivery Method:
-	    echo '<div>'.$i_media_type_names[$i['i_media_type']].' &nbsp; '.( $i['i_deliver_asap']=='t' ? '<i class="fa fa-bolt" aria-hidden="true"></i> ASAP' : '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed' ).'</div>';
+	echo '<div>'.$i_media_type_names[$i['i_media_type']].' &nbsp;'.( isset($i_dispatch_minutes['week'][$i['i_dispatch_minutes']]) ? $i_dispatch_minutes['week'][$i['i_dispatch_minutes']] : $i_dispatch_minutes['day'][$i['i_dispatch_minutes']] ).'</div>';
 	
         //Message:
 	    if($i['i_media_type']=='text'){
@@ -71,19 +72,6 @@ function echo_message($i){
     	echo '<input type="url" name="i_url" placeholder="URL" class="form-control edit-on" value="'.$i['i_url'].'">';
     	
     	
-    	//Delivery:
-    	echo '<div class="edit-on">';
-    	   echo '<div class="radio"><label>
-        		<input type="radio" name="i_deliver_asap_'.$i['i_id'].'" value="t" '.( $i['i_deliver_asap']=='t' ? 'checked="true"' : '' ).' >
-        		<i class="fa fa-bolt" aria-hidden="true"></i> ASAP
-        	</label></div>';
-    	   echo '<div class="radio"><label>
-        		<input type="radio" name="i_deliver_asap_'.$i['i_id'].'" value="f" '.( $i['i_deliver_asap']=='t' ? '' : 'checked="true"' ).' >
-        		<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed
-        	</label></div>';
-    	echo '</div>';
-    	
-    	
         //Editing menu:
         echo '<ul class="msg-nav">';
 		    //echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
@@ -93,7 +81,7 @@ function echo_message($i){
 		    echo '<li class="edit-updates"></li>';
 		    echo '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>';
 		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Tip" data-placement="left"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
-		    echo '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
+		    //echo '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
 		    echo '</ul>';
 	    
     echo '</div>';

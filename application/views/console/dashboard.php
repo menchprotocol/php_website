@@ -1,5 +1,9 @@
 <?php
 $sprint_units = $this->config->item('sprint_units');
+$tips_count = count($this->Db_model->i_fetch(array(
+    'i_status' => 1,
+    'i_b_id' => $bootcamp['b_id'],
+)));
 ?>
 <div class="dashboard">
 
@@ -14,7 +18,10 @@ $sprint_units = $this->config->item('sprint_units');
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="material-icons">format_list_numbered</i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
       	<div><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
-      	<div><?= $bootcamp['c__task_count'] ?> Tasks</div>
+      	<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?></div>
+      	<div><?= $tips_count ?> Tip<?= ($tips_count==1?'':'s') ?></div>
+      	
+      	
       	<?= ( count($bootcamp['c__child_intents'])>0 ? '<div>'.round($bootcamp['c__estimated_hours'],1).' Hours</div><div>'.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']).'</div>' : '' ) ?>
       </div>
     </div>

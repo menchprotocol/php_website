@@ -123,7 +123,6 @@ function save_c(){
  		alert('ERROR: Missing b_id.');
  		return false;
  	}
-
  	
  	
  	var postData = {
@@ -332,7 +331,7 @@ function load_message_sorting(){
 		  }
 	});
 }
-	
+
 function msg_create(){
 	
 	//Set processing status:
@@ -346,7 +345,7 @@ function msg_create(){
 		i_media_type:$('#i_media_type').val(),
 		i_message:$('#i_message').val(),
 		i_url:$('#i_url').val(),
-		i_deliver_asap:$('input[name=i_deliver_asap]:checked').val(),
+		i_dispatch_minutes:$('#i_dispatch_minutes').val(),
 		
 	}, function(data) {
 		
@@ -612,13 +611,14 @@ function msg_save_edit(i_id){
     <div class="tab-pane" id="tips">
     	<?php 
     	$i_media_type_names = $this->config->item('i_media_type_names');
+    	$i_dispatch_minutes = $this->config->item('i_dispatch_minutes');
     	?>
     	<p class="maxout">Tips are messages sent to students via Facebook Messenger:</p>
     	<ul class="maxout">
 			<li>Each tip focuses on a single point or concept.</li>
 			<li>Tips communicate facts & best-practices on how to take action.</li>
 			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> tips to reference links, Youtube, etc...</li>
-			<li>Tips are sent in the same order below, so sort them accordingly.</li>
+			<li>You can send tips ASAP when action plan is released OR schedule for later.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
@@ -633,7 +633,7 @@ function msg_save_edit(i_id){
 		echo '<div class="list-group list-messages">';
     		echo '<div class="list-group-item">';
         		echo '<div class="add-msg">';
-        		echo '<select class="form-control" id="i_media_type" style="width:150px;" id="i_type">';
+        		echo '<select class="form-control" id="i_media_type" style="width:150px;">';
             		foreach($i_media_type_names as $key=>$name){
             		    echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
             		}
@@ -642,17 +642,12 @@ function msg_save_edit(i_id){
         		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
         		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional reference URL" />';
         		echo '<div>';
-        		  echo '<span>Delivery Mode:</span>';
-        		  
-        		  echo '<div class="radio"><label>
-        		<input type="radio" name="i_deliver_asap" value="t" checked="true" />
-        		<i class="fa fa-bolt" aria-hidden="true"></i> ASAP <i style="font-weight:normal; font-style:normal;"> Share tip as soon as task becomes available to students.</i>
-        	</label></div>';
-        		  echo '<div class="radio"><label>
-        		<input type="radio" name="i_deliver_asap" value="f" />
-        		<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed <i style="font-weight:normal; font-style:normal;"> Share tip sometime after this task becomes available and next task being started to keep students engaged.</i>
-        	</label></div>';
-        		  
+        		
+        		  echo '<select class="form-control" id="i_dispatch_minutes">';
+        		  foreach($i_dispatch_minutes[$bootcamp['b_sprint_unit']] as $key=>$name){
+        		      echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
+        		  }
+        		  echo '</select>';
         		  
         		echo '</div>';
         		echo '<a href="javascript:msg_create();" class="btn btn-primary" data-toggle="tooltip" title="Ctrl + Enter ;)" style="margin-top:0;">ADD TIP</a>';

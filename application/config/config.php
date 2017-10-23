@@ -55,6 +55,35 @@ $config['core_objects'] = array(
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13');
 
+
+
+$config['i_dispatch_minutes'] = array(
+    'week' => array(
+        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Action Plan is Released',
+        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Action Plan is Released',
+        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Action Plan is Released',
+        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Action Plan is Released',
+        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Action Plan is Released',
+        '1440'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Day after Action Plan is Released',
+        '2880'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Days after Action Plan is Released',
+        '4320'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Days after Action Plan is Released',
+        '5760'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Days after Action Plan is Released',
+        '7200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 5 Days after Action Plan is Released',
+        '8640'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Days after Action Plan is Released',
+    ),
+    'day' => array(
+        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Action Plan is Released',
+        '60'    => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Hour after Action Plan is Released',
+        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Action Plan is Released',
+        '180'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Hours after Action Plan is Released',
+        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Action Plan is Released',
+        '360'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Hours after Action Plan is Released',
+        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Action Plan is Released',
+        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Action Plan is Released',
+        '960'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 16 Hours after Action Plan is Released',
+        '1200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 20 Hours after Action Plan is Released',
+    ),
+);
 $config['i_media_type_names'] = array(
     'text' => '<i class="fa fa-commenting" aria-hidden="true"></i> Text Message',
     'image' => '<i class="fa fa-camera" aria-hidden="true"></i> Raw Image',
