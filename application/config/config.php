@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.495,
+    'version' => 0.500,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -22,8 +22,11 @@ $config['application_status_salt'] = 'SALTs3cr3t777';
 
 //The core objects of the platform:
 $config['core_objects'] = array(
-        'u' => array(
+    'u' => array(
         'o_name' => 'User',
+    ),
+    'us' => array(
+        'o_name' => 'Student Completion Reports',
     ),
     'b' => array(
         'o_name' => 'Bootcamp',

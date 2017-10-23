@@ -1082,6 +1082,47 @@ class Process extends CI_Controller {
 	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit']);
 	}
 	
+
+	function completion_report(){
+	    
+	    if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
+	        || !isset($_POST['b_id']) || intval($_POST['b_id'])<=0
+	        || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
+	        || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+	            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
+	    } elseif(!isset($_POST['us_notes']) || strlen($_POST['us_notes'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Report Content.</span>');
+	    }
+	    
+	    
+	    //Now update the DB:
+	    $us_data = $this->Db_model->us_create(array(
+	        'us_b_id' => intval($_POST['b_id']),
+	        'us_r_id' => intval($_POST['r_id']),
+	        'us_c_id' => intval($_POST['c_id']),
+	        'us_student_id' => intval($_POST['u_id']),
+	        'us_student_notes' => trim($_POST['us_notes']),
+	        'us_status' => 0, //To be reviewed
+	    ));
+	    
+	    
+	    //Log Engagement for New Intent Link:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $us_data['us_student_id'],
+	        'e_message' => $us_data['us_student_notes'],
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'us_data' => $us_data,
+	        )),
+	        'e_type_id' => 33, //Completion Report Submitted
+	        'e_object_id' => $us_data['us_c_id'],
+	        'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
+	    ));
+	    
+	    
+	    //Show result:
+	    echo_us($us_data);
+	}
 	
 	
 	function intent_edit(){

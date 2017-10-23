@@ -79,7 +79,7 @@ class Db_model extends CI_Model {
 	            'e_type_id' => 8, //Platform Error
 	        ));
 	        return false;
-	    }	    
+	    }
 	    
 	    //Missing anything?
 	    if(!isset($insert_columns['ru_timestamp'])){
@@ -91,6 +91,24 @@ class Db_model extends CI_Model {
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ru_id'] = $this->db->insert_id();
+	    
+	    return $insert_columns;
+	}
+	
+	function us_create($insert_columns){
+	    
+	    //TODO Do some checks here
+	    
+	    //Missing anything?
+	    if(!isset($insert_columns['us_timestamp'])){
+	        $insert_columns['us_timestamp'] = date("Y-m-d H:i:s");
+	    }
+	    
+	    //Lets now add:
+	    $this->db->insert('v5_user_submissions', $insert_columns);
+	    
+	    //Fetch inserted id:
+	    $insert_columns['us_id'] = $this->db->insert_id();
 	    
 	    return $insert_columns;
 	}
@@ -330,12 +348,32 @@ class Db_model extends CI_Model {
 	
 	
 	
+	/* ******************************
+	 * us User Submissions
+	 ****************************** */
 	
-	
+	function us_fetch($match_columns){
+	    $this->db->select('*');
+	    $this->db->from('v5_user_submissions');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    $res = $q->result_array();
+	    
+	    //Put intent ID as key for easy accessing:
+	    foreach($res as $key=>$val){
+	        unset($res[$key]);
+	        $res[$val['us_c_id']] = $val;
+	    }
+	    
+	    return $res;
+	}
 	
 	/* ******************************
 	 * i Messages
 	 ****************************** */
+	
 	
 	function i_fetch($match_columns){
 		$this->db->select('*');

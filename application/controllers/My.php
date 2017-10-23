@@ -20,15 +20,16 @@ class My extends CI_Controller {
 	
 	function fetch(){
 	    //echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
-	    /*
+	    
 	    echo_json($this->Db_model->remix_admissions(array(
 	        'u.u_fb_id' => '1443101719058431',
 	        'ru.ru_status' => 4, //Actively enrolled in
 	    )));
-	    */
+	    /*
 	    echo_json($this->Db_model->c_full_fetch(array(
 	        'b.b_id' => 1,
 	    )));
+	    */
 	}
 	
 	
@@ -68,7 +69,7 @@ class My extends CI_Controller {
 	        'c_id' => $c_id,
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/my_actionplan' , $data);
+	    $this->load->view('front/student/actionplan_frame' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
 	
@@ -99,6 +100,15 @@ class My extends CI_Controller {
 	        //How Many?
 	        if(count($admissions)==1){
 	            
+	            //Log Engagement
+	            $this->Db_model->e_create(array(
+	                'e_creator_id' => $admissions[0]['u_id'],
+	                'e_json' => json_encode($admissions),
+	                'e_type_id' => 32, //Action Plan Opened
+	                'e_object_id' => $admissions[0]['r_id'],
+	                'e_b_id' => $admissions[0]['b_id'],
+	            ));
+	            
 	            //Reload with specific directions:
 	            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
 	            
@@ -116,171 +126,57 @@ class My extends CI_Controller {
 	        
 	    } else {
 	        
-	        //Fetch user:
-	        $matching_users = $this->Db_model->u_fetch(array(
-	            'u_fb_id' => $u_fb_id,
+	        //Fetch user & all their admissions:
+	        $admissions = $this->Db_model->remix_admissions(array(
+	            'u.u_fb_id' => $u_fb_id,
 	            'u_status >=' => 0,
+	            'ru.ru_status' => 4, //Actively enrolled in
 	        ));
 	        
 	        //We have directions on what to load:
 	        $bootcamps = $this->Db_model->c_full_fetch(array(
 	            'b.b_id' => $b_id,
 	        ));
-	        if(isset($bootcamps[0])){
-	            //Fetch intent relative to the bootcamp by doing an array search:
-	            $view_data = extract_level( $bootcamps[0] , $c_id );
+	        
+	        
+	        
+	        if(count($bootcamps)>0 && count($admissions)>0){
+	            
+	            //Check if this admission matches this bootcamp
+	            $admission = null;
+	            foreach($admissions as $a_test_case){
+	                foreach($bootcamps as $b_test_case){
+	                    if($b_test_case['b_id'] == $a_test_case['b_id']){
+	                        $admission = $a_test_case;
+	                        break;
+	                    }
+	                }
+	                if($admission){
+	                    break;
+	                }
+	            }
+	            
+	            if($admission){
+	                //Fetch intent relative to the bootcamp by doing an array search:
+	                $view_data = extract_level( $bootcamps[0] , $c_id );
+	                //Append user to data:
+	                $view_data['admission'] = $admission;
+	                $view_data['us_data'] = $this->Db_model->us_fetch(array(
+	                    'us_r_id' => $admission['r_id'],
+	                    'us_student_id' => $admission['u_id'],
+	                ));
+	            }
 	        }
 	        
-	        if(!isset($matching_users[0]) || !isset($bootcamps[0]) || !isset($view_data)){
+	        if(!$admission || !$view_data){
 	            //Ooops, they dont have anything!
 	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
 	            //Nothing found for this user!
 	            die('<script> window.location = "/my/actionplan"; </script>');
-	        }
+	        }	        
 	        
-	        
-	        //Fetch some variables:
-	        $application_status_salt = $this->config->item('application_status_salt');
-	        
-	        
-	        //Display Breadcrumb:
-	        echo '<ol class="breadcrumb">';
-	        foreach($view_data['breadcrumb_p'] as $link){
-	            if($link['link']){
-	                echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
-	            } else {
-	                echo '<li>'.$link['anchor'].'</li>';
-	            }
-	        }
-	        echo '</ol>';
-	        
-    	        
-	        
-	        
-	        
-
-	        //Display Action Plan list:
-	        if($view_data['level']<3){
-	            echo '<h4><i class="fa fa-list-ul" aria-hidden="true"></i> '.( $view_data['level']==1 ? 'Action Plan' : 'Checklist' ).' <span class="sub-title">'.echo_time(($view_data['intent']['c__estimated_hours']-$view_data['intent']['c_time_estimate']),1).'</span></h4>';
-	            echo '<div id="list-outbound" class="list-group">';
-	            if($view_data['level']==1){
-	                //Show their successful admission to also train on UI:
-	                //<a href="/my/applications/?u_key='.md5($matching_users[0]['u_id'].$application_status_salt).'&u_id='.$matching_users[0]['u_id'].'&show_action_plan=1"
-	                echo '<li class="list-group-item">';
-    	                echo '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
-    	                echo '<span class="inline-level">START</span>';
-    	                echo 'Complete Bootcamp Application';
-    	                //echo '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>3</span>';
-	                echo '</li>';
-	            }
-	            foreach($view_data['intent']['c__child_intents'] as $sub_intent){
-	                echo echo_c($view_data['bootcamp'],$sub_intent,($view_data['level']+1));
-	            }
-	            echo '</div>';
-	        }
-	        
-	        //Javascript:
-	        ?>
-	        <input type="hidden" id="b_id" value="" />
-	        <input type="hidden" id="c_id" value="" />
-	        <input type="hidden" id="u_id" value="" />
-	        
-	        <script>
-	        function mark_done(){
-	        	//Show spinner:
-	        	$('#save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
-	        	
-	        	//Save Scheduling iFrame content:
-	        	if(parseInt($('#r_live_office_hours_val').val())){
-	        		document.getElementById('weekschedule').contentWindow.save_hours();
-	        	}
-	        	
-	        	var save_data = {	
-	        		r_id:$('#r_id').val(),
-	        		r_start_date:$('#r_start_date').val(),
-	        		
-	        		//Communication:
-	        		r_response_time_hours:$('#r_response_time_hours').val(),
-	        		r_weekly_1on1s:$('#r_weekly_1on1s').val(),
-	        		r_live_office_hours_check:$('#r_live_office_hours_val').val(),
-	        		r_office_hour_instructions:$('#r_office_hour_instructions').val(),
-	        		r_closed_dates:$('#r_closed_dates').val(),
-	        		
-	        		//Cohort:
-	        		r_status:$('#r_status').val(),
-	        		r_usd_price:$('#r_usd_price').val(),
-	        		r_min_students:$('#r_min_students').val(),
-	        		r_max_students:$('#r_max_students').val(),
-	        		r_typeform_id:$('#r_typeform_id').val(),
-	        		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
-	        		
-	        		//Application:
-	        		r_prerequisites:( r_prerequisites_quill.getLength()>1 ? $('#r_prerequisites .ql-editor').html() : "" ),
-	        		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
-	        	};
-	        	
-	        	//Now merge into timeline dates:
-	        	//var timeline = update_timeline();
-	        	//for (var key in timeline){
-	        	//	save_data[key] = timeline[key];
-	        	//}
-	        	
-	        	//Save the rest of the content:
-	        	$.post("/process/cohort_edit", save_data , function(data) {
-	        		//Update UI to confirm with user:
-	        		$('#save_r_results').html(data).hide().fadeIn();
-	        		
-	        		//Disapper in a while:
-	        		setTimeout(function() {
-	        			$('#save_r_results').fadeOut();
-	        	    }, 10000);
-	            });
-		    }
-
-		    function start_report(){
-		    	$('.mark_done').toggle();
-		    	
-		    	$('html,body').animate({
-					scrollTop: $('#completio_report').offset().top
-				}, 150);
-
-		    	$('#us_notes').focus();
-			}
-	        </script>
-	        <?php
-	        
-	        //Overview:
-	        echo '<h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview <span class="sub-title">'.echo_time($view_data['intent']['c_time_estimate'],1).'</span></h4>';
-	        echo '<div class="quill_content">'.$view_data['intent']['c_todo_overview'].'</div>';
-	        
-	        
-	        //Tips:
-	        echo '<h4>💡Tips</h4>';
-	        echo '<div class="tips_content">';
-	           $displayed = 0;
-	           if(count($view_data['i_messages'])>0){
-	               foreach($view_data['i_messages'] as $i){
-	                   //Do logic for ASAP/DRIP-FEED here:
-	                   
-	               }
-	           }
-	           
-	           if($displayed==0){
-	               //No tips for now:
-	               echo '<div class="quill_content">'.( count($view_data['i_messages'])>0 ? 'None yet but you will get some soon.' : 'None here.' ).'</div>';
-	           }
-	           //echo $view_data['intent']['c_todo_overview'];
-	        echo '</div>';
-	        
-	        
-	        //Mark Complete:
-	        echo '<h4 id="completio_report"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Completion Report</h4>';
-	        echo '<div class="quill_content mark_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-pencil" aria-hidden="true"></i>Start Writing</a></div>';
-	        echo '<div class="quill_content mark_done" style="display:none;">';
-	           echo '<textarea id="us_notes" placeholder="Report on what you did, how it went, url submission, etc..." class="form-control"></textarea>';
-	           echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle-o" aria-hidden="true"></i>Submit</a>';
-	        echo '</div>';
-	        
+	        //Load UI:
+	        $this->load->view('front/student/actionplan_ui.php' , $view_data);
 	    }
 	}
 	

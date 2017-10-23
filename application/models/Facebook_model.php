@@ -44,7 +44,7 @@ class Facebook_model extends CI_Model {
 								'locale' => 'default',
 								'text' => 'I\'m a Personal Assistant Bot for your Mench Bootcamps. I can help with:
 
-- Managing Assignments
+- Your Action Plan
 - Reminder Notifications
 - Asking Questions',
 						),
@@ -66,6 +66,7 @@ class Facebook_model extends CI_Model {
 						        'webview_share_button' => 'hide',
 						        'messenger_extensions' => true,
 						    ),
+						    /*
 						    array(
 						        'title' => '🏆 Leaderboard',
 						        'type' => 'web_url',

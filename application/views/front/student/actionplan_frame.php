@@ -10,23 +10,21 @@
 //the Messenger Extensions JS SDK is done loading:
 window.extAsyncInit = function() {
 
-	var psid = '1443101719058431';
-	//Update backend:
- 	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
- 		//Update UI to confirm with user:
- 		$( "#page_content").html(data);
- 	});
- 	
-	/*
+	//var psid = '1443101719058431';
 	//Get User ID:
     MessengerExtensions.getUserID(function success(uids) {
-    	// User ID was successfully obtained.
+    	//User ID was successfully obtained.
       	var psid = uids.psid;
-      	
+        //Fetch Page:
+     	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
+     		//Update UI to confirm with user:
+     		$( "#page_content").html(data);
+     	});
+     	
     }, function error(err, errorMessage) {
-    	$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: Access allowed via Facebook Messenger only.</div>');
+    	$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: You Must Access Using Facebook Messenger.</div>');
     });
-	*/
+
 };
 
 //Optionally you can close webview like this:

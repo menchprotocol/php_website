@@ -24,6 +24,7 @@ function calculate_refund($duration_days,$refund_type,$cancellation_policy){
 
 
 
+
 function extract_level($b,$c_id){
     
     $CI =& get_instance();
@@ -253,7 +254,7 @@ function echo_br($admin){
 
 
 //This is used for My/Actionplan display:
-function echo_c($b,$c,$level){
+function echo_c($b,$c,$level,$us_data=null){
     /* 
      * $b = Bootcamp object
      * $c = Intent object
@@ -272,7 +273,13 @@ function echo_c($b,$c,$level){
             $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
         } elseif($level==3 || $c['cr_outbound_rank']<=1){
             $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-            $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+            
+            if(isset($us_data[$c['c_id']])){
+                $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
+            } else {
+                $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+            }
+            
             
             //if($c['cr_outbound_rank']<=1){
             //$ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
@@ -622,22 +629,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
         	    's_color' => '#f44336', //red
         	    's_desc'  => 'Intructor has reviewed submission and found issues with it that requires student attention.',
         	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-exclamation-circle',
+        	    's_mini_icon' => 'fa-exclamation-circle initial',
     	    ),
     	    0 => array(
         	    's_name'  => 'Pending Review',
         	    's_color' => '#2f2639', //dark
         	    's_desc'  => 'Student has submitted thier action plan and is pending instructor review.',
         	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-check-circle-o',
-        	    
+        	    's_mini_icon' => 'fa-check-circle-o initial',
     	    ),
     	    1 => array(
         	    's_name'  => 'Approved',
         	    's_color' => '#4caf50', //green
         	    's_desc'  => 'Intructor has reviewed & approved action plan submission.',
         	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-check-circle',
+        	    's_mini_icon' => 'fa-check-circle initial',
     	    ),
 	    ),
 	    
@@ -729,7 +735,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    }
 		//We have two skins for displaying statuses:
 	    if($micro_status){
-	        return '<i class="fa fa-circle" style="color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$status_index[$object][$status]['s_name'].': '.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"></i>';
+	        return '<i class="fa '.( isset($status_index[$object][$status]['s_mini_icon']) ? $status_index[$object][$status]['s_mini_icon'] : 'fa-circle' ).'" style="color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$status_index[$object][$status]['s_name'].': '.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"></i>';
 		} else {
 		    return '<span class="label label-default" style="background-color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_desc'].'">'.strtoupper($status_index[$object][$status]['s_name']).' <i class="fa fa-info-circle" aria-hidden="true"></i></span>';
 		}
@@ -1236,4 +1242,13 @@ function html_run($run){
 	
 	//Return:
 	return $return_string;
+}
+
+
+
+
+
+function echo_us($us_data){
+    echo '<div style="margin-bottom:10px;">Submitted on '.time_format($us_data['us_timestamp']).' PST</div>';
+    echo status_bible('us',$us_data['us_status']);
 }

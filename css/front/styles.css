@@ -693,20 +693,20 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 #funnel .quill_content {
 	font-size:0.7em;
-	line-height:110%;
+	line-height:120%;
 	font-weight:normal;
 	margin:0 3px 10px 5px;
 	color:#000;
 }
 #funnel .quill_content textarea{
 	width: 100% !important;
-    height: 200px !important;
+    height: 220px !important;
     font-size: 18px !important;
     padding: 3px !important;
     margin: 0 !important;
     max-width: 100%;
 }
-#funnel .quill_content ul{
+#funnel .quill_content ul, #funnel .quill_content ol{
 	margin-left:-20px;
 }
 #funnel .sub-title {
