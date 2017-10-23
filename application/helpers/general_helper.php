@@ -23,6 +23,124 @@ function calculate_refund($duration_days,$refund_type,$cancellation_policy){
 }
 
 
+
+function extract_level($b,$c_id){
+    
+    $CI =& get_instance();
+    //This is what we shall return:
+    $view_data = array(
+        'pid' => $c_id, //To be deprecated at some point...
+        'c_id' => $c_id,
+        'bootcamp' => $b,
+        'i_messages' => $CI->Db_model->i_fetch(array(
+            'i_status' => 1,
+            'i_c_id' => $c_id,
+        )),
+    );
+    
+    
+    if($b['c_id']==$c_id){
+        
+        //Level 1 (The bootcamp itself)
+        $view_data['level'] = 1;
+        $view_data['week_num'] = 0;
+        $view_data['intent'] = $b;
+        $view_data['title'] = 'Action Plan | '.$b['c_objective'];
+        $view_data['breadcrumb'] = array(
+            array(
+                'link' => null,
+                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+            ),
+        );
+        $view_data['breadcrumb_p'] = $view_data['breadcrumb'];
+        return $view_data;
+        
+    } else {
+        
+        foreach($b['c__child_intents'] as $sprint){
+            
+            if($sprint['c_id']==$c_id){
+                //Found this as level 2:
+                $view_data['level'] = 2;
+                $view_data['week_num'] = $sprint['cr_outbound_rank'];
+                $view_data['intent'] = $sprint;
+                $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
+                $view_data['breadcrumb'] = array(
+                    array(
+                        'link' => '/console/'.$b['b_id'].'/actionplan',
+                        'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                    ),
+                    array(
+                        'link' => null,
+                        'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                    ),
+                );
+                $view_data['breadcrumb_p'] = array(
+                    array(
+                        'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
+                        'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                    ),
+                    array(
+                        'link' => null,
+                        'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                    ),
+                );
+                
+                return $view_data;
+                
+            } else {
+                
+                //Perhaps a level 3?
+                foreach($sprint['c__child_intents'] as $task){
+                    if($task['c_id']==$c_id){
+                        //This is level 3:
+                        $view_data['level'] = 3;
+                        $view_data['intent'] = $task;
+                        $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
+                        $view_data['breadcrumb'] = array(
+                            array(
+                                'link' => '/console/'.$b['b_id'].'/actionplan',
+                                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                            ),
+                            array(
+                                'link' => '/console/'.$b['b_id'].'/actionplan/'.$sprint['c_id'],
+                                'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                            ),
+                            array(
+                                'link' => null,
+                                'anchor' => 'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+                            ),
+                        );
+                        $view_data['breadcrumb_p'] = array(
+                            array(
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
+                                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                            ),
+                            array(
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$sprint['c_id'],
+                                'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                            ),
+                            array(
+                                'link' => null,
+                                'anchor' => 'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+                            ),
+                        );
+                        
+                        return $view_data;
+                    }
+                }
+            }
+        }
+        
+        //Still here?!
+        return false;
+    }
+}
+
+
+
+
+
 function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
@@ -133,6 +251,50 @@ function echo_br($admin){
     return $ui;
 }
 
+
+//This is used for My/Actionplan display:
+function echo_c($b,$c,$level){
+    /* 
+     * $b = Bootcamp object
+     * $c = Intent object
+     * $level Legend:
+     *    1 = Top level Action plan
+     *    2 = Action Day/Week
+     *    3 = Task
+     * 
+     * * */
+    
+    $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+            
+        //Left content
+        if($c['cr_outbound_rank']<=2){
+            $ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
+        } elseif($c['cr_outbound_rank']<=5){
+            $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+        } else {
+            $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
+        }
+        
+        
+        $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b['b_sprint_unit']) : 'Task' ).' '.$c['cr_outbound_rank'].'</span>' : '' );
+        $ui .= $c['c_objective'].' ';
+        
+        //Other settings:        
+        if($level==2 && isset($c['c__estimated_hours'])){
+            $ui .= echo_time($c['c__estimated_hours'],1);
+        } elseif($level==3 && isset($c['c_time_estimate'])){
+            $ui .= echo_time($c['c_time_estimate'],1);
+        }
+        
+        
+        if($level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+            //This sprint has Assignments:
+            $ui .= '&nbsp;<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
+        }
+        
+    $ui .= '</a>';
+    return $ui;
+}
 
 
 function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){

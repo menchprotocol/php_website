@@ -21,14 +21,20 @@ class Db_model extends CI_Model {
 	        $cohorts = $this->Db_model->r_fetch(array(
 	            'r.r_id' => $enrollment['ru_r_id'],
 	        ));
-	        //Assume this was fetched:
-	        $admissions[$key]['cohort'] = $cohorts[0];
+	        if(count($cohorts)<=0){
+	            return false;
+	        }
+	        //Merge in:
+	        $admissions[$key] = array_merge($admissions[$key] , $cohorts[0]);
 	        //Fetch bootcamp:
 	        $bootcamps = $this->Db_model->c_full_fetch(array(
 	            'b.b_id' => $cohorts[0]['r_b_id'],
 	        ));
-	        //Assume this was fetched:
-	        $admissions[$key]['bootcamp'] = $bootcamps[0];
+	        if(count($bootcamps)<=0){
+	            return false;
+	        }
+	        //Merge in:
+	        $admissions[$key] = array_merge($admissions[$key] , $bootcamps[0]);
 	    }
 	    
 	    return $admissions;

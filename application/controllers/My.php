@@ -18,15 +18,23 @@ class My extends CI_Controller {
 	    header( 'Location: /');
 	}
 	
-	
 	function fetch(){
-	    echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
+	    //echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
+	    /*
+	    echo_json($this->Db_model->remix_admissions(array(
+	        'u.u_fb_id' => '1443101719058431',
+	        'ru.ru_status' => 4, //Actively enrolled in
+	    )));
+	    */
+	    echo_json($this->Db_model->c_full_fetch(array(
+	        'b.b_id' => 1,
+	    )));
 	}
 	
 	
 	function leaderboard(){
 	    $data = array(
-	        'title' => '🏆 Leaderboard',
+	        'title' => '🏆Leaderboard',
 	    );
 	    //Load apply page:
 	    $this->load->view('front/shared/p_header' , $data);
@@ -37,7 +45,7 @@ class My extends CI_Controller {
 	function account(){
 	    //Load apply page:
 	    $data = array(
-	        'title' => '⚙ My Account',
+	        'title' => '⚙My Account',
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
 	    $this->load->view('front/student/my_account' , $data);
@@ -45,98 +53,114 @@ class My extends CI_Controller {
 	}
 	
 	
-	function actionplan(){
+	
+	
+	function actionplan($b_id=null,$c_id=null){
 	    //Load apply page:
 	    $data = array(
-	        'title' => '✔️ Action Plan',
+	        'title' => '✔️Action Plan',
+	        'b_id' => $b_id,
+	        'c_id' => $c_id,
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
 	    $this->load->view('front/student/my_actionplan' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
 	
-	function fetch_actionplan($c_id=null){
+	function display_actionplan($u_fb_id,$b_id=null,$c_id=null){
 	    
 	    //Fetch bootcamps for this user:
-	    $fb_psid = $_POST['psid'];
-	    if(strlen($fb_psid)<10){
+	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
-	        die('<div class="alert alert-danger" role="alert">Invalid user ID.</div>');
+	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
 	    }
 	    
-	    
-	    $assignments = null;
-	    
-	    if(!$c_id){
+	    if(!($b_id && $c_id)){
 	        
-	        //Fetch all cohorts for this user:
-	        $assignments = $this->Db_model->c_fb_fetch($fb_psid);
+	        //Fetch all their admissions:
+	        $admissions = $this->Db_model->remix_admissions(array(
+	            'u.u_fb_id' => $u_fb_id,
+	            'ru.ru_status' => 4, //Actively enrolled in
+	        ));
 	        
-	        //Does this student belong to any cohorts?
-	        if(count($assignments)==0){
-	            //Add notice to session:
+	        //How many?
+	        if(count($admissions)<=0){
+	            //Ooops, they dont have anything!
 	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Join a bootcamp below to get started.</div>');
 	            //Nothing found for this user!
 	            die('<script> window.location = "/bootcamps"; </script>');
 	        }
 	        
-	        //This is the home page of assignments!
-	        if(count($assignments)==1){
-	            //Lets set the CID to this cohort:
-	            $this->fetch_assignments($assignments[0]['c_id']);
-	            //End function:
-	            return false;
-	        }
-	    }
-	    
-	    //By now we have a specific $c_id to load!
-	    if(!$assignments){
-	        $assignments = $this->Db_model->c_newwww($c_id);
-	    }
-	    
-	    //Would not include this in the general_helper since this is the only instance of this UI:
-	    //List their cohorts so they get to choose which c_id
-	    echo '<div class="list-group">';
-	    foreach($assignments as $c){
-	        echo '<a href="/my/assignments/'.$c['c_id'].'" class="list-group-item"><span class="pull-right"><span class="label label-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-	        echo $c['c_objective'].' ';
-	        echo '<i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($cohort['r_start_date'],1).' &nbsp; ';
-	        echo '<i class="fa fa-usd" aria-hidden="true"></i> '.number_format($cohort['r_usd_price']);
-	        
-	        //Other settings:
-	        if(strlen($intent['c_todo_overview'])>0){
-	            echo '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
-	        }
-	        if(strlen($intent['c_todo_bible'])>0){
-	            echo '<i class="fa fa-book title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Action Plan"></i>';
+	        //How Many?
+	        if(count($admissions)==1){
 	            
-	            if($level==2 && isset($intent['c__estimated_hours'])){
-	                echo echo_time($intent['c__estimated_hours'],0);
-	            } elseif($level==3 && isset($intent['c_time_estimate'])){
-	                echo echo_time($intent['c_time_estimate'],0);
+	            //Reload with specific directions:
+	            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
+	            
+	        } else {
+	            
+	            //List bootcamps:
+	            echo '<ol class="breadcrumb"><li>My Bootcamps</li></ol>';
+	            echo '<div id="list-outbound" class="list-group">';
+	            foreach($intent['c__child_intents'] as $sub_intent){
+	                echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
+	            }
+	            echo '</div>';
+	            echo '<p style="text-align:center;"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
+	        
+	        }
+	        
+	    } else {
+	        
+	        //Fetch user:
+	        $matching_users = $this->Db_model->u_fetch(array(
+	            'u_fb_id' => $u_fb_id,
+	            'u_status >=' => 0,
+	        ));
+	        
+	        //We have directions on what to load:
+	        $bootcamps = $this->Db_model->c_full_fetch(array(
+	            'b.b_id' => $b_id,
+	        ));
+	        if(isset($bootcamps[0])){
+	            //Fetch intent relative to the bootcamp by doing an array search:
+	            $view_data = extract_level( $bootcamps[0] , $c_id );
+	        }
+	        
+	        if(!isset($matching_users[0]) || !isset($bootcamps[0]) || !isset($view_data)){
+	            //Ooops, they dont have anything!
+	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
+	            //Nothing found for this user!
+	            die('<script> window.location = "/my/actionplan"; </script>');
+	        }
+	        
+	        
+	        //Display Breadcrumb:
+	        echo '<ol class="breadcrumb">';
+	        foreach($view_data['breadcrumb_p'] as $link){
+	            if($link['link']){
+	                echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
+	            } else {
+	                echo '<li>'.$link['anchor'].'</li>';
 	            }
 	        }
-	        
-	        
-	        
-	        if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
-	            //This sprint has action plan:
-	            $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Sub-Goals"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+	        echo '</ol>';
+
+	        //Display Action Plan list:
+	        if($view_data['level']<3){
+	            echo '<div id="list-outbound" class="list-group">';
+	            foreach($view_data['intent']['c__child_intents'] as $sub_intent){
+	                echo echo_c($view_data['bootcamp'],$sub_intent,($view_data['level']+1));
+	            }
+	            echo '</div>';
 	        }
+    	        
 	        
 	        
+	        //Display Footer User:
+	        echo '<p style="text-align:center;"><img src="'.$matching_users[0]['u_image_url'].'" class="mini-image" /> '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</p>';
 	        
-	        echo '</a>';
 	    }
-	    echo '</div>';
-	    
-	    
-	    if(0){
-	        //A single bootcamp, load inner view:
-	    } elseif(count($assignments)>1){
-	        //List all their bootcamps so they choose which one to see:
-	        
-	    } 
 	}
 	
 	
@@ -231,14 +255,13 @@ class My extends CI_Controller {
 	    //To give the typeform webhook some time to update the DB status:
 	    sleep(2);
 	    
-	    
 	    //Fetch all their admissions:
 	    $admissions = $this->Db_model->remix_admissions(array(
 	        'ru.ru_r_id'	=> $_GET['r_id'],
 	        'ru.ru_u_id'	=> $udata['u_id'],
 	    ));
 	    //Make sure we got all this data:
-	    if(!(count($admissions)==1) || !isset($admissions[0]['cohort']['r_id']) || !isset($admissions[0]['bootcamp']['b_id'])){
+	    if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
 	        //Log this error:
 	        $this->Db_model->e_create(array(
 	            'e_creator_id' => $_GET['u_id'],

@@ -37,7 +37,7 @@ $(document).ready(function() {
 	$("#i_media_type").change(function() {
 		if($( this ).val()=='text'){
 			$('#i_message, #i_message_counter').show();
-		    $('#i_url').attr('placeholder','Optional reference URL');
+		    $('#i_url').attr('placeholder','Optional Reference URL');
 		} else {
 			$('#i_message').hide().val('');
 			$('#i_message_counter').hide();
@@ -633,15 +633,15 @@ function msg_save_edit(i_id){
 		
 		echo '<div class="list-group list-messages">';
     		echo '<div class="list-group-item">';
-        		echo '<div class="add-msg">';
+        		echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
         		echo '<select class="form-control" id="i_media_type" style="width:150px;">';
             		foreach($i_media_type_names as $key=>$name){
             		    echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
             		}
         		echo '</select>';
-        		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Plain text Message. Do not include URLs or HTML code."></textarea>';
+        		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Plain text (No URLs/HTML)"></textarea>';
         		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
-        		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional reference URL" />';
+        		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional Reference URL" />';
         		echo '<div>';
         		
         		  echo '<select class="form-control" id="i_dispatch_minutes">';

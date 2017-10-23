@@ -4,6 +4,26 @@
 	background-color:#FEDD16 !important;
 	color:#000000 !important;
 }
+
+#funnel .breadcrumb {
+	margin-top:-40px;
+	text-align:center;
+}
+#funnel .breadcrumb li{
+	line-height:110%;
+	font-size:0.8em;
+}
+
+#funnel .initial {
+	min-width:25px;
+}
+
+#funnel .list-group{
+	margin:0 auto 30px;
+	text-align:left;
+}
+
+
 #funnel .main{
 	margin-top:10px !important;
 	border-radius:0;
@@ -16,7 +36,7 @@
 	width:100% !important;
 	margin:0 !important;
 	padding:20px 0 !important;
-	text-align:center;
+	text-align:left;
 }
 
 #funnel .checkbox label {
@@ -208,7 +228,7 @@
 .price>h4>span{ font-size:0.6em; }
 .yellow { color:rgba(254, 221, 22, 0.91) !important; }
 .list-group-item .title-main { display:inline; }
-.card-description img { width:28px; height:28px; margin-top:-2px; border-radius: 50%; }
+.card-description img, .mini-image { width:28px; height:28px; margin-top:-2px; border-radius: 50%; }
 .profile-pic { width:50px; height:50px; margin:0 0 0 15px; border-radius: 50%; border:1px solid #CCC; }
 .userheader { line-height:110%; margin-bottom:15px; }
 .userheader>span { display:block; font-size:0.8em; font-weight:normal; margin:-8px 0 0 59px; }

@@ -9,28 +9,27 @@
 
 //the Messenger Extensions JS SDK is done loading:
 window.extAsyncInit = function() {
-
-
-	//Update backend:
- 	$.post("/my/fetch_actionplan", {psid:'1443101719058431'}, function(data) {
- 		//Update UI to confirm with user:
- 		$( "#page_content").html(data);
- 	});
-
-
- 	//Temp:
- 	$( "#page_content").html('<div class="alert alert-danger" role="alert">You are not enrolled in any bootcamps. Get started today by <a href="/bootcamps"><u>Browsing Bootcamps</u> <i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>');
- 	
-	/*
+	
 	//Get User ID:
     MessengerExtensions.getUserID(function success(uids) {
     	// User ID was successfully obtained.
       	var psid = uids.psid;
-      	$("#page_content").html(psid);
+
+        //Update backend:
+     	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
+     		//Update UI to confirm with user:
+     		$( "#page_content").html(data);
+
+     		//Load tooltips:
+     		$(function () {
+     			  $('[data-toggle="tooltip"]').addClass('').tooltip();
+     		});
+     	});
+      	
     }, function error(err, errorMessage) {
     	$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: Access allowed via Facebook Messenger only.</div>');
     });
-	*/
+    
 };
 
 //Optionally you can close webview like this:
@@ -39,6 +38,4 @@ function close_webview(){
 }
 </script>
 
-
-<h2>Assignments</h2>
 <div id="page_content"><div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div></div>

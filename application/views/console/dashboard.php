@@ -46,6 +46,7 @@ $tips_count = count($this->Db_model->i_fetch(array(
     </div>
     <hr />
     
+    <?php /*
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/stream"><b><i class="material-icons">forum</i> Activity Stream <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
@@ -54,6 +55,7 @@ $tips_count = count($this->Db_model->i_fetch(array(
       </div>
     </div>
     <hr />
+    */?>
     
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/settings"><b><i class="material-icons">settings</i> Settings <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>

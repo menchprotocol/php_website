@@ -125,96 +125,10 @@ class Console extends CI_Controller {
 		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
 		}
 		
-		//Construct data:
-		$pid = ( (isset($pid) && intval($pid)>0) ? $pid : $bootcamps[0]['c_id'] );
-		$view_data = array(
-		    'pid' => $pid,
-		    'bootcamp' => $bootcamps[0],
-			'i_messages' => $this->Db_model->i_fetch(array(
-				'i_status >=' => 0,
-				'i_c_id' => $pid,
-			)),
-		);
-		
-		
-		/*
-		 * 
-		 * Now lets determine the level of this task compared to 
-		 * the main bootcamp, and construct the breadcrumb accordingly:
-		 * 
-		 * */
-		if($bootcamps[0]['c_id']==$pid){
-		    
-		    //Level 1 (The bootcamp itself)
-		    $view_data['level'] = 1;
-		    $view_data['intent'] = $bootcamps[0];
-		    $view_data['title'] = 'Action Plan | '.$bootcamps[0]['c_objective'];
-		    $view_data['breadcrumb'] = array(
-		        array(
-		            'link' => null,
-		            'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'],
-		        ),
-		    );
-		    
-		} else {
-		    
-		    foreach($bootcamps[0]['c__child_intents'] as $sprint){
-		        
-		        if($sprint['c_id']==$pid){
-		            //Found this as level 2:
-		            $view_data['level'] = 2;
-		            $view_data['week_num'] = $sprint['cr_outbound_rank'];
-		            $view_data['intent'] = $sprint;
-		            $view_data['title'] = 'Action Plan | '.ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
-		            $view_data['breadcrumb'] = array(
-		                array(
-		                    'link' => '/console/'.$b_id.'/actionplan',
-		                    'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'],
-		                ),
-		                array(
-		                    'link' => null,
-		                    'anchor' => ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
-		                ),
-		            );
-		            //Found it, Exit loop:
-		            break;
-		        }
-		        
-		        //Perhaps a level 3?
-		        foreach($sprint['c__child_intents'] as $task){
-		            if($task['c_id']==$pid){
-		                //This is level 3:
-		                $view_data['level'] = 3;
-		                $view_data['intent'] = $task;
-		                $view_data['title'] = 'Action Plan | '.ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
-		                $view_data['breadcrumb'] = array(
-		                    array(
-		                        'link' => '/console/'.$b_id.'/actionplan',
-		                        'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'],
-		                    ),
-		                    array(
-		                        'link' => '/console/'.$b_id.'/actionplan/'.$sprint['c_id'],
-		                        'anchor' => ucwords($bootcamps[0]['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
-		                    ),
-		                    array(
-		                        'link' => null,
-		                        'anchor' => 'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
-		                    ),
-		                );
-		                
-		                $task_matched = true;
-		                break;
-		            }
-		        }
-		        if(isset($view_data['level'])){
-		            break;
-		        }
-		    }
-		    
-		    //Did we find the sprint or task that matched $pid?
-		    if(!isset($view_data['intent'])){
-		        redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
-		    }
+		//Fetch intent relative to the bootcamp by doing an array search:
+		$view_data = extract_level( $bootcamps[0] , ( intval($pid)>0 ? $pid : $bootcamps[0]['c_id'] ) );
+		if(!$view_data){
+		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
 		}
 		
 		//Load views:

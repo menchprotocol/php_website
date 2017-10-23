@@ -12,7 +12,7 @@ window.extAsyncInit = function() {
 
 
 	//Update backend:
- 	$.post("/my/fetch_assignments", {psid:'1443101719058431'}, function(data) {
+ 	$.post("/my/...", {psid:'1443101719058431'}, function(data) {
  		//Update UI to confirm with user:
  		$( "#page_content").html(data);
  	});

@@ -59,7 +59,7 @@ function toggleview(object_key){
 $( document ).ready(function() {
 	$("#reg1, #reg2, #reg3").countdowntimer({
 		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , time_format($next_cohort['r_start_date'],3,-1)); ?> 23:59:00",
+        dateAndTime : "<?php echo date('Y/m/d' , time_format($next_cohort['r_start_date'],3,-1)); ?> 23:59:59",
 		size : "lg",
 		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"

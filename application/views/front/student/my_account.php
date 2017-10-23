@@ -21,7 +21,7 @@ window.extAsyncInit = function() {
       	
       	$("#page_content").html(psid);
 
-      	$.post("/my/fetch_actionplan", {psid:'1443101719058431'}, function(data) {
+      	$.post("/my/display_account", {psid:'1443101719058431'}, function(data) {
      		//Update UI to confirm with user:
      		$( "#page_content").html(data);
      	});

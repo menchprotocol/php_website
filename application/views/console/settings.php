@@ -72,9 +72,7 @@ function save_settings(){
             <li><b>A</b>ttainable by providing a step-by-step <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><u>Action Plan</u></a> for students to follow.</li>
             <li><b>R</b>ewarding by having a <a href="https://support.mench.co/hc/en-us/articles/115002315231"><u>Gamified Leaderboard <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> for every <a href="/console/<?= $bootcamp['b_id'] ?>/cohorts"><u>Cohort</u></a>.</li>
             <li><b>T</b>ime-bound by defining the total duration of each cohort upfront.</li>
-		</ul>
-		<p></p>
-		
+		</ul>		
 		
 		
 		
