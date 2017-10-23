@@ -610,9 +610,17 @@ function msg_save_edit(i_id){
     
     
     <div class="tab-pane" id="tips">
-    
     	<?php 
-		echo '<p>'.$this->lang->line('i_desc').'</p>';
+    	$i_media_type_names = $this->config->item('i_media_type_names');
+    	?>
+    	<p class="maxout">Tips are messages sent to students via Facebook Messenger:</p>
+    	<ul class="maxout">
+			<li>Each tip focuses on a single point or concept.</li>
+			<li>Tips communicate facts & best-practices on how to take action.</li>
+			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> tips to reference links, Youtube, etc...</li>
+			<li>Tips are sent in the same order below, so sort them accordingly.</li>
+		</ul>
+    	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
 		foreach($i_messages as $i){
 		    echo_message($i);
@@ -621,7 +629,7 @@ function msg_save_edit(i_id){
 		
 		
 		//TODO do_edits
-		$i_media_type_names = $this->config->item('i_media_type_names');
+		
 		echo '<div class="list-group list-messages">';
     		echo '<div class="list-group-item">';
         		echo '<div class="add-msg">';
@@ -647,9 +655,7 @@ function msg_save_edit(i_id){
         		  
         		  
         		echo '</div>';
-        		echo '<ul class="msg-nav">';
-            		  echo '<li><a href="javascript:msg_create();" class="btn btn-primary" data-toggle="tooltip" title="Ctrl + Enter ;)" style="margin-top:0;"><i class="fa fa-plus"></i> Add TIP</a></li>';
-            		echo '</ul>';
+        		echo '<a href="javascript:msg_create();" class="btn btn-primary" data-toggle="tooltip" title="Ctrl + Enter ;)" style="margin-top:0;">ADD TIP</a>';
         		echo '</div>';
     		echo '</div>';
         echo '</div>';

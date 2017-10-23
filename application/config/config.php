@@ -47,7 +47,7 @@ $config['core_objects'] = array(
         'o_name' => 'Transaction',
     ),
     'i' => array(
-        'o_name' => 'Tip',
+        'o_name' => 'Tips',
     ),
 );
 

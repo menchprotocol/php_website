@@ -24,7 +24,6 @@ $lang['i_name'] = 'Media';
 $lang['i_pname'] = 'Media';
 $lang['i_icon'] = '<i class="fa fa-play-circle" aria-hidden="true"></i>';
 $lang['i_missing'] = 'No media found.';
-$lang['i_desc'] = 'Videos, audio files, images or text snippets that communicates best principles for execution.';
 
 //Run Sub-Menu Names:
 $lang['r_s_name'] = 'Settings';
