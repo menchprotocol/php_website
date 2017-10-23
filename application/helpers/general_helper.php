@@ -271,7 +271,7 @@ function echo_c($b,$c,$level,$us_data=null){
         if($level==0){
             $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
             $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
-        } elseif($level==3 || $c['cr_outbound_rank']<=1){
+        } elseif($level==3 || $c['cr_outbound_rank']<=2){
             $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
             
             if(isset($us_data[$c['c_id']])){
