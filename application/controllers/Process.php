@@ -114,6 +114,7 @@ class Process extends CI_Controller {
 	                
 	                $application_status_salt = $this->config->item('application_status_salt');
 	                $u_key = md5($udata['u_id'].$application_status_salt);
+	                
 	                //Log Engagement:
 	                $this->Db_model->e_create(array(
 	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
@@ -137,7 +138,7 @@ class Process extends CI_Controller {
 	                
 	                //Redirect to typeform:
 	                die(json_encode(array(
-	                    'hard_redirect' => 'https://mench.typeform.com/to/'.$next_cohort['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']),
+	                    'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$udata),
 	                )));
 	            }
 	        }
@@ -220,12 +221,12 @@ class Process extends CI_Controller {
 	                    if(email_application_url($udata)){
 	                        //Fetch variables:
 	                        $application_status_salt = $this->config->item('application_status_salt');
-	                        $u_key = md5($udata['u_id'].$application_status_salt);
+	                        $udata['u_key'] = md5($udata['u_id'].$application_status_salt);
 	                        
 	                        //Log Engagement:
 	                        $this->Db_model->e_create(array(
 	                            'e_creator_id' => $udata['u_id'], //The user that updated the account
-	                            'e_message' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
+	                            'e_message' => 'https://mench.co/my/applications?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
 	                            'e_json' => json_encode(array(
 	                                'input' => $_POST,
 	                                'udata' => $udata,
@@ -246,7 +247,7 @@ class Process extends CI_Controller {
 	                        //Redirect to typeform:
 	                        
 	                        die(json_encode(array(
-	                            'hard_redirect' => 'https://mench.typeform.com/to/'.$next_cohort['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']),
+	                            'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$udata),
 	                        )));
 	                    }
 	                }
@@ -539,7 +540,17 @@ class Process extends CI_Controller {
 	                //Make some adjustments
 	                $cohort_data['r_start_date'] = date("Y-m-d",strtotime($_POST['r_start_date']));
 	                $cohort_data['r_status'] = intval($_POST['r_status']); //Override with input status
-	                unset($cohort_data['r_id']); //Remove as it would be assigned for this new cohort
+	                
+	                //TODO Calculate Cache times / For now disable:
+	                unset($cohort_data['r_cache_registration_end_time']);
+	                unset($cohort_data['r_cache_full_refund_time']);
+	                unset($cohort_data['r_cache_pro_rated_refund_time']);
+	                unset($cohort_data['r_cache_cohort_last_day']);
+	                
+	                //The following data are unique and should NOT be copied:
+	                unset($cohort_data['r_id']);
+	                unset($cohort_data['r_typeform_id']);
+	                unset($cohort_data['r_is_locked']);
 	            }
 	        }
 	        
@@ -644,7 +655,7 @@ class Process extends CI_Controller {
 	function cohort_edit(){
 	    
 	    //Auth user and check required variables:
-	    $cancellation_policies = $this->config->item('cancellation_policies');
+	    $cancellation_terms = $this->config->item('cancellation_terms');
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:
@@ -656,8 +667,10 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
-	    } elseif(!isset($_POST['r_cancellation_policy']) || !array_key_exists($_POST['r_cancellation_policy'],$cancellation_policies)){
+	    } elseif(!isset($_POST['r_cancellation_policy']) || !array_key_exists($_POST['r_cancellation_policy'],$cancellation_terms)){
 	        die('<span style="color:#FF0000;">Error: Invalid Cancellation Policy.</span>');
+	    } elseif(!isset($_POST['r_typeform_id'])){
+	        die('<span style="color:#FF0000;">Error: Missing Typeform ID.</span>');
 	    }
 	    
 	    
@@ -681,6 +694,7 @@ class Process extends CI_Controller {
 	        'r_application_questions' => $_POST['r_application_questions'],
 	        'r_prerequisites' => $_POST['r_prerequisites'],
 	        'r_cancellation_policy' => $_POST['r_cancellation_policy'],
+	        'r_typeform_id' => $_POST['r_typeform_id'],
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        'r_status' => intval($_POST['r_status']),
 	        'r_usd_price' => floatval($_POST['r_usd_price']),
@@ -1347,20 +1361,34 @@ class Process extends CI_Controller {
 	
 	function media_create(){
 	    
+	    $i_media_type_names = $this->config->item('i_media_type_names');
 	    $udata = auth(2);
 	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh to Continue.</span>');
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Session. Refresh to Continue.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
-	        die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
-	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing message.</span>');
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Task ID.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['i_media_type']) || !array_key_exists($_POST['i_media_type'],$i_media_type_names)){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Media Type.</span>');
+	    } elseif($_POST['i_media_type']=='text' && (!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0)){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Missing message.</span>');
+	    } elseif(!($_POST['i_media_type']=='text') && (!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid URL.</span>');
+	    } elseif(!isset($_POST['i_deliver_asap']) || !in_array($_POST['i_deliver_asap'],array('t','f'))){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Delivery Method.</span>');
 	    }
 	    
 	    //Create Link:
 	    $i = $this->Db_model->i_create(array(
 	        'i_creator_id' => $udata['u_id'],
 	        'i_c_id' => intval($_POST['pid']),
+	        'i_b_id' => intval($_POST['b_id']),
+	        'i_media_type' => $_POST['i_media_type'],
 	        'i_message' => trim($_POST['i_message']),
+	        'i_url' => trim($_POST['i_url']),
+	        'i_deliver_asap' => $_POST['i_deliver_asap'],
+	        'i_status' => 1,
 	        'i_rank' => 1 + $this->Db_model->max_value('v5_media','i_rank', array(
 	            'i_status >=' => 0,
 	            'i_c_id' => intval($_POST['pid']),
@@ -1373,6 +1401,9 @@ class Process extends CI_Controller {
 	    //Print the challenge:
 	    echo_message($i);
 	}
+	
+	
+	
 	
 	function media_edit(){
 	    //Auth user and Load object:

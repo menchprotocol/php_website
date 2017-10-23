@@ -1,18 +1,55 @@
 <?php
 //Fetch the sprint units from config:
 $sprint_units = $this->config->item('sprint_units');
+$udata = $this->session->userdata('user');
 ?>
 <style> .breadcrumb li { display:block; } </style>
 <script>
+
+//Count text area characters:
+function countChar(val) {
+    var len = val.value.length;
+    if (len > 600) {
+      val.value = val.value.substring(0, 600);
+    } else {
+      $('#charNum').text(600 - len);
+    }
+}
+
+  
 $(document).ready(function() {
+
+	//Detect any possible hashes that controll the menu?
+	if(window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+      	//Open specific menu with a 100ms delay to fix TOP NAV bug
+    	setTimeout(function() {
+    		$('.tab-pane, #topnav > li').removeClass('active');
+    		$('#'+hash+', #nav_'+hash).addClass('active');
+	    }, 100);
+    }
+	
 	//Load Sortable:
 	load_intent_sort();
+	load_message_sorting();
 
+	//Watch for message creation drop down change:
+	$("#i_media_type").change(function() {
+		if($( this ).val()=='text'){
+			$('#i_message, #i_message_counter').show();
+		    $('#i_url').attr('placeholder','Optional reference URL');
+		} else {
+			$('#i_message').hide().val('');
+			$('#i_message_counter').hide();
+			$('#i_url').attr('placeholder',$( this ).val()+' URL');
+		}
+	});
+	
 	//Watch for message creation:
-	$('#i_message').keydown(function (e) {
-		  if (e.ctrlKey && e.keyCode == 13) {
-			  msg_create();
-		  }
+	$('#i_message, #i_url').keydown(function (e) {
+		if (e.ctrlKey && e.keyCode == 13) {
+			msg_create();
+		}
 	});
 
 
@@ -23,6 +60,8 @@ $(document).ready(function() {
             return true;
         }
     });
+
+    
 	//Load Algolia:
 	/*
 	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
@@ -296,28 +335,43 @@ function load_message_sorting(){
 	
 function msg_create(){
 	
-	//Fetch needed vars:
-	var i_message = $('#i_message').val();
-	var pid = $('#pid').val();
-	
-	if(i_message.length<1 || pid<1){
-		return false;
-	}
-	
 	//Set processing status:
-    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/round_load.gif" class="loader" /> Adding... </div></div>');
-	
-    //Empty Input:
-	$( "#i_message" ).val("").focus();
+    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/round_load.gif" class="loader" /></div></div>');
 	
 	//Update backend:
-	$.post("/process/media_create", {pid:pid, i_message:i_message}, function(data) {
+	$.post("/process/media_create", {
+		
+		b_id:$('#b_id').val(),
+		pid:$('#pid').val(),
+		i_media_type:$('#i_media_type').val(),
+		i_message:$('#i_message').val(),
+		i_url:$('#i_url').val(),
+		i_deliver_asap:$('input[name=i_deliver_asap]:checked').val(),
+		
+	}, function(data) {
+		
 		//Update UI to confirm with user:
 		$( "#temp" ).remove();
 		$( "#message-sorting" ).append(data);
+
+		//Empty Inputs Fields:
+		$( "#i_url, #i_message" ).val("");
+
+		//Reset Focus:
+		if($("#i_media_type").val()=='text'){
+			$("#i_message").focus();
+		} else {
+			$("#i_url").focus();
+		}
 		
 		//Resort:
 		load_message_sorting();
+
+		//Hide any errors:
+		setTimeout(function() {
+	        $(".i_error").fadeOut();
+	    }, 3000);
+		
 	});
 }
 
@@ -416,12 +470,12 @@ function msg_save_edit(i_id){
 
 
 <?php if($level>1){ ?>
-<ul class="nav nav-pills nav-pills-primary">
+<ul id="topnav" class="nav nav-pills nav-pills-primary">
   <?php if($level<=2){ ?>
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</a></li>
+  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</a></li>
   <?php } ?>
-  <li class="<?= ($level>2 ? 'active' : '') ?>"><a href="#pill2" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
-  <li style="display:none;"><a href="#pill3" data-toggle="tab"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Tips</a></li>
+  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
+  <li id="nav_tips"><a href="#tips" data-toggle="tab" onclick="update_hash('tips')"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Tips</a></li>
 </ul>
 <?php } ?>
 
@@ -429,20 +483,19 @@ function msg_save_edit(i_id){
 <div class="tab-content tab-space">
 	
 	<?php if($level<=2){ ?>
-    <div class="tab-pane <?= ($level>2 ? 'hidden' : 'active') ?>" id="pill1">
+    <div class="tab-pane <?= ($level>2 ? 'hidden' : 'active') ?>" id="list">
     	<?php
     	if($level==1){
     	    ?>
-            <p class="maxout" style="margin-top:-30px;">Action Plan is your bootcamp's curriculum that guides your students to success:</p>
+            <p class="maxout" style="margin-top:-30px;">Action Plan is the curriculum for action-driven insights to help students succeed:</p>
         	<ul class="maxout">
-    			<li>Action Plan Frequency is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b> which can be modified in <a href="/console/<?= $bootcamp['b_id'] ?>/settings"><u>Settings</u></a>.</li>
-    			<li>Define <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Action Plans with more-or-less equal execution times.</li>
-    			<li>Each <?= $bootcamp['b_sprint_unit'] ?>'s Action Plan has its own task list for further instructions.</li>
+    			<li>Define <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Action Plans</b> with more-or-less equal execution times.</li>
+    			<li>Each <?= $bootcamp['b_sprint_unit'] ?> can have its own <b>Task List</b> to further break-down instructions.</li>
     			<li>You can easily add, remove and sort your Action Plan at any time.</li>
     		</ul>
     		<?php
         } elseif($level==2){
-            echo '<p class="maxout">Define the tasks necessary to accomplish <b>'.$intent['c_objective'].'</b>:</p>';
+            echo '<p class="maxout">Define the tasks necessary to accomplish this '.$bootcamp['b_sprint_unit'].'\'s Primary Goal:</p>';
         }
         
         
@@ -472,19 +525,23 @@ function msg_save_edit(i_id){
         		</div>
         	</div>
         </div>
+        
+        <?php if($level==1){ ?>
+        <p style="font-size:0.9em;">Note: The Bootcamp's <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Action Plan Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>. Modify in <a href="/console/<?= $bootcamp['b_id'] ?>/settings#settings"><u>Settings <i class="fa fa-angle-right" aria-hidden="true"></i></u></a></p>
+        <?php } ?>
     </div>
     <?php } ?>
     
     
     
     
-    <div class="tab-pane <?= ($level>2 ? 'active' : '') ?>" id="pill2">
+    <div class="tab-pane <?= ($level>2 ? 'active' : '') ?>" id="details">
     
     
-    	<div class="title"><h4>Title</h4></div>
+    	<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</h4></div>
     	<ul>
-            <li>The title is a goal that is both "Specific" and "Measurable".</li>
-            <li>Define execution instructions in the "Description" section below.</li>
+            <li>Set a goal that is both "Specific" and "Measurable".</li>
+            <li>Also used as the title.</li>
 		</ul>
         <div class="form-group label-floating is-empty">
             <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">			
@@ -492,23 +549,28 @@ function msg_save_edit(i_id){
         
         
         
-        <div class="title"><h4>Description</h4></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</h4></div>
         <ul class="maxout">
-			<li>An overview of how to execute this task.</li>
-			<li>Publicly displayed on the landing page to help students review your action plan.</li>
+			<?php if($level==2){ ?>
+			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s Action Plan.</li>
+			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp.</li>
+			<?php } elseif($level>2){ ?>
+			<li>Instructions on how to execute this task.</li>
+			<li>Task Overviews are private and only shared with students on the <?= $bootcamp['b_sprint_unit'] ?> of execution.</li>
+			<?php } ?>
 		</ul>
         <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
         <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
         
         
-        
-        <div class="title"><h4>Status</h4></div>
-        <ul class="maxout">
-			<li>Default status is <?= status_bible('c',1) ?>.</li>
-			<li>To prevent this from being shown to students set status to <?= status_bible('c',0) ?>.</li>
-		</ul>
-        <?php echo_status_dropdown('c','c_status',$intent['c_status']); ?>
-        
+        <div style="display:<?= ( $udata['u_status']>=4 ? 'block' : 'none' ) ?>;">
+            <div class="title" style="margin-top:25px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Status</h4></div>
+            <ul class="maxout">
+    			<li>Default status is <?= status_bible('c',1) ?>.</li>
+    			<li>To prevent this from being shown to students set status to <?= status_bible('c',0) ?>.</li>
+    		</ul>
+            <?php echo_status_dropdown('c','c_status',$intent['c_status']); ?>
+        </div>
         
         
         
@@ -522,7 +584,7 @@ function msg_save_edit(i_id){
         
         
         
-        <div class="title"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
         <ul class="maxout">
 			<li>The estimated time to read/execute this task.</li>
 			<li>Don't consider sub-tasks as they have their own time estimate.</li>
@@ -547,7 +609,7 @@ function msg_save_edit(i_id){
     
     
     
-    <div class="tab-pane" id="pill3">
+    <div class="tab-pane" id="tips">
     
     	<?php 
 		echo '<p>'.$this->lang->line('i_desc').'</p>';
@@ -559,15 +621,37 @@ function msg_save_edit(i_id){
 		
 		
 		//TODO do_edits
+		$i_media_type_names = $this->config->item('i_media_type_names');
 		echo '<div class="list-group list-messages">';
-		echo '<div class="list-group-item">';
-		echo '<div class="add-msg">';
-		echo '<textarea id="i_message" placeholder="+ Add Media"></textarea>';
-		echo '<ul class="msg-nav">';
-		echo '<li><a href="javascript:msg_create();" data-toggle="tooltip" title="Ctrl + Enter ;)"><i class="fa fa-plus"></i> Add</a></li>';
-		echo '</ul>';
-		echo '</div>';
-		echo '</div>';
+    		echo '<div class="list-group-item">';
+        		echo '<div class="add-msg">';
+        		echo '<select class="form-control" id="i_media_type" style="width:150px;" id="i_type">';
+            		foreach($i_media_type_names as $key=>$name){
+            		    echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
+            		}
+        		echo '</select>';
+        		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Plain text Message. Do not include URLs or HTML code."></textarea>';
+        		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
+        		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional reference URL" />';
+        		echo '<div>';
+        		  echo '<span>Delivery Mode:</span>';
+        		  
+        		  echo '<div class="radio"><label>
+        		<input type="radio" name="i_deliver_asap" value="t" checked="true" />
+        		<i class="fa fa-bolt" aria-hidden="true"></i> ASAP <i style="font-weight:normal; font-style:normal;"> Share tip as soon as task becomes available to students.</i>
+        	</label></div>';
+        		  echo '<div class="radio"><label>
+        		<input type="radio" name="i_deliver_asap" value="f" />
+        		<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed <i style="font-weight:normal; font-style:normal;"> Share tip sometime after this task becomes available and next task being started to keep students engaged.</i>
+        	</label></div>';
+        		  
+        		  
+        		echo '</div>';
+        		echo '<ul class="msg-nav">';
+            		  echo '<li><a href="javascript:msg_create();" class="btn btn-primary" data-toggle="tooltip" title="Ctrl + Enter ;)" style="margin-top:0;"><i class="fa fa-plus"></i> Add TIP</a></li>';
+            		echo '</ul>';
+        		echo '</div>';
+    		echo '</div>';
         echo '</div>';
         ?>
         

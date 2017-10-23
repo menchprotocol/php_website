@@ -89,14 +89,14 @@ $( document ).ready(function() {
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
             	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?>*</b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?>)</li>
-            	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
+            	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(calculate_duration($bootcamp)-1)) ?></b></li>
             	<li>Time Commitment: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
             	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php } ?>
             	
             	<?php if($total_hours>0){ ?>
-            	<li>Live Office Hours: <b><?= echo_hours($total_hours) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
+            	<li>Live Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
             	<?php } ?>
             	
             	<?php if($next_cohort['r_max_students']>0){ ?>
@@ -252,22 +252,21 @@ $( document ).ready(function() {
     			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
     			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).((count($bootcamp['c__child_intents'])==1?'':'s')) ?></b></li>
-    			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(count($bootcamp['c__child_intents'])*7)) ?></b></li>
+    			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?></b></li>
     		</ul>
     		<hr />
     		
     		<h4>Cancellation Policy: <?= ucwords($next_cohort['r_cancellation_policy']); ?></h4>
     		<?php 
-    		$cancellation_policies = $this->config->item('cancellation_policies');
+    		$full_days = calculate_refund(calculate_duration($bootcamp),'full',$next_cohort['r_cancellation_policy']);
+    		$prorated_days = calculate_refund(calculate_duration($bootcamp),'prorated',$next_cohort['r_cancellation_policy']);
+    		//Display cancellation terms:
     		echo '<ul style="list-style:none; margin-left:-30px;">';
-    		echo '<li>Full Refund Before <b>'.time_format($next_cohort['r_start_date'],1,9).' 11:59pm PST</b></li>';
-    		echo '<li>Pro-Rated Refund Before <b>'.time_format($next_cohort['r_start_date'],1,51).' 11:59pm PST</b></li>';
-    		//foreach($cancellation_policies[$next_cohort['r_cancellation_policy']] as $policy){
-    		    //echo '<li>'.$policy.'</li>';
-    		//}
+    		echo '<li>Full Refund: '.( $full_days>0 ? 'Before <b>'.time_format($next_cohort['r_start_date'],1,($full_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
+    		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($next_cohort['r_start_date'],1,($prorated_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
     		echo '</ul>';
     		?>
-    		<p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Bootcamp Cancellation Policies</a>.</p>
+    		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Bootcamp Cancellation Policies</a>.</p>
     		<hr />
     		<h4>Tuition</h4>
     		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Reimbursement Guarantee</a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'].(count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>

@@ -46,3 +46,8 @@ var setting_listu = {
 	placeholder: 'List items here...',
 	theme: 'snow'
 };
+
+function update_hash(hash){
+	window.location.hash = hash;
+    e.preventDefault();
+}

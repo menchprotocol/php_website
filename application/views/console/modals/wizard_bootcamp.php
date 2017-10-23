@@ -7,7 +7,7 @@
         <h3 class="modal-title">New Bootcamp</h3>
       </div>
       <div class="modal-body">
-        	<div class="title"><h4>Primary Goal</h4></div>
+        	<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</h4></div>
         	<ul>
     			<li>Describe your bootcamp's core offering in 70 characters or less.</li>
                 <li>Define a goal that is both "Specific" and "Measurable".</li>

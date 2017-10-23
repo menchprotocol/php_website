@@ -104,7 +104,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Dashboard',
+	                'anchor' => 'Bootcamp Dashboard',
 	            ),
 	        ),
 	    ));
@@ -132,7 +132,7 @@ class Console extends CI_Controller {
 		    'bootcamp' => $bootcamps[0],
 			'i_messages' => $this->Db_model->i_fetch(array(
 				'i_status >=' => 0,
-				'i_c_id >=' => $pid,
+				'i_c_id' => $pid,
 			)),
 		);
 		
@@ -152,7 +152,7 @@ class Console extends CI_Controller {
 		    $view_data['breadcrumb'] = array(
 		        array(
 		            'link' => null,
-		            'anchor' => $bootcamps[0]['c_objective'],
+		            'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'],
 		        ),
 		    );
 		    
@@ -169,7 +169,7 @@ class Console extends CI_Controller {
 		            $view_data['breadcrumb'] = array(
 		                array(
 		                    'link' => '/console/'.$b_id.'/actionplan',
-		                    'anchor' => $bootcamps[0]['c_objective'],
+		                    'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'],
 		                ),
 		                array(
 		                    'link' => null,
@@ -190,7 +190,7 @@ class Console extends CI_Controller {
 		                $view_data['breadcrumb'] = array(
 		                    array(
 		                        'link' => '/console/'.$b_id.'/actionplan',
-		                        'anchor' => $bootcamps[0]['c_objective'],
+		                        'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'],
 		                    ),
 		                    array(
 		                        'link' => '/console/'.$b_id.'/actionplan/'.$sprint['c_id'],

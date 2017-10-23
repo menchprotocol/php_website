@@ -1,6 +1,7 @@
 <?php
 //Fetch the sprint units from config:
 $sprint_units = $this->config->item('sprint_units');
+$udata = $this->session->userdata('user');
 ?>
 <script>
 function ucwords(str) {
@@ -15,6 +16,16 @@ function js_mktime(hour,minute,month,day,year) {
 
 
 $(document).ready(function() {
+	//Detect any possible hashes that controll the menu?
+	if(window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+      	//Open specific menu with a 100ms delay to fix TOP NAV bug
+    	setTimeout(function() {
+    		$('.tab-pane, #topnav > li').removeClass('active');
+    		$('#'+hash+', #nav_'+hash).addClass('active');
+	    }, 100);
+    }
+    
 	//Load date picker:
 	$( function() {
 	    $( "#r_start_date" ).datepicker({
@@ -133,6 +144,7 @@ function save_r(){
 		r_usd_price:$('#r_usd_price').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),
+		r_typeform_id:$('#r_typeform_id').val(),
 		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
 		
 		//Application:
@@ -177,11 +189,11 @@ function reset_default(){
 
 
 
-<ul class="nav nav-pills nav-pills-primary">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-ticket" aria-hidden="true"></i> Admission</a></li>
-  <li><a href="#pill2" data-toggle="tab"><i class="fa fa-life-ring" aria-hidden="true"></i> 1-on-1 Support</a></li>
-  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-usd" aria-hidden="true"></i> Pricing</a></li>
-  <li><a href="#pill4" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+<ul id="topnav" class="nav nav-pills nav-pills-primary">
+  <li id="nav_admission" class="active"><a href="#admission" data-toggle="tab" onclick="update_hash('admission')"><i class="fa fa-ticket" aria-hidden="true"></i> Admission</a></li>
+  <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> 1-on-1 Support</a></li>
+  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Pricing</a></li>
+  <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
 
@@ -189,9 +201,9 @@ function reset_default(){
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="pill1">
+    <div class="tab-pane active" id="admission">
         
-    	<div class="title"><h4>Minimum Students</h4></div>
+    	<div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students</h4></div>
         <ul>
 			<li>Minimum number of students required to kick-start the cohort.</li>
   			<li>All applicants would be refunded if the minimum is not met.</li>
@@ -203,7 +215,7 @@ function reset_default(){
         
         
         <br />
-        <div class="title"><h4>Maximum Students</h4></div>
+        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students</h4></div>
         <ul>
 			<li>Maximum number of students that can apply before cohort is full.</li>
   			<li>The next cohort (if any) would be displayed if this cohort gets maxed-out.</li>
@@ -215,7 +227,7 @@ function reset_default(){
 		
 		
 		<br />
-		<div class="title"><h4>Prerequisites</h4></div>
+		<div class="title"><h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</h4></div>
 		<ul>
 			<li>An optional list of requirements students must meet to join this cohort.</li>
   			<li>We ask students to confirm all prerequisites during their application.</li>
@@ -226,7 +238,7 @@ function reset_default(){
         
 		
 		<br />
-		<div class="title"><h4>Application Questions</h4></div>
+		<div class="title"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions</h4></div>
   		<ul>
   			<li>Open-ended questions you'd like to ask students during their application.</li>
   			<li>Useful to assess student's desire level and suitability for this bootcamp.</li>
@@ -239,9 +251,9 @@ function reset_default(){
     </div>
     
     
-    <div class="tab-pane" id="pill2">
+    <div class="tab-pane" id="support">
     
-		<div class="title"><h4>Response Time</h4></div>
+		<div class="title"><h4><i class="fa fa-comments" aria-hidden="true"></i> Response Time</h4></div>
 		<ul>
 			<li>On Mench you are required to respond to all student inquiries.</li>
 			<li>You get to choose how fast you commit to responding.</li>
@@ -256,7 +268,7 @@ function reset_default(){
         </select>
         
         
-		<div class="title"><h4>1-on-1 Mentorship</h4></div>
+		<div class="title"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4></div>
 		<ul>
 			<li>Provide personalized 1-on-1 support to each student.</li>
 			<li>Usually conducted over live video (Skype, Zoom, Hangouts, etc...)</li>
@@ -277,7 +289,7 @@ function reset_default(){
         
         
 		
-		<div class="title"><h4>Live Office Hours</h4></div>
+		<div class="title"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Live Office Hours</h4></div>
 		<ul>
 			<li>Use to offer live support to your students who choose to show-up.</li>
 			<li>Usually conducted over live video (Skype, Zoom, Hangouts, etc...)</li>
@@ -329,9 +341,9 @@ function reset_default(){
     
     
     
-    <div class="tab-pane" id="pill3">
+    <div class="tab-pane" id="pricing">
     	
-    	<div class="title"><h4>Admission Price</h4></div>
+    	<div class="title"><h4><i class="fa fa-usd" aria-hidden="true"></i> Admission Price</h4></div>
   		<ul>
   			<li>Set based on bootcamp length and level of 1-on-1 support.</li>
 			<li>We recommend charging $100-$200 per support hour.</li>
@@ -343,32 +355,41 @@ function reset_default(){
         </div>
         
         <br />
-        <div class="title"><h4>Cancellation Policy (for Paid Cohorts)</h4></div>
+        <br />
+        <div class="title"><h4><i class="fa fa-ban" aria-hidden="true"></i> Cancellation Policy (for Paid Cohorts)</h4></div>
 		<?php 
-		$cancellation_policies = $this->config->item('cancellation_policies');
-		foreach($cancellation_policies as $key=>$policies){
+		$cancellation_terms = $this->config->item('cancellation_terms');
+		foreach($cancellation_terms as $type=>$terms){
 		    echo '<div class="radio">
         	<label>
-        		<input type="radio" name="r_cancellation_policy" value="'.$key.'" '.( $cohort['r_cancellation_policy']==$key ? 'checked="true"' : '' ).' />
-        		'.ucwords($key).'
+        		<input type="radio" name="r_cancellation_policy" value="'.$type.'" '.( $cohort['r_cancellation_policy']==$type ? 'checked="true"' : '' ).' />
+        		'.ucwords($type).'
         	</label>
         	<ul style="margin-left:15px;">';
-		    foreach($policies as $policy){
-		        echo '<li>'.$policy.'</li>';
-		    }
+		      echo '<li>Full Refund: '.( $terms['full']>0 ? '<b>Before '.($terms['full']*100).'%</b> of the cohort\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
+		      echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the cohort\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
         	echo '</ul></div>';
 		}
 		?>
-        <p>Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
+        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
         
 
     </div>
     
     
-    <div class="tab-pane" id="pill4">
+    <div class="tab-pane" id="settings">
     
     
-    	<div class="title"><h4>Cohort Start Day</h4></div>
+    	<div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Cohort Status</h4></div>
+		<ul>
+			<li>Only displayed in landing page if status is <?= status_bible('r',1) ?>.</li>
+			<li>If a cohort is full, the next published cohort would become open for admission.</li>
+		</ul>
+	 	<?php echo_status_dropdown('r','r_status',$cohort['r_status']); ?>
+		<br />
+		
+		
+		<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Cohort Start Day</h4></div>
   		<ul>
 			<li>The bootcamp's start day for this cohort of students.</li>
   			<li>End date automatically calculated based on the number of <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Goals</b></a>.</li>
@@ -389,15 +410,22 @@ function reset_default(){
 		</ul>
         */?>
         <br />
-    
-    
-		<div class="title"><h4>Cohort Status</h4></div>
-		<ul>
-			<li>Only displayed in landing page if status is <?= status_bible('r',1) ?>.</li>
-			<li>If a cohort is full, the next published cohort would become open for admission.</li>
-		</ul>
-	 	<?php echo_status_dropdown('r','r_status',$cohort['r_status']); ?>
-		<br />
+        
+        
+        
+        <div style="display:<?= ( $udata['u_status']>=3 ? 'block' : 'none' ) ?>;">
+        	<div class="title"><h4><i class="fa fa-keyboard-o" aria-hidden="true"></i> Typeform ID</h4></div>
+        	<ul>
+    			<li>Each cohort has a unique Typeform as its application form.</li>
+    			<li>This section is only visible by Mench Super Admins.</li>
+    		</ul>
+            <div class="form-group label-floating is-empty">
+                <input type="text" id="r_typeform_id" style="width:233px;" value="<?= $cohort['r_typeform_id'] ?>" class="form-control border">			
+            </div>
+            <?php if(strlen($cohort['r_typeform_id'])>0){ ?>
+            <div style="margin-bottom:20px;"><a href="<?= typeform_url($cohort['r_typeform_id'],$udata) ?>" target="_blank" class="btn btn-default landing_page_url">View Typeform <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></div>
+            <?php } ?>
+    	</div>    	
 		
     </div>
 </div>

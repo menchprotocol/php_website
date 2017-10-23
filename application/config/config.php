@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.45,
+    'version' => 0.48,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -55,19 +55,30 @@ $config['core_objects'] = array(
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0','0.12','0.25','0.5','1','2','3','5','8','13');
 
-$config['cancellation_policies'] = array(
+$config['i_media_type_names'] = array(
+    'text' => '<i class="fa fa-commenting" aria-hidden="true"></i> Text Message',
+    'image' => '<i class="fa fa-camera" aria-hidden="true"></i> Raw Image',
+    'video' => '<i class="fa fa-youtube-play" aria-hidden="true"></i> Raw Video',
+    'audio' => '<i class="fa fa-volume-up" aria-hidden="true"></i> Raw Audio',
+    'file' => '<i class="fa fa-file" aria-hidden="true"></i> Raw File',
+);
+
+$config['cancellation_terms'] = array(
     'flexible' => array(
-        'Full refund before 10% of the cohort\'s elapsed time.',
-        'Pro-rated refund before 60% of the cohort\'s elapsed time.',
+        'full' => 0.10,
+        'prorated' => 0.60,
     ),
     'moderate' => array(
-        'Full refund before cohort\'s start date.',
-        'Pro-rated refund before 30% of the cohort\'s elapsed time.',
+        'full' => 0,
+        'prorated' => 0.30,
     ),
     'strict' => array(
-        'No refunds after admission.',
+        'full' => 0,
+        'prorated' => 0,
     ),
 );
+
+
 
 $config['sprint_units'] = array(
     'day' => array(

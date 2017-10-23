@@ -224,10 +224,6 @@ input { font-size:16px !important; }
 .dropdown { padding:0; clear:both; diaplay:block; padding-bottom:20px; }
 .dropdown>a { padding-left:10px; padding-right:10px; } 
 .text-edit { min-height:80px; resize: both !important; }
-.showdown { display:none; }
-.showdown table th { padding:5px 10px; border:1px solid #ccc; background-color:#333; color:#FFF; }
-.showdown table td { padding:5px 10px; border:1px solid #ccc; }
-.showdown h3, .showdown h4, .showdown h5, .showdown h6 { margin:10px 0; }
 .mini-label {display:block; margin-bottom:-3px;margin-top:10px;}
 .underdot{ border-bottom: 1px dotted #BBB; cursor:help; }
 body { font-size:18px; }
@@ -357,8 +353,8 @@ video::-webkit-media-controls-panel {
 
 .msg-nav {list-style-type: none; margin: 0; padding:5px 0 0 0; }
 .msg-nav li { margin-right:5px; display:inline-block; padding:0 5px 0 0; font-size:0.9em; color:#666; }
-.msg-nav li.edit-on, #message-sorting textarea.edit-on { display:none; }
-.msg-nav li a { color:#999; padding:3px 5px; border-radius:3px; }
+.msg-nav li.edit-on, #message-sorting .edit-on { display:none; }
+.msg-nav li a { color:#2f2639; padding:3px 5px; border-radius:3px; }
 .msg-nav li a:hover { background-color:#EFEFEF; }
 .add-msg { width:80%; }
 .msg-show { display:inline-block !important; }

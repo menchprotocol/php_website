@@ -1,5 +1,18 @@
 <script>
 
+
+$(document).ready(function() {
+	//Detect any possible hashes that controll the menu?
+	if(window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+      	//Open specific menu with a 100ms delay to fix TOP NAV bug
+    	setTimeout(function() {
+    		$('.tab-pane, #topnav > li').removeClass('active');
+    		$('#'+hash+', #nav_'+hash).addClass('active');
+	    }, 100);
+    }
+});
+
 function trigger_link_watch(link_id,prepend_url){
 	
 	if($( "#"+link_id ).val().length>0){
@@ -105,10 +118,10 @@ if(!(count($ufetch)==1)){
 $udata = $ufetch[0];
 ?>
 
-<ul class="nav nav-pills nav-pills-primary">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
-  <li><a href="#pill2" data-toggle="tab"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
-  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-comments" aria-hidden="true"></i> Social</a></li>
+<ul id="topnav" class="nav nav-pills nav-pills-primary">
+  <li id="nav_profile" class="active"><a href="#profile" data-toggle="tab" onclick="update_hash('profile')"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
+  <li id="nav_password"><a href="#password" data-toggle="tab" onclick="update_hash('password')"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
+  <li id="nav_social"><a href="#social" data-toggle="tab" onclick="update_hash('social')"><i class="fa fa-comments" aria-hidden="true"></i> Social</a></li>
   <!-- <li><a href="#pill4" data-toggle="tab"><i class="fa fa-university" aria-hidden="true"></i> Banking</a></li> -->
 </ul>
 
@@ -116,7 +129,7 @@ $udata = $ufetch[0];
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="pill1">
+    <div class="tab-pane active" id="profile">
     	
     	<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
     	
@@ -229,7 +242,7 @@ $udata = $ufetch[0];
     </div>
     
     
-    <div class="tab-pane" id="pill2">
+    <div class="tab-pane" id="password">
     	<div class="title"><h4>Current Password</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="password" id="u_password_current" class="form-control border">
@@ -245,7 +258,7 @@ $udata = $ufetch[0];
     </div>
     
     
-    <div class="tab-pane" id="pill3">
+    <div class="tab-pane" id="social">
     	
     	<p>Link social accounts you wish to share on your bootcamp page to allow student to learn more about you.</p>
     	

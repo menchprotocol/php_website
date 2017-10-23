@@ -120,7 +120,7 @@ $udata = $this->session->userdata('user');
 	    		if(isset($udata['u_id'])){
 	    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
 	    		} else {
-	    		    echo '<a href="https://mench.typeform.com/to/nh4s2u" class="btn btn-danger btn-raised btn-lg bg-glow glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
+	    		    echo '<a href="'.typeform_url('nh4s2u').'" class="btn btn-danger btn-raised btn-lg bg-glow glow">'.$this->lang->line('signup').' <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
 	    		    echo '<p class="sub-button">'.$this->lang->line('or').' <a href="https://support.mench.co/hc/en-us/articles/115002079731">Read More Testimonials</a> or <a href="/login">Login</a></p>';
 	    		}
 	    		?>

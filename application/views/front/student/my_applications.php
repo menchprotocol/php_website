@@ -19,7 +19,7 @@ foreach($admissions as $admission){
     
     
     //Typeform Application:
-    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : 'https://mench.typeform.com/to/'.$admission['cohort']['r_typeform_id'].'?u_key='.$u_key.'&u_id='.$admission['u_id'].'&u_email='.$admission['u_email'].'&u_fname='.urlencode($admission['u_fname']) ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : typeform_url($admission['cohort']['r_typeform_id'],$admission) ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
     
     //Payment

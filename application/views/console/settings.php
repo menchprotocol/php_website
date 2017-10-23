@@ -4,6 +4,19 @@ function ba_add(){
 	alert('Contact us at support@mench.co to modify team members.');
 }
 
+
+$(document).ready(function() {
+	//Detect any possible hashes that controll the menu?
+	if(window.location.hash) {
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        //Open specific menu with a 100ms delay to fix TOP NAV bug
+    	setTimeout(function() {
+    		$('.tab-pane, #topnav > li').removeClass('active');
+    		$('#'+hash+', #nav_'+hash).addClass('active');
+	    }, 100);
+    }
+});
+
 function save_settings(){
 	//Show spinner:
 	$('.save_setting_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -41,16 +54,16 @@ function save_settings(){
 <input type="hidden" id="c_id" value="<?= $bootcamp['b_c_id'] ?>" />
 
 
-<ul class="nav nav-pills nav-pills-primary">
-  <li class="active"><a href="#pill1" data-toggle="tab"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
-  <li><a href="#pill2" data-toggle="tab"><i class="fa fa-users" aria-hidden="true"></i> Team</a></li>
-  <li><a href="#pill3" data-toggle="tab"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+<ul id="topnav" class="nav nav-pills nav-pills-primary">
+  <li id="nav_details" class="active"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
+  <li id="nav_team"><a href="#team" data-toggle="tab" onclick="update_hash('team')"><i class="fa fa-user-circle" aria-hidden="true"></i> Team</a></li>
+  <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="pill1">
+    <div class="tab-pane active" id="details">
     
     	<p>Mench bootcamps offer a S.M.A.R.T. Framework for achieving goals that are:</p>
     	<ul>
@@ -62,8 +75,11 @@ function save_settings(){
 		</ul>
 		<p></p>
 		
+		
+		
+		
 		<br />
-    	<div class="title"><h4>Primary Goal</h4></div>
+    	<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</h4></div>
     	<ul>
 			<li>Describe your bootcamp's key offering in 70 characters or less.</li>
             <li>Define a goal that is both "Specific" and "Measurable".</li>
@@ -78,7 +94,7 @@ function save_settings(){
         
         
         <br />
-        <div class="title"><h4>Explainer Video URL</h4></div>
+        <div class="title"><h4><i class="fa fa-youtube-play" aria-hidden="true"></i> Explainer Video URL</h4></div>
         <ul>
 			<li>Explains who should join this bootcamp and why.</li>
 			<li>Displayed at the top of your landing page.</li>
@@ -94,7 +110,7 @@ function save_settings(){
         
         
         <br />
-        <div class="title"><h4>Overview</h4></div>
+        <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</h4></div>
         <ul>
 			<li>Give an overview of how you plan to help students accomplish the Primary Goal.</li>
             <li>Displayed at the top of the landing page.</li>
@@ -112,7 +128,7 @@ function save_settings(){
     </div>
     
     
-    <div class="tab-pane" id="pill2">
+    <div class="tab-pane" id="team">
     	<p>Your team scales your 1-on-1 support and ability to manage your operations:</p>
     	<ul>
 			<li>You hire/pay/manage your team. We give you tools to make them efficient.</li>
@@ -147,10 +163,10 @@ function save_settings(){
 		-->
     </div>
     
-    <div class="tab-pane" id="pill3">
+    <div class="tab-pane" id="settings">
     	
     	
-    	<div class="title" style="margin-top:0;"><h4>Bootcamp Status</h4></div>
+    	<div class="title" style="margin-top:0;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status</h4></div>
     	<ul>
 			<li>Bootcamps are created in <?= status_bible('b',0) ?> mode to give you time to build them.</li>
 			<li>When you're ready to publish you update the status to <?= status_bible('b',1) ?>.</li>
@@ -165,7 +181,7 @@ function save_settings(){
 		
 		
 		
-		<div class="title"><h4>Action Plan Frequency</h4></div>
+		<div class="title"><h4><i class="fa fa-hourglass-end" aria-hidden="true"></i> Action Plan Frequency</h4></div>
         <ul>
 			<li>Sets the frequency between each <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><u>Action Plan</u></a> item.</li>
 			<li>Used to calculate cohort durations based on the number of <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><u>Action Plans</u></a>.</li>
@@ -186,7 +202,7 @@ function save_settings(){
 		
 		
 		<br />
-		<div class="title" style="margin-top:15px;"><h4>Landing Page URL</h4></div>
+		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Landing Page URL</h4></div>
         <ul>
 			<li>Your bootcamp's unique landing page URL.</li>
 			<li>Accepts letter and hyphens as inputs. No numbers or other characters.</li>

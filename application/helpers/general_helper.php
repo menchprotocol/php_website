@@ -12,6 +12,17 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
+function calculate_duration($bootcamp){
+    return ((count($bootcamp['c__child_intents'])*($bootcamp['b_sprint_unit']=='week'?7:1)));
+}
+
+function calculate_refund($duration_days,$refund_type,$cancellation_policy){
+    $CI =& get_instance();
+    $cancellation_terms = $CI->config->item('cancellation_terms');
+    return ceil( $duration_days * $cancellation_terms[$cancellation_policy][$refund_type] );
+}
+
+
 function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
@@ -34,16 +45,48 @@ function echo_video($video_url){
 
 function echo_message($i){
 	//Fetch current Challenge:
+    $CI =& get_instance();
+    $i_media_type_names = $CI->config->item('i_media_type_names');
+    
 	echo '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
 	echo '<div>';
-        //Tip content:
-    	echo '<span class="showdown edit-off">'.$i['i_message'].'</span>';
-    	echo '<textarea class="edit-on">'.$i['i_message'].'</textarea>';
-    	echo '<div class="original">'.$i['i_message'].'</div>';
-
+	
+	    //Type & Delivery Method:
+	    echo '<div>'.$i_media_type_names[$i['i_media_type']].' &nbsp; '.( $i['i_deliver_asap']=='t' ? '<i class="fa fa-bolt" aria-hidden="true"></i> ASAP' : '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed' ).'</div>';
+	
+        //Message:
+	    if($i['i_media_type']=='text'){
+            echo '<div class="showdown edit-off">'.$i['i_message'].'</div>';
+            echo '<textarea name="i_message" class="edit-on">'.$i['i_message'].'</textarea>';
+        }
+    	    
+    	//URL:
+        if($i['i_media_type']=='text'){
+            if(strlen($i['i_url'])>0){
+                echo '<a href="'.$i['i_url'].'" target="_blank" class="edit-off">'.$i['i_url'].'</a>';
+            }
+    	} else {
+    	    echo '<div class="edit-off">'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+    	}
+    	echo '<input type="url" name="i_url" placeholder="URL" class="form-control edit-on" value="'.$i['i_url'].'">';
+    	
+    	
+    	//Delivery:
+    	echo '<div class="edit-on">';
+    	   echo '<div class="radio"><label>
+        		<input type="radio" name="i_deliver_asap_'.$i['i_id'].'" value="t" '.( $i['i_deliver_asap']=='t' ? 'checked="true"' : '' ).' >
+        		<i class="fa fa-bolt" aria-hidden="true"></i> ASAP
+        	</label></div>';
+    	   echo '<div class="radio"><label>
+        		<input type="radio" name="i_deliver_asap_'.$i['i_id'].'" value="f" '.( $i['i_deliver_asap']=='t' ? '' : 'checked="true"' ).' >
+        		<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed
+        	</label></div>';
+    	echo '</div>';
+    	
+    	
         //Editing menu:
         echo '<ul class="msg-nav">';
-		    echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
+		    //echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
 		    //echo '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
 		    echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
 		    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
@@ -132,7 +175,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
   
     	    //Other settings:
     	    if(strlen($intent['c_todo_overview'])>0){
-    	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Description"></i>';
+    	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
     	    }
     	    
     	    if($level==2 && isset($intent['c__estimated_hours'])){
@@ -567,13 +610,23 @@ function filter_next_cohort($cohorts){
     }
     
     foreach($cohorts as $cohort){        
-        if($cohort['r_status']>=1 && strtotime($cohort['r_start_date'])>time()){
+        if($cohort['r_status']>=1 && (strtotime($cohort['r_start_date'])-(24*3600))>=strtotime(date("F j, Y"))){
             return $cohort;
             break;
         }
     }
     
     return false;
+}
+
+function typeform_url($r_typeform_id,$udata=null){
+    $identifier = null;
+    if($udata){
+        $CI =& get_instance();
+        $application_status_salt = $CI->config->item('application_status_salt');
+        $identifier = '?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']);
+    }
+    return 'https://mench.typeform.com/to/'.$r_typeform_id.$identifier;
 }
 
 function redirect_message($url,$message){
@@ -713,7 +766,7 @@ function time_format($t,$format=0,$plus_days=0){
         return 'NOW';
     }
     
-    $timestamp = strtotime(substr($t,0,19)) + ($plus_days*24*3600);
+    $timestamp = strtotime(substr($t,0,19)) + ($plus_days*24*3600) + ($plus_days>0 ? (12*3600) : 0); //Added this last part to consider the end of days for dates
     $this_year = ( date("Y")==date("Y",$timestamp) );
     if($format==0){
         return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),$timestamp);
@@ -797,7 +850,7 @@ function format_e_message($e_message){
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
             
             if($segments[0]=='image'){
-                $e_message .= '<a href="'.$sub_segments[0].'" target="_blank"><img src="'.$sub_segments[0].'" style="width:50%" /></a>';
+                $e_message .= '<a href="'.$sub_segments[0].'" target="_blank"><img src="'.$sub_segments[0].'" style="max-width:50%" /></a>';
             } elseif($segments[0]=='audio'){
                 $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){

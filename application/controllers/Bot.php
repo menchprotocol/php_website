@@ -247,8 +247,8 @@ class Bot extends CI_Controller {
 						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
 						            array('text' => 'I was able to successfully find and activate your Mench account 👍'),
 						            array('text' => 'I noticed you\'re our '.echo_ordinal($matching_users[0]['u_id']).' member so welcome onboard! I also noticed you\'re involved with '.count($admissions).' bootcamp'.( count($admissions)==1 ? ': '.$admissions[0]['bootcamp']['c_objective'].' lead by '.$admissions[0]['bootcamp']['b__admins'][0]['u_fname'].' '.$admissions[0]['bootcamp']['b__admins'][0]['u_lname'] : 's' ).'.'),
-						            array('text' => 'As your Personal Assistant Bot I will be sending you important updates about your bootcamp. I will also forward all your messages to your bootcamp\'s instructor team so they can get back to you asap'.( count($admissions)==1 ? ', usually in less than '.$admissions[0]['cohort']['r_response_time_hours'].' hours ⚡' : '.' )),
-						            array('text' => 'I have no more updates for now, but is there anything you would like to know about us? 🤔'),
+						            array('text' => 'As your Personal Assistant Bot I will be sending you important updates about your bootcamp. I will also forward all your messages to your bootcamp\'s instructor team so they can get back to you asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['cohort']['r_response_time_hours'].' hours ⚡' : '.' )),
+						            array('text' => 'I have no more updates for now. Do you have any questions? 🤔'),
 						        ));
 						    }
 						}

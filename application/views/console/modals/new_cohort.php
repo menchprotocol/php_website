@@ -69,21 +69,21 @@ $('#r_start_date').keyup(function(e){
       		
       		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
-        	<div class="title"><h4>Cohort Start Day</div>
+        	<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Cohort Start Day</div>
 			<div class="form-group label-floating is-empty">
 			    <input type="text" id="r_start_date" style="width:233px;" class="form-control border" />
 			    <span class="material-input"></span>
 			</div>
 			
 			
-			<div class="title"><h4>Cohort Status</div>
+			<div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Cohort Status</div>
 			<?php echo_status_dropdown('r','r_status',1,array(-1)); ?>
 			
 			<?php 
             if(count($bootcamp['c__cohorts'])>0){
                 //We already have some cohorts, give user the option to copy settings:
                 ?>
-                <div class="title"><h4>Copy Settings</div>
+                <div class="title"><h4><i class="fa fa-clone" aria-hidden="true"></i> Copy Settings</div>
     			<div class="form-group label-floating is-empty">
     			    <select class="form-control input-mini border" id="copy_cohort_id">
     			    	<option value="0">Do Not Copy Settings</option>
