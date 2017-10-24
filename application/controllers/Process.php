@@ -1432,23 +1432,45 @@ class Process extends CI_Controller {
 	        'i_status' => 1,
 	    ));
 	    
-	    //TODO Log engagement
-	    
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'after' => $i,
+	        )),
+	        'e_type_id' => 34, //Tip added
+	        'e_object_id' => intval($i['i_id']),
+	        'e_b_id' => $i['i_b_id'], //Share with bootcamp team
+	    ));
 	    
 	    //Print the challenge:
 	    echo_message($i);
 	}
 	
 	function media_edit(){
+	    
+	    //TODO update and start using
+	    exit;
+	    
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing i_id.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing tip id.</span>');
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing i_message.</span>');
+	    }
+	    
+	    //Fetch tip:
+	    $tips = $this->Db_model->i_fetch(array(
+	        'i_id' => intval($_POST['i_id']),
+	    ));
+	    if(!isset($tips[0])){
+	        die('<span style="color:#FF0000;">Error: Invalid tip id.</span>');
 	    }
 	    
 	    //Now update the DB:
@@ -1458,7 +1480,18 @@ class Process extends CI_Controller {
 	        'i_message' => trim($_POST['i_message']),
 	    ));
 	    
-	    //TODO Save change history
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        //'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $tips[0],
+	        )),
+	        'e_type_id' => 36, //Tip edited
+	        'e_object_id' => intval($tips[0]['i_id']),
+	        'e_b_id' => $tips[0]['i_b_id'], //Share with bootcamp team
+	    ));
 	    
 	    //Show result:
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
@@ -1471,7 +1504,16 @@ class Process extends CI_Controller {
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid i_id.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing tip id.</span>');
+	    }
+	    
+	    //Fetch tip:
+	    $tips = $this->Db_model->i_fetch(array(
+	        'i_id' => intval($_POST['i_id']),
+	        'i_status >=' => 0, //Not deleted
+	    ));
+	    if(!isset($tips[0])){
+	        die('<span style="color:#FF0000;">Error: Invalid tip id.</span>');
 	    }
 	    
 	    //Now update the DB:
@@ -1481,8 +1523,18 @@ class Process extends CI_Controller {
 	        'i_status' => -1, //Deleted by user
 	    ));
 	    
-	    //TODO Save change history
-	    
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $udata['u_id'],
+	        'e_message' => ucwords($tips[0]['i_media_type']).': '.$tips[0]['i_message'].' '.$tips[0]['i_url'].' (Dispatch after '.$tips[0]['i_dispatch_minutes'].' minutes)',
+	        'e_json' => json_encode(array(
+	            'input' => $_POST,
+	            'before' => $tips[0],
+	        )),
+	        'e_type_id' => 35, //Tip deleted
+	        'e_object_id' => intval($tips[0]['i_id']),
+	        'e_b_id' => $tips[0]['i_b_id'], //Share with bootcamp team
+	    ));
 	    
 	    //Show result:
 	    die('<span style="color:#00CC00;">Deleted</span>');

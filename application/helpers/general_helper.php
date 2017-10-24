@@ -223,7 +223,7 @@ function echo_message($i){
 	echo '<div>';
 	
 	    //Type & Delivery Method:
-	echo '<div>'.$i_media_type_names[$i['i_media_type']].' &nbsp;'.( isset($i_dispatch_minutes['week'][$i['i_dispatch_minutes']]) ? $i_dispatch_minutes['week'][$i['i_dispatch_minutes']] : $i_dispatch_minutes['day'][$i['i_dispatch_minutes']] ).'</div>';
+	echo '<div>'.$i_media_type_names[$i['i_media_type']].'</div>';
 	
 	
 	    
@@ -241,10 +241,11 @@ function echo_message($i){
         echo '<ul class="msg-nav">';
 		    //echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
 		    //echo '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
-		    echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
-		    echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
+        echo '<li>'.( isset($i_dispatch_minutes['week'][$i['i_dispatch_minutes']]) ? $i_dispatch_minutes['week'][$i['i_dispatch_minutes']] : $i_dispatch_minutes['day'][$i['i_dispatch_minutes']] ).'</li>';
+            echo '<li class="edit-on"><a href="javascript:msg_save_edit('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
+            echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
 		    echo '<li class="edit-updates"></li>';
-		    echo '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>';
+		    //echo '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>'; //Not editable so no reason to show for now!
 		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Tip" data-placement="left"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
 		    //echo '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
 		    echo '</ul>';
@@ -393,22 +394,22 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	    $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b_sprint_unit) : 'Task' ).' #'.$intent['cr_outbound_rank'].'</span>' : '' );
     	    $ui .= $intent['c_objective'].' ';
   
-    	    //Other settings:
+    	    
+    	    //Meta data & stats:
+    	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
+    	        //This sprint has Assignments:
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+    	    }
+    	    if($intent['c__tip_count']>0){
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tips"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>'.$intent['c__tip_count'].'</span>';
+    	    }
     	    if(strlen($intent['c_todo_overview'])>0){
     	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
     	    }
-    	    
     	    if($level==2 && isset($intent['c__estimated_hours'])){
     	        $ui .= echo_time($intent['c__estimated_hours'],1);
     	    } elseif($level==3 && isset($intent['c_time_estimate'])){
     	        $ui .= echo_time($intent['c_time_estimate'],1);
-    	    }
-    	    
-        	    
-    	    
-    	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
-    	        //This sprint has Assignments:
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
     	    $ui .= ' <span class="srt-'.$direction.'"></span>'; //For the status of sorting
     	    

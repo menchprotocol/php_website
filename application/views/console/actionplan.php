@@ -486,14 +486,23 @@ function msg_save_edit(i_id){
     	<?php
     	if($level==1){
     	    ?>
-            <p class="maxout" style="margin-top:-30px;">Action Plan is the curriculum for action-driven insights to help students succeed:</p>
+            <p class="maxout" style="margin-top:-30px;">Action plan is your bootcamp's curriculum:</p>
         	<ul class="maxout">
-    			<li>Define <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Action Plans</b> with more-or-less equal execution times.</li>
-    			<li>Each <?= $bootcamp['b_sprint_unit'] ?> can have its own <b>Task List</b> to further break-down instructions.</li>
-    			<li>You can easily add, remove and sort your Action Plan at any time.</li>
+    			<li>A hierarchical collection of insights that empower your students to take action.</li>
+    			<li>Students are expected to complete each top-level action plan <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
+    			<li>Each <?= $bootcamp['b_sprint_unit'] ?> can have its own <b>Tasks</b> to keep your action plan organized.</li>
+    			<li>You can easily add, remove and sort your action plan at any time.</li>
     		</ul>
     		<?php
         } elseif($level==2){
+            ?>
+            <p class="maxout">Tasks are your 2nd-level action plan:</p>
+        	<ul class="maxout">
+    			<li>Each top-level action plan can have Tasks to breakdown what needs to be done.</li>
+    			<li>Students must complete all tasks in order to complete a top-level action plan.</li>
+    			<li>You can easily add, remove and sort your tasks at any time.</li>
+    		</ul>
+            <?php
             echo '<p class="maxout">Define the tasks necessary to accomplish this '.$bootcamp['b_sprint_unit'].'\'s Primary Goal:</p>';
         }
         
@@ -524,10 +533,6 @@ function msg_save_edit(i_id){
         		</div>
         	</div>
         </div>
-        
-        <?php if($level==1){ ?>
-        <p style="font-size:0.9em;">Note: The Bootcamp's <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Action Plan Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>. Modify in <a href="/console/<?= $bootcamp['b_id'] ?>/settings#settings"><u>Settings <i class="fa fa-angle-right" aria-hidden="true"></i></u></a></p>
-        <?php } ?>
     </div>
     <?php } ?>
     
@@ -536,6 +541,7 @@ function msg_save_edit(i_id){
     
     <div class="tab-pane <?= ($level>2 ? 'active' : '') ?>" id="details">
     
+    	<p class="maxout">Modify the details of this action plan item:</p>
     
     	<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</h4></div>
     	<ul>
@@ -551,7 +557,7 @@ function msg_save_edit(i_id){
         <div class="title" style="margin-top:25px;"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</h4></div>
         <ul class="maxout">
 			<?php if($level==2){ ?>
-			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s Action Plan.</li>
+			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s action plan.</li>
 			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp. Students get it again at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
 			<?php } elseif($level>2){ ?>
 			<li>Instructions on how to execute this task.</li>
@@ -576,7 +582,7 @@ function msg_save_edit(i_id){
         <!-- TODO Remove soon -->
         <div style="display:<?= (strlen($intent['c_todo_bible'])>0 ? 'block' : 'none') ?>;">
         <div class="title"><h4>Homework (Being Removed Soon...)</h4></div>
-		<p>Instructions for the students to execute towards this goal. Action Plans also include goal-related facts and reference to other content (Videos, Blog Posts, Udemy, images, etc...). Action Plans are "drip-fed" to students meaning they are unlocked with each <?= $sprint_units[$bootcamp['b_sprint_unit']]['name']?> goal.</p>
+		<p>Instructions for the students to execute towards this goal. Action plans also include goal-related facts and reference to other content (Videos, Blog Posts, Udemy, images, etc...). Action plans are "drip-fed" to students meaning they are unlocked with each <?= $sprint_units[$bootcamp['b_sprint_unit']]['name']?> goal.</p>
     	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
         <script> var c_todo_bible_quill = new Quill('#c_todo_bible', setting_full); </script>
         </div>
@@ -615,10 +621,10 @@ function msg_save_edit(i_id){
     	?>
     	<p class="maxout">Tips are messages sent to students via Facebook Messenger:</p>
     	<ul class="maxout">
-			<li>Each tip focuses on a single point or concept.</li>
-			<li>Tips communicate facts & best-practices on how to take action.</li>
-			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> tips to reference links, Youtube, etc...</li>
-			<li>You can use <b>{first_name}</b> in <b><?= strip_tags($i_media_type_names['text']) ?></b> tips for further personalization.</li>
+			<li>Have each tip focused on a single point or concept.</li>
+			<li>Use tips to communicate facts & best-practices on how to take action.</li>
+			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> for referencing articles, Youtube, etc...</li>
+			<li>Use <b>{first_name}</b> in <b><?= strip_tags($i_media_type_names['text']) ?></b> tips for more personalization.</li>
 			<li>Tips are private & only shared with students during each <?= $bootcamp['b_sprint_unit'] ?>.</li>
 		</ul>
     	<?php 

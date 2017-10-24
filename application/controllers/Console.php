@@ -131,6 +131,11 @@ class Console extends CI_Controller {
 		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
 		}
 		
+		if(isset($_GET['raw'])){
+		    echo_json($view_data);
+		    exit;
+		}
+		
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
 		$this->load->view('console/actionplan' , $view_data);

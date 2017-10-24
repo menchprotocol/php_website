@@ -9,7 +9,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<h2 class="title" style="margin-top:30px;">For Students</h2>
 					<p style="min-height:200px;">Are you struggling finding the time and motivation to accomplish your goals? Have you read tons of books or taken a bunch of courses only to be overwhelmed and confused as to how to implement what you've learned? Join one of our bootcamps to take action once and for all!</p>
-					<a href="/bootcamps" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-search" aria-hidden="true"></i> Browse Bootcamps</a>
+					<a href="/bootcamps" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-search" aria-hidden="true"></i> Join a Bootcamps</a>
 				</div>
 			</div>
 			<div class="col-md-6">

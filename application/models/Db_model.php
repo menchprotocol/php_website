@@ -509,8 +509,11 @@ class Db_model extends CI_Model {
 	        //Start estimating hours calculation:
 	        $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
 	        
+	        
+	        
 	        //Fetch Sub-Goals:
 	        $bootcamps[$key]['c__task_count'] = 0;
+	        $bootcamps[$key]['c__tip_count'] = 0;
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
 	            'cr.cr_status >=' => 0,
@@ -528,12 +531,30 @@ class Db_model extends CI_Model {
 	                'cr.cr_status >=' => 0,
 	            ));
 	            
+	            
+	            //Count tips:
+	            $sprint_tips = count($this->Db_model->i_fetch(array(
+	                'i_status >=' => 0,
+	                'i_c_id' => $sprint_value['c_id'],
+	            )));
+	            $bootcamps[$key]['c__tip_count'] += $sprint_tips;
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__tip_count'] = $sprint_tips;
+	            
 	            //Addup task values:
 	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
 	                //Addup task estimated time:
 	                $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
 	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
 	                $bootcamps[$key]['c__task_count']++;
+	                
+	                //Count tips:
+	                $task_tips = count($this->Db_model->i_fetch(array(
+	                    'i_status >=' => 0,
+	                    'i_c_id' => $task_value['c_id'],
+	                )));
+	                $bootcamps[$key]['c__tip_count'] += $task_tips;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__tip_count'] += $task_tips;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__tip_count'] = $task_tips;
 	            }
 	        }
 	        
@@ -855,7 +876,7 @@ class Db_model extends CI_Model {
 		        //Compose email:
 		        $html_message = null; //Start
 		        $html_message .= '<div>Hi Mench Admin,</div><br />';
-		        $html_message .= '<div>I am reporting on a '.$engagements[0]['a_desc'].':</div><br />';
+		        $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
 		        
 		        $html_message .= '<div>Initiator: '.$by.'</div>';
 		        if(intval($engagements[0]['e_object_id'])>0){
@@ -866,7 +887,7 @@ class Db_model extends CI_Model {
 		        $html_message .= '<div>Cheers,</div>';
 		        $html_message .= '<div>MenchBot</div>';
 		        $this->load->model('Email_model');
-		        $this->Email_model->send_single_email(array('miguel@mench.co','shervin@mench.co'),$subject,$html_message);
+		        $this->Email_model->send_single_email(array('miguel@mench.co'),$subject,$html_message);
 		    }
 		}
 		
