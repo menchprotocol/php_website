@@ -855,11 +855,12 @@ class Db_model extends CI_Model {
 		        //Compose email:
 		        $html_message = null; //Start
 		        $html_message .= '<div>Hi Mench Admin,</div><br />';
-		        $html_message .= '<div>I am reporting a new engagement which you should know about.</div><br />';
-		        $html_message .= '<div>Engagement Type: '.trim(strip_tags($engagements[0]['a_name'])).'</div>';
-		        $html_message .= '<div>Engagement Description: '.$engagements[0]['a_desc'].'</div><br />';
+		        $html_message .= '<div>I am reporting on a '.$engagements[0]['a_desc'].':</div><br />';
+		        
 		        $html_message .= '<div>Initiator: '.$by.'</div>';
-		        $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
+		        if(intval($engagements[0]['e_object_id'])>0){
+		            $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
+		        }
 		        $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
 		        $html_message .= '<br />';
 		        $html_message .= '<div>Cheers,</div>';
