@@ -196,7 +196,10 @@ function echo_i($i,$first_name=null){
         
         echo '<div>'.( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
         if(strlen($i['i_url'])>0){
-            echo '<div><a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a></div>';
+            $CI =& get_instance();
+            $website = $CI->config->item('website');
+            $tip_url = $website['url'].'tip/'.$i['i_id'];
+            echo '<div><a href="'.$tip_url.'" target="_blank">'.$tip_url.'</a></div>';
         }
         
     } else {
@@ -539,33 +542,51 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task being drafted and not accessible by students until published live',
-	            'u_min_status'  => 1,
+	            'u_min_status'  => 3,
 	        ),
 	        1 => array(
 	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
 	            's_desc'  => 'Task is active and accessible by students.',
-	            'u_min_status'  => 1,
+	            'u_min_status'  => 3,
 	        ),
 	    ),
 	    'r' => array(
-	        -1 => array(
-	            's_name'  => 'Delete',
-	            's_color' => '#f44336', //red
-	            's_desc'  => 'Cohort removed by bootcamp leader.',
-	            'u_min_status'  => 1,
-	        ),
+    	    -2 => array(
+        	    's_name'  => 'Cancel',
+        	    's_color' => '#f44336', //red
+        	    's_desc'  => 'Cohort was cancelled after it had started.',
+        	    'u_min_status'  => 3,
+    	    ),
+    	    -1 => array(
+        	    's_name'  => 'Delete',
+        	    's_color' => '#f44336', //red
+        	    's_desc'  => 'Cohort removed by bootcamp leader before it was started.',
+        	    'u_min_status'  => 2,
+    	    ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Cohort not displayed on landing page until published live',
-	            'u_min_status'  => 1,
+	            's_desc'  => 'Cohort not yet ready for admission as its being modified.',
+	            'u_min_status'  => 2,
 	        ),
 	        1 => array(
-	            's_name'  => 'Published',
-	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Cohort is visible to students and ready for admission.',
-	            'u_min_status'  => 1,
+    	        's_name'  => 'Open For Admission',
+    	        's_color' => '#8dd08f', //light green
+    	        's_desc'  => 'Cohort is visible to students and ready for admission.',
+    	        'u_min_status'  => 2,
+	        ),
+	        2 => array(
+    	        's_name'  => 'Running',
+    	        's_color' => '#4caf50', //green
+    	        's_desc'  => 'Cohort has admitted students and is currently running.',
+    	        'u_min_status'  => 3,
+	        ),
+	        3 => array(
+    	        's_name'  => 'Finished',
+    	        's_color' => '#e91e63', //Rose
+    	        's_desc'  => 'Cohort was successfully operated and is now complete.',
+    	        'u_min_status'  => 3,
 	        ),
 	    ),
 	    'i' => array(
@@ -1128,6 +1149,70 @@ function email_application_url($udata){
     $html_message .= '<div>Team Mench</div>';
     $CI->load->model('Email_model');
     return $CI->Email_model->send_single_email($to_array,$subject,$html_message);
+}
+
+
+function object_link($object,$id,$b_id=0){
+    //Loads the name (and possibly URL) for $object with id=$id
+    $CI =& get_instance();
+    $core_objects = $CI->config->item('core_objects');
+    $id = intval($id);
+    
+    if($id>0){
+        //Used mainly for engagement tracking
+        $website = $CI->config->item('website');
+        
+        if($object=='c'){
+            //Fetch intent/task:
+            $intents = $CI->Db_model->c_fetch(array(
+            'c.c_id' => $id,
+            ));
+            if(isset($intents[0])){
+                if($b_id){
+                    //We can return a link:
+                    return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan/'.$intents[0]['c_id'].'">'.$core_objects[$object]['o_name'].': '.$intents[0]['c_objective'].'</a>';
+                } else {
+                    return $core_objects[$object]['o_name'].': '.$intents[0]['c_objective'];
+                }
+            }
+        } elseif($object=='b'){
+            $bootcamps = $CI->Db_model->c_full_fetch(array(
+                'b.b_id' => $id,
+            ));
+            if(isset($bootcamps[0])){
+                return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$core_objects[$object]['o_name'].': '.$bootcamps[0]['c_objective'].'</a>';
+            }
+        } elseif($object=='u'){
+            $matching_users = $CI->Db_model->u_fetch(array(
+                'u_id' => $id,
+            ));
+            if(isset($matching_users[0])){
+                return $core_objects[$object]['o_name'].': '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</a>';
+            }
+        } elseif($object=='r'){
+            $cohorts = $CI->Db_model->r_fetch(array(
+                'r.r_id' => $id,
+            ));
+            if(isset($cohorts[0])){
+                if($b_id){
+                    //We can return a link:
+                    return '<a href="'.$website['url'].'console/'.$b_id.'/cohorts/'.$cohorts[0]['r_id'].'">'.$core_objects[$object]['o_name'].': '.time_format($cohorts[0]['r_start_date'],1).'</a>';
+                } else {
+                    return $core_objects[$object]['o_name'].': '.time_format($cohorts[0]['r_start_date'],1);
+                }
+            }
+        } elseif($object=='cr'){
+            //TODO later...
+        } elseif($object=='t'){
+            //Transaction
+            //TODO later...
+        } elseif($object=='i'){
+            //TODO later...
+        }
+    }
+    
+    //Still here? Return default:
+    return $core_objects[$object]['o_name'].' #'.$id;
 }
 
 function quick_message($fb_user_id,$message){

@@ -177,7 +177,7 @@ class Bot extends CI_Controller {
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
 						//Referral key which currently equals the User ID
-						$eng_data['e_object_id'] = intval($referral_array['ref']); 
+						$eng_data['e_object_id'] = intval($referral_array['ref']);
 						
 
 						if($eng_data['e_object_id']>0){
@@ -245,9 +245,8 @@ class Bot extends CI_Controller {
 						        //Communicate the linking process with user:
 						        $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
 						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
-						            array('text' => 'I was able to successfully find and activate your Mench account 👍'),
-						            array('text' => 'I will be '.count($admissions).' bootcamp.'),
-						            array('text' => 'As your Personal Assistant Bot I will be sending you important updates '.( count($admissions)==1 ? ' on your Bootcamp '.$admissions[0]['c_objective'].' lead by '.$admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'] : ' for you '.count($admissions).' bootcamps.' ).'. I will also forward all your messages to your bootcamp\'s instructor team so they can get back to you asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['r_response_time_hours'].' hours ⚡' : '.' )),
+						            array('text' => 'My name is Mench and I will be your Personal Assistant to help you accomplish the primary goal of your bootcamp.'),
+						            array('text' => 'As your Personal Assistant Bot I will be sending you important updates '.( count($admissions)==1 ? ' on your bootcamp "'.$admissions[0]['c_objective'].'" lead by '.$admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'] : ' on your '.count($admissions).' enrolled bootcamps.' ).'. I will also forward all your messages to your bootcamp\'s instructor team so they can get back to you asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['r_response_time_hours'].' hours ⚡' : '.' )),
 						            array('text' => 'I have no more updates for now. Do you have any questions? 🤔'),
 						        ), 'NO_PUSH' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 						    }
@@ -312,12 +311,8 @@ class Bot extends CI_Controller {
 					$is_mench = 0; //TODO
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					
-					if($metadata=='SKIP_ECHO_LOGGING'){
-						//We've been asked to skip this error logging!
-						continue;
-					}
 					
-					//Do some checks:
+					//Do some basic checks:
 					if(!isset($im['message']['mid'])){
 					    $this->Db_model->e_create(array(
 					        'e_message' => 'facebook_webhook() Received message without Facebook Message ID.',
@@ -328,7 +323,6 @@ class Bot extends CI_Controller {
 					
 					//It may also have an attachment
 					//https://developers.facebook.com/docs/messenger-platform/webhook-reference/message
-					//
 					$new_file_url = null; //Would be updated IF message is a file
 					if(isset($im['message']['attachments'])){
 						//We have some attachments, lets loops through them:
@@ -397,6 +391,22 @@ class Bot extends CI_Controller {
 					$this->Db_model->e_create($eng_data);
 					
 					
+					
+					//Forward to Miguel (Hack for now)
+					//TODO Implement instructor notification system for inbound student messages on Messenger
+					$miguel_fb_id = '1234880879950857';
+					if(!$sent_from_us && !($user_id==$miguel_fb_id)){
+					    //Forward to miguel:
+					    $this->Facebook_model->send_message(array(
+					        'recipient' => array(
+					            'id' => $miguel_fb_id
+					        ),
+					        'message' => 'New Message Received',
+					        'notification_type' => 'REGULAR'
+					    ));
+					}
+					
+					
 					//Should we start talking?!
 					/*
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['e_message'])>0){
@@ -425,9 +435,6 @@ class Bot extends CI_Controller {
 								'message' => $response,
 								'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
 						));
-						
-						
-						//TODO Log outgoing message Engagement
 					}
 					*/
 					

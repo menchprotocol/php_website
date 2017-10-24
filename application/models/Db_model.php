@@ -793,6 +793,8 @@ class Db_model extends CI_Model {
 	    return $q->result_array();
 	}
 	
+	
+	
 	function e_create($link_data){
 	    
 	    //Sort out the optional fields first:
@@ -835,9 +837,36 @@ class Db_model extends CI_Model {
 		
 		//Lets log:
 		$this->db->insert('v5_engagements', $link_data);
-		
+
 		//Fetch inserted id:
 		$link_data['e_id'] = $this->db->insert_id();
+		
+		
+		//Do we need to notify the admin about this engagement?
+		if($link_data['e_id']>0 && in_array($link_data['e_type_id'],array(33))){
+		    
+		    //Fetch Engagement Data:
+		    $engagements = $this->Db_model->e_fetch(array(
+		        'e_id' => $link_data['e_id']
+		    ));
+		    if(isset($engagements[0])){
+		        $subject = 'New Engagement: '.strip_tags($engagements[0]['a_name']);
+		        //Compose email:
+		        $html_message = null; //Start
+		        $html_message .= '<div>Hi Mench Admin,</div><br />';
+		        $html_message .= '<div>I am reporting a new engagement which you should know about.</div><br />';
+		        $html_message .= '<div>Engagement Type: '.$engagements[0]['a_name'].'</div>';
+		        $html_message .= '<div>Engagement Description: '.$engagements[0]['a_desc'].'</div>';
+		        $html_message .= '<div>Initiator: '.(isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System').'</div>';
+		        $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
+		        $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
+		        $html_message .= '<br />';
+		        $html_message .= '<div>Cheers,</div>';
+		        $html_message .= '<div>MenchBot</div>';
+		        $this->load->model('Email_model');
+		        $this->Email_model->send_single_email(array('miguel@mench.co','shervin@mench.co'),$subject,$html_message);
+		    }
+		}
 		
 		//Boya!
 		return $link_data;

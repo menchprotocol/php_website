@@ -18,6 +18,7 @@ class My extends CI_Controller {
 	    header( 'Location: /');
 	}
 	
+
 	function fetch(){
 	    //echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
 	    
@@ -32,6 +33,25 @@ class My extends CI_Controller {
 	    */
 	}
 	
+	
+	function load_tip($tip_id){
+	    
+	    //Loads the tip URL:
+	    if($tip_id>0){
+	        $tips = $this->Db_model->i_fetch(array(
+	            'i_id' => $tip_id,
+	            'i_status >=' => 0, //Not deleted
+	        ));
+	        
+	        if(isset($tips[0]) && $tips[0]['i_media_type']=='text' && strlen($tips[0]['i_url'])>0){
+	            header('Location: '.$tips[0]['i_url']);
+	            return true;
+	        }
+	    }
+	    
+	    //Still here?
+	    redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Tip ID.</div>');    
+	}
 	
 	function leaderboard(){
 	    $data = array(

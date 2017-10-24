@@ -1083,6 +1083,7 @@ class Process extends CI_Controller {
 	}
 	
 
+	
 	function completion_report(){
 	    
 	    if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
@@ -1093,7 +1094,6 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['us_notes']) || strlen($_POST['us_notes'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Report Content.</span>');
 	    }
-	    
 	    
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(

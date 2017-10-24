@@ -26,7 +26,6 @@ td { padding:5px 0 !important; }
 <tbody>
 <?php 
 //Fetch objects
-$core_objects = $this->config->item('core_objects');
 foreach($engagements as $e){
     echo '<tr>';
         echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
@@ -37,7 +36,7 @@ foreach($engagements as $e){
         echo '<td>';
             if($e['e_object_id']>0 || strlen($e['a_object_code'])>0){
                 //Is there a specific title to fetch?
-                echo $core_objects[$e['a_object_code']]['o_name'].' #'.$e['e_object_id'];
+                echo object_link($e['a_object_code'],$e['e_object_id'],$e['e_b_id']);
             }
         echo '</td>';
         echo '<td>'.( $e['e_b_id']>0 ? '<a href="/console/'.$e['b_id'].'">'.$e['c_objective'].'</a>' : '' ).'</td>';

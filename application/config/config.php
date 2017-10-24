@@ -35,10 +35,10 @@ $config['core_objects'] = array(
         'o_name' => 'Bootcamp Team Member',
     ),
     'c' => array(
-        'o_name' => 'Task',
+        'o_name' => 'Action Item',
     ),
     'cr' => array(
-        'o_name' => 'Task Link',
+        'o_name' => 'Action Item Link',
     ),
     'r' => array(
         'o_name' => 'Cohort',

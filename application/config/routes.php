@@ -76,6 +76,7 @@ $route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
  ****************************** */
 $route['typeform_complete'] 				= "my/typeform"; //Deprecated on 2017-10-18, give it 3-4 months before removing
 $route['application_status'] 	            = "my/applications"; //Deprecated on 2017-10-18, give it 3-4 months before removing
+$route['tip/(:num)'] 	                    = "my/load_tip/$1";
 
 
 /* ******************************
