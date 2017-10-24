@@ -25,6 +25,17 @@ window.extAsyncInit = function() {
 	}, function error(err) {
 	  // error retrieving supported features
 	});
+
+	//Get context:
+	MessengerExtensions.getContext('1782431902047009', 
+      function success(thread_context){
+        // success
+        console.log(thread_context);
+      },
+      function error(err){
+        // error
+      }
+    );
 	
 	//Get User ID:
     MessengerExtensions.getUserID(function success(uids) {
@@ -38,6 +49,7 @@ window.extAsyncInit = function() {
      	
     }, function error(err, errorMessage) {
     	$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: You Must Access Using Facebook Messenger.</div>');
+    	console.log(errorMessage);
     });
     
     <?php } ?>
