@@ -79,6 +79,8 @@ class My extends CI_Controller {
 	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
 	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
+	    } elseif(!isset($_GET['sr']) || !parse_signed_request($_GET['sr'])){
+	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
 	    
 	    if(!($b_id && $c_id)){

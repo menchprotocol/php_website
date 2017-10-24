@@ -19,38 +19,25 @@ window.extAsyncInit = function() {
  	});
  	
 	<?php } else { ?>
-
-	MessengerExtensions.getSupportedFeatures(function success(result) {
-	  console.log(result.supported_features);
-	}, function error(err) {
-	  // error retrieving supported features
-	});
-
+	
 	//Get context:
 	MessengerExtensions.getContext('1782431902047009', 
       function success(thread_context){
         // success
-        console.log(thread_context);
-      },
-      function error(err){
-        // error
-      }
-    );
-	
-	//Get User ID:
-    MessengerExtensions.getUserID(function success(uids) {
-    	//User ID was successfully obtained.
-      	var psid = uids.psid;
+        //User ID was successfully obtained.
+      	var psid = thread_context.psid;
+      	var signed_request = thread_context.signed_request;
         //Fetch Page:
-     	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
+     	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>?sr="+signed_request, {}, function(data) {
      		//Update UI to confirm with user:
      		$( "#page_content").html(data);
      	});
-     	
-    }, function error(err, errorMessage) {
-    	$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: You Must Access Using Facebook Messenger.</div>');
-    	console.log(errorMessage);
-    });
+      },
+      function error(err){
+        // error
+		$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: '+err+'</div>');
+      }
+    );
     
     <?php } ?>
     

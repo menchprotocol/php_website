@@ -25,6 +25,33 @@ function calculate_refund($duration_days,$refund_type,$cancellation_policy){
 
 
 
+function parse_signed_request($signed_request) {
+    list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+    
+    $secret = "f2857b518c69b3a51f106d6372687094"; // Use your app secret here
+    
+    // Decode the data
+    $sig = base64_url_decode($encoded_sig);
+    $data = json_decode(base64_url_decode($payload), true);
+    
+    // Confirm the signature
+    $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
+    if ($sig !== $expected_sig) {
+        //error_log('Bad Signed JSON signature!');
+        return null;
+    }
+    
+    return $data;
+}
+
+function base64_url_decode($input) {
+    return base64_decode(strtr($input, '-_', '+/'));
+}
+
+
+
+
+
 function extract_level($b,$c_id){
     
     $CI =& get_instance();
