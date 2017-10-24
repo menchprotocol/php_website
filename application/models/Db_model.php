@@ -843,21 +843,22 @@ class Db_model extends CI_Model {
 		
 		
 		//Do we need to notify the admin about this engagement?
-		if($link_data['e_id']>0 && in_array($link_data['e_type_id'],array(33))){
+		if($link_data['e_id']>0 && in_array($link_data['e_type_id'],array(33,6))){
 		    
 		    //Fetch Engagement Data:
 		    $engagements = $this->Db_model->e_fetch(array(
 		        'e_id' => $link_data['e_id']
 		    ));
 		    if(isset($engagements[0])){
-		        $subject = 'New Engagement: '.strip_tags($engagements[0]['a_name']);
+		        $by = (isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System');
+		        $subject = 'New '.trim(strip_tags($engagements[0]['a_name'])).' by '.$by;
 		        //Compose email:
 		        $html_message = null; //Start
 		        $html_message .= '<div>Hi Mench Admin,</div><br />';
 		        $html_message .= '<div>I am reporting a new engagement which you should know about.</div><br />';
-		        $html_message .= '<div>Engagement Type: '.$engagements[0]['a_name'].'</div>';
-		        $html_message .= '<div>Engagement Description: '.$engagements[0]['a_desc'].'</div>';
-		        $html_message .= '<div>Initiator: '.(isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System').'</div>';
+		        $html_message .= '<div>Engagement Type: '.trim(strip_tags($engagements[0]['a_name'])).'</div>';
+		        $html_message .= '<div>Engagement Description: '.$engagements[0]['a_desc'].'</div><br />';
+		        $html_message .= '<div>Initiator: '.$by.'</div>';
 		        $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
 		        $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
 		        $html_message .= '<br />';

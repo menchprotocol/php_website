@@ -391,22 +391,6 @@ class Bot extends CI_Controller {
 					$this->Db_model->e_create($eng_data);
 					
 					
-					
-					//Forward to Miguel (Hack for now)
-					//TODO Implement instructor notification system for inbound student messages on Messenger
-					$miguel_fb_id = '1234880879950857';
-					if(!$sent_from_us && !($user_id==$miguel_fb_id)){
-					    //Forward to miguel:
-					    $this->Facebook_model->send_message(array(
-					        'recipient' => array(
-					            'id' => $miguel_fb_id
-					        ),
-					        'message' => 'New Message Received',
-					        'notification_type' => 'REGULAR'
-					    ));
-					}
-					
-					
 					//Should we start talking?!
 					/*
 					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['e_message'])>0){
