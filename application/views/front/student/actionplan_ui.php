@@ -1,5 +1,6 @@
 <?php 
 //Fetch some variables:
+$sprint_units = $this->config->item('sprint_units');
 $application_status_salt = $this->config->item('application_status_salt');
 ?>
 <script>
@@ -68,14 +69,14 @@ echo '</ol>';
 
 //Display Action Plan list:
 if($level<3){
-    echo '<h4><i class="fa fa-list-ul" aria-hidden="true"></i> '.( $level==1 ? 'Action Plan' : 'Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
+    echo '<h4><i class="fa fa-list-ul" aria-hidden="true"></i> '.( $level==1 ? $sprint_units[$admission['b_sprint_unit']]['name'].' Action Plan' : 'Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
     echo '<div id="list-outbound" class="list-group">';
     if($level==1){
         //Show their successful admission to also train on UI:
         //<a href="/my/applications/?u_key='.md5($matching_users[0]['u_id'].$application_status_salt).'&u_id='.$matching_users[0]['u_id'].'&show_action_plan=1"
         echo '<li class="list-group-item">';
-        echo '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
-        echo '<span class="inline-level">START</span>';
+        echo status_bible('us',1,1).' ';
+        echo '<span class="inline-level">&nbsp;</span>';
         echo 'Complete Bootcamp Application';
         //echo '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>3</span>';
         echo '</li>';
@@ -93,6 +94,9 @@ if($level<3){
     $checklist_done = true;
 }
 
+
+
+
 //Overview:
 echo '<h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview <span class="sub-title">'.echo_time($intent['c_time_estimate'],1).'</span></h4>';
 echo '<div class="quill_content">'.$intent['c_todo_overview'].'</div>';
@@ -107,15 +111,14 @@ if($level>1){
     if(count($i_messages)>0){
         foreach($i_messages as $i){
             //Do logic for ASAP/DRIP-FEED here:
-            
+            echo '<div class="tip_bubble">';
+            echo '<i class="fa fa-lightbulb-o" aria-hidden="true"></i>';
+            echo_i($i,$admission['u_fname']);
+            echo '</div>';
         }
+    } else {
+        echo '<div class="quill_content">None yet.</div>';
     }
-    
-    if($displayed==0){
-        //No tips for now:
-        echo '<div class="quill_content">'.( count($i_messages)>0 ? 'None yet.' : 'None yet.' ).'</div>';
-    }
-    
     //echo $intent['c_todo_overview'];
     echo '</div>';
 }

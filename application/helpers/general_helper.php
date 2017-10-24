@@ -28,7 +28,7 @@ function calculate_refund($duration_days,$refund_type,$cancellation_policy){
 function parse_signed_request($signed_request) {
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
     
-    $secret = "f2857b518c69b3a51f106d6372687094f"; // Use your app secret here
+    $secret = "f2857b518c69b3a51f106d6372687094"; // Use your app secret here
     
     // Decode the data
     $sig = base64_url_decode($encoded_sig);
@@ -189,6 +189,27 @@ function echo_video($video_url){
 
 
 
+function echo_i($i,$first_name=null){
+    
+    echo '<div class="i_content">';
+    if($i['i_media_type']=='text'){
+        
+        echo '<div>'.( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
+        if(strlen($i['i_url'])>0){
+            echo '<div><a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a></div>';
+        }
+        
+    } else {
+        
+        echo '<div>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+        
+    }
+    
+    echo '</div>';
+}
+
+
+
 function echo_message($i){
 	//Fetch current Challenge:
     $CI =& get_instance();
@@ -201,22 +222,17 @@ function echo_message($i){
 	    //Type & Delivery Method:
 	echo '<div>'.$i_media_type_names[$i['i_media_type']].' &nbsp;'.( isset($i_dispatch_minutes['week'][$i['i_dispatch_minutes']]) ? $i_dispatch_minutes['week'][$i['i_dispatch_minutes']] : $i_dispatch_minutes['day'][$i['i_dispatch_minutes']] ).'</div>';
 	
-        //Message:
-	    if($i['i_media_type']=='text'){
-            echo '<div class="showdown edit-off">'.$i['i_message'].'</div>';
-            echo '<textarea name="i_message" class="edit-on">'.$i['i_message'].'</textarea>';
-        }
-    	    
-    	//URL:
-        if($i['i_media_type']=='text'){
-            if(strlen($i['i_url'])>0){
-                echo '<a href="'.$i['i_url'].'" target="_blank" class="edit-off">'.$i['i_url'].'</a>';
-            }
-    	} else {
-    	    echo '<div class="edit-off">'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+	
+	    
+	    echo '<div class="edit-off">';
+	    echo echo_i($i);
+    	echo '</div>';
+    	
+    	
+    	if($i['i_media_type']=='text'){
+    	    echo '<textarea name="i_message" class="edit-on">'.$i['i_message'].'</textarea>';
     	}
     	echo '<input type="url" name="i_url" placeholder="URL" class="form-control edit-on" value="'.$i['i_url'].'">';
-    	
     	
         //Editing menu:
         echo '<ul class="msg-nav">';
@@ -319,7 +335,7 @@ function echo_c($b,$c,$level,$us_data=null){
         }
         
         if($level>0){
-            $ui .= ( $level>=2 ? ( $level==2 ? '<span class="inline-level">'.ucwords($b['b_sprint_unit']).' '.$c['cr_outbound_rank'].'</span>' : '' ) : '' );
+            $ui .= ( $level>=2 ? ( $level==2 ? '<span class="inline-level">'.strtoupper(substr($b['b_sprint_unit'],0,1)).$c['cr_outbound_rank'].'</span>' : '' ) : '' );
         }
         
         $ui .= $c['c_objective'].' ';
@@ -360,7 +376,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	    
     	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Remove from Action Plan" data-placement="left"></i> &nbsp;';
     	    
-    	    $ui .= status_bible('c',$intent['c_status'],1,'left');
+    	    //$ui .= status_bible('c',$intent['c_status'],1,'left');
     	    //$ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
 /*
         	    $ui .= '<span class="label label-primary">';
@@ -667,7 +683,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	    ),
     	    1 => array(
         	    's_name'  => 'Approved',
-        	    's_color' => '#4caf50', //green
+        	    's_color' => '#2f2639', //dark
         	    's_desc'  => 'Intructor has reviewed & approved action plan submission.',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-check-circle initial',
