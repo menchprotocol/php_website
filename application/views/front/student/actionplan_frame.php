@@ -19,6 +19,12 @@ window.extAsyncInit = function() {
  	});
  	
 	<?php } else { ?>
+
+	MessengerExtensions.getSupportedFeatures(function success(result) {
+	  console.log(result.supported_features);
+	}, function error(err) {
+	  // error retrieving supported features
+	});
 	
 	//Get User ID:
     MessengerExtensions.getUserID(function success(uids) {
