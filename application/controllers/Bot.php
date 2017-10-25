@@ -247,7 +247,7 @@ class Bot extends CI_Controller {
 						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
 						            array('text' => 'My name is Mench and I will be your Personal Assistant to help you accomplish the primary goal of your bootcamp.'),
 						            array('text' => 'As your Personal Assistant Bot I will be sending you important updates'.( count($admissions)==1 ? ' on your bootcamp "'.$admissions[0]['c_objective'].'" lead by '.$admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'] : ' on your '.count($admissions).' enrolled bootcamps.' ).'. I will also forward all your messages to your bootcamp\'s instructor team so they can reply asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['r_response_time_hours'].' hours ⚡' : '.' )),
-						            array('text' => 'I have no more updates for now. Do you have any questions? 🤔'),
+						            array('text' => 'Those were all my the updates for now. Feel free to ask questions at any time. To get started, click on the "️✔️ Action Plan" button on the persistent menu.'),
 						        ), 'NO_PUSH' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 						    }
 						}
