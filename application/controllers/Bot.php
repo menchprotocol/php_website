@@ -177,7 +177,9 @@ class Bot extends CI_Controller {
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
 						//Referral key which currently equals the User ID
-						$eng_data['e_object_id'] = intval($referral_array['ref']);
+						$ref = explore('_',$referral_array['ref'],2);
+						$u_key = $ref[1]; //TODO use to validate if authentic origin
+						$eng_data['e_object_id'] = intval($ref[0]);
 						
 
 						if($eng_data['e_object_id']>0){
