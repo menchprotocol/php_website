@@ -177,7 +177,7 @@ class Bot extends CI_Controller {
 						$ref_type = $referral_array['type'];
 						$ad_id = ( isset($referral_array['ad_id']) ? $referral_array['ad_id'] : null ); //Only IF user comes from the Ad
 						//Referral key which currently equals the User ID
-						$ref = explore('_',$referral_array['ref'],2);
+						$ref = explode('_',$referral_array['ref'],2);
 						$u_key = $ref[1]; //TODO use to validate if authentic origin
 						$eng_data['e_object_id'] = intval($ref[0]);
 						
@@ -290,8 +290,13 @@ class Bot extends CI_Controller {
 				        'e_type_id' => 5, //Message Delivered
 				    ));
 					
+				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
+				    
+				    //This is when we message them and they accept to chat because they had deleted MenchBot or something...
+				    //TODO maybe later log an engagement
+				    
 				} elseif(isset($im['message'])) {
-					
+				    
 					/*
 					 * Triggered for both incoming and outgoing messages on behalf of our team
 					 * 
