@@ -330,11 +330,19 @@ class Bot extends CI_Controller {
 							
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
-								//Store to local DB:
-								$new_file_url = save_file($att['payload']['url'],$json_data);
+							    //Make sure its not a sticker!
+							    if(isset($att['payload']['sticker_id'])){
+							        //yes it is!
+							        $eng_data['e_message'] .= (strlen($eng_data['e_message'])>0?"\n\n":'').'/sticker #'.$att['payload']['sticker_id'];
+							    } else {
+							        //No it's an image!
+							        //Store to local DB:
+							        $new_file_url = save_file($att['payload']['url'],$json_data);
+							        
+							        //Message with image attachment
+							        $eng_data['e_message'] .= (strlen($eng_data['e_message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url;
+							    }
 								
-								//Message with image attachment
-								$eng_data['e_message'] .= (strlen($eng_data['e_message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url;
 								
 								/*
 								//Reply:
