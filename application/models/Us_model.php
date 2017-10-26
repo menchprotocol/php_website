@@ -462,7 +462,7 @@ class Us_model extends CI_Model {
 		$this->db->select('timestamp,message');
 		$this->db->from('v3_engagement e');
 		$this->db->where('e.us_id' , $us_id);
-		$this->db->where('e.action_pid' , 1032); //Messages sent from $us_id to AskMench bot
+		$this->db->where('e.action_pid' , 1032); //Messages sent from $us_id to our Mench bot
 		$this->db->where('e.intent_pid' , 0); //Only search for messages without specific intents
 		$this->db->order_by('id' , 'DESC');
 		$this->db->limit($limit);

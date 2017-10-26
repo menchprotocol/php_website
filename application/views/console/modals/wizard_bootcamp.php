@@ -11,7 +11,7 @@
         	<ul>
     			<li>Describe your bootcamp's core offering in 70 characters or less.</li>
                 <li>Define a goal that is both "Specific" and "Measurable".</li>
-                <li>Sets the bar for our <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u>Tuition Reimbursement Guarantee <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+                <li>Sets the bar for our <a href="https://support.mench.co/hc/en-us/articles/115002080031"><u>Tuition Reimbursement Guarantee</u></a>.</li>
     			<li>Success is % of students who accomplish this when bootcamp ends.</li>
     		</ul>
 			<div class="form-group label-floating is-empty">

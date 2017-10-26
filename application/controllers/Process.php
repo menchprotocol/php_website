@@ -521,6 +521,20 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Import Settings.</span>');
 	    } else {
 	        
+	        //Start with the date:
+	        $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
+	        //Check for unique start date:
+	        $current_cohorts = $this->Db_model->r_fetch(array(
+	            'r.r_b_id' => intval($_POST['r_b_id']),
+	            'r.r_status >=' => 0,
+	            'r.r_start_date' => $new_date,
+	        ));
+	        if(count($current_cohorts)>0){
+	            //Ooops, we cannot have duplicate dates:
+	            die('<span style="color:#FF0000;">Error: Cannot have a two cohorts starting on the same day.</span>');
+	        }
+	        
+	        
 	        //This is the variable we're building:
 	        $cohort_data = null;
 	        
@@ -535,19 +549,15 @@ class Process extends CI_Controller {
 	            if(count($cohorts)==1){
 	                //Port the settings:
 	                $cohort_data = $cohorts[0];
-	                $eng_message = time_format($_POST['r_start_date'],1).' cohort created by copying '.time_format($cohorts[0]['r_start_date'],1).' cohort settings.';
+	                $eng_message = time_format($_POST['r_start_date'],1).' cohort created by copying '.time_format($cohort_data['r_start_date'],1).' cohort settings.';
 	                
 	                //Make some adjustments
-	                $cohort_data['r_start_date'] = date("Y-m-d",strtotime($_POST['r_start_date']));
+	                $cohort_data['r_start_date'] = $new_date;
 	                $cohort_data['r_status'] = intval($_POST['r_status']); //Override with input status
-	                
-	                //TODO Calculate Cache times / For now disable:
-	                unset($cohort_data['r_cache_registration_end_time']);
-	                unset($cohort_data['r_cache_full_refund_time']);
-	                unset($cohort_data['r_cache_pro_rated_refund_time']);
-	                unset($cohort_data['r_cache_cohort_last_day']);
+	                //TODO Update cache timeline
 	                
 	                //The following data are unique and should NOT be copied:
+	                unset($cohort_data['r_cache_pst_timeline']);
 	                unset($cohort_data['r_id']);
 	                unset($cohort_data['r_typeform_id']);
 	                unset($cohort_data['r_is_locked']);
@@ -560,13 +570,14 @@ class Process extends CI_Controller {
 	            
 	            //Fetch default questions:
 	            $default_cohort_questions = $this->config->item('default_cohort_questions');
+	            $default_cohort_prerequisites = $this->config->item('default_cohort_prerequisites');
 	            
 	            //Generate core data:
 	            $cohort_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
 	                'r_status' => intval($_POST['r_status']),
-	                'r_prerequisites' => '<ol><li>An internet-connected computer</li><li>etc...</li></ol>',
+	                'r_prerequisites' => '<ol><li>'.join('</li><li>',$default_cohort_prerequisites).'</li></ol>',
 	                'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
 	            );
 	            
@@ -577,6 +588,7 @@ class Process extends CI_Controller {
 	        
 	        //Create new cohort:
 	        $cohort = $this->Db_model->r_create($cohort_data);
+	        
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
@@ -655,7 +667,7 @@ class Process extends CI_Controller {
 	function cohort_edit(){
 	    
 	    //Auth user and check required variables:
-	    $cancellation_terms = $this->config->item('cancellation_terms');
+	    $refund_policies = $this->config->item('refund_policies');
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:
@@ -665,12 +677,27 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
-	    } elseif(!isset($_POST['r_cancellation_policy']) || !array_key_exists($_POST['r_cancellation_policy'],$cancellation_terms)){
-	        die('<span style="color:#FF0000;">Error: Invalid Cancellation Policy.</span>');
+	    } elseif(!isset($_POST['r_cancellation_policy']) || !array_key_exists($_POST['r_cancellation_policy'],$refund_policies)){
+	        die('<span style="color:#FF0000;">Error: Invalid Refund Policy.</span>');
 	    } elseif(!isset($_POST['r_typeform_id'])){
 	        die('<span style="color:#FF0000;">Error: Missing Typeform ID.</span>');
+	    }
+	    
+	    //Check Duplicate Date:
+	    $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
+	    //Check for unique start date:
+	    $current_cohorts = $this->Db_model->r_fetch(array(
+	        'r.r_b_id' => intval($_POST['b_id']),
+	        'r.r_status >=' => 0,
+	        'r.r_start_date' => $new_date,
+	    ));
+	    if(count($current_cohorts)>0){
+	        //Ooops, we cannot have duplicate dates:
+	        die('<span style="color:#FF0000;">Error: Cannot have a two cohorts starting on the same day.</span>');
 	    }
 	    
 	    
@@ -687,7 +714,7 @@ class Process extends CI_Controller {
 	    
 	    
 	    $r_update = array(
-	        'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
+	        'r_start_date' => $new_date,
 	        'r_response_time_hours' => $_POST['r_response_time_hours'],
 	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
 	        'r_office_hour_instructions' => $_POST['r_office_hour_instructions'],
@@ -1091,18 +1118,31 @@ class Process extends CI_Controller {
 	        || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
 	        || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
 	            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
-	    } elseif(!isset($_POST['us_notes']) || strlen($_POST['us_notes'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Report Content.</span>');
+	    //} elseif(!isset($_POST['us_notes']) || strlen($_POST['us_notes'])<=0){
+	        //die('<span style="color:#FF0000;">Error: Missing Report Content.</span>');
 	    }
+	    
+	    //Fetch intent:
+	    $original_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['c_id']),
+	    ));
+	    if(count($original_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid task ID.</span>');
+	    }
+	    
+	    //See if we have to give any points for this completion:
+	    //TODO
 	    
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
 	        'us_b_id' => intval($_POST['b_id']),
 	        'us_r_id' => intval($_POST['r_id']),
 	        'us_c_id' => intval($_POST['c_id']),
+	        'us_on_time_score' => 1, //Either 1 or 0.5 TODO update based on centralized time
+	        'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
 	        'us_student_id' => intval($_POST['u_id']),
 	        'us_student_notes' => trim($_POST['us_notes']),
-	        'us_status' => 0, //To be reviewed
+	        'us_status' => 1, //No need for review
 	    ));
 	    
 	    
@@ -1114,7 +1154,7 @@ class Process extends CI_Controller {
 	            'input' => $_POST,
 	            'us_data' => $us_data,
 	        )),
-	        'e_type_id' => 33, //Completion Report Submitted
+	        'e_type_id' => 33, //Marked as Done Report
 	        'e_object_id' => $us_data['us_c_id'],
 	        'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
 	    ));
@@ -1153,7 +1193,6 @@ class Process extends CI_Controller {
 	    //Generate Update Array
 	    $c_update = array(
 	        'c_objective' => trim($_POST['c_objective']),
-	        'c_todo_bible' => $_POST['c_todo_bible'],
 	        'c_todo_overview' => $_POST['c_todo_overview'],
 	        'c_status' => intval($_POST['c_status']),
 	        'c_time_estimate' => floatval($_POST['c_time_estimate']),

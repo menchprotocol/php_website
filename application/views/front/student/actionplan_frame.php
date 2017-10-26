@@ -9,13 +9,14 @@
 
 //the Messenger Extensions JS SDK is done loading:
 window.extAsyncInit = function() {
+
 	
 	<?php if(is_dev()){ ?>
 	
 	var psid = '1443101719058431';
 	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
  		//Update UI to confirm with user:
- 		$( "#page_content").html(data).append('.');
+ 		$( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
  	});
  	
 	<?php } else { ?>

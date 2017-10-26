@@ -30,7 +30,13 @@ $tips_count = count($this->Db_model->i_fetch(array(
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/cohorts"><b><i class="fa fa-calendar" aria-hidden="true"></i> Cohorts <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
       	<div><?= count($bootcamp['c__cohorts']) ?> Total</div>
-      	<?= ( count($bootcamp['c__cohorts'])>0 ? '<div>'.time_format($bootcamp['c__cohorts'][0]['r_start_date'],1).' is next</div>' : '' )  ?>
+      	<?php 
+      	//Fetch cohort:
+      	if(count($bootcamp['c__cohorts'])>0){
+      	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+      	    echo '<div>'.time_format($next_cohort['r_start_date'],1).' is next</div>';
+      	}
+        ?>
       </div>
     </div>
     <hr />

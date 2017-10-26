@@ -130,7 +130,6 @@ function save_c(){
  	 		pid:$('#pid').val(),
      		c_objective:$('#c_objective').val(),
      		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
-     		c_todo_bible:( c_todo_bible_quill.getLength()>1 ? $('#c_todo_bible .ql-editor').html() : "" ),
      		c_status:$('#c_status').val(),
      		c_time_estimate:$('#c_time_estimate').val(),
  	};
@@ -458,8 +457,6 @@ function msg_save_edit(i_id){
 </script>
 
 
-
-
 <input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $bootcamp['c_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
@@ -546,11 +543,37 @@ function msg_save_edit(i_id){
     	<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</h4></div>
     	<ul>
             <li>Set a goal that is both "Specific" and "Measurable".</li>
-            <li>Also used as the title.</li>
+            <li>Also used as the title of this task.</li>
 		</ul>
         <div class="form-group label-floating is-empty">
             <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">			
         </div>
+        
+        
+       
+        
+        
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-clock-o"></i> Time Estimate & Points</h4></div>
+        
+        
+        <ul class="maxout">
+			<li>How long you think it takes an average student to read & execute this task?</li>
+			<li>This is an estimate of this task's complexity.</li>
+			<li>Don't consider sub-task's as each task has its own Time & Point Estimate.</li>
+			<li>This also defines <b>points earned</b> by students for playing <a href="https://support.mench.co/hc/en-us/articles/115002372531"><u>The Mench Game</u></a>.</li>
+			<?php if($level<=2){ ?>
+			<li>IF you estimate more than 13 hours, then break task down into smaller tasks.</li>
+			<?php } ?>
+		</ul>
+        <select class="form-control input-mini border" id="c_time_estimate">
+        	<?php 
+        	$times = $this->config->item('c_time_options');
+        	foreach($times as $time){
+        	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).' = '.round($time*60).' On-Time Points OR '.floor($time*60*0.5).' Late Point'.(round($time*60)==1?'':'s').'</option>';
+        	}
+        	?>
+        </select>
+        
         
         
         
@@ -568,7 +591,11 @@ function msg_save_edit(i_id){
         <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
         
         
-        <div style="display:<?= ( $udata['u_status']>=4 ? 'block' : 'none' ) ?>;">
+        
+        
+        
+        
+        <div style="display:<?= ( $udata['u_status']>999 /*Disabled for now!*/ ? 'block' : 'none' ) ?>;">
             <div class="title" style="margin-top:25px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Status</h4></div>
             <ul class="maxout">
     			<li>Default status is <?= status_bible('c',1) ?>.</li>
@@ -579,30 +606,7 @@ function msg_save_edit(i_id){
         
         
         
-        <!-- TODO Remove soon -->
-        <div style="display:<?= (strlen($intent['c_todo_bible'])>0 ? 'block' : 'none') ?>;">
-        <div class="title"><h4>Homework (Being Removed Soon...)</h4></div>
-		<p>Instructions for the students to execute towards this goal. Action plans also include goal-related facts and reference to other content (Videos, Blog Posts, Udemy, images, etc...). Action plans are "drip-fed" to students meaning they are unlocked with each <?= $sprint_units[$bootcamp['b_sprint_unit']]['name']?> goal.</p>
-    	<div id="c_todo_bible"><?= $intent['c_todo_bible'] ?></div>
-        <script> var c_todo_bible_quill = new Quill('#c_todo_bible', setting_full); </script>
-        </div>
-        
-        
-        
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
-        <ul class="maxout">
-			<li>The estimated time to read/execute this task.</li>
-			<li>Don't consider sub-tasks as they have their own time estimate.</li>
-			<li>Break down tasks into smaller tasks for estimates more than 13 hours.</li>
-		</ul>
-        <select class="form-control input-mini border" id="c_time_estimate">
-        	<?php 
-        	$times = $this->config->item('c_time_options');
-        	foreach($times as $time){
-        	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).'</option>';
-        	}
-        	?>
-        </select>
+       
         
         
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span class="save_c_results"></span></td></tr></table>

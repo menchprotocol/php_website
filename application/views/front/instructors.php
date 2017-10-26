@@ -36,7 +36,7 @@ $udata = $this->session->userdata('user');
 			<div class="col-md-4">
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">filter_3</i></div>
-					<h3 class="info-title">Navigate To Success</h3>
+					<h3 class="info-title">Lead To Success</h3>
 					<p>Ready, set, go! Set weekly milestones, completion prizes, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and identify who needs help the most.</p>
 				</div>
 			</div>

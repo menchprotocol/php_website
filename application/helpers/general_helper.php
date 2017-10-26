@@ -18,8 +18,8 @@ function calculate_duration($bootcamp,$current_week=null){
 
 function calculate_refund($duration_days,$refund_type,$cancellation_policy){
     $CI =& get_instance();
-    $cancellation_terms = $CI->config->item('cancellation_terms');
-    return ceil( $duration_days * $cancellation_terms[$cancellation_policy][$refund_type] );
+    $refund_policies = $CI->config->item('refund_policies');
+    return ceil( $duration_days * $refund_policies[$cancellation_policy][$refund_type] );
 }
 
 
@@ -173,7 +173,7 @@ function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
 function echo_hours($int_time){
-    return ( $int_time>0 && $int_time<1 ? round($int_time*60).'m' : $int_time.'h' );
+    return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : $int_time.($int_time==1?' Hour':' Hours') );
 }
 
 function echo_video($video_url){
@@ -256,13 +256,13 @@ function echo_message($i){
 
 function echo_time($c_time_estimate,$show_icon=1){
     if($c_time_estimate>0){
-        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Time Investment">'.( $show_icon ? '<i class="fa fa-clock-o" aria-hidden="true"></i>' : '');
+        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Completion Time">'.( $show_icon ? '<i class="fa fa-clock-o" aria-hidden="true"></i>' : '');
         if($c_time_estimate<1){
             //Minutes:
-            $ui .= round($c_time_estimate*60).'m';
+            $ui .= round($c_time_estimate*60).' Minutes';
         } else {
             //Hours:
-            $ui .= round($c_time_estimate,1).'h';
+            $ui .= round($c_time_estimate,1).' Hour'.(round($c_time_estimate,1)==1?'':'s');
         }
         $ui .= '</span>';
         return $ui;
@@ -400,7 +400,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	        //This sprint has Assignments:
     	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
-    	    if($intent['c__tip_count']>0){
+    	    if(isset($intent['c__tip_count']) && $intent['c__tip_count']>0){
     	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tips"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>'.$intent['c__tip_count'].'</span>';
     	    }
     	    if(strlen($intent['c_todo_overview'])>0){
@@ -704,9 +704,9 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
         	    's_mini_icon' => 'fa-check-circle-o initial',
     	    ),
     	    1 => array(
-        	    's_name'  => 'Approved',
+        	    's_name'  => 'Marked Done',
         	    's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Intructor has reviewed & approved action plan submission.',
+        	    's_desc'  => 'This action plan item is complete.',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-check-circle initial',
     	    ),
@@ -726,7 +726,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -2 => array(
 	            's_name'  => 'Student Withdrew',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student withdrew from the bootcamp. Refund is based on cancellation policy & withdrawal date.',
+	            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the cohort refund policy & withdrawal date.',
 	            'u_min_status'  => 999, //Only done by Student themselves
 	        ),
 	        -1 => array(
@@ -1378,6 +1378,49 @@ function html_run($run){
 
 
 function echo_us($us_data){
-    echo '<div style="margin-bottom:10px;">Submitted on '.time_format($us_data['us_timestamp']).' PST</div>';
     echo status_bible('us',$us_data['us_status']);
+    $points = round($us_data['us_time_estimate']*60*$us_data['us_on_time_score']);
+    echo '<div style="margin:15px 0 10px;"><b>'.( $points>0 ? 'Congratulations! You earned '.$points.' points' : 'You did not earn any points' ).'</b> for completing this '.echo_time($us_data['us_time_estimate'],1).'task '.( $us_data['us_on_time_score']==0 ? 'really late' : ( $us_data['us_on_time_score']==1 ? 'on-time' : 'a little late' ) ).' on '.time_format($us_data['us_timestamp']).'.</div>';
+    echo '<div style="margin-bottom:10px;">Your Comments: '.( strlen($us_data['us_student_notes'])>0 ? $us_data['us_student_notes'] : 'None' ).'</div>';
+    echo '<p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Anything changed? Simply share your task updates over <a href="javascript:close_webview();">MenchBot</a>.</p>';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,19 +6,20 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.52,
+    'version' => 0.55,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
     'email' => 'shervin@mench.co',
     'fb_page_id' => '381488558920384',
     'fb_app_id' => '1782431902047009',
-    'bot_ref_url' => 'https://m.me/askmench',
+    'bot_ref_url' => 'https://m.me/menchbot',
     'access_token' => 'EAAZAVHMRbmyEBAJET1DMKAAQPOoHZABRs9hXxTk6l7g0ETkwETgJatVIaMIXRJ9DclVB61xkNidUYZC512MJKpfNlIGGDaFzHuIq6JrfbOtZADlxH39cI2AIOYSMXEw7pg4W3faIFm5Ynq4nPTArSOUD3vQ2xNoGNh9TDT57BQZDZD',
 );
 
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
+
 
 //The core objects of the platform:
 $config['core_objects'] = array(
@@ -26,7 +27,7 @@ $config['core_objects'] = array(
         'o_name' => 'User',
     ),
     'us' => array(
-        'o_name' => 'Completion Report',
+        'o_name' => 'Mark-as-Done Report',
     ),
     'b' => array(
         'o_name' => 'Bootcamp',
@@ -56,7 +57,7 @@ $config['core_objects'] = array(
 
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0','0.05','0.12','0.25','0.5','1','2','3','5','8','13');
+$config['c_time_options'] = array('0','0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
 
 
 
@@ -95,7 +96,7 @@ $config['i_media_type_names'] = array(
     'file' => '<i class="fa fa-file" aria-hidden="true"></i> Raw File',
 );
 
-$config['cancellation_terms'] = array(
+$config['refund_policies'] = array(
     'flexible' => array(
         'full' => 0.10,
         'prorated' => 0.60,
@@ -133,6 +134,11 @@ $config['aws_credentials'] = [
 $config['default_cohort_questions'] = array(
     'Why did you choose to join this bootcamp?',
     'Why should the instructor choose you? (Considering limited bootcamp seats)',
+);
+$config['default_cohort_prerequisites'] = array(
+    'An internet-connected computer',
+    'Flient in English',
+    'etc...',
 );
 
 

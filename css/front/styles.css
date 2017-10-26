@@ -108,13 +108,13 @@
   color:#AAA !important;
 }
 
-.tab-pane, .list-group, .maxout {max-width:650px;}
+.tab-pane, .list-group, .maxout {max-width:650px !important;}
 .list-group-item { padding: 10px 10px; }
 .fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; } 
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 
 .title-main { display:block; line-height:100%; padding-bottom:5px; font-size:1em; font-weight:bold; }
-.title-sub { display:inline-block; color:#999; margin-right:5px; font-weight:normal; font-size: 0.8em; }
+.title-sub { display:inline-block; color:#666; margin-right:5px; font-weight:bold; font-size: 0.9em; }
 .title-sub i { width:auto; margin-right:2px; text-align:center; }
 
 .c_objective { line-height:100%; }
@@ -647,6 +647,10 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	color:#000000 !important;
 }
 
+#funnel .section {
+	text-align:center;
+}
+
 #funnel .breadcrumb {
 	margin-top:-30px;
 	margin-left:-4px;
@@ -665,7 +669,10 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	text-align:center;
 	display:inline-block;
 }
-
+#funnel .form-control::placeholder {
+	font-size:20px !important;
+	color:#AAA !important;
+}
 #funnel .list-group-item {
     padding: 10px 5px 8px;
 }
@@ -710,13 +717,22 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	text-decoration:underline;
 }
 
+ select.form-control{
+	width: auto !important;
+	max-width: none !important;
+}
+
 #funnel .quill_content textarea{
 	width: 100% !important;
-    height: 220px !important;
-    font-size: 18px !important;
+    height: 70px !important;
+    font-size: 16px !important;
     padding: 3px !important;
     margin: 0 !important;
     max-width: 100%;
+}
+#funnel .quill_content textarea::placeholder {
+	font-size:16px !important;
+	color:#AAA !important;
 }
 #funnel .quill_content ul, #funnel .quill_content ol{
 	margin-left:-20px;
@@ -762,10 +778,6 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	background-color:#FFF;
 	border-radius:3px;
 	font-size:20px !important;
-}
-#funnel .form-control::placeholder {
-	font-size:20px !important;
-	color:#AAA !important;
 }
 
 .btn-funnel {

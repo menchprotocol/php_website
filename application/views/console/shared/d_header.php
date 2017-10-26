@@ -61,7 +61,7 @@ $website = $this->config->item('website');
 		
 	    <div class="sidebar" id="mainsidebar" data-color="purple">
 	    	<div class="sidebar-wrapper">
-	    	
+	    	`
 	    		<?php 
 	    		if(isset($bootcamp)){
 	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/bootcamps/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page" class="landing_page_url"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';

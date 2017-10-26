@@ -1,6 +1,7 @@
 <?php
 //Fetch the sprint units from config:
 $sprint_units = $this->config->item('sprint_units');
+$website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 ?>
 <script>
@@ -37,10 +38,9 @@ $(document).ready(function() {
 		});
 	});
 
-	//Watch for changing cancellation policy:
+	//Watch for changing refund policy:
 	$('input[name=r_cancellation_policy]').change(function() {
 		//$("#r_live_office_hours_val").val(ucwords(this.value));
-		//update_timeline();
     });
 
 	//Watchout for changing office hours checkbox:
@@ -57,68 +57,6 @@ $(document).ready(function() {
 });
 
 
-
-
-function update_timeline(){
-
-	//Set base variables:
-	var week_count = parseInt($('#week_count').val());
-	var r_start_date = $('#r_start_date').val().split("/");
-	var cancellation_policy = $('input[name=r_cancellation_policy]:checked').val();
-	
-	//Define cancellation policy variables:
-	if(cancellation_policy=='flexible'){
-		var complete_refund_days = Math.ceil(week_count * 7 * 0.10);
-		var prorated_refund_days = Math.ceil(week_count * 7 * 0.60);
-	} else if(cancellation_policy=='moderate'){
-		var complete_refund_days = -1; //A day before the start date midnight
-		var prorated_refund_days = Math.ceil(week_count * 7 * 0.30);
-	} else if(cancellation_policy=='strict'){
-		var complete_refund_days = null;
-		var prorated_refund_days = null;
-	} else {
-		//Unknown?!
-		alert('Unrecognized cancellation policy ['+cancellation_policy+']. Cannot generate timeline.');
-		return false;
-	}
-
-
-	//Calculate times:
-	var r_cache_registration_end_time = new Date(parseInt(r_start_date[2]), parseInt(r_start_date[0]), parseInt(r_start_date[1]), 23, 59, 0, 0);
-	r_cache_registration_end_time.setDate(r_cache_registration_end_time.getDate() - 1);
-
-	console.log(r_cache_registration_end_time);
-	return false;
-	
-    var timeline = {
-			r_cache_registration_end_time : add_days(a,-1),
-			r_cache_cohort_first_day : null,
-			r_cache_full_refund_time : ( complete_refund_days===null ? null : add_days(a,complete_refund_days) ),
-			r_cache_pro_rated_refund_time : ( prorated_refund_days===null ? null : add_days(a,prorated_refund_days) ),
-			r_cache_cohort_last_day : null,
-	};
-
-	//Some examples:
-	var a = new Date(UNIX_timestamp * 1000);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    var formatted_time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-	
-	//Update UI:
-	for (var key in timeline){
-		$('#'+key).val(timeline[key]);
-	}
-	
-	//Return raw dates:
-	return timeline;
-}
-
-
 function save_r(){
 	//Show spinner:
 	$('#save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
@@ -130,6 +68,7 @@ function save_r(){
 	
 	var save_data = {	
 		r_id:$('#r_id').val(),
+		b_id:$('#b_id').val(),
 		r_start_date:$('#r_start_date').val(),
 		
 		//Communication:
@@ -153,7 +92,6 @@ function save_r(){
 	};
 	
 	//Now merge into timeline dates:
-	//var timeline = update_timeline();
 	//for (var key in timeline){
 	//	save_data[key] = timeline[key];
 	//}
@@ -182,6 +120,7 @@ function reset_default(){
 
 
 <input type="hidden" id="r_id" value="<?= $cohort['r_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $cohort['r_b_id'] ?>" />
 <input type="hidden" id="week_count" value="<?= count($bootcamp['c__child_intents']) ?>" />
 
 
@@ -253,10 +192,11 @@ function reset_default(){
     
     <div class="tab-pane" id="support">
     
-		<div class="title"><h4><i class="fa fa-comments" aria-hidden="true"></i> Response Time</h4></div>
+		<div class="title"><h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4></div>
 		<ul>
-			<li>On Mench you are required to respond to all student inquiries.</li>
-			<li>You get to choose how fast you commit to responding.</li>
+			<li>Almost all your student communication is done using our <a href="#" target="_blank">Ask Mench Bot <i class="fa fa-external-link" aria-hidden="true"></i></a>.</li>
+			<li>You are required to respond to 100% of incoming student messages.</li>
+			<li>You get to choose how fast you commit to responding to messages.</li>
 		</ul>
         <select class="form-control input-mini border" id="r_response_time_hours">
         	<?php 
@@ -270,9 +210,9 @@ function reset_default(){
         
 		<div class="title"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4></div>
 		<ul>
-			<li>Provide personalized 1-on-1 support to each student.</li>
-			<li>Usually conducted over live video (Skype, Zoom, Hangouts, etc...)</li>
-			<li>May also include screen sharing and assignment review.</li>
+			<li>Recommended for difficult-to-execute bootcamps to help students 1-on-1.</li>
+			<li>Use a Calendar app to manually setup weekly meetings with each student.</li>
+			<li>Use a video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
 		</ul>
         <select class="form-control input-mini border" id="r_weekly_1on1s" style="width:300px;">
         	<?php 
@@ -291,8 +231,9 @@ function reset_default(){
 		
 		<div class="title"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Live Office Hours</h4></div>
 		<ul>
-			<li>Use to offer live support to your students who choose to show-up.</li>
-			<li>Usually conducted over live video (Skype, Zoom, Hangouts, etc...)</li>
+			<li>Provide support to students who show-up during pre-set office hours.</li>
+			<li>Students will receive a broadcast message 30 minute before each timeslot.</li>
+			<li>Use a group video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
 		</ul>
 		
 		
@@ -356,10 +297,10 @@ function reset_default(){
         
         <br />
         <br />
-        <div class="title"><h4><i class="fa fa-ban" aria-hidden="true"></i> Cancellation Policy (for Paid Cohorts)</h4></div>
+        <div class="title"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy (for Paid Cohorts)</h4></div>
 		<?php 
-		$cancellation_terms = $this->config->item('cancellation_terms');
-		foreach($cancellation_terms as $type=>$terms){
+		$refund_policies = $this->config->item('refund_policies');
+		foreach($refund_policies as $type=>$terms){
 		    echo '<div class="radio">
         	<label>
         		<input type="radio" name="r_cancellation_policy" value="'.$type.'" '.( $cohort['r_cancellation_policy']==$type ? 'checked="true"' : '' ).' />
@@ -371,7 +312,7 @@ function reset_default(){
         	echo '</ul></div>';
 		}
 		?>
-        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank">Cancellation Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></p>
+        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a></p>
         
 
     </div>

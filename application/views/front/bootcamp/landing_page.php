@@ -90,13 +90,13 @@ $( document ).ready(function() {
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
             	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?>*</b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?>)</li>
             	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(calculate_duration($bootcamp)-1)) ?></b></li>
-            	<li>Time Commitment: <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
+            	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
-            	<li>1-on-1 Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
+            	<li>Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php } ?>
             	
             	<?php if($total_hours>0){ ?>
-            	<li>Live Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
+            	<li>Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
             	<?php } ?>
             	
             	<?php if($next_cohort['r_max_students']>0){ ?>
@@ -125,7 +125,7 @@ $( document ).ready(function() {
     		
     		
     		<h3>Action Plan</h3>
-    		<p>This <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp takes about <?= echo_time($bootcamp['c__estimated_hours']) ?>to complete, or about <b><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?>h/<?= ucwords($bootcamp['b_sprint_unit']) ?></b>:</p>
+    		<p>The tasks for this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp are estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>to complete, or about <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b>:</p>
     		<div id="c_goals_list">
     		<?php 
             foreach($bootcamp['c__child_intents'] as $sprint){
@@ -140,13 +140,13 @@ $( document ).ready(function() {
     		<h3>1-on-1 Support</h3>
     		<?php
     		if($next_cohort['r_weekly_1on1s']>0){
-    		    echo '<h4>'.echo_hours($next_cohort['r_weekly_1on1s']).'/'.ucwords($bootcamp['b_sprint_unit']).' of 1-on-1 Mentorship</h4>';
+    		    echo '<h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4>';
     		    echo '<p>You will receive <b>'.echo_hours($next_cohort['r_weekly_1on1s']).'/'.ucwords($bootcamp['b_sprint_unit']).'</b> of 1-on-1 mentorship over a live video chat.</p>';
     		    echo '<hr />';
     		}
     		if(count($office_hours_ui)>0 || $total_hours>0){
-    		    echo '<h4>'.echo_hours($total_hours).'/Week of Live Office Hours</h4>';
-    		    echo '<p>You can connect with instructors live during these weekly timeslots:</p>';
+    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Live Office Hours</h4>';
+    		    echo '<p>You can access <b>'.echo_hours($total_hours).'/Week</b> of live office hours during these timeslots:</p>';
     		    echo '<ul style="list-style:none; margin-left:-30px;">';
     		    foreach($office_hours_ui as $oa_ui){
     		        echo '<li>'.$oa_ui.'</li>';
@@ -159,9 +159,14 @@ $( document ).ready(function() {
     		}
     		?>
     		
-    		<h4>Under <?= echo_hours($next_cohort['r_response_time_hours']) ?> Response Time</h4>
-    		<p>This bootcamp offers responses times of under <b><?= echo_hours($next_cohort['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructors.</p>
+    		<h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
+    		<p>This bootcamp offers chat response times of <b>Under <?= echo_hours($next_cohort['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
+    		<hr />
     		
+    		<?php /*
+    		<h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Group</h4>
+    		<p>A Facebook Group enables students to connect with their peers and instructors to share ideas as a micro-community that shares a common goal.</p>
+    		*/?>
     		
     		
     		
@@ -247,7 +252,7 @@ $( document ).ready(function() {
     
     
     		<h3>Admission</h3>
-    		<h4>Timeline</h4>
+    		<h4><i class="fa fa-calendar" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
     			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
@@ -256,7 +261,8 @@ $( document ).ready(function() {
     		</ul>
     		<hr />
     		
-    		<h4>Cancellation Policy: <?= ucwords($next_cohort['r_cancellation_policy']); ?></h4>
+    		<h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy</h4>
+    		<p>This bootcamp offers a <b><?= ucwords($next_cohort['r_cancellation_policy']); ?></b> refund policy:</p>
     		<?php 
     		$full_days = calculate_refund(calculate_duration($bootcamp),'full',$next_cohort['r_cancellation_policy']);
     		$prorated_days = calculate_refund(calculate_duration($bootcamp),'prorated',$next_cohort['r_cancellation_policy']);
@@ -266,11 +272,11 @@ $( document ).ready(function() {
     		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($next_cohort['r_start_date'],1,($prorated_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
     		echo '</ul>';
     		?>
-    		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Bootcamp Cancellation Policies</a>.</p>
+    		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a>.</p>
     		<hr />
-    		<h4>Tuition</h4>
+    		<h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4>
     		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Reimbursement Guarantee</a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'].(count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
-    		<p>Ready to unleash your potential?</p>
+    		<p>Ready to unleash your full potential?</p>
     		
     		
     		
