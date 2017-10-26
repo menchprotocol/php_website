@@ -5,6 +5,14 @@ $application_status_salt = $this->config->item('application_status_salt');
 ?>
 <script>
 
+$( document ).ready(function() {
+	if(!parseInt($('#checklist_complete').val())){
+		//Show lock icon if sub-tasks are required
+		$('#initiate_done .fa').removeClass('fa-check-circle').addClass('fa-lock');
+	}
+});
+
+
 function mark_done(){
 
 	//Inactive for now! Maybe introduce later...
@@ -78,7 +86,6 @@ foreach($breadcrumb_p as $link){
     }
 }
 echo '</ol>';
-
 
 //Overview:
 //echo '<h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview <span class="sub-title">'.echo_time($intent['c_time_estimate'],1).'</span></h4>';
