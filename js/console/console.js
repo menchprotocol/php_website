@@ -49,5 +49,7 @@ var setting_listu = {
 
 function update_hash(hash){
 	window.location.hash = hash;
-    e.preventDefault();
+	if(!(typeof e === 'undefined')){
+		e.preventDefault();
+	}
 }

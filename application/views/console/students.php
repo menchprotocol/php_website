@@ -1,4 +1,4 @@
-<p class="maxout">Manage your growing students and communicate with them live through <a href="#" data-toggle="modal" data-target="#MenchBotModal">MenchBot</a>.</p>
+<p class="maxout">Connect with your students on-demand using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>:</p>
 <ul class="maxout">
 	<li>Filter students by cohort and see the leaderboard of each <a href="https://support.mench.co/hc/en-us/articles/115002372531"><u>Mench Game</u></a>.</li>
 	<li>Also filter by students who are behind so you can give them a hand.</li>

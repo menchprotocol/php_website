@@ -1,5 +1,6 @@
 <?php 
 $sprint_units = $this->config->item('sprint_units');
+$r_start_time_mins = $this->config->item('r_start_time_mins');
 //$sprint_units[$bootcamp['b_sprint_unit']]['name']
 $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
 //Calculate office hours:
@@ -33,7 +34,6 @@ if(isset($office_hours) && is_array($office_hours)){
 ?>
 
 
-<script src="/js/lib/jquery.countdownTimer.min.js" type="text/javascript"></script>
 <script>
 function toggleview(object_key){
 	if($('#'+object_key+' .pointer').hasClass('fa-caret-right')){
@@ -88,7 +88,7 @@ $( document ).ready(function() {
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
-            	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']); ?>*</b> ($<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?>)</li>
+            	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']).( $next_cohort['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $next_cohort['r_usd_price']>0 ? ' ($'.round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
             	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(calculate_duration($bootcamp)-1)) ?></b></li>
             	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
@@ -104,7 +104,9 @@ $( document ).ready(function() {
             	<?php } ?>
             </ul>
             
+            <?php if($next_cohort['r_usd_price']>0){ ?>
             <p style="padding:0 0 0 5px; font-size:0.9em; line-height:120%;"><b>*</b> All Bootcamps include our signature <a href="https://support.mench.co/hc/en-us/articles/115002080031"><b>Tuition Reimbursement Guarantee &raquo;</b></a></p>
+            <?php } ?>
             
             <div style="padding:10px 0 30px; text-align:center;">
             	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
@@ -128,10 +130,23 @@ $( document ).ready(function() {
     		<p>The tasks for this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp are estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>to complete, or about <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b>:</p>
     		<div id="c_goals_list">
     		<?php 
+    		$action_plan_item = 0;
             foreach($bootcamp['c__child_intents'] as $sprint){
+                $action_plan_item++;
                 echo '<div id="c_'.$sprint['c_id'].'">';
-                echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].' '.echo_time($sprint['c__estimated_hours'],1).'</a></h4>';
-                    echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">'.$sprint['c_todo_overview'].'</div>';
+                    echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</a></h4>';
+                    echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
+                        echo $sprint['c_todo_overview'];
+                        echo '<div class="title-sub">';
+                            if(count($sprint['c__child_intents'])>0){
+                                echo '<i class="fa fa-check-square" aria-hidden="true"></i>'.count($sprint['c__child_intents']).' Task'.(count($sprint['c__child_intents'])==1?'':'s').' &nbsp;';
+                            }
+                            if($sprint['c__estimated_hours']>0){
+                                echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp;';
+                            }
+                            echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp,$action_plan_item)-1)).' 11:59pm PST';
+                        echo '</div>';
+                    echo '</div>';
                 echo '</div>';
             }
             ?>
@@ -163,10 +178,11 @@ $( document ).ready(function() {
     		<p>This bootcamp offers chat response times of <b>Under <?= echo_hours($next_cohort['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
     		<hr />
     		
-    		<?php /*
+    		
+    		<?php if(strlen($next_cohort['r_facebook_group_id'])>1){ ?>
     		<h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Group</h4>
     		<p>A Facebook Group enables students to connect with their peers and instructors to share ideas as a micro-community that shares a common goal.</p>
-    		*/?>
+    		<?php } ?>
     		
     		
     		
@@ -245,22 +261,20 @@ $( document ).ready(function() {
     
     
     
-    
-    
-    
-    
-    
-    
+
     		<h3>Admission</h3>
     		<h4><i class="fa fa-calendar" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
-    			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2) ?></b></li>
+    			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2).' '.$r_start_time_mins[$next_cohort['r_start_time_mins']] ?> PST</b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).((count($bootcamp['c__child_intents'])==1?'':'s')) ?></b></li>
-    			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?></b></li>
+    			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST</b></li>
     		</ul>
     		<hr />
     		
+    		
+    		
+    		<?php if($next_cohort['r_usd_price']>0){ ?>
     		<h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy</h4>
     		<p>This bootcamp offers a <b><?= ucwords($next_cohort['r_cancellation_policy']); ?></b> refund policy:</p>
     		<?php 
@@ -274,8 +288,18 @@ $( document ).ready(function() {
     		?>
     		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a>.</p>
     		<hr />
+    		<?php } ?>
+    		
+    		
+    		
+    		
+    		
     		<h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4>
+    		<?php if($next_cohort['r_usd_price']>0){ ?>
     		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Reimbursement Guarantee</a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'].(count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
+    		<?php } else { ?>
+    		<p>This bootcamp is <b>FREE</b>.</p>
+    		<?php } ?>
     		<p>Ready to unleash your full potential?</p>
     		
     		

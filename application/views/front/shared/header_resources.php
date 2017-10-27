@@ -23,6 +23,7 @@ $website = $this->config->item('website');
 <script src="/js/console/bootstrap.min.js" type="text/javascript"></script>
 <script src="/js/console/material.min.js" type="text/javascript"></script>
 <script src="/js/console/material-dashboard.js" type="text/javascript"></script>
+<script src="/js/lib/jquery.countdownTimer.min.js" type="text/javascript"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="//cdn.quilljs.com/1.3.3/quill.min.js"></script>
 <!-- END SHARED RESOURCES -->

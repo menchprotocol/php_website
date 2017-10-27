@@ -12,8 +12,8 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-function calculate_duration($bootcamp,$current_week=null){
-    return ((($current_week ? $current_week : count($bootcamp['c__child_intents']))*($bootcamp['b_sprint_unit']=='week'?7:1)));
+function calculate_duration($bootcamp,$action_plan_item=null){
+    return ( ( !is_null($action_plan_item) ? $action_plan_item : count($bootcamp['c__child_intents']) ) * ( $bootcamp['b_sprint_unit']=='week' ? 7 : 1 ) );
 }
 
 function calculate_refund($duration_days,$refund_type,$cancellation_policy){
@@ -71,7 +71,7 @@ function extract_level($b,$c_id){
         
         //Level 1 (The bootcamp itself)
         $view_data['level'] = 1;
-        $view_data['week_num'] = 0;
+        $view_data['sprint_index'] = 0;
         $view_data['intent'] = $b;
         $view_data['title'] = 'Action Plan | '.$b['c_objective'];
         $view_data['breadcrumb'] = array(
@@ -90,7 +90,7 @@ function extract_level($b,$c_id){
             if($sprint['c_id']==$c_id){
                 //Found this as level 2:
                 $view_data['level'] = 2;
-                $view_data['week_num'] = $sprint['cr_outbound_rank'];
+                $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                 $view_data['intent'] = $sprint;
                 $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
                 $view_data['breadcrumb'] = array(
@@ -123,6 +123,7 @@ function extract_level($b,$c_id){
                     if($task['c_id']==$c_id){
                         //This is level 3:
                         $view_data['level'] = 3;
+                        $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                         $view_data['intent'] = $task;
                         $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
                         $view_data['breadcrumb'] = array(
@@ -301,7 +302,7 @@ function echo_br($admin){
 
 
 //This is used for My/Actionplan display:
-function echo_c($b,$c,$level,$us_data=null){
+function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     /* 
      * $b = Bootcamp object
      * $c = Intent object
@@ -311,59 +312,68 @@ function echo_c($b,$c,$level,$us_data=null){
      *    3 = Task
      * 
      * * */
+
+    //Calculate deadlines if level 2 action plan items to see which one to show!
+    $unlocked_action_plan = false;
+    if($level==2){
+        //Do some time calculations for the point system:
+        $open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index-1)))))+($sprint_index==1?(intval($b['r_start_time_mins'])*60):0);
+        $unlocked_action_plan = ( time() >= $open_date );
+    }
     
-    
-        $show_a = true; //Most cases
-        //Left content
-        if($level==0){
-            $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-            $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
-        } elseif($level==3 || $c['cr_outbound_rank']<=1){
-            $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-            
-            if(isset($us_data[$c['c_id']])){
-                $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
-            } else {
-                $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
-            }
-            
-            
-            //if($c['cr_outbound_rank']<=1){
-            //$ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
-            //}
-            
+
+    $show_a = true; //Most cases
+    //Left content
+    if($level==0){
+        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
+    } elseif($level==3 || $unlocked_action_plan){
+        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        
+        if(isset($us_data[$c['c_id']])){
+            $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
         } else {
-            $show_a = false; //Not here, its locked
-            $ui = '<li class="list-group-item">';
-            $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
+            $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
         }
         
-        if($level>0){
-            $ui .= ( $level>=2 ? ( $level==2 ? '<span class="inline-level">'.strtoupper(substr($b['b_sprint_unit'],0,1)).$c['cr_outbound_rank'].'</span>' : '' ) : '' );
-        }
         
-        $ui .= $c['c_objective'].' ';
+        //if($c['cr_outbound_rank']<=1){
+        //$ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
+        //}
         
+    } else {
+        $show_a = false; //Not here, its locked
+        $ui = '<li class="list-group-item">';
+        $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
+    }
+    
+    if($level>0){
+        $ui .= ( $level>=2 ? ( $level==2 ? '<span class="inline-level">'.strtoupper(substr($b['b_sprint_unit'],0,1)).$c['cr_outbound_rank'].'</span>' : '' ) : '' );
+    }
+    
+    $ui .= $c['c_objective'].' ';
+    
+    
+    
+    $ui .= '<span class="sub-stats">';
         
-        $ui .= '<span class="sub-stats">';
-            
-        //Other settings:
-        if($show_a && $level==2 && isset($c['c__estimated_hours'])){
-                $ui .= echo_time($c['c__estimated_hours'],1);
-        } elseif($level==3 && isset($c['c_time_estimate'])){
-                $ui .= echo_time($c['c_time_estimate'],1);
-        }
-            
-        if($show_a && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            //This sprint has Assignments:
-            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
-        }
+    //Other settings:
+    if($show_a && $level==2 && isset($c['c__estimated_hours'])){
+            $ui .= echo_time($c['c__estimated_hours'],1);
+    } elseif($level==3 && isset($c['c_time_estimate'])){
+            $ui .= echo_time($c['c_time_estimate'],1);
+    }
         
-        //TODO Need to somehow fetch cohorts in here...
-        //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($admission['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
-        $ui .= '</span>';
-        
-        $ui .= ($show_a ? '</a>' : '</li>');
+    if($show_a && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+        //This sprint has Assignments:
+        $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
+    }
+    
+    //TODO Need to somehow fetch cohorts in here...
+    //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($admission['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
+    $ui .= '</span>';
+    
+    $ui .= ($show_a ? '</a>' : '</li>');
     return $ui;
 }
 
@@ -1044,7 +1054,10 @@ function time_format($t,$format=0,$plus_days=0){
         return date(( $this_year ? "M j" : "M j Y" ),$timestamp);
     } elseif($format==5){
         return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);
+    } elseif($format==6){
+        return date("Y/m/d",$timestamp);
     } 
+    
 }
 
 function time_diff($t,$second_tiome=null){
@@ -1389,7 +1402,17 @@ function echo_us($us_data){
 
 
 
-
+function bigintval($value) {
+    $value = trim($value);
+    if (ctype_digit($value)) {
+        return $value;
+    }
+    $value = preg_replace("/[^0-9](.*)$/", '', $value);
+    if (ctype_digit($value)) {
+        return $value;
+    }
+    return 0;
+}
 
 
 

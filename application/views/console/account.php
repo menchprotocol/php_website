@@ -118,6 +118,9 @@ if(!(count($ufetch)==1)){
 $udata = $ufetch[0];
 ?>
 
+<p style="float:right; margin-top:-75px;"><a href="/process/logout" class="btn btn-xs btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></p>
+
+
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile" data-toggle="tab" onclick="update_hash('profile')"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
   <li id="nav_password"><a href="#password" data-toggle="tab" onclick="update_hash('password')"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>

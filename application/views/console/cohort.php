@@ -33,7 +33,7 @@ $(document).ready(function() {
 	    	minDate : 2,
 	    	beforeShowDay: function(date){
 	    		  var day = date.getDay(); 
-	    		  return [day == 1,""];
+	    		  return [ <?= $bootcamp['b_sprint_unit']=='week' ? 'day==1' : 'day==1 || day==2 || day==3 || day==4 || day==5 || day==6 || day==0' ?> ,""];
 	    	},
 		});
 	});
@@ -77,6 +77,8 @@ function save_r(){
 		r_live_office_hours_check:$('#r_live_office_hours_val').val(),
 		r_office_hour_instructions:$('#r_office_hour_instructions').val(),
 		r_closed_dates:$('#r_closed_dates').val(),
+		r_start_time_mins:$('#r_start_time_mins').val(),
+		r_facebook_group_id:$('#r_facebook_group_id').val(),
 		
 		//Cohort:
 		r_status:$('#r_status').val(),
@@ -130,7 +132,7 @@ function reset_default(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_admission" class="active"><a href="#admission" data-toggle="tab" onclick="update_hash('admission')"><i class="fa fa-ticket" aria-hidden="true"></i> Admission</a></li>
-  <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> 1-on-1 Support</a></li>
+  <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
   <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Pricing</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
@@ -194,7 +196,7 @@ function reset_default(){
     
 		<div class="title"><h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4></div>
 		<ul>
-			<li>Almost all your student communication is done using our <a href="#" target="_blank">Ask Mench Bot <i class="fa fa-external-link" aria-hidden="true"></i></a>.</li>
+			<li>Student communication is done on Facebook Messenger using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> <u>MenchBot</u></a>.</li>
 			<li>You are required to respond to 100% of incoming student messages.</li>
 			<li>You get to choose how fast you commit to responding to messages.</li>
 		</ul>
@@ -224,11 +226,19 @@ function reset_default(){
         </select>
         
         
-        
-        
-        
+        <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Group ID</h4></div>
+		<ul>
+			<li>Empower students to interact with each other to increase engagement.</li>
+			<li>Create a Private Facebook Group for each cohort and add ID below.</li>
+			<li>MenchBot invites students to join group at the start of the cohort.</li>
+		</ul>
+		<div class="input-group border">
+          <span class="input-group-addon addon-lean">https://www.facebook.com/groups/</span><input type="number" min="0" step="1" placeholder="1944349839139244" class="form-control social-input" id="r_facebook_group_id" maxlength="22" value="<?= ($cohort['r_facebook_group_id']>0 ? $cohort['r_facebook_group_id'] : '') ?>" />
+        </div>
         
 		
+		
+		<br />
 		<div class="title"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Live Office Hours</h4></div>
 		<ul>
 			<li>Provide support to students who show-up during pre-set office hours.</li>
@@ -312,7 +322,7 @@ function reset_default(){
         	echo '</ul></div>';
 		}
 		?>
-        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a></p>
+        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a>.</p>
         
 
     </div>
@@ -330,27 +340,34 @@ function reset_default(){
 		<br />
 		
 		
-		<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Cohort Start Day</h4></div>
+		
+		
+		<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time</h4></div>
   		<ul>
-			<li>The bootcamp's start day for this cohort of students.</li>
-  			<li>End date automatically calculated based on the number of <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Goals</b></a>.</li>
+			<li>The day & time when this cohort starts.</li>
+			<li>Start time also controls when each Action Plan <?= $bootcamp['b_sprint_unit'] ?> starts.</li>
+  			<li>End date auto calculated based on the number of <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Goals</b></a>.</li>
   			<?php if($bootcamp['b_sprint_unit']=='week'){ ?>
   			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> bootcamps always start on Mondays and end on Sundays.</li>
   			<?php } ?>
 		</ul>
         <div class="form-group label-floating is-empty">
-            <input type="text" id="r_start_date" value="<?= date("m/d/Y" , strtotime($cohort['r_start_date']) ) ?>" style="width:233px;" class="form-control border" />
+        
+            <input type="text" id="r_start_date" value="<?= date("m/d/Y" , strtotime($cohort['r_start_date']) ) ?>" style="width:120px;display:inline-block;" class="form-control border" />
             <span class="material-input"></span>
+            
         </div>
-        <?php /*
-        <ul style="list-style:none; margin-left:-20px;">
-  			<li><span style="width:165px; display:inline-block;">Admission Starts</span><span class="dynamic" id="r_cache_registration_start_time"></span></li>
-			<li><span style="width:165px; display:inline-block;">Admission Ends</span><span class="dynamic" id="r_cache_registration_end_time"></span></li>
-			<li><span style="width:165px; display:inline-block;">Bootcamp Starts</span><span class="dynamic" id="r_cache_cohort_first_day"></span></li>
-			<li><span style="width:165px; display:inline-block;">Bootcamp Ends</span><span class="dynamic" id="r_cache_cohort_last_day"></span></li>
-		</ul>
-        */?>
-        <br />
+        <div class="form-group label-floating is-empty" style="margin-left:130px; margin-top:-50px;">
+
+            <select class="form-control input-mini border" id="r_start_time_mins">
+            	<?php 
+            	$r_start_time_mins = $this->config->item('r_start_time_mins');
+            	foreach($r_start_time_mins as $minutes=>$fancy_time){
+            	    echo '<option value="'.$minutes.'" '.( $cohort['r_start_time_mins']==$minutes ? 'selected="selected"' : '' ).'>'.$fancy_time.' PST</option>';
+            	}
+            	?>
+            </select>
+        </div>        
         
         
         

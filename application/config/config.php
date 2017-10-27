@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.55,
+    'version' => 0.56,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -139,6 +139,59 @@ $config['default_cohort_prerequisites'] = array(
     'An internet-connected computer',
     'Flient in English',
     'etc...',
+);
+
+
+
+$config['r_start_time_mins'] = array(
+    0 => 'Midnight',
+    30 => '12:30am',
+    60 => '1:00am',
+    90 => '1:30am',
+    120 => '2:00am',
+    150 => '2:30am',
+    180 => '3:00am',
+    210 => '3:30am',
+    240 => '4:00am',
+    270 => '4:30am',
+    300 => '5:00am',
+    330 => '5:30am',
+    360 => '6:00am',
+    390 => '6:30am',
+    420 => '7:00am',
+    450 => '7:30am',
+    480 => '8:00am',
+    510 => '8:30am',
+    540 => '9:00am',
+    570 => '9:30am',
+    600 => '10:00am',
+    630 => '10:30am',
+    660 => '11:00am',
+    690 => '11:30am',
+    720 => 'Noon',
+    750 => '12:30pm',
+    780 => '1:00pm',
+    810 => '1:30pm',
+    840 => '2:00pm',
+    870 => '2:30pm',
+    900 => '3:00pm',
+    930 => '3:30pm',
+    960 => '4:00pm',
+    990 => '4:30pm',
+    1020 => '5:00pm',
+    1050 => '5:30pm',
+    1080 => '6:00pm',
+    1110 => '6:30pm',
+    1140 => '7:00pm',
+    1170 => '7:30pm',
+    1200 => '8:00pm',
+    1230 => '8:30pm',
+    1260 => '9:00pm',
+    1290 => '9:30pm',
+    1320 => '10:00pm',
+    1350 => '10:30pm',
+    1380 => '11:00pm',
+    1410 => '11:30pm',
 );
 
 

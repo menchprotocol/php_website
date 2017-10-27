@@ -2,6 +2,13 @@
 //Fetch some variables:
 $sprint_units = $this->config->item('sprint_units');
 $application_status_salt = $this->config->item('application_status_salt');
+
+//Do some time calculations for the point system:
+$due_date = time_format($admission['r_start_date'],2,(calculate_duration($admission,($sprint_index>0?$sprint_index:null))-1));
+$due_late_date = time_format($admission['r_start_date'],2,(calculate_duration($admission,($sprint_index>0?($sprint_index+1):(count($admission['c__child_intents'])+1)))-1));
+$ontime_secs_left = (strtotime($due_date) - time())+((24*3600)-1);
+$alittle_late_secs = ( $admission['b_sprint_unit']=='week' ? (7*24*3600) : (24*3600) );
+$qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
 ?>
 <script>
 
@@ -10,8 +17,24 @@ $( document ).ready(function() {
 		//Show lock icon if sub-tasks are required
 		$('#initiate_done .fa').removeClass('fa-check-circle').addClass('fa-lock');
 	}
-});
 
+	$("#ontime_dueby").countdowntimer({
+		startDate : "<?= date('Y/m/d H:i:s'); ?>",
+        dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date))); ?> 23:59:59",
+		size : "lg",
+		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+      	regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+	});
+	$("#late_dueby").countdowntimer({
+		startDate : "<?= date('Y/m/d H:i:s'); ?>",
+        dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date)+$alittle_late_secs)); ?> 23:59:59",
+		size : "lg",
+		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+      	regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+	});
+
+	
+});
 
 function mark_done(){
 
@@ -33,7 +56,9 @@ function mark_done(){
 	//Save the rest of the content:
 	$.post("/process/completion_report", {	
 
+		page_loaded:<?= time() ?>,
 		us_notes:us_notes,
+		us_on_time_score:<?= $ontime_secs_left>0 ? '1.00' : ( $qualify_for_little_late ? '0.50' : '0.00' ) ?>,
 		u_id:$('#u_id').val(),
 		b_id:$('#b_id').val(),
 		r_id:$('#r_id').val(),
@@ -108,6 +133,18 @@ if(isset($us_data[$intent['c_id']])){
     echo '<textarea id="us_notes" placeholder="Share comments to get feedback from your instructor..." class="form-control maxout"></textarea>';
     echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
     echo '</div>';
+    
+    if($ontime_secs_left>0){
+        //Still on time:
+        echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' 11:59pm PST in <span id="ontime_dueby"></span>';
+    } else {
+        echo '<span style="text-decoration: line-through;">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Was due '.$due_date.' 11:59pm PST</span>';
+        if($qualify_for_little_late && $sprint_index>0){
+            echo '<div style="padding-left:22px;"><b>Earn '.floor($intent['c_time_estimate']*30).' late points</b> by '.$due_late_date.' 11:59pm PST in <span id="late_dueby"></span></div>';
+        }
+    }
+    
+    
 }
 echo '</div>';
 
@@ -133,6 +170,7 @@ if($level>1){
 }
 
 
+
 //Display Action Plan list:
 if($level<3){
     echo '<h4><i class="fa fa-list-ul" aria-hidden="true"></i> '.( $level==1 ? $sprint_units[$admission['b_sprint_unit']]['name'].' Action Plan' : 'Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
@@ -147,12 +185,14 @@ if($level<3){
         //echo '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>3</span>';
         echo '</li>';
     }
+    $sprint_index = 0;
     $done_count = 0;
     foreach($intent['c__child_intents'] as $sub_intent){
+        $sprint_index++;
         if(isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=0){
             $done_count++;
         }
-        echo echo_c($bootcamp,$sub_intent,($level+1),$us_data);
+        echo echo_c($admission,$sub_intent,($level+1),$us_data,$sprint_index);
     }
     $checklist_done = ( $done_count == count($intent['c__child_intents']) );
     echo '</div>';

@@ -554,10 +554,9 @@ class Process extends CI_Controller {
 	                //Make some adjustments
 	                $cohort_data['r_start_date'] = $new_date;
 	                $cohort_data['r_status'] = intval($_POST['r_status']); //Override with input status
-	                //TODO Update cache timeline
 	                
 	                //The following data are unique and should NOT be copied:
-	                unset($cohort_data['r_cache_pst_timeline']);
+	                unset($cohort_data['r_facebook_group_id']); //Each cohort has a unique group
 	                unset($cohort_data['r_id']);
 	                unset($cohort_data['r_typeform_id']);
 	                unset($cohort_data['r_is_locked']);
@@ -691,6 +690,7 @@ class Process extends CI_Controller {
 	    $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
 	    //Check for unique start date:
 	    $current_cohorts = $this->Db_model->r_fetch(array(
+	        'r.r_id !=' => intval($_POST['r_id']),
 	        'r.r_b_id' => intval($_POST['b_id']),
 	        'r.r_status >=' => 0,
 	        'r.r_start_date' => $new_date,
@@ -721,6 +721,8 @@ class Process extends CI_Controller {
 	        'r_application_questions' => $_POST['r_application_questions'],
 	        'r_prerequisites' => $_POST['r_prerequisites'],
 	        'r_cancellation_policy' => $_POST['r_cancellation_policy'],
+	        'r_start_time_mins' => intval($_POST['r_start_time_mins']),
+	        'r_facebook_group_id' => bigintval($_POST['r_facebook_group_id']),
 	        'r_typeform_id' => $_POST['r_typeform_id'],
 	        'r_closed_dates' => $_POST['r_closed_dates'],
 	        'r_status' => intval($_POST['r_status']),
@@ -1118,8 +1120,10 @@ class Process extends CI_Controller {
 	        || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
 	        || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
 	            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
-	    //} elseif(!isset($_POST['us_notes']) || strlen($_POST['us_notes'])<=0){
-	        //die('<span style="color:#FF0000;">Error: Missing Report Content.</span>');
+	    } elseif(!isset($_POST['us_on_time_score'])){
+	        die('<span style="color:#FF0000;">Error: Missing point score.</span>');
+	    } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
+	        die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
 	    }
 	    
 	    //Fetch intent:
@@ -1130,15 +1134,13 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid task ID.</span>');
 	    }
 	    
-	    //See if we have to give any points for this completion:
-	    //TODO
 	    
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
 	        'us_b_id' => intval($_POST['b_id']),
 	        'us_r_id' => intval($_POST['r_id']),
 	        'us_c_id' => intval($_POST['c_id']),
-	        'us_on_time_score' => 1, //Either 1 or 0.5 TODO update based on centralized time
+	        'us_on_time_score' => floatval($_POST['us_on_time_score']),
 	        'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
 	        'us_student_id' => intval($_POST['u_id']),
 	        'us_student_notes' => trim($_POST['us_notes']),
