@@ -212,7 +212,9 @@ function echo_i($i,$first_name=null){
     echo '</div>';
 }
 
-
+function make_links_clickable($text){
+    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1"><u>$1</u></a>', $text);
+}
 
 function echo_message($i){
 	//Fetch current Challenge:
@@ -225,8 +227,6 @@ function echo_message($i){
 	
 	    //Type & Delivery Method:
 	echo '<div>'.$i_media_type_names[$i['i_media_type']].'</div>';
-	
-	
 	    
 	    echo '<div class="edit-off">';
 	    echo echo_i($i);

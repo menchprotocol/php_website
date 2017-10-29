@@ -3,6 +3,7 @@ encoding//application/controllers/Bot.php=UTF-8
 encoding//application/controllers/Front.php=UTF-8
 encoding//application/controllers/My.php=UTF-8
 encoding//application/controllers/Process.php=UTF-8
+encoding//application/helpers/general_helper.php=UTF-8
 encoding//application/models/Facebook_model.php=UTF-8
 encoding//application/views/front/splash/the_online_challenge_framework.php=UTF-8
 encoding//application/views/front/student/actionplan_ui.php=UTF-8

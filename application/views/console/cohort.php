@@ -24,7 +24,7 @@ $(document).ready(function() {
     	setTimeout(function() {
     		$('.tab-pane, #topnav > li').removeClass('active');
     		$('#'+hash+', #nav_'+hash).addClass('active');
-	    }, 100);
+	    }, 300);
     }
     
 	//Load date picker:
@@ -182,7 +182,7 @@ function save_r(){
 			<ul>
       			<li>Instructions on how students can contact you or your team.</li>
     			<li>Include Skype ID, Google Hangout link, Zoom video confrence url, etc...</li>
-    			<li>We send automatic reminders 30-minutes prior to each office hour.</li>
+    			<li>Mench sends automatic reminders 30-minutes prior to each office hour.</li>
     		</ul>
             <div class="form-group label-floating is-empty">
                 <textarea class="form-control text-edit border" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $cohort['r_office_hour_instructions'] ?></textarea>
@@ -192,7 +192,7 @@ function save_r(){
             <div class="title"><h4>Office Hours: Weekly Schedule</h4></div>
             <ul>
       			<li>Set office hours in PST timezone (Currently <?= time_format(time(),7) ?>).</li>
-    			<li>We will adjust hours based on each student's timezone.</li>
+    			<li>Mench will adjust hours based on each student's timezone.</li>
     			<li>Click once to insert new time-frame and then drag to expand.</li>
     		</ul>
             <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/cohorts/<?= $cohort['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>

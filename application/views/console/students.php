@@ -22,7 +22,7 @@ if(count($submissions)>0){
         //Print their submission:
         echo '<div class="row">';
         echo '<div class="col-sm-4"><a href="/console/'.$bootcamp['b_id'].'/actionplan/'.$s['c_id'].'"><b><u>'.$s['c_objective'].'</u></b></a><br />Submitted '.( $s['us_on_time_score']==0 ? '<b style="color:#FF0000">really late</b>' : ( $s['us_on_time_score']==1 ? '<b style="color:#00CC00">on-time</b>' : '<b style="color:#FF8C00">a little late</b>' ) ).'<br />'.time_format($s['us_timestamp']).'</div>
-        <div class="col-sm-8">'.( strlen($s['us_student_notes'])>0 ? nl2br($s['us_student_notes']) : 'No Comments' ).'</div>';
+        <div class="col-sm-8">'.( strlen($s['us_student_notes'])>0 ? nl2br(make_links_clickable($s['us_student_notes'])) : 'No Comments' ).'</div>';
         echo '</div>';
         echo '<hr />';
     }

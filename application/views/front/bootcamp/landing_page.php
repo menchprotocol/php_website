@@ -179,7 +179,7 @@ $( document ).ready(function() {
     		<hr />
     		
     		
-    		<?php if(strlen($next_cohort['r_facebook_group_id'])>1){ ?>
+    		<?php if(strlen($next_cohort['r_facebook_group_id'])>0){ ?>
     		<h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Group</h4>
     		<p>A Facebook Group enables students to connect with their peers and instructors to share ideas as a micro-community that shares a common goal.</p>
     		<?php } ?>
