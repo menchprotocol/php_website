@@ -95,7 +95,11 @@ class Console extends CI_Controller {
 	    ));
 	    if(!isset($bootcamps[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
-	    }	    
+	    }
+	    
+	    if(isset($_GET['raw'])){
+	        echo_json($bootcamps[0]); exit;
+	    }
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
@@ -104,7 +108,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Bootcamp Dashboard',
+	                'anchor' => 'Dashboard',
 	            ),
 	        ),
 	    ));
@@ -308,12 +312,12 @@ class Console extends CI_Controller {
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Bootcamp Settings | '.$bootcamps[0]['c_objective'],
+	        'title' => 'Settings | '.$bootcamps[0]['c_objective'],
 	        'bootcamp' => $bootcamps[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Bootcamp Settings',
+	                'anchor' => 'Settings',
 	            ),
 	        ),
 	    ));

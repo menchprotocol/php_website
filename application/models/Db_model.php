@@ -370,6 +370,21 @@ class Db_model extends CI_Model {
 	    return $res;
 	}
 	
+	
+	function us_fetch_fancy($match_columns){
+	    $this->db->select('*');
+	    $this->db->from('v5_user_submissions us');
+	    $this->db->join('v5_users u', 'u.u_id = us.us_student_id');
+	    $this->db->join('v5_intents c', 'c.c_id = us.us_c_id');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $this->db->order_by('us.us_student_id');
+	    $this->db->order_by('us.us_id','DESC');
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
 	/* ******************************
 	 * i Messages
 	 ****************************** */

@@ -1,7 +1,7 @@
 @CHARSET "ISO-8859-1";
 
 
-#mainsidebar { margin-top:60px; padding-top:0; }
+#mainsidebar { margin-top:60px; padding-top:0; z-index:1 !important; }
 .main-panel { background-color:transparent; }
 .dash { background-color:#FFF; border-radius:5px !important; margin-right:15px; margin-bottom:80px; padding-bottom: 5px !important; }
 .container-fluid { padding-right:15px; padding-left:15px; }
@@ -10,6 +10,15 @@
 .navbar {margin-bottom:0; padding:0 !important; height:60px !important; }
 .navbar-right { margin-right:0; margin-top:5px; }
 .nav-open .sidebar{ box-shadow:none; }
+.badge-primary {
+	background-color:#fedd16;
+	color:#000;
+	font-size:1em;
+	padding-top: 6px;
+    padding-left: 8px;
+    padding-bottom: 5px;
+    margin-top: -3px;
+}
 .breadcrumb {
 	margin:0; 
 	color:#2f2639; 
@@ -610,22 +619,6 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	color:#999;
 	font-size:0.8em;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

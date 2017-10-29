@@ -1,10 +1,3 @@
-<?php
-$sprint_units = $this->config->item('sprint_units');
-$tips_count = count($this->Db_model->i_fetch(array(
-    'i_status' => 1,
-    'i_b_id' => $bootcamp['b_id'],
-)));
-?>
 <div class="dashboard">
 
 	<div class="row">
@@ -13,15 +6,41 @@ $tips_count = count($this->Db_model->i_fetch(array(
     </div>
     <hr />
     
+    
+    <?php $launch_status = calculate_bootcamp_status($bootcamp); ?>
+    <div class="row">
+      <div class="col-sm-3"><b><?= $launch_status['stage'] ?></b></div>
+      <div class="col-sm-9">
+      		<div><b><?= $launch_status['progress'] ?>% Ready</b></div>
+      		<div class="progress">
+            	<div class="progress-bar" role="progressbar" aria-valuenow="<?= $launch_status['progress'] ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $launch_status['progress'] ?>%;">
+            	<span class="sr-only"><?= $launch_status['progress'] ?>% Complete</span>
+            	</div>
+            </div>
+      		<ul style="margin:-10px 0 0 -15px; list-style:decimal;">
+      			<?php 
+      			foreach($launch_status['call_to_action'] as $action){
+      			    echo '<li>'.$action.'</li>';
+      			}
+      			?>
+      		</ul>
+      </div>
+    </div>
+    <hr />
+    
+    
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="material-icons">format_list_numbered</i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
       	<div><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
       	<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?></div>
-      	<div><?= $tips_count ?> Tip<?= ($tips_count==1?'':'s') ?></div>
+      	<div><?= $bootcamp['c__tip_count'] ?> Tip<?= ($bootcamp['c__tip_count']==1?'':'s') ?></div>
       	
+      	<?php if(count($bootcamp['c__child_intents'])>0){ ?>
+      	<div><?= round($bootcamp['c__estimated_hours'],1) ?> Hours = <?= number_format($bootcamp['c__estimated_hours']*60) ?> Points</div>
+      	<div><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?> Hours/<?= ucwords($bootcamp['b_sprint_unit']) ?></div>
+      	<?php } ?>
       	
-      	<?= ( count($bootcamp['c__child_intents'])>0 ? '<div>'.round($bootcamp['c__estimated_hours'],1).' Hours</div><div>'.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']).'</div>' : '' ) ?>
       </div>
     </div>
     <hr />

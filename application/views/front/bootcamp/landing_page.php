@@ -1,6 +1,6 @@
 <?php 
 $sprint_units = $this->config->item('sprint_units');
-$r_start_time_mins = $this->config->item('r_start_time_mins');
+$start_times = $this->config->item('start_times');
 //$sprint_units[$bootcamp['b_sprint_unit']]['name']
 $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
 //Calculate office hours:
@@ -266,7 +266,7 @@ $( document ).ready(function() {
     		<h4><i class="fa fa-calendar" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
-    			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2).' '.$r_start_time_mins[$next_cohort['r_start_time_mins']] ?> PST</b></li>
+    			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2).' '.$start_times[$next_cohort['r_start_time_mins']] ?> PST</b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).((count($bootcamp['c__child_intents'])==1?'':'s')) ?></b></li>
     			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST</b></li>
     		</ul>

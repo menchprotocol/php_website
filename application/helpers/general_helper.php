@@ -284,7 +284,6 @@ function echo_br($admin){
         
         $ui .= '</span> ';
         
-        
         //Left content
         //$ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i> ';
         $ui .= $admin['u_fname'].' '.$admin['u_lname'].' &nbsp;';
@@ -390,6 +389,9 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	    
     	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Remove from Action Plan" data-placement="left"></i> &nbsp;';
     	    
+    	    $ui .= '<span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+    	    
+    	    
     	    //$ui .= status_bible('c',$intent['c_status'],1,'left');
     	    //$ui .= '<i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this item. You can re-add it by searching it via the Add section below." data-placement="left"></i> ';
 /*
@@ -444,6 +446,381 @@ function echo_users($users){
 		}
 		echo '<a href="/user/'.$user['u_url_key'].'">@'.$user['u_url_key'].'</a>';
 	}
+}
+
+
+function date_is_past($date){
+    return ((strtotime($date)-(24*3600))<strtotime(date("F j, Y")));
+}
+
+function calculate_bootcamp_status($b){
+    
+    $CI =& get_instance();
+    //A function used on the dashboard to indicate what is left before launching the bootcamp
+    $progress_possible = 0; //Total points of progress
+    $progress_gained = 0; //Points granted for completion
+    $call_to_action = array();
+    
+    //Now we will check in order that we would display call to actions:
+    $task_count = 0;
+    foreach($b['c__child_intents'] as $c){
+        
+        if($c['c_status']<0){
+            continue;
+        }
+        
+        //Clear the intent checker:
+        unset($c_missing);
+        $c_missing = array();
+        
+        /* *****************************
+         *  Action Plan
+         *******************************/
+        
+        
+        //c_todo_overview
+        $to_gain = 10;
+        $progress_possible += $to_gain;
+        if(strlen($c['c_todo_overview'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($c_missing,'[Overview]');
+        }
+        
+        //c_time_estimate
+        if(!isset($c['c__child_intents']) || count($c['c__child_intents'])<=0){
+            $to_gain = 5;
+            $progress_possible += $to_gain;
+            if($c['c_time_estimate']>0){
+                $progress_gained += $to_gain;
+            } else {
+                array_push($c_missing,'[Time Estimate OR Sub-tasks]');
+            }
+        }
+        
+        $sprint_name = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
+        //Did we have anything?
+        if(count($c_missing)>0){
+            array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+        }
+        
+        
+        if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+            //Also do the count for these:
+            foreach($c['c__child_intents'] as $c2){
+                
+                //Clear the intent checker:
+                unset($c_missing);
+                $c_missing = array();
+                
+                
+                //c_todo_overview
+                $to_gain = 10;
+                $progress_possible += $to_gain;
+                if(strlen($c2['c_todo_overview'])>0){
+                    $progress_gained += $to_gain;
+                } else {
+                    array_push($c_missing,'[Overview]');
+                }
+                
+                //c_time_estimate
+                $to_gain = 5;
+                $progress_possible += $to_gain;
+                if($c2['c_time_estimate']>0){
+                    $progress_gained += $to_gain;
+                } else {
+                    array_push($c_missing,'[Time Estimate]');
+                }
+                
+                //Did we have anything?
+                if(count($c_missing)>0){
+                    array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
+                }
+                
+                //Increase count:
+                $task_count++;
+            }
+        }
+    }
+    
+    
+    //require some tasks
+    $to_gain = 60;
+    $progress_possible += $to_gain;
+    $required_tasks = 3;
+    if($task_count>=$required_tasks){
+        $progress_gained += $to_gain;
+    } else {
+        $progress_gained += ($task_count/$required_tasks)*$to_gain;
+        array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Tasks]</b>'.($task_count>0?' ('.($required_tasks-$task_count).' more)':'').' to any '.$b['b_sprint_unit'].' of your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
+    }
+    
+    
+    //require some tips
+    $to_gain = 15;
+    $required_tips = 3;
+    $progress_possible += $to_gain;
+    if($b['c__tip_count']>=$required_tips){
+        $progress_gained += $to_gain;
+    } else {
+        $progress_gained += ($b['c__tip_count']/$required_tips)*$to_gain;
+        array_push($call_to_action,'Add <b>[At least '.$required_tips.' Tips]</b>'.($b['c__tip_count']>0?' ('.($required_tips-$b['c__tip_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
+    }
+    
+    
+    /* *****************************
+     *  Cohorts
+     *******************************/
+    
+    //Let's see if we can find a drafting or published cohort:
+    $next_cohort = null;
+    if(isset($b['c__cohorts']) && count($b['c__cohorts'])>0){
+        foreach($b['c__cohorts'] as $cohort){
+            if($cohort['r_status']<=1 && $cohort['r_status']>=0 && !date_is_past($cohort['r_start_date'])){
+                $next_cohort = $cohort;
+                break;
+            }
+        }
+    }
+    
+    //r_max_students
+    $to_gain = 5;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if(strlen($next_cohort['r_max_students'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Set <b>[Max Students]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_prerequisites
+    $to_gain = 10;
+    $progress_possible += $to_gain;
+    $default_cohort_prerequisites = $CI->config->item('default_cohort_prerequisites');
+    if($next_cohort){
+        if(strlen($next_cohort['r_prerequisites'])>0 && !($next_cohort['r_prerequisites']=='<ol><li>'.join('</li><li>',$default_cohort_prerequisites).'</li></ol>')){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Modify <b>[Prerequisites]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_application_questions
+    $to_gain = 10;
+    $progress_possible += $to_gain;
+    $default_cohort_questions = $CI->config->item('default_cohort_questions');
+    if($next_cohort){
+        if(strlen($next_cohort['r_application_questions'])>0 && !($next_cohort['r_application_questions']=='<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>')){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Modify <b>[Application Questions]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_response_time_hours
+    $to_gain = 5;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if(strlen($next_cohort['r_response_time_hours'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Set <b>[Chat Response Time]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_facebook_group_id
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if(strlen($next_cohort['r_facebook_group_id'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add a <b>[Facebook Group]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_weekly_1on1s
+    $to_gain = 5;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if(strlen($next_cohort['r_weekly_1on1s'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Set <b>[1-on-1 Mentorship Level]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_live_office_hours
+    if($next_cohort){
+        $to_gain = 5;
+        $progress_possible += $to_gain;
+        if((strlen($next_cohort['r_live_office_hours'])<=0) || (strlen($next_cohort['r_live_office_hours'])>0 && strlen($next_cohort['r_office_hour_instructions'])>0)){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Set <b>[Office Hours: Contact Method]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_usd_price
+    $to_gain = 20;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if(strlen($next_cohort['r_usd_price'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Set <b>[Admission Price]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_cancellation_policy
+    $to_gain = 10;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if($next_cohort['r_usd_price']==0 || strlen($next_cohort['r_usd_price'])==0 || strlen($next_cohort['r_cancellation_policy'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Set <b>[Refund Policy]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }    
+    
+    //r_status
+    $to_gain = 5;
+    $progress_possible += $to_gain;
+    if($next_cohort){
+        if($next_cohort['r_status']==1){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Change <b>[Cohort Status]</b> to '.status_bible('r',1).' for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#settings"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //Did we NOT have a next cohort?
+    if(!$next_cohort){
+        //Missing cohort all together!
+        array_push($call_to_action,'Create <b>[At least 1 Cohort]</b> in <a href="/console/'.$b['b_id'].'/cohorts"><u>Cohorts</u></a>');
+    }
+    
+    
+    
+    /* *******************************
+     *  Leader profile (for them only)
+     *********************************/
+    $udata = $CI->session->userdata('user');
+    if(isset($b['b__admins']) && count($b['b__admins'])>0 && $b['b__admins'][0]['u_id']==$udata['u_id']){
+        
+        //Set variable short hand:
+        $bl = $b['b__admins'][0];
+        
+        //u_phone
+        $to_gain = 5;
+        $progress_possible += $to_gain;
+        if(strlen($bl['u_phone'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[Phone Number]</b> (Private) to <a href="/console/account"><u>My Account</u></a>');
+        }
+        
+        //u_image_url
+        $to_gain = 10;
+        $progress_possible += $to_gain;
+        if(strlen($bl['u_image_url'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[Profile Picture URL]</b> to <a href="/console/account"><u>My Account</u></a>');
+        }
+        
+        //u_country_code && u_current_city
+        $to_gain = 30;
+        $progress_possible += $to_gain;
+        if(strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[Current Country, City & State]</b> to <a href="/console/account"><u>My Account</u></a>');
+        }
+        
+        //u_language
+        $to_gain = 30;
+        $progress_possible += $to_gain;
+        if(strlen($bl['u_language'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[Fluent Languages]</b> to <a href="/console/account"><u>My Account</u></a>');
+        }
+        
+        //u_image_url
+        $to_gain = 30;
+        $progress_possible += $to_gain;
+        if(strlen($bl['u_bio'])>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[Biography]</b> to <a href="/console/account"><u>My Account</u></a>');
+        }
+        
+        //Profile counter:
+        $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
+        $u_social_account = $CI->config->item('u_social_account');
+        foreach($u_social_account as $sa_key=>$sa){
+            $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
+        }
+        
+        $to_gain = 30;
+        $progress_possible += $to_gain;
+        $required_social_profiles = 3;
+        if($profile_counter>=$required_social_profiles){
+            $progress_gained += $to_gain;
+        } else {
+            $progress_gained += ($profile_counter/$required_social_profiles)*$to_gain;
+            array_push($call_to_action,'Link <b>[At least '.$required_social_profiles.' Social Profiles]</b>'.($profile_counter>0?' ('.($required_social_profiles-$profile_counter).' more)':'').' to <a href="/console/account#social"><u>My Account</u></a>');
+        }
+    }
+        
+    
+    /* *****************************
+     *  Bootcamp Settings
+     *******************************/
+    
+    //b_video_url
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if(strlen($b['b_video_url'])>0){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Add <b>[Explainer Video URL]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
+    }
+    
+    
+    //c_todo_overview
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if(strlen($b['c_todo_overview'])>0){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>'.$b['c_todo_bible']);
+    }
+    
+  
+    //c_status
+    $to_gain = 5;
+    $progress_possible += $to_gain;
+    if($b['b_status']>=1){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Change <b>[Bootcamp Status]</b> to '.status_bible('b',1).' in <a href="/console/'.$b['b_id'].'/settings#settings"><u>Settings</u></a>');
+    }
+    
+    
+    $progress_percentage = round($progress_gained/$progress_possible*100);
+    if($progress_percentage==100){
+        array_push($call_to_action,'Review all settings on your <a href="/bootcamps/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>');
+        array_push($call_to_action,'Wait until bootcamp status is updated to '.status_bible('b',3));
+        array_push($call_to_action,'Start admissions by notifying your followers via email or social media.');
+    }
+    return array(
+        'stage' => '<i class="fa fa-bullhorn" aria-hidden="true"></i> Launch Progress',
+        'progress' => $progress_percentage,
+        'call_to_action' => $call_to_action,
+    );
 }
 
 function is_valid_intent($c_id){
@@ -883,8 +1260,8 @@ function filter_next_cohort($cohorts){
         return false;
     }
     
-    foreach($cohorts as $cohort){        
-        if($cohort['r_status']>=1 && (strtotime($cohort['r_start_date'])-(24*3600))>=strtotime(date("F j, Y"))){
+    foreach($cohorts as $cohort){
+        if($cohort['r_status']==1 && !date_is_past($cohort['r_start_date'])){
             return $cohort;
             break;
         }
@@ -1040,7 +1417,7 @@ function time_format($t,$format=0,$plus_days=0){
         return 'NOW';
     }
     
-    $timestamp = strtotime(substr($t,0,19)) + ($plus_days*24*3600) + ($plus_days>0 ? (12*3600) : 0); //Added this last part to consider the end of days for dates
+    $timestamp = ( strlen(intval($t))==strlen($t) ? $t : strtotime(substr($t,0,19)) ) + ($plus_days*24*3600) + ($plus_days>0 ? (12*3600) : 0); //Added this last part to consider the end of days for dates
     $this_year = ( date("Y")==date("Y",$timestamp) );
     if($format==0){
         return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),$timestamp);
@@ -1056,6 +1433,8 @@ function time_format($t,$format=0,$plus_days=0){
         return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);
     } elseif($format==6){
         return date("Y/m/d",$timestamp);
+    } elseif($format==7){
+        return date(( $this_year ? "D M j, g:i a" : "D M j, Y, g:i a" ),$timestamp);
     } 
     
 }
@@ -1394,7 +1773,7 @@ function echo_us($us_data){
     echo status_bible('us',$us_data['us_status']);
     $points = round($us_data['us_time_estimate']*60*$us_data['us_on_time_score']);
     echo '<div style="margin:15px 0 10px;"><b>'.( $points>0 ? 'Congratulations! You earned '.$points.' points' : 'You did not earn any points' ).'</b> for completing this '.echo_time($us_data['us_time_estimate'],1).'task '.( $us_data['us_on_time_score']==0 ? 'really late' : ( $us_data['us_on_time_score']==1 ? 'on-time' : 'a little late' ) ).' on '.time_format($us_data['us_timestamp']).'.</div>';
-    echo '<div style="margin-bottom:10px;">Your Comments: '.( strlen($us_data['us_student_notes'])>0 ? $us_data['us_student_notes'] : 'None' ).'</div>';
+    echo '<div style="margin-bottom:10px;">Your Comments: '.( strlen($us_data['us_student_notes'])>0 ? nl2br($us_data['us_student_notes']) : 'None' ).'</div>';
     echo '<p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Anything changed? Simply share your task updates over <a href="javascript:close_webview();">MenchBot</a>.</p>';
 }
 

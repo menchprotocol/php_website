@@ -1,6 +1,14 @@
+<?php
+$uses = $this->session->userdata('user');
+$ufetch = $this->Db_model->u_fetch(array(
+    'u_id' => $uses['u_id'],
+));
+if(!(count($ufetch)==1)){
+    redirect_message('/console','Session expired.');
+}
+$udata = $ufetch[0];
+?>
 <script>
-
-
 $(document).ready(function() {
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
@@ -31,32 +39,6 @@ function trigger_link_watch(link_id,prepend_url){
 }
 
 function update_account(){
-	
-	if(!$('#u_fname').val().length){
-		alert('Missing first name.');
-		return false;
-	} else if(!$('#u_lname').val().length){
-		alert('Missing last name.');
-		return false;
-	} else if(!$('#u_email').val().length){
-		alert('Missing email.');
-		return false;
-	} else if(!$('#u_image_url').val().length){
-		alert('Missing profile picture url.');
-		return false;
-	} else if(!$('#u_gender').val().length){
-		alert('Missing gender.');
-		return false;
-	} else if(!$('#u_country_code').val().length){
-		alert('Missing country.');
-		return false;
-	} else if(!$('#u_timezone').val().length){
-		alert('Missing time zone.');
-		return false;
-	} else if(!$('#u_language').val().length){
-		alert('Missing language.');
-		return false;
-	}
 	
 	//Show spinner:
 	$('.update_u_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
@@ -103,22 +85,18 @@ function update_account(){
 	    }, 10000);
     });
 }
+
+function insert_gravatar(){
+	var gravatar_url = 'https://www.gravatar.com/avatar/<?= md5(trim(strtolower($udata['u_email']))) ?>';
+	$('.profile-pic').attr('src',gravatar_url);
+    $('#u_image_url').val(gravatar_url);
+    alert('Gravatar URL for your email <?= $udata['u_email'] ?> was successfully inserted. Make sure to SAVE changes.');
+}
 </script>
 
 
 
-<?php
-$uses = $this->session->userdata('user');
-$ufetch = $this->Db_model->u_fetch(array(
-    'u_id' => $uses['u_id'],
-));
-if(!(count($ufetch)==1)){
-    redirect_message('/console','Session expired.');
-}
-$udata = $ufetch[0];
-?>
-
-<p style="float:right; margin-top:-75px;"><a href="/process/logout" class="btn btn-xs btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></p>
+<p style="float:right; margin-top:-75px;"><a href="/process/logout" class="btn btn-sm btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></p>
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
@@ -165,8 +143,15 @@ $udata = $ufetch[0];
         
         
         <div class="title"><h4>Profile Picture URL</h4></div>
+        <ul>
+        	<li>Used as your instructor profile photo in your bootcamp landing pages.</li>
+        	<li>Link to any URL that hosts your photo, starting with "https://"</li>
+        	<?php if(strlen($udata['u_email'])>0){ ?>
+        	<li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+        	<?php } ?>
+        </ul>
         <div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-        	<img src="<?= $udata['u_image_url'] ?>" class="profile-pic" />
+        	<img src="<?= ( strlen($udata['u_image_url'])>0 ? $udata['u_image_url'] : '/img/bp_128.png' ) ?>" class="profile-pic" />
         </div>
         <div class="col-xs-10" style="padding-left:5px; padding-right:0;">
         	<input type="url" required id="u_image_url" value="<?= $udata['u_image_url'] ?>" class="form-control border">
@@ -176,6 +161,7 @@ $udata = $ufetch[0];
         <div class="title"><h4>Gender</h4></div>
         <div class="form-group label-floating is-empty">
             <select id="u_gender" class="border">
+            	<option value="">Choose...</option>
             	<?php
             	echo '<option value="m" '.($udata['u_gender']=='m'?'selected="selected"':'').'>Male</option>';
             	echo '<option value="f" '.($udata['u_gender']=='f'?'selected="selected"':'').'>Female</option>';
@@ -185,10 +171,11 @@ $udata = $ufetch[0];
         </div>
         
         
-        <div class="title"><h4>Country, City, State</h4></div>
+        <div class="title"><h4>Current Country, City & State</h4></div>
         <div class="col-md-6" style="padding-left:0; padding-right:5px;">
         	<div class="form-group label-floating is-empty">
             	<select id="u_country_code" class="border">
+            		<option value="">Choose...</option>
                 	<?php
                 	$countries_all = $this->config->item('countries_all');
                 	foreach($countries_all as $c_key=>$c_name){
@@ -208,6 +195,7 @@ $udata = $ufetch[0];
         <div class="title"><h4>Timezone</h4></div>
         <div class="form-group label-floating is-empty">
             <select id="u_timezone" class="border">
+            	<option value="">Choose...</option>
             	<?php
             	$timezones = $this->config->item('timezones');
             	foreach($timezones as $tz_val=>$tz_name){

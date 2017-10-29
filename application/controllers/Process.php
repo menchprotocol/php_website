@@ -366,6 +366,7 @@ class Process extends CI_Controller {
 	    header( 'Location: /' );
 	}
 	
+
 	
 	function account_update(){
 	    
@@ -384,16 +385,12 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
 	    } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
 	        die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
-	    } elseif(!isset($_POST['u_image_url']) || !filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://' || !url_exists($_POST['u_image_url'])){
+	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://' || !url_exists($_POST['u_image_url']))){
 	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
-	    } elseif(!isset($_POST['u_gender']) || !in_array($_POST['u_gender'],array('m','f'))){
-	        die('<span style="color:#FF0000;">Error: Missing gender. Try again.</span>');
-	    } elseif(!isset($_POST['u_country_code']) || !array_key_exists($_POST['u_country_code'], $countries_all)){
-	        die('<span style="color:#FF0000;">Error: Missing country. Try again.</span>');
-	    } elseif(!isset($_POST['u_timezone']) || !array_key_exists($_POST['u_timezone'], $timezones)){
-	        die('<span style="color:#FF0000;">Error: Missing timezone.</span>');
-	    } elseif(!isset($_POST['u_language']) || count($_POST['u_language'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing language. Try again.</span>');
+	    }
+	    
+	    if(!isset($_POST['u_language'])){
+	        $_POST['u_language'] = array();
 	    }
 	    
 	    //Fetch current data:
@@ -511,8 +508,9 @@ class Process extends CI_Controller {
 	        //Display error:
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
+	    } elseif(!isset($_POST['r_start_time_mins'])){
+	        die('<span style="color:#FF0000;">Error: Enter valid start time.</span>');
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
@@ -553,13 +551,13 @@ class Process extends CI_Controller {
 	                
 	                //Make some adjustments
 	                $cohort_data['r_start_date'] = $new_date;
+	                $cohort_data['r_start_time_mins'] = intval($_POST['r_start_time_mins']);
 	                $cohort_data['r_status'] = intval($_POST['r_status']); //Override with input status
 	                
 	                //The following data are unique and should NOT be copied:
 	                unset($cohort_data['r_facebook_group_id']); //Each cohort has a unique group
 	                unset($cohort_data['r_id']);
 	                unset($cohort_data['r_typeform_id']);
-	                unset($cohort_data['r_is_locked']);
 	            }
 	        }
 	        
@@ -575,6 +573,7 @@ class Process extends CI_Controller {
 	            $cohort_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
+	                'r_start_time_mins' => intval($_POST['r_start_time_mins']),
 	                'r_status' => intval($_POST['r_status']),
 	                'r_prerequisites' => '<ol><li>'.join('</li><li>',$default_cohort_prerequisites).'</li></ol>',
 	                'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
@@ -636,8 +635,9 @@ class Process extends CI_Controller {
 	    
 	    
 	    $blank_template = 'a:7:{i:0;a:1:{s:3:"day";s:1:"0";}i:1;a:1:{s:3:"day";s:1:"1";}i:2;a:1:{s:3:"day";s:1:"2";}i:3;a:1:{s:3:"day";s:1:"3";}i:4;a:1:{s:3:"day";s:1:"4";}i:5;a:1:{s:3:"day";s:1:"5";}i:6;a:1:{s:3:"day";s:1:"6";}}';
+	    $prepped_input = trim(serialize($_POST['hours']));
 	    $r_update = array(
-	        'r_live_office_hours' => ( trim(serialize($_POST['hours']))==$blank_template ? '' : serialize($_POST['hours'])),
+	        'r_live_office_hours' => ( strlen($prepped_input)>0 && !($prepped_input==$blank_template) ? $prepped_input : null ),
 	    );
 	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
 	    
@@ -665,8 +665,6 @@ class Process extends CI_Controller {
 	
 	function cohort_edit(){
 	    
-	    //Auth user and check required variables:
-	    $refund_policies = $this->config->item('refund_policies');
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:
@@ -680,10 +678,6 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
-	    } elseif(!isset($_POST['r_cancellation_policy']) || !array_key_exists($_POST['r_cancellation_policy'],$refund_policies)){
-	        die('<span style="color:#FF0000;">Error: Invalid Refund Policy.</span>');
-	    } elseif(!isset($_POST['r_typeform_id'])){
-	        die('<span style="color:#FF0000;">Error: Missing Typeform ID.</span>');
 	    }
 	    
 	    //Check Duplicate Date:
@@ -711,29 +705,35 @@ class Process extends CI_Controller {
 	    }
 	    
 	    
+	    //Fetch config variables for checking:
+	    $refund_policies = $this->config->item('refund_policies');
+	    $r_response_options = $this->config->item('r_response_options');
+	    $weekly_1on1s_options = $this->config->item('r_weekly_1on1s_options');
+	    $start_times = $this->config->item('start_times');
 	    
 	    
 	    $r_update = array(
 	        'r_start_date' => $new_date,
-	        'r_response_time_hours' => $_POST['r_response_time_hours'],
-	        'r_weekly_1on1s' => $_POST['r_weekly_1on1s'],
-	        'r_office_hour_instructions' => $_POST['r_office_hour_instructions'],
+	        'r_start_time_mins' => ( array_key_exists(intval($_POST['r_start_time_mins']),$start_times) ? intval($_POST['r_start_time_mins']) : null ),
+	        'r_status' => intval($_POST['r_status']),
+	        
+	        'r_response_time_hours' => ( in_array(floatval($_POST['r_response_time_hours']),$r_response_options) ? floatval($_POST['r_response_time_hours']) : null ),
+	        'r_weekly_1on1s' => ( strlen($_POST['r_weekly_1on1s'])>0 && in_array(floatval($_POST['r_weekly_1on1s']),$weekly_1on1s_options) ? floatval($_POST['r_weekly_1on1s']) : null ),
+	        'r_office_hour_instructions' => ( strlen($_POST['r_office_hour_instructions'])>0 ? trim($_POST['r_office_hour_instructions']) : null ),
 	        'r_application_questions' => $_POST['r_application_questions'],
 	        'r_prerequisites' => $_POST['r_prerequisites'],
-	        'r_cancellation_policy' => $_POST['r_cancellation_policy'],
-	        'r_start_time_mins' => intval($_POST['r_start_time_mins']),
-	        'r_facebook_group_id' => bigintval($_POST['r_facebook_group_id']),
-	        'r_typeform_id' => $_POST['r_typeform_id'],
-	        'r_closed_dates' => $_POST['r_closed_dates'],
-	        'r_status' => intval($_POST['r_status']),
-	        'r_usd_price' => floatval($_POST['r_usd_price']),
+	        'r_cancellation_policy' => ( isset($_POST['r_cancellation_policy']) && array_key_exists($_POST['r_cancellation_policy'],$refund_policies) ? $_POST['r_cancellation_policy'] : null ),
+	        'r_facebook_group_id' => ( strlen($_POST['r_facebook_group_id'])>0 && bigintval($_POST['r_facebook_group_id'])>=0 ? bigintval($_POST['r_facebook_group_id']) : null ),
+	        'r_typeform_id' => ( strlen($_POST['r_typeform_id'])>0 ? trim($_POST['r_typeform_id']) : null ),
+	        'r_closed_dates' => ( strlen($_POST['r_closed_dates'])>0 ? trim($_POST['r_closed_dates']) : null ),
+	        'r_usd_price' => ( strlen($_POST['r_usd_price'])>0 && floatval($_POST['r_usd_price'])>=0 ? floatval($_POST['r_usd_price']) : null ),
 	        'r_min_students' => intval($_POST['r_min_students']),
-	        'r_max_students' => intval($_POST['r_max_students']),
+	        'r_max_students' => ( strlen($_POST['r_max_students'])>0 && intval($_POST['r_max_students'])>=0 ? intval($_POST['r_max_students']) : null ),
 	    );
 	    
 	    if(isset($_POST['r_live_office_hours_check']) && !intval($_POST['r_live_office_hours_check'])){
 	        //User the office schedule off, lets disable it:
-	        $r_update['r_live_office_hours'] = '';
+	        $r_update['r_live_office_hours'] = null;
 	    }	    
 	    
 	    //Save

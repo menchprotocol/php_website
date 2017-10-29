@@ -485,7 +485,7 @@ function msg_save_edit(i_id){
     	    ?>
             <p class="maxout" style="margin-top:-30px;">Action plan is your bootcamp's curriculum:</p>
         	<ul class="maxout">
-    			<li>A hierarchical collection of insights that empower your students to take action.</li>
+    			<li>A hierarchical collection of insights that empower students to take action.</li>
     			<li>Students are expected to complete each top-level action plan <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
     			<li>Each <?= $bootcamp['b_sprint_unit'] ?> can have its own <b>Tasks</b> to keep your action plan organized.</li>
     			<li>You can easily add, remove and sort your action plan at any time.</li>
@@ -550,12 +550,26 @@ function msg_save_edit(i_id){
         </div>
         
         
+        
+        
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</h4></div>
+        <ul class="maxout">
+			<?php if($level==2){ ?>
+			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s action plan.</li>
+			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp. Students get it again at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
+			<?php } elseif($level>2){ ?>
+			<li>Instructions on how to execute this task.</li>
+			<li>Overviews are private & only shared with students at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
+			<?php } ?>
+		</ul>
+        <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
+        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
+        
+        
        
         
         
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-clock-o"></i> Time Estimate & Points</h4></div>
-        
-        
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
         <ul class="maxout">
 			<li>How long you think it takes an average student to read & execute this task?</li>
 			<li>This is an estimate of this task's complexity.</li>
@@ -573,22 +587,7 @@ function msg_save_edit(i_id){
         	}
         	?>
         </select>
-        
-        
-        
-        
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</h4></div>
-        <ul class="maxout">
-			<?php if($level==2){ ?>
-			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s action plan.</li>
-			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp. Students get it again at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
-			<?php } elseif($level>2){ ?>
-			<li>Instructions on how to execute this task.</li>
-			<li>Overviews are private & only shared with students at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
-			<?php } ?>
-		</ul>
-        <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
-        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
+       
         
         
         

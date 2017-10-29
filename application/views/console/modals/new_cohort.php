@@ -12,6 +12,7 @@ function r_process_create(){
 		
 		r_b_id:$('#r_b_id').val(),
 		r_start_date:$('#r_start_date').val(),
+		r_start_time_mins:$('#r_start_time_mins').val(),
 		r_status:$('#r_status').val(),
 		copy_cohort_id:$('#copy_cohort_id').val(),
 		
@@ -55,7 +56,7 @@ $('#r_start_date').keyup(function(e){
 
 
 
-<!-- Modal Core -->
+<!-- NEW COHORT -->
 <div class="modal fade" id="newCohortModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -64,17 +65,13 @@ $('#r_start_date').keyup(function(e){
         <h3 class="modal-title">New Cohort</h3>
       </div>
       <div class="modal-body">
-      		
-      		<div class="alert alert-info" role="alert">It's best to create your <a href="/console/<?= $bootcamp['b_id'] ?>/actionplan">Action Plan</a> before creating a cohort. This gives you a better idea of how much time students should commit and what price you should charge them.</div>
-      		
+      		      		
       		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
-        	<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Cohort Start Day</div>
-			<div class="form-group label-floating is-empty">
-			    <input type="text" id="r_start_date" style="width:233px;" class="form-control border" />
-			    <span class="material-input"></span>
-			</div>
-			
+			<?php $this->load->view('console/inputs/r_start_day_time' , array(
+                'b_sprint_unit' => $bootcamp['b_sprint_unit'],
+			    'r_start_time_mins' => '540', //9 AM Default recommendation
+            )); ?>
 			
 			<div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Cohort Status</div>
 			<?php echo_status_dropdown('r','r_status',1,array(-1)); ?>
@@ -100,8 +97,7 @@ $('#r_start_date').keyup(function(e){
             }
             
             ?>
-            
-			
+            <div style="margin:0; padding:0; clear:both;">&nbsp;</div>
 			<div id="new_cohort_result"></div>
       </div>
       <div class="modal-footer">
@@ -110,3 +106,28 @@ $('#r_start_date').keyup(function(e){
     </div>
   </div>
 </div>
+
+
+
+
+<!-- SCHEDULE COHORTS -->
+<div class="modal fade" id="ScheduleCohorts" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Cohort Scheduling</h3>
+      </div>
+      <div class="modal-body">
+      		<p>Cohort Scheduling is an advanced feature for bootcamps with a consistent operation. This feature enables you to:</p>
+          	<ul>
+          		<li>Auto create cohorts based on a pre-selected schedule.</li>
+          		<li>Select schedules such as Weekly, Bi-Weekly, Quarterly, etc...</li>
+          		<li>Enable students to register in any cohort starting within 3 months.</li>
+          	</ul>
+          	<p>Contact us via live chat to enable Cohort Scheduling for your account.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
