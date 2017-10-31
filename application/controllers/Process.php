@@ -768,6 +768,11 @@ class Process extends CI_Controller {
 	 ****************************** */
 	
 	function bootcamp_create(){
+	    
+	    //For fancy UI to give impression of hard work:
+	    sleep(3);
+	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Going to Bootcamp Dashboard...</div>');
+	    
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:

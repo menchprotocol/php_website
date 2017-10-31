@@ -2,7 +2,10 @@
 
 	<div class="row">
       <div class="col-sm-3"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>Primary Goal</b></div>
-      <div class="col-sm-9"><?= $bootcamp['c_objective'] ?></div>
+      <div class="col-sm-9">
+      	<p style="margin-bottom:0; font-size:1.4em; font-weight:bold;"><?= $bootcamp['c_objective'] ?></p>
+      	<div><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" style=""><u>Open Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>
+      </div>
     </div>
     <hr />
     

@@ -10,10 +10,8 @@ $(document).ready(function() {
 	if(window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
         //Open specific menu with a 100ms delay to fix TOP NAV bug
-    	setTimeout(function() {
-    		$('.tab-pane, #topnav > li').removeClass('active');
-    		$('#'+hash+', #nav_'+hash).addClass('active');
-	    }, 100);
+        $('.tab-pane, #topnav > li').removeClass('active');
+		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
     }
 });
 
@@ -63,8 +61,6 @@ function save_settings(){
 
     <div class="tab-pane active" id="details">
     
-		<?php $this->load->view('console/inputs/g_smart_goals' ); ?>
-		<br />
 		<?php $this->load->view('console/inputs/c_objective' , array('c_objective'=>$bootcamp['c_objective']) ); ?>
 		<br />
 		<?php $this->load->view('console/inputs/b_video_url' , array('b_video_url'=>$bootcamp['b_video_url']) ); ?>

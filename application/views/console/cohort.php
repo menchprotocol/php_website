@@ -21,10 +21,8 @@ $(document).ready(function() {
 	if(window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
       	//Open specific menu with a 100ms delay to fix TOP NAV bug
-    	setTimeout(function() {
-    		$('.tab-pane, #topnav > li').removeClass('active');
-    		$('#'+hash+', #nav_'+hash).addClass('active');
-	    }, 300);
+        $('.tab-pane, #topnav > li').removeClass('active');
+		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
     }
     
 	//Load date picker:

@@ -28,7 +28,7 @@
 					<i class="material-icons" style="color:#3C4858;">verified_user</i>
 				</div>
 				<h3 class="info-title" style="margin-top:8px;">Tuition Guarantee</h3>
-				<p>We'll bet that by following the bootcamp's action plan you'll get the results you signed up for. If you did the work and did not accomplish the end goal we'll give you a full refund with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Reimbursement Guarantee</a>.</p>
+				<p>We'll bet that by following the bootcamp's action plan you'll get the results you signed up for. If you did the work and did not accomplish the end goal we'll give you a full refund with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Guarantee</a>.</p>
 			</div>
 		</div>
 

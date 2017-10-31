@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.58,
+    'version' => 0.60,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -115,11 +115,11 @@ $config['refund_policies'] = array(
 $config['sprint_units'] = array(
     'day' => array(
         'name' => 'Daily',
-        'desc' => 'Good for shorter Bootcamps that each Action Plan is due Daily.',
+        'desc' => 'Fast-pace & shorter bootcamps usually 1-30 days long.',
     ),
     'week' => array(
         'name' => 'Weekly',
-        'desc' => 'Good for longer Bootcamps that each Action Plan is due Weekly.',
+        'desc' => 'More complex & longer bootcamps usually 2-36 weeks long.',
     ),
 );
 

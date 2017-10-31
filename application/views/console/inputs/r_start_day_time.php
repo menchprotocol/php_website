@@ -3,8 +3,10 @@
 <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time</h4></div>
 <ul>
 	<li>The day & time when this cohort starts.</li>
+	<?php if(isset($b_sprint_unit)){ ?>
 	<li>End date calculated based on the number of <?= $sprint_units[$b_sprint_unit]['name'] ?> Action Plans.</li>
-	<?php if($b_sprint_unit=='week'){ ?>
+	<?php } ?>
+	<?php if(isset($b_sprint_unit) && $b_sprint_unit=='week'){ ?>
 	<li><?= $sprint_units[$b_sprint_unit]['name'] ?> bootcamps always start on Mondays and end on Sundays.</li>
 	<?php } ?>
 </ul>
