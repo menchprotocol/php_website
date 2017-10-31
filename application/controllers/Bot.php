@@ -308,7 +308,7 @@ class Bot extends CI_Controller {
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					
 					$eng_data = array(
-						'e_creator_id' => ( $sent_from_us ? 0 : $this->Db_model->u_fb_search($im['sender']['id'])),
+					    'e_creator_id' => $this->Db_model->u_fb_search($user_id),
 						'e_json' => json_encode($json_data),
 						'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
 					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received

@@ -1522,6 +1522,8 @@ function format_e_message($e_message){
                 $e_message = ' '.$sub_segments[1];
             }
         }
+    } else {
+        $e_message = make_links_clickable($e_message);
     }
     $e_message = nl2br($e_message);
     return $e_message;
