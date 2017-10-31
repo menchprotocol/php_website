@@ -43,7 +43,7 @@ class Cron extends CI_Controller {
 	                                
 	                                //Update engagement data:
 	                                $this->Db_model->e_update( $ep['e_id'] , array(
-	                                    'e_message' => (strlen($eng_data['e_message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+	                                    'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
 	                                    'e_file_save' => 1, //Mark as done
 	                                ));
 	                                
