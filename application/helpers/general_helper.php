@@ -1578,12 +1578,18 @@ function object_link($object,$id,$b_id=0){
                 return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$core_objects[$object]['o_name'].': '.$bootcamps[0]['c_objective'].'</a>';
             }
         } elseif($object=='u'){
-            $matching_users = $CI->Db_model->u_fetch(array(
-                'u_id' => $id,
-            ));
-            if(isset($matching_users[0])){
-                return $core_objects[$object]['o_name'].': '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</a>';
+            if($id<=0){
+                return 'System';
+            } else {
+                $matching_users = $CI->Db_model->u_fetch(array(
+                    'u_id' => $id,
+                ));
+                if(isset($matching_users[0])){
+                    //TODO Link to profile or chat widget link maybe?
+                    return $core_objects[$object]['o_name'].': '.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'];
+                }
             }
+                
         } elseif($object=='r'){
             $cohorts = $CI->Db_model->r_fetch(array(
                 'r.r_id' => $id,
