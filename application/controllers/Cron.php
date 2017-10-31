@@ -16,10 +16,14 @@ class Cron extends CI_Controller {
 	     * attachments to amazon S3 and then changes status to e_file_save=1
 	     * 
 	     */
+	    
+	    $max_per_batch = 10; //Max number of scans per run
+	    
 	    $e_pending = $this->Db_model->e_fetch(array(
 	        'e_file_save' => 0, //Pending file upload to S3
 	    ));
 	    
+	    $counter = 0;
 	    foreach($e_pending as $ep){
 	        
 	        //Prepare variables:
@@ -47,11 +51,14 @@ class Cron extends CI_Controller {
 	                                    'e_file_save' => 1, //Mark as done
 	                                ));
 	                                
+	                                //Increase counter:
+	                                $counter++;
+	                                
 	                                //Share link back if admin:
 	                                if( in_array($im['sender']['id'] , array('1443101719058431','1234880879950857' /* Shervin , Miguel */)) ){
 	                                     //Communicate the linking process with user:
 	                                     $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
-	                                         array('text' => 'Saved your file on Mench☁️ and sending you this this message just because you\'re '.$ep['u_fname'].' and you\'r AWESOME: '.$new_file_url),
+	                                         array('text' => 'Saved your file on Mench☁️ and sending you this this message just because you\'re '.$ep['u_fname'].' and you\'re AWESOME: '.$new_file_url),
 	                                     ), 'SILENT_PUSH' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 	                                }
 	                            }
@@ -60,8 +67,12 @@ class Cron extends CI_Controller {
 	                }
 	            }
 	        }
-	        break;
+	        if($counter>=$max_per_batch){
+	            break; //done for now
+	        }
 	    }
+	    //Echo message for cron job:
+	    echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
 	}
 	
 	
