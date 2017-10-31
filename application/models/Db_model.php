@@ -711,6 +711,12 @@ class Db_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
+	function e_update($e_id,$update_columns){
+	    $this->db->where('e_id', $e_id);
+	    $this->db->update('v5_engagements', $update_columns);
+	    return $this->db->affected_rows();
+	}
+	
 	function r_create($insert_columns){
 	    
 	    //Lets now add:
@@ -813,6 +819,9 @@ class Db_model extends CI_Model {
 	    
 	    return $insert_columns;
 	}
+	
+	
+	
 	
 	
 	function e_fetch($match_columns=array()){
