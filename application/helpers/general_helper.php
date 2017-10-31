@@ -1290,7 +1290,7 @@ function redirect_message($url,$message){
 function save_file($file_url,$json_data){
     $CI =& get_instance();
     
-    $file_name = md5($file_url.time().'someSa!t').'.'.fetch_file_ext($file_url);
+    $file_name = md5($file_url.'fileSavingSa!t').'.'.fetch_file_ext($file_url);
     $file_path = 'application/cache/temp_files/';
     
     //Fetch Remote:
