@@ -55,6 +55,7 @@ function base64_url_decode($input) {
 function extract_level($b,$c_id){
     
     $CI =& get_instance();
+    $core_objects = $CI->config->item('core_objects');
     //This is what we shall return:
     $view_data = array(
         'pid' => $c_id, //To be deprecated at some point...
@@ -73,7 +74,7 @@ function extract_level($b,$c_id){
         $view_data['level'] = 1;
         $view_data['sprint_index'] = 0;
         $view_data['intent'] = $b;
-        $view_data['title'] = 'Action Plan | '.$b['c_objective'];
+        $view_data['title'] = 'Milestones | '.$b['c_objective'];
         $view_data['breadcrumb'] = array(
             array(
                 'link' => null,
@@ -92,25 +93,25 @@ function extract_level($b,$c_id){
                 $view_data['level'] = 2;
                 $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                 $view_data['intent'] = $sprint;
-                $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
+                $view_data['title'] = 'Milestones | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
                 $view_data['breadcrumb'] = array(
                     array(
-                        'link' => '/console/'.$b['b_id'].'/actionplan',
+                        'link' => '/console/'.$b['b_id'].'/milestones',
                         'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                     ),
                     array(
                         'link' => null,
-                        'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                        'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
                     ),
                 );
                 $view_data['breadcrumb_p'] = array(
                     array(
-                        'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
+                        'link' => '/my/milestones/'.$b['b_id'].'/'.$b['b_c_id'],
                         'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                     ),
                     array(
                         'link' => null,
-                        'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                        'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
                     ),
                 );
                 
@@ -125,33 +126,33 @@ function extract_level($b,$c_id){
                         $view_data['level'] = 3;
                         $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                         $view_data['intent'] = $task;
-                        $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
+                        $view_data['title'] = 'Milestones | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
                         $view_data['breadcrumb'] = array(
                             array(
-                                'link' => '/console/'.$b['b_id'].'/actionplan',
+                                'link' => '/console/'.$b['b_id'].'/milestones',
                                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                             ),
                             array(
-                                'link' => '/console/'.$b['b_id'].'/actionplan/'.$sprint['c_id'],
-                                'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                                'link' => '/console/'.$b['b_id'].'/milestones/'.$sprint['c_id'],
+                                'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => 'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+                                'anchor' => $core_objects['level_2']['o_icon'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
                             ),
                         );
                         $view_data['breadcrumb_p'] = array(
                             array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
+                                'link' => '/my/milestones/'.$b['b_id'].'/'.$b['b_c_id'],
                                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                             ),
                             array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$sprint['c_id'],
-                                'anchor' => ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
+                                'link' => '/my/milestones/'.$b['b_id'].'/'.$sprint['c_id'],
+                                'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => 'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+                                'anchor' => $core_objects['level_2']['o_icon'].'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
                             ),
                         );
                         
@@ -288,9 +289,9 @@ function echo_br($admin){
         //$ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i> ';
         $ui .= $admin['u_fname'].' '.$admin['u_lname'].' &nbsp;';
         if($admin['ba_team_display']=='t'){
-            $ui .= '<i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member listed on the Landing Page"></i>';
+            $ui .= '<i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Instructor listed on the Landing Page"></i>';
         } else {
-            $ui .= '<i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Team Member NOT listed on the Landing Page"></i>';
+            $ui .= '<i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Instructor NOT listed on the Landing Page"></i>';
         }
         
         $ui .= ' <span class="srt-admins"></span>'; //For the status of sorting
@@ -300,19 +301,19 @@ function echo_br($admin){
 }
 
 
-//This is used for My/Actionplan display:
+//This is used for My/milestones display:
 function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     /* 
      * $b = Bootcamp object
      * $c = Intent object
      * $level Legend:
-     *    1 = Top level Action plan
+     *    1 = Top level Milestones
      *    2 = Action Day/Week
      *    3 = Task
      * 
      * * */
 
-    //Calculate deadlines if level 2 action plan items to see which one to show!
+    //Calculate deadlines if level 2 Milestones items to see which one to show!
     $unlocked_action_plan = false;
     if($level==2){
         //Do some time calculations for the point system:
@@ -324,10 +325,10 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     $show_a = true; //Most cases
     //Left content
     if($level==0){
-        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        $ui = '<a href="/my/milestones/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
     } elseif($level==3 || $unlocked_action_plan){
-        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        $ui = '<a href="/my/milestones/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         
         if(isset($us_data[$c['c_id']])){
             $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
@@ -379,15 +380,17 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
 
 function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     $CI =& get_instance();
+    $core_objects = $CI->config->item('core_objects');
+    
 	if($direction=='outbound'){
 	    
-	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item is_sortable">';
+	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/milestones/'.$intent['c_id'].'" class="list-group-item is_sortable">';
 	        //Right content
     	    $ui .= '<span class="pull-right">';
 
     	    $ui .= '<i class="fa fa-sort" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left" aria-hidden="true"></i> &nbsp;';
     	    
-    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Remove from Action Plan" data-placement="left"></i> &nbsp;';
+    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Remove '.$core_objects['level_'.($level-1)]['o_name'].'" data-placement="left"></i> &nbsp;';
     	    
     	    $ui .= '<span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
     	    
@@ -403,7 +406,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	    $ui .= '</span> ';
     	    
     	    //Left content
-    	    $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? ucwords($b_sprint_unit) : 'Task' ).' #'.$intent['cr_outbound_rank'].'</span>' : '' );
+    	    $ui .= ( $level>=2 ? '<span class="inline-level">'.( $level==2 ? $core_objects['level_'.($level-1)]['o_icon'].' '.ucwords($b_sprint_unit) : $core_objects['level_'.($level-1)]['o_icon'].' Task' ).' #'.$intent['cr_outbound_rank'].'</span>' : '' );
     	    $ui .= $intent['c_objective'].' ';
   
     	    
@@ -430,7 +433,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
 	    
 	} else {
 	    //Not really being used for now...
-	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.$intent['c_objective'].' '.echo_time($intent['c_time_estimate']).'</a>';
+	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/milestones/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.$intent['c_objective'].' '.echo_time($intent['c_time_estimate']).'</a>';
 	}
 }
 
@@ -474,7 +477,7 @@ function calculate_bootcamp_status($b){
         $c_missing = array();
         
         /* *****************************
-         *  Action Plan
+         *  Milestones
          *******************************/
         
         
@@ -501,7 +504,7 @@ function calculate_bootcamp_status($b){
         $sprint_name = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
         //Did we have anything?
         if(count($c_missing)>0){
-            array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
         }
         
         
@@ -534,7 +537,7 @@ function calculate_bootcamp_status($b){
                 
                 //Did we have anything?
                 if(count($c_missing)>0){
-                    array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
+                    array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
                 }
                 
                 //Increase count:
@@ -552,7 +555,7 @@ function calculate_bootcamp_status($b){
         $progress_gained += $to_gain;
     } else {
         $progress_gained += ($task_count/$required_tasks)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Tasks]</b>'.($task_count>0?' ('.($required_tasks-$task_count).' more)':'').' to any '.$b['b_sprint_unit'].' of your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
+        array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Tasks]</b>'.($task_count>0?' ('.($required_tasks-$task_count).' more)':'').' to any '.$b['b_sprint_unit'].' of your <a href="/console/'.$b['b_id'].'/milestones"><u>Milestones</u></a>');
     }
     
     
@@ -564,7 +567,7 @@ function calculate_bootcamp_status($b){
         $progress_gained += $to_gain;
     } else {
         $progress_gained += ($b['c__tip_count']/$required_tips)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_tips.' Tips]</b>'.($b['c__tip_count']>0?' ('.($required_tips-$b['c__tip_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
+        array_push($call_to_action,'Add <b>[At least '.$required_tips.' Tips]</b>'.($b['c__tip_count']>0?' ('.($required_tips-$b['c__tip_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/milestones"><u>Milestones</u></a>');
     }
     
     
@@ -606,6 +609,7 @@ function calculate_bootcamp_status($b){
         }
     }
     
+    
     //r_application_questions
     $to_gain = 10;
     $progress_possible += $to_gain;
@@ -626,17 +630,6 @@ function calculate_bootcamp_status($b){
             $progress_gained += $to_gain;
         } else {
             array_push($call_to_action,'Set <b>[Chat Response Time]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
-        }
-    }
-    
-    //r_facebook_group_id
-    $to_gain = 15;
-    $progress_possible += $to_gain;
-    if($next_cohort){
-        if(strlen($next_cohort['r_facebook_group_id'])>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Add a <b>[Facebook Group]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
         }
     }
     
@@ -670,6 +663,18 @@ function calculate_bootcamp_status($b){
             $progress_gained += $to_gain;
         } else {
             array_push($call_to_action,'Set <b>[Admission Price]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+        }
+    }
+    
+    //r_completion_prizes
+    $to_gain = 10;
+    $progress_possible += $to_gain;
+    $default_cohort_prizes = $CI->config->item('default_cohort_prizes');
+    if($next_cohort){
+        if(strlen($next_cohort['r_completion_prizes'])>0 && !($next_cohort['r_completion_prizes']=='<ol><li>'.join('</li><li>',$default_cohort_prizes).'</li></ol>')){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Modify <b>[Completion Prizes]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
         }
     }
     
@@ -786,7 +791,7 @@ function calculate_bootcamp_status($b){
     if(strlen($b['b_video_url'])>0){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Add <b>[Explainer Video URL]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
+        array_push($call_to_action,'Add <b>[Explainer Video]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
     }
     
     
@@ -907,16 +912,17 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
-    	        's_name'  => 'Published as Unlisted',
+    	        's_name'  => 'Published',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Live, ready for admission using the sharable landing page URL.',
+    	        's_desc'  => 'Ready for student admission by sharing your landing page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
 	        ),
+	        //TODO remove this soon:
 	        3 => array(
-    	        's_name'  => 'Published to Marketplace',
+    	        's_name'  => 'Published',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Bootcamp listed on marketplace and ready for admission.',
-    	        'u_min_status'  => 3, //Can only be done by admin
+    	        's_desc'  => 'Ready for student admission by sharing your landing page URL.',
+    	        'u_min_status'  => 99999, //hidden
 	        ),
 	    ),
 	    'c' => array(
@@ -1025,19 +1031,19 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        1 => array(
 	            's_name'  => 'Assistant',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'View-only access to action plan, cohorts and activity stream. Can answer student inquiries but cannot make any changes.',
+	            's_desc'  => 'View-only access to Milestones, cohorts and activity stream. Can answer student inquiries but cannot make any changes.',
 	            'u_min_status'  => 1,
 	        ),
 	        2 => array(
-	            's_name'  => 'Instructor',
+	            's_name'  => 'Co-Instructor',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Can modify action plan and cohort but not settings. Can also answer student inquiries and admit new students.',
+	            's_desc'  => 'Supports the lead instructor in bootcamp operations based on the privileges assigned to them by the lead instructor.',
 	            'u_min_status'  => 1,
 	        ),
 	        3 => array(
 	            's_name'  => 'Lead Instructor',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured based on completion rate.',
+	            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -1086,14 +1092,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	    0 => array(
         	    's_name'  => 'Pending Review',
         	    's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Student has submitted thier action plan and is pending instructor review.',
+        	    's_desc'  => 'Student has submitted thier Milestone tasks and is pending instructor review.',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-check-circle-o initial',
     	    ),
     	    1 => array(
         	    's_name'  => 'Marked Done',
         	    's_color' => '#2f2639', //dark
-        	    's_desc'  => 'This action plan item is complete.',
+        	    's_desc'  => 'Milestone tasks are marked as done.',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-check-circle initial',
     	    ),
@@ -1166,7 +1172,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        5 => array(
 	            's_name'  => 'Bootcamp Graduate',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'Student completed cohort and executed all their action plan as approved by bootcamp leader.',
+	            's_desc'  => 'Student completed cohort and completed all Milestones as approved by lead instructor.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -1565,7 +1571,7 @@ function object_link($object,$id,$b_id=0){
             if(isset($intents[0])){
                 if($b_id){
                     //We can return a link:
-                    return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan/'.$intents[0]['c_id'].'">'.$core_objects[$object]['o_name'].': '.$intents[0]['c_objective'].'</a>';
+                    return '<a href="'.$website['url'].'console/'.$b_id.'/milestones/'.$intents[0]['c_id'].'">'.$core_objects[$object]['o_name'].': '.$intents[0]['c_objective'].'</a>';
                 } else {
                     return $core_objects[$object]['o_name'].': '.$intents[0]['c_objective'];
                 }

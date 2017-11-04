@@ -1,3 +1,4 @@
+<?php $sprint_units = $this->config->item('sprint_units'); ?>
 <div class="dashboard">
 
 	<div class="row">
@@ -33,15 +34,15 @@
     
     
     <div class="row">
-      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="material-icons">format_list_numbered</i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
+      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/milestones"><b><i class="fa fa-flag" aria-hidden="true"></i> Milestones <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
-      	<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?></div>
-      	<div><?= $bootcamp['c__tip_count'] ?> Tip<?= ($bootcamp['c__tip_count']==1?'':'s') ?></div>
+      	<div><?= count($bootcamp['c__child_intents']) ?> <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone'.( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
+      	<div><?= $bootcamp['c__task_count'] ?> Total Task<?= ($bootcamp['c__task_count']==1?'':'s') ?></div>
+      	<div><?= $bootcamp['c__tip_count'] ?> Total Tip<?= ($bootcamp['c__tip_count']==1?'':'s') ?></div>
       	
       	<?php if(count($bootcamp['c__child_intents'])>0){ ?>
-      	<div><?= round($bootcamp['c__estimated_hours'],1) ?> Hours = <?= number_format($bootcamp['c__estimated_hours']*60) ?> Points</div>
-      	<div><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?> Hours/<?= ucwords($bootcamp['b_sprint_unit']) ?></div>
+      	<div><?= round($bootcamp['c__estimated_hours'],1) ?> Total Hours = <a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u><?= number_format($bootcamp['c__estimated_hours']*60) ?> Points <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a></div>
+      	<div><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?> Hours/<?= ucwords($bootcamp['b_sprint_unit']) ?> Average</div>
       	<?php } ?>
       	
       </div>
@@ -51,7 +52,7 @@
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/cohorts"><b><i class="fa fa-calendar" aria-hidden="true"></i> Cohorts <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div><?= count($bootcamp['c__cohorts']) ?> Total</div>
+      	<div><?= count($bootcamp['c__cohorts']) ?> Total Cohorts</div>
       	<?php 
       	//Fetch cohort:
       	if(count($bootcamp['c__cohorts'])>0){
@@ -66,10 +67,10 @@
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/students"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div>0 Total</div>
+      	<div>0 Total Students</div>
       	<div>0 Pending Admission</div>
-      	<div>0 Asked For Help</div>
-      	<div>0 Late on Action Plan</div>
+      	<div>0 With Pending Messages on <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a></div>
+      	<div>0 Late on Milestones</div>
 	  </div>
     </div>
     <hr />
@@ -88,7 +89,8 @@
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/settings"><b><i class="material-icons">settings</i> Settings <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div><?= count($bootcamp['b__admins']) ?> Team Member<?= (count($bootcamp['b__admins'])>1 ? 's' : '') ?></div>
+      	<div>Lead Instructor: <?= $bootcamp['b__admins'][0]['u_fname'].' '.$bootcamp['b__admins'][0]['u_lname'] ?></div>
+      	<div><?= (count($bootcamp['b__admins'])-1) ?> Co-Instructor<?= ((count($bootcamp['b__admins'])-1)==1 ? '' : 's') ?></div>
       	<?= status_bible('b',$bootcamp['b_status']) ?>
       </div>
     </div>

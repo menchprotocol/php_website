@@ -43,12 +43,12 @@ $website = $this->config->item('website');
     				<?php
     				//<li><a href="/features">Features</a></li>
     				//<li><a href="/pricing">Pricing</a></li>
-    				echo '<li><a href="/bootcamps"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>';
+    				//echo '<li><a href="/bootcamps"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>';
     				if(isset($udata['u_id'])){
     					echo '<li id="isloggedin"><a href="/console">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
     				} else {
     				    echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch</a></li>';
-    				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
+    				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Instructor Login</a></li>';
     				}
     				?>
         		</ul>

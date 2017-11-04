@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.60,
+    'version' => 0.68,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -21,6 +21,21 @@ $config['website'] = array(
 $config['application_status_salt'] = 'SALTs3cr3t777';
 
 
+$config['level_names'] = array(
+    1 => array(
+        'name' => '',
+        'names' => '',
+    ),
+    2 => array(
+        'name' => '',
+        'names' => '',
+    ),
+    3 => array(
+        'name' => 'Milestone',
+        'names' => 'Milestones',
+    ),
+);
+
 //The core objects of the platform:
 $config['core_objects'] = array(
     'u' => array(
@@ -33,13 +48,13 @@ $config['core_objects'] = array(
         'o_name' => 'Bootcamp',
     ),
     'ba' => array(
-        'o_name' => 'Bootcamp Team Member',
+        'o_name' => 'Bootcamp Instructors',
     ),
     'c' => array(
-        'o_name' => 'Action Item',
+        'o_name' => 'Milestones',
     ),
     'cr' => array(
-        'o_name' => 'Action Item Link',
+        'o_name' => 'Milestone Links',
     ),
     'r' => array(
         'o_name' => 'Cohort',
@@ -53,6 +68,21 @@ $config['core_objects'] = array(
     'i' => array(
         'o_name' => 'Tip',
     ),
+    'level_0' => array(
+        'o_name' => 'Bootcamp',
+        'o_names' => 'Bootcamps',
+        'o_icon' => '',
+    ),
+    'level_1' => array(
+        'o_name' => 'Milestone',
+        'o_names' => 'Milestones',
+        'o_icon' => '<i class="fa fa-flag" aria-hidden="true"></i>',
+    ),
+    'level_2' => array(
+        'o_name' => 'Task',
+        'o_names' => 'Tasks',
+        'o_icon' => '<i class="fa fa-check-square" aria-hidden="true"></i>',
+    ),
 );
 
 
@@ -63,29 +93,29 @@ $config['c_time_options'] = array('0','0.05','0.1166667','0.25','0.5','1','2','3
 
 $config['i_dispatch_minutes'] = array(
     'week' => array(
-        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Action Plan is Released',
-        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Action Plan is Released',
-        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Action Plan is Released',
-        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Action Plan is Released',
-        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Action Plan is Released',
-        '1440'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Day after Action Plan is Released',
-        '2880'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Days after Action Plan is Released',
-        '4320'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Days after Action Plan is Released',
-        '5760'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Days after Action Plan is Released',
-        '7200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 5 Days after Action Plan is Released',
-        '8640'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Days after Action Plan is Released',
+        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Milestone Starts',
+        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Milestone Starts',
+        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Milestone Starts',
+        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Milestone Starts',
+        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Milestone Starts',
+        '1440'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Day after Milestone Starts',
+        '2880'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Days after Milestone Starts',
+        '4320'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Days after Milestone Starts',
+        '5760'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Days after Milestone Starts',
+        '7200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 5 Days after Milestone Starts',
+        '8640'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Days after Milestone Starts',
     ),
     'day' => array(
-        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Action Plan is Released',
-        '60'    => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Hour after Action Plan is Released',
-        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Action Plan is Released',
-        '180'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Hours after Action Plan is Released',
-        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Action Plan is Released',
-        '360'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Hours after Action Plan is Released',
-        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Action Plan is Released',
-        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Action Plan is Released',
-        '960'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 16 Hours after Action Plan is Released',
-        '1200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 20 Hours after Action Plan is Released',
+        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Milestone Starts',
+        '60'    => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Hour after Milestone Starts',
+        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Milestone Starts',
+        '180'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Hours after Milestone Starts',
+        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Milestone Starts',
+        '360'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Hours after Milestone Starts',
+        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Milestone Starts',
+        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Milestone Starts',
+        '960'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 16 Hours after Milestone Starts',
+        '1200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 20 Hours after Milestone Starts',
     ),
 );
 $config['i_media_type_names'] = array(
@@ -132,6 +162,12 @@ $config['aws_credentials'] = [
 
 $config['default_cohort_questions'] = array(
     'Why did you choose to join this bootcamp?',
+    'etc...',
+);
+$config['default_cohort_prizes'] = array(
+    'A branded T-Shirt',
+    '1 Year unlimited access to my online courses',
+    '30-Minutes consultation session to explore your next best move',
     'etc...',
 );
 $config['default_cohort_prerequisites'] = array(

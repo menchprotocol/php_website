@@ -81,26 +81,26 @@ class My extends CI_Controller {
 	
 	
 	
-	function actionplan($b_id=null,$c_id=null){
+	function milestones($b_id=null,$c_id=null){
 	    //Load apply page:
 	    $data = array(
-	        'title' => '✔️Action Plan',
+	        'title' => '🚩 Milestones',
 	        'b_id' => $b_id,
 	        'c_id' => $c_id,
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/actionplan_frame' , $data);
+	    $this->load->view('front/student/milestones_frame' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
 	
-	function display_actionplan($u_fb_id,$b_id=null,$c_id=null){
+	function display_milestones($u_fb_id,$b_id=null,$c_id=null){
 	    
 	    //Fetch bootcamps for this user:
 	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
-	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
+	        die('<h3>Milestones</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
 	    } elseif(!is_dev() && (!isset($_GET['sr']) || !parse_signed_request($_GET['sr']))){
-	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
+	        die('<h3>Milestones</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
 	    
 	    if(!($b_id && $c_id)){
@@ -126,13 +126,13 @@ class My extends CI_Controller {
 	            $this->Db_model->e_create(array(
 	                'e_creator_id' => $admissions[0]['u_id'],
 	                'e_json' => json_encode($admissions),
-	                'e_type_id' => 32, //Action Plan Opened
+	                'e_type_id' => 32, //Milestones Opened
 	                'e_object_id' => $admissions[0]['r_id'],
 	                'e_b_id' => $admissions[0]['b_id'],
 	            ));
 	            
 	            //Reload with specific directions:
-	            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
+	            $this->display_milestones($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
 	            
 	        } else {
 	            
@@ -194,11 +194,11 @@ class My extends CI_Controller {
 	            //Ooops, they dont have anything!
 	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
 	            //Nothing found for this user!
-	            die('<script> window.location = "/my/actionplan"; </script>');
+	            die('<script> window.location = "/my/milestones"; </script>');
 	        }	        
 	        
 	        //Load UI:
-	        $this->load->view('front/student/actionplan_ui.php' , $view_data);
+	        $this->load->view('front/student/milestones_ui.php' , $view_data);
 	    }
 	}
 	

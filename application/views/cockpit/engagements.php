@@ -14,7 +14,7 @@ td { padding:5px 0 !important; }
 <thead>
 	<tr>
 		<th style="width:120px;">Time</th>
-		<th style="width:120px;">Involving</th>
+		<th style="width:120px;">Initiator</th>
 		<th style="width:120px;">Action</th>
 		<th style="max-width:300px;">Message</th>
 		<!-- <th style="width:50px;">Data</th>  -->

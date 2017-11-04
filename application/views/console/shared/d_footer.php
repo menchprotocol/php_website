@@ -31,12 +31,21 @@ if(isset($load_view)){
 		</h4>
       </div>
       <div class="modal-body" style="margin-top:-22px;">
-      <p>MenchBot connects Students and Instructors using Facebook Messenger to increase engagement and empower on-demand communication. Watch the this video on how students would activate and use it:</p>
+      <p>MenchBot connects Students and Instructors using Facebook Messenger to increase engagement and empower on-demand communication.</p>
+      <!--
+      <p>Watch this video on how students would activate and use it:</p>
       <p style="text-align:center;"><video width="250" controls=""><source src="https://s3foundation.s3-us-west-2.amazonaws.com/6ab68e75f4858b981a6db2c737a52cdf.mp4" type="video/mp4"></video></p>
+       -->
       </div>
+      
       <div class="modal-footer">
+      <?php if(!(isset($udata['u_fb_id']) && strlen($udata['u_fb_id'])>0)){ ?>
         <a href="<?= $website['bot_ref_url'].'?ref='.$udata['u_id'] ?>" class="btn btn-primary">Connect to MenchBot</a>
+      <?php } else { ?>
+        <p style="text-align:left;">You are already connected to MenchBot.</p>
+      <?php } ?>
       </div>
+      
     </div>
   </div>
 </div>

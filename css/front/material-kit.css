@@ -63,6 +63,14 @@ a {
   color: #000;
   text-decoration:none;
 }
+
+p a, li a {
+  text-decoration:underline;
+}
+
+.nav a {
+	text-decoration:none;
+}
 .btn a, .btn, .navbar a {
   text-decoration:none !important;
 }

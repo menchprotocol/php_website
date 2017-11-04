@@ -73,8 +73,8 @@ foreach($admissions as $admission){
         echo status_bible('ru',$admission['ru_status'],0,'top');
     } elseif($admission['ru_status']>=4 && isset($_GET['show_action_plan'])) {
         //The bootcamp has started, show the the link to it:
-        //TODO This has issue because maybe they access it via their email URL and no Action plan psid is available
-        //echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$admission['c_id'].'" class="btn btn-black" style="font-size:0.8em;">Go to Action Plan</a>';
+        //TODO This has issue because maybe they access it via their email URL and no Milestones psid is available
+        //echo '<a href="/my/milestones/'.$admission['b_id'].'/'.$admission['c_id'].'" class="btn btn-black" style="font-size:0.8em;">Go to Milestones</a>';
     }
 }
 echo '</div>';

@@ -26,11 +26,11 @@ class Console extends CI_Controller {
 		
 		//This lists all users based on the permissions of the user
 		$this->load->view('console/shared/d_header', array(
-            'title' => 'My Account',
+            'title' => 'My Instructor Account',
             'breadcrumb' => array(
                 array(
                     'link' => null,
-                    'anchor' => 'My Account',
+                    'anchor' => 'My Instructor Account',
                 ),
             ),
 		));
@@ -119,7 +119,7 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function actionplan($b_id,$pid=null){
+	function milestones($b_id,$pid=null){
 		
 		$udata = auth(2,1);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
@@ -132,7 +132,7 @@ class Console extends CI_Controller {
 		//Fetch intent relative to the bootcamp by doing an array search:
 		$view_data = extract_level( $bootcamps[0] , ( intval($pid)>0 ? $pid : $bootcamps[0]['c_id'] ) );
 		if(!$view_data){
-		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
+		    redirect_message('/console/'.$b_id.'/milestones','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
 		}
 		
 		if(isset($_GET['raw'])){
@@ -142,7 +142,7 @@ class Console extends CI_Controller {
 		
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/actionplan' , $view_data);
+		$this->load->view('console/milestones' , $view_data);
 		$this->load->view('console/shared/d_footer');
 		
 	}

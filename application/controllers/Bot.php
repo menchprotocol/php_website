@@ -249,7 +249,7 @@ class Bot extends CI_Controller {
 						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
 						            array('text' => 'My name is MenchBot and I will be your Personal Assistant to help you accomplish your bootcamp goal.'),
 						            array('text' => 'As your personal assistant I will send you important updates'.( count($admissions)==1 ? ' on your bootcamp "'.$admissions[0]['c_objective'].'" lead by '.$admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'] : ' on your '.count($admissions).' enrolled bootcamps' ).'. I will also forward all your messages to your bootcamp\'s instructor team so they can reply asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['r_response_time_hours'].' hours ⚡' : '.' )),
-						            array('text' => 'That\'s it for now. Click the "️Action Plan" button in the menu below to get started with your bootcamp.'),
+						            array('text' => 'That\'s it for now. Click the "️🚩 Milestones" button in the menu below to get started with your bootcamp.'),
 						        ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 						    }
 						}

@@ -76,7 +76,6 @@ function save_r(){
 		r_office_hour_instructions:$('#r_office_hour_instructions').val(),
 		r_closed_dates:$('#r_closed_dates').val(),
 		r_start_time_mins:$('#r_start_time_mins').val(),
-		r_facebook_group_id:$('#r_facebook_group_id').val(),
 		
 		//Cohort:
 		r_status:$('#r_status').val(),
@@ -86,9 +85,10 @@ function save_r(){
 		r_typeform_id:$('#r_typeform_id').val(),
 		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
 		
-		//Application:
+		//Quill Forms:
 		r_prerequisites:( r_prerequisites_quill.getLength()>1 ? $('#r_prerequisites .ql-editor').html() : "" ),
 		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
+		r_completion_prizes:( r_completion_prizes_quill.getLength()>1 ? $('#r_completion_prizes .ql-editor').html() : "" ),
 	};
 	
 	//Now merge into timeline dates:
@@ -124,7 +124,7 @@ function save_r(){
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_admission" class="active"><a href="#admission" data-toggle="tab" onclick="update_hash('admission')"><i class="fa fa-ticket" aria-hidden="true"></i> Admission</a></li>
   <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Pricing</a></li>
+  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Finance</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
@@ -148,8 +148,6 @@ function save_r(){
     
     	<?php $this->load->view('console/inputs/r_response_time_hours' , array('r_response_time_hours'=>$cohort['r_response_time_hours']) ); ?>
 
-    	<?php $this->load->view('console/inputs/r_facebook_group_id' , array('r_facebook_group_id'=>$cohort['r_facebook_group_id']) ); ?>
-		<br />
     	<?php $this->load->view('console/inputs/r_weekly_1on1s' , array(
     	       'r_weekly_1on1s'=>$cohort['r_weekly_1on1s'],
     	       'b_sprint_unit'=>$bootcamp['b_sprint_unit']     
@@ -214,6 +212,7 @@ function save_r(){
     
         <?php $this->load->view('console/inputs/r_usd_price' , array('r_usd_price'=>$cohort['r_usd_price']) ); ?>
         <br />
+        <?php $this->load->view('console/inputs/r_completion_prizes' , array('r_completion_prizes'=>$cohort['r_completion_prizes']) ); ?>
         <br />
         <?php $this->load->view('console/inputs/r_cancellation_policy' , array('r_cancellation_policy'=>$cohort['r_cancellation_policy']) ); ?>
     </div>
@@ -234,7 +233,7 @@ function save_r(){
         	<div class="title"><h4><i class="fa fa-keyboard-o" aria-hidden="true"></i> Typeform ID</h4></div>
         	<ul>
     			<li>Each cohort has a unique Typeform as its application form.</li>
-    			<li>This section is only visible by Mench Super Admins.</li>
+    			<li>This section is only visible to <?= status_bible('u',3) ?>.</li>
     		</ul>
             <div class="form-group label-floating is-empty">
                 <input type="text" id="r_typeform_id" style="width:233px;" value="<?= $cohort['r_typeform_id'] ?>" class="form-control border">			

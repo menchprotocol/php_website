@@ -6,10 +6,14 @@ $udata = $this->session->userdata('user');
         <div class="container">
             <div class="row">
 				<div class="col-sm-9">
+					<!--
 					<h1 class="home-p">Online Bootcamps for the Ambitious.</h1>
-                    <h4 class="home-p">Bootcamps help you accomplish a goal <u>faster</u> by working with expert instructors that hold you accountable in executing a step-by-step action plan.</h4>
-                    
-                    <a href="/bootcamps" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Browse Bootcamps <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
+                    <h4 class="home-p">Accomplish a goal <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
+                     -->
+                    <h1 class="home-p">Empower Your Students to Succeed</h1>
+                    <h4 class="home-p">Easily build and operate online bootcamps designed to maximize student engagements.</h4>
+                     
+                    <a href="/launch" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Learn More <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
 				</div>
 				<div class="col-sm-3">&nbsp;</div>
             </div>

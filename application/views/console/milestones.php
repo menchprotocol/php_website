@@ -1,6 +1,7 @@
 <?php
 //Fetch the sprint units from config:
 $sprint_units = $this->config->item('sprint_units');
+$core_objects = $this->config->item('core_objects');
 $udata = $this->session->userdata('user');
 ?>
 <style> .breadcrumb li { display:block; } </style>
@@ -222,9 +223,9 @@ function intents_sort(){
  		new_sort[sort_rank] = cr_id;
  		
  		//Update sort handler:
- 		var current_handler = $( "#cr_"+cr_id+" .inline-level" ).text();
+ 		var current_handler = $( "#cr_"+cr_id+" .inline-level" ).html();
  		var handler_parts = current_handler.split("#");
- 		$( "#cr_"+cr_id+" .inline-level" ).text(handler_parts[0]+'#'+sort_rank);
+ 		$( "#cr_"+cr_id+" .inline-level" ).html(handler_parts[0]+'#'+sort_rank);
  	});
  	
  	//Update backend:
@@ -462,16 +463,15 @@ function msg_save_edit(i_id){
 
 
 
-
-<?php if($level>1){ ?>
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <?php if($level<=2){ ?>
-  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</a></li>
+  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'] ?></a></li>
   <?php } ?>
-  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
+  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-info-circle" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?></a></li>
+  <?php if($level>1){ ?>
   <li id="nav_tips"><a href="#tips" data-toggle="tab" onclick="update_hash('tips')"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Tips</a></li>
+  <?php } ?>
 </ul>
-<?php } ?>
 
 
 <div class="tab-content tab-space">
@@ -481,24 +481,24 @@ function msg_save_edit(i_id){
     	<?php
     	if($level==1){
     	    ?>
-            <p class="maxout" style="margin-top:-30px;">Action plan is your bootcamp's curriculum:</p>
         	<ul class="maxout">
-    			<li>A hierarchical collection of insights that empower students to take action.</li>
-    			<li>Students are expected to complete each top-level action plan <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
-    			<li>Each <?= $bootcamp['b_sprint_unit'] ?> can have its own <b>Tasks</b> to keep your action plan organized.</li>
-    			<li>You can easily add, remove and sort your action plan at any time.</li>
+        		<li><b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> help students accomplish the bootcamp's <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>  Primary Goal</b>.</li>
+    			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b> in <a href="/console/<?= $bootcamp['b_id'] ?>/settings/#settings"><u><i class="material-icons">settings</i>Settings</u></a>.</li>
+    			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+    			<li>To keep students focused, milestones are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
+    			<li>Each <?= strtolower($sprint_units[$bootcamp['b_sprint_unit']]['name']) ?> milestone can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
+    			<!-- <li><b><?= ucwords($bootcamp['b_sprint_unit']) ?>-Off Milestones</b> are milestones with 0 tasks assigned to them.</li> -->
+    			<li>You can easily add, remove and sort milestones at any time.</li>
     		</ul>
     		<?php
         } elseif($level==2){
             ?>
-            <p class="maxout">Tasks are your 2nd-level action plan:</p>
         	<ul class="maxout">
-    			<li>Each top-level action plan can have Tasks to breakdown what needs to be done.</li>
-    			<li>Students must complete all tasks in order to complete a top-level action plan.</li>
-    			<li>You can easily add, remove and sort your tasks at any time.</li>
+    			<li>Each <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b> is broken down into <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b>.</li>
+    			<li>Students must complete all <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> in order to complete a <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b>.</li>
+    			<li>You can easily add, remove and sort <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> at any time.</li>
     		</ul>
             <?php
-            echo '<p class="maxout">Define the tasks necessary to accomplish this '.$bootcamp['b_sprint_unit'].'\'s Primary Goal:</p>';
         }
         
         
@@ -514,7 +514,7 @@ function msg_save_edit(i_id){
         <div class="list-group">
         	<div class="list-group-item list_input">
         		<div class="input-group">
-        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'New Action Plan' : 'New Task') ?>"></div>
+        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'New '.$sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone' : 'New Task for '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint_index) ?>"></div>
         			<span class="input-group-addon" style="padding-right:0;">
         				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
         					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
@@ -535,61 +535,35 @@ function msg_save_edit(i_id){
     
     
     <div class="tab-pane <?= ($level>2 ? 'active' : '') ?>" id="details">
-    
-    	<p class="maxout">Modify the details of this action plan item:</p>
-    
-    	<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</h4></div>
-    	<ul>
-            <li>Set a goal that is both "Specific" and "Measurable".</li>
-            <li>Also used as the title of this task.</li>
-		</ul>
-        <div class="form-group label-floating is-empty">
-            <input type="text" id="c_objective" value="<?= $intent['c_objective'] ?>" class="form-control border">			
+        
+        <?php $this->load->view('console/inputs/c_objective' , array(
+            'level' => $level,
+            'c_objective' => $intent['c_objective'],
+        )); ?>
+        
+        <br />
+        <?php $this->load->view('console/inputs/c_todo_overview' , array(
+            'level' => $level,
+            'c_todo_overview' => $intent['c_todo_overview'],
+        )); ?>
+        
+       
+        <?php $times = $this->config->item('c_time_options'); ?>
+        <div style="display:<?= (($level>=3 || $intent['c_time_estimate']>0)?'block':'none') ?>;">
+            <div class="title" style="margin-top:25px; display:<?= ($level>=3?'block':'none') ?>;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
+            <ul class="maxout">
+    			<li>The estimated time for the <b>average</b> student to read & execute this task.</li>
+    			<li>Correlates to this task's complexity and defines its <a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u>completion point <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+    			<li>IF you estimate more than <?= $times[(count($times)-1)] ?> hours then break task down into multiple tasks.</li>
+    		</ul>
+            <select class="form-control input-mini border" id="c_time_estimate">
+            	<?php 
+            	foreach($times as $time){
+            	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).' = '.round($time*60).' On-Time Points OR '.floor($time*60*0.5).' Late Point'.(round($time*60)==1?'':'s').'</option>';
+            	}
+            	?>
+            </select>
         </div>
-        
-        
-        
-        
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview</h4></div>
-        <ul class="maxout">
-			<?php if($level==2){ ?>
-			<li>Instructions on how to execute this <?= $bootcamp['b_sprint_unit'] ?>'s action plan.</li>
-			<li><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Overviews are publicly displayed on the landing page under the "Action Plan" section to help students learn more about this bootcamp. Students get it again at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
-			<?php } elseif($level>2){ ?>
-			<li>Instructions on how to execute this task.</li>
-			<li>Overviews are private & only shared with students at the start of each <?= $bootcamp['b_sprint_unit'] ?>.</li>
-			<?php } ?>
-		</ul>
-        <div id="c_todo_overview"><?= $intent['c_todo_overview'] ?></div>
-        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
-        
-        
-       
-        
-        
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
-        <ul class="maxout">
-			<li>How long you think it takes an average student to read & execute this task?</li>
-			<li>This is an estimate of this task's complexity.</li>
-			<li>Don't consider sub-task's as each task has its own Time & Point Estimate.</li>
-			<li>This also defines <b>points earned</b> by students for playing <a href="https://support.mench.co/hc/en-us/articles/115002372531"><u>The Mench Game</u></a>.</li>
-			<?php if($level<=2){ ?>
-			<li>IF you estimate more than 13 hours, then break task down into smaller tasks.</li>
-			<?php } ?>
-		</ul>
-        <select class="form-control input-mini border" id="c_time_estimate">
-        	<?php 
-        	$times = $this->config->item('c_time_options');
-        	foreach($times as $time){
-        	    echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).' = '.round($time*60).' On-Time Points OR '.floor($time*60*0.5).' Late Point'.(round($time*60)==1?'':'s').'</option>';
-        	}
-        	?>
-        </select>
-       
-        
-        
-        
-        
         
         
         <div style="display:<?= ( $udata['u_status']>999 /*Disabled for now!*/ ? 'block' : 'none' ) ?>;">
@@ -605,7 +579,7 @@ function msg_save_edit(i_id){
         
        
         
-        
+        <br />
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span class="save_c_results"></span></td></tr></table>
 		
     </div>
@@ -620,13 +594,13 @@ function msg_save_edit(i_id){
     	$i_media_type_names = $this->config->item('i_media_type_names');
     	$i_dispatch_minutes = $this->config->item('i_dispatch_minutes');
     	?>
-    	<p class="maxout">Tips are messages sent to students via Facebook Messenger:</p>
+    	<p class="maxout"></p>
     	<ul class="maxout">
-			<li>Have each tip focused on a single point or concept.</li>
-			<li>Use tips to communicate facts & best-practices on how to take action.</li>
+			<li>Tips are facts or best-practices to help effectively execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
+			<li>Have each tip focused on a single concept.</li>
 			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> for referencing articles, Youtube, etc...</li>
-			<li>Use <b>{first_name}</b> in <b><?= strip_tags($i_media_type_names['text']) ?></b> tips for more personalization.</li>
-			<li>Tips are private & only shared with students during each <?= $bootcamp['b_sprint_unit'] ?>.</li>
+			<li>Adding "<b>{first_name}</b>" in <b><?= strip_tags($i_media_type_names['text']) ?></b> to mention the student name.</li>
+			<li>Tips are "drip-fed" to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
@@ -658,7 +632,8 @@ function msg_save_edit(i_id){
         		  echo '</select>';
         		  
         		echo '</div>';
-        		echo '<a href="javascript:msg_create();" class="btn btn-primary" data-toggle="tooltip" title="Ctrl + Enter ;)" style="margin-top:0;">ADD TIP</a>';
+        		echo '<a href="javascript:msg_create();" class="btn btn-primary" style="margin-top:0;">ADD TIP</a>';
+        		echo '<span class="enter">or press <b>CTRL+ENTER</b></span>';
         		echo '</div>';
     		echo '</div>';
         echo '</div>';

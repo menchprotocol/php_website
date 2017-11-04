@@ -87,8 +87,8 @@ $route['tip/(:num)'] 	                    = "my/load_tip/$1";
 $route['console/help/status_bible'] 			       = "console/status_bible";
 
 $route['console/account'] 						       = "console/account"; //Instructor account
-$route['console/(:num)/actionplan/(:num)'] 		       = "console/actionplan/$1/$2";
-$route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
+$route['console/(:num)/milestones/(:num)'] 		       = "console/milestones/$1/$2";
+$route['console/(:num)/milestones'] 			       = "console/milestones/$1";
 $route['console/(:num)/students'] 				       = "console/students/$1";
 $route['console/(:num)/stream'] 				       = "console/stream/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";

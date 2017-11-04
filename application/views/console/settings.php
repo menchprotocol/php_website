@@ -1,7 +1,7 @@
 <script>
 //Bootcamp admin management features
 function ba_add(){
-	alert('Contact us at support@mench.co to modify team members.');
+	alert('Contact us at support@mench.co to modify instructor team.');
 }
 
 
@@ -28,10 +28,6 @@ function save_settings(){
 		b_video_url:$('#b_video_url').val(),
 		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
 		
-		c_id:$('#c_id').val(),
-		c_objective:$('#c_objective').val(),
- 		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
-		
 	} , function(data) {
 		
 		//Update UI to confirm with user:
@@ -48,24 +44,20 @@ function save_settings(){
 
 
 <input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
-<input type="hidden" id="c_id" value="<?= $bootcamp['b_c_id'] ?>" />
-
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_details" class="active"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a></li>
-  <li id="nav_team"><a href="#team" data-toggle="tab" onclick="update_hash('team')"><i class="fa fa-user-circle" aria-hidden="true"></i> Team</a></li>
+  <li id="nav_landingpage" class="active"><a href="#landingpage" data-toggle="tab" onclick="update_hash('landingpage')"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
+  <li id="nav_team"><a href="#team" data-toggle="tab" onclick="update_hash('team')"><i class="fa fa-user-plus" aria-hidden="true"></i> Co-Instructors</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="details">
-    
-		<?php $this->load->view('console/inputs/c_objective' , array('c_objective'=>$bootcamp['c_objective']) ); ?>
-		<br />
+    <div class="tab-pane active" id="landingpage">
+
 		<?php $this->load->view('console/inputs/b_video_url' , array('b_video_url'=>$bootcamp['b_video_url']) ); ?>
 		<br />
-		<?php $this->load->view('console/inputs/c_todo_overview' , array('c_todo_overview'=>$bootcamp['c_todo_overview']) ); ?>
+		<?php $this->load->view('console/inputs/b_url_key' , array('b_url_key'=>$bootcamp['b_url_key']) ); ?>
         <br />
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
         
@@ -73,13 +65,14 @@ function save_settings(){
     
     
     <div class="tab-pane" id="team">
-    	<p>Your team scales your 1-on-1 support and ability to manage your operations:</p>
+    	<p>Co-instructors help you scale your ability to provide 1-on-1 support to manage a larger and more consistent bootcamp operation:</p>
     	<ul>
-			<li>You hire/pay/manage your team. We give you tools to make them efficient.</li>
-			<li>Each bootcamp must have a single <?= status_bible('ba',3) ?>.</li>
-			<li>Team members can be added as <?= status_bible('ba',1) ?> or <?= status_bible('ba',2) ?>.</li>
-			<li>Team members can be displayed on the landing page or be hidden.</li>
-            <li>Contact us via live chat (bottom-right) to modify team members.</li>
+			<li>Each bootcamp has a single <?= status_bible('ba',3) ?> who is the "Bootcamp CEO".</li>
+			<li><?= status_bible('ba',3) ?> can recruit and manage multiple <?= status_bible('ba',2) ?>.</li>
+			<li>Each <?= status_bible('ba',2) ?> can have specific read/write privileges.</li>
+			<li>Each <?= status_bible('ba',2) ?> can be displayed of hidden from the landing page.</li>
+			<li>You can also setup revenue sharing with each <?= status_bible('ba',2) ?>.</li>
+            <li>Contact us via live chat (bottom-right) to modify your instructor team.</li>
 		</ul>
     	<?php
     	echo '<div id="list-outbound" class="list-group">';
@@ -113,8 +106,8 @@ function save_settings(){
 		<?php $this->load->view('console/inputs/b_status' , array('b_status'=>$bootcamp['b_status']) ); ?>
 		<?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
 		<br />
-		<?php $this->load->view('console/inputs/b_url_key' , array('b_url_key'=>$bootcamp['b_url_key']) ); ?>
-		
+		<?php $this->load->view('console/inputs/b_terms_agreement' , array('b_terms_agreement_time'=>$bootcamp['b_terms_agreement_time']) ); ?>
+		<br />
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
         
     </div>

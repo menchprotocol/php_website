@@ -126,7 +126,7 @@ $( document ).ready(function() {
     		<div id="r_prerequisites"><?= ( strlen($next_cohort['r_prerequisites'])>0 ? $next_cohort['r_prerequisites'] : 'None' ) ?></div>
     		
     		
-    		<h3>Action Plan</h3>
+    		<h3>Milestones</h3>
     		<p>The tasks for this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp are estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>to complete, or about <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b>:</p>
     		<div id="c_goals_list">
     		<?php 
@@ -178,18 +178,9 @@ $( document ).ready(function() {
     		<p>This bootcamp offers chat response times of <b>Under <?= echo_hours($next_cohort['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
     		<hr />
     		
+
     		
-    		<?php if(strlen($next_cohort['r_facebook_group_id'])>0){ ?>
-    		<h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Group</h4>
-    		<p>A Facebook Group enables students to connect with their peers and instructors to share ideas as a micro-community that shares a common goal.</p>
-    		<?php } ?>
-    		
-    		
-    		
-    		
-    		
-    		
-    		
+
     		
     		
     		<h3>Instructors</h3>
@@ -263,6 +254,8 @@ $( document ).ready(function() {
     
 
     		<h3>Admission</h3>
+    		
+    		
     		<h4><i class="fa fa-calendar" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
@@ -271,6 +264,16 @@ $( document ).ready(function() {
     			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST</b></li>
     		</ul>
     		<hr />
+    		
+    		
+    		
+    		<?php if(strlen($next_cohort['r_completion_prizes'])>0){ 
+    		    $plural_prize = ( substr_count($next_cohort['r_completion_prizes'],'<li>')==1 ? '' : 's' ); ?>
+    		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
+    		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST.</p>
+    		<div id="r_completion_prizes"><?= $next_cohort['r_completion_prizes'] ?></div>
+    		<hr />
+    		<?php } ?>
     		
     		
     		

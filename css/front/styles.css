@@ -52,6 +52,7 @@
     overflow: hidden;
 }
 
+.dropdown-menu a { text-decoration:none !important; }
 .video-player {margin-top:10px;}
 .video-player video {border-radius:6px;}
 .tab-space { padding-bottom:0px !important; }

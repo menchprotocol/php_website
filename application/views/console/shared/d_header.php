@@ -52,7 +52,9 @@ $website = $this->config->item('website');
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Help Center</i></span></a></li>
-						<li><a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a></li>
+						<?php if(!(isset($udata['u_fb_id']) && strlen($udata['u_fb_id'])>0)){ ?>
+						<li><a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> Connect to MenchBot</a></li>
+						<?php } ?>
 						<li><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> My Account</a></li>
 					</ul>
 				</div>
@@ -76,7 +78,7 @@ $website = $this->config->item('website');
 
             	    echo '<li class="li-sep '.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['b_id'] ? 'active' : '' ).'"><a href="/console/'.$bootcamp['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i><p>Action Plan</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/milestones')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/milestones"><i class="fa fa-flag" aria-hidden="true"></i><p>Milestones</p></a></li>';
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    
@@ -85,7 +87,6 @@ $website = $this->config->item('website');
             	    //echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/settings"><i class="material-icons">settings</i><p>Settings &nbsp;'.status_bible('b',$bootcamp['b_status'],1,'top').'</p></a></li>';
-            	    
         		}
             	?>
             	</ul>

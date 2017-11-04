@@ -14,7 +14,7 @@ window.extAsyncInit = function() {
 	<?php if(is_dev()){ ?>
 	
 	var psid = '1443101719058431';
-	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
+	$.post("/my/display_milestones/"+psid+"/<?= $b_id ?>/<?= $c_id ?>", {}, function(data) {
  		//Update UI to confirm with user:
  		$( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
  	});
@@ -29,7 +29,7 @@ window.extAsyncInit = function() {
       	var psid = thread_context.psid;
       	var signed_request = thread_context.signed_request;
         //Fetch Page:
-     	$.post("/my/display_actionplan/"+psid+"/<?= $b_id ?>/<?= $c_id ?>?sr="+signed_request, {}, function(data) {
+     	$.post("/my/display_milestones/"+psid+"/<?= $b_id ?>/<?= $c_id ?>?sr="+signed_request, {}, function(data) {
      		//Update UI to confirm with user:
      		$( "#page_content").html(data);
      	});

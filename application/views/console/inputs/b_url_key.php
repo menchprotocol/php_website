@@ -1,7 +1,7 @@
 <div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Landing Page URL</h4></div>
 <ul>
 	<li>Your bootcamp's unique landing page URL.</li>
-	<li>Accepts letter and hyphens as inputs. No numbers or other characters.</li>
+	<li>Use letters and hyphens. No numbers or other characters.</li>
 	<li>Share with students to enroll in your online bootcamp.</li>
 	<li>Be aware that URL changes break previously shared links.</li>
 </ul>

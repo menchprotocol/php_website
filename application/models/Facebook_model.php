@@ -44,7 +44,7 @@ class Facebook_model extends CI_Model {
 								'locale' => 'default',
 								'text' => 'I\'m a Personal Assistant Bot for your Mench Bootcamps. I can help with:
 
-- Your Action Plan
+- Bootcamp Milestones
 - Reminder Notifications
 - Asking Questions',
 						),
@@ -59,9 +59,9 @@ class Facebook_model extends CI_Model {
 						'composer_input_disabled' => false,
 						'call_to_actions' => array(
 						    array(
-						        'title' => '✔️ Action Plan',
+						        'title' => '🚩 Milestones',
 						        'type' => 'web_url',
-						        'url' => 'https://mench.co/my/actionplan',
+						        'url' => 'https://mench.co/my/milestones',
 						        'webview_height_ratio' => 'tall',
 						        'webview_share_button' => 'hide',
 						        'messenger_extensions' => true,
