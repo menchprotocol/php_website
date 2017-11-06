@@ -717,14 +717,32 @@ class Db_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
+	//Leads:
+	function il_update($il_id,$update_columns){
+	    $this->db->where('il_id', $il_id);
+	    $this->db->update('v5_instructor_leads', $update_columns);
+	    return $this->db->affected_rows();
+	}
+	function il_create($insert_columns){
+	    $this->db->insert('v5_instructor_leads', $insert_columns);
+	    $insert_columns['il_id'] = $this->db->insert_id();    
+	    return $insert_columns;
+	}
+	function il_fetch($match_columns=array()){
+	    $this->db->select('*');
+	    $this->db->from('v5_instructor_leads il');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $this->db->order_by('il_id','ASC');
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
+	
 	function r_create($insert_columns){
-	    
-	    //Lets now add:
 	    $this->db->insert('v5_cohorts', $insert_columns);
-	    
-	    //Fetch inserted id:
 	    $insert_columns['r_id'] = $this->db->insert_id();
-	    
 	    return $insert_columns;
 	}
 	

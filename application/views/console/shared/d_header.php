@@ -78,7 +78,7 @@ $website = $this->config->item('website');
 
             	    echo '<li class="li-sep '.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['b_id'] ? 'active' : '' ).'"><a href="/console/'.$bootcamp['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/milestones')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/milestones"><i class="fa fa-flag" aria-hidden="true"></i><p>Milestones</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/milestones')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/milestones"><i class="fa fa-list-ol" aria-hidden="true"></i><p>Action Plan</p></a></li>';
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/cohorts')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/cohorts">'.$this->lang->line('r_icon').'<p>'.$this->lang->line('r_pname').'</p></a></li>';
                 	    

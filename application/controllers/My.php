@@ -84,7 +84,7 @@ class My extends CI_Controller {
 	function milestones($b_id=null,$c_id=null){
 	    //Load apply page:
 	    $data = array(
-	        'title' => '🚩 Milestones',
+	        'title' => '🚩 Action Plan',
 	        'b_id' => $b_id,
 	        'c_id' => $c_id,
 	    );

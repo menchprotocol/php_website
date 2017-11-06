@@ -71,7 +71,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">monetization_on</i></div>
 					<h3 class="info-title">Grow Your Business</h3>
-					<p>A bootcamp allows you to add an lucrative source of income. People are willing to pay a premiun for content that helps them get actual results. At Mench you'll be able to command higher prices than for information only products.</p>
+					<p>A bootcamp allows you to add a lucrative source of income. People are willing to pay a premium for content that helps them get actual results. At Mench you'll be able to command higher prices than for information-only products.</p>
 				</div>
 			</div>
 		</div>

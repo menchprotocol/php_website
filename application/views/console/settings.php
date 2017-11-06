@@ -16,6 +16,7 @@ $(document).ready(function() {
 });
 
 function save_settings(){
+	
 	//Show spinner:
 	$('.save_setting_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 	
@@ -27,6 +28,7 @@ function save_settings(){
 		b_url_key:$('#b_url_key').val(),
 		b_video_url:$('#b_video_url').val(),
 		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
+		b_newly_checked:(document.getElementById('b_terms_agreement_time').checked ? '1' : '0'),
 		
 	} , function(data) {
 		

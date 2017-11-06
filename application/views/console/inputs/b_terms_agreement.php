@@ -10,9 +10,9 @@
 	<div class="checkbox">
 	<label>
 		<?php if(isset($b_terms_agreement_time) && strlen($b_terms_agreement_time)>0){ ?>
-		<input type="checkbox" id="b_terms_agreement_time" name="b_terms_agreement_time" disabled checked /> Lead instructor agreed on <?= time_format($b_terms_agreement_time,0) ?>
+		<input type="checkbox" id="b_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($b_terms_agreement_time,0) ?> PST</b>
 		<?php } else { ?>
-		<input type="checkbox" id="b_terms_agreement_time" name="b_terms_agreement_time" /> As the lead bootcamp instructor I certify that all above statements are true
+		<input type="checkbox" id="b_terms_agreement_time" /> As the lead bootcamp instructor I certify that all above statements are true
 		<?php } ?>
 	</label>
 </div>

@@ -74,7 +74,7 @@ function extract_level($b,$c_id){
         $view_data['level'] = 1;
         $view_data['sprint_index'] = 0;
         $view_data['intent'] = $b;
-        $view_data['title'] = 'Milestones | '.$b['c_objective'];
+        $view_data['title'] = 'Action Plan | '.$b['c_objective'];
         $view_data['breadcrumb'] = array(
             array(
                 'link' => null,
@@ -93,7 +93,7 @@ function extract_level($b,$c_id){
                 $view_data['level'] = 2;
                 $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                 $view_data['intent'] = $sprint;
-                $view_data['title'] = 'Milestones | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
+                $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
                 $view_data['breadcrumb'] = array(
                     array(
                         'link' => '/console/'.$b['b_id'].'/milestones',
@@ -126,7 +126,7 @@ function extract_level($b,$c_id){
                         $view_data['level'] = 3;
                         $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                         $view_data['intent'] = $task;
-                        $view_data['title'] = 'Milestones | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
+                        $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
                         $view_data['breadcrumb'] = array(
                             array(
                                 'link' => '/console/'.$b['b_id'].'/milestones',
@@ -152,7 +152,7 @@ function extract_level($b,$c_id){
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => $core_objects['level_2']['o_icon'].'Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+                                'anchor' => $core_objects['level_2']['o_icon'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
                             ),
                         );
                         
@@ -182,7 +182,8 @@ function echo_video($video_url){
     //Support youtube and direct video URLs
     if(substr_count($video_url,'youtube.com/watch?v=')==1){
         //This is youtube:
-        return '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.one_two_explode('youtube.com/watch?v=','&',$video_url).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+        //We can also define start and end time by adding this: &start=4&end=9
+        return '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.one_two_explode('youtube.com/watch?v=','&',$video_url).'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
     } else {
         //This is a direct video URL:
         return '<video width="100%" onclick="this.play()" controls><source src="'.$video_url.'" type="video/mp4">Your browser does not support the video tag.</video>';
@@ -307,8 +308,8 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
      * $b = Bootcamp object
      * $c = Intent object
      * $level Legend:
-     *    1 = Top level Milestones
-     *    2 = Action Day/Week
+     *    1 = Action Plan / Top Level
+     *    2 = Milestone (Day or Week)
      *    3 = Task
      * 
      * * */
@@ -330,12 +331,34 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     } elseif($level==3 || $unlocked_action_plan){
         $ui = '<a href="/my/milestones/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         
-        if(isset($us_data[$c['c_id']])){
-            $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
-        } else {
-            $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+        if($level==2){
+            
+            //We need to check if all child tasks are marked as complete:
+            $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
+            foreach($c['c__child_intents'] as $task){
+                if(!isset($us_data[$task['c_id']])){
+                    //No submission for this, definitely not done!
+                    $aggregate_status = -2; //A special meaning here, which is not found
+                    break;
+                } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
+                    $aggregate_status = $us_data[$task['c_id']]['us_status'];
+                }
+            }
+            
+            if($aggregate_status==-2){
+                $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+            } else {
+                $ui .= status_bible('us',$aggregate_status,1).' ';
+            }
+            
+        } elseif($level==3){
+            //This is a task, it needs to have a direct submission:
+            if(isset($us_data[$c['c_id']])){
+                $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
+            } else {
+                $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+            }
         }
-        
         
         //if($c['cr_outbound_rank']<=1){
         //$ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
@@ -347,8 +370,9 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
         $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
     }
     
-    if($level>0){
-        $ui .= ( $level>=2 ? ( $level==2 ? '<span class="inline-level">'.strtoupper(substr($b['b_sprint_unit'],0,1)).$c['cr_outbound_rank'].'</span>' : '' ) : '' );
+    if($level==2){
+        //Show milestone abbrevation like "W1" or "D4"
+        $ui .= '<span class="inline-level">'.strtoupper(substr($b['b_sprint_unit'],0,1)).$c['cr_outbound_rank'].'</span>';
     }
     
     $ui .= $c['c_objective'].' ';
@@ -516,7 +540,6 @@ function calculate_bootcamp_status($b){
                 unset($c_missing);
                 $c_missing = array();
                 
-                
                 //c_todo_overview
                 $to_gain = 10;
                 $progress_possible += $to_gain;
@@ -548,6 +571,7 @@ function calculate_bootcamp_status($b){
     
     
     //require some tasks
+    /*
     $to_gain = 60;
     $progress_possible += $to_gain;
     $required_tasks = 3;
@@ -555,11 +579,13 @@ function calculate_bootcamp_status($b){
         $progress_gained += $to_gain;
     } else {
         $progress_gained += ($task_count/$required_tasks)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Tasks]</b>'.($task_count>0?' ('.($required_tasks-$task_count).' more)':'').' to any '.$b['b_sprint_unit'].' of your <a href="/console/'.$b['b_id'].'/milestones"><u>Milestones</u></a>');
+        array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Tasks]</b>'.($task_count>0?' ('.($required_tasks-$task_count).' more)':'').' to any Milestone in '.$b['b_sprint_unit'].' of your <a href="/console/'.$b['b_id'].'/milestones"><u>Action Plan</u></a>');
     }
+    */
     
     
     //require some tips
+    /*
     $to_gain = 15;
     $required_tips = 3;
     $progress_possible += $to_gain;
@@ -569,6 +595,7 @@ function calculate_bootcamp_status($b){
         $progress_gained += ($b['c__tip_count']/$required_tips)*$to_gain;
         array_push($call_to_action,'Add <b>[At least '.$required_tips.' Tips]</b>'.($b['c__tip_count']>0?' ('.($required_tips-$b['c__tip_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/milestones"><u>Milestones</u></a>');
     }
+    */
     
     
     /* *****************************
@@ -753,7 +780,7 @@ function calculate_bootcamp_status($b){
             array_push($call_to_action,'Add <b>[Fluent Languages]</b> to <a href="/console/account"><u>My Account</u></a>');
         }
         
-        //u_image_url
+        //u_bio
         $to_gain = 30;
         $progress_possible += $to_gain;
         if(strlen($bl['u_bio'])>0){
@@ -795,13 +822,22 @@ function calculate_bootcamp_status($b){
     }
     
     
+    //b_terms_agreement_time
+    $to_gain = 45;
+    $progress_possible += $to_gain;
+    if(strlen($b['b_terms_agreement_time'])>0){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Agree to <b>[Lead Instructor Agreement]</b> in <a href="/console/'.$b['b_id'].'/settings#settings"><u>Settings</u></a>');
+    }
+    
     //c_todo_overview
     $to_gain = 15;
     $progress_possible += $to_gain;
     if(strlen($b['c_todo_overview'])>0){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>'.$b['c_todo_bible']);
+        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/milestones#details"><u>Action Plan</u></a>'.$b['c_todo_bible']);
     }
     
   

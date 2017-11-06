@@ -83,6 +83,9 @@ class Front extends CI_Controller {
 	 ****************************** */
 	
 	function bootcamps_browse(){
+	    //Require login
+	    $udata = auth(1,1);
+	    
 	    //The public list of challenges:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => 'Browse Bootcamps',

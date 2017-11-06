@@ -182,7 +182,7 @@ $udata = $this->session->userdata('user');
             
             <div class="wizard-box platform-intro">
         		<p>Mench is a marketplace for online bootcamps.</p>
-        		<p>We've designed a learning chatbot called <b><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</b> that dramatically increases student engagements.</p>
+        		<p>We've designed a learning chatbot called <b><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</b> that dramatically increases student engagement.</p>
         		<p>How?</p>
         		<ul style="list-style:decimal;">
         			<li>By deliverying learning content over Facebook Messenger which is a highly engaging platform used by over 1.3 Billion users.</li>
@@ -316,7 +316,7 @@ $udata = $this->session->userdata('user');
             				<ul style="list-style:decimal;">
                     			<li>Bootcamps should be designed to start-off easy and get incrementally harder one <b style="display:inline-block;"><i class="fa fa-flag" aria-hidden="true"></i> Milestone</b> at a time.</li>
                     			<li>Students get to warm-up during the first few milestones before going under pressure to perform.</li>
-                    			<li>This reduces drop-out rates while increasing student engagements.</li>
+                    			<li>This reduces drop-out rates while increasing student engagement.</li>
                     		</ul>
             			</td>
             		</tr>

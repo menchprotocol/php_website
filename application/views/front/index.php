@@ -8,7 +8,7 @@ $udata = $this->session->userdata('user');
 			<div class="col-md-6">
 				<div class="info">
 					<h2 class="title" style="margin-top:30px; line-height: 110%;">For Online Instructors</h2>
-					<p style="min-height:200px;">Upgrade your online courses into bootcamps and empower some of your existing students to learn faster by taking action. Earn an average of 25x more per student by bundling personalized support with your content while dramatically increasing student engagements.</p>
+					<p style="min-height:200px;">Upgrade your online courses into bootcamps and empower some of your existing students to learn faster by taking action. Earn an average of 25x more per student by bundling personalized support with your content while dramatically increasing student engagement.</p>
 				</div>
 			</div>
 			<div class="col-md-6">

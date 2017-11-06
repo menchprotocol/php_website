@@ -962,6 +962,12 @@ class Process extends CI_Controller {
 	        'b_video_url' => $_POST['b_video_url'],
 	        'b_sprint_unit' => $_POST['b_sprint_unit'],
 	    );
+	    
+	    //Did they just agree to the agreement?
+	    if(isset($_POST['b_newly_checked']) && intval($_POST['b_newly_checked']) && strlen($bootcamps[0]['b_terms_agreement_time'])<1){
+	        //Yes they did, save the timestamp:
+	        $b_update['b_terms_agreement_time'] = date("Y-m-d H:i:s");
+	    }
 
 	    //Updatye bootcamp:
 	    $this->Db_model->b_update( intval($_POST['b_id']) , $b_update);
