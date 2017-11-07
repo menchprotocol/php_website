@@ -19,7 +19,7 @@ foreach($admissions as $admission){
     
     
     //Typeform Application:
-    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : typeform_url($admission['r_typeform_id'],$admission) ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : typeform_url($admission['r_typeform_id'],$admission['r_id'],$admission) ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
     
     if($admission['r_usd_price']>0){

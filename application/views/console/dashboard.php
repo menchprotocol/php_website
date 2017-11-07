@@ -34,7 +34,7 @@
     
     
     <div class="row">
-      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/milestones"><b><i class="fa fa-flag" aria-hidden="true"></i> Milestones <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
+      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/milestones"><b><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
       	<div><?= count($bootcamp['c__child_intents']) ?> <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone'.( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
       	<div><?= $bootcamp['c__task_count'] ?> Total Task<?= ($bootcamp['c__task_count']==1?'':'s') ?></div>
@@ -56,8 +56,8 @@
       	<?php 
       	//Fetch cohort:
       	if(count($bootcamp['c__cohorts'])>0){
-      	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
-      	    echo '<div>'.time_format($next_cohort['r_start_date'],1).' is next</div>';
+      	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],null);
+      	    echo '<div>'.time_format($next_cohort['r_start_date'],1).' is Open for Admission</div>';
       	}
         ?>
       </div>

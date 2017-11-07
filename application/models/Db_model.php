@@ -453,14 +453,12 @@ class Db_model extends CI_Model {
 		
 		$runs = $q->result_array();
 		foreach($runs as $key=>$value){
-		    /*
-		     * //TODO: Determine enrolled students and apply potential registration limitations
-		    $runs[$key]['r__enrolled_students'] = $this->Db_model->ru_fetch(array(
+		    //Fetch admission count:
+		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: Process/cohort_create() when duplicating a cohort
+		    $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
-		        'ru.ru_status <'	=> 2, //TODO Review: Regular students
-		        'u.u_status <'		=> 2, //TODO Review: Regular students
-		    ));
-		    */
+		        'ru.ru_status >'	=> 0, //Anyone who has paid anything
+		    )));
 		}
 		
 		return $runs;

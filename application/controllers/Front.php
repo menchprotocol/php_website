@@ -98,7 +98,8 @@ class Front extends CI_Controller {
 	    $this->load->view('front/shared/f_footer');
 	}
 	
-	function bootcamp_load($b_url_key){
+	function bootcamp_load($b_url_key,$r_id=null){
+	    
 	    //Fetch data:
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_url_key' => $b_url_key,
@@ -109,7 +110,8 @@ class Front extends CI_Controller {
 	        //Invalid key, redirect back:
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
-	    //Validate status:
+	    
+	    //Validate bootcamp status:
 	    $udata = $this->session->userdata('user');
 	    $bootcamp = $bootcamps[0];
 	    if($bootcamp['b_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1)){
@@ -117,13 +119,20 @@ class Front extends CI_Controller {
 	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
 	    
+	    //Validate Cohort:
+	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],$r_id);
+	    if(!$next_cohort){
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">'.( $r_id ? 'Cohort has expired.' : 'No active cohorts open for admission.' ).'</div>');
+	    }
+	    
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
-	        'title' => $bootcamp['c_objective'],
+	        'title' => $bootcamp['c_objective'].' - Starting '.time_format($next_cohort['r_start_date'],4),
 	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as an instructor. This bootcamp is hidden from the public until published live.</div>' : null ),
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(
 	        'bootcamp' => $bootcamp,
+	        'next_cohort' => $next_cohort,
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
@@ -144,14 +153,14 @@ class Front extends CI_Controller {
 	    
 	    //Validate Cohort ID that it's still the latest:
 	    $bootcamp = $bootcamps[0];
-	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],$r_id);
 	    if(!($next_cohort['r_id']==$r_id)){
 	        //Invalid cohort ID, redirect back:
 	        redirect_message('/bootcamps/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Cohort is no longer active.</div>');
 	    }
 	    
 	    $data = array(
-	        'title' => 'Reserve Your Seat in '.$bootcamp['c_objective'].' Bootcamp Starting '.time_format($next_cohort['r_start_date'],4),
+	        'title' => 'Reserve Seat in '.$bootcamp['c_objective'].' - Starting '.time_format($next_cohort['r_start_date'],4),
 	        'next_cohort' => $next_cohort,
 	    );
 	    

@@ -85,11 +85,13 @@ function save_r(){
 		r_typeform_id:$('#r_typeform_id').val(),
 		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
 		
-		//Quill Forms:
-		r_prerequisites:( r_prerequisites_quill.getLength()>1 ? $('#r_prerequisites .ql-editor').html() : "" ),
-		r_application_questions:( r_application_questions_quill.getLength()>1 ? $('#r_application_questions .ql-editor').html() : "" ),
-		r_completion_prizes:( r_completion_prizes_quill.getLength()>1 ? $('#r_completion_prizes .ql-editor').html() : "" ),
+		//Item lists:
+		r_application_questions: fetch_submit('r_application_questions'),
+		r_prerequisites: fetch_submit('r_prerequisites'),
+		r_completion_prizes: fetch_submit('r_completion_prizes'),
 	};
+
+	console.log(save_data);
 	
 	//Now merge into timeline dates:
 	//for (var key in timeline){
@@ -133,25 +135,120 @@ function save_r(){
 
 <div class="tab-content tab-space">
 
+
+
+	<!-- Admission Tab -->
     <div class="tab-pane active" id="admission">
-        <?php $this->load->view('console/inputs/r_min_students' , array('r_min_students'=>$cohort['r_min_students']) ); ?>
+    
+        <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students</h4></div>
+        <ul>
+        	<li>Minimum number of students required to kick-start this cohort.</li>
+        	<li>All applicants would be refunded if the minimum is not met.</li>
+        	<li>The value must be "1" or greater.</li>
+        </ul>
+        <div class="input-group">
+        	<input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= (isset($cohort['r_min_students'])?$cohort['r_min_students']:null) ?>" class="form-control border" />
+        </div>
         <br />
-        <?php $this->load->view('console/inputs/r_max_students' , array('r_max_students'=>$cohort['r_max_students']) ); ?>
+        
+        
+        
+        
+        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students</h4></div>
+        <ul>
+        	<li>Maximum number of students that can apply before cohort is full.</li>
+        	<li>Consider your audience size to leverage this field to create a sense of scarcity.</li>
+        	<li>Once cohort is full we will automatically display your next published cohort.</li>
+        	<li>Remove the maximum limitation by setting it to "0".</li>
+        </ul>
+        <div class="input-group">
+          <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= ( isset($cohort['r_max_students']) ? $cohort['r_max_students'] : null ) ?>" class="form-control border" />
+        </div>
         <br />
-        <?php $this->load->view('console/inputs/r_prerequisites' , array('r_prerequisites'=>$cohort['r_prerequisites']) ); ?>
+        
+                
+        
+        
+        
+        <div class="title"><h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</h4></div>
+        <ul>
+        	<li>A list of requirements students must meet to join this bootcamp.</li>
+        	<li>We ask students to confirm all prerequisites during their application.</li>
+        </ul>
+        <script>
+        $(document).ready(function() {
+        	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-exclamation-triangle"></i> Prerequisite',<?= ( strlen($cohort['r_prerequisites'])>0 ? $cohort['r_prerequisites'] : '[]' ) ?>);
+        });
+        </script>
+        <div id="r_prerequisites" class="list-group"></div>
         <br />
-        <?php $this->load->view('console/inputs/r_application_questions' , array('r_application_questions'=>$cohort['r_application_questions']) ); ?>
+        
+        
+        
+        
+        
+        
+        <div class="title"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions</h4></div>
+        <ul>
+        	<li>Open-ended questions you'd like to ask students during their application.</li>
+        	<li>Useful to assess student's desire level and suitability for this bootcamp.</li>
+        </ul>
+        
+        <script>
+        $(document).ready(function() {
+        	initiate_list('r_application_questions','+ New Question','<i class="fa fa-question-circle"></i> Question',<?= ( strlen($cohort['r_application_questions'])>0 ? $cohort['r_application_questions'] : '[]' ) ?>);
+        });
+        </script>
+        <div id="r_application_questions" class="list-group"></div>
     </div>
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     <div class="tab-pane" id="support">
     
-    	<?php $this->load->view('console/inputs/r_response_time_hours' , array('r_response_time_hours'=>$cohort['r_response_time_hours']) ); ?>
+    
+		<div class="title"><h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4></div>
+        <ul>
+        	<li>Student communication is done on Facebook Messenger using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> <u>MenchBot</u></a>.</li>
+        	<li>You are required to respond to 100% of incoming student messages.</li>
+        	<li>You get to choose how fast you commit to responding to messages.</li>
+        </ul>
+        <select class="form-control input-mini border" id="r_response_time_hours">
+        <option value="">Select Responsiveness</option>
+        <?php 
+        $r_response_options = $this->config->item('r_response_options');
+        foreach($r_response_options as $time){
+            echo '<option value="'.$time.'" '.( isset($cohort['r_response_time_hours']) && $cohort['r_response_time_hours']==$time ? 'selected="selected"' : '' ).'>Under '.echo_hours($time).'</option>';
+        }
+        ?>
+        </select>
 
-    	<?php $this->load->view('console/inputs/r_weekly_1on1s' , array(
-    	       'r_weekly_1on1s'=>$cohort['r_weekly_1on1s'],
-    	       'b_sprint_unit'=>$bootcamp['b_sprint_unit']     
-    	)); ?>
+
+
+		
+		
+		<div class="title"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship Level</h4></div>
+        <ul>
+        	<li>Recommended for difficult-to-execute bootcamps to help students 1-on-1.</li>
+        	<li>Use a Calendar app to manually setup weekly meetings with each student.</li>
+        	<li>Use a video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
+        </ul>
+        <select class="form-control input-mini border" id="r_weekly_1on1s" style="width:300px;">
+        <option value="">Select Mentorship Level</option>
+        <?php
+        $weekly_1on1s_options = $this->config->item('r_weekly_1on1s_options');
+        foreach($weekly_1on1s_options as $time){
+            echo '<option value="'.$time.'" '.( isset($cohort['r_weekly_1on1s']) && $cohort['r_weekly_1on1s']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).' per student per '.$bootcamp['b_sprint_unit'].'</option>';
+        }
+        ?>
+        </select>
     	
 
 
@@ -210,24 +307,72 @@ function save_r(){
     
     <div class="tab-pane" id="pricing">
     
-        <?php $this->load->view('console/inputs/r_usd_price' , array('r_usd_price'=>$cohort['r_usd_price']) ); ?>
+        <div class="title"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4></div>
+        <ul>
+        	<li>A 1-time fee for student to join this bootcamp.</li>
+        	<li>Correlates to total duration, estimated hours & personalized support level.</li>
+        	<li>Enter "0" if free. We do not charge any commission on free bootcamps.</li>
+        	<li>We suggest charging $100-$200/week per each hour of 1-on-1 mentorship.</li>
+        	<li>We charge 15% commission for paid bootcamps & <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank" style="display:inline-block;">Payout in 2 installments <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+        	<li>Co-Instructor revenue sharing & student payment plans are <a href="javascript:alert('You can share your revenue with your co-instructors, or you can setup student payment plans for bootcamps that cost more than $500. Contact us via chat to learn more or to request these features.');">available <i class="fa fa-info-circle" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+        </ul>
+        <div class="input-group">
+        	<span class="input-group-addon addon-lean">USD $</span>
+        	<input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= isset($cohort['r_usd_price']) && floatval($cohort['r_usd_price'])>=0 ? $cohort['r_usd_price'] : null ?>" class="form-control border" />
+        </div>
         <br />
-        <?php $this->load->view('console/inputs/r_completion_prizes' , array('r_completion_prizes'=>$cohort['r_completion_prizes']) ); ?>
+        
+        
+        
+        
+        <div class="title"><h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prizes (Optional)</h4></div>
+        <ul>
+        	<li>Awarded to students who complete all milestones by the last day of this cohort.</li>
+        	<li>Prizes are an additional incentive to increase your bootcamp's completion rates.</li>
+        	<li>Completion prizes are published on your landing page's Admission section.</li>
+        </ul>
+        
+        <script>
+        $(document).ready(function() {
+        	initiate_list('r_completion_prizes','+ New Prize','<i class="fa fa-gift"></i> Prize',<?= ( strlen($cohort['r_completion_prizes'])>0 ? $cohort['r_completion_prizes'] : '[]' ) ?>);
+        });
+        </script>
+        <div id="r_completion_prizes" class="list-group"></div>
         <br />
-        <?php $this->load->view('console/inputs/r_cancellation_policy' , array('r_cancellation_policy'=>$cohort['r_cancellation_policy']) ); ?>
+        
+        
+        
+        <div class="title"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy (for Paid Cohorts)</h4></div>
+        <?php 
+        $refund_policies = $this->config->item('refund_policies');
+        foreach($refund_policies as $type=>$terms){
+            echo '<div class="radio">
+        	<label>
+        		<input type="radio" name="r_cancellation_policy" value="'.$type.'" '.( isset($cohort['r_cancellation_policy']) && $cohort['r_cancellation_policy']==$type ? 'checked="true"' : '' ).' />
+        		'.ucwords($type).'
+        	</label>
+        	<ul style="margin-left:15px;">';
+            echo '<li>Full Refund: '.( $terms['full']>0 ? '<b>Before '.($terms['full']*100).'%</b> of the cohort\'s elapsed time' : ( $terms['prorated']>0 ? '<b>Before Start Date</b> of the cohort' : '<b>None</b> After Admission' ) ).'.</li>';
+              echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the cohort\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
+        	echo '</ul></div>';
+        }
+        ?>
+        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank" style="display:inline-block;">Refund Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</p>
     </div>
     
     
     <div class="tab-pane" id="settings">
     
-    
         <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$cohort['r_status']) ); ?>
 		<br />
+		
         <?php $this->load->view('console/inputs/r_start_day_time' , array(
+            'milestone_count' => count($bootcamp['c__child_intents']),
             'b_sprint_unit' => $bootcamp['b_sprint_unit'],
             'r_start_date' => $cohort['r_start_date'],
             'r_start_time_mins' => $cohort['r_start_time_mins'],
         )); ?>
+        
         
         <div style="display:<?= ( $udata['u_status']>=3 ? 'block' : 'none' ) ?>;">
         	<div class="title"><h4><i class="fa fa-keyboard-o" aria-hidden="true"></i> Typeform ID</h4></div>
@@ -239,9 +384,10 @@ function save_r(){
                 <input type="text" id="r_typeform_id" style="width:233px;" value="<?= $cohort['r_typeform_id'] ?>" class="form-control border">			
             </div>
             <?php if(strlen($cohort['r_typeform_id'])>0){ ?>
-            <div style="margin-bottom:20px;"><a href="<?= typeform_url($cohort['r_typeform_id'],$udata) ?>" target="_blank" class="btn btn-default landing_page_url">View Typeform <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></div>
+            <div style="margin-bottom:20px;"><a href="<?= typeform_url($cohort['r_typeform_id'],$cohort['r_id'],$udata) ?>" target="_blank" class="btn btn-default landing_page_url">View Typeform <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></div>
             <?php } ?>
     	</div>
+    	
     </div>
 </div>
 

@@ -53,7 +53,9 @@ $('#r_start_date').keyup(function(e){
 });
 </script>
 
-
+<style>
+#timeline_update{ font-size:0.8em; }
+</style>
 
 
 <!-- NEW COHORT -->
@@ -69,12 +71,13 @@ $('#r_start_date').keyup(function(e){
       		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
 			<?php $this->load->view('console/inputs/r_start_day_time' , array(
-                'b_sprint_unit' => $bootcamp['b_sprint_unit'],
+			    'milestone_count' => count($bootcamp['c__child_intents']),
+			    'b_sprint_unit' => $bootcamp['b_sprint_unit'],
 			    'r_start_time_mins' => '540', //9 AM Default recommendation
             )); ?>
 			
-			<div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Cohort Status</div>
-			<?php echo_status_dropdown('r','r_status',1,array(-1)); ?>
+			
+			<?php $this->load->view('console/inputs/r_status' , array('r_status'=>1,'removal_status'=>array(-1,-2,2,3)) ); ?>
 			
 			<?php 
             if(count($bootcamp['c__cohorts'])>0){

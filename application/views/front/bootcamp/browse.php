@@ -6,7 +6,11 @@
 foreach($bootcamps as $count=>$bootcamp){
     
     //Fetch cohort:
-    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],null);
+    
+    if(!$next_cohort){
+        continue;
+    }
     
     if(fmod($count,4)==0){
         echo '</div><div class="row">';

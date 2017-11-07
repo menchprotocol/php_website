@@ -68,6 +68,7 @@ $route['login']						= "front/login"; //Bootcamp Operator login
 
 //Three steps of the signup process:
 $route['bootcamps/(:any)/(:num)/apply'] 	= "front/bootcamp_apply/$1/$2"; //Start of application funnel for Email, first & last name
+$route['bootcamps/(:any)/(:num)']	        = "front/bootcamp_load/$1/$2"; //Load specific cohort
 $route['bootcamps/(:any)']	                = "front/bootcamp_load/$1"; //Landing page
 $route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
 

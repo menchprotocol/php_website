@@ -52,6 +52,8 @@
     overflow: hidden;
 }
 
+#timeline_update ul { margin-left:-10px; }
+.fa-trash, .list_input .badge-primary {cursor:pointer;}
 .dropdown-menu a { text-decoration:none !important; }
 .video-player {margin-top:10px;}
 .video-player video {border-radius:6px;}

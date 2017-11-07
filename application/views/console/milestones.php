@@ -176,7 +176,6 @@ function new_intent(c_objective){
  		//Resort:
  		load_intent_sort();
  		
- 		
  		//Tooltips:
  		$('[data-toggle="tooltip"]').addClass('').tooltip();
  	});
@@ -541,11 +540,28 @@ function msg_save_edit(i_id){
             'c_objective' => $intent['c_objective'],
         )); ?>
         
+        
+        
         <br />
-        <?php $this->load->view('console/inputs/c_todo_overview' , array(
-            'level' => $level,
-            'c_todo_overview' => $intent['c_todo_overview'],
-        )); ?>
+        <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview</h4></div>
+        <ul class="maxout">
+        	<?php if($level==1){ ?>
+        	<li>Provide an overview of how your bootcamp plans to accomplish its <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</b>.</li>
+        	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are published on the landing page below the title.</li>
+        	<?php } elseif($level==2){ ?>
+        	<li>Provide an overview of <b>how</b> this milestone builds towards the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</b> and <b>what</b> will students be doing for this milestone.</li>
+        	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are published in the landing page's Milestone section.</li>
+        	<?php } elseif($level>=3){ ?>
+        	<li>Give more context on how to execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
+        	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overview provides instructions on how to execute this task.</li>
+        	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are private & "drip-fed" to students during the bootcamp.</li>
+        	<?php } ?>
+        </ul>
+        <div id="c_todo_overview"><?= ( isset($intent['c_todo_overview']) ? $intent['c_todo_overview'] : '' ) ?></div>
+        <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
+        
+        
+        
         
        
         <?php $times = $this->config->item('c_time_options'); ?>
@@ -615,7 +631,7 @@ function msg_save_edit(i_id){
 		echo '<div class="list-group list-messages">';
     		echo '<div class="list-group-item">';
         		echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
-        		echo '<select class="form-control" id="i_media_type" style="width:150px;">';
+        		echo '<select class="form-control" id="i_media_type" style="width:150px; display:none;">';
             		foreach($i_media_type_names as $key=>$name){
             		    echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
             		}
@@ -623,7 +639,7 @@ function msg_save_edit(i_id){
         		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Plain text (No URLs/HTML)"></textarea>';
         		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
         		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional Reference URL" />';
-        		echo '<div>';
+        		echo '<div style="display:none;">';
         		
         		  echo '<select class="form-control" id="i_dispatch_minutes">';
         		  foreach($i_dispatch_minutes[$bootcamp['b_sprint_unit']] as $key=>$name){
@@ -632,7 +648,7 @@ function msg_save_edit(i_id){
         		  echo '</select>';
         		  
         		echo '</div>';
-        		echo '<a href="javascript:msg_create();" class="btn btn-primary" style="margin-top:0;">ADD TIP</a>';
+        		echo '<a href="javascript:msg_create();" class="btn btn-primary" style="margin-top:0;">ADD</a>';
         		echo '<span class="enter">or press <b>CTRL+ENTER</b></span>';
         		echo '</div>';
     		echo '</div>';

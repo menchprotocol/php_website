@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.69,
+    'version' => 0.71,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -145,11 +145,11 @@ $config['refund_policies'] = array(
 $config['sprint_units'] = array(
     'day' => array(
         'name' => 'Daily',
-        'desc' => 'Fast-pace & shorter bootcamps usually 1-30 days long.',
+        'desc' => 'Fast-pace & shorter bootcamps usually 3-30 days long.',
     ),
     'week' => array(
         'name' => 'Weekly',
-        'desc' => 'More complex & longer bootcamps usually 2-36 weeks long.',
+        'desc' => 'More complex & longer bootcamps usually 2-52 weeks long.',
     ),
 );
 
@@ -162,20 +162,19 @@ $config['aws_credentials'] = [
 
 $config['default_cohort_questions'] = array(
     'Why did you choose to join this bootcamp?',
-    'etc...',
+    'etc... (Delete this)',
 );
 $config['default_cohort_prizes'] = array(
     'A branded T-Shirt',
     '1 Year unlimited access to my online courses',
     '30-Minutes consultation session to explore your next best move',
-    'etc...',
+    'etc... (Delete this)',
 );
 $config['default_cohort_prerequisites'] = array(
     'An internet-connected computer',
     'Fluent in English',
-    'etc...',
+    'etc... (Delete this)',
 );
-
 
 
 $config['start_times'] = array(

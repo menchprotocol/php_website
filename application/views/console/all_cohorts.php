@@ -1,4 +1,9 @@
-<?php $this->load->view('console/inputs/g_cohort_intro'); ?>
+<p class="maxout" style="margin-top:-10px;">Each cohort is a grouping of students based on their start date:</p>
+<ul class="maxout" style="margin-bottom:20px;">
+	<li>Enable you to run your bootcamp multiple times for different student groups.</li>
+	<li>Improve your bootcamp iteratively on each cohort using student feedbacks.</li>
+	<li>All cohorts share the bootcamp's central <b style="display:inline-block;"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</b>.</li>
+</ul>
 
 <?php
 if(count($bootcamp['c__cohorts'])>0){
@@ -22,4 +27,3 @@ if(count($bootcamp['c__cohorts'])>0){
 
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newCohortModal">New</a>
 <span>or <a href="#" data-toggle="modal" data-target="#ScheduleCohorts"><u>Schedule Cohorts</u></a></span>
-

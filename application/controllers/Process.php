@@ -28,6 +28,7 @@ class Process extends CI_Controller {
 	 ****************************** */
 	
 	function funnel_progress(){
+	    
 	    //Fetch inputs:
 	    $current_section = intval(@$_POST['current_section']);
 	    $cohorts = $this->Db_model->r_fetch(array(
@@ -38,7 +39,7 @@ class Process extends CI_Controller {
 	        'b.b_id' => $cohorts[0]['r_b_id'],
 	    ));
 	    $bootcamp = $bootcamps[0];
-	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],null);
 	    
 	    
 	    //Display results:
@@ -138,7 +139,7 @@ class Process extends CI_Controller {
 	                
 	                //Redirect to typeform:
 	                die(json_encode(array(
-	                    'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$udata),
+	                    'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$next_cohort['r_id'],$udata),
 	                )));
 	            }
 	        }
@@ -247,7 +248,7 @@ class Process extends CI_Controller {
 	                        //Redirect to typeform:
 	                        
 	                        die(json_encode(array(
-	                            'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$udata),
+	                            'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$next_cohort['r_id'],$udata),
 	                        )));
 	                    }
 	                }
@@ -508,6 +509,35 @@ class Process extends CI_Controller {
 	 * r Cohorts
 	 ****************************** */
 	
+	function cohort_timeline(){
+	    //Displays the cohort timeline based on some inputs:
+	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
+	        die('<span style="color:#000;">Enter start date to see timeline.</span>');
+	    } elseif(!isset($_POST['r_start_time_mins'])){
+	        die('<span style="color:#000;">Enter start time to see timeline.</span>');
+	    } elseif(!isset($_POST['milestone_count']) || intval($_POST['milestone_count'])<=0){
+	        die('<span style="color:#FF0000;">Error: You have not added any Milestones to your Action Plan.</span>');
+	    } elseif(!isset($_POST['b_sprint_unit'])){
+	        die('<span style="color:#FF0000;">Error: Invalid Milestone Submission Frequency.</span>');
+	    }
+	    
+	    $_POST['milestone_count'] = intval($_POST['milestone_count']);
+	    //Incldue config variables:
+        $sprint_units = $this->config->item('sprint_units');
+        $start_times = $this->config->item('start_times');
+	    
+	    //Start calculations:
+        echo '<p>Based on this start time, your cohort timeline is:</p>';
+        echo '<ul style="list-style:decimal;">';
+	        echo '<li>Admission Starts <b>When Bootcamp is Published Live</b></li>';
+	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b> (Midnight Before Start Day)</li>';
+	        echo '<li>Cohort Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> (Your Selected Time)</li>';
+    	    echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> (Afternoon of Start Day <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
+    	    echo '<li>Cohort Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])-1)).' 11:59pm PST</b> ('.$_POST['milestone_count'] ?> <?= ucwords($_POST['b_sprint_unit']).' Action Plan)</li>';
+    	    echo '<li>Performance Payout by <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> (2 Weeks Later <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
+    	    echo '</ul>';
+	}
+	
 	
 	function cohort_create(){
 	    $udata = auth(2);
@@ -564,6 +594,7 @@ class Process extends CI_Controller {
 	                //The following data are unique and should NOT be copied:
 	                unset($cohort_data['r_id']);
 	                unset($cohort_data['r_typeform_id']);
+	                unset($cohort_data['r__current_admissions']); //This is a dummy placeholder
 	            }
 	        }
 	        
@@ -582,9 +613,9 @@ class Process extends CI_Controller {
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
 	                'r_start_time_mins' => intval($_POST['r_start_time_mins']),
 	                'r_status' => intval($_POST['r_status']),
-	                'r_prerequisites' => '<ol><li>'.join('</li><li>',$default_cohort_prerequisites).'</li></ol>',
-	                'r_application_questions' => '<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>',
-	                'r_completion_prizes' => '<ol><li>'.join('</li><li>',$default_cohort_prizes).'</li></ol>',
+	                'r_prerequisites' => json_encode($default_cohort_prerequisites),
+	                'r_application_questions' => json_encode($default_cohort_questions),
+	                'r_completion_prizes' => json_encode($default_cohort_prizes),
 	            );
 	            
 	            //Default message:
@@ -728,15 +759,16 @@ class Process extends CI_Controller {
 	        'r_response_time_hours' => ( in_array(floatval($_POST['r_response_time_hours']),$r_response_options) ? floatval($_POST['r_response_time_hours']) : null ),
 	        'r_weekly_1on1s' => ( strlen($_POST['r_weekly_1on1s'])>0 && in_array(floatval($_POST['r_weekly_1on1s']),$weekly_1on1s_options) ? floatval($_POST['r_weekly_1on1s']) : null ),
 	        'r_office_hour_instructions' => ( strlen($_POST['r_office_hour_instructions'])>0 ? trim($_POST['r_office_hour_instructions']) : null ),
-	        'r_application_questions' => $_POST['r_application_questions'],
-	        'r_prerequisites' => $_POST['r_prerequisites'],
-	        'r_completion_prizes' => $_POST['r_completion_prizes'],
 	        'r_cancellation_policy' => ( isset($_POST['r_cancellation_policy']) && array_key_exists($_POST['r_cancellation_policy'],$refund_policies) ? $_POST['r_cancellation_policy'] : null ),
 	        'r_typeform_id' => ( strlen($_POST['r_typeform_id'])>0 ? trim($_POST['r_typeform_id']) : null ),
 	        'r_closed_dates' => ( strlen($_POST['r_closed_dates'])>0 ? trim($_POST['r_closed_dates']) : null ),
 	        'r_usd_price' => ( strlen($_POST['r_usd_price'])>0 && floatval($_POST['r_usd_price'])>=0 ? floatval($_POST['r_usd_price']) : null ),
 	        'r_min_students' => intval($_POST['r_min_students']),
 	        'r_max_students' => ( strlen($_POST['r_max_students'])>0 && intval($_POST['r_max_students'])>=0 ? intval($_POST['r_max_students']) : null ),
+	        //List items:
+	        'r_application_questions' => ( isset($_POST['r_application_questions']) && is_array($_POST['r_application_questions']) && count($_POST['r_application_questions'])>0 ? json_encode($_POST['r_application_questions']) : null ),
+	        'r_prerequisites' => ( isset($_POST['r_prerequisites']) && is_array($_POST['r_prerequisites']) && count($_POST['r_prerequisites'])>0 ? json_encode($_POST['r_prerequisites']) : null ),
+	        'r_completion_prizes' => ( isset($_POST['r_completion_prizes']) && is_array($_POST['r_completion_prizes']) && count($_POST['r_completion_prizes'])>0 ? json_encode($_POST['r_completion_prizes']) : null ),
 	    );
 	    
 	    if(isset($_POST['r_live_office_hours_check']) && !intval($_POST['r_live_office_hours_check'])){
@@ -791,7 +823,6 @@ class Process extends CI_Controller {
         $intent = $this->Db_model->c_create(array(
             'c_creator_id' => $udata['u_id'],
             'c_objective' => trim($_POST['c_objective']),
-            'c_todo_overview' => $_POST['c_todo_overview'],
         ));
         if(intval($intent['c_id'])<=0){
             //Log this error:
@@ -803,7 +834,7 @@ class Process extends CI_Controller {
             ));
             //Display error:
             die('<span style="color:#FF0000;">Error: Unkown error while trying to create intent.</span>');
-        }        
+        }
         
         
         //Generaye URL Key:

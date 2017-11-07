@@ -483,57 +483,62 @@ function date_is_past($date){
 function calculate_bootcamp_status($b){
     
     $CI =& get_instance();
+    $sprint_units = $CI->config->item('sprint_units');
     //A function used on the dashboard to indicate what is left before launching the bootcamp
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
     $call_to_action = array();
     
-    //Now we will check in order that we would display call to actions:
-    $task_count = 0;
+    
+    
+    
+    //Do we have enough Milestones?
+    $to_gain = 60;
+    $required_milestones = ( $b['b_sprint_unit']=='week' ? 2 : 3 ); //Minimum 3 days or 1 week
+    $progress_possible += $to_gain;
+    if(count($b['c__child_intents'])>=$required_milestones){
+        $progress_gained += $to_gain;
+    } else {
+        $progress_gained += (count($b['c__child_intents'])/$required_milestones)*$to_gain;
+        array_push($call_to_action,'Add <b>[At least '.$required_milestones.' '.$sprint_units[$b['b_sprint_unit']]['name'].' Milestone'.($required_milestones==1?'':'s').']</b>'.(count($b['c__child_intents'])>0?' ('.($required_milestones-count($b['c__child_intents'])).' more)':'').' to your <a href="/console/'.$b['b_id'].'/milestones"><u>Action Plan</u></a>');
+    }
+    
+    //Now check each Milestone and its Tasks:
     foreach($b['c__child_intents'] as $c){
         
         if($c['c_status']<0){
-            continue;
+            continue; //Don't check unpublished Intents
         }
         
-        //Clear the intent checker:
-        unset($c_missing);
-        $c_missing = array();
         
-        /* *****************************
-         *  Milestones
-         *******************************/
+        //Prepare key variables:
+        $sprint_name = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
         
         
-        //c_todo_overview
+        //Milestone Overview
         $to_gain = 10;
         $progress_possible += $to_gain;
         if(strlen($c['c_todo_overview'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($c_missing,'[Overview]');
-        }
-        
-        //c_time_estimate
-        if(!isset($c['c__child_intents']) || count($c['c__child_intents'])<=0){
-            $to_gain = 5;
-            $progress_possible += $to_gain;
-            if($c['c_time_estimate']>0){
-                $progress_gained += $to_gain;
-            } else {
-                array_push($c_missing,'[Time Estimate OR Sub-tasks]');
-            }
-        }
-        
-        $sprint_name = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
-        //Did we have anything?
-        if(count($c_missing)>0){
-            array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>[Overview]</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
         }
         
         
+        //Sub Tasks
+        $to_gain = 30;
+        $required_tasks = ( $b['b_sprint_unit']=='week' ? 1 : 1 ); //At least one task for each for now
+        $progress_possible += $to_gain;
+        if(isset($c['c__child_intents']) && count($c['c__child_intents'])>=$required_tasks){
+            $progress_gained += $to_gain;
+        } else {
+            $progress_gained += (count($c['c__child_intents'])/$required_tasks)*$to_gain;
+            array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/milestones/'.$c['c_id'].'"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+        }
+        
+        
+        //Check existing sub-tasks:
         if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            //Also do the count for these:
             foreach($c['c__child_intents'] as $c2){
                 
                 //Clear the intent checker:
@@ -562,26 +567,9 @@ function calculate_bootcamp_status($b){
                 if(count($c_missing)>0){
                     array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
                 }
-                
-                //Increase count:
-                $task_count++;
             }
         }
     }
-    
-    
-    //require some tasks
-    /*
-    $to_gain = 60;
-    $progress_possible += $to_gain;
-    $required_tasks = 3;
-    if($task_count>=$required_tasks){
-        $progress_gained += $to_gain;
-    } else {
-        $progress_gained += ($task_count/$required_tasks)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Tasks]</b>'.($task_count>0?' ('.($required_tasks-$task_count).' more)':'').' to any Milestone in '.$b['b_sprint_unit'].' of your <a href="/console/'.$b['b_id'].'/milestones"><u>Action Plan</u></a>');
-    }
-    */
     
     
     //require some tips
@@ -629,7 +617,7 @@ function calculate_bootcamp_status($b){
     $progress_possible += $to_gain;
     $default_cohort_prerequisites = $CI->config->item('default_cohort_prerequisites');
     if($next_cohort){
-        if(strlen($next_cohort['r_prerequisites'])>0 && !($next_cohort['r_prerequisites']=='<ol><li>'.join('</li><li>',$default_cohort_prerequisites).'</li></ol>')){
+        if(strlen($next_cohort['r_prerequisites'])>0 && !($next_cohort['r_prerequisites']==json_encode($default_cohort_prerequisites))){
             $progress_gained += $to_gain;
         } else {
             array_push($call_to_action,'Modify <b>[Prerequisites]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
@@ -642,7 +630,7 @@ function calculate_bootcamp_status($b){
     $progress_possible += $to_gain;
     $default_cohort_questions = $CI->config->item('default_cohort_questions');
     if($next_cohort){
-        if(strlen($next_cohort['r_application_questions'])>0 && !($next_cohort['r_application_questions']=='<ol><li>'.join('</li><li>',$default_cohort_questions).'</li></ol>')){
+        if(strlen($next_cohort['r_application_questions'])>0 && !($next_cohort['r_application_questions']==json_encode($default_cohort_questions))){
             $progress_gained += $to_gain;
         } else {
             array_push($call_to_action,'Modify <b>[Application Questions]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
@@ -698,7 +686,7 @@ function calculate_bootcamp_status($b){
     $progress_possible += $to_gain;
     $default_cohort_prizes = $CI->config->item('default_cohort_prizes');
     if($next_cohort){
-        if(strlen($next_cohort['r_completion_prizes'])>0 && !($next_cohort['r_completion_prizes']=='<ol><li>'.join('</li><li>',$default_cohort_prizes).'</li></ol>')){
+        if(!($next_cohort['r_completion_prizes']==json_encode($default_cohort_prizes))){
             $progress_gained += $to_gain;
         } else {
             array_push($call_to_action,'Modify <b>[Completion Prizes]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
@@ -847,7 +835,7 @@ function calculate_bootcamp_status($b){
     if($b['b_status']>=1){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Change <b>[Bootcamp Status]</b> to '.status_bible('b',1).' in <a href="/console/'.$b['b_id'].'/settings#settings"><u>Settings</u></a>');
+        array_push($call_to_action,'Finally change <b>[Bootcamp Status]</b> to '.status_bible('b',1).' in <a href="/console/'.$b['b_id'].'/settings#settings"><u>Settings</u></a>');
     }
     
     
@@ -1297,13 +1285,13 @@ function url_exists($url){
     return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'403')>0 || substr_count($file_headers[0],'404')>0);
 }
 
-function filter_next_cohort($cohorts){
+function filter_next_cohort($cohorts,$r_id=null){
     if(!$cohorts || count($cohorts)<=0){
         return false;
     }
     
     foreach($cohorts as $cohort){
-        if($cohort['r_status']==1 && !date_is_past($cohort['r_start_date'])){
+        if($cohort['r_status']==1 && !date_is_past($cohort['r_start_date']) && ($cohort['r__current_admissions']<$cohort['r_max_students'] || !$cohort['r_max_students']) && (!$r_id || ($r_id==$cohort['r_id']))){
             return $cohort;
             break;
         }
@@ -1312,12 +1300,12 @@ function filter_next_cohort($cohorts){
     return false;
 }
 
-function typeform_url($r_typeform_id,$udata=null){
+function typeform_url($r_typeform_id,$r_id=null,$udata=null){
     $identifier = null;
-    if($udata){
+    if($udata && $r_id){
         $CI =& get_instance();
         $application_status_salt = $CI->config->item('application_status_salt');
-        $identifier = '?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']);
+        $identifier = '?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']).'&r_id='.$r_id;
     }
     return 'https://mench.typeform.com/to/'.$r_typeform_id.$identifier;
 }

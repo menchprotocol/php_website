@@ -2,7 +2,6 @@
 $sprint_units = $this->config->item('sprint_units');
 $start_times = $this->config->item('start_times');
 //$sprint_units[$bootcamp['b_sprint_unit']]['name']
-$next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
 //Calculate office hours:
 $office_hours = unserialize($next_cohort['r_live_office_hours']);
 $days = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
@@ -31,10 +30,50 @@ if(isset($office_hours) && is_array($office_hours)){
         }
     }
 }
+
+
+//See if this bootcamp has multiple active cohorts:
+$available_cohorts = 0;
+$cohort_selection = '<h4 id="available_cohorts"><i class="fa fa-calendar" aria-hidden="true"></i> Avaiable Cohorts</h4>';
+$cohort_selection .= '<div id="cohort_list" class="list-group" style="max-width:none !important;">';
+foreach($bootcamp['c__cohorts'] as $cohort){
+    if($cohort['r_status']==1 && !date_is_past($cohort['r_start_date']) && ($cohort['r__current_admissions']<$cohort['r_max_students'] || !$cohort['r_max_students'])){
+        $available_cohorts++;
+        if($cohort['r_id']==$next_cohort['r_id']){
+            $cohort_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
+        } else {
+            $cohort_selection .= '<a href="/bootcamps/'.$bootcamp['b_url_key'].'/'.$cohort['r_id'].'" class="list-group-item">';
+            $cohort_selection .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+        }
+        
+        
+        $cohort_selection .= '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($cohort['r_start_date'],2).'</b> &nbsp; ';
+        $cohort_selection .= '<i class="fa fa-usd" aria-hidden="true"></i> '.(strlen($cohort['r_usd_price'])>0 ? number_format($cohort['r_usd_price']) : 'FREE' ).' &nbsp; ';
+        if($cohort['r_id']==$next_cohort['r_id']){
+            $cohort_selection .= '<span class="label label-default" style="background-color:#fedd16; color:#000;">CURRENTLY VIEWING</span>';
+        }
+        $cohort_selection .= ($cohort['r_id']==$next_cohort['r_id'] ? '</li>' : '</a>' );
+        
+        //Do not show more than the next 7 cohorts:
+        if($available_cohorts>=7){
+            break;
+        }
+    }
+}
+$cohort_selection .= '</div>';
+$cohort_selection .= '<hr />';
 ?>
 
 
 <script>
+
+function choose_cohort(){
+	//Flash border color:
+	$('html,body').animate({
+		scrollTop: $('#available_cohorts').offset().top - 65
+	}, 150);
+}
+
 function toggleview(object_key){
 	if($('#'+object_key+' .pointer').hasClass('fa-caret-right')){
 		//Opening an item!
@@ -99,8 +138,12 @@ $( document ).ready(function() {
             	<li>Office Hours: <b><?= echo_hours($total_hours) ?>/Week</b></li>
             	<?php } ?>
             	
+            	
             	<?php if($next_cohort['r_max_students']>0){ ?>
-            	<li>Maximum Capacity: <b><?= $next_cohort['r_max_students'] ?> Seats</b></li>
+            		<li>Maximum Seats: <b><?= $next_cohort['r_max_students'] ?> Seats</b></li>
+                	<?php if(($next_cohort['r__current_admissions']/$next_cohort['r_max_students'])>=0.5){ ?>
+                	<li>Seats Remaining: <b><?= ($next_cohort['r_max_students']-$next_cohort['r__current_admissions']) ?>/<?= $next_cohort['r_max_students'] ?></b></li>
+                	<?php } ?>
             	<?php } ?>
             </ul>
             
@@ -111,6 +154,7 @@ $( document ).ready(function() {
             <div style="padding:10px 0 30px; text-align:center;">
             	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
             	<div>Admission Ends in <span id="reg1"></span></div>
+            	<?= ( $available_cohorts>1 ? '<div>or <a href="javascript:choose_cohort();"><u>Choose Another Cohort</u></a></div>' : '' ) ?>
             </div>
         </div>
         
@@ -123,7 +167,10 @@ $( document ).ready(function() {
     		
     		
     		<h3>Prerequisites</h3>
-    		<div id="r_prerequisites"><?= ( strlen($next_cohort['r_prerequisites'])>0 ? $next_cohort['r_prerequisites'] : 'None' ) ?></div>
+    		<div id="r_prerequisites"><?= ( strlen($next_cohort['r_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($next_cohort['r_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
+    		
+    		
+    		
     		
     		
     		<h3>Milestones</h3>
@@ -255,8 +302,13 @@ $( document ).ready(function() {
 
     		<h3>Admission</h3>
     		
+    		<?php 
+    		if($available_cohorts>1){
+    		    echo $cohort_selection;
+    		}
+    		?>
     		
-    		<h4><i class="fa fa-calendar" aria-hidden="true"></i> Timeline</h4>
+    		<h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
     			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2).' '.$start_times[$next_cohort['r_start_time_mins']] ?> PST</b></li>
@@ -268,10 +320,10 @@ $( document ).ready(function() {
     		
     		
     		<?php if(strlen($next_cohort['r_completion_prizes'])>0){ 
-    		    $plural_prize = ( substr_count($next_cohort['r_completion_prizes'],'<li>')==1 ? '' : 's' ); ?>
+    		    $plural_prize = ( json_decode($next_cohort['r_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
     		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST.</p>
-    		<div id="r_completion_prizes"><?= $next_cohort['r_completion_prizes'] ?></div>
+    		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($next_cohort['r_completion_prizes'])).'</li></ol>' ?></div>
     		<hr />
     		<?php } ?>
     		
@@ -319,6 +371,7 @@ $( document ).ready(function() {
 <div style="padding:20px 0 30px; text-align:center;">
 	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
 	<div>Admission Ends in <span id="reg3"></span></div>
+	<?= ( $available_cohorts>1 ? '<div>or <a href="javascript:choose_cohort();"><u>Choose Another Cohort</u></a></div>' : '' ) ?>
 </div>
 
 

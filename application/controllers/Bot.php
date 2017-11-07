@@ -508,7 +508,7 @@ class Bot extends CI_Controller {
 	    $json_data = json_decode(file_get_contents('php://input'), true);
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    
-	    if(!isset($json_data['form_response']['hidden']['u_id']) || !isset($json_data['form_response']['hidden']['u_key']) || !(md5($json_data['form_response']['hidden']['u_id'].$application_status_salt)==$json_data['form_response']['hidden']['u_key'])){
+	    if(!isset($json_data['form_response']['hidden']['r_id']) || !isset($json_data['form_response']['hidden']['u_id']) || !isset($json_data['form_response']['hidden']['u_key']) || !(md5($json_data['form_response']['hidden']['u_id'].$application_status_salt)==$json_data['form_response']['hidden']['u_key'])){
 	        //Log this error:
 	        $this->Db_model->e_create(array(
 	            'e_creator_id' => 0,
@@ -533,7 +533,7 @@ class Bot extends CI_Controller {
 	        'b.b_id' => $cohorts[0]['r_b_id'],
 	    ));
 	    $bootcamp = @$bootcamps[0];
-	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts']);
+	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],$json_data['form_response']['hidden']['r_id']);
 	    $enrollments = $this->Db_model->ru_fetch(array(
 	        'ru.ru_r_id'	=> $next_cohort['r_id'],
 	        'ru.ru_u_id'	=> $udata['u_id'],
