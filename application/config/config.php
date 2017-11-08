@@ -20,22 +20,6 @@ $config['website'] = array(
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 
-
-$config['level_names'] = array(
-    1 => array(
-        'name' => '',
-        'names' => '',
-    ),
-    2 => array(
-        'name' => '',
-        'names' => '',
-    ),
-    3 => array(
-        'name' => 'Milestone',
-        'names' => 'Milestones',
-    ),
-);
-
 //The core objects of the platform:
 $config['core_objects'] = array(
     'u' => array(
