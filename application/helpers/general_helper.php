@@ -96,7 +96,7 @@ function extract_level($b,$c_id){
                 $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'];
                 $view_data['breadcrumb'] = array(
                     array(
-                        'link' => '/console/'.$b['b_id'].'/milestones',
+                        'link' => '/console/'.$b['b_id'].'/actionplan',
                         'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                     ),
                     array(
@@ -106,7 +106,7 @@ function extract_level($b,$c_id){
                 );
                 $view_data['breadcrumb_p'] = array(
                     array(
-                        'link' => '/my/milestones/'.$b['b_id'].'/'.$b['b_c_id'],
+                        'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
                         'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                     ),
                     array(
@@ -129,11 +129,11 @@ function extract_level($b,$c_id){
                         $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'];
                         $view_data['breadcrumb'] = array(
                             array(
-                                'link' => '/console/'.$b['b_id'].'/milestones',
+                                'link' => '/console/'.$b['b_id'].'/actionplan',
                                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                             ),
                             array(
-                                'link' => '/console/'.$b['b_id'].'/milestones/'.$sprint['c_id'],
+                                'link' => '/console/'.$b['b_id'].'/actionplan/'.$sprint['c_id'],
                                 'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
                             ),
                             array(
@@ -143,11 +143,11 @@ function extract_level($b,$c_id){
                         );
                         $view_data['breadcrumb_p'] = array(
                             array(
-                                'link' => '/my/milestones/'.$b['b_id'].'/'.$b['b_c_id'],
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
                                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
                             ),
                             array(
-                                'link' => '/my/milestones/'.$b['b_id'].'/'.$sprint['c_id'],
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$sprint['c_id'],
                                 'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' #'.$sprint['cr_outbound_rank'].' '.$sprint['c_objective'],
                             ),
                             array(
@@ -201,8 +201,8 @@ function echo_i($i,$first_name=null){
         if(strlen($i['i_url'])>0){
             $CI =& get_instance();
             $website = $CI->config->item('website');
-            $tip_url = $website['url'].'tip/'.$i['i_id'];
-            echo '<div><a href="'.$tip_url.'" target="_blank">'.$tip_url.'</a></div>';
+            $url = $website['url'].'ref/'.$i['i_id'];
+            echo '<div><a href="'.$url.'" target="_blank">'.$url.'</a></div>';
         }
         
     } else {
@@ -249,7 +249,7 @@ function echo_message($i){
             echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
 		    echo '<li class="edit-updates"></li>';
 		    //echo '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>'; //Not editable so no reason to show for now!
-		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Tip" data-placement="left"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Insight" data-placement="left"><a href="javascript:media_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
 		    //echo '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
 		    echo '</ul>';
 	    
@@ -302,7 +302,7 @@ function echo_br($admin){
 }
 
 
-//This is used for My/milestones display:
+//This is used for My/actionplan display:
 function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     /* 
      * $b = Bootcamp object
@@ -326,10 +326,10 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     $show_a = true; //Most cases
     //Left content
     if($level==0){
-        $ui = '<a href="/my/milestones/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
     } elseif($level==3 || $unlocked_action_plan){
-        $ui = '<a href="/my/milestones/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         
         if($level==2){
             
@@ -393,7 +393,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
         $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
     }
     
-    //TODO Need to somehow fetch cohorts in here...
+    //TODO Need to somehow fetch classes in here...
     //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($admission['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
     $ui .= '</span>';
     
@@ -408,7 +408,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     
 	if($direction=='outbound'){
 	    
-	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/milestones/'.$intent['c_id'].'" class="list-group-item is_sortable">';
+	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item is_sortable">';
 	        //Right content
     	    $ui .= '<span class="pull-right">';
 
@@ -439,8 +439,8 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	        //This sprint has Assignments:
     	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
-    	    if(isset($intent['c__tip_count']) && $intent['c__tip_count']>0){
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tips"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>'.$intent['c__tip_count'].'</span>';
+    	    if(isset($intent['c__insight_count']) && $intent['c__insight_count']>0){
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Insights"><i class="fa fa-eye" aria-hidden="true"></i>'.$intent['c__insight_count'].'</span>';
     	    }
     	    if(strlen($intent['c_todo_overview'])>0){
     	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
@@ -457,7 +457,6 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
 	    
 	} else {
 	    //Not really being used for now...
-	    return '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/milestones/'.$intent['c_id'].'" class="list-group-item"><span class="pull-left" style="margin-right:5px;"><span class="label label-default"><i class="fa fa-chevron-left" aria-hidden="true"></i></span></span><span class="pull-right"><i class="fa fa-chain-broken" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Unlink this reference." data-placement="left"></i></span> '.$intent['c_objective'].' '.echo_time($intent['c_time_estimate']).'</a>';
 	}
 }
 
@@ -500,10 +499,10 @@ function calculate_bootcamp_status($b){
         $progress_gained += $to_gain;
     } else {
         $progress_gained += (count($b['c__child_intents'])/$required_milestones)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_milestones.' '.$sprint_units[$b['b_sprint_unit']]['name'].' Milestone'.($required_milestones==1?'':'s').']</b>'.(count($b['c__child_intents'])>0?' ('.($required_milestones-count($b['c__child_intents'])).' more)':'').' to your <a href="/console/'.$b['b_id'].'/milestones"><u>Action Plan</u></a>');
+        array_push($call_to_action,'Add <b>[At least '.$required_milestones.' '.$sprint_units[$b['b_sprint_unit']]['name'].' Milestone'.($required_milestones==1?'':'s').']</b>'.(count($b['c__child_intents'])>0?' ('.($required_milestones-count($b['c__child_intents'])).' more)':'').' to your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
     }
     
-    //Now check each Milestone and its Tasks:
+    //Now check each Milestone and its Task List:
     foreach($b['c__child_intents'] as $c){
         
         if($c['c_status']<0){
@@ -521,11 +520,11 @@ function calculate_bootcamp_status($b){
         if(strlen($c['c_todo_overview'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Add <b>[Overview]</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>[Overview]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
         }
         
         
-        //Sub Tasks
+        //Sub Task List
         $to_gain = 30;
         $required_tasks = ( $b['b_sprint_unit']=='week' ? 1 : 1 ); //At least one task for each for now
         $progress_possible += $to_gain;
@@ -533,7 +532,7 @@ function calculate_bootcamp_status($b){
             $progress_gained += $to_gain;
         } else {
             $progress_gained += (count($c['c__child_intents'])/$required_tasks)*$to_gain;
-            array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/milestones/'.$c['c_id'].'"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
         }
         
         
@@ -565,37 +564,37 @@ function calculate_bootcamp_status($b){
                 
                 //Did we have anything?
                 if(count($c_missing)>0){
-                    array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/milestones/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
+                    array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
                 }
             }
         }
     }
     
     
-    //require some tips
+    //require some Insights
     /*
     $to_gain = 15;
-    $required_tips = 3;
+    $required_insights = 3;
     $progress_possible += $to_gain;
-    if($b['c__tip_count']>=$required_tips){
+    if($b['c__insight_count']>=$required_insights){
         $progress_gained += $to_gain;
     } else {
-        $progress_gained += ($b['c__tip_count']/$required_tips)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_tips.' Tips]</b>'.($b['c__tip_count']>0?' ('.($required_tips-$b['c__tip_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/milestones"><u>Milestones</u></a>');
+        $progress_gained += ($b['c__insight_count']/$required_insights)*$to_gain;
+        array_push($call_to_action,'Add <b>[At least '.$required_insights.' Insights]</b>'.($b['c__insight_count']>0?' ('.($required_insights-$b['c__insight_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
     }
     */
     
     
     /* *****************************
-     *  Cohorts
+     *  classes
      *******************************/
     
-    //Let's see if we can find a drafting or published cohort:
-    $next_cohort = null;
-    if(isset($b['c__cohorts']) && count($b['c__cohorts'])>0){
-        foreach($b['c__cohorts'] as $cohort){
-            if($cohort['r_status']<=1 && $cohort['r_status']>=0 && !date_is_past($cohort['r_start_date'])){
-                $next_cohort = $cohort;
+    //Let's see if we can find a drafting or published class:
+    $focus_class = null;
+    if(isset($b['c__classes']) && count($b['c__classes'])>0){
+        foreach($b['c__classes'] as $class){
+            if($class['r_status']<=1 && $class['r_status']>=0 && !date_is_past($class['r_start_date'])){
+                $focus_class = $class;
                 break;
             }
         }
@@ -604,23 +603,23 @@ function calculate_bootcamp_status($b){
     //r_max_students
     $to_gain = 5;
     $progress_possible += $to_gain;
-    if($next_cohort){
-        if(strlen($next_cohort['r_max_students'])>0){
+    if($focus_class){
+        if(strlen($focus_class['r_max_students'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Max Students]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Set <b>[Max Students]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_prerequisites
     $to_gain = 10;
     $progress_possible += $to_gain;
-    $default_cohort_prerequisites = $CI->config->item('default_cohort_prerequisites');
-    if($next_cohort){
-        if(strlen($next_cohort['r_prerequisites'])>0 && !($next_cohort['r_prerequisites']==json_encode($default_cohort_prerequisites))){
+    $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
+    if($focus_class){
+        if(strlen($focus_class['r_prerequisites'])>0 && !($focus_class['r_prerequisites']==json_encode($default_class_prerequisites))){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Modify <b>[Prerequisites]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Modify <b>[Prerequisites]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
@@ -628,97 +627,97 @@ function calculate_bootcamp_status($b){
     //r_application_questions
     $to_gain = 10;
     $progress_possible += $to_gain;
-    $default_cohort_questions = $CI->config->item('default_cohort_questions');
-    if($next_cohort){
-        if(strlen($next_cohort['r_application_questions'])>0 && !($next_cohort['r_application_questions']==json_encode($default_cohort_questions))){
+    $default_class_questions = $CI->config->item('default_class_questions');
+    if($focus_class){
+        if(strlen($focus_class['r_application_questions'])>0 && !($focus_class['r_application_questions']==json_encode($default_class_questions))){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Modify <b>[Application Questions]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Modify <b>[Application Questions]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_response_time_hours
     $to_gain = 5;
     $progress_possible += $to_gain;
-    if($next_cohort){
-        if(strlen($next_cohort['r_response_time_hours'])>0){
+    if($focus_class){
+        if(strlen($focus_class['r_response_time_hours'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Chat Response Time]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Set <b>[Chat Response Time]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_weekly_1on1s
     $to_gain = 5;
     $progress_possible += $to_gain;
-    if($next_cohort){
-        if(strlen($next_cohort['r_weekly_1on1s'])>0){
+    if($focus_class){
+        if(strlen($focus_class['r_weekly_1on1s'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[1-on-1 Mentorship Level]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Set <b>[1-on-1 Mentorship Level]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_live_office_hours
-    if($next_cohort){
+    if($focus_class){
         $to_gain = 5;
         $progress_possible += $to_gain;
-        if((strlen($next_cohort['r_live_office_hours'])<=0) || (strlen($next_cohort['r_live_office_hours'])>0 && strlen($next_cohort['r_office_hour_instructions'])>0)){
+        if((strlen($focus_class['r_live_office_hours'])<=0) || (strlen($focus_class['r_live_office_hours'])>0 && strlen($focus_class['r_office_hour_instructions'])>0)){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Office Hours: Contact Method]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#support"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Set <b>[Office Hours: Contact Method]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_usd_price
     $to_gain = 20;
     $progress_possible += $to_gain;
-    if($next_cohort){
-        if(strlen($next_cohort['r_usd_price'])>0){
+    if($focus_class){
+        if(strlen($focus_class['r_usd_price'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Admission Price]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Set <b>[Admission Price]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_completion_prizes
     $to_gain = 10;
     $progress_possible += $to_gain;
-    $default_cohort_prizes = $CI->config->item('default_cohort_prizes');
-    if($next_cohort){
-        if(!($next_cohort['r_completion_prizes']==json_encode($default_cohort_prizes))){
+    $default_class_prizes = $CI->config->item('default_class_prizes');
+    if($focus_class){
+        if(!($focus_class['r_completion_prizes']==json_encode($default_class_prizes))){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Modify <b>[Completion Prizes]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Modify <b>[Completion Prizes]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
     //r_cancellation_policy
     $to_gain = 10;
     $progress_possible += $to_gain;
-    if($next_cohort){
-        if($next_cohort['r_usd_price']==0 || strlen($next_cohort['r_usd_price'])==0 || strlen($next_cohort['r_cancellation_policy'])>0){
+    if($focus_class){
+        if($focus_class['r_usd_price']==0 || strlen($focus_class['r_usd_price'])==0 || strlen($focus_class['r_cancellation_policy'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Refund Policy]</b> for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#pricing"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Set <b>[Refund Policy]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }    
     
     //r_status
     $to_gain = 5;
     $progress_possible += $to_gain;
-    if($next_cohort){
-        if($next_cohort['r_status']==1){
+    if($focus_class){
+        if($focus_class['r_status']==1){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Change <b>[Cohort Status]</b> to '.status_bible('r',1).' for <a href="/console/'.$b['b_id'].'/cohorts/'.$next_cohort['r_id'].'#settings"><u>'.time_format($next_cohort['r_start_date'],4).' Cohort</u></a>');
+            array_push($call_to_action,'Change <b>[Class Status]</b> to '.status_bible('r',1).' for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#settings"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
-    //Did we NOT have a next cohort?
-    if(!$next_cohort){
-        //Missing cohort all together!
-        array_push($call_to_action,'Create <b>[At least 1 Cohort]</b> in <a href="/console/'.$b['b_id'].'/cohorts"><u>Cohorts</u></a>');
+    //Did we NOT have a next class?
+    if(!$focus_class){
+        //Missing class all together!
+        array_push($call_to_action,'Create <b>[At least 1 Class]</b> in <a href="/console/'.$b['b_id'].'/classes"><u>Classes</u></a>');
     }
     
     
@@ -825,7 +824,7 @@ function calculate_bootcamp_status($b){
     if(strlen($b['c_todo_overview'])>0){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/milestones#details"><u>Action Plan</u></a>'.$b['c_todo_bible']);
+        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/actionplan#details"><u>Action Plan</u></a>');
     }
     
   
@@ -841,12 +840,12 @@ function calculate_bootcamp_status($b){
     
     $progress_percentage = round($progress_gained/$progress_possible*100);
     if($progress_percentage==100){
-        array_push($call_to_action,'Review all settings on your <a href="/bootcamps/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>');
+        array_push($call_to_action,'Review your <a href="/bootcamps/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>');
         array_push($call_to_action,'Wait until bootcamp status is updated to '.status_bible('b',3));
         array_push($call_to_action,'Start admissions by notifying your followers via email or social media.');
     }
     return array(
-        'stage' => '<i class="fa fa-bullhorn" aria-hidden="true"></i> Launch Progress',
+        'stage' => '<i class="fa fa-bullhorn" aria-hidden="true"></i> Launch Checklist',
         'progress' => $progress_percentage,
         'call_to_action' => $call_to_action,
     );
@@ -941,12 +940,11 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	        's_desc'  => 'Ready for student admission by sharing your landing page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
 	        ),
-	        //TODO remove this soon:
 	        3 => array(
-    	        's_name'  => 'Published',
+    	        's_name'  => 'Published to Marketplace',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Ready for student admission by sharing your landing page URL.',
-    	        'u_min_status'  => 99999, //hidden
+    	        's_desc'  => 'Ready for student admission by URL sharing and by being visible in the Mench marketplace.',
+    	        'u_min_status'  => 3, //Can only be done by admin
 	        ),
 	    ),
 	    'c' => array(
@@ -973,37 +971,37 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	    -2 => array(
         	    's_name'  => 'Cancel',
         	    's_color' => '#f44336', //red
-        	    's_desc'  => 'Cohort was cancelled after it had started.',
+        	    's_desc'  => 'Class was cancelled after it had started.',
         	    'u_min_status'  => 3,
     	    ),
     	    -1 => array(
         	    's_name'  => 'Delete',
         	    's_color' => '#f44336', //red
-        	    's_desc'  => 'Cohort removed by bootcamp leader before it was started.',
+        	    's_desc'  => 'Class removed by bootcamp leader before it was started.',
         	    'u_min_status'  => 2,
     	    ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Cohort not yet ready for admission as its being modified.',
+	            's_desc'  => 'Class not yet ready for admission as its being modified.',
 	            'u_min_status'  => 2,
 	        ),
 	        1 => array(
     	        's_name'  => 'Open For Admission',
     	        's_color' => '#8dd08f', //light green
-    	        's_desc'  => 'Cohort is visible to students and ready for admission.',
+    	        's_desc'  => 'Class is visible to students and ready for admission.',
     	        'u_min_status'  => 2,
 	        ),
 	        2 => array(
     	        's_name'  => 'Running',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Cohort has admitted students and is currently running.',
+    	        's_desc'  => 'Class has admitted students and is currently running.',
     	        'u_min_status'  => 3,
 	        ),
 	        3 => array(
     	        's_name'  => 'Finished',
     	        's_color' => '#e91e63', //Rose
-    	        's_desc'  => 'Cohort was successfully operated and is now complete.',
+    	        's_desc'  => 'Class was successfully operated and is now complete.',
     	        'u_min_status'  => 3,
 	        ),
 	    ),
@@ -1011,19 +1009,19 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Delete',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Tip removed.',
+	            's_desc'  => 'Insight removed.',
 	            'u_min_status'  => 1,
 	        ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Tip not visible to students until published.',
+	            's_desc'  => 'Insight not visible to students until published.',
 	            'u_min_status'  => 1,
 	        ),
 	        1 => array(
 	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Tip ready to be shared with students.',
+	            's_desc'  => 'Insight accessible by students.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -1052,16 +1050,18 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_desc'  => 'Bootcamp access revoked.',
 	            'u_min_status'  => 1,
 	        ),
+	        /*
 	        1 => array(
 	            's_name'  => 'Assistant',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'View-only access to Milestones, cohorts and activity stream. Can answer student inquiries but cannot make any changes.',
+	            's_desc'  => 'Not active!',
 	            'u_min_status'  => 1,
 	        ),
+	        */
 	        2 => array(
 	            's_name'  => 'Co-Instructor',
 	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Supports the lead instructor in bootcamp operations based on the privileges assigned to them by the lead instructor.',
+	            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them.',
 	            'u_min_status'  => 1,
 	        ),
 	        3 => array(
@@ -1143,7 +1143,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -2 => array(
 	            's_name'  => 'Student Withdrew',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the cohort refund policy & withdrawal date.',
+	            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date.',
 	            'u_min_status'  => 999, //Only done by Student themselves
 	        ),
 	        -1 => array(
@@ -1196,7 +1196,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        5 => array(
 	            's_name'  => 'Bootcamp Graduate',
 	            's_color' => '#e91e63', //Rose
-	            's_desc'  => 'Student completed cohort and completed all Milestones as approved by lead instructor.',
+	            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -1285,14 +1285,14 @@ function url_exists($url){
     return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'403')>0 || substr_count($file_headers[0],'404')>0);
 }
 
-function filter_next_cohort($cohorts,$r_id=null){
-    if(!$cohorts || count($cohorts)<=0){
+function filter_class($classes,$r_id=null){
+    if(!$classes || count($classes)<=0){
         return false;
     }
     
-    foreach($cohorts as $cohort){
-        if($cohort['r_status']==1 && !date_is_past($cohort['r_start_date']) && ($cohort['r__current_admissions']<$cohort['r_max_students'] || !$cohort['r_max_students']) && (!$r_id || ($r_id==$cohort['r_id']))){
-            return $cohort;
+    foreach($classes as $class){
+        if($class['r_status']==1 && !date_is_past($class['r_start_date']) && ($class['r__current_admissions']<$class['r_max_students'] || !$class['r_max_students']) && (!$r_id || ($r_id==$class['r_id']))){
+            return $class;
             break;
         }
     }
@@ -1300,21 +1300,20 @@ function filter_next_cohort($cohorts,$r_id=null){
     return false;
 }
 
-function typeform_url($r_typeform_id,$r_id=null,$udata=null){
-    $identifier = null;
-    if($udata && $r_id){
-        $CI =& get_instance();
-        $application_status_salt = $CI->config->item('application_status_salt');
-        $identifier = '?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'].'&u_email='.$udata['u_email'].'&u_fname='.urlencode($udata['u_fname']).'&r_id='.$r_id;
-    }
-    return 'https://mench.typeform.com/to/'.$r_typeform_id.$identifier;
+function typeform_url($r_typeform_id){
+    return 'https://mench.typeform.com/to/'.$r_typeform_id;
+}
+function messenger_activation_url($u_id){
+    $CI =& get_instance();
+    $website = $CI->config->item('website');
+    return $website['bot_ref_url'].'?ref='.$u_id; //TODO: Maybe append some sort of hash for more security
 }
 
 function redirect_message($url,$message){
 	$CI =& get_instance();
 	$CI->session->set_flashdata('hm', $message);
 	header("Location: ".$url);
-	return false;
+	exit;
 }
 
 function save_file($file_url,$json_data){
@@ -1595,7 +1594,7 @@ function object_link($object,$id,$b_id=0){
             if(isset($intents[0])){
                 if($b_id){
                     //We can return a link:
-                    return '<a href="'.$website['url'].'console/'.$b_id.'/milestones/'.$intents[0]['c_id'].'">'.$core_objects[$object]['o_name'].': '.$intents[0]['c_objective'].'</a>';
+                    return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan/'.$intents[0]['c_id'].'">'.$core_objects[$object]['o_name'].': '.$intents[0]['c_objective'].'</a>';
                 } else {
                     return $core_objects[$object]['o_name'].': '.$intents[0]['c_objective'];
                 }
@@ -1621,15 +1620,15 @@ function object_link($object,$id,$b_id=0){
             }
                 
         } elseif($object=='r'){
-            $cohorts = $CI->Db_model->r_fetch(array(
+            $classes = $CI->Db_model->r_fetch(array(
                 'r.r_id' => $id,
             ));
-            if(isset($cohorts[0])){
+            if(isset($classes[0])){
                 if($b_id){
                     //We can return a link:
-                    return '<a href="'.$website['url'].'console/'.$b_id.'/cohorts/'.$cohorts[0]['r_id'].'">'.$core_objects[$object]['o_name'].': '.time_format($cohorts[0]['r_start_date'],1).'</a>';
+                    return '<a href="'.$website['url'].'console/'.$b_id.'/classes/'.$classes[0]['r_id'].'">'.$core_objects[$object]['o_name'].': '.time_format($classes[0]['r_start_date'],1).'</a>';
                 } else {
-                    return $core_objects[$object]['o_name'].': '.time_format($cohorts[0]['r_start_date'],1);
+                    return $core_objects[$object]['o_name'].': '.time_format($classes[0]['r_start_date'],1);
                 }
             }
         } elseif($object=='cr'){

@@ -4,7 +4,6 @@
 	</div>
 
 <?php 
-$website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 if(isset($load_view)){
     $data = array();
@@ -39,10 +38,10 @@ if(isset($load_view)){
       </div>
       
       <div class="modal-footer">
-      <?php if(!(isset($udata['u_fb_id']) && strlen($udata['u_fb_id'])>0)){ ?>
-        <a href="<?= $website['bot_ref_url'].'?ref='.$udata['u_id'] ?>" class="btn btn-primary">Connect to MenchBot</a>
-      <?php } else { ?>
+      <?php if(strlen($udata['u_fb_id'])>4){ ?>
         <p style="text-align:left;">You are already connected to MenchBot.</p>
+      <?php } else { ?>
+        <a href="<?= messenger_activation_url($udata['u_id']) ?>" class="btn btn-primary">Connect to MenchBot</a>
       <?php } ?>
       </div>
       

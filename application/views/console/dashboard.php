@@ -1,15 +1,5 @@
 <?php $sprint_units = $this->config->item('sprint_units'); ?>
-<div class="dashboard">
-
-	<div class="row">
-      <div class="col-sm-3"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>Primary Goal</b></div>
-      <div class="col-sm-9">
-      	<p style="margin-bottom:0; font-size:1.4em; font-weight:bold;"><?= $bootcamp['c_objective'] ?></p>
-      	<div><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" style=""><u>Open Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>
-      </div>
-    </div>
-    <hr />
-    
+<div class="dashboard">    
     
     <?php $launch_status = calculate_bootcamp_status($bootcamp); ?>
     <div class="row">
@@ -32,32 +22,30 @@
     </div>
     <hr />
     
-    
     <div class="row">
-      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/milestones"><b><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
+      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
+        <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $bootcamp['c_objective'] ?></div>
       	<div><?= count($bootcamp['c__child_intents']) ?> <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone'.( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
-      	<div><?= $bootcamp['c__task_count'] ?> Total Task<?= ($bootcamp['c__task_count']==1?'':'s') ?></div>
-      	<div><?= $bootcamp['c__tip_count'] ?> Total Tip<?= ($bootcamp['c__tip_count']==1?'':'s') ?></div>
-      	
-      	<?php if(count($bootcamp['c__child_intents'])>0){ ?>
-      	<div><?= round($bootcamp['c__estimated_hours'],1) ?> Total Hours = <a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u><?= number_format($bootcamp['c__estimated_hours']*60) ?> Points <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a></div>
-      	<div><?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?> Hours/<?= ucwords($bootcamp['b_sprint_unit']) ?> Average</div>
-      	<?php } ?>
-      	
+      	<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours = <?= round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])) ?> Hours/<?= ucwords($bootcamp['b_sprint_unit']) ?></div>
+      	<div><?= $bootcamp['c__insight_count'] ?> Insight<?= ($bootcamp['c__insight_count']==1?'':'s') ?></div>
+      	<?php /* if(count($bootcamp['c__child_intents'])>0){ ?>
+      	<div><a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u><?= number_format($bootcamp['c__estimated_hours']*60) ?> Points <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a></div>
+      	<div></div>
+      	<?php } */ ?>      	
       </div>
     </div>
     <hr />
     
     <div class="row">
-      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/cohorts"><b><i class="fa fa-calendar" aria-hidden="true"></i> Cohorts <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
+      <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/classes"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div><?= count($bootcamp['c__cohorts']) ?> Total Cohorts</div>
+      	<div><?= count($bootcamp['c__classes']) ?> Classes</div>
       	<?php 
-      	//Fetch cohort:
-      	if(count($bootcamp['c__cohorts'])>0){
-      	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],null);
-      	    echo '<div>'.time_format($next_cohort['r_start_date'],1).' is Open for Admission</div>';
+      	//Fetch class:
+      	if(count($bootcamp['c__classes'])>0){
+      	    $focus_class = filter_class($bootcamp['c__classes'],null);
+      	    echo '<div>'.time_format($focus_class['r_start_date'],1).' is Open for Admission</div>';
       	}
         ?>
       </div>
@@ -67,7 +55,7 @@
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/students"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div>0 Total Students</div>
+      	<div>0 Students</div>
       	<div>0 Pending Admission</div>
       	<div>0 With Pending Messages on <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a></div>
       	<div>0 Late on Milestones</div>

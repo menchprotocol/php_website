@@ -5,10 +5,10 @@
 <?php 
 foreach($bootcamps as $count=>$bootcamp){
     
-    //Fetch cohort:
-    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],null);
+    //Fetch class:
+    $focus_class = filter_class($bootcamp['c__classes'],null);
     
-    if(!$next_cohort){
+    if(!$focus_class){
         continue;
     }
     
@@ -39,9 +39,9 @@ foreach($bootcamps as $count=>$bootcamp){
                 
                 echo '<div class="footer">
                         <div class="price">
-							<h4>'.echo_price($next_cohort['r_usd_price']).'</h4>
+							<h4>'.echo_price($focus_class['r_usd_price']).'</h4>
 						</div>
-                    	<div class="stats"><span>Starts <b>'.time_format($next_cohort['r_start_date'],1).'</b></span></div>
+                    	<div class="stats"><span>Starts <b>'.time_format($focus_class['r_start_date'],1).'</b></span></div>
                     </div>
 
 				</div>

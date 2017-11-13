@@ -9,7 +9,7 @@ $website = $this->config->item('website');
         <div class="container">
             <nav>
                 <ul class="pull-left">
-                    <li><a href="/terms"><?= $this->lang->line('terms') ?></a></li>
+                    <li><a href="/terms">Terms</a></li>
                     <li><a href="/contact">Contact</a></li>
 				</ul>
 				<ul class="pull-right">

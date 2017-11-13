@@ -71,8 +71,7 @@ class Apiai_model extends CI_Model {
 			);
 		}
 		
-		//Fetch INs
-		$IN_links = $this->Us_model->fetch_node(intval($pid) , 'fetch_parents');
+		//TODO Fetch INs
 		
 		
 		//Is this a valid entity?
@@ -207,7 +206,6 @@ class Apiai_model extends CI_Model {
 					$new_data['update_id'] = $published_gem_id;
 				}
 				
-				$publish_gem = $this->Us_model->insert_link($new_data);
 				
 			}
 			
@@ -248,7 +246,6 @@ class Apiai_model extends CI_Model {
 							$new_data['update_id'] = $published_gem_id;
 						}
 						
-						$publish_gem = $this->Us_model->insert_link($new_data);
 						
 					}
 					
@@ -290,7 +287,6 @@ class Apiai_model extends CI_Model {
 					$new_data['update_id'] = $published_gem_id;
 				}
 				
-				$publish_gem = $this->Us_model->insert_link($new_data);
 				
 			}
 			
@@ -500,8 +496,7 @@ class Apiai_model extends CI_Model {
 							//Append reference assuming we found one:
 							if( $ref_pid>0 ){
 								
-								//Fetch INs to construct reference:
-								$INs = $this->Us_model->fetch_node($ref_pid);
+								//TODO Fetch INs to construct reference:
 								
 								//Make sure its of type @Entity, otherwise not used here.
 								if($INs[0]['grandpa_id']==1){
@@ -558,7 +553,6 @@ class Apiai_model extends CI_Model {
 	function sync_intent($pid,$setting=array()){
 		
 		//This functions takes a pattern ID, and prepares the JSON data for api.ai
-		$GEMs = $this->Us_model->fetch_full_node(intval($pid));
 		$intent = $this->prep_bootcamp($GEMs);
 		
 		if(!$intent){
@@ -634,7 +628,6 @@ class Apiai_model extends CI_Model {
 					$update_data['update_id'] = $published_gem_id;
 				}
 				
-				$new_link = $this->Us_model->insert_link($update_data);
 				
 			}
 			
@@ -662,7 +655,6 @@ class Apiai_model extends CI_Model {
 					$update_data['update_id'] = $published_gem_id;
 				}
 				
-				$new_link = $this->Us_model->insert_link($update_data);
 				
 			}
 			

@@ -6,8 +6,7 @@ foreach($admissions as $admission){
     
     //Determine the steps:
     $applied = (strlen($admission['ru_application_survey'])>0);
-    //$paid = ( $admission['ru_paid_sofar']>=$admission['r_usd_price']); //The real deal
-    $paid = ( $admission['ru_paid_sofar']>0);
+    $paid = ( count($admission['ru__transactions'])>0 );
     
     echo '<hr />';
     echo '<h4>'.$admission['c_objective'].'</h4>';
@@ -18,8 +17,8 @@ foreach($admissions as $admission){
     echo '<div class="checkbox"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Initiate Application</label></div>';
     
     
-    //Typeform Application:
-    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : typeform_url($admission['r_typeform_id'],$admission['r_id'],$admission) ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+    //Apply Form:
+    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : '/my/apply/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
     
     if($admission['r_usd_price']>0){
@@ -63,18 +62,18 @@ foreach($admissions as $admission){
             
             <?php
         }
-    }
-        
+    }   
     
+    //Let them know the status of their application:
+    echo status_bible('ru',$admission['ru_status'],0,'top');
     
     //Instructor Approval:
     if($admission['ru_status']<4 && $applied && $paid){
-        //Now let them know the status of their application:
-        echo status_bible('ru',$admission['ru_status'],0,'top');
+        
     } elseif($admission['ru_status']>=4 && isset($_GET['show_action_plan'])) {
         //The bootcamp has started, show the the link to it:
         //TODO This has issue because maybe they access it via their email URL and no Milestones psid is available
-        //echo '<a href="/my/milestones/'.$admission['b_id'].'/'.$admission['c_id'].'" class="btn btn-black" style="font-size:0.8em;">Go to Milestones</a>';
+        //echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$admission['c_id'].'" class="btn btn-black" style="font-size:0.8em;">Go to Milestones</a>';
     }
 }
 echo '</div>';

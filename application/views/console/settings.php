@@ -158,15 +158,15 @@ function save_settings(){
         </ul>
         <div class="form-group label-floating is-empty">
         	<div class="checkbox">
-        	<label>
-        		<?php if(isset($bootcamp['b_terms_agreement_time']) && strlen($bootcamp['b_terms_agreement_time'])>0){ ?>
-        		<input type="checkbox" id="b_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($bootcamp['b_terms_agreement_time'],0) ?> PST</b>
-        		<?php } else { ?>
-        		<input type="checkbox" id="b_terms_agreement_time" /> As the lead bootcamp instructor I certify that all above statements are true
-        		<?php } ?>
-        	</label>
+            	<label>
+            		<?php if(isset($bootcamp['b_terms_agreement_time']) && strlen($bootcamp['b_terms_agreement_time'])>0){ ?>
+            		<input type="checkbox" id="b_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($bootcamp['b_terms_agreement_time'],0) ?> PST</b>
+            		<?php } else { ?>
+            		<input type="checkbox" id="b_terms_agreement_time" /> As the lead bootcamp instructor I certify that all above statements are true
+            		<?php } ?>
+            	</label>
+            </div>
         </div>
-        </div>		
 		<br />
 		
 		

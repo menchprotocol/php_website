@@ -52,7 +52,7 @@
 
 <script>
 	function save_hours(){		
-		$.post("/process/update_schedule", { r_id:<?= $cohort['r_id'] ?> , hours : jQuery.parseJSON( $("#schedule").jqs('export') ) } , function(data) {
+		$.post("/process/update_schedule", { r_id:<?= $class['r_id'] ?> , hours : jQuery.parseJSON( $("#schedule").jqs('export') ) } , function(data) {
 			//Update UI to confirm with user:
 			$('.save_oa_update').html(data).hide().fadeIn();
 	    });
@@ -64,7 +64,7 @@
             confirm: false,
             hour: 12,
             days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-            data: <?= json_encode(unserialize($cohort['r_live_office_hours'])) ?>
+            data: <?= json_encode(unserialize($class['r_live_office_hours'])) ?>
         });        
     });
 </script>

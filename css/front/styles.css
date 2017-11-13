@@ -645,7 +645,8 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 
 #funnel .section {
-	text-align:center;
+	text-align:left;
+	padding:10px 0;
 }
 
 #funnel .breadcrumb {
@@ -770,7 +771,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 
 #funnel .form-control {
 	max-width:300px;
-	margin:20px auto 0 !important;
+	margin:10px 0 0 !important;
 	padding:21px 10px 25px !important;
 	background-color:#FFF;
 	border-radius:3px;
@@ -804,13 +805,14 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	text-align:left;
 	height:60px;
 	overflow:visible;
+	font-weight: normal;
 }
 .enter img {
 	margin-top:6px;
 }
 
 .result {
-	height:30px;
+	min-height:30px;
 	margin: -10px 0 -5px 0;
 	font-size:18px;
 }

@@ -40,7 +40,6 @@ function ucwords(str) {
     });
 }
 
-
 /* ******************************** */
 /* ******************************** */
 /* Simple List Management Functions */

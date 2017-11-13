@@ -18,42 +18,60 @@ class Db_model extends CI_Model {
 	    
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
-	        $cohorts = $this->Db_model->r_fetch(array(
+	        $classes = $this->Db_model->r_fetch(array(
 	            'r.r_id' => $enrollment['ru_r_id'],
 	        ));
-	        if(count($cohorts)<=0){
+	        if(count($classes)<=0){
 	            return false;
 	        }
 	        //Merge in:
-	        $admissions[$key] = array_merge($admissions[$key] , $cohorts[0]);
+	        $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
+	        
+	        
 	        //Fetch bootcamp:
 	        $bootcamps = $this->Db_model->c_full_fetch(array(
-	            'b.b_id' => $cohorts[0]['r_b_id'],
+	            'b.b_id' => $classes[0]['r_b_id'],
 	        ));
 	        if(count($bootcamps)<=0){
 	            return false;
 	        }
 	        //Merge in:
 	        $admissions[$key] = array_merge($admissions[$key] , $bootcamps[0]);
+	        
+	        //Fetch transactions:
+	        $admissions[$key]['ru__transactions'] = $this->Db_model->t_fetch(array(
+	            't.t_ru_id' => $enrollment['ru_id'],
+	        ));
 	    }
 	    
 	    return $admissions;
 	}
 	
 	
+	function t_fetch($match_columns){
+	    //Fetch the target gems:
+	    $this->db->select('*');
+	    $this->db->from('v5_transactions t');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
 	/* ******************************
 	 * Users
 	 ****************************** */
 	
 	function u_fetch($match_columns){
-		//Fetch the target gems:
-		$this->db->select('*');
-		$this->db->from('v5_users u');
-		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
-		}
-		$q = $this->db->get();
-		return $q->result_array();
+	    //Fetch the target gems:
+	    $this->db->select('*');
+	    $this->db->from('v5_users u');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    return $q->result_array();
 	}
 	
 	function ru_update($ru_id,$update_columns){
@@ -262,7 +280,7 @@ class Db_model extends CI_Model {
 		} else {
 			//Ooops, some error!
 		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_fb_search() Failed to create/fetch user using their Facebook ID ['.$u_fb_id.'].',
+		        'e_message' => 'u_fb_search() Failed to create new user using their Facebook PSID ['.$u_fb_id.'].',
 		        'e_type_id' => 8, //Platform Error
 		    ));
 			return 0;
@@ -435,7 +453,7 @@ class Db_model extends CI_Model {
 	}
 	
 	/* ******************************
-	 * Cohorts
+	 * Classes
 	 ****************************** */
 	
 	function r_fetch($match_columns){
@@ -454,7 +472,7 @@ class Db_model extends CI_Model {
 		$runs = $q->result_array();
 		foreach($runs as $key=>$value){
 		    //Fetch admission count:
-		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: Process/cohort_create() when duplicating a cohort
+		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: Process/r_create() when duplicating a class
 		    $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
 		        'ru.ru_status >'	=> 0, //Anyone who has paid anything
@@ -500,6 +518,7 @@ class Db_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('v5_cohort_students ru');
 		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
+		$this->db->join('v5_cohorts r', 'r.r_id = ru.ru_r_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -526,9 +545,9 @@ class Db_model extends CI_Model {
 	        
 	        
 	        
-	        //Fetch Sub-Goals:
+	        //Fetch Sub-intents:
 	        $bootcamps[$key]['c__task_count'] = 0;
-	        $bootcamps[$key]['c__tip_count'] = 0;
+	        $bootcamps[$key]['c__insight_count'] = 0;
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
 	            'cr.cr_status >=' => 0,
@@ -547,13 +566,13 @@ class Db_model extends CI_Model {
 	            ));
 	            
 	            
-	            //Count tips:
-	            $sprint_tips = count($this->Db_model->i_fetch(array(
+	            //Count Insights:
+	            $milestone_insights = count($this->Db_model->i_fetch(array(
 	                'i_status >=' => 0,
 	                'i_c_id' => $sprint_value['c_id'],
 	            )));
-	            $bootcamps[$key]['c__tip_count'] += $sprint_tips;
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__tip_count'] = $sprint_tips;
+	            $bootcamps[$key]['c__insight_count'] += $milestone_insights;
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_count'] = $milestone_insights;
 	            
 	            //Addup task values:
 	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
@@ -562,19 +581,19 @@ class Db_model extends CI_Model {
 	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
 	                $bootcamps[$key]['c__task_count']++;
 	                
-	                //Count tips:
-	                $task_tips = count($this->Db_model->i_fetch(array(
+	                //Count Insights:
+	                $task_insights = count($this->Db_model->i_fetch(array(
 	                    'i_status >=' => 0,
 	                    'i_c_id' => $task_value['c_id'],
 	                )));
-	                $bootcamps[$key]['c__tip_count'] += $task_tips;
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__tip_count'] += $task_tips;
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__tip_count'] = $task_tips;
+	                $bootcamps[$key]['c__insight_count'] += $task_insights;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_count'] += $task_insights;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__insight_count'] = $task_insights;
 	            }
 	        }
 	        
-	        //Fetch cohorts:
-	        $bootcamps[$key]['c__cohorts'] = $this->r_fetch(array(
+	        //Fetch Classes:
+	        $bootcamps[$key]['c__classes'] = $this->r_fetch(array(
 	            'r.r_b_id' => $c['b_id'],
 	            'r.r_status >=' => 0,
 	        ));
@@ -718,17 +737,17 @@ class Db_model extends CI_Model {
 	//Leads:
 	function il_update($il_id,$update_columns){
 	    $this->db->where('il_id', $il_id);
-	    $this->db->update('v5_instructor_leads', $update_columns);
+	    $this->db->update('v5_scraped_leads', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	function il_create($insert_columns){
-	    $this->db->insert('v5_instructor_leads', $insert_columns);
+	    $this->db->insert('v5_scraped_leads', $insert_columns);
 	    $insert_columns['il_id'] = $this->db->insert_id();    
 	    return $insert_columns;
 	}
 	function il_fetch($match_columns=array()){
 	    $this->db->select('*');
-	    $this->db->from('v5_instructor_leads il');
+	    $this->db->from('v5_scraped_leads il');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -906,32 +925,66 @@ class Db_model extends CI_Model {
 		
 		
 		//Do we need to notify the admin about this engagement?
-		if($link_data['e_id']>0 && in_array($link_data['e_type_id'],array(33,6))){
+		if($link_data['e_id']>0 && $link_data['e_type_id']>0){
 		    
-		    //Fetch Engagement Data:
-		    $engagements = $this->Db_model->e_fetch(array(
-		        'e_id' => $link_data['e_id']
-		    ));
-		    if(isset($engagements[0])){
-		        $by = (isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System');
-		        $subject = 'New '.trim(strip_tags($engagements[0]['a_name'])).' by '.$by;
-		        //Compose email:
-		        $html_message = null; //Start
-		        $html_message .= '<div>Hi Mench Admin,</div><br />';
-		        $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
-		        
-		        $html_message .= '<div>Initiator: '.$by.'</div>';
-		        if(intval($engagements[0]['e_object_id'])>0){
-		            $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
+		    //Define subscriptions per user group:
+		    $subscriptions = array(
+		        array(
+		            'admin_emails' => array('miguel@mench.co'),
+		            'subscription' => array(33,6), //Submission Report & Incoming Messages
+		        ),
+		        array(
+		            'admin_emails' => array('shervin@mench.co'),
+		            'subscription' => array(8,9,3,4,5), //System error, Technical Support Attention Errors, 3x Messenger New Users
+		        ),
+		        array(
+		            'admin_emails' => array('shervin@mench.co','miguel@mench.co'),
+		            'subscription' => array(26,15,37), //Application Submitted, New Bootcamp, Request to Publish a Bootcamp
+		        ),
+		    );
+		    
+		    //load model:
+		    $this->load->model('Email_model');
+		    
+		    //Detect matches:
+		    foreach($subscriptions as $subscription){
+		        if(in_array($link_data['e_type_id'],$subscription['subscription'])){
+		            
+		            //Just do this one:
+		            if(!isset($engagements[0])){
+		                //Fetch Engagement Data:
+		                $engagements = $this->Db_model->e_fetch(array(
+		                    'e_id' => $link_data['e_id']
+		                ));
+		            }
+		            
+		            //Did we find it? We should have:
+		            if(isset($engagements[0])){
+		                $by = ( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+		                $subject = 'New '.trim(strip_tags($engagements[0]['a_name'])).' by '.$by;
+		                
+		                //Compose email:
+		                $html_message = null; //Start
+		                $html_message .= '<div>Hi Mench Admin,</div><br />';
+		                $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
+		                
+		                $html_message .= '<div>Initiator: '.$by.'</div>';
+		                if(intval($engagements[0]['e_object_id'])>0){
+		                    $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
+		                }
+		                $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
+		                $html_message .= '<br />';
+		                $html_message .= '<div>Cheers,</div>';
+		                $html_message .= '<div>MenchBot</div>';
+		                
+		                //Send email:
+		                $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);
+		            }
 		        }
-		        $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
-		        $html_message .= '<br />';
-		        $html_message .= '<div>Cheers,</div>';
-		        $html_message .= '<div>MenchBot</div>';
-		        $this->load->model('Email_model');
-		        $this->Email_model->send_single_email(array('miguel@mench.co'),$subject,$html_message);
 		    }
 		}
+		
+		
 		
 		//Boya!
 		return $link_data;

@@ -4,11 +4,17 @@ $udata = $this->session->userdata('user');
 ?>
 	<div class="page-header header-filter" data-parallax="true" style="background-image: url('/img/bg.jpg');">
         <div class="container">
+        	<?php 
+        	$hm = $this->session->flashdata('hm');
+            if($hm){
+                echo '<div class="row"><div class="col-sm-12">'.$hm.'</div></div>';
+        	}
+        	?>
             <div class="row">
 				<div class="col-sm-9">
 					<!--
 					<h1 class="home-p">Online Bootcamps for the Ambitious.</h1>
-                    <h4 class="home-p">Accomplish a goal <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
+                    <h4 class="home-p">Accomplish an objective <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
                      -->
                     <h1 class="home-p">Empower Your Students to Succeed</h1>
                     <h4 class="home-p">Easily build and operate online bootcamps designed to maximize student engagement.</h4>

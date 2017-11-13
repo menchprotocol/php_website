@@ -1,7 +1,7 @@
 <script>
 var current_section = 1;
 var default_text = 'or press <b>ENTER</b>';
-var r_id = <?= $next_cohort['r_id'] ?>;
+var r_id = <?= $focus_class['r_id'] ?>;
 
 function ui_show(section_overide=0){
 	if(section_overide>0){
@@ -64,33 +64,33 @@ $( document ).ready(function() {
 
 
 
-<p style="border-bottom:3px solid #000; font-weight:bold; padding-bottom:10px; display:inline-block;"><?= $title ?></p>
+<p style="border-bottom:3px solid #000; font-weight:bold; padding-bottom:10px; display:block;"><?= $title ?></p>
 
 
 
 <div class="section s1">
-	<p><b>Email Address:</b></p>
+	<p>Email Address:</p>
     <p><input type="email" id="u_email" style="text-transform: lowercase;" class="form-control" /></p>
     <p class="result">&nbsp;</p>
     <a href="javascript:next_section()" class="btn btn-funnel">Next</a><span class="enter">or press <b>ENTER</b></span>
 </div>
 
 <div class="section s2" style="display:none;">
-	<p><b>First Name:</b></p>
+	<p>First Name:</p>
     <p><input type="text" id="u_fname" class="form-control" /></p>
     <p class="result">&nbsp;</p>
     <a href="javascript:next_section()" class="btn btn-funnel">Next</a><span class="enter">or press <b>ENTER</b></span>
 </div>
 
 <div class="section s3" style="display:none;">
-	<p><b>Last Name:</b></p>
+	<p>Last Name:</p>
     <p><input type="text" class="form-control" id="u_lname" /></p>
     <p class="result">&nbsp;</p>
     <a href="javascript:next_section()" class="btn btn-funnel">Next</a><span class="enter">or press <b>ENTER</b></span>
 </div>
 
 <div class="section s4" style="display:none;">
-	<p><b><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Check Your Email</b></p>
+	<p><i class="fa fa-envelope-open-o" aria-hidden="true"></i> Check Your Email</p>
 	<br />
 	<p>We emailed you a unique bootcamp application link to continue.</p>
 	<p>You can close this window.</p>

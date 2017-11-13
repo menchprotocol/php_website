@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.71,
+    'version' => 0.79,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -41,16 +41,19 @@ $config['core_objects'] = array(
         'o_name' => 'Milestone Links',
     ),
     'r' => array(
-        'o_name' => 'Cohort',
+        'o_name' => 'Class',
+        'o_names' => 'Classes',
     ),
     'ru' => array(
         'o_name' => 'Admission',
     ),
     't' => array(
         'o_name' => 'Transaction',
+        'o_names' => 'Transactions',
     ),
     'i' => array(
-        'o_name' => 'Tip',
+        'o_name' => 'Insight',
+        'o_names' => 'Insights',
     ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
@@ -66,6 +69,69 @@ $config['core_objects'] = array(
         'o_name' => 'Task',
         'o_names' => 'Tasks',
         'o_icon' => '<i class="fa fa-check-square" aria-hidden="true"></i>',
+    ),
+);
+
+$config['bootcamp_categories'] = array(
+    1 => array(
+        'name' => 'Development',
+        'icon' => '<i class="fa fa-code" aria-hidden="true"></i>',
+    ),
+    2 => array(
+        'name' => 'Music',
+        'icon' => '<i class="fa fa-music" aria-hidden="true"></i>',
+    ),
+    3 => array(
+        'name' => 'Teacher Training',
+        'icon' => '<i class="fa fa-graduation-cap" aria-hidden="true"></i>',
+    ),
+    4 => array(
+        'name' => 'Language',
+        'icon' => '<i class="fa fa-language" aria-hidden="true"></i>',
+    ),
+    5 => array(
+        'name' => 'Academics',
+        'icon' => '<i class="fa fa-flask" aria-hidden="true"></i>',
+    ),
+    6 => array(
+        'name' => 'Test Prep',
+        'icon' => '<i class="fa fa-file-text" aria-hidden="true"></i>',
+    ),
+    7 => array(
+        'name' => 'Business',
+        'icon' => '<i class="fa fa-usd" aria-hidden="true"></i>',
+    ),
+    8 => array(
+        'name' => 'Office Productivity',
+        'icon' => '<i class="fa fa-briefcase" aria-hidden="true"></i>',
+    ),
+    9 => array(
+        'name' => 'IT & Software',
+        'icon' => '<i class="fa fa-laptop" aria-hidden="true"></i>',
+    ),
+    10 => array(
+        'name' => 'Design',
+        'icon' => '<i class="fa fa-paint-brush" aria-hidden="true"></i>',
+    ),
+    11 => array(
+        'name' => 'Personal Development',
+        'icon' => '<i class="fa fa-smile-o" aria-hidden="true"></i>',
+    ),
+    12 => array(
+        'name' => 'Lifestyle',
+        'icon' => '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>',
+    ),
+    13 => array(
+        'name' => 'Marketing',
+        'icon' => '<i class="fa fa-bullseye" aria-hidden="true"></i>',
+    ),
+    14 => array(
+        'name' => 'Health & Fitness',
+        'icon' => '<i class="fa fa-heartbeat" aria-hidden="true"></i>',
+    ),
+    15 => array(
+        'name' => 'Photography',
+        'icon' => '<i class="fa fa-camera" aria-hidden="true"></i>',
     ),
 );
 
@@ -144,17 +210,17 @@ $config['aws_credentials'] = [
 ];
 
 
-$config['default_cohort_questions'] = array(
+$config['default_class_questions'] = array(
     'Why did you choose to join this bootcamp?',
     'etc... (Delete this)',
 );
-$config['default_cohort_prizes'] = array(
+$config['default_class_prizes'] = array(
     'A branded T-Shirt',
     '1 Year unlimited access to my online courses',
     '30-Minutes consultation session to explore your next best move',
     'etc... (Delete this)',
 );
-$config['default_cohort_prerequisites'] = array(
+$config['default_class_prerequisites'] = array(
     'An internet-connected computer',
     'Fluent in English',
     'etc... (Delete this)',

@@ -3,7 +3,7 @@ $sprint_units = $this->config->item('sprint_units');
 $start_times = $this->config->item('start_times');
 //$sprint_units[$bootcamp['b_sprint_unit']]['name']
 //Calculate office hours:
-$office_hours = unserialize($next_cohort['r_live_office_hours']);
+$office_hours = unserialize($focus_class['r_live_office_hours']);
 $days = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
 $office_hours_ui = array();
 $total_hours = 0;
@@ -32,45 +32,45 @@ if(isset($office_hours) && is_array($office_hours)){
 }
 
 
-//See if this bootcamp has multiple active cohorts:
-$available_cohorts = 0;
-$cohort_selection = '<h4 id="available_cohorts"><i class="fa fa-calendar" aria-hidden="true"></i> Avaiable Cohorts</h4>';
-$cohort_selection .= '<div id="cohort_list" class="list-group" style="max-width:none !important;">';
-foreach($bootcamp['c__cohorts'] as $cohort){
-    if($cohort['r_status']==1 && !date_is_past($cohort['r_start_date']) && ($cohort['r__current_admissions']<$cohort['r_max_students'] || !$cohort['r_max_students'])){
-        $available_cohorts++;
-        if($cohort['r_id']==$next_cohort['r_id']){
-            $cohort_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
+//See if this bootcamp has multiple active Classes:
+$available_classes = 0;
+$class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Avaiable Classes</h4>';
+$class_selection .= '<div id="class_list" class="list-group" style="max-width:none !important;">';
+foreach($bootcamp['c__classes'] as $class){
+    if($class['r_status']==1 && !date_is_past($class['r_start_date']) && ($class['r__current_admissions']<$class['r_max_students'] || !$class['r_max_students'])){
+        $available_classes++;
+        if($class['r_id']==$focus_class['r_id']){
+            $class_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
         } else {
-            $cohort_selection .= '<a href="/bootcamps/'.$bootcamp['b_url_key'].'/'.$cohort['r_id'].'" class="list-group-item">';
-            $cohort_selection .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+            $class_selection .= '<a href="/bootcamps/'.$bootcamp['b_url_key'].'/'.$class['r_id'].'" class="list-group-item">';
+            $class_selection .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
         }
         
         
-        $cohort_selection .= '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($cohort['r_start_date'],2).'</b> &nbsp; ';
-        $cohort_selection .= '<i class="fa fa-usd" aria-hidden="true"></i> '.(strlen($cohort['r_usd_price'])>0 ? number_format($cohort['r_usd_price']) : 'FREE' ).' &nbsp; ';
-        if($cohort['r_id']==$next_cohort['r_id']){
-            $cohort_selection .= '<span class="label label-default" style="background-color:#fedd16; color:#000;">CURRENTLY VIEWING</span>';
+        $class_selection .= '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b> &nbsp; ';
+        $class_selection .= '<i class="fa fa-usd" aria-hidden="true"></i> '.(strlen($class['r_usd_price'])>0 ? number_format($class['r_usd_price']) : 'FREE' ).' &nbsp; ';
+        if($class['r_id']==$focus_class['r_id']){
+            $class_selection .= '<span class="label label-default" style="background-color:#fedd16; color:#000;">CURRENTLY VIEWING</span>';
         }
-        $cohort_selection .= ($cohort['r_id']==$next_cohort['r_id'] ? '</li>' : '</a>' );
+        $class_selection .= ($class['r_id']==$focus_class['r_id'] ? '</li>' : '</a>' );
         
-        //Do not show more than the next 7 cohorts:
-        if($available_cohorts>=7){
+        //Do not show more than the next 7 Classes:
+        if($available_classes>=7){
             break;
         }
     }
 }
-$cohort_selection .= '</div>';
-$cohort_selection .= '<hr />';
+$class_selection .= '</div>';
+$class_selection .= '<hr />';
 ?>
 
 
 <script>
 
-function choose_cohort(){
+function choose_r(){
 	//Flash border color:
 	$('html,body').animate({
-		scrollTop: $('#available_cohorts').offset().top - 65
+		scrollTop: $('#available_classes').offset().top - 65
 	}, 150);
 }
 
@@ -98,9 +98,9 @@ function toggleview(object_key){
 $( document ).ready(function() {
 	$("#reg1, #reg2, #reg3").countdowntimer({
 		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , time_format($next_cohort['r_start_date'],3,-1)); ?> 23:59:59",
+        dateAndTime : "<?php echo date('Y/m/d' , time_format($focus_class['r_start_date'],3,-1)); ?> 23:59:59",
 		size : "lg",
-		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+		regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
 	});
 });
@@ -108,8 +108,7 @@ $( document ).ready(function() {
 
 
 
-
-<?php if($next_cohort){ ?>
+<?php if($focus_class){ ?>
 
 <h1 style="margin-bottom:30px;"><?= $bootcamp['c_objective'] ?></h1>
 
@@ -127,11 +126,11 @@ $( document ).ready(function() {
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
-            	<li>Tuition: <b><?= echo_price($next_cohort['r_usd_price']).( $next_cohort['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $next_cohort['r_usd_price']>0 ? ' ($'.round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
-            	<li>Dates: <b><?= time_format($next_cohort['r_start_date'],1) ?> - <?= time_format($next_cohort['r_start_date'],1,(calculate_duration($bootcamp)-1)) ?></b></li>
+            	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
+            	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($bootcamp)-1)) ?></b></li>
             	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
-            	<?php if($next_cohort['r_weekly_1on1s']>0){ ?>
-            	<li>Mentorship: <b><?= echo_hours($next_cohort['r_weekly_1on1s']) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
+            	<?php if($focus_class['r_weekly_1on1s']>0){ ?>
+            	<li>Mentorship: <b><?= echo_hours($focus_class['r_weekly_1on1s']) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php } ?>
             	
             	<?php if($total_hours>0){ ?>
@@ -139,22 +138,22 @@ $( document ).ready(function() {
             	<?php } ?>
             	
             	
-            	<?php if($next_cohort['r_max_students']>0){ ?>
-            		<li>Maximum Seats: <b><?= $next_cohort['r_max_students'] ?> Seats</b></li>
-                	<?php if(($next_cohort['r__current_admissions']/$next_cohort['r_max_students'])>=0.5){ ?>
-                	<li>Seats Remaining: <b><?= ($next_cohort['r_max_students']-$next_cohort['r__current_admissions']) ?>/<?= $next_cohort['r_max_students'] ?></b></li>
+            	<?php if($focus_class['r_max_students']>0){ ?>
+            		<li>Maximum Seats: <b><?= $focus_class['r_max_students'] ?> Seats</b></li>
+                	<?php if(($focus_class['r__current_admissions']/$focus_class['r_max_students'])>=0.5){ ?>
+                	<li>Seats Remaining: <b><?= ($focus_class['r_max_students']-$focus_class['r__current_admissions']) ?>/<?= $focus_class['r_max_students'] ?></b></li>
                 	<?php } ?>
             	<?php } ?>
             </ul>
             
-            <?php if($next_cohort['r_usd_price']>0){ ?>
+            <?php if($focus_class['r_usd_price']>0){ ?>
             <p style="padding:0 0 0 5px; font-size:0.9em; line-height:120%;"><b>*</b> All Bootcamps include our signature <a href="https://support.mench.co/hc/en-us/articles/115002080031"><b>Tuition Guarantee &raquo;</b></a></p>
             <?php } ?>
             
             <div style="padding:10px 0 30px; text-align:center;">
-            	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+            	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $focus_class['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
             	<div>Admission Ends in <span id="reg1"></span></div>
-            	<?= ( $available_cohorts>1 ? '<div>or <a href="javascript:choose_cohort();"><u>Choose Another Cohort</u></a></div>' : '' ) ?>
+            	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
         
@@ -167,7 +166,7 @@ $( document ).ready(function() {
     		
     		
     		<h3>Prerequisites</h3>
-    		<div id="r_prerequisites"><?= ( strlen($next_cohort['r_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($next_cohort['r_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
+    		<div id="r_prerequisites"><?= ( strlen($focus_class['r_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($focus_class['r_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
     		
     		
     		
@@ -191,7 +190,7 @@ $( document ).ready(function() {
                             if($sprint['c__estimated_hours']>0){
                                 echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp;';
                             }
-                            echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp,$action_plan_item)-1)).' 11:59pm PST';
+                            echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp,$action_plan_item)-1)).' 11:59pm PST';
                         echo '</div>';
                     echo '</div>';
                 echo '</div>';
@@ -201,9 +200,9 @@ $( document ).ready(function() {
     		
     		<h3>1-on-1 Support</h3>
     		<?php
-    		if($next_cohort['r_weekly_1on1s']>0){
+    		if($focus_class['r_weekly_1on1s']>0){
     		    echo '<h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4>';
-    		    echo '<p>You will receive <b>'.echo_hours($next_cohort['r_weekly_1on1s']).'/'.ucwords($bootcamp['b_sprint_unit']).'</b> of 1-on-1 mentorship over a live video chat.</p>';
+    		    echo '<p>You will receive <b>'.echo_hours($focus_class['r_weekly_1on1s']).'/'.ucwords($bootcamp['b_sprint_unit']).'</b> of 1-on-1 mentorship over a live video chat.</p>';
     		    echo '<hr />';
     		}
     		if(count($office_hours_ui)>0 || $total_hours>0){
@@ -214,15 +213,15 @@ $( document ).ready(function() {
     		        echo '<li>'.$oa_ui.'</li>';
     		    }
     		    echo '</ul>';
-    		    if(strlen($next_cohort['r_closed_dates'])>0){
-    		        echo '<p>Closed on '.$next_cohort['r_closed_dates'].'</p>';
+    		    if(strlen($focus_class['r_closed_dates'])>0){
+    		        echo '<p>Closed on '.$focus_class['r_closed_dates'].'</p>';
     		    }
     		    echo '<hr />';
     		}
     		?>
     		
     		<h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
-    		<p>This bootcamp offers chat response times of <b>Under <?= echo_hours($next_cohort['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
+    		<p>This bootcamp offers chat response times of <b>Under <?= echo_hours($focus_class['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
     		<hr />
     		
 
@@ -303,42 +302,42 @@ $( document ).ready(function() {
     		<h3>Admission</h3>
     		
     		<?php 
-    		if($available_cohorts>1){
-    		    echo $cohort_selection;
+    		if($available_classes>1){
+    		    echo $class_selection;
     		}
     		?>
     		
     		<h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
-    			<li>Admission Ends <b><?= time_format($next_cohort['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
-    			<li>Bootcamp Starts <b><?= time_format($next_cohort['r_start_date'],2).' '.$start_times[$next_cohort['r_start_time_mins']] ?> PST</b></li>
+    			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
+    			<li>Bootcamp Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).((count($bootcamp['c__child_intents'])==1?'':'s')) ?></b></li>
-    			<li>Bootcamp Ends <b><?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST</b></li>
+    			<li>Bootcamp Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?></b></li>
     		</ul>
     		<hr />
     		
     		
     		
-    		<?php if(strlen($next_cohort['r_completion_prizes'])>0){ 
-    		    $plural_prize = ( json_decode($next_cohort['r_completion_prizes'])==1 ? '' : 's' ); ?>
+    		<?php if(strlen($focus_class['r_completion_prizes'])>0){ 
+    		    $plural_prize = ( json_decode($focus_class['r_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
-    		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($next_cohort['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST.</p>
-    		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($next_cohort['r_completion_prizes'])).'</li></ol>' ?></div>
+    		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($focus_class['r_completion_prizes'])).'</li></ol>' ?></div>
+    		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST.</p>
     		<hr />
     		<?php } ?>
     		
     		
     		
-    		<?php if($next_cohort['r_usd_price']>0){ ?>
+    		<?php if($focus_class['r_usd_price']>0){ ?>
     		<h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy</h4>
-    		<p>This bootcamp offers a <b><?= ucwords($next_cohort['r_cancellation_policy']); ?></b> refund policy:</p>
+    		<p>This bootcamp offers a <b><?= ucwords($focus_class['r_cancellation_policy']); ?></b> refund policy:</p>
     		<?php 
-    		$full_days = calculate_refund(calculate_duration($bootcamp),'full',$next_cohort['r_cancellation_policy']);
-    		$prorated_days = calculate_refund(calculate_duration($bootcamp),'prorated',$next_cohort['r_cancellation_policy']);
+    		$full_days = calculate_refund(calculate_duration($bootcamp),'full',$focus_class['r_cancellation_policy']);
+    		$prorated_days = calculate_refund(calculate_duration($bootcamp),'prorated',$focus_class['r_cancellation_policy']);
     		//Display cancellation terms:
     		echo '<ul style="list-style:none; margin-left:-30px;">';
-    		echo '<li>Full Refund: '.( $full_days>0 ? 'Before <b>'.time_format($next_cohort['r_start_date'],1,($full_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
-    		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($next_cohort['r_start_date'],1,($prorated_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
+    		echo '<li>Full Refund: '.( $full_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($full_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
+    		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($prorated_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
     		echo '</ul>';
     		?>
     		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a>.</p>
@@ -350,8 +349,8 @@ $( document ).ready(function() {
     		
     		
     		<h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4>
-    		<?php if($next_cohort['r_usd_price']>0){ ?>
-    		<p>One-time payment of <b><?= echo_price($next_cohort['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Guarantee</a>. In other words you pay $<?= round($next_cohort['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'].(count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
+    		<?php if($focus_class['r_usd_price']>0){ ?>
+    		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Guarantee</a>. In other words you pay $<?= round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'].(count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
     		<?php } else { ?>
     		<p>This bootcamp is <b>FREE</b>.</p>
     		<?php } ?>
@@ -369,14 +368,14 @@ $( document ).ready(function() {
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $next_cohort['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($next_cohort['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $focus_class['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
 	<div>Admission Ends in <span id="reg3"></span></div>
-	<?= ( $available_cohorts>1 ? '<div>or <a href="javascript:choose_cohort();"><u>Choose Another Cohort</u></a></div>' : '' ) ?>
+	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
 
 
 <?php } else { ?>
-	<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Live Cohort</span>We cannot render this landing page because its missing a live cohort.</div>
+	<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Live Class</span>We cannot render this landing page because its missing a live class.</div>
 <?php } ?>
 
 </div>

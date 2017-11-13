@@ -119,7 +119,7 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function milestones($b_id,$pid=null){
+	function actionplan($b_id,$pid=null){
 		
 		$udata = auth(2,1);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
@@ -132,7 +132,7 @@ class Console extends CI_Controller {
 		//Fetch intent relative to the bootcamp by doing an array search:
 		$view_data = extract_level( $bootcamps[0] , ( intval($pid)>0 ? $pid : $bootcamps[0]['c_id'] ) );
 		if(!$view_data){
-		    redirect_message('/console/'.$b_id.'/milestones','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
+		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
 		}
 		
 		if(isset($_GET['raw'])){
@@ -142,13 +142,13 @@ class Console extends CI_Controller {
 		
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/milestones' , $view_data);
+		$this->load->view('console/actionplan' , $view_data);
 		$this->load->view('console/shared/d_footer');
 		
 	}
 	
 	
-	function all_cohorts($b_id){
+	function all_classes($b_id){
 	    //Authenticate:
 	    $udata = auth(2,1);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
@@ -159,21 +159,21 @@ class Console extends CI_Controller {
 	    }
 	    
 	    $view_data = array(
-	        'title' => 'Cohorts | '.$bootcamps[0]['c_objective'],
+	        'title' => 'Classes | '.$bootcamps[0]['c_objective'],
 	        'bootcamp' => $bootcamps[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Cohorts',
+	                'anchor' => 'Classes',
 	            ),
 	        ),
 	    );
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , $view_data);
-	    $this->load->view('console/all_cohorts' , $view_data);
+	    $this->load->view('console/all_classes' , $view_data);
 	    $this->load->view('console/shared/d_footer' , array(
-	        'load_view' => 'console/modals/new_cohort',
+	        'load_view' => 'console/modals/new_class',
 	        'bootcamp' => $bootcamps[0],
 	    ));
 	}
@@ -190,20 +190,20 @@ class Console extends CI_Controller {
 	    }
 	    
 	    //This could be a new run, or editing an existing run:
-	    $cohort = filter($bootcamps[0]['c__cohorts'],'r_id',$r_id);
-	    if(!$cohort){
-	        die('<div class="alert alert-danger" role="alert">Invalid cohort ID.</div>');
+	    $class = filter($bootcamps[0]['c__classes'],'r_id',$r_id);
+	    if(!$class){
+	        die('<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 	    }
 	    
 	    //Load in iFrame
 	    $this->load->view('console/frames/scheduler' , array( 
-	        'title' => 'Edit Schedule | '.time_format($cohort['r_start_date'],1).' Cohort | '.$bootcamps[0]['c_objective'],
+	        'title' => 'Edit Schedule | '.time_format($class['r_start_date'],1).' Class | '.$bootcamps[0]['c_objective'],
 	        'bootcamp' => $bootcamps[0],
-	        'cohort' => $cohort
+	        'class' => $class
 	    ));
 	}
 	
-	function cohort($b_id,$r_id){
+	function load_class($b_id,$r_id){
 		//Authenticate:
 		$udata = auth(2,1);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
@@ -214,30 +214,30 @@ class Console extends CI_Controller {
 		}
 		
 		//This could be a new run, or editing an existing run:
-		$cohort = filter($bootcamps[0]['c__cohorts'],'r_id',$r_id);
-		if(!$cohort){
-		    redirect_message('/console/'.$b_id.'/cohorts' , '<div class="alert alert-danger" role="alert">Invalid cohort ID.</div>');
+		$class = filter($bootcamps[0]['c__classes'],'r_id',$r_id);
+		if(!$class){
+		    redirect_message('/console/'.$b_id.'/classes' , '<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 		}
 		
 		$view_data = array(
-		    'title' => time_format($cohort['r_start_date'],1).' Cohort Settings | '.$bootcamps[0]['c_objective'],
+		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$bootcamps[0]['c_objective'],
 		    'bootcamp' => $bootcamps[0],
-		    'cohort' => $cohort,
+		    'class' => $class,
 		    'breadcrumb' => array(
 		        array(
-		            'link' => '/console/'.$b_id.'/cohorts',
-		            'anchor' => 'Cohorts',
+		            'link' => '/console/'.$b_id.'/classes',
+		            'anchor' => 'Classes',
 		        ),
 		        array(
 		            'link' => null,
-		            'anchor' => time_format($cohort['r_start_date'],1),
+		            'anchor' => time_format($class['r_start_date'],1),
 		        ),
 		    ),
 		);
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/cohort' , $view_data);
+		$this->load->view('console/class' , $view_data);
 		$this->load->view('console/shared/d_footer');
 	}
 	

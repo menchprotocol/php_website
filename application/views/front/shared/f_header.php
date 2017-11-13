@@ -67,13 +67,14 @@ if(isset($landing_page)){
 	//Regular content page:
 	echo '<div class="main main-raised main-plain">';
 	echo '<div class="container body-container">';
+	
+	$hm = $this->session->flashdata('hm');
+	if($hm){
+	    echo $hm;
+	}
 }
 
 if(isset($message)){
     echo $message;
-}
-$hm = $this->session->flashdata('hm');
-if($hm){
-    echo $hm;
 }
 ?>

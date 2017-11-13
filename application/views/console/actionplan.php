@@ -36,7 +36,7 @@ $(document).ready(function() {
 	$("#i_media_type").change(function() {
 		if($( this ).val()=='text'){
 			$('#i_message, #i_message_counter').show();
-		    $('#i_url').attr('placeholder','Optional Reference URL');
+		    $('#i_url').attr('placeholder','Optional URL');
 		} else {
 			$('#i_message').hide().val('');
 			$('#i_message_counter').hide();
@@ -81,7 +81,7 @@ $(document).ready(function() {
 		    displayKey: function(suggestion) { return "" },
 		    templates: {
 		      suggestion: function(suggestion) {
-		         return '<span class="suggest-prefix"><i class="fa fa-link" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
+		         return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
 		      },
 		      header: function(data) {
 		    	  if(!data.isEmpty){
@@ -466,10 +466,8 @@ function msg_save_edit(i_id){
   <?php if($level<=2){ ?>
   <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'] ?></a></li>
   <?php } ?>
-  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-info-circle" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?></a></li>
-  <?php if($level>1){ ?>
-  <li id="nav_tips"><a href="#tips" data-toggle="tab" onclick="update_hash('tips')"><i class="fa fa-lightbulb-o" aria-hidden="true"></i> Tips</a></li>
-  <?php } ?>
+  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-cog" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?></a></li>
+  <li id="nav_insights"><a href="#insights" data-toggle="tab" onclick="update_hash('insights')"><i class="fa fa-eye" aria-hidden="true"></i> Insights</a></li>
 </ul>
 
 
@@ -481,7 +479,7 @@ function msg_save_edit(i_id){
     	if($level==1){
     	    ?>
         	<ul class="maxout">
-        		<li><b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> help students accomplish the bootcamp's <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>  Primary Goal</b>.</li>
+        		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> to reach the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
     			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b> in <a href="/console/<?= $bootcamp['b_id'] ?>/settings/#settings"><u><i class="material-icons">settings</i>Settings</u></a>.</li>
     			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
     			<li>To keep students focused, milestones are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
@@ -490,7 +488,7 @@ function msg_save_edit(i_id){
     			<li>You can easily add, remove and sort milestones at any time.</li>
     		</ul>
     		<?php
-        } elseif($level==2){
+        } elseif($level==2){ 
             ?>
         	<ul class="maxout">
     			<li>Each <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b> is broken down into <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b>.</li>
@@ -546,10 +544,10 @@ function msg_save_edit(i_id){
         <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview</h4></div>
         <ul class="maxout">
         	<?php if($level==1){ ?>
-        	<li>Provide an overview of how your bootcamp plans to accomplish its <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</b>.</li>
+        	<li>Provide an overview of how your bootcamp plans to accomplish its <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Objective</b>.</li>
         	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are published on the landing page below the title.</li>
         	<?php } elseif($level==2){ ?>
-        	<li>Provide an overview of <b>how</b> this milestone builds towards the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Primary Goal</b> and <b>what</b> will students be doing for this milestone.</li>
+        	<li>Provide an overview of <b>how</b> this milestone builds towards the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Objective</b> and <b>what</b> will students be doing for this milestone.</li>
         	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are published in the landing page's Milestone section.</li>
         	<?php } elseif($level>=3){ ?>
         	<li>Give more context on how to execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
@@ -605,18 +603,17 @@ function msg_save_edit(i_id){
     
     
     
-    <div class="tab-pane" id="tips">
+    <div class="tab-pane" id="insights">
     	<?php 
     	$i_media_type_names = $this->config->item('i_media_type_names');
     	$i_dispatch_minutes = $this->config->item('i_dispatch_minutes');
     	?>
     	<p class="maxout"></p>
     	<ul class="maxout">
-			<li>Tips are facts or best-practices to help effectively execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
-			<li>Have each tip focused on a single concept.</li>
-			<li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> for referencing articles, Youtube, etc...</li>
+			<li>Insights are facts or best-practices to help effectively execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
+			<!-- <li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> for referencing articles, Youtube, etc...</li> -->
 			<li>Adding "<b>{first_name}</b>" in <b><?= strip_tags($i_media_type_names['text']) ?></b> to mention the student name.</li>
-			<li>Tips are "drip-fed" to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+			<li>Insights are shared with students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
@@ -638,7 +635,7 @@ function msg_save_edit(i_id){
         		echo '</select>';
         		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Plain text (No URLs/HTML)"></textarea>';
         		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
-        		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional Reference URL" />';
+        		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional URL" />';
         		echo '<div style="display:none;">';
         		
         		  echo '<select class="form-control" id="i_dispatch_minutes">';

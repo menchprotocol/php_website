@@ -29,26 +29,33 @@ class Process extends CI_Controller {
 	
 	function funnel_progress(){
 	    
+	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['current_section'])){
+	        die(json_encode(array(
+	            'goto_section' => 0,
+	            'color' => '#FF0000',
+	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Class ID',
+	        )));
+	    }
+	    
 	    //Fetch inputs:
-	    $current_section = intval(@$_POST['current_section']);
-	    $cohorts = $this->Db_model->r_fetch(array(
+	    $current_section = intval($_POST['current_section']);
+	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	        'r.r_status' => 1,
 	    ));
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b.b_id' => $cohorts[0]['r_b_id'],
+	        'b.b_id' => $classes[0]['r_b_id'],
 	    ));
 	    $bootcamp = $bootcamps[0];
-	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],null);
+	    $focus_class = filter_class($bootcamp['c__classes'],intval($_POST['r_id']));
 	    
 	    
 	    //Display results:
-	    header('Content-Type: application/json');
-	    if(!isset($bootcamp) || !isset($cohorts[0]) || $bootcamp['b_id']<1 || !($next_cohort['r_id']==intval($_POST['r_id']))){
-	        die(json_encode(array(
+	    if(!isset($bootcamp) || !isset($classes[0]) || $bootcamp['b_id']<1 || !($focus_class['r_id']==intval($_POST['r_id']))){
+	        die(echo_json(array(
 	            'goto_section' => 0,
 	            'color' => '#FF0000',
-	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Cohort ID',
+	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Class ID',
 	        )));
 	    }	    
 	    
@@ -57,7 +64,7 @@ class Process extends CI_Controller {
 	        //EMAIL
 	        if(!isset($_POST['u_email']) || strlen($_POST['u_email'])<1 || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
 	            //Invalid
-	            die(json_encode(array(
+	            die(echo_json(array(
 	                'goto_section' => 0,
 	                'color' => '#FF0000',
 	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid email, try again.',
@@ -69,27 +76,71 @@ class Process extends CI_Controller {
 	        $users = $this->Db_model->u_fetch(array(
 	            'u_email' => strtolower($_POST['u_email']),
 	        ));
+	        
 	        if(count($users)==0){
 	            //Nope, lets continue:
-	            die(json_encode(array(
+	            die(echo_json(array(
 	                'goto_section' => 2,
 	            )));
 	        }
 	        
 	        //This is a registered user!
 	        $udata = $users[0];
+
 	        
-	        //See if they are applied for this cohort:
+	        //Check their current application status(es):
 	        $enrollments = $this->Db_model->ru_fetch(array(
-	            'ru.ru_r_id'	=> $next_cohort['r_id'],
-	            'ru.ru_u_id'	=> $udata['u_id'],
+	            'r.r_status >='	   => 1, //Open for admission
+	            'r.r_status <='	   => 2, //Running
+	            'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
+	            'ru.ru_u_id'	   => $udata['u_id'],
 	        ));
 	        
 	        
-	        if(count($enrollments)==0){
+	        if((count($enrollments)==1 && !($enrollments[0]['ru_r_id']==$focus_class['r_id'])) || (count($enrollments)>=2)/* <-- This should never happen! */){
+	            
+	            //Ooops, registered in another class, must first deal with that
+	            //Currently users can only enroll in one class at a time
+	            //TODO Make more sophisticated to understand start & end dates and enable multiple if dates do not overlap
+	            
+	            //Log engagement:
+	            $this->Db_model->e_create(array(
+	                'e_creator_id' => $udata['u_id'],
+	                'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is currently not allowed!',
+	                'e_json' => json_encode($_POST),
+	                'e_type_id' => 9, //Support Needing Graceful Errors
+	            ));
+	            
+	            //Send the email to their application:            
+	            if(email_application_url($udata)){
+	                
+	                $application_status_salt = $this->config->item('application_status_salt');
+	                
+	                //Log Email Engagement:
+	                $this->Db_model->e_create(array(
+	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                    'e_message' => 'Student received email with link to their applications: https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'],
+	                    'e_json' => json_encode(array(
+	                        'input' => $_POST,
+	                        'udata' => $udata,
+	                    )),
+	                    'e_type_id' => 28, //Email sent
+	                ));
+	                
+	                //show the error:
+	                die(echo_json(array(
+	                    'goto_section' => 0,
+	                    'color' => '#FF0000',
+	                    'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: You can take 1 bootcamp at a time. We emailed you a link to manage your current bootcamps. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.',
+	                )));   
+	            }
+	            
+	            
+	        } elseif(count($enrollments)==0){
+	            
 	            //Existing user that is never enrolled here:
 	            $enrollments[0] = $this->Db_model->ru_create(array(
-	                'ru_r_id' 	=> $next_cohort['r_id'],
+	                'ru_r_id' 	=> $focus_class['r_id'],
 	                'ru_u_id' 	=> $udata['u_id'],
 	            ));
 	            
@@ -101,8 +152,8 @@ class Process extends CI_Controller {
 	                    'udata' => $udata,
 	                    'rudata' => $enrollments[0],
 	                )),
-	                'e_type_id' => 29, //Joined Cohort
-	                'e_object_id' => $next_cohort['r_id'],
+	                'e_type_id' => 29, //Joined Class
+	                'e_object_id' => $focus_class['r_id'],
 	                'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	            ));
 	        }
@@ -126,20 +177,11 @@ class Process extends CI_Controller {
 	                        'rudata' => $enrollments[0],
 	                    )),
 	                    'e_type_id' => 28, //Email sent
-	                    'e_object_id' => $next_cohort['r_id'],
-	                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                ));
 	                
-	                //Continue to last step:
-	                /*
-	                die(json_encode(array(
-	                    'goto_section' => 4,
-	                )));
-	                */
-	                
-	                //Redirect to typeform:
-	                die(json_encode(array(
-	                    'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$next_cohort['r_id'],$udata),
+	                //Redirect to application:
+	                die(echo_json(array(
+	                    'hard_redirect' => '/my/apply/'.$enrollments[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
 	                )));
 	            }
 	        }
@@ -148,14 +190,14 @@ class Process extends CI_Controller {
 	        
 	        if(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<2){
 	            //Invalid
-	            die(json_encode(array(
+	            die(echo_json(array(
 	                'goto_section' => 0,
 	                'color' => '#FF0000',
 	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid first name, try again.',
 	            )));
 	        } else {
 	            //Nope, lets continue:
-	            die(json_encode(array(
+	            die(echo_json(array(
 	                'goto_section' => 3,
 	            )));
 	        }
@@ -164,7 +206,7 @@ class Process extends CI_Controller {
 	        
 	        if(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<2){
 	            //Invalid
-	            die(json_encode(array(
+	            die(echo_json(array(
 	                'goto_section' => 0,
 	                'color' => '#FF0000',
 	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid last name, try again.',
@@ -192,14 +234,14 @@ class Process extends CI_Controller {
 	                        'udata' => $udata,
 	                    )),
 	                    'e_type_id' => 27, //New Student Lead
-	                    'e_object_id' => $next_cohort['r_id'],
+	                    'e_object_id' => $focus_class['r_id'],
 	                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                ));
 	                
 	                
 	                //Insert Enrollment Status since they are new:
 	                $rudata = $this->Db_model->ru_create(array(
-	                    'ru_r_id' 	=> $next_cohort['r_id'],
+	                    'ru_r_id' 	=> $focus_class['r_id'],
 	                    'ru_u_id' 	=> $udata['u_id'],
 	                ));
 	                
@@ -213,8 +255,8 @@ class Process extends CI_Controller {
 	                            'udata' => $udata,
 	                            'rudata' => $rudata,
 	                        )),
-	                        'e_type_id' => 29, //Joined Cohort
-	                        'e_object_id' => $next_cohort['r_id'],
+	                        'e_type_id' => 29, //Joined Class
+	                        'e_object_id' => $focus_class['r_id'],
 	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                    ));	                        
 	                        
@@ -234,21 +276,11 @@ class Process extends CI_Controller {
 	                                'rudata' => $rudata,
 	                            )),
 	                            'e_type_id' => 28, //Email sent
-	                            'e_object_id' => $next_cohort['r_id'],
-	                            'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                        ));
 	                        
-	                        //Continue to last step:
-	                        /*
-	                        die(json_encode(array(
-	                            'goto_section' => 4,
-	                        )));
-	                        */
-	                        
-	                        //Redirect to typeform:
-	                        
-	                        die(json_encode(array(
-	                            'hard_redirect' => typeform_url($next_cohort['r_typeform_id'],$next_cohort['r_id'],$udata),
+	                        //Redirect to application:
+	                        die(echo_json(array(
+	                            'hard_redirect' => '/my/apply/'.$rudata['ru_id'].'?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
 	                        )));
 	                    }
 	                }
@@ -258,11 +290,75 @@ class Process extends CI_Controller {
 	    
 	    
 	    //Ooops, what happened?
-	    die(json_encode(array(
+	    die(echo_json(array(
 	        'goto_section' => 0,
 	        'color' => '#FF0000',
 	        'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Unknown error, try again.',
 	    )));
+	}
+	
+	
+	//When they submit the application in step 2 of their admission:
+	function submit_application(){
+	    
+	    $application_status_salt = $this->config->item('application_status_salt');
+	    if(intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['answers']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+	        
+	        //Log engagement:
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
+	            'e_message' => 'submit_application() Missing Core Inputs.',
+	            'e_json' => json_encode($_POST),
+	            'e_type_id' => 8, //Platform Error
+	        ));
+	        
+	        //Display Error:
+	        die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
+	    }
+	    
+	    
+	    //Fetch all their admissions:
+	    $admissions = $this->Db_model->remix_admissions(array(
+	        'ru.ru_id'	=> intval($_POST['ru_id']),
+	    ));
+	    
+	    //Make sure we got all this data:
+	    if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
+	        //Log this error:
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $_POST['u_id'],
+	            'e_message' => 'submit_application() failed to fetch admission data.',
+	            'e_json' => json_encode($_POST),
+	            'e_type_id' => 8, //Platform Error
+	        ));
+	        
+	        //Error:
+	        die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
+	    }
+	    
+	    //Attach timestamp:
+	    $_POST['answers']['pst_timestamp'] = date("Y-m-d H:i:s");
+	    
+	    //Save answers:
+	    $this->Db_model->ru_update( intval($_POST['ru_id']) , array(
+	        'ru_application_survey' => json_encode($_POST['answers']),
+	    ));
+	    
+	    //Log Engagement:
+	    $this->Db_model->e_create(array(
+	        'e_creator_id' => $_POST['u_id'],
+	        'e_json' => json_encode($_POST),
+	        'e_type_id' => 26, //Application submitted
+	        'e_object_id' => $admissions[0]['r_id'],
+	        'e_b_id' => $admissions[0]['b_id'], //Share with bootcamp team
+	    ));
+	    
+	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
+	    //The "pay_r_id" variable makes the next page redirect to paypal automatically:
+	    //Show message & redirect:
+	    sleep(1);
+	    echo '<script> setTimeout(function() { window.location = "/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'].'" }, 1000); </script>';
+	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted!</div>';
 	}
 	
 	
@@ -294,18 +390,12 @@ class Process extends CI_Controller {
 	            'e_creator_id' => $users[0]['u_id'],
 	            'e_message' => 'login() denied because account is not active.',
 	            'e_json' => json_encode($_POST),
-	            'e_type_id' => 9, //Platform Expected Error
+	            'e_type_id' => 9, //Support Needing Graceful Errors
 	        ));
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us for more details.</div>');
 	        return false;
 	    } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
 	        //Bad password
-	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $users[0]['u_id'],
-	            'e_message' => 'login() denied because of incorrect password.',
-	            'e_json' => json_encode($_POST),
-	            'e_type_id' => 9, //Platform Expected Error
-	        ));
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
 	        return false;
 	    }
@@ -323,7 +413,7 @@ class Process extends CI_Controller {
                     'e_creator_id' => $users[0]['u_id'],
                     'e_message' => 'login() denied because user is not assigned to any bootcamps.',
                     'e_json' => json_encode($_POST),
-                    'e_type_id' => 9, //Platform Expected Error
+                    'e_type_id' => 9, //Support Needing Graceful Errors
                 ));
                 redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You are not assigned to any bootcamps.</div>');
                 return false;
@@ -506,11 +596,11 @@ class Process extends CI_Controller {
 	
 	
 	/* ******************************
-	 * r Cohorts
+	 * r Classes
 	 ****************************** */
 	
-	function cohort_timeline(){
-	    //Displays the cohort timeline based on some inputs:
+	function class_timeline(){
+	    //Displays the class timeline based on some inputs:
 	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        die('<span style="color:#000;">Enter start date to see timeline.</span>');
 	    } elseif(!isset($_POST['r_start_time_mins'])){
@@ -527,19 +617,19 @@ class Process extends CI_Controller {
         $start_times = $this->config->item('start_times');
 	    
 	    //Start calculations:
-        echo '<p>Based on this start time, your cohort timeline is:</p>';
+        echo '<p>Based on this start time, your class timeline is:</p>';
         echo '<ul style="list-style:decimal;">';
 	        echo '<li>Admission Starts <b>When Bootcamp is Published Live</b></li>';
 	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b> (Midnight Before Start Day)</li>';
-	        echo '<li>Cohort Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> (Your Selected Time)</li>';
+	        echo '<li>Class Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> (Your Selected Time)</li>';
     	    echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> (Afternoon of Start Day <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
-    	    echo '<li>Cohort Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])-1)).' 11:59pm PST</b> ('.$_POST['milestone_count'] ?> <?= ucwords($_POST['b_sprint_unit']).' Action Plan)</li>';
+    	    echo '<li>Class Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])-1)).' 11:59pm PST</b> ('.$_POST['milestone_count'] ?> <?= ucwords($_POST['b_sprint_unit']).' Action Plan)</li>';
     	    echo '<li>Performance Payout by <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> (2 Weeks Later <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
     	    echo '</ul>';
 	}
 	
 	
-	function cohort_create(){
+	function r_create(){
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:
@@ -551,80 +641,79 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
-	        die('<span style="color:#FF0000;">Error: Invalid cohort status.</span>');
-	    } elseif(!isset($_POST['copy_cohort_id']) || intval($_POST['copy_cohort_id'])<0){
-	        die('<span style="color:#FF0000;">Error: Missing Cohort Import Settings.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid class status.</span>');
+	    } elseif(!isset($_POST['copy_r_id']) || intval($_POST['copy_r_id'])<0){
+	        die('<span style="color:#FF0000;">Error: Missing Class Import Settings.</span>');
 	    } else {
 	        
 	        //Start with the date:
 	        $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
 	        //Check for unique start date:
-	        $current_cohorts = $this->Db_model->r_fetch(array(
+	        $current_classes = $this->Db_model->r_fetch(array(
 	            'r.r_b_id' => intval($_POST['r_b_id']),
 	            'r.r_status >=' => 0,
 	            'r.r_start_date' => $new_date,
 	        ));
-	        if(count($current_cohorts)>0){
+	        if(count($current_classes)>0){
 	            //Ooops, we cannot have duplicate dates:
-	            die('<span style="color:#FF0000;">Error: Cannot have a two cohorts starting on the same day.</span>');
+	            die('<span style="color:#FF0000;">Error: Cannot have a two classes starting on the same day.</span>');
 	        }
 	        
 	        
 	        //This is the variable we're building:
-	        $cohort_data = null;
+	        $class_data = null;
 	        
-	        if(intval($_POST['copy_cohort_id'])>0){
+	        if(intval($_POST['copy_r_id'])>0){
 	            
 	            //Fetch default questions:
-	            $cohorts = $this->Db_model->r_fetch(array(
-	                'r.r_id' => intval($_POST['copy_cohort_id']),
+	            $classes = $this->Db_model->r_fetch(array(
+	                'r.r_id' => intval($_POST['copy_r_id']),
 	                'r.r_b_id' => intval($_POST['r_b_id']),
 	            ));
 	            
-	            if(count($cohorts)==1){
+	            if(count($classes)==1){
 	                //Port the settings:
-	                $cohort_data = $cohorts[0];
-	                $eng_message = time_format($_POST['r_start_date'],1).' cohort created by copying '.time_format($cohort_data['r_start_date'],1).' cohort settings.';
+	                $class_data = $classes[0];
+	                $eng_message = time_format($_POST['r_start_date'],1).' class created by copying '.time_format($class_data['r_start_date'],1).' class settings.';
 	                
 	                //Make some adjustments
-	                $cohort_data['r_start_date'] = $new_date;
-	                $cohort_data['r_start_time_mins'] = intval($_POST['r_start_time_mins']);
-	                $cohort_data['r_status'] = intval($_POST['r_status']); //Override with input status
+	                $class_data['r_start_date'] = $new_date;
+	                $class_data['r_start_time_mins'] = intval($_POST['r_start_time_mins']);
+	                $class_data['r_status'] = intval($_POST['r_status']); //Override with input status
 	                
 	                //The following data are unique and should NOT be copied:
-	                unset($cohort_data['r_id']);
-	                unset($cohort_data['r_typeform_id']);
-	                unset($cohort_data['r__current_admissions']); //This is a dummy placeholder
+	                unset($class_data['r_id']);
+	                unset($class_data['r__current_admissions']); //This is a dummy placeholder
 	            }
 	        }
 	        
 	        
 	        //Did we build it?
-	        if(!$cohort_data){
+	        if(!$class_data){
 	            
 	            //Fetch default questions:
-	            $default_cohort_questions = $this->config->item('default_cohort_questions');
-	            $default_cohort_prerequisites = $this->config->item('default_cohort_prerequisites');
-	            $default_cohort_prizes = $this->config->item('default_cohort_prizes');
+	            $default_class_questions = $this->config->item('default_class_questions');
+	            $default_class_prerequisites = $this->config->item('default_class_prerequisites');
+	            $default_class_prizes = $this->config->item('default_class_prizes');
 	            
 	            //Generate core data:
-	            $cohort_data = array(
+	            $class_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
 	                'r_start_time_mins' => intval($_POST['r_start_time_mins']),
 	                'r_status' => intval($_POST['r_status']),
-	                'r_prerequisites' => json_encode($default_cohort_prerequisites),
-	                'r_application_questions' => json_encode($default_cohort_questions),
-	                'r_completion_prizes' => json_encode($default_cohort_prizes),
+	                'r_prerequisites' => json_encode($default_class_prerequisites),
+	                'r_application_questions' => json_encode($default_class_questions),
+	                'r_completion_prizes' => json_encode($default_class_prizes),
 	            );
 	            
 	            //Default message:
-	            $eng_message = time_format($_POST['r_start_date'],1).' cohort created form scratch.';
+	            $eng_message = time_format($_POST['r_start_date'],1).' class created form scratch.';
 	        }
 	        
 	        
-	        //Create new cohort:
-	        $cohort = $this->Db_model->r_create($cohort_data);
+	        //Create new class:
+	        $class = $this->Db_model->r_create($class_data);
 	        
 	        
 	        //Log engagement:
@@ -634,17 +723,17 @@ class Process extends CI_Controller {
 	            'e_json' => json_encode(array(
 	                'input' => $_POST,
 	                'before' => array(),
-	                'after' => $cohort,
+	                'after' => $class,
 	            )),
-	            'e_type_id' => 14, //New Cohort
-	            'e_object_id' => $cohort['r_id'],
+	            'e_type_id' => 14, //New Class
+	            'e_object_id' => $class['r_id'],
 	            'e_b_id' => intval($_POST['r_b_id']), //Share with bootcamp team
 	        ));
 	        
 	        
-	        if($cohort['r_id']>0){
+	        if($class['r_id']>0){
 	            //Redirect:
-	            echo '<script> window.location = "/console/'.intval($_POST['r_b_id']).'/cohorts/'.$cohort['r_id'].'" </script>';
+	            echo '<script> window.location = "/console/'.intval($_POST['r_b_id']).'/classes/'.$class['r_id'].'" </script>';
 	        } else {
 	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this bootcamp.</span>');
 	        }
@@ -660,16 +749,16 @@ class Process extends CI_Controller {
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Missing hours.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
 	    }
 	    
 	    //Fetch for the record:
-	    $cohorts = $this->Db_model->r_fetch(array(
+	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	    ));
-	    if(count($cohorts)<1){
+	    if(count($classes)<1){
 	        //Ooops, not found!
-	        die('<span style="color:#FF0000;">Error: Cohort ID not found.</span>');
+	        die('<span style="color:#FF0000;">Error: Class ID not found.</span>');
 	    }
 	    
 	    
@@ -681,18 +770,18 @@ class Process extends CI_Controller {
 	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
 	    
 	    //Log engagement ONLY if different:
-	    if($r_update['r_live_office_hours']!==$cohorts[0]['r_live_office_hours']){
+	    if($r_update['r_live_office_hours']!==$classes[0]['r_live_office_hours']){
 	        $this->Db_model->e_create(array(
 	            'e_creator_id' => $udata['u_id'], //The user
-	            'e_message' => readable_updates($cohorts[0],$r_update,'r_'),
+	            'e_message' => readable_updates($classes[0],$r_update,'r_'),
 	            'e_json' => json_encode(array(
 	                'input' => $_POST,
-	                'before' => @unserialize($cohorts[0]['r_live_office_hours']),
+	                'before' => @unserialize($classes[0]['r_live_office_hours']),
 	                'after' => @unserialize($r_update['r_live_office_hours']),
 	            )),
-	            'e_type_id' => 24, //Cohort Schedule Update
+	            'e_type_id' => 24, //Class Schedule Update
 	            'e_object_id' => intval($_POST['r_id']),
-	            'e_b_id' => $cohorts[0]['r_b_id'], //Share with bootcamp team
+	            'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
 	        ));
 	    }
 	    
@@ -702,7 +791,7 @@ class Process extends CI_Controller {
 	
 	
 	
-	function cohort_edit(){
+	function class_edit(){
 	    
 	    $udata = auth(2);
 	    if(!$udata){
@@ -712,35 +801,35 @@ class Process extends CI_Controller {
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Cohort ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
-	        die('<span style="color:#FF0000;">Error: Missing Cohort Status.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Class Status.</span>');
 	    }
 	    
 	    //Check Duplicate Date:
 	    $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
 	    //Check for unique start date:
-	    $current_cohorts = $this->Db_model->r_fetch(array(
+	    $current_classes = $this->Db_model->r_fetch(array(
 	        'r.r_id !=' => intval($_POST['r_id']),
 	        'r.r_b_id' => intval($_POST['b_id']),
 	        'r.r_status >=' => 0,
 	        'r.r_start_date' => $new_date,
 	    ));
-	    if(count($current_cohorts)>0){
+	    if(count($current_classes)>0){
 	        //Ooops, we cannot have duplicate dates:
-	        die('<span style="color:#FF0000;">Error: Cannot have a two cohorts starting on the same day.</span>');
+	        die('<span style="color:#FF0000;">Error: Cannot have a two classes starting on the same day.</span>');
 	    }
 	    
 	    
 	    //Fetch for the record:
-	    $cohorts = $this->Db_model->r_fetch(array(
+	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	    ));
-	    if(count($cohorts)<1){
+	    if(count($classes)<1){
 	        //Ooops, not found!
-	        die('<span style="color:#FF0000;">Error: Cohort ID not found.</span>');
+	        die('<span style="color:#FF0000;">Error: Class ID not found.</span>');
 	    }
 	    
 	    
@@ -760,7 +849,6 @@ class Process extends CI_Controller {
 	        'r_weekly_1on1s' => ( strlen($_POST['r_weekly_1on1s'])>0 && in_array(floatval($_POST['r_weekly_1on1s']),$weekly_1on1s_options) ? floatval($_POST['r_weekly_1on1s']) : null ),
 	        'r_office_hour_instructions' => ( strlen($_POST['r_office_hour_instructions'])>0 ? trim($_POST['r_office_hour_instructions']) : null ),
 	        'r_cancellation_policy' => ( isset($_POST['r_cancellation_policy']) && array_key_exists($_POST['r_cancellation_policy'],$refund_policies) ? $_POST['r_cancellation_policy'] : null ),
-	        'r_typeform_id' => ( strlen($_POST['r_typeform_id'])>0 ? trim($_POST['r_typeform_id']) : null ),
 	        'r_closed_dates' => ( strlen($_POST['r_closed_dates'])>0 ? trim($_POST['r_closed_dates']) : null ),
 	        'r_usd_price' => ( strlen($_POST['r_usd_price'])>0 && floatval($_POST['r_usd_price'])>=0 ? floatval($_POST['r_usd_price']) : null ),
 	        'r_min_students' => intval($_POST['r_min_students']),
@@ -783,15 +871,15 @@ class Process extends CI_Controller {
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_creator_id' => $udata['u_id'], //The user
-	        'e_message' => readable_updates($cohorts[0],$r_update,'r_'),
+	        'e_message' => readable_updates($classes[0],$r_update,'r_'),
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
-	            'before' => $cohorts[0],
+	            'before' => $classes[0],
 	            'after' => $r_update,
 	        )),
-	        'e_type_id' => ($r_update['r_status']<0 && $r_update['r_status']!=$cohorts[0]['r_status'] ? 16 : 13), //Cohort Setting Updated/Deleted
+	        'e_type_id' => ($r_update['r_status']<0 && $r_update['r_status']!=$classes[0]['r_status'] ? 16 : 13), //Class Setting Updated/Deleted
 	        'e_object_id' => intval($_POST['r_id']),
-	        'e_b_id' => $cohorts[0]['r_b_id'], //Share with bootcamp team
+	        'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
 	    ));
 	    
 	    
@@ -1016,6 +1104,20 @@ class Process extends CI_Controller {
 	        'e_object_id' => intval($_POST['b_id']),
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
 	    ));
+	    
+	    //Is this a request to publish?
+	    if(intval($_POST['b_status'])==1 && !(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
+	        $this->Db_model->e_create(array(
+	            'e_creator_id' => $udata['u_id'],
+	            'e_json' => json_encode(array(
+	                'input' => $_POST,
+	                'before' => $bootcamps[0],
+	                'after' => $b_update,
+	            )),
+	            'e_type_id' => 37, //Request to publish
+	            'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        ));
+	    }   
 	    
 	    //Update Href for Landing page buttons:
 	    echo '<script> $(".landing_page_url").attr("href", "/bootcamps/'.$_POST['b_url_key'].'"); </script>';
@@ -1493,7 +1595,7 @@ class Process extends CI_Controller {
 	            'input' => $_POST,
 	            'after' => $i,
 	        )),
-	        'e_type_id' => 34, //Tip added
+	        'e_type_id' => 34, //Insight added
 	        'e_object_id' => intval($i['i_id']),
 	        'e_b_id' => $i['i_b_id'], //Share with bootcamp team
 	    ));
@@ -1513,17 +1615,17 @@ class Process extends CI_Controller {
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing tip id.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Insight id.</span>');
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing i_message.</span>');
 	    }
 	    
-	    //Fetch tip:
-	    $tips = $this->Db_model->i_fetch(array(
+	    //Fetch Insight:
+	    $insights = $this->Db_model->i_fetch(array(
 	        'i_id' => intval($_POST['i_id']),
 	    ));
-	    if(!isset($tips[0])){
-	        die('<span style="color:#FF0000;">Error: Invalid tip id.</span>');
+	    if(!isset($insights[0])){
+	        die('<span style="color:#FF0000;">Error: Invalid Insight id.</span>');
 	    }
 	    
 	    //Now update the DB:
@@ -1539,11 +1641,11 @@ class Process extends CI_Controller {
 	        //'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
-	            'before' => $tips[0],
+	            'before' => $insights[0],
 	        )),
-	        'e_type_id' => 36, //Tip edited
-	        'e_object_id' => intval($tips[0]['i_id']),
-	        'e_b_id' => $tips[0]['i_b_id'], //Share with bootcamp team
+	        'e_type_id' => 36, //Insight edited
+	        'e_object_id' => intval($insights[0]['i_id']),
+	        'e_b_id' => $insights[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
 	    //Show result:
@@ -1557,16 +1659,16 @@ class Process extends CI_Controller {
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing tip id.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Insight id.</span>');
 	    }
 	    
-	    //Fetch tip:
-	    $tips = $this->Db_model->i_fetch(array(
+	    //Fetch Insight:
+	    $insights = $this->Db_model->i_fetch(array(
 	        'i_id' => intval($_POST['i_id']),
 	        'i_status >=' => 0, //Not deleted
 	    ));
-	    if(!isset($tips[0])){
-	        die('<span style="color:#FF0000;">Error: Invalid tip id.</span>');
+	    if(!isset($insights[0])){
+	        die('<span style="color:#FF0000;">Error: Invalid Insight id.</span>');
 	    }
 	    
 	    //Now update the DB:
@@ -1579,14 +1681,14 @@ class Process extends CI_Controller {
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_creator_id' => $udata['u_id'],
-	        'e_message' => ucwords($tips[0]['i_media_type']).': '.$tips[0]['i_message'].' '.$tips[0]['i_url'].' (Dispatch after '.$tips[0]['i_dispatch_minutes'].' minutes)',
+	        'e_message' => ucwords($insights[0]['i_media_type']).': '.$insights[0]['i_message'].' '.$insights[0]['i_url'].' (Dispatch after '.$insights[0]['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
-	            'before' => $tips[0],
+	            'before' => $insights[0],
 	        )),
-	        'e_type_id' => 35, //Tip deleted
-	        'e_object_id' => intval($tips[0]['i_id']),
-	        'e_b_id' => $tips[0]['i_b_id'], //Share with bootcamp team
+	        'e_type_id' => 35, //Insight deleted
+	        'e_object_id' => intval($insights[0]['i_id']),
+	        'e_b_id' => $insights[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
 	    //Show result:

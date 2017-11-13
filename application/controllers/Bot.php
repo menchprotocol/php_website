@@ -190,9 +190,59 @@ class Bot extends CI_Controller {
 						        'u_status >=' => 0,
 						    ));
 						    
+						    $current_fb_users = $this->Db_model->u_fetch(array(
+						        'u_id !=' => $eng_data['e_object_id'],
+						        'u_fb_id' => $im['sender']['id'],
+						        'u_status >=' => 0,
+						    ));
+						    
 						    //Users can only activate their accounts if/when they are missing their u_fb_id field
 						    //Did we find a single user without a linked Facebook account?
-						    if(count($matching_users)==1 && strlen($matching_users[0]['u_fb_id'])<5){
+						    if(count($current_fb_users)>0){
+						        
+						        //This FB user is assigned to a different mench account, so we cannot activate them!
+						        $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						            array('text' => 'I could not activate your Messenger account because your Messenger account is already associated with another Mench account. Contact our support team to resolve this issue.'),
+						        ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+						        
+						        //Log engagement:
+						        $this->Db_model->e_create(array(
+						            'e_creator_id' => $eng_data['e_object_id'],
+						            'e_message' => 'MenchBot failed to activate user because Messenger account is associated with another Mench account.',
+						            'e_json' => json_encode($json_data),
+						            'e_type_id' => 9, //Support Needing Graceful Errors
+						        ));
+						        
+						    } elseif(count($matching_users)>0 && strlen($matching_users[0]['u_fb_id'])>1){
+						        
+						        //Found this user but they seem to already be activated.
+						        //Lets see who is the Messenger account:
+						        
+						        if($matching_users[0]['u_fb_id']==$im['sender']['id']){
+						            
+						            //All good, already activated with same account
+						            $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						                array('text' => 'I have already activated your Messenger account. You are good to go :)'),
+						            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+						            
+						        } else {
+						            
+						            //Ooops, Mench user seems to be activated with a different Messenger account!
+						            $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						                array('text' => 'I could not activate your Messenger account because your Mench account is already activated with another Messenger account. Contact our support team to resolve this issue.'),
+						            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+						            
+						            //Log engagement:
+						            $this->Db_model->e_create(array(
+						                'e_creator_id' => $eng_data['e_object_id'],
+						                'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
+						                'e_json' => json_encode($json_data),
+						                'e_type_id' => 9, //Support Needing Graceful Errors
+						            ));
+						            
+						        }
+						        
+						    } elseif(count($matching_users)>0){
 						        
 						        
 						        /* *************************************
@@ -205,7 +255,6 @@ class Bot extends CI_Controller {
 						        
 						        //Split locale into language and country
 						        $locale = explode('_',$fb_profile['locale'],2);
-						        
 						        
 						        //Update necessary fields when Activating through Messenger:
 						        $update_profile = array(
@@ -247,7 +296,7 @@ class Bot extends CI_Controller {
 						        //Communicate the linking process with user:
 						        $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
 						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
-						            array('text' => 'My name is MenchBot and I will be your Personal Assistant to help you accomplish your bootcamp goal.'),
+						            array('text' => 'My name is MenchBot and I will be your Personal Assistant to help you accomplish your bootcamp objective.'),
 						            array('text' => 'As your personal assistant I will send you important updates'.( count($admissions)==1 ? ' on your bootcamp "'.$admissions[0]['c_objective'].'" lead by '.$admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'] : ' on your '.count($admissions).' enrolled bootcamps' ).'. I will also forward all your messages to your bootcamp\'s instructor team so they can reply asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['r_response_time_hours'].' hours ⚡' : '.' )),
 						            array('text' => 'That\'s it for now. Click the "️🚩 Action Plan" button in the menu below to get started with your bootcamp.'),
 						        ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
@@ -305,14 +354,56 @@ class Bot extends CI_Controller {
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
+					$u_id = $this->Db_model->u_fb_search($user_id);
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
+					$admissions = $this->Db_model->ru_fetch(array(
+					    'r.r_status >='	   => 1, //Open for admission
+					    'r.r_status <='	   => 2, //Running
+					    'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
+					    'ru.ru_u_id'	   => $u_id,
+					));
 					
+					//Check to see which bootcamp, if any, is this student enrolled in:
+					if(!$sent_from_us && count($admissions)<=0){
+					    
+					    //None! Give students directions on how to enroll
+					    $this->Facebook_model->batch_messages( $user_id , array(
+					        array('text' => 'You are not enrolled in a bootcamp. You can enroll in a bootcamp using an invitation URL sent by a Mench instructor or by visiting https://mench.co to get started.'),
+					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+					    
+					    //Log engagement:
+					    $this->Db_model->e_create(array(
+					        'e_creator_id' => $u_id,
+					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. Reply using Facebook Mench Page Inbox.',
+					        'e_json' => json_encode($json_data),
+					        'e_type_id' => 9, //Support Needing Graceful Errors
+					    ));
+					    
+					} elseif(!$sent_from_us && count($admissions)>=2){
+					    
+					    //Ooops, how did they enroll in so many bootcamps?
+					    $this->Facebook_model->batch_messages( $user_id , array(
+					        array('text' => 'Error: You are somehow enrolled in multiple bootcamps. You can only enroll in 1 bootcamp at a time. I have notified Mench Admins to look into adjusting your application status and get back to you soon.'),
+					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+					    
+					    //Log Engagement:
+					    $this->Db_model->e_create(array(
+					        'e_creator_id' => $u_id,
+					        'e_message' => 'facebook_webhook() Received inbound message from student enrolled in *multiple* bootcamps!',
+					        'e_json' => json_encode($json_data),
+					        'e_type_id' => 8, //Platform Error
+					    ));
+					    
+					}
+					
+					//Start data reparation for message inbound OR outbound engagement:
 					$eng_data = array(
-					    'e_creator_id' => ( $sent_from_us ? 0 /* PARTIALLY replaced a/ chat widget, still admins FB Inbox Open */ : $this->Db_model->u_fb_search($im['sender']['id'])),
+					    'e_creator_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
 						'e_json' => json_encode($json_data),
-					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : '' ),
+					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
 					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
-					    'e_object_id' => ( $sent_from_us ? $this->Db_model->u_fb_search($im['recipient']['id']) : 0 ),
+					    'e_object_id' => ( $sent_from_us ? $u_id : 0 ),
+					    'e_b_id' => ( count($admissions)==1 ? $admissions[0]['r_b_id'] : 0 ),
 					);
 					
 					//Some that are not used yet:
@@ -338,35 +429,9 @@ class Bot extends CI_Controller {
 							
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
-							    //Store to local DB:
-							    //$new_file_url = save_file($att['payload']['url'],$json_data);
-							    
-							    //Message with image attachment
-							    //$eng_data['e_message'] .= (strlen($eng_data['e_message'])>0?"\n\n":'').'/attach '.$att['type'].':'.$new_file_url;
-							    
 							    //Indicate that we need to save this file on our servers:
-							    $eng_data['e_file_save'] = 0; //Indicates pending files for the cron job to fetch!
-								
-								/*
-								//Reply:
-								$this->Facebook_model->send_message(array(
-										'recipient' => array(
-												'id' => $user_id
-										),
-										'sender_action' => 'typing_on'
-								));
-								
-								//Testing for now:
-								$this->Facebook_model->send_message(array(
-										'recipient' => array(
-												'id' => $user_id
-										),
-										'message' => array(
-												'text' => 'Got your messageand will get back to you soon!',
-										),
-										'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-								));
-								*/
+							    $eng_data['e_file_save'] = 0;
+							    //We do not save instantly as we need to respond to facebook's webhook call ASAP or else FB resend attachment!
 								
 							} elseif($att['type']=='location'){
 								
@@ -397,41 +462,10 @@ class Bot extends CI_Controller {
 						}
 					}
 					
-					
 					//Log incoming engagement:
 					$this->Db_model->e_create($eng_data);
 					
-					
-					//Should we start talking?!
-					/*
-					if(0 && !$sent_from_us && !isset($im['message']['attachments']) && strlen($eng_data['e_message'])>0){
-						
-						//TODO disabled for now, build later
-						//Incoming text message, attempt to auto detect it:
-						//$eng_data['gem_id'] = ''; //If intent was found, the update ID that was served
-						
-						//Indicate to the user that we're typing:
-						
-						
-						if(isset($unsubscribed_gem['id'])){
-							//Oho! This user is unsubscribed, Ask them if they would like to re-join us:
-							$response = array(
-								'text' => 'You had unsubscribed from Us. Would you like to re-join?',
-							);
-						} else {
-							//TODO Now figure out the response
-						}
-						 
-						//Send message back to user:
-						$this->Facebook_model->send_message(array(
-								'recipient' => array(
-										'id' => $user_id
-								),
-								'message' => $response,
-								'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-						));
-					}
-					*/
+					//TODO Implement automated responses later on using api.ai or some other NLP engine
 					
 				} else {
 				    //This should really not happen!
@@ -457,12 +491,12 @@ class Bot extends CI_Controller {
 	        ));
 	        
 	        if(count($enrollments)==1){
-	            //Fetch cohort data to grab bootcamp ID:
-	            $cohorts = $this->Db_model->r_fetch(array(
+	            //Fetch class data to grab bootcamp ID:
+	            $classes = $this->Db_model->r_fetch(array(
 	                'r.r_id' => $enrollments[0]['ru_r_id'],
 	            ));
 	            
-	            if(count($cohorts)==1){
+	            if(count($classes)==1){
 	                
 	                //Define numbers:
 	                $amount = floatval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
@@ -477,7 +511,6 @@ class Bot extends CI_Controller {
 	                    't_paypal_ipn' => json_encode($_POST),
 	                    't_currency' => $_POST['mc_currency'],
 	                    't_payment_type' => $_POST['payment_type'],
-	                    't_paypal_verified' => ( $_POST['payer_status']=='verified' ? 't' : 'f' ),
 	                    't_total' => $amount,
 	                    't_fees' => $fee,
 	                ));
@@ -485,7 +518,6 @@ class Bot extends CI_Controller {
 	                //Update student's payment status:
 	                $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
 	                    'ru_status' => 2, //For now this is the default since we don't accept partial payments
-	                    'ru_paid_sofar' => ($enrollments[0]['ru_paid_sofar'] + $amount), //This supports partial payments though!
 	                ));
 	                
 	                //Log Engagement
@@ -495,78 +527,205 @@ class Bot extends CI_Controller {
 	                    'e_json' => json_encode($_POST),
 	                    'e_type_id' => 30, //Paypal Payment
 	                    'e_object_id' => $transaction['t_id'],
-	                    'e_b_id' => $cohorts[0]['r_b_id'],
+	                    'e_b_id' => $classes[0]['r_b_id'],
 	                ));
 	            }
 	        }
 	    }
-	}
+	}	
+
 	
-	function typeform_webhook(){
-	    
-	    //This function is called when a user submits a typeform to save its data	    
-	    $json_data = json_decode(file_get_contents('php://input'), true);
-	    $application_status_salt = $this->config->item('application_status_salt');
-	    
-	    if(!isset($json_data['form_response']['hidden']['r_id']) || !isset($json_data['form_response']['hidden']['u_id']) || !isset($json_data['form_response']['hidden']['u_key']) || !(md5($json_data['form_response']['hidden']['u_id'].$application_status_salt)==$json_data['form_response']['hidden']['u_key'])){
-	        //Log this error:
-	        $this->Db_model->e_create(array(
-	            'e_creator_id' => 0,
-	            'e_message' => 'BOT/typeform_webhook() received application with invalid user credentials.',
-	            'e_json' => json_encode($json_data),
-	            'e_type_id' => 8, //Platform Error
-	        ));
-	        exit;
-	    }
-	    
-	    
-	    //Search for cohort using form ID:
-	    $users = $this->Db_model->u_fetch(array(
-	        'u_id' => $json_data['form_response']['hidden']['u_id'],
-	    ));
-	    $udata = @$users[0];
-	    $cohorts = $this->Db_model->r_fetch(array(
-	        'r.r_typeform_id' => $json_data['form_response']['form_id'],
-	        'r.r_status' => 1,
-	    ));
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b.b_id' => $cohorts[0]['r_b_id'],
-	    ));
-	    $bootcamp = @$bootcamps[0];
-	    $next_cohort = filter_next_cohort($bootcamp['c__cohorts'],$json_data['form_response']['hidden']['r_id']);
-	    $enrollments = $this->Db_model->ru_fetch(array(
-	        'ru.ru_r_id'	=> $next_cohort['r_id'],
-	        'ru.ru_u_id'	=> $udata['u_id'],
-	    ));
-	    
-	    if(!isset($udata['u_id']) || !isset($bootcamp['b_id']) || !isset($cohorts[0]['r_id']) || !isset($enrollments[0]['ru_id']) || !($next_cohort['r_id']==$cohorts[0]['r_id'])){
-	        //Log this error:
-	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $udata['u_id'],
-	            'e_message' => 'BOT/typeform_webhook() received application with missing information.',
-	            'e_json' => json_encode($json_data),
-	            'e_type_id' => 8, //Platform Error
-	        ));
-	        exit;
-	    }
-	    
-	    //Update submission:
-	    $this->Db_model->ru_update($enrollments[0]['ru_id'],array(
-	        'ru_application_survey' => json_encode($json_data),
-	    ));
-	    
-	    //Log Engagement:
-	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
-	        'e_json' => json_encode($json_data),
-	        'e_type_id' => 26, //Typeform Application submitted
-	        'e_object_id' => $next_cohort['r_id'],
-	        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
-	    ));
-	    
-	    
-	}
-	
+/*
+ * Sample api.ai Webhook call:
+
+Array
+(
+    [originalRequest] => Array
+        (
+            [source] => facebook
+            [data] => Array
+                (
+                    [sender] => Array
+                        (
+                            [id] => 1344093838979504
+                        )
+
+                    [recipient] => Array
+                        (
+                            [id] => 1782774501750818
+                        )
+
+                    [message] => Array
+                        (
+                            [mid] => mid.$cAAZVbKt7ywpil2wGeFcZibAMlNcz
+                            [text] => hi
+                            [seq] => 14551
+                        )
+
+                    [timestamp] => 1496362434168
+                )
+
+        )
+
+    [id] => 7ac3054f-6fb0-4ca7-b6a8-ac7f44c7baf4
+    [timestamp] => 2017-06-02T00:13:54.51Z
+    [lang] => en
+    [result] => Array
+        (
+            [source] => agent
+            [resolvedQuery] => hi
+            [speech] => 
+            [action] => 
+            [actionIncomplete] => 
+            [parameters] => Array
+                (
+                )
+
+            [contexts] => Array
+                (
+                    [0] => Array
+                        (
+                            [name] => generic
+                            [parameters] => Array
+                                (
+                                    [facebook_sender_id] => 1344093838979504
+                                )
+
+                            [lifespan] => 4
+                        )
+
+                )
+
+            [metadata] => Array
+                (
+                    [intentId] => 087e291c-8476-4782-b9ee-bc02cddea54a
+                    [webhookUsed] => true
+                    [webhookForSlotFillingUsed] => false
+                    [intentName] => Introduce Us Bot
+                )
+
+            [fulfillment] => Array
+                (
+                    [speech] => 
+                    [messages] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => hi 👋
+                                )
+
+                            [1] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => My name is Us.
+                                )
+
+                            [2] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => I'm called Us, well, because my intelligence is fueled by a group of people that collect idea nuggets from world class entrepreneurs.
+                                )
+
+                            [3] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => Here is how it works: You subscribe to a topic (only topic for now is growing tech startup), and we send you relevant idea nuggets in the form of video, audio, text and image. We curated these insights form credible sources so you can learn faster. Interested? Type "start"
+                                )
+                        )
+                )
+            [score] => 1
+        )
+
+    [status] => Array
+        (
+            [code] => 200
+            [errorType] => success
+        )
+    [sessionId] => be205d4d-852a-4dd5-9939-af0391c9ce93
+)
+
+
+
+Direct from api.ai:
+Array
+(
+    [id] => 9183cfa8-cc84-42cc-9f1f-b1ea9900204b
+    [timestamp] => 2017-06-02T00:13:03.213Z
+    [lang] => en
+    [result] => Array
+        (
+            [source] => agent
+            [resolvedQuery] => stat startup
+            [speech] => 
+            [action] => ||56
+            [actionIncomplete] => 
+            [parameters] => Array
+                (
+                )
+
+            [contexts] => Array
+                (
+                )
+
+            [metadata] => Array
+                (
+                    [intentId] => 231ec0aa-ddab-4820-9bc3-a6a597fd623c
+                    [webhookUsed] => true
+                    [webhookForSlotFillingUsed] => false
+                    [intentName] => Hypergrow a Startup
+                )
+
+            [fulfillment] => Array
+                (
+                    [speech] => 
+                    [messages] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [type] => 3
+                                    [platform] => facebook
+                                    [imageUrl] => http://www.quicksprout.com/images/startup.jpg
+                                )
+
+                            [1] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => Welome onboard! How often would you like to receive updates from Us?
+                                )
+
+                            [2] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => You can always type in specific topics that interest you the most, and we will auto subscribe you once those topics become available.
+                                )
+
+                            [3] => Array
+                                (
+                                    [type] => 0
+                                    [platform] => facebook
+                                    [speech] => Before you go, what is currently your biggest challenge in building your technology startup?
+                                )
+                        )
+                )
+            [score] => 0.43
+        )
+
+    [status] => Array
+        (
+            [code] => 200
+            [errorType] => success
+        )
+    [sessionId] => c4e9fd9a-b1b9-4db4-bbd0-3e9b33c2697e
+)
+*/
+
 	
 	function apiai_webhook(){
 		
@@ -614,7 +773,7 @@ class Bot extends CI_Controller {
 				));
 				
 				//We have a sender ID, see if this is registered using Facebook PSID
-				$matching_users = $this->Us_model->search_node($fb_user_id,1024);
+
 				
 				if(count($matching_users)>0){
 					
@@ -622,7 +781,6 @@ class Bot extends CI_Controller {
 					$eng_data['us_id'] = $matching_users[0]['node_id'];
 					
 					//TODO Check to see if this user is unsubscribed:
-					//$unsubscribed_gem = $this->Us_model->fetch_sandwich_node($eng_data['us_id'],845);
 					
 					
 				} else {
@@ -649,7 +807,6 @@ class Bot extends CI_Controller {
 					);
 				} else {
 					//Now figure out the response:
-					$response = $this->Us_model->generate_response($eng_data['intent_pid'],$setting);
 				}
 				
 				//TODO: Log response engagement

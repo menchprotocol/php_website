@@ -1,4 +1,4 @@
-<h1><?= $this->lang->line('login') ?></h1>
+<h1>Login as Instructor</h1>
 <br />
 
 <div class="login-content">
@@ -25,7 +25,7 @@
 	<br />
 	
 	<div class="extra-info">
-		<p><?= $this->lang->line('no_account') ?> <a href="<?= typeform_url('nh4s2u') ?>"><?= $this->lang->line('signup') ?> <i class="fa fa-sign-in"></i></a></p>
-		<p><?= $this->lang->line('forgot_pass') ?> <a href="/contact"><?= $this->lang->line('contact_us') ?> <i class="fa fa-comment" aria-hidden="true"></i></a></p>
+		<p>Want to Run a Bootcamp? <a href="<?= typeform_url('nh4s2u') ?>">Signup As Instructor <i class="fa fa-sign-in"></i></a></p>
+		<p>Forgot Password? <a href="/contact">Contact Us <i class="fa fa-comment" aria-hidden="true"></i></a></p>
 	</div>
 </div>

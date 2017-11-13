@@ -16,13 +16,13 @@ $(document).ready(function() {
 function update_timeline(){
 	//Update timeline IF we have both a date and time:
 	if($('#r_start_date').val().length<1 || $('#r_start_time_mins').val().length<1){
-		$('#timeline_update').html('<p>Select date & time to see your cohort\'s timeline.</p>');
+		$('#timeline_update').html('<p>Select date & time to see your class\'s timeline.</p>');
 	}
 	//Show spinner:
 	$('#timeline_update').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Save the rest of the content:
-	$.post("/process/cohort_timeline", {
+	$.post("/process/class_timeline", {
 
 		//Communication:
 		milestone_count:$('#milestone_count').val(),
@@ -46,7 +46,7 @@ function update_timeline(){
 
 <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time</h4></div>
 <ul>
-	<li>The day & time when this cohort starts.</li>
+	<li>The day & time when this class starts.</li>
 	<?php if(isset($b_sprint_unit)){ ?>
 	<li>End date calculated based on the number of <?= $sprint_units[$b_sprint_unit]['name'] ?> <b style="display:inline-block;"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</b>.</li>
 	<?php } ?>

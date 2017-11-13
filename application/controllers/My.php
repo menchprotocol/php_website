@@ -34,23 +34,23 @@ class My extends CI_Controller {
 	}
 	
 	
-	function load_tip($tip_id){
+	function load_url($insight_id){
 	    
-	    //Loads the tip URL:
-	    if($tip_id>0){
-	        $tips = $this->Db_model->i_fetch(array(
-	            'i_id' => $tip_id,
+	    //Loads the URL:
+	    if($insight_id>0){
+	        $insights = $this->Db_model->i_fetch(array(
+	            'i_id' => $insight_id,
 	            'i_status >=' => 0, //Not deleted
 	        ));
 	        
-	        if(isset($tips[0]) && $tips[0]['i_media_type']=='text' && strlen($tips[0]['i_url'])>0){
-	            header('Location: '.$tips[0]['i_url']);
+	        if(isset($insights[0]) && $insights[0]['i_media_type']=='text' && strlen($insights[0]['i_url'])>0){
+	            header('Location: '.$insights[0]['i_url']);
 	            return true;
 	        }
 	    }
 	    
 	    //Still here?
-	    redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Tip ID.</div>');    
+	    redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Insight ID.</div>');    
 	}
 	
 	function leaderboard(){
@@ -79,9 +79,7 @@ class My extends CI_Controller {
 	}
 	
 	
-	
-	
-	function milestones($b_id=null,$c_id=null){
+	function actionplan($b_id=null,$c_id=null){
 	    //Load apply page:
 	    $data = array(
 	        'title' => '🚩 Action Plan',
@@ -89,11 +87,11 @@ class My extends CI_Controller {
 	        'c_id' => $c_id,
 	    );
 	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/milestones_frame' , $data);
+	    $this->load->view('front/student/actionplan_frame' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
 	
-	function display_milestones($u_fb_id,$b_id=null,$c_id=null){
+	function display_actionplan($u_fb_id,$b_id=null,$c_id=null){
 	    
 	    //Fetch bootcamps for this user:
 	    if(strlen($u_fb_id)<=0){
@@ -126,13 +124,13 @@ class My extends CI_Controller {
 	            $this->Db_model->e_create(array(
 	                'e_creator_id' => $admissions[0]['u_id'],
 	                'e_json' => json_encode($admissions),
-	                'e_type_id' => 32, //Milestones Opened
+	                'e_type_id' => 32, //actionplan Opened
 	                'e_object_id' => $admissions[0]['r_id'],
 	                'e_b_id' => $admissions[0]['b_id'],
 	            ));
 	            
 	            //Reload with specific directions:
-	            $this->display_milestones($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
+	            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
 	            
 	        } else {
 	            
@@ -194,11 +192,11 @@ class My extends CI_Controller {
 	            //Ooops, they dont have anything!
 	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
 	            //Nothing found for this user!
-	            die('<script> window.location = "/my/milestones"; </script>');
+	            die('<script> window.location = "/my/actionplan"; </script>');
 	        }	        
 	        
 	        //Load UI:
-	        $this->load->view('front/student/milestones_ui.php' , $view_data);
+	        $this->load->view('front/student/actionplan_ui.php' , $view_data);
 	    }
 	}
 	
@@ -222,7 +220,7 @@ class My extends CI_Controller {
 	        sleep(2);
 	    }
 	    
-	    //Search for cohort using form ID:
+	    //Search for class using form ID:
 	    $users = $this->Db_model->u_fetch(array(
 	        'u_id' => intval($_GET['u_id']),
 	    ));
@@ -236,12 +234,12 @@ class My extends CI_Controller {
 	    //Did we find at-least one?
 	    if(count($admissions)<=0){
 	        //Log this error:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">No Active Applications.</div>');
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">You have not applied to join any bootcamp yet.</div>');
 	        exit;
 	    }
 	    
 	    
-	    //Validate Cohort ID that it's still the latest:
+	    //Validate Class ID that it's still the latest:
 	    $data = array(
 	        'title' => 'My Application Status',
 	        'udata' => $udata,
@@ -259,63 +257,44 @@ class My extends CI_Controller {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	function typeform(){
-	    //User is redirected here after they complete their typeform application.
-	    //Note that the typeform Webhook would call the Controller Bot/typeform_webhook to update the data
+	function apply($ru_id){
 	    
+	    //List student applications
 	    $application_status_salt = $this->config->item('application_status_salt');
-	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key']) || !isset($_GET['r_id']) || intval($_GET['r_id'])<1){
-	        
+	    if(intval($ru_id)<1 || !isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        $this->Db_model->e_create(array(
-	            'e_message' => 'STUDENT/typeform() received call that was missing core data.',
-	            'e_json' => json_encode($_GET),
-	            'e_type_id' => 8, //Platform Error
-	        ));
-	        
-	        //Redirect:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Missing Typeform Variables</div>');
+	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
-	    
-	    //Search for cohort using form ID:
-	    $users = $this->Db_model->u_fetch(array(
-	        'u_id' => intval($_GET['u_id']),
-	    ));
-	    $udata = @$users[0];
-	    
-	    //To give the typeform webhook some time to update the DB status:
-	    sleep(2);
-	    
-	    //Fetch all their admissions:
+	    //Fetch all their addmissions:
 	    $admissions = $this->Db_model->remix_admissions(array(
-	        'ru.ru_r_id'	=> $_GET['r_id'],
-	        'ru.ru_u_id'	=> $udata['u_id'],
+	        'ru.ru_id'	   => $ru_id,
+	        'ru.ru_u_id'   => intval($_GET['u_id']),
 	    ));
-	    //Make sure we got all this data:
-	    if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
+	    //Did we find at-least one?
+	    if(count($admissions)<=0){
 	        //Log this error:
-	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $_GET['u_id'],
-	            'e_message' => 'STUDENT/typeform() failed to fetch bootcamp data.',
-	            'e_json' => json_encode($_GET),
-	            'e_type_id' => 8, //Platform Error
-	        ));
-	        
-	        //Redirect:
-	        redirect_message('/my/applications?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'],'<div class="alert alert-danger" role="alert"> Failed to fetch bootcamp data.</div>');
+	        redirect_message('/my/applications?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'],'<div class="alert alert-danger" role="alert">No Active Applications.</div>');
 	        exit;
 	    }
 	    
-	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
-	    //The "pay_r_id" variable makes the next page redirect to paypal automatically:
-	    header( 'Location: /my/applications?pay_r_id='.$_GET['r_id'].'&u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'] );
+	    //Assemble the data:
+	    $data = array(
+	        'title' => 'Application to Join '.$admissions[0]['c_objective'].' - Starting '.time_format($admissions[0]['r_start_date'],4),
+	        'ru_id' => $ru_id,
+	        'u_id' => $_GET['u_id'],
+	        'u_key' => $_GET['u_key'],
+	        'admission' => $admissions[0],
+	    );
+	    
+	    //Load apply page:
+	    $this->load->view('front/shared/p_header' , $data);
+	    $this->load->view('front/student/class_apply' , $data);
+	    $this->load->view('front/shared/p_footer');
+	    
 	}
+	
+	
+	
 }

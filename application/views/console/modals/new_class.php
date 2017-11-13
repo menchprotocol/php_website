@@ -5,20 +5,20 @@ $sprint_units = $this->config->item('sprint_units');
 <script>
 function r_process_create(){
 	//Show processing:
-	$( "#new_cohort_result" ).html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
+	$( "#new_r_result" ).html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Send for processing:
-	$.post("/process/cohort_create", {
+	$.post("/process/r_create", {
 		
 		r_b_id:$('#r_b_id').val(),
 		r_start_date:$('#r_start_date').val(),
 		r_start_time_mins:$('#r_start_time_mins').val(),
 		r_status:$('#r_status').val(),
-		copy_cohort_id:$('#copy_cohort_id').val(),
+		copy_r_id:$('#copy_r_id').val(),
 		
 	}, function(data) {
 		//Append data to view:
-		$( "#new_cohort_result" ).html(data).hide().fadeIn();
+		$( "#new_r_result" ).html(data).hide().fadeIn();
 	});
 }
 
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	});
 
 	//Focus on the datepicker:
-	$('#newCohortModal').on('shown.bs.modal', function () {
+	$('#newClassModal').on('shown.bs.modal', function () {
 		//$('#r_start_date').focus();
 	});
 });
@@ -58,13 +58,13 @@ $('#r_start_date').keyup(function(e){
 </style>
 
 
-<!-- NEW COHORT -->
-<div class="modal fade" id="newCohortModal" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- NEW class -->
+<div class="modal fade" id="newClassModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title">New Cohort</h3>
+        <h3 class="modal-title">New Class</h3>
       </div>
       <div class="modal-body">
       		      		
@@ -80,28 +80,28 @@ $('#r_start_date').keyup(function(e){
 			<?php $this->load->view('console/inputs/r_status' , array('r_status'=>1,'removal_status'=>array(-1,-2,2,3)) ); ?>
 			
 			<?php 
-            if(count($bootcamp['c__cohorts'])>0){
-                //We already have some cohorts, give user the option to copy settings:
+            if(count($bootcamp['c__classes'])>0){
+                //We already have some classes, give user the option to copy settings:
                 ?>
                 <div class="title"><h4><i class="fa fa-clone" aria-hidden="true"></i> Copy Settings</div>
     			<div class="form-group label-floating is-empty">
-    			    <select class="form-control input-mini border" id="copy_cohort_id">
+    			    <select class="form-control input-mini border" id="copy_r_id">
     			    	<option value="0">Do Not Copy Settings</option>
                     	<?php 
-                    	foreach($bootcamp['c__cohorts'] as $count=>$cohort){
-                    	    echo '<option value="'.$cohort['r_id'].'" '.( ($count+1)==count($bootcamp['c__cohorts']) ? 'selected="selected"' : '' ).'>Copy '.time_format($cohort['r_start_date'],1).' Cohort</option>';
+                    	foreach($bootcamp['c__classes'] as $count=>$class){
+                    	    echo '<option value="'.$class['r_id'].'" '.( ($count+1)==count($bootcamp['c__classes']) ? 'selected="selected"' : '' ).'>Copy '.time_format($class['r_start_date'],1).' Class</option>';
                     	}
                     	?>
                     </select>
     			</div>
                 <?php
             } else {
-                echo '<input type="hidden" id="copy_cohort_id" value="0" />';
+                echo '<input type="hidden" id="copy_r_id" value="0" />';
             }
             
             ?>
             <div style="margin:0; padding:0; clear:both;">&nbsp;</div>
-			<div id="new_cohort_result"></div>
+			<div id="new_r_result"></div>
       </div>
       <div class="modal-footer">
         <a href="javascript:r_process_create()" type="button" class="btn btn-primary">Create</a>
@@ -113,22 +113,22 @@ $('#r_start_date').keyup(function(e){
 
 
 
-<!-- SCHEDULE COHORTS -->
-<div class="modal fade" id="ScheduleCohorts" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- SCHEDULE CLASSES -->
+<div class="modal fade" id="ScheduleClasses" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title">Cohort Scheduling</h3>
+        <h3 class="modal-title">Class Scheduling</h3>
       </div>
       <div class="modal-body">
-      		<p>Cohort Scheduling is an advanced feature for bootcamps with a consistent operation. This feature enables you to:</p>
+      		<p>Class Scheduling is an advanced feature for bootcamps with a consistent operation. This feature enables you to:</p>
           	<ul>
-          		<li>Auto create cohorts based on a pre-selected schedule.</li>
+          		<li>Auto create classes based on a pre-selected schedule.</li>
           		<li>Select schedules such as Weekly, Bi-Weekly, Quarterly, etc...</li>
-          		<li>Enable students to register in any cohort starting within 3 months.</li>
+          		<li>Enable students to choose from a list of your upcoming classes.</li>
           	</ul>
-          	<p>Contact us via live chat to enable Cohort Scheduling for your account.</p>
+          	<p>Contact us via live chat to enable Class Scheduling for your account.</p>
       </div>
     </div>
   </div>

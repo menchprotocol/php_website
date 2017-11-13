@@ -176,8 +176,8 @@ function insert_gravatar(){
             		<option value="">Choose...</option>
                 	<?php
                 	$countries_all = $this->config->item('countries_all');
-                	foreach($countries_all as $c_key=>$c_name){
-                	    echo '<option value="'.$c_key.'" '.($udata['u_country_code']==$c_key?'selected="selected"':'').'>'.$c_name.'</option>';
+                	foreach($countries_all as $country_key=>$country_name){
+                	    echo '<option value="'.$country_key.'" '.($udata['u_country_code']==$country_key?'selected="selected"':'').'>'.$country_name.'</option>';
                 	}
                 	?>
                 </select>
@@ -274,7 +274,7 @@ function insert_gravatar(){
     
     <div class="tab-pane" id="pill4">
     	<p><b>Coming soon.</b></p>
-    	<p>Setup your bank account to receive direct deposits for each cohort payments via Paypal.</p>
+    	<p>Setup your bank account to receive direct deposits for each class payments via Paypal.</p>
     </div>
     
 </div>

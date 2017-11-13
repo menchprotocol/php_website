@@ -1289,6 +1289,7 @@ fieldset[disabled] .form-group.is-focused .checkbox label {
   overflow: hidden;
   z-index: 1;
   border-radius: 3px;
+  background-color: #FFF;
 }
 .checkbox .checkbox-material .check:before {
   position: absolute;

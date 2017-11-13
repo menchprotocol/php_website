@@ -68,16 +68,15 @@ $route['login']						= "front/login"; //Bootcamp Operator login
 
 //Three steps of the signup process:
 $route['bootcamps/(:any)/(:num)/apply'] 	= "front/bootcamp_apply/$1/$2"; //Start of application funnel for Email, first & last name
-$route['bootcamps/(:any)/(:num)']	        = "front/bootcamp_load/$1/$2"; //Load specific cohort
+$route['bootcamps/(:any)/(:num)']	        = "front/bootcamp_load/$1/$2"; //Load specific class
 $route['bootcamps/(:any)']	                = "front/bootcamp_load/$1"; //Landing page
 $route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
 
 /* ******************************
  * Student Semi-Private URLs
  ****************************** */
-$route['typeform_complete'] 				= "my/typeform"; //Deprecated on 2017-10-18, give it 3-4 months before removing
 $route['application_status'] 	            = "my/applications"; //Deprecated on 2017-10-18, give it 3-4 months before removing
-$route['tip/(:num)'] 	                    = "my/load_tip/$1";
+$route['ref/(:num)'] 	                    = "my/load_url/$1";
 
 
 /* ******************************
@@ -88,14 +87,14 @@ $route['tip/(:num)'] 	                    = "my/load_tip/$1";
 $route['console/help/status_bible'] 			       = "console/status_bible";
 
 $route['console/account'] 						       = "console/account"; //Instructor account
-$route['console/(:num)/milestones/(:num)'] 		       = "console/milestones/$1/$2";
-$route['console/(:num)/milestones'] 			       = "console/milestones/$1";
+$route['console/(:num)/actionplan/(:num)'] 		       = "console/actionplan/$1/$2";
+$route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
 $route['console/(:num)/students'] 				       = "console/students/$1";
 $route['console/(:num)/stream'] 				       = "console/stream/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";
-$route['console/(:num)/cohorts/(:num)/scheduler']      = "console/scheduler/$1/$2"; //iFrame view
-$route['console/(:num)/cohorts/(:num)'] 		       = "console/cohort/$1/$2";
-$route['console/(:num)/cohorts'] 				       = "console/all_cohorts/$1";
+$route['console/(:num)/classes/(:num)/scheduler']      = "console/scheduler/$1/$2"; //iFrame view
+$route['console/(:num)/classes/(:num)'] 		       = "console/load_class/$1/$2";
+$route['console/(:num)/classes'] 				       = "console/all_classes/$1";
 $route['console/(:num)/raw'] 				           = "console/raw/$1"; //For dev purposes
 $route['console/(:num)'] 			                   = "console/dashboard/$1";
 $route['console'] 								       = "console/all_bootcamps";
