@@ -633,9 +633,9 @@ function msg_save_edit(i_id){
             		    echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
             		}
         		echo '</select>';
-        		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Plain text (No URLs/HTML)"></textarea>';
+        		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Text Message..."></textarea>';
         		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
-        		echo '<input type="url" class="form-control" id="i_url" placeholder="Optional URL" />';
+        		echo '<input type="url" class="form-control" id="i_url" placeholder="Reference URL (Optional)" />';
         		echo '<div style="display:none;">';
         		
         		  echo '<select class="form-control" id="i_dispatch_minutes">';

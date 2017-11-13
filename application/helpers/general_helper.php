@@ -318,7 +318,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
     $unlocked_action_plan = false;
     if($level==2){
         //Do some time calculations for the point system:
-        $open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index-1)))))+($sprint_index==1?(intval($b['r_start_time_mins'])*60):0);
+        $open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index-1)))))+(intval($b['r_start_time_mins'])*60);
         $unlocked_action_plan = ( time() >= $open_date );
     }
     
