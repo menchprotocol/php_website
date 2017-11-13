@@ -100,7 +100,7 @@ $(document).ready(function() {
         <?php $url = $website['url'].'bootcamps/'.$bootcamp['b_url_key']; ?>
       	<div>Landing Page URL: <a href="<?= $url ?>" id="landing_page_url" target="_blank"><u><?= $url ?></u></a> <i class="fa fa-clone copy_button" aria-hidden="true" data-toggle="tooltip" title="Copy Landing Page URL into Clipboard"></i></div>
       	<div id="copy_button"><?= $url ?></div>
-      	<div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status']) ?></div>
+      	<div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status'],0,'top') ?></div>
       </div>
     </div>
     

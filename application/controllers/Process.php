@@ -619,7 +619,7 @@ class Process extends CI_Controller {
 	    //Start calculations:
         echo '<p>Based on this start time, your class timeline is:</p>';
         echo '<ul style="list-style:decimal;">';
-	        echo '<li>Admission Starts <b>When Bootcamp is Published Live</b></li>';
+	        echo '<li>Admission Starts <b>When Bootcamp is '.status_bible('b',2).'</b></li>';
 	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b> (Midnight Before Start Day)</li>';
 	        echo '<li>Class Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> (Your Selected Time)</li>';
     	    echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> (Afternoon of Start Day <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
