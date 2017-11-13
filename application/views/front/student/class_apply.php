@@ -178,7 +178,7 @@ $start_times = $this->config->item('start_times');
 <div class="wizard-box" id="overview_agree">
 	<p>Confirm that you commit to participating and doing the required work for this bootcamp:</p>
 	<ul>
-		<li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
+		<li>Bootcamp Objective: <b><?= $admission['c_objective'] ?></b></li>
     	<li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>: 
         	<?php 
         	foreach($admission['b__admins'] as $key=>$instructor){
@@ -276,16 +276,17 @@ $start_times = $this->config->item('start_times');
 </div>
 
 
+<?php if(strlen($admission['u_fb_id'])<=1){ ?>
 <div class="wizard-box">
 	<p>This step is optional: You can activate MenchBot using Facebook Messenger to:</p>
 	<ul>
-		<li>Experience how students use Mench</li>
 		<li>Connect with your instructor live</li>
 		<li>Track your application progress</li>
+		<li>Experience how students use Mench</li>
 	</ul>
 	<p style="margin:40px 0"><a href="<?= messenger_activation_url($admission['u_id']) ?>" target="_blank">Click Here to Activate Your MenchBot</a> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></p>
 </div>
-
+<?php } ?>
 
 <div class="wizard-box">
 	<p>That's all!</p>

@@ -65,16 +65,7 @@ foreach($admissions as $admission){
     }   
     
     //Let them know the status of their application:
-    echo status_bible('ru',$admission['ru_status'],0,'top');
-    
-    //Instructor Approval:
-    if($admission['ru_status']<4 && $applied && $paid){
-        
-    } elseif($admission['ru_status']>=4 && isset($_GET['show_action_plan'])) {
-        //The bootcamp has started, show the the link to it:
-        //TODO This has issue because maybe they access it via their email URL and no Milestones psid is available
-        //echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$admission['c_id'].'" class="btn btn-black" style="font-size:0.8em;">Go to Milestones</a>';
-    }
+    echo '<div style="font-size: 0.7em;">Current Status: '.status_bible('ru',$admission['ru_status'],0,'top').'</div>';
 }
 echo '</div>';
 ?>

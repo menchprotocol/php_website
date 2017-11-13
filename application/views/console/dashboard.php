@@ -35,7 +35,7 @@ $(document).ready(function() {
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-        <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $bootcamp['c_objective'] ?></div>
+        <div>Bootcamp Objective: <?= $bootcamp['c_objective'] ?></div>
       	<div><?= count($bootcamp['c__child_intents']) ?> <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone'.( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
       	<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours<?= ( count($bootcamp['c__child_intents'])>0 ? ' = '.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']) : '' ) ?></div>
       	<div><?= $bootcamp['c__insight_count'] ?> Insight<?= ($bootcamp['c__insight_count']==1?'':'s') ?></div>
@@ -55,7 +55,7 @@ $(document).ready(function() {
       	//Fetch class:
       	if(count($bootcamp['c__classes'])>0){
       	    $focus_class = filter_class($bootcamp['c__classes'],null);
-      	    echo '<div>'.time_format($focus_class['r_start_date'],2).' is Next Starting Date</div>';
+      	    echo '<div>Next Starting Date: '.time_format($focus_class['r_start_date'],2).'</div>';
       	}
         ?>
       </div>

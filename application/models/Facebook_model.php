@@ -147,6 +147,7 @@ class Facebook_model extends CI_Model {
 	//This is a fancier way to send messages that feels more human:
 	function batch_messages($u_fb_id , $messages , $notification_type='REGULAR'){
 	    foreach($messages as $count=>$message){
+	        
 	        $this->Facebook_model->send_message(array(
 	            'recipient' => array(
 	                'id' => $u_fb_id,
