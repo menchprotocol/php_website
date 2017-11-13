@@ -172,7 +172,6 @@ $( document ).ready(function() {
     		
     		
     		<h3>Action Plan</h3>
-    		<p>Executing this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp is estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>which is about <?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?> per <?= $bootcamp['b_sprint_unit'] ?>. Here are its <?= strtolower($sprint_units[$bootcamp['b_sprint_unit']]['name']) ?> milestones:</p>
     		<div id="c_goals_list">
     		<?php 
     		$action_plan_item = 0;
@@ -196,6 +195,11 @@ $( document ).ready(function() {
             }
             ?>
     		</div>
+    		<p>Executing this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp is estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>which is an average of <?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?> per <?= $bootcamp['b_sprint_unit'] ?>.</p>
+    		
+    		
+    		
+    		
     		
     		<h3>1-on-1 Support</h3>
     		<?php

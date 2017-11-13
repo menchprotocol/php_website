@@ -55,7 +55,7 @@ $(document).ready(function() {
       	//Fetch class:
       	if(count($bootcamp['c__classes'])>0){
       	    $focus_class = filter_class($bootcamp['c__classes'],null);
-      	    echo '<div>'.time_format($focus_class['r_start_date'],1).' is Open for Admission</div>';
+      	    echo '<div>'.time_format($focus_class['r_start_date'],2).' is Next Starting Date</div>';
       	}
         ?>
       </div>

@@ -144,7 +144,7 @@ $config['bootcamp_categories'] = array(
 
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0','0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
+$config['c_time_options'] = array('0',/*'0.05','0.1166667',*/'0.25','0.5','1','2','3','5','8','13');
 
 
 

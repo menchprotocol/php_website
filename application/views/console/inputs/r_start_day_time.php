@@ -50,9 +50,6 @@ function update_timeline(){
 	<?php if(isset($b_sprint_unit)){ ?>
 	<li>End date calculated based on the number of <?= $sprint_units[$b_sprint_unit]['name'] ?> <b style="display:inline-block;"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</b>.</li>
 	<?php } ?>
-	<?php if(isset($b_sprint_unit) && $b_sprint_unit=='week'){ ?>
-	<li><?= $sprint_units[$b_sprint_unit]['name'] ?> bootcamps always start on Mondays and end on Sundays.</li>
-	<?php } ?>
 </ul>
 <div class="form-group label-floating is-empty">
     <input type="text" id="r_start_date" value="<?= ( isset($r_start_date) ? date("m/d/Y",strtotime($r_start_date)) : '' )  ?>" style="width:120px;display:inline-block;" class="form-control border" />
