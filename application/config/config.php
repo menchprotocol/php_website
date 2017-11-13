@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.791,
+    'version' => 0.792,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -24,21 +24,27 @@ $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['core_objects'] = array(
     'u' => array(
         'o_name' => 'User',
+        'o_names' => 'Users',
     ),
     'us' => array(
         'o_name' => 'Mark-as-Done Report',
+        'o_names' => 'Mark-as-Done Reports',
     ),
     'b' => array(
         'o_name' => 'Bootcamp',
+        'o_names' => 'Bootcamps',
     ),
     'ba' => array(
-        'o_name' => 'Bootcamp Instructors',
+        'o_name' => 'Bootcamp Instructor',
+        'o_names' => 'Bootcamp Instructors',
     ),
     'c' => array(
         'o_name' => 'Milestones',
+        'o_names' => 'Milestone',
     ),
     'cr' => array(
-        'o_name' => 'Milestone Links',
+        'o_name' => 'Milestone Link',
+        'o_names' => 'Milestone Links',
     ),
     'r' => array(
         'o_name' => 'Class',
@@ -46,6 +52,7 @@ $config['core_objects'] = array(
     ),
     'ru' => array(
         'o_name' => 'Admission',
+        'o_names' => 'Admissions',
     ),
     't' => array(
         'o_name' => 'Transaction',

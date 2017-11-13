@@ -8,7 +8,7 @@ foreach($core_objects as $object_id=>$co){
     if($statuses){
         echo '<h2>'.$co['o_name'].'</h2>';
         foreach($statuses as $intval=>$status){
-            echo '<p style="padding-left:10px;"><span style="width:30px; display:inline-block;">'.$intval.'</span><span style="width:30px; display:inline-block;">'.status_bible($object_id,$intval,1,'right').'</span>'.status_bible($object_id,$intval,0,'right').' '.$status['s_desc'].'</p>';
+            echo '<p style="padding-left:10px;"><span style="width:30px; display:inline-block;">'.$intval.'</span>'.status_bible($object_id,$intval,0,'right').' '.$status['s_desc'].'</p>';
         }
     }
 	echo '<br />';

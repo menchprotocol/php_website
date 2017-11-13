@@ -321,10 +321,81 @@ class Bot extends CI_Controller {
 					}
 					
 					//Update the user ID now as we might have linked them:
-					$eng_data['e_creator_id'] = $this->Db_model->u_fb_search($im['sender']['id']);
+					$user_id = $im['sender']['id']; //Their facebook ID
+					$u_id = $this->Db_model->u_fb_search($user_id); //Their Mench ID
+					$eng_data['e_creator_id'] = $u_id; //Append to engagement data
 					
-					//General variables:
+					
+					
+					
+					
+					/*
+					 * Start of Code Block #001
+					 * ***************************
+					 * Check User Admission Status
+					 *
+					 * Note: This Code Block is repeated
+					 */
+					$admissions = $this->Db_model->ru_fetch(array(
+					    'r.r_status >='	   => 1, //Open for admission
+					    'r.r_status <='	   => 2, //Running
+					    'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
+					    'ru.ru_u_id'	   => $u_id,
+					));
+					
+					//Check to see which bootcamp, if any, is this student enrolled in:
+					if(count($admissions)<=0){
+					    
+					    //None! Give students directions on how to enroll
+					    $this->Facebook_model->batch_messages( $user_id , array(
+					        array('text' => 'Hi there! You don\'t seem to be enrolled in a Mench bootcamp yet. You can join a Bootcamp using a private invitation URL. Visit us at https://mench.co to learn more.'),
+					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+					    
+					    //Log engagement:
+					    $this->Db_model->e_create(array(
+					        'e_creator_id' => $u_id,
+					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
+					        'e_json' => json_encode($json_data),
+					        'e_type_id' => 9, //Support Needing Graceful Errors
+					    ));
+					    
+					} elseif(count($admissions)>=2){
+					    
+					    //Ooops, how did they enroll in so many bootcamps?
+					    $this->Facebook_model->batch_messages( $user_id , array(
+					        array('text' => 'Error: You are somehow enrolled in multiple bootcamps. You can only enroll in 1 bootcamp at a time. I have notified Mench Admins to look into adjusting your application status and get back to you soon.'),
+					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
+					    
+					    //Log Engagement:
+					    $this->Db_model->e_create(array(
+					        'e_creator_id' => $u_id,
+					        'e_message' => 'We Received inbound message from student enrolled in *multiple* bootcamps!',
+					        'e_json' => json_encode($json_data),
+					        'e_type_id' => 8, //Platform Error
+					    ));
+					    
+					} else {
+					    
+					    //Append Bootcamp ID to engagement:
+					    $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
+					    
+					}
+					/*
+					 * End of Code Block #001
+					 * ***************************
+					 */
+					
+					
+					
+					
+					
+					
+					//Log primary engagement:
 					$this->Db_model->e_create($eng_data);
+					
+					
+					
+					
 					
 					
 				} elseif(isset($im['optin'])) {
@@ -356,6 +427,27 @@ class Bot extends CI_Controller {
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
 					$u_id = $this->Db_model->u_fb_search($user_id);
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
+					
+					
+					
+					//Start data reparation for message inbound OR outbound engagement:
+					$eng_data = array(
+					    'e_creator_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
+						'e_json' => json_encode($json_data),
+					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
+					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
+					    'e_object_id' => ( $sent_from_us ? $u_id : 0 ),
+					    'e_b_id' => ( count($admissions)==1 ? $admissions[0]['r_b_id'] : 0 ),
+					);
+					
+					
+					/*
+					 * Start of Code Block #001
+					 * ***************************
+					 * Check User Admission Status
+					 *
+					 * Note: This Code Block is repeated
+					 */
 					$admissions = $this->Db_model->ru_fetch(array(
 					    'r.r_status >='	   => 1, //Open for admission
 					    'r.r_status <='	   => 2, //Running
@@ -374,7 +466,7 @@ class Bot extends CI_Controller {
 					    //Log engagement:
 					    $this->Db_model->e_create(array(
 					        'e_creator_id' => $u_id,
-					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. Reply using Facebook Mench Page Inbox.',
+					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 9, //Support Needing Graceful Errors
 					    ));
@@ -389,22 +481,21 @@ class Bot extends CI_Controller {
 					    //Log Engagement:
 					    $this->Db_model->e_create(array(
 					        'e_creator_id' => $u_id,
-					        'e_message' => 'facebook_webhook() Received inbound message from student enrolled in *multiple* bootcamps!',
+					        'e_message' => 'We Received inbound message from student enrolled in *multiple* bootcamps!',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 8, //Platform Error
 					    ));
 					    
+					} else {
+					    
+					    //Append Bootcamp ID to engagement:
+					    $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
+					    
 					}
-					
-					//Start data reparation for message inbound OR outbound engagement:
-					$eng_data = array(
-					    'e_creator_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
-						'e_json' => json_encode($json_data),
-					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
-					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
-					    'e_object_id' => ( $sent_from_us ? $u_id : 0 ),
-					    'e_b_id' => ( count($admissions)==1 ? $admissions[0]['r_b_id'] : 0 ),
-					);
+					/*
+					 * End of Code Block #001
+					 * ***************************
+					 */
 					
 					//Some that are not used yet:
 					$is_mench = 0; //TODO

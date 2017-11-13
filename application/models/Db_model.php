@@ -975,7 +975,9 @@ class Db_model extends CI_Model {
 		                if(intval($engagements[0]['e_b_id'])>0){
 		                    $html_message .= '<div>'.object_link('b',intval($engagements[0]['e_b_id'])).'</div>';
 		                }
-		                $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
+		                if(strlen($engagements[0]['e_message'])>0){
+		                    $html_message .= '<div>Message: '.$engagements[0]['e_message'].'</div>';
+		                }
 		                $html_message .= '<br />';
 		                $html_message .= '<div>Cheers,</div>';
 		                $html_message .= '<div>Mench Engagement Watcher</div>';

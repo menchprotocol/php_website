@@ -479,13 +479,13 @@ function msg_save_edit(i_id){
     	if($level==1){
     	    ?>
         	<ul class="maxout">
-        		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> to reach the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
+        		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> that step-by-step help students accomplish the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
     			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b> in <a href="/console/<?= $bootcamp['b_id'] ?>/settings/#settings"><u><i class="material-icons">settings</i>Settings</u></a>.</li>
     			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-    			<li>To keep students focused, milestones are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
-    			<li>Each <?= strtolower($sprint_units[$bootcamp['b_sprint_unit']]['name']) ?> milestone can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
+    			<li>To keep students focused, <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
+    			<li>Each <b><?= $core_objects['level_1']['o_icon'].' '.$sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Milestone</b> can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
     			<!-- <li><b><?= ucwords($bootcamp['b_sprint_unit']) ?>-Off Milestones</b> are milestones with 0 tasks assigned to them.</li> -->
-    			<li>You can easily add, remove and sort milestones at any time.</li>
+    			<li>You can easily add, remove and sort <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> at any time.</li>
     		</ul>
     		<?php
         } elseif($level==2){ 

@@ -840,9 +840,9 @@ function calculate_bootcamp_status($b){
     
     $progress_percentage = round($progress_gained/$progress_possible*100);
     if($progress_percentage==100){
-        array_push($call_to_action,'Review your <a href="/bootcamps/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>');
-        array_push($call_to_action,'Wait until bootcamp status is updated to '.status_bible('b',3));
-        array_push($call_to_action,'Start admissions by notifying your followers via email or social media.');
+        array_push($call_to_action,'Review your <a href="/bootcamps/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a> to make sure it all looks good.');
+        array_push($call_to_action,'Wait until Mench team updates your bootcamp status to '.status_bible('b',2));
+        array_push($call_to_action,'Launch admissions by sending a message to your student list.');
     }
     return array(
         'stage' => '<i class="fa fa-bullhorn" aria-hidden="true"></i> Launch Checklist',
@@ -921,30 +921,35 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Bootcamp removed.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-trash initial',
 	        ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Bootcamp not listed in marketplace until published live',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-pencil-square initial',
 	        ),
 	        1 => array(
 	            's_name'  => 'Request To Publish',
 	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Bootcamp submit to be reviewed by Mench team to be published live.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-check-square initial',
 	        ),
 	        2 => array(
     	        's_name'  => 'Published',
     	        's_color' => '#4caf50', //green
     	        's_desc'  => 'Ready for student admission by sharing your landing page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
+    	        's_mini_icon' => 'fa-bullhorn initial',
 	        ),
 	        3 => array(
     	        's_name'  => 'Published to Marketplace',
-    	        's_color' => '#4caf50', //green
+    	        's_color' => '#e91e63', //Rose
     	        's_desc'  => 'Ready for student admission by URL sharing and by being visible in the Mench marketplace.',
     	        'u_min_status'  => 3, //Can only be done by admin
+    	        's_mini_icon' => 'fa-bullhorn initial',
 	        ),
 	    ),
 	    'c' => array(
@@ -953,18 +958,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Task removed.',
 	            'u_min_status'  => 999, //Not possible for now.
+	            's_mini_icon' => 'fa-trash initial',
 	        ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task being drafted and not accessible by students until published live',
 	            'u_min_status'  => 3,
+	            's_mini_icon' => 'fa-pencil-square initial',
 	        ),
 	        1 => array(
 	            's_name'  => 'Published',
 	            's_color' => '#4caf50', //green
 	            's_desc'  => 'Task is active and accessible by students.',
 	            'u_min_status'  => 3,
+	            's_mini_icon' => 'fa-bullhorn initial',
 	        ),
 	    ),
 	    'r' => array(
@@ -979,30 +987,35 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
         	    's_color' => '#f44336', //red
         	    's_desc'  => 'Class removed by bootcamp leader before it was started.',
         	    'u_min_status'  => 2,
+        	    's_mini_icon' => 'fa-trash initial',
     	    ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Class not yet ready for admission as its being modified.',
 	            'u_min_status'  => 2,
+	            's_mini_icon' => 'fa-pencil-square initial',
 	        ),
 	        1 => array(
     	        's_name'  => 'Open For Admission',
     	        's_color' => '#8dd08f', //light green
-    	        's_desc'  => 'Class is visible to students and ready for admission.',
+    	        's_desc'  => 'Class is open for student admission.',
     	        'u_min_status'  => 2,
+    	        's_mini_icon' => 'fa-bullhorn initial',
 	        ),
 	        2 => array(
     	        's_name'  => 'Running',
     	        's_color' => '#4caf50', //green
     	        's_desc'  => 'Class has admitted students and is currently running.',
     	        'u_min_status'  => 3,
+    	        's_mini_icon' => 'fa-play-circle initial',
 	        ),
 	        3 => array(
-    	        's_name'  => 'Finished',
+    	        's_name'  => 'Completed',
     	        's_color' => '#e91e63', //Rose
-    	        's_desc'  => 'Class was successfully operated and is now complete.',
+    	        's_desc'  => 'Class was operated completely until its last day.',
     	        'u_min_status'  => 3,
+    	        's_mini_icon' => 'fa-graduation-cap initial',
 	        ),
 	    ),
 	    'i' => array(
@@ -1011,18 +1024,28 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Insight removed.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-trash initial',
 	        ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Insight not visible to students until published.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-pencil-square initial',
 	        ),
 	        1 => array(
-	            's_name'  => 'Published',
-	            's_color' => '#4caf50', //green
-	            's_desc'  => 'Insight accessible by students.',
-	            'u_min_status'  => 1,
+    	        's_name'  => 'Publish for Students',
+    	        's_color' => '#4caf50', //green
+    	        's_desc'  => 'Insight accessible by students.',
+    	        'u_min_status'  => 1,
+    	        's_mini_icon' => 'fa-user initial',
+	        ),
+	        2 => array(
+    	        's_name'  => 'Publish in Lading Page',
+    	        's_color' => '#e91e63', //Rose
+    	        's_desc'  => 'Insight visible in the Landing Page to be used as promotional content.',
+    	        's_mini_icon' => 'fa-bullhorn initial',
+    	        'u_min_status'  => 1,
 	        ),
 	    ),
 	    
@@ -1032,6 +1055,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Task link removed.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-trash initial',
 	        ),
 	        1 => array(
 	            's_name'  => 'Published',
@@ -1049,6 +1073,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'Bootcamp access revoked.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-minus-circle initial',
 	        ),
 	        /*
 	        1 => array(
@@ -1063,12 +1088,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#4caf50', //green
 	            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-user-plus initial',
 	        ),
 	        3 => array(
 	            's_name'  => 'Lead Instructor',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate.',
 	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-star initial',
 	        ),
 	    ),
 	    
@@ -1078,29 +1105,34 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_color' => '#f44336', //red
 	            's_desc'  => 'User account deleted and no longer active.',
 	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
+	            's_mini_icon' => 'fa-user-times initial',
 	        ),
 	        0 => array(
 	            's_name'  => 'Pending',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'User added by the students but has not yet claimed their account.',
 	            'u_min_status'  => 999, //System only
+	            's_mini_icon' => 'fa-user-o initial',
 	        ),
 	        1 => array(
 	            's_name'  => 'Active',
 	            's_color' => '#4caf50', //green
 	            's_desc'  => 'User active.',
+	            's_mini_icon' => 'fa-user initial',
 	            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
 	        ),
 	        2 => array(
 	            's_name'  => 'Lead Instructor',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
+	            's_mini_icon' => 'fa-star initial',
 	            'u_min_status'  => 3, //Only admins can approve leaders
 	        ),
 	        3 => array(
 	            's_name'  => 'Mench Admin',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
+	            's_mini_icon' => 'fa-shield initial',
 	            'u_min_status'  => 3, //Only admins can create other admins
 	        ),
 	    ),
@@ -1156,7 +1188,8 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        //Post Application
 	        0 => array(
     	        's_name'  => 'Admission Initiated',
-    	        's_color' => '#2f2639', //dark
+    	        's_mini_icon' => 'fa-pencil-square initial',
+    	        's_color' => '#2f2639', //darkques
     	        's_desc'  => 'Student has started the application process but has not completed it yet.',
     	        'u_min_status'  => 999, //System insertion only
 	        ),
@@ -1173,6 +1206,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_name'  => 'Pending Admission',
 	            's_color' => '#8dd08f', //light green
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
+	            's_mini_icon' => 'fa-pause-circle initial',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
 	        
@@ -1189,6 +1223,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_name'  => 'Bootcamp Student',
 	            's_color' => '#4caf50', //green
 	            's_desc'  => 'Student admitted making them ready to participate in bootcamp.',
+	            's_mini_icon' => 'fa-user initial',
 	            'u_min_status'  => 1,
 	        ),
 	        
@@ -1197,6 +1232,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_name'  => 'Bootcamp Graduate',
 	            's_color' => '#e91e63', //Rose
 	            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
+	            's_mini_icon' => 'fa-graduation-cap initial',
 	            'u_min_status'  => 1,
 	        ),
 	    ),
@@ -1215,12 +1251,11 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    if(!isset($status_index[$object][$status])){
 	        return false;
 	    }
+	    
 		//We have two skins for displaying statuses:
-	    if($micro_status){
-	        return '<i class="fa '.( isset($status_index[$object][$status]['s_mini_icon']) ? $status_index[$object][$status]['s_mini_icon'] : 'fa-circle' ).'" style="color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="Status is '.$status_index[$object][$status]['s_name'].': '.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"></i>';
-		} else {
-		    return '<span class="label label-default" style="background-color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_desc'].'">'.strtoupper($status_index[$object][$status]['s_name']).' <i class="fa fa-info-circle" aria-hidden="true"></i></span>';
-		}
+	    return '<span class="status-label" style="color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_name'].' Status: '.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"><i class="fa '.( isset($status_index[$object][$status]['s_mini_icon']) ? $status_index[$object][$status]['s_mini_icon'] : 'fa-circle' ).'"></i>'.($micro_status?'':$status_index[$object][$status]['s_name']).'</span>';
+	    
+	    //Older version: return '<span class="label label-default" style="background-color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_desc'].'">'.strtoupper($status_index[$object][$status]['s_name']).' <i class="fa fa-info-circle" aria-hidden="true"></i></span>';
 	}
 }
 

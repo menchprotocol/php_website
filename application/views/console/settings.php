@@ -49,7 +49,7 @@ function save_settings(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_landingpage" class="active"><a href="#landingpage" data-toggle="tab" onclick="update_hash('landingpage')"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
-  <li id="nav_team"><a href="#team" data-toggle="tab" onclick="update_hash('team')"><i class="fa fa-user-plus" aria-hidden="true"></i> Co-Instructors</a></li>
+  <li id="nav_team"><a href="#team" data-toggle="tab" onclick="update_hash('team')"><i class="fa fa-user-plus" aria-hidden="true"></i> Instructors</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
@@ -135,7 +135,7 @@ function save_settings(){
         	<li>Bootcamps are created in <?= status_bible('b',0) ?> mode to give you time to build them.</li>
         	<li>When you're ready to publish you update the status to <?= status_bible('b',1) ?>.</li>
         	<li>We will start our review process & work with you to iteratively improve it.</li>
-        	<li>Once ready & approved we update the status to <?= status_bible('b',3) ?>.</li>
+        	<li>Once ready & approved we update the status to <?= status_bible('b',2) ?>.</li>
         </ul>
         <?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
         <div style="clear:both; margin:0; padding:0;"></div>

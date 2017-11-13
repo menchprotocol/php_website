@@ -40,7 +40,7 @@
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/classes"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div><?= count($bootcamp['c__classes']) ?> Classes</div>
+      	<div><?= count($bootcamp['c__classes']) ?> Class<?= (count($bootcamp['c__classes'])==1?'':'es') ?></div>
       	<?php 
       	//Fetch class:
       	if(count($bootcamp['c__classes'])>0){

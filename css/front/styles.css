@@ -778,6 +778,18 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	font-size:20px !important;
 }
 
+.status-label{
+	font-weight:bold;
+	text-transform:uppercase;
+	font-size:0.9em;
+}
+.status-label i {
+	font-size:1em;
+	width:22px;
+	display:inline-block;
+	text-align: center;
+}
+
 .btn-funnel {
 	margin-top:25px;
     background-color: #000000;
