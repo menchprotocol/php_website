@@ -1121,6 +1121,7 @@ class Process extends CI_Controller {
 	    
 	    //Update Href for Landing page buttons:
 	    echo '<script> $(".landing_page_url").attr("href", "/bootcamps/'.$_POST['b_url_key'].'"); </script>';
+	    echo '<script> $("#copy_button").text("https://mench.co/bootcamps/'.$_POST['b_url_key'].'"); </script>'; //Getting a bit lazy here...
 	    //Show result 
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
