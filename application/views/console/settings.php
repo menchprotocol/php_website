@@ -4,8 +4,14 @@ function ba_add(){
 	alert('Contact us at support@mench.co to modify instructor team.');
 }
 
-
 $(document).ready(function() {
+
+	//Watchout for the copy URL to clipboard:
+    $( ".copy_button" ).click(function() {
+    	copyToClipboard(document.getElementById("copy_button"));
+    	$( ".copy_button" ).hide().fadeIn().css('color','#00CC00');
+    });
+    
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
@@ -42,7 +48,6 @@ function save_settings(){
     });
 }
 </script>
-
 
 
 <input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
@@ -83,7 +88,14 @@ function save_settings(){
               <span class="input-group-addon addon-lean" style="color:#CCC;"> &nbsp;&nbsp;https://mench.co/bootcamps/</span>
               <input type="text" id="b_url_key" style="text-transform:lowercase; margin:0 0 -2px -12px !important; font-size:18px !important; " value="<?= $bootcamp['b_url_key'] ?>" maxlength="255" class="form-control" />
             </div>
-            <div style="margin-bottom:20px;"><a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-default landing_page_url">View Landing Page <i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a></div>
+            <div style="margin-bottom:20px;">
+            	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-sm btn-default landing_page_url">Open Landing Page &nbsp;<i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a>
+            	
+            	<?php $website = $this->config->item('website'); ?>
+				<?php $url = $website['url'].'bootcamps/'.$bootcamp['b_url_key']; ?>
+            	<a href="#" class="btn btn-sm btn-default copy_button">Copy URL to Clipboard &nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a>
+            	<div id="copy_button"><?= $url ?></div>
+            </div>
         </div>
         <br />
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>

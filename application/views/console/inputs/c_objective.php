@@ -3,7 +3,7 @@
 <ul>
     <li>Set a <b>specific</b> and <b>measurable</b> objective in 70 characters or less.</li>
 	<?php if($level==1){ ?>
-	<li>Do not include time constraints like "in 2 weeks" as timing is auto calculate using <b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> "Estimated Time" field.</li>
+	<li>Do not include time constraints like "in 2 weeks" as total time investment is calculated using the sum of <b><i class="fa fa-clock-o" aria-hidden="true"></i> Estimated Time</b> values for all &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b>.</li>
 	<?php } ?>
 </ul>
 <div class="form-group label-floating is-empty">

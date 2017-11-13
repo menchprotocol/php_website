@@ -1,7 +1,6 @@
 <?php 
 $sprint_units = $this->config->item('sprint_units');
 $start_times = $this->config->item('start_times');
-//$sprint_units[$bootcamp['b_sprint_unit']]['name']
 //Calculate office hours:
 $office_hours = unserialize($focus_class['r_live_office_hours']);
 $days = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
@@ -126,7 +125,6 @@ $( document ).ready(function() {
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
-            	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
             	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($bootcamp))) ?></b></li>
             	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php if($focus_class['r_weekly_1on1s']>0){ ?>
@@ -144,6 +142,7 @@ $( document ).ready(function() {
                 	<li>Seats Remaining: <b><?= ($focus_class['r_max_students']-$focus_class['r__current_admissions']) ?>/<?= $focus_class['r_max_students'] ?></b></li>
                 	<?php } ?>
             	<?php } ?>
+            	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
             </ul>
             
             <?php if($focus_class['r_usd_price']>0){ ?>
@@ -172,15 +171,15 @@ $( document ).ready(function() {
     		
     		
     		
-    		<h3>Milestones</h3>
-    		<p>The tasks for this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp are estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>to complete, or about <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b>:</p>
+    		<h3>Action Plan</h3>
+    		<p>Executing this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp is estimated to take about <?= echo_time($bootcamp['c__estimated_hours']) ?>which is about <?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?> per <?= $bootcamp['b_sprint_unit'] ?>. Here are its <?= strtolower($sprint_units[$bootcamp['b_sprint_unit']]['name']) ?> milestones:</p>
     		<div id="c_goals_list">
     		<?php 
     		$action_plan_item = 0;
             foreach($bootcamp['c__child_intents'] as $sprint){
                 $action_plan_item++;
                 echo '<div id="c_'.$sprint['c_id'].'">';
-                    echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</a></h4>';
+                    echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</a></h4>';
                     echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
                         echo $sprint['c_todo_overview'];
                         echo '<div class="title-sub">';
@@ -202,7 +201,7 @@ $( document ).ready(function() {
     		<?php
     		if($focus_class['r_weekly_1on1s']>0){
     		    echo '<h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4>';
-    		    echo '<p>You will receive <b>'.echo_hours($focus_class['r_weekly_1on1s']).'/'.ucwords($bootcamp['b_sprint_unit']).'</b> of 1-on-1 mentorship over a live video chat.</p>';
+    		    echo '<p>You will receive <b>'.echo_hours($focus_class['r_weekly_1on1s']).'/'.ucwords($bootcamp['b_sprint_unit']).'</b> of 1-on-1 coaching over video chat.</p>';
     		    echo '<hr />';
     		}
     		if(count($office_hours_ui)>0 || $total_hours>0){

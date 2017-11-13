@@ -1,3 +1,13 @@
+<script>
+$(document).ready(function() {
+	//Watchout for the copy URL to clipboard:
+    $( ".copy_button" ).click(function() {
+    	copyToClipboard(document.getElementById("copy_button"));
+    	$( ".copy_button" ).hide().fadeIn().css('color','#00CC00');
+    });
+});
+</script>
+
 <?php $sprint_units = $this->config->item('sprint_units'); ?>
 <div class="dashboard">    
     
@@ -58,7 +68,7 @@
       	<div>0 Students</div>
       	<div>0 Pending Admission</div>
       	<div>0 With Pending Messages on <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a></div>
-      	<div>0 Late on Milestones</div>
+      	<div>0 Late on Milestone Submissions</div>
 	  </div>
     </div>
     <hr />
@@ -77,9 +87,20 @@
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/settings"><b><i class="material-icons">settings</i> Settings <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div>Lead Instructor: <?= $bootcamp['b__admins'][0]['u_fname'].' '.$bootcamp['b__admins'][0]['u_lname'] ?></div>
-      	<div><?= (count($bootcamp['b__admins'])-1) ?> Co-Instructor<?= ((count($bootcamp['b__admins'])-1)==1 ? '' : 's') ?></div>
-      	<?= status_bible('b',$bootcamp['b_status']) ?>
+      	<div>Instructor<?= ( count($bootcamp['b__admins'])==1 ? '' : 's' ) ?>: 
+        	<?php 
+        	foreach($bootcamp['b__admins'] as $key=>$instructor){
+        	    if($key>0){
+        	        echo ', ';
+        	    }
+        	    echo $instructor['u_fname'].' '.$instructor['u_lname'];
+        	}
+        	?></div>
+        <?php $website = $this->config->item('website'); ?>
+        <?php $url = $website['url'].'bootcamps/'.$bootcamp['b_url_key']; ?>
+      	<div>Landing Page URL: <a href="<?= $url ?>" id="landing_page_url" target="_blank"><u><?= $url ?></u></a> <i class="fa fa-clone copy_button" aria-hidden="true" data-toggle="tooltip" title="Copy Landing Page URL into Clipboard"></i></div>
+      	<div id="copy_button"><?= $url ?></div>
+      	<div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status']) ?></div>
       </div>
     </div>
     
