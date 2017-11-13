@@ -972,10 +972,13 @@ class Db_model extends CI_Model {
 		                if(intval($engagements[0]['e_object_id'])>0){
 		                    $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
 		                }
+		                if(intval($engagements[0]['e_b_id'])>0){
+		                    $html_message .= '<div>'.object_link('b',intval($engagements[0]['e_b_id'])).'</div>';
+		                }
 		                $html_message .= '<div>Content: '.$engagements[0]['e_message'].'</div>';
 		                $html_message .= '<br />';
 		                $html_message .= '<div>Cheers,</div>';
-		                $html_message .= '<div>MenchBot</div>';
+		                $html_message .= '<div>Mench Engagement Watcher</div>';
 		                
 		                //Send email:
 		                $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);

@@ -1604,12 +1604,14 @@ function object_link($object,$id,$b_id=0){
                 }
             }
         } elseif($object=='b'){
+            
             $bootcamps = $CI->Db_model->c_full_fetch(array(
                 'b.b_id' => $id,
             ));
             if(isset($bootcamps[0])){
                 return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$core_objects[$object]['o_name'].': '.$bootcamps[0]['c_objective'].'</a>';
             }
+            
         } elseif($object=='u'){
             if($id<=0){
                 return 'System';
