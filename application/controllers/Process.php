@@ -623,7 +623,7 @@ class Process extends CI_Controller {
 	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b> (Midnight Before Start Day)</li>';
 	        echo '<li>Class Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> (Your Selected Time)</li>';
     	    echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> (Afternoon of Start Day <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
-    	    echo '<li>Class Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])-1)).' 11:59pm PST</b> ('.$_POST['milestone_count'] ?> <?= ucwords($_POST['b_sprint_unit']).' Action Plan)</li>';
+    	    echo '<li>Class Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> ('.$_POST['milestone_count'] ?> <?= ucwords($_POST['b_sprint_unit']).' Action Plan)</li>';
     	    echo '<li>Performance Payout by <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> (2 Weeks Later <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
     	    echo '</ul>';
 	}

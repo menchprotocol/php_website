@@ -1559,6 +1559,10 @@ function format_e_message($e_message){
 }
 
 
+function minutes_to_hours($mins){
+    return floor(($mins/60)).':'.fmod($mins,60);
+}
+
 function email_application_url($udata){
     $to_array = array($udata['u_email']);
     $CI =& get_instance();
@@ -1642,7 +1646,11 @@ function object_link($object,$id,$b_id=0){
     }
     
     //Still here? Return default:
-    return $core_objects[$object]['o_name'].' #'.$id;
+    if($id>0){
+        return $core_objects[$object]['o_name'].' #'.$id;
+    } else {
+        return NULL;
+    }
 }
 
 function quick_message($fb_user_id,$message){

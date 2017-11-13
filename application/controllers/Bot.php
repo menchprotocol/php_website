@@ -368,7 +368,7 @@ class Bot extends CI_Controller {
 					    
 					    //None! Give students directions on how to enroll
 					    $this->Facebook_model->batch_messages( $user_id , array(
-					        array('text' => 'You are not enrolled in a bootcamp. You can enroll in a bootcamp using an invitation URL sent by a Mench instructor or by visiting https://mench.co to get started.'),
+					        array('text' => 'Hi there! You don\'t seem to be enrolled in a Mench bootcamp yet. You can join a Bootcamp using a private invitation URL. Visit us at https://mench.co to learn more.'),
 					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 					    
 					    //Log engagement:

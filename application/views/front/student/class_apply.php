@@ -260,8 +260,8 @@ $start_times = $this->config->item('start_times');
 	//Display cancellation terms:
 	echo '<ul>';
 	echo '<li>You will always receive a full refund if your admission application was not approved.</li>';
-	echo '<li>Full Refund: <b>'.( $full_days>0 ? 'Before '.time_format($admission['r_start_date'],1,($full_days-1)).' 11:59pm PST' : 'None After Admission' ).'</b></li>';
-	echo '<li>Pro-Rated Refund: <b>'.( $prorated_days>0 ? 'Before '.time_format($admission['r_start_date'],1,($prorated_days-1)).' 11:59pm PST' : 'None After Admission' ).'</b></li>';
+	echo '<li>Full Refund: <b>'.( $full_days>0 ? 'Before '.time_format($admission['r_start_date'],1,($full_days-1)).' '.$start_times[$admission['r_start_time_mins']].' PST' : 'None After Admission' ).'</b></li>';
+	echo '<li>Pro-Rated Refund: <b>'.( $prorated_days>0 ? 'Before '.time_format($admission['r_start_date'],1,($prorated_days-1)).' '.$start_times[$admission['r_start_time_mins']].' PST' : 'None After Admission' ).'</b></li>';
 	echo '</ul>';
 	?>
 		

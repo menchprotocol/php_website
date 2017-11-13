@@ -961,7 +961,7 @@ class Db_model extends CI_Model {
 		            //Did we find it? We should have:
 		            if(isset($engagements[0])){
 		                $by = ( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
-		                $subject = 'New '.trim(strip_tags($engagements[0]['a_name'])).' by '.$by;
+		                $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.$by;
 		                
 		                //Compose email:
 		                $html_message = null; //Start

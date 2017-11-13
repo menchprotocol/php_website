@@ -127,7 +127,7 @@ $( document ).ready(function() {
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
             	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
-            	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($bootcamp)-1)) ?></b></li>
+            	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($bootcamp))) ?></b></li>
             	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	<?php if($focus_class['r_weekly_1on1s']>0){ ?>
             	<li>Mentorship: <b><?= echo_hours($focus_class['r_weekly_1on1s']) ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
@@ -190,7 +190,7 @@ $( document ).ready(function() {
                             if($sprint['c__estimated_hours']>0){
                                 echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp;';
                             }
-                            echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp,$action_plan_item)-1)).' 11:59pm PST';
+                            echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp,$action_plan_item))).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
                         echo '</div>';
                     echo '</div>';
                 echo '</div>';
@@ -312,7 +312,7 @@ $( document ).ready(function() {
     			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
     			<li>Bootcamp Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).((count($bootcamp['c__child_intents'])==1?'':'s')) ?></b></li>
-    			<li>Bootcamp Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?></b></li>
+    			<li>Bootcamp Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     		</ul>
     		<hr />
     		
@@ -322,7 +322,7 @@ $( document ).ready(function() {
     		    $plural_prize = ( json_decode($focus_class['r_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
     		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($focus_class['r_completion_prizes'])).'</li></ol>' ?></div>
-    		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp)-1)) ?> 11:59pm PST.</p>
+    		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))) ?> <?= $start_times[$focus_class['r_start_time_mins']] ?> PST.</p>
     		<hr />
     		<?php } ?>
     		
@@ -336,8 +336,8 @@ $( document ).ready(function() {
     		$prorated_days = calculate_refund(calculate_duration($bootcamp),'prorated',$focus_class['r_cancellation_policy']);
     		//Display cancellation terms:
     		echo '<ul style="list-style:none; margin-left:-30px;">';
-    		echo '<li>Full Refund: '.( $full_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($full_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
-    		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($prorated_days-1)).' 11:59pm PST</b>' : '<b>None</b> After Admission' ).'</li>';
+    		echo '<li>Full Refund: '.( $full_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($full_days-1)).' '.$start_times[$focus_class['r_start_time_mins']].' PST</b>' : '<b>None</b> After Admission' ).'</li>';
+    		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($prorated_days-1)).' '.$start_times[$focus_class['r_start_time_mins']].' PST</b>' : '<b>None</b> After Admission' ).'</li>';
     		echo '</ul>';
     		?>
     		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a>.</p>

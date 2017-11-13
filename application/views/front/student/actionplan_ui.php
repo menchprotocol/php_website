@@ -2,10 +2,11 @@
 //Fetch some variables:
 $sprint_units = $this->config->item('sprint_units');
 $application_status_salt = $this->config->item('application_status_salt');
+$start_times = $this->config->item('start_times');
 
 //Do some time calculations for the point system:
-$due_date = time_format($admission['r_start_date'],2,(calculate_duration($admission,($sprint_index>0?$sprint_index:null))-1));
-$due_late_date = time_format($admission['r_start_date'],2,(calculate_duration($admission,($sprint_index>0?($sprint_index+1):(count($admission['c__child_intents'])+1)))-1));
+$due_date = time_format($admission['r_start_date'],2,(calculate_duration($admission,($sprint_index>0?$sprint_index:null))));
+$due_late_date = time_format($admission['r_start_date'],2,(calculate_duration($admission,($sprint_index>0?($sprint_index+1):(count($admission['c__child_intents'])+1)))));
 $ontime_secs_left = (strtotime($due_date) - time())+((24*3600)-1);
 $alittle_late_secs = ( $admission['b_sprint_unit']=='week' ? (7*24*3600) : (24*3600) );
 $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
@@ -20,14 +21,14 @@ $( document ).ready(function() {
 
 	$("#ontime_dueby").countdowntimer({
 		startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date))); ?> 23:59:59",
+        dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date))); ?> <?= minutes_to_hours($admission['r_start_time_mins']) ?>:59",
 		size : "lg",
 		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       	regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
 	});
 	$("#late_dueby").countdowntimer({
 		startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date)+$alittle_late_secs)); ?> 23:59:59",
+        dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date)+$alittle_late_secs)); ?> <?= minutes_to_hours($admission['r_start_time_mins']) ?>:59",
 		size : "lg",
 		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       	regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -122,10 +123,6 @@ if($intent['c_time_estimate']>0){
     echo '<div class="quill_content">Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'which equals <b>'.round($intent['c_time_estimate']*60).' Points</b> if completed on-time. <a href="https://support.mench.co/hc/en-us/articles/115002372531"><u>Learn More &raquo;</u></a></div>';
 }
 
-//Mark Complete:
-//echo '<h4><i class="fa fa-check-circle-o" aria-hidden="true"></i> Mark as Done</h4>';
-//echo '<div class="quill_content"><i class="fa fa-calendar" aria-hidden="true"></i> Due by '.time_format($admission['r_start_date'],5,(calculate_duration($admission,count($intent['c__child_intents']))-1)).' 11:59 PM PST</div>';
-
 
 if($level>2){
     echo '<div id="save_report" class="quill_content">';
@@ -141,11 +138,11 @@ if($level>2){
         
         if($ontime_secs_left>0){
             //Still on time:
-            echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' 11:59pm PST in <span id="ontime_dueby"></span>';
+            echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="ontime_dueby"></span>';
         } else {
-            echo '<span style="text-decoration: line-through;">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Was due '.$due_date.' 11:59pm PST</span>';
+            echo '<span style="text-decoration: line-through;">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Was due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST</span>';
             if($qualify_for_little_late && $sprint_index>0){
-                echo '<div style="padding-left:22px;"><b>Earn '.floor($intent['c_time_estimate']*30).' late points</b> by '.$due_late_date.' 11:59pm PST in <span id="late_dueby"></span></div>';
+                echo '<div style="padding-left:22px;"><b>Earn '.floor($intent['c_time_estimate']*30).' late points</b> by '.$due_late_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="late_dueby"></span></div>';
             }
         }
         
