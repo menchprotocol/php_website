@@ -9,7 +9,7 @@ $(document).ready(function() {
 	//Watchout for the copy URL to clipboard:
     $( ".copy_button" ).click(function() {
     	copyToClipboard(document.getElementById("copy_button"));
-    	$( ".copy_button" ).hide().fadeIn().css('color','#00CC00');
+    	$( ".copy_button" ).hide().fadeIn().css('color','#fedd16');
     });
     
 	//Detect any possible hashes that controll the menu?
