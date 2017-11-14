@@ -490,6 +490,26 @@ function calculate_bootcamp_status($b){
     
     
     
+    //Bootcamp c_todo_overview
+    /*
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if(strlen($b['c_todo_overview'])>0){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/actionplan#details"><u>Action Plan</u></a>');
+    }
+    */
+    
+    //Bootcamp Insights:
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if($b['c__insight_this_count']>0){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Add <b>[At least 1 Insight]</b> in <a href="/console/'.$b['b_id'].'/actionplan#insights"><u>Action Plan</u></a>');
+    }
+    
     
     //Do we have enough Milestones?
     $to_gain = 60;
@@ -511,18 +531,28 @@ function calculate_bootcamp_status($b){
         
         
         //Prepare key variables:
-        $sprint_name = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
+        $milestone_anchor = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
         
         
         //Milestone Overview
+        /*
         $to_gain = 10;
         $progress_possible += $to_gain;
         if(strlen($c['c_todo_overview'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Add <b>[Overview]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#details"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>[Overview]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#details"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
         }
+        */
         
+        //Milestone Insights
+        $to_gain = 15;
+        $progress_possible += $to_gain;
+        if($c['c__insight_this_count']>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[At least 1 Insight]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#insights"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
+        }
         
         //Sub Task List
         $to_gain = 30;
@@ -532,7 +562,7 @@ function calculate_bootcamp_status($b){
             $progress_gained += $to_gain;
         } else {
             $progress_gained += (count($c['c__child_intents'])/$required_tasks)*$to_gain;
-            array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'"><u>'.$sprint_name.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
         }
         
         
@@ -540,17 +570,27 @@ function calculate_bootcamp_status($b){
         if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
             foreach($c['c__child_intents'] as $c2){
                 
-                //Clear the intent checker:
-                unset($c_missing);
-                $c_missing = array();
+                //Create task object:
+                $task_anchor = $milestone_anchor.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
                 
                 //c_todo_overview
+                /*
                 $to_gain = 10;
                 $progress_possible += $to_gain;
                 if(strlen($c2['c_todo_overview'])>0){
                     $progress_gained += $to_gain;
                 } else {
                     array_push($c_missing,'[Overview]');
+                }
+                */
+                
+                //Insights for Tasks:
+                $to_gain = 15;
+                $progress_possible += $to_gain;
+                if($c2['c__insight_this_count']>0){
+                    $progress_gained += $to_gain;
+                } else {
+                    array_push($call_to_action,'Add <b>[At least 1 Insight]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#insights"><u>'.$task_anchor.'</u></a>');
                 }
                 
                 //c_time_estimate
@@ -559,12 +599,7 @@ function calculate_bootcamp_status($b){
                 if($c2['c_time_estimate']>0){
                     $progress_gained += $to_gain;
                 } else {
-                    array_push($c_missing,'[Time Estimate]');
-                }
-                
-                //Did we have anything?
-                if(count($c_missing)>0){
-                    array_push($call_to_action,'Add <b>'.join('</b> & <b>',$c_missing).'</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$sprint_name.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'].'</u></a>');
+                    array_push($call_to_action,'Add <b>[Time Estimate]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$task_anchor.'</u></a>');
                 }
             }
         }
@@ -818,17 +853,8 @@ function calculate_bootcamp_status($b){
         array_push($call_to_action,'Agree to <b>[Lead Instructor Agreement]</b> in <a href="/console/'.$b['b_id'].'/settings#settings"><u>Settings</u></a>');
     }
     
-    //c_todo_overview
-    $to_gain = 15;
-    $progress_possible += $to_gain;
-    if(strlen($b['c_todo_overview'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Bootcamp Overview]</b> in <a href="/console/'.$b['b_id'].'/actionplan#details"><u>Action Plan</u></a>');
-    }
-    
   
-    //c_status
+    //b_status
     $to_gain = 5;
     $progress_possible += $to_gain;
     if($b['b_status']>=1){

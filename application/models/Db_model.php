@@ -544,10 +544,16 @@ class Db_model extends CI_Model {
 	        $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
 	        
 	        
+	        //Bootcamp Insights:
+	        $bootcamp_insights = count($this->Db_model->i_fetch(array(
+	            'i_status >=' => 0,
+	            'i_c_id' => $c['c_id'],
+	        )));
 	        
 	        //Fetch Sub-intents:
 	        $bootcamps[$key]['c__task_count'] = 0;
-	        $bootcamps[$key]['c__insight_count'] = 0;
+	        $bootcamps[$key]['c__insight_count'] = $bootcamp_insights;
+	        $bootcamps[$key]['c__insight_this_count'] = $bootcamp_insights;
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
 	            'cr.cr_status >=' => 0,
@@ -573,6 +579,7 @@ class Db_model extends CI_Model {
 	            )));
 	            $bootcamps[$key]['c__insight_count'] += $milestone_insights;
 	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_count'] = $milestone_insights;
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_this_count'] = $milestone_insights;
 	            
 	            //Addup task values:
 	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
@@ -588,7 +595,9 @@ class Db_model extends CI_Model {
 	                )));
 	                $bootcamps[$key]['c__insight_count'] += $task_insights;
 	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_count'] += $task_insights;
+	                //The following two are identicals, just there for consistency:
 	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__insight_count'] = $task_insights;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__insight_this_count'] = $task_insights;
 	            }
 	        }
 	        
@@ -981,6 +990,7 @@ class Db_model extends CI_Model {
 		                $html_message .= '<br />';
 		                $html_message .= '<div>Cheers,</div>';
 		                $html_message .= '<div>Mench Engagement Watcher</div>';
+		                $html_message .= '<div style="font-size:0.8em;">Engagement ID '.$engagements[0]['e_id'].'</div>';
 		                
 		                //Send email:
 		                $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);

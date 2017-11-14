@@ -101,6 +101,7 @@ class Console extends CI_Controller {
 	        echo_json($bootcamps[0]); exit;
 	    }
 	    
+	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
 	        'title' => 'Dashboard | '.$bootcamps[0]['c_objective'],

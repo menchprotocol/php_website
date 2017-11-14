@@ -5,7 +5,7 @@ echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamp Applications</h3>
 foreach($admissions as $admission){
     
     //Determine the steps:
-    $applied = (strlen($admission['ru_application_survey'])>0);
+    $applied = ( strlen($admission['ru_application_survey'])>0 );
     $paid = ( count($admission['ru__transactions'])>0 );
     
     echo '<hr />';
