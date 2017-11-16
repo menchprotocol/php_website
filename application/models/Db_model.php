@@ -77,7 +77,7 @@ class Db_model extends CI_Model {
 	function ru_update($ru_id,$update_columns){
 	    //Update first
 	    $this->db->where('ru_id', $ru_id);
-	    $this->db->update('v5_cohort_students', $update_columns);
+	    $this->db->update('v5_class_students', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	
@@ -105,7 +105,7 @@ class Db_model extends CI_Model {
 	    }
 	    
 	    //Lets now add:
-	    $this->db->insert('v5_cohort_students', $insert_columns);
+	    $this->db->insert('v5_class_students', $insert_columns);
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ru_id'] = $this->db->insert_id();
@@ -216,7 +216,7 @@ class Db_model extends CI_Model {
 	    //Fetch the admins of the bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
-	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_u_id = u.u_id');
+	    $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_u_id = u.u_id');
 	    $this->db->where('ba.ba_status >=',0);
 	    $this->db->where('ba.ba_b_id',$b_id);
 	    $this->db->where('u.u_status >=',0);
@@ -231,7 +231,7 @@ class Db_model extends CI_Model {
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_bootcamps b', 'b.b_c_id = c.c_id');
-	    $this->db->join('v5_bootcamp_admins ba', 'ba.ba_b_id = b.b_id');
+	    $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_b_id = b.b_id');
 	    $this->db->order_by('b.b_status', 'DESC');
 	    $this->db->order_by('c.c_objective', 'ASC');
 	    foreach($match_columns as $key=>$value){
@@ -410,13 +410,13 @@ class Db_model extends CI_Model {
 	
 	function i_fetch($match_columns){
 		$this->db->select('i.*');
-		$this->db->from('v5_media i');
+		$this->db->from('v5_insights i');
 		$this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
 		$this->db->where('c.c_status >=',0);
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
-		$this->db->order_by('i_dispatch_minutes');
+		$this->db->order_by('i_rank');
 		$q = $this->db->get();
 		return $q->result_array();
 	}
@@ -438,7 +438,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_media', $insert_columns);
+		$this->db->insert('v5_insights', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
@@ -448,7 +448,7 @@ class Db_model extends CI_Model {
 	
 	function i_update($i_id,$update_columns){
 		$this->db->where('i_id', $i_id);
-		$this->db->update('v5_media', $update_columns);
+		$this->db->update('v5_insights', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -460,8 +460,8 @@ class Db_model extends CI_Model {
 	    
 		//Missing anything?
 		$this->db->select('r.*');
-		$this->db->from('v5_cohorts r');
-		$this->db->join('v5_cohort_students ru', 'ru.ru_r_id = r.r_id', 'left');
+		$this->db->from('v5_classes r');
+		$this->db->join('v5_class_students ru', 'ru.ru_r_id = r.r_id', 'left');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -488,8 +488,8 @@ class Db_model extends CI_Model {
 	    //Fetch user's active bootcamps
 	    $this->db->select('c.*');
 	    
-	    $this->db->from('v5_cohort_students ru');
-	    $this->db->join('v5_cohorts r', 'r.r_id = ru.ru_r_id');
+	    $this->db->from('v5_class_students ru');
+	    $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
 	    $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 	    $this->db->join('v5_bootcamps b', 'b.b_id = r.r_b_id');
 	    $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
@@ -516,9 +516,9 @@ class Db_model extends CI_Model {
 	
 	function ru_fetch($match_columns){
 		$this->db->select('*');
-		$this->db->from('v5_cohort_students ru');
+		$this->db->from('v5_class_students ru');
 		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
-		$this->db->join('v5_cohorts r', 'r.r_id = ru.ru_r_id');
+		$this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -727,7 +727,7 @@ class Db_model extends CI_Model {
 	
 	function r_update($r_id,$update_columns){
 	    $this->db->where('r_id', $r_id);
-	    $this->db->update('v5_cohorts', $update_columns);
+	    $this->db->update('v5_classes', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	
@@ -767,7 +767,7 @@ class Db_model extends CI_Model {
 	
 	
 	function r_create($insert_columns){
-	    $this->db->insert('v5_cohorts', $insert_columns);
+	    $this->db->insert('v5_classes', $insert_columns);
 	    $insert_columns['r_id'] = $this->db->insert_id();
 	    return $insert_columns;
 	}
@@ -856,7 +856,7 @@ class Db_model extends CI_Model {
 	    }
 	    
 	    //Lets now add:
-	    $this->db->insert('v5_bootcamp_admins', $insert_columns);
+	    $this->db->insert('v5_bootcamp_instructors', $insert_columns);
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ba_id'] = $this->db->insert_id();
@@ -872,9 +872,7 @@ class Db_model extends CI_Model {
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
-	    $this->db->join('v5_users u', 'u.u_id=e.e_creator_id','left');
-	    $this->db->join('v5_bootcamps b', 'b.b_id=e.e_b_id','left');
-	    $this->db->join('v5_intents c', 'c.c_id=b.b_c_id','left');
+	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -889,14 +887,14 @@ class Db_model extends CI_Model {
 	function e_create($link_data){
 	    
 	    //Sort out the optional fields first:
-	    if(!isset($link_data['e_creator_id'])){
+	    if(!isset($link_data['e_initiator_u_id'])){
 	        //Try to fetch user ID from session:
 	        $user_data = $this->session->userdata('user');
 	        if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
-	            $link_data['e_creator_id'] = $user_data['u_id'];
+	            $link_data['e_initiator_u_id'] = $user_data['u_id'];
 	        } else {
 	            //Have no user:
-	            $link_data['e_creator_id'] = 0;
+	            $link_data['e_initiator_u_id'] = 0;
 	        }
 	    }
 	    if(!isset($link_data['e_timestamp'])){
@@ -908,20 +906,16 @@ class Db_model extends CI_Model {
 	    if(!isset($link_data['e_message'])){
 	        $link_data['e_message'] = null;
 	    }
-	    if(!isset($link_data['e_object_id'])){
-	        $link_data['e_object_id'] = 0;
-	    }
 		
 	    
 		//Now check required fields:
 		if(!isset($link_data['e_type_id'])){
 		    //Log this error:
 		    $this->Db_model->e_create(array(
-		        'e_creator_id' => $link_data['e_creator_id'],
+		        'e_initiator_u_id' => $link_data['e_initiator_u_id'],
 		        'e_message' => 'e_create() Function missing [e_type_id] variable.',
 		        'e_json' => json_encode($link_data),
 		        'e_type_id' => 8, //Platform Error
-		        'e_object_id' => $link_data['e_object_id'], //Maybe there!
 		    ));
 			return false;
 		}
@@ -936,28 +930,15 @@ class Db_model extends CI_Model {
 		//Do we need to notify the admin about this engagement?
 		if($link_data['e_id']>0 && $link_data['e_type_id']>0){
 		    
-		    //Define subscriptions per user group:
-		    $subscriptions = array(
-		        array(
-		            'admin_emails' => array('miguel@mench.co'),
-		            'subscription' => array(33,6), //Submission Report & Incoming Messages
-		        ),
-		        array(
-		            'admin_emails' => array('shervin@mench.co'),
-		            'subscription' => array(8,9,3,4,5), //System error, Technical Support Attention Errors, 3x Messenger New Users
-		        ),
-		        array(
-		            'admin_emails' => array('shervin@mench.co','miguel@mench.co'),
-		            'subscription' => array(26,15,37), //Application Submitted, New Bootcamp, Request to Publish a Bootcamp
-		        ),
-		    );
-		    
 		    //load model:
 		    $this->load->model('Email_model');
 		    
 		    //Detect matches:
-		    foreach($subscriptions as $subscription){
-		        if(in_array($link_data['e_type_id'],$subscription['subscription'])){
+		    $engagement_subscriptions = $this->config->item('engagement_subscriptions');
+		    $engagement_references = $this->config->item('engagement_references');
+		    
+		    foreach($engagement_subscriptions as $subscription){
+		        if(in_array($link_data['e_type_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
 		            
 		            //Just do this one:
 		            if(!isset($engagements[0])){
@@ -969,21 +950,22 @@ class Db_model extends CI_Model {
 		            
 		            //Did we find it? We should have:
 		            if(isset($engagements[0])){
-		                $by = ( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
-		                $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.$by;
+		                $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
 		                
 		                //Compose email:
 		                $html_message = null; //Start
 		                $html_message .= '<div>Hi Mench Admin,</div><br />';
 		                $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
 		                
-		                $html_message .= '<div>Initiator: '.$by.'</div>';
-		                if(intval($engagements[0]['e_object_id'])>0){
-		                    $html_message .= '<div>Applied To: '.object_link($engagements[0]['a_object_code'],$engagements[0]['e_object_id'],$engagements[0]['e_b_id']).'</div>';
+		                
+		                //Lets go through all references to see what is there:
+		                foreach($engagement_references as $engagement_field=>$er){
+		                    if(intval($engagements[0][$engagement_field])>0){
+		                        //Yes we have a value here:
+		                        $html_message .= '<div>'.$er['name'].': '.object_link($er['object_code'], $engagements[0][$engagement_field], $engagements[0]['e_b_id']).'</div>';
+		                    }
 		                }
-		                if(intval($engagements[0]['e_b_id'])>0){
-		                    $html_message .= '<div>'.object_link('b',intval($engagements[0]['e_b_id'])).'</div>';
-		                }
+		                
 		                if(strlen($engagements[0]['e_message'])>0){
 		                    $html_message .= '<div>Message: '.$engagements[0]['e_message'].'</div>';
 		                }

@@ -17,6 +17,7 @@ $website = $this->config->item('website');
     <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
+    <script src="/js/lib/dropzone.js" type="text/javascript"></script>
         
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
     <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
@@ -42,7 +43,7 @@ $website = $this->config->item('website');
 					</button>
 					<span class="navbar-brand dashboard-logo">
 						<a href="/console">
-						<img src="/img/bp_48.png" style="margin-top:-11px !important;" />
+						<img src="/img/bp_48.png" style="margin-top: -16px !important; margin-right: -5px !important;" />
 						<span style="text-transform:none;">Bootcamps</span>
 						</a>
 						<!-- <input type="text" placeholder="Search"> -->

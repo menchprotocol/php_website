@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.81,
+    'version' => 0.82,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -62,6 +62,9 @@ $config['core_objects'] = array(
         'o_name' => 'Insight',
         'o_names' => 'Insights',
     ),
+    'idm' => array(
+        'o_name' => 'Insight Delivery Method',
+    ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
         'o_names' => 'Bootcamps',
@@ -76,6 +79,55 @@ $config['core_objects'] = array(
         'o_name' => 'Task',
         'o_names' => 'Tasks',
         'o_icon' => '<i class="fa fa-check-square" aria-hidden="true"></i>',
+    ),
+);
+
+$config['engagement_references'] = array(
+    'e_initiator_u_id' => array(
+        'name' => 'Initiator',
+        'object_code' => 'u',
+    ),
+    'e_recipient_u_id' => array(
+        'name' => 'Recipient',
+        'object_code' => 'u',
+    ),
+    'e_b_id' => array(
+        'name' => 'Bootcamp',
+        'object_code' => 'b',
+    ),
+    'e_r_id' => array(
+        'name' => 'Class',
+        'object_code' => 'r',
+    ),
+    'e_c_id' => array(
+        'name' => 'Intent',
+        'object_code' => 'c',
+    ),
+    'e_cr_id' => array(
+        'name' => 'Intent Link',
+        'object_code' => 'cr',
+    ),
+    'e_i_id' => array(
+        'name' => 'Insight',
+        'object_code' => 'i',
+    ),
+    'e_t_id' => array(
+        'name' => 'Transaction',
+        'object_code' => 't',
+    ),
+);
+$config['engagement_subscriptions'] = array(
+    array(
+        'admin_emails' => array('miguel@mench.co'),
+        'subscription' => array(33,6), //Submission Report & Incoming Messages
+    ),
+    array(
+        'admin_emails' => array('shervin@mench.co'),
+        'subscription' => array(0,8,9,3,4,5,10), //ALL, System error, Technical Support Attention Errors, 3x Messenger New Users, Instructor Login
+    ),
+    array(
+        'admin_emails' => array('shervin@mench.co','miguel@mench.co'),
+        'subscription' => array(26,15,37), //Application Submitted, New Bootcamp, Request to Publish a Bootcamp
     ),
 );
 
@@ -174,13 +226,6 @@ $config['i_dispatch_minutes'] = array(
         '960'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 16 Hours after Milestone Starts',
         '1200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 20 Hours after Milestone Starts',
     ),
-);
-$config['i_media_type_names'] = array(
-    'text' => '<i class="fa fa-commenting" aria-hidden="true"></i> Text Message',
-    'image' => '<i class="fa fa-camera" aria-hidden="true"></i> Raw Image',
-    'video' => '<i class="fa fa-youtube-play" aria-hidden="true"></i> Raw Video',
-    'audio' => '<i class="fa fa-volume-up" aria-hidden="true"></i> Raw Audio',
-    'file' => '<i class="fa fa-file" aria-hidden="true"></i> Raw File',
 );
 
 $config['refund_policies'] = array(

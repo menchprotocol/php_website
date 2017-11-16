@@ -790,6 +790,14 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	display:inline-block;
 	text-align: center;
 }
+
+
+
+
+
+
+
+
 .copy_button{ cursor:pointer; font-size:0.9em; }
 #copy_button{display:none;}
 .btn-funnel {

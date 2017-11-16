@@ -54,6 +54,7 @@ function update_account(){
 		u_current_city:$('#u_current_city').val(),
 		u_timezone:$('#u_timezone').val(),
 		u_language:$('#u_language').val(),
+		u_newly_checked:(document.getElementById('u_terms_agreement_time').checked ? '1' : '0'),
 
 		u_bio:( u_bio_quill.getLength()>1 ? $('#u_bio .ql-editor').html() : "" ),
 		
@@ -228,6 +229,31 @@ function insert_gravatar(){
 		</ul>
 		<div id="u_bio"><?= $udata['u_bio'] ?></div>
         <script> var u_bio_quill = new Quill('#u_bio', setting_full); </script>
+        
+        
+        
+        <br />
+		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
+        <ul>
+        	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
+        	<li>I have read and understood my bootcamp's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Tuition Guarantee <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        	<li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        </ul>
+        <div class="form-group label-floating is-empty">
+        	<div class="checkbox">
+            	<label>
+            		<?php if(isset($udata['u_terms_agreement_time']) && strlen($udata['u_terms_agreement_time'])>0){ ?>
+            		<input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($udata['u_terms_agreement_time'],0) ?> PST</b>
+            		<?php } else { ?>
+            		<input type="checkbox" id="u_terms_agreement_time" /> I certify that all above statements are true
+            		<?php } ?>
+            	</label>
+            </div>
+        </div>
+        
+        
     </div>
     
     

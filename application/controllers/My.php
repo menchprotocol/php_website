@@ -122,11 +122,12 @@ class My extends CI_Controller {
 	            
 	            //Log Engagement
 	            $this->Db_model->e_create(array(
-	                'e_creator_id' => $admissions[0]['u_id'],
+	                'e_initiator_u_id' => $admissions[0]['u_id'],
 	                'e_json' => json_encode($admissions),
 	                'e_type_id' => 32, //actionplan Opened
-	                'e_object_id' => $admissions[0]['r_id'],
 	                'e_b_id' => $admissions[0]['b_id'],
+	                'e_r_id' => $admissions[0]['r_id'],
+	                'e_c_id' => $admissions[0]['c_id'],
 	            ));
 	            
 	            //Reload with specific directions:

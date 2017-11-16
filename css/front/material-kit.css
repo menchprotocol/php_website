@@ -202,7 +202,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   border: none;
   border-radius: 3px;
   position: relative;
-  padding: 12px 30px;
+  padding: 12px 18px;
   margin: 10px 1px;
   font-size: 12px;
   font-weight: 400;
@@ -245,8 +245,8 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle, .open >
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle:focus, .open >
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle:hover {
-  background-color: #999999;
-  color: #FFFFFF;
+  background-color: #efefef;
+  color: #999;
 }
 .btn:focus, .btn:active, .btn:hover, .btn.btn-default:focus, .btn.btn-default:active, .btn.btn-default:hover,
 .navbar .navbar-nav > li > a.btn:focus,

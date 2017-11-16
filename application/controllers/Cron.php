@@ -12,15 +12,15 @@ class Cron extends CI_Controller {
 	function bot_save_files(){
 	    /*
 	     * This cron job looks for all engagements with Facebook attachments
-	     * that are pending upload (i.e. e_file_save=0) and uploads their
-	     * attachments to amazon S3 and then changes status to e_file_save=1
+	     * that are pending upload (i.e. e_cron_job=0) and uploads their
+	     * attachments to amazon S3 and then changes status to e_cron_job=1
 	     * 
 	     */
 	    
 	    $max_per_batch = 10; //Max number of scans per run
 	    
 	    $e_pending = $this->Db_model->e_fetch(array(
-	        'e_file_save' => 0, //Pending file upload to S3
+	        'e_cron_job' => 0, //Pending file upload to S3
 	    ));
 	    
 	    $counter = 0;
@@ -48,7 +48,7 @@ class Cron extends CI_Controller {
 	                                //Update engagement data:
 	                                $this->Db_model->e_update( $ep['e_id'] , array(
 	                                    'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
-	                                    'e_file_save' => 1, //Mark as done
+	                                    'e_cron_job' => 1, //Mark as done
 	                                ));
 	                                
 	                                //Increase counter:

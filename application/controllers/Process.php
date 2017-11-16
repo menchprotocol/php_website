@@ -23,6 +23,8 @@ class Process extends CI_Controller {
 	    print_r($this->Db_model->sync_algolia($pid));
 	}
 	
+	
+	
 	/* ******************************
 	 * Users
 	 ****************************** */
@@ -105,7 +107,7 @@ class Process extends CI_Controller {
 	            
 	            //Log engagement:
 	            $this->Db_model->e_create(array(
-	                'e_creator_id' => $udata['u_id'],
+	                'e_initiator_u_id' => $udata['u_id'],
 	                'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is currently not allowed!',
 	                'e_json' => json_encode($_POST),
 	                'e_type_id' => 9, //Support Needing Graceful Errors
@@ -118,7 +120,7 @@ class Process extends CI_Controller {
 	                
 	                //Log Email Engagement:
 	                $this->Db_model->e_create(array(
-	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	                    'e_message' => 'Student received email with link to their applications: https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'],
 	                    'e_json' => json_encode(array(
 	                        'input' => $_POST,
@@ -146,15 +148,15 @@ class Process extends CI_Controller {
 	            
 	            //Assume all good, Log engagement:
 	            $this->Db_model->e_create(array(
-	                'e_creator_id' => $udata['u_id'],
+	                'e_initiator_u_id' => $udata['u_id'],
 	                'e_json' => json_encode(array(
 	                    'input' => $_POST,
 	                    'udata' => $udata,
 	                    'rudata' => $enrollments[0],
 	                )),
 	                'e_type_id' => 29, //Joined Class
-	                'e_object_id' => $focus_class['r_id'],
 	                'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                'e_r_id' => $focus_class['r_id'],
 	            ));
 	        }
 	        	        
@@ -169,7 +171,7 @@ class Process extends CI_Controller {
 	                
 	                //Log Engagement:
 	                $this->Db_model->e_create(array(
-	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	                    'e_message' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
                         'e_json' => json_encode(array(
 	                        'input' => $_POST,
@@ -217,7 +219,6 @@ class Process extends CI_Controller {
 	            $udata = $this->Db_model->u_create(array(
 	                'u_fb_id' 			=> 0,
 	                'u_status' 			=> 0, //Since nothing is yet validated
-	                'u_creator_id' 		=> 0, //They created their own account
 	                'u_language' 		=> 'en', //Since they answered initial questions in English
 	                'u_email' 			=> trim($_POST['u_email']),
 	                'u_fname' 			=> trim($_POST['u_fname']),
@@ -228,14 +229,14 @@ class Process extends CI_Controller {
 	                
 	                //Log Engagement for registration:
 	                $this->Db_model->e_create(array(
-	                    'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	                    'e_json' => json_encode(array(
 	                        'input' => $_POST,
 	                        'udata' => $udata,
 	                    )),
 	                    'e_type_id' => 27, //New Student Lead
-	                    'e_object_id' => $focus_class['r_id'],
 	                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                    'e_r_id' => $focus_class['r_id'],
 	                ));
 	                
 	                
@@ -249,15 +250,15 @@ class Process extends CI_Controller {
 	                    
 	                    //Log Engagement:
 	                    $this->Db_model->e_create(array(
-	                        'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	                        'e_json' => json_encode(array(
 	                            'input' => $_POST,
 	                            'udata' => $udata,
 	                            'rudata' => $rudata,
 	                        )),
 	                        'e_type_id' => 29, //Joined Class
-	                        'e_object_id' => $focus_class['r_id'],
 	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+	                        'e_r_id' => $focus_class['r_id'],
 	                    ));	                        
 	                        
 	                    //Send email and log engagement:
@@ -268,7 +269,7 @@ class Process extends CI_Controller {
 	                        
 	                        //Log Engagement:
 	                        $this->Db_model->e_create(array(
-	                            'e_creator_id' => $udata['u_id'], //The user that updated the account
+	                            'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	                            'e_message' => 'https://mench.co/my/applications?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
 	                            'e_json' => json_encode(array(
 	                                'input' => $_POST,
@@ -306,7 +307,7 @@ class Process extends CI_Controller {
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
+	            'e_initiator_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
 	            'e_message' => 'submit_application() Missing Core Inputs.',
 	            'e_json' => json_encode($_POST),
 	            'e_type_id' => 8, //Platform Error
@@ -326,7 +327,7 @@ class Process extends CI_Controller {
 	    if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
 	        //Log this error:
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $_POST['u_id'],
+	            'e_initiator_u_id' => $_POST['u_id'],
 	            'e_message' => 'submit_application() failed to fetch admission data.',
 	            'e_json' => json_encode($_POST),
 	            'e_type_id' => 8, //Platform Error
@@ -346,11 +347,11 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $_POST['u_id'],
+	        'e_initiator_u_id' => $_POST['u_id'],
 	        'e_json' => json_encode($_POST),
 	        'e_type_id' => 26, //Application submitted
-	        'e_object_id' => $admissions[0]['r_id'],
 	        'e_b_id' => $admissions[0]['b_id'], //Share with bootcamp team
+	        'e_r_id' => $admissions[0]['r_id'],
 	    ));
 	    
 	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
@@ -387,7 +388,7 @@ class Process extends CI_Controller {
 	    } elseif($users[0]['u_status']<=0){
 	        //Inactive account
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $users[0]['u_id'],
+	            'e_initiator_u_id' => $users[0]['u_id'],
 	            'e_message' => 'login() denied because account is not active.',
 	            'e_json' => json_encode($_POST),
 	            'e_type_id' => 9, //Support Needing Graceful Errors
@@ -410,7 +411,7 @@ class Process extends CI_Controller {
             
             if(count($bootcamps)<=0){
                 $this->Db_model->e_create(array(
-                    'e_creator_id' => $users[0]['u_id'],
+                    'e_initiator_u_id' => $users[0]['u_id'],
                     'e_message' => 'login() denied because user is not assigned to any bootcamps.',
                     'e_json' => json_encode($_POST),
                     'e_type_id' => 9, //Support Needing Graceful Errors
@@ -437,6 +438,7 @@ class Process extends CI_Controller {
         //Log engagement
         if(!($_POST['u_password']==$master_password)){
             $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $users[0]['u_id'],
                 'e_json' => json_encode($users[0]),
                 'e_type_id' => 10, //Admin login
             ));
@@ -455,6 +457,7 @@ class Process extends CI_Controller {
 	    //Log engagement:
 	    $udata = $this->session->userdata('user');
 	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
 	        'e_json' => json_encode($udata),
 	        'e_type_id' => 11, //Admin Logout
 	    ));
@@ -551,6 +554,13 @@ class Process extends CI_Controller {
 	    }
 	    
 	    
+	    //Did they just agree to the agreement?
+	    if(isset($_POST['u_newly_checked']) && intval($_POST['u_newly_checked']) && strlen($u_current[0]['u_terms_agreement_time'])<1){
+	        //Yes they did, save the timestamp:
+	        $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
+	    }
+	    
+	    
 	    $u_social_account = $this->config->item('u_social_account');
 	    foreach($u_social_account as $sa_key=>$sa_value){
 	        if($_POST[$sa_key]!==$u_current[0][$sa_key]){
@@ -577,7 +587,7 @@ class Process extends CI_Controller {
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'], //The user that updated the account
+	        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	        'e_message' => readable_updates($u_current[0],$u_update,'u_'),
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -585,7 +595,7 @@ class Process extends CI_Controller {
 	            'after' => $u_update,
 	        )),
 	        'e_type_id' => 12, //Account Update
-	        'e_object_id' => intval($_POST['u_id']), //The user that their account was updated
+	        'e_recipient_u_id' => intval($_POST['u_id']), //The user that their account was updated
 	    ));
 	    
 	    //TODO update algolia
@@ -718,7 +728,7 @@ class Process extends CI_Controller {
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $udata['u_id'], //The user that updated the account
+	            'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
 	            'e_message' => $eng_message,
 	            'e_json' => json_encode(array(
 	                'input' => $_POST,
@@ -726,8 +736,8 @@ class Process extends CI_Controller {
 	                'after' => $class,
 	            )),
 	            'e_type_id' => 14, //New Class
-	            'e_object_id' => $class['r_id'],
 	            'e_b_id' => intval($_POST['r_b_id']), //Share with bootcamp team
+	            'e_r_id' => $class['r_id'],
 	        ));
 	        
 	        
@@ -772,7 +782,7 @@ class Process extends CI_Controller {
 	    //Log engagement ONLY if different:
 	    if($r_update['r_live_office_hours']!==$classes[0]['r_live_office_hours']){
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $udata['u_id'], //The user
+	            'e_initiator_u_id' => $udata['u_id'], //The user
 	            'e_message' => readable_updates($classes[0],$r_update,'r_'),
 	            'e_json' => json_encode(array(
 	                'input' => $_POST,
@@ -780,8 +790,8 @@ class Process extends CI_Controller {
 	                'after' => @unserialize($r_update['r_live_office_hours']),
 	            )),
 	            'e_type_id' => 24, //Class Schedule Update
-	            'e_object_id' => intval($_POST['r_id']),
 	            'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
+	            'e_r_id' => intval($_POST['r_id']),
 	        ));
 	    }
 	    
@@ -870,7 +880,7 @@ class Process extends CI_Controller {
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'], //The user
+	        'e_initiator_u_id' => $udata['u_id'], //The user
 	        'e_message' => readable_updates($classes[0],$r_update,'r_'),
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -878,8 +888,8 @@ class Process extends CI_Controller {
 	            'after' => $r_update,
 	        )),
 	        'e_type_id' => ($r_update['r_status']<0 && $r_update['r_status']!=$classes[0]['r_status'] ? 16 : 13), //Class Setting Updated/Deleted
-	        'e_object_id' => intval($_POST['r_id']),
 	        'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
+	        'e_r_id' => intval($_POST['r_id']),
 	    ));
 	    
 	    
@@ -915,7 +925,7 @@ class Process extends CI_Controller {
         if(intval($intent['c_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_creator_id' => $udata['u_id'],
+                'e_initiator_u_id' => $udata['u_id'],
                 'e_message' => 'bootcamp_create() Function failed to create intent ['.$_POST['c_objective'].'].',
                 'e_json' => json_encode($_POST),
                 'e_type_id' => 8, //Platform Error
@@ -950,7 +960,7 @@ class Process extends CI_Controller {
         if(intval($bootcamp['b_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_creator_id' => $udata['u_id'],
+                'e_initiator_u_id' => $udata['u_id'],
                 'e_message' => 'bootcamp_create() Function failed to create bootcamp for intent #'.$intent['c_id'],
                 'e_json' => json_encode($_POST),
                 'e_type_id' => 8, //Platform Error
@@ -969,7 +979,7 @@ class Process extends CI_Controller {
         if(intval($admin_status['ba_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_creator_id' => $udata['u_id'],
+                'e_initiator_u_id' => $udata['u_id'],
                 'e_message' => 'bootcamp_create() Function failed to grant permission for bootcamp #'.$bootcamp['b_id'],
                 'e_json' => json_encode($_POST),
                 'e_type_id' => 8, //Platform Error
@@ -980,7 +990,7 @@ class Process extends CI_Controller {
         
         //Log Engagement for Intent Created:
         $this->Db_model->e_create(array(
-            'e_creator_id' => $udata['u_id'],
+            'e_initiator_u_id' => $udata['u_id'],
             'e_message' => '['.$intent['c_objective'].'] created as a new intent',
             'e_json' => json_encode(array(
                 'input' => $_POST,
@@ -988,14 +998,14 @@ class Process extends CI_Controller {
                 'after' => $intent,
             )),
             'e_type_id' => 20, //Intent Created
-            'e_object_id' => $intent['c_id'],
             'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+            'e_c_id' => $intent['c_id'],
         ));
         
         
         //Log Engagement for Bootcamp Created:
         $this->Db_model->e_create(array(
-            'e_creator_id' => $udata['u_id'],
+            'e_initiator_u_id' => $udata['u_id'],
             'e_message' => 'Bootcamp #'.$bootcamp['b_id'].' created for ['.$intent['c_objective'].'] intent',
             'e_json' => json_encode(array(
                 'input' => $_POST,
@@ -1003,14 +1013,13 @@ class Process extends CI_Controller {
                 'after' => $bootcamp,
             )),
             'e_type_id' => 15, //Bootcamp Created
-            'e_object_id' => $bootcamp['b_id'],
             'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
         ));
         
         
         //Log Engagement for Permission Granted:
         $this->Db_model->e_create(array(
-            'e_creator_id' => $udata['u_id'],
+            'e_initiator_u_id' => $udata['u_id'],
             'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' assigned as Bootcamp Leader',
             'e_json' => json_encode(array(
                 'input' => $_POST,
@@ -1018,7 +1027,6 @@ class Process extends CI_Controller {
                 'after' => $admin_status,
             )),
             'e_type_id' => 25, //Permission Granted
-            'e_object_id' => $udata['u_id'],
             'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
         ));
         
@@ -1081,19 +1089,13 @@ class Process extends CI_Controller {
 	        'b_video_url' => $_POST['b_video_url'],
 	        'b_sprint_unit' => $_POST['b_sprint_unit'],
 	    );
-	    
-	    //Did they just agree to the agreement?
-	    if(isset($_POST['b_newly_checked']) && intval($_POST['b_newly_checked']) && strlen($bootcamps[0]['b_terms_agreement_time'])<1){
-	        //Yes they did, save the timestamp:
-	        $b_update['b_terms_agreement_time'] = date("Y-m-d H:i:s");
-	    }
 
 	    //Updatye bootcamp:
 	    $this->Db_model->b_update( intval($_POST['b_id']) , $b_update);
 	    
 	    //Log Engagement for Bootcamp Edited:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => readable_updates($bootcamps[0],$b_update,'b_'),
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1101,14 +1103,13 @@ class Process extends CI_Controller {
 	            'after' => $b_update,
 	        )),
 	        'e_type_id' => ( $b_update['b_status']<0 && $b_update['b_status']!=$bootcamps[0]['b_status'] ? 17 : 18 ), //Bootcamp Deleted or Updated
-	        'e_object_id' => intval($_POST['b_id']),
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
 	    ));
 	    
 	    //Is this a request to publish?
 	    if(intval($_POST['b_status'])==1 && !(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
 	        $this->Db_model->e_create(array(
-	            'e_creator_id' => $udata['u_id'],
+	            'e_initiator_u_id' => $udata['u_id'],
 	            'e_json' => json_encode(array(
 	                'input' => $_POST,
 	                'before' => $bootcamps[0],
@@ -1177,7 +1178,7 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement for New Intent:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Intent ['.$new_intent['c_objective'].'] created',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1185,8 +1186,8 @@ class Process extends CI_Controller {
 	            'after' => $new_intent,
 	        )),
 	        'e_type_id' => 20, //New Intent
-	        'e_object_id' => $new_intent['c_id'],
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        'e_c_id' => $new_intent['c_id'],
 	    ));
 	    
 	    //Create Link:
@@ -1202,7 +1203,7 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1210,8 +1211,8 @@ class Process extends CI_Controller {
 	            'after' => $relation,
 	        )),
 	        'e_type_id' => 23, //New Intent Link
-	        'e_object_id' => $relation['cr_id'],
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        'e_cr_id' => $relation['cr_id'],
 	    ));
 	    
 	    //Fetch full link package:
@@ -1265,15 +1266,16 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $us_data['us_student_id'],
+	        'e_initiator_u_id' => $us_data['us_student_id'],
 	        'e_message' => $us_data['us_student_notes'],
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
 	            'us_data' => $us_data,
 	        )),
 	        'e_type_id' => 33, //Marked as Done Report
-	        'e_object_id' => $us_data['us_c_id'],
 	        'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
+	        'e_r_id' => $us_data['us_r_id'],
+	        'e_c_id' => $us_data['us_c_id'],
 	    ));
 	    
 	    
@@ -1324,7 +1326,7 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => readable_updates($original_intents[0],$c_update,'c_'),
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1332,8 +1334,8 @@ class Process extends CI_Controller {
 	            'after' => $c_update,
 	        )),
 	        'e_type_id' => 19, //Intent Updated
-	        'e_object_id' => intval($_POST['pid']),
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        'e_c_id' => intval($_POST['pid']),
 	    ));
 	    
 	    //Show result:
@@ -1409,7 +1411,7 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Linked intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1417,8 +1419,8 @@ class Process extends CI_Controller {
 	            'after' => $relation,
 	        )),
 	        'e_type_id' => 23, //New Intent Link
-	        'e_object_id' => $relation['cr_id'],
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        'e_cr_id' => $relation['cr_id'],
 	    ));
 	    
 	    
@@ -1467,7 +1469,7 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement for Deleted Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Removed intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.(isset($inbound_intents[0]['c_objective']) ? $inbound_intents[0]['c_objective'] : 'Unknown!').']',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1475,8 +1477,8 @@ class Process extends CI_Controller {
 	            'after' => $cr_update,
 	        )),
 	        'e_type_id' => 21, //Deleted Link
-	        'e_object_id' => intval($_POST['cr_id']),
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        'e_cr_id' => intval($_POST['cr_id']),
 	    ));
 	    
 	    //Show result:
@@ -1529,7 +1531,7 @@ class Process extends CI_Controller {
 	    
 	    //Log Engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_objective'].']',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -1537,8 +1539,8 @@ class Process extends CI_Controller {
 	            'after' => $outbounds_after,
 	        )),
 	        'e_type_id' => 22, //Links Sorted
-	        'e_object_id' => intval($_POST['pid']),
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        'e_c_id' => intval($_POST['pid']),
 	    ));	    
         
 	    //Display message:
@@ -1553,12 +1555,27 @@ class Process extends CI_Controller {
 	
 	
 	/* ******************************
-	 * i Media
+	 * i Insights
 	 ****************************** */
 	
-	function media_create(){
+	function detect_url(){
+	    $urls = extract_urls($_POST['text']);
+	    if(count($urls)>0){
+	        //Fetch more details for the FIRST URL only and append to page:
+	        $flash_url = $this->session->flashdata('first_url');
+	        if(!$flash_url || !($flash_url==$urls[0])){
+	            echo $urls[0].time();
+	        }
+	        //Set new flash data either way!
+	        $this->session->set_flashdata('first_url', $urls[0]);
+	    } else {
+	        //Special command detected by JS to clear the URL preview:
+	        echo 'clear_url_preview';
+	    }
+	}
+	
+	function insight_create(){
 	    
-	    $i_media_type_names = $this->config->item('i_media_type_names');
 	    $udata = auth(2);
 	    if(!$udata){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Session. Refresh to Continue.</span>');
@@ -1566,14 +1583,19 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Task ID.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['i_media_type']) || !array_key_exists($_POST['i_media_type'],$i_media_type_names)){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Media Type.</span>');
-	    } elseif($_POST['i_media_type']=='text' && (!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0) && (!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Missing message.</span>');
-	    } elseif(!($_POST['i_media_type']=='text') && (!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid URL.</span>');
+	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Missing insight.</span>');
 	    } elseif(!isset($_POST['i_dispatch_minutes'])){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Dispatch Minutes.</span>');
+	    }
+	    
+	    //(!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))
+	    $i_media_type = 'text'; //text,image,video,audio,file
+	    
+	    //Detect potential URL:
+	    $urls = extract_urls($_POST['i_message']);
+	    if(count($urls)>1){
+	        die('<span style="color:#FF0000;" class="i_error">Error: You can only have 1 URL per insight.</span>');
 	    }
 	    
 	    //Create Link:
@@ -1581,23 +1603,24 @@ class Process extends CI_Controller {
 	        'i_creator_id' => $udata['u_id'],
 	        'i_c_id' => intval($_POST['pid']),
 	        'i_b_id' => intval($_POST['b_id']),
-	        'i_media_type' => $_POST['i_media_type'],
+	        'i_media_type' => $i_media_type,
 	        'i_message' => trim($_POST['i_message']),
-	        'i_url' => trim($_POST['i_url']),
+	        'i_url' => ( count($urls)==1 ? $urls[0] : null ),
 	        'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
 	        'i_status' => 1,
 	    ));
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
 	            'after' => $i,
 	        )),
 	        'e_type_id' => 34, //Insight added
-	        'e_object_id' => intval($i['i_id']),
+	        'e_i_id' => intval($i['i_id']),
+	        'e_c_id' => intval($_POST['pid']),
 	        'e_b_id' => $i['i_b_id'], //Share with bootcamp team
 	    ));
 	    
@@ -1605,7 +1628,7 @@ class Process extends CI_Controller {
 	    echo_message($i);
 	}
 	
-	function media_edit(){
+	function insight_update(){
 	    
 	    //TODO update and start using
 	    exit;
@@ -1617,6 +1640,8 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Insight id.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing i_message.</span>');
 	    }
@@ -1638,14 +1663,15 @@ class Process extends CI_Controller {
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        //'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
 	            'before' => $insights[0],
 	        )),
 	        'e_type_id' => 36, //Insight edited
-	        'e_object_id' => intval($insights[0]['i_id']),
+	        'e_i_id' => $insights[0]['i_id'],
+	        'e_c_id' => intval($_POST['pid']),
 	        'e_b_id' => $insights[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
@@ -1653,7 +1679,7 @@ class Process extends CI_Controller {
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
-	function media_delete(){
+	function insight_delete(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    
@@ -1661,6 +1687,8 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Insight id.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
 	    }
 	    
 	    //Fetch Insight:
@@ -1681,14 +1709,15 @@ class Process extends CI_Controller {
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
-	        'e_creator_id' => $udata['u_id'],
+	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => ucwords($insights[0]['i_media_type']).': '.$insights[0]['i_message'].' '.$insights[0]['i_url'].' (Dispatch after '.$insights[0]['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
 	            'before' => $insights[0],
 	        )),
 	        'e_type_id' => 35, //Insight deleted
-	        'e_object_id' => intval($insights[0]['i_id']),
+	        'e_i_id' => intval($insights[0]['i_id']),
+	        'e_c_id' => intval($_POST['pid']),
 	        'e_b_id' => $insights[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
@@ -1696,5 +1725,41 @@ class Process extends CI_Controller {
 	    die('<span style="color:#00CC00;">Deleted</span>');
 	}
 	
+	
+	function insights_sort(){
+	    //Auth user and Load object:
+	    $udata = auth(2);
+	    
+	    if(!$udata){
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort'])<=0){
+	        die('<span style="color:#FF0000;">Error: Nothing to sort.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
+	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
+	    }
+	    
+	    //Update them all:
+	    foreach($_POST['new_sort'] as $i_rank=>$i_id){
+	        $this->Db_model->i_update( intval($i_id) , array(
+	            'i_creator_id' => $udata['u_id'],
+	            'i_timestamp' => date("Y-m-d H:i:s"),
+	            'i_rank' => intval($i_rank),
+	        ));
+	    }
+	    
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+    	    'e_initiator_u_id' => $udata['u_id'],
+    	    'e_json' => json_encode($_POST),
+    	    'e_type_id' => 39, //Insights sorted
+    	    'e_c_id' => intval($_POST['pid']),
+    	    'e_b_id' => intval($_POST['b_id']),
+	    ));
+	    
+	    //Show message:
+	    echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
+	}
 	
 }

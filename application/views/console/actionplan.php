@@ -7,18 +7,53 @@ $udata = $this->session->userdata('user');
 <style> .breadcrumb li { display:block; } </style>
 <script>
 
+function add_first_name(){
+    $('#i_message').val($('#i_message').val()+' {first_name}'); 
+}
+
 //Count text area characters:
 function countChar(val) {
+
+	//Update count:
     var len = val.value.length;
     if (len > 600) {
-      val.value = val.value.substring(0, 600);
+        val.value = val.value.substring(0, 600);
     } else {
-      $('#charNum').text(600 - len);
+        $('#charNum').text(600 - len);
     }
+
+    //Passon data to detect URLs:
+    $.post("/process/detect_url", { text:val.value } , function(data) {
+ 		//Update data
+ 		if(data=='clear_url_preview'){
+ 			$('#url_preview').html("");
+ 		} else if(data.length>0){
+ 			$('#url_preview').html(data);
+     	}
+	});
 }
 
   
 $(document).ready(function() {
+
+/*
+ * parallelUploads:1,
+	uploadMultiple:false,
+	previewTemplate:null,
+	hiddenInputContainer:true,
+	createImageThumbnails:false,
+	clickable:false,
+ */
+	
+	//Initiat3e Dropzone:
+	$("#dropform").dropzone({
+		url: "/process/insight_attach",
+		maxFilesize: 1, // MB
+		accept: function(file, done) {
+			alert(file.name+" was Uploaded");
+			//done("Naha, you don't.");
+		}
+	});
 
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
@@ -31,21 +66,9 @@ $(document).ready(function() {
 	//Load Sortable:
 	load_intent_sort();
 	load_message_sorting();
-
-	//Watch for message creation drop down change:
-	$("#i_media_type").change(function() {
-		if($( this ).val()=='text'){
-			$('#i_message, #i_message_counter').show();
-		    $('#i_url').attr('placeholder','Optional URL');
-		} else {
-			$('#i_message').hide().val('');
-			$('#i_message_counter').hide();
-			$('#i_url').attr('placeholder',$( this ).val()+' URL');
-		}
-	});
 	
 	//Watch for message creation:
-	$('#i_message, #i_url').keydown(function (e) {
+	$('#i_message').keydown(function (e) {
 		if (e.ctrlKey && e.keyCode == 13) {
 			msg_create();
 		}
@@ -316,7 +339,7 @@ function load_message_sorting(){
 				});
 				
 				//Update backend:
-				$.post("/process/media_sort", {new_sort:new_sort}, function(data) {
+				$.post("/process/insights_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:$('#pid').val()}, function(data) {
 					//Update UI to confirm with user:
 					$( ".edit-updates" ).html(data);
 					
@@ -335,13 +358,11 @@ function msg_create(){
     $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/round_load.gif" class="loader" /></div></div>');
 	
 	//Update backend:
-	$.post("/process/media_create", {
+	$.post("/process/insight_create", {
 		
 		b_id:$('#b_id').val(),
 		pid:$('#pid').val(),
-		i_media_type:$('#i_media_type').val(),
 		i_message:$('#i_message').val(),
-		i_url:$('#i_url').val(),
 		i_dispatch_minutes:$('#i_dispatch_minutes').val(),
 		
 	}, function(data) {
@@ -351,14 +372,11 @@ function msg_create(){
 		$( "#message-sorting" ).append(data);
 
 		//Empty Inputs Fields:
-		$( "#i_url, #i_message" ).val("");
+		$( "#i_message" ).val("");
+		countChar(document.getElementById('i_message'));
 
 		//Reset Focus:
-		if($("#i_media_type").val()=='text'){
-			$("#i_message").focus();
-		} else {
-			$("#i_url").focus();
-		}
+		$("#i_message").focus();
 		
 		//Resort:
 		load_message_sorting();
@@ -373,12 +391,12 @@ function msg_create(){
 
 
 
-function media_delete(i_id){
+function insight_delete(i_id){
 	//Double check:
 	var r = confirm("Delete Message?");
 	if (r == true) {
 	    //Delete and remove:
-		$.post("/process/media_delete", {i_id:i_id}, function(data) {
+		$.post("/process/insight_delete", {i_id:i_id, pid:$('#pid').val()}, function(data) {
 			//Update UI to confirm with user:
 			
 			$("#ul-nav-"+i_id).html('<div>'+data+'</div>');
@@ -402,7 +420,7 @@ function msg_start_edit(i_id){
 	$(document).keyup(function(e) {		
 		//Watch for action keys:
 		if (e.ctrlKey && e.keyCode === 13){
-			msg_save_edit(i_id);
+			insight_save_updates(i_id);
 		} else if (e.keyCode === 27) {
 			msg_cancel_edit(i_id);
 		}
@@ -422,7 +440,7 @@ function msg_cancel_edit(i_id,success=0){
 	}
 }
 
-function msg_save_edit(i_id){
+function insight_save_updates(i_id){
 	//Make sure there is some value:
 	var i_message = $("#ul-nav-"+i_id+" textarea").val();
 	if(i_message.length<1){
@@ -437,7 +455,7 @@ function msg_save_edit(i_id){
 	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
 	
 	//Update message:
-	$.post("/process/media_edit", {i_id:i_id, i_message:i_message}, function(data) {
+	$.post("/process/insight_update", {i_id:i_id, i_message:i_message, pid:$('#pid').val()}, function(data) {
 		//Update UI to confirm with user:
 		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
 		
@@ -466,7 +484,7 @@ function msg_save_edit(i_id){
   <?php if($level<=2){ ?>
   <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'] ?></a></li>
   <?php } ?>
-  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-cog" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?></a></li>
+  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-pencil-square" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?></a></li>
   <li id="nav_insights"><a href="#insights" data-toggle="tab" onclick="update_hash('insights')"><i class="fa fa-eye" aria-hidden="true"></i> Insights</a></li>
 </ul>
 
@@ -605,16 +623,11 @@ function msg_save_edit(i_id){
     
     
     <div class="tab-pane" id="insights">
-    	<?php 
-    	$i_media_type_names = $this->config->item('i_media_type_names');
-    	$i_dispatch_minutes = $this->config->item('i_dispatch_minutes');
-    	?>
     	<p class="maxout"></p>
     	<ul class="maxout">
-			<li>Insights are facts or best-practices to help effectively execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
-			<!-- <li>Use <b><?= strip_tags($i_media_type_names['text']) ?></b> for referencing articles, Youtube, etc...</li> -->
-			<li>Adding "<b>{first_name}</b>" in <b><?= strip_tags($i_media_type_names['text']) ?></b> to mention the student name.</li>
-			<li>Insights are shared with students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+			<li>Facts or best-practices helping students accomplish the <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?> objecetive.</li>
+			<li>Insights are delivered to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+			<li>Each insight can be a message, URL or a media file.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
@@ -624,36 +637,48 @@ function msg_save_edit(i_id){
 		echo '</div>';
 		
 		
-		//TODO do_edits
 		
+		
+		
+		
+		
+		//TODO do_edits		
 		echo '<div class="list-group list-messages">';
     		echo '<div class="list-group-item">';
-        		echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
-        		echo '<select class="form-control" id="i_media_type" style="width:150px; display:none;">';
-            		foreach($i_media_type_names as $key=>$name){
-            		    echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
-            		}
-        		echo '</select>';
-        		echo '<textarea maxlength="600" onkeyup="countChar(this)" class="form-control" style="height:120px;" id="i_message" placeholder="Text Message..."></textarea>';
-        		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.</div>';
-        		echo '<input type="url" class="form-control" id="i_url" placeholder="Reference URL (Optional)" />';
-        		echo '<div style="display:none;">';
+    		
+    		  echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
+    		  echo '<form id="dropform">'; //Used for dropping files
+    		  
+    		  
+    		    echo '<textarea onkeyup="countChar(this)" class="form-control" style="min-height:110px; resize:vertical;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
+    		
+        		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.<a href="javascript:add_first_name();" style="float:right; font-weight:bold;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-plus-square" aria-hidden="true"></i> {first_name}</a></div>';
         		
-        		  echo '<select class="form-control" id="i_dispatch_minutes">';
-        		  foreach($i_dispatch_minutes[$bootcamp['b_sprint_unit']] as $key=>$name){
-        		      echo '<option value="'.$key.'">'.strip_tags($name).'</option>';
-        		  }
-        		  echo '</select>';
-        		  
-        		echo '</div>';
-        		echo '<a href="javascript:msg_create();" class="btn btn-primary" style="margin-top:0;">ADD</a>';
-        		echo '<span class="enter">or press <b>CTRL+ENTER</b></span>';
-        		echo '</div>';
-    		echo '</div>';
+        		echo '<div id="url_preview"></div>';
+        		
+        		echo '<ul style="list-style:none;">';
+            		echo '<li class="pull-left" style="padding:2px 5px 0 0;">';
+            		echo '<div class="fallback" style="display:inline-block;"><input type="file" name="file" /></div>';
+            		echo '</li>';
+            		
+            		echo '<li class="pull-right"><a href="javascript:msg_create();" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
+            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
+            		  echo echo_status_dropdown('i','i_status',1,array(-1),'dropup');
+            		echo '</li>';
+            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
+            		echo echo_status_dropdown('idm','i_dispatch_minutes',0,array(),'dropup');
+            		echo '</li>';
+            		
+        		echo '</ul>';
+        		
+        		
+              echo '</form>';
+        	  echo '</div>';
+        		
+            echo '</div>';
         echo '</div>';
         ?>
         
     </div>
-    
 </div>
 

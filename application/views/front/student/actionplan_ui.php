@@ -114,7 +114,6 @@ foreach($breadcrumb_p as $link){
 echo '</ol>';
 
 //Overview:
-//echo '<h4><i class="fa fa-binoculars" aria-hidden="true"></i> Overview <span class="sub-title">'.echo_time($intent['c_time_estimate'],1).'</span></h4>';
 if($level>1){
     echo '<div class="quill_content">'.$intent['c_todo_overview'].'</div>';
 }

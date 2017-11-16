@@ -114,7 +114,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
-				        'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_initiator_u_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 1, //Message Read
 				    ));
@@ -123,7 +123,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
-				        'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_initiator_u_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 2, //Message Delivered
 				    ));
@@ -179,19 +179,19 @@ class Bot extends CI_Controller {
 						//Referral key which currently equals the User ID
 						$ref = explode('_',$referral_array['ref'],2);
 						$u_key = $ref[1]; //TODO use to validate if authentic origin
-						$eng_data['e_object_id'] = intval($ref[0]);
+						$ref_u_id = intval($ref[0]);
 						
 
-						if($eng_data['e_object_id']>0){
+						if($ref_u_id>0){
 						    
 						    //See if we can find a valid user with this account:
 						    $matching_users = $this->Db_model->u_fetch(array(
-						        'u_id' => $eng_data['e_object_id'],
+						        'u_id' => $ref_u_id,
 						        'u_status >=' => 0,
 						    ));
 						    
 						    $current_fb_users = $this->Db_model->u_fetch(array(
-						        'u_id !=' => $eng_data['e_object_id'],
+						        'u_id !=' => $ref_u_id,
 						        'u_fb_id' => $im['sender']['id'],
 						        'u_status >=' => 0,
 						    ));
@@ -207,10 +207,11 @@ class Bot extends CI_Controller {
 						        
 						        //Log engagement:
 						        $this->Db_model->e_create(array(
-						            'e_creator_id' => $eng_data['e_object_id'],
+						            'e_initiator_u_id' => $ref_u_id,
 						            'e_message' => 'MenchBot failed to activate user because Messenger account is associated with another Mench account.',
 						            'e_json' => json_encode($json_data),
 						            'e_type_id' => 9, //Support Needing Graceful Errors
+						            'e_recipient_u_id' => $current_fb_users[0]['u_id'],
 						        ));
 						        
 						    } elseif(count($matching_users)>0 && strlen($matching_users[0]['u_fb_id'])>1){
@@ -234,7 +235,7 @@ class Bot extends CI_Controller {
 						            
 						            //Log engagement:
 						            $this->Db_model->e_create(array(
-						                'e_creator_id' => $eng_data['e_object_id'],
+						                'e_initiator_u_id' => $ref_u_id,
 						                'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
 						                'e_json' => json_encode($json_data),
 						                'e_type_id' => 9, //Support Needing Graceful Errors
@@ -280,7 +281,7 @@ class Bot extends CI_Controller {
 						        
 						        //Log Activation Engagement:
 						        $this->Db_model->e_create(array(
-						            'e_creator_id' => $matching_users[0]['u_id'],
+						            'e_initiator_u_id' => $matching_users[0]['u_id'],
 						            'e_json' => json_encode(array(
 						                'fb_webhook' => $json_data,
 						                'fb_profile' => $fb_profile,
@@ -288,8 +289,8 @@ class Bot extends CI_Controller {
 						                'admissions' => $admissions,
 						            )),
 						            'e_type_id' => 31, //Messenger Activated
-						            'e_object_id' => $matching_users[0]['u_id'],
 						            'e_b_id' => (count($admissions)==1 ? $admissions[0]['b_id'] : 0),
+						            'e_r_id' => (count($admissions)==1 ? $admissions[0]['r_id'] : 0),
 						        ));
 						        
 						        
@@ -323,7 +324,7 @@ class Bot extends CI_Controller {
 					//Update the user ID now as we might have linked them:
 					$user_id = $im['sender']['id']; //Their facebook ID
 					$u_id = $this->Db_model->u_fb_search($user_id); //Their Mench ID
-					$eng_data['e_creator_id'] = $u_id; //Append to engagement data
+					$eng_data['e_initiator_u_id'] = $u_id; //Append to engagement data
 					
 					
 					
@@ -353,7 +354,7 @@ class Bot extends CI_Controller {
 					    
 					    //Log engagement:
 					    $this->Db_model->e_create(array(
-					        'e_creator_id' => $u_id,
+					        'e_initiator_u_id' => $u_id,
 					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 9, //Support Needing Graceful Errors
@@ -368,7 +369,7 @@ class Bot extends CI_Controller {
 					    
 					    //Log Engagement:
 					    $this->Db_model->e_create(array(
-					        'e_creator_id' => $u_id,
+					        'e_initiator_u_id' => $u_id,
 					        'e_message' => 'We Received inbound message from student enrolled in *multiple* bootcamps!',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 8, //Platform Error
@@ -405,9 +406,9 @@ class Bot extends CI_Controller {
 					
 					//Log engagement:
 				    $this->Db_model->e_create(array(
-				        'e_creator_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_initiator_u_id' => $this->Db_model->u_fb_search($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
-				        'e_type_id' => 5, //Message Delivered
+				        'e_type_id' => 5, //Messenger Optin
 				    ));
 					
 				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -432,12 +433,13 @@ class Bot extends CI_Controller {
 					
 					//Start data reparation for message inbound OR outbound engagement:
 					$eng_data = array(
-					    'e_creator_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
+					    'e_initiator_u_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
 						'e_json' => json_encode($json_data),
 					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
 					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
-					    'e_object_id' => ( $sent_from_us ? $u_id : 0 ),
+					    'e_recipient_u_id' => ( $sent_from_us ? $u_id : 0 ),
 					    'e_b_id' => ( count($admissions)==1 ? $admissions[0]['r_b_id'] : 0 ),
+					    'e_r_id' => ( count($admissions)==1 ? $admissions[0]['r_id'] : 0 ),
 					);
 					
 					
@@ -465,7 +467,7 @@ class Bot extends CI_Controller {
 					    
 					    //Log engagement:
 					    $this->Db_model->e_create(array(
-					        'e_creator_id' => $u_id,
+					        'e_initiator_u_id' => $u_id,
 					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 9, //Support Needing Graceful Errors
@@ -480,7 +482,7 @@ class Bot extends CI_Controller {
 					    
 					    //Log Engagement:
 					    $this->Db_model->e_create(array(
-					        'e_creator_id' => $u_id,
+					        'e_initiator_u_id' => $u_id,
 					        'e_message' => 'We Received inbound message from student enrolled in *multiple* bootcamps!',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 8, //Platform Error
@@ -521,7 +523,7 @@ class Bot extends CI_Controller {
 							if(in_array($att['type'],array('image','audio','video','file'))){
 								
 							    //Indicate that we need to save this file on our servers:
-							    $eng_data['e_file_save'] = 0;
+							    $eng_data['e_cron_job'] = 0;
 							    //We do not save instantly as we need to respond to facebook's webhook call ASAP or else FB resend attachment!
 								
 							} elseif($att['type']=='location'){
@@ -613,12 +615,13 @@ class Bot extends CI_Controller {
 	                
 	                //Log Engagement
 	                $this->Db_model->e_create(array(
-	                    'e_creator_id' => $enrollments[0]['ru_u_id'],
+	                    'e_initiator_u_id' => $enrollments[0]['ru_u_id'],
 	                    'e_message' => 'Received $'.$amount.' USD via PayPal.',
 	                    'e_json' => json_encode($_POST),
 	                    'e_type_id' => 30, //Paypal Payment
-	                    'e_object_id' => $transaction['t_id'],
 	                    'e_b_id' => $classes[0]['r_b_id'],
+	                    'e_r_id' => $classes[0]['r_id'],
+	                    'e_t_id' => $transaction['t_id'],
 	                ));
 	            }
 	        }
@@ -876,7 +879,7 @@ Array
 					
 				} else {
 					//This is a new user that needs to be registered!
-				    $eng_data['e_creator_id'] = $this->Db_model->u_fb_create($fb_user_id);
+				    $eng_data['e_initiator_u_id'] = $this->Db_model->u_fb_create($fb_user_id);
 					
 					if(!$eng_data['us_id']){
 						//There was an error fetching the user profile from Facebook:
