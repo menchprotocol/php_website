@@ -876,7 +876,7 @@ class Db_model extends CI_Model {
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
-	    $this->db->order_by('e.e_id','ASC'); //TODO Change to DESC
+	    $this->db->order_by('e.e_id','DESC');
 	    if($limit>0){
 	        $this->db->limit($limit);
 	    }
