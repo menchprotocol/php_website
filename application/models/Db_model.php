@@ -868,7 +868,7 @@ class Db_model extends CI_Model {
 	
 	
 	
-	function e_fetch($match_columns=array()){
+	function e_fetch($match_columns=array(),$limit=100){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
@@ -876,8 +876,10 @@ class Db_model extends CI_Model {
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
-	    $this->db->order_by('e.e_id','DESC');
-	    $this->db->limit(100);
+	    $this->db->order_by('e.e_id','ASC'); //TODO Change to DESC
+	    if($limit>0){
+	        $this->db->limit($limit);
+	    }
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}

@@ -377,8 +377,9 @@ class Bot extends CI_Controller {
 					    
 					} else {
 					    
-					    //Append Bootcamp ID to engagement:
+					    //Append Bootcamp & Class ID to engagement:
 					    $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
+					    $eng_data['e_r_id'] = $admissions[0]['r_id'];
 					    
 					}
 					/*
@@ -492,6 +493,7 @@ class Bot extends CI_Controller {
 					    
 					    //Append Bootcamp ID to engagement:
 					    $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
+					    $eng_data['e_r_id'] = $admissions[0]['r_id'];
 					    
 					}
 					/*
