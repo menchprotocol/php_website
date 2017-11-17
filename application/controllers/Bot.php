@@ -36,7 +36,7 @@ class Bot extends CI_Controller {
 	
 	function send_message(){
 	    
-	    //Dummy:
+	    /*
 	    if(!isset($_POST) || count($_POST)<1){
 	        $_POST['b_id'] = 1;
 	        $_POST['sender_u_id'] = 1;
@@ -45,6 +45,7 @@ class Bot extends CI_Controller {
 	        $_POST['auth_hash'] = md5( $_POST['sender_u_id'] . $_POST['receiver_u_id'] . $_POST['message_type'] . '7H6hgtgtfii87' );
 	        $_POST['text_payload'] = 'Hi This is a Test...';
 	    }
+	    */
 	    
 	    //Auth user and check required variables:
 	    if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
