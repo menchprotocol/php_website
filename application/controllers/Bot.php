@@ -126,7 +126,10 @@ class Bot extends CI_Controller {
 	                
 	                //Send Message:
 	                $this->Facebook_model->batch_messages( $admissions[0]['u_fb_id'] , array(
-	                    array('text' => $_POST['text_payload']),
+	                    array(
+	                        'text' => $_POST['text_payload'],
+	                        'metadata' => 'system_logged',
+	                    ),
 	                ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
 	                
 	                //Log Engagement:
