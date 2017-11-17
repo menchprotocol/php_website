@@ -549,7 +549,13 @@ class Bot extends CI_Controller {
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
 					$u_id = $this->Db_model->u_fb_put($user_id);
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
+					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					
+					if($metadata=='system_logged'){
+					    //This is already logged! No need to take further action!
+					    json_encode(array('complete'=>'yes'));
+					    exit;
+					}
 					
 					
 					//Start data reparation for message inbound OR outbound engagement:
@@ -620,10 +626,6 @@ class Bot extends CI_Controller {
 					 * End of Code Block #001
 					 * ***************************
 					 */
-					
-					//Some that are not used yet:
-					$is_mench = 0; //TODO
-					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					
 					
 					//Do some basic checks:
