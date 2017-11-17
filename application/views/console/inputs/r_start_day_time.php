@@ -33,6 +33,9 @@ function update_timeline(){
 	} , function(data) {
 		//Update UI to confirm with user:
 		$('#timeline_update').html(data).hide().fadeIn();
+
+		//Activate Tooltip:
+		$('[data-toggle="tooltip"]').tooltip();
     });
 }
 </script>

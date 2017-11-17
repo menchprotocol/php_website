@@ -29,8 +29,6 @@ function save_settings(){
 		b_id:$('#b_id').val(),
 		b_status:$('#b_status').val(),
 		b_url_key:$('#b_url_key').val(),
-		b_video_url:$('#b_video_url').val(),
-		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
 		
 	} , function(data) {
 		
@@ -49,29 +47,26 @@ function save_settings(){
 <input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_landingpage" class="active"><a href="#landingpage" data-toggle="tab" onclick="update_hash('landingpage')"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
+  <li id="nav_general" class="active"><a href="#general" data-toggle="tab" onclick="update_hash('general')"><i class="fa fa-cog" aria-hidden="true"></i> General</a></li>
   <li id="nav_team"><a href="#team" data-toggle="tab" onclick="update_hash('team')"><i class="fa fa-user-plus" aria-hidden="true"></i> Instructors</a></li>
-  <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="landingpage">
-
-		<div class="title"><h4><i class="fa fa-youtube-play" aria-hidden="true"></i> Explainer Video</h4></div>
+    <div class="tab-pane active" id="general">
+    	
+		<div class="title" style="margin-top:0;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status</h4></div>
         <ul>
-			<li>A 1-3 minute video explaining who should join this bootcamp and why.</li>
-			<li>Published at the top of your landing page.</li>
-  			<li>Enter a YouTube URL or link to a video file hosted online.</li>
-  			<li>Chat with us if you'd like us to host the video for you.</li>
-		</ul>
-		<div class="form-group label-floating is-empty border" style="padding-bottom:0;">
-            <input type="url" id="b_video_url" placeholder="https://www.youtube.com/watch?v=Ec4o68fSRsc" value="<?= (isset($bootcamp['b_video_url']) ? $bootcamp['b_video_url'] : null) ?>" style="margin-bottom:0;" class="form-control">
-            <span class="material-input"></span>
-        </div>
+        	<li>Bootcamps are created in <?= status_bible('b',0) ?> mode to give you time to build them.</li>
+        	<li>When you're ready to publish you update the status to <?= status_bible('b',1) ?>.</li>
+        	<li>We will start our review process & work with you to iteratively improve it.</li>
+        	<li>Once ready & approved we update the status to <?= status_bible('b',2) ?>.</li>
+        </ul>
+        <?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
+        <div style="clear:both; margin:0; padding:0;"></div>
+		
+		
 		<br />
-		
-		
 		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Landing Page URL</h4></div>
         <ul>
         	<li>Your bootcamp's unique landing page URL.</li>
@@ -93,10 +88,10 @@ function save_settings(){
             	<div id="copy_button"><?= $url ?></div>
             </div>
         </div>
-        <br />
+		
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
-        
     </div>
+    
     
     
     <div class="tab-pane" id="team">
@@ -136,28 +131,6 @@ function save_settings(){
 		?>
     </div>
     
-    <div class="tab-pane" id="settings">
-    	
-		<div class="title" style="margin-top:0;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status</h4></div>
-        <ul>
-        	<li>Bootcamps are created in <?= status_bible('b',0) ?> mode to give you time to build them.</li>
-        	<li>When you're ready to publish you update the status to <?= status_bible('b',1) ?>.</li>
-        	<li>We will start our review process & work with you to iteratively improve it.</li>
-        	<li>Once ready & approved we update the status to <?= status_bible('b',2) ?>.</li>
-        </ul>
-        <?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
-        <div style="clear:both; margin:0; padding:0;"></div>
-
-
-
-		<?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
-		<br />
-		
-		
-		
-        <table width="100%"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
-        
-    </div>
 </div>
 
 

@@ -630,11 +630,12 @@ class Process extends CI_Controller {
         echo '<p>Based on this start time, your class timeline is:</p>';
         echo '<ul style="list-style:decimal;">';
 	        echo '<li>Admission Starts <b>When Bootcamp is '.status_bible('b',2).'</b></li>';
-	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b> (Midnight Before Start Day)</li>';
-	        echo '<li>Class Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> (Your Selected Time)</li>';
-    	    echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> (Afternoon of Start Day <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
-    	    echo '<li>Class Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b> ('.$_POST['milestone_count'] ?> <?= ucwords($_POST['b_sprint_unit']).' Action Plan)</li>';
-    	    echo '<li>Performance Payout by <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> (2 Weeks Later <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a>)</li>';
+	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
+	        echo '<li>Class Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+	        echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+	        echo '<li>Bootcamp Duration <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s</b></li>';
+	        echo '<li>Class Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+    	    echo '<li>Performance Payout by <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
     	    echo '</ul>';
 	}
 	
@@ -1049,8 +1050,6 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['b_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Status.</span>');
-	    } elseif(!isset($_POST['b_sprint_unit'])){
-	        die('<span style="color:#FF0000;">Error: Missing Sprint Unit.</span>');
 	    } elseif(!isset($_POST['b_url_key']) || strlen($_POST['b_url_key'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing URL Key.</span>');
 	    }
@@ -1074,20 +1073,12 @@ class Process extends CI_Controller {
 	    if(count($duplicate_bootcamps)>0){
 	        //Ooops, we have a duplicate:
 	        die('<span style="color:#FF0000;">Error: Duplicate URL Key with <a href="/bootcamps/'.$_POST['b_url_key'].'" target="_blank">another bootcamp</a>.</span>');
-	    }
-	    
-	    //Validate Video & Image URL:
-	    if(strlen($_POST['b_video_url'])>0 && !url_exists($_POST['b_video_url'])){
-	        die('<span style="color:#FF0000;">Error: <a href="'.$_POST['b_video_url'].'" target="_blank">Video URL</a> could not be verified.</span>');
-	    }
-	    
+	    }	    
 	    
 	    //Generate update array for the bootcamp:
 	    $b_update = array(
 	        'b_status' => intval($_POST['b_status']),
 	        'b_url_key' => $_POST['b_url_key'],
-	        'b_video_url' => $_POST['b_video_url'],
-	        'b_sprint_unit' => $_POST['b_sprint_unit'],
 	    );
 
 	    //Updatye bootcamp:
@@ -1260,7 +1251,7 @@ class Process extends CI_Controller {
 	        'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
 	        'us_student_id' => intval($_POST['u_id']),
 	        'us_student_notes' => trim($_POST['us_notes']),
-	        'us_status' => 1, //No need for review
+	        'us_status' => 1, //Submitted
 	    ));
 	    
 	    
@@ -1298,7 +1289,17 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['c_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Task Status.</span>');
-	    }	    
+	    } elseif(!isset($_POST['b_sprint_unit'])){
+	        die('<span style="color:#FF0000;">Error: Missing Milestone Submission Frequency.</span>');
+	    }
+	    
+	    //Validate Bootcamp ID:
+	    $bootcamps = $this->Db_model->b_fetch(array(
+	        'b.b_id' => intval($_POST['b_id']),
+	    ));
+	    if(count($bootcamps)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    }
 	    
 	    
 	    //Validate Original intent:
@@ -1310,6 +1311,7 @@ class Process extends CI_Controller {
 	    } elseif(isset($_POST['c_is_last']) && $_POST['c_is_last']=='t' && count($original_intents[0]['c__child_intents'])>0){
 	        die('<span style="color:#FF0000;">Error: Break Milestones cannot have any Tasks.</span>');
 	    }
+	    
 	    
 	    //Generate Update Array
 	    $c_update = array(
@@ -1326,7 +1328,6 @@ class Process extends CI_Controller {
 	    //Update Algolia:
 	    $this->Db_model->sync_algolia(intval($_POST['pid']));
 	    
-	    
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
@@ -1340,6 +1341,31 @@ class Process extends CI_Controller {
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
 	        'e_c_id' => intval($_POST['pid']),
 	    ));
+	    
+	    
+	    if(!($bootcamps[0]['b_sprint_unit']==$_POST['b_sprint_unit'])){
+	        //Updatye bootcamp:
+	        $b_update = array(
+	            'b_sprint_unit' => $_POST['b_sprint_unit'],
+	        );
+	        $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
+	        
+	        //Log Engagement for Bootcamp Edited:
+	        $this->Db_model->e_create(array(
+	            'e_initiator_u_id' => $udata['u_id'],
+	            'e_message' => readable_updates($bootcamps[0],$b_update,'b_'),
+	            'e_json' => json_encode(array(
+	                'input' => $_POST,
+	                'before' => $bootcamps[0],
+	                'after' => $b_update,
+	            )),
+	            'e_type_id' => 18, //Bootcamp Setting Updated
+	            'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+	        ));
+	        
+	        //Do a Hard Redirect:
+	        echo '<script> setTimeout(function() { window.location = "/console/'.$_POST['b_id'].'/actionplan" }, 500); </script>';
+	    }
 	    
 	    //Show result:
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');

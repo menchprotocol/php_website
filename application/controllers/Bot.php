@@ -12,34 +12,151 @@ class Bot extends CI_Controller {
 	
 	
 	function t(){
-	    header('Content-Type: application/json');
-	    echo json_encode($this->Facebook_model->set_settings());
+	    echo_json($this->Facebook_model->set_settings());
 		//print_r($this->Facebook_model->fetch_settings());
 	}
 	
 	function fetch(){
-	    header('Content-Type: application/json');
-	    echo json_encode($this->Db_model->b_fb_fetch('1443101719058431'));
+	    echo_json($this->Db_model->b_fb_fetch('1443101719058431'));
 	}
 	
 	function fetch_entity($apiai_id){
-		header('Content-Type: application/json');
-		echo json_encode($this->Apiai_model->fetch_entity($apiai_id));
+	    echo_json($this->Apiai_model->fetch_entity($apiai_id));
 	}
 	
 	function fetch_bootcamp($apiai_id){
-		header('Content-Type: application/json');
-		echo json_encode($this->Apiai_model->fetch_bootcamp($apiai_id));
+	    echo_json($this->Apiai_model->fetch_bootcamp($apiai_id));
 	}
 	
 	function prep_bootcamp($pid){
-		header('Content-Type: application/json');
-		echo json_encode($this->Apiai_model->prep_bootcamp($pid));
+	    echo_json($this->Apiai_model->prep_bootcamp($pid));
 	}
 	
 	
 	
-	
+	function send_message(){
+	    
+	    //Dummy:
+	    if(!isset($_POST) || count($_POST)<1){
+	        $_POST['b_id'] = 1;
+	        $_POST['sender_u_id'] = 1;
+	        $_POST['receiver_u_id'] = 1;
+	        $_POST['message_type'] = 'text';
+	        $_POST['auth_hash'] = md5( $_POST['sender_u_id'] . $_POST['receiver_u_id'] . $_POST['message_type'] . '7H6hgtgtfii87' );
+	        $_POST['text_payload'] = 'Hi This is a Test...';
+	    }
+	    
+	    //Auth user and check required variables:
+	    if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Bootcamp ID',
+	        ));
+	    } elseif(!isset($_POST['sender_u_id']) || intval($_POST['sender_u_id'])<=0){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Sender/Instructor ID',
+	        ));
+	    } elseif(!isset($_POST['receiver_u_id']) || intval($_POST['receiver_u_id'])<=0){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Receiver/Student ID',
+	        ));
+	    } elseif(!isset($_POST['message_type']) || !in_array($_POST['message_type'],array('text','audio','video','image','file'))){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Message Type',
+	        ));
+	    } elseif(!isset($_POST['auth_hash']) || !(md5( $_POST['sender_u_id'] . $_POST['receiver_u_id'] . $_POST['message_type'] . '7H6hgtgtfii87' ) == $_POST['auth_hash'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Auth Hash',
+	        ));
+	    } elseif($_POST['message_type']=='text' && (!isset($_POST['text_payload']) || strlen($_POST['text_payload'])<1)){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Text Payload',
+	        ));
+	    } elseif(in_array($_POST['message_type'],array('audio','video','image','file')) && !isset($_POST['attach_url'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Attachment URL',
+	        ));	        
+	    } else {
+	        
+	        //Fetch instructor/Bootcamp:
+	        $fetch_instructors = $this->Db_model->ba_fetch(array(
+	            'ba.ba_b_id' => intval($_POST['b_id']),
+	            'ba.ba_u_id' => intval($_POST['sender_u_id']),
+	            'ba.ba_status >=' => 0,
+	            'u.u_status >=' => 0,
+	        ));
+	        
+	        //Fetch Student:
+	        $admissions = $this->Db_model->remix_admissions(array(
+	            'ru.ru_u_id'	=> intval($_POST['receiver_u_id']),
+	            'r.r_b_id'	    => intval($_POST['b_id']),
+	        ));
+	        
+	        //Validate Student ID:
+	        if(!(count($fetch_instructors)==1)){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'Instructor Not Assigned to Bootcamp',
+	            ));
+	        } elseif(count($admissions)<=0){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'Student Not Enrolled in Bootcamp',
+	            ));
+	        } elseif(count($admissions)>=2){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'Student Enrolled On Mutiple Bootcamps',
+	            ));
+	        } elseif(strlen($admissions[0]['u_fb_id'])<5){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'Student Not Activated Messenger Yet',
+	            ));
+	        } else {
+	            
+	            //Proceed to Send Message:
+	            if($_POST['message_type']=='text'){
+	                
+	                //Send Message:
+	                $this->Facebook_model->batch_messages( $admissions[0]['u_fb_id'] , array(
+	                    array('text' => $_POST['text_payload']),
+	                ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
+	                
+	                //Log Engagement:
+	                $this->Db_model->e_create(array(
+	                    'e_initiator_u_id' => intval($_POST['sender_u_id']),
+	                    'e_recipient_u_id' => intval($_POST['receiver_u_id']),
+	                    'e_message' => $_POST['text_payload'],
+	                    'e_json' => json_encode($_POST),
+	                    'e_type_id' => 7, //Outbound Message
+	                    'e_b_id' => $admissions[0]['b_id'],
+	                    'e_r_id' => $admissions[0]['r_id'],
+	                ));
+	                
+	                //Show success:
+	                echo_json(array(
+	                    'status' => 1,
+	                    'message' => 'Message sent',
+	                ));
+	                
+	            } else {
+	                
+	                //TODO Wire in Attachments:
+	                echo_json(array(
+	                    'status' => 0,
+	                    'message' => 'Sending Attachments Not Wired In Yet',
+	                ));
+	            }
+	        }
+	    }
+	}
 	
 	
 	function facebook_webhook(){
@@ -114,7 +231,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_initiator_u_id' => $this->Db_model->u_fb_put($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 1, //Message Read
 				    ));
@@ -123,7 +240,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_initiator_u_id' => $this->Db_model->u_fb_put($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 2, //Message Delivered
 				    ));
@@ -323,7 +440,7 @@ class Bot extends CI_Controller {
 					
 					//Update the user ID now as we might have linked them:
 					$user_id = $im['sender']['id']; //Their facebook ID
-					$u_id = $this->Db_model->u_fb_search($user_id); //Their Mench ID
+					$u_id = $this->Db_model->u_fb_put($user_id); //Their Mench ID
 					$eng_data['e_initiator_u_id'] = $u_id; //Append to engagement data
 					
 					
@@ -407,7 +524,7 @@ class Bot extends CI_Controller {
 					
 					//Log engagement:
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Db_model->u_fb_search($im['sender']['id']),
+				        'e_initiator_u_id' => $this->Db_model->u_fb_put($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 5, //Messenger Optin
 				    ));
@@ -427,7 +544,7 @@ class Bot extends CI_Controller {
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-					$u_id = $this->Db_model->u_fb_search($user_id);
+					$u_id = $this->Db_model->u_fb_put($user_id);
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					
 					

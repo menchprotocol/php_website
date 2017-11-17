@@ -175,7 +175,7 @@ if(count($i_messages)>0){
 
 //Display Milestone list:
 if($level<3){
-    echo '<h4><i class="fa fa-list-ul" aria-hidden="true"></i> '.( $level==1 ? $sprint_units[$admission['b_sprint_unit']]['name'].' Milestones' : 'Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
+    echo '<h4>'.( $level==1 ? '<i class="fa fa-flag" aria-hidden="true"></i> '.$sprint_units[$admission['b_sprint_unit']]['name'].' Milestones' : '<i class="fa fa-list-ul" aria-hidden="true"></i> '.ucwords($admission['b_sprint_unit']).' #'.$sprint_index.' Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
     echo '<div id="list-outbound" class="list-group">';
     if($level==1){
         //Show their successful admission to also train on UI:

@@ -170,6 +170,7 @@ function save_c(){
  	
  	var postData = {
 		b_id:$('#b_id').val(),
+ 		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
  		pid:$('#pid').val(),
  		c_objective:$('#c_objective').val(),
  		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
@@ -520,7 +521,7 @@ function message_save_updates(i_id){
     	    ?>
         	<ul class="maxout">
         		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> that step-by-step help students accomplish the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
-    			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b> in <a href="/console/<?= $bootcamp['b_id'] ?>/settings/#settings"><u><i class="material-icons">settings</i>Settings</u></a>.</li>
+    			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
     			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
     			<li>To keep students focused, <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
     			<li>Each <b><?= $core_objects['level_1']['o_icon'].' '.$sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Milestone</b> can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
@@ -663,6 +664,11 @@ function message_save_updates(i_id){
             <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
         </div>
         
+        
+        
+        <div style="display:<?= ( $level==1 ?'block':'none' ) ?>;">
+    		<?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
+        </div>
         
         
         <div style="display:<?= ( $level==2 ?'block':'none' ) ?>;">

@@ -212,14 +212,14 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function c_admins($b_id){
+	function ba_fetch($match_columns){
 	    //Fetch the admins of the bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
 	    $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_u_id = u.u_id');
-	    $this->db->where('ba.ba_status >=',0);
-	    $this->db->where('ba.ba_b_id',$b_id);
-	    $this->db->where('u.u_status >=',0);
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
 	    $this->db->order_by('ba.ba_status','DESC');
 	    $this->db->order_by('ba.ba_team_display','DESC');
 	    $q = $this->db->get();
@@ -242,7 +242,7 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function u_fb_search($u_fb_id){
+	function u_fb_put($u_fb_id){
 		//A function to check or create a new user using FB id:
 		
 		//Search for current users:
@@ -266,7 +266,7 @@ class Db_model extends CI_Model {
 		} else {
 			//Inconsistent data:
 		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_fb_search() Found multiple users for Facebook ID ['.$u_fb_id.'].',
+		        'e_message' => 'u_fb_put() Found multiple users for Facebook ID ['.$u_fb_id.'].',
 		        'e_json' => json_encode($matching_users),
 		        'e_type_id' => 8, //Platform Error
 		    ));
@@ -280,7 +280,7 @@ class Db_model extends CI_Model {
 		} else {
 			//Ooops, some error!
 		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_fb_search() Failed to create new user using their Facebook PSID ['.$u_fb_id.'].',
+		        'e_message' => 'u_fb_put() Failed to create new user using their Facebook PSID ['.$u_fb_id.'].',
 		        'e_type_id' => 8, //Platform Error
 		    ));
 			return 0;
@@ -632,7 +632,11 @@ class Db_model extends CI_Model {
 	        ));
 	        
 	        //Fetch admins:
-	        $bootcamps[$key]['b__admins'] =  $this->Db_model->c_admins($c['b_id']);
+	        $bootcamps[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
+	            'ba.ba_b_id' => $c['b_id'],
+	            'ba.ba_status >=' => 0,
+	            'u.u_status >=' => 0,
+	        ));
 	    }
 	    
 	    return $bootcamps;
@@ -982,7 +986,7 @@ class Db_model extends CI_Model {
 		                }
 		                
 		                if(strlen($engagements[0]['e_message'])>0){
-		                    $html_message .= '<div>Message: '.$engagements[0]['e_message'].'</div>';
+		                    $html_message .= '<div>Message:<br />'.format_e_message($engagements[0]['e_message']).'</div>';
 		                }
 		                $html_message .= '<br />';
 		                $html_message .= '<div>Cheers,</div>';

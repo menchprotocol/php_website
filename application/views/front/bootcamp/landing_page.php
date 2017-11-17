@@ -114,10 +114,10 @@ $( document ).ready(function() {
 <div class="row" id="landing_page">
 
 	<div class="col-md-4">
-    	<?php if(strlen($bootcamp['b_video_url'])>0){ ?>
+	
+    	<?php /* if(strlen($bootcamp['b_video_url'])>0){ ?>
         	<div class="video-player"><?= echo_video($bootcamp['b_video_url']); ?></div>
-        <?php } ?>
-        
+        <?php } */ ?>
         
         <div id="sidebar">
         	

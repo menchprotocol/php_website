@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.82,
+    'version' => 0.83,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -126,7 +126,7 @@ $config['engagement_subscriptions'] = array(
         'subscription' => array(0,8,9,3,4,5,10), //ALL, System error, Technical Support Attention Errors, 3x Messenger New Users, Instructor Login
     ),
     array(
-        'admin_emails' => array('shervin@mench.co','miguel@mench.co'),
+        'admin_emails' => array('miguel@mench.co'), //'shervin@mench.co', Removed for now since I am receiving all Engagements
         'subscription' => array(26,15,37), //Application Submitted, New Bootcamp, Request to Publish a Bootcamp
     ),
 );

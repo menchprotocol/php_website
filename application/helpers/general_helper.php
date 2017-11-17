@@ -152,7 +152,7 @@ function extract_level($b,$c_id){
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => $core_objects['level_2']['o_icon'].' Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
+                                'anchor' => '<i class="fa fa-list-ul" aria-hidden="true"></i> Task #'.$task['cr_outbound_rank'].' '.$task['c_objective'],
                             ),
                         );
                         
@@ -355,7 +355,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
             }
             
             if($aggregate_status==-2){
-                $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+                $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
             } else {
                 $ui .= status_bible('us',$aggregate_status,1).' ';
             }
@@ -365,7 +365,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
             if(isset($us_data[$c['c_id']])){
                 $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
             } else {
-                $ui .= '<i class="fa fa-circle-thin initial" aria-hidden="true"></i> ';
+                $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
             }
         }
         
@@ -853,17 +853,7 @@ function calculate_bootcamp_status($b){
     
     /* *****************************
      *  Bootcamp Settings
-     *******************************/
-    
-    //b_video_url
-    $to_gain = 15;
-    $progress_possible += $to_gain;
-    if(strlen($b['b_video_url'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Explainer Video]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
-    }
-    
+     *******************************/   
     
   
     //b_status
@@ -872,7 +862,7 @@ function calculate_bootcamp_status($b){
     if($b['b_status']>=1){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Finally change <b>[Bootcamp Status]</b> to '.status_bible('b',1).' in <a href="/console/'.$b['b_id'].'/settings#settings"><u>Settings</u></a>');
+        array_push($call_to_action,'Finally change <b>[Bootcamp Status]</b> to '.status_bible('b',1).' in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
     }
     
     
@@ -1200,21 +1190,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
         	    's_color' => '#f44336', //red
         	    's_desc'  => 'Intructor has reviewed submission and found issues with it that requires student attention.',
         	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-exclamation-circle initial',
-    	    ),
-    	    0 => array(
-        	    's_name'  => 'Pending Review',
-        	    's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Student has submitted thier Milestone tasks and is pending instructor review.',
-        	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-check-circle-o initial',
+        	    's_mini_icon' => 'fa-exclamation-triangle initial',
     	    ),
     	    1 => array(
         	    's_name'  => 'Marked Done',
         	    's_color' => '#2f2639', //dark
         	    's_desc'  => 'Milestone tasks are marked as done.',
         	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-check-circle initial',
+        	    's_mini_icon' => 'fa-check-square initial',
     	    ),
 	    ),
 	    

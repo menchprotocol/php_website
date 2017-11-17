@@ -797,7 +797,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 
 
 
-
+.dropdown-menu .status-label { display:block; }
 .copy_button{ cursor:pointer; font-size:0.9em; }
 #copy_button{display:none;}
 .btn-funnel {

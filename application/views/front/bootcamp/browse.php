@@ -15,10 +15,11 @@ foreach($bootcamps as $count=>$bootcamp){
     if(fmod($count,4)==0){
         echo '</div><div class="row">';
     }
+    //'.echo_video($bootcamp['b_video_url']).'
     echo '<div class="col-sm-6 col-md-4">
 			<div class="card card-product">
 				<div class="card-image">
-					'.echo_video($bootcamp['b_video_url']).'
+					<!-- TODO -->
 				</div>
 
 				<div class="card-content">';
