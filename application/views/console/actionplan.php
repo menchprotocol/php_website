@@ -574,9 +574,11 @@ function message_save_updates(i_id){
     <div class="tab-pane <?= ( !$has_tree ? 'active' : '') ?>" id="messages">
     	<p class="maxout"></p>
     	<ul class="maxout">
-			<li>Facts or best-practices helping students accomplish the <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?> objecetive.</li>
+			<li>Messages are facts or best-practices shared with students that help them understand how to execute towards this <b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?> Objecetive</b>.</li>
 			<li>Messages are delivered to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-			<li>Each message can be a message, URL or a media file.</li>
+			<li>Each message can be a text snippet, URL reference or a media file.</li>
+			<li>Message are delivered in the same order that you sort them.</li>
+			<li>Messages are unique insights to get students a step closer to success.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
