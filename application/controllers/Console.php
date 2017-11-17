@@ -26,11 +26,11 @@ class Console extends CI_Controller {
 		
 		//This lists all users based on the permissions of the user
 		$this->load->view('console/shared/d_header', array(
-            'title' => 'My Instructor Account',
+            'title' => 'My Account',
             'breadcrumb' => array(
                 array(
                     'link' => null,
-                    'anchor' => 'My Instructor Account',
+                    'anchor' => 'My Account',
                 ),
             ),
 		));

@@ -3,6 +3,7 @@
 $sprint_units = $this->config->item('sprint_units');
 $core_objects = $this->config->item('core_objects');
 $udata = $this->session->userdata('user');
+$has_tree = ($level<=2 && $intent['c_is_last']=='f');
 ?>
 <style> .breadcrumb li { display:block; } </style>
 <script>
@@ -33,6 +34,9 @@ function countChar(val) {
 	});
 }
 
+
+
+
   
 $(document).ready(function() {
 
@@ -44,23 +48,40 @@ $(document).ready(function() {
 	createImageThumbnails:false,
 	clickable:false,
  */
+
+ 
+    <?php if($has_tree){ ?>
+    function update_tree_input(){
+    	var current_count = $("#list-outbound").children().length;
+    	$('#addnode').attr("placeholder", "<?= $core_objects['level_'.$level]['o_name'] ?> #"+(current_count+1)+" Objective (Specific & Measurable)");
+    	return current_count;
+    }
+    
+    var current_subtree = update_tree_input();
+    $('#list-outbound').bind("DOMSubtreeModified",function(){
+		if($("#list-outbound").children().length!=current_subtree){
+			//List has been adjusted, change the placeholder:
+			current_subtree = update_tree_input();
+		}
+    });
+    <?php } ?>
+
+
+
 	
 	//Initiat3e Dropzone:
 	$("#dropform").dropzone({
-		url: "/process/insight_attach",
+		url: "/process/message_attach",
 		maxFilesize: 1, // MB
 		accept: function(file, done) {
 			alert(file.name+" was Uploaded");
 			//done("Naha, you don't.");
 		}
 	});
-
+	
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-      	//Open specific menu with a 100ms delay to fix TOP NAV bug
-        $('.tab-pane, #topnav > li').removeClass('active');
-		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+		focu_hash(window.location.hash);
     }
 	
 	//Load Sortable:
@@ -148,12 +169,13 @@ function save_c(){
  	
  	
  	var postData = {
- 			b_id:$('#b_id').val(),
- 	 		pid:$('#pid').val(),
-     		c_objective:$('#c_objective').val(),
-     		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
-     		c_status:$('#c_status').val(),
-     		c_time_estimate:$('#c_time_estimate').val(),
+		b_id:$('#b_id').val(),
+ 		pid:$('#pid').val(),
+ 		c_objective:$('#c_objective').val(),
+ 		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
+ 		c_status:$('#c_status').val(),
+ 		c_time_estimate:$('#c_time_estimate').val(),
+ 		c_is_last:(document.getElementById('c_is_last').checked ? 't' : 'f'),
  	};
  	
  	//Show spinner:
@@ -174,7 +196,7 @@ function save_c(){
 function new_intent(c_objective){
  	
  	if(c_objective.length<1){
- 		alert('Missing name. Try again.');
+ 		alert('Error: Missing Objective. Try Again...');
  		$('#addnode').focus();
  		return false;
  	}
@@ -339,7 +361,7 @@ function load_message_sorting(){
 				});
 				
 				//Update backend:
-				$.post("/process/insights_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:$('#pid').val()}, function(data) {
+				$.post("/process/messages_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:$('#pid').val()}, function(data) {
 					//Update UI to confirm with user:
 					$( ".edit-updates" ).html(data);
 					
@@ -358,7 +380,7 @@ function msg_create(){
     $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/round_load.gif" class="loader" /></div></div>');
 	
 	//Update backend:
-	$.post("/process/insight_create", {
+	$.post("/process/message_create", {
 		
 		b_id:$('#b_id').val(),
 		pid:$('#pid').val(),
@@ -391,12 +413,12 @@ function msg_create(){
 
 
 
-function insight_delete(i_id){
+function message_delete(i_id){
 	//Double check:
 	var r = confirm("Delete Message?");
 	if (r == true) {
 	    //Delete and remove:
-		$.post("/process/insight_delete", {i_id:i_id, pid:$('#pid').val()}, function(data) {
+		$.post("/process/message_delete", {i_id:i_id, pid:$('#pid').val()}, function(data) {
 			//Update UI to confirm with user:
 			
 			$("#ul-nav-"+i_id).html('<div>'+data+'</div>');
@@ -420,7 +442,7 @@ function msg_start_edit(i_id){
 	$(document).keyup(function(e) {		
 		//Watch for action keys:
 		if (e.ctrlKey && e.keyCode === 13){
-			insight_save_updates(i_id);
+			message_save_updates(i_id);
 		} else if (e.keyCode === 27) {
 			msg_cancel_edit(i_id);
 		}
@@ -440,7 +462,7 @@ function msg_cancel_edit(i_id,success=0){
 	}
 }
 
-function insight_save_updates(i_id){
+function message_save_updates(i_id){
 	//Make sure there is some value:
 	var i_message = $("#ul-nav-"+i_id+" textarea").val();
 	if(i_message.length<1){
@@ -455,7 +477,7 @@ function insight_save_updates(i_id){
 	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
 	
 	//Update message:
-	$.post("/process/insight_update", {i_id:i_id, i_message:i_message, pid:$('#pid').val()}, function(data) {
+	$.post("/process/message_update", {i_id:i_id, i_message:i_message, pid:$('#pid').val()}, function(data) {
 		//Update UI to confirm with user:
 		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
 		
@@ -469,7 +491,6 @@ function insight_save_updates(i_id){
 	});
 }
 
-
 </script>
 
 
@@ -481,18 +502,19 @@ function insight_save_updates(i_id){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <?php if($level<=2){ ?>
+  <?php if($has_tree){ ?>
   <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'] ?></a></li>
   <?php } ?>
-  <li id="nav_details" class="<?= ($level>2 ? 'active' : '') ?>"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-pencil-square" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?></a></li>
-  <li id="nav_insights"><a href="#insights" data-toggle="tab" onclick="update_hash('insights')"><i class="fa fa-eye" aria-hidden="true"></i> Insights</a></li>
+  <li id="nav_messages" class="<?= ( !$has_tree ? 'active' : '') ?>"><a href="#messages" data-toggle="tab" onclick="update_hash('messages')"><i class="fa fa-commenting" aria-hidden="true"></i> Messages</a></li>
+  <li id="nav_details"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>
 </ul>
 
 
 <div class="tab-content tab-space">
 	
-	<?php if($level<=2){ ?>
-    <div class="tab-pane <?= ($level>2 ? 'hidden' : 'active') ?>" id="list">
+	
+	
+	<div class="tab-pane <?= ( $has_tree ? 'active' : 'hidden') ?>" id="list">
     	<?php
     	if($level==1){
     	    ?>
@@ -516,7 +538,6 @@ function insight_save_updates(i_id){
             <?php
         }
         
-        
         //Print current sub-intents:
         echo '<div id="list-outbound" class="list-group">';
         foreach($intent['c__child_intents'] as $sub_intent){
@@ -529,9 +550,9 @@ function insight_save_updates(i_id){
         <div class="list-group">
         	<div class="list-group-item list_input">
         		<div class="input-group">
-        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder="+ <?= ($level==1 ? 'New '.$sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone' : 'New Task for '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint_index) ?>"></div>
+        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder=""></div>
         			<span class="input-group-addon" style="padding-right:0;">
-        				<span id="dir_handle" class="label label-primary pull-right" style="cursor:pointer;" onclick="new_intent($('#addnode').val());">
+        				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;" onclick="new_intent($('#addnode').val());">
         					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
         					<div class="togglebutton" style="margin-top:5px; display:none;">
         		            	<label>
@@ -544,12 +565,74 @@ function insight_save_updates(i_id){
         	</div>
         </div>
     </div>
-    <?php } ?>
     
     
     
     
-    <div class="tab-pane <?= ($level>2 ? 'active' : '') ?>" id="details">
+    
+    
+    <div class="tab-pane <?= ( !$has_tree ? 'active' : '') ?>" id="messages">
+    	<p class="maxout"></p>
+    	<ul class="maxout">
+			<li>Facts or best-practices helping students accomplish the <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?> objecetive.</li>
+			<li>Messages are delivered to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+			<li>Each message can be a message, URL or a media file.</li>
+		</ul>
+    	<?php 
+		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
+		foreach($i_messages as $i){
+		    echo_message($i);
+		}
+		echo '</div>';
+		
+		
+		
+		//TODO do_edits		
+		echo '<div class="list-group list-messages">';
+    		echo '<div class="list-group-item">';
+    		
+    		  echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
+    		  echo '<form id="dropform">'; //Used for dropping files
+    		  
+    		  
+    		    echo '<textarea onkeyup="countChar(this)" class="form-control" style="min-height:110px; resize:vertical;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
+    		
+        		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.<a href="javascript:add_first_name();" style="float:right; font-weight:bold;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-plus-square" aria-hidden="true"></i> {first_name}</a></div>';
+        		
+        		echo '<div id="url_preview"></div>';
+        		
+        		echo '<ul style="list-style:none;">';
+        		  /*
+            		echo '<li class="pull-left" style="padding:2px 5px 0 0;">';
+            		echo '<div class="fallback" style="display:inline-block;"><input type="file" name="file" /></div>';
+            		echo '</li>';
+            		*/
+        		
+            		echo '<li class="pull-right"><a href="javascript:msg_create();" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
+            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
+            		  echo echo_status_dropdown('i','i_status',1,array(-1),'dropup');
+            		echo '</li>';
+            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
+            		echo echo_status_dropdown('idm','i_dispatch_minutes',0,array(),'dropup');
+            		echo '</li>';
+            		
+        		echo '</ul>';
+        		
+        		
+              echo '</form>';
+        	  echo '</div>';
+        		
+            echo '</div>';
+        echo '</div>';
+        ?>
+        
+    </div>
+    
+    
+    
+    
+    
+    <div class="tab-pane" id="details">
         
         <?php $this->load->view('console/inputs/c_objective' , array(
             'level' => $level,
@@ -557,8 +640,8 @@ function insight_save_updates(i_id){
         )); ?>
         
         
-        <?php /* TODO Remove soon with the instroduction of Insights V4 */ ?>
-        <div style="display:<?= ( in_array($udata['u_id'],array(1,2)) ? 'block' : 'none' ) ?>;">
+        <?php /* TODO Remove soon with the instroduction of Messages V4 */ ?>
+        <div style="display:<?= ( in_array($udata['u_id'],array(1,2)) && strlen($intent['c_todo_overview'])>0 ? 'block' : 'none' ) ?>;">
         	<br />
             <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview</h4></div>
             <ul class="maxout">
@@ -580,6 +663,29 @@ function insight_save_updates(i_id){
         
         
         
+        <div style="display:<?= ( $level==2 ?'block':'none' ) ?>;">
+    		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone</h4></div>
+            <ul>
+            	<li>Break Milestones give some time off in between Milestones.</li>
+            	<li>They also help students who are falling behind to catchup.</li>
+            	<li>Break Milestones cannot have any <b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b>.</li>
+            	<li>Give Each Break Milestone a Relevant Title like "<?= ($bootcamp['b_sprint_unit']=='day' ? 'Weekend Break' : 'Midterm Break') ?>".</li>
+            </ul>
+            <div class="form-group label-floating is-empty">
+            	<div class="checkbox">
+                	<label>
+                		<?php if($intent['c_is_last']=='t'){ ?>
+                		<input type="checkbox" id="c_is_last" checked /> Is Break Milestone
+                		<?php } elseif(count($intent['c__child_intents'])>0){ ?>
+                		<input type="checkbox" id="c_is_last" /> Is Break Milestone <b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Your Must Delete All Tasks First</b>
+                		<?php } else { ?>
+                		<input type="checkbox" id="c_is_last" /> Is Break Milestone
+                		<?php } ?>
+                	</label>
+                </div>
+            </div>
+        </div>
+    		
        
         <?php $times = $this->config->item('c_time_options'); ?>
         <div style="display:<?= (($level>=3 || $intent['c_time_estimate']>0)?'block':'none') ?>;">
@@ -619,66 +725,7 @@ function insight_save_updates(i_id){
     
     
     
-    
-    
-    
-    <div class="tab-pane" id="insights">
-    	<p class="maxout"></p>
-    	<ul class="maxout">
-			<li>Facts or best-practices helping students accomplish the <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?> objecetive.</li>
-			<li>Insights are delivered to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-			<li>Each insight can be a message, URL or a media file.</li>
-		</ul>
-    	<?php 
-		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
-		foreach($i_messages as $i){
-		    echo_message($i);
-		}
-		echo '</div>';
-		
-		
-		
-		
-		
-		
-		
-		//TODO do_edits		
-		echo '<div class="list-group list-messages">';
-    		echo '<div class="list-group-item">';
-    		
-    		  echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
-    		  echo '<form id="dropform">'; //Used for dropping files
-    		  
-    		  
-    		    echo '<textarea onkeyup="countChar(this)" class="form-control" style="min-height:110px; resize:vertical;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
-    		
-        		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.<a href="javascript:add_first_name();" style="float:right; font-weight:bold;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-plus-square" aria-hidden="true"></i> {first_name}</a></div>';
-        		
-        		echo '<div id="url_preview"></div>';
-        		
-        		echo '<ul style="list-style:none;">';
-            		echo '<li class="pull-left" style="padding:2px 5px 0 0;">';
-            		echo '<div class="fallback" style="display:inline-block;"><input type="file" name="file" /></div>';
-            		echo '</li>';
-            		
-            		echo '<li class="pull-right"><a href="javascript:msg_create();" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
-            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
-            		  echo echo_status_dropdown('i','i_status',1,array(-1),'dropup');
-            		echo '</li>';
-            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
-            		echo echo_status_dropdown('idm','i_dispatch_minutes',0,array(),'dropup');
-            		echo '</li>';
-            		
-        		echo '</ul>';
-        		
-        		
-              echo '</form>';
-        	  echo '</div>';
-        		
-            echo '</div>';
-        echo '</div>';
-        ?>
-        
-    </div>
+     
+   
 </div>
 

@@ -14,10 +14,7 @@ $(document).ready(function() {
     
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        //Open specific menu with a 100ms delay to fix TOP NAV bug
-        $('.tab-pane, #topnav > li').removeClass('active');
-		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+		focu_hash(window.location.hash);
     }
 });
 

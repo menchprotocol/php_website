@@ -12,6 +12,19 @@ function update_dropdown(name,intvalue,count){
 	$('[data-toggle="tooltip"]').addClass('').tooltip();
 }
 
+
+//To keep state of the horizontal menu using URL hashtags:
+function focu_hash(the_hash){
+	var hash = the_hash.substring(1); //Puts hash in variable, and removes the # character
+  	//Open specific menu with a 100ms delay to fix TOP NAV bug
+	//Detect if this Exists:
+	if($('#'+hash+'.tab-pane').attr('class').indexOf("hidden")<=0){
+		$('.tab-pane, #topnav > li').removeClass('active');
+		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+	}
+}
+
+
 //Quill Text editor variables:
 var setting_full = {
 	modules: {

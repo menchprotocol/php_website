@@ -254,11 +254,11 @@ function echo_message($i){
 		    //echo '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
 		    //echo '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
         echo '<li>'.( isset($i_dispatch_minutes['week'][$i['i_dispatch_minutes']]) ? $i_dispatch_minutes['week'][$i['i_dispatch_minutes']] : $i_dispatch_minutes['day'][$i['i_dispatch_minutes']] ).'</li>';
-            echo '<li class="edit-on"><a href="javascript:insight_save_updates('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
+            echo '<li class="edit-on"><a href="javascript:message_save_updates('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
             echo '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
 		    echo '<li class="edit-updates"></li>';
 		    //echo '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>'; //Not editable so no reason to show for now!
-		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Insight" data-placement="left"><a href="javascript:insight_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+		    echo '<li class="pull-right" data-toggle="tooltip" title="Delete Message" data-placement="left"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
 		    echo '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
 		    echo '</ul>';
 	    
@@ -444,18 +444,17 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
   
     	    
     	    //Meta data & stats:
+    	    if($level==2 && $intent['c_is_last']=='t'){
+    	        //This sprint has Assignments:
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="This is a Break Milestone"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+    	    }
     	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
     	        //This sprint has Assignments:
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Tasks"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="This Milestone Has '.count($intent['c__child_intents']).' Task'.(count($intent['c__child_intents'])==1?'':'s').'"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
     	    }
-    	    if(isset($intent['c__insight_count']) && $intent['c__insight_count']>0){
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="Number of Insights"><i class="fa fa-eye" aria-hidden="true"></i>'.$intent['c__insight_count'].'</span>';
+    	    if(isset($intent['c__message_count']) && $intent['c__message_count']>0){
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="This '.$core_objects['level_'.($level-1)]['o_name'].' Has '.$intent['c__message_count'].' Message'.($intent['c__message_count']==1?'':'s').'"><i class="fa fa-commenting" aria-hidden="true"></i>'.$intent['c__message_count'].'</span>';
     	    }
-    	    /*
-    	    if(strlen($intent['c_todo_overview'])>0){
-    	        $ui .= '<i class="fa fa-binoculars title-sub" aria-hidden="true" data-toggle="tooltip" title="Has Overview"></i>';
-    	    }
-    	    */
     	    if($level==2 && isset($intent['c__estimated_hours'])){
     	        $ui .= echo_time($intent['c__estimated_hours'],1);
     	    } elseif($level==3 && isset($intent['c_time_estimate'])){
@@ -512,15 +511,6 @@ function calculate_bootcamp_status($b){
     }
     */
     
-    //Bootcamp Insights:
-    $to_gain = 15;
-    $progress_possible += $to_gain;
-    if($b['c__insight_this_count']>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[At least 1 Insight]</b> in <a href="/console/'.$b['b_id'].'/actionplan#insights"><u>Action Plan</u></a>');
-    }
-    
     
     //Do we have enough Milestones?
     $to_gain = 60;
@@ -556,15 +546,6 @@ function calculate_bootcamp_status($b){
         }
         */
         
-        //Milestone Insights
-        $to_gain = 15;
-        $progress_possible += $to_gain;
-        if($c['c__insight_this_count']>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Add <b>[At least 1 Insight]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#insights"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
-        }
-        
         //Sub Task List
         $to_gain = 30;
         $required_tasks = ( $b['b_sprint_unit']=='week' ? 1 : 1 ); //At least one task for each for now
@@ -574,6 +555,17 @@ function calculate_bootcamp_status($b){
         } else {
             $progress_gained += (count($c['c__child_intents'])/$required_tasks)*$to_gain;
             array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
+        }
+        
+        
+        
+        //Milestone Messages
+        $to_gain = 15;
+        $progress_possible += $to_gain;
+        if($c['c__message_this_count']>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[At least 1 Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
         }
         
         
@@ -595,15 +587,6 @@ function calculate_bootcamp_status($b){
                 }
                 */
                 
-                //Insights for Tasks:
-                $to_gain = 15;
-                $progress_possible += $to_gain;
-                if($c2['c__insight_this_count']>0){
-                    $progress_gained += $to_gain;
-                } else {
-                    array_push($call_to_action,'Add <b>[At least 1 Insight]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#insights"><u>'.$task_anchor.'</u></a>');
-                }
-                
                 //c_time_estimate
                 $to_gain = 5;
                 $progress_possible += $to_gain;
@@ -612,23 +595,42 @@ function calculate_bootcamp_status($b){
                 } else {
                     array_push($call_to_action,'Add <b>[Time Estimate]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$task_anchor.'</u></a>');
                 }
+                
+                
+                //Messages for Tasks:
+                $to_gain = 15;
+                $progress_possible += $to_gain;
+                if($c2['c__message_this_count']>0){
+                    $progress_gained += $to_gain;
+                } else {
+                    array_push($call_to_action,'Add <b>[At least 1 Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#messages"><u>'.$task_anchor.'</u></a>');
+                }
             }
         }
     }
     
     
-    //require some Insights
+    //require some Messages
     /*
     $to_gain = 15;
-    $required_insights = 3;
+    $required_messages = 3;
     $progress_possible += $to_gain;
-    if($b['c__insight_count']>=$required_insights){
+    if($b['c__message_count']>=$required_messages){
         $progress_gained += $to_gain;
     } else {
-        $progress_gained += ($b['c__insight_count']/$required_insights)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_insights.' Insights]</b>'.($b['c__insight_count']>0?' ('.($required_insights-$b['c__insight_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
+        $progress_gained += ($b['c__message_count']/$required_messages)*$to_gain;
+        array_push($call_to_action,'Add <b>[At least '.$required_messages.' Messages]</b>'.($b['c__message_count']>0?' ('.($required_messages-$b['c__message_count']).' more)':'').' to any task in your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
     }
     */
+    
+    //Bootcamp Messages:
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if($b['c__message_this_count']>0){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Add <b>[At least 1 Message]</b> in <a href="/console/'.$b['b_id'].'/actionplan#messages"><u>Action Plan</u></a>');
+    }
     
     
     /* *****************************
@@ -1060,28 +1062,28 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        -1 => array(
 	            's_name'  => 'Archive',
 	            's_color' => '#f44336', //red
-	            's_desc'  => 'Insight removed.',
+	            's_desc'  => 'Message removed.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-trash initial',
 	        ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Insight not delivered to students until published.',
+	            's_desc'  => 'Message not delivered to students until published.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-pencil-square initial',
 	        ),
 	        1 => array(
     	        's_name'  => 'Publish',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Insight delivered to students during this milestone.',
+    	        's_desc'  => 'Message delivered to students during this milestone.',
     	        'u_min_status'  => 1,
     	        's_mini_icon' => 'fa-play-circle initial',
 	        ),
 	        2 => array(
     	        's_name'  => 'Publish as Promoted',
     	        's_color' => '#e91e63', //Rose
-    	        's_desc'  => 'Insight published on the Landing Page and delivered to students during this milestone.',
+    	        's_desc'  => 'Message published on the Landing Page and delivered to students during this milestone.',
     	        's_mini_icon' => 'fa-bullhorn initial',
     	        'u_min_status'  => 1,
 	        ),
@@ -1091,7 +1093,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        0 => array(
 	            's_name'  => 'Instant Message',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Delivered when milestone starts. Used for mission-critical insights.',
+	            's_desc'  => 'Delivered when milestone starts. Used for mission-critical messages.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-bolt initial',
 	        ),
@@ -1375,7 +1377,7 @@ function can_modify($object,$object_id){
 
 function url_exists($url){
     $file_headers = @get_headers($url);
-    return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'403')>0 || substr_count($file_headers[0],'404')>0);
+    return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'404')>0);
 }
 
 function filter_class($classes,$r_id=null){

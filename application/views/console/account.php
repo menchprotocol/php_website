@@ -12,10 +12,7 @@ $udata = $ufetch[0];
 $(document).ready(function() {
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-      	//Open specific menu with a 100ms delay to fix TOP NAV bug
-        $('.tab-pane, #topnav > li').removeClass('active');
-		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+		focu_hash(window.location.hash);
     }
 });
 
@@ -95,7 +92,10 @@ function insert_gravatar(){
 
 
 
-<p style="float:right; margin-top:-75px;"><a href="/process/logout" class="btn btn-sm btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a></p>
+<p style="float:right; margin-top:-75px;">
+	<a href="/console" class="btn btn-sm btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> &nbsp;My Bootcamps</span></a>
+	<a href="/process/logout" class="btn btn-sm btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a>
+</p>
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">

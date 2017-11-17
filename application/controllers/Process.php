@@ -108,7 +108,7 @@ class Process extends CI_Controller {
 	            //Log engagement:
 	            $this->Db_model->e_create(array(
 	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is currently not allowed!',
+	                'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is not allowed!',
 	                'e_json' => json_encode($_POST),
 	                'e_type_id' => 9, //Support Needing Graceful Errors
 	            ));
@@ -1298,15 +1298,17 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['c_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Task Status.</span>');
-	    }
+	    }	    
 	    
 	    
 	    //Validate Original intent:
 	    $original_intents = $this->Db_model->c_fetch(array(
 	        'c.c_id' => intval($_POST['pid']),
-	    ));
+	    ) , true /*Fetch Outbound*/ );
 	    if(count($original_intents)<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
+	    } elseif(isset($_POST['c_is_last']) && $_POST['c_is_last']=='t' && count($original_intents[0]['c__child_intents'])>0){
+	        die('<span style="color:#FF0000;">Error: Break Milestones cannot have any Tasks.</span>');
 	    }
 	    
 	    //Generate Update Array
@@ -1315,6 +1317,7 @@ class Process extends CI_Controller {
 	        'c_todo_overview' => $_POST['c_todo_overview'],
 	        'c_status' => intval($_POST['c_status']),
 	        'c_time_estimate' => floatval($_POST['c_time_estimate']),
+	        'c_is_last' => $_POST['c_is_last'],
 	    );
 	    
 	    //Now update the DB:
@@ -1555,7 +1558,7 @@ class Process extends CI_Controller {
 	
 	
 	/* ******************************
-	 * i Insights
+	 * i Messages
 	 ****************************** */
 	
 	function detect_url(){
@@ -1574,7 +1577,7 @@ class Process extends CI_Controller {
 	    }
 	}
 	
-	function insight_create(){
+	function message_create(){
 	    
 	    $udata = auth(2);
 	    if(!$udata){
@@ -1584,7 +1587,7 @@ class Process extends CI_Controller {
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Missing insight.</span>');
+	        die('<span style="color:#FF0000;" class="i_error">Error: Missing message.</span>');
 	    } elseif(!isset($_POST['i_dispatch_minutes'])){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Dispatch Minutes.</span>');
 	    }
@@ -1595,7 +1598,7 @@ class Process extends CI_Controller {
 	    //Detect potential URL:
 	    $urls = extract_urls($_POST['i_message']);
 	    if(count($urls)>1){
-	        die('<span style="color:#FF0000;" class="i_error">Error: You can only have 1 URL per insight.</span>');
+	        die('<span style="color:#FF0000;" class="i_error">Error: You can only have 1 URL per message.</span>');
 	    }
 	    
 	    //Create Link:
@@ -1618,7 +1621,7 @@ class Process extends CI_Controller {
 	            'input' => $_POST,
 	            'after' => $i,
 	        )),
-	        'e_type_id' => 34, //Insight added
+	        'e_type_id' => 34, //Message added
 	        'e_i_id' => intval($i['i_id']),
 	        'e_c_id' => intval($_POST['pid']),
 	        'e_b_id' => $i['i_b_id'], //Share with bootcamp team
@@ -1628,7 +1631,7 @@ class Process extends CI_Controller {
 	    echo_message($i);
 	}
 	
-	function insight_update(){
+	function message_update(){
 	    
 	    //TODO update and start using
 	    exit;
@@ -1639,19 +1642,19 @@ class Process extends CI_Controller {
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Insight id.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Message id.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing i_message.</span>');
 	    }
 	    
-	    //Fetch Insight:
-	    $insights = $this->Db_model->i_fetch(array(
+	    //Fetch Message:
+	    $messages = $this->Db_model->i_fetch(array(
 	        'i_id' => intval($_POST['i_id']),
 	    ));
-	    if(!isset($insights[0])){
-	        die('<span style="color:#FF0000;">Error: Invalid Insight id.</span>');
+	    if(!isset($messages[0])){
+	        die('<span style="color:#FF0000;">Error: Invalid Message id.</span>');
 	    }
 	    
 	    //Now update the DB:
@@ -1667,37 +1670,37 @@ class Process extends CI_Controller {
 	        //'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
-	            'before' => $insights[0],
+	            'before' => $messages[0],
 	        )),
-	        'e_type_id' => 36, //Insight edited
-	        'e_i_id' => $insights[0]['i_id'],
+	        'e_type_id' => 36, //Message edited
+	        'e_i_id' => $messages[0]['i_id'],
 	        'e_c_id' => intval($_POST['pid']),
-	        'e_b_id' => $insights[0]['i_b_id'], //Share with bootcamp team
+	        'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
 	    //Show result:
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
-	function insight_delete(){
+	function message_delete(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Insight id.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Message id.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
 	    }
 	    
-	    //Fetch Insight:
-	    $insights = $this->Db_model->i_fetch(array(
+	    //Fetch Message:
+	    $messages = $this->Db_model->i_fetch(array(
 	        'i_id' => intval($_POST['i_id']),
 	        'i_status >=' => 0, //Not deleted
 	    ));
-	    if(!isset($insights[0])){
-	        die('<span style="color:#FF0000;">Error: Invalid Insight id.</span>');
+	    if(!isset($messages[0])){
+	        die('<span style="color:#FF0000;">Error: Invalid Message id.</span>');
 	    }
 	    
 	    //Now update the DB:
@@ -1710,15 +1713,15 @@ class Process extends CI_Controller {
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => ucwords($insights[0]['i_media_type']).': '.$insights[0]['i_message'].' '.$insights[0]['i_url'].' (Dispatch after '.$insights[0]['i_dispatch_minutes'].' minutes)',
+	        'e_message' => ucwords($messages[0]['i_media_type']).': '.$messages[0]['i_message'].' '.$messages[0]['i_url'].' (Dispatch after '.$messages[0]['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
-	            'before' => $insights[0],
+	            'before' => $messages[0],
 	        )),
-	        'e_type_id' => 35, //Insight deleted
-	        'e_i_id' => intval($insights[0]['i_id']),
+	        'e_type_id' => 35, //Message deleted
+	        'e_i_id' => intval($messages[0]['i_id']),
 	        'e_c_id' => intval($_POST['pid']),
-	        'e_b_id' => $insights[0]['i_b_id'], //Share with bootcamp team
+	        'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
 	    //Show result:
@@ -1726,7 +1729,7 @@ class Process extends CI_Controller {
 	}
 	
 	
-	function insights_sort(){
+	function messages_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    
@@ -1753,7 +1756,7 @@ class Process extends CI_Controller {
 	    $this->Db_model->e_create(array(
     	    'e_initiator_u_id' => $udata['u_id'],
     	    'e_json' => json_encode($_POST),
-    	    'e_type_id' => 39, //Insights sorted
+    	    'e_type_id' => 39, //Messages sorted
     	    'e_c_id' => intval($_POST['pid']),
     	    'e_b_id' => intval($_POST['b_id']),
 	    ));

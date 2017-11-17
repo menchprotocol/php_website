@@ -410,7 +410,7 @@ class Db_model extends CI_Model {
 	
 	function i_fetch($match_columns){
 		$this->db->select('i.*');
-		$this->db->from('v5_insights i');
+		$this->db->from('v5_messages i');
 		$this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
 		$this->db->where('c.c_status >=',0);
 		foreach($match_columns as $key=>$value){
@@ -438,7 +438,7 @@ class Db_model extends CI_Model {
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_insights', $insert_columns);
+		$this->db->insert('v5_messages', $insert_columns);
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
@@ -448,7 +448,7 @@ class Db_model extends CI_Model {
 	
 	function i_update($i_id,$update_columns){
 		$this->db->where('i_id', $i_id);
-		$this->db->update('v5_insights', $update_columns);
+		$this->db->update('v5_messages', $update_columns);
 		return $this->db->affected_rows();
 	}
 	
@@ -527,6 +527,30 @@ class Db_model extends CI_Model {
 	}
 	
 	
+	function c_fetch($match_columns,$fetch_outbound=false){
+	    //The basic fetcher for intents
+	    //Missing anything?
+	    $this->db->select('*');
+	    $this->db->from('v5_intents c');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $q = $this->db->get();
+	    $intents = $q->result_array();
+	    
+	    if($fetch_outbound){
+	        //Ok, lets append the outbound intents:
+	        foreach($intents as $key=>$c){
+	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+	                'cr.cr_inbound_id' => $c['c_id'],
+	                'cr.cr_status >=' => 0,
+	            ));
+	        }
+	    }
+	    
+	    return $intents;
+	}
+	
 	function c_full_fetch($match_columns){
 	    //Missing anything?
 	    $this->db->select('*');
@@ -544,16 +568,16 @@ class Db_model extends CI_Model {
 	        $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
 	        
 	        
-	        //Bootcamp Insights:
-	        $bootcamp_insights = count($this->Db_model->i_fetch(array(
+	        //Bootcamp Messages:
+	        $bootcamp_messages = count($this->Db_model->i_fetch(array(
 	            'i_status >=' => 0,
 	            'i_c_id' => $c['c_id'],
 	        )));
 	        
 	        //Fetch Sub-intents:
 	        $bootcamps[$key]['c__task_count'] = 0;
-	        $bootcamps[$key]['c__insight_count'] = $bootcamp_insights;
-	        $bootcamps[$key]['c__insight_this_count'] = $bootcamp_insights;
+	        $bootcamps[$key]['c__message_count'] = $bootcamp_messages;
+	        $bootcamps[$key]['c__message_this_count'] = $bootcamp_messages;
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
 	            'cr.cr_status >=' => 0,
@@ -572,14 +596,14 @@ class Db_model extends CI_Model {
 	            ));
 	            
 	            
-	            //Count Insights:
-	            $milestone_insights = count($this->Db_model->i_fetch(array(
+	            //Count Messages:
+	            $milestone_messages = count($this->Db_model->i_fetch(array(
 	                'i_status >=' => 0,
 	                'i_c_id' => $sprint_value['c_id'],
 	            )));
-	            $bootcamps[$key]['c__insight_count'] += $milestone_insights;
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_count'] = $milestone_insights;
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_this_count'] = $milestone_insights;
+	            $bootcamps[$key]['c__message_count'] += $milestone_messages;
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_count'] = $milestone_messages;
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_this_count'] = $milestone_messages;
 	            
 	            //Addup task values:
 	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
@@ -588,16 +612,16 @@ class Db_model extends CI_Model {
 	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
 	                $bootcamps[$key]['c__task_count']++;
 	                
-	                //Count Insights:
-	                $task_insights = count($this->Db_model->i_fetch(array(
+	                //Count Messages:
+	                $task_messages = count($this->Db_model->i_fetch(array(
 	                    'i_status >=' => 0,
 	                    'i_c_id' => $task_value['c_id'],
 	                )));
-	                $bootcamps[$key]['c__insight_count'] += $task_insights;
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__insight_count'] += $task_insights;
+	                $bootcamps[$key]['c__message_count'] += $task_messages;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_count'] += $task_messages;
 	                //The following two are identicals, just there for consistency:
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__insight_count'] = $task_insights;
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__insight_this_count'] = $task_insights;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_count'] = $task_messages;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_this_count'] = $task_messages;
 	            }
 	        }
 	        
@@ -612,17 +636,6 @@ class Db_model extends CI_Model {
 	    }
 	    
 	    return $bootcamps;
-	}
-	
-	function c_fetch($match_columns){
-	    //Missing anything?
-	    $this->db->select('*');
-	    $this->db->from('v5_intents c');
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $q = $this->db->get();
-	    return $q->result_array();
 	}
 	
 	function b_fetch($match_columns){
@@ -952,7 +965,7 @@ class Db_model extends CI_Model {
 		            
 		            //Did we find it? We should have:
 		            if(isset($engagements[0])){
-		                $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+		                $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
 		                
 		                //Compose email:
 		                $html_message = null; //Start

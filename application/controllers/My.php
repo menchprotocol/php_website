@@ -34,23 +34,23 @@ class My extends CI_Controller {
 	}
 	
 	
-	function load_url($insight_id){
+	function load_url($message_id){
 	    
 	    //Loads the URL:
-	    if($insight_id>0){
-	        $insights = $this->Db_model->i_fetch(array(
-	            'i_id' => $insight_id,
+	    if($message_id>0){
+	        $messages = $this->Db_model->i_fetch(array(
+	            'i_id' => $message_id,
 	            'i_status >=' => 0, //Not deleted
 	        ));
 	        
-	        if(isset($insights[0]) && $insights[0]['i_media_type']=='text' && strlen($insights[0]['i_url'])>0){
-	            header('Location: '.$insights[0]['i_url']);
+	        if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){
+	            header('Location: '.$messages[0]['i_url']);
 	            return true;
 	        }
 	    }
 	    
 	    //Still here?
-	    redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Insight ID.</div>');    
+	    redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Message ID.</div>');    
 	}
 	
 	function leaderboard(){

@@ -730,7 +730,7 @@ Array
                                 (
                                     [type] => 0
                                     [platform] => facebook
-                                    [speech] => Here is how it works: You subscribe to a topic (only topic for now is growing tech startup), and we send you relevant idea nuggets in the form of video, audio, text and image. We curated these insights form credible sources so you can learn faster. Interested? Type "start"
+                                    [speech] => Here is how it works: You subscribe to a topic (only topic for now is growing tech startup), and we send you relevant idea nuggets in the form of video, audio, text and image. We curated these messages form credible sources so you can learn faster. Interested? Type "start"
                                 )
                         )
                 )

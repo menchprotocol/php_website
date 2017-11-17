@@ -59,11 +59,11 @@ $config['core_objects'] = array(
         'o_names' => 'Transactions',
     ),
     'i' => array(
-        'o_name' => 'Insight',
-        'o_names' => 'Insights',
+        'o_name' => 'Message',
+        'o_names' => 'Messages',
     ),
     'idm' => array(
-        'o_name' => 'Insight Delivery Method',
+        'o_name' => 'Message Delivery Method',
     ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
@@ -108,7 +108,7 @@ $config['engagement_references'] = array(
         'object_code' => 'cr',
     ),
     'e_i_id' => array(
-        'name' => 'Insight',
+        'name' => 'Message',
         'object_code' => 'i',
     ),
     'e_t_id' => array(

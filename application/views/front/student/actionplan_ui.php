@@ -153,14 +153,14 @@ if($level>2){
 
 //Rerefences:
 if(count($i_messages)>0){
-    echo '<h4><i class="fa fa-eye" aria-hidden="true"></i> Insights</h4>';
+    echo '<h4><i class="fa fa-commenting" aria-hidden="true"></i> Messages from Your Instructor</h4>';
     echo '<div class="tips_content">';
     $displayed = 0;
     if(count($i_messages)>0){
         foreach($i_messages as $i){
             //Do logic for ASAP/DRIP-FEED here:
             echo '<div class="tip_bubble">';
-            echo '<i class="fa fa-eye" aria-hidden="true"></i>';
+            echo '<i class="fa fa-commenting" aria-hidden="true"></i>';
             echo_i($i,$admission['u_fname']);
             echo '</div>';
         }
