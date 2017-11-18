@@ -26,6 +26,8 @@ function update_timeline(){
 
 		//Communication:
 		milestone_count:$('#milestone_count').val(),
+		b_status:$('#b_status').val(),
+		b_id:$('#b_id').val(),
 		b_sprint_unit:$('#b_sprint_unit').val(),
 		r_start_date:$('#r_start_date').val(),
 		r_start_time_mins:$('#r_start_time_mins').val(),
@@ -45,6 +47,12 @@ function update_timeline(){
 <?php } ?>
 <?php if(isset($b_sprint_unit)){ ?>
 <input type="hidden" id="b_sprint_unit" value="<?= $b_sprint_unit ?>" />
+<?php } ?>
+<?php if(isset($b_id)){ ?>
+<input type="hidden" id="b_id" value="<?= $b_id ?>" />
+<?php } ?>
+<?php if(isset($b_status)){ ?>
+<input type="hidden" id="b_status" value="<?= $b_status ?>" />
 <?php } ?>
 
 <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time</h4></div>

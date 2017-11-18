@@ -10,7 +10,6 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	
 	function t(){
 	    echo_json($this->Facebook_model->set_settings());
 		//print_r($this->Facebook_model->fetch_settings());
@@ -129,7 +128,7 @@ class Bot extends CI_Controller {
 	                $this->Facebook_model->batch_messages( $admissions[0]['u_fb_id'] , array(
 	                    array(
 	                        'text' => $_POST['text_payload'],
-	                        'metadata' => 'system_logged',
+	                        'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
 	                    ),
 	                ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
 	                

@@ -446,7 +446,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	    //Meta data & stats:
     	    if($level==2 && $intent['c_is_last']=='t'){
     	        //This sprint has Assignments:
-    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="This is a Break Milestone"><i class="fa fa-check-square" aria-hidden="true"></i>'.count($intent['c__child_intents']).'</span>';
+    	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="This is a Break Milestone with nothing to Submit, but maybe some Messages to read, listen or watch."><i class="fa fa-coffee" aria-hidden="true"></i>Break Milestone</span>';
     	    }
     	    if($level==2 && isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
     	        //This sprint has Assignments:

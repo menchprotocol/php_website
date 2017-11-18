@@ -579,7 +579,6 @@ function message_save_updates(i_id){
 			<li>Messages are delivered to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
 			<li>Each message can be a text snippet, URL reference or a media file.</li>
 			<li>Message are delivered in the same order that you sort them.</li>
-			<li>Messages are unique insights to get students a step closer to success.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
@@ -676,7 +675,7 @@ function message_save_updates(i_id){
             <ul>
             	<li>Break Milestones give some time off in between Milestones.</li>
             	<li>They also help students who are falling behind to catchup.</li>
-            	<li>Break Milestones cannot have any <b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b>.</li>
+            	<li>Have no <b><i class="fa fa-check-square" aria-hidden="true"></i> TASKS</b> but may have <b><i class="fa fa-commenting" aria-hidden="true"></i>MESSAGES</b> to read, listen or watch.</li>
             	<li>Give Each Break Milestone a Relevant Title like "<?= ($bootcamp['b_sprint_unit']=='day' ? 'Weekend Break' : 'Midterm Break') ?>".</li>
             </ul>
             <div class="form-group label-floating is-empty">

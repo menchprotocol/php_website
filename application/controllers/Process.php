@@ -612,13 +612,17 @@ class Process extends CI_Controller {
 	function class_timeline(){
 	    //Displays the class timeline based on some inputs:
 	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-	        die('<span style="color:#000;">Enter start date to see timeline.</span>');
+	        die('<span style="color:#000;">Pick a start date to see class timeline.</span>');
 	    } elseif(!isset($_POST['r_start_time_mins'])){
-	        die('<span style="color:#000;">Enter start time to see timeline.</span>');
+	        die('<span style="color:#000;">Pick a start time to see class timeline.</span>');
 	    } elseif(!isset($_POST['milestone_count']) || intval($_POST['milestone_count'])<=0){
 	        die('<span style="color:#FF0000;">Error: You have not added any Milestones to your Action Plan.</span>');
 	    } elseif(!isset($_POST['b_sprint_unit'])){
-	        die('<span style="color:#FF0000;">Error: Invalid Milestone Submission Frequency.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Milestone Submission Frequency.</span>');
+	    } elseif(!isset($_POST['b_id'])){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['b_status'])){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp Status.</span>');
 	    }
 	    
 	    $_POST['milestone_count'] = intval($_POST['milestone_count']);
@@ -629,13 +633,13 @@ class Process extends CI_Controller {
 	    //Start calculations:
         echo '<p>Based on this start time, your class timeline is:</p>';
         echo '<ul style="list-style:decimal;">';
-	        echo '<li>Admission Starts <b>When Bootcamp is '.status_bible('b',2).'</b></li>';
-	        echo '<li>Admission Ends <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
-	        echo '<li>Class Starts <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-	        echo '<li>Instant Payout by <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-	        echo '<li>Bootcamp Duration <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s</b></li>';
-	        echo '<li>Class Ends <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-    	    echo '<li>Performance Payout by <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+            echo '<li>Admissions Can Start: <b>'.(intval($_POST['b_status'])>=2?'ASAP':'When Bootcamp is '.status_bible('b',2)).'</b></li>';
+	        echo '<li>Admission Ends: <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
+	        echo '<li>Class Starts: <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+	        echo '<li>Instant Payout by: <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+	        echo '<li>Bootcamp Duration: <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s</b> based on <b><a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
+	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
     	    echo '</ul>';
 	}
 	
@@ -1309,7 +1313,7 @@ class Process extends CI_Controller {
 	    if(count($original_intents)<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
 	    } elseif(isset($_POST['c_is_last']) && $_POST['c_is_last']=='t' && count($original_intents[0]['c__child_intents'])>0){
-	        die('<span style="color:#FF0000;">Error: Break Milestones cannot have any Tasks.</span>');
+	        die('<span style="color:#FF0000;">Error: Break Milestones cannot have any Tasks. Either delete all Tasks or create a new Milestone.</span>');
 	    }
 	    
 	    

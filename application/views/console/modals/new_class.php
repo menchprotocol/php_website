@@ -73,6 +73,8 @@ $('#r_start_date').keyup(function(e){
 			<?php $this->load->view('console/inputs/r_start_day_time' , array(
 			    'milestone_count' => count($bootcamp['c__child_intents']),
 			    'b_sprint_unit' => $bootcamp['b_sprint_unit'],
+			    'b_id' => $bootcamp['b_id'],
+			    'b_status' => $bootcamp['b_status'],
 			    'r_start_time_mins' => '540', //9 AM Default recommendation
             )); ?>
 			
