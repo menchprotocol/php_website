@@ -1713,17 +1713,18 @@ class Process extends CI_Controller {
 	        ));
 	        
 	    } else {
-	        	        
-	        //Attempt to store in Cloud:
-	        if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
-	            $mime = $_FILES[$_POST['upload_type']]['type'];
-	        } else {
-	            $mime = mime_content_type($_FILES[$_POST['upload_type']]['tmp_name']);
-	        }
 	        
 	        //First save file locally:
 	        $temp_local = "application/cache/".$_FILES[$_POST['upload_type']]["name"];
 	        move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+	        
+	        //Attempt to store in Cloud:
+	        if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
+	            $mime = $_FILES[$_POST['upload_type']]['type'];
+	        } else {
+	            $mime = mime_content_type($temp_local);
+	        }
+	        
 	        //Upload to S3:
 	        $new_file_url = save_file( $temp_local , $_FILES[$_POST['upload_type']] );
 	        

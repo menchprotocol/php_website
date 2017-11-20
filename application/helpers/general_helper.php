@@ -1507,7 +1507,7 @@ function save_file($file_url,$json_data){
     $fp = @fopen( $file_path.$file_name , 'w');
     
     //Then upload to AWS S3:
-    if($fp && @include( 'application/libraries/aws/aws-autoloader.php' )){
+    if($fp && @require_once( 'application/libraries/aws/aws-autoloader.php' )){
         
         fwrite($fp, $result);
         fclose($fp);

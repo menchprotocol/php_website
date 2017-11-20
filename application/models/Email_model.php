@@ -8,7 +8,7 @@ class Email_model extends CI_Model {
 		parent::__construct();
 		
 		//Loadup amazon SES:
-		require( 'application/libraries/aws/aws-autoloader.php' );
+		@require_once( 'application/libraries/aws/aws-autoloader.php' );
 		$this->CLIENT = new Aws\Ses\SesClient([
 		    'version' 	    => 'latest',
 		    'region'  	    => 'us-west-2',
