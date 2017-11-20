@@ -1490,9 +1490,10 @@ function remote_mime($file_url){
 function save_file($file_url,$json_data,$is_local=false){
     $CI =& get_instance();
     
+    $file_name = md5($file_url.'fileSavingSa!t').'.'.fetch_file_ext($file_url);
+    
     if(!$is_local){
         //Save this remote file to local first:
-        $file_name = md5($file_url.'fileSavingSa!t').'.'.fetch_file_ext($file_url);
         $file_path = 'application/cache/temp_files/';
         
         
