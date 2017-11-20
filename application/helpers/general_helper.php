@@ -629,20 +629,20 @@ function calculate_bootcamp_status($b){
         }
     }
     
-    
+    manifest
     //Bootcamp Messages:
     $to_gain = 15;
     $progress_possible += $to_gain;
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']>=2 ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']>=2 && $i['i_media_type']=='video' ? 1 : 0 );
         }
     }
     if($qualified_messages>0){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Add <b>[At least 1 '.status_bible('i',2).' Message]</b> in <a href="/console/'.$b['b_id'].'/actionplan#messages"><u>Action Plan</u></a>');
+        array_push($call_to_action,'Upload <b>[At least 1 '.status_bible('i',2).' Video Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan#messages"><u>Action Plan</u></a>');
     }
     
     

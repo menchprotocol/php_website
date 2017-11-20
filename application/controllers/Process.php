@@ -1721,7 +1721,11 @@ class Process extends CI_Controller {
 	            $mime = mime_content_type($_FILES[$_POST['upload_type']]['tmp_name']);
 	        }
 	        
-	        $new_file_url = save_file($_FILES[$_POST['upload_type']]['tmp_name'],$_FILES[$_POST['upload_type']]);
+	        //First save file locally:
+	        $temp_local = "application/cache/".$_FILES[$_POST['upload_type']]["name"];
+	        move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+	        //Upload to S3:
+	        $new_file_url = save_file( $temp_local , $_FILES[$_POST['upload_type']] );
 	        
 	        //What happened?
 	        if(!$new_file_url){
@@ -1817,9 +1821,6 @@ class Process extends CI_Controller {
 	        ));
 	    } else {
 	        
-	        
-	        
-	        
 	        //Detect potential URL:
 	        $urls = extract_urls($_POST['i_message']);
 	        if(count($urls)>1){
@@ -1843,7 +1844,6 @@ class Process extends CI_Controller {
 	                //This channel is all text:
 	                $i_media_type = 'text'; //Possible: text,image,video,audio,file
 	            }
-	            
 	            
 	            //Create Link:
 	            $i = $this->Db_model->i_create(array(
