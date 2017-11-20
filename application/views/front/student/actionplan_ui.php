@@ -115,7 +115,26 @@ echo '</ol>';
 
 //Overview:
 if($level>1){
-    echo '<div class="quill_content">'.$intent['c_todo_overview'].'</div>';
+    //Messages:
+    echo '<h4><i class="fa fa-commenting" aria-hidden="true"></i> Messages</h4>';
+    echo '<div class="tips_content">';
+    $displayed_messages = 0;
+    if(count($i_messages)>0){
+        foreach($i_messages as $i){
+            if($i['i_status']>=1){
+                //TODO Implement logic for ASAP/DRIP-FEED here:
+                echo '<div class="tip_bubble">';
+                echo '<i class="fa fa-commenting" aria-hidden="true"></i>';
+                echo echo_i($i,$admission['u_fname']);
+                echo '</div>';
+                $displayed_messages++;
+            }
+        }
+    }
+    if($displayed_messages==0){
+        echo '<div class="quill_content">None yet.</div>';
+    }
+    echo '</div>';
 }
 
 if($intent['c_time_estimate']>0){
@@ -151,30 +170,10 @@ if($level>2){
 
 
 
-//Rerefences:
-if(count($i_messages)>0){
-    echo '<h4><i class="fa fa-commenting" aria-hidden="true"></i> Messages from Your Instructor</h4>';
-    echo '<div class="tips_content">';
-    $displayed = 0;
-    if(count($i_messages)>0){
-        foreach($i_messages as $i){
-            //Do logic for ASAP/DRIP-FEED here:
-            echo '<div class="tip_bubble">';
-            echo '<i class="fa fa-commenting" aria-hidden="true"></i>';
-            echo_i($i,$admission['u_fname']);
-            echo '</div>';
-        }
-    } else {
-        echo '<div class="quill_content">None yet.</div>';
-    }
-    //echo $intent['c_todo_overview'];
-    echo '</div>';
-}
-
 
 
 //Display Milestone list:
-if($level<3){
+if($level<3 && !($intent['c_is_last']=='t')){
     echo '<h4>'.( $level==1 ? '<i class="fa fa-flag" aria-hidden="true"></i> '.$sprint_units[$admission['b_sprint_unit']]['name'].' Milestones' : '<i class="fa fa-list-ul" aria-hidden="true"></i> '.ucwords($admission['b_sprint_unit']).' #'.$sprint_index.' Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
     echo '<div id="list-outbound" class="list-group">';
     if($level==1){

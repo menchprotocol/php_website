@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.84,
+    'version' => 0.88,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -19,6 +19,7 @@ $config['website'] = array(
 
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
+$config['file_limit_mb'] = 200; //The max file size to be uploaded
 
 //The core objects of the platform:
 $config['core_objects'] = array(
@@ -64,6 +65,9 @@ $config['core_objects'] = array(
     ),
     'idm' => array(
         'o_name' => 'Message Delivery Method',
+    ),
+    'ct' => array(
+        'o_name' => 'Bootcamp Categories',
     ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
@@ -131,102 +135,11 @@ $config['engagement_subscriptions'] = array(
     ),
 );
 
-$config['bootcamp_categories'] = array(
-    1 => array(
-        'name' => 'Development',
-        'icon' => '<i class="fa fa-code" aria-hidden="true"></i>',
-    ),
-    2 => array(
-        'name' => 'Music',
-        'icon' => '<i class="fa fa-music" aria-hidden="true"></i>',
-    ),
-    3 => array(
-        'name' => 'Teacher Training',
-        'icon' => '<i class="fa fa-graduation-cap" aria-hidden="true"></i>',
-    ),
-    4 => array(
-        'name' => 'Language',
-        'icon' => '<i class="fa fa-language" aria-hidden="true"></i>',
-    ),
-    5 => array(
-        'name' => 'Academics',
-        'icon' => '<i class="fa fa-flask" aria-hidden="true"></i>',
-    ),
-    6 => array(
-        'name' => 'Test Prep',
-        'icon' => '<i class="fa fa-file-text" aria-hidden="true"></i>',
-    ),
-    7 => array(
-        'name' => 'Business',
-        'icon' => '<i class="fa fa-usd" aria-hidden="true"></i>',
-    ),
-    8 => array(
-        'name' => 'Office Productivity',
-        'icon' => '<i class="fa fa-briefcase" aria-hidden="true"></i>',
-    ),
-    9 => array(
-        'name' => 'IT & Software',
-        'icon' => '<i class="fa fa-laptop" aria-hidden="true"></i>',
-    ),
-    10 => array(
-        'name' => 'Design',
-        'icon' => '<i class="fa fa-paint-brush" aria-hidden="true"></i>',
-    ),
-    11 => array(
-        'name' => 'Personal Development',
-        'icon' => '<i class="fa fa-smile-o" aria-hidden="true"></i>',
-    ),
-    12 => array(
-        'name' => 'Lifestyle',
-        'icon' => '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>',
-    ),
-    13 => array(
-        'name' => 'Marketing',
-        'icon' => '<i class="fa fa-bullseye" aria-hidden="true"></i>',
-    ),
-    14 => array(
-        'name' => 'Health & Fitness',
-        'icon' => '<i class="fa fa-heartbeat" aria-hidden="true"></i>',
-    ),
-    15 => array(
-        'name' => 'Photography',
-        'icon' => '<i class="fa fa-camera" aria-hidden="true"></i>',
-    ),
-);
-
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0',/*'0.05','0.1166667',*/'0.25','0.5','1','2','3','5','8','13');
 
 
-
-$config['i_dispatch_minutes'] = array(
-    'week' => array(
-        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Milestone Starts',
-        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Milestone Starts',
-        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Milestone Starts',
-        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Milestone Starts',
-        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Milestone Starts',
-        '1440'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Day after Milestone Starts',
-        '2880'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Days after Milestone Starts',
-        '4320'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Days after Milestone Starts',
-        '5760'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Days after Milestone Starts',
-        '7200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 5 Days after Milestone Starts',
-        '8640'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Days after Milestone Starts',
-    ),
-    'day' => array(
-        '0'     => '<i class="fa fa-bolt" aria-hidden="true"></i> Send ASAP when Milestone Starts',
-        '60'    => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 1 Hour after Milestone Starts',
-        '120'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 2 Hours after Milestone Starts',
-        '180'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 3 Hours after Milestone Starts',
-        '240'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 4 Hours after Milestone Starts',
-        '360'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 6 Hours after Milestone Starts',
-        '480'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 8 Hours after Milestone Starts',
-        '720'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 12 Hours after Milestone Starts',
-        '960'   => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 16 Hours after Milestone Starts',
-        '1200'  => '<i class="fa fa-tint" aria-hidden="true"></i> Drip-Feed 20 Hours after Milestone Starts',
-    ),
-);
 
 $config['refund_policies'] = array(
     'flexible' => array(
@@ -845,8 +758,41 @@ $config['countries_all'] = array(
     "ZW" => "Zimbabwe"
 );
 
-$config['r_response_options'] = array('1','2','3','4','12','24','48');
-$config['r_weekly_1on1s_options'] = array('0','0.5','1','1.5','2','2.5','3','3.5','4','5','6','7','10','12','14','15','21');
+$config['r_response_options'] = array('1','2','3','5','12','24','48');
+
+//IF Changed, Also adjust echo_mentorship() & gross_mentorship() functions in general_helper()
+$config['r_meeting_frequency'] = array(
+    "0" => "None",
+    "d1" => "1 Per Day",
+    "w1" => "1 Per Week",
+    "w2" => "2 Per Week",
+    "w3" => "3 Per Week",
+    "w5" => "5 Per Week",
+    "1" => "1 Session Total",
+    "2" => "2 Sessions Total",
+    "3" => "3 Sessions Total",
+    "4" => "4 Sessions Total",
+    "6" => "6 Sessions Total",
+    "12" => "12 Sessions Total",
+    "18" => "18 Sessions Total",
+    "24" => "24 Sessions Total",
+);
+$config['r_meeting_duration'] = array('0.25','0.5','1','2','3','5');
+
+$config['r_student_reach'] = array(
+    "0" => "Select Student Reach...",
+    "50" => "0 - 99",
+    "500" => "100 - 1k",
+    "2500" => "1k - 5k",
+    "7500" => "5k - 10k",
+    "15000" => "10k - 20k",
+    "35000" => "20k - 50k",
+    "75000" => "50k - 100k",
+    "150000" => "100k - 200k",
+    "350000" => "200k - 500k",
+    "750000" => "500k+",
+);
+
 
 //Engagement mediums and corresponding actions that result in a new engagement
 $config['e_mediums'] = array(

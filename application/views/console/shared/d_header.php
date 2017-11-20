@@ -11,13 +11,11 @@ $website = $this->config->item('website');
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 	<title>Mench<?= ( isset($title) ? ' | '.$title : '' ) ?></title>
-    
-	<?php $this->load->view('front/shared/header_resources' ); ?>    
-    
+        
+	<?php $this->load->view('front/shared/header_resources' ); ?>
     <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-    <script src="/js/lib/dropzone.js" type="text/javascript"></script>
         
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
     <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
@@ -77,7 +75,7 @@ $website = $this->config->item('website');
             	    
             	    $sprint_units = $this->config->item('sprint_units'); 
 
-            	    echo '<li class="li-sep '.( $_SERVER['REQUEST_URI'] == '/console/'.$bootcamp['b_id'] ? 'active' : '' ).'"><a href="/console/'.$bootcamp['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
+            	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$bootcamp['b_id'],'/console/'.$bootcamp['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$bootcamp['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i><p>Action Plan</p></a></li>';
             	    

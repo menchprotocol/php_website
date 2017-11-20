@@ -17,13 +17,14 @@ function countChar(val) {
 
 	//Update count:
     var len = val.value.length;
-    if (len > 600) {
-        val.value = val.value.substring(0, 600);
+    if (len > 420) {
+    	$('#charNum').addClass('overload').text(len);
     } else {
-        $('#charNum').text(600 - len);
+        $('#charNum').removeClass('overload').text(len);
     }
 
     //Passon data to detect URLs:
+    /*
     $.post("/process/detect_url", { text:val.value } , function(data) {
  		//Update data
  		if(data=='clear_url_preview'){
@@ -32,6 +33,7 @@ function countChar(val) {
  			$('#url_preview').html(data);
      	}
 	});
+	*/
 }
 
 
@@ -39,15 +41,6 @@ function countChar(val) {
 
   
 $(document).ready(function() {
-
-/*
- * parallelUploads:1,
-	uploadMultiple:false,
-	previewTemplate:null,
-	hiddenInputContainer:true,
-	createImageThumbnails:false,
-	clickable:false,
- */
 
  
     <?php if($has_tree){ ?>
@@ -65,19 +58,6 @@ $(document).ready(function() {
 		}
     });
     <?php } ?>
-
-
-
-	
-	//Initiat3e Dropzone:
-	$("#dropform").dropzone({
-		url: "/process/message_attach",
-		maxFilesize: 1, // MB
-		accept: function(file, done) {
-			alert(file.name+" was Uploaded");
-			//done("Naha, you don't.");
-		}
-	});
 	
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
@@ -95,7 +75,7 @@ $(document).ready(function() {
 		}
 	});
 
-
+	//Add new intent:
 	$( "#addnode" ).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
@@ -173,7 +153,6 @@ function save_c(){
  		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
  		pid:$('#pid').val(),
  		c_objective:$('#c_objective').val(),
- 		c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
  		c_status:$('#c_status').val(),
  		c_time_estimate:$('#c_time_estimate').val(),
  		c_is_last:(document.getElementById('c_is_last').checked ? 't' : 'f'),
@@ -223,7 +202,7 @@ function new_intent(c_objective){
  		load_intent_sort();
  		
  		//Tooltips:
- 		$('[data-toggle="tooltip"]').addClass('').tooltip();
+ 		$('[data-toggle="tooltip"]').tooltip();
  	});
 }
 
@@ -249,7 +228,7 @@ function link_lintent(target_id){
  		load_intent_sort();
  		
  		//Tooltips:
- 		$('[data-toggle="tooltip"]').addClass('').tooltip();
+ 		$('[data-toggle="tooltip"]').tooltip();
  	});
 }
 
@@ -375,42 +354,7 @@ function load_message_sorting(){
 	});
 }
 
-function msg_create(){
-	
-	//Set processing status:
-    $( "#message-sorting" ).append('<div id="temp"><div><img src="/img/round_load.gif" class="loader" /></div></div>');
-	
-	//Update backend:
-	$.post("/process/message_create", {
-		
-		b_id:$('#b_id').val(),
-		pid:$('#pid').val(),
-		i_message:$('#i_message').val(),
-		i_dispatch_minutes:$('#i_dispatch_minutes').val(),
-		
-	}, function(data) {
-		
-		//Update UI to confirm with user:
-		$( "#temp" ).remove();
-		$( "#message-sorting" ).append(data);
 
-		//Empty Inputs Fields:
-		$( "#i_message" ).val("");
-		countChar(document.getElementById('i_message'));
-
-		//Reset Focus:
-		$("#i_message").focus();
-		
-		//Resort:
-		load_message_sorting();
-
-		//Hide any errors:
-		setTimeout(function() {
-	        $(".i_error").fadeOut();
-	    }, 3000);
-		
-	});
-}
 
 
 
@@ -569,21 +513,287 @@ function message_save_updates(i_id){
     
     
     
+<script>
+
+var isAdvancedUpload = function() {
+    var div = document.createElement('div');
+    return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+}();
+
+var $input    = $('.box').find('input[type="file"]'),
+$label    = $('.box').find('label'),
+showFiles = function(files) {
+  $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace( '{count}', files.length ) : files[ 0 ].name);
+};
+
+//...
+
+$input.on('drop', function(e) {
+	alert('dropped');
+droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
+showFiles( droppedFiles );
+});
+
+//...
+
+$input.on('change', function(e) {
+showFiles(e.target.files);
+});
+
+
+
+
+
+
+
+
+
+function message_form_lock(){
+	$('#add_message').html('<span><img src="/img/round_yellow_load.gif" class="loader" /></span>');
+	$('#message_status').html('');
+	
+	
+	$('.add-msg').addClass('is-working');
+	$('#i_message').prop("disabled", true);
+	$('.remove_loading').hide();
+	$('#add_message').attr('href','#');
+}
+
+
+function message_form_unlock(result){
     
+	//Update UI to unlock:
+	$('#add_message').html('<i class="fa fa-plus" aria-hidden="true"></i>');
+	$('.add-msg').removeClass('is-working');
+	$('#i_message').prop("disabled", false);
+	$('.remove_loading').fadeIn();
+	$('#add_message').attr('href','javascript:msg_create();');
+	
+	//Reset Focus:
+	$("#i_message").focus();
+	
+	
+	//What was the result?
+	if(result.status){
+		
+		//Append data:
+		$( "#message-sorting" ).append(result.message);
+
+		//Resort:
+		load_message_sorting();
+
+		//Tooltips:
+ 		$('[data-toggle="tooltip"]').tooltip();
+
+		//Hide any errors:
+		setTimeout(function() {
+	        $(".i_error").fadeOut();
+	    }, 3000);
+	    
+	} else {
+		
+		$('#message_status').html('<b style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+result.message+'</b>');
+		
+	}
+}
+
+function save_attachment(droppedFiles,uploadType){
+	
+	if ($('.box').hasClass('is-uploading')) { return false; }
+      
+    if (isAdvancedUpload) {
+
+    	//Lock message:
+        message_form_lock();
+
+        var ajaxData = new FormData($('.box').get(0));
+  	    if (droppedFiles) {
+  	      $.each( droppedFiles, function(i, file) {
+  	  	      var thename = $input.attr('name');
+  	  	      if (typeof thename == typeof undefined || thename == false) {
+  	  		     var thename = 'drop';
+  	  	      }
+  	          ajaxData.append( uploadType , file );
+  	      });
+  	    }
+  	    
+        ajaxData.append( 'upload_type', uploadType );
+        ajaxData.append( 'i_status', $('#i_status').val() );
+        ajaxData.append( 'i_dispatch_minutes', $('#i_dispatch_minutes').val() );
+        ajaxData.append( 'pid', $('#pid').val() );
+        ajaxData.append( 'b_id', $('#b_id').val() );
+        
+        
+  	  $.ajax({
+  	    url: '/process/message_attachment',
+  	    type: $('.box').attr('method'),
+  	    data: ajaxData,
+  	    dataType: 'json',
+  	    cache: false,
+  	    contentType: false,
+  	    processData: false,
+  	    complete: function() {
+  	        $('.box').removeClass('is-uploading');
+  	    },
+  	    success: function(data) {
+  	    	message_form_unlock(data);
+  	    },
+  	    error: function(data) {
+  	    	var result = [];
+  	    	result.status = 0;
+  	  	 	result.message = data.responseText;
+  	    	message_form_unlock(result);
+  	    }
+  	  });
+    } else {
+      // ajax for legacy browsers
+    }
+}
+
+
+function msg_create(){
+
+	//Lock message:
+    message_form_lock();
+	
+	//Update backend:
+	$.post("/process/message_create", {
+		
+		b_id:$('#b_id').val(),
+		pid:$('#pid').val(),
+		i_message:$('#i_message').val(),
+		i_dispatch_minutes:$('#i_dispatch_minutes').val(),
+		i_status:$('#i_status').val(),
+		
+	}, function(data) {
+
+		//Empty Inputs Fields if success:
+		if(data.status){
+			$( "#i_message" ).val("");
+    		countChar(document.getElementById('i_message'));
+		}
+
+		//Unlock field:
+		message_form_unlock(data);
+		
+	});
+}
+
+$(document).ready(function() {
+	
+	$('.box').find('input[type="file"]').change(function (){
+		save_attachment(droppedFiles,'file');
+    });
     
+    if (isAdvancedUpload) {
+
+      $('.box').addClass('has-advanced-upload');
+      var droppedFiles = false;
+    
+      $('.box').on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      })
+      .on('dragover dragenter', function() {
+        $('.add-msg').addClass('is-working');
+      })
+      .on('dragleave dragend drop', function() {
+        $('.add-msg').removeClass('is-working');
+      })
+      .on('drop', function(e) {
+        droppedFiles = e.originalEvent.dataTransfer.files;
+        e.preventDefault();
+        save_attachment(droppedFiles,'drop');
+      });
+
+    }
+});
+</script>
+
+
+<style>
+.overload{
+color:#FF0000;
+font-weight:bold;
+}
+.box__dragndrop {
+  display: none;
+}
+.box.has-advanced-upload {
+  
+}
+.box.has-advanced-upload .box__dragndrop {
+  display: inline;
+}
+
+.add-msg{
+background-color: #FFF !important; border: 1px solid #CCC;
+}
+.is-working {
+  background-color:#e5e4e4 !important;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#url_preview{
+margin:5px 0;
+}
+
+.inputfile + label {
+    display: inline-block;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+	pointer-events: none;
+}
+.textarea_buttons{
+    font-weight:bold;
+    font-size:13px;
+}
+.textarea_buttons:hover{
+    color:#777 !important;
+}
+.dropdown-toggle.btn{ padding:12px 5px; }
+</style>
     
     <div class="tab-pane <?= ( !$has_tree ? 'active' : '') ?>" id="messages">
     	<p class="maxout"></p>
     	<ul class="maxout">
-			<li>Messages are facts or best-practices shared with students that help them understand how to execute towards this <b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?> Objecetive</b>.</li>
-			<li>Messages are delivered to students 1 milestone at a time using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-			<li>Each message can be a text snippet, URL reference or a media file.</li>
-			<li>Message are delivered in the same order that you sort them.</li>
+			<?php if($level==1){ ?>
+			<li>Action plan has 3 levels: <b>(1) Bootcamp (You're Here)</b> (2) Milestone (3) Task.</li>
+    		<li><?= status_bible('i',1) ?> Bootcamp messages are sent to students on day 1.</li>
+    		<li><?= status_bible('i',2) ?> Bootcamp messages are <b>also</b> added to the landing page.</li>
+    		<?php } elseif($level==2){ ?>
+    		<li>Action plan has 3 levels: (1) Bootcamp <b>(2) Milestone (You're Here)</b> (3) Task.</li>
+    		<li><?= status_bible('i',1) ?> Milestone messages are sent to students when milestone starts.</li>
+    		<li><?= status_bible('i',2) ?> Milestone messages are <b>also</b> added to the landing page.</li>
+    		<?php } elseif($level==3){ ?>
+    		<li>Action plan has 3 levels: (1) Bootcamp (2) Milestone <b>(3) Task (You're Here)</b>.</li>
+    		<li><?= status_bible('i',1) ?> Task messages are sent to students when milestone starts.</li>
+    		<li>Task messages cannot be <?= status_bible('i',2) ?>.</li>
+    		<?php } ?>
+			<li>Messages are facts or best-practices shared with students that help them understand how to execute towards this <b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Objective</b>.</li>
+			<li>Students can also access messages via the persistent menu of <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+			<li>A message can be a media file, URL or a text snippet up to 420 characters.</li>
+			<li>Each message can reference up to 1 URL.</li>
 		</ul>
     	<?php 
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
 		foreach($i_messages as $i){
-		    echo_message($i);
+		    echo echo_message($i);
 		}
 		echo '</div>';
 		
@@ -593,33 +803,43 @@ function message_save_updates(i_id){
 		echo '<div class="list-group list-messages">';
     		echo '<div class="list-group-item">';
     		
-    		  echo '<div class="add-msg" style="background-color: #FFF; border: 1px solid #CCC;">';
-    		  echo '<form id="dropform">'; //Used for dropping files
-    		  
-    		  
+    		  echo '<div class="add-msg">';
+    		  echo '<form class="box" method="post" enctype="multipart/form-data">'; //Used for dropping files
+
     		    echo '<textarea onkeyup="countChar(this)" class="form-control" style="min-height:110px; resize:vertical;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
-    		
-        		echo '<div id="i_message_counter" style="margin:-15px 0 10px 0; font-size:0.8em;"><span id="charNum">600</span>/600 Remaining.<a href="javascript:add_first_name();" style="float:right; font-weight:bold;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-plus-square" aria-hidden="true"></i> {first_name}</a></div>';
-        		
-        		echo '<div id="url_preview"></div>';
+        
+    		    echo '<div id="i_message_counter" style="margin:0 0 10px 0; font-size:0.8em;">';
+    		      //File counter:
+    		    echo '<span id="charNum">0</span>/420';
+    		    echo '<span id="message_status" style="margin-left:10px;"></span>';
+    		    //{first_name}
+        		  echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-user" aria-hidden="true"></i> {first_name}</a>';
+        		  //Choose a file:
+        		  $file_limit_mb = $this->config->item('file_limit_mb');
+        		  echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="left"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload File</label></div>';
+        		echo '</div>';
         		
         		echo '<ul style="list-style:none;">';
+        		
         		  /*
             		echo '<li class="pull-left" style="padding:2px 5px 0 0;">';
             		echo '<div class="fallback" style="display:inline-block;"><input type="file" name="file" /></div>';
             		echo '</li>';
             		*/
         		
-            		echo '<li class="pull-right"><a href="javascript:msg_create();" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
-            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
-            		  echo echo_status_dropdown('i','i_status',1,array(-1),'dropup');
-            		echo '</li>';
-            		echo '<li class="pull-right" style="padding:2px 5px 0 0;">';
+            		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
+            		
+            		
+            		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
             		echo echo_status_dropdown('idm','i_dispatch_minutes',0,array(),'dropup');
+            		echo '</li>';
+            		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
+            		echo echo_status_dropdown('i','i_status',($level==1?2:1),($level==3?array(-1,2):array(-1)),'dropup');
             		echo '</li>';
             		
         		echo '</ul>';
         		
+        		echo '<div id="url_preview"></div>';
         		
               echo '</form>';
         	  echo '</div>';
@@ -644,23 +864,10 @@ function message_save_updates(i_id){
         
         <?php /* TODO Remove soon with the instroduction of Messages V4 */ ?>
         <div style="display:<?= ( in_array($udata['u_id'],array(1,2)) && strlen($intent['c_todo_overview'])>0 ? 'block' : 'none' ) ?>;">
-        	<br />
-            <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview</h4></div>
-            <ul class="maxout">
-            	<?php if($level==1){ ?>
-            	<li>Provide an overview of how your bootcamp plans to accomplish its <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Objective</b>.</li>
-            	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are published on the landing page below the title.</li>
-            	<?php } elseif($level==2){ ?>
-            	<li>Provide an overview of <b>how</b> this milestone builds towards the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Objective</b> and <b>what</b> will students be doing for this milestone.</li>
-            	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are published in the landing page's Milestone section.</li>
-            	<?php } elseif($level>=3){ ?>
-            	<li>Give more context on how to execute this <?= strtolower($core_objects['level_'.($level-1)]['o_name']) ?>.</li>
-            	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overview provides instructions on how to execute this task.</li>
-            	<li><?= $core_objects['level_'.($level-1)]['o_name'] ?> overviews are private & "drip-fed" to students during the bootcamp.</li>
-            	<?php } ?>
-            </ul>
+            <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview (MOVE TO MESSAGES)</h4></div>
+			<hr />
             <div id="c_todo_overview"><?= ( isset($intent['c_todo_overview']) ? $intent['c_todo_overview'] : '' ) ?></div>
-            <script> var c_todo_overview_quill = new Quill('#c_todo_overview', setting_full); </script>
+            <hr />
         </div>
         
         
@@ -675,7 +882,7 @@ function message_save_updates(i_id){
             <ul>
             	<li>Break Milestones give some time off in between Milestones.</li>
             	<li>They also help students who are falling behind to catchup.</li>
-            	<li>Have no <b><i class="fa fa-check-square" aria-hidden="true"></i> TASKS</b> but may have <b><i class="fa fa-commenting" aria-hidden="true"></i>MESSAGES</b> to read, listen or watch.</li>
+            	<li>Have no <b><i class="fa fa-check-square" aria-hidden="true"></i> TASKS</b> but may have <b><i class="fa fa-commenting" aria-hidden="true"></i> MESSAGES</b> to read, listen or watch.</li>
             	<li>Give Each Break Milestone a Relevant Title like "<?= ($bootcamp['b_sprint_unit']=='day' ? 'Weekend Break' : 'Midterm Break') ?>".</li>
             </ul>
             <div class="form-group label-floating is-empty">

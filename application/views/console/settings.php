@@ -29,6 +29,7 @@ function save_settings(){
 		b_id:$('#b_id').val(),
 		b_status:$('#b_status').val(),
 		b_url_key:$('#b_url_key').val(),
+		b_category_id:$('#b_category_id').val(),
 		
 	} , function(data) {
 		
@@ -55,6 +56,15 @@ function save_settings(){
 
     <div class="tab-pane active" id="general">
     	
+    	
+    	<div class="title"><h4><i class="fa fa-tag" aria-hidden="true"></i> Bootcamp Category</h4></div>
+        <ul>
+        	<li>Select the primary category that represents the main bootcamp idea.</li>
+        </ul>
+        <?php echo_status_dropdown('ct','b_category_id',$bootcamp['b_category_id']); ?>
+        
+        
+        <br />
 		<div class="title" style="margin-top:0;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status</h4></div>
         <ul>
         	<li>Bootcamps are created in <?= status_bible('b',0) ?> mode to give you time to build them.</li>
@@ -64,9 +74,8 @@ function save_settings(){
         </ul>
         <?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
+
 		
-		
-		<br />
 		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Landing Page URL</h4></div>
         <ul>
         	<li>Your bootcamp's unique landing page URL.</li>

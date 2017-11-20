@@ -66,7 +66,7 @@ function update_timeline(){
     <input type="text" id="r_start_date" value="<?= ( isset($r_start_date) ? date("m/d/Y",strtotime($r_start_date)) : '' )  ?>" style="width:120px;display:inline-block;" class="form-control border" />
     <span class="material-input"></span>
 </div>
-<div class="form-group label-floating is-empty" style="margin-left:130px; margin-top:-50px;">
+<div class="form-group label-floating is-empty" style="margin-left:130px; margin-top:-36px;">
     <select class="form-control input-mini border" id="r_start_time_mins">
     	<?php
     	foreach($start_times as $minutes=>$fancy_time){

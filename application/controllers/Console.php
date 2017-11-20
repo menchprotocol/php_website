@@ -98,7 +98,8 @@ class Console extends CI_Controller {
 	    }
 	    
 	    if(isset($_GET['raw'])){
-	        echo_json($bootcamps[0]); exit;
+	        echo_json($bootcamps[0]);
+	        exit;
 	    }
 	    
 	    

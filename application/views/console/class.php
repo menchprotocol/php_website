@@ -5,6 +5,7 @@ $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 ?>
 <script>
+
 function ucwords(str) {
    return (str + '').replace(/^(.)|\s+(.)/g, function ($1) {
       return $1.toUpperCase()
@@ -14,13 +15,71 @@ function js_mktime(hour,minute,month,day,year) {
     return new Date(year, month-1, day, hour, minutes, 0).getTime() / 1000;
 }
 
+function adjust_mentorship_sessions(){
+	var val = $('#r_meeting_frequency').val();
+	
+	if(val=='0'){
+		$('#r_meeting_duration').hide();
+	} else {
+		$('#r_meeting_duration').fadeIn();
+	}
+	
+	if(val=='d1' || val=='w1' || val=='w2' || val=='w3' || val=='w5'){
+		$('#frequency_details').html('(Excluding <i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone)');
+	} else {
+		$('#frequency_details').html('');
+	}
+}
 
+function update_tuition_calculator(){
+
+	//Save the rest of the content:
+	$.post("/process/tuition_calculator", {	
+		
+		//Object IDs:
+		r_id:$('#r_id').val(),
+		b_id:$('#b_id').val(),
+		
+		//Service Factors:
+		r_response_time_hours:$('#r_response_time_hours').val(),
+		r_meeting_frequency:$('#r_meeting_frequency').val(),
+		r_meeting_duration:$('#r_meeting_duration').val(),
+
+		//Duration:
+		b_sprint_unit:$('#b_sprint_unit').val(),
+		c__child_intent_count:$('#c__child_intent_count').val(),
+		c__estimated_hours:$('#c__estimated_hours').val(),
+
+		//Screening:
+		r_min_students:$('#r_min_students').val(),
+		r_max_students:$('#r_max_students').val(),
+
+		//Current Base:
+		r_student_reach:$('#r_student_reach').val(),
+		
+	} , function(data) {
+		
+		//Update UI to confirm with user:
+		$('#calculator_body').html(data).hide().fadeIn();
+
+		//Activate Tooltip:
+		$('[data-toggle="tooltip"]').tooltip();
+		
+    });
+}
 
 $(document).ready(function() {
+    
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
 		focu_hash(window.location.hash);
     }
+
+    //Tuition Calculator:
+    update_tuition_calculator();
+    $( "#r_response_time_hours, #r_meeting_frequency, #r_meeting_duration, #r_min_students, #r_max_students, #r_student_reach" ).change(function() {
+    	update_tuition_calculator();
+    });
     
 	//Load date picker:
 	$( function() {
@@ -37,6 +96,13 @@ $(document).ready(function() {
 	$('input[name=r_cancellation_policy]').change(function() {
 		//$("#r_live_office_hours_val").val(ucwords(this.value));
     });
+
+	
+	adjust_mentorship_sessions();
+	$('#r_meeting_frequency').change(function() {
+		adjust_mentorship_sessions();		
+    });
+	
 
 	//Watchout for changing office hours checkbox:
 	$("#r_live_office_hours_check").change(function() {
@@ -68,7 +134,8 @@ function save_r(){
 		
 		//Communication:
 		r_response_time_hours:$('#r_response_time_hours').val(),
-		r_weekly_1on1s:$('#r_weekly_1on1s').val(),
+		r_meeting_frequency:$('#r_meeting_frequency').val(),
+		r_meeting_duration:$('#r_meeting_duration').val(),
 		r_live_office_hours_check:$('#r_live_office_hours_val').val(),
 		r_office_hour_instructions:$('#r_office_hour_instructions').val(),
 		r_closed_dates:$('#r_closed_dates').val(),
@@ -77,6 +144,7 @@ function save_r(){
 		//Class:
 		r_status:$('#r_status').val(),
 		r_usd_price:$('#r_usd_price').val(),
+		r_student_reach:$('#r_student_reach').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),
 		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
@@ -112,17 +180,16 @@ function save_r(){
 
 <input type="hidden" id="r_id" value="<?= $class['r_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $class['r_b_id'] ?>" />
-<input type="hidden" id="week_count" value="<?= count($bootcamp['c__child_intents']) ?>" />
-
-
-
+<input type="hidden" id="c__child_intent_count" value="<?= count($bootcamp['c__child_intents']) ?>" />
+<input type="hidden" id="c__estimated_hours" value="<?= count($bootcamp['c__estimated_hours']) ?>" />
+<input type="hidden" id="b_sprint_unit" value="<?= $bootcamp['b_sprint_unit'] ?>" />
 
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_admission" class="active"><a href="#admission" data-toggle="tab" onclick="update_hash('admission')"><i class="fa fa-ticket" aria-hidden="true"></i> Admission</a></li>
+  <li id="nav_screening" class="active"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-search" aria-hidden="true"></i> Screening</a></li>
   <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Finance</a></li>
+  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Pricing</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
 </ul>
 
@@ -132,22 +199,37 @@ function save_r(){
 <div class="tab-content tab-space">
 
 
-
-	<!-- Admission Tab -->
-    <div class="tab-pane active" id="admission">
     
-    	<div style="display:none;">
+        <div class="tab-pane active" id="screening">
+        
+        
+        <div class="title"><h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</h4></div>
+        <ul>
+        	<li>A list of requirements students must meet to join this bootcamp.</li>
+        	<li>We ask students to confirm all prerequisites during their application.</li>
+        </ul>
+        <script>
+        $(document).ready(function() {
+        	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-exclamation-triangle"></i>',<?= ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : '[]' ) ?>);
+        });
+        </script>
+        <div id="r_prerequisites" class="list-group"></div>
+    
+    
+    
+    	<div style="display:block;">
             <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students</h4></div>
             <ul>
             	<li>Minimum number of students required to kick-start this class.</li>
-            	<li>All applicants would be refunded if the minimum is not met.</li>
-            	<li>The value must be "1" or greater.</li>
+            	<li>All applicants will be refunded if the minimum is not met.</li>
+            	<li>Set the minimum to 1 or greater.</li>
             </ul>
             <div class="input-group">
             	<input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border" />
             </div>
             <br />
         </div>
+        
         
         
         <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students</h4></div>
@@ -162,24 +244,7 @@ function save_r(){
         </div>
         <br />
         
-                
-        
-        
-        
-        <div class="title"><h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</h4></div>
-        <ul>
-        	<li>A list of requirements students must meet to join this bootcamp.</li>
-        	<li>We ask students to confirm all prerequisites during their application.</li>
-        </ul>
-        <script>
-        $(document).ready(function() {
-        	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-exclamation-triangle"></i> Prerequisite',<?= ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : '[]' ) ?>);
-        });
-        </script>
-        <div id="r_prerequisites" class="list-group"></div>
-        <br />
-        
-        
+
         
         
         
@@ -193,29 +258,24 @@ function save_r(){
         
         <script>
         $(document).ready(function() {
-        	initiate_list('r_application_questions','+ New Question','<i class="fa fa-question-circle"></i> Question',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
+        	initiate_list('r_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
         });
         </script>
         <div id="r_application_questions" class="list-group"></div>
+        
+        
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     <div class="tab-pane" id="support">
     
     
-		<div class="title"><h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4></div>
+		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Chat Response Time</h4></div>
         <ul>
         	<li>Student communication is done on Facebook Messenger using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> <u>MenchBot</u></a>.</li>
-        	<li>You are required to respond to 100% of incoming student messages.</li>
+        	<li>You are required to respond to all incoming messages from your students.</li>
         	<li>You get to choose how fast you commit to responding to messages.</li>
+        	<li>You can delegate support to <?= status_bible('ba',2) ?>.</li>
         </ul>
         <select class="form-control input-mini border" id="r_response_time_hours">
         <option value="">Select Responsiveness</option>
@@ -231,21 +291,46 @@ function save_r(){
 
 		
 		
-		<div class="title"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship Level</h4></div>
+		<div class="title"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship Sessions</h4></div>
         <ul>
+        	<li>If Set, Every student gets 1-on-1 mentorship to maximize chance of success.</li>
         	<li>Recommended for difficult-to-execute bootcamps to help students 1-on-1.</li>
         	<li>Use a Calendar app to manually setup your meetings with each student.</li>
         	<li>Use a video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
         </ul>
-        <select class="form-control input-mini border" id="r_weekly_1on1s" style="width:300px;">
-        <option value="">Select Mentorship Level</option>
-        <?php
-        $weekly_1on1s_options = $this->config->item('r_weekly_1on1s_options');
-        foreach($weekly_1on1s_options as $time){
-            echo '<option value="'.$time.'" '.( isset($class['r_weekly_1on1s']) && $class['r_weekly_1on1s']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).' per student per '.$bootcamp['b_sprint_unit'].'</option>';
-        }
-        ?>
-        </select>
+        
+        <table style="width:100%;">
+        	<tr>
+        		<td style="width:150px;">
+        			<select class="form-control input-mini border" id="r_meeting_frequency">
+                        <?php
+                        if(strlen($class['r_meeting_frequency'])==0){
+                            echo '<option value="">Select...</option>';
+                        }
+                        $r_meeting_frequency = $this->config->item('r_meeting_frequency');
+                        foreach($r_meeting_frequency as $val=>$name){
+                            echo '<option value="'.$val.'" '.( $class['r_meeting_frequency'].''==$val.'' ? 'selected="selected"' : '' ).'>'.$name.'</option>';
+                        }
+                        ?>
+                    </select>
+        		</td>
+        		<td style="width:160px;">
+        			<select class="form-control input-mini border" id="r_meeting_duration">
+                        <?php
+                        $r_meeting_duration = $this->config->item('r_meeting_duration');
+                        foreach($r_meeting_duration as $time){
+                            echo '<option value="'.$time.'" '.( $class['r_meeting_duration']==$time ? 'selected="selected"' : '' ).'>@ '.echo_hours($time).' Each</option>';
+                        }
+                        ?>
+                    </select>
+        		</td>
+        		<td>
+                    <span id="frequency_details"></span>
+        		</td>
+        	</tr>
+        </table>
+                    
+                
     	
 
 
@@ -299,19 +384,37 @@ function save_r(){
 		</div>
     </div>
     
+
+    
     
     
     
     <div class="tab-pane" id="pricing">
     
-        <div class="title"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4></div>
+        
+        <div style="display:none;">
+        	<div class="title"><h4><i class="fa fa-calculator" aria-hidden="true"></i> Tuition Calculator</h4></div>
+            <select class="form-control input-mini border" id="r_student_reach">
+    			<?php 
+    			$r_student_reach = $this->config->item('r_student_reach');
+    			foreach($r_student_reach as $val=>$name){
+    			    echo '<option value="'.$val.'" '.( $class['r_student_reach']==$val ? 'selected="selected"' : '' ).'>'.$name.'</option>';
+    			}
+    			?>
+    		</select>
+            <div id="calculator_body"></div>
+            <br />
+        </div>
+            
+        
+        
+        <div class="title"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition Rate</h4></div>
         <ul>
-        	<li>A 1-time fee for student to join this bootcamp.</li>
-        	<li>Correlates to total duration, estimated hours & personalized support level.</li>
-        	<li>Enter "0" if free.</li>
-        	<li>We suggest charging $100-$200/week per each hour of 1-on-1 mentorship.</li>
+        	<li>A 1-time fee for student to join this bootcamp class.</li>
+        	<li>Use above calculator to estimate a customized tuition rate.</li>
+        	<li>Enter "0" if free. Good for shorter lead generation bootcamps.</li>
         	<li>Learn more about <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank" style="display:inline-block;">Commission Rates & Payout Installments <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
-        	<li>Co-Instructor revenue sharing & student payment plans are <a href="javascript:alert('You can share your revenue with your co-instructors, or you can setup student payment plans for bootcamps that cost more than $500. Contact us via chat to learn more or to enable these features.');">available <i class="fa fa-info-circle" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+        	<li>Contact us to setup co-instructor revenue sharing or student payment plans.</li>
         </ul>
         <div class="input-group">
         	<span class="input-group-addon addon-lean">USD $</span>
@@ -319,23 +422,8 @@ function save_r(){
         </div>
         <br />
         
+      
         
-        
-        
-        <div class="title"><h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prizes (Optional)</h4></div>
-        <ul>
-        	<li>Awarded to students who complete all milestones by the last day of this class.</li>
-        	<li>Prizes are an additional incentive to increase your bootcamp's completion rate.</li>
-        	<li>Completion prizes are published on your landing page's Admission section.</li>
-        </ul>
-        
-        <script>
-        $(document).ready(function() {
-        	initiate_list('r_completion_prizes','+ New Prize','<i class="fa fa-gift"></i> Prize',<?= ( strlen($class['r_completion_prizes'])>0 ? $class['r_completion_prizes'] : '[]' ) ?>);
-        });
-        </script>
-        <div id="r_completion_prizes" class="list-group"></div>
-        <br />
         
         
         
@@ -355,6 +443,23 @@ function save_r(){
         }
         ?>
         <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank" style="display:inline-block;">Refund Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</p>
+        
+        
+        
+        <br />
+        <div class="title"><h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prizes (Optional)</h4></div>
+        <ul>
+        	<li>Awarded to students who complete all milestones by the last day of this class.</li>
+        	<li>Prizes are an additional incentive to increase your bootcamp's completion rate.</li>
+        	<li>Completion prizes are published on your landing page's Admission section.</li>
+        </ul>
+        
+        <script>
+        $(document).ready(function() {
+        	initiate_list('r_completion_prizes','+ New Prize','<i class="fa fa-gift"></i>',<?= ( strlen($class['r_completion_prizes'])>0 ? $class['r_completion_prizes'] : '[]' ) ?>);
+        });
+        </script>
+        <div id="r_completion_prizes" class="list-group"></div>
     </div>
     
     

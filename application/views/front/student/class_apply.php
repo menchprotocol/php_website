@@ -193,8 +193,8 @@ $start_times = $this->config->item('start_times');
     	<li>Duration: <b><?= count($admission['c__child_intents']) ?> <?= ucwords($admission['b_sprint_unit']).( count($admission['c__child_intents'])==1 ? '' : 's') ?></b></li>
     	<li>End Time: <b><?= time_format($admission['r_start_date'],2,(calculate_duration($admission))).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
     	<li>Your Commitment: <b><?= echo_hours(round($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?>/<?= ucwords($admission['b_sprint_unit']) ?></b></li>
-    	<?php if($admission['r_weekly_1on1s']>0){ ?>
-    	<li>1-on-1 Mentorship: <b><?= echo_hours($admission['r_weekly_1on1s']) ?>/<?= ucwords($admission['b_sprint_unit']) ?></b></li>
+    	<?php if(strlen($admission['r_meeting_frequency'])>0 && !($admission['r_meeting_frequency']=="0")){ ?>
+    	<li>Mentorship: <b><?= echo_mentorship($admission['r_meeting_frequency'],$admission['r_meeting_duration']) ?></b></li>
     	<?php } ?>
 	</ul>
 	<div class="form-group label-floating is-empty">

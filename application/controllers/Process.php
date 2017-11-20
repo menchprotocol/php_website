@@ -609,6 +609,80 @@ class Process extends CI_Controller {
 	 * r Classes
 	 ****************************** */
 	
+	function tuition_calculator(){
+	    /*
+
+		r_id:$('#r_id').val(),
+		b_id:$('#b_id').val(),
+		
+		//Service Factors:
+		r_response_time_hours:$('#r_response_time_hours').val(),
+		r_meeting_frequency:$('#r_meeting_frequency').val(),
+		r_meeting_frequency:$('#r_meeting_frequency').val(),
+
+		//Duration:
+		b_sprint_unit:$('#b_sprint_unit').val(),
+		c__child_intent_count:$('#c__child_intent_count').val(),
+		c__estimated_hours:$('#c__estimated_hours').val(),
+		
+		//Screening:
+		r_min_students:$('#r_min_students').val(),
+		r_max_students:$('#r_max_students').val(),
+
+		//Current Base:
+		r_student_reach:$('#r_student_reach').val(),
+		*/
+	    
+	    //Displays the class timeline based on some inputs:
+	    if(!isset($_POST['r_id']) || !isset($_POST['b_id'])){
+	        die('<span style="color:#FF0000;">Missing core data.</span>');
+	    } elseif(!isset($_POST['r_student_reach']) || intval($_POST['r_student_reach'])<=0){
+	        die('<span style="color:#000;">Set your current student reach to load calculator...</span>');
+	    } elseif(!isset($_POST['milestone_count']) || intval($_POST['milestone_count'])<=0){
+	        die('<span style="color:#FF0000;">Error: You have not added any Milestones to your Action Plan.</span>');
+	    } elseif(!isset($_POST['b_sprint_unit'])){
+	        die('<span style="color:#FF0000;">Error: Missing Milestone Submission Frequency.</span>');
+	    } elseif(!isset($_POST['b_id'])){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['b_status'])){
+	        die('<span style="color:#FF0000;">Error: Missing Bootcamp Status.</span>');
+	    }
+	    
+	    $_POST['milestone_count'] = intval($_POST['milestone_count']);
+	    //Incldue config variables:
+	    $sprint_units = $this->config->item('sprint_units');
+	    $start_times = $this->config->item('start_times');
+	    //Calculate total mentorship hours:
+	    $total_mentorship = gross_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration'],$bootcamp['b_sprint_unit'],$open_milestones,false);
+	    
+	    //Fetch and calculate office hours:
+	    $total_office_hours = 0;
+	    if(strlen($focus_class['r_live_office_hours'])>0 && is_array($office_hours)){
+	        foreach (unserialize($focus_class['r_live_office_hours']) as $key=>$oa){
+	            if(isset($oa['periods']) && count($oa['periods'])>0){
+	                //Yes we have somehours for this day:
+	                foreach($oa['periods'] as $period){
+	                    //Calculate hours for this period:
+	                    $total_office_hours += hourformat($period[1]) - hourformat($period[0]);
+	                }
+	            }
+	        }
+	    }
+	    
+	    //Start calculations:
+	    echo '<p>Price Suggestion: <b>USD $250 - $500</b></p>';
+	    echo '<p>Class Earning Potential: <b>22 Seats @ USD $15,000 - $22,000</b></p>';
+	    echo '<ul style="list-style:decimal;">';
+    	    echo '<li>Bootcamp Duration: <b>'.(intval($_POST['b_status'])>=2?'ASAP':'When Bootcamp is '.status_bible('b',2)).'</b></li>';
+    	    echo '<li>Student Commitment: <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
+    	    echo '<li>Total 1-on-1 Mentorship: <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+    	    echo '<li>Total Office Hours: <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+    	    echo '<li>Bootcamp Duration: <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
+    	    echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+	    echo '</ul>';
+	    
+	}
 	function class_timeline(){
 	    //Displays the class timeline based on some inputs:
 	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
@@ -633,11 +707,11 @@ class Process extends CI_Controller {
 	    //Start calculations:
         echo '<p>Based on this start time, your class timeline is:</p>';
         echo '<ul style="list-style:decimal;">';
-            echo '<li>Admissions Can Start: <b>'.(intval($_POST['b_status'])>=2?'ASAP':'When Bootcamp is '.status_bible('b',2)).'</b></li>';
+            echo '<li>Admissions Starts: <b>'.(intval($_POST['b_status'])>=2?'ASAP':'When Bootcamp is '.status_bible('b',2)).'</b></li>';
 	        echo '<li>Admission Ends: <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
 	        echo '<li>Class Starts: <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
 	        echo '<li>Instant Payout by: <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-	        echo '<li>Bootcamp Duration: <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s</b> based on <b><a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
+	        echo '<li>Bootcamp Duration: <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
 	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
     	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
     	    echo '</ul>';
@@ -851,17 +925,17 @@ class Process extends CI_Controller {
 	    //Fetch config variables for checking:
 	    $refund_policies = $this->config->item('refund_policies');
 	    $r_response_options = $this->config->item('r_response_options');
-	    $weekly_1on1s_options = $this->config->item('r_weekly_1on1s_options');
-	    $start_times = $this->config->item('start_times');
-	    
+	    $r_meeting_durations = $this->config->item('r_meeting_duration');
+	    $r_meeting_frquencies = $this->config->item('r_meeting_frequency');
+	    $start_times = $this->config->item('start_times');	    
 	    
 	    $r_update = array(
 	        'r_start_date' => $new_date,
 	        'r_start_time_mins' => ( array_key_exists(intval($_POST['r_start_time_mins']),$start_times) ? intval($_POST['r_start_time_mins']) : null ),
 	        'r_status' => intval($_POST['r_status']),
-	        
 	        'r_response_time_hours' => ( in_array(floatval($_POST['r_response_time_hours']),$r_response_options) ? floatval($_POST['r_response_time_hours']) : null ),
-	        'r_weekly_1on1s' => ( strlen($_POST['r_weekly_1on1s'])>0 && in_array(floatval($_POST['r_weekly_1on1s']),$weekly_1on1s_options) ? floatval($_POST['r_weekly_1on1s']) : null ),
+	        'r_meeting_frequency' => ( strlen($_POST['r_meeting_frequency'])>0 && array_key_exists($_POST['r_meeting_frequency'],$r_meeting_frquencies) ? $_POST['r_meeting_frequency'].'' : null ),
+	        'r_meeting_duration' => ( strlen($_POST['r_meeting_duration'])>0 && in_array(floatval($_POST['r_meeting_duration']),$r_meeting_durations) ? floatval($_POST['r_meeting_duration']) : null ),
 	        'r_office_hour_instructions' => ( strlen($_POST['r_office_hour_instructions'])>0 ? trim($_POST['r_office_hour_instructions']) : null ),
 	        'r_cancellation_policy' => ( isset($_POST['r_cancellation_policy']) && array_key_exists($_POST['r_cancellation_policy'],$refund_policies) ? $_POST['r_cancellation_policy'] : null ),
 	        'r_closed_dates' => ( strlen($_POST['r_closed_dates'])>0 ? trim($_POST['r_closed_dates']) : null ),
@@ -1083,6 +1157,7 @@ class Process extends CI_Controller {
 	    $b_update = array(
 	        'b_status' => intval($_POST['b_status']),
 	        'b_url_key' => $_POST['b_url_key'],
+	        'b_category_id' => intval($_POST['b_category_id']),
 	    );
 
 	    //Updatye bootcamp:
@@ -1320,7 +1395,6 @@ class Process extends CI_Controller {
 	    //Generate Update Array
 	    $c_update = array(
 	        'c_objective' => trim($_POST['c_objective']),
-	        'c_todo_overview' => $_POST['c_todo_overview'],
 	        'c_status' => intval($_POST['c_status']),
 	        'c_time_estimate' => floatval($_POST['c_time_estimate']),
 	        'c_is_last' => $_POST['c_is_last'],
@@ -1607,58 +1681,207 @@ class Process extends CI_Controller {
 	    }
 	}
 	
+	function message_attachment(){
+	    
+	    $udata = auth(2);
+	    $file_limit_mb = $this->config->item('file_limit_mb');
+	    if(!$udata){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Session. Refresh to Continue',
+	        ));
+	    } elseif(!isset($_POST['i_dispatch_minutes']) || !isset($_POST['pid']) || !isset($_POST['b_id']) || !isset($_POST['i_status'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing intent data.',
+	        ));
+	    } elseif(!isset($_POST['upload_type']) || !in_array($_POST['upload_type'],array('file','drop'))){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Unknown upload type.',
+	        ));
+	    } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || !isset($_FILES[$_POST['upload_type']]['type']) || !isset($_FILES[$_POST['upload_type']]['size'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing file.',
+	        ));
+	    } elseif($_FILES[$_POST['upload_type']]['size']>($file_limit_mb*1024*1024)){
+	        
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'File is larger than '.$file_limit_mb.' MB.',
+	        ));
+	        
+	    } else {
+	        	        
+	        //Attempt to store in Cloud:
+	        if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
+	            $mime = $_FILES[$_POST['upload_type']]['type'];
+	        } else {
+	            $mime = mime_content_type($_FILES[$_POST['upload_type']]['tmp_name']);
+	        }
+	        
+	        $new_file_url = save_file($_FILES[$_POST['upload_type']]['tmp_name'],$_FILES[$_POST['upload_type']]);
+	        
+	        //What happened?
+	        if(!$new_file_url){
+	            
+	            //Oops something went wrong:
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'Could not save to cloud!',
+	            ));
+	            
+	        } else {
+	            
+	            //Detect file type:
+	            $i_media_type = mime_type($mime);
+	            
+	            //Create Message:
+	            $message = '/attach '.$i_media_type.':'.trim($new_file_url);
+	            
+	            //Create Link:
+	            $i = $this->Db_model->i_create(array(
+	                'i_creator_id' => $udata['u_id'],
+	                'i_c_id' => intval($_POST['pid']),
+	                'i_b_id' => intval($_POST['b_id']),
+	                'i_media_type' => $i_media_type,
+	                'i_message' => $message,
+	                'i_url' => $new_file_url,
+	                'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
+	                'i_status' => intval($_POST['i_status']),
+	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+	                    'i_status >=' => 0,
+	                    'i_c_id' => intval($_POST['pid']),
+	                )),
+	            ));
+	            
+	            //Log engagement:
+	            $this->Db_model->e_create(array(
+	                'e_initiator_u_id' => $udata['u_id'],
+	                'e_message' => $message,
+	                'e_json' => json_encode(array(
+	                    'post' => $_POST,
+	                    'file' => $_FILES,
+	                    'after' => $i,
+	                )),
+	                'e_type_id' => 34, //Message added
+	                'e_i_id' => intval($i['i_id']),
+	                'e_c_id' => intval($i['i_c_id']),
+	                'e_b_id' => $i['i_b_id'], //Share with bootcamp team
+	            ));
+	            
+	            //Echo message:
+	            echo_json(array(
+	                'status' => 1,
+	                'message' => echo_message($i),
+	            ));
+	        }
+	    }
+	}
+	
+	
+	
 	function message_create(){
 	    
 	    $udata = auth(2);
 	    if(!$udata){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Session. Refresh to Continue.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Session. Refresh to Continue.',
+	        ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Task ID.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Task ID.',
+	        ));
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Bootcamp ID.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Bootcamp ID.',
+	        ));
+	    } elseif(!isset($_POST['i_status'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Status.',
+	        ));
 	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Missing message.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing message.',
+	        ));
 	    } elseif(!isset($_POST['i_dispatch_minutes'])){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Missing Dispatch Minutes.</span>');
-	    }
-	    
-	    //(!isset($_POST['i_url']) || strlen($_POST['i_url'])<=0 || !filter_var($_POST['i_url'], FILTER_VALIDATE_URL))
-	    $i_media_type = 'text'; //text,image,video,audio,file
-	    
-	    //Detect potential URL:
-	    $urls = extract_urls($_POST['i_message']);
-	    if(count($urls)>1){
-	        die('<span style="color:#FF0000;" class="i_error">Error: You can only have 1 URL per message.</span>');
-	    }
-	    
-	    //Create Link:
-	    $i = $this->Db_model->i_create(array(
-	        'i_creator_id' => $udata['u_id'],
-	        'i_c_id' => intval($_POST['pid']),
-	        'i_b_id' => intval($_POST['b_id']),
-	        'i_media_type' => $i_media_type,
-	        'i_message' => trim($_POST['i_message']),
-	        'i_url' => ( count($urls)==1 ? $urls[0] : null ),
-	        'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
-	        'i_status' => 1,
-	    ));
-	    
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
-	        'e_json' => json_encode(array(
-	            'input' => $_POST,
-	            'after' => $i,
-	        )),
-	        'e_type_id' => 34, //Message added
-	        'e_i_id' => intval($i['i_id']),
-	        'e_c_id' => intval($_POST['pid']),
-	        'e_b_id' => $i['i_b_id'], //Share with bootcamp team
-	    ));
-	    
-	    //Print the challenge:
-	    echo_message($i);
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Dispatch Minutes.',
+	        ));
+	    } else {
+	        
+	        
+	        
+	        
+	        //Detect potential URL:
+	        $urls = extract_urls($_POST['i_message']);
+	        if(count($urls)>1){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'You can only have 1 URL per message.',
+	            ));
+	        } else {
+	            
+	            //Detect file type:
+	            if(count($urls)==1 && trim($urls[0])==trim($_POST['i_message'])){
+	                
+	                //This message is a URL only! Let's see maybe it points to a file or something:
+	                $mime = remote_mime($urls[0]);
+	                $i_media_type = mime_type($mime);
+	                if($i_media_type=='file'){
+	                    $i_media_type = 'text';
+	                }
+	                
+	            } else {
+	                //This channel is all text:
+	                $i_media_type = 'text'; //Possible: text,image,video,audio,file
+	            }
+	            
+	            
+	            //Create Link:
+	            $i = $this->Db_model->i_create(array(
+	                'i_creator_id' => $udata['u_id'],
+	                'i_c_id' => intval($_POST['pid']),
+	                'i_b_id' => intval($_POST['b_id']),
+	                'i_media_type' => $i_media_type,
+	                'i_message' => trim($_POST['i_message']),
+	                'i_url' => ( count($urls)==1 ? $urls[0] : null ),
+	                'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
+	                'i_status' => intval($_POST['i_status']),
+	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+	                    'i_status >=' => 0,
+	                    'i_c_id' => intval($_POST['pid']),
+	                )),
+	            ));
+	            
+	            //Log engagement:
+	            $this->Db_model->e_create(array(
+	                'e_initiator_u_id' => $udata['u_id'],
+	                'e_message' => $i['i_message'],
+	                'e_json' => json_encode(array(
+	                    'input' => $_POST,
+	                    'after' => $i,
+	                )),
+	                'e_type_id' => 34, //Message added
+	                'e_i_id' => intval($i['i_id']),
+	                'e_c_id' => intval($_POST['pid']),
+	                'e_b_id' => $i['i_b_id'], //Share with bootcamp team
+	            ));
+	            
+	            //Print the challenge:
+	            echo_json(array(
+	                'status' => 1,
+	                'message' => echo_message($i),
+	            ));
+	        }    
+	    }   
 	}
 	
 	function message_update(){
@@ -1670,7 +1893,10 @@ class Process extends CI_Controller {
 	    $udata = auth(2);
 	    
 	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Session. Refresh the Page to Continue.',
+	        ));
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Message id.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){

@@ -1983,11 +1983,11 @@ label.control-label {
 }
 
 .form-group {
-  padding-bottom: 7px;
+  padding-bottom: 0;
   margin: 5px 0 0 0;
 }
 .form-group .form-control {
-  margin-bottom: 7px;
+  margin-bottom: 0;
 }
 .form-group .form-control::-moz-placeholder {
   font-size: 14px;

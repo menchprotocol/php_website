@@ -569,15 +569,16 @@ class Db_model extends CI_Model {
 	        
 	        
 	        //Bootcamp Messages:
-	        $bootcamp_messages = count($this->Db_model->i_fetch(array(
+	        $bootcamp_messages = $this->Db_model->i_fetch(array(
 	            'i_status >=' => 0,
 	            'i_c_id' => $c['c_id'],
-	        )));
+	        ));
 	        
 	        //Fetch Sub-intents:
 	        $bootcamps[$key]['c__task_count'] = 0;
-	        $bootcamps[$key]['c__message_count'] = $bootcamp_messages;
-	        $bootcamps[$key]['c__message_this_count'] = $bootcamp_messages;
+	        $bootcamps[$key]['c__message_tree_count'] = count($bootcamp_messages);
+	        $bootcamps[$key]['c__messages'] = $bootcamp_messages;
+	        $bootcamps[$key]['c__break_milestones'] = 0; //Keep track of total break milestones
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
 	            'cr.cr_status >=' => 0,
@@ -588,7 +589,10 @@ class Db_model extends CI_Model {
 	            $bootcamps[$key]['c__estimated_hours'] += $sprint_value['c_time_estimate'];
 	            //Introduce sprint total time:
 	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = $sprint_value['c_time_estimate'];
-	            
+	            //Is this a break milestone?
+	            if($sprint_value['c_is_last']=='t'){
+	                $bootcamps[$key]['c__break_milestones']++;
+	            }
 	            //Fetch sprint tasks at level 3:
 	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                'cr.cr_inbound_id' => $sprint_value['c_id'],
@@ -597,13 +601,13 @@ class Db_model extends CI_Model {
 	            
 	            
 	            //Count Messages:
-	            $milestone_messages = count($this->Db_model->i_fetch(array(
+	            $milestone_messages = $this->Db_model->i_fetch(array(
 	                'i_status >=' => 0,
 	                'i_c_id' => $sprint_value['c_id'],
-	            )));
-	            $bootcamps[$key]['c__message_count'] += $milestone_messages;
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_count'] = $milestone_messages;
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_this_count'] = $milestone_messages;
+	            ));
+	            $bootcamps[$key]['c__message_tree_count'] += count($milestone_messages);
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = count($milestone_messages);
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__messages'] = $milestone_messages;
 	            
 	            //Addup task values:
 	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
@@ -613,15 +617,15 @@ class Db_model extends CI_Model {
 	                $bootcamps[$key]['c__task_count']++;
 	                
 	                //Count Messages:
-	                $task_messages = count($this->Db_model->i_fetch(array(
+	                $task_messages = $this->Db_model->i_fetch(array(
 	                    'i_status >=' => 0,
 	                    'i_c_id' => $task_value['c_id'],
-	                )));
-	                $bootcamps[$key]['c__message_count'] += $task_messages;
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_count'] += $task_messages;
+	                ));
+	                $bootcamps[$key]['c__message_tree_count'] += count($task_messages);
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($task_messages);
 	                //The following two are identicals, just there for consistency:
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_count'] = $task_messages;
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_this_count'] = $task_messages;
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
+	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
 	            }
 	        }
 	        

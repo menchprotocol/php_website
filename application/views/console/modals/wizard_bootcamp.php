@@ -59,7 +59,6 @@ function move_ui(adjustment){
 		$.post("/process/bootcamp_create", {
 			
 			c_objective:$('#c_objective').val(),
-     		//c_todo_overview:( c_todo_overview_quill.getLength()>1 ? $('#c_todo_overview .ql-editor').html() : "" ),
      		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
      		milestone_list:fetch_submit('milestones_list'),
      		r_start_date:$('#r_start_date').val(),

@@ -794,8 +794,14 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 
 
 
-
-
+#frequency_details {
+	margin-top: -13px;
+	padding-top: 0;
+	display: block;
+}
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
 
 .dropdown-menu .status-label { display:block; }
 .copy_button{ cursor:pointer; font-size:0.9em; }

@@ -127,7 +127,7 @@ $('#r_start_date').keyup(function(e){
       		<p>Class Scheduling is an advanced feature for bootcamps with a consistent operation. This feature enables you to:</p>
           	<ul>
           		<li>Auto create classes based on a pre-selected schedule.</li>
-          		<li>Select schedules such as Weekly, Bi-Weekly, Quarterly, etc...</li>
+          		<li>Ideal for classes that run Weekly, Bi-Weekly, Monthly or Quarterly.</li>
           		<li>Enable students to choose from a list of your upcoming classes.</li>
           	</ul>
           	<p>Contact us via live chat to enable Class Scheduling for your account.</p>
