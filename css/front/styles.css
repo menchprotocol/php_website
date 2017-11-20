@@ -791,7 +791,9 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 	text-align: center;
 }
 
-
+.i_content {
+    margin-bottom: 10px;
+}
 
 
 #frequency_details {

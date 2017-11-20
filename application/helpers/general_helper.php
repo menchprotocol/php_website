@@ -1721,7 +1721,7 @@ function format_e_message($e_message){
             } elseif($segments[0]=='audio'){
                 $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                $e_message .= '<video width="100%" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                $e_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
                 $e_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
             }

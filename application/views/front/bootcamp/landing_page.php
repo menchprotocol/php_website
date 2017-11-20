@@ -116,11 +116,6 @@ $( document ).ready(function() {
 <div class="row" id="landing_page">
 
 	<div class="col-md-4">
-	
-    	<?php /* if(strlen($bootcamp['b_video_url'])>0){ ?>
-        	<div class="video-player"><?= echo_video($bootcamp['b_video_url']); ?></div>
-        <?php } */ ?>
-        
         <div id="sidebar">
         	
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
@@ -158,8 +153,10 @@ $( document ).ready(function() {
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
-        
     </div>
+    
+    
+    
     
     <div class="col-md-8">
     
@@ -171,7 +168,6 @@ $( document ).ready(function() {
     		    }
     		}
             ?>
-
     		
     		<h3>Prerequisites</h3>
     		<div id="r_prerequisites"><?= ( strlen($focus_class['r_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($focus_class['r_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
