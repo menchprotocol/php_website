@@ -239,7 +239,7 @@ function echo_message($i){
 	
 	    //Type & Delivery Method:
 	    
-	    $echo_ui .= '<div class="edit-off">';
+	    $echo_ui .= '<div class="edit-off" style="margin:5px 0 0 0;">';
 	    $echo_ui .= echo_i($i);
     	$echo_ui .= '</div>';
     	
@@ -1717,7 +1717,7 @@ function format_e_message($e_message){
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
             
             if($segments[0]=='image'){
-                $e_message .= '<a href="'.$sub_segments[0].'" target="_blank"><img src="'.$sub_segments[0].'" style="max-width:50%" /></a>';
+                $e_message .= '<a href="'.$sub_segments[0].'" target="_blank"><img src="'.$sub_segments[0].'" style="max-width:100%" /></a>';
             } elseif($segments[0]=='audio'){
                 $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
