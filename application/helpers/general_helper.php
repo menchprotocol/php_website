@@ -629,7 +629,6 @@ function calculate_bootcamp_status($b){
         }
     }
     
-    manifest
     //Bootcamp Messages:
     $to_gain = 15;
     $progress_possible += $to_gain;
