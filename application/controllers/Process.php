@@ -1715,7 +1715,7 @@ class Process extends CI_Controller {
 	    } else {
 	        
 	        //First save file locally:
-	        $temp_local = "application/cache/".$_FILES[$_POST['upload_type']]["name"];
+	        $temp_local = "application/cache/temp_files/".$_FILES[$_POST['upload_type']]["name"];
 	        move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
 	        
 	        //Attempt to store in Cloud:
@@ -1726,7 +1726,7 @@ class Process extends CI_Controller {
 	        }
 	        
 	        //Upload to S3:
-	        $new_file_url = save_file( $temp_local , $_FILES[$_POST['upload_type']] );
+	        $new_file_url = save_file( $temp_local , $_FILES[$_POST['upload_type']] , true );
 	        
 	        //What happened?
 	        if(!$new_file_url){

@@ -1487,30 +1487,36 @@ function remote_mime($file_url){
     return $mime;
 }
 
-function save_file($file_url,$json_data){
+function save_file($file_url,$json_data,$is_local=false){
     $CI =& get_instance();
     
-    $file_name = md5($file_url.'fileSavingSa!t').'.'.fetch_file_ext($file_url);
-    $file_path = 'application/cache/temp_files/';
-    
-    //Fetch Remote:
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $file_url);
-    curl_setopt($ch, CURLOPT_VERBOSE, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    $result = curl_exec($ch);
-    curl_close($ch);
-    
-    //Write in directory:
-    $fp = @fopen( $file_path.$file_name , 'w');
+    if(!$is_local){
+        //Save this remote file to local first:
+        $file_name = md5($file_url.'fileSavingSa!t').'.'.fetch_file_ext($file_url);
+        $file_path = 'application/cache/temp_files/';
+        
+        
+        //Fetch Remote:
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $file_url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        //Write in directory:
+        $fp = @fopen( $file_path.$file_name , 'w');
+    }
     
     //Then upload to AWS S3:
-    if($fp && @require_once( 'application/libraries/aws/aws-autoloader.php' )){
+    if(($is_local || (isset($fp) && $fp)) && @require_once( 'application/libraries/aws/aws-autoloader.php' )){
         
-        fwrite($fp, $result);
-        fclose($fp);
+        if(isset($fp)){
+            fwrite($fp, $result);
+            fclose($fp);
+        }
         
         $s3 = new Aws\S3\S3Client([
             'version' 		=> 'latest',
@@ -1520,12 +1526,12 @@ function save_file($file_url,$json_data){
         $result = $s3->putObject(array(
             'Bucket'       => 's3foundation', //Same bucket for now
             'Key'          => $file_name,
-            'SourceFile'   => $file_path.$file_name,
+            'SourceFile'   => ( $is_local ? $file_url : $file_path.$file_name ),
             'ACL'          => 'public-read'
         ));
         
         if(isset($result['ObjectURL']) && strlen($result['ObjectURL'])>10){
-            @unlink($file_path.$file_name);
+            @unlink(( $is_local ? $file_url : $file_path.$file_name ));
             return $result['ObjectURL'];
         } else {
             $CI->Db_model->e_create(array(
