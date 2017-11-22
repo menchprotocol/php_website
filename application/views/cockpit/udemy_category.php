@@ -3,7 +3,7 @@
 	<td>#</td>
 	<td style="width:300px; text-align:left;">Instructor</td>
 	<td>Courses</td>
-	<td>Admissions</td>
+	<td>Students</td>
 	<td>Engagement</td>
 	<td>Email</td>
 	<td>Is Company</td>

@@ -205,7 +205,7 @@ function echo_i($i,$first_name=null){
             $i['i_message'] = trim(str_replace($i['i_url'],'<div><a href="'.$url.'" target="_blank">'.$url.'</a></div>',$i['i_message']));
         }
         
-        $echo_ui .= '<div>'.nl2br( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
+        $echo_ui .= '<div class="msg">'.nl2br( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
         
     } else {
         
@@ -839,7 +839,7 @@ function calculate_bootcamp_status($b){
     if(strlen($bl['u_bio'])>0){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Add <b>[Biography]</b> to '.$account_action);
+        array_push($call_to_action,'Add <b>[Introductory Message]</b> to '.$account_action);
     }
     
     //Profile counter:

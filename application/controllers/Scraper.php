@@ -272,7 +272,7 @@ class Scraper extends CI_Controller {
 	    echo "\tOverview";
 	    
 	    echo "\tCourses";
-	    echo "\tAdmissions";
+	    echo "\tStudents";
 	    echo "\tEngagement Rate";
 	    
 	    //To Collect:

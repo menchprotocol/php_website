@@ -118,7 +118,7 @@
     border-bottom: 0 solid #FFF !important;
 }
 .header-search::placeholder {
-  color:#AAA !important;
+  color:#CCC !important;
 }
 
 .tab-pane, .list-group, .maxout {max-width:650px !important;}
@@ -304,7 +304,7 @@ video::-webkit-media-controls-panel {
 	padding:0;
 }
 .list-messages>div>div {
-	background-color:#e5e4e4;
+	background-color:#FFF;
 	max-width:80%;
 	min-width:280px;
 	border-radius:3px;
@@ -315,8 +315,21 @@ video::-webkit-media-controls-panel {
 	margin:0;
 	margin-bottom:5px;
 	display:inline-block;
+	    border: 1px solid #CCC;
 }
 
+.msg {
+	font-size: 17px !important;
+    font-family: Helvetica, Arial, sans-serif !important;
+    line-height: 120% !important;
+    color: #222;
+}
+.msg::placeholder{
+	font-size: 17px !important;
+    font-family: Helvetica, Arial, sans-serif !important;
+    line-height: 120% !important;
+    color: #CCC;
+}
 .list-messages>div>div>textarea {
 	width: 100%;
     border: 0;
@@ -669,7 +682,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 #funnel .form-control::placeholder {
 	font-size:20px !important;
-	color:#AAA !important;
+	color:#CCC !important;
 }
 #funnel .list-group-item {
     padding: 10px 5px 8px;
@@ -730,7 +743,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 #funnel .quill_content textarea::placeholder {
 	font-size:16px !important;
-	color:#AAA !important;
+	color:#CCC !important;
 }
 #funnel .quill_content ul, #funnel .quill_content ol{
 	margin-left:-20px;
