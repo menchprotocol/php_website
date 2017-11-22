@@ -46,7 +46,7 @@ $(document).ready(function() {
     <?php if($has_tree){ ?>
     function update_tree_input(){
     	var current_count = $("#list-outbound").children().length;
-    	$('#addnode').attr("placeholder", "<?= $core_objects['level_'.$level]['o_name'] ?> #"+(current_count+1)+" Objective (Specific & Measurable)");
+    	$('#addnode').attr("placeholder", "<?= ( $level==1 ? ucwords($bootcamp['b_sprint_unit']) : $core_objects['level_'.$level]['o_name'] ) ?> #"+(current_count+1)+" Objective (Specific & Measurable)");
     	return current_count;
     }
     
@@ -457,8 +457,6 @@ function message_save_updates(i_id){
 
 <div class="tab-content tab-space">
 	
-	
-	
 	<div class="tab-pane <?= ( $has_tree ? 'active' : 'hidden') ?>" id="list">
     	<?php
     	if($level==1){
@@ -484,6 +482,10 @@ function message_save_updates(i_id){
         }
         
         //Print current sub-intents:
+        if($level==1 && $bootcamp['c__estimated_hours']>0){
+            echo '<p style="text-align:right; padding-right:5px;"><span class="badge pricing-badge" data-toggle="tooltip" title="Changing your bootcamp\'s Action Plan time estimate will change the suggested price of the Tuition Calculator. Checkout the Pricing tab under any of your Classes for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span> <b><i class="fa fa-clock-o" aria-hidden="true"></i>'.echo_hours($bootcamp['c__estimated_hours']).'</b></p>';
+        }
+        
         echo '<div id="list-outbound" class="list-group">';
         foreach($intent['c__child_intents'] as $sub_intent){
             echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
@@ -619,7 +621,6 @@ function save_attachment(droppedFiles,uploadType){
   	    
         ajaxData.append( 'upload_type', uploadType );
         ajaxData.append( 'i_status', $('#i_status').val() );
-        ajaxData.append( 'i_dispatch_minutes', $('#i_dispatch_minutes').val() );
         ajaxData.append( 'pid', $('#pid').val() );
         ajaxData.append( 'b_id', $('#b_id').val() );
         
@@ -662,7 +663,6 @@ function msg_create(){
 		b_id:$('#b_id').val(),
 		pid:$('#pid').val(),
 		i_message:$('#i_message').val(),
-		i_dispatch_minutes:$('#i_dispatch_minutes').val(),
 		i_status:$('#i_status').val(),
 		
 	}, function(data) {
@@ -772,19 +772,6 @@ margin:5px 0;
     <div class="tab-pane <?= ( !$has_tree ? 'active' : '') ?>" id="messages">
     	<p class="maxout"></p>
     	<ul class="maxout">
-			<?php if($level==1){ ?>
-			<li>Action plan has 3 levels: <b>(1) Bootcamp (You're Here)</b> (2) Milestone (3) Task.</li>
-    		<li><?= status_bible('i',1) ?> Bootcamp messages are sent to students on day 1.</li>
-    		<li><?= status_bible('i',2) ?> Bootcamp messages are <b>also</b> added to the landing page.</li>
-    		<?php } elseif($level==2){ ?>
-    		<li>Action plan has 3 levels: (1) Bootcamp <b>(2) Milestone (You're Here)</b> (3) Task.</li>
-    		<li><?= status_bible('i',1) ?> Milestone messages are sent to students when milestone starts.</li>
-    		<li><?= status_bible('i',2) ?> Milestone messages are <b>also</b> added to the landing page.</li>
-    		<?php } elseif($level==3){ ?>
-    		<li>Action plan has 3 levels: (1) Bootcamp (2) Milestone <b>(3) Task (You're Here)</b>.</li>
-    		<li><?= status_bible('i',1) ?> Task messages are sent to students when milestone starts.</li>
-    		<li>Task messages cannot be <?= status_bible('i',2) ?>.</li>
-    		<?php } ?>
 			<li>Messages are facts or best-practices shared with students that help them understand how to execute towards this <b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Objective</b>.</li>
 			<li>Students can also access messages via the persistent menu of <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
 			<li>A message can be a media file, URL or a text snippet up to 420 characters.</li>
@@ -820,21 +807,11 @@ margin:5px 0;
         		echo '</div>';
         		
         		echo '<ul style="list-style:none;">';
-        		
-        		  /*
-            		echo '<li class="pull-left" style="padding:2px 5px 0 0;">';
-            		echo '<div class="fallback" style="display:inline-block;"><input type="file" name="file" /></div>';
-            		echo '</li>';
-            		*/
-        		
+
             		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
             		
-            		
             		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-            		echo echo_status_dropdown('idm','i_dispatch_minutes',0,array(),'dropup');
-            		echo '</li>';
-            		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-            		echo echo_status_dropdown('i','i_status',($level==1?2:1),($level==3?array(-1,2):array(-1)),'dropup');
+            		echo echo_status_dropdown('i','i_status',($level==1?3:1),($level==1?array(-1,1,2):($level==3?array(-1,3):array(-1))),'dropup');
             		echo '</li>';
             		
         		echo '</ul>';
@@ -864,7 +841,7 @@ margin:5px 0;
         
         <?php /* TODO Remove soon with the instroduction of Messages V4 */ ?>
         <div style="display:<?= ( in_array($udata['u_id'],array(1,2)) && strlen($intent['c_todo_overview'])>0 ? 'block' : 'none' ) ?>;">
-            <div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview (MOVE TO MESSAGES)</h4></div>
+        	<div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview (MOVE TO MESSAGES)</h4></div>
 			<hr />
             <div id="c_todo_overview"><?= ( isset($intent['c_todo_overview']) ? $intent['c_todo_overview'] : '' ) ?></div>
             <hr />
@@ -873,6 +850,7 @@ margin:5px 0;
         
         
         <div style="display:<?= ( $level==1 ?'block':'none' ) ?>;">
+        	<hr />
     		<?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
         </div>
         

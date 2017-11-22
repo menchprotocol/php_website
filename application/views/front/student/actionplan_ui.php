@@ -121,8 +121,8 @@ if($level>1){
     $displayed_messages = 0;
     if(count($i_messages)>0){
         foreach($i_messages as $i){
-            if($i['i_status']>=1){
-                //TODO Implement logic for ASAP/DRIP-FEED here:
+            if(in_array($i['i_status'],array(1,3))){
+                //TODO Implement logic for DRIP messages i_status=2
                 echo '<div class="tip_bubble">';
                 echo '<i class="fa fa-commenting" aria-hidden="true"></i>';
                 echo echo_i($i,$admission['u_fname']);

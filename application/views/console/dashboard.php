@@ -15,16 +15,16 @@ $(document).ready(function() {
     <div class="row">
       <div class="col-sm-3"><b><?= $launch_status['stage'] ?></b></div>
       <div class="col-sm-9">
-      		<div><b><?= $launch_status['progress'] ?>% Ready</b></div>
+      		<div><b><?= $launch_status['progress'] ?>% Ready</b>, Complete the following checklist to launch your bootcamp:</div>
       		<div class="progress">
             	<div class="progress-bar" role="progressbar" aria-valuenow="<?= $launch_status['progress'] ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $launch_status['progress'] ?>%;">
             	<span class="sr-only"><?= $launch_status['progress'] ?>% Complete</span>
             	</div>
             </div>
-      		<ul style="margin:-10px 0 0 -15px; list-style:decimal;">
+      		<ul style="margin:-10px 0 0 -35px; list-style:none;">
       			<?php 
       			foreach($launch_status['call_to_action'] as $action){
-      			    echo '<li>'.$action.'</li>';
+      			    echo '<li><i class="fa fa-square-o" aria-hidden="true"></i> '.$action.'</li>';
       			}
       			?>
       		</ul>
@@ -35,7 +35,7 @@ $(document).ready(function() {
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><b><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-        <div>Bootcamp Objective: <?= $bootcamp['c_objective'] ?></div>
+        <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $bootcamp['c_objective'] ?></div>
       	<div><?= count($bootcamp['c__child_intents']) ?> <?= $sprint_units[$bootcamp['b_sprint_unit']]['name'].' Milestone'.( count($bootcamp['c__child_intents'])==1 ? '' : 's' ) ?></div>
       	<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours<?= ( count($bootcamp['c__child_intents'])>0 ? ' = '.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']) : '' ) ?></div>
       	<div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>

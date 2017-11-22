@@ -15,7 +15,7 @@ td { padding:5px 0 !important; }
 	<tr>
 		<th style="width:120px;">Time</th>
 		<th style="width:120px;">Action</th>
-		<th>Message</th>
+		<th><div style="padding-left:10px;">Message</div></th>
 		<th style="width:300px;">References</th>
 		<th style="width:30px; text-align:center !important;">&nbsp;</th>
 	</tr>
@@ -30,7 +30,7 @@ foreach($engagements as $e){
     echo '<tr>';
         echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
         echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].' (Type #'.$e['a_id'].')" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
-        echo '<td>'.( strlen($e['e_message'])>0 ? format_e_message($e['e_message']) : '' ).( $e['e_cron_job']==0 ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Uploading File to Mench Cloud...</div>' : '' ).'</td>';
+        echo '<td><div style="max-width:300px; padding-left:10px;">'.( strlen($e['e_message'])>0 ? format_e_message($e['e_message']) : '' ).( $e['e_cron_job']==0 ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Uploading File to Mench Cloud...</div>' : '' ).'</div></td>';
         echo '<td>';
             //Lets go through all references to see what is there:
             foreach($engagement_references as $engagement_field=>$er){

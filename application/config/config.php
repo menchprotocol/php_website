@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.88,
+    'version' => 0.91,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -62,9 +62,6 @@ $config['core_objects'] = array(
     'i' => array(
         'o_name' => 'Message',
         'o_names' => 'Messages',
-    ),
-    'idm' => array(
-        'o_name' => 'Message Delivery Method',
     ),
     'ct' => array(
         'o_name' => 'Bootcamp Categories',
@@ -160,11 +157,11 @@ $config['refund_policies'] = array(
 $config['sprint_units'] = array(
     'day' => array(
         'name' => 'Daily',
-        'desc' => 'Fast-pace & shorter bootcamps usually 3-30 days long.',
+        'desc' => 'Usually 3-30 days for fast-pace/focused bootcamps.',
     ),
     'week' => array(
         'name' => 'Weekly',
-        'desc' => 'More complex & longer bootcamps usually 2-52 weeks long.',
+        'desc' => 'Usually 2-52 weeks for more ambitious/longer bootcamps.',
     ),
 );
 
@@ -758,7 +755,7 @@ $config['countries_all'] = array(
     "ZW" => "Zimbabwe"
 );
 
-$config['r_response_options'] = array('1','2','3','5','12','24','48');
+$config['r_response_options'] = array('2','3','5','12','24','48');
 
 //IF Changed, Also adjust echo_mentorship() & gross_mentorship() functions in general_helper()
 $config['r_meeting_frequency'] = array(

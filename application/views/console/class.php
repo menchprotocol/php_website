@@ -47,15 +47,9 @@ function update_tuition_calculator(){
 
 		//Duration:
 		b_sprint_unit:$('#b_sprint_unit').val(),
-		c__child_intent_count:$('#c__child_intent_count').val(),
+		b_effective_milestones:$('#b_effective_milestones').val(),
 		c__estimated_hours:$('#c__estimated_hours').val(),
-
-		//Screening:
-		r_min_students:$('#r_min_students').val(),
-		r_max_students:$('#r_max_students').val(),
-
-		//Current Base:
-		r_student_reach:$('#r_student_reach').val(),
+		whatif_selection:( $("#whatif_selection").length==0 ? null : $('#whatif_selection').val() ),
 		
 	} , function(data) {
 		
@@ -75,11 +69,18 @@ $(document).ready(function() {
 		focu_hash(window.location.hash);
     }
 
+	
     //Tuition Calculator:
     update_tuition_calculator();
-    $( "#r_response_time_hours, #r_meeting_frequency, #r_meeting_duration, #r_min_students, #r_max_students, #r_student_reach" ).change(function() {
+    $( "#r_response_time_hours, #r_meeting_frequency, #r_meeting_duration" /* #r_student_reach, #r_min_students, #r_max_students */ ).change(function() {
     	update_tuition_calculator();
     });
+
+    //The inner Select change in the pricing calculator:
+	$("#calculator_body").on("change", "#whatif_selection", function(){
+		update_tuition_calculator();
+	});
+	
     
 	//Load date picker:
 	$( function() {
@@ -180,8 +181,8 @@ function save_r(){
 
 <input type="hidden" id="r_id" value="<?= $class['r_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $class['r_b_id'] ?>" />
-<input type="hidden" id="c__child_intent_count" value="<?= count($bootcamp['c__child_intents']) ?>" />
-<input type="hidden" id="c__estimated_hours" value="<?= count($bootcamp['c__estimated_hours']) ?>" />
+<input type="hidden" id="b_effective_milestones" value="<?= ( count($bootcamp['c__child_intents']) - $bootcamp['c__break_milestones'] ) ?>" />
+<input type="hidden" id="c__estimated_hours" value="<?= $bootcamp['c__estimated_hours'] ?>" />
 <input type="hidden" id="b_sprint_unit" value="<?= $bootcamp['b_sprint_unit'] ?>" />
 
 
@@ -217,7 +218,22 @@ function save_r(){
     
     
     
-    	<div style="display:block;">
+    	<div class="title" style="margin-top:30px;"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions</h4></div>
+        <ul>
+        	<li>Open-ended questions you'd like to ask students during their application.</li>
+        	<li>Students are required to answer every question.</li>
+        	<li>These questions can help you learn more about each student and assess their desire level and suitability for this bootcamp.</li>
+        </ul>
+        
+        <script>
+        $(document).ready(function() {
+        	initiate_list('r_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
+        });
+        </script>
+        <div id="r_application_questions" class="list-group"></div>
+    
+    
+    	<div style="display:block; margin-top:30px;">
             <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students</h4></div>
             <ul>
             	<li>Minimum number of students required to kick-start this class.</li>
@@ -231,7 +247,6 @@ function save_r(){
         </div>
         
         
-        
         <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students</h4></div>
         <ul>
         	<li>Maximum number of students that can apply before class is full.</li>
@@ -242,27 +257,6 @@ function save_r(){
         <div class="input-group">
           <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border" />
         </div>
-        <br />
-        
-
-        
-        
-        
-        
-        <div class="title"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions</h4></div>
-        <ul>
-        	<li>Open-ended questions you'd like to ask students during their application.</li>
-        	<li>Students are required to answer every question.</li>
-        	<li>These questions can help you learn more about each student and assess their desire level and suitability for this bootcamp.</li>
-        </ul>
-        
-        <script>
-        $(document).ready(function() {
-        	initiate_list('r_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
-        });
-        </script>
-        <div id="r_application_questions" class="list-group"></div>
-        
         
     </div>
     
@@ -270,7 +264,7 @@ function save_r(){
     <div class="tab-pane" id="support">
     
     
-		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Chat Response Time</h4></div>
+		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Inquiry Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
         <ul>
         	<li>Student communication is done on Facebook Messenger using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> <u>MenchBot</u></a>.</li>
         	<li>You are required to respond to all incoming messages from your students.</li>
@@ -291,14 +285,13 @@ function save_r(){
 
 		
 		
-		<div class="title"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship Sessions</h4></div>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
         <ul>
         	<li>If Set, Every student gets 1-on-1 mentorship to maximize chance of success.</li>
         	<li>Recommended for difficult-to-execute bootcamps to help students 1-on-1.</li>
         	<li>Use a Calendar app to manually setup your meetings with each student.</li>
         	<li>Use a video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
         </ul>
-        
         <table style="width:100%;">
         	<tr>
         		<td style="width:150px;">
@@ -329,13 +322,10 @@ function save_r(){
         		</td>
         	</tr>
         </table>
-                    
-                
     	
 
 
-		<br />
-		<div class="title"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Live Office Hours</h4></div>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
 		<ul>
 			<li>Provide virtual group support to students who show-up during office hours.</li>
 			<li>Students will receive a broadcast message 30 minute before each timeslot.</li>
@@ -347,7 +337,7 @@ function save_r(){
 		<div class="checkbox">
         	<label>
         		<input type="checkbox" id="r_live_office_hours_check" <?= strlen($class['r_live_office_hours'])>0 ? 'checked' : '' ?>>
-        		Enable Live Office Hours
+        		Enable Weekly Office Hours
         	</label>
         </div>
 		
@@ -364,7 +354,7 @@ function save_r(){
             </div>
             
             
-            <div class="title"><h4>Office Hours: Weekly Schedule</h4></div>
+            <div class="title"><h4>Office Hours: Weekly Schedule <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
             <ul>
       			<li>Set office hours in PST timezone (Currently <?= time_format(time(),7) ?>).</li>
     			<li>Mench will adjust hours based on each student's timezone.</li>
@@ -392,26 +382,29 @@ function save_r(){
     <div class="tab-pane" id="pricing">
     
         
-        <div style="display:none;">
+        <div style="display:block;">
         	<div class="title"><h4><i class="fa fa-calculator" aria-hidden="true"></i> Tuition Calculator</h4></div>
-            <select class="form-control input-mini border" id="r_student_reach">
+            
     			<?php 
+    			/*
+    			echo '<select class="form-control input-mini border" id="r_student_reach">';
     			$r_student_reach = $this->config->item('r_student_reach');
     			foreach($r_student_reach as $val=>$name){
     			    echo '<option value="'.$val.'" '.( $class['r_student_reach']==$val ? 'selected="selected"' : '' ).'>'.$name.'</option>';
     			}
+    			echo '</select>';
+    			*/
     			?>
-    		</select>
+    		
             <div id="calculator_body"></div>
-            <br />
         </div>
             
         
         
-        <div class="title"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition Rate</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition Rate</h4></div>
         <ul>
         	<li>A 1-time fee for student to join this bootcamp class.</li>
-        	<li>Use above calculator to estimate a customized tuition rate.</li>
+        	<li>Use above calculator to estimate your customized tuition rate.</li>
         	<li>Enter "0" if free. Good for shorter lead generation bootcamps.</li>
         	<li>Learn more about <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank" style="display:inline-block;">Commission Rates & Payout Installments <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
         	<li>Contact us to setup co-instructor revenue sharing or student payment plans.</li>
@@ -427,7 +420,7 @@ function save_r(){
         
         
         
-        <div class="title"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy (For Paid Classes)</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy (For Paid Classes)</h4></div>
         <?php 
         $refund_policies = $this->config->item('refund_policies');
         foreach($refund_policies as $type=>$terms){
@@ -446,8 +439,7 @@ function save_r(){
         
         
         
-        <br />
-        <div class="title"><h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prizes (Optional)</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-gift" aria-hidden="true"></i> Optional Completion Prizes</h4></div>
         <ul>
         	<li>Awarded to students who complete all milestones by the last day of this class.</li>
         	<li>Prizes are an additional incentive to increase your bootcamp's completion rate.</li>
@@ -467,9 +459,8 @@ function save_r(){
     
         <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$class['r_status']) ); ?>
 		<br />
-		
         <?php $this->load->view('console/inputs/r_start_day_time' , array(
-            'milestone_count' => count($bootcamp['c__child_intents']),
+            'c__child_intent_count' => count($bootcamp['c__child_intents']),
             'b_sprint_unit' => $bootcamp['b_sprint_unit'],
             'b_id' => $bootcamp['b_id'],
             'b_status' => $bootcamp['b_status'],

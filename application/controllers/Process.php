@@ -610,87 +610,198 @@ class Process extends CI_Controller {
 	 ****************************** */
 	
 	function tuition_calculator(){
-	    /*
-
-		r_id:$('#r_id').val(),
-		b_id:$('#b_id').val(),
-		
-		//Service Factors:
-		r_response_time_hours:$('#r_response_time_hours').val(),
-		r_meeting_frequency:$('#r_meeting_frequency').val(),
-		r_meeting_frequency:$('#r_meeting_frequency').val(),
-
-		//Duration:
-		b_sprint_unit:$('#b_sprint_unit').val(),
-		c__child_intent_count:$('#c__child_intent_count').val(),
-		c__estimated_hours:$('#c__estimated_hours').val(),
-		
-		//Screening:
-		r_min_students:$('#r_min_students').val(),
-		r_max_students:$('#r_max_students').val(),
-
-		//Current Base:
-		r_student_reach:$('#r_student_reach').val(),
-		*/
-	    
 	    //Displays the class timeline based on some inputs:
-	    if(!isset($_POST['r_id']) || !isset($_POST['b_id'])){
-	        die('<span style="color:#FF0000;">Missing core data.</span>');
-	    } elseif(!isset($_POST['r_student_reach']) || intval($_POST['r_student_reach'])<=0){
-	        die('<span style="color:#000;">Set your current student reach to load calculator...</span>');
-	    } elseif(!isset($_POST['milestone_count']) || intval($_POST['milestone_count'])<=0){
-	        die('<span style="color:#FF0000;">Error: You have not added any Milestones to your Action Plan.</span>');
-	    } elseif(!isset($_POST['b_sprint_unit'])){
-	        die('<span style="color:#FF0000;">Error: Missing Milestone Submission Frequency.</span>');
-	    } elseif(!isset($_POST['b_id'])){
-	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['b_status'])){
-	        die('<span style="color:#FF0000;">Error: Missing Bootcamp Status.</span>');
+	    if(!isset($_POST['r_id']) || !isset($_POST['b_id']) || !isset($_POST['r_response_time_hours']) || !isset($_POST['r_meeting_frequency']) || !isset($_POST['r_meeting_duration']) || !isset($_POST['b_sprint_unit']) || !isset($_POST['b_effective_milestones']) || !isset($_POST['c__estimated_hours'])){
+	        die('<span style="color:#FF0000;">Missing core data: '.print_r($_POST,ture).'</span>');
 	    }
 	    
-	    $_POST['milestone_count'] = intval($_POST['milestone_count']);
-	    //Incldue config variables:
-	    $sprint_units = $this->config->item('sprint_units');
-	    $start_times = $this->config->item('start_times');
-	    //Calculate total mentorship hours:
-	    $total_mentorship = gross_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration'],$bootcamp['b_sprint_unit'],$open_milestones,false);
 	    
-	    //Fetch and calculate office hours:
-	    $total_office_hours = 0;
-	    if(strlen($focus_class['r_live_office_hours'])>0 && is_array($office_hours)){
-	        foreach (unserialize($focus_class['r_live_office_hours']) as $key=>$oa){
-	            if(isset($oa['periods']) && count($oa['periods'])>0){
-	                //Yes we have somehours for this day:
-	                foreach($oa['periods'] as $period){
-	                    //Calculate hours for this period:
-	                    $total_office_hours += hourformat($period[1]) - hourformat($period[0]);
+	    //Set standards for Tuition Calculator:
+	    $calculator_logic = array(
+	        'base_usd_price' => 11400, //Standard price in the coding bootcamp industry
+	        'target_savings' => 0.5, //How much Mench plans to be cheaper because we're fully online
+	        'pricing_factors' => array(
+	            'personalized_mentorship' => array(
+	                'weight' => 0.40, //The percentage of importance for this factor relative to other pricing_factors
+	                'name' => '1-on-1 Mentorship',
+	                'desc' => 'The sum of all 1-on-1 mentorship offered during the entire bootcamp',
+	                'industry_is' => 72,
+	                'mench_is' => 0, //To be calculated
+	                'mench_what_if' => ( isset($_POST['whatif_personalized_mentorship']) && intval($_POST['whatif_personalized_mentorship'])>0 ? intval($_POST['whatif_personalized_mentorship']) : null ),
+	            ),
+	            'handson_work' => array(
+	                'weight' => 0.30, //The percentage of importance for this factor relative to other pricing_factors
+	                'name' => 'Hands-On Student Work',
+	                'desc' => 'The sum of all hours students must spend to complete the bootcamp work',
+	                'industry_is' => 600, //How much time students need to spend to complete the bootcamp
+	                'mench_is' => 0, //To be calculated
+	                'mench_what_if' => ( isset($_POST['whatif_handson_work']) && intval($_POST['whatif_handson_work'])>0 ? intval($_POST['whatif_handson_work']) : null ),
+	            ),
+	            'respond_under' => array(
+	                'weight' => 0.20, //The percentage of importance for this factor relative to other pricing_factors
+	                'name' => 'Inquiry Response Time',
+	                'desc' => 'The average response time of the bootcamp team to student inquiries',
+	                'industry_is' => 2, //How fast (in hours) are they committing to respond
+	                'mench_is' => 0, //To be calculated
+	                'mench_what_if' => ( isset($_POST['whatif_respond_under']) && intval($_POST['whatif_respond_under'])>0 ? intval($_POST['whatif_respond_under']) : null ),
+	            ),
+	            'weekly_office_hours' => array(
+	                'weight' => 0.10, //The percentage of importance for this factor relative to other pricing_factors
+	                'name' => 'Weekly Office Hours',
+	                'desc' => 'The total number of weekly office hours available that students can ask questions and get instant answers',
+	                'industry_is' => 20,
+	                'mench_is' => 0, //To be calculated
+	                'mench_what_if' => ( isset($_POST['whatif_weekly_office_hours']) && intval($_POST['whatif_weekly_office_hours'])>0 ? intval($_POST['whatif_weekly_office_hours']) : null ),
+	            ),
+	        ),
+	    );
+	    
+	    
+	    //Check to make sure we have enough data to offer a suggestion:
+	    $missing_preq = array();
+	    if(strlen($_POST['r_response_time_hours'])<=0){
+	        array_push($missing_preq,'Set Inquiry Response Time');
+	    }
+	    if(strlen($_POST['r_meeting_frequency'])<=0 || strlen($_POST['r_meeting_duration'])<=0){
+	        array_push($missing_preq,'Set 1-on-1 Mentorship');
+	    }
+	    if($_POST['b_effective_milestones']<=0){
+	        array_push($missing_preq,'Add some Milestones to your Action Plan');
+	    }
+	    
+	    
+	    //Start calculations:
+	    if(count($missing_preq)>0){
+	        
+	        echo '<p><i class="fa fa-exclamation-circle" aria-hidden="true"></i> We will make a price suggestion once you:</p>';
+	        echo '<ul style="list-style:decimal;">';
+	        foreach($missing_preq as $mp){
+	            echo '<li>'.$mp.'</li>';
+	        }
+	        echo '</ul>';
+	        
+	    } else {
+	        
+	        //Fetch and calculate office hours:
+	        $current_classes = $this->Db_model->r_fetch(array(
+	            'r.r_id' => intval($_POST['r_id']),
+	        ));
+	        if(!(count($current_classes)==1)){
+	            die('<span style="color:#FF0000;">Invalid Class ID</span>');
+	        }
+	        
+	        
+	        //Calculate total office hours:
+	        $focus_class = $current_classes[0];
+	        if(strlen($focus_class['r_live_office_hours'])>0 && is_array(unserialize($focus_class['r_live_office_hours']))){
+	            foreach (unserialize($focus_class['r_live_office_hours']) as $key=>$oa){
+	                if(isset($oa['periods']) && count($oa['periods'])>0){
+	                    //Yes we have somehours for this day:
+	                    foreach($oa['periods'] as $period){
+	                        //Calculate hours for this period:
+	                        $calculator_logic['pricing_factors']['weekly_office_hours']['mench_is'] += (hourformat($period[1]) - hourformat($period[0]));
+	                    }
 	                }
 	            }
 	        }
+	        
+	        
+	        //Calculate remaining elements:
+	        $c__estimated_hours = intval($_POST['c__estimated_hours']);
+	        $whatif_selected = ( isset($_POST['whatif_selection']) && intval($_POST['whatif_selection'])>0 ? intval($_POST['whatif_selection']) : null );
+	        $calculator_logic['pricing_factors']['personalized_mentorship']['mench_is'] = gross_mentorship($_POST['r_meeting_frequency'],$_POST['r_meeting_duration'],$_POST['b_sprint_unit'],$_POST['b_effective_milestones'],false);
+	        $calculator_logic['pricing_factors']['respond_under']['mench_is'] = $_POST['r_response_time_hours'];
+	        $calculator_logic['pricing_factors']['handson_work']['mench_is'] = ( $whatif_selected ? $whatif_selected : $c__estimated_hours );
+	        
+	        
+	        $whatif_handson_work = array(25,50,100,150,200,300,400,500,600);
+	        if(!in_array($c__estimated_hours,$whatif_handson_work)){
+	            array_push($whatif_handson_work,$c__estimated_hours);
+	            asort($whatif_handson_work);
+	        }
+	        
+	        
+	        //Show details to students:
+	        echo '<table class="table table-condensed">';
+    	        echo '<tr>';
+        	        echo '<td style="border-bottom:1px solid #999;">&nbsp;</td>';
+        	        echo '<td style="border-bottom:1px solid #999; width:100px; text-align:right; font-weight:bold;">Traditional<br />Bootcamps</td>';
+        	        echo '<td style="border-bottom:1px solid #999; width:220px; text-align:right; font-weight:bold;">Your Mench<br />Bootcamp</td>';
+    	        echo '</tr>';
+    	        
+    	        //First row on Duration:
+    	        echo '<tr>';
+        	        echo '<td style="text-align:left;"><span style="width:220px; display: inline-block;" data-toggle="tooltip" title="The amount of time it takes students to accomplish the Bootcamp Objective" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> Bootcamp Duration</span></td>';
+        	        echo '<td style="text-align:right;">24 Weeks</td>';
+        	        echo '<td style="text-align:right;">'.$_POST['b_effective_milestones'].' '.ucwords($_POST['b_sprint_unit']).($_POST['b_effective_milestones']==1?'':'s').'</td>';
+        	    echo '</tr>';
+    	        
+    	        //Show each item of the calculation:
+    	        $equalized_mench_price = $calculator_logic['target_savings'] * $calculator_logic['base_usd_price'];
+    	        $suggested_price = 0;
+    	        $suggested_mench_price = 0;
+    	        foreach($calculator_logic['pricing_factors'] as $item=>$pf){
+    	            if($item=='respond_under'){
+    	                //This is calculated a bit differently:
+    	                $mench_price = ( $pf['weight'] * $equalized_mench_price * ( ( $pf['mench_is']<=2 ? 1 : ($pf['industry_is']/$pf['mench_is']) ) ) );
+    	            } else {
+    	                $mench_price = ( $pf['weight'] * $equalized_mench_price * ( $pf['mench_is']/$pf['industry_is'] ) );
+    	            }
+    	            
+    	            $suggested_mench_price += $mench_price;
+    	            
+    	            echo '<tr>';
+    	                echo '<td style="text-align:left;"><span style="width:220px; display: inline-block;" data-toggle="tooltip" title="'.$pf['desc'].'" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$pf['name'].'</span></td>';
+    	                echo '<td style="text-align:right;">'.$pf['industry_is'].' Hours</td>';
+    	                echo '<td style="text-align:right;">';
+    	                if($item=='handson_work'){
+    	                    echo '<select id="whatif_selection" style="padding:0 !important; font-size: 18px !important;" data-toggle="tooltip" title="It takes time to build your Action Plan and estimate the completion time of all its tasks. This feature enables you to get a price estimate by forecasting how many hours your Action Plan would be." data-placement="top">';
+    	                    foreach($whatif_handson_work as $whw){
+    	                        if($whw<$c__estimated_hours){
+    	                            continue;
+    	                        }
+    	                        echo '<option value="'.$whw.'" '.( $pf['mench_is']==$whw ? 'selected="selected"' : '' ).'>'.( $whw==$c__estimated_hours ? 'Current: ' : 'What If: ' ).$whw.' Hour'.($whw==1?'':'s').'</option>';
+    	                    }
+    	                    echo '</select>';
+    	                } else {
+    	                    echo $pf['mench_is'].' Hour'.( $pf['mench_is']==1?'':'s' );
+    	                }
+    	                echo '</td>';
+    	            echo '</tr>';
+    	        }
+    	        
+    	        //Show pricing:
+    	        $price_range = ( $suggested_mench_price<1000 ? 0.002 : 0.001 );
+    	        echo '<tr>';
+        	        echo '<td style="border-top:1px solid #999; text-align:left; font-weight:bold; padding-left:19px;">USD Price Suggestion</td>';
+        	        echo '<td style="border-top:1px solid #999; text-align:right; font-weight:bold;"><span data-toggle="tooltip" title="This is how much an average bootcamp costs based on 2017 statistics generated for the coding industry based on 95 bootcamps and 22k students across the world" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> $'.number_format($calculator_logic['base_usd_price'],0).'</span></td>';
+        	        echo '<td style="border-top:1px solid #999; text-align:right; font-weight:bold;"><span data-toggle="tooltip" title="This is the price range we suggest based on your bootcamp settings. Also consider that we have adjusted this pricing suggestion to '.(($calculator_logic['target_savings'])*100).'% of Traditional Bootcamps because Online Bootcamps save on rent and hydro." data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> $'.number_format(round($suggested_mench_price*(0.01-$price_range))*100,0).'<span style="padding:0 3px;">-</span>$'.number_format(round($suggested_mench_price*(0.01+$price_range))*100,0).'</span></td>';
+    	        echo '</tr>';
+    	        
+	        echo '</table>';
+	        
+	        echo '<p>Other elements that also affect pricing:</p>';
+	        echo '<ul style="list-style:decimal; margin-left:-15px;">';
+	        echo '<li><b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>: More popular objectives (like getting hired in a particular job) will attract more students which allow you to charge a higher price.</li>';
+	        echo '<li><b style="display:inline-block;"><i class="fa fa-envelope" aria-hidden="true"></i> Current Student Reach</b>: Instructors with a larger student base and Email list can also charge higher price.</li>';
+	        echo '</ul>';
+	        echo '<p>We have done extensive research on the bootcamp industry and would love to answer any additional questions you may have regarding pricing.</p>';
+	        
+	        
+	        //TODO Give macro potential in the future:
+	        //echo '<p>Class Earning Potential: <b>22 Seats @ USD $15,000 - $22,000</b></p>';
 	    }
-	    
-	    //Start calculations:
-	    echo '<p>Price Suggestion: <b>USD $250 - $500</b></p>';
-	    echo '<p>Class Earning Potential: <b>22 Seats @ USD $15,000 - $22,000</b></p>';
-	    echo '<ul style="list-style:decimal;">';
-    	    echo '<li>Bootcamp Duration: <b>'.(intval($_POST['b_status'])>=2?'ASAP':'When Bootcamp is '.status_bible('b',2)).'</b></li>';
-    	    echo '<li>Student Commitment: <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
-    	    echo '<li>Total 1-on-1 Mentorship: <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-    	    echo '<li>Total Office Hours: <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-    	    echo '<li>Bootcamp Duration: <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
-    	    echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-	    echo '</ul>';
+    	    
 	    
 	}
 	function class_timeline(){
 	    //Displays the class timeline based on some inputs:
 	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-	        die('<span style="color:#000;">Pick a start date to see class timeline.</span>');
+	        die('<span style="color:#000;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pick a start date to see class timeline.</span>');
 	    } elseif(!isset($_POST['r_start_time_mins'])){
-	        die('<span style="color:#000;">Pick a start time to see class timeline.</span>');
-	    } elseif(!isset($_POST['milestone_count']) || intval($_POST['milestone_count'])<=0){
-	        die('<span style="color:#FF0000;">Error: You have not added any Milestones to your Action Plan.</span>');
+	        die('<span style="color:#000;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pick a start time to see class timeline.</span>');
+	    } elseif(!isset($_POST['c__child_intent_count']) || intval($_POST['c__child_intent_count'])<=0){
+	        die('<span style="color:#000;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Add some Milestones to your Action Plan to see class timeline.</span>');
 	    } elseif(!isset($_POST['b_sprint_unit'])){
 	        die('<span style="color:#FF0000;">Error: Missing Milestone Submission Frequency.</span>');
 	    } elseif(!isset($_POST['b_id'])){
@@ -699,7 +810,7 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing Bootcamp Status.</span>');
 	    }
 	    
-	    $_POST['milestone_count'] = intval($_POST['milestone_count']);
+	    $_POST['c__child_intent_count'] = intval($_POST['c__child_intent_count']);
 	    //Incldue config variables:
         $sprint_units = $this->config->item('sprint_units');
         $start_times = $this->config->item('start_times');
@@ -711,9 +822,9 @@ class Process extends CI_Controller {
 	        echo '<li>Admission Ends: <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
 	        echo '<li>Class Starts: <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
 	        echo '<li>Instant Payout by: <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-	        echo '<li>Bootcamp Duration: <b>'.$_POST['milestone_count'].' '.ucwords($_POST['b_sprint_unit']).'s <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
-	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['milestone_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+	        echo '<li>Bootcamp Duration: <b>'.$_POST['c__child_intent_count'].' '.ucwords($_POST['b_sprint_unit']).'s <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
+	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__child_intent_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__child_intent_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
     	    echo '</ul>';
 	}
 	
@@ -1690,7 +1801,7 @@ class Process extends CI_Controller {
 	            'status' => 0,
 	            'message' => 'Invalid Session. Refresh to Continue',
 	        ));
-	    } elseif(!isset($_POST['i_dispatch_minutes']) || !isset($_POST['pid']) || !isset($_POST['b_id']) || !isset($_POST['i_status'])){
+	    } elseif(!isset($_POST['pid']) || !isset($_POST['b_id']) || !isset($_POST['i_status'])){
 	        echo_json(array(
 	            'status' => 0,
 	            'message' => 'Missing intent data.',
@@ -1753,7 +1864,6 @@ class Process extends CI_Controller {
 	                'i_media_type' => $i_media_type,
 	                'i_message' => $message,
 	                'i_url' => $new_file_url,
-	                'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
 	                'i_status' => intval($_POST['i_status']),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
 	                    'i_status >=' => 0,
@@ -1815,11 +1925,6 @@ class Process extends CI_Controller {
 	            'status' => 0,
 	            'message' => 'Missing message.',
 	        ));
-	    } elseif(!isset($_POST['i_dispatch_minutes'])){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Dispatch Minutes.',
-	        ));
 	    } else {
 	        
 	        //Detect potential URL:
@@ -1854,7 +1959,6 @@ class Process extends CI_Controller {
 	                'i_media_type' => $i_media_type,
 	                'i_message' => trim($_POST['i_message']),
 	                'i_url' => ( count($urls)==1 ? $urls[0] : null ),
-	                'i_dispatch_minutes' => intval($_POST['i_dispatch_minutes']),
 	                'i_status' => intval($_POST['i_status']),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
 	                    'i_status >=' => 0,
@@ -1924,7 +2028,6 @@ class Process extends CI_Controller {
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
-	        //'e_message' => ucwords($i['i_media_type']).': '.$i['i_message'].' '.$i['i_url'].' (Dispatch after '.$i['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
 	            'before' => $messages[0],
@@ -1970,7 +2073,6 @@ class Process extends CI_Controller {
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => ucwords($messages[0]['i_media_type']).': '.$messages[0]['i_message'].' '.$messages[0]['i_url'].' (Dispatch after '.$messages[0]['i_dispatch_minutes'].' minutes)',
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
 	            'before' => $messages[0],

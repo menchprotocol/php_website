@@ -795,9 +795,24 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
     margin-bottom: 10px;
 }
 
+.pricing-badge {
+    padding: 4px 6px;
+    font-size: 12px;
+    background-color: #999;
+    border-radius: 3px;
+    margin:-2px 5px 0;
+    cursor:help;
+}
+.status-label{
+	cursor:help;
+}
+.list-group-item>.input-group>.form-group>input[type="text"]{
+    margin-bottom: -2px;
+    padding-bottom: 22px !important;
+    padding-top: 18px !important;
+}
 
 #frequency_details {
-	margin-top: -13px;
 	padding-top: 0;
 	display: block;
 }

@@ -162,7 +162,7 @@ $( document ).ready(function() {
     
     		<?php 
     		foreach($bootcamp['c__messages'] as $i){
-    		    if($i['i_status']>=2){
+    		    if($i['i_status']>=3){
     		        //Publish to Landing Page!
     		        echo echo_i($i);
     		    }
@@ -188,7 +188,7 @@ $( document ).ready(function() {
                         
                         $messages_shown = 0;
                         foreach($sprint['c__messages'] as $i){
-                            if($i['i_status']==2){
+                            if($i['i_status']>=3){
                                 //Publish to Landing Page!
                                 echo echo_i($i);
                                 $messages_shown++;
@@ -234,7 +234,7 @@ $( document ).ready(function() {
     		
     		
     		if(count($office_hours_ui)>0 || $total_office_hours>0){
-    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Live Office Hours</h4>';
+    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours</h4>';
     		    echo '<p>You can access <b>'.echo_hours($total_office_hours).' Per Week</b> of live office hours during these timeslots:</p>';
     		    echo '<ul style="list-style:none; margin-left:-30px;">';
     		    foreach($office_hours_ui as $oa_ui){
@@ -252,8 +252,8 @@ $( document ).ready(function() {
     		
     		
     		<?php if(strlen($focus_class['r_response_time_hours'])>0){ ?>
-    		<h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
-    		<p>This bootcamp offers chat response times of <b>Under <?= echo_hours($focus_class['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
+    		<h4><i class="fa fa-comments" aria-hidden="true"></i> Inquiry Response Time</h4>
+    		<p>This bootcamp offers live chat with response times of <b>Under <?= echo_hours($focus_class['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
     		<hr />
     		<?php } ?>
 

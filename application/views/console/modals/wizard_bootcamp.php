@@ -8,7 +8,7 @@ function move_ui(adjustment){
 	if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
 		var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
 		if(the_id=='wz_objective' && $('#'+the_id+' input').val().length<2){
-			alert('Enter `Objective to continue');
+			alert('Enter Objective to continue');
 			$('#'+the_id+' input').focus();
 			return false;
 		} else if(the_id=='wz_sprint_unit' && typeof $('#'+the_id+' input[name=b_sprint_unit]:checked').val() == 'undefined'){

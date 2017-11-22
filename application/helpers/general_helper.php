@@ -253,7 +253,7 @@ function echo_message($i){
         $echo_ui .= '<ul class="msg-nav">';
 		    //$echo_ui .= '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
 		    //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
-            $echo_ui .= '<li>'.status_bible('i',$i['i_status'],1,'right').' '.status_bible('idm',$i['i_dispatch_minutes'],1,'right').'</li>';
+            $echo_ui .= '<li>'.status_bible('i',$i['i_status'],1,'right').'</li>';
             $echo_ui .= '<li class="edit-on"><a href="javascript:message_save_updates('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
             $echo_ui .= '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
 		    $echo_ui .= '<li class="edit-updates"></li>';
@@ -493,8 +493,8 @@ function echo_mentorship($r_meeting_frequency,$r_meeting_duration){
 }
 
 
-function gross_mentorship($r_meeting_frequency,$r_meeting_duration,$b_sprint_unit,$b_effective_sprints,$is_fancy=true){
-    $bootcamp_days = ( $b_sprint_unit=='week' ? 7 : 1 ) * $b_effective_sprints;
+function gross_mentorship($r_meeting_frequency,$r_meeting_duration,$b_sprint_unit,$b_effective_milestones,$is_fancy=true){
+    $bootcamp_days = ( $b_sprint_unit=='week' ? 7 : 1 ) * $b_effective_milestones;
     
     if($r_meeting_frequency=="0"){
         $total_hours = 0;
@@ -506,6 +506,13 @@ function gross_mentorship($r_meeting_frequency,$r_meeting_duration,$b_sprint_uni
     } else {
         //1 Time frequencies like "1" or "3"
         $total_hours = ( $r_meeting_frequency * $r_meeting_duration );
+    }
+    
+    //Format nicely:
+    $total_hours = number_format($total_hours,1);
+    $parts = explode('.',$total_hours,2);
+    if(intval($parts[1])==0){
+        $total_hours = intval($parts[0]);
     }
     
     if($is_fancy){
@@ -590,7 +597,7 @@ function calculate_bootcamp_status($b){
         if($qualified_messages>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Add <b>[At least 1 '.status_bible('i',1).' Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
+            array_push($call_to_action,'Add <b>[At least 1 Published Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
         }
         
         
@@ -623,7 +630,7 @@ function calculate_bootcamp_status($b){
                 if($qualified_messages>0){
                     $progress_gained += $to_gain;
                 } else {
-                    array_push($call_to_action,'Add <b>[At least 1 '.status_bible('i',1).' Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#messages"><u>'.$task_anchor.'</u></a>');
+                    array_push($call_to_action,'Add <b>[At least 1 Published Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#messages"><u>'.$task_anchor.'</u></a>');
                 }
             }
         }
@@ -635,13 +642,13 @@ function calculate_bootcamp_status($b){
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']>=2 && $i['i_media_type']=='video' ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']>=3 && $i['i_media_type']=='video' ? 1 : 0 );
         }
     }
     if($qualified_messages>0){
         $progress_gained += $to_gain;
     } else {
-        array_push($call_to_action,'Upload <b>[At least 1 '.status_bible('i',2).' Video Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan#messages"><u>Action Plan</u></a>');
+        array_push($call_to_action,'Upload <b>[At least 1 '.status_bible('i',3).' Video Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan#messages"><u>Action Plan</u></a>');
     }
     
     
@@ -703,7 +710,7 @@ function calculate_bootcamp_status($b){
         if(strlen($focus_class['r_response_time_hours'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Chat Response Time]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
+            array_push($call_to_action,'Set <b>[Inquiry Response Time]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
@@ -1082,42 +1089,33 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Message not delivered to students until published.',
+	            's_desc'  => 'Message not visible to students while drafting.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
 	        1 => array(
-    	        's_name'  => 'Published',
+    	        's_name'  => 'Publish ASAP',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Message delivered to students during this milestone.',
+    	        's_desc'  => 'Message sent to students as soon as milestone starts. Good for mission-critical messages.',
     	        'u_min_status'  => 1,
-    	        's_mini_icon' => 'fa-play-circle',
+    	        's_mini_icon' => 'fa-bolt',
 	        ),
 	        2 => array(
-    	        's_name'  => 'Promoted',
+    	        's_name'  => 'Publish Drip',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Message published on the Landing Page and delivered to students during this milestone.',
+    	        's_desc'  => 'Message sent to students sometime during the milestone. Good for increasing student engagements.',
+    	        's_mini_icon' => 'fa-tint',
+    	        'u_min_status'  => 1,
+	        ),
+	        3 => array(
+    	        's_name'  => 'Landing Page',
+    	        's_color' => '#e91e63', //Rose
+    	        's_desc'  => 'Message published on the Landing Page and sent to students as soon as milestone starts.',
     	        's_mini_icon' => 'fa-bullhorn',
     	        'u_min_status'  => 1,
 	        ),
 	    ),
 	    
-	    'idm' => array(
-	        0 => array(
-	            's_name'  => 'ASAP',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'ASAP messages are delivered to students as soon as milestone starts. Good for mission-critical messages.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-bolt',
-	        ),
-	        1 => array(
-    	        's_name'  => 'Drip',
-    	        's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Drip messages are delivered to students sometime during the milestone to increase engagement.',
-    	        'u_min_status'  => 1,
-    	        's_mini_icon' => 'fa-tint',
-	        ),
-	    ),
 	    
 	    'cr' => array(
 	        -1 => array(
