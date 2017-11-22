@@ -831,17 +831,7 @@ margin:5px 0;
         <?php $this->load->view('console/inputs/c_objective' , array(
             'level' => $level,
             'c_objective' => $intent['c_objective'],
-        )); ?>
-        
-        
-        <?php /* TODO Remove soon with the instroduction of Messages V4 */ ?>
-        <div style="display:<?= ( in_array($udata['u_id'],array(1,2)) && strlen($intent['c_todo_overview'])>0 ? 'block' : 'none' ) ?>;">
-        	<div class="title"><h4><i class="fa fa-binoculars" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Overview (MOVE TO MESSAGES)</h4></div>
-			<hr />
-            <div id="c_todo_overview"><?= ( isset($intent['c_todo_overview']) ? $intent['c_todo_overview'] : '' ) ?></div>
-            <hr />
-        </div>
-        
+        )); ?>        
         
         
         <div style="display:<?= ( $level==1 ?'block':'none' ) ?>;">
