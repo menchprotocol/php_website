@@ -624,7 +624,7 @@ class Process extends CI_Controller {
 	            'handson_work' => array(
 	                'weight' => 0.35, //The percentage of importance for this factor relative to other pricing_factors
 	                'name' => 'Hands-On Student Work',
-	                'desc' => 'Total hours students must spend to complete all bootcamp tasks. NOTE: duration may vary based on delivery speed which can be full-time (40h/week) or part-time (10h/week).',
+	                'desc' => 'Total hours students must spend to complete all bootcamp tasks. Note: Different bootcamps have different durations based on their delivery speed of full-time (40h/week) or part-time (10h/week).',
 	                'industry_is' => 600, //How much time students need to spend to complete the bootcamp
 	                'mench_is' => 0, //To be calculated
 	                'mench_what_if' => ( isset($_POST['whatif_handson_work']) && intval($_POST['whatif_handson_work'])>0 ? intval($_POST['whatif_handson_work']) : null ),
@@ -725,7 +725,7 @@ class Process extends CI_Controller {
 	        echo '<table class="table table-condensed">';
     	        echo '<tr>';
         	        echo '<td style="border-bottom:1px solid #999;">&nbsp;</td>';
-        	        echo '<td style="border-bottom:1px solid #999; width:100px; text-align:right; font-weight:bold;">Traditional<br />Bootcamps</td>';
+        	        echo '<td style="border-bottom:1px solid #999; width:125px; text-align:right; font-weight:bold;">Traditional<br />Bootcamps</td>';
         	        echo '<td style="border-bottom:1px solid #999; width:220px; text-align:right; font-weight:bold;">Your Mench<br />Bootcamp</td>';
     	        echo '</tr>';
     	        
@@ -754,7 +754,7 @@ class Process extends CI_Controller {
     	            
     	            echo '<tr>';
     	                echo '<td style="text-align:left;"><span style="width:220px; display: inline-block;" data-toggle="tooltip" title="'.$pf['desc'].'" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$pf['name'].'</span></td>';
-    	                echo '<td style="text-align:right;">'.$pf['industry_is'].' Hours</td>';
+    	                echo '<td style="text-align:right;">'.($item=='respond_under'?'Under ':'').$pf['industry_is'].' Hours</td>';
     	                echo '<td style="text-align:right;">';
     	                if($item=='handson_work'){
     	                    echo '<select id="whatif_selection" style="padding:0 !important; font-size: 18px !important; border-top:0;" data-toggle="tooltip" title="It takes time to build your Action Plan and estimate the completion time of all its tasks. This feature enables you to get a price estimate by forecasting how many hours your Action Plan would be." data-placement="top">';
@@ -766,7 +766,7 @@ class Process extends CI_Controller {
     	                    }
     	                    echo '</select>';
     	                } else {
-    	                    echo '<a style="text-decoration:none;" href="javascript:switch_to(\'support\')">'.$pf['mench_is'].' Hour'.( $pf['mench_is']==1?'':'s' ).' <i class="fa fa-wrench" aria-hidden="true"></i></a></td>';
+    	                    echo '<a style="text-decoration:none;" href="javascript:switch_to(\'support\')">'.($item=='respond_under'?'Under ':'').$pf['mench_is'].' Hour'.( $pf['mench_is']==1?'':'s' ).' <i class="fa fa-wrench" aria-hidden="true"></i></a></td>';
     	                }
     	            echo '</tr>';
     	        }
