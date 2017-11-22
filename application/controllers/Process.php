@@ -760,7 +760,7 @@ class Process extends CI_Controller {
     	                    echo '<select id="whatif_selection" style="padding:0 !important; font-size: 18px !important; border-top:0;" data-toggle="tooltip" title="It takes time to build your Action Plan and estimate the completion time of all its tasks. This feature enables you to get a price estimate by forecasting how many hours your Action Plan would be." data-placement="top">';
     	                    foreach($whatif_handson_work as $whw){
     	                        if($whw<$c__estimated_hours){
-    	                            continue;
+    	                            continue; //Only encourage them to go higher, not lower!
     	                        }
     	                        echo '<option value="'.$whw.'" '.( $pf['mench_is']==$whw ? 'selected="selected"' : '' ).'>'.( $whw==$c__estimated_hours ? 'Current: ' : 'What If: ' ).$whw.' Hour'.($whw==1?'':'s').'</option>';
     	                    }

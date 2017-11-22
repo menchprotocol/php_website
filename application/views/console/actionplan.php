@@ -834,7 +834,7 @@ margin:5px 0;
         )); ?>        
         
         
-        <div style="display:<?= ( $level==1 ?'block':'none' ) ?>;">
+        <div style="display:<?= ( $level==1 ?'block':'none' ) ?>; margin-top:30px;">
     		<?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
         </div>
         
