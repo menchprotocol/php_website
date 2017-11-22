@@ -1,4 +1,4 @@
-<table class="table table-condensed">
+<table class="table table-condensed table-striped">
 <tr style="font-weight: bold;">
 	<td>#</td>
 	<td style="width:300px; text-align:left;">Instructor</td>
@@ -7,7 +7,7 @@
 	<td>Engagement</td>
 	<td>Email</td>
 	<td>Is Company</td>
-	<td style="width:120px; text-align:right;">Instructor Profiles</td>
+	<td style="width:140px; text-align:right;">Instructor Profiles</td>
 </tr>
 <?php
 $totals = array(0,0,0);
@@ -23,18 +23,19 @@ $links = array(
 foreach($il_category as $i=>$ilo){
     echo '<tr>';
     echo '<td>'.number_format(($i+1),0).'</td>';
-    echo '<td style="width:300px; text-align:left; border-bottom:1px solid #CCC;">'.( strlen($ilo['il_overview'])>0 ? '<i class="fa fa-info-circle" data-toggle="tooltip" title="'.strip_tags(substr($ilo['il_overview'],0,600)).'..." data-placement="right" aria-hidden="true"></i> ' : '' ).$ilo['il_first_name'].' '.$ilo['il_last_name'].'</td>';
-    echo '<td style="border-bottom:1px solid #CCC;">'.number_format($ilo['il_course_count'],0).'</td>';
-    echo '<td style="border-bottom:1px solid #CCC;">'.number_format($ilo['il_student_count'],0).'</td>';
-        echo '<td style="border-bottom:1px solid #CCC;">'.number_format(( $ilo['il_student_count']>0 ? ( $ilo['il_review_count']/$ilo['il_student_count']*100 ) : 0 ),1).'%</td>';
-        echo '<td style="border-bottom:1px solid #CCC;">---</td>';
-        echo '<td style="border-bottom:1px solid #CCC;">---</td>';
-        echo '<td style="border-bottom:1px solid #CCC; width:120px; text-align:right;">';
-        foreach($links as $link_id=>$link_icon){
-            if(strlen($ilo[$link_id])>0){
-                echo '<a href="'.$ilo[$link_id].'" target="_blank">'.$link_icon.'</a> ';
+    echo '<td style="width:300px; text-align:left; ">'.( strlen($ilo['il_overview'])>0 ? '<i class="fa fa-info-circle" data-toggle="tooltip" title="'.strip_tags(substr($ilo['il_overview'],0,600)).'..." data-placement="right" aria-hidden="true"></i> ' : '' ).$ilo['il_first_name'].' '.$ilo['il_last_name'].'</td>';
+    echo '<td style="">'.number_format($ilo['il_course_count'],0).'</td>';
+    echo '<td style="">'.number_format($ilo['il_student_count'],0).'</td>';
+        echo '<td style="">'.number_format(( $ilo['il_student_count']>0 ? ( $ilo['il_review_count']/$ilo['il_student_count']*100 ) : 0 ),1).'%</td>';
+        echo '<td style="">---</td>';
+        echo '<td style="">---</td>';
+        echo '<td style=" width:120px; text-align:right;">';
+            foreach($links as $link_id=>$link_icon){
+                if(strlen($ilo[$link_id])>0){
+                    echo '<a href="'.$ilo[$link_id].'" target="_blank">'.$link_icon.'</a> ';
+                }
             }
-        }
+            echo '<a href="https://www.google.ca/search?q='.urlencode($ilo['il_first_name'].' '.$ilo['il_last_name']).'" target="_blank"><i class="fa fa-google" aria-hidden="true"></i></a>';
         echo '</td>';
     echo '</tr>';
     
