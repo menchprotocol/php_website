@@ -59,6 +59,32 @@ class Db_model extends CI_Model {
 	    return $q->result_array();
 	}
 	
+	
+	function il_fetch($match_columns){
+	    //Fetch the target gems:
+	    $this->db->select('*');
+	    $this->db->from('v5_scraped_leads il');
+	    foreach($match_columns as $key=>$value){
+	        $this->db->where($key,$value);
+	    }
+	    $this->db->order_by('il_student_count DESC');
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
+	function il_overview_fetch(){
+	    //Fetches an overview of Udemy Instructors
+	    $this->db->select('COUNT(il_id) as total_instructors, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
+	    $this->db->from('v5_scraped_leads il');
+	    $this->db->where('il_udemy_user_id>0');
+	    $this->db->where('il_student_count>0'); //Need for Engagement Rate
+	    $this->db->group_by('il_udemy_category');
+	    $this->db->order_by('total_instructors DESC');
+	    $q = $this->db->get();
+	    return $q->result_array();
+	}
+	
+	
 	/* ******************************
 	 * Users
 	 ****************************** */
@@ -452,6 +478,9 @@ class Db_model extends CI_Model {
 		return $this->db->affected_rows();
 	}
 	
+	
+	
+	
 	/* ******************************
 	 * Classes
 	 ****************************** */
@@ -550,6 +579,8 @@ class Db_model extends CI_Model {
 	    
 	    return $intents;
 	}
+	
+	
 	
 	function c_full_fetch($match_columns){
 	    //Missing anything?
@@ -774,18 +805,7 @@ class Db_model extends CI_Model {
 	    $this->db->insert('v5_scraped_leads', $insert_columns);
 	    $insert_columns['il_id'] = $this->db->insert_id();    
 	    return $insert_columns;
-	}
-	function il_fetch($match_columns=array()){
-	    $this->db->select('*');
-	    $this->db->from('v5_scraped_leads il');
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $this->db->order_by('il_id','ASC');
-	    $q = $this->db->get();
-	    return $q->result_array();
-	}
-	
+	}	
 	
 	function r_create($insert_columns){
 	    $this->db->insert('v5_classes', $insert_columns);

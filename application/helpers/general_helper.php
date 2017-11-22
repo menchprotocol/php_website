@@ -268,15 +268,15 @@ function echo_message($i){
     return $echo_ui;
 }
 
-function echo_time($c_time_estimate,$show_icon=1){
+function echo_time($c_time_estimate,$show_icon=1,$micro=false){
     if($c_time_estimate>0){
-        $ui = '<span class="title-sub" data-toggle="tooltip" title="Estimated Completion Time">'.( $show_icon ? '<i class="fa fa-clock-o" aria-hidden="true"></i>' : '');
+        $ui = '<span class="title-sub" style="text-transform:none !important;" data-toggle="tooltip" title="Estimated Task Completion Time">'.( $show_icon ? '<i class="fa fa-clock-o" aria-hidden="true"></i>' : '');
         if($c_time_estimate<1){
             //Minutes:
-            $ui .= round($c_time_estimate*60).' Minutes';
+            $ui .= round($c_time_estimate*60).($micro?'m':' Minutes');
         } else {
             //Hours:
-            $ui .= round($c_time_estimate,1).' Hour'.(round($c_time_estimate,1)==1?'':'s');
+            $ui .= round($c_time_estimate,1).($micro?'h':' Hour'.(round($c_time_estimate,1)==1?'':'s'));
         }
         $ui .= '</span>';
         return $ui;
@@ -461,9 +461,9 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     	        $ui .= '<span class="title-sub" data-toggle="tooltip" title="This '.$core_objects['level_'.($level-1)]['o_name'].' Has '.$intent['c__message_tree_count'].' Message'.($intent['c__message_tree_count']==1?'':'s').'"><i class="fa fa-commenting" aria-hidden="true"></i>'.$intent['c__message_tree_count'].'</span>';
     	    }
     	    if($level==2 && isset($intent['c__estimated_hours'])){
-    	        $ui .= echo_time($intent['c__estimated_hours'],1);
+    	        $ui .= echo_time($intent['c__estimated_hours'],1,1);
     	    } elseif($level==3 && isset($intent['c_time_estimate'])){
-    	        $ui .= echo_time($intent['c_time_estimate'],1);
+    	        $ui .= echo_time($intent['c_time_estimate'],1,1);
     	    }
     	    $ui .= ' <span class="srt-'.$direction.'"></span>'; //For the status of sorting
     	    
@@ -927,11 +927,11 @@ function echo_ordinal($number){
     }
 }
 
-function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown'){
+function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown',$level=0){
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     $inner_tooltip = ($direction=='dropup'?'top':'top');
-    $now = status_bible($object,$current_status_id,0,$inner_tooltip);
+    $now = status_bible($object,$current_status_id,0,$inner_tooltip,$level);
     ?>
     <input type="hidden" id="<?= $input_name ?>" value="<?= $current_status_id ?>" /> 
     <div style="display:inline-block;" class="<?= $direction ?>">
@@ -941,7 +941,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
     	</a>
     	<ul class="dropdown-menu">
     		<?php 
-    		$statuses = status_bible($object);
+    		$statuses = status_bible($object,null,false,'bottom',$level);
     		$count = 0;
     		foreach($statuses as $intval=>$status){
     		    if(isset($status['u_min_status']) && ($udata['u_status']<$status['u_min_status'] || in_array($intval,$exclude_ids))){
@@ -949,8 +949,8 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
     		        continue;
     		    }
     		    $count++;
-    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip).'</a></li>';
-    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,0,$inner_tooltip).'</li>'; //For UI replacement
+    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</a></li>';
+    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</li>'; //For UI replacement
     		}
     		?>
     	</ul>
@@ -970,7 +970,7 @@ function hourformat($fancy_hour){
     }
 }
 
-function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
+function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom',$level=0){
 	
     //IF you make any changes, make sure to also reflect in the view/console/guides/status_bible.php as well
 	$status_index = array(
@@ -1094,23 +1094,23 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
 	        1 => array(
-    	        's_name'  => 'Publish ASAP',
+    	        's_name'  => 'Student Start',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Message sent to students as soon as milestone starts. Good for mission-critical messages.',
+    	        's_desc'  => 'Message sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts. Good for mission-critical messages.',
     	        'u_min_status'  => 1,
     	        's_mini_icon' => 'fa-bolt',
 	        ),
 	        2 => array(
-    	        's_name'  => 'Publish Drip',
+    	        's_name'  => 'Student Drip',
     	        's_color' => '#4caf50', //green
-    	        's_desc'  => 'Message sent to students sometime during the milestone. Good for increasing student engagements.',
+    	        's_desc'  => 'Message sent to students sometime during the '.( $level==1 ? 'bootcamp' : 'milestone' ).'. Good for increasing student engagements.',
     	        's_mini_icon' => 'fa-tint',
     	        'u_min_status'  => 1,
 	        ),
 	        3 => array(
     	        's_name'  => 'Landing Page',
     	        's_color' => '#e91e63', //Rose
-    	        's_desc'  => 'Message published on the Landing Page and sent to students as soon as milestone starts.',
+    	        's_desc'  => 'Message published on the Landing Page and sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts.',
     	        's_mini_icon' => 'fa-bullhorn',
     	        'u_min_status'  => 1,
 	        ),

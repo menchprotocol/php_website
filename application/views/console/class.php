@@ -204,14 +204,14 @@ function save_r(){
         <div class="tab-pane active" id="screening">
         
         
-        <div class="title"><h4><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Prerequisites</h4></div>
+        <div class="title"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites</h4></div>
         <ul>
         	<li>A list of requirements students must meet to join this bootcamp.</li>
         	<li>We ask students to confirm all prerequisites during their application.</li>
         </ul>
         <script>
         $(document).ready(function() {
-        	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-exclamation-triangle"></i>',<?= ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : '[]' ) ?>);
+        	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : '[]' ) ?>);
         });
         </script>
         <div id="r_prerequisites" class="list-group"></div>
@@ -227,7 +227,7 @@ function save_r(){
         
         <script>
         $(document).ready(function() {
-        	initiate_list('r_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
+        	initiate_list('r_application_questions','+ New Application Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
         });
         </script>
         <div id="r_application_questions" class="list-group"></div>

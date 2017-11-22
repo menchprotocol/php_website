@@ -448,7 +448,7 @@ function message_save_updates(i_id){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <?php if($has_tree){ ?>
-  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'] ?></a></li>
+  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'].( $level<3 && $intent['c__estimated_hours']>0 ? ' '.echo_time($intent['c__estimated_hours'],1,1) : '' ) ?></a></li>
   <?php } ?>
   <li id="nav_messages" class="<?= ( !$has_tree ? 'active' : '') ?>"><a href="#messages" data-toggle="tab" onclick="update_hash('messages')"><i class="fa fa-commenting" aria-hidden="true"></i> Messages</a></li>
   <li id="nav_details"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>
@@ -479,11 +479,6 @@ function message_save_updates(i_id){
     			<li>You can easily add, remove and sort <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> at any time.</li>
     		</ul>
             <?php
-        }
-        
-        //Print current sub-intents:
-        if($level==1 && $bootcamp['c__estimated_hours']>0){
-            echo '<p style="text-align:right; padding-right:5px;"><span class="badge pricing-badge" data-toggle="tooltip" title="Changing your bootcamp\'s Action Plan time estimate will change the suggested price of the Tuition Calculator. Checkout the Pricing tab under any of your Classes for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span> <b><i class="fa fa-clock-o" aria-hidden="true"></i>'.echo_hours($bootcamp['c__estimated_hours']).'</b></p>';
         }
         
         echo '<div id="list-outbound" class="list-group">';
@@ -811,7 +806,7 @@ margin:5px 0;
             		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
             		
             		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-            		echo echo_status_dropdown('i','i_status',($level==1?3:1),($level==1?array(-1,1,2):($level==3?array(-1,3):array(-1))),'dropup');
+            		echo echo_status_dropdown('i','i_status',($level==1?3:1),($level==1?array(-1):($level==3?array(-1,3):array(-1))),'dropup',$level);
             		echo '</li>';
             		
         		echo '</ul>';

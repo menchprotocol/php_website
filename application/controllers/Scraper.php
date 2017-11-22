@@ -124,60 +124,84 @@ class Scraper extends CI_Controller {
 	
 	
 	
-	function udemy_import(){
+	function udemy_import($cat_index,$page=1){
 	    
 	    //Define key variables:
 	    $client_id = 'g8m7YhcqLAXuJsWxGXXeEjQ1KZ82eh9WEeCPbPGG';
 	    $client_secret = 'Q3MhsS1d8DMjmaB6mbifp0KcpYkG51HFvrA8t0h1ZFXvTDEiHVplggrF0U0PdOBuzKmkJta46YRpv9Rf6QLptoiI4AsGHU9MWaIjkf4whX5eWL0WASXo2LCVuTdOcNhA';
+	    $categories = array(
+	        'Development', //0
+	        'Design',
+	        'Test Prep',
+	        'Academics',
+	        'Business',
+	        'Health & Fitness',
+	        'IT & Software',
+	        'Language',
+	        'Lifestyle',
+	        'Marketing',
+	        'Music',
+	        'Office Productivity',
+	        'Personal Development',
+	        'Photography',
+	        'Teacher Training',
+	    );
 	    $stats = array(
-	        'category' => 'Development', //Academics Business Design Development Health & Fitness IT & Software Language Lifestyle Marketing Music Office Productivity Personal Development Photography Teacher Training Test Prep
-	        'page_start' => 76,
-	        'page_end' => 85,
+	        'category' => $categories[$cat_index],
+	        'page' => $page,
 	        'total_results' => 0,
 	        'newly_added' => 0,
 	        'already_existed' => 0,
 	    );
 	    
-	    for ($p = $stats['page_start']; $p <= $stats['page_end']; $p++) {
-	        $api_url = 'https://www.udemy.com/api-2.0/courses/?category='.$stats['category'].'&ordering=most-reviewed&page_size=100&page='.$p;
-	        $context = stream_context_create(array(
-	            'http' => array(
-	                'header' => "Authorization: Basic " . base64_encode("$client_id:$client_secret"),
-	            ),
-	        ));
-	        $results = objectToArray(json_decode(file_get_contents($api_url, false, $context)));
-	        $stats['total_results'] = $results['count'];
-	        
-	        //Go through all the results of this page:
-	        foreach($results['results'] as $result){
-	            //GO through all the instructors of this course:
-	            foreach($result['visible_instructors'] as $instructor){
-	                //See if they eixist in DB or not:
-	                $already_exists = $this->Db_model->il_fetch(array(
+	    //Start fetching:
+	    $api_url = 'https://www.udemy.com/api-2.0/courses/?category='.urlencode($stats['category']).'&ordering=most-reviewed&page_size=100&page='.$page;
+	    $context = stream_context_create(array(
+	        'http' => array(
+	            'header' => "Authorization: Basic " . base64_encode("$client_id:$client_secret"),
+	        ),
+	    ));
+	    $results = objectToArray(json_decode(file_get_contents($api_url, false, $context)));
+	    $stats['total_results'] = $results['count'];
+	    
+	    //Go through all the results of this page:
+	    foreach($results['results'] as $result){
+	        //GO through all the instructors of this course:
+	        foreach($result['visible_instructors'] as $instructor){
+	            //See if they eixist in DB or not:
+	            $already_exists = $this->Db_model->il_fetch(array(
+	                'il_udemy_user_id' => $instructor['id'],
+	            ));
+	            if(count($already_exists)>0){
+	                //Exists already!
+	                $stats['already_existed']++;
+	            } else {
+	                $stats['newly_added']++;
+	                $names = explode(' ',$instructor['display_name'],2);
+	                
+	                $this->Db_model->il_create(array(
 	                    'il_udemy_user_id' => $instructor['id'],
+	                    'il_url' => 'https://www.udemy.com'.$instructor['url'],
+	                    'il_overview' => $instructor['job_title'],
+	                    'il_first_name' => $names[0],
+	                    'il_last_name' => ( isset($names[1]) ? $names[1] : '' ),
+	                    'il_udemy_category' => $stats['category'],
 	                ));
-	                if(count($already_exists)>0){
-	                    //Exists already!
-	                    $stats['already_existed']++;
-	                } else {
-	                    $stats['newly_added']++;
-	                    $names = explode(' ',$instructor['display_name'],2);
-	                    
-	                    $this->Db_model->il_create(array(
-	                        'il_udemy_user_id' => $instructor['id'],
-	                        'il_url' => 'https://www.udemy.com'.$instructor['url'],
-	                        'il_overview' => $instructor['job_title'],
-	                        'il_first_name' => $names[0],
-	                        'il_last_name' => $names[1],
-	                        'il_udemy_category' => $stats['category'],
-	                    ));
-	                }
 	            }
 	        }
 	    }
 	    
+	    
 	    //Echo stats:
 	    print_r($stats);
+	    
+	    //Move on:
+	    if(($page*100)<$stats['total_results']){
+	        echo '<script> window.location.href = "/scraper/udemy_import/'.$cat_index.'/'.($page+1).'"; </script>';
+	    } elseif(isset($categories[($cat_index+1)])){
+	        //We do have a next category, lets move on:
+	        echo '<script> window.location.href = "/scraper/udemy_import/'.($cat_index+1).'/1"; </script>';
+	    }
 	}
 	
 	function udemy_extract(){
@@ -186,7 +210,6 @@ class Scraper extends CI_Controller {
 	    $to_update = $this->Db_model->il_fetch(array(
 	        'il_timestamp' => null, //Fetch courses that have never been updated before
 	        'il_udemy_user_id >' => 0,
-	        'il_udemy_category' => 'Development',
 	    ));
 	    
 	    $count = 0;
@@ -221,31 +244,41 @@ class Scraper extends CI_Controller {
 	    }
 	    
 	    echo '<head><meta http-equiv="refresh" content="2"></head>';
-	    echo $count.' Updated.';
+	    echo $count.' Updated on '.date("Y-m-d H:i:s");
 	}
 	
 	function udemy_csv(){
+	    
+	    if(!isset($_GET['cat'])){
+	        die('Missing category');
+	    }
+	    
 	    $to_print = $this->Db_model->il_fetch(array(
 	        'il_timestamp !=' => null, //Fetch courses that have never been updated before
 	        'il_udemy_user_id >' => 0,
-	        'il_udemy_category' => 'Development',
+	        'il_student_count >' => 0,
+	        'il_udemy_category' => urldecode($_GET['cat']),
 	    ));
 	    
 	    header("Content-type: application/octet-stream");
-	    header("Content-Disposition: attachment; filename=your_desired_name.xls");
+	    header("Content-Disposition: attachment; filename=".urldecode($_GET['cat'])." Udemy Instructors.xls");
 	    header("Pragma: no-cache");
 	    header("Expires: 0");
 	    
 	    echo "#";
+	    echo "\tUdemy ID";
 	    echo "\tFirst Name";
 	    echo "\tLast Name";
-	    echo "\tCategory";
-	    
-	    echo "\tStudent Count";
-	    echo "\tCourse Count";
-	    echo "\tReview Count";
-	    
 	    echo "\tOverview";
+	    
+	    echo "\tCourses";
+	    echo "\tAdmissions";
+	    echo "\tEngagement Rate";
+	    
+	    //To Collect:
+	    echo "\tEmail";
+	    echo "\tIs Company";
+	    
 	    
 	    echo "\tUdemy URL";
 	    echo "\tWebsite";
@@ -259,16 +292,17 @@ class Scraper extends CI_Controller {
 	    foreach($to_print as $tp){
 	        $counter++;
 	        echo $counter;
+	        echo "\t".$tp['il_udemy_user_id'];
 	        echo "\t".$tp['il_first_name'];
 	        echo "\t".$tp['il_last_name'];
-	        echo "\t".$tp['il_udemy_category'];
-	        
-	        echo "\t".intval($tp['il_student_count']);
-	        echo "\t".intval($tp['il_course_count']);
-	        echo "\t".intval($tp['il_review_count']);
-	        
 	        echo "\t".trim(str_replace("\n",' ',$tp['il_overview']));
 	        
+	        echo "\t".intval($tp['il_course_count']);
+	        echo "\t".intval($tp['il_student_count']);
+	        echo "\t".( $tp['il_student_count']>0 ? ($tp['il_review_count']/$tp['il_student_count']*100) : 0 );
+	        
+	        echo "\t";
+	        echo "\t";
 	        
 	        echo "\t".$tp['il_url'];
 	        echo "\t".trim($tp['il_website']);

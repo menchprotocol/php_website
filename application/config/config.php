@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.91,
+    'version' => 0.92,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -292,18 +292,11 @@ $config['u_social_account'] = array(
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-stack-overflow" aria-hidden="true"></i>',
     ),
-    
     'u_medium_username' => array(
         'sa_name' => 'Medium',
         'sa_prefix' => 'https://medium.com/@',
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-medium" aria-hidden="true"></i>',
-    ),
-    'u_dribbble_username' => array(
-        'sa_name' => 'dribbble',
-        'sa_prefix' => 'https://dribbble.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-dribbble" aria-hidden="true"></i>',
     ),
     'u_dribbble_username' => array(
         'sa_name' => 'dribbble',

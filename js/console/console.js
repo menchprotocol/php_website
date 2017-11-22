@@ -12,6 +12,9 @@ function update_dropdown(name,intvalue,count){
 	$('[data-toggle="tooltip"]').addClass('').tooltip();
 }
 
+function switch_to(hashtag_name){
+	$('#topnav a[href="#'+hashtag_name+'"]').tab('show');
+}
 
 //To keep state of the horizontal menu using URL hashtags:
 function focu_hash(the_hash){

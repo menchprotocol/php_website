@@ -621,21 +621,21 @@ class Process extends CI_Controller {
 	        'base_usd_price' => 11400, //Standard price in the coding bootcamp industry
 	        'target_savings' => 0.5, //How much Mench plans to be cheaper because we're fully online
 	        'pricing_factors' => array(
+	            'handson_work' => array(
+	                'weight' => 0.35, //The percentage of importance for this factor relative to other pricing_factors
+	                'name' => 'Hands-On Student Work',
+	                'desc' => 'Total hours students must spend to complete all bootcamp tasks. NOTE: duration may vary based on delivery speed which can be full-time (40h/week) or part-time (10h/week).',
+	                'industry_is' => 600, //How much time students need to spend to complete the bootcamp
+	                'mench_is' => 0, //To be calculated
+	                'mench_what_if' => ( isset($_POST['whatif_handson_work']) && intval($_POST['whatif_handson_work'])>0 ? intval($_POST['whatif_handson_work']) : null ),
+	            ),
 	            'personalized_mentorship' => array(
-	                'weight' => 0.40, //The percentage of importance for this factor relative to other pricing_factors
+	                'weight' => 0.35, //The percentage of importance for this factor relative to other pricing_factors
 	                'name' => '1-on-1 Mentorship',
 	                'desc' => 'The sum of all 1-on-1 mentorship offered during the entire bootcamp',
 	                'industry_is' => 72,
 	                'mench_is' => 0, //To be calculated
 	                'mench_what_if' => ( isset($_POST['whatif_personalized_mentorship']) && intval($_POST['whatif_personalized_mentorship'])>0 ? intval($_POST['whatif_personalized_mentorship']) : null ),
-	            ),
-	            'handson_work' => array(
-	                'weight' => 0.30, //The percentage of importance for this factor relative to other pricing_factors
-	                'name' => 'Hands-On Student Work',
-	                'desc' => 'The sum of all hours students must spend to complete the bootcamp work',
-	                'industry_is' => 600, //How much time students need to spend to complete the bootcamp
-	                'mench_is' => 0, //To be calculated
-	                'mench_what_if' => ( isset($_POST['whatif_handson_work']) && intval($_POST['whatif_handson_work'])>0 ? intval($_POST['whatif_handson_work']) : null ),
 	            ),
 	            'respond_under' => array(
 	                'weight' => 0.20, //The percentage of importance for this factor relative to other pricing_factors
@@ -730,11 +730,13 @@ class Process extends CI_Controller {
     	        echo '</tr>';
     	        
     	        //First row on Duration:
+    	        /*
     	        echo '<tr>';
         	        echo '<td style="text-align:left;"><span style="width:220px; display: inline-block;" data-toggle="tooltip" title="The amount of time it takes students to accomplish the Bootcamp Objective" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> Bootcamp Duration</span></td>';
         	        echo '<td style="text-align:right;">24 Weeks</td>';
         	        echo '<td style="text-align:right;">'.$_POST['b_effective_milestones'].' '.ucwords($_POST['b_sprint_unit']).($_POST['b_effective_milestones']==1?'':'s').'</td>';
         	    echo '</tr>';
+    	        */
     	        
     	        //Show each item of the calculation:
     	        $equalized_mench_price = $calculator_logic['target_savings'] * $calculator_logic['base_usd_price'];
@@ -755,7 +757,7 @@ class Process extends CI_Controller {
     	                echo '<td style="text-align:right;">'.$pf['industry_is'].' Hours</td>';
     	                echo '<td style="text-align:right;">';
     	                if($item=='handson_work'){
-    	                    echo '<select id="whatif_selection" style="padding:0 !important; font-size: 18px !important;" data-toggle="tooltip" title="It takes time to build your Action Plan and estimate the completion time of all its tasks. This feature enables you to get a price estimate by forecasting how many hours your Action Plan would be." data-placement="top">';
+    	                    echo '<select id="whatif_selection" style="padding:0 !important; font-size: 18px !important; border-top:0;" data-toggle="tooltip" title="It takes time to build your Action Plan and estimate the completion time of all its tasks. This feature enables you to get a price estimate by forecasting how many hours your Action Plan would be." data-placement="top">';
     	                    foreach($whatif_handson_work as $whw){
     	                        if($whw<$c__estimated_hours){
     	                            continue;
@@ -764,9 +766,8 @@ class Process extends CI_Controller {
     	                    }
     	                    echo '</select>';
     	                } else {
-    	                    echo $pf['mench_is'].' Hour'.( $pf['mench_is']==1?'':'s' );
+    	                    echo '<a style="text-decoration:none;" href="javascript:switch_to(\'support\')">'.$pf['mench_is'].' Hour'.( $pf['mench_is']==1?'':'s' ).' <i class="fa fa-wrench" aria-hidden="true"></i></a></td>';
     	                }
-    	                echo '</td>';
     	            echo '</tr>';
     	        }
     	        
