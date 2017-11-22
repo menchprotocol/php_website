@@ -835,12 +835,11 @@ margin:5px 0;
         
         
         <div style="display:<?= ( $level==1 ?'block':'none' ) ?>;">
-        	<hr />
     		<?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
         </div>
         
         
-        <div style="display:<?= ( $level==2 ?'block':'none' ) ?>;">
+        <div style="display:<?= ( $level==2 ?'block':'none' ) ?>; margin-top:30px;">
     		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone</h4></div>
             <ul>
             	<li>Break Milestones give some time off in between Milestones.</li>
@@ -865,7 +864,7 @@ margin:5px 0;
     		
        
         <?php $times = $this->config->item('c_time_options'); ?>
-        <div style="display:<?= (($level>=3 || $intent['c_time_estimate']>0)?'block':'none') ?>;">
+        <div style="display:<?= (($level>=3 || $intent['c_time_estimate']>0)?'block':'none') ?>; margin-top:30px;">
             <div class="title" style="margin-top:25px; display:<?= ($level>=3?'block':'none') ?>;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
             <ul class="maxout">
     			<li>The estimated time for the <b>average</b> student to read & execute this task.</li>
@@ -882,7 +881,7 @@ margin:5px 0;
         </div>
         
         
-        <div style="display:<?= ( $udata['u_status']>999 /*Disabled for now!*/ ? 'block' : 'none' ) ?>;">
+        <div style="display:<?= ( $udata['u_status']>999 /*Disabled for now!*/ ? 'block' : 'none' ) ?>; margin-top:30px;">
             <div class="title" style="margin-top:25px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Status</h4></div>
             <ul class="maxout">
     			<li>Default status is <?= status_bible('c',1) ?>.</li>
@@ -890,7 +889,6 @@ margin:5px 0;
     		</ul>
             <?php echo_status_dropdown('c','c_status',$intent['c_status']); ?>
         </div>
-        
         
         
        
