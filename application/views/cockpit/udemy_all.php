@@ -1,4 +1,4 @@
-<p>Note: <b>Course & Admissions Have Overlap</b> and do not reflect unique numbers as multiple instructors share the same pool of admissions by being on the same course. <a href="https://about.udemy.com/udemy-for-business/a-year-of-udemy-2016-in-review/">Udemy Reported</a> they surpoassed 10M students by 2017. Also in 2016 they had 27M admissions.</p>
+<p>Note: <b>Course & Admissions Have Overlaps</b> as they do not reflect unique numbers because co-instructors share their course admissions. <a href="https://about.udemy.com/udemy-for-business/a-year-of-udemy-2016-in-review/" target="_blank">Udemy Reported</a> 10M students by the end of 2016 and 27M admissions during the entire 2016.</p>
 <table class="table table-condensed">
 <tr style="font-weight: bold;">
 	<td>Udemy Category</td>

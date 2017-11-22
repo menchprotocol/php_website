@@ -24,7 +24,7 @@
 			if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false || isset($_GET['skip'])) {
 			    echo '<input type="submit" class="btn btn-primary btn-raised btn-round" value="Login">';
 			} else {
-			    echo '<br /><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>You Cannot Login</b> because we currently support <a href="https://www.google.com/chrome/browser/desktop/index.html" target="_blank"><u>Google Chrome</u></a> only.';
+			    echo '<br /><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>You Cannot Login</b> because we currently support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.';
 			}
 			?>
 			

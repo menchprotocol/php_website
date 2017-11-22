@@ -23,7 +23,7 @@ $links = array(
 foreach($il_category as $i=>$ilo){
     echo '<tr>';
     echo '<td>'.number_format(($i+1),0).'</td>';
-    echo '<td style="width:300px; text-align:left; border-bottom:1px solid #CCC;">'.( strlen($ilo['il_overview'])>0 ? '<i class="fa fa-info-circle" data-toggle="tooltip" title="'.strip_tags($ilo['il_overview']).'" data-placement="right" aria-hidden="true"></i> ' : '' ).$ilo['il_first_name'].' '.$ilo['il_last_name'].'</td>';
+    echo '<td style="width:300px; text-align:left; border-bottom:1px solid #CCC;">'.( strlen($ilo['il_overview'])>0 ? '<i class="fa fa-info-circle" data-toggle="tooltip" title="'.strip_tags(substr($ilo['il_overview'],0,600)).'..." data-placement="right" aria-hidden="true"></i> ' : '' ).$ilo['il_first_name'].' '.$ilo['il_last_name'].'</td>';
     echo '<td style="border-bottom:1px solid #CCC;">'.number_format($ilo['il_course_count'],0).'</td>';
     echo '<td style="border-bottom:1px solid #CCC;">'.number_format($ilo['il_student_count'],0).'</td>';
         echo '<td style="border-bottom:1px solid #CCC;">'.number_format(( $ilo['il_student_count']>0 ? ( $ilo['il_review_count']/$ilo['il_student_count']*100 ) : 0 ),1).'%</td>';
