@@ -62,6 +62,24 @@ function update_tuition_calculator(){
     });
 }
 
+function changeContactMethod(){
+    var len = $('#r_office_hour_instructions').val().length;
+    if (len > 420) {
+    	$('#ContactMethodChar').addClass('overload').text(len);
+    } else {
+        $('#ContactMethodChar').removeClass('overload').text(len);
+    }
+}
+function changeCloseDates(){
+    var len = $('#r_closed_dates').val().length;
+    if (len > 420) {
+    	$('#CloseDatesChar').addClass('overload').text(len);
+    } else {
+        $('#CloseDatesChar').removeClass('overload').text(len);
+    }
+}
+
+
 $(document).ready(function() {
     
 	//Detect any possible hashes that controll the menu?
@@ -69,6 +87,9 @@ $(document).ready(function() {
 		focu_hash(window.location.hash);
     }
 
+    //Update counters:
+    changeContactMethod();
+    changeCloseDates();
 	
     //Tuition Calculator:
     update_tuition_calculator();
@@ -155,8 +176,6 @@ function save_r(){
 		r_prerequisites: fetch_submit('r_prerequisites'),
 		r_completion_prizes: fetch_submit('r_completion_prizes'),
 	};
-
-	console.log(save_data);
 	
 	//Now merge into timeline dates:
 	//for (var key in timeline){
@@ -343,18 +362,19 @@ function save_r(){
 		
 		<div class="has_office_hours" style="display:<?= strlen($class['r_live_office_hours'])>0 ? 'block' : 'none' ?>;">
 			
-			<div class="title"><h4>Office Hours: Contact Method</h4></div>
+			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Contact Instructions Message</h4></div>
 			<ul>
-      			<li>Instructions on how students can contact you or your team.</li>
+      			<li>Let students know how they can connect with you during office hours.</li>
     			<li>Include Skype ID, Google Hangout link, Zoom video confrence url, etc...</li>
     			<li>Mench sends automatic reminders 30-minutes prior to each office hour.</li>
     		</ul>
             <div class="form-group label-floating is-empty">
-                <textarea class="form-control text-edit border" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
+                <textarea class="form-control text-edit border" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
+                <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/420</div>
             </div>
             
             
-            <div class="title"><h4>Office Hours: Weekly Schedule <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
+            <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly Schedule <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
             <ul>
       			<li>Set office hours in PST timezone (Currently <?= time_format(time(),7) ?>).</li>
     			<li>Mench will adjust hours based on each student's timezone.</li>
@@ -363,18 +383,17 @@ function save_r(){
             <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
 			
 			
-            <div class="title"><h4>Office Hours: Close Dates</h4></div>
+            <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates Message</h4></div>
             <ul>
-      			<li>Manually define the dates that you would not provide office hours.</li>
+      			<li>Manually define the dates that you would not provide office hours during this calss.</li>
     		</ul>
             <div class="form-group label-floating is-empty">
-                <textarea class="form-control text-edit border" placeholder="Plain text like: Nov 23, Dec 25, Dec 26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
+                <textarea class="form-control text-edit border" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
+                <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/420</div>
             </div>
             
 		</div>
     </div>
-    
-
     
     
     

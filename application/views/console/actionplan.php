@@ -9,14 +9,15 @@ $has_tree = ($level<=2 && $intent['c_is_last']=='f');
 <script>
 
 function add_first_name(){
-    $('#i_message').val($('#i_message').val()+' {first_name}'); 
+    $('#i_message').val($('#i_message').val()+' {first_name}');
+    changeMessage();
 }
 
 //Count text area characters:
-function countChar(val) {
+function changeMessage() {
 
 	//Update count:
-    var len = val.value.length;
+    var len = $('#i_message').val().length;
     if (len > 420) {
     	$('#charNum').addClass('overload').text(len);
     } else {
@@ -84,6 +85,39 @@ $(document).ready(function() {
         }
     });
 
+
+
+
+
+
+	$('.box').find('input[type="file"]').change(function (){
+		save_attachment(droppedFiles,'file');
+    });
+    
+    if (isAdvancedUpload) {
+
+      $('.box').addClass('has-advanced-upload');
+      var droppedFiles = false;
+    
+      $('.box').on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      })
+      .on('dragover dragenter', function() {
+        $('.add-msg').addClass('is-working');
+      })
+      .on('dragleave dragend drop', function() {
+        $('.add-msg').removeClass('is-working');
+      })
+      .on('drop', function(e) {
+        droppedFiles = e.originalEvent.dataTransfer.files;
+        e.preventDefault();
+        save_attachment(droppedFiles,'drop');
+      });
+
+    }
+
+    
     
 	//Load Algolia:
 	/*
@@ -436,81 +470,13 @@ function message_save_updates(i_id){
 	});
 }
 
-</script>
-
-
-<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
-<input type="hidden" id="c_id" value="<?= $bootcamp['c_id'] ?>" />
-<input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
-<input type="hidden" id="next_level" value="<?= $level+1 ?>" />
 
 
 
-<ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <?php if($has_tree){ ?>
-  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'].( $level<3 && $intent['c__estimated_hours']>0 ? ' '.echo_time($intent['c__estimated_hours'],1,1) : '' ) ?></a></li>
-  <?php } ?>
-  <li id="nav_messages" class="<?= ( !$has_tree ? 'active' : '') ?>"><a href="#messages" data-toggle="tab" onclick="update_hash('messages')"><i class="fa fa-commenting" aria-hidden="true"></i> Messages</a></li>
-  <li id="nav_details"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>
-</ul>
 
 
-<div class="tab-content tab-space">
-	
-	<div class="tab-pane <?= ( $has_tree ? 'active' : 'hidden') ?>" id="list">
-    	<?php
-    	if($level==1){
-    	    ?>
-        	<ul class="maxout">
-        		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> that step-by-step help students accomplish the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
-    			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
-    			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-    			<li>To keep students focused, <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
-    			<li>Each <b><?= $core_objects['level_1']['o_icon'].' '.$sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Milestone</b> can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
-    			<!-- <li><b><?= ucwords($bootcamp['b_sprint_unit']) ?>-Off Milestones</b> are milestones with 0 tasks assigned to them.</li> -->
-    			<li>You can easily add, remove and sort <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> at any time.</li>
-    		</ul>
-    		<?php
-        } elseif($level==2){ 
-            ?>
-        	<ul class="maxout">
-    			<li>Each <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b> is broken down into <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b>.</li>
-    			<li>Students must complete all <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> in order to complete a <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b>.</li>
-    			<li>You can easily add, remove and sort <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> at any time.</li>
-    		</ul>
-            <?php
-        }
-        
-        echo '<div id="list-outbound" class="list-group">';
-        foreach($intent['c__child_intents'] as $sub_intent){
-            echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
-        }
-        echo '</div>';
-        
-        //Show add button:
-        ?>
-        <div class="list-group">
-        	<div class="list-group-item list_input">
-        		<div class="input-group">
-        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder=""></div>
-        			<span class="input-group-addon" style="padding-right:0;">
-        				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;" onclick="new_intent($('#addnode').val());">
-        					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
-        					<div class="togglebutton" style="margin-top:5px; display:none;">
-        		            	<label>
-        		                	<input type="checkbox" onclick="change_direction()" />
-        		            	</label>
-                    		</div>
-        				</span>
-        			</span>
-        		</div>
-        	</div>
-        </div>
-    </div>
-    
-    
-    
-<script>
+
+
 
 var isAdvancedUpload = function() {
     var div = document.createElement('div');
@@ -665,7 +631,7 @@ function msg_create(){
 		//Empty Inputs Fields if success:
 		if(data.status){
 			$( "#i_message" ).val("");
-    		countChar(document.getElementById('i_message'));
+    		changeMessage();
 		}
 
 		//Unlock field:
@@ -674,96 +640,82 @@ function msg_create(){
 	});
 }
 
-$(document).ready(function() {
-	
-	$('.box').find('input[type="file"]').change(function (){
-		save_attachment(droppedFiles,'file');
-    });
-    
-    if (isAdvancedUpload) {
-
-      $('.box').addClass('has-advanced-upload');
-      var droppedFiles = false;
-    
-      $('.box').on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      })
-      .on('dragover dragenter', function() {
-        $('.add-msg').addClass('is-working');
-      })
-      .on('dragleave dragend drop', function() {
-        $('.add-msg').removeClass('is-working');
-      })
-      .on('drop', function(e) {
-        droppedFiles = e.originalEvent.dataTransfer.files;
-        e.preventDefault();
-        save_attachment(droppedFiles,'drop');
-      });
-
-    }
-});
 </script>
 
 
-<style>
-.overload{
-color:#FF0000;
-font-weight:bold;
-}
-.box__dragndrop {
-  display: none;
-}
-.box.has-advanced-upload {
-  
-}
-.box.has-advanced-upload .box__dragndrop {
-  display: inline;
-}
 
-.add-msg{
-background-color: #FFF !important; border: 1px solid #CCC;
-}
-.is-working {
-  background-color:#e5e4e4 !important;
-}
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
+<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
+<input type="hidden" id="c_id" value="<?= $bootcamp['c_id'] ?>" />
+<input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
+<input type="hidden" id="next_level" value="<?= $level+1 ?>" />
 
-#url_preview{
-margin:5px 0;
-}
 
-.inputfile + label {
-    display: inline-block;
-}
 
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
-.inputfile:focus + label {
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
-}
-.inputfile + label * {
-	pointer-events: none;
-}
-.textarea_buttons{
-    font-weight:bold;
-    font-size:13px;
-}
-.textarea_buttons:hover{
-    color:#777 !important;
-}
-.dropdown-toggle.btn{ padding:12px 5px; }
-</style>
+<ul id="topnav" class="nav nav-pills nav-pills-primary">
+  <?php if($has_tree){ ?>
+  <li id="nav_list" class="active"><a href="#list" data-toggle="tab" onclick="update_hash('list')"><?= $core_objects['level_'.$level]['o_icon'].' '.$core_objects['level_'.$level]['o_names'].( $level<3 && $intent['c__estimated_hours']>0 ? ' '.echo_time($intent['c__estimated_hours'],1,1) : '' ) ?></a></li>
+  <?php } ?>
+  <li id="nav_messages" class="<?= ( !$has_tree ? 'active' : '') ?>"><a href="#messages" data-toggle="tab" onclick="update_hash('messages')"><i class="fa fa-commenting" aria-hidden="true"></i> Messages</a></li>
+  <li id="nav_details"><a href="#details" data-toggle="tab" onclick="update_hash('details')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>
+</ul>
+
+
+<div class="tab-content tab-space">
+	
+	<div class="tab-pane <?= ( $has_tree ? 'active' : 'hidden') ?>" id="list">
+    	<?php
+    	if($level==1){
+    	    ?>
+        	<ul class="maxout">
+        		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> that step-by-step help students accomplish the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
+    			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
+    			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
+    			<li>To keep students focused, <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
+    			<li>Each <b><?= $core_objects['level_1']['o_icon'].' '.$sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Milestone</b> can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
+    			<!-- <li><b><?= ucwords($bootcamp['b_sprint_unit']) ?>-Off Milestones</b> are milestones with 0 tasks assigned to them.</li> -->
+    			<li>You can easily add, remove and sort <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> at any time.</li>
+    		</ul>
+    		<?php
+        } elseif($level==2){ 
+            ?>
+        	<ul class="maxout">
+    			<li>Each <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b> is broken down into <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b>.</li>
+    			<li>Students must complete all <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> in order to complete a <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b>.</li>
+    			<li>You can easily add, remove and sort <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> at any time.</li>
+    		</ul>
+            <?php
+        }
+        
+        echo '<div id="list-outbound" class="list-group">';
+        foreach($intent['c__child_intents'] as $sub_intent){
+            echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
+        }
+        echo '</div>';
+        
+        //Show add button:
+        ?>
+        <div class="list-group">
+        	<div class="list-group-item list_input">
+        		<div class="input-group">
+        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder=""></div>
+        			<span class="input-group-addon" style="padding-right:0;">
+        				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;" onclick="new_intent($('#addnode').val());">
+        					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
+        					<div class="togglebutton" style="margin-top:5px; display:none;">
+        		            	<label>
+        		                	<input type="checkbox" onclick="change_direction()" />
+        		            	</label>
+                    		</div>
+        				</span>
+        			</span>
+        		</div>
+        	</div>
+        </div>
+    </div>
     
+    
+    
+
     <div class="tab-pane <?= ( !$has_tree ? 'active' : '') ?>" id="messages">
     	<p class="maxout"></p>
     	<ul class="maxout">
@@ -788,7 +740,7 @@ margin:5px 0;
     		  echo '<div class="add-msg">';
     		  echo '<form class="box" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
-    		    echo '<textarea onkeyup="countChar(this)" class="form-control" style="min-height:110px; resize:vertical;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
+    		    echo '<textarea onkeyup="changeMessage()" class="form-control" style="min-height:110px; resize:vertical;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
         
     		    echo '<div id="i_message_counter" style="margin:0 0 10px 0; font-size:0.8em;">';
     		      //File counter:
@@ -890,17 +842,10 @@ margin:5px 0;
             <?php echo_status_dropdown('c','c_status',$intent['c_status']); ?>
         </div>
         
-        
        
         
         <br />
         <table width="100%"><tr><td class="save-td"><a href="javascript:save_c();" class="btn btn-primary">Save</a></td><td><span class="save_c_results"></span></td></tr></table>
 		
     </div>
-    
-    
-    
-     
-   
 </div>
-

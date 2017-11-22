@@ -14,7 +14,20 @@ $(document).ready(function() {
 	if(window.location.hash) {
 		focu_hash(window.location.hash);
     }
+
+	//Counter:
+	changeBio();
 });
+
+//Count text area characters:
+function changeBio() {
+    var len = $('#u_bio').val().length;
+    if (len > 420) {
+    	$('#charNum').addClass('overload').text(len);
+    } else {
+        $('#charNum').removeClass('overload').text(len);
+    }
+}
 
 function trigger_link_watch(link_id,prepend_url){
 	
@@ -52,8 +65,8 @@ function update_account(){
 		u_timezone:$('#u_timezone').val(),
 		u_language:$('#u_language').val(),
 		u_newly_checked:(document.getElementById('u_terms_agreement_time').checked ? '1' : '0'),
-
-		u_bio:( u_bio_quill.getLength()>1 ? $('#u_bio .ql-editor').html() : "" ),
+		
+		u_bio:$('#u_bio').val(),
 		
 		u_password_current:$('#u_password_current').val(),
 		u_password_new:$('#u_password_new').val(),
@@ -113,85 +126,63 @@ function insert_gravatar(){
     	
     	<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
     	
-        <div class="title"><h4>Full Name</h4></div>
-        <div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-        	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" placeholder="First Name" class="form-control border">
-        </div>
-        <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
-        	<input type="text" required id="u_lname" value="<?= $udata['u_lname'] ?>" placeholder="Last Name" class="form-control border">
-        </div>
+        <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fa fa-id-card" aria-hidden="true"></i> Full Name</h4></div>
         
-        
-        
-        <div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-        	<div class="title"><h4>Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
-            <div class="form-group label-floating is-empty">
-                <input type="email" required id="u_email" value="<?= $udata['u_email'] ?>" class="form-control border">
-                <span class="material-input"></span>
+        <div class="row" style="margin:0 0 0 0;">
+        	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
+            	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" placeholder="First Name" class="form-control border">
+            </div>
+            <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
+            	<input type="text" required id="u_lname" value="<?= $udata['u_lname'] ?>" placeholder="Last Name" class="form-control border">
             </div>
         </div>
-        <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
-        	<div class="title"><h4>Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
-            <div class="form-group label-floating is-empty">
-                <input type="tel" maxlength="30" required id="u_phone" value="<?= $udata['u_phone'] ?>" class="form-control border">
-                <span class="material-input"></span>
+        
+        
+        <div class="row" style="margin:20px 0 0 0;">
+        	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
+            	<div class="title"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+                <div class="form-group label-floating is-empty">
+                    <input type="email" required id="u_email" value="<?= $udata['u_email'] ?>" class="form-control border">
+                    <span class="material-input"></span>
+                </div>
             </div>
-        </div>            
-        
-        
-        
-        
-        <div class="title"><h4>Profile Picture URL</h4></div>
-        <ul>
-        	<li>Used as your instructor profile photo in your bootcamp landing pages.</li>
-        	<li>Link to any URL that hosts your photo, starting with "https://"</li>
-        	<?php if(strlen($udata['u_email'])>0){ ?>
-        	<li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
-        	<?php } ?>
-        </ul>
-        <div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-        	<img src="<?= ( strlen($udata['u_image_url'])>0 ? $udata['u_image_url'] : '/img/bp_128.png' ) ?>" class="profile-pic" />
-        </div>
-        <div class="col-xs-10" style="padding-left:5px; padding-right:0;">
-        	<input type="url" required id="u_image_url" value="<?= $udata['u_image_url'] ?>" class="form-control border">
-        </div>
-        
-        
-        <div class="title"><h4>Gender</h4></div>
-        <div class="form-group label-floating is-empty">
-            <select id="u_gender" class="border">
-            	<option value="">Choose...</option>
-            	<?php
-            	echo '<option value="m" '.($udata['u_gender']=='m'?'selected="selected"':'').'>Male</option>';
-            	echo '<option value="f" '.($udata['u_gender']=='f'?'selected="selected"':'').'>Female</option>';
-            	?>
-            </select>
-            <span class="material-input"></span>
-        </div>
-        
-        
-        <div class="title"><h4>Current Country, City & State</h4></div>
-        <div class="col-md-6" style="padding-left:0; padding-right:5px;">
-        	<div class="form-group label-floating is-empty">
-            	<select id="u_country_code" class="border">
-            		<option value="">Choose...</option>
-                	<?php
-                	$countries_all = $this->config->item('countries_all');
-                	foreach($countries_all as $country_key=>$country_name){
-                	    echo '<option value="'.$country_key.'" '.($udata['u_country_code']==$country_key?'selected="selected"':'').'>'.$country_name.'</option>';
-                	}
-                	?>
-                </select>
-            	<span class="material-input"></span>
+            <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
+            	<div class="title"><h4><i class="fa fa-phone-square" aria-hidden="true"></i> Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+                <div class="form-group label-floating is-empty">
+                    <input type="tel" maxlength="30" required id="u_phone" value="<?= $udata['u_phone'] ?>" class="form-control border">
+                    <span class="material-input"></span>
+                </div>
             </div>
         </div>
-        <div class="col-md-6" style="padding-left:5px; padding-right:0;">
-        	<input type="text" required id="u_current_city" placeholder="Los Angeles, CA" value="<?= $udata['u_current_city'] ?>" class="form-control border">
+        
+        
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-map-marker" aria-hidden="true"></i> Country, City & State</h4></div>
+        <div class="row" style="margin:0;">
+        	<div class="col-md-6" style="padding-left:0; padding-right:5px;">
+            	<div class="form-group label-floating is-empty">
+                	<select id="u_country_code" class="border" style="width:100%;">
+                		<option value="">Choose...</option>
+                    	<?php
+                    	$countries_all = $this->config->item('countries_all');
+                    	foreach($countries_all as $country_key=>$country_name){
+                    	    echo '<option value="'.$country_key.'" '.($udata['u_country_code']==$country_key?'selected="selected"':'').'>'.$country_name.'</option>';
+                    	}
+                    	?>
+                    </select>
+                	<span class="material-input"></span>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-left:5px; padding-right:0;">
+            	<input type="text" required id="u_current_city" placeholder="Los Angeles, CA" value="<?= $udata['u_current_city'] ?>" class="form-control border">
+            </div>
         </div>
+            
+        
+
         
         
         
-        <div class="title"><h4>Timezone</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timezone</h4></div>
         <div class="form-group label-floating is-empty">
             <select id="u_timezone" class="border">
             	<option value="">Choose...</option>
@@ -206,7 +197,53 @@ function insert_gravatar(){
         </div>
         
         
-        <div class="title"><h4>Fluent Languages</h4></div>
+        
+        
+        
+        
+        
+        
+		
+		
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Introductory Message</h4></div>
+		<ul class="maxout">
+			<li>Give the Mench community an overview of your professional background.</li>
+			<li>Make sure to include your strong suits and tangible accomplishments.</li>
+			<li>Your Introductory Message will be displayed on your bootcamp landing page.</li>
+		</ul>
+		<textarea class="form-control text-edit border" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($udata['u_bio'])),0,420); ?></textarea>
+        <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/420</div>
+        
+        
+        
+        
+        
+        
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-picture-o" aria-hidden="true"></i> Profile Picture</h4></div>
+        <ul>
+        	<li>Used as your instructor profile photo in your bootcamp landing pages.</li>
+        	<li>Link to any URL that hosts your photo, starting with "https://"</li>
+        	<?php if(strlen($udata['u_email'])>0){ ?>
+        	<li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+        	<?php } ?>
+        </ul>
+        <div class="row" style="margin:0 0 0 0;">
+        	<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
+            	<img src="<?= ( strlen($udata['u_image_url'])>0 ? $udata['u_image_url'] : '/img/bp_128.png' ) ?>" class="profile-pic" />
+            </div>
+            <div class="col-xs-10" style="padding-left:5px; padding-right:0;">
+            	<input type="url" required id="u_image_url" value="<?= $udata['u_image_url'] ?>" class="form-control border">
+            </div>
+        </div>
+        
+        
+        
+        
+        
+        
+      
+        
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-language" aria-hidden="true"></i> Fluent Languages</h4></div>
         <p>Hold down Ctrl to select multiple:</p>
         <div class="form-group label-floating is-empty">
         	<select multiple id="u_language" style="height:150px;" class="border">
@@ -220,20 +257,26 @@ function insert_gravatar(){
             </select>
         	<span class="material-input"></span>
         </div>
-		
-		
-		<div class="title"><h4>Biography</h4></div>
-		<ul class="maxout">
-			<li>Give students a background of your self and your tangible accomplishments.</li>
-			<li>Will be displayed on yor instrutor profile.</li>
-		</ul>
-		<div id="u_bio"><?= $udata['u_bio'] ?></div>
-        <script> var u_bio_quill = new Quill('#u_bio', setting_full); </script>
         
         
         
-        <br />
-		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-venus-mars" aria-hidden="true"></i> Gender</h4></div>
+        <div class="form-group label-floating is-empty">
+            <select id="u_gender" class="border">
+            	<option value="">Choose...</option>
+            	<?php
+            	echo '<option value="m" '.($udata['u_gender']=='m'?'selected="selected"':'').'>Male</option>';
+            	echo '<option value="f" '.($udata['u_gender']=='f'?'selected="selected"':'').'>Female</option>';
+            	?>
+            </select>
+            <span class="material-input"></span>
+        </div>
+        
+        
+        
+        
+        
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
         <ul>
         	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
         	<li>I have read and understood my bootcamp's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Tuition Guarantee <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
@@ -253,18 +296,17 @@ function insert_gravatar(){
             </div>
         </div>
         
-        
     </div>
     
     
     <div class="tab-pane" id="password">
-    	<div class="title"><h4>Current Password</h4></div>
+    	<div class="title"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> Current Password</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="password" id="u_password_current" class="form-control border">
             <span class="material-input"></span>
         </div>
         
-        <div class="title"><h4>New Password</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> New Password</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="password" id="u_password_new" class="form-control border">
             <span class="material-input"></span>

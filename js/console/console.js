@@ -27,20 +27,6 @@ function focu_hash(the_hash){
 	}
 }
 
-
-//Quill Text editor variables:
-var setting_full = {
-	modules: {
-		syntax: true,
-		toolbar: [
-		  [{ 'header': [1, 2, false] }],
-		  ['bold', 'underline' ],
-		  ['link', 'blockquote', 'code-block', { 'list': 'ordered'}, { 'list': 'bullet' }], //'image', 
-		]
-	},
-	theme: 'snow'
-};
-
 function update_hash(hash){
 	window.location.hash = hash;
 	if(!(typeof e === 'undefined')){

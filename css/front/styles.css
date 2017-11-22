@@ -885,5 +885,59 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
 }
 
 
+.overload{
+color:#FF0000;
+font-weight:bold;
+}
+.box__dragndrop {
+  display: none;
+}
+.box.has-advanced-upload {
+  
+}
+.box.has-advanced-upload .box__dragndrop {
+  display: inline;
+}
 
+.add-msg{
+background-color: #FFF !important; border: 1px solid #CCC;
+}
+.is-working {
+  background-color:#e5e4e4 !important;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#url_preview{
+margin:5px 0;
+}
+
+.inputfile + label {
+    display: inline-block;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+	pointer-events: none;
+}
+.textarea_buttons{
+    font-weight:bold;
+    font-size:13px;
+}
+.textarea_buttons:hover{
+    color:#777 !important;
+}
+.dropdown-toggle.btn{ padding:12px 5px; }
 

@@ -488,6 +488,8 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
 	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://' || !url_exists($_POST['u_image_url']))){
 	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
+	    } elseif(strlen($_POST['u_bio'])>420){
+	        die('<span style="color:#FF0000;">Error: Introductory Message should be less than 420 characters. Try again.</span>');
 	    }
 	    
 	    if(!isset($_POST['u_language'])){
@@ -1005,6 +1007,10 @@ class Process extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Class Status.</span>');
+	    } elseif(strlen($_POST['r_office_hour_instructions'])>420){
+	        die('<span style="color:#FF0000;">Error: Contact Instructions Message must be less than 420 characters long.</span>');
+	    } elseif(strlen($_POST['r_closed_dates'])>420){
+	        die('<span style="color:#FF0000;">Error: Close Dates Message must be less than 420 characters long.</span>');
 	    }
 	    
 	    //Check Duplicate Date:
