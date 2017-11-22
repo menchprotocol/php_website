@@ -649,7 +649,7 @@ class Process extends CI_Controller {
 	                'weight' => 0.10, //The percentage of importance for this factor relative to other pricing_factors
 	                'name' => 'Weekly Office Hours',
 	                'desc' => 'The total number of weekly office hours available that students can ask questions and get instant answers',
-	                'industry_is' => 20,
+	                'industry_is' => 40,
 	                'mench_is' => 0, //To be calculated
 	                'mench_what_if' => ( isset($_POST['whatif_weekly_office_hours']) && intval($_POST['whatif_weekly_office_hours'])>0 ? intval($_POST['whatif_weekly_office_hours']) : null ),
 	            ),
@@ -785,9 +785,7 @@ class Process extends CI_Controller {
 	        echo '<ul style="list-style:decimal; margin-left:-15px;">';
 	        echo '<li><b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>: More popular objectives (like getting hired in a particular job) will attract more students which allow you to charge a higher price.</li>';
 	        echo '<li><b style="display:inline-block;"><i class="fa fa-envelope" aria-hidden="true"></i> Current Student Reach</b>: Instructors with a larger student base and Email list can also charge higher price.</li>';
-	        echo '</ul>';
-	        echo '<p>We have done extensive research on the bootcamp industry and would love to answer any additional questions you may have regarding pricing.</p>';
-	        
+	        echo '</ul>';	        
 	        
 	        //TODO Give macro potential in the future:
 	        //echo '<p>Class Earning Potential: <b>22 Seats @ USD $15,000 - $22,000</b></p>';
