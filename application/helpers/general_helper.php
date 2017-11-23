@@ -254,12 +254,15 @@ function echo_message($i){
 		    //$echo_ui .= '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
 		    //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
             $echo_ui .= '<li>'.status_bible('i',$i['i_status'],1,'right').'</li>';
-            $echo_ui .= '<li class="edit-on"><a href="javascript:message_save_updates('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
-            $echo_ui .= '<li class="edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
-		    $echo_ui .= '<li class="edit-updates"></li>';
+            $echo_ui .= '<li data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="right"><i class="fa fa-sort"></i></li>';
+            $echo_ui .= '<li data-toggle="tooltip" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+            
+            
+            $echo_ui .= '<li class="pull-right edit-on"><a href="javascript:message_save_updates('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
+            $echo_ui .= '<li class="pull-right edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
+		    $echo_ui .= '<li class="pull-right edit-updates"></li>';
 		    //$echo_ui .= '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>'; //Not editable so no reason to show for now!
-		    $echo_ui .= '<li class="pull-right" data-toggle="tooltip" title="Delete Message" data-placement="left"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
-		    $echo_ui .= '<li class="pull-right" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left"><i class="fa fa-sort"></i></li>';
+		    
 		    $echo_ui .= '</ul>';
 	    
     $echo_ui .= '</div>';

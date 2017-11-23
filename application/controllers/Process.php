@@ -2089,7 +2089,7 @@ class Process extends CI_Controller {
 	    ));
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Deleted</span>');
+	    die('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
 	}
 	
 	

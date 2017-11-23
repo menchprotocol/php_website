@@ -322,7 +322,11 @@ video::-webkit-media-controls-panel {
 	font-size: 17px !important;
     font-family: Helvetica, Arial, sans-serif !important;
     line-height: 120% !important;
-    color: #222;
+    color: #3C4858;
+}
+.list-messages video {
+	border-top-left-radius:3px;
+	border-top-right-radius: 0.9em;
 }
 .msg::placeholder{
 	font-size: 17px !important;
