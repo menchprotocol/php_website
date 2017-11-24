@@ -55,9 +55,11 @@ $(document).ready(function() {
       	<div><?= count($bootcamp['c__classes']) ?> Class<?= (count($bootcamp['c__classes'])==1?'':'es') ?></div>
       	<?php 
       	//Fetch class:
-      	if(count($bootcamp['c__classes'])>0){
-      	    $focus_class = filter_class($bootcamp['c__classes'],null);
+      	$focus_class = filter_class($bootcamp['c__classes'],null);
+      	if($focus_class){
       	    echo '<div>Next Starting Date: '.time_format($focus_class['r_start_date'],2).'</div>';
+      	} elseif(count($bootcamp['c__classes'])>0){
+      	    echo '<div>None Open for Admission Yet</div>';
       	}
         ?>
       </div>

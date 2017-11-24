@@ -69,7 +69,7 @@ function save_settings(){
         <div style="clear:both; margin:0; padding:0;"></div>
 
 		
-		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Bootcamp Hashtag <span id="hb_628" class="help_button" intent-id="628"></span></h4></div>
+		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Bootcamp Hashtag <span id="hb_628" class="help_button" intent-id="628"></span></h4></div>
         <div class="help_body maxout" id="content_628"></div>
         <div class="form-group label-floating is-empty">
         	<div class="input-group border">

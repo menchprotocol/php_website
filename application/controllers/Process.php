@@ -715,7 +715,7 @@ class Process extends CI_Controller {
 	    //Check to make sure we have enough data to offer a suggestion:
 	    $missing_preq = array();
 	    if(strlen($_POST['r_response_time_hours'])<=0){
-	        array_push($missing_preq,'Set Inquiry Response Time');
+	        array_push($missing_preq,'Set Response Time');
 	    }
 	    if(strlen($_POST['r_meeting_frequency'])<=0 || strlen($_POST['r_meeting_duration'])<=0){
 	        array_push($missing_preq,'Set 1-on-1 Mentorship');

@@ -265,7 +265,7 @@ function save_r(){
     <div class="tab-pane" id="support">
     
     	<?php itip(630); ?>
-		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Inquiry Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
+		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
         <div class="help_body maxout" id="content_614"></div>
         <select class="form-control input-mini border" id="r_response_time_hours">
         <option value="">Select Responsiveness</option>

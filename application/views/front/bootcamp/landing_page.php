@@ -252,7 +252,7 @@ $( document ).ready(function() {
     		
     		
     		<?php if(strlen($focus_class['r_response_time_hours'])>0){ ?>
-    		<h4><i class="fa fa-comments" aria-hidden="true"></i> Inquiry Response Time</h4>
+    		<h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
     		<p>This bootcamp offers live chat with response times of <b>Under <?= echo_hours($focus_class['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
     		<hr />
     		<?php } ?>

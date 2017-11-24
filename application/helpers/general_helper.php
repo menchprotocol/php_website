@@ -717,7 +717,7 @@ function calculate_bootcamp_status($b){
         if(strlen($focus_class['r_response_time_hours'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Inquiry Response Time]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
+            array_push($call_to_action,'Set <b>[Response Time]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
@@ -750,7 +750,7 @@ function calculate_bootcamp_status($b){
         if(strlen($focus_class['r_usd_price'])>0){
             $progress_gained += $to_gain;
         } else {
-            array_push($call_to_action,'Set <b>[Admission Price]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
+            array_push($call_to_action,'Set <b>[Tuition Rate]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
         }
     }
     
