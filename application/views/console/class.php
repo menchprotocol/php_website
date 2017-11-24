@@ -207,7 +207,7 @@ function save_r(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_screening" class="active"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-search" aria-hidden="true"></i> Screening</a></li>
+  <li id="nav_screening" class="active"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-eye" aria-hidden="true"></i> Screening</a></li>
   <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
   <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-calculator" aria-hidden="true"></i> Pricing</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>

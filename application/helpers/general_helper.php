@@ -206,7 +206,7 @@ function echo_i($i,$first_name=null){
             $CI =& get_instance();
             $website = $CI->config->item('website');
             $url = $website['url'].'ref/'.$i['i_id'];
-            $i['i_message'] = trim(str_replace($i['i_url'],'<div><a href="'.$url.'" target="_blank">'.$url.'</a></div>',$i['i_message']));
+            $i['i_message'] = trim(str_replace($i['i_url'],'<div><a href="'.$url.'" target="_blank">'.$url.'<i class="fa fa-external-link" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a></div>',$i['i_message']));
         }
         
         $echo_ui .= '<div class="msg">'.nl2br( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';

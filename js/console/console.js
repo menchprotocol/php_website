@@ -162,7 +162,7 @@ function initiate_list(group_id,placeholder,prefix,current_items){
 	//Add the add line:
 	$('#'+group_id).html('<div class="list-group-item list_input">'+
 			'<div class="input-group">'+
-			'<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control" style="margin-top:3px;" placeholder="'+placeholder+'"></div>'+
+			'<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'"></div>'+
 			'<span class="input-group-addon" style="padding-right:0;">'+
 			'<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fa fa-plus" aria-hidden="true"></i></span></span>'+
 			'</span>'+

@@ -734,7 +734,7 @@ function msg_create(){
     		  echo '<div class="add-msg">';
     		  echo '<form class="box" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
-    		    echo '<textarea onkeyup="changeMessage()" class="form-control msg" style="min-height:110px; resize:vertical; padding-left: 0 !important; padding-top: 0 !important;" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
+    		    echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin" id="i_message" placeholder="Write Message, Paste URL or Drop a File..."></textarea>';
         
     		    echo '<div id="i_message_counter" style="margin:0 0 10px 0; font-size:0.8em;">';
     		      //File counter:

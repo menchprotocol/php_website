@@ -319,21 +319,40 @@ video::-webkit-media-controls-panel {
 }
 
 .msg {
-	font-size: 17px !important;
-    font-family: Helvetica, Arial, sans-serif !important;
+	font-size: 18px !important;
+    font-family: Lato !important;
     line-height: 120% !important;
+    font-weight:300 !important;
     color: #3C4858;
+}
+.msg a {
+	text-decoration:underline;
 }
 .list-messages video {
 	border-top-left-radius:3px;
 	border-top-right-radius: 0.9em;
 }
 
-.msg::placeholder{
-	font-size: 17px !important;
-    font-family: Helvetica, Arial, sans-serif !important;
-    line-height: 120% !important;
-    color: #CCC;
+
+
+.listerin{
+	margin-top:3px;
+	padding-top: 20px !important;
+    height: 49px !important;
+    font-weight:300 !important;
+    font-size: 18px !important;
+    font-family: Lato;
+    line-height: 27px !important;
+    color:#3C4858;
+}
+.listerin::placeholder{
+	font-size: 16px !important;
+    font-family: Lato;
+    line-height: 27px !important;
+    color: #AAA;
+    text-transform: uppercase;
+    font-weight:300 !important;
+    padding-left:0;
 }
 #addnode{
 	padding-top: 20px !important;
@@ -381,7 +400,7 @@ video::-webkit-media-controls-panel {
 .link-view { font-size:0.7em; color:#d6ba14 !important; margin-left:5px; }
 #console .navbar-header { min-width:500px; }
 .border { border: 1px solid #ccc !important;  border-radius:4px !important; }
-input.form-control, textarea.form-control, select { padding:3px 7px 5px !important; }
+input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .list-group-item { border: 1px solid #ccc; }
 .list_input{ padding: 0 7px; }
 .ql-toolbar{
@@ -1030,3 +1049,14 @@ margin:5px 0;
 }
 .dropdown-toggle.btn{ padding:12px 5px; }
 
+
+.msgin{
+	min-height:110px; resize:vertical; padding-left: 0 !important; padding-top: 0 !important;
+}
+.msgin::placeholder{
+	font-size: 18px !important;
+    font-family: Lato !important;
+    line-height: 120% !important;
+    font-weight:300 !important;
+    color: #CCC;
+}
