@@ -804,6 +804,16 @@ function calculate_bootcamp_status($b){
     $udata = $CI->session->userdata('user');
     $account_action = ( $b['b__admins'][0]['u_id']==$udata['u_id'] ? '<a href="/console/account"><u>My Account</u></a>' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account.' );
     
+    
+    //u_fb_id
+    $to_gain = 15;
+    $progress_possible += $to_gain;
+    if(strlen($bl['u_fb_id'])>1){
+        $progress_gained += $to_gain;
+    } else {
+        array_push($call_to_action,'Activate Your <b>[<a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>]</b>');
+    }
+    
     //u_phone
     $to_gain = 5;
     $progress_possible += $to_gain;
@@ -1101,7 +1111,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
 	        1 => array(
-    	        's_name'  => 'Student Start',
+    	        's_name'  => 'Student ASAP',
     	        's_color' => '#4caf50', //green
     	        's_desc'  => 'Message sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts. Good for mission-critical messages.',
     	        'u_min_status'  => 1,

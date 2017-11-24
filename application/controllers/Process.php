@@ -728,7 +728,7 @@ class Process extends CI_Controller {
 	    //Start calculations:
 	    if(count($missing_preq)>0){
 	        
-	        echo '<p><i class="fa fa-exclamation-circle" aria-hidden="true"></i> We will make a price suggestion once you:</p>';
+	        echo '<p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> The calculator can make a suggestion after you:</p>';
 	        echo '<ul style="list-style:decimal;">';
 	        foreach($missing_preq as $mp){
 	            echo '<li>'.$mp.'</li>';
@@ -845,11 +845,11 @@ class Process extends CI_Controller {
 	function class_timeline(){
 	    //Displays the class timeline based on some inputs:
 	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-	        die('<span style="color:#000;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pick a start date to see class timeline.</span>');
+	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pick a start date to see class timeline.</span>');
 	    } elseif(!isset($_POST['r_start_time_mins'])){
-	        die('<span style="color:#000;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Pick a start time to see class timeline.</span>');
+	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pick a start time to see class timeline.</span>');
 	    } elseif(!isset($_POST['c__child_intent_count']) || intval($_POST['c__child_intent_count'])<=0){
-	        die('<span style="color:#000;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Add some Milestones to your Action Plan to see class timeline.</span>');
+	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Add some Milestones to your Action Plan to see class timeline.</span>');
 	    } elseif(!isset($_POST['b_sprint_unit'])){
 	        die('<span style="color:#FF0000;">Error: Missing Milestone Submission Frequency.</span>');
 	    } elseif(!isset($_POST['b_id'])){
@@ -1814,7 +1814,7 @@ class Process extends CI_Controller {
 	    ));	    
         
 	    //Display message:
-	    echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
+	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
 	}
 	
 	

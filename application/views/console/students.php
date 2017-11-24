@@ -21,7 +21,7 @@ if(count($submissions)>0){
         echo '<hr />';
     }
 } else {
-    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> No students admitted yet.</div>';
+    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No students admitted yet.</div>';
 }
 
 ?>
