@@ -100,7 +100,6 @@ $(document).ready(function() {
 .wizard-box ul li { margin-bottom:10px; }
 .wizard-box a { text-decoration:underline; }
 .wizard-box h4 { margin:0 0 15px 0; padding:0; font-size:1.2em; }
-.wizard-box .col-xs-6 { text-align:center; }
 .aligned-list>li>i { width:36px; display:inline-block; text-align:center; }
 .large-fa {font-size: 60px; margin-top:15px;}
 .xlarge-fa {font-size: 68px; margin-top:15px;}
