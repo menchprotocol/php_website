@@ -209,7 +209,7 @@ function save_r(){
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_screening" class="active"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-search" aria-hidden="true"></i> Screening</a></li>
   <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-usd" aria-hidden="true"></i> Pricing</a></li>
+  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-calculator" aria-hidden="true"></i> Pricing</a></li>
   <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>
 </ul>
 
@@ -265,7 +265,7 @@ function save_r(){
     <div class="tab-pane" id="support">
     
     	<?php itip(630); ?>
-		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Inquiry Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
+		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Inquiry Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
         <div class="help_body maxout" id="content_614"></div>
         <select class="form-control input-mini border" id="r_response_time_hours">
         <option value="">Select Responsiveness</option>
@@ -281,7 +281,7 @@ function save_r(){
 
 		
 		
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
         <div class="help_body maxout" id="content_615"></div>
         <table style="width:100%;">
         	<tr>
@@ -316,7 +316,7 @@ function save_r(){
     	
 
 
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_616" class="help_button" intent-id="616"></span></h4></div>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_616" class="help_button" intent-id="616"></span></h4></div>
 		<div class="help_body maxout" id="content_616"></div>
 		
 		
@@ -330,7 +330,7 @@ function save_r(){
 		
 		<div class="has_office_hours" style="display:<?= strlen($class['r_live_office_hours'])>0 ? 'block' : 'none' ?>;">
 			
-			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Contact Instructions Message <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
+			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Contact Instructions <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
 			<div class="help_body maxout" id="content_617"></div>
             <div class="form-group label-floating is-empty">
                 <textarea class="form-control text-edit border" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
@@ -338,17 +338,16 @@ function save_r(){
             </div>
             
             
-            <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly PST Schedule <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
-            <div class="help_body maxout" id="content_618"></div>
-            <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
-			
-			
-            <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates Message <span id="hb_619" class="help_button" intent-id="619"></span></h4></div>
+            <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates <span id="hb_619" class="help_button" intent-id="619"></span></h4></div>
             <div class="help_body maxout" id="content_619"></div>
             <div class="form-group label-floating is-empty">
                 <textarea class="form-control text-edit border" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
                 <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/420</div>
             </div>
+            
+            <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly Schedule PST <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
+            <div class="help_body maxout" id="content_618"></div>
+            <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
             
 		</div>
     </div>
@@ -361,7 +360,7 @@ function save_r(){
         
         <div style="display:block;">
         	<div class="title"><h4><i class="fa fa-calculator" aria-hidden="true"></i> Tuition Calculator <span id="hb_620" class="help_button" intent-id="620"></span></h4></div>
-            <div class="help_body maxout" id="content_620"></div>
+            <div class="help_body maxout" id="content_620" style="margin-bottom:50px;"></div>
             <div id="calculator_body"></div>
         </div>
             

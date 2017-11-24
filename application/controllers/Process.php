@@ -678,7 +678,7 @@ class Process extends CI_Controller {
 	        'pricing_factors' => array(
 	            'handson_work' => array(
 	                'weight' => 0.35, //The percentage of importance for this factor relative to other pricing_factors
-	                'name' => 'Hands-On Student Work',
+	                'name' => 'Student Assignments',
 	                'desc' => 'Total hours students must spend to complete all bootcamp tasks. Note: Different bootcamps have different durations based on their delivery speed of full-time (40h/week) or part-time (10h/week).',
 	                'industry_is' => 600, //How much time students need to spend to complete the bootcamp
 	                'mench_is' => 0, //To be calculated
@@ -694,7 +694,7 @@ class Process extends CI_Controller {
 	            ),
 	            'respond_under' => array(
 	                'weight' => 0.20, //The percentage of importance for this factor relative to other pricing_factors
-	                'name' => 'Inquiry Response Time',
+	                'name' => 'Response Time',
 	                'desc' => 'The average response time of the bootcamp team to student inquiries',
 	                'industry_is' => 2, //How fast (in hours) are they committing to respond
 	                'mench_is' => 0, //To be calculated
@@ -777,11 +777,11 @@ class Process extends CI_Controller {
 	        
 	        
 	        //Show details to students:
-	        echo '<table class="table table-condensed">';
+	        echo '<table class="table table-condensed" style="margin-top:-40px;">';
     	        echo '<tr>';
         	        echo '<td style="border-bottom:1px solid #999;">&nbsp;</td>';
-        	        echo '<td style="border-bottom:1px solid #999; width:125px; text-align:right; font-weight:bold;">Traditional<br />Bootcamps</td>';
-        	        echo '<td style="border-bottom:1px solid #999; width:220px; text-align:right; font-weight:bold;">Your Mench<br />Bootcamp</td>';
+        	        echo '<td style="border-bottom:1px solid #999; width:120px; text-align:right;">Traditional<br />Bootcamps</td>';
+        	        echo '<td style="border-bottom:1px solid #999; width:200px; text-align:right;">Your Mench<br />Bootcamp</td>';
     	        echo '</tr>';
     	        
     	        //First row on Duration:
@@ -829,18 +829,12 @@ class Process extends CI_Controller {
     	        //Show pricing:
     	        $price_range = ( $suggested_mench_price<1000 ? 0.002 : 0.001 );
     	        echo '<tr>';
-        	        echo '<td style="border-top:1px solid #999; text-align:left; font-weight:bold; padding-left:19px;">USD Price Suggestion</td>';
-        	        echo '<td style="border-top:1px solid #999; text-align:right; font-weight:bold;"><span data-toggle="tooltip" title="This is how much an average bootcamp costs based on 2017 statistics generated for the coding industry based on 95 bootcamps and 22k students across the world" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> $'.number_format($calculator_logic['base_usd_price'],0).'</span></td>';
+        	        echo '<td style="border-top:1px solid #999; text-align:left; padding-left:19px;">USD Price Suggestion</td>';
+        	        echo '<td style="border-top:1px solid #999; text-align:right;"><span data-toggle="tooltip" title="This is how much an average bootcamp costs based on 2017 statistics generated for the coding industry based on 95 bootcamps and 22k students across the world" data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> $'.number_format($calculator_logic['base_usd_price'],0).'</span></td>';
         	        echo '<td style="border-top:1px solid #999; text-align:right; font-weight:bold;"><span data-toggle="tooltip" title="This is the price range we suggest based on your bootcamp settings. Also consider that we have adjusted this pricing suggestion to '.(($calculator_logic['target_savings'])*100).'% of Traditional Bootcamps because Online Bootcamps save on rent and hydro." data-placement="top"><i class="fa fa-info-circle" aria-hidden="true"></i> $'.number_format(round($suggested_mench_price*(0.01-$price_range))*100,0).'<span style="padding:0 3px;">-</span>$'.number_format(round($suggested_mench_price*(0.01+$price_range))*100,0).'</span></td>';
     	        echo '</tr>';
     	        
 	        echo '</table>';
-	        
-	        echo '<p>Other elements that also affect pricing:</p>';
-	        echo '<ul style="list-style:decimal; margin-left:-15px;">';
-	        echo '<li><b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>: More popular objectives (like getting hired in a particular job) will attract more students which allow you to charge a higher price.</li>';
-	        echo '<li><b style="display:inline-block;"><i class="fa fa-envelope" aria-hidden="true"></i> Current Student Reach</b>: Instructors with a larger student base and Email list can also charge higher price.</li>';
-	        echo '</ul>';	        
 	        
 	        //TODO Give macro potential in the future:
 	        //echo '<p>Class Earning Potential: <b>22 Seats @ USD $15,000 - $22,000</b></p>';

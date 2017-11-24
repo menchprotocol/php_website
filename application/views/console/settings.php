@@ -59,10 +59,6 @@ function save_settings(){
     	
     	<div class="title"><h4><i class="fa fa-tag" aria-hidden="true"></i> Bootcamp Category <span id="hb_626" class="help_button" intent-id="626"></span></h4></div>
     	<div class="help_body maxout" id="content_626"></div>
-            
-        <ul>
-        	<li>Select the primary category that represents the main bootcamp idea.</li>
-        </ul>
         <?php echo_status_dropdown('ct','b_category_id',$bootcamp['b_category_id']); ?>
         
         
