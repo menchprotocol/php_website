@@ -110,7 +110,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Dashboard',
+	                'anchor' => 'Dashboard <span id="hb_597" class="help_button" intent-id="597"></span>',
 	            ),
 	        ),
 	    ));
@@ -166,7 +166,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Classes',
+	                'anchor' => 'Classes <span id="hb_593" class="help_button" intent-id="593"></span>',
 	            ),
 	        ),
 	    );
@@ -262,7 +262,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Students',
+	                'anchor' => 'Students <span id="hb_594" class="help_button" intent-id="594"></span>',
 	            ),
 	        ),
 	    ));

@@ -328,11 +328,25 @@ video::-webkit-media-controls-panel {
 	border-top-left-radius:3px;
 	border-top-right-radius: 0.9em;
 }
+
 .msg::placeholder{
 	font-size: 17px !important;
     font-family: Helvetica, Arial, sans-serif !important;
     line-height: 120% !important;
     color: #CCC;
+}
+#addnode{
+	padding-top: 20px !important;
+    height: 49px !important;
+}
+#addnode::placeholder{
+	font-size: 16px !important;
+    font-family: Lato;
+    line-height: 27px !important;
+    color: #AAA;
+    text-transform: uppercase;
+    font-weight:300;
+    padding-left:15px;
 }
 .list-messages>div>div>textarea {
 	width: 100%;
@@ -812,13 +826,63 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px !importa
     margin-bottom: 10px;
 }
 
-.pricing-badge {
+.belowh2-btn .tip-badge, .belowh2-bdy {
+	margin: 0px 0 18px 0  !important;
+}
+		
+.tip-badge {
     padding: 4px 6px;
-    font-size: 12px;
+    font-size: 18px;
     background-color: #999;
     border-radius: 3px;
-    margin:-2px 5px 0;
+    margin:0;
+    cursor:default;
+    font-family:"Lato", "Helvetica", "Arial", sans-serif;
+}
+h4 .tip-badge{
+    font-size: 18px;
+    margin-left: 5px;
+    margin-top: -5px;
+}
+.tipbtn,.tipbtn>span{cursor:pointer !important;}
+.help_body {
+	cursor:default;
+    display:none;
+    background-color:#FFF;
+    border:1px solid #999;
+    margin:0 0 10px;
+    padding:10px;
+    border-radius:3px;
+}
+
+.help_body .fa-times {
+	color: #999;
+	font-size: 28px;
+    padding-right: 2px;
+}
+
+.below_h {
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
+.help_body .gotit{
+    margin:10px 0 0 0;
+}
+
+.help_body .tip-badge {
+    display:inline-block;
+    clear:both;
+    margin-bottom:15px;
+}
+
+.pricing-badge {
+    padding: 4px 6px;
     cursor:help;
+    font-size: 18px;
+    background-color: #999;
+    border-radius: 3px;
+    margin: -5px 0 0 5px;
 }
 .status-label{
 	cursor:help;

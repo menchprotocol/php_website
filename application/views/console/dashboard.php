@@ -8,6 +8,8 @@ $(document).ready(function() {
 });
 </script>
 
+<div class="help_body below_h" id="content_597"></div>
+
 <?php $sprint_units = $this->config->item('sprint_units'); ?>
 <div class="dashboard">    
     

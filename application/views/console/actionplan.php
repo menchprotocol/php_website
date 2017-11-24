@@ -45,15 +45,16 @@ $(document).ready(function() {
 
  
     <?php if($has_tree){ ?>
+    
     function update_tree_input(){
-    	var current_count = $("#list-outbound").children().length;
+    	var current_count = $("#list-outbound").children().length-1;
     	$('#addnode').attr("placeholder", "<?= ( $level==1 ? ucwords($bootcamp['b_sprint_unit']) : $core_objects['level_'.$level]['o_name'] ) ?> #"+(current_count+1)+" Objective (Specific & Measurable)");
     	return current_count;
     }
     
     var current_subtree = update_tree_input();
     $('#list-outbound').bind("DOMSubtreeModified",function(){
-		if($("#list-outbound").children().length!=current_subtree){
+		if(($("#list-outbound").children().length+1) != current_subtree){
 			//List has been adjusted, change the placeholder:
 			current_subtree = update_tree_input();
 		}
@@ -221,7 +222,7 @@ function new_intent(c_objective){
  	var next_level = $( "#next_level" ).val();
  	
  	//Set processing status:
-     $( "#list-outbound").append('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
+     $( "#list-outbound>div").before('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
  	
      //Empty Input:
  	$( "#addnode" ).val("").focus();
@@ -230,7 +231,9 @@ function new_intent(c_objective){
  	$.post("/process/intent_create", {b_id:b_id, c_id:c_id, pid:pid, c_objective:c_objective, next_level:next_level}, function(data) {
  		//Update UI to confirm with user:
  		$( "#temp" ).remove();
- 		$( "#list-outbound" ).append(data);
+
+ 		//Add new
+ 		$('#list-outbound>div').before(data);
  		
  		//Resort:
  		load_intent_sort();
@@ -247,7 +250,7 @@ function link_lintent(target_id){
  	var next_level = $( "#next_level" ).val();
  	
  	//Set processing status:
-     $( "#list-outbound" ).append('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
+     $( "#list-outbound>div" ).before('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
  	
      //Empty Input:
  	$( "#addnode" ).val("").focus();
@@ -256,7 +259,9 @@ function link_lintent(target_id){
  	$.post("/process/intent_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
  		//Update UI to confirm with user:
  		$( "#temp" ).remove();
- 		$( "#list-outbound" ).append(data);
+
+ 		//Add new
+ 		$('#list-outbound>div').before(data);
  		
  		//Resort:
  		load_intent_sort();
@@ -336,6 +341,9 @@ function intent_unlink(cr_id,cr_title){
  				
  				//Update sort:
  				intents_sort();
+
+ 				//Update count:
+ 				update_tree_input();
  		    }, 1000);
  		});
  	} else {
@@ -649,7 +657,7 @@ function msg_create(){
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
 <input type="hidden" id="next_level" value="<?= $level+1 ?>" />
 
-
+<div class="help_body below_h maxout" id="content_592"></div>
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <?php if($has_tree){ ?>
@@ -664,38 +672,20 @@ function msg_create(){
 	
 	<div class="tab-pane <?= ( $has_tree ? 'active' : 'hidden') ?>" id="list">
     	<?php
+    	
+    	//Show relevant tips:
     	if($level==1){
-    	    ?>
-        	<ul class="maxout">
-        		<li><b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b> is a collection of <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> that step-by-step help students accomplish the <b style="display:inline-block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</b>.</li>
-    			<li>The <b><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</b> is set to <b><?= $sprint_units[$bootcamp['b_sprint_unit']]['name'] ?></b>.</li>
-    			<li>Students must mark milestones as complete every <?= $bootcamp['b_sprint_unit'] ?> using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-    			<li>To keep students focused, <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> are unlocked one <?= $bootcamp['b_sprint_unit'] ?> at a time.</li>
-    			<li>Each <b><?= $core_objects['level_1']['o_icon'].' '.$sprint_units[$bootcamp['b_sprint_unit']]['name'] ?> Milestone</b> can have a number of &nbsp;<b><i class="fa fa-check-square" aria-hidden="true"></i> Tasks</b> for further breakdown.</li>
-    			<!-- <li><b><?= ucwords($bootcamp['b_sprint_unit']) ?>-Off Milestones</b> are milestones with 0 tasks assigned to them.</li> -->
-    			<li>You can easily add, remove and sort <b><?= $core_objects['level_1']['o_icon'] ?> Milestones</b> at any time.</li>
-    		</ul>
-    		<?php
-        } elseif($level==2){ 
-            ?>
-        	<ul class="maxout">
-    			<li>Each <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b> is broken down into <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b>.</li>
-    			<li>Students must complete all <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> in order to complete a <b><?= $core_objects['level_1']['o_icon'] ?> Milestone</b>.</li>
-    			<li>You can easily add, remove and sort <b><?= $core_objects['level_2']['o_icon'] ?> Tasks</b> at any time.</li>
-    		</ul>
-            <?php
-        }
-        
+    	    itip(599);
+    	} elseif($level==2){
+    	    itip(602);
+    	}
+    	
         echo '<div id="list-outbound" class="list-group">';
-        foreach($intent['c__child_intents'] as $sub_intent){
-            echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
-        }
-        echo '</div>';
-        
-        //Show add button:
-        ?>
-        <div class="list-group">
-        	<div class="list-group-item list_input">
+            foreach($intent['c__child_intents'] as $sub_intent){
+                echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
+            }
+            ?>
+            <div class="list-group-item list_input">
         		<div class="input-group">
         			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" id="addnode" placeholder=""></div>
         			<span class="input-group-addon" style="padding-right:0;">
@@ -710,21 +700,25 @@ function msg_create(){
         			</span>
         		</div>
         	</div>
-        </div>
+        	<?php
+        echo '</div>';
+        ?>
     </div>
-    
-    
     
 
     <div class="tab-pane <?= ( !$has_tree ? 'active' : '') ?>" id="messages">
-    	<p class="maxout"></p>
-    	<ul class="maxout">
-			<li>Messages are facts or best-practices shared with students that help them understand how to execute towards this <b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Objective</b>.</li>
-			<li>Students can also access messages via the persistent menu of <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>.</li>
-			<li>A message can be a media file, URL or a text snippet up to 420 characters.</li>
-			<li>Each message can reference up to 1 URL.</li>
-		</ul>
     	<?php 
+    	
+    	//Show relevant tips:
+    	if($level==1){
+    	    itip(604);
+    	} elseif($level==2){
+    	    itip(605);
+    	} elseif($level==3){
+    	    itip(608);
+    	}
+    	
+    	
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
 		foreach($i_messages as $i){
 		    echo echo_message($i);
@@ -792,13 +786,8 @@ function msg_create(){
         
         
         <div style="display:<?= ( $level==2 ?'block':'none' ) ?>; margin-top:30px;">
-    		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone</h4></div>
-            <ul>
-            	<li>Break Milestones give some time off in between Milestones.</li>
-            	<li>They also help students who are falling behind to catchup.</li>
-            	<li>Have no <b><i class="fa fa-check-square" aria-hidden="true"></i> TASKS</b> but may have <b><i class="fa fa-commenting" aria-hidden="true"></i> MESSAGES</b> to read, listen or watch.</li>
-            	<li>Give Each Break Milestone a Relevant Title like "<?= ($bootcamp['b_sprint_unit']=='day' ? 'Weekend Break' : 'Midterm Break') ?>".</li>
-            </ul>
+    		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone <span id="hb_601" class="help_button" intent-id="601"></span></h4></div>
+            <div class="help_body maxout" id="content_601"></div>
             <div class="form-group label-floating is-empty">
             	<div class="checkbox">
                 	<label>
@@ -817,12 +806,8 @@ function msg_create(){
        
         <?php $times = $this->config->item('c_time_options'); ?>
         <div style="display:<?= (($level>=3 || $intent['c_time_estimate']>0)?'block':'none') ?>; margin-top:30px;">
-            <div class="title" style="margin-top:25px; display:<?= ($level>=3?'block':'none') ?>;"><h4><i class="fa fa-clock-o"></i> Time Estimate</h4></div>
-            <ul class="maxout">
-    			<li>The estimated time for the <b>average</b> student to read & execute this task.</li>
-    			<li>Correlates to this task's complexity and defines its <a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u>completion point <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
-    			<li>IF you estimate more than <?= $times[(count($times)-1)] ?> hours then break task down into multiple tasks.</li>
-    		</ul>
+            <div class="title" style="margin-top:25px; display:<?= ($level>=3?'block':'none') ?>;"><h4><i class="fa fa-clock-o"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
+            <div class="help_body maxout" id="content_609"></div>
             <select class="form-control input-mini border" id="c_time_estimate">
             	<?php 
             	foreach($times as $time){

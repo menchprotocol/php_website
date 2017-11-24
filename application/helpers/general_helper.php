@@ -49,6 +49,10 @@ function base64_url_decode($input) {
 }
 
 
+function itip($c_id){
+    echo '<span id="hb_'.$c_id.'" class="help_button belowh2-btn" intent-id="'.$c_id.'"></span>';
+    echo '<div class="help_body belowh2-bdy maxout" id="content_'.$c_id.'"></div>';
+}
 
 
 
@@ -78,7 +82,7 @@ function extract_level($b,$c_id){
         $view_data['breadcrumb'] = array(
             array(
                 'link' => null,
-                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'].' <span id="hb_592" class="help_button" intent-id="592"></span>',
             ),
         );
         $view_data['breadcrumb_p'] = $view_data['breadcrumb'];

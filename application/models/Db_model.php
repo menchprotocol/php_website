@@ -433,12 +433,11 @@ class Db_model extends CI_Model {
 	 * i Messages
 	 ****************************** */
 	
-	
 	function i_fetch($match_columns){
 		$this->db->select('i.*');
 		$this->db->from('v5_messages i');
 		$this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
-		$this->db->where('c.c_status >=',0);
+		$this->db->where('c.c_status >=',0); //Not yet implemented
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}

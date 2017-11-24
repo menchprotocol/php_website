@@ -50,7 +50,7 @@ $website = $this->config->item('website');
 				
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i><span> Help Center</i></span></a></li>
+						<li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</i></span></a></li>
 						<?php if(!(isset($udata['u_fb_id']) && strlen($udata['u_fb_id'])>0)){ ?>
 						<li><a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> Connect to MenchBot</a></li>
 						<?php } ?>

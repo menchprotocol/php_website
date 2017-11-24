@@ -23,7 +23,60 @@ class Process extends CI_Controller {
 	    print_r($this->Db_model->sync_algolia($pid));
 	}
 	
-	
+	function load_tip(){
+	    $udata = auth(2);
+	    //Used to load all the help messages within the Console:
+	    if(!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id'])<1){
+	        echo_json(array(
+	            'success' => 0,
+	        ));
+	    }
+	    
+	    //Fetch Messages and the User's Got It Engagement History:
+	    $messages = $this->Db_model->i_fetch(array(
+	        'i_c_id' => intval($_POST['intent_id']),
+	        'i_status >=' => 0, //Published in any form. This may need more logic
+	    ));
+	    
+	    if(isset($_POST['gotit']) && $_POST['gotit']){
+	        
+	        //Log an engagement for all messages
+	        foreach($messages as $i){
+	            $this->Db_model->e_create(array(
+	                'e_initiator_u_id' => $udata['u_id'],
+	                'e_json' => json_encode($i),
+	                'e_type_id' => 40, //Got It
+	                'e_c_id' => intval($_POST['intent_id']),
+	                'e_i_id' => $i['i_id'],
+	            ));
+	        }
+	        
+	    } else {
+	        
+	        //Build UI friendly Message:
+	        $help_content = null;
+	        foreach($messages as $i){
+	            $help_content .= echo_i($i);
+	        }
+	        
+	        //See if this user has clicked on the "Got It" button yet or not.
+	        $engagements = $this->Db_model->e_fetch(array(
+	            'e_c_id' => intval($_POST['intent_id']),
+	            'e_initiator_u_id' => $udata['u_id'],
+	            'e_type_id' => 40, //They "Got It"
+	        ));
+	        
+	        //Return results:
+	        echo_json(array(
+	            'success' => ( $help_content ?  1 : 0 ), //No Messages perhaps!
+	            'auto_open' => ( count($engagements)>0 ? 0 : 1 ), //Open only if they have not pressed the Gotit Button before
+	            'intent_id' => intval($_POST['intent_id']),
+	            'help_content' => $help_content,
+	        ));
+	    }
+	    
+    	    
+	}
 	
 	/* ******************************
 	 * Users

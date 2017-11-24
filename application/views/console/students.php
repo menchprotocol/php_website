@@ -1,9 +1,4 @@
-<p class="maxout">Connect with your students on-demand using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>:</p>
-<ul class="maxout">
-	<li>Filter students by class and see the leaderboard for each class.</li>
-	<li>Filter students who are falling behind on milestone submissions to give a hand.</li>
-	<li>Send and receive instant messages from each student.</li>
-</ul>
+<div class="help_body maxout below_h" id="content_594"></div>
 
 <?php 
 $submissions = $this->Db_model->us_fetch_fancy(array(

@@ -12,6 +12,61 @@ function update_dropdown(name,intvalue,count){
 	$('[data-toggle="tooltip"]').addClass('').tooltip();
 }
 
+function open_tip(intent_id){
+	$('#hb_'+intent_id).hide();
+	$("div#content_"+intent_id).fadeIn();
+}
+function close_tip(intent_id){
+	$("div#content_"+intent_id).hide();
+	$('#hb_'+intent_id).fadeIn('slow');
+}
+
+function gotit(intent_id){
+	//Close Tip:
+	close_tip(intent_id);
+	
+	//Log engagement (And hope it logs):
+	$.post("/process/load_tip", { intent_id:intent_id, gotit:'1' } , function(data) {});
+}
+
+//Function to load all help messages throughout the console:
+$(document).ready(function() {
+		
+	//Each Message includes two elements on the page:
+	//<span class="help_button" intent-id="597"></span> Containing the button for the Help message that is always accessible by user even after they clicked the "Got It" button
+	//<div id="content_597"></div> Where the actual message would be loaded on the page, which is usally close to the help button
+	if($("span.help_button")[0]){
+		var loaded_messages = [];
+		var tips_button = '<span class="badge tip-badge"><i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+		var intent_id = 0;
+		$( "span.help_button" ).each(function() {
+			intent_id = parseInt($( this ).attr('intent-id'));
+			if(intent_id>0 && $("div#content_"+intent_id)[0] && !(jQuery.inArray(intent_id,loaded_messages)!=-1)){
+				//Its valid as all elements match! Let's continue:
+				loaded_messages.push(intent_id);
+				
+				//Let's check to see if this user has already seen this:
+				$.post("/process/load_tip", { intent_id:intent_id } , function(data) {
+					//Let's see what we got:
+					if(data.success){
+						//Load the content:
+						$('#hb_'+data.intent_id).html('<a class="tipbtn" href="javascript:open_tip('+data.intent_id+')">'+tips_button+'</a>'); //Load the button
+						$("div#content_"+data.intent_id).html('<div class="row"><div class="col-sm-6">'+tips_button+'</div><div class="col-sm-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
+						$("div#content_"+data.intent_id).append(data.help_content);
+						$("div#content_"+data.intent_id).append('<a href="javascript:gotit('+data.intent_id+')" class="btn btn-sm btn-primary gotit"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Got it</a>');
+						//Show to user if not seen before:
+						if(data.auto_open){
+							open_tip(data.intent_id);
+						}
+					}
+			    });
+			}
+		});
+	}
+});
+
+	
+
 function switch_to(hashtag_name){
 	$('#topnav a[href="#'+hashtag_name+'"]').tab('show');
 }

@@ -1,8 +1,4 @@
-<ul class="maxout" style="margin-bottom:20px;">
-	<li>Each <b><i class="fa fa-calendar" aria-hidden="true"></i> Class</b> groups students based on their start date.</li>
-	<li>All classes share the bootcamp's central <b style="display:inline-block;"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</b>.</li>
-	<li>Improve your bootcamp iteratively after each class using student feedback.</li>
-</ul>
+<div class="help_body maxout below_h" id="content_593"></div>
 
 <?php
 if(count($bootcamp['c__classes'])>0){

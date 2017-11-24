@@ -57,7 +57,9 @@ function save_settings(){
     <div class="tab-pane active" id="general">
     	
     	
-    	<div class="title"><h4><i class="fa fa-tag" aria-hidden="true"></i> Bootcamp Category</h4></div>
+    	<div class="title"><h4><i class="fa fa-tag" aria-hidden="true"></i> Bootcamp Category <span id="hb_626" class="help_button" intent-id="626"></span></h4></div>
+    	<div class="help_body maxout" id="content_626"></div>
+            
         <ul>
         	<li>Select the primary category that represents the main bootcamp idea.</li>
         </ul>
@@ -65,24 +67,14 @@ function save_settings(){
         
         
         <br />
-		<div class="title" style="margin-top:0;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status</h4></div>
-        <ul>
-        	<li>Bootcamps are created in <?= status_bible('b',0) ?> mode to give you time to build them.</li>
-        	<li>When you're ready to publish you update the status to <?= status_bible('b',1) ?>.</li>
-        	<li>We will start our review process & work with you to iteratively improve it.</li>
-        	<li>Once ready & approved we update the status to <?= status_bible('b',2) ?>.</li>
-        </ul>
+		<div class="title" style="margin-top:0;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="help_body maxout" id="content_627"></div>
         <?php echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
 
 		
-		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Landing Page URL</h4></div>
-        <ul>
-        	<li>Your bootcamp's unique landing page URL.</li>
-        	<li>Use letters and hyphens. No numbers or other characters.</li>
-        	<li>Share with students to enroll in your online bootcamp.</li>
-        	<li>Be aware that URL changes break previously shared links.</li>
-        </ul>
+		<div class="title" style="margin-top:15px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Bootcamp Hashtag <span id="hb_628" class="help_button" intent-id="628"></span></h4></div>
+        <div class="help_body maxout" id="content_628"></div>
         <div class="form-group label-floating is-empty">
         	<div class="input-group border">
               <span class="input-group-addon addon-lean" style="color:#CCC;"> &nbsp;&nbsp;https://mench.co/bootcamps/</span>
@@ -104,39 +96,13 @@ function save_settings(){
     
     
     <div class="tab-pane" id="team">
-    	<p>Co-instructors help you scale your ability to provide 1-on-1 support to manage a larger and more consistent bootcamp operation:</p>
-    	<ul>
-			<li>Each bootcamp has a single <?= status_bible('ba',3) ?> who is the "Bootcamp CEO".</li>
-			<li><?= status_bible('ba',3) ?> can recruit and manage multiple <?= status_bible('ba',2) ?>.</li>
-			<li>Each <?= status_bible('ba',2) ?> can have specific read/write privileges.</li>
-			<li>Each <?= status_bible('ba',2) ?> can be displayed of hidden from the landing page.</li>
-			<li>You can also setup revenue sharing with each <?= status_bible('ba',2) ?>.</li>
-            <li>Contact us via live chat (bottom-right) to modify your instructor team.</li>
-		</ul>
     	<?php
+    	itip(629);
     	echo '<div id="list-outbound" class="list-group">';
     	foreach($bootcamp['b__admins'] as $admin){
     	    echo echo_br($admin);
     	}
-		echo '</div>';
-		
-		/*
-		<div id="list-outbound" class="list-group">
-    		<div class="list-group-item list_input">
-				<div class="input-group">
-					<div class="form-group is-empty" style="margin: 0; padding: 0;">
-						<input type="email" class="form-control autosearch" id="addAdmin" placeholder="johnsmith@gmail.com">
-					</div>
-					<span class="input-group-addon" style="padding-right:0;">
-						<span class="label label-primary pull-right" style="cursor:pointer;" onclick="ba_add();">
-							<div><i class="fa fa-plus"></i></div>
-						</span>
-					</span>
-				</div>
-			</div>
-		</div>
-		*/
-		
+		echo '</div>';		
 		?>
     </div>
     

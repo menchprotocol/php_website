@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.95,
+    'version' => 0.96,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
     'name' => 'Mench',
@@ -20,6 +20,7 @@ $config['website'] = array(
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['file_limit_mb'] = 200; //The max file size to be uploaded
+
 
 //The core objects of the platform:
 $config['core_objects'] = array(

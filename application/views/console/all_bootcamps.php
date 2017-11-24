@@ -5,8 +5,8 @@ if(count($bootcamps)>0){
     foreach($bootcamps as $bootcamp){
         echo '<a href="/console/'.$bootcamp['b_id'].'" class="list-group-item">';
             echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+            echo '<span style="font-size:0.8em;">'.status_bible('b',$bootcamp['b_status'],1,'right').'</span>';
             echo '<b>'.$bootcamp['c_objective'].'</b> &nbsp;';
-            echo '<span style="font-size:0.8em;">'.status_bible('b',$bootcamp['b_status'],0,'top').'</span>';
         echo '</a>';
     }
     echo '</div>';

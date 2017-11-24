@@ -219,15 +219,11 @@ function save_r(){
 <div class="tab-content tab-space">
 
 
-    
         <div class="tab-pane active" id="screening">
         
         
-        <div class="title"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites</h4></div>
-        <ul>
-        	<li>A list of requirements students must meet to join this bootcamp.</li>
-        	<li>We ask students to confirm all prerequisites during their application.</li>
-        </ul>
+        <div class="title"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span></h4></div>
+        <div class="help_body maxout" id="content_610"></div>
         <script>
         $(document).ready(function() {
         	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : '[]' ) ?>);
@@ -237,13 +233,8 @@ function save_r(){
     
     
     
-    	<div class="title" style="margin-top:30px;"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions</h4></div>
-        <ul>
-        	<li>Open-ended questions you'd like to ask students during their application.</li>
-        	<li>Students are required to answer every question.</li>
-        	<li>These questions can help you learn more about each student and assess their desire level and suitability for this bootcamp.</li>
-        </ul>
-        
+    	<div class="title" style="margin-top:30px;"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions <span id="hb_611" class="help_button" intent-id="611"></span></h4></div>
+        <div class="help_body maxout" id="content_611"></div>
         <script>
         $(document).ready(function() {
         	initiate_list('r_application_questions','+ New Application Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
@@ -253,12 +244,8 @@ function save_r(){
     
     
     	<div style="display:block; margin-top:30px;">
-            <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students</h4></div>
-            <ul>
-            	<li>Minimum number of students required to kick-start this class.</li>
-            	<li>All applicants will be refunded if the minimum is not met.</li>
-            	<li>Set the minimum to 1 or greater.</li>
-            </ul>
+            <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students <span id="hb_612" class="help_button" intent-id="612"></span></h4></div>
+            <div class="help_body maxout" id="content_612"></div>
             <div class="input-group">
             	<input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border" />
             </div>
@@ -266,13 +253,8 @@ function save_r(){
         </div>
         
         
-        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students</h4></div>
-        <ul>
-        	<li>Maximum number of students that can apply before class is full.</li>
-        	<li>Consider your audience size to leverage this field to create a sense of scarcity.</li>
-        	<li>If a class is full, the next published class would become open for admission.</li>
-        	<li>You can remove this maximum limitation by setting it to "0".</li>
-        </ul>
+        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students <span id="hb_613" class="help_button" intent-id="613"></span></h4></div>
+        <div class="help_body maxout" id="content_613"></div>
         <div class="input-group">
           <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border" />
         </div>
@@ -282,14 +264,9 @@ function save_r(){
     
     <div class="tab-pane" id="support">
     
-    
-		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Inquiry Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
-        <ul>
-        	<li>Student communication is done on Facebook Messenger using <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> <u>MenchBot</u></a>.</li>
-        	<li>You are required to respond to all incoming messages from your students.</li>
-        	<li>You get to choose how fast you commit to responding to messages.</li>
-        	<li>You can delegate support to <?= status_bible('ba',2) ?>.</li>
-        </ul>
+    	<?php itip(630); ?>
+		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Inquiry Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
+        <div class="help_body maxout" id="content_614"></div>
         <select class="form-control input-mini border" id="r_response_time_hours">
         <option value="">Select Responsiveness</option>
         <?php 
@@ -304,13 +281,8 @@ function save_r(){
 
 		
 		
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
-        <ul>
-        	<li>If Set, Every student gets 1-on-1 mentorship to maximize chance of success.</li>
-        	<li>Recommended for difficult-to-execute bootcamps to help students 1-on-1.</li>
-        	<li>Use a Calendar app to manually setup your meetings with each student.</li>
-        	<li>Use a video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
-        </ul>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+        <div class="help_body maxout" id="content_615"></div>
         <table style="width:100%;">
         	<tr>
         		<td style="width:150px;">
@@ -344,12 +316,8 @@ function save_r(){
     	
 
 
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
-		<ul>
-			<li>Provide virtual group support to students who show-up during office hours.</li>
-			<li>Students will receive a broadcast message 30 minute before each timeslot.</li>
-			<li>Use a group video chat app like Skype, Zoom or Hangouts to conduct meetings.</li>
-		</ul>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_616" class="help_button" intent-id="616"></span></h4></div>
+		<div class="help_body maxout" id="content_616"></div>
 		
 		
 		<input type="hidden" id="r_live_office_hours_val" value="<?= strlen($class['r_live_office_hours'])>0 ? '1' : '0' ?>" />
@@ -362,31 +330,21 @@ function save_r(){
 		
 		<div class="has_office_hours" style="display:<?= strlen($class['r_live_office_hours'])>0 ? 'block' : 'none' ?>;">
 			
-			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Contact Instructions Message</h4></div>
-			<ul>
-      			<li>Let students know how they can connect with you during office hours.</li>
-    			<li>Include Skype ID, Google Hangout link, Zoom video confrence url, etc...</li>
-    			<li>Mench sends automatic reminders 30-minutes prior to each office hour.</li>
-    		</ul>
+			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Contact Instructions Message <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
+			<div class="help_body maxout" id="content_617"></div>
             <div class="form-group label-floating is-empty">
                 <textarea class="form-control text-edit border" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
                 <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/420</div>
             </div>
             
             
-            <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly Schedule <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> AFFECTS PRICING</span></h4></div>
-            <ul>
-      			<li>Set office hours in PST timezone (Currently <?= time_format(time(),7) ?>).</li>
-    			<li>Mench will adjust hours based on each student's timezone.</li>
-    			<li>Click once to insert new time-frame and then drag to expand.</li>
-    		</ul>
+            <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly PST Schedule <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom">AFFECTS <i class="fa fa-usd" aria-hidden="true"></i></span> <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
+            <div class="help_body maxout" id="content_618"></div>
             <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
 			
 			
-            <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates Message</h4></div>
-            <ul>
-      			<li>Manually define the dates that you would not provide office hours during this calss.</li>
-    		</ul>
+            <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates Message <span id="hb_619" class="help_button" intent-id="619"></span></h4></div>
+            <div class="help_body maxout" id="content_619"></div>
             <div class="form-group label-floating is-empty">
                 <textarea class="form-control text-edit border" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
                 <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/420</div>
@@ -402,32 +360,15 @@ function save_r(){
     
         
         <div style="display:block;">
-        	<div class="title"><h4><i class="fa fa-calculator" aria-hidden="true"></i> Tuition Calculator</h4></div>
-            
-    			<?php 
-    			/*
-    			echo '<select class="form-control input-mini border" id="r_student_reach">';
-    			$r_student_reach = $this->config->item('r_student_reach');
-    			foreach($r_student_reach as $val=>$name){
-    			    echo '<option value="'.$val.'" '.( $class['r_student_reach']==$val ? 'selected="selected"' : '' ).'>'.$name.'</option>';
-    			}
-    			echo '</select>';
-    			*/
-    			?>
-    		
+        	<div class="title"><h4><i class="fa fa-calculator" aria-hidden="true"></i> Tuition Calculator <span id="hb_620" class="help_button" intent-id="620"></span></h4></div>
+            <div class="help_body maxout" id="content_620"></div>
             <div id="calculator_body"></div>
         </div>
             
         
         
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition Rate</h4></div>
-        <ul>
-        	<li>A 1-time fee for student to join this bootcamp class.</li>
-        	<li>Use above calculator to estimate your customized tuition rate.</li>
-        	<li>Enter "0" if free. Good for shorter lead generation bootcamps.</li>
-        	<li>Learn more about <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank" style="display:inline-block;">Commission Rates & Payout Installments <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
-        	<li>Contact us to setup co-instructor revenue sharing or student payment plans.</li>
-        </ul>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition Rate <span id="hb_621" class="help_button" intent-id="621"></span></h4></div>
+        <div class="help_body maxout" id="content_621"></div>
         <div class="input-group">
         	<span class="input-group-addon addon-lean">USD $</span>
         	<input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= isset($class['r_usd_price']) && floatval($class['r_usd_price'])>=0 ? $class['r_usd_price'] : null ?>" class="form-control border" />
@@ -439,7 +380,8 @@ function save_r(){
         
         
         
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy (For Paid Classes)</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy <span id="hb_622" class="help_button" intent-id="622"></span></h4></div>
+        <div class="help_body maxout" id="content_622"></div>
         <?php 
         $refund_policies = $this->config->item('refund_policies');
         foreach($refund_policies as $type=>$terms){
@@ -453,18 +395,11 @@ function save_r(){
               echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the class\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
         	echo '</ul></div>';
         }
-        ?>
-        <p>Students will always receive a full refund if you reject their application during the admission screeing process. Learn more about <a href="https://support.mench.co/hc/en-us/articles/115002095952" target="_blank" style="display:inline-block;">Refund Policies <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</p>
+        ?>        
         
         
-        
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-gift" aria-hidden="true"></i> Optional Completion Prizes</h4></div>
-        <ul>
-        	<li>Awarded to students who complete all milestones by the last day of this class.</li>
-        	<li>Prizes are an additional incentive to increase your bootcamp's completion rate.</li>
-        	<li>Completion prizes are published on your landing page's Admission section.</li>
-        </ul>
-        
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-gift" aria-hidden="true"></i> Optional Completion Prizes <span id="hb_623" class="help_button" intent-id="623"></span></h4></div>
+        <div class="help_body maxout" id="content_623"></div>
         <script>
         $(document).ready(function() {
         	initiate_list('r_completion_prizes','+ New Prize','<i class="fa fa-gift"></i>',<?= ( strlen($class['r_completion_prizes'])>0 ? $class['r_completion_prizes'] : '[]' ) ?>);

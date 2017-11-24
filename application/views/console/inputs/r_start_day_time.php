@@ -55,13 +55,9 @@ function update_timeline(){
 <input type="hidden" id="b_status" value="<?= $b_status ?>" />
 <?php } ?>
 
-<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time</h4></div>
-<ul>
-	<li>The day & time when this class starts.</li>
-	<?php if(isset($b_sprint_unit)){ ?>
-	<li>End date calculated based on the number of <?= $sprint_units[$b_sprint_unit]['name'] ?> <b style="display:inline-block;"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</b>.</li>
-	<?php } ?>
-</ul>
+<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time <span id="hb_625" class="help_button" intent-id="625"></span></h4></div>
+<div class="help_body maxout" id="content_625"></div>
+
 <div class="form-group label-floating is-empty">
     <input type="text" id="r_start_date" value="<?= ( isset($r_start_date) ? date("m/d/Y",strtotime($r_start_date)) : '' )  ?>" style="width:120px;display:inline-block;" class="form-control border" />
     <span class="material-input"></span>
