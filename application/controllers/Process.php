@@ -1814,7 +1814,7 @@ class Process extends CI_Controller {
 	    ));	    
         
 	    //Display message:
-	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
+	    echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
 	}
 	
 	
@@ -2173,7 +2173,7 @@ class Process extends CI_Controller {
 	    ));
 	    
 	    //Show message:
-	    echo '<span style="color:#00CC00;">'.(count($_POST['new_sort'])-1).' sorted</span>';
+	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
 	}
 	
 }
