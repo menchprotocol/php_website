@@ -26,7 +26,7 @@ function gotit(intent_id){
 	close_tip(intent_id);
 	
 	//Log engagement (And hope it logs):
-	$.post("/process/load_tip", { intent_id:intent_id, gotit:'1' } , function(data) {});
+	$.post("/api_v1/load_tip", { intent_id:intent_id, gotit:'1' } , function(data) {});
 }
 
 //Function to load all help messages throughout the console:
@@ -46,7 +46,7 @@ $(document).ready(function() {
 				loaded_messages.push(intent_id);
 				
 				//Let's check to see if this user has already seen this:
-				$.post("/process/load_tip", { intent_id:intent_id } , function(data) {
+				$.post("/api_v1/load_tip", { intent_id:intent_id } , function(data) {
 					//Let's see what we got:
 					if(data.success){
 						//Load the content:

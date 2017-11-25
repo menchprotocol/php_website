@@ -2,7 +2,7 @@
 <br />
 
 <div class="login-content">
-	<form method="post" action="/process/login">
+	<form method="post" action="/api_v1/login">
 		<input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
 		<div class="input-group">
 			<span class="input-group-addon">

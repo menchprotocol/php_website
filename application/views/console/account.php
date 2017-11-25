@@ -51,7 +51,7 @@ function update_account(){
 	//Show spinner:
 	$('.update_u_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 	
-	$.post("/process/account_update", {
+	$.post("/api_v1/account_update", {
 		
 		u_id:$('#u_id').val(),
 		u_fname:$('#u_fname').val(),
@@ -107,7 +107,7 @@ function insert_gravatar(){
 
 <p style="float:right; margin-top:-75px;">
 	<a href="/console" class="btn btn-sm btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> &nbsp;My Bootcamps</span></a>
-	<a href="/process/logout" class="btn btn-sm btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a>
+	<a href="/api_v1/logout" class="btn btn-sm btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a>
 </p>
 
 

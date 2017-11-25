@@ -22,7 +22,7 @@ function next_section(){
     	setTimeout(function() {
         	
     		//Send data for processing:
-    		$.post("/process/funnel_progress", {
+    		$.post("/api_v1/funnel_progress", {
     		r_id:r_id,
     		current_section:current_section,
     		u_email:$('#u_email').val(),

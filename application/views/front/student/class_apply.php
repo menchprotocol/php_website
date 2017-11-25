@@ -73,7 +73,7 @@ function move_ui(adjustment){
 		$('#btn_next, #btn_prev').hide();
 		
 		//Send for processing:
-		$.post("/process/submit_application", {
+		$.post("/api_v1/submit_application", {
 
 			//Core variables:
 			ru_id:<?= $ru_id ?>,

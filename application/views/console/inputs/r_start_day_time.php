@@ -22,7 +22,7 @@ function update_timeline(){
 	$('#timeline_update').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Save the rest of the content:
-	$.post("/process/class_timeline", {
+	$.post("/api_v1/class_timeline", {
 
 		//Communication:
 		c__child_intent_count:$('#c__child_intent_count').val(),

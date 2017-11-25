@@ -55,7 +55,7 @@ function mark_done(){
 
 	
 	//Save the rest of the content:
-	$.post("/process/completion_report", {	
+	$.post("/api_v1/completion_report", {	
 
 		page_loaded:<?= time() ?>,
 		us_notes:us_notes,

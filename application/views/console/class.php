@@ -34,7 +34,7 @@ function adjust_mentorship_sessions(){
 function update_tuition_calculator(){
 
 	//Save the rest of the content:
-	$.post("/process/tuition_calculator", {	
+	$.post("/api_v1/tuition_calculator", {	
 		
 		//Object IDs:
 		r_id:$('#r_id').val(),
@@ -183,7 +183,7 @@ function save_r(){
 	//}
 	
 	//Save the rest of the content:
-	$.post("/process/class_edit", save_data , function(data) {
+	$.post("/api_v1/class_edit", save_data , function(data) {
 		//Update UI to confirm with user:
 		$('#save_r_results').html(data).hide().fadeIn();
 		

@@ -24,7 +24,7 @@ function save_settings(){
 	$('.save_setting_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 	
 	//Save the rest of the content:
-	$.post("/process/bootcamp_edit", {
+	$.post("/api_v1/bootcamp_edit", {
 		
 		b_id:$('#b_id').val(),
 		b_status:$('#b_status').val(),

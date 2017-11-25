@@ -162,7 +162,7 @@ $( document ).ready(function() {
     
     		<?php 
     		foreach($bootcamp['c__messages'] as $i){
-    		    if($i['i_status']>=3){
+    		    if($i['i_status']>=3 && $i['i_status']<4){
     		        //Publish to Landing Page!
     		        echo echo_i($i);
     		    }
@@ -188,7 +188,7 @@ $( document ).ready(function() {
                         
                         $messages_shown = 0;
                         foreach($sprint['c__messages'] as $i){
-                            if($i['i_status']>=3){
+                            if($i['i_status']>=3 && $i['i_status']<4){
                                 //Publish to Landing Page!
                                 echo echo_i($i);
                                 $messages_shown++;

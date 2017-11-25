@@ -66,8 +66,9 @@ function extract_level($b,$c_id){
         'c_id' => $c_id,
         'bootcamp' => $b,
         'i_messages' => $CI->Db_model->i_fetch(array(
-            'i_status >=' => 0,
-            'i_c_id' => $c_id,
+            'i_status >=' => 0, //Private notes never have i_c_id set, but lets filter anyways:
+            'i_status <' => 4,
+            'i_c_id' => $c_id, 
         )),
     );
     
@@ -206,7 +207,7 @@ function echo_i($i,$first_name=null){
             $CI =& get_instance();
             $website = $CI->config->item('website');
             $url = $website['url'].'ref/'.$i['i_id'];
-            $i['i_message'] = trim(str_replace($i['i_url'],'<div><a href="'.$url.'" target="_blank">'.$url.'<i class="fa fa-external-link" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a></div>',$i['i_message']));
+            $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
         }
         
         $echo_ui .= '<div class="msg">'.nl2br( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
@@ -598,7 +599,7 @@ function calculate_bootcamp_status($b){
         $qualified_messages = 0;
         if(count($c['c__messages'])>0){
             foreach($c['c__messages'] as $i){
-                $qualified_messages += ( $i['i_status']>=1 ? 1 : 0 );
+                $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<4 ? 1 : 0 );
             }
         }
         if($qualified_messages>0){
@@ -631,7 +632,7 @@ function calculate_bootcamp_status($b){
                 $qualified_messages = 0;
                 if(count($c2['c__messages'])>0){
                     foreach($c2['c__messages'] as $i){
-                        $qualified_messages += ( $i['i_status']>=1 ? 1 : 0 );
+                        $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<4 ? 1 : 0 );
                     }
                 }
                 if($qualified_messages>0){
@@ -649,7 +650,7 @@ function calculate_bootcamp_status($b){
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']>=3 && $i['i_media_type']=='video' ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']>=3 && $i['i_status']<4 && $i['i_media_type']=='video' ? 1 : 0 );
         }
     }
     if($qualified_messages>0){
@@ -806,6 +807,7 @@ function calculate_bootcamp_status($b){
     
     
     //u_fb_id
+    /*
     $to_gain = 15;
     $progress_possible += $to_gain;
     if(strlen($bl['u_fb_id'])>1){
@@ -813,6 +815,7 @@ function calculate_bootcamp_status($b){
     } else {
         array_push($call_to_action,'Activate Your <b>[<a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>]</b>');
     }
+    */
     
     //u_phone
     $to_gain = 5;
@@ -1129,6 +1132,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	        's_color' => '#e91e63', //Rose
     	        's_desc'  => 'Message published on the Landing Page and sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts.',
     	        's_mini_icon' => 'fa-bullhorn',
+    	        'u_min_status'  => 1,
+	        ),
+	        4 => array(
+    	        's_name'  => 'Private Student Note',
+    	        's_color' => '#2f2639', //dark
+    	        's_desc'  => 'This Message is taken by the instructor team on a particular Student and is visible to the entire team.',
+    	        's_mini_icon' => 'fa-eye-slash',
     	        'u_min_status'  => 1,
 	        ),
 	    ),

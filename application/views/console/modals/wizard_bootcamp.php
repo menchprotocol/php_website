@@ -56,7 +56,7 @@ function move_ui(adjustment){
 		$('#btn_next, #btn_prev').hide();
 		
 		//Send for processing:
-		$.post("/process/bootcamp_create", {
+		$.post("/api_v1/bootcamp_create", {
 			
 			c_objective:$('#c_objective').val(),
      		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),

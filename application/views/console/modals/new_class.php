@@ -8,7 +8,7 @@ function r_process_create(){
 	$( "#new_r_result" ).html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Send for processing:
-	$.post("/process/r_create", {
+	$.post("/api_v1/r_create", {
 		
 		r_b_id:$('#r_b_id').val(),
 		r_start_date:$('#r_start_date').val(),

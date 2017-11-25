@@ -26,7 +26,7 @@ function changeMessage() {
 
     //Passon data to detect URLs:
     /*
-    $.post("/process/detect_url", { text:val.value } , function(data) {
+    $.post("/api_v1/detect_url", { text:val.value } , function(data) {
  		//Update data
  		if(data=='clear_url_preview'){
  			$('#url_preview').html("");
@@ -196,7 +196,7 @@ function save_c(){
  	//Show spinner:
  	$('.save_c_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
  	
- 	$.post("/process/intent_edit", postData , function(data) {
+ 	$.post("/api_v1/intent_edit", postData , function(data) {
  		//Update UI to confirm with user:
  		$('.save_c_results').html(data).hide().fadeIn();
  		
@@ -228,7 +228,7 @@ function new_intent(c_objective){
  	$( "#addnode" ).val("").focus();
  	
  	//Update backend:
- 	$.post("/process/intent_create", {b_id:b_id, c_id:c_id, pid:pid, c_objective:c_objective, next_level:next_level}, function(data) {
+ 	$.post("/api_v1/intent_create", {b_id:b_id, c_id:c_id, pid:pid, c_objective:c_objective, next_level:next_level}, function(data) {
  		//Update UI to confirm with user:
  		$( "#temp" ).remove();
 
@@ -256,7 +256,7 @@ function link_lintent(target_id){
  	$( "#addnode" ).val("").focus();
  	
  	//Update backend:
- 	$.post("/process/intent_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
+ 	$.post("/api_v1/intent_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
  		//Update UI to confirm with user:
  		$( "#temp" ).remove();
 
@@ -292,7 +292,7 @@ function intents_sort(){
  	});
  	
  	//Update backend:
- 	$.post("/process/intents_sort", {pid:$('#pid').val(), b_id:$('#b_id').val(), new_sort:new_sort}, function(data) {
+ 	$.post("/api_v1/intents_sort", {pid:$('#pid').val(), b_id:$('#b_id').val(), new_sort:new_sort}, function(data) {
  		//Update UI to confirm with user:
  		$( "#list-outbound .srt-outbound").html(data);
  		
@@ -331,7 +331,7 @@ function intent_unlink(cr_id,cr_title){
  	var r = confirm("Remove "+cr_title+"?");
  	if (r == true) {
  	    //Delete and remove:
- 		$.post("/process/intent_unlink", {cr_id:cr_id, b_id:b_id}, function(data) {
+ 		$.post("/api_v1/intent_unlink", {cr_id:cr_id, b_id:b_id}, function(data) {
  			//Update UI to confirm with user:
  			$( "#cr_"+cr_id ).html(data);			
  			
@@ -383,7 +383,7 @@ function load_message_sorting(){
 				});
 				
 				//Update backend:
-				$.post("/process/messages_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:$('#pid').val()}, function(data) {
+				$.post("/api_v1/messages_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:$('#pid').val()}, function(data) {
 					//Update UI to confirm with user:
 					$( ".edit-updates" ).html(data);
 					
@@ -405,7 +405,7 @@ function message_delete(i_id){
 	var r = confirm("Delete Message?");
 	if (r == true) {
 	    //Delete and remove:
-		$.post("/process/message_delete", {i_id:i_id, pid:$('#pid').val()}, function(data) {
+		$.post("/api_v1/message_delete", {i_id:i_id, pid:$('#pid').val()}, function(data) {
 			//Update UI to confirm with user:
 			
 			$("#ul-nav-"+i_id).html('<div>'+data+'</div>');
@@ -464,7 +464,7 @@ function message_save_updates(i_id){
 	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
 	
 	//Update message:
-	$.post("/process/message_update", {i_id:i_id, i_message:i_message, pid:$('#pid').val()}, function(data) {
+	$.post("/api_v1/message_update", {i_id:i_id, i_message:i_message, pid:$('#pid').val()}, function(data) {
 		//Update UI to confirm with user:
 		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
 		
@@ -595,7 +595,7 @@ function save_attachment(droppedFiles,uploadType){
         
         
   	  $.ajax({
-  	    url: '/process/message_attachment',
+  	    url: '/api_v1/message_attachment',
   	    type: $('.box').attr('method'),
   	    data: ajaxData,
   	    dataType: 'json',
@@ -627,7 +627,7 @@ function msg_create(){
     message_form_lock();
 	
 	//Update backend:
-	$.post("/process/message_create", {
+	$.post("/api_v1/message_create", {
 		
 		b_id:$('#b_id').val(),
 		pid:$('#pid').val(),
@@ -749,10 +749,10 @@ function msg_create(){
         		
         		echo '<ul style="list-style:none;">';
 
-            		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;"><i class="fa fa-plus" aria-hidden="true"></i></a></li>';
+            		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;">ADD</a></li>';
             		
             		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-            		echo echo_status_dropdown('i','i_status',($level==1?3:1),($level==1?array(-1):($level==3?array(-1,3):array(-1))),'dropup',$level);
+            		echo echo_status_dropdown('i','i_status',($level==1?3:1),($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level);
             		echo '</li>';
             		
         		echo '</ul>';

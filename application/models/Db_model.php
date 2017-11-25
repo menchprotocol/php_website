@@ -458,9 +458,6 @@ class Db_model extends CI_Model {
 		if(!isset($insert_columns['i_timestamp'])){
 			$insert_columns['i_timestamp'] = date("Y-m-d H:i:s");
 		}
-		if(!isset($insert_columns['i_status'])){
-			$insert_columns['i_status'] = 0; //Drafting...
-		}
 		
 		//Lets now add:
 		$this->db->insert('v5_messages', $insert_columns);
@@ -500,7 +497,7 @@ class Db_model extends CI_Model {
 		$runs = $q->result_array();
 		foreach($runs as $key=>$value){
 		    //Fetch admission count:
-		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: Process/r_create() when duplicating a class
+		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: api_v1/r_create() when duplicating a class
 		    $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
 		        'ru.ru_status >'	=> 0, //Anyone who has paid anything
@@ -601,6 +598,7 @@ class Db_model extends CI_Model {
 	        //Bootcamp Messages:
 	        $bootcamp_messages = $this->Db_model->i_fetch(array(
 	            'i_status >=' => 0,
+	            'i_status <' => 4, //But not private notes if any
 	            'i_c_id' => $c['c_id'],
 	        ));
 	        
@@ -633,6 +631,7 @@ class Db_model extends CI_Model {
 	            //Count Messages:
 	            $milestone_messages = $this->Db_model->i_fetch(array(
 	                'i_status >=' => 0,
+	                'i_status <' => 4, //But not private notes if any
 	                'i_c_id' => $sprint_value['c_id'],
 	            ));
 	            $bootcamps[$key]['c__message_tree_count'] += count($milestone_messages);
@@ -649,6 +648,7 @@ class Db_model extends CI_Model {
 	                //Count Messages:
 	                $task_messages = $this->Db_model->i_fetch(array(
 	                    'i_status >=' => 0,
+	                    'i_status <' => 4, //But not private notes if any
 	                    'i_c_id' => $task_value['c_id'],
 	                ));
 	                $bootcamps[$key]['c__message_tree_count'] += count($task_messages);
@@ -1038,7 +1038,7 @@ class Db_model extends CI_Model {
 		$website = $this->config->item('website');
 		
 		if(is_dev()){
-		    return file_get_contents($website['url']."process/algolia/".$c_id);
+		    return file_get_contents($website['url']."api_v1/algolia/".$c_id);
 		}
 		
 		//Include PHP library:

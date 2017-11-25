@@ -1,10 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Process extends CI_Controller {
+class Api_v1 extends CI_Controller {
 	
-    //Used for all JS processing calls
-	function __construct() {
+    /*
+     * A hub of external micro apps transmitting data with the Mench server
+     * 
+     * */
+	
+    function __construct() {
 		parent::__construct();
 		
 		$this->output->enable_profiler(FALSE);
@@ -36,6 +40,7 @@ class Process extends CI_Controller {
 	    $messages = $this->Db_model->i_fetch(array(
 	        'i_c_id' => intval($_POST['intent_id']),
 	        'i_status >=' => 0, //Published in any form. This may need more logic
+	        'i_status <' => 4, //But not private notes if any
 	    ));
 	    
 	    if(isset($_POST['gotit']) && $_POST['gotit']){
@@ -1752,7 +1757,7 @@ class Process extends CI_Controller {
 	    ));
 	    
 	    //Show result:
-	    die('<span style="color:#00CC00;">Removed Link</span>');
+	    die('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
 	}
 	
 	
@@ -1919,6 +1924,7 @@ class Process extends CI_Controller {
 	                'i_status' => intval($_POST['i_status']),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
 	                    'i_status >=' => 0,
+	                    'i_status <' => 4, //But not private notes if any
 	                    'i_c_id' => intval($_POST['pid']),
 	                )),
 	            ));
@@ -2014,6 +2020,7 @@ class Process extends CI_Controller {
 	                'i_status' => intval($_POST['i_status']),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
 	                    'i_status >=' => 0,
+	                    'i_status <' => 4, //But not private notes if any
 	                    'i_c_id' => intval($_POST['pid']),
 	                )),
 	            ));
@@ -2119,7 +2126,7 @@ class Process extends CI_Controller {
 	    $this->Db_model->i_update( intval($_POST['i_id']) , array(
 	        'i_creator_id' => $udata['u_id'],
 	        'i_timestamp' => date("Y-m-d H:i:s"),
-	        'i_status' => -1, //Deleted by user
+	        'i_status' => -1, //Deleted by instructor
 	    ));
 	    
 	    //Log engagement:
