@@ -64,6 +64,22 @@ class Console extends CI_Controller {
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
+		//User Bootcamps:
+		$my_bootcamps = $this->Db_model->u_bootcamps(array(
+		    'ba.ba_u_id' => $udata['u_id'],
+		    'ba.ba_status >=' => 0,
+		    'b.b_status >=' => 0,
+		));
+		
+		//Did we find any?
+		foreach($my_bootcamps as $key=>$mb){
+		    //Fetch full bootcamp:
+		    $this_full = $this->Db_model->c_full_fetch(array(
+		        'b.b_id' => $mb['b_id'],
+		    ));
+		    $my_bootcamps[$key] = $this_full[0];
+		}
+		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
 			'title' => 'My Bootcamps',
@@ -75,11 +91,8 @@ class Console extends CI_Controller {
 		    ),
 		));
 		$this->load->view('console/all_bootcamps' , array(
-		    'bootcamps' => $this->Db_model->u_bootcamps(array(
-		        'ba.ba_u_id' => $udata['u_id'],
-		        'ba.ba_status >=' => 0,
-		        'b.b_status >=' => 0,
-		    )),
+		    'bootcamps' => $my_bootcamps,
+		    'udata' => $udata,
 		));
 		$this->load->view('console/shared/d_footer' , array(
 		    'load_view' => 'console/modals/wizard_bootcamp',
@@ -325,6 +338,7 @@ class Console extends CI_Controller {
 	    ));
 	    $this->load->view('console/settings' , array(
 	        'bootcamp' => $bootcamps[0],
+	        'udata' => $udata,
 	    ));
 	    $this->load->view('console/shared/d_footer');
 	}

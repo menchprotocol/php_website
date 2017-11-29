@@ -10,6 +10,39 @@ table, tr, td, th { text-align:left !important; font-size:14px; cursor:default !
 th { font-weight:bold !important; }
 td { padding:5px 0 !important; }
 </style>
+
+
+<?php 
+//Display filters:
+echo '<form action="" method="GET">';
+echo '<table class="table table-condensed"><tr>';
+foreach($engagement_filters as $key=>$value){
+    echo '<td><div style="padding-right:5px;">';
+    if(isset(${$key})){ //We have a list to show:
+        echo '<select name="'.$key.'" class="border" style="width:160px;">';
+        echo '<option value="0">'.$value.'</option>';
+        foreach(${$key} as $key2=>$value2){
+            echo '<option value="'.$key2.'" '.((isset($_GET[$key]) && intval($_GET[$key])==$key2)?'selected="selected"':'').'>'.$value2.'</option>';
+        }
+        echo '</select>';
+    } else {
+    	//show text input
+        echo '<input type="text" name="'.$key.'" placeholder="'.$value.'" value="'.((isset($_GET[$key]))?$_GET[$key]:'').'" class="form-control border">';
+    }
+    if($key=='e_initiator_u_id' || $key=='e_recipient_u_id'){
+        echo '<div><a href="/cockpit/all/users">List Users &raquo;</a></div>';
+    } elseif($key=='e_b_id'){
+        echo '<div><a href="/cockpit/all/bootcamps">List Bootcamps &raquo;</a></div>';
+    } else {
+        echo '<div>&nbsp;</div>';
+    }
+    echo '</div></td>';
+}
+echo '<td><input type="submit" class="btn btn-sm btn-primary" value="Apply" /><div>&nbsp;</div></td>';
+echo '</tr></table>';
+echo '</form>';
+?>
+
 <table class="table table-condensed table-striped">
 <thead>
 	<tr>
@@ -34,6 +67,9 @@ foreach($engagements as $e){
         echo '<td>';
             //Lets go through all references to see what is there:
             foreach($engagement_references as $engagement_field=>$er){
+                if($er['object_code']=='i'){
+                    continue;
+                }
                 if(intval($e[$engagement_field])>0){
                     //Yes we have a value here:
                     echo '<div>'.$er['name'].': '.object_link($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';

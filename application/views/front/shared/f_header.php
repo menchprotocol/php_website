@@ -22,6 +22,8 @@ $website = $this->config->item('website');
 	</script>
 	<?php } ?>
 	
+	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id); } ?>
+	
 </head>
 
 <body class="landing-page">
@@ -41,9 +43,6 @@ $website = $this->config->item('website');
         	<div class="collapse navbar-collapse">
         		<ul class="nav navbar-nav navbar-right">
     				<?php
-    				//<li><a href="/features">Features</a></li>
-    				//<li><a href="/pricing">Pricing</a></li>
-    				//echo '<li><a href="/bootcamps"><i class="fa fa-search" aria-hidden="true"></i> Browse</a></li>';
     				if(isset($udata['u_id'])){
     					echo '<li id="isloggedin"><a href="/console">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
     				} else {

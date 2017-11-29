@@ -18,8 +18,6 @@ window.extAsyncInit = function() {
  	});
 
 
- 	//Temp:
- 	$( "#page_content").html('<div class="alert alert-danger" role="alert">You are not enrolled in any bootcamps. Get started today by <a href="/bootcamps"><u>Browsing Bootcamps</u> <i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>');
  	
 	/*
 	//Get User ID:

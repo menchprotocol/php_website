@@ -23,6 +23,8 @@ $website = $this->config->item('website');
 	ga('send', 'pageview');
 	</script>
 	
+	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id); } ?>
+	
 </head>
 
 <body id="funnel">

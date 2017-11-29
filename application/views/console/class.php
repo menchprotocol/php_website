@@ -160,8 +160,10 @@ function save_r(){
 		r_meeting_duration:$('#r_meeting_duration').val(),
 		r_live_office_hours_check:$('#r_live_office_hours_val').val(),
 		r_office_hour_instructions:$('#r_office_hour_instructions').val(),
+		r_fb_pixel_id:$('#r_fb_pixel_id').val(),
 		r_closed_dates:$('#r_closed_dates').val(),
 		r_start_time_mins:$('#r_start_time_mins').val(),
+		
 		
 		//Class:
 		r_status:$('#r_status').val(),
@@ -313,7 +315,8 @@ function save_r(){
         		</td>
         	</tr>
         </table>
-    	
+        
+
 
 
 		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_616" class="help_button" intent-id="616"></span></h4></div>
@@ -330,26 +333,28 @@ function save_r(){
 		
 		<div class="has_office_hours" style="display:<?= strlen($class['r_live_office_hours'])>0 ? 'block' : 'none' ?>;">
 			
-			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Contact Instructions <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
+			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Office Hour Contact Method <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
 			<div class="help_body maxout" id="content_617"></div>
             <div class="form-group label-floating is-empty">
-                <textarea class="form-control text-edit border" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
-                <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/420</div>
-            </div>
-            
-            
-            <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates <span id="hb_619" class="help_button" intent-id="619"></span></h4></div>
-            <div class="help_body maxout" id="content_619"></div>
-            <div class="form-group label-floating is-empty">
-                <textarea class="form-control text-edit border" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
-                <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/420</div>
+                <textarea class="form-control text-edit border" style="min-height:50px;" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
+                <div style="margin:0 0 0 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/420</div>
             </div>
             
             <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly Schedule PST <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
             <div class="help_body maxout" id="content_618"></div>
             <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
-            
 		</div>
+		
+		
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates <span id="hb_619" class="help_button" intent-id="619"></span></h4></div>
+        <div class="help_body maxout" id="content_619"></div>
+        <div class="form-group label-floating is-empty">
+            <textarea class="form-control text-edit border" style="min-height:50px;" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
+            <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/420</div>
+        </div>
+    	
+    	
+    	
     </div>
     
     
@@ -410,8 +415,17 @@ function save_r(){
     
     <div class="tab-pane" id="settings">
     
-        <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$class['r_status']) ); ?>
-		<br />
+        <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$class['r_status']) ); ?>		
+		
+		<div style="display:block; margin-top:20px;">
+            <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel ID <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+            <div class="help_body maxout" id="content_718"></div>
+            <div class="input-group">
+            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border" />
+            </div>
+            <br />
+        </div>
+		
         <?php $this->load->view('console/inputs/r_start_day_time' , array(
             'c__child_intent_count' => count($bootcamp['c__child_intents']),
             'b_sprint_unit' => $bootcamp['b_sprint_unit'],

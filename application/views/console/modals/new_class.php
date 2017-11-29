@@ -79,13 +79,20 @@ $('#r_start_date').keyup(function(e){
             )); ?>
 			
 			
-			<?php $this->load->view('console/inputs/r_status' , array('r_status'=>1,'removal_status'=>array(-1,-2,2,3)) ); ?>
+			<?php
+			if($bootcamp['b_status']>=2){
+			    $this->load->view('console/inputs/r_status' , array('r_status'=>1,'removal_status'=>array(-1,-2,2,3)) );
+			} else {
+			    //Since bootcamp is pending, lets have the class open by default so instructor makes 1 les decision here:
+			    echo '<input type="hidden" id="r_status" value="1" />';
+			}
+			?>
 			
 			<?php 
             if(count($bootcamp['c__classes'])>0){
                 //We already have some classes, give user the option to copy settings:
                 ?>
-                <div class="title"><h4><i class="fa fa-clone" aria-hidden="true"></i> Copy Settings</div>
+                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-clone" aria-hidden="true"></i> Copy Settings</div>
     			<div class="form-group label-floating is-empty">
     			    <select class="form-control input-mini border" id="copy_r_id">
     			    	<option value="0">Do Not Copy Settings</option>

@@ -114,8 +114,8 @@ function insert_gravatar(){
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile" data-toggle="tab" onclick="update_hash('profile')"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
   <li id="nav_password"><a href="#password" data-toggle="tab" onclick="update_hash('password')"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
-  <li id="nav_social"><a href="#social" data-toggle="tab" onclick="update_hash('social')"><i class="fa fa-comments" aria-hidden="true"></i> Social</a></li>
-  <!-- <li><a href="#pill4" data-toggle="tab"><i class="fa fa-university" aria-hidden="true"></i> Banking</a></li> -->
+  <li id="nav_social"><a href="#social" data-toggle="tab" onclick="update_hash('social')"><i class="fa fa-link" aria-hidden="true"></i> Links</a></li>
+  <li id="nav_referrals"><a href="#referrals" data-toggle="tab" onclick="update_hash('referrals')"><i class="fa fa-bar-chart" aria-hidden="true"></i> Referrals</a></li>
 </ul>
 
 
@@ -130,10 +130,10 @@ function insert_gravatar(){
         
         <div class="row" style="margin:0 0 0 0;">
         	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-            	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" placeholder="First Name" class="form-control border">
+            	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" data-lpignore="true" placeholder="First Name" class="form-control border">
             </div>
             <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
-            	<input type="text" required id="u_lname" value="<?= $udata['u_lname'] ?>" placeholder="Last Name" class="form-control border">
+            	<input type="text" required id="u_lname" value="<?= $udata['u_lname'] ?>" data-lpignore="true" placeholder="Last Name" class="form-control border">
             </div>
         </div>
         
@@ -142,14 +142,14 @@ function insert_gravatar(){
         	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
             	<div class="title"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
                 <div class="form-group label-floating is-empty">
-                    <input type="email" required id="u_email" value="<?= $udata['u_email'] ?>" class="form-control border">
+                    <input type="email" required id="u_email" data-lpignore="true" value="<?= $udata['u_email'] ?>" class="form-control border">
                     <span class="material-input"></span>
                 </div>
             </div>
             <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
             	<div class="title"><h4><i class="fa fa-phone-square" aria-hidden="true"></i> Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
                 <div class="form-group label-floating is-empty">
-                    <input type="tel" maxlength="30" required id="u_phone" value="<?= $udata['u_phone'] ?>" class="form-control border">
+                    <input type="tel" maxlength="30" required id="u_phone" data-lpignore="true" value="<?= $udata['u_phone'] ?>" class="form-control border">
                     <span class="material-input"></span>
                 </div>
             </div>
@@ -173,7 +173,7 @@ function insert_gravatar(){
                 </div>
             </div>
             <div class="col-md-6" style="padding-left:5px; padding-right:0;">
-            	<input type="text" required id="u_current_city" placeholder="Los Angeles, CA" value="<?= $udata['u_current_city'] ?>" class="form-control border">
+            	<input type="text" required id="u_current_city" placeholder="Los Angeles, CA" data-lpignore="true" value="<?= $udata['u_current_city'] ?>" class="form-control border">
             </div>
         </div>
             
@@ -296,33 +296,33 @@ function insert_gravatar(){
             </div>
         </div>
         
+        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
     
     <div class="tab-pane" id="password">
     	<div class="title"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> Current Password</h4></div>
         <div class="form-group label-floating is-empty">
-            <input type="password" id="u_password_current" class="form-control border">
+            <input type="password" id="u_password_current" style="max-width: 260px;" class="form-control border">
             <span class="material-input"></span>
         </div>
         
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> New Password</h4></div>
         <div class="form-group label-floating is-empty">
-            <input type="password" id="u_password_new" class="form-control border">
+            <input type="password" id="u_password_new" style="max-width: 260px;" class="form-control border">
             <span class="material-input"></span>
         </div>
         
+        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
     
     <div class="tab-pane" id="social">
     	
     	<p>Link social accounts you wish to share on your bootcamp page to allow student to learn more about you.</p>
-    	
-    	
         <div class="title"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Your Website <span id="ph_u_website_url"></span></h4></div>
         <p>Start with http:// or https://</p>
-    	<input type="url" class="form-control border" id="u_website_url" maxlength="255" value="<?= $udata['u_website_url'] ?>" />
+    	<input type="url" class="form-control border" id="u_website_url" data-lpignore="true" maxlength="255" value="<?= $udata['u_website_url'] ?>" />
         <script>trigger_link_watch('u_website_url','');</script>
         
         <?php
@@ -330,22 +330,60 @@ function insert_gravatar(){
         foreach($u_social_account as $sa_key=>$sa){
             echo '<div class="title"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' URL <span id="ph_'.$sa_key.'"></span></h4></div>
     	<div class="input-group border">
-          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span><input type="text" class="form-control social-input" id="'.$sa_key.'" maxlength="100" value="'.$udata[$sa_key].'" />
+          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span><input type="text" data-lpignore="true" class="form-control social-input" id="'.$sa_key.'" maxlength="100" value="'.$udata[$sa_key].'" />
         </div>';
             echo '<script>trigger_link_watch("'.$sa_key.'","'.$sa['sa_prefix'].'");</script>';
         }
         ?>
         
         <div class="title"><h4><i class="fa fa-skype" aria-hidden="true"></i> Skype Username</h4></div>
-    	<input type="text" class="form-control border" id="u_skype_username" maxlength="100" value="<?= $udata['u_skype_username'] ?>" />
+    	<input type="text" class="form-control border" data-lpignore="true" id="u_skype_username" maxlength="100" value="<?= $udata['u_skype_username'] ?>" />
+    	
+    	<table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
     
-    <div class="tab-pane" id="pill4">
-    	<p><b>Coming soon.</b></p>
-    	<p>Setup your bank account to receive direct deposits for each class payments via Paypal.</p>
+    <div class="tab-pane" id="referrals" style="max-width:none !important;">
+        	
+    	<div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Recent Referral Activity <span id="hb_728" class="help_button" intent-id="728"></span></h4></div>
+    	<div class="help_body maxout" id="content_728"></div>
+    	
+    	<?php 
+    	$engagements = $this->Db_model->e_fetch(array(
+    	    'e_recipient_u_id' => $udata['u_id'],
+    	    //e_type_id=45,46,47 is affiliate related!
+    	    'e_type_id >=' => "45",
+    	    'e_type_id <=' => "47",
+    	));
+    	if(count($engagements)>0){
+    	    
+    	    //Print engagement list:
+    	    echo '<table class="table table-condensed table-striped left-table" style="font-size:0.8em; margin-top:10px;">
+            <tr style="font-weight:bold;">
+            	<td>ID</td>
+            	<td>Action</td>
+            	<td>Time</td>
+            	<td>Student</td>
+            	<td>Bootcamp</td>
+            	<td>Notes</td>
+            </tr>';
+            
+    	    foreach($engagements as $e){
+    	        echo '<tr>';
+        	        echo '<td>#'.$e['e_id'].'</td>';
+        	        echo '<td>'.$e['a_name'].'</td>';
+        	        echo '<td>'.time_format($e['e_timestamp']).'</td>';
+        	        echo '<td>'.( intval($e['e_initiator_u_id']) ? object_link('u', $e['e_initiator_u_id']) : 'Visitor' ).'</td>';
+        	        echo '<td>'.object_link('b', $e['e_b_id']).'</td>';
+        	        echo '<td>'.$e['e_message'].'</td>';
+    	        echo '</tr>';
+    	    }
+    	    
+    	    echo '</table>';
+    	    
+    	} else {
+    	    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No affiliate referrals yet. Visit your Bootcamp\'s Settings tab to get started.</div>';
+    	}
+    	?>
     </div>
     
 </div>
-
-<br />
-<table width="100%"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>

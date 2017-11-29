@@ -222,9 +222,7 @@ function echo_i($i,$first_name=null){
     return $echo_ui;
 }
 
-function make_links_clickable($text){
-    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1"><u>$1</u></a>', $text);
-}
+
 
 function extract_urls($text){
     $parts = preg_split('/\s+/', $text);
@@ -237,37 +235,42 @@ function extract_urls($text){
     return $urls;
 }
 
-function echo_message($i){
+function echo_uploader($i){
+    return '<img src="'.$i['u_image_url'].'" data-toggle="tooltip" title="Last modified by '.$i['u_fname'].' '.$i['u_lname'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right" />';
+}
+
+function echo_message($i,$level=0){
+
     $echo_ui = '';
-	$echo_ui .= '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
-	$echo_ui .= '<div>';
+    $echo_ui .= '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
+    $echo_ui .= '<input type="hidden" class="i_media_type" value="'.$i['i_media_type'].'" />';
+    $echo_ui .= '<div>';
 	
-	    //Type & Delivery Method:
-	    
-	    $echo_ui .= '<div class="edit-off" style="margin:5px 0 0 0;">';
+	    //Type & Delivery Method:    
+	    $echo_ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" style="margin:5px 0 0 0;">';
 	    $echo_ui .= echo_i($i);
     	$echo_ui .= '</div>';
     	
     	
     	if($i['i_media_type']=='text'){
-    	    $echo_ui .= '<textarea name="i_message" class="edit-on">'.$i['i_message'].'</textarea>';
+    	    //Text editing:
+    	    $echo_ui .= '<textarea name="i_message" class="edit-on msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
     	}
-    	$echo_ui .= '<input type="url" name="i_url" placeholder="URL" class="form-control edit-on" value="'.$i['i_url'].'">';
     	
         //Editing menu:
         $echo_ui .= '<ul class="msg-nav">';
-		    //$echo_ui .= '<li class="edit-off"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil"></i> Edit</a></li>';
 		    //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
-            $echo_ui .= '<li>'.status_bible('i',$i['i_status'],1,'right').'</li>';
-            $echo_ui .= '<li data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="right"><i class="fa fa-sort"></i></li>';
-            $echo_ui .= '<li data-toggle="tooltip" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+            $echo_ui .= '<li class="i_uploader">'.echo_uploader($i).'</li>';
+            $echo_ui .= '<li data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="right"><i class="fa fa-sort" style="color:#2f2639;"></i></li>';
+            $echo_ui .= '<li data-toggle="tooltip" style="margin-right: 2px; margin-left: 3px;" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+            $echo_ui .= '<li class="edit-off the_status" style="margin-right: 0;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
+            $echo_ui .= '<li class="edit-off" data-toggle="tooltip" title="Modify status'.( $i['i_media_type']=='text' ? ' and/or text message' : '').'" data-placement="right"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-cog"></i></a></li>';
             
-            
-            $echo_ui .= '<li class="pull-right edit-on"><a href="javascript:message_save_updates('.$i['i_id'].');"><i class="fa fa-check"></i> Save</a></li>';
-            $echo_ui .= '<li class="pull-right edit-on"><a href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times"></i></a></li>';
-		    $echo_ui .= '<li class="pull-right edit-updates"></li>';
-		    //$echo_ui .= '<li class="pull-right">'.status_bible('i',$i['i_status'],1,'left').'</a></li>'; //Not editable so no reason to show for now!
-		    
+            //Right side reverse:
+            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold;">Save</a></li>';
+            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-default" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level).'</li>';
+            $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
 		    $echo_ui .= '</ul>';
 	    
     $echo_ui .= '</div>';
@@ -569,15 +572,38 @@ function calculate_bootcamp_status($b){
     }
     
     //Now check each Milestone and its Task List:
-    foreach($b['c__child_intents'] as $c){
+    foreach($b['c__child_intents'] as $milestone_num=>$c){
         
         if($c['c_status']<0){
-            continue; //Don't check unpublished Intents
+            continue; //Don't check unpublished Milestones, which is not even possible for now...
         }
         
         
         //Prepare key variables:
         $milestone_anchor = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
+        
+        
+        //Milestone Messages
+        $to_gain = 15;
+        $progress_possible += $to_gain;
+        $qualified_messages = 0;
+        if(count($c['c__messages'])>0){
+            foreach($c['c__messages'] as $i){
+                $qualified_messages += ( $i['i_status']==3 ? 1 : 0 );
+            }
+        }
+        if($qualified_messages>0){
+            $progress_gained += $to_gain;
+        } else {
+            array_push($call_to_action,'Add <b>[At least 1 '.status_bible('i',3).' Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
+        }
+        
+        
+        
+        //For the MVP we require Task details for 1 Weekly Milestone or 2 Daily Milestones, not more!
+        if(($b['b_sprint_unit']=='week' && $milestone_num>0) || ($b['b_sprint_unit']=='day' && $milestone_num>1)){
+            continue;
+        }
         
         
         //Sub Task List
@@ -592,27 +618,10 @@ function calculate_bootcamp_status($b){
         }
         
         
-        
-        //Milestone Messages
-        $to_gain = 15;
-        $progress_possible += $to_gain;
-        $qualified_messages = 0;
-        if(count($c['c__messages'])>0){
-            foreach($c['c__messages'] as $i){
-                $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<4 ? 1 : 0 );
-            }
-        }
-        if($qualified_messages>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Add <b>[At least 1 Published Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
-        }
-        
-        
-        //Check existing sub-tasks:
+        //Check Tasks:
         if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
             foreach($c['c__child_intents'] as $c2){
-                
+
                 //Create task object:
                 $task_anchor = $milestone_anchor.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
                 
@@ -625,14 +634,13 @@ function calculate_bootcamp_status($b){
                     array_push($call_to_action,'Add <b>[Time Estimate]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$task_anchor.'</u></a>');
                 }
                 
-                
                 //Messages for Tasks:
                 $to_gain = 15;
                 $progress_possible += $to_gain;
                 $qualified_messages = 0;
                 if(count($c2['c__messages'])>0){
                     foreach($c2['c__messages'] as $i){
-                        $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<4 ? 1 : 0 );
+                        $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<=3 ? 1 : 0 );
                     }
                 }
                 if($qualified_messages>0){
@@ -643,6 +651,7 @@ function calculate_bootcamp_status($b){
             }
         }
     }
+    
     
     //Bootcamp Messages:
     $to_gain = 15;
@@ -917,12 +926,12 @@ function calculate_bootcamp_status($b){
     
     $progress_percentage = round($progress_gained/$progress_possible*100);
     if($progress_percentage==100){
-        array_push($call_to_action,'Review your <a href="/bootcamps/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a> to make sure it all looks good.');
+        array_push($call_to_action,'Review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a> to make sure it all looks good.');
         array_push($call_to_action,'Wait until Mench team updates your bootcamp status to '.status_bible('b',2));
         array_push($call_to_action,'Launch admissions by sending a message to your student list.');
     }
     return array(
-        'stage' => '<i class="fa fa-bullhorn" aria-hidden="true"></i> Launch Checklist',
+        'stage' => '<i class="fa fa-tasks" aria-hidden="true"></i> Bootcamp MVP Checklist',
         'progress' => $progress_percentage,
         'call_to_action' => $call_to_action,
     );
@@ -952,30 +961,28 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
     $udata = $CI->session->userdata('user');
     $inner_tooltip = ($direction=='dropup'?'top':'top');
     $now = status_bible($object,$current_status_id,0,$inner_tooltip,$level);
-    ?>
-    <input type="hidden" id="<?= $input_name ?>" value="<?= $current_status_id ?>" /> 
-    <div style="display:inline-block;" class="<?= $direction ?>">
-    	<a href="#" style="margin: 0;" class="btn btn-simple dropdown-toggle border" id="ui_<?= $input_name ?>" data-toggle="dropdown">
-        	<?= ( $now ? $now : 'Select...' ) ?>
+    
+    $return_ui = '';
+    $return_ui .= '<input type="hidden" id="'.$input_name.'" value="'.$current_status_id.'" /> 
+    <div style="display:inline-block;" class="'.$direction.'">
+    	<a href="#" style="margin: 0;" class="btn btn-simple dropdown-toggle border" id="ui_'.$input_name.'" data-toggle="dropdown">
+        	'.( $now ? $now : 'Select...' ).'
         	<b class="caret"></b>
     	</a>
-    	<ul class="dropdown-menu">
-    		<?php 
-    		$statuses = status_bible($object,null,false,'bottom',$level);
-    		$count = 0;
-    		foreach($statuses as $intval=>$status){
-    		    if(isset($status['u_min_status']) && ($udata['u_status']<$status['u_min_status'] || in_array($intval,$exclude_ids))){
-    		        //Do not enable this user to modify to this status:
-    		        continue;
-    		    }
-    		    $count++;
-    		    echo '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</a></li>';
-    		    echo '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</li>'; //For UI replacement
-    		}
-    		?>
-    	</ul>
-    </div>
-    <?php
+        <ul class="dropdown-menu">';
+    $statuses = status_bible($object,null,false,'bottom',$level);
+    $count = 0;
+    foreach($statuses as $intval=>$status){
+        if(isset($status['u_min_status']) && ($udata['u_status']<$status['u_min_status'] || in_array($intval,$exclude_ids))){
+            //Do not enable this user to modify to this status:
+            continue;
+        }
+        $count++;
+        $return_ui .= '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</a></li>';
+        $return_ui .= '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</li>'; //For UI replacement
+    }
+    $return_ui .= '</ul></div>';
+    return $return_ui;
 }
 
 function hourformat($fancy_hour){
@@ -997,35 +1004,35 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'b' => array(
 	        -1 => array(
 	            's_name'  => 'Archive',
-	            's_color' => '#f44336', //red
-	            's_desc'  => 'Bootcamp removed.',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Bootcamp archived by lead instructor.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-trash',
 	        ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Bootcamp not listed in marketplace until published live',
+	            's_desc'  => 'Bootcamp under development. Admissions starts when published live.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
 	        1 => array(
 	            's_name'  => 'Request To Publish',
-	            's_color' => '#8dd08f', //light green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Bootcamp submit to be reviewed by Mench team to be published live.',
 	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-check-square',
+	            's_mini_icon' => 'fa-eye',
 	        ),
 	        2 => array(
     	        's_name'  => 'Published',
-    	        's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Ready for student admission by sharing your landing page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
 	        3 => array(
     	        's_name'  => 'Published to Marketplace',
-    	        's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Ready for student admission by URL sharing and by being visible in the Mench marketplace.',
     	        'u_min_status'  => 3, //Can only be done by admin
     	        's_mini_icon' => 'fa-bullhorn',
@@ -1034,7 +1041,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'c' => array(
 	        -1 => array(
 	            's_name'  => 'Archive',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task removed.',
 	            'u_min_status'  => 999, //Not possible for now.
 	            's_mini_icon' => 'fa-trash',
@@ -1048,7 +1055,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        1 => array(
 	            's_name'  => 'Published',
-	            's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task is active and accessible by students.',
 	            'u_min_status'  => 3,
 	            's_mini_icon' => 'fa-bullhorn',
@@ -1057,14 +1064,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'r' => array(
     	    -2 => array(
         	    's_name'  => 'Cancel',
-        	    's_color' => '#f44336', //red
+    	        's_color' => '#2f2639', //dark
         	    's_desc'  => 'Class was cancelled after it had started.',
         	    'u_min_status'  => 3,
         	    's_mini_icon' => 'fa-times-circle',
     	    ),
     	    -1 => array(
         	    's_name'  => 'Archive',
-        	    's_color' => '#f44336', //red
+    	        's_color' => '#2f2639', //dark
         	    's_desc'  => 'Class removed by bootcamp leader before it was started.',
         	    'u_min_status'  => 2,
         	    's_mini_icon' => 'fa-trash',
@@ -1077,22 +1084,22 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
 	        1 => array(
-    	        's_name'  => 'Open For Admission',
-    	        's_color' => '#4caf50', //green
+    	        's_name'  => 'Admission Open',
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Class is open for student admission.',
     	        'u_min_status'  => 2,
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
 	        2 => array(
     	        's_name'  => 'Running',
-    	        's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Class has admitted students and is currently running.',
     	        'u_min_status'  => 3,
     	        's_mini_icon' => 'fa-play-circle',
 	        ),
 	        3 => array(
     	        's_name'  => 'Completed',
-    	        's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Class was operated completely until its last day.',
     	        'u_min_status'  => 3,
     	        's_mini_icon' => 'fa-graduation-cap',
@@ -1101,7 +1108,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'i' => array(
 	        -1 => array(
 	            's_name'  => 'Archive',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Message removed.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-trash',
@@ -1115,46 +1122,45 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        1 => array(
     	        's_name'  => 'Student ASAP',
-    	        's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Message sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts. Good for mission-critical messages.',
     	        'u_min_status'  => 1,
     	        's_mini_icon' => 'fa-bolt',
 	        ),
 	        2 => array(
     	        's_name'  => 'Student Drip',
-    	        's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Message sent to students sometime during the '.( $level==1 ? 'bootcamp' : 'milestone' ).'. Good for increasing student engagements.',
     	        's_mini_icon' => 'fa-tint',
     	        'u_min_status'  => 1,
 	        ),
 	        3 => array(
     	        's_name'  => 'Landing Page',
-    	        's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Message published on the Landing Page and sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts.',
     	        's_mini_icon' => 'fa-bullhorn',
     	        'u_min_status'  => 1,
 	        ),
 	        4 => array(
-    	        's_name'  => 'Private Student Note',
+    	        's_name'  => 'Private Note',
     	        's_color' => '#2f2639', //dark
-    	        's_desc'  => 'This Message is taken by the instructor team on a particular Student and is visible to the entire team.',
+    	        's_desc'  => 'This Message is taken by the instructor team on a particular student and is visible to the entire team.',
     	        's_mini_icon' => 'fa-eye-slash',
     	        'u_min_status'  => 1,
 	        ),
 	    ),
 	    
-	    
 	    'cr' => array(
 	        -1 => array(
 	            's_name'  => 'Archive',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task link removed.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-trash',
 	        ),
 	        1 => array(
 	            's_name'  => 'Publish',
-	            's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task link is active.',
 	            'u_min_status'  => 1,
 	        ),
@@ -1165,7 +1171,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'ba' => array(
 	        -1 => array(
 	            's_name'  => 'Revoked',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Bootcamp access revoked.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-minus-circle',
@@ -1180,14 +1186,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        */
 	        2 => array(
 	            's_name'  => 'Co-Instructor',
-	            's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-user-plus',
 	        ),
 	        3 => array(
 	            's_name'  => 'Lead Instructor',
-	            's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-star',
@@ -1197,7 +1203,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'u' => array(
 	        -1 => array(
 	            's_name'  => 'Delete',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'User no longer active.',
 	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
 	            's_mini_icon' => 'fa-user-times',
@@ -1211,21 +1217,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        1 => array(
 	            's_name'  => 'Active',
-	            's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'User active.',
 	            's_mini_icon' => 'fa-user',
 	            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
 	        ),
 	        2 => array(
 	            's_name'  => 'Lead Instructor',
-	            's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
 	            's_mini_icon' => 'fa-star',
 	            'u_min_status'  => 3, //Only admins can approve leaders
 	        ),
 	        3 => array(
 	            's_name'  => 'Mench Admin',
-	            's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
 	            's_mini_icon' => 'fa-shield',
 	            'u_min_status'  => 3, //Only admins can create other admins
@@ -1235,14 +1241,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    'us' => array(
     	    -1 => array(
         	    's_name'  => 'Requires Revision',
-        	    's_color' => '#f44336', //red
+    	        's_color' => '#2f2639', //dark
         	    's_desc'  => 'Intructor has reviewed submission and found issues with it that requires student attention.',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-exclamation-triangle',
     	    ),
     	    1 => array(
         	    's_name'  => 'Marked Done',
-        	    's_color' => '#2f2639', //dark
+    	        's_color' => '#2f2639', //dark
         	    's_desc'  => 'Milestone tasks are marked as done.',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-check-square',
@@ -1255,7 +1261,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        //Withrew after course has started:
 	        -3 => array(
 	            's_name'  => 'Student Dispelled',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-times-circle',
@@ -1263,14 +1269,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        //Withrew prior to course has started:
 	        -2 => array(
 	            's_name'  => 'Student Withdrew',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date.',
 	            'u_min_status'  => 999, //Only done by Student themselves
 	            's_mini_icon' => 'fa-times-circle',
 	        ),
 	        -1 => array(
 	            's_name'  => 'Admission Rejected',
-	            's_color' => '#f44336', //red
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Application rejected by bootcamp leader before start date. Students receives a full refund.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-times-circle',
@@ -1279,7 +1285,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        //Post Application
 	        0 => array(
     	        's_name'  => 'Admission Initiated',
-    	        's_color' => '#2f2639', //darkques
+	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Student has started the application process but has not completed it yet.',
     	        'u_min_status'  => 999, //System insertion only
     	        's_mini_icon' => 'fa-pencil-square',
@@ -1295,7 +1301,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        */
 	        2 => array(
 	            's_name'  => 'Pending Admission',
-	            's_color' => '#8dd08f', //light green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            's_mini_icon' => 'fa-pause-circle',
 	            'u_min_status'  => 999, //System insertion only
@@ -1305,14 +1311,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        /*
 	        3 => array(
 	            's_name'  => 'Invitation Sent',
-	            's_color' => '#8dd08f', //light green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Admins have full access to all bootcamp features.',
 	            'u_min_status'  => 1,
 	        ),
 	        */
 	        4 => array(
 	            's_name'  => 'Bootcamp Student',
-	            's_color' => '#4caf50', //green
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student admitted making them ready to participate in bootcamp.',
 	            's_mini_icon' => 'fa-user',
 	            'u_min_status'  => 1,
@@ -1321,7 +1327,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        //Completion
 	        5 => array(
 	            's_name'  => 'Bootcamp Graduate',
-	            's_color' => '#e91e63', //Rose
+	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
 	            's_mini_icon' => 'fa-graduation-cap',
 	            'u_min_status'  => 1,
@@ -1334,6 +1340,22 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	    's_name'  => 'Development',
     	    's_mini_icon' => 'fa-code',
     	    ),
+	        7 => array(
+	            's_name'  => 'Business',
+	            's_mini_icon' => 'fa-handshake-o',
+	        ),
+	        9=> array(
+	            's_name'  => 'IT & Software',
+	            's_mini_icon' => 'fa-laptop',
+	        ),
+	        10=> array(
+	            's_name'  => 'Design',
+	            's_mini_icon' => 'fa-paint-brush',
+	        ),
+	        13=> array(
+	            's_name'  => 'Marketing',
+	            's_mini_icon' => 'fa-bullseye',
+	        ),
     	    2=> array(
     	    's_name'  => 'Music',
     	    's_mini_icon' => 'fa-music',
@@ -1346,42 +1368,32 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	    's_name'  => 'Language',
     	    's_mini_icon' => 'fa-language',
     	    ),
+	        /*
     	    5=> array(
     	    's_name'  => 'Academics',
     	    's_mini_icon' => 'fa-flask',
-    	    ),
-    	    7 => array(
-    	    's_name'  => 'Business',
-    	    's_mini_icon' => 'fa-usd',
-    	    ),
-    	    8=> array(
-    	    's_name'  => 'Office Productivity',
-    	    's_mini_icon' => 'fa-briefcase',
-    	    ),
-    	    9=> array(
-    	    's_name'  => 'IT & Software',
-    	    's_mini_icon' => 'fa-laptop',
-    	    ),
-    	    10=> array(
-    	    's_name'  => 'Design',
-    	    's_mini_icon' => 'fa-paint-brush',
-    	    ),
-    	    11=> array(
-    	    's_name'  => 'Personal Development',
-    	    's_mini_icon' => 'fa-smile-o',
     	    ),
     	    12=> array(
     	    's_name'  => 'Lifestyle',
     	    's_mini_icon' => 'fa-repeat',
     	    ),
-    	    13=> array(
-    	    's_name'  => 'Marketing',
-    	    's_mini_icon' => 'fa-bullseye',
+    	    */
+    	    
+    	    8=> array(
+    	    's_name'  => 'Office Productivity',
+    	    's_mini_icon' => 'fa-briefcase',
     	    ),
+    	    
+    	    11=> array(
+    	    's_name'  => 'Personal Development',
+    	    's_mini_icon' => 'fa-smile-o',
+    	    ),
+    	    
     	    14=> array(
     	    's_name'  => 'Health & Fitness',
     	    's_mini_icon' => 'fa-heartbeat',
     	    ),
+	        
     	    15=> array(
     	    's_name'  => 'Photography',
     	    's_mini_icon' => 'fa-camera',
@@ -1489,10 +1501,15 @@ function filter_class($classes,$r_id=null){
 function typeform_url($typeform_id){
     return 'https://mench.typeform.com/to/'.$typeform_id;
 }
-function messenger_activation_url($u_id){
+
+function messenger_activation_url($botkey,$u_id){
     $CI =& get_instance();
-    $website = $CI->config->item('website');
-    return $website['bot_ref_url'].'?ref='.$u_id; //TODO: Maybe append some sort of hash for more security
+    $mench_bots = $CI->config->item('mench_bots');
+    if(isset($mench_bots[$botkey]['bot_ref_url'])){
+        return $mench_bots[$botkey]['bot_ref_url'].'?ref='.$u_id; //TODO: Maybe append some sort of hash for more security
+    } else {
+        return false;
+    }
 }
 
 function redirect_message($url,$message){
@@ -1673,13 +1690,13 @@ function time_format($t,$format=0,$plus_days=0){
     
 }
 
-function time_diff($t,$second_tiome=null){
-    if(!$second_tiome){
-        $second_tiome = time(); //Now
+function time_diff($t,$second_time=null){
+    if(!$second_time){
+        $second_time = time(); //Now
     } else {
-        $second_tiome = strtotime(substr($second_tiome,0,19));
+        $second_time = strtotime(substr($second_time,0,19));
     }
-    $time = $second_tiome - strtotime(substr($t,0,19)); // to get the time since that moment
+    $time = $second_time - strtotime(substr($t,0,19)); // to get the time since that moment
 	$is_future = ( $time<0 );
 	$time = abs($time);
 	$tokens = array (
@@ -1687,9 +1704,9 @@ function time_diff($t,$second_tiome=null){
 			2592000 => 'Month',
 			604800 => 'Week',
 			86400 => 'Day',
-			3600 => 'Hr',
-			60 => 'Min',
-			1 => 'Sec'
+			3600 => 'Hour',
+			60 => 'Minute',
+			1 => 'Second'
 	);
 	
 	foreach ($tokens as $unit => $text) {
@@ -1700,7 +1717,6 @@ function time_diff($t,$second_tiome=null){
 		    $numberOfUnits = number_format(($time / $unit),0);
 		}
 		
-		
 		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
 	}
 }
@@ -1708,13 +1724,25 @@ function time_diff($t,$second_tiome=null){
 
 
 
-function url_name($text){
-    //Cleans text and
-    return substr(str_replace(' ','',preg_replace("/[^a-zA-Z0-9]+/", "", trim($text))),0,30);
-}
-
-function clean_urlkey($text){
-    return str_replace(' ','',preg_replace("/[^a-zA-Z0\-]+/", "", str_replace(' ','-',strtolower($text))));
+function generate_hashtag($text){
+    //These hashtags cannot be taken
+    $CI =& get_instance();
+    $reserved_hashtags = $CI->config->item('reserved_hashtags');
+    
+    //Cleanup the text:
+    $text = trim($text);
+    $text = ucwords($text);
+    $text = str_replace('&','And',$text);
+    $text = preg_replace("/[^a-zA-Z0-9]/", "", $text);
+    $text = substr($text,0,30);
+    
+    //Now check to make sure its all good!
+    if(in_array(strtolower($text),$reserved_hashtags)){
+        //Oops, they cannot pick this, lets add a random number to this!
+        $text .= rand(1,9999);
+    }
+    
+    return $text;    
 }
 
 function one_two_explode($one,$two,$content){
@@ -1726,6 +1754,10 @@ function one_two_explode($one,$two,$content){
 	return trim($temp[0]);
 }
 
+
+function make_links_clickable($text){
+    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1"><u>$1</u></a>', $text);
+}
 
 function format_e_message($e_message){
     
@@ -1814,7 +1846,11 @@ function object_link($object,$id,$b_id=0){
                 'b.b_id' => $id,
             ));
             if(isset($bootcamps[0])){
-                return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
+                if($b_id){
+                    return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
+                } else {
+                    return $bootcamps[0]['c_objective'];
+                }
             }
             
         } elseif($object=='u'){
@@ -1826,7 +1862,7 @@ function object_link($object,$id,$b_id=0){
                 ));
                 if(isset($matching_users[0])){
                     //TODO Link to profile or chat widget link maybe?
-                    return $matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'];
+                    return '<span title="ID '.$id.'">'.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</span>';
                 }
             }
                 
@@ -1848,7 +1884,14 @@ function object_link($object,$id,$b_id=0){
             //Transaction
             //TODO later...
         } elseif($object=='i'){
-            //TODO later...
+            //Fetch message conent:
+            $matching_messages = $CI->Db_model->i_fetch(array(
+                'i_id' => $id,
+            ));
+            if(isset($matching_messages[0])){
+                //TODO Link to profile or chat widget link maybe?
+                return echo_i($matching_messages[0]);
+            }
         }
     }
     
@@ -1858,53 +1901,6 @@ function object_link($object,$id,$b_id=0){
     } else {
         return NULL;
     }
-}
-
-function quick_message($fb_user_id,$message){
-	$CI =& get_instance();
-	
-	//Detect what type of message is this?
-	if(substr($message,0,8)=='/attach '){
-		//Some sort of attachment:
-		$attachment_type = trim(one_two_explode('/attach ',':',$message));
-		
-		if(in_array($attachment_type,array('image','audio','video','file'))){
-			$temp = explode($attachment_type.':',$message,2);
-			$attachment_url = $temp[1];
-			$CI->Facebook_model->send_message(array(
-					'recipient' => array(
-							'id' => $fb_user_id
-					),
-					'message' => array(
-							'attachment' => array(
-									'type' => $attachment_type,
-									'payload' => array(
-											'url' => $attachment_url,
-									),
-							),
-					),
-					'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-			));
-			return 1;
-		}
-		
-		//Still here? oops:
-		return 0;
-		
-	} else {
-		
-		//Assumption is that this is a regular text message:
-		$CI->Facebook_model->send_message(array(
-				'recipient' => array(
-						'id' => $fb_user_id
-				),
-				'message' => array(
-						'text' => $message,
-				),
-				'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-		));
-		return 1;
-	}
 }
 
 function fetchMax($input_array,$searchKey){
@@ -2029,7 +2025,23 @@ function echo_us($us_data){
 }
 
 
-
+function echo_facebook_pixel($r_fb_pixel_id){
+    return "<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '".$r_fb_pixel_id."');
+fbq('track', 'PageView');
+</script>
+<noscript><img height=\"1\" width=\"1\" style=\"display:none\" src=\"https://www.facebook.com/tr?id=".$r_fb_pixel_id."&ev=PageView&noscript=1\" /></noscript>
+<!-- End Facebook Pixel Code -->";
+}
 
 
 function bigintval($value) {

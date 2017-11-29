@@ -96,6 +96,8 @@ class Db_model extends CI_Model {
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
+	    $this->db->order_by('u_status','DESC');
+	    $this->db->order_by('u_id','DESC');
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
@@ -346,7 +348,7 @@ class Db_model extends CI_Model {
 		
 		//Call facebook messenger API and get user details
 		//https://developers.facebook.com/docs/messenger-platform/user-profile/
-		$fb_profile = $this->Facebook_model->fetch_profile($u_fb_id);
+		$fb_profile = $this->Facebook_model->fetch_profile('381488558920384',$u_fb_id);
 		
 		if(!isset($fb_profile['first_name'])){
 			//There was an issue accessing this on FB
@@ -434,9 +436,10 @@ class Db_model extends CI_Model {
 	 ****************************** */
 	
 	function i_fetch($match_columns){
-		$this->db->select('i.*');
+		$this->db->select('*');
 		$this->db->from('v5_messages i');
 		$this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
+		$this->db->join('v5_users u', 'u.u_id = i.i_creator_id');
 		$this->db->where('c.c_status >=',0); //Not yet implemented
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
@@ -683,8 +686,24 @@ class Db_model extends CI_Model {
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
+	    $this->db->order_by('b_id','DESC');
 	    $q = $this->db->get();
 	    return $q->result_array();
+	}
+	
+	
+	function a_fetch(){
+	    //Format in special way, used in engagements page:
+	    $this->db->select('*');
+	    $this->db->from('v5_engagement_types a');
+	    $this->db->order_by('a_name');
+	    $q = $this->db->get();
+	    $types = $q->result_array();
+	    $return_array = array();
+	    foreach($types as $a){
+	        $return_array[$a['a_id']] = $a['a_name'];
+	    }
+	    return $return_array;
 	}
 	
 	function c_plain_fetch($match_columns){

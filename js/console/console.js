@@ -9,7 +9,7 @@ function update_dropdown(name,intvalue,count){
 	//Update dropdown UI:
 	$('#ui_'+name).html( $('#'+name+'_'+count).html() + '<b class="caret"></b>' );
 	//Reload tooldip:
-	$('[data-toggle="tooltip"]').addClass('').tooltip();
+	$('[data-toggle="tooltip"]').tooltip();
 }
 
 function open_tip(intent_id){
@@ -51,9 +51,11 @@ $(document).ready(function() {
 					if(data.success){
 						//Load the content:
 						$('#hb_'+data.intent_id).html('<a class="tipbtn" href="javascript:open_tip('+data.intent_id+')">'+tips_button+'</a>'); //Load the button
-						$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6">'+tips_button+'</div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
+						$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6">'+tips_button+'</div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')" data-toggle="tooltip" title="Will minimize temporarily and would re-open next time your load this page." data-placement="left"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
 						$("div#content_"+data.intent_id).append(data.help_content);
-						$("div#content_"+data.intent_id).append('<a href="javascript:gotit('+data.intent_id+')" class="btn btn-sm btn-primary gotit"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Got it</a>');
+						$("div#content_"+data.intent_id).append('<a href="javascript:gotit('+data.intent_id+')" class="btn btn-sm btn-primary gotit" data-toggle="tooltip" title="Will minimize and keep it minimized in the future. You can easily re-access again by clicking the information icon." data-placement="right"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Got it</a>');
+						//Reload tooldip:
+						$('[data-toggle="tooltip"]').tooltip();
 						//Show to user if not seen before:
 						if(data.auto_open){
 							open_tip(data.intent_id);

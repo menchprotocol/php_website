@@ -71,6 +71,57 @@ class Front extends CI_Controller {
 	 * Pitch Pages
 	 ****************************** */
 	
+	function affiliate_click($b_id,$u_id,$goto_apply){
+	    //Log this click under this user:
+	    $bootcamps = $this->Db_model->b_fetch(array(
+	        'b.b_id' => $b_id,
+	    ));
+	    if(count($bootcamps)<=0){
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
+	    }
+	    
+	    //Validate the user:
+	    $users = $this->Db_model->u_fetch(array(
+	        'u_id' => $u_id,
+	        'u_status >' => 0, //All active users
+	    ));
+	    if(count($users)<=0){
+	        
+	        //Invalid user, just redirect:
+	        header( 'Location: /'.$bootcamps[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
+	        
+	    } else {
+	        
+	        //Everything matches, lets log engagement:	        
+	        $e_new = $this->Db_model->e_create(array(
+	            'e_initiator_u_id' => 0, //At this point the user does not have an account as they just clicked on the link
+	            'e_message' => 'New visitor arrived from '.( $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : 'an unknown referrer' ).' with IP address of '.( $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : 'unknown'),
+	            'e_json' => json_encode(array(
+	                'ip' => $_SERVER['REMOTE_ADDR'],
+	                'get_browser' => get_browser(null, true),
+	                'user_agent' => $_SERVER['HTTP_USER_AGENT'],
+	                'referer_url' => $_SERVER["HTTP_REFERER"],
+	            )),
+	            'e_type_id' => 45, //Affiliate Link Clicked
+	            'e_b_id' => $b_id, //The bootcamp ID they referred to
+	            'e_recipient_u_id' => $u_id, //The affiliate ID
+	        ));
+	        
+	        //Lets create Cookie:
+	        $created_time = time();
+	        $this->load->helper('cookie');
+	        set_cookie(
+	            'menchref',
+	            $u_id.'-'.md5($u_id.'c00ki3'.$created_time.$e_new['e_id']).'-'.$created_time.'-'.$e_new['e_id'], //The referrer ID
+	            (60*24*3600), //60 Days
+	            '.mench.co'
+	        );
+	        
+	        //Lets redirect to Page:
+	        header( 'Location: /'.$bootcamps[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
+	    }
+	}
+	
 	function instructors(){
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => 'Launch A Bootcamp',
@@ -85,17 +136,18 @@ class Front extends CI_Controller {
 	 ****************************** */
 	
 	function bootcamps_browse(){
+	    
 	    //Require login for now:
 	    if(!auth(1)){
 	        $hm = $this->session->flashdata('hm');
 	        if($hm){
 	            //Set again and redirect:
 	            $this->session->set_flashdata('hm', $hm);
-	            header( 'Location: /' );
 	        }
+	        header( 'Location: /' );
 	    }
 	    
-	    //The public list of challenges:
+	    //The public list of bootcamps:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => 'Browse Bootcamps',
 	    ));
@@ -116,26 +168,28 @@ class Front extends CI_Controller {
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b.b_url_key' => $b_url_key,
+	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
 	    
 	    //Validate bootcamp:
 	    if(!isset($bootcamps[0]) || ($bootcamps[0]['b_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1))){
 	        //Invalid key, redirect back:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
 	    
 	    //Validate Class:
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
 	    if(!$focus_class){
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : $bootcamp['c_objective'].' Does not have any published classes.' ).'</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : $bootcamp['c_objective'].' Does not have any published classes.' ).'</div>');
 	    }
 	    
+    
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => $bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
 	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as an instructor. This bootcamp is hidden from the public until published live.</div>' : null ),
+	        'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(
 	        'bootcamp' => $bootcamp,
@@ -145,7 +199,7 @@ class Front extends CI_Controller {
 	}
 	
 	
-	function bootcamp_apply($b_url_key,$r_id){
+	function bootcamp_apply($b_url_key,$r_id=null){
 	    //The start of the funnel for email, first name & last name
 	    
 	    //Fetch data:
@@ -156,28 +210,58 @@ class Front extends CI_Controller {
 	    //Validate bootcamp:
 	    if(!isset($bootcamps[0])){
 	        //Invalid key, redirect back:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
 	    }
 	    
 	    //Validate Class ID that it's still the latest:
 	    $bootcamp = $bootcamps[0];
-	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
-	    if(!($focus_class['r_id']==$r_id)){
-	        //Invalid class ID, redirect back:
-	        redirect_message('/bootcamps/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer active.</div>');
+	    
+	    //Lets figure out how many active classes there are!
+	    $active_classes = array();
+	    foreach($bootcamp['c__classes'] as $class){
+	        if(filter_class(array($class),$class['r_id'])){
+	            array_push($active_classes,$class);
+	        }
 	    }
 	    
-	    $data = array(
-	        'title' => 'Reserve Seat in '.$bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'focus_class' => $focus_class,
-	    );
-	    
-	    //Load apply page:
-	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/bootcamp/apply' , $data);
-	    $this->load->view('front/shared/p_footer');
+	    if(count($active_classes)<1){
+	        
+	        //Ooops, no active classes!
+	        redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">No active classes found for this bootcamp.</div>');
+	        
+	    } elseif(!$r_id && count($active_classes)>1){
+	        
+	        //Let the students choose which class they like to join:
+	        $data = array(
+	            'bootcamp' => $bootcamp,
+	            'active_classes' => $active_classes,
+	            'title' => 'Join '.$bootcamp['c_objective'],
+	        );
+	        //Load apply page:
+	        $this->load->view('front/shared/p_header' , $data);
+	        $this->load->view('front/bootcamp/choose_class' , $data); //TODO Build this
+	        $this->load->view('front/shared/p_footer');
+	        
+	    } else {
+	        
+	        //Match the class and move on:
+	        $focus_class = filter_class($bootcamp['c__classes'],$r_id);
+	        if(!$focus_class){
+	            //Invalid class ID, redirect back:
+	            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer active.</div>');
+	        }
+	        
+	        $data = array(
+	            'title' => 'Reserve Seat in '.$bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
+	            'focus_class' => $focus_class,
+	            'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
+	        );
+	        
+	        //Load apply page:
+	        $this->load->view('front/shared/p_header' , $data);
+	        $this->load->view('front/bootcamp/apply' , $data);
+	        $this->load->view('front/shared/p_footer');
+	    }
 	}
-	
-	
 	
 }

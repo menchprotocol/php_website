@@ -9,29 +9,13 @@ class Bot extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 	}
-	
-	function t(){
-	    echo_json($this->Facebook_model->set_settings());
-		//print_r($this->Facebook_model->fetch_settings());
+
+	function set_settings($botkey){
+	    echo_json($this->Facebook_model->set_settings($botkey));
 	}
-	
-	function fetch(){
-	    echo_json($this->Db_model->b_fb_fetch('1443101719058431'));
-	}
-	
-	function fetch_entity($apiai_id){
-	    echo_json($this->Apiai_model->fetch_entity($apiai_id));
-	}
-	
-	function fetch_bootcamp($apiai_id){
-	    echo_json($this->Apiai_model->fetch_bootcamp($apiai_id));
-	}
-	
-	function prep_bootcamp($pid){
-	    echo_json($this->Apiai_model->prep_bootcamp($pid));
-	}
-	
-	
+	function fetch_settings($botkey){
+	    print_r($this->Facebook_model->fetch_settings($botkey));
+	}	
 	
 	function send_message(){
 	    
@@ -123,40 +107,47 @@ class Bot extends CI_Controller {
 	            
 	            //Proceed to Send Message:
 	            if($_POST['message_type']=='text'){
-	                
-	                //Send Message:
-	                $this->Facebook_model->batch_messages( $admissions[0]['u_fb_id'] , array(
-	                    array(
-	                        'text' => $_POST['text_payload'],
-	                        'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-	                    ),
-	                ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
-	                
-	                //Log Engagement:
-	                $this->Db_model->e_create(array(
-	                    'e_initiator_u_id' => intval($_POST['sender_u_id']),
-	                    'e_recipient_u_id' => intval($_POST['receiver_u_id']),
-	                    'e_message' => $_POST['text_payload'],
-	                    'e_json' => json_encode($_POST),
-	                    'e_type_id' => 7, //Outbound Message
-	                    'e_b_id' => $admissions[0]['b_id'],
-	                    'e_r_id' => $admissions[0]['r_id'],
-	                ));
-	                
-	                //Show success:
-	                echo_json(array(
-	                    'status' => 1,
-	                    'message' => 'Message sent',
-	                ));
-	                
+	                //Create Engagement message to be saved:
+	                $e_message = $_POST['text_payload'];
+	                $fb_message = array(
+	                    'text' => $_POST['text_payload'],
+	                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+	                );
 	            } else {
-	                
-	                //TODO Wire in Attachments:
-	                echo_json(array(
-	                    'status' => 0,
-	                    'message' => 'Sending Attachments Not Wired In Yet',
-	                ));
+	                //Create Engagement message to be saved:
+	                $e_message = '/attach '.$_POST['message_type'].':'.trim($_POST['attach_url']);
+	                $fb_message = array(
+	                    'attachment' => array(
+	                        'type' => $_POST['message_type'],
+	                        'payload' => array(
+	                            'url' => $_POST['attach_url'],
+	                            'is_reusable' => false,
+	                        ),
+	                    ),
+	                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+	                );
 	            }
+	            
+	            //Send Message:
+	            $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'] , array($fb_message), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
+	            
+	            //Log Engagement:
+	            $this->Db_model->e_create(array(
+	                'e_initiator_u_id' => intval($_POST['sender_u_id']),
+	                'e_recipient_u_id' => intval($_POST['receiver_u_id']),
+	                'e_message' => $e_message,
+	                'e_json' => json_encode($_POST),
+	                'e_type_id' => 7, //Outbound Message
+	                'e_b_id' => $admissions[0]['b_id'],
+	                'e_r_id' => $admissions[0]['r_id'],
+	            ));
+	            
+	            //Show success:
+	            echo_json(array(
+	                'status' => 1,
+	                'message' => 'Message sent',
+	            ));
+	            
 	        }
 	    }
 	}
@@ -174,7 +165,7 @@ class Bot extends CI_Controller {
 		//Facebook Webhook Authentication:
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
-		$website = $this->config->item('website');
+		$mench_bots = $this->config->item('mench_bots');
 		
 		
 		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
@@ -183,11 +174,9 @@ class Bot extends CI_Controller {
 		
 		//Fetch input data:
 		$json_data = json_decode(file_get_contents('php://input'), true);
-		
-		
-		
 		//This is for local testing only:
 		//$json_data = objectToArray(json_decode('{"object":"page","entry":[{"id":"381488558920384","time":1505007977668,"messaging":[{"sender":{"id":"1443101719058431"},"recipient":{"id":"381488558920384"},"timestamp":1505007977521,"message":{"mid":"mid.$cAAFa9hmVoehkmryMMVeaXdGIY9x5","seq":19898,"text":"Yes"}}]}]}'));
+		
 		
 		//Do some basic checks:
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
@@ -211,9 +200,9 @@ class Bot extends CI_Controller {
 		foreach($json_data['entry'] as $entry){
 			
 			//check the page ID:
-			if(!isset($entry['id']) || $entry['id']!==$website['fb_page_id']){
+		    if(!isset($entry['id']) || !array_key_exists($entry['id'],$mench_bots)){
 			    $this->Db_model->e_create(array(
-			        'e_message' => 'facebook_webhook() unrecognized page id ['.$entry['id'].'].',
+			        'e_message' => 'facebook_webhook() unrecognized page/bot id ['.$entry['id'].'].',
 			        'e_json' => json_encode($json_data),
 			        'e_type_id' => 8, //Platform Error
 			    ));
@@ -223,6 +212,7 @@ class Bot extends CI_Controller {
 			        'e_message' => 'facebook_webhook() call missing messaging Array().',
 			        'e_json' => json_encode($json_data),
 			        'e_type_id' => 8, //Platform Error
+			        'e_fb_page_id' => $entry['id'],
 			    ));
 				continue;
 			}
@@ -237,6 +227,7 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Db_model->u_fb_put($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 1, //Message Read
+				        'e_fb_page_id' => $entry['id'],
 				    ));
 					
 				} elseif(isset($im['delivery'])) {
@@ -246,6 +237,7 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Db_model->u_fb_put($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 2, //Message Delivered
+				        'e_fb_page_id' => $entry['id'],
 				    ));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -286,6 +278,7 @@ class Bot extends CI_Controller {
 					$eng_data = array(
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => json_encode($json_data),
+					    'e_fb_page_id' => $entry['id'],
 					);
 					
 					
@@ -321,17 +314,18 @@ class Bot extends CI_Controller {
 						    if(count($current_fb_users)>0){
 						        
 						        //This FB user is assigned to a different mench account, so we cannot activate them!
-						        $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						        $this->Facebook_model->batch_messages( '381488558920384', $im['sender']['id'] , array(
 						            array('text' => 'I could not activate your Messenger account because your Messenger account is already associated with another Mench account. Contact our support team to resolve this issue.'),
 						        ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 						        
 						        //Log engagement:
 						        $this->Db_model->e_create(array(
 						            'e_initiator_u_id' => $ref_u_id,
-						            'e_message' => 'MenchBot failed to activate user because Messenger account is associated with another Mench account.',
+						            'e_message' => 'Facebook Webhook failed to activate user because Messenger account is associated with another Mench account.',
 						            'e_json' => json_encode($json_data),
 						            'e_type_id' => 9, //Support Needing Graceful Errors
 						            'e_recipient_u_id' => $current_fb_users[0]['u_id'],
+						            'e_fb_page_id' => $entry['id'],
 						        ));
 						        
 						    } elseif(count($matching_users)>0 && strlen($matching_users[0]['u_fb_id'])>1){
@@ -342,14 +336,14 @@ class Bot extends CI_Controller {
 						        if($matching_users[0]['u_fb_id']==$im['sender']['id']){
 						            
 						            //All good, already activated with same account
-						            $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						            $this->Facebook_model->batch_messages( '381488558920384', $im['sender']['id'] , array(
 						                array('text' => 'I have already activated your Messenger account. You are good to go :)'),
 						            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 						            
 						        } else {
 						            
 						            //Ooops, Mench user seems to be activated with a different Messenger account!
-						            $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						            $this->Facebook_model->batch_messages( '381488558920384', $im['sender']['id'] , array(
 						                array('text' => 'I could not activate your Messenger account because your Mench account is already activated with another Messenger account. Contact our support team to resolve this issue.'),
 						            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 						            
@@ -359,6 +353,7 @@ class Bot extends CI_Controller {
 						                'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
 						                'e_json' => json_encode($json_data),
 						                'e_type_id' => 9, //Support Needing Graceful Errors
+						                'e_fb_page_id' => $entry['id'],
 						            ));
 						            
 						        }
@@ -372,7 +367,7 @@ class Bot extends CI_Controller {
 						         */
 						        
 						        //Fetch their profile from Facebook:
-						        $fb_profile = $this->Facebook_model->fetch_profile($im['sender']['id']);
+						        $fb_profile = $this->Facebook_model->fetch_profile('381488558920384',$im['sender']['id']);
 						        
 						        //Split locale into language and country
 						        $locale = explode('_',$fb_profile['locale'],2);
@@ -411,11 +406,12 @@ class Bot extends CI_Controller {
 						            'e_type_id' => 31, //Messenger Activated
 						            'e_b_id' => (count($admissions)==1 ? $admissions[0]['b_id'] : 0),
 						            'e_r_id' => (count($admissions)==1 ? $admissions[0]['r_id'] : 0),
+						            'e_fb_page_id' => $entry['id'],
 						        ));
 						        
 						        
 						        //Communicate the linking process with user:
-						        $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
+						        $this->Facebook_model->batch_messages( '381488558920384', $im['sender']['id'] , array(
 						            array('text' => 'Hi '.$update_profile['u_fname'].' 👋'),
 						            array('text' => 'My name is MenchBot and I will be your Personal Assistant to help you accomplish your bootcamp objective.'),
 						            array('text' => 'As your personal assistant I will send you important updates'.( count($admissions)==1 ? ' on your bootcamp "'.$admissions[0]['c_objective'].'" lead by '.$admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'] : ' on your '.count($admissions).' enrolled bootcamps' ).'. I will also forward all your messages to your bootcamp\'s instructor team so they can reply asap'.( count($admissions)==1 ? ', usually within '.$admissions[0]['r_response_time_hours'].' hours ⚡' : '.' )),
@@ -468,7 +464,7 @@ class Bot extends CI_Controller {
 					if(count($admissions)<=0){
 					    
 					    //None! Give students directions on how to enroll
-					    $this->Facebook_model->batch_messages( $user_id , array(
+					    $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
 					        array('text' => 'Hi there! You don\'t seem to be enrolled in a Mench bootcamp yet. You can join a Bootcamp using a private invitation URL. Visit us at https://mench.co to learn more.'),
 					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 					    
@@ -478,12 +474,13 @@ class Bot extends CI_Controller {
 					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 9, //Support Needing Graceful Errors
+					        'e_fb_page_id' => $entry['id'],
 					    ));
 					    
 					} elseif(count($admissions)>=2){
 					    
 					    //Ooops, how did they enroll in so many bootcamps?
-					    $this->Facebook_model->batch_messages( $user_id , array(
+					    $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
 					        array('text' => 'Error: You are somehow enrolled in multiple bootcamps. You can only enroll in 1 bootcamp at a time. I have notified Mench Admins to look into adjusting your application status and get back to you soon.'),
 					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 					    
@@ -493,6 +490,7 @@ class Bot extends CI_Controller {
 					        'e_message' => 'We Received inbound message from student enrolled in *multiple* bootcamps!',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 8, //Platform Error
+					        'e_fb_page_id' => $entry['id'],
 					    ));
 					    
 					} else {
@@ -530,6 +528,7 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Db_model->u_fb_put($im['sender']['id']),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 5, //Messenger Optin
+				        'e_fb_page_id' => $entry['id'],
 				    ));
 					
 				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -567,6 +566,7 @@ class Bot extends CI_Controller {
 					    'e_recipient_u_id' => ( $sent_from_us ? $u_id : 0 ),
 					    'e_b_id' => ( count($admissions)==1 ? $admissions[0]['r_b_id'] : 0 ),
 					    'e_r_id' => ( count($admissions)==1 ? $admissions[0]['r_id'] : 0 ),
+					    'e_fb_page_id' => $entry['id'],
 					);
 					
 					
@@ -588,7 +588,7 @@ class Bot extends CI_Controller {
 					if(!$sent_from_us && count($admissions)<=0){
 					    
 					    //None! Give students directions on how to enroll
-					    $this->Facebook_model->batch_messages( $user_id , array(
+					    $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
 					        array('text' => 'Hi there! You don\'t seem to be enrolled in a Mench bootcamp yet. You can join a Bootcamp using a private invitation URL. Visit us at https://mench.co to learn more.'),
 					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 					    
@@ -598,12 +598,13 @@ class Bot extends CI_Controller {
 					        'e_message' => 'Received inbound message from a user that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 9, //Support Needing Graceful Errors
+					        'e_fb_page_id' => $entry['id'],
 					    ));
 					    
 					} elseif(!$sent_from_us && count($admissions)>=2){
 					    
 					    //Ooops, how did they enroll in so many bootcamps?
-					    $this->Facebook_model->batch_messages( $user_id , array(
+					    $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
 					        array('text' => 'Error: You are somehow enrolled in multiple bootcamps. You can only enroll in 1 bootcamp at a time. I have notified Mench Admins to look into adjusting your application status and get back to you soon.'),
 					    ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
 					    
@@ -613,6 +614,7 @@ class Bot extends CI_Controller {
 					        'e_message' => 'We Received inbound message from student enrolled in *multiple* bootcamps!',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 8, //Platform Error
+					        'e_fb_page_id' => $entry['id'],
 					    ));
 					    
 					} else {
@@ -634,6 +636,7 @@ class Bot extends CI_Controller {
 					        'e_message' => 'facebook_webhook() Received message without Facebook Message ID.',
 					        'e_json' => json_encode($json_data),
 					        'e_type_id' => 8, //Platform Error
+					        'e_fb_page_id' => $entry['id'],
 					    ));
 					}
 					
@@ -674,6 +677,7 @@ class Bot extends CI_Controller {
 							        'e_message' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
 							        'e_json' => json_encode($json_data),
 							        'e_type_id' => 8, //Platform Error
+							        'e_fb_page_id' => $entry['id'],
 							    ));
 							}
 						}
@@ -690,6 +694,7 @@ class Bot extends CI_Controller {
 				        'e_message' => 'facebook_webhook() received unrecognized webhook call.',
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 8, //Platform Error
+				        'e_fb_page_id' => $entry['id'],
 				    ));
 				}
 			}
@@ -982,14 +987,7 @@ Array
 			
 			if(strlen($fb_user_id)>0){
 				
-				//Indicate to the user that we're typing:
-				$this->Facebook_model->send_message(array(
-						'recipient' => array(
-								'id' => $fb_user_id
-						),
-						'sender_action' => 'typing_on'
-				));
-				
+				//Indicate to the user that we're typing...
 				//We have a sender ID, see if this is registered using Facebook PSID
 
 				
@@ -1029,14 +1027,7 @@ Array
 				
 				//TODO: Log response engagement
 				
-				//Send message back to user:
-				$this->Facebook_model->send_message(array(
-						'recipient' => array(
-								'id' => $fb_user_id
-						),
-						'message' => $response,
-						'notification_type' => 'REGULAR' //Can be REGULAR, SILENT_PUSH or NO_PUSH
-				));
+				//Send message back to user...
 			}
 			
 		} else {

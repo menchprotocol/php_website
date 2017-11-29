@@ -63,9 +63,7 @@ $( document ).ready(function() {
 </script>
 
 
-
 <p style="border-bottom:3px solid #000; font-weight:bold; padding-bottom:10px; display:block;"><?= $title ?></p>
-
 
 
 <div class="section s1">

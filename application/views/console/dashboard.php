@@ -1,10 +1,6 @@
 <script>
 $(document).ready(function() {
-	//Watchout for the copy URL to clipboard:
-    $( ".copy_button" ).click(function() {
-    	copyToClipboard(document.getElementById("copy_button"));
-    	$( ".copy_button" ).hide().fadeIn().css('color','#fedd16');
-    });
+	
 });
 </script>
 
@@ -100,10 +96,6 @@ $(document).ready(function() {
         	    echo $instructor['u_fname'].' '.$instructor['u_lname'];
         	}
         	?></div>
-        <?php $website = $this->config->item('website'); ?>
-        <?php $url = $website['url'].'bootcamps/'.$bootcamp['b_url_key']; ?>
-      	<div>Landing Page URL: <a href="<?= $url ?>" id="landing_page_url" target="_blank"><u><?= $url ?></u></a> <i class="fa fa-clone copy_button" aria-hidden="true" data-toggle="tooltip" title="Copy Landing Page URL into Clipboard"></i></div>
-      	<div id="copy_button"><?= $url ?></div>
       	<div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status'],0,'top') ?></div>
       </div>
     </div>

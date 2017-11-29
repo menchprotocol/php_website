@@ -54,14 +54,6 @@ class Cron extends CI_Controller {
 	                                
 	                                //Increase counter:
 	                                $counter++;
-	                                
-	                                //Share link back if admin:
-	                                if( in_array($im['sender']['id'] , array('1443101719058431','1234880879950857' /* Shervin , Miguel */)) ){
-	                                     //Communicate the linking process with user:
-	                                     $this->Facebook_model->batch_messages( $im['sender']['id'] , array(
-	                                         array('text' => 'Saved your file on Mench☁️ and sending you this message just because you\'re '.$ep['u_fname'].' and you\'re AWESOME: '.$new_file_url),
-	                                     ), 'SILENT_PUSH' /*REGULAR/SILENT_PUSH/NO_PUSH*/);
-	                                }
 	                            }
 	                        }
 	                    }

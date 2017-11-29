@@ -41,7 +41,7 @@ if(isset($load_view)){
       <?php if(strlen($udata['u_fb_id'])>4){ ?>
         <p style="text-align:left;">You are already connected to MenchBot.</p>
       <?php } else { ?>
-        <a href="<?= messenger_activation_url($udata['u_id']) ?>" class="btn btn-primary">Connect to MenchBot</a>
+        <a href="<?= messenger_activation_url('381488558920384',$udata['u_id']) ?>" class="btn btn-primary">Connect to MenchBot</a>
       <?php } ?>
       </div>
       

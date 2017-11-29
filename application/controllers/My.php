@@ -114,7 +114,7 @@ class My extends CI_Controller {
 	            //Ooops, they dont have anything!
 	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Join a bootcamp below to get started.</div>');
 	            //Nothing found for this user!
-	            die('<script> window.location = "/bootcamps"; </script>');
+	            die('<script> window.location = "/"; </script>');
 	        }
 	        
 	        //How Many?
@@ -211,7 +211,7 @@ class My extends CI_Controller {
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
@@ -235,7 +235,7 @@ class My extends CI_Controller {
 	    //Did we find at-least one?
 	    if(count($admissions)<=0){
 	        //Log this error:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">You have not applied to join any bootcamp yet.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">You have not applied to join any bootcamp yet.</div>');
 	        exit;
 	    }
 	    
@@ -264,7 +264,7 @@ class My extends CI_Controller {
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    if(intval($ru_id)<1 || !isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        redirect_message('/bootcamps','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
@@ -287,6 +287,7 @@ class My extends CI_Controller {
 	        'u_id' => $_GET['u_id'],
 	        'u_key' => $_GET['u_key'],
 	        'admission' => $admissions[0],
+	        'r_fb_pixel_id' => $admissions[0]['r_fb_pixel_id'], //Will insert pixel code in header
 	    );
 	    
 	    //Load apply page:

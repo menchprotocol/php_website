@@ -61,7 +61,7 @@ class Api_v1 extends CI_Controller {
 	        //Build UI friendly Message:
 	        $help_content = null;
 	        foreach($messages as $i){
-	            $help_content .= echo_i($i);
+	            $help_content .= echo_i($i,$udata['u_fname']);
 	        }
 	        
 	        //See if this user has clicked on the "Got It" button yet or not.
@@ -171,7 +171,7 @@ class Api_v1 extends CI_Controller {
 	                'e_type_id' => 9, //Support Needing Graceful Errors
 	            ));
 	            
-	            //Send the email to their application:            
+	            //Send the email to their application:
 	            if(email_application_url($udata)){
 	                
 	                $application_status_salt = $this->config->item('application_status_salt');
@@ -192,17 +192,52 @@ class Api_v1 extends CI_Controller {
 	                    'goto_section' => 0,
 	                    'color' => '#FF0000',
 	                    'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: You can take 1 bootcamp at a time. We emailed you a link to manage your current bootcamps. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.',
-	                )));   
+	                )));
 	            }
 	            
 	            
 	        } elseif(count($enrollments)==0){
 	            
-	            //Existing user that is never enrolled here:
-	            $enrollments[0] = $this->Db_model->ru_create(array(
-	                'ru_r_id' 	=> $focus_class['r_id'],
-	                'ru_u_id' 	=> $udata['u_id'],
-	            ));
+	            //Existing user that is never enrolled here!
+	            $admission_application = array(
+	                'ru_r_id' 	        => $focus_class['r_id'],
+	                'ru_u_id' 	        => $udata['u_id'],
+	                'ru_affiliate_u_id' => 0,
+	            );
+	            
+	            //Lets see if they have an affiliate Cookie:
+	            $aff_cookie = get_cookie('menchref');
+	            if(isset($aff_cookie) && $aff_cookie && strlen($aff_cookie)>10){
+	                //Seems to be something here, lets see:
+	                $cookie_parts = explode('-',$aff_cookie);
+	                if(intval($cookie_parts[0]) && $cookie_parts[1]==md5( intval($cookie_parts[0]) . 'c00ki3' . $cookie_parts[2] . intval($cookie_parts[3]) )){
+	                    //Yes, this is a match!
+	                    $admission_application['ru_affiliate_u_id'] = intval($cookie_parts[0]);
+	                }
+	            }
+	            
+	            //Lets start their admission application:
+	            $enrollments[0] = $this->Db_model->ru_create($admission_application);
+	            
+	            //Did we have an affiliate?
+	            if($admission_application['ru_affiliate_u_id']){
+	                //Log Affiliate Engagement:
+	                $this->Db_model->e_create(array(
+	                    'e_initiator_u_id' => $udata['u_id'], //The User ID
+	                    'e_message' => 'User initiated admission. Pending payment and lead instructor approval.',
+	                    'e_json' => json_encode(array(
+	                        'input' => $_POST,
+	                        'udata' => $udata,
+	                        'rudata' => $enrollments[0],
+	                        'cookie' => $aff_cookie,
+	                        'initial_e_id' => intval($cookie_parts[3]),
+	                    )),
+	                    'e_type_id' => 46, //Affiliate User Initiated Admission
+	                    'e_b_id' => $bootcamp['b_id'],
+	                    'e_r_id' => $focus_class['r_id'],
+	                    'e_recipient_u_id' => $admission_application['ru_affiliate_u_id'], //The affiliate ID
+	                ));
+	            }
 	            
 	            //Assume all good, Log engagement:
 	            $this->Db_model->e_create(array(
@@ -216,6 +251,7 @@ class Api_v1 extends CI_Controller {
 	                'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                'e_r_id' => $focus_class['r_id'],
 	            ));
+	            
 	        }
 	        	        
 	        
@@ -298,13 +334,49 @@ class Api_v1 extends CI_Controller {
 	                ));
 	                
 	                
-	                //Insert Enrollment Status since they are new:
-	                $rudata = $this->Db_model->ru_create(array(
-	                    'ru_r_id' 	=> $focus_class['r_id'],
-	                    'ru_u_id' 	=> $udata['u_id'],
-	                ));
+	                //Existing user that is never enrolled here!
+	                $admission_application = array(
+	                    'ru_r_id' 	        => $focus_class['r_id'],
+	                    'ru_u_id' 	        => $udata['u_id'],
+	                    'ru_affiliate_u_id' => 0,
+	                );
 	                
+	                //Lets see if they have an affiliate Cookie:
+	                $aff_cookie = get_cookie('menchref');
+	                if(isset($aff_cookie) && $aff_cookie && strlen($aff_cookie)>10){
+	                    //Seems to be something here, lets see:
+	                    $cookie_parts = explode('-',$aff_cookie);
+	                    if(intval($cookie_parts[0]) && $cookie_parts[1]==md5( intval($cookie_parts[0]) . 'c00ki3' . $cookie_parts[2] . intval($cookie_parts[3]) )){
+	                        //Yes, this is a match!
+	                        $admission_application['ru_affiliate_u_id'] = intval($cookie_parts[0]);
+	                    }
+	                }
+	                
+	                //Insert Enrollment Status since they are new:
+	                $rudata = $this->Db_model->ru_create($admission_application);
+	                
+	                //Did it work?
 	                if($rudata['ru_id']>0){
+	                    
+	                    //Did we have an affiliate?
+	                    if($admission_application['ru_affiliate_u_id']){
+	                        //Log Affiliate Engagement:
+	                        $this->Db_model->e_create(array(
+	                            'e_initiator_u_id' => $udata['u_id'], //The User ID
+	                            'e_message' => 'User initiated admission. Pending payment and lead instructor approval. Intial click Tracker ID is #'.intval($cookie_parts[3]),
+	                            'e_json' => json_encode(array(
+	                                'input' => $_POST,
+	                                'udata' => $udata,
+	                                'rudata' => $rudata,
+	                                'initial_e_id' => intval($cookie_parts[3]),
+	                                'cookie' => $aff_cookie,
+	                            )),
+	                            'e_type_id' => 46, //Affiliate User Initiated Admission
+	                            'e_b_id' => $bootcamp['b_id'],
+	                            'e_r_id' => $focus_class['r_id'],
+	                            'e_recipient_u_id' => $admission_application['ru_affiliate_u_id'], //The affiliate ID
+	                        ));
+	                    }
 	                    
 	                    //Log Engagement:
 	                    $this->Db_model->e_create(array(
@@ -317,7 +389,7 @@ class Api_v1 extends CI_Controller {
 	                        'e_type_id' => 29, //Joined Class
 	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                        'e_r_id' => $focus_class['r_id'],
-	                    ));	                        
+	                    ));
 	                        
 	                    //Send email and log engagement:
 	                    if(email_application_url($udata)){
@@ -1107,6 +1179,7 @@ class Api_v1 extends CI_Controller {
 	        'r_office_hour_instructions' => ( strlen($_POST['r_office_hour_instructions'])>0 ? trim($_POST['r_office_hour_instructions']) : null ),
 	        'r_cancellation_policy' => ( isset($_POST['r_cancellation_policy']) && array_key_exists($_POST['r_cancellation_policy'],$refund_policies) ? $_POST['r_cancellation_policy'] : null ),
 	        'r_closed_dates' => ( strlen($_POST['r_closed_dates'])>0 ? trim($_POST['r_closed_dates']) : null ),
+	        'r_fb_pixel_id' => ( strlen($_POST['r_fb_pixel_id'])>0 ? bigintval($_POST['r_fb_pixel_id']) : 0 ),
 	        'r_usd_price' => ( strlen($_POST['r_usd_price'])>0 && floatval($_POST['r_usd_price'])>=0 ? floatval($_POST['r_usd_price']) : null ),
 	        'r_min_students' => intval($_POST['r_min_students']),
 	        'r_max_students' => ( strlen($_POST['r_max_students'])>0 && intval($_POST['r_max_students'])>=0 ? intval($_POST['r_max_students']) : null ),
@@ -1184,7 +1257,7 @@ class Api_v1 extends CI_Controller {
         
         //Generaye URL Key:
         //Cleans text:
-        $generated_key = clean_urlkey($_POST['c_objective']);
+        $generated_key = generate_hashtag($_POST['c_objective']);
         
         
         //Check for duplicates:
@@ -1289,6 +1362,7 @@ class Api_v1 extends CI_Controller {
 	function bootcamp_edit(){
 	    //Auth user and check required variables:
 	    $udata = auth(2);
+	    $reserved_hashtags = $this->config->item('reserved_hashtags');
 	    if(!$udata){
 	        //Display error:
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
@@ -1308,18 +1382,23 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    }
 	    
-	    //Cleanup the URL key:
-	    $_POST['b_url_key'] = clean_urlkey($_POST['b_url_key']);
-	    
-	    //Validate URL key to be unique:
+	    //Check hashtag:
+	    if(in_array(strtolower($_POST['b_url_key']),$reserved_hashtags)){
+	        die('<span style="color:#FF0000;">Error: You cannot use "'.$_POST['b_url_key'].'" as hashtag.</span>');
+	    } elseif(strlen($_POST['b_url_key'])>30){
+	        die('<span style="color:#FF0000;">Error: Hashtags should be less than 30 characters long.</span>');
+	    } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
+	        die('<span style="color:#FF0000;">Error: Hashtags can only include letters a-z and numbers 0-9.</span>');
+	    }
+	    //Validate Hashtag to be unique:
 	    $duplicate_bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_url_key' => $_POST['b_url_key'],
 	        'b.b_id !=' => intval($_POST['b_id']),
 	    ));
 	    if(count($duplicate_bootcamps)>0){
 	        //Ooops, we have a duplicate:
-	        die('<span style="color:#FF0000;">Error: Duplicate URL Key with <a href="/bootcamps/'.$_POST['b_url_key'].'" target="_blank">another bootcamp</a>.</span>');
-	    }	    
+	        die('<span style="color:#FF0000;">Error: Hashtag <a href="/'.$_POST['b_url_key'].'" target="_blank">#'.$_POST['b_url_key'].'</a> already taken.</span>');
+	    }
 	    
 	    //Generate update array for the bootcamp:
 	    $b_update = array(
@@ -1330,6 +1409,7 @@ class Api_v1 extends CI_Controller {
 
 	    //Updatye bootcamp:
 	    $this->Db_model->b_update( intval($_POST['b_id']) , $b_update);
+	    
 	    
 	    //Log Engagement for Bootcamp Edited:
 	    $this->Db_model->e_create(array(
@@ -1343,6 +1423,7 @@ class Api_v1 extends CI_Controller {
 	        'e_type_id' => ( $b_update['b_status']<0 && $b_update['b_status']!=$bootcamps[0]['b_status'] ? 17 : 18 ), //Bootcamp Deleted or Updated
 	        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
 	    ));
+	    
 	    
 	    //Is this a request to publish?
 	    if(intval($_POST['b_status'])==1 && !(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
@@ -1359,8 +1440,10 @@ class Api_v1 extends CI_Controller {
 	    }   
 	    
 	    //Update Href for Landing page buttons:
-	    echo '<script> $(".landing_page_url").attr("href", "/bootcamps/'.$_POST['b_url_key'].'"); </script>';
-	    echo '<script> $("#copy_button").text("https://mench.co/bootcamps/'.$_POST['b_url_key'].'"); </script>'; //Getting a bit lazy here...
+	    echo '<script> $(".landing_page_url").attr("href", "/'.$_POST['b_url_key'].'"); </script>';
+	    echo '<script> $("#marketplace_b_url").text("https://mench.co/'.$_POST['b_url_key'].'"); </script>'; //Getting a bit lazy here...
+	    echo '<script> $("#marketplace_b_url_ui").val("https://mench.co/'.$_POST['b_url_key'].'"); </script>'; //Getting a bit lazy here...
+	    
 	    //Show result 
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
@@ -1913,7 +1996,7 @@ class Api_v1 extends CI_Controller {
 	            //Create Message:
 	            $message = '/attach '.$i_media_type.':'.trim($new_file_url);
 	            
-	            //Create Link:
+	            //Create message:
 	            $i = $this->Db_model->i_create(array(
 	                'i_creator_id' => $udata['u_id'],
 	                'i_c_id' => intval($_POST['pid']),
@@ -1929,25 +2012,29 @@ class Api_v1 extends CI_Controller {
 	                )),
 	            ));
 	            
+	            //Fetch full message:
+	            $new_messages = $this->Db_model->i_fetch(array(
+	                'i_id' => $i['i_id'],
+	            ));
+	            
 	            //Log engagement:
 	            $this->Db_model->e_create(array(
 	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_message' => $message,
 	                'e_json' => json_encode(array(
 	                    'post' => $_POST,
 	                    'file' => $_FILES,
-	                    'after' => $i,
+	                    'after' => $new_messages[0],
 	                )),
 	                'e_type_id' => 34, //Message added
-	                'e_i_id' => intval($i['i_id']),
-	                'e_c_id' => intval($i['i_c_id']),
-	                'e_b_id' => $i['i_b_id'], //Share with bootcamp team
+	                'e_i_id' => intval($new_messages[0]['i_id']),
+	                'e_c_id' => intval($new_messages[0]['i_c_id']),
+	                'e_b_id' => $new_messages[0]['i_b_id'], //Share with bootcamp team
 	            ));
 	            
 	            //Echo message:
 	            echo_json(array(
 	                'status' => 1,
-	                'message' => echo_message($i),
+	                'message' => echo_message($new_messages[0],$_POST['level']),
 	            ));
 	        }
 	    }
@@ -1990,14 +2077,15 @@ class Api_v1 extends CI_Controller {
 	        if(count($urls)>1){
 	            echo_json(array(
 	                'status' => 0,
-	                'message' => 'You can only have 1 URL per message.',
+	                'message' => 'You can only add 1 URL per message.',
 	            ));
 	        } else {
 	            
 	            //Detect file type:
 	            if(count($urls)==1 && trim($urls[0])==trim($_POST['i_message'])){
 	                
-	                //This message is a URL only! Let's see maybe it points to a file or something:
+	                //This message is a URL only, perform raw URL to file conversion
+	                //This feature only available for newly created message, NOT in editing mode!
 	                $mime = remote_mime($urls[0]);
 	                $i_media_type = mime_type($mime);
 	                if($i_media_type=='file'){
@@ -2009,7 +2097,7 @@ class Api_v1 extends CI_Controller {
 	                $i_media_type = 'text'; //Possible: text,image,video,audio,file
 	            }
 	            
-	            //Create Link:
+	            //Create Message:
 	            $i = $this->Db_model->i_create(array(
 	                'i_creator_id' => $udata['u_id'],
 	                'i_c_id' => intval($_POST['pid']),
@@ -2025,24 +2113,28 @@ class Api_v1 extends CI_Controller {
 	                )),
 	            ));
 	            
+	            //Fetch full message:
+	            $new_messages = $this->Db_model->i_fetch(array(
+	                'i_id' => $i['i_id'],
+	            ));
+	            
 	            //Log engagement:
 	            $this->Db_model->e_create(array(
 	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_message' => $i['i_message'],
 	                'e_json' => json_encode(array(
 	                    'input' => $_POST,
-	                    'after' => $i,
+	                    'after' => $new_messages[0],
 	                )),
 	                'e_type_id' => 34, //Message added
-	                'e_i_id' => intval($i['i_id']),
+	                'e_i_id' => intval($new_messages[0]['i_id']),
 	                'e_c_id' => intval($_POST['pid']),
-	                'e_b_id' => $i['i_b_id'], //Share with bootcamp team
+	                'e_b_id' => $new_messages[0]['i_b_id'], //Share with bootcamp team
 	            ));
 	            
 	            //Print the challenge:
 	            echo_json(array(
 	                'status' => 1,
-	                'message' => echo_message($i),
+	                'message' => echo_message($new_messages[0],$_POST['level']),
 	            ));
 	        }    
 	    }   
@@ -2050,55 +2142,107 @@ class Api_v1 extends CI_Controller {
 	
 	function message_update(){
 	    
-	    //TODO update and start using
-	    exit;
-	    
 	    //Auth user and Load object:
 	    $udata = auth(2);
-	    
 	    if(!$udata){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Session. Refresh the Page to Continue.',
+	            'message' => 'Invalid Session. Refresh & try Again',
+	        ));
+	    } elseif(!isset($_POST['i_media_type'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Type',
 	        ));
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Message id.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Message ID',
+	        ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
-	    } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing i_message.</span>');
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Invalid Intent ID',
+	        ));
+	    } elseif(($_POST['i_media_type']=='text') && (!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0)){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Text Message',
+	        ));
+	    } elseif(!isset($_POST['i_status'])){
+	        echo_json(array(
+	            'status' => 0,
+	            'message' => 'Missing Status',
+	        ));
+	    } else {
+	        //Fetch Message:
+	        $messages = $this->Db_model->i_fetch(array(
+	            'i_id' => intval($_POST['i_id']),
+	            'i_status >=' => 0,
+	        ));
+	        
+	        //Fetch URLs for Text:
+	        if($_POST['i_media_type']=='text'){
+	            $urls = extract_urls($_POST['i_message']);
+	        }
+	        
+	        if($_POST['i_media_type']=='text' && count($urls)>1){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'You can only add 1 URL per message.',
+	            ));
+	        } elseif(!isset($messages[0])){
+	            echo_json(array(
+	                'status' => 0,
+	                'message' => 'Message Not Found',
+	            ));
+	        } else {
+	            
+	            //Define what needs to be updated:
+	            $to_update = array(
+	                'i_creator_id' => $udata['u_id'],
+	                'i_timestamp' => date("Y-m-d H:i:s"),
+	                'i_status' => intval($_POST['i_status']),
+	            );
+	            
+	            //Is this a text message?
+	            if($_POST['i_media_type']=='text'){
+	                $to_update['i_message'] = trim($_POST['i_message']);
+	                $to_update['i_url'] = ( count($urls)==1 ? $urls[0] : null );
+	            }
+	            
+	            //Now update the DB:
+	            $this->Db_model->i_update( intval($_POST['i_id']) , $to_update );
+	            
+	            //Refetch the message for display purposes:
+	            $new_messages = $this->Db_model->i_fetch(array(
+	                'i_id' => intval($_POST['i_id']),
+	            ));
+	            
+	            //Log engagement:
+	            $this->Db_model->e_create(array(
+	                'e_initiator_u_id' => $udata['u_id'],
+	                'e_json' => json_encode(array(
+	                    'input' => $_POST,
+	                    'before' => $messages[0],
+	                    'after' => $new_messages[0],
+	                )),
+	                'e_type_id' => 36, //Message edited
+	                'e_i_id' => $messages[0]['i_id'],
+	                'e_c_id' => intval($_POST['pid']),
+	                'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
+	            ));
+	            
+	            //Print the challenge:
+	            echo_json(array(
+	                'status' => 1,
+	                'message' => echo_i($new_messages[0]),
+	                'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
+	                'success_icon' => '<img src="/img/round_done.gif?time='.time().'" class="loader" />',
+	                'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
+	            ));
+	        }
 	    }
-	    
-	    //Fetch Message:
-	    $messages = $this->Db_model->i_fetch(array(
-	        'i_id' => intval($_POST['i_id']),
-	    ));
-	    if(!isset($messages[0])){
-	        die('<span style="color:#FF0000;">Error: Invalid Message id.</span>');
-	    }
-	    
-	    //Now update the DB:
-	    $this->Db_model->i_update( intval($_POST['i_id']) , array(
-	        'i_creator_id' => $udata['u_id'],
-	        'i_timestamp' => date("Y-m-d H:i:s"),
-	        'i_message' => trim($_POST['i_message']),
-	    ));
-	    
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_json' => json_encode(array(
-	            'input' => $_POST,
-	            'before' => $messages[0],
-	        )),
-	        'e_type_id' => 36, //Message edited
-	        'e_i_id' => $messages[0]['i_id'],
-	        'e_c_id' => intval($_POST['pid']),
-	        'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
-	    ));
-	    
-	    //Show result:
-	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
 	function message_delete(){
@@ -2164,8 +2308,6 @@ class Api_v1 extends CI_Controller {
 	    //Update them all:
 	    foreach($_POST['new_sort'] as $i_rank=>$i_id){
 	        $this->Db_model->i_update( intval($i_id) , array(
-	            'i_creator_id' => $udata['u_id'],
-	            'i_timestamp' => date("Y-m-d H:i:s"),
 	            'i_rank' => intval($i_rank),
 	        ));
 	    }

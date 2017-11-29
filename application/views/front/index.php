@@ -12,6 +12,7 @@ $udata = $this->session->userdata('user');
 				</div>
 			</div>
 			<div class="col-md-6">
+			
 				<?php /*
 				<div class="info">
 					<h2 class="title" style="margin-top:30px;">For Students</h2>

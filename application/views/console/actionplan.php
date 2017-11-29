@@ -424,7 +424,8 @@ function msg_start_edit(i_id){
 	$("#ul-nav-"+i_id+" .edit-off").hide();
 	$("#ul-nav-"+i_id+" .edit-on").fadeIn().css("display","inline-block");
 	$("#ul-nav-"+i_id+">div").css('width','100%');
-	
+	$("#ul-nav-"+i_id+" textarea").focus();
+
 	//Watch typing:
 	$(document).keyup(function(e) {		
 		//Watch for action keys:
@@ -441,40 +442,52 @@ function msg_cancel_edit(i_id,success=0){
 	$("#ul-nav-"+i_id+" .edit-off").fadeIn().css("display","inline-block");
 	$("#ul-nav-"+i_id+" .edit-on").hide();
 	$("#ul-nav-"+i_id+">div").css('width','inherit');
-	
-	if(!success){
-		//Revert text changes to original:
-		var original = $("#ul-nav-"+i_id+" .original").text(); //Original content
-		$("#ul-nav-"+i_id+" textarea").val(original); //Revert Textarea
-	}
 }
 
 function message_save_updates(i_id){
-	//Make sure there is some value:
-	var i_message = $("#ul-nav-"+i_id+" textarea").val();
-	if(i_message.length<1){
-		alert('Message is required. Try again.');
-		return false;
-	}
-	
-	//Revert View:
-	msg_cancel_edit(i_id,1);
 	
 	//Show loader:
 	$("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
+
+	//Revert View:
+	msg_cancel_edit(i_id,1);
 	
 	//Update message:
-	$.post("/api_v1/message_update", {i_id:i_id, i_message:i_message, pid:$('#pid').val()}, function(data) {
-		//Update UI to confirm with user:
-		$("#ul-nav-"+i_id+" .edit-updates").html('<div>'+data+'</div>');
+	$.post("/api_v1/message_update", {
 		
-		//Update original:
-		$("#ul-nav-"+i_id+" .original").text(i_message);
+		i_id:i_id,
+		i_message:$("#ul-nav-"+i_id+" textarea").val(),
+		i_status:$("#i_status_"+i_id).val(),
+		pid:$('#pid').val(),
+		level:($('#next_level').val()-1),
+		i_media_type:$("#ul-nav-"+i_id+" .i_media_type").val(),
 		
+	}, function(data) {
+		
+		if(data.status){
+			
+			//All good, lets show new text:
+			if($("#ul-nav-"+i_id+" .i_media_type").val()=='text'){
+				$("#ul-nav-"+i_id+" .text_message").html(data.message);
+			}
+			//Update new status:
+			$("#ul-nav-"+i_id+" .the_status").html(data.new_status);
+			//Update new uploader:
+			$("#ul-nav-"+i_id+" .i_uploader").html(data.new_uploader);
+			//Show success here
+			$("#ul-nav-"+i_id+" .edit-updates").html('<b>'+data.success_icon+'</b>');
+		} else {
+			//Oops, some sort of an error, lets
+			$("#ul-nav-"+i_id+" .edit-updates").html('<b style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+data.message+'</b>');
+		}
+
+		//Tooltips:
+ 		$('[data-toggle="tooltip"]').tooltip();
+
 		//Disapper in a while:
 		setTimeout(function() {
-			$("#ul-nav-"+i_id+" .edit-updates>div").fadeOut();
-	    }, 3000);
+			$("#ul-nav-"+i_id+" .edit-updates>b").fadeOut();
+	    }, 10000);
 	});
 }
 
@@ -590,6 +603,7 @@ function save_attachment(droppedFiles,uploadType){
   	    
         ajaxData.append( 'upload_type', uploadType );
         ajaxData.append( 'i_status', $('#i_status').val() );
+        ajaxData.append( 'level', ($('#next_level').val()-1) );
         ajaxData.append( 'pid', $('#pid').val() );
         ajaxData.append( 'b_id', $('#b_id').val() );
         
@@ -633,6 +647,7 @@ function msg_create(){
 		pid:$('#pid').val(),
 		i_message:$('#i_message').val(),
 		i_status:$('#i_status').val(),
+		level:($('#next_level').val()-1),
 		
 	}, function(data) {
 
@@ -721,7 +736,7 @@ function msg_create(){
     	
 		echo '<div id="message-sorting" class="list-group list-messages" style="margin-bottom:0;">';
 		foreach($i_messages as $i){
-		    echo echo_message($i);
+		    echo echo_message($i,$level);
 		}
 		echo '</div>';
 		
@@ -749,7 +764,7 @@ function msg_create(){
         		
         		echo '<ul style="list-style:none;">';
 
-            		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top:0;">ADD</a></li>';
+            		echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top: 2px; padding: 5px 8px;">ADD</a></li>';
             		
             		echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
             		echo echo_status_dropdown('i','i_status',($level==1?3:1),($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level);
@@ -824,7 +839,7 @@ function msg_create(){
     			<li>Default status is <?= status_bible('c',1) ?>.</li>
     			<li>To prevent this from being shown to students set status to <?= status_bible('c',0) ?>.</li>
     		</ul>
-            <?php echo_status_dropdown('c','c_status',$intent['c_status']); ?>
+            <?= echo_status_dropdown('c','c_status',$intent['c_status']); ?>
         </div>
         
        

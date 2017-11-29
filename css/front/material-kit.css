@@ -246,7 +246,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle:focus, .open >
 .navbar .navbar-nav > li > a.btn.btn-default.dropdown-toggle:hover {
   background-color: #efefef;
-  color: #999;
+  color: #2f2639;
 }
 .btn:focus, .btn:active, .btn:hover, .btn.btn-default:focus, .btn.btn-default:active, .btn.btn-default:hover,
 .navbar .navbar-nav > li > a.btn:focus,
@@ -1984,7 +1984,7 @@ label.control-label {
 
 .form-group {
   padding-bottom: 0;
-  margin: 5px 0 0 0;
+  margin: 0 0 0 0;
 }
 .form-group .form-control {
   margin-bottom: 0;

@@ -6,21 +6,172 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 0.991,
+    'version' => 1.0,
     'legaL_name' => 'Mench Media Inc.',
-    'url' => 'https://mench.co/', //Important to end with / as other links depend on this.
+    'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
     'email' => 'shervin@mench.co',
-    'fb_page_id' => '381488558920384',
-    'fb_app_id' => '1782431902047009',
-    'bot_ref_url' => 'https://m.me/menchbot',
-    'access_token' => 'EAAZAVHMRbmyEBAJET1DMKAAQPOoHZABRs9hXxTk6l7g0ETkwETgJatVIaMIXRJ9DclVB61xkNidUYZC512MJKpfNlIGGDaFzHuIq6JrfbOtZADlxH39cI2AIOYSMXEw7pg4W3faIFm5Ynq4nPTArSOUD3vQ2xNoGNh9TDT57BQZDZD',
 );
+
+//All active bots connected to the platform:
+$config['mench_bots'] = array(
+    '381488558920384' => array(
+        'name' => 'MenchBot', //For Students
+        'u_db' => 'u_fb_id',
+        'fb_page_id' => '381488558920384',
+        'fb_app_id' => '1782431902047009',
+        'bot_ref_url' => 'https://m.me/menchbot',
+        'access_token' => 'EAAZAVHMRbmyEBAJET1DMKAAQPOoHZABRs9hXxTk6l7g0ETkwETgJatVIaMIXRJ9DclVB61xkNidUYZC512MJKpfNlIGGDaFzHuIq6JrfbOtZADlxH39cI2AIOYSMXEw7pg4W3faIFm5Ynq4nPTArSOUD3vQ2xNoGNh9TDT57BQZDZD',
+        'settings' => array(
+            'get_started' => array(
+                'payload' => 'GET_STARTED',
+            ),
+            'greeting' => array(
+                array(
+                    'locale' => 'default',
+                    'text' => 'I\'m a Personal Assistant Bot for your Mench Bootcamps. I can help with:
+                    
+- Bootcamp Action Plan
+- Reminder Notifications
+- Asking Questions',
+                ),
+            ),
+            'whitelisted_domains' => array(
+                'http://local.mench.co',
+                'https://mench.co',
+            ),
+            'persistent_menu' => array(
+                array(
+                    'locale' => 'default',
+                    'composer_input_disabled' => false,
+                    'call_to_actions' => array(
+                        array(
+                            'title' => '🚩 Action Plan',
+                            'type' => 'web_url',
+                            'url' => 'https://mench.co/my/actionplan',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
+                        /*
+                         array(
+                         'title' => '🏆 Leaderboard',
+                         'type' => 'web_url',
+                         'url' => 'https://mench.co/my/leaderboard',
+                         'messenger_extensions' => true,
+                         'webview_height_ratio' => 'tall',
+                         'webview_share_button' => 'hide',
+                         ),
+                         array(
+                         'title' => '⚙ My Account',
+                         'type' => 'web_url',
+                         'url' => 'https://mench.co/my/account',
+                         'messenger_extensions' => true,
+                         'webview_height_ratio' => 'tall',
+                         'webview_share_button' => 'hide',
+                         ),
+                         /*
+                         array(
+                         'title' => 'My Dashboard',
+                         'type' => 'nested',
+                         'call_to_actions' => array(
+                         array(
+                         'title' => 'Leaderboard',
+                         'type' => 'web_url',
+                         'url' => 'https://mench.co/my/ledaerboard',
+                         'webview_height_ratio' => 'tall',
+                         'webview_share_button' => 'hide',
+                         ),
+                         array(
+                         'title' => 'Assignments',
+                         'type' => 'web_url',
+                         'url' => 'https://mench.co/my/assignments',
+                         'webview_height_ratio' => 'tall',
+                         'webview_share_button' => 'hide',
+                         ),
+                         ),
+                         ),
+                         array(
+                         'title' => 'Help & Support',
+                         'type' => 'postback',
+                         'payload' => 'HISTORY_PAYLOAD',
+                         ),
+                         */
+                    ),
+                ),
+            ),
+        ),
+    ),
+    '1169880823142908' => array(
+        'name' => 'Mench Instructor Hub', //For Instructors
+        'u_db' => 'u_fb_hub_id',
+        'fb_page_id' => '1169880823142908',
+        'fb_app_id' => '139884580073435',
+        'bot_ref_url' => 'https://m.me/1169880823142908', //TODO Miguel to update this
+        'access_token' => 'EAABZCOWq0b9sBABYALs8Hh4d4yVLc3qplDTZATOa3k4db57aUTeSsyKcZAJxkJfRobTl1pCSN7r4auQSPVvbX3JHa4wfu8VpM6mVjZCXXEtUNCvZCeVf0EBZAZAoPaAZA6ocZCeD5j1QUtXdeyvYau4FCnvZARwEsxP0UpFnmWZBZAMFPQZDZD',
+        'settings' => array(
+            'get_started' => array(
+                'payload' => 'GET_STARTED',
+            ),
+            'greeting' => array(
+                array(
+                    'locale' => 'default',
+                    'text' => 'I\'m a Personal Assistant Bot for Mench Instructors. I can help with:
+                    
+- Bootcamp Notifications
+- Student Updates
+- Q&A w/ Mench Team',
+                ),
+            ),
+            'whitelisted_domains' => array(
+                'http://local.mench.co',
+                'https://mench.co',
+            ),
+        ),
+    )
+);
+
+
 
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['file_limit_mb'] = 200; //The max file size to be uploaded
 
+
+
+//No bootcamps can be created using these hashtags
+//URL structure is: https://mench.co/HASHTAG
+$config['reserved_hashtags'] = array(
+    'bootcamps',
+    'bootcamp',
+    'mench',
+    'login',
+    'logout',
+    'user',
+    'users',
+    'account',
+    'accounts',
+    'profile',
+    'profiles',
+    'terms',
+    'start',
+    'launch',
+    'contact',
+    'contactus',
+    'faq',
+    'ses',
+    'application_status',
+    'application',
+    'apply',
+    'ref',
+    'console',
+    'help',
+    'hashtag',
+    'instructor',
+    'instructors',
+    'student',
+    'students',
+);
 
 //The core objects of the platform:
 $config['core_objects'] = array(
@@ -41,12 +192,12 @@ $config['core_objects'] = array(
         'o_names' => 'Bootcamp Instructors',
     ),
     'c' => array(
-        'o_name' => 'Milestones',
-        'o_names' => 'Milestone',
+        'o_name' => 'Intent',
+        'o_names' => 'Intent',
     ),
     'cr' => array(
-        'o_name' => 'Milestone Link',
-        'o_names' => 'Milestone Links',
+        'o_name' => 'Intent Link',
+        'o_names' => 'Intent Links',
     ),
     'r' => array(
         'o_name' => 'Class',
@@ -324,9 +475,9 @@ $config['timezones'] = array(
     '-1'        => "(GMT-01:00) Azores, Cape Verde Is.",
     '0'         => "(GMT 0:00) London, Dublin, Lisbon, Casablanca",
     '1'         => "(GMT+01:00) Amsterdam, Berlin, Paris, etc...",
-    '2'         => "(GMT+02:00) Athens, Istanbul, Jerusalem, etc...",    
-    '3'         => "(GMT+03:00) Moscow, Baghdad, Kuwait, Riyadh",    
-    '3.5'       => "(GMT+03:30) Tehran",   
+    '2'         => "(GMT+02:00) Athens, Istanbul, Jerusalem, etc...",
+    '3'         => "(GMT+03:00) Moscow, Baghdad, Kuwait, Riyadh",
+    '3.5'       => "(GMT+03:30) Tehran",
     '4'         => "(GMT+04:00) Baku, Volgograd, Muscat, etc...",
     '4.5'       => "(GMT+04:30) Kabul",
     '5'         => "(GMT+05:00) Karachi, Tashkent, Kolkata, etc...",

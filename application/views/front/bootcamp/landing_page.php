@@ -43,7 +43,7 @@ foreach($bootcamp['c__classes'] as $class){
         if($class['r_id']==$focus_class['r_id']){
             $class_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
         } else {
-            $class_selection .= '<a href="/bootcamps/'.$bootcamp['b_url_key'].'/'.$class['r_id'].'" class="list-group-item">';
+            $class_selection .= '<a href="/'.$bootcamp['b_url_key'].'/'.$class['r_id'].'" class="list-group-item">';
             $class_selection .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
         }
         
@@ -105,8 +105,8 @@ $( document ).ready(function() {
       		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
 	});
 });
-</script>
 
+</script>
 
 
 <?php if($focus_class){ ?>
@@ -148,7 +148,7 @@ $( document ).ready(function() {
             <?php } ?>
             
             <div style="padding:10px 0 30px; text-align:center;">
-            	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $focus_class['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
             	<div>Admission Ends in <span id="reg1"></span></div>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
@@ -398,7 +398,7 @@ $( document ).ready(function() {
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-	<a href="/bootcamps/<?= $bootcamp['b_url_key'] ?>/<?= $focus_class['r_id'] ?>/apply" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
 	<div>Admission Ends in <span id="reg3"></span></div>
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
