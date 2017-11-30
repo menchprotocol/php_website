@@ -2,9 +2,14 @@
 <br />
 
 <div class="login-content">
-	<form method="post" action="/api_v1/login">
-		<input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
-		<div class="input-group">
+	
+	<?php 
+	//Check to make sure it's Chrome:
+	if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false || isset($_GET['skip'])) {
+	    ?>
+	    <form method="post" action="/api_v1/login">
+	    <input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
+		<div class="input-group" style="margin-bottom: 5px;">
 			<span class="input-group-addon">
 				<i class="material-icons">email</i>
 			</span>
@@ -17,19 +22,13 @@
 			</span>
 			<div class="form-group is-empty"><input type="password" name="u_password" required="required" placeholder="Password" class="form-control"><span class="material-input"></span></div>
 		</div>
-		
-		<div id="loginb" class="submit-btn">
-			<?php 
-			//Check to make sure it's Chrome:
-			if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false || isset($_GET['skip'])) {
-			    echo '<input type="submit" class="btn btn-primary btn-raised btn-round" value="Login">';
-			} else {
-			    echo '<br /><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>You Cannot Login</b> because we currently support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.';
-			}
-			?>
-			
-		</div>
-	</form>
+	    <div id="loginb" class="submit-btn"><input type="submit" class="btn btn-primary btn-raised btn-round" value="Login"></div>
+	    </form>
+	    <?php
+	} else {
+	    echo '<br /><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>You Cannot Login</b> because we currently support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.';
+	}
+	?>
 	<br />
 	
 	<div class="extra-info">
