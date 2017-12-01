@@ -210,7 +210,7 @@ class Front extends CI_Controller {
 	    //Validate bootcamp:
 	    if(!isset($bootcamps[0])){
 	        //Invalid key, redirect back:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
 	    }
 	    
 	    //Validate Class ID that it's still the latest:
