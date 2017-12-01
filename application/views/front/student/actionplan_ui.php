@@ -176,6 +176,10 @@ if($level>2){
 if($level<3 && !($intent['c_is_last']=='t')){
     echo '<h4>'.( $level==1 ? '<i class="fa fa-flag" aria-hidden="true"></i> '.$sprint_units[$admission['b_sprint_unit']]['name'].' Milestones' : '<i class="fa fa-list-ul" aria-hidden="true"></i> '.ucwords($admission['b_sprint_unit']).' #'.$sprint_index.' Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
     echo '<div id="list-outbound" class="list-group">';
+    
+    /*
+     * Initially was suppoed to educate user on what a checked check box looks like. Then realized its adding complexity.
+     * 
     if($level==1){
         //Show their successful admission to also train on UI:
         //<a href="/my/applications/?u_key='.md5($matching_users[0]['u_id'].$application_status_salt).'&u_id='.$matching_users[0]['u_id'].'&show_action_plan=1"
@@ -186,6 +190,7 @@ if($level<3 && !($intent['c_is_last']=='t')){
         //echo '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>3</span>';
         echo '</li>';
     }
+    */
     $sprint_index = 0;
     $done_count = 0;
     foreach($intent['c__child_intents'] as $sub_intent){

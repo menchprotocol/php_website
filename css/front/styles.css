@@ -933,7 +933,7 @@ h4 .tip-badge{
     clear:both;
     margin-bottom:15px;
 }
-
+.badge-current{display:inline-block; font-weight:bold; background-color:#2f2639; color:#FFF; float:none !important; font-size:14px; }
 .pricing-badge {
     padding: 4px 6px;
     cursor:help;

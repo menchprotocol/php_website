@@ -65,7 +65,7 @@ $website = $this->config->item('website');
 	    	`
 	    		<?php 
 	    		if(isset($bootcamp)){
-	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page" class="landing_page_url"><i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
+	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page" class="landing_page_url"><i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
 	    		}
 	    		?>
 	    		<ul class="nav">

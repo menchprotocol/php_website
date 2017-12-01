@@ -118,7 +118,7 @@ function save_settings(){
     	<div class="help_body maxout" id="content_726"></div>
     	<input type="text" disabled value="<?= $aff_b_url ?>" class="form-control disabled" />
     	<div style="margin-bottom:20px;">
-        	<a href="<?= $aff_b_url ?>" target="_blank" class="btn btn-sm btn-default">Open &nbsp;<i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a>
+        	<a href="<?= $aff_b_url ?>" target="_blank" class="btn btn-sm btn-default">Open &nbsp;<i class="fa fa-external-link-square" style="font-size:1em;" aria-hidden="true"></i></a>
         	<a href="#" class="btn btn-sm btn-default aff_b_url">Copy &nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a>
         	<div id="aff_b_url" style="display:none;"><?= $aff_b_url ?></div>
         </div>
@@ -129,7 +129,7 @@ function save_settings(){
     	<div class="help_body maxout" id="content_727"></div>
     	<input type="text" disabled value="<?= $aff_a_url ?>" class="form-control disabled" />
         <div style="margin-bottom:20px;">
-        	<a href="<?= $aff_a_url ?>" target="_blank" class="btn btn-sm btn-default">Open &nbsp;<i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a>
+        	<a href="<?= $aff_a_url ?>" target="_blank" class="btn btn-sm btn-default">Open &nbsp;<i class="fa fa-external-link-square" style="font-size:1em;" aria-hidden="true"></i></a>
         	<a href="#" class="btn btn-sm btn-default aff_a_url">Copy &nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a>
         	<div id="aff_a_url" style="display:none;"><?= $aff_a_url ?></div>
         </div>
@@ -140,7 +140,7 @@ function save_settings(){
     	<div class="help_body maxout" id="content_725"></div>
     	<input type="text" disabled id="marketplace_b_url_ui" value="https://mench.co/<?= $bootcamp['b_url_key'] ?>" class="form-control disabled" />
     	<div style="margin-bottom:20px;">
-        	<a href="/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-sm btn-default landing_page_url">Open &nbsp;<i class="fa fa-external-link" style="font-size:1em;" aria-hidden="true"></i></a>
+        	<a href="/<?= $bootcamp['b_url_key'] ?>" target="_blank" class="btn btn-sm btn-default landing_page_url">Open &nbsp;<i class="fa fa-external-link-square" style="font-size:1em;" aria-hidden="true"></i></a>
         	<a href="#" class="btn btn-sm btn-default marketplace_b_url">Copy &nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a>
         	<div id="marketplace_b_url" style="display:none;"><?= $marketplace_b_url ?></div>
         </div>

@@ -283,7 +283,7 @@ $start_times = $this->config->item('start_times');
 		<li>Track your application progress</li>
 		<li>Experience how students use Mench</li>
 	</ul>
-	<p style="margin:40px 0"><a href="<?= messenger_activation_url('381488558920384',$admission['u_id']) ?>" target="_blank">Click Here to Activate Your MenchBot</a> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></p>
+	<p style="margin:40px 0"><a href="<?= messenger_activation_url('381488558920384',$admission['u_id']) ?>" target="_blank">Click Here to Activate Your MenchBot</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
 </div>
 <?php } ?>
 

@@ -207,7 +207,7 @@ function echo_i($i,$first_name=null){
             $CI =& get_instance();
             $website = $CI->config->item('website');
             $url = $website['url'].'ref/'.$i['i_id'];
-            $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+            $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
         }
         
         $echo_ui .= '<div class="msg">'.nl2br( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
@@ -338,20 +338,51 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
 
     //Calculate deadlines if level 2 Milestones items to see which one to show!
     $unlocked_action_plan = false;
+    $is_now = '';
     if($level==2){
+        if($sprint_index>=2){
+            //This the second milestone or more, make sure the previous milestone is done before unlocking this
+            //We need to check if all child tasks are marked as complete:
+            $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
+            $last_milestone = ( $sprint_index - 2 );
+            //Make sure this last milestone is not a Break Milestone:
+            while(isset($b['c__child_intents'][$last_milestone]['c_is_last']) && $b['c__child_intents'][$last_milestone]['c_is_last']=='t'){
+                $last_milestone--;
+            }
+                
+            
+            if($last_milestone>=0){
+                foreach($b['c__child_intents'][$last_milestone]['c__child_intents'] as $task){
+                    if(!isset($us_data[$task['c_id']])){
+                        //No submission for this, definitely not done!
+                        $aggregate_status = -2; //A special meaning here, which is not found
+                        break;
+                    } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
+                        $aggregate_status = $us_data[$task['c_id']]['us_status'];
+                    }
+                }
+            }   
+        }
         //Do some time calculations for the point system:
         $open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index-1)))))+(intval($b['r_start_time_mins'])*60);
-        $unlocked_action_plan = ( time() >= $open_date );
+        $next_open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index)))))+(intval($b['r_start_time_mins'])*60);
+        $is_current = (time() >= $open_date);
+        $next_is_current = (time() >= $next_open_date);
+        $unlocked_action_plan = ( $is_current && ( $sprint_index<2 || $aggregate_status>0 ) );
+        $is_now = ( $is_current && !$next_is_current ? ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> HERE NOW</span>' : '' );
     }
-    
 
     $show_a = true; //Most cases
     //Left content
     if($level==0){
+        //Not possible for now as each student can take 1 bootcamp at a time.
         $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
     } elseif($level==3 || $unlocked_action_plan){
         $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
+        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+        
+        
         
         if($level==2){
             
@@ -417,6 +448,8 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
         //This sprint has Assignments:
         $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
     }
+    
+    $ui .= $is_now;
     
     //TODO Need to somehow fetch classes in here...
     //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($admission['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
@@ -926,7 +959,7 @@ function calculate_bootcamp_status($b){
     
     $progress_percentage = round($progress_gained/$progress_possible*100);
     if($progress_percentage==100){
-        array_push($call_to_action,'Review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link" style="font-size: 0.8em;" aria-hidden="true"></i></a> to make sure it all looks good.');
+        array_push($call_to_action,'Review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to make sure it all looks good.');
         array_push($call_to_action,'Wait until Mench team updates your bootcamp status to '.status_bible('b',2));
         array_push($call_to_action,'Launch admissions by sending a message to your student list.');
     }
