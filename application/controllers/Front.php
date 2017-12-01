@@ -181,7 +181,7 @@ class Front extends CI_Controller {
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
 	    if(!$focus_class){
-	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : $bootcamp['c_objective'].' Does not have any published classes.' ).'</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : $bootcamp['c_objective'].' does not have any classes open for admission.' ).'</div>');
 	    }
 	    
     

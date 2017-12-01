@@ -548,7 +548,7 @@ class Db_model extends CI_Model {
 		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 		$this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
 		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
+		    $this->db->where($key,$value);
 		}
 		$q = $this->db->get();
 		return $q->result_array();

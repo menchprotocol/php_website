@@ -43,45 +43,31 @@ class Api_v1 extends CI_Controller {
 	        'i_status <' => 4, //But not private notes if any
 	    ));
 	    
-	    if(isset($_POST['gotit']) && $_POST['gotit']){
-	        
-	        //Log an engagement for all messages
-	        foreach($messages as $i){
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_json' => json_encode($i),
-	                'e_type_id' => 40, //Got It
-	                'e_c_id' => intval($_POST['intent_id']),
-	                'e_i_id' => $i['i_id'],
-	            ));
-	        }
-	        
-	    } else {
-	        
-	        //Build UI friendly Message:
-	        $help_content = null;
-	        foreach($messages as $i){
-	            $help_content .= echo_i($i,$udata['u_fname']);
-	        }
-	        
-	        //See if this user has clicked on the "Got It" button yet or not.
-	        $engagements = $this->Db_model->e_fetch(array(
-	            'e_c_id' => intval($_POST['intent_id']),
+	    //Log an engagement for all messages
+	    foreach($messages as $i){
+	        $this->Db_model->e_create(array(
 	            'e_initiator_u_id' => $udata['u_id'],
-	            'e_type_id' => 40, //They "Got It"
-	        ));
-	        
-	        //Return results:
-	        echo_json(array(
-	            'success' => ( $help_content ?  1 : 0 ), //No Messages perhaps!
-	            'auto_open' => ( count($engagements)>0 ? 0 : 1 ), //Open only if they have not pressed the Gotit Button before
-	            'intent_id' => intval($_POST['intent_id']),
-	            'help_content' => $help_content,
+	            'e_json' => json_encode($i),
+	            'e_type_id' => 40, //Got It
+	            'e_c_id' => intval($_POST['intent_id']),
+	            'e_i_id' => $i['i_id'],
 	        ));
 	    }
 	    
-    	    
+	    //Build UI friendly Message:
+	    $help_content = null;
+	    foreach($messages as $i){
+	        $help_content .= echo_i($i,$udata['u_fname']);
+	    }
+	    
+	    //Return results:
+	    echo_json(array(
+	        'success' => ( $help_content ?  1 : 0 ), //No Messages perhaps!
+	        'intent_id' => intval($_POST['intent_id']),
+	        'help_content' => $help_content,
+	    ));
 	}
+
 	
 	/* ******************************
 	 * Users
@@ -279,7 +265,7 @@ class Api_v1 extends CI_Controller {
 	                
 	                //Redirect to application:
 	                die(echo_json(array(
-	                    'hard_redirect' => '/my/apply/'.$enrollments[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
+	                    'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
 	                )));
 	            }
 	        }
@@ -303,12 +289,14 @@ class Api_v1 extends CI_Controller {
 	    } elseif($current_section==3){
 	        
 	        if(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<2){
+	            
 	            //Invalid
 	            die(echo_json(array(
 	                'goto_section' => 0,
 	                'color' => '#FF0000',
 	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid last name, try again.',
 	            )));
+	            
 	        } else {
 	            
 	            //Register User:
@@ -392,6 +380,8 @@ class Api_v1 extends CI_Controller {
 	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                        'e_r_id' => $focus_class['r_id'],
 	                    ));
+	                    
+	                   
 	                        
 	                    //Send email and log engagement:
 	                    if(email_application_url($udata)){
@@ -413,7 +403,7 @@ class Api_v1 extends CI_Controller {
 	                        
 	                        //Redirect to application:
 	                        die(echo_json(array(
-	                            'hard_redirect' => '/my/apply/'.$rudata['ru_id'].'?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
+	                            'hard_redirect' => '/my/class_application/'.$rudata['ru_id'].'?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
 	                        )));
 	                    }
 	                }
@@ -1389,6 +1379,8 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: You cannot use "'.$_POST['b_url_key'].'" as hashtag.</span>');
 	    } elseif(strlen($_POST['b_url_key'])>30){
 	        die('<span style="color:#FF0000;">Error: Hashtags should be less than 30 characters long.</span>');
+	    } elseif(strlen($_POST['b_url_key'])<5){
+	        die('<span style="color:#FF0000;">Error: Hashtags should be at least 5 characters long.</span>');
 	    } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
 	        die('<span style="color:#FF0000;">Error: Hashtags can only include letters a-z and numbers 0-9.</span>');
 	    }

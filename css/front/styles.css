@@ -890,8 +890,8 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .tip-badge {
     padding: 4px 6px;
     font-size: 18px;
-    background-color: #FFFFFF;
-    color:#555;
+    background-color: #2f2639;
+    color:#FFF;
     border-radius: 3px;
     margin:0;
     cursor:default;
@@ -906,7 +906,7 @@ h4 .tip-badge{
 .help_body {
 	cursor:default;
     display:none;
-    background-color:#FFF;
+    background-color:#fff8cc;
     border:1px solid #CCC;
     margin:0 0 10px;
     padding:10px;
@@ -914,7 +914,7 @@ h4 .tip-badge{
 }
 
 .help_body .fa-times {
-	color: #555;
+	color: #2f2639;
 	font-size: 28px;
     padding-right: 2px;
 }

@@ -18,7 +18,7 @@ foreach($admissions as $admission){
     
     
     //Apply Form:
-    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : '/my/apply/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+    echo '<div class="checkbox"><label '.( $applied ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $applied ? 'checked' : '' ).'> <a href="'.( $applied ? 'javasript:void(0);' : '/my/class_application/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id ).'"> Step 2: Submit Application <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
     
     if($admission['r_usd_price']>0){

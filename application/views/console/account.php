@@ -113,9 +113,10 @@ function insert_gravatar(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile" data-toggle="tab" onclick="update_hash('profile')"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
-  <li id="nav_password"><a href="#password" data-toggle="tab" onclick="update_hash('password')"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
   <li id="nav_social"><a href="#social" data-toggle="tab" onclick="update_hash('social')"><i class="fa fa-link" aria-hidden="true"></i> Links</a></li>
+  <li id="nav_password"><a href="#password" data-toggle="tab" onclick="update_hash('password')"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
   <li id="nav_referrals"><a href="#referrals" data-toggle="tab" onclick="update_hash('referrals')"><i class="fa fa-bar-chart" aria-hidden="true"></i> Referrals</a></li>
+  <li id="nav_payouts"><a href="#payouts" data-toggle="tab" onclick="update_hash('payouts')"><i class="fa fa-money" aria-hidden="true"></i> Payouts</a></li>
 </ul>
 
 
@@ -384,6 +385,10 @@ function insert_gravatar(){
     	    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No affiliate referrals yet. Visit your Bootcamp\'s Settings tab to get started.</div>';
     	}
     	?>
+    </div>
+    
+    <div class="tab-pane" id="payouts">
+    	<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No payouts yet.</div>
     </div>
     
 </div>

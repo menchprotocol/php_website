@@ -258,7 +258,7 @@ class My extends CI_Controller {
 	
 	
 	
-	function apply($ru_id){
+	function class_application($ru_id){
 	    
 	    //List student applications
 	    $application_status_salt = $this->config->item('application_status_salt');

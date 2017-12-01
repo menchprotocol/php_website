@@ -12,61 +12,61 @@ function update_dropdown(name,intvalue,count){
 	$('[data-toggle="tooltip"]').tooltip();
 }
 
+//Define tip style:
+var tips_button = '<span class="badge tip-badge"><i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+
 function open_tip(intent_id){
+	
+	//See if this tip needs to be loaded:
+	if(!$("div#content_"+intent_id).html().length){
+		
+		//Show loader:
+		$("div#content_"+intent_id).html('<img src="/img/round_load.gif" class="loader" />');
+		
+		//Let's check to see if this user has already seen this:
+		$.post("/api_v1/load_tip", { intent_id:intent_id } , function(data) {
+			//Let's see what we got:
+			if(data.success){
+				//Load the content:
+				$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6">'+tips_button+'</div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')" data-toggle="tooltip" title="Will minimize temporarily and would re-open next time your load this page." data-placement="left"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
+				$("div#content_"+data.intent_id).append(data.help_content);
+				
+				//Reload tooldip:
+				$('[data-toggle="tooltip"]').tooltip();
+			}
+	    });
+	}
+	
+	//Expand the tip:
 	$('#hb_'+intent_id).hide();
 	$("div#content_"+intent_id).fadeIn();
 }
+
 function close_tip(intent_id){
 	$("div#content_"+intent_id).hide();
 	$('#hb_'+intent_id).fadeIn('slow');
 }
 
-function gotit(intent_id){
-	//Close Tip:
-	close_tip(intent_id);
-	
-	//Log engagement (And hope it logs):
-	$.post("/api_v1/load_tip", { intent_id:intent_id, gotit:'1' } , function(data) {});
-}
 
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
-		
 	//Each Message includes two elements on the page:
 	//<span class="help_button" intent-id="597"></span> Containing the button for the Help message that is always accessible by user even after they clicked the "Got It" button
 	//<div id="content_597"></div> Where the actual message would be loaded on the page, which is usally close to the help button
 	if($("span.help_button")[0]){
 		var loaded_messages = [];
-		var tips_button = '<span class="badge tip-badge"><i class="fa fa-info-circle" aria-hidden="true"></i></span>';
 		var intent_id = 0;
 		$( "span.help_button" ).each(function() {
 			intent_id = parseInt($( this ).attr('intent-id'));
 			if(intent_id>0 && $("div#content_"+intent_id)[0] && !(jQuery.inArray(intent_id,loaded_messages)!=-1)){
 				//Its valid as all elements match! Let's continue:
 				loaded_messages.push(intent_id);
-				
-				//Let's check to see if this user has already seen this:
-				$.post("/api_v1/load_tip", { intent_id:intent_id } , function(data) {
-					//Let's see what we got:
-					if(data.success){
-						//Load the content:
-						$('#hb_'+data.intent_id).html('<a class="tipbtn" href="javascript:open_tip('+data.intent_id+')">'+tips_button+'</a>'); //Load the button
-						$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6">'+tips_button+'</div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')" data-toggle="tooltip" title="Will minimize temporarily and would re-open next time your load this page." data-placement="left"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
-						$("div#content_"+data.intent_id).append(data.help_content);
-						$("div#content_"+data.intent_id).append('<a href="javascript:gotit('+data.intent_id+')" class="btn btn-sm btn-primary gotit" data-toggle="tooltip" title="Will minimize and keep it minimized in the future. You can easily re-access again by clicking the information icon." data-placement="right"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Got it</a>');
-						//Reload tooldip:
-						$('[data-toggle="tooltip"]').tooltip();
-						//Show to user if not seen before:
-						if(data.auto_open){
-							open_tip(data.intent_id);
-						}
-					}
-			    });
+				//Load the Tip icon so they can access the tip if they like:
+				$('#hb_'+intent_id).html('<a class="tipbtn" href="javascript:open_tip('+intent_id+')">'+tips_button+'</a>'); //Load the button
 			}
 		});
 	}
 });
-
 	
 
 function switch_to(hashtag_name){

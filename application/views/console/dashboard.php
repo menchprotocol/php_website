@@ -19,10 +19,10 @@ $(document).ready(function() {
             	<span class="sr-only"><?= $launch_status['progress'] ?>% Complete</span>
             	</div>
             </div>
-      		<ul style="margin:-10px 0 0 -35px; list-style:none;">
+      		<ul style="margin:-10px 0 0 -10px; list-style:decimal;">
       			<?php 
       			foreach($launch_status['call_to_action'] as $action){
-      			    echo '<li><i class="fa fa-square-o" aria-hidden="true"></i> '.$action.'</li>';
+      			    echo '<li>'.$action.'</li>';
       			}
       			?>
       		</ul>
@@ -65,10 +65,22 @@ $(document).ready(function() {
     <div class="row">
       <div class="col-sm-3"><a href="/console/<?= $bootcamp['b_id'] ?>/students"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></div>
       <div class="col-sm-9">
-      	<div>0 Students</div>
-      	<div>0 Pending Admission</div>
-      	<div>0 With Pending Messages on <a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a></div>
-      	<div>0 Late on Milestone Submissions</div>
+      	<?php 
+      	//Fetch admission stats:
+      	$admissions_accepted = $this->Db_model->ru_fetch(array(
+          	'r.r_b_id'	       => $bootcamp['b_id'],
+          	'r.r_status >='	   => 1, //Open for admission and up
+          	'ru.ru_status >='  => 4, //Enrolled & Graduated
+      	));
+      	$admissions_pending = $this->Db_model->ru_fetch(array(
+      	    'r.r_b_id'	       => $bootcamp['b_id'],
+      	    'r.r_status >='	   => 1, //Open for admission and up
+      	    'ru.ru_status <'   => 4,
+      	    'ru.ru_status >='  => 0,
+      	));
+        ?>
+      	<div><?= count($admissions_accepted) ?> Students</div>
+      	<div><?= count($admissions_pending) ?> Pending Admission</div>
 	  </div>
     </div>
     <hr />

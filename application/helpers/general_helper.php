@@ -264,7 +264,7 @@ function echo_message($i,$level=0){
             $echo_ui .= '<li data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="right"><i class="fa fa-sort" style="color:#2f2639;"></i></li>';
             $echo_ui .= '<li data-toggle="tooltip" style="margin-right: 2px; margin-left: 3px;" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
             $echo_ui .= '<li class="edit-off the_status" style="margin-right: 0;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
-            $echo_ui .= '<li class="edit-off" data-toggle="tooltip" title="Modify status'.( $i['i_media_type']=='text' ? ' and/or text message' : '').'" data-placement="right"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-cog"></i></a></li>';
+            $echo_ui .= '<li class="edit-off" data-toggle="tooltip" title="Modify status'.( $i['i_media_type']=='text' ? ' and/or text message' : '').'" data-placement="right"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil-square"></i></a></li>';
             
             //Right side reverse:
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold;">Save</a></li>';
