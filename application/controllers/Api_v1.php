@@ -89,6 +89,8 @@ class Api_v1 extends CI_Controller {
 	
 	function funnel_progress(){
 	    
+	    $this->load->helper('cookie');
+	    
 	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['current_section'])){
 	        die(json_encode(array(
 	            'goto_section' => 0,
