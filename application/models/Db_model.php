@@ -270,126 +270,227 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function u_fb_put($u_fb_id){
-		//A function to check or create a new user using FB id:
-		
-		//Search for current users:
-		$matching_users = $this->u_fetch(array(
-				'u_fb_id' => $u_fb_id,
-		));
-		
-		$u_id = null;
-		
-		//What did we find?
-		if(count($matching_users) == 1){
-			
-			//Yes, we found them!
-			$u_id = $matching_users[0]['u_id'];
-			
-		} elseif(count($matching_users) <= 0){
-			
-			//This is a new user that needs to be registered!
-			$u_id = $this->u_fb_create($u_fb_id);
-			
-		} else {
-			//Inconsistent data:
-		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_fb_put() Found multiple users for Facebook ID ['.$u_fb_id.'].',
-		        'e_json' => json_encode($matching_users),
-		        'e_type_id' => 8, //Platform Error
-		    ));
-			return 0;
-		}
-		
-		
-		if($u_id){
-			//We found it!
-			return $u_id;
-		} else {
-			//Ooops, some error!
-		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_fb_put() Failed to create new user using their Facebook PSID ['.$u_fb_id.'].',
-		        'e_type_id' => 8, //Platform Error
-		    ));
-			return 0;
-		}
-	}
+
 	
-	function u_fb_fetch($full_name){		
-		//Fetch the user using their full name
-		$this->db->select('u_fb_id, LOWER(CONCAT(u_fname," ",u_lname)) AS full_name');
-		$this->db->from('v5_users u');
-		$this->db->where('full_name',trim(strtolower($full_name)));
-		$this->db->where('u_status >',0);
-		$q = $this->db->get();
-		$matching_users = $q->result_array();
-		
-		if(count($matching_users)>0){
-			
-			if(count($matching_users)>=2){
-				//Multiple users found!
-			    $this->Db_model->e_create(array(
-			        'e_message' => 'u_fb_fetch() Found '.count($matching_users).' users with a full name of ['.$full_name.']. First result returned.',
-			        'e_json' => json_encode($matching_users),
-			        'e_type_id' => 8, //Platform Error
-			    ));
-			}
-			
-			//Return first result:
-			return $matching_users[0]['u_fb_id'];
-		}
-		
-		//Ooops, nothing found!
-		return null;
-	}
-	
-	
-	function u_fb_create($u_fb_id){
-		
-		//Call facebook messenger API and get user details
-		//https://developers.facebook.com/docs/messenger-platform/user-profile/
-		$fb_profile = $this->Facebook_model->fetch_profile('381488558920384',$u_fb_id);
-		
-		if(!isset($fb_profile['first_name'])){
-			//There was an issue accessing this on FB
-			return false;
-		}
-		
-		//Do we already have this person?
-		$matching_users = $this->u_fetch(array(
-				'u_fb_id' => $u_fb_id,
-		));
-		
-		//Is this user in our system already?
-		if(count($matching_users)>0){
-			if(count($matching_users)>=2){
-			    $this->Db_model->e_create(array(
-			        'e_message' => 'u_fb_create() Found multiple users for Facebook ID ['.$u_fb_id.'].',
-			        'e_json' => json_encode($matching_users),
-			        'e_type_id' => 8, //Platform Error
-			    ));
-			}
-			
-			//Yes, just assume the user is the first result:
-			return $matching_users[0]['u_id'];
-		}
-		
-		//Split locale into language and country
-		$locale = explode('_',$fb_profile['locale'],2);
-		
-		//Create user
-		$udata = $this->u_create(array(
-				'u_fb_id' 			=> $u_fb_id,
-				'u_fname' 			=> $fb_profile['first_name'],
-				'u_lname' 			=> $fb_profile['last_name'],
-				'u_timezone' 		=> $fb_profile['timezone'],
-				'u_image_url' 		=> $fb_profile['profile_pic'],
-				'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-				'u_language' 		=> $locale[0],
-				'u_country_code' 	=> $locale[1],
-		));
-		
-		return $udata['u_id'];
+	function activate_bot($botkey, $psid_sender_id, $ref=null){
+	    
+	    //Import some variables:
+	    $mench_bots = $this->config->item('mench_bots');
+	    $bot_activation_salt = $this->config->item('bot_activation_salt');
+	    $db_field = $mench_bots[$botkey]['u_db'];
+	    
+	    //See who else might have this PSID id
+	    $current_fb_users = $this->Db_model->u_fetch(array(
+	        $db_field => $psid_sender_id,
+	        'u_status >=' => '0',
+	    ));
+	    
+	    if(!$ref){
+	        
+	        //This is validating to see if a sender is registered or not:
+	        if(count($current_fb_users)==0){
+	            
+	            //This is a new user that needs to be registered!
+	            //Call facebook messenger API and get user details
+	            //https://developers.facebook.com/docs/messenger-platform/user-profile/
+	            $fb_profile = $this->Facebook_model->fetch_profile($botkey,$psid_sender_id);
+	            
+	            if(!$fb_profile){
+	                //This error has already been logged!
+	                //We cannot create this user:
+	                return 0;
+	            }
+	            
+	            //Split locale into language and country
+	            $locale = explode('_',$fb_profile['locale'],2);
+	            
+	            //Create user
+	            $udata = $this->Db_model->u_create(array(
+	                $db_field 			=> $psid_sender_id,
+	                'u_fname' 			=> $fb_profile['first_name'],
+	                'u_lname' 			=> $fb_profile['last_name'],
+	                'u_timezone' 		=> $fb_profile['timezone'],
+	                'u_image_url' 		=> $fb_profile['profile_pic'],
+	                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+	                'u_language' 		=> $locale[0],
+	                'u_country_code' 	=> $locale[1],
+	            ));
+	            
+	            //Communicate with them accordingly:
+	            if($entry['id']=='1169880823142908'){
+	                //For instructors:
+	                tree_message(922, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
+	            } elseif($entry['id']=='381488558920384'){
+	                //For students:
+	                tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
+	            }
+	            
+	            //Return the newly created user ID:
+	            return $udata['u_id'];
+	            
+	        } elseif(count($current_fb_users)==1){
+	            
+	            //Yes, we found a single match!
+	            return $current_fb_users[0]['u_id'];
+	            
+	        } else {
+	            
+	            //Inconsistent data:
+	            $this->Db_model->e_create(array(
+	                'e_message' => 'activate_bot() Found multiple users for Facebook ID ['.$psid_sender_id.'].',
+	                'e_json' => json_encode($current_fb_users),
+	                'e_type_id' => 8, //Platform Error
+	                'e_fb_page_id' => $botkey,
+	            ));
+	            
+	            //We dont know which user this is:
+	            return 0;
+	            
+	        }
+	    }
+	    
+	    //First make sure this is a valid encrypted ref ID
+	    $ref_u_id = 0;
+	    if(substr_count($ref,'msgact_')==1){
+	        $parts = explode('_',$ref);
+	        if($parts[2]==substr(md5($parts[1].$bot_activation_salt),0,8)){
+	            $ref_u_id = intval($parts[1]); //This is the matches user id
+	        }
+	    }
+	    //Didn't find a valid user id?
+	    if(!$ref_u_id){
+	        return 0;
+	    }
+	    
+	    
+	    //Fetch this account and see whatssup:
+	    $matching_users = $this->Db_model->u_fetch(array(
+	        'u_id' => $ref_u_id,
+	    ));
+	    
+	    if(count($matching_users)<1){
+	        //Invalid user ID
+	        return 0;
+	    } elseif(strlen($matching_users[0][$db_field])>4 && $matching_users[0][$db_field]==$psid_sender_id){
+	        //This is already an active user, we can return the ID:
+	        return $ref_u_id;
+	    } elseif(strlen($matching_users[0][$db_field])>4){
+	        
+	        //Ooops, Mench user seems to be activated with a different Messenger account!
+	        //Communicate with them accordingly:
+	        if($entry['id']=='1169880823142908'){
+	            //For instructors:
+	            tree_message(919, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	        } elseif($entry['id']=='381488558920384'){
+	            //For students:
+	            tree_message(923, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	        }
+	        
+	        //Log engagement:
+	        $this->Db_model->e_create(array(
+	            'e_initiator_u_id' => $ref_u_id,
+	            'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
+	            'e_json' => json_encode($json_data),
+	            'e_type_id' => 9, //Support Needing Graceful Errors
+	            'e_fb_page_id' => $botkey,
+	        ));
+	        
+	        //Return false:
+	        return 0;
+	    }
+	    
+	    
+	    
+	    if(count($current_fb_users)>0){
+	        
+	        //Some other users have this already, lets see who else has this:
+	        $cleared_count = 0;
+	        foreach($current_fb_users as $current_fb_user){
+	            if($current_fb_user['u_status']<=0 && strlen($current_fb_user['u_email'])<5){
+	                //We can de-activate & merge this account:
+	                $this->Db_model->u_update( $current_fb_users[0]['u_id'] , array(
+	                    $db_field => 0, //Give it up since not active
+	                    'u_status' => -2, //Merged account
+	                ));
+	                
+	                //This was cleared:
+	                $cleared_count++;
+	            }
+	        }
+	        
+	        //Did we clear all?
+	        if(!($cleared_count==count($current_fb_users))){
+	            //We could not clear the entitlement of 1 or more of the users...
+	            //This FB user is assigned to a different mench account, so we cannot activate them!
+	            //Communicate with them accordingly:
+	            if($entry['id']=='1169880823142908'){
+	                //For instructors:
+	                tree_message(925, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	            } elseif($entry['id']=='381488558920384'){
+	                //For students:
+	                tree_message(924, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	            }
+	            
+	            //Log engagement:
+	            $this->Db_model->e_create(array(
+	                'e_initiator_u_id' => $ref_u_id,
+	                'e_message' => 'Facebook Webhook failed to activate user because Messenger account is associated with another Mench account.',
+	                'e_json' => json_encode($json_data),
+	                'e_type_id' => 9, //Support Needing Graceful Errors
+	                'e_recipient_u_id' => $current_fb_users[0]['u_id'],
+	                'e_fb_page_id' => $botkey,
+	            ));
+	            
+	            //Return false!
+	            return 0;
+	        }
+	    }
+	    
+	    
+	    
+	    
+	    //We are ready to activate!
+	    /* *************************************
+	     * Messenger Activation
+	     * *************************************
+	     */
+	    
+	    //Fetch their profile from Facebook:
+	    $fb_profile = $this->Facebook_model->fetch_profile($botkey,$psid_sender_id);
+	    
+	    //Split locale into language and country
+	    $locale = explode('_',$fb_profile['locale'],2);
+	    
+	    //Do a Smart Update for select fields as linking:
+	    $this->Db_model->u_update( $ref_u_id , array(
+	        $db_field         => $psid_sender_id,
+	        'u_image_url'     => ( strlen($matching_users[0]['u_image_url'])<5 ? $fb_profile['profile_pic'] : $matching_users[0]['u_image_url'] ),
+	        'u_status'        => ( $matching_users[0]['u_status']==0 ? 1 : $matching_users[0]['u_status'] ), //Activate their profile as well
+	        'u_timezone'      => $fb_profile['timezone'],
+	        'u_gender'        => strtolower(substr($fb_profile['gender'],0,1)),
+	        'u_language'      => ( $matching_users[0]['u_language']=='en' && !($matching_users[0]['u_language']==$locale[0]) ? $locale[0] : $matching_users[0]['u_language'] ),
+	        'u_country_code'  => $locale[1],
+	    ));
+	    
+	    //Log Activation Engagement:
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => $ref_u_id,
+	        'e_json' => json_encode(array(
+	            'fb_webhook' => $json_data,
+	            'fb_profile' => $fb_profile,
+	        )),
+	        'e_type_id' => 31, //Messenger Activated
+	        'e_fb_page_id' => $botkey,
+	    ));
+	    
+	    //Communicate with them accordingly:
+	    if($entry['id']=='1169880823142908'){
+	        //For instructors:
+	        tree_message(918, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	    } elseif($entry['id']=='381488558920384'){
+	        //For students:
+	        tree_message(926, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	    }
 	}
 	
 	
@@ -555,7 +656,11 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function c_fetch($match_columns,$fetch_outbound=false){
+	function c_fetch($match_columns, $outbound_levels=0, $append_obj=array()){
+	    
+	    //Always deal with ints here:
+	    $outbound_levels = intval($outbound_levels);
+	    
 	    //The basic fetcher for intents
 	    //Missing anything?
 	    $this->db->select('*');
@@ -566,16 +671,45 @@ class Db_model extends CI_Model {
 	    $q = $this->db->get();
 	    $intents = $q->result_array();
 	    
-	    if($fetch_outbound){
-	        //Ok, lets append the outbound intents:
-	        foreach($intents as $key=>$c){
-	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	                'cr.cr_inbound_id' => $c['c_id'],
-	                'cr.cr_status >=' => 0,
+	    
+	    //We had anything?
+	    if(count($intents)>0 && in_array('i',$append_obj)){
+	        $intents[0]['c__messages'] = array('ss');
+	        //Fetch Messages:
+	        foreach($intents as $key=>$value){
+	            $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+	                'i_c_id' => $value['c_id'],
+	                'i_status >=' => 0, //Published in any form. This may need more logic
+	                'i_status <' => 4, //But not private notes if any
 	            ));
 	        }
 	    }
 	    
+	    if(count($intents)>0 && $outbound_levels>=1){
+	        //Lets append the outbound intents:
+	        //Can't wrap my head around recursive, will do dummy way for now:
+	        foreach($intents as $key=>$value){
+	            
+	            //Do the first level:
+	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+	                'cr.cr_inbound_id' => $value['c_id'],
+	                'cr.cr_status >' => 0,
+	            ) , $append_obj );
+	            
+	            //need more depth?
+	            if(count($intents[$key]['c__child_intents'])>0 && $outbound_levels>=2){
+	                //Start the second level:
+	                foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
+	                    $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+	                        'cr.cr_inbound_id' => $value2['c_id'],
+	                        'cr.cr_status >' => 0,
+	                    ) , $append_obj );
+	                }
+	            }
+	        } 
+	    }
+	    
+	    //Return everything that was collected:
 	    return $intents;
 	}
 	
@@ -718,7 +852,7 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function cr_outbound_fetch($match_columns){
+	function cr_outbound_fetch($match_columns,$append_obj=array()){
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
@@ -728,7 +862,24 @@ class Db_model extends CI_Model {
 		}
 		$this->db->order_by('cr.cr_outbound_rank','ASC');
 		$q = $this->db->get();
-		return $q->result_array();
+		$return = $q->result_array();
+		
+		//We had anything?
+		if(count($return)>0){
+		    if(in_array('i',$append_obj)){
+		        //Fetch Messages:
+		        foreach($return as $key=>$value){
+		            $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+		                'i_c_id' => $value['c_id'],
+		                'i_status >=' => 0, //Published in any form. This may need more logic
+		                'i_status <' => 4, //But not private notes if any
+		            ));
+		        }
+		    }
+		}
+		
+		//Return the package:
+		return $return;
 	}
 	
 	function cr_inbound_fetch($match_columns){

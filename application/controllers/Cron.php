@@ -22,6 +22,8 @@ class Cron extends CI_Controller {
 	    
 	    $e_pending = $this->Db_model->e_fetch(array(
 	        'e_cron_job' => 0, //Pending file upload to S3
+	        'e_type_id >=' => 6, //Messages only
+	        'e_type_id <=' => 7, //Messages only
 	    ));
 	    
 	    $counter = 0;

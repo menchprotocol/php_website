@@ -13,7 +13,7 @@ $website = $this->config->item('website');
                     <li><a href="/contact">Contact</a></li>
 				</ul>
 				<ul class="pull-right">
-                    <li class="legal-name"><i><img src="/img/bp_128.png" /><?= $website['legaL_name'] ?></i></li>
+                    <li class="legal-name bg-glow"><i><img src="/img/bp_128.png" /><?= $website['legaL_name'] ?></i></li>
                     <li><i>v<?= $website['version'] ?></i></li>
                 </ul>
             </nav>

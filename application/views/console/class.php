@@ -79,6 +79,13 @@ function changeCloseDates(){
     }
 }
 
+var load_calculator = 0;
+
+function initiate_calculator(){
+	$('#calculator_body').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
+	load_calculator = 1;
+	update_tuition_calculator();
+}
 
 $(document).ready(function() {
     
@@ -92,9 +99,10 @@ $(document).ready(function() {
     changeCloseDates();
 	
     //Tuition Calculator:
-    update_tuition_calculator();
     $( "#r_response_time_hours, #r_meeting_frequency, #r_meeting_duration" /* #r_student_reach, #r_min_students, #r_max_students */ ).change(function() {
-    	update_tuition_calculator();
+        if(load_calculator){
+        	update_tuition_calculator();
+        }
     });
 
     //The inner Select change in the pricing calculator:
@@ -366,7 +374,7 @@ function save_r(){
         <div style="display:block;">
         	<div class="title"><h4><i class="fa fa-calculator" aria-hidden="true"></i> Tuition Calculator <span id="hb_620" class="help_button" intent-id="620"></span></h4></div>
             <div class="help_body maxout" id="content_620" style="margin-bottom:50px;"></div>
-            <div id="calculator_body"></div>
+            <div id="calculator_body"><a href="javascript:initiate_calculator()" class="btn btn-primary">Load Calculator</a></div>
         </div>
             
         

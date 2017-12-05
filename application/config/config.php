@@ -6,12 +6,13 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.02,
+    'version' => 1.1,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
     'email' => 'shervin@mench.co',
 );
+
 
 //All active bots connected to the platform:
 $config['mench_bots'] = array(
@@ -29,11 +30,11 @@ $config['mench_bots'] = array(
             'greeting' => array(
                 array(
                     'locale' => 'default',
-                    'text' => 'I\'m a Personal Assistant Bot for your Mench Bootcamps. I can help with:
-                    
-- Bootcamp Action Plan
-- Reminder Notifications
-- Asking Questions',
+                    'text' => 'I\'m an Assistant Bot for Mench Students. I\'ll help with:
+
+- Notifications & Reminders
+- Managing your Action Plan
+- Chat with your Instructor',
                 ),
             ),
             'whitelisted_domains' => array(
@@ -103,8 +104,8 @@ $config['mench_bots'] = array(
         ),
     ),
     '1169880823142908' => array(
-        'name' => 'Mench Instructor Hub', //For Instructors
-        'u_db' => 'u_fb_hub_id',
+        'name' => 'Mench Instructor Bot', //For Instructors
+        'u_db' => 'u_fb_i_id',
         'fb_page_id' => '1169880823142908',
         'fb_app_id' => '139884580073435',
         'bot_ref_url' => 'https://m.me/1169880823142908', //TODO Miguel to update this
@@ -116,11 +117,12 @@ $config['mench_bots'] = array(
             'greeting' => array(
                 array(
                     'locale' => 'default',
-                    'text' => 'I\'m a Personal Assistant Bot for Mench Instructors. I can help with:
+                    'text' => 'I\'m an Assistant Bot for Mench Instructors. I\'ll help with:
                     
-- Bootcamp Notifications
-- Student Updates
-- Q&A w/ Mench Team',
+- Bootcamp Building & Examples
+- Notifications
+- Mench Team Communications
+',
                 ),
             ),
             'whitelisted_domains' => array(
@@ -135,6 +137,7 @@ $config['mench_bots'] = array(
 
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
+$config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 200; //The max file size to be uploaded
 
 
@@ -194,6 +197,7 @@ $config['core_objects'] = array(
     'c' => array(
         'o_name' => 'Intent',
         'o_names' => 'Intent',
+        'maxlength' => 70,//Applies to all intents inputs
     ),
     'cr' => array(
         'o_name' => 'Intent Link',

@@ -608,7 +608,7 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
 	    } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
 	        die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
-	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://' || !url_exists($_POST['u_image_url']))){
+	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://')){
 	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
 	    } elseif(strlen($_POST['u_bio'])>420){
 	        die('<span style="color:#FF0000;">Error: Introductory Message should be less than 420 characters. Try again.</span>');
@@ -666,7 +666,7 @@ class Api_v1 extends CI_Controller {
 	    if($_POST['u_website_url']!==$u_current[0]['u_website_url']){
 	        if(strlen($_POST['u_website_url'])>0){
 	            //Validate it:
-	            if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL) && url_exists($_POST['u_website_url'])){
+	            if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
 	                $u_update['u_website_url'] = $_POST['u_website_url'];
 	                echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
 	            } else {
@@ -690,12 +690,8 @@ class Api_v1 extends CI_Controller {
 	        if($_POST[$sa_key]!==$u_current[0][$sa_key]){
 	            if(strlen($_POST[$sa_key])>0){
 	                //User has attempted to update it, lets validate it:
-	                $full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
-	                if(url_exists($full_url)){
-	                    $u_update[$sa_key] = trim($_POST[$sa_key]);
-	                } else {
-	                    $warning .= 'Invalid '.$sa_value['sa_name'].' username. ';
-	                }
+	                //$full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
+	                $u_update[$sa_key] = trim($_POST[$sa_key]);
 	            } else {
 	                $u_update[$sa_key] = '';
 	            }
@@ -733,8 +729,51 @@ class Api_v1 extends CI_Controller {
 	 * r Classes
 	 ****************************** */
 	
+	function load_referrals(){
+	    
+	    $udata = auth(1);
+	    if(!isset($udata['u_id'])){
+	        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Session expired. Refresh & try again.</div>';
+	    } elseif(!isset($_POST['u_id'])){
+	        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing User ID.</div>';
+	    } else{
+
+	        $engagements = $this->Db_model->e_fetch(array(
+	            'e_recipient_u_id' => intval($_POST['u_id']),
+	            //e_type_id=45,46,47 is affiliate related!
+	            'e_type_id >=' => "45",
+	            'e_type_id <=' => "47",
+	        ));
+	        
+	        //Print engagement list:
+	        echo '<table class="table table-condensed table-striped left-table" style="font-size:0.8em; margin-top:10px;">
+                <tr style="font-weight:bold;">
+                	<td>ID</td>
+                	<td>Action</td>
+                	<td>Time</td>
+                	<td>Student</td>
+                	<td>Bootcamp</td>
+                	<td>Notes</td>
+                </tr>';
+	        
+	        foreach($engagements as $e){
+	            echo '<tr>';
+	            echo '<td>#'.$e['e_id'].'</td>';
+	            echo '<td>'.$e['a_name'].'</td>';
+	            echo '<td>'.time_format($e['e_timestamp']).'</td>';
+	            echo '<td>'.( intval($e['e_initiator_u_id']) ? object_link('u', $e['e_initiator_u_id']) : 'Visitor' ).'</td>';
+	            echo '<td>'.object_link('b', $e['e_b_id']).'</td>';
+	            echo '<td>'.$e['e_message'].'</td>';
+	            echo '</tr>';
+	        }
+	        
+	        echo '</table>';
+	    }
+	}
+	
 	function tuition_calculator(){
 	    //Displays the class timeline based on some inputs:
+	    $udata = auth(1);
 	    if(!isset($_POST['r_id']) || !isset($_POST['b_id']) || !isset($_POST['r_response_time_hours']) || !isset($_POST['r_meeting_frequency']) || !isset($_POST['r_meeting_duration']) || !isset($_POST['b_sprint_unit']) || !isset($_POST['b_effective_milestones']) || !isset($_POST['c__estimated_hours'])){
 	        die('<span style="color:#FF0000;">Missing core data: '.print_r($_POST,ture).'</span>');
 	    }
@@ -815,6 +854,7 @@ class Api_v1 extends CI_Controller {
 	        }
 	        
 	        
+	        
 	        //Calculate total office hours:
 	        $focus_class = $current_classes[0];
 	        if(strlen($focus_class['r_live_office_hours'])>0 && is_array(unserialize($focus_class['r_live_office_hours']))){
@@ -829,6 +869,16 @@ class Api_v1 extends CI_Controller {
 	            }
 	        }
 	        
+	        //Log view:
+	        $this->Db_model->e_create(array(
+	            'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
+	            'e_type_id' => 48, //View
+	            'e_message' => 'Tuition Calculator',
+	            'e_b_id' => $focus_class['r_b_id'],
+	            'e_r_id' => $focus_class['r_id'],
+	            'e_c_id' => 0,
+	            'e_recipient_u_id' => 0,
+	        ));
 	        
 	        //Calculate remaining elements:
 	        $c__estimated_hours = intval($_POST['c__estimated_hours']);
@@ -1629,7 +1679,7 @@ class Api_v1 extends CI_Controller {
 	    //Validate Original intent:
 	    $original_intents = $this->Db_model->c_fetch(array(
 	        'c.c_id' => intval($_POST['pid']),
-	    ) , true /*Fetch Outbound*/ );
+	    ) , 1 /*Fetch 1 Level of Outbound*/ );
 	    if(count($original_intents)<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
 	    } elseif(isset($_POST['c_is_last']) && $_POST['c_is_last']=='t' && count($original_intents[0]['c__child_intents'])>0){

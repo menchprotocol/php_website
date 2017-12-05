@@ -7,19 +7,37 @@ class Facebook_model extends CI_Model {
 	}
 	
 	
-	function fetch_profile($botkey,$user_id){
+	function fetch_profile($botkey,$psid_sender_id){
 	    $mench_bots = $this->config->item('mench_bots');
 	    if(!array_key_exists($botkey,$mench_bots)){
 	        die('Invalid Bot Key');
 	    }
-	    $ch = curl_init('https://graph.facebook.com/v2.6/'.$user_id.'?access_token='.$mench_bots[$botkey]['access_token']);
+	    $ch = curl_init('https://graph.facebook.com/v2.6/'.$psid_sender_id.'?access_token='.$mench_bots[$botkey]['access_token']);
 		curl_setopt_array($ch, array(
 				CURLOPT_CUSTOMREQUEST => 'GET',
 				CURLOPT_RETURNTRANSFER => TRUE,
 		));
 		// Send the request
-		return objectToArray(json_decode(curl_exec($ch)));
-	}	
+		$fb_profile = objectToArray(json_decode(curl_exec($ch)));
+		
+		if(!isset($fb_profile['first_name'])){
+		    
+		    //Failed to fetch this profile:
+		    $this->Db_model->e_create(array(
+		        'e_message' => 'fetch_profile() failed to fetch user profile for Facebook ID ['.$psid_sender_id.'].',
+		        'e_json' => json_encode($fb_profile),
+		        'e_type_id' => 8, //Platform Error
+		        'e_fb_page_id' => $botkey,
+		    ));
+		    
+		    //There was an issue accessing this on FB
+		    return false;
+		    
+		} else {
+		    return $fb_profile;
+		}
+	}
+
 	
 	function fetch_settings($botkey){
 	    $mench_bots = $this->config->item('mench_bots');
@@ -71,12 +89,16 @@ class Facebook_model extends CI_Model {
 	}
 	
 	
+	
+	
 	//This is a fancier way to send messages that feels more human:
-	function batch_messages( $botkey , $u_fb_id , $messages , $notification_type='REGULAR'){
+	function batch_messages( $botkey , $u_fb_id , $messages , $notification_type='REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/){
 	    
 	    $mench_bots = $this->config->item('mench_bots');
 	    if(!array_key_exists($botkey,$mench_bots)){
 	        die('Invalid Bot Key');
+	    } elseif(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
+	        die('Invalid notification type');
 	    }
 	    
 	    foreach($messages as $count=>$message){
@@ -88,8 +110,10 @@ class Facebook_model extends CI_Model {
 	            'sender_action' => 'typing_on'
 	        ));
 	        
+	        //To have them see the typing...
 	        sleep(rand(0,3));
 	        
+	        //Send the real message:
 	        $this->Facebook_model->send_message( $botkey , array(
 	            'recipient' => array(
 	                'id' => $u_fb_id,

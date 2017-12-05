@@ -49,7 +49,7 @@ function close_tip(intent_id){
 
 
 //Function to load all help messages throughout the console:
-$(document).ready(function() {
+$(document).ready(function() {	
 	//Each Message includes two elements on the page:
 	//<span class="help_button" intent-id="597"></span> Containing the button for the Help message that is always accessible by user even after they clicked the "Got It" button
 	//<div id="content_597"></div> Where the actual message would be loaded on the page, which is usally close to the help button

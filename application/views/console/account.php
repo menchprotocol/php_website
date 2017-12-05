@@ -46,6 +46,15 @@ function trigger_link_watch(link_id,prepend_url){
 	});
 }
 
+function load_referrals(u_id){
+	$('#referral_data').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+
+	$.post("/api_v1/load_referrals", {u_id:u_id} , function(data) {
+		//Update UI to confirm with user:
+		$('#referral_data').html(data).hide().fadeIn();
+    });
+}
+
 function update_account(){
 	
 	//Show spinner:
@@ -357,29 +366,7 @@ function insert_gravatar(){
     	));
     	if(count($engagements)>0){
     	    
-    	    //Print engagement list:
-    	    echo '<table class="table table-condensed table-striped left-table" style="font-size:0.8em; margin-top:10px;">
-            <tr style="font-weight:bold;">
-            	<td>ID</td>
-            	<td>Action</td>
-            	<td>Time</td>
-            	<td>Student</td>
-            	<td>Bootcamp</td>
-            	<td>Notes</td>
-            </tr>';
-            
-    	    foreach($engagements as $e){
-    	        echo '<tr>';
-        	        echo '<td>#'.$e['e_id'].'</td>';
-        	        echo '<td>'.$e['a_name'].'</td>';
-        	        echo '<td>'.time_format($e['e_timestamp']).'</td>';
-        	        echo '<td>'.( intval($e['e_initiator_u_id']) ? object_link('u', $e['e_initiator_u_id']) : 'Visitor' ).'</td>';
-        	        echo '<td>'.object_link('b', $e['e_b_id']).'</td>';
-        	        echo '<td>'.$e['e_message'].'</td>';
-    	        echo '</tr>';
-    	    }
-    	    
-    	    echo '</table>';
+    	    echo '<div id="referral_data"><a href="javascript:load_referrals('.$udata['u_id'].')" class="btn btn-primary">Load '.count($engagements).' Referral Activity</a></div>';
     	    
     	} else {
     	    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No affiliate referrals yet. Visit your Bootcamp\'s Settings tab to get started.</div>';

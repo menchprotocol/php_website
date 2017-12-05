@@ -71,6 +71,7 @@ class Console extends CI_Controller {
 		    'b.b_status >=' => 0,
 		));
 		
+		
 		//Did we find any?
 		foreach($my_bootcamps as $key=>$mb){
 		    //Fetch full bootcamp:
@@ -79,21 +80,42 @@ class Console extends CI_Controller {
 		    ));
 		    $my_bootcamps[$key] = $this_full[0];
 		}
+		$title = ( strlen($udata['u_fb_i_id'])>4 ? 'My Bootcamps' : '<img src="/img/white-logo.png" style="width:32px; margin-top: -2px;" /> Activate Your Assistant Bot') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
-			'title' => 'My Bootcamps',
+		    'title' => trim(strip_tags($title)),
 		    'breadcrumb' => array(
 		        array(
 		            'link' => null,
-		            'anchor' => 'My Bootcamps',
+		            'anchor' => $title,
 		        ),
 		    ),
 		));
-		$this->load->view('console/all_bootcamps' , array(
-		    'bootcamps' => $my_bootcamps,
-		    'udata' => $udata,
-		));
+		
+		//Have they activated their Bot yet?
+		if(strlen($udata['u_fb_i_id'])>4){
+		    //Yes, show them their bootcamps:
+		    $this->load->view('console/all_bootcamps' , array(
+		        'bootcamps' => $my_bootcamps,
+		        'udata' => $udata,
+		    ));
+		} else {
+		    
+		    //Fetch the ID from the Database to be up to date:
+		    $users = $this->Db_model->u_fetch(array(
+		        'u_id' => $udata['u_id'],
+		    ));
+		    
+		    //Show activation:
+		    $this->load->view('console/activate_bot' , array(
+		        'bootcamps' => $my_bootcamps,
+		        'users' => $users,
+		        'udata' => $udata,
+		    ));
+		}
+    	
+		//Footer:
 		$this->load->view('console/shared/d_footer' , array(
 		    'load_view' => 'console/modals/wizard_bootcamp',
 		));
@@ -115,10 +137,25 @@ class Console extends CI_Controller {
 	        exit;
 	    }
 	    
+	    $title = 'Dashboard | '.$bootcamps[0]['c_objective'];
+	    
+	    //Log view:
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
+	        'e_json' => json_encode(array(
+	            'url' => $_SERVER['REQUEST_URI'],
+	        )),
+	        'e_type_id' => 48, //View
+	        'e_message' => $title,
+	        'e_b_id' => $bootcamps[0]['b_id'],
+	        'e_r_id' => 0,
+	        'e_c_id' => 0,
+	        'e_recipient_u_id' => 0,
+	    ));
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Dashboard | '.$bootcamps[0]['c_objective'],
+	        'title' => $title,
 	        'bootcamp' => $bootcamps[0],
 	        'breadcrumb' => array(
 	            array(

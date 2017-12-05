@@ -197,27 +197,83 @@ function echo_video($video_url){
 
 
 
-function echo_i($i,$first_name=null){
+function echo_i($i,$first_name=null,$fb_format=false){
     
-    $echo_ui = '';
-    $echo_ui .= '<div class="i_content">';
-    if($i['i_media_type']=='text'){
+    //Must be one of these 5 types:
+    if(!isset($i['i_media_type']) || !in_array($i['i_media_type'],array('text','video','audio','image','file'))){
+        return false;
+    }
+    
+    
+    if(!$fb_format){
+        //HTML format:
+        $echo_ui = '';
+        $echo_ui .= '<div class="i_content">';
+    }
+    
+    //Proceed to Send Message:
+    if($i['i_media_type']=='text' && strlen($i['i_message'])>0){
         
+        //Does this message also have a link?
         if(strlen($i['i_url'])>0){
+            
             $CI =& get_instance();
             $website = $CI->config->item('website');
             $url = $website['url'].'ref/'.$i['i_id'];
-            $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+            if($first_name){
+                //Tweak the name:
+                $i['i_message'] = str_replace('{first_name}', $first_name, $i['i_message']);
+            }
+            
+            if($fb_format){
+                //Messenger format:
+                $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+            } else {
+                //HTML format:
+                $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+            }
         }
         
-        $echo_ui .= '<div class="msg">'.nl2br( $first_name ? str_replace('{first_name}', $first_name, $i['i_message']) : $i['i_message'] ).'</div>';
+        //Now return the template:
+        if($fb_format){
+            //Messenger array:
+            return array(
+                $i['i_media_type'] => $i['i_message'],
+                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+            );
+        } else {
+            //HTML format:
+            $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
+        }
+        
+    } elseif(strlen($i['i_url'])>0) {
+        
+        //Valid media file with URL:
+        if($fb_format){
+            
+            //Messenger array:
+            return array(
+                'attachment' => array(
+                    'type' => $i['i_media_type'],
+                    'payload' => array(
+                        'url' => $i['i_url'],
+                        'is_reusable' => true, //This can likely be reused within the class
+                    ),
+                ),
+                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+            );
+            
+        } else {
+            //HTML media format:
+            $echo_ui .= '<div>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+        }
         
     } else {
-        
-        $echo_ui .= '<div>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
-        
+        //Something was wrong:
+        return false;
     }
-    
+
+    //This must be HTML if we're still here, return:
     $echo_ui .= '</div>';
     return $echo_ui;
 }
@@ -244,7 +300,7 @@ function echo_message($i,$level=0){
     $echo_ui = '';
     $echo_ui .= '<div class="list-group-item is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
     $echo_ui .= '<input type="hidden" class="i_media_type" value="'.$i['i_media_type'].'" />';
-    $echo_ui .= '<div>';
+    $echo_ui .= '<div style="overflow:visible !important;">';
 	
 	    //Type & Delivery Method:    
 	    $echo_ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" style="margin:5px 0 0 0;">';
@@ -262,9 +318,9 @@ function echo_message($i,$level=0){
 		    //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
             $echo_ui .= '<li class="i_uploader">'.echo_uploader($i).'</li>';
             $echo_ui .= '<li data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="right"><i class="fa fa-sort" style="color:#2f2639;"></i></li>';
-            $echo_ui .= '<li data-toggle="tooltip" style="margin-right: 2px; margin-left: 3px;" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+            $echo_ui .= '<li data-toggle="tooltip" style="margin-right: 10px; margin-left: 6px;" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+            $echo_ui .= '<li class="edit-off" data-toggle="tooltip" title="Modify status'.( $i['i_media_type']=='text' ? ' and/or text message' : '').'" data-placement="right"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil-square-o"></i></a></li>';
             $echo_ui .= '<li class="edit-off the_status" style="margin-right: 0;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
-            $echo_ui .= '<li class="edit-off" data-toggle="tooltip" title="Modify status'.( $i['i_media_type']=='text' ? ' and/or text message' : '').'" data-placement="right"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil-square"></i></a></li>';
             
             //Right side reverse:
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold;">Save</a></li>';
@@ -461,8 +517,11 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
 
 
 function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
+    
     $CI =& get_instance();
     $core_objects = $CI->config->item('core_objects');
+    $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_objective']);
+    $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Item');
     
 	if($direction=='outbound'){
 	    
@@ -472,7 +531,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
 
     	    $ui .= '<i class="fa fa-sort" data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="left" aria-hidden="true"></i> &nbsp;';
     	    
-    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.str_replace('\'','',str_replace('"','',$intent['c_objective'])).'\');" data-toggle="tooltip" title="Remove '.$core_objects['level_'.($level-1)]['o_name'].'" data-placement="left"></i> &nbsp;';
+    	    $ui .= '<i class="fa fa-trash" onclick="intent_unlink('.$intent['cr_id'].',\''.$clean_title.'\');" data-toggle="tooltip" title="Remove '.$core_objects['level_'.($level-1)]['o_name'].'" data-placement="left"></i> &nbsp;';
     	    
     	    $ui .= '<span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
     	    
@@ -847,17 +906,7 @@ function calculate_bootcamp_status($b){
     $udata = $CI->session->userdata('user');
     $account_action = ( $b['b__admins'][0]['u_id']==$udata['u_id'] ? '<a href="/console/account"><u>My Account</u></a>' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account.' );
     
-    
-    //u_fb_id
-    /*
-    $to_gain = 15;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_fb_id'])>1){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Activate Your <b>[<a href="#" data-toggle="modal" data-target="#MenchBotModal"><i class="fa fa-commenting" aria-hidden="true"></i> MenchBot</a>]</b>');
-    }
-    */
+
     
     //u_phone
     $to_gain = 5;
@@ -964,7 +1013,7 @@ function calculate_bootcamp_status($b){
         array_push($call_to_action,'Launch admissions by sending a message to your student list.');
     }
     return array(
-        'stage' => '<i class="fa fa-tasks" aria-hidden="true"></i> Bootcamp MVP Checklist',
+        'stage' => '<i class="fa fa-tasks" aria-hidden="true"></i> Bootcamp <span class="underl" data-toggle="tooltip" data-placement="bottom" title="MVP = Minimum Viable Product = Build a basic version of your Bootcamp  within 15-20 hours and then iteratively improve it over time.">MVP</span> Checklist',
         'progress' => $progress_percentage,
         'call_to_action' => $call_to_action,
     );
@@ -1234,6 +1283,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    ),
 	    
 	    'u' => array(
+	        -2 => array(
+	            's_name'  => 'Merged',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'User merged with another user',
+	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
+	            's_mini_icon' => 'fa-user-times',
+	        ),
 	        -1 => array(
 	            's_name'  => 'Delete',
 	            's_color' => '#2f2639', //dark
@@ -1511,11 +1567,6 @@ function can_modify($object,$object_id){
 	return false;
 }
 
-function url_exists($url){
-    $file_headers = @get_headers($url);
-    return !(!$file_headers || substr_count($file_headers[0],'401')>0 || substr_count($file_headers[0],'402')>0 || substr_count($file_headers[0],'404')>0);
-}
-
 function filter_class($classes,$r_id=null){
     if(!$classes || count($classes)<=0){
         return false;
@@ -1535,11 +1586,21 @@ function typeform_url($typeform_id){
     return 'https://mench.typeform.com/to/'.$typeform_id;
 }
 
-function messenger_activation_url($botkey,$u_id){
+
+function echo_chat(){
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
+    $bot_activation_salt = $CI->config->item('bot_activation_salt');
+    //This is for the instructor bot:
+    return '<div class="fb-customerchat" page_id="1169880823142908" ref="'.( isset($udata['u_id']) && strlen($udata['u_fb_i_id'])<4 ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"></div>';
+}
+
+function messenger_activation_url($botkey,$u_id=null){
     $CI =& get_instance();
     $mench_bots = $CI->config->item('mench_bots');
+    $bot_activation_salt = $CI->config->item('bot_activation_salt');
     if(isset($mench_bots[$botkey]['bot_ref_url'])){
-        return $mench_bots[$botkey]['bot_ref_url'].'?ref='.$u_id; //TODO: Maybe append some sort of hash for more security
+        return $mench_bots[$botkey]['bot_ref_url'].($u_id?'?ref=msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8):''); //TODO: Maybe append some sort of hash for more security
     } else {
         return false;
     }
@@ -1948,9 +2009,256 @@ function fetchMax($input_array,$searchKey){
 }
 
 
-
-
-
+function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages only, 1 means 1 level down, etc... */, $botkey, $e_recipient_u_id, $notification_type='REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id=0, $r_id=0){
+    
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
+    $mench_bots = $CI->config->item('mench_bots');
+    $e_initiator_u_id = ( isset($udata['u_id']) ? intval($udata['u_id']) : 0 );
+    $e_recipient_u_id = intval($e_recipient_u_id); //Just making sure
+    
+    //Fetch tree and its messages:
+    $tree = $CI->Db_model->c_fetch(array(
+        'c.c_id' => $intent_id,
+    ) , $outbound_levels , array('i') /* Append messages to the return */ );
+    
+    
+    
+    //Make sure we have the core components checked:
+    if(!isset($tree[0])){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid Intent ID',
+        );
+    } elseif(!array_key_exists($botkey,$mench_bots)){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid Bot ID',
+        );
+    } elseif($outbound_levels<0 || $outbound_levels>2){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid Outbound Level',
+        );
+    } elseif(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid Notification type',
+        );
+    }
+    
+    //Validate recipient:
+    $recipients = $CI->Db_model->u_fetch(array(
+        'u_id' => $e_recipient_u_id,
+    ));
+    
+    if(!isset($recipients[0])){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid Recipient ID',
+        );
+    }
+    $recipient_fb_psid = $recipients[0][$mench_bots[$botkey]['u_db']];
+    if(strlen($recipient_fb_psid)<4){
+        return array(
+            'status' => 0,
+            'message' => 'Recipient has not activated this bot yet',
+        );
+    }
+    
+    //Define key variables:
+    $instant_messages = array();
+    $drip_count = 0;
+    
+    if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
+        //We have messages for the very first level!
+        foreach($tree[0]['c__messages'] as $i){
+            if($i['i_status']==2){
+                
+                //Increase counter:
+                $drip_count++;
+                
+                //This has a drip sequence, subscribe the user for later messages on this:
+                $CI->Db_model->e_create(array(
+                    'e_initiator_u_id' => $e_initiator_u_id,
+                    'e_recipient_u_id' => $e_recipient_u_id,
+                    'e_c_id' => $intent_id,
+                    'e_message' => 'Scheduled to drip...', //Stage 1 Message
+                    'e_json' => json_encode(array(
+                        'outbound_levels' => $outbound_levels,
+                        'original_tree' => $tree,
+                        'top_c_id' => $intent_id,
+                    )),
+                    'e_cron_job' => 0, //drip this thread later on using its cron job...
+                    'e_type_id' => 49, //Messenger drip tree
+                    'e_b_id' => $b_id, //If set...
+                    'e_r_id' => $r_id, //If set...
+                    'e_i_id' => $i['i_id'], //The message that is being dripped
+                    'e_fb_page_id' => $botkey,
+                ));
+                
+            } elseif(in_array($i['i_status'],array(1,3))){
+                
+                //These are to be instantly distributed:
+                array_push( $instant_messages , echo_i($i, $i['u_fname'], true /*Facebook Format*/ ));
+                
+                //Long sent engagement:
+                $CI->Db_model->e_create(array(
+                    'e_initiator_u_id' => $e_initiator_u_id,
+                    'e_recipient_u_id' => $e_recipient_u_id,
+                    'e_c_id' => $intent_id,
+                    'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
+                    'e_json' => json_encode(array(
+                        'outbound_levels' => $outbound_levels,
+                        'original_tree' => $tree,
+                        'top_c_id' => $intent_id,
+                    )),
+                    'e_type_id' => 7, //Outbound message
+                    'e_b_id' => $b_id, //If set...
+                    'e_r_id' => $r_id, //If set...
+                    'e_i_id' => $i['i_id'], //The message that is being dripped
+                    'e_fb_page_id' => $botkey,
+                ));
+            }
+        }
+    }
+    
+    
+    if($outbound_levels>=1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
+        //We have some child intents, see if they have any messages:
+        foreach($tree[0]['c__child_intents'] as $level1){
+            
+            //Does this intent have messages?
+            if(isset($level1['c__messages']) && count($level1['c__messages'])>0){
+                foreach($level1['c__messages'] as $i){
+                    
+                    if($i['i_status']==2){
+                        
+                        //Increase counter:
+                        $drip_count++;
+                        
+                        //This has a drip sequence, subscribe the user for later messages on this:
+                        $CI->Db_model->e_create(array(
+                            'e_initiator_u_id' => $e_initiator_u_id,
+                            'e_recipient_u_id' => $e_recipient_u_id,
+                            'e_c_id' => $level1['c_id'],
+                            'e_message' => 'Scheduled to drip...', //Stage 1 Message
+                            'e_json' => json_encode(array(
+                                'outbound_levels' => $outbound_levels,
+                                'original_tree' => $tree,
+                                'top_c_id' => $intent_id,
+                            )),
+                            'e_cron_job' => 0, //drip this thread later on using its cron job...
+                            'e_type_id' => 49, //Messenger drip message
+                            'e_b_id' => $b_id, //If set...
+                            'e_r_id' => $r_id, //If set...
+                            'e_i_id' => $i['i_id'], //The message that is being dripped
+                            'e_fb_page_id' => $botkey,
+                        ));
+                        
+                    } elseif(in_array($i['i_status'],array(1,3))){
+                        
+                        //These are to be instantly distributed:
+                        array_push( $instant_messages , echo_i($i, $i['u_fname'], true /*Facebook Format*/ ));
+                        
+                        //Long sent engagement:
+                        $CI->Db_model->e_create(array(
+                            'e_initiator_u_id' => $e_initiator_u_id,
+                            'e_recipient_u_id' => $e_recipient_u_id,
+                            'e_c_id' => $level1['c_id'],
+                            'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
+                            'e_json' => json_encode(array(
+                                'outbound_levels' => $outbound_levels,
+                                'original_tree' => $tree,
+                                'top_c_id' => $intent_id,
+                            )),
+                            'e_type_id' => 7, //Outbound message
+                            'e_b_id' => $b_id, //If set...
+                            'e_r_id' => $r_id, //If set...
+                            'e_i_id' => $i['i_id'], //The message that is being dripped
+                            'e_fb_page_id' => $botkey,
+                        ));
+                    }
+                }
+            }
+            
+            //Any child intents and a need to go Deeper?
+            if($outbound_levels>=2 && isset($level1['c__child_intents']) && count($level1['c__child_intents'])>0){
+                //We have some child intents, see if they have any messages:
+                foreach($level1['c__child_intents'] as $level2){
+                    if(isset($level2['c__messages']) && count($level2['c__messages'])>0){
+                        foreach($level2['c__messages'] as $i){
+                            if($i['i_status']==2){
+                                
+                                //Increase counter:
+                                $drip_count++;
+                                
+                                //This has a drip sequence, subscribe the user for later messages on this:
+                                $CI->Db_model->e_create(array(
+                                    'e_initiator_u_id' => $e_initiator_u_id,
+                                    'e_recipient_u_id' => $e_recipient_u_id,
+                                    'e_c_id' => $level2['c_id'],
+                                    'e_message' => 'Scheduled to drip...', //Stage 1 Message
+                                    'e_json' => json_encode(array(
+                                        'outbound_levels' => $outbound_levels,
+                                        'original_tree' => $tree,
+                                        'top_c_id' => $intent_id,
+                                    )),
+                                    'e_cron_job' => 0, //drip this thread later on using its cron job...
+                                    'e_type_id' => 49, //Messenger drip message
+                                    'e_b_id' => $b_id, //If set...
+                                    'e_r_id' => $r_id, //If set...
+                                    'e_i_id' => $i['i_id'], //The message that is being dripped
+                                    'e_fb_page_id' => $botkey,
+                                ));
+                                
+                            } elseif(in_array($i['i_status'],array(1,3))){
+                                
+                                //These are to be instantly distributed:
+                                array_push( $instant_messages , echo_i($i, $i['u_fname'], true /*Facebook Format*/ ));
+                                
+                                //Long sent engagement:
+                                $CI->Db_model->e_create(array(
+                                    'e_initiator_u_id' => $e_initiator_u_id,
+                                    'e_recipient_u_id' => $e_recipient_u_id,
+                                    'e_c_id' => $level2['c_id'],
+                                    'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
+                                    'e_json' => json_encode(array(
+                                        'outbound_levels' => $outbound_levels,
+                                        'original_tree' => $tree,
+                                        'top_c_id' => $intent_id,
+                                    )),
+                                    'e_type_id' => 7, //Outbound message
+                                    'e_b_id' => $b_id, //If set...
+                                    'e_r_id' => $r_id, //If set...
+                                    'e_i_id' => $i['i_id'], //The message that is being dripped
+                                    'e_fb_page_id' => $botkey,
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    //Dispatch all Instant Messages, their engagements have already been logged:
+    $CI->Facebook_model->batch_messages($botkey, $recipient_fb_psid, $instant_messages, $notification_type);
+    //TODO check to make sure this matches the total number of logged engagements?
+    
+    
+    //Successful:
+    return array(
+        'status' => 1,
+        'message' => 'Sent '.count($instant_messages).' instant messages and scheduled '.$drip_count.' drip messages',
+        //Extra field for success only:
+        'stats' => array(
+            'instant' => count($instant_messages),
+            'drip' => $drip_count,
+        ),
+    );
+}
 
 function html_new_run(){
 	//Start generating the add new Run button:

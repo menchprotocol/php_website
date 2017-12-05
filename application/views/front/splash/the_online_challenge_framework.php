@@ -28,12 +28,3 @@ $udata = $this->session->userdata('user');
     
     <div class="main main-raised">
 	<div class="container body-container">
-    
-    <script>
-    $( document ).ready(function() {
-    	 var glow = $('.bg-glow');
-    	    setInterval(function(){
-    	        glow.toggleClass('glow');
-    	    }, 1333);
-    });
-    </script>

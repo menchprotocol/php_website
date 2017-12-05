@@ -277,13 +277,10 @@ $start_times = $this->config->item('start_times');
 
 <?php if(strlen($admission['u_fb_id'])<=1){ ?>
 <div class="wizard-box">
-	<p>This step is optional: You can activate MenchBot using Facebook Messenger to:</p>
-	<ul>
-		<li>Connect with your instructor live</li>
-		<li>Track your application progress</li>
-		<li>Experience how students use Mench</li>
-	</ul>
-	<p style="margin:40px 0"><a href="<?= messenger_activation_url('381488558920384',$admission['u_id']) ?>" target="_blank">Click Here to Activate Your MenchBot</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
+	<?php $mench_bots = $this->config->item('mench_bots'); ?>
+	<p><img src="/img/bp_48.png" alt="Mench Assistant Bot" /> <b style="font-size:1.2em;">MenchBot Activation</b></p>
+	<p><?= nl2br($mench_bots['381488558920384']['settings']['greeting'][0]['text']) ?></p>
+	<p style="margin:40px 0; font-weight:bold;"><a href="<?= messenger_activation_url('381488558920384',$admission['u_id']) ?>" target="_blank">Activate My Assistant Bot</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
 </div>
 <?php } ?>
 
