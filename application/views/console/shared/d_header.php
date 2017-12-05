@@ -76,7 +76,7 @@ if(count($unread_notifications)>0){
 					</button>
 					<span class="navbar-brand dashboard-logo">
 						<a href="/console">
-						<img src="/img/white-logo.png" />
+						<img src="/img/bp_128.png" />
 						<span style="text-transform:none;" class="bg-glow">Bootcamps</span>
 						</a>
 						<!-- <input type="text" placeholder="Search"> -->
