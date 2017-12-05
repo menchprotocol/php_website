@@ -214,16 +214,19 @@ function echo_i($i,$first_name=null,$fb_format=false){
     //Proceed to Send Message:
     if($i['i_media_type']=='text' && strlen($i['i_message'])>0){
         
+        
+        //Do we have a {first_name} replacement?
+        if($first_name){
+            //Tweak the name:
+            $i['i_message'] = str_replace('{first_name}', $first_name, $i['i_message']);
+        }
+        
         //Does this message also have a link?
         if(strlen($i['i_url'])>0){
             
             $CI =& get_instance();
             $website = $CI->config->item('website');
             $url = $website['url'].'ref/'.$i['i_id'];
-            if($first_name){
-                //Tweak the name:
-                $i['i_message'] = str_replace('{first_name}', $first_name, $i['i_message']);
-            }
             
             if($fb_format){
                 //Messenger format:
