@@ -33,7 +33,9 @@ $mench_bots = $this->config->item('mench_bots');
 
 <?php
 //Facebook chat in console:
-echo echo_chat();
+if(isset($udata['u_fb_i_id']) && $udata['u_fb_i_id']>0){
+    echo echo_chat();
+}
 
 //Start the filtering array for unread notifications:
 $unread_notification_filters = array(
