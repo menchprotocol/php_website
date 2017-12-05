@@ -9,7 +9,7 @@ if($users[0]['u_fb_id']>0){
     //Tell user to continue:
     echo '<div class="maxout">';
         echo '<div class="alert alert-success" role="alert"><i class="fa fa-check-square" aria-hidden="true"></i> <b>Success!</b> We\'re now connected through Facebook Messenger.</div>';
-        echo '<a href="/console" class="btn btn-primary">Go To My Bootcamps &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
+        echo '<a href="/console" class="btn btn-primary">My Bootcamps &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
     echo '</div>';
     
 } else {
@@ -21,7 +21,7 @@ if($users[0]['u_fb_id']>0){
         
         //Instructor Bot has NOT been activated by the instructor yet:
         echo '<p>'.nl2br($mench_bots['381488558920384']['settings']['greeting'][0]['text']).'</p>';
-        echo '<a href="'.messenger_activation_url('381488558920384',$users[0]['u_id']).'" class="btn btn-primary"> Activate Bot &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
+        echo '<a href="'.messenger_activation_url('381488558920384',$users[0]['u_id']).'" class="btn btn-primary"> Activate &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
         
         
         
