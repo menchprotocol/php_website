@@ -109,7 +109,6 @@ $(document).ready(function() {
 	$("#calculator_body").on("change", "#whatif_selection", function(){
 		update_tuition_calculator();
 	});
-	
     
 	//Load date picker:
 	$( function() {

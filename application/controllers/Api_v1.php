@@ -771,13 +771,26 @@ class Api_v1 extends CI_Controller {
 	    }
 	}
 	
+	function mark_read(){
+	    //Log a Messenger Read engagement to remove the notifications
+	    $udata = auth(1);
+	    if(isset($udata['u_id']) && $udata['u_id']>0 && strlen($_POST['botkey'])>4){
+	        $this->Db_model->e_create(array(
+	            'e_initiator_u_id' => $udata['u_id'],
+	            'e_json' => json_encode(array('original_request'=>'console_chat')),
+	            'e_type_id' => 1, //Message Read
+	            'e_fb_page_id' => $_POST['botkey'],
+	        ));
+	        echo 'success'; //This will suce the notification
+	    }   
+	}
+	
 	function tuition_calculator(){
 	    //Displays the class timeline based on some inputs:
 	    $udata = auth(1);
 	    if(!isset($_POST['r_id']) || !isset($_POST['b_id']) || !isset($_POST['r_response_time_hours']) || !isset($_POST['r_meeting_frequency']) || !isset($_POST['r_meeting_duration']) || !isset($_POST['b_sprint_unit']) || !isset($_POST['b_effective_milestones']) || !isset($_POST['c__estimated_hours'])){
 	        die('<span style="color:#FF0000;">Missing core data: '.print_r($_POST,ture).'</span>');
-	    }
-	    
+	    }	    
 	    
 	    //Set standards for Tuition Calculator:
 	    $calculator_logic = array(

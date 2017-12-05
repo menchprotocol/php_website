@@ -616,6 +616,10 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
     color: #0082ff;
 }
 
+#msgnotif:hover{
+	background-color:#CCC !important;
+}
+
 .navbar-nav>li{
 	margin-left:20px;
 }

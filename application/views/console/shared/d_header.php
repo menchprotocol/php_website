@@ -29,7 +29,7 @@ $mench_bots = $this->config->item('mench_bots');
 
 
 
-<body>
+<body id="console_body">
 
 <?php
 //Start the filtering array for unread notifications:
@@ -52,11 +52,7 @@ if(count($last_read)>0){
 }
 
 //See how many unread notifications we have:
-//TODO launch for all instructors...
-$unread_notifications = array();
-if($udata['u_id']==1){
-    $unread_notifications = $this->Db_model->e_fetch($unread_notification_filters);
-}
+$unread_notifications = $this->Db_model->e_fetch($unread_notification_filters);
 
 //Facebook chat in console ONLY if activated already:
 if(isset($udata['u_fb_i_id']) && $udata['u_fb_i_id']>0){
@@ -65,7 +61,7 @@ if(isset($udata['u_fb_i_id']) && $udata['u_fb_i_id']>0){
 
 //Show them if >0
 if(count($unread_notifications)>0){
-    echo '<div id="msgnotif"><i class="fa fa-bell" aria-hidden="true"></i> '.count($unread_notifications).' New</div>';
+    echo '<a id="msgnotif" href="javascript:mark_read()" data-toggle="tooltip" title="Unread notifications sent by your assistant. Click to dismiss." data-placement="top"><i class="fa fa-bell" aria-hidden="true"></i> '.count($unread_notifications).' New</a>';
 }
 ?>
 
