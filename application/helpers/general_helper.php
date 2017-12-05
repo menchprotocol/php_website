@@ -1596,7 +1596,7 @@ function echo_chat($botkey,$unread_notifications_count=0){
     //$bot_activation_salt = $CI->config->item('bot_activation_salt');
     //This is for the instructor bot:
     return '<div class="fb-customerchat" minimized="'.( $unread_notifications_count ? 'false' : 'true' ).'" page_id="'.$botkey.'"></div>';
-    //ref="'.( isset($udata['u_id']) && strlen($udata['u_fb_i_id'])<4 ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"
+    //ref="'.( isset($udata['u_id']) && strlen($udata['u_fb_id'])<4 ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"
 }
 
 function messenger_activation_url($botkey,$u_id=null){
@@ -2098,7 +2098,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                     'e_b_id' => $b_id, //If set...
                     'e_r_id' => $r_id, //If set...
                     'e_i_id' => $i['i_id'], //The message that is being dripped
-                    'e_fb_page_id' => $botkey,
                 ));
                 
             } elseif(in_array($i['i_status'],array(1,3))){
@@ -2121,7 +2120,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                     'e_b_id' => $b_id, //If set...
                     'e_r_id' => $r_id, //If set...
                     'e_i_id' => $i['i_id'], //The message that is being dripped
-                    'e_fb_page_id' => $botkey,
                 ));
             }
         }
@@ -2157,7 +2155,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             'e_b_id' => $b_id, //If set...
                             'e_r_id' => $r_id, //If set...
                             'e_i_id' => $i['i_id'], //The message that is being dripped
-                            'e_fb_page_id' => $botkey,
                         ));
                         
                     } elseif(in_array($i['i_status'],array(1,3))){
@@ -2180,7 +2177,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             'e_b_id' => $b_id, //If set...
                             'e_r_id' => $r_id, //If set...
                             'e_i_id' => $i['i_id'], //The message that is being dripped
-                            'e_fb_page_id' => $botkey,
                         ));
                     }
                 }
@@ -2213,7 +2209,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                                     'e_b_id' => $b_id, //If set...
                                     'e_r_id' => $r_id, //If set...
                                     'e_i_id' => $i['i_id'], //The message that is being dripped
-                                    'e_fb_page_id' => $botkey,
                                 ));
                                 
                             } elseif(in_array($i['i_status'],array(1,3))){
@@ -2236,7 +2231,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                                     'e_b_id' => $b_id, //If set...
                                     'e_r_id' => $r_id, //If set...
                                     'e_i_id' => $i['i_id'], //The message that is being dripped
-                                    'e_fb_page_id' => $botkey,
                                 ));
                             }
                         }

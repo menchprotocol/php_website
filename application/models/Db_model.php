@@ -316,14 +316,8 @@ class Db_model extends CI_Model {
 	                'u_country_code' 	=> $locale[1],
 	            ));
 	            
-	            //Communicate with them accordingly:
-	            if($botkey=='1169880823142908'){
-	                //For instructors:
-	                tree_message(922, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
-	            } elseif($botkey=='381488558920384'){
-	                //For students:
-	                tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
-	            }
+	            //For students:
+	            tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
 	            
 	            //Return the newly created user ID:
 	            return $udata['u_id'];
@@ -340,7 +334,6 @@ class Db_model extends CI_Model {
 	                'e_message' => 'activate_bot() Found multiple users for Facebook ID ['.$psid_sender_id.'].',
 	                'e_json' => json_encode($current_fb_users),
 	                'e_type_id' => 8, //Platform Error
-	                'e_fb_page_id' => $botkey,
 	            ));
 	            
 	            //We dont know which user this is:
@@ -377,14 +370,7 @@ class Db_model extends CI_Model {
 	    } elseif(strlen($matching_users[0][$db_field])>4){
 	        
 	        //Ooops, Mench user seems to be activated with a different Messenger account!
-	        //Communicate with them accordingly:
-	        if($botkey=='1169880823142908'){
-	            //For instructors:
-	            tree_message(919, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	        } elseif($botkey=='381488558920384'){
-	            //For students:
-	            tree_message(923, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	        }
+	        tree_message(923, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
@@ -392,7 +378,6 @@ class Db_model extends CI_Model {
 	            'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
 	            'e_json' => json_encode($json_data),
 	            'e_type_id' => 9, //Support Needing Graceful Errors
-	            'e_fb_page_id' => $botkey,
 	        ));
 	        
 	        //Return false:
@@ -422,14 +407,7 @@ class Db_model extends CI_Model {
 	        if(!($cleared_count==count($current_fb_users))){
 	            //We could not clear the entitlement of 1 or more of the users...
 	            //This FB user is assigned to a different mench account, so we cannot activate them!
-	            //Communicate with them accordingly:
-	            if($botkey=='1169880823142908'){
-	                //For instructors:
-	                tree_message(925, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	            } elseif($botkey=='381488558920384'){
-	                //For students:
-	                tree_message(924, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	            }
+	            tree_message(924, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	            
 	            //Log engagement:
 	            $this->Db_model->e_create(array(
@@ -438,7 +416,6 @@ class Db_model extends CI_Model {
 	                'e_json' => json_encode($json_data),
 	                'e_type_id' => 9, //Support Needing Graceful Errors
 	                'e_recipient_u_id' => $current_fb_users[0]['u_id'],
-	                'e_fb_page_id' => $botkey,
 	            ));
 	            
 	            //Return false!
@@ -480,16 +457,21 @@ class Db_model extends CI_Model {
 	            'fb_profile' => $fb_profile,
 	        )),
 	        'e_type_id' => 31, //Messenger Activated
-	        'e_fb_page_id' => $botkey,
 	    ));
 	    
-	    //Communicate with them accordingly:
-	    if($botkey=='1169880823142908'){
-	        //For instructors:
-	        tree_message(918, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	    } elseif($botkey=='381488558920384'){
-	        //For students:
-	        tree_message(926, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	    //Fetch this user to see if they are an admin or not!
+	    $matching_users = $this->u_fetch(array(
+	        'u_id' => $ref_u_id,
+	    ));
+	    
+	    if(isset($matching_users[0])){
+	        if($matching_users[0]['u_status']==2){
+	            //Lead instructors:
+	            tree_message(918, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	        } else {
+	            //For students:
+	            tree_message(926, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
+	        }
 	    }
 	}
 	

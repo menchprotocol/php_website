@@ -12,7 +12,7 @@ class Bot extends CI_Controller {
     
 	function shervin($c_id,$depth){
 	    //Message shervin as example:
-	    echo_json(tree_message($c_id, $depth, '381488558920384'/*1169880823142908*/, 1, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
+	    echo_json(tree_message($c_id, $depth, '381488558920384', 1, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
 	}
 	
 	function t(){
@@ -224,7 +224,6 @@ class Bot extends CI_Controller {
 			        'e_message' => 'facebook_webhook() call missing messaging Array().',
 			        'e_json' => json_encode($json_data),
 			        'e_type_id' => 8, //Platform Error
-			        'e_fb_page_id' => $entry['id'],
 			    ));
 				continue;
 			}
@@ -239,7 +238,6 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 1, //Message Read
-				        'e_fb_page_id' => $entry['id'],
 				    ));
 					
 				} elseif(isset($im['delivery'])) {
@@ -249,7 +247,6 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 2, //Message Delivered
-				        'e_fb_page_id' => $entry['id'],
 				    ));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -288,7 +285,6 @@ class Bot extends CI_Controller {
 					$eng_data = array(
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => json_encode($json_data),
-					    'e_fb_page_id' => $entry['id'],
 					    'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], $ref),
 					);
 					
@@ -342,7 +338,6 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 5, //Messenger Optin
-				        'e_fb_page_id' => $entry['id'],
 				    ));
 					
 				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -382,7 +377,6 @@ class Bot extends CI_Controller {
 					    'e_recipient_u_id' => ( $sent_from_us ? $u_id : 0 ),
 					    'e_b_id' => 0, //Default, may be updated later...
 					    'e_r_id' => 0, //Default, may be updated later...
-					    'e_fb_page_id' => $entry['id'],
 					);
 					
 					
@@ -410,7 +404,6 @@ class Bot extends CI_Controller {
 					            'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
 					            'e_json' => json_encode($json_data),
 					            'e_type_id' => 9, //Support Needing Graceful Errors
-					            'e_fb_page_id' => $entry['id'],
 					        ));
 					    }
 					}
@@ -450,7 +443,6 @@ class Bot extends CI_Controller {
 							        'e_message' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
 							        'e_json' => json_encode($json_data),
 							        'e_type_id' => 8, //Platform Error
-							        'e_fb_page_id' => $entry['id'],
 							    ));
 							}
 						}
@@ -466,7 +458,6 @@ class Bot extends CI_Controller {
 				        'e_message' => 'facebook_webhook() received unrecognized webhook call.',
 				        'e_json' => json_encode($json_data),
 				        'e_type_id' => 8, //Platform Error
-				        'e_fb_page_id' => $entry['id'],
 				    ));
 				    
 				}

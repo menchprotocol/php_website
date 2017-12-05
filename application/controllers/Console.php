@@ -80,7 +80,7 @@ class Console extends CI_Controller {
 		    ));
 		    $my_bootcamps[$key] = $this_full[0];
 		}
-		$title = ( strlen($udata['u_fb_i_id'])>4 ? 'My Bootcamps' : '<img src="/img/white-logo.png" style="width:32px; margin-top: -2px;" /> Activate Your Assistant Bot') ;
+		$title = ( strlen($udata['u_fb_id'])>4 ? 'My Bootcamps' : '<img src="/img/white-logo.png" style="width:32px; margin-top: -2px;" /> Activate Your Assistant Bot') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
@@ -94,7 +94,7 @@ class Console extends CI_Controller {
 		));
 		
 		//Have they activated their Bot yet?
-		if(strlen($udata['u_fb_i_id'])>4){
+		if(strlen($udata['u_fb_id'])>4){
 		    //Yes, show them their bootcamps:
 		    $this->load->view('console/all_bootcamps' , array(
 		        'bootcamps' => $my_bootcamps,

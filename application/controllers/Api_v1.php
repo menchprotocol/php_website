@@ -779,7 +779,6 @@ class Api_v1 extends CI_Controller {
 	            'e_initiator_u_id' => $udata['u_id'],
 	            'e_json' => json_encode(array('original_request'=>'console_chat')),
 	            'e_type_id' => 1, //Message Read
-	            'e_fb_page_id' => $_POST['botkey'],
 	        ));
 	        echo 'success'; //This will suce the notification
 	    }   

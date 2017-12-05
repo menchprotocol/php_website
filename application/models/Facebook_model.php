@@ -27,7 +27,6 @@ class Facebook_model extends CI_Model {
 		        'e_message' => 'fetch_profile() failed to fetch user profile for Facebook ID ['.$psid_sender_id.'].',
 		        'e_json' => json_encode($fb_profile),
 		        'e_type_id' => 8, //Platform Error
-		        'e_fb_page_id' => $botkey,
 		    ));
 		    
 		    //There was an issue accessing this on FB

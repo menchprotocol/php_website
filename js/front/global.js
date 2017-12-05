@@ -10,7 +10,7 @@ ga('send', 'pageview');
 //Facebook SDK for JavaScript 
 window.fbAsyncInit = function() {
   FB.init({
-    appId            : '139884580073435',
+    appId            : '1782431902047009', //MenchBot
     autoLogAppEvents : true,
     xfbml            : true,
     version          : 'v2.11'

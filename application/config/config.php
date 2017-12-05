@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.1,
+    'version' => 1.11,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -103,34 +103,6 @@ $config['mench_bots'] = array(
             ),
         ),
     ),
-    '1169880823142908' => array(
-        'name' => 'Mench Instructor Bot', //For Instructors
-        'u_db' => 'u_fb_i_id',
-        'fb_page_id' => '1169880823142908',
-        'fb_app_id' => '139884580073435',
-        'bot_ref_url' => 'https://m.me/1169880823142908', //TODO Miguel to update this
-        'access_token' => 'EAABZCOWq0b9sBABYALs8Hh4d4yVLc3qplDTZATOa3k4db57aUTeSsyKcZAJxkJfRobTl1pCSN7r4auQSPVvbX3JHa4wfu8VpM6mVjZCXXEtUNCvZCeVf0EBZAZAoPaAZA6ocZCeD5j1QUtXdeyvYau4FCnvZARwEsxP0UpFnmWZBZAMFPQZDZD',
-        'settings' => array(
-            'get_started' => array(
-                'payload' => 'GET_STARTED',
-            ),
-            'greeting' => array(
-                array(
-                    'locale' => 'default',
-                    'text' => 'I\'m an Assistant Bot for Mench Instructors. I\'ll help with:
-                    
-- Bootcamp Building & Examples
-- Notifications
-- Mench Team Communications
-',
-                ),
-            ),
-            'whitelisted_domains' => array(
-                'http://local.mench.co',
-                'https://mench.co',
-            ),
-        ),
-    )
 );
 
 

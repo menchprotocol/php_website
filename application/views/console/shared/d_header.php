@@ -36,14 +36,12 @@ $mench_bots = $this->config->item('mench_bots');
 $unread_notification_filters = array(
     'e_recipient_u_id' => $udata['u_id'], //The instructor received these messages
     'e_type_id' => "7", //Outbound messages towards instructors
-    'e_fb_page_id' => "1169880823142908", //For the instructor Bot
 );
 
 //Fetch their last read engagement
 $last_read = $this->Db_model->e_fetch(array(
     'e_initiator_u_id' => $udata['u_id'], //The reading of the message was initiated by student
     'e_type_id' => "1", //Message read
-    'e_fb_page_id' => "1169880823142908", //For the instructor Bot
 ),1); //We only need the lates one!
 
 //Did we have any? If so, append that to the filter:
@@ -55,8 +53,8 @@ if(count($last_read)>0){
 $unread_notifications = $this->Db_model->e_fetch($unread_notification_filters);
 
 //Facebook chat in console ONLY if activated already:
-if(isset($udata['u_fb_i_id']) && $udata['u_fb_i_id']>0){
-    echo echo_chat('1169880823142908',count($unread_notifications));
+if(isset($udata['u_fb_id']) && $udata['u_fb_id']>0){
+    echo echo_chat('381488558920384',count($unread_notifications));
 }
 
 //Show them if >0
@@ -85,7 +83,7 @@ if(count($unread_notifications)>0){
 					</span>
 				</div>
 				
-				<?php if(strlen($udata['u_fb_i_id'])>4){ ?>
+				<?php if(strlen($udata['u_fb_id'])>4){ ?>
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</i></span></a></li> */ ?>
