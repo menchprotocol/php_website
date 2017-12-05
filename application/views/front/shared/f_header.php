@@ -27,13 +27,6 @@ $website = $this->config->item('website');
 
 <body class="landing-page">
 
-<?php
-//Facebook chat in console:
-if(isset($udata['u_fb_i_id']) && $udata['u_fb_i_id']>0){
-    echo echo_chat();
-}
-?>
-
     <nav class="navbar navbar-warning navbar-fixed-top navbar-color-on-scroll <?= ( isset($landing_page) ? 'navbar-transparent': 'no-adj') ?>">
     	<div class="container">
         	<!-- Brand and toggle get grouped for better mobile display -->

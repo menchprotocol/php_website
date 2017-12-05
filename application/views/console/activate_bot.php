@@ -9,7 +9,6 @@ if($users[0]['u_fb_i_id']>0){
     //Tell user to continue:
     echo '<div class="maxout">';
         echo '<div class="alert alert-success" role="alert"><i class="fa fa-check-square" aria-hidden="true"></i> <b>Success!</b> We\'re now connected through Facebook Messenger.</div>';
-        echo '<p>You can access at any time using the "<img src="/img/MessengerIcon.png" width="28" />" icon at the bottom/right of this screen.</p>';
         echo '<a href="/console" class="btn btn-primary">Go To My Bootcamps &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
     echo '</div>';
     
