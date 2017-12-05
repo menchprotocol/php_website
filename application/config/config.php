@@ -30,11 +30,11 @@ $config['mench_bots'] = array(
             'greeting' => array(
                 array(
                     'locale' => 'default',
-                    'text' => 'I\'m an Assistant Bot for Mench Students. I\'ll help with:
+                    'text' => 'I\'m an Assistant Bot for Mench Bootcamps. I\'ll help with:
 
-- Notifications & Reminders
+- Notifications/Reminders
 - Managing your Action Plan
-- Chat with your Instructor',
+- Chat with Instructor & Mench Team',
                 ),
             ),
             'whitelisted_domains' => array(

@@ -80,7 +80,7 @@ class Console extends CI_Controller {
 		    ));
 		    $my_bootcamps[$key] = $this_full[0];
 		}
-		$title = ( strlen($udata['u_fb_id'])>4 ? 'My Bootcamps' : '<img src="/img/white-logo.png" style="width:32px; margin-top: -2px;" /> Activate Your Assistant Bot') ;
+		$title = ( strlen($udata['u_fb_id'])>4 ? 'My Bootcamps' : '<img src="/img/white-logo.png" style="width:32px; margin-top: -2px;" /> Activate MenchBot') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(

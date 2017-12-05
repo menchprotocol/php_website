@@ -278,9 +278,9 @@ $start_times = $this->config->item('start_times');
 <?php if(strlen($admission['u_fb_id'])<=1){ ?>
 <div class="wizard-box">
 	<?php $mench_bots = $this->config->item('mench_bots'); ?>
-	<p><img src="/img/bp_48.png" alt="Mench Assistant Bot" /> <b style="font-size:1.2em;">MenchBot Activation</b></p>
+	<p><img src="/img/bp_48.png" alt="MenchBot" /> <b style="font-size:1.2em;">MenchBot Activation</b></p>
 	<p><?= nl2br($mench_bots['381488558920384']['settings']['greeting'][0]['text']) ?></p>
-	<p style="margin:40px 0; font-weight:bold;"><a href="<?= messenger_activation_url('381488558920384',$admission['u_id']) ?>" target="_blank">Activate My Assistant Bot</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
+	<p style="margin:40px 0; font-weight:bold;"><a href="<?= messenger_activation_url('381488558920384',$admission['u_id']) ?>" target="_blank">Activate MenchBot</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
 </div>
 <?php } ?>
 

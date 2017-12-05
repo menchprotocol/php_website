@@ -465,7 +465,7 @@ class Db_model extends CI_Model {
 	    ));
 	    
 	    if(isset($matching_users[0])){
-	        if($matching_users[0]['u_status']==2){
+	        if($matching_users[0]['u_status']>=2){
 	            //Lead instructors:
 	            tree_message(918, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	        } else {

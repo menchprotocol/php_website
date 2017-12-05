@@ -27,7 +27,7 @@ if($users[0]['u_fb_id']>0){
         
         /*
         if(isset($_GET['if_activated'])){
-            echo '<div class="alert alert-warning" style="margin-top:20px;" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Not Yet Activated!</b> start chatting with your Assistant Bot to get started.</div>';
+            echo '<div class="alert alert-warning" style="margin-top:20px;" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>Not Yet Activated!</b> start chatting with your MenchBot to get started.</div>';
         }
         echo '<a href="/console?if_activated=1" class="btn btn-primary"><i class="fa fa-refresh" aria-hidden="true"></i> Refresh</a>';
         */
