@@ -317,10 +317,10 @@ class Db_model extends CI_Model {
 	            ));
 	            
 	            //Communicate with them accordingly:
-	            if($entry['id']=='1169880823142908'){
+	            if($botkey=='1169880823142908'){
 	                //For instructors:
 	                tree_message(922, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
-	            } elseif($entry['id']=='381488558920384'){
+	            } elseif($botkey=='381488558920384'){
 	                //For students:
 	                tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
 	            }
@@ -378,10 +378,10 @@ class Db_model extends CI_Model {
 	        
 	        //Ooops, Mench user seems to be activated with a different Messenger account!
 	        //Communicate with them accordingly:
-	        if($entry['id']=='1169880823142908'){
+	        if($botkey=='1169880823142908'){
 	            //For instructors:
 	            tree_message(919, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	        } elseif($entry['id']=='381488558920384'){
+	        } elseif($botkey=='381488558920384'){
 	            //For students:
 	            tree_message(923, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	        }
@@ -423,10 +423,10 @@ class Db_model extends CI_Model {
 	            //We could not clear the entitlement of 1 or more of the users...
 	            //This FB user is assigned to a different mench account, so we cannot activate them!
 	            //Communicate with them accordingly:
-	            if($entry['id']=='1169880823142908'){
+	            if($botkey=='1169880823142908'){
 	                //For instructors:
 	                tree_message(925, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	            } elseif($entry['id']=='381488558920384'){
+	            } elseif($botkey=='381488558920384'){
 	                //For students:
 	                tree_message(924, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	            }
@@ -484,10 +484,10 @@ class Db_model extends CI_Model {
 	    ));
 	    
 	    //Communicate with them accordingly:
-	    if($entry['id']=='1169880823142908'){
+	    if($botkey=='1169880823142908'){
 	        //For instructors:
 	        tree_message(918, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
-	    } elseif($entry['id']=='381488558920384'){
+	    } elseif($botkey=='381488558920384'){
 	        //For students:
 	        tree_message(926, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	    }
