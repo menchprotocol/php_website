@@ -651,20 +651,23 @@ function calculate_bootcamp_status($b){
     //A function used on the dashboard to indicate what is left before launching the bootcamp
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
-    $call_to_action = array();
+    $checklist = array();
     
     
     
     //Do we have enough Milestones?
-    $to_gain = 60;
+    $estimated_minutes = 60;
     $required_milestones = ( $b['b_sprint_unit']=='week' ? 2 : 3 ); //Minimum 3 days or 1 week
-    $progress_possible += $to_gain;
-    if(count($b['c__child_intents'])>=$required_milestones){
-        $progress_gained += $to_gain;
-    } else {
-        $progress_gained += (count($b['c__child_intents'])/$required_milestones)*$to_gain;
-        array_push($call_to_action,'Add <b>[At least '.$required_milestones.' '.$sprint_units[$b['b_sprint_unit']]['name'].' Milestone'.($required_milestones==1?'':'s').']</b>'.(count($b['c__child_intents'])>0?' ('.($required_milestones-count($b['c__child_intents'])).' more)':'').' to your <a href="/console/'.$b['b_id'].'/actionplan"><u>Action Plan</u></a>');
-    }
+    $progress_possible += $estimated_minutes;
+    $us_status = ( count($b['c__child_intents'])>=$required_milestones ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : (count($b['c__child_intents'])/$required_milestones)*$estimated_minutes );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan',
+        'anchor' => '<b>Add '.$required_milestones.' or more '.$sprint_units[$b['b_sprint_unit']]['name'].' Milestones</b>'.( count($b['c__child_intents'])>0 && !$us_status ?' ('.($required_milestones-count($b['c__child_intents'])).' more)':'').' in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+    
     
     //Now check each Milestone and its Task List:
     foreach($b['c__child_intents'] as $milestone_num=>$c){
@@ -673,26 +676,29 @@ function calculate_bootcamp_status($b){
             continue; //Don't check unpublished Milestones, which is not even possible for now...
         }
         
-        
         //Prepare key variables:
         $milestone_anchor = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
         
         
         //Milestone Messages
-        $to_gain = 15;
-        $progress_possible += $to_gain;
-        $qualified_messages = 0;
-        if(count($c['c__messages'])>0){
-            foreach($c['c__messages'] as $i){
-                $qualified_messages += ( $i['i_status']==3 ? 1 : 0 );
+        if($c['c_is_last']=='f'){
+            $estimated_minutes = 15;
+            $progress_possible += $estimated_minutes;
+            $qualified_messages = 0;
+            if(count($c['c__messages'])>0){
+                foreach($c['c__messages'] as $i){
+                    $qualified_messages += ( $i['i_status']==3 ? 1 : 0 );
+                }
             }
+            $us_status = ( $qualified_messages>0 ? 1 : 0 );
+            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+            array_push( $checklist , array(
+                'href' => '/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages',
+                'anchor' => '<b>Add a '.status_bible('i',3).' Message</b> to '.$milestone_anchor.$c['c_objective'],
+                'us_status' => $us_status,
+                'time_min' => $estimated_minutes,
+            ));
         }
-        if($qualified_messages>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Add <b>[At least 1 '.status_bible('i',3).' Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'#messages"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
-        }
-        
         
         
         //For the MVP we require Task details for 1 Weekly Milestone or 2 Daily Milestones, not more!
@@ -702,67 +708,77 @@ function calculate_bootcamp_status($b){
         
         
         //Sub Task List
-        $to_gain = 30;
-        $required_tasks = ( $b['b_sprint_unit']=='week' ? 1 : 1 ); //At least one task for each for now
-        $progress_possible += $to_gain;
-        if(isset($c['c__child_intents']) && count($c['c__child_intents'])>=$required_tasks){
-            $progress_gained += $to_gain;
-        } else {
-            $progress_gained += (count($c['c__child_intents'])/$required_tasks)*$to_gain;
-            array_push($call_to_action,'Add <b>[At least '.$required_tasks.' Task'.($required_tasks==1?'':'s').']</b>'.(count($c['c__child_intents'])>0?' ('.($required_tasks-count($c['c__child_intents'])).' more)':'').' to <a href="/console/'.$b['b_id'].'/actionplan/'.$c['c_id'].'"><u>'.$milestone_anchor.$c['c_objective'].'</u></a>');
-        }
-        
-        
-        //Check Tasks:
-        if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            foreach($c['c__child_intents'] as $c2){
-
-                //Create task object:
-                $task_anchor = $milestone_anchor.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
-                
-                //c_time_estimate
-                $to_gain = 5;
-                $progress_possible += $to_gain;
-                if($c2['c_time_estimate']>0){
-                    $progress_gained += $to_gain;
-                } else {
-                    array_push($call_to_action,'Add <b>[Time Estimate]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details"><u>'.$task_anchor.'</u></a>');
-                }
-                
-                //Messages for Tasks:
-                $to_gain = 15;
-                $progress_possible += $to_gain;
-                $qualified_messages = 0;
-                if(count($c2['c__messages'])>0){
-                    foreach($c2['c__messages'] as $i){
-                        $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<=3 ? 1 : 0 );
+        if($c['c_is_last']=='f'){
+            $estimated_minutes = 30;
+            $progress_possible += $estimated_minutes;
+            $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );
+            $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
+            array_push( $checklist , array(
+                'href' => '/console/'.$b['b_id'].'/actionplan/'.$c['c_id'],
+                'anchor' => '<b>Add a Task</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$milestone_anchor.$c['c_objective'],
+                'us_status' => $us_status,
+                'time_min' => $estimated_minutes,
+            ));
+            
+            //Check Tasks:
+            if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+                foreach($c['c__child_intents'] as $c2){
+                    
+                    //Create task object:
+                    $task_anchor = $milestone_anchor.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
+                    
+                    //c_time_estimate
+                    $estimated_minutes = 5;
+                    $progress_possible += $estimated_minutes;
+                    $us_status = ( $c2['c_time_estimate']>0 ? 1 : 0 );
+                    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+                    array_push( $checklist , array(
+                        'href' => '/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#details',
+                        'anchor' => '<b>Estimate Completion Time</b> for '.$task_anchor,
+                        'us_status' => $us_status,
+                        'time_min' => $estimated_minutes,
+                    ));
+                    
+                    //Messages for Tasks:
+                    $estimated_minutes = 15;
+                    $progress_possible += $estimated_minutes;
+                    $qualified_messages = 0;
+                    if(count($c2['c__messages'])>0){
+                        foreach($c2['c__messages'] as $i){
+                            $qualified_messages += ( $i['i_status']>=1 && $i['i_status']<=3 ? 1 : 0 );
+                        }
                     }
-                }
-                if($qualified_messages>0){
-                    $progress_gained += $to_gain;
-                } else {
-                    array_push($call_to_action,'Add <b>[At least 1 Published Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#messages"><u>'.$task_anchor.'</u></a>');
+                    $us_status = ( $qualified_messages>0 ? 1 : 0 );
+                    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+                    array_push( $checklist , array(
+                        'href' => '/console/'.$b['b_id'].'/actionplan/'.$c2['c_id'].'#messages',
+                        'anchor' => '<b>Add a Published Message</b> to '.$task_anchor,
+                        'us_status' => $us_status,
+                        'time_min' => $estimated_minutes,
+                    ));
                 }
             }
-        }
+        }    
     }
     
     
     //Bootcamp Messages:
-    $to_gain = 15;
-    $progress_possible += $to_gain;
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
             $qualified_messages += ( $i['i_status']>=3 && $i['i_status']<4 && $i['i_media_type']=='video' ? 1 : 0 );
         }
     }
-    if($qualified_messages>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Upload <b>[At least 1 '.status_bible('i',3).' Video Message]</b> to <a href="/console/'.$b['b_id'].'/actionplan#messages"><u>Action Plan</u></a>');
-    }
-    
+    $us_status = ( $qualified_messages>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#messages',
+        'anchor' => '<b>Add a '.status_bible('i',3).' Video Message</b> to Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     /* *****************************
      *  classes
@@ -779,125 +795,163 @@ function calculate_bootcamp_status($b){
         }
     }
     
-    //r_max_students
-    $to_gain = 5;
-    $progress_possible += $to_gain;
-    if($focus_class){
-        if(strlen($focus_class['r_max_students'])>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Set <b>[Max Students]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_prerequisites
-    $to_gain = 10;
-    $progress_possible += $to_gain;
-    $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
-    if($focus_class){
-        if(strlen($focus_class['r_prerequisites'])>0 && !($focus_class['r_prerequisites']==json_encode($default_class_prerequisites))){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Modify <b>[Prerequisites]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    
-    //r_application_questions
-    $to_gain = 10;
-    $progress_possible += $to_gain;
-    $default_class_questions = $CI->config->item('default_class_questions');
-    if($focus_class){
-        if(strlen($focus_class['r_application_questions'])>0 && !($focus_class['r_application_questions']==json_encode($default_class_questions))){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Modify <b>[Application Questions]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_response_time_hours
-    $to_gain = 5;
-    $progress_possible += $to_gain;
-    if($focus_class){
-        if(strlen($focus_class['r_response_time_hours'])>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Set <b>[Response Time]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_meeting_frequency
-    $to_gain = 10;
-    $progress_possible += $to_gain;
-    if($focus_class){
-        if(strlen($focus_class['r_meeting_frequency'])>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Set <b>[1-on-1 Mentorship Sessions]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_live_office_hours
-    if($focus_class){
-        $to_gain = 5;
-        $progress_possible += $to_gain;
-        if((strlen($focus_class['r_live_office_hours'])<=0) || (strlen($focus_class['r_live_office_hours'])>0 && strlen($focus_class['r_office_hour_instructions'])>0)){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Set <b>[Office Hours: Contact Method]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_usd_price
-    $to_gain = 20;
-    $progress_possible += $to_gain;
-    if($focus_class){
-        if(strlen($focus_class['r_usd_price'])>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Set <b>[Tuition Rate]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_completion_prizes
-    $to_gain = 10;
-    $progress_possible += $to_gain;
-    $default_class_prizes = $CI->config->item('default_class_prizes');
-    if($focus_class){
-        if(!($focus_class['r_completion_prizes']==json_encode($default_class_prizes))){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Modify <b>[Completion Prizes]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
-    
-    //r_cancellation_policy
-    $to_gain = 10;
-    $progress_possible += $to_gain;
-    if($focus_class){
-        if($focus_class['r_usd_price']==0 || strlen($focus_class['r_usd_price'])==0 || strlen($focus_class['r_cancellation_policy'])>0){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Set <b>[Refund Policy]</b> for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }    
-    
-    //r_status
-    $to_gain = 5;
-    $progress_possible += $to_gain;
-    if($focus_class){
-        if($focus_class['r_status']==1){
-            $progress_gained += $to_gain;
-        } else {
-            array_push($call_to_action,'Change <b>[Class Status]</b> to '.status_bible('r',1).' for <a href="/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#settings"><u>'.time_format($focus_class['r_start_date'],4).' Class</u></a>');
-        }
-    }
     
     //Did we NOT have a next class?
     if(!$focus_class){
         //Missing class all together!
-        array_push($call_to_action,'Create <b>[At least 1 Class]</b> in <a href="/console/'.$b['b_id'].'/classes"><u>Classes</u></a>');
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes',
+            'anchor' => '<b>Create a Class</b> in Classes',
+            'us_status' => 0,
+            'time_min' => $estimated_minutes,
+        ));
     }
+    
+    //r_max_students
+    $estimated_minutes = 5;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $us_status = ( strlen($focus_class['r_max_students'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'],
+            'anchor' => '<b>Set Max Students</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_prerequisites
+    $estimated_minutes = 10;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
+        $us_status = ( strlen($focus_class['r_prerequisites'])>0 && !($focus_class['r_prerequisites']==json_encode($default_class_prerequisites)) ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'],
+            'anchor' => '<b>Edit Prerequisites</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    
+    //r_application_questions
+    $estimated_minutes = 10;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $default_class_questions = $CI->config->item('default_class_questions');
+        $us_status = ( strlen($focus_class['r_application_questions'])>0 && !($focus_class['r_application_questions']==json_encode($default_class_questions)) ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'],
+            'anchor' => '<b>Edit Application Questions</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_response_time_hours
+    $estimated_minutes = 5;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $us_status = ( strlen($focus_class['r_response_time_hours'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support',
+            'anchor' => '<b>Set Response Time</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_meeting_frequency
+    $estimated_minutes = 10;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $us_status = ( strlen($focus_class['r_meeting_frequency'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support',
+            'anchor' => '<b>Set 1-on-1 Mentorship Sessions</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_live_office_hours
+    if($focus_class && strlen($focus_class['r_live_office_hours'])>0){
+        $estimated_minutes = 5;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($focus_class['r_office_hour_instructions'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support',
+            'anchor' => '<b>Set Office Hours Contact Message</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_usd_price
+    $estimated_minutes = 20;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $us_status = ( strlen($focus_class['r_usd_price'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing',
+            'anchor' => '<b>Set Tuition Rate</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_completion_prizes
+    $estimated_minutes = 10;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $default_class_prizes = $CI->config->item('default_class_prizes');
+        $us_status = ( !($focus_class['r_completion_prizes']==json_encode($default_class_prizes)) ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing',
+            'anchor' => '<b>Edit Completion Prizes</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    //r_cancellation_policy
+    $estimated_minutes = 10;
+    $progress_possible += $estimated_minutes;
+    if($focus_class && $focus_class['r_usd_price']>0){
+        $us_status = ( strlen($focus_class['r_cancellation_policy'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing',
+            'anchor' => '<b>Set Refund Polic</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }    
+    
+    //r_status
+    $estimated_minutes = 5;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $us_status = ( $focus_class['r_status']==1 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#settings',
+            'anchor' => '<b>Set Class Status to '.status_bible('r',1).'</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+    
+    
     
     
     
@@ -907,54 +961,72 @@ function calculate_bootcamp_status($b){
     //This must exist:
     $bl = $b['b__admins'][0];
     $udata = $CI->session->userdata('user');
-    $account_action = ( $b['b__admins'][0]['u_id']==$udata['u_id'] ? '<a href="/console/account"><u>My Account</u></a>' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account.' );
+    $is_my_account = ( $b['b__admins'][0]['u_id']==$udata['u_id'] );
+    $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account' );
+    $account_href = ( $is_my_account ? '/console/account' : null );
+    
     
 
     
     //u_phone
-    $to_gain = 5;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_phone'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Phone Number]</b> (Private) to '.$account_action);
-    }
+    $estimated_minutes = 5;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_phone'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     //u_image_url
-    $to_gain = 10;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_image_url'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Profile Picture URL]</b> to '.$account_action);
-    }
+    $estimated_minutes = 10;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_image_url'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Set Profile Picture</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     //u_country_code && u_current_city
-    $to_gain = 30;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Current Country, City & State]</b> to '.$account_action);
-    }
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Set Current Country, City & State</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     //u_language
-    $to_gain = 30;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_language'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Fluent Languages]</b> to '.$account_action);
-    }
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_language'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     //u_bio
-    $to_gain = 30;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_bio'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Add <b>[Introductory Message]</b> to '.$account_action);
-    }
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_bio'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Set Introductory Message</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     //Profile counter:
     $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
@@ -963,25 +1035,30 @@ function calculate_bootcamp_status($b){
         $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
     }
     
-    $to_gain = 30;
-    $progress_possible += $to_gain;
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
     $required_social_profiles = 3;
-    if($profile_counter>=$required_social_profiles){
-        $progress_gained += $to_gain;
-    } else {
-        $progress_gained += ($profile_counter/$required_social_profiles)*$to_gain;
-        array_push($call_to_action,'Link <b>[At least '.$required_social_profiles.' Social Profiles]</b>'.($profile_counter>0?' ('.($required_social_profiles-$profile_counter).' more)':'').' to '.$account_action);
-    }
+    $us_status = ( $profile_counter>=$required_social_profiles ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     
     //u_terms_agreement_time
-    $to_gain = 45;
-    $progress_possible += $to_gain;
-    if(strlen($bl['u_terms_agreement_time'])>0){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Agree to <b>[Instructor Agreement]</b> in '.$account_action);
-    }
+    $estimated_minutes = 45;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href,
+        'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
         
     
     /* *****************************
@@ -990,37 +1067,66 @@ function calculate_bootcamp_status($b){
     
     
     //b_category_id
-    $to_gain = 15;
-    $progress_possible += $to_gain;
-    if($b['b_category_id']>=1){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Select <b>[Bootcamp Category]</b> in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
-    }
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( $b['b_category_id']>=1 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/settings',
+        'anchor' => '<b>Set Bootcamp Category</b> in Settings',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     
     //b_status
-    $to_gain = 5;
-    $progress_possible += $to_gain;
-    if($b['b_status']>=1){
-        $progress_gained += $to_gain;
-    } else {
-        array_push($call_to_action,'Finally change <b>[Bootcamp Status]</b> to '.status_bible('b',1).' in <a href="/console/'.$b['b_id'].'/settings"><u>Settings</u></a>');
-    }
+    $estimated_minutes = 5;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( $b['b_status']>=1 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/settings',
+        'anchor' => '<b>Set Bootcamp Status to '.status_bible('b',1).'</b> in Settings',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     
-    $progress_percentage = round($progress_gained/$progress_possible*100);
-    if($progress_percentage==100){
-        array_push($call_to_action,'Review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Bootcamp Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to make sure it all looks good.');
-        array_push($call_to_action,'Wait until Mench team updates your bootcamp status to '.status_bible('b',2));
-        array_push($call_to_action,'Launch admissions by sending a message to your student list.');
-    }
+    
+    //Return the final message:
     return array(
         'stage' => '<i class="fa fa-tasks" aria-hidden="true"></i> Bootcamp <span class="underl" data-toggle="tooltip" data-placement="bottom" title="MVP = Minimum Viable Product = Build a basic version of your Bootcamp  within 15-20 hours and then iteratively improve it over time.">MVP</span> Checklist',
-        'progress' => $progress_percentage,
-        'call_to_action' => $call_to_action,
+        'progress' => round($progress_gained/$progress_possible*100),
+        'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your bootcamp status to '.status_bible('b',2).'. At this time you can launch your bootcamp by inviting your students to join.',
+        'check_list' => $checklist,
     );
 }
+
+
+
+function echo_checklist($href,$anchor,$us_status,$time_min=0){
+    
+    $ui = '';
+    if($href){
+        $ui .= '<a href="'.$href.'" class="list-group-item '.($us_status?'checklist-done':'').'">';
+        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+    } else {
+        $ui .= '<li class="list-group-item '.($us_status?'checklist-done':'').'">';
+    }
+    
+    $ui .= status_bible('us',$us_status,1,'right').' ';
+    //Never got around estimating the time of each task, as it seemed a bit arbitrary to do so...
+    //$ui .= ( $time_min ? '<span class="est-time" data-toggle="tooltip" data-placement="right" title="Takes about '.$time_min.' minutes to complete"><b>~'.$time_min.'"</b></span>' : '' );
+    $ui .= $anchor.' ';
+    
+    if($href){
+        $ui .= '</a>';
+    } else {
+        $ui .= '</li>';
+    }
+    return $ui;
+}
+
 
 function is_valid_intent($c_id){
     $CI =& get_instance();
@@ -1331,17 +1437,24 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    ),
 	    
 	    'us' => array(
-    	    -1 => array(
-        	    's_name'  => 'Requires Revision',
-    	        's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Intructor has reviewed submission and found issues with it that requires student attention.',
-        	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-exclamation-triangle',
-    	    ),
+	        -1 => array(
+	            's_name'  => 'Requires Revision',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Submission has been reviewed and improvement suggestions are pending implementation',
+	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-exclamation-triangle',
+	        ),
+	        0 => array(
+	            's_name'  => 'Pending Completion',
+	            's_color' => '#2f2639', //dark
+	            's_desc'  => 'Task is pending completion',
+	            'u_min_status'  => 1,
+	            's_mini_icon' => 'fa-square-o',
+	        ),
     	    1 => array(
         	    's_name'  => 'Marked Done',
     	        's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Milestone tasks are marked as done.',
+        	    's_desc'  => 'Marked as complete',
         	    'u_min_status'  => 1,
         	    's_mini_icon' => 'fa-check-square',
     	    ),
@@ -2062,8 +2175,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'message' => 'Invalid Recipient ID',
         );
     }
-    $recipient_fb_psid = $recipients[0][$mench_bots[$botkey]['u_db']];
-    if(strlen($recipient_fb_psid)<4){
+    if(strlen($recipients[0]['u_fb_id'])<4){
         return array(
             'status' => 0,
             'message' => 'Recipient has not activated this bot yet',
@@ -2103,7 +2215,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             } elseif(in_array($i['i_status'],array(1,3))){
                 
                 //These are to be instantly distributed:
-                array_push( $instant_messages , echo_i($i, $i['u_fname'], true /*Facebook Format*/ ));
+                array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
                 
                 //Long sent engagement:
                 $CI->Db_model->e_create(array(
@@ -2160,7 +2272,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                     } elseif(in_array($i['i_status'],array(1,3))){
                         
                         //These are to be instantly distributed:
-                        array_push( $instant_messages , echo_i($i, $i['u_fname'], true /*Facebook Format*/ ));
+                        array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
                         
                         //Long sent engagement:
                         $CI->Db_model->e_create(array(
@@ -2214,7 +2326,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             } elseif(in_array($i['i_status'],array(1,3))){
                                 
                                 //These are to be instantly distributed:
-                                array_push( $instant_messages , echo_i($i, $i['u_fname'], true /*Facebook Format*/ ));
+                                array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
                                 
                                 //Long sent engagement:
                                 $CI->Db_model->e_create(array(
@@ -2242,7 +2354,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     
     
     //Dispatch all Instant Messages, their engagements have already been logged:
-    $CI->Facebook_model->batch_messages($botkey, $recipient_fb_psid, $instant_messages, $notification_type);
+    $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
     //TODO check to make sure this matches the total number of logged engagements?
     
     

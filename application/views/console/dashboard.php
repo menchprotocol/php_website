@@ -7,20 +7,32 @@
 
 <?php $launch_status = calculate_bootcamp_status($bootcamp); ?>
 <div class="title" style="margin-top:30px;"><h4><?= $launch_status['stage'] ?></h4></div>
-<div><b><?= $launch_status['progress'] ?>% Ready</b>, Complete the following checklist to make your Bootcamp ready for launch:</div>
+<div><b><?= $launch_status['progress'] ?>% Ready</b>, Complete this checklist to prepare your Bootcamp for launch:</div>
 <div class="progress">
 	<div class="progress-bar" role="progressbar" aria-valuenow="<?= $launch_status['progress'] ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $launch_status['progress'] ?>%;">
 	<span class="sr-only"><?= $launch_status['progress'] ?>% Complete</span>
 	</div>
 </div>
-<ul style="margin:-10px 0 0 -10px; list-style:decimal;">
-	<?php 
-	foreach($launch_status['call_to_action'] as $action){
-	    echo '<li>'.$action.'</li>';
-	}
-	?>
-</ul>
-<hr />
+<?php
+//Display the checklist:
+$count_done = 0;
+$check_list = '';
+foreach($launch_status['check_list'] as $item){
+    $check_list .= echo_checklist($item['href'],$item['anchor'],$item['us_status'],$item['time_min']);
+    if($item['us_status']){
+        $count_done++;
+    }
+}
+echo '<div id="list-checklist" class="list-group">';
+echo $check_list;
+echo '</div>';
+if($count_done>0){
+    echo '<div class="toggle-done"><a href="javascript:$(\'.checklist-done\').toggleClass(\'checklist-done-see\');"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Tasks</a></div>';
+}
+if($launch_status['progress']==100){
+    echo '<p>'.$launch_status['completion_message'].'</p>';
+}
+?>
 
 <div class="title" style="margin-top:30px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4></div>
 <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $bootcamp['c_objective'] ?></div>
@@ -31,7 +43,7 @@
 <div><a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u><?= number_format($bootcamp['c__estimated_hours']*60) ?> Points <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a></div>
 <div></div>
 <?php } */ ?>
-<hr />
+
 
 
 <div class="title" style="margin-top:30px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/classes"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-angle-right" aria-hidden="true"></i></b></a></h4></div>
@@ -45,7 +57,7 @@ if($focus_class){
     echo '<div>None Open for Admission Yet</div>';
 }
 ?>
-<hr />
+
 
 
 
@@ -66,7 +78,7 @@ $admissions_pending = $this->Db_model->ru_fetch(array(
 ?>
 <div><?= count($admissions_accepted) ?> Students</div>
 <div><?= count($admissions_pending) ?> Pending Admission</div>
-<hr />
+
 
 
 

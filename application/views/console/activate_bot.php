@@ -21,8 +21,7 @@ if($users[0]['u_fb_id']>0){
         
         //Instructor Bot has NOT been activated by the instructor yet:
         echo '<p>'.nl2br($mench_bots['381488558920384']['settings']['greeting'][0]['text']).'</p>';
-        echo '<a href="'.messenger_activation_url('381488558920384',$users[0]['u_id']).'" class="btn btn-primary"> Activate &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
-        
+        echo '<a href="'.messenger_activation_url('381488558920384',$users[0]['u_id']).'" class="btn btn-primary"> Say "Hi" to MenchBot &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
         
         
         /*

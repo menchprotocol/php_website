@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.11,
+    'version' => 1.12,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -18,7 +18,6 @@ $config['website'] = array(
 $config['mench_bots'] = array(
     '381488558920384' => array(
         'name' => 'MenchBot', //For Students
-        'u_db' => 'u_fb_id',
         'fb_page_id' => '381488558920384',
         'fb_app_id' => '1782431902047009',
         'bot_ref_url' => 'https://m.me/menchbot',
@@ -111,7 +110,6 @@ $config['mench_bots'] = array(
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 200; //The max file size to be uploaded
-
 
 
 //No bootcamps can be created using these hashtags

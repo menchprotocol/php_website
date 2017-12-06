@@ -8,7 +8,7 @@ if(count($bootcamp['c__classes'])>0){
             echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
             echo '<i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($class['r_start_date'],2).' &nbsp; ';
             if(strlen($class['r_usd_price'])>0){
-                echo '<i class="fa fa-usd" aria-hidden="true"></i> '.number_format($class['r_usd_price']).' &nbsp; ';
+                echo '<i class="fa fa-usd" aria-hidden="true"></i> '.number_format($class['r_usd_price'],( fmod($class['r_usd_price'],1)==0?0:2 )).' &nbsp; ';
             }
             echo status_bible('r',$class['r_status'],0,'top');
         echo '</a>';

@@ -277,11 +277,10 @@ class Db_model extends CI_Model {
 	    //Import some variables:
 	    $mench_bots = $this->config->item('mench_bots');
 	    $bot_activation_salt = $this->config->item('bot_activation_salt');
-	    $db_field = $mench_bots[$botkey]['u_db'];
 	    
 	    //See who else might have this PSID id
 	    $current_fb_users = $this->Db_model->u_fetch(array(
-	        $db_field => $psid_sender_id,
+	        'u_fb_id' => $psid_sender_id,
 	        'u_status >=' => '0',
 	    ));
 	    
@@ -306,7 +305,7 @@ class Db_model extends CI_Model {
 	            
 	            //Create user
 	            $udata = $this->Db_model->u_create(array(
-	                $db_field 			=> $psid_sender_id,
+	                'u_fb_id' 			=> $psid_sender_id,
 	                'u_fname' 			=> $fb_profile['first_name'],
 	                'u_lname' 			=> $fb_profile['last_name'],
 	                'u_timezone' 		=> $fb_profile['timezone'],
@@ -364,10 +363,10 @@ class Db_model extends CI_Model {
 	    if(count($matching_users)<1){
 	        //Invalid user ID
 	        return 0;
-	    } elseif(strlen($matching_users[0][$db_field])>4 && $matching_users[0][$db_field]==$psid_sender_id){
+	    } elseif(strlen($matching_users[0]['u_fb_id'])>4 && $matching_users[0]['u_fb_id']==$psid_sender_id){
 	        //This is already an active user, we can return the ID:
 	        return $ref_u_id;
-	    } elseif(strlen($matching_users[0][$db_field])>4){
+	    } elseif(strlen($matching_users[0]['u_fb_id'])>4){
 	        
 	        //Ooops, Mench user seems to be activated with a different Messenger account!
 	        tree_message(923, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
@@ -394,7 +393,7 @@ class Db_model extends CI_Model {
 	            if($current_fb_user['u_status']<=0 && strlen($current_fb_user['u_email'])<5){
 	                //We can de-activate & merge this account:
 	                $this->Db_model->u_update( $current_fb_users[0]['u_id'] , array(
-	                    $db_field => 0, //Give it up since not active
+	                    'u_fb_id' => 0, //Give it up since not active
 	                    'u_status' => -2, //Merged account
 	                ));
 	                
@@ -440,7 +439,7 @@ class Db_model extends CI_Model {
 	    
 	    //Do a Smart Update for select fields as linking:
 	    $this->Db_model->u_update( $ref_u_id , array(
-	        $db_field         => $psid_sender_id,
+	        'u_fb_id'         => $psid_sender_id,
 	        'u_image_url'     => ( strlen($matching_users[0]['u_image_url'])<5 ? $fb_profile['profile_pic'] : $matching_users[0]['u_image_url'] ),
 	        'u_status'        => ( $matching_users[0]['u_status']==0 ? 1 : $matching_users[0]['u_status'] ), //Activate their profile as well
 	        'u_timezone'      => $fb_profile['timezone'],
