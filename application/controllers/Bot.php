@@ -403,7 +403,7 @@ class Bot extends CI_Controller {
 					            'u_id' => $ref_u_id,
 					        ));
 					        
-					        if($matching_users[0]['s_status']>=2){
+					        if($matching_users[0]['u_status']>=2){
 					            //Is admin
 					            //Log engagement to give extra care:
 					            $this->Db_model->e_create(array(
