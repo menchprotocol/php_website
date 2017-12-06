@@ -380,7 +380,7 @@ class Bot extends CI_Controller {
 					);
 					
 					
-					if($entry['id']=='381488558920384' && $u_id){
+					if($u_id){
 					    
 					    //Fetch for admission to append to this message:
 					    $admissions = $this->Db_model->ru_fetch(array(
@@ -391,20 +391,37 @@ class Bot extends CI_Controller {
 					    ));
 					    
 					    if(isset($admissions[0])){
+					        
 					        //Append to engagement data:
 					        $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
 					        $eng_data['e_r_id'] = $admissions[0]['r_id'];
-					    } else {
-					        //Non Verified Guest, inform them about this:
-					        tree_message(921, 0, $entry['id'], $eng_data['e_initiator_u_id'], 'REGULAR', 0, 0);
 					        
-					        //Log engagement to give extra care:
-					        $this->Db_model->e_create(array(
-					            'e_initiator_u_id' => $u_id,
-					            'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
-					            'e_json' => json_encode($json_data),
-					            'e_type_id' => 9, //Support Needing Graceful Errors
+					    } else {
+					        
+					        //Fetch user details to see if they are admin:
+					        $matching_users = $this->Db_model->u_fetch(array(
+					            'u_id' => $ref_u_id,
 					        ));
+					        
+					        if($matching_users[0]['s_status']>=2){
+					            //Is admin
+					            //Log engagement to give extra care:
+					            $this->Db_model->e_create(array(
+					                'e_initiator_u_id' => $u_id,
+					                'e_message' => 'Received inbound message from an instructor. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
+					                'e_json' => json_encode($json_data),
+					                'e_type_id' => 9, //Support Needing Graceful Errors
+					            ));
+					        } else {
+					            //Non Verified Guest
+					            //Log engagement to give extra care:
+					            $this->Db_model->e_create(array(
+					                'e_initiator_u_id' => $u_id,
+					                'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
+					                'e_json' => json_encode($json_data),
+					                'e_type_id' => 9, //Support Needing Graceful Errors
+					            ));
+					        }   
 					    }
 					}
 					
@@ -754,24 +771,6 @@ Array
 				//Indicate to the user that we're typing...
 				//We have a sender ID, see if this is registered using Facebook PSID
 
-				
-				if(count($matching_users)>0){
-					
-					//Yes, we found them!
-					$eng_data['us_id'] = $matching_users[0]['node_id'];
-					
-					//TODO Check to see if this user is unsubscribed:
-					
-					
-				} else {
-					//This is a new user that needs to be registered!
-					
-					if(!$eng_data['us_id']){
-						//There was an error fetching the user profile from Facebook:
-						$eng_data['us_id'] = 765; //Use FB messenger
-						//TODO Log error and look into this
-					}
-				}
 				
 				
 				//Log incoming engagement
