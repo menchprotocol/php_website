@@ -400,18 +400,13 @@ class Bot extends CI_Controller {
 					        
 					        //Fetch user details to see if they are admin:
 					        $matching_users = $this->Db_model->u_fetch(array(
-					            'u_id' => $ref_u_id,
+					            'u_id' => $u_id,
 					        ));
 					        
 					        if($matching_users[0]['u_status']>=2){
-					            //Is admin
-					            //Log engagement to give extra care:
-					            $this->Db_model->e_create(array(
-					                'e_initiator_u_id' => $u_id,
-					                'e_message' => 'Received inbound message from an instructor. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
-					                'e_json' => json_encode($json_data),
-					                'e_type_id' => 9, //Support Needing Graceful Errors
-					            ));
+					            
+					            //Is admin, do nothing for now...
+					            
 					        } else {
 					            //Non Verified Guest
 					            //Log engagement to give extra care:
