@@ -182,6 +182,9 @@ $( document ).ready(function() {
     		$action_plan_item = 0;
             foreach($bootcamp['c__child_intents'] as $sprint){
                 $action_plan_item++;
+                if($sprint['c_is_last']=='t'){
+                    continue;
+                }
                 echo '<div id="c_'.$sprint['c_id'].'">';
                 echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].( $sprint['c_is_last']=='t' ? ' <i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone' : '' ).'</a></h4>';
                     echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
