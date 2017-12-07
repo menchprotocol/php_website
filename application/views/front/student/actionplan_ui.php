@@ -137,12 +137,15 @@ if($level>1){
     echo '</div>';
 }
 
-if($intent['c_time_estimate']>0){
-    echo '<div class="quill_content">Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'which equals <b>'.round($intent['c_time_estimate']*60).' Points</b> if completed on-time. <a href="https://support.mench.co/hc/en-us/articles/115002372531"><u>Learn More &raquo;</u></a></div>';
-}
 
 
 if($level>2){
+    
+    //Do we have a time estimate for this task?
+    if($intent['c_time_estimate']>0){
+        echo '<div class="quill_content">Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'which equals <b>'.round($intent['c_time_estimate']*60).' Points</b> if completed on-time. <a href="https://support.mench.co/hc/en-us/articles/115002372531"><u>Learn More &raquo;</u></a></div>';
+    }
+    
     echo '<div id="save_report" class="quill_content">';
     if(isset($us_data[$intent['c_id']])){
         echo_us($us_data[$intent['c_id']]);
@@ -163,7 +166,6 @@ if($level>2){
                 echo '<div style="padding-left:22px;"><b>Earn '.floor($intent['c_time_estimate']*30).' late points</b> by '.$due_late_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="late_dueby"></span></div>';
             }
         }
-        
     }
     echo '</div>';
 }
@@ -191,6 +193,7 @@ if($level<3 && !($intent['c_is_last']=='t')){
         echo '</li>';
     }
     */
+    
     $sprint_index = 0;
     $done_count = 0;
     foreach($intent['c__child_intents'] as $sub_intent){
