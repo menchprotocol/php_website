@@ -194,7 +194,7 @@ class Console extends CI_Controller {
 		
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/actionplan2' , $view_data); //V2 in place now
+		$this->load->view('console/actionplan'.( $udata['u_id']==1 ? '2' : '' ) , $view_data); //V2 in place now
 		$this->load->view('console/shared/d_footer');
 		
 	}
