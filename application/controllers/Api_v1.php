@@ -2104,7 +2104,7 @@ class Api_v1 extends CI_Controller {
 	    if(!$udata){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Session. Refresh to Continue.',
+	            'message' => 'Invalid Session. Refresh.',
 	        ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        echo_json(array(
@@ -2133,7 +2133,7 @@ class Api_v1 extends CI_Controller {
 	        if(count($urls)>1){
 	            echo_json(array(
 	                'status' => 0,
-	                'message' => 'You can only add 1 URL per message.',
+	                'message' => 'Max 1 URL/Message ',
 	            ));
 	        } else {
 	            
@@ -2203,7 +2203,7 @@ class Api_v1 extends CI_Controller {
 	    if(!$udata){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Session. Refresh & try Again',
+	            'message' => 'Invalid Session. Refresh.',
 	        ));
 	    } elseif(!isset($_POST['i_media_type'])){
 	        echo_json(array(
@@ -2245,7 +2245,7 @@ class Api_v1 extends CI_Controller {
 	        if($_POST['i_media_type']=='text' && count($urls)>1){
 	            echo_json(array(
 	                'status' => 0,
-	                'message' => 'You can only add 1 URL per message.',
+	                'message' => 'Max 1 URL/Message ',
 	            ));
 	        } elseif(!isset($messages[0])){
 	            echo_json(array(
@@ -2288,13 +2288,13 @@ class Api_v1 extends CI_Controller {
 	                'e_c_id' => intval($_POST['pid']),
 	                'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
 	            ));
-	            
+
 	            //Print the challenge:
 	            echo_json(array(
 	                'status' => 1,
 	                'message' => echo_i($new_messages[0]),
-	                'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
-	                'success_icon' => '<img src="/img/round_done.gif?time='.time().'" class="loader" />',
+	                'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'top'),
+	                'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
 	                'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
 	            ));
 	        }
@@ -2378,7 +2378,7 @@ class Api_v1 extends CI_Controller {
 	    ));
 	    
 	    //Show message:
-	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
+	    echo '<span><i class="fa fa-check" aria-hidden="true"></i> Sorted</span>';
 	}
 	
 }

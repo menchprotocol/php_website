@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.12,
+    'version' => 1.13,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -260,7 +260,7 @@ $config['engagement_subscriptions'] = array(
 
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0',/*'0.05','0.1166667',*/'0.25','0.5','1','2','3','5','8','13');
+$config['c_time_options'] = array('0','0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
 
 
 

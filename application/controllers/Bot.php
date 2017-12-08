@@ -16,6 +16,9 @@ class Bot extends CI_Controller {
 	}
 	
 	function t(){
+	    
+	    $urls = extract_urls('For tips on how to exactly use the software, just search for free tutorials on Youtube or go back to the recording lessons on my 8 hour course creation course on Udemy https://www.udemy.com/how-to-create-an-awesome-online-course');
+	    print_r($urls);
 	    /*
 	    echo_json($this->Db_model->c_fetch(array(
 	        'c.c_id' => 917,

@@ -124,7 +124,6 @@ if($level>1){
             if(in_array($i['i_status'],array(1,3))){
                 //TODO Implement logic for DRIP messages i_status=2
                 echo '<div class="tip_bubble">';
-                echo '<i class="fa fa-commenting" aria-hidden="true"></i>';
                 echo echo_i($i,$admission['u_fname']);
                 echo '</div>';
                 $displayed_messages++;
@@ -140,6 +139,8 @@ if($level>1){
 
 
 if($level>2){
+    
+    echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
     
     //Do we have a time estimate for this task?
     if($intent['c_time_estimate']>0){

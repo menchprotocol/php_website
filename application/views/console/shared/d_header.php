@@ -13,7 +13,11 @@ $mench_bots = $this->config->item('mench_bots');
     <meta name="viewport" content="width=device-width" />
 	<title>Mench<?= ( isset($title) ? ' | '.$title : '' ) ?></title>
 
+    <link href="/css/lib/devices.min.css" rel="stylesheet" />
+    <link href="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
 	<?php $this->load->view('front/shared/header_resources' ); ?>
+
+    <script src="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>

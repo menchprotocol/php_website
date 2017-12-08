@@ -115,10 +115,65 @@
 .checklist-done-see{
 	display:block !important;
 }
-#list-checklist .list-group-item:first-child {
+#list-checklist>.list-group-item:first-child {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+#list-checklist>.list-group-item:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+
+/* iPhone devide tweak: */
+.marvel-device.iphone-x {
+    width: 345px;
+    height: 700px;
+    margin: 0 auto;
+    display: block;
+}
+.marvel-device.iphone-x .notch {
+    top: 26px;
+    left: 93px;
+}
+
+.ix-top{
+	margin: 8px 14px 0 18px;
+	font-size: 15px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    line-height: 100%;
+    padding: 0;
+    height:22px;
+    clear:both;
+}
+
+.ix-top-left{
+	display: inline-block;
+    width: 47px;
+    float:left;
+}
+.ix-top-right{
+	display: inline-block;
+    width: 55px;
+    float:right;
+}
+.ix-top-right .fa-wifi{
+	margin-right: 2px;
+}
+
+.ix-msg{
+	height:500px;
+}
+
+.ix-kyb{
+	
+}
+
+
+
+
 .est-time{
 	width: 36px;
     display: inline-block;
@@ -327,7 +382,7 @@ video::-webkit-media-controls-panel {
 .remove_loading .dropup>a { padding:5px 8px; }
 
 .msg-nav>li>a:hover { background-color:#EFEFEF; }
-.add-msg { width:80%; }
+.add-msg { width:100%; }
 .msg-show { display:inline-block !important; }
 .msg-hide { display:none; }
 .i_uploader>img{width: 20px; height: 20px; margin: -2px 5px 0 0; border-radius: 50%;}
@@ -336,14 +391,17 @@ video::-webkit-media-controls-panel {
 .msg-menu>button {border: 0; background-color: transparent;}
 .msg-menu .dropdown-menu li { padding-top:3px; padding-bottom:3px; }
 .original {display:none;}
+.list-messages{
+	margin-bottom:0;
+	padding:7px 0;
+}
 .list-messages>div {
 	border:0;
 	margin:0;
 	padding:0;
 }
 .list-messages>div>div {
-	background-color:#FFF;
-	max-width:80%;
+	max-width:100%;
 	min-width:280px;
 	border-radius:3px;
 	border-bottom-right-radius: 1.3em;
@@ -353,18 +411,47 @@ video::-webkit-media-controls-panel {
 	margin:0;
 	margin-bottom:5px;
 	display:inline-block;
-	    border: 1px solid #CCC;
+	background-color: #E5E5E5 !important;
+}
+.tip_bubble{
+	border-radius:3px;
+	border-bottom-right-radius: 1.3em;
+    border-top-right-radius: 1.3em;
+	padding:10px 15px 10px 10px;
+	font-size:16px;
+	margin:0;
+	background-color: #E5E5E5 !important;
+	max-width:320px;
+	display:block;
+	margin:10px 0;
 }
 
+.ix-tip{
+	line-height: 110%;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 15px 50px 5px;
+    text-align: center;
+    background-color: #ffefa5eb;
+    padding: 6px 5px;
+    border-radius: 8px;
+}
+.list-messages>.is_sortable {
+	margin-left: 8px;
+    margin-right: 15px;
+}
 .msg {
-	font-size: 18px !important;
+	font-size: 16px !important;
     font-family: Lato !important;
-    line-height: 120% !important;
-    font-weight:300 !important;
+    line-height: 110% !important;
+    font-weight:500 !important;
     color: #3C4858;
 }
 .msg a {
 	text-decoration:underline;
+	max-width: 272px;
+    overflow: hidden;
+    display: inline-block;
 }
 .list-messages video {
 	border-top-left-radius:3px;
@@ -829,15 +916,12 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	color:#2f2639 !important;
 }
 
-#funnel .quill_content, .tip_bubble {
+#funnel .quill_content {
 	font-size:0.7em;
 	line-height:120%;
 	font-weight:normal;
 	margin:0 3px 10px 5px;
 	color:#000;
-}
-.tip_bubble {
-	margin-left: 10px;
 }
 .tip_bubble a {
 	font-weight:bold;
@@ -920,9 +1004,6 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	text-align: center;
 }
 
-.i_content {
-    margin-bottom: 10px;
-}
 .dropdown-menu{ margin-top: -20px !important; }
 .dropdown-menu li > a { padding: 7px 10px; }
 .i_content audio, .i_content video{ width:100%; }
@@ -1100,7 +1181,8 @@ font-weight:bold;
 }
 
 .add-msg{
-background-color: #FFF !important; border: 1px solid #CCC;
+background-color: #FFF !important;
+border-top: 4px solid #000;
 }
 .is-working {
   background-color:#e5e4e4 !important;
@@ -1145,14 +1227,29 @@ margin:5px 0;
 }
 .dropdown-toggle.btn{ padding:12px 5px; }
 
-
+#message_status{
+	width: 170px;
+    overflow: hidden;
+    display: inline-block;
+    height: 29px;
+}
+.btn-hidden{
+            background-color: transparent;
+            color: #2f2639;
+            box-shadow: none;
+            transition: none;
+}
 .msgin{
-	min-height:110px; resize:vertical; padding-left: 0 !important; padding-top: 0 !important;
+	min-height:80px;
+	resize:vertical;
+	padding-left: 0 !important;
+	padding-top: 0 !important;
+	margin-top: 2px;
 }
 .msgin::placeholder{
-	font-size: 18px !important;
+	font-size: 16px !important;
     font-family: Lato !important;
-    line-height: 120% !important;
-    font-weight:300 !important;
-    color: #CCC;
+    line-height: 110% !important;
+    font-weight:500 !important;
+    color: #888;
 }

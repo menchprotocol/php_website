@@ -28,7 +28,7 @@ function open_tip(intent_id){
 			//Let's see what we got:
 			if(data.success){
 				//Load the content:
-				$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6">'+tips_button+'</div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')" data-toggle="tooltip" title="Will minimize temporarily and would re-open next time your load this page." data-placement="left"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
+				$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip('+data.intent_id+')">'+tips_button+'</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
 				$("div#content_"+data.intent_id).append(data.help_content);
 				
 				//Reload tooldip:

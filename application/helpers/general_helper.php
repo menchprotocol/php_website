@@ -284,6 +284,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
 function extract_urls($text){
+    $text = preg_replace('/[[:^print:]]/', ' ', $text); //Replace non-ascii characters with space
     $parts = preg_split('/\s+/', $text);
     $urls = array();
     foreach($parts as $part){
@@ -323,12 +324,12 @@ function echo_message($i,$level=0){
             $echo_ui .= '<li data-toggle="tooltip" title="Drag Up/Down to Sort" data-placement="right"><i class="fa fa-sort" style="color:#2f2639;"></i></li>';
             $echo_ui .= '<li data-toggle="tooltip" style="margin-right: 10px; margin-left: 6px;" title="Delete Message" data-placement="right"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
             $echo_ui .= '<li class="edit-off" data-toggle="tooltip" title="Modify status'.( $i['i_media_type']=='text' ? ' and/or text message' : '').'" data-placement="right"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil-square-o"></i></a></li>';
-            $echo_ui .= '<li class="edit-off the_status" style="margin-right: 0;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
+            $echo_ui .= '<li class="edit-off the_status" style="margin-right: 0;">'.status_bible('i',$i['i_status'],1,'top').'</li>';
             
             //Right side reverse:
-            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold;">Save</a></li>';
-            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-default" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level).'</li>';
+            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');" data-toggle="tooltip" title="Cancel Edit" data-placement="top"><i class="fa fa-times" style="color:#000"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
 		    $echo_ui .= '</ul>';
 	    
@@ -1147,16 +1148,16 @@ function echo_ordinal($number){
     }
 }
 
-function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown',$level=0){
+function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown',$level=0,$mini=0){
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     $inner_tooltip = ($direction=='dropup'?'top':'top');
-    $now = status_bible($object,$current_status_id,0,$inner_tooltip,$level);
+    $now = status_bible($object,$current_status_id,$mini,$inner_tooltip,$level);
     
     $return_ui = '';
     $return_ui .= '<input type="hidden" id="'.$input_name.'" value="'.$current_status_id.'" /> 
     <div style="display:inline-block;" class="'.$direction.'">
-    	<a href="#" style="margin: 0;" class="btn btn-simple dropdown-toggle border" id="ui_'.$input_name.'" data-toggle="dropdown">
+    	<a href="#" style="margin: 0; background-color:#FFF;" class="btn btn-simple dropdown-toggle border" id="ui_'.$input_name.'" data-toggle="dropdown">
         	'.( $now ? $now : 'Select...' ).'
         	<b class="caret"></b>
     	</a>
@@ -1170,7 +1171,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
         }
         $count++;
         $return_ui .= '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</a></li>';
-        $return_ui .= '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</li>'; //For UI replacement
+        $return_ui .= '<li style="display:none;" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,$mini,$inner_tooltip,$level).'</li>'; //For UI replacement
     }
     $return_ui .= '</ul></div>';
     return $return_ui;
@@ -1304,6 +1305,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-trash',
 	        ),
+	        /*
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
@@ -1311,17 +1313,18 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
+	        */
 	        1 => array(
-    	        's_name'  => 'Student ASAP',
+    	        's_name'  => 'ASAP',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Message sent to students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts. Good for mission-critical messages.',
+    	        's_desc'  => 'Mission-critical message sent when '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts.',
     	        'u_min_status'  => 1,
     	        's_mini_icon' => 'fa-bolt',
 	        ),
 	        2 => array(
-    	        's_name'  => 'Student Drip',
+    	        's_name'  => 'Drip',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Message sent to students sometime during the '.( $level==1 ? 'bootcamp' : 'milestone' ).'. Good for increasing student engagements.',
+    	        's_desc'  => 'Engaging message sent sometime during the '.( $level==1 ? 'bootcamp' : 'milestone' ).'.',
     	        's_mini_icon' => 'fa-tint',
     	        'u_min_status'  => 1,
 	        ),
@@ -1985,7 +1988,7 @@ function format_e_message($e_message){
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
             
             if($segments[0]=='image'){
-                $e_message .= '<a href="'.$sub_segments[0].'" target="_blank"><img src="'.$sub_segments[0].'" style="max-width:100%" /></a>';
+                $e_message .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
             } elseif($segments[0]=='audio'){
                 $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){

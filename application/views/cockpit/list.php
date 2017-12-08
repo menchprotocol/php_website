@@ -130,12 +130,13 @@ if($object_name=='bootcamps'){
     ));
     
     ?>
-    <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:520px;">
+    <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:650px;">
     <thead>
     	<tr>
     		<th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
     		<th>User</th>
+    		<th><i class="fa fa-commenting" aria-hidden="true"></i></th>
     		<th>Joined</th>
     		<th>Engagements</th>
     	</tr>
@@ -149,10 +150,18 @@ if($object_name=='bootcamps'){
             'e_initiator_u_id' => $user['u_id'],
         ));
         
+        if(strlen($user['u_fb_id'])>4){
+            $messages = $this->Db_model->e_fetch(array(
+                '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
+                '(e_type_id=6 OR e_type_id=7)' => null,
+            ));
+        }
+        
         echo '<tr>';
         echo '<td>'.$user['u_id'].'</td>';
         echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
         echo '<td>'.$user['u_fname'].' '.$user['u_lname'].'</td>';
+        echo '<td>'.( strlen($user['u_fb_id'])>4 ? intval(count($messages)) : '' ).'</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
         echo '<td><a href="/cockpit/engagements?e_recipient_u_id='.$user['u_id'].'">Recipient &raquo;</a> | <a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'">'.( count($engagements)>=100 ? '100+' : count($engagements) ).' Initiated &raquo;</a></td>';
         echo '</tr>';

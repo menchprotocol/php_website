@@ -315,7 +315,7 @@ class Db_model extends CI_Model {
 	                'u_country_code' 	=> $locale[1],
 	            ));
 	            
-	            //For students:
+	            //Non verified guest students:
 	            tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
 	            
 	            //Return the newly created user ID:
@@ -1065,7 +1065,11 @@ class Db_model extends CI_Model {
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
 	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
+	        if($value){
+	            $this->db->where($key,$value);
+	        } else {
+	            $this->db->where($key);
+	        }
 	    }
 	    $this->db->order_by('e.e_id','DESC');
 	    if($limit>0){
