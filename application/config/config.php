@@ -246,15 +246,11 @@ $config['engagement_references'] = array(
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(33,6), //Submission Report & Incoming Messages
+        'subscription' => array(26,33,6,15,30,31,37),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(0,8,9,3,4,5,10), //ALL, System error, Technical Support Attention Errors, 3x Messenger New Users, Instructor Login
-    ),
-    array(
-        'admin_emails' => array('miguel@mench.co'), //'shervin@mench.co', Removed for now since I am receiving all Engagements
-        'subscription' => array(26,15,37), //Application Submitted, New Bootcamp, Request to Publish a Bootcamp
+        'subscription' => array(26,3,4,5,8,9,10,15,29,30,31,37,40),
     ),
 );
 
@@ -370,17 +366,17 @@ $config['start_times'] = array(
 
 //NOTE: If changed, also make corresponding changes to update_account() function in global.js file
 $config['u_social_account'] = array(
-    'u_linkedin_username' => array(
-        'sa_name' => 'Linkedin',
-        'sa_prefix' => 'https://www.linkedin.com/in/',
-        'sa_postfix' => '/',
-        'sa_icon' => '<i class="fa fa-linkedin-square" aria-hidden="true"></i>',
-    ),
-    'u_github_username' => array(
-        'sa_name' => 'Github',
-        'sa_prefix' => 'https://github.com/',
+    'u_fb_username' => array(
+        'sa_name' => 'Facebook',
+        'sa_prefix' => 'https://www.facebook.com/',
         'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fa fa-facebook-official" aria-hidden="true"></i>',
+    ),
+    'u_instagram_username' => array(
+        'sa_name' => 'Instagram',
+        'sa_prefix' => 'https://www.instagram.com/',
+        'sa_postfix' => '/',
+        'sa_icon' => '<i class="fa fa-instagram" aria-hidden="true"></i>',
     ),
     'u_twitter_username' => array(
         'sa_name' => 'Twitter',
@@ -394,18 +390,26 @@ $config['u_social_account'] = array(
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-youtube-play" aria-hidden="true"></i>',
     ),
-    'u_fb_username' => array(
-        'sa_name' => 'Facebook',
-        'sa_prefix' => 'https://www.facebook.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-facebook-official" aria-hidden="true"></i>',
-    ),
-    'u_instagram_username' => array(
-        'sa_name' => 'Instagram',
-        'sa_prefix' => 'https://www.instagram.com/',
+    'u_linkedin_username' => array(
+        'sa_name' => 'Linkedin',
+        'sa_prefix' => 'https://www.linkedin.com/in/',
         'sa_postfix' => '/',
-        'sa_icon' => '<i class="fa fa-instagram" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fa fa-linkedin-square" aria-hidden="true"></i>',
     ),
+    'u_github_username' => array(
+        'sa_name' => 'Github',
+        'sa_prefix' => 'https://github.com/',
+        'sa_postfix' => '',
+        'sa_icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+    ),
+    'u_calendly_username' => array(
+        'sa_name' => 'Calendly',
+        'sa_prefix' => 'https://calendly.com/',
+        'sa_postfix' => '',
+        'sa_icon' => '<i class="fa fa-calendar-check-o" aria-hidden="true"></i>',
+    ),
+    
+    /*
     'u_quora_username' => array(
         'sa_name' => 'Quora',
         'sa_prefix' => 'https://www.quora.com/profile/',
@@ -430,6 +434,7 @@ $config['u_social_account'] = array(
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-dribbble" aria-hidden="true"></i>',
     ),
+    */
 );
 
 

@@ -38,13 +38,8 @@ class Console extends CI_Controller {
 		$this->load->view('console/shared/d_footer');
 	}
 	
-	function help(){
-	    header( 'Location: /console' );
-	}	
-	
 	function status_bible(){
-	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(1,1);
+	    $udata = auth(3,1);
 	    
 	    //Load views
 	    $this->load->view('console/shared/d_header' , array(
@@ -70,7 +65,6 @@ class Console extends CI_Controller {
 		    'ba.ba_status >=' => 0,
 		    'b.b_status >=' => 0,
 		));
-		
 		
 		//Did we find any?
 		foreach($my_bootcamps as $key=>$mb){
@@ -124,7 +118,7 @@ class Console extends CI_Controller {
 	
 	function dashboard($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_id' => $b_id,
 	    ));
@@ -173,7 +167,7 @@ class Console extends CI_Controller {
 	
 	function actionplan($b_id,$pid=null){
 		
-		$udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
 		    'b.b_id' => $b_id,
 		));
@@ -202,7 +196,7 @@ class Console extends CI_Controller {
 	
 	function all_classes($b_id){
 	    //Authenticate:
-	    $udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_id' => $b_id,
 	    ));
@@ -233,7 +227,7 @@ class Console extends CI_Controller {
 	
 	function scheduler($b_id,$r_id){
 	    //Authenticate:
-	    $udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_id' => $b_id,
 	    ));
@@ -257,7 +251,7 @@ class Console extends CI_Controller {
 	
 	function load_class($b_id,$r_id){
 		//Authenticate:
-		$udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 		$bootcamps = $this->Db_model->c_full_fetch(array(
 		    'b.b_id' => $b_id,
 		));
@@ -297,7 +291,7 @@ class Console extends CI_Controller {
 	
 	function students($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_id' => $b_id,
 	    ));
@@ -324,38 +318,9 @@ class Console extends CI_Controller {
 	}
 	
 	
-	
-	function stream($b_id){
-	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(2,1);
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b.b_id' => $b_id,
-	    ));
-	    if(!isset($bootcamps[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
-	    }
-	    
-	    //Load view
-	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Activity Stream | '.$bootcamps[0]['c_objective'],
-	        'bootcamp' => $bootcamps[0],
-	        'breadcrumb' => array(
-	            array(
-	                'link' => null,
-	                'anchor' => 'Activity Stream',
-	            ),
-	        ),
-	    ));
-	    $this->load->view('console/stream' , array(
-	        'bootcamp' => $bootcamps[0],
-	    ));
-	    $this->load->view('console/shared/d_footer');
-	}
-	
-	
 	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(2,1);
+	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'b.b_id' => $b_id,
 	    ));

@@ -313,9 +313,9 @@ function load_intent_sort(){
 	}
 	var theobject = document.getElementById("list-outbound");
  	var sort = Sortable.create( theobject , {
- 		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
- 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+ 		  animation: 150, // ms, animation speed moving items when sorting, `0` ï¿½ without animation
  		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+ 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
  		  onUpdate: function (evt/**Event*/){
  			  intents_sort();
  		  }
@@ -370,7 +370,7 @@ function intent_unlink(cr_id,cr_title){
 function load_message_sorting(){
 	var theobject = document.getElementById("message-sorting");
 	var sort_msg = Sortable.create( theobject , {
-		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+		  animation: 150, // ms, animation speed moving items when sorting, `0` ï¿½ without animation
 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
 		  onUpdate: function (evt/**Event*/){
@@ -689,7 +689,71 @@ function msg_create(){
 
 <div class="row">
 	<div class="col-md-6">
-		<p>nd qualified students for your coding bootcamp by running affordable mini-bootcamps online. Increase conversion rates by giving students a taste of your servind qualified students for your coding bootcamp by running affordable mini-bootcamps online. Increase conversion rates by giving students a taste of your servind qualified students for your coding bootcamp by running affordable mini-bootcamps online. Increase conversion rates by giving students a taste of your servind qualified students for your coding bootcamp by running affordable mini-bootcamps online. Increase conversion rates by giving students a taste of your servi</p>
+		
+		<?php
+    	
+        	//Show relevant tips:
+        	/*
+        	if($level==1){
+        	    itip(599);
+        	} elseif($level==2){
+        	    itip(602);
+        	}
+    	    */
+		
+		$task_lists = array();
+        echo '<div id="list-outbound" class="list-group">';
+        
+            foreach($intent['c__child_intents'] as $key=>$sub_intent){
+                echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
+                
+                //Any tasks?
+                if(count($sub_intent['c__child_intents'])>0){
+                    $list_id = 'list-outbound-'.$key;
+                    array_push($task_lists,$list_id); //Keep track to echo JS sorting
+                    echo '<div id="'.$list_id.'" class="list-group">';
+                    foreach($sub_intent['c__child_intents'] as $sub_intent2){
+                        echo echo_cr($bootcamp['b_id'],$sub_intent2,'outbound',($level+2),$bootcamp['b_sprint_unit'],$key);
+                    }
+                    echo '</div>';
+                }
+            }
+            ?>
+            <div class="list-group-item list_input">
+        		<div class="input-group">
+        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="<?= $core_objects['c']['maxlength'] ?>" id="addnode" placeholder=""></div>
+        			<span class="input-group-addon" style="padding-right:0;">
+        				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;" onclick="new_intent($('#addnode').val());">
+        					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
+        					<div class="togglebutton" style="margin-top:5px; display:none;">
+        		            	<label>
+        		                	<input type="checkbox" onclick="change_direction()" />
+        		            	</label>
+                    		</div>
+        				</span>
+        			</span>
+        		</div>
+        	</div>
+        	<?php
+        echo '</div>';
+        
+        foreach($task_lists as $tl){
+            ?>
+            <script type="text/javascript">
+            var theobject = document.getElementById("list-outbound");
+         	var sort = Sortable.create( theobject , {
+         		  animation: 150, // ms, animation speed moving items when sorting, `0` ï¿½ without animation
+         		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+         		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
+         		  onUpdate: function (evt/**Event*/){
+         			  intents_sort();
+         		  }
+         	});
+            </script>
+            <?php
+        }
+        ?>
+		
 	</div>
 	<div class="col-md-6">
 		<div class="marvel-device iphone-x">
@@ -797,38 +861,7 @@ function msg_create(){
 <div class="tab-content tab-space">
 	
 	<div class="tab-pane <?= ( $has_tree ? 'active' : 'hidden') ?>" id="list">
-    	<?php
-    	
-    	//Show relevant tips:
-    	if($level==1){
-    	    itip(599);
-    	} elseif($level==2){
-    	    itip(602);
-    	}
-    	
-        echo '<div id="list-outbound" class="list-group">';
-            foreach($intent['c__child_intents'] as $sub_intent){
-                echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit']);
-            }
-            ?>
-            <div class="list-group-item list_input">
-        		<div class="input-group">
-        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="<?= $core_objects['c']['maxlength'] ?>" id="addnode" placeholder=""></div>
-        			<span class="input-group-addon" style="padding-right:0;">
-        				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;" onclick="new_intent($('#addnode').val());">
-        					<div><span id="dir_name" class="dir-sign">OUTBOUND</span> <i class="fa fa-plus"></i></div>
-        					<div class="togglebutton" style="margin-top:5px; display:none;">
-        		            	<label>
-        		                	<input type="checkbox" onclick="change_direction()" />
-        		            	</label>
-                    		</div>
-        				</span>
-        			</span>
-        		</div>
-        	</div>
-        	<?php
-        echo '</div>';
-        ?>
+    
     </div>
     
     

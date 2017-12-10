@@ -520,7 +520,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
 }
 
 
-function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
+function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$task_index=null){
     
     $CI =& get_instance();
     $core_objects = $CI->config->item('core_objects');
@@ -529,7 +529,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit){
     
 	if($direction=='outbound'){
 	    
-	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item is_sortable">';
+	    $ui = '<a id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" href="/console/'.$b_id.'/actionplan/'.$intent['c_id'].'" class="list-group-item '.( $level>2 ? 'is_task is_sortable_'.$task_index : 'is_sortable' ).'">';
 	        //Right content
     	    $ui .= '<span class="pull-right">';
 
@@ -975,7 +975,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_phone'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href,
+        'href' => $account_href.'#communication',
         'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -988,7 +988,7 @@ function calculate_bootcamp_status($b){
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => $account_href,
-        'anchor' => '<b>Set Profile Picture</b> in '.$account_anchor,
+        'anchor' => '<b>Set Picture</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1000,7 +1000,7 @@ function calculate_bootcamp_status($b){
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => $account_href,
-        'anchor' => '<b>Set Current Country, City & State</b> in '.$account_anchor,
+        'anchor' => '<b>Set Location</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1011,7 +1011,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_language'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href,
+        'href' => $account_href.'#communication',
         'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1042,7 +1042,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( $profile_counter>=$required_social_profiles ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
     array_push( $checklist , array(
-        'href' => $account_href,
+        'href' => $account_href.'#communication',
         'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1055,7 +1055,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href,
+        'href' => $account_href.'#finance',
         'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1642,25 +1642,56 @@ function filter($array,$ikey,$ivalue){
 	return null;
 }
 
-//2x Authentication Functions:
 
-function auth($min_level,$force_redirect=0){
+function auth($min_level,$force_redirect=0,$b_id=0){
 	
 	$CI =& get_instance();
 	$udata = $CI->session->userdata('user');
 	
-	if(!isset($udata['u_status']) || intval($udata['u_status'])<intval($min_level)){
-		//Ooops, there is an error:
-		if(!$force_redirect){
-			return false;
-		} else {
-			//Block access:
-			$CI->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Missing access or session expired. Login to continue.</div>');
-			header( 'Location: /login?url='.urlencode($_SERVER['REQUEST_URI']) );
-		}
+	//Let's start checking various ways we can give user access:
+	if(!$min_level && !$b_id){
+	    
+	    //No minimum level required, grant access:
+	    return $udata;
+	    
+	} elseif(isset($udata['u_id']) && $udata['u_status']>=3){
+	    
+	    //Always grant access to Super Admins:
+	    return $udata;
+	    
+	} elseif(isset($udata['u_id']) && $b_id){
+	    
+	    //Fetch bootcamp admins and see if they have access to this:
+	    $bootcamp_instructors = $CI->Db_model->ba_fetch(array(
+	        'ba.ba_b_id' => $b_id,
+	        'ba.ba_status >=' => 1, //Must be an actively assigned instructor
+	        'u.u_status >=' => 1, //Must be a user level 1 or higher
+	        'u.u_id' => $udata['u_id'],
+	    ));
+	    
+	    if(count($bootcamp_instructors)>0){
+	        //Append permissions here:
+	        $udata['bootcamp_permissions'] = $bootcamp_instructors[0];
+	        //Instructor is part of the bootcamp:
+	        return $udata;
+	    }
+	    
+	} elseif(isset($udata['u_id']) && intval($udata['u_status'])>=intval($min_level)){
+	    
+		//They meet the minimum level requirement:
+	    return $udata;
+	    
 	}
 	
-	return $udata;
+	//Still here?!
+	//We could not find a reason to give user access, so block them:
+	if(!$force_redirect){
+	    return false;
+	} else {
+	    //Block access:
+	    redirect_message( ( isset($udata['u_id']) && intval($udata['u_status'])>=2 ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	}
+	
 }
 function can_modify($object,$object_id){
 	
@@ -1726,9 +1757,11 @@ function messenger_activation_url($botkey,$u_id=null){
     }
 }
 
-function redirect_message($url,$message){
-	$CI =& get_instance();
-	$CI->session->set_flashdata('hm', $message);
+function redirect_message($url,$message=null){
+    if($message){
+        $CI =& get_instance();
+        $CI->session->set_flashdata('hm', $message);
+    }
 	header("Location: ".$url);
 	exit;
 }
@@ -1832,11 +1865,14 @@ function fb_time($unix_time){
 
 function curl_html($url){
 	$ch = curl_init($url);
-	curl_setopt_array($ch, array(
-			CURLOPT_CUSTOMREQUEST => 'GET',
-			CURLOPT_POST => FALSE,
-			CURLOPT_RETURNTRANSFER => TRUE,
-	));
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+	curl_setopt($ch, CURLOPT_POST, FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+	if(is_dev()){
+	    //SSL does not work on my local PC.
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+	}
 	return curl_exec($ch);
 }
 

@@ -19,10 +19,17 @@ class Front extends CI_Controller {
 	}
 	
 	function login(){
+	    //Check to see if they are already logged in?
+	    $udata = $this->session->userdata('user');
+	    if(isset($udata['u_id']) && $udata['u_status']>=2){
+	        //Lead instructor and above, go to console:
+	        redirect_message('/console');
+	    }
+	    
 		$this->load->view('front/shared/f_header' , array(
 				'title' => 'Login as Instructor',
 		));
-		$this->load->view('front/partner_login');
+		$this->load->view('front/login');
 		$this->load->view('front/shared/f_footer');
 	}
 	

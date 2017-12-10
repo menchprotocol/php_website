@@ -46,8 +46,8 @@ $website = $this->config->item('website');
     				if(isset($udata['u_id'])){
     					echo '<li id="isloggedin"><a href="/console">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
     				} else {
-    				    echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch Bootcamp</a></li>';
-    				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Instructor Login</a></li>';
+    				    echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Build a Bootcamp</a></li>';
+    				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
     				}
     				?>
         		</ul>
