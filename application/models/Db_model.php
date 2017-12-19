@@ -94,7 +94,11 @@ class Db_model extends CI_Model {
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
 	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
+	        if($value){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
 	    }
 	    $this->db->order_by('u_status','DESC');
 	    $this->db->order_by('u_id','DESC');
@@ -721,59 +725,88 @@ class Db_model extends CI_Model {
 	        ));
 	        
 	        //Fetch Sub-intents:
-	        $bootcamps[$key]['c__task_count'] = 0;
+            $bootcamps[$key]['c__active_intents'] = array();
+            $bootcamps[$key]['c__task_count'] = 0;
 	        $bootcamps[$key]['c__message_tree_count'] = count($bootcamp_messages);
 	        $bootcamps[$key]['c__messages'] = $bootcamp_messages;
-	        $bootcamps[$key]['c__break_milestones'] = 0; //Keep track of total break milestones
+	        $bootcamps[$key]['c__milestone_units'] = 0; //Keep track of total milestone units:
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
-	            'cr.cr_status >=' => 0,
+                'cr.cr_status >=' => 0,
+                'c.c_status >=' => 0,
 	        ));
 	        
 	        foreach($bootcamps[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
-	            //Addup sprint estimated time:
-	            $bootcamps[$key]['c__estimated_hours'] += $sprint_value['c_time_estimate'];
+
+                //Count Messages:
+                $milestone_messages = $this->Db_model->i_fetch(array(
+                    'i_status >=' => 0,
+                    'i_status <' => 4, //But not private notes if any
+                    'i_c_id' => $sprint_value['c_id'],
+                ));
+
+                //Assign messages:
+                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__messages'] = $milestone_messages;
+
+                //Addup message count:
+                $bootcamps[$key]['c__message_tree_count'] += ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
+                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
+
+	            //NOTE: Milestones do *not* have a time estimate, so no point in trying to addem up here...
+
 	            //Introduce sprint total time:
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = $sprint_value['c_time_estimate'];
-	            //Is this a break milestone?
-	            if($sprint_value['c_is_last']=='t'){
-	                $bootcamps[$key]['c__break_milestones']++;
-	            }
+	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = 0; //Because its always zero!
+
 	            //Fetch sprint tasks at level 3:
 	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                'cr.cr_inbound_id' => $sprint_value['c_id'],
 	                'cr.cr_status >=' => 0,
+                    'c.c_status >=' => 0,
 	            ));
-	            
-	            
-	            //Count Messages:
-	            $milestone_messages = $this->Db_model->i_fetch(array(
-	                'i_status >=' => 0,
-	                'i_status <' => 4, //But not private notes if any
-	                'i_c_id' => $sprint_value['c_id'],
-	            ));
-	            $bootcamps[$key]['c__message_tree_count'] += count($milestone_messages);
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = count($milestone_messages);
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__messages'] = $milestone_messages;
+
+	            //Is this an active Milestone?
+	            if($sprint_value['c_status']==1){
+	                //Create task array:
+                    $bootcamps[$key]['c__active_intents'][$sprint_value['c_id']] = array();
+
+                    //Addup the timeline:
+                    $bootcamps[$key]['c__milestone_units'] += $sprint_value['c_duration_multiplier'];
+                }
 	            
 	            //Addup task values:
 	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
-	                //Addup task estimated time:
-	                $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-	                $bootcamps[$key]['c__task_count']++;
-	                
-	                //Count Messages:
-	                $task_messages = $this->Db_model->i_fetch(array(
-	                    'i_status >=' => 0,
-	                    'i_status <' => 4, //But not private notes if any
-	                    'i_c_id' => $task_value['c_id'],
-	                ));
-	                $bootcamps[$key]['c__message_tree_count'] += count($task_messages);
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($task_messages);
-	                //The following two are identicals, just there for consistency:
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
-	                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
+
+                    //Count Messages:
+                    $task_messages = $this->Db_model->i_fetch(array(
+                        'i_status >=' => 0,
+                        'i_status <' => 4, //But not private notes if any
+                        'i_c_id' => $task_value['c_id'],
+                    ));
+
+                    //Add messages:
+                    $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
+
+	                //Addup task estimated time for active tasks in active Milestones:
+                    if($task_value['c_status']==1){
+
+                        if($sprint_value['c_status']==1){
+                            $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+                            $bootcamps[$key]['c__task_count']++;
+                            //add to active tasks per milestone:
+                            array_push($bootcamps[$key]['c__active_intents'][$sprint_value['c_id']],$task_value['c_id']);
+                        }
+
+                        //Addup Milestone Hours for its Active Tasks Regardless of Milestone status:
+                        $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+
+                        //Increase message counts:
+                        $bootcamps[$key]['c__message_tree_count'] += count($task_messages);
+                        $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($task_messages);
+
+                    }
+
+                    //Always show task message count regardless of status:
+                    $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
 	            }
 	        }
 	        
@@ -886,7 +919,13 @@ class Db_model extends CI_Model {
 	
 	function max_value($table,$column,$match_columns){
 		$this->db->select('MAX('.$column.') as largest');
-		$this->db->from($table);
+		if($table=='v5_intent_links'){
+		    //This is a HACK :D
+            $this->db->from('v5_intent_links cr');
+            $this->db->join('v5_intents c', 'cr.cr_outbound_id = c.c_id');
+        } else {
+            $this->db->from($table);
+        }
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -1193,7 +1232,7 @@ class Db_model extends CI_Model {
 		$website = $this->config->item('website');
 		
 		if(is_dev()){
-		    return file_get_contents($website['url']."api_v1/algolia/".$c_id);
+		    return curl_html($website['url']."api_v1/algolia/".$c_id);
 		}
 		
 		//Include PHP library:

@@ -5,6 +5,17 @@ $website = $this->config->item('website');
 ?><!doctype html>
 <html lang="en">
 <head>
+    <!--
+
+    WELCOME TO MENCH SOURCE CODE!
+
+    INTERESTED IN HELPING US BUILD THE FUTURE OF EDUCATION?
+
+    YOU CAN WORK WITH US AS AN INDEPENDENT CONTRACTOR FROM ANYWHERE IN THE WORLD.
+
+    AND IF YOU ACHIEVE THE MENCH STATUS, YOU CAN ALSO APPLY TO WORK AS A CORE TEAM MEMBER.
+
+    -->
 	<meta charset="utf-8" />
 	<meta name="robots" content="noindex">
 	<link rel="icon" type="image/png" href="/img/bp_16.png">

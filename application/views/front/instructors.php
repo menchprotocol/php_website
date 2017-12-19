@@ -64,7 +64,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">flash_on</i></div>
 					<h3 class="info-title">Make a Real Impact</h3>
-					<p>A bootcamp is all about getting your audience tangible results via execution. At Mench we provide you with all the tools to help your students take action to accomplish the bootcamp objective once and for all. Only through action we can change the world!</p>
+					<p>A bootcamp is all about getting your audience tangible results via execution. At Mench we provide you with all the tools to help your students take action to accomplish the bootcamp outcome once and for all. Only through action we can change the world!</p>
 				</div>
 			</div>
 			<div class="col-md-4">

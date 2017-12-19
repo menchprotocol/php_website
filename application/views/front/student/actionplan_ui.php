@@ -14,6 +14,7 @@ $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
 <script>
 
 $( document ).ready(function() {
+
 	if(!parseInt($('#checklist_complete').val())){
 		//Show lock icon if sub-tasks are required
 		$('#initiate_done .fa').removeClass('fa-check-circle').addClass('fa-lock');
@@ -26,6 +27,7 @@ $( document ).ready(function() {
 		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       	regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
 	});
+
 	$("#late_dueby").countdowntimer({
 		startDate : "<?= date('Y/m/d H:i:s'); ?>",
         dateAndTime : "<?= date('Y/m/d' , (strtotime($due_date)+$alittle_late_secs)); ?> <?= minutes_to_hours($admission['r_start_time_mins']) ?>:59",
@@ -33,7 +35,6 @@ $( document ).ready(function() {
 		regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       	regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
 	});
-
 	
 });
 
@@ -113,6 +114,7 @@ foreach($breadcrumb_p as $link){
 }
 echo '</ol>';
 
+
 //Overview:
 if($level>1){
     //Messages:
@@ -121,8 +123,7 @@ if($level>1){
     $displayed_messages = 0;
     if(count($i_messages)>0){
         foreach($i_messages as $i){
-            if(in_array($i['i_status'],array(1,3))){
-                //TODO Implement logic for DRIP messages i_status=2
+            if($i['i_status']==1){
                 echo '<div class="tip_bubble">';
                 echo echo_i($i,$admission['u_fname']);
                 echo '</div>';
@@ -149,8 +150,11 @@ if($level>2){
     
     echo '<div id="save_report" class="quill_content">';
     if(isset($us_data[$intent['c_id']])){
+
         echo_us($us_data[$intent['c_id']]);
+
     } else {
+
         echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Done</a></div>';
         echo '<div class="mark_done" style="display:none;">';
         echo '<div>Add comments or URLs here:</div>';
@@ -176,7 +180,7 @@ if($level>2){
 
 
 //Display Milestone list:
-if($level<3 && !($intent['c_is_last']=='t')){
+if($level<3){
     echo '<h4>'.( $level==1 ? '<i class="fa fa-flag" aria-hidden="true"></i> '.$sprint_units[$admission['b_sprint_unit']]['name'].' Milestones' : '<i class="fa fa-list-ul" aria-hidden="true"></i> '.ucwords($admission['b_sprint_unit']).' #'.$sprint_index.' Tasks' ).' <span class="sub-title">'.echo_time(($intent['c__estimated_hours']-$intent['c_time_estimate']),1).'</span></h4>';
     echo '<div id="list-outbound" class="list-group">';
     
@@ -198,6 +202,9 @@ if($level<3 && !($intent['c_is_last']=='t')){
     $sprint_index = 0;
     $done_count = 0;
     foreach($intent['c__child_intents'] as $sub_intent){
+        if($sub_intent['c_status']<1){
+            continue;
+        }
         $sprint_index++;
         if(isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=0){
             $done_count++;

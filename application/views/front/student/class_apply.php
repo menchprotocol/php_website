@@ -177,7 +177,7 @@ $start_times = $this->config->item('start_times');
 <div class="wizard-box" id="overview_agree">
 	<p>Confirm that you commit to participating and doing the required work for this bootcamp:</p>
 	<ul>
-		<li>Bootcamp Objective: <b><?= $admission['c_objective'] ?></b></li>
+		<li>Bootcamp Outcome: <b><?= $admission['c_objective'] ?></b></li>
     	<li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>: 
         	<?php 
         	foreach($admission['b__admins'] as $key=>$instructor){
@@ -251,6 +251,7 @@ $start_times = $this->config->item('start_times');
 <?php } ?>
 
 
+<?php if($admission['r_usd_price']>0){ ?>
 <div class="wizard-box" id="refund_agreement">
 	<p>This bootcamp offers a <b><?= ucwords($admission['r_cancellation_policy']); ?></b> refund policy:</p>
 	<?php 
@@ -271,11 +272,12 @@ $start_times = $this->config->item('start_times');
         	</label>
         </div>
     </div>
-    
 </div>
+<?php } ?>
 
 
-<?php if(strlen($admission['u_fb_id'])<=1){ ?>
+
+<?php if(strlen($admission['u_fb_id'])<4){ ?>
 <div class="wizard-box">
 	<?php $mench_bots = $this->config->item('mench_bots'); ?>
 	<p><img src="/img/bp_48.png" alt="MenchBot" /> <b style="font-size:1.2em;">MenchBot Activation</b></p>
@@ -284,10 +286,15 @@ $start_times = $this->config->item('start_times');
 </div>
 <?php } ?>
 
+
+
+
 <div class="wizard-box">
 	<p>That's all!</p>
 	<p>Click "Next" to submit your application!</p>
+    <?php if($admission['r_usd_price']>0){ ?>
 	<p>The final remaining step is to pay <b><?= echo_price($admission['r_usd_price']); ?></b> via PayPal to reserve your seat.</p>
+    <?php } ?>
 </div>
 
 

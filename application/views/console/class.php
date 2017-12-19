@@ -1,6 +1,7 @@
 <?php
 //Fetch the sprint units from config:
 $sprint_units = $this->config->item('sprint_units');
+$message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 ?>
@@ -47,7 +48,7 @@ function update_tuition_calculator(){
 
 		//Duration:
 		b_sprint_unit:$('#b_sprint_unit').val(),
-		b_effective_milestones:$('#b_effective_milestones').val(),
+        c__milestone_units:$('#c__milestone_units').val(),
 		c__estimated_hours:$('#c__estimated_hours').val(),
 		whatif_selection:( $("#whatif_selection").length==0 ? null : $('#whatif_selection').val() ),
 		
@@ -64,7 +65,7 @@ function update_tuition_calculator(){
 
 function changeContactMethod(){
     var len = $('#r_office_hour_instructions').val().length;
-    if (len > 420) {
+    if (len > <?= $message_max ?>) {
     	$('#ContactMethodChar').addClass('overload').text(len);
     } else {
         $('#ContactMethodChar').removeClass('overload').text(len);
@@ -72,7 +73,7 @@ function changeContactMethod(){
 }
 function changeCloseDates(){
     var len = $('#r_closed_dates').val().length;
-    if (len > 420) {
+    if (len > <?= $message_max ?>) {
     	$('#CloseDatesChar').addClass('overload').text(len);
     } else {
         $('#CloseDatesChar').removeClass('overload').text(len);
@@ -209,7 +210,7 @@ function save_r(){
 
 <input type="hidden" id="r_id" value="<?= $class['r_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $class['r_b_id'] ?>" />
-<input type="hidden" id="b_effective_milestones" value="<?= ( count($bootcamp['c__child_intents']) - $bootcamp['c__break_milestones'] ) ?>" />
+<input type="hidden" id="c__milestone_units" value="<?= $bootcamp['c__milestone_units'] ?>" />
 <input type="hidden" id="c__estimated_hours" value="<?= $bootcamp['c__estimated_hours'] ?>" />
 <input type="hidden" id="b_sprint_unit" value="<?= $bootcamp['b_sprint_unit'] ?>" />
 
@@ -343,8 +344,8 @@ function save_r(){
 			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Office Hour Contact Method <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
 			<div class="help_body maxout" id="content_617"></div>
             <div class="form-group label-floating is-empty">
-                <textarea class="form-control text-edit border" style="min-height:50px;" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
-                <div style="margin:0 0 0 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/420</div>
+                <textarea class="form-control text-edit border msg msgin" style="min-height:50px; padding:3px;" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
+                <div style="margin:0 0 0 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/<?= $message_max ?></div>
             </div>
             
             <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly Schedule PST <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
@@ -356,8 +357,8 @@ function save_r(){
 		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Close Dates <span id="hb_619" class="help_button" intent-id="619"></span></h4></div>
         <div class="help_body maxout" id="content_619"></div>
         <div class="form-group label-floating is-empty">
-            <textarea class="form-control text-edit border" style="min-height:50px;" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
-            <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/420</div>
+            <textarea class="form-control text-edit border msg msgin" style="min-height:50px; padding:3px;" onkeyup="changeCloseDates()" placeholder="We will be closed on Dec 25-26 and Jan 1" id="r_closed_dates"><?= $class['r_closed_dates'] ?></textarea>
+            <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="CloseDatesChar">0</span>/<?= $message_max ?></div>
         </div>
     	
     	
@@ -393,7 +394,7 @@ function save_r(){
         
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy <span id="hb_622" class="help_button" intent-id="622"></span></h4></div>
         <div class="help_body maxout" id="content_622"></div>
-        <?php 
+        <?php
         $refund_policies = $this->config->item('refund_policies');
         foreach($refund_policies as $type=>$terms){
             echo '<div class="radio">

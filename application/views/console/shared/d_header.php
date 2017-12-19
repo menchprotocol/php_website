@@ -6,6 +6,17 @@ $mench_bots = $this->config->item('mench_bots');
 ?><!doctype html>
 <html lang="en">
 <head>
+    <!--
+
+    WELCOME TO MENCH SOURCE CODE!
+
+    INTERESTED IN HELPING US BUILD THE FUTURE OF EDUCATION?
+
+    YOU CAN WORK WITH US AS AN INDEPENDENT CONTRACTOR FROM ANYWHERE IN THE WORLD.
+
+    AND IF YOU ACHIEVE THE MENCH STATUS, YOU CAN ALSO APPLY TO WORK AS A CORE TEAM MEMBER.
+
+    -->
 	<meta charset="utf-8" />
 	<link rel="icon" type="image/png" href="/img/bp_16.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -14,19 +25,14 @@ $mench_bots = $this->config->item('mench_bots');
 	<title>Mench<?= ( isset($title) ? ' | '.$title : '' ) ?></title>
 
     <link href="/css/lib/devices.min.css" rel="stylesheet" />
-    <link href="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <link href="/css/lib/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
 	<?php $this->load->view('front/shared/header_resources' ); ?>
 
-    <script src="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="/js/lib/autocomplete.jquery.min.js"></script>
+    <script src="/js/lib/algoliasearch.min.js"></script>
     <script src="/js/lib/sortable.min.js" type="text/javascript"></script>
-        
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
     <script src="/js/console/console.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
-    
-    <!-- Zendesk Autofill -->
-    <?php /* <script> zE( function () { zE.identify({name: '<?= $udata['u_fname'] ?> <?= $udata['u_lname'] ?>', email: '<?= $udata['u_email'] ?>'}); }); </script> */?>
 
 </head>
 
@@ -91,7 +97,7 @@ if(count($unread_notifications)>0){
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</i></span></a></li> */ ?>
-						<li><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> My Account</a></li>
+						<li><a href="/console/account"><?= (strlen($udata['u_image_url'])>4 ? '<img src="'.$udata['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i>') ?> My Account</a></li>
 					</ul>
 				</div>
 				<?php } ?>
@@ -103,10 +109,10 @@ if(count($unread_notifications)>0){
 	    	<div class="sidebar-wrapper">
 	    		<?php 
 	    		if(isset($bootcamp)){
-	    		    echo '<div class="left-li-title">'.$bootcamp['c_objective'].' <a href="/'.$bootcamp['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Open Landing Page" class="landing_page_url"><i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a></div>';
+	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i><span id="top-left-title">'.$bootcamp['c_objective'].'</span></div>';
 	    		}
 	    		?>
-	    		<ul class="nav">
+	    		<ul class="nav" style="margin-top: 0;">
                     
             	<?php
             	if(isset($bootcamp)){
@@ -123,7 +129,7 @@ if(count($unread_notifications)>0){
                 	    
             	    //echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings &nbsp;'.status_bible('b',$bootcamp['b_status'],1,'top').'</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/team')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/team"><i class="fa fa-user-plus" aria-hidden="true"></i><p>Team</p></a></li>';
         		}
             	?>
             	</ul>
@@ -132,7 +138,7 @@ if(count($unread_notifications)>0){
 
 
 	    <div class="main-panel">
-	        <div class="content dash">	        
+	        <div class="content dash" style="<?= ( isset($bootcamp) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
 	        
     	        <?php 
     	        if(isset($breadcrumb)){

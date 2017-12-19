@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.13,
+    'version' => 1.2,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -195,7 +195,7 @@ $config['core_objects'] = array(
     'level_0' => array(
         'o_name' => 'Bootcamp',
         'o_names' => 'Bootcamps',
-        'o_icon' => '',
+        'o_icon' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i>',
     ),
     'level_1' => array(
         'o_name' => 'Milestone',
@@ -205,7 +205,7 @@ $config['core_objects'] = array(
     'level_2' => array(
         'o_name' => 'Task',
         'o_names' => 'Tasks',
-        'o_icon' => '<i class="fa fa-check-square" aria-hidden="true"></i>',
+        'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',
     ),
 );
 
@@ -260,6 +260,12 @@ $config['c_time_options'] = array('0','0.05','0.1166667','0.25','0.5','1','2','3
 
 
 
+//That is auto added to all bootcamp teams as Adviser role:
+$config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time
+$config['message_max'] = 420; //Max number of characters allowed in messages
+
+
+
 $config['refund_policies'] = array(
     'flexible' => array(
         'full' => 0.10,
@@ -279,11 +285,11 @@ $config['refund_policies'] = array(
 $config['sprint_units'] = array(
     'day' => array(
         'name' => 'Daily',
-        'desc' => 'Usually 3-30 days for fast-pace micro-Bootcamps',
+        'desc' => 'Usually 3-30 days',
     ),
     'week' => array(
         'name' => 'Weekly',
-        'desc' => 'Usually 2-52 weeks for more ambitious "full" Bootcamps',
+        'desc' => 'Usually 2-14 weeks',
     ),
 );
 
@@ -879,7 +885,7 @@ $config['countries_all'] = array(
     "ZW" => "Zimbabwe"
 );
 
-$config['r_response_options'] = array('2','3','5','12','24','48');
+$config['r_response_options'] = array('6','12','24','48');
 
 //IF Changed, Also adjust echo_mentorship() & gross_mentorship() functions in general_helper()
 $config['r_meeting_frequency'] = array(

@@ -195,7 +195,7 @@ class Front extends CI_Controller {
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => $bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as an instructor. This bootcamp is hidden from the public until published live.</div>' : null ),
+	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as an instructor.<br />This bootcamp is hidden from the public until published live.</div>' : null ),
 	        'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(

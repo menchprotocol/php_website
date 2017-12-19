@@ -14,7 +14,7 @@ $udata = $this->session->userdata('user');
 				<div class="col-sm-9">
 					<!--
 					<h1 class="home-p">Online Bootcamps for the Ambitious.</h1>
-                    <h4 class="home-p">Accomplish an objective <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
+                    <h4 class="home-p">Accomplish an outcome <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
                      -->
                     <h1 class="home-p">Empower Your Students to Succeed</h1>
                     <h4 class="home-p">Easily build and operate online bootcamps designed to maximize student engagement.</h4>

@@ -2,7 +2,7 @@
 
 //Instructor has already activated their Instructor Bot
 if(count($bootcamps)>0){
-    echo '<div class="list-group">';
+    echo '<div class="list-group maxout">';
     foreach($bootcamps as $bootcamp){
         
         //Calculate their progress:

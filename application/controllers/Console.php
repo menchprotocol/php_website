@@ -188,7 +188,7 @@ class Console extends CI_Controller {
 		
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/actionplan'.( is_dev() ? '2' : '' ) , $view_data); //V2 in place now
+		$this->load->view('console/actionplan' , $view_data);
 		$this->load->view('console/shared/d_footer');
 		
 	}
@@ -318,7 +318,7 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function settings($b_id){
+	function team($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
@@ -330,16 +330,16 @@ class Console extends CI_Controller {
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Settings | '.$bootcamps[0]['c_objective'],
+	        'title' => 'Team | '.$bootcamps[0]['c_objective'],
 	        'bootcamp' => $bootcamps[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Settings',
+	                'anchor' => 'Team <span id="hb_629" class="help_button" intent-id="629"></span>',
 	            ),
 	        ),
 	    ));
-	    $this->load->view('console/settings' , array(
+	    $this->load->view('console/team' , array(
 	        'bootcamp' => $bootcamps[0],
 	        'udata' => $udata,
 	    ));

@@ -6,8 +6,8 @@ $tip_index = array(
     3 => 607,
 );
 ?>
-<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Objective <span id="hb_<?= $tip_index[$level] ?>" class="help_button" intent-id="<?= $tip_index[$level] ?>"></span></h4></div>
+<div class="title"><h4><?= $core_objects['level_'.($level-1)]['o_icon'].' '.$core_objects['level_'.($level-1)]['o_name'] ?> Outcome <span id="hb_<?= $tip_index[$level] ?>" class="help_button" intent-id="<?= $tip_index[$level] ?>"></span></h4></div>
 <div class="help_body maxout" id="content_<?= $tip_index[$level] ?>"></div>
 <div class="form-group label-floating is-empty">
-    <input type="text" id="c_objective" maxlength="<?= $core_objects['c']['maxlength'] ?>" placeholder="<?= ( $level==1 ? 'Get hired as an entry-level web developer' : '') ?>" value="<?= (isset($c_objective) ? htmlentities($c_objective) : '') ?>" class="form-control border">			
+    <input type="text" id="c_objective" maxlength="<?= $core_objects['c']['maxlength'] ?>" placeholder="<?= ( $level==1 ? 'Get hired as an entry-level web developer' : '') ?>" value="<?= (isset($c_objective) ? htmlentities($c_objective) : '') ?>" class="form-control c_objective_input border">
 </div>

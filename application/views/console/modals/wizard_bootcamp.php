@@ -8,7 +8,7 @@ function move_ui(adjustment){
 	if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
 		var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
 		if(the_id=='wz_objective' && $('#'+the_id+' input').val().length<2){
-			alert('Enter Objective to continue');
+			alert('Enter Outcome to continue');
 			$('#'+the_id+' input').focus();
 			return false;
 		} else if(the_id=='wz_sprint_unit' && typeof $('#'+the_id+' input[name=b_sprint_unit]:checked').val() == 'undefined'){
@@ -119,8 +119,8 @@ $udata = $this->session->userdata('user');
             <div class="wizard-box">
         		<p>Let's start creating a new bootcamp by defining:</p>
         		<ul style="list-style:decimal;" class="aligned-list">
-        			<li><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Objective</li>
-        			<li><i class="fa fa-hourglass-end" aria-hidden="true"></i> Milestone Submission Frequency</li>
+        			<li><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Outcome</li>
+        			<li><i class="fa fa-flag" aria-hidden="true"></i> Milestone Duration</li>
         		</ul>
             </div>
                                     

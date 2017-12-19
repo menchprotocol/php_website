@@ -62,7 +62,7 @@ if($object_name=='bootcamps'){
      		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
-    		<th>Bootcamp Objective</th>
+    		<th>Bootcamp Outcome</th>
     		<th style="width:100px;"><i class="fa fa-flag" aria-hidden="true"></i></th>
     		<th style="width:40px;"><i class="fa fa-tasks" aria-hidden="true"></i></th>
     		<th style="width:40px;"><i class="fa fa-calendar" aria-hidden="true"></i></th>
@@ -107,7 +107,7 @@ if($object_name=='bootcamps'){
     		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
-    		<th>Bootcamp Objective</th>
+    		<th>Bootcamp Outcome</th>
     		<th style="width:100px;"><i class="fa fa-flag" aria-hidden="true"></i></th>
     		<th style="width:40px;"><i class="fa fa-tasks" aria-hidden="true"></i></th>
     		<th style="width:40px;"><i class="fa fa-calendar" aria-hidden="true"></i></th>

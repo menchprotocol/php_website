@@ -35,7 +35,7 @@ if(isset($office_hours) && is_array($office_hours)){
 
 //See if this bootcamp has multiple active Classes:
 $available_classes = 0;
-$class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Avaiable Classes</h4>';
+$class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Available Classes</h4>';
 $class_selection .= '<div id="class_list" class="list-group" style="max-width:none !important;">';
 foreach($bootcamp['c__classes'] as $class){
     if($class['r_status']==1 && !date_is_past($class['r_start_date']) && ($class['r__current_admissions']<$class['r_max_students'] || !$class['r_max_students'])){
@@ -121,9 +121,9 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
-            	<li>Duration: <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's') ?></b></li>
+            	<li>Duration: <b><?= $bootcamp['c__milestone_units'] ?> <?= ucwords($bootcamp['b_sprint_unit']).( $bootcamp['c__milestone_units']==1 ? '' : 's') ?></b></li>
             	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($bootcamp))) ?></b></li>
-            	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?> Per <?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
+            	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'])) ?> Per <?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	
             	<?php if(strlen($focus_class['r_meeting_frequency'])>0 && !($focus_class['r_meeting_frequency']=="0")){ ?>
             	<li>Mentorship: <b><?= echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']) ?></b></li>
@@ -140,7 +140,7 @@ $( document ).ready(function() {
                 	<li>Seats Remaining: <b><?= ($focus_class['r_max_students']-$focus_class['r__current_admissions']) ?>/<?= $focus_class['r_max_students'] ?></b></li>
                 	<?php } ?>
             	<?php } ?>
-            	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
+            	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/$bootcamp['c__milestone_units']).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
             </ul>
             
             <?php if($focus_class['r_usd_price']>0){ ?>
@@ -148,7 +148,7 @@ $( document ).ready(function() {
             <?php } ?>
             
             <div style="padding:10px 0 30px; text-align:center;">
-            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             	<div>Admission Ends in <span id="reg1"></span></div>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
@@ -175,18 +175,17 @@ $( document ).ready(function() {
     		
     		
     		
-    		
+
     		<h3>Action Plan</h3>
     		<div id="c_goals_list">
     		<?php 
-    		$action_plan_item = 0;
             foreach($bootcamp['c__child_intents'] as $sprint){
-                $action_plan_item++;
-                if($sprint['c_is_last']=='t'){
+                if($sprint['c_status']<1){
                     continue;
                 }
+                $ending_unit = $sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1;
                 echo '<div id="c_'.$sprint['c_id'].'">';
-                echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].( $sprint['c_is_last']=='t' ? ' <i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone' : '' ).'</a></h4>';
+                echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].($sprint['c_duration_multiplier']>1 ? '-'.$ending_unit : '' ).': '.$sprint['c_objective'].'</a></h4>';
                     echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
                         
                         $messages_shown = 0;
@@ -197,20 +196,12 @@ $( document ).ready(function() {
                                 $messages_shown++;
                             }
                         }
-                        if($messages_shown==0 && $sprint['c_is_last']=='t'){
-                            echo '<p>You would not complete any tasks during this break milestone.</p>';
-                        }
                         
                         echo '<div class="title-sub">';
-                            if(!($sprint['c_is_last']=='t')){
-                                if(count($sprint['c__child_intents'])>0){
-                                    echo '<i class="fa fa-check-square" aria-hidden="true"></i>'.count($sprint['c__child_intents']).' Task'.(count($sprint['c__child_intents'])==1?'':'s').' &nbsp;';
-                                }
-                                if($sprint['c__estimated_hours']>0){
-                                    echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp;';
-                                }
-                                echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp,$action_plan_item))).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
-                            }
+                        if($sprint['c__estimated_hours']>0){
+                            echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp;';
+                        }
+                        echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,calculate_duration($bootcamp,$ending_unit)).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
                         echo '</div>';
                     echo '</div>';
                 echo '</div>';
@@ -220,7 +211,7 @@ $( document ).ready(function() {
     		
     		
     		<?php if($bootcamp['c__estimated_hours']>0){ ?>
-    		<p>Completing this <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp<?= ( $bootcamp['c__break_milestones']>0 ? ' (With '.$bootcamp['c__break_milestones'].' Break '.ucwords($bootcamp['b_sprint_unit']).($bootcamp['c__break_milestones']==1?'':'s').')' : '' ) ?> is estimated to take about <?= echo_hours($bootcamp['c__estimated_hours']) ?> which is an average of <?= echo_hours(round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents']))) ?> per <?= $bootcamp['b_sprint_unit'] ?>.</p>
+    		<p>Completing this <?= $bootcamp['c__milestone_units'] ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp is estimated to take <?= echo_hours($bootcamp['c__estimated_hours']) ?> which is about <?= echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'])) ?> per <?= $bootcamp['b_sprint_unit'] ?>.</p>
     		<?php } ?>
     		
     		
@@ -228,10 +219,9 @@ $( document ).ready(function() {
     		
     		<h3>1-on-1 Support</h3>
     		<?php
-    		$open_milestones = count($bootcamp['c__child_intents'])-$bootcamp['c__break_milestones'];
     		if(strlen($focus_class['r_meeting_frequency'])>0 && !($focus_class['r_meeting_frequency']=="0")){
     		    echo '<h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4>';
-    		    echo '<p>You will receive a total of <b>'.gross_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration'],$bootcamp['b_sprint_unit'],$open_milestones).'</b> of 1-on-1 mentorship ('.echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']).') during the '.$open_milestones.' open '.$bootcamp['b_sprint_unit'].($open_milestones==1?'':'s').' of this bootcamp.</p>';
+    		    echo '<p>You will receive a total of <b>'.gross_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration'],$bootcamp['b_sprint_unit'],$bootcamp['c__milestone_units']).'</b> of 1-on-1 mentorship ('.echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']).') during the '.$bootcamp['c__milestone_units'].' '.$bootcamp['b_sprint_unit'].($bootcamp['c__milestone_units']==1?'':'s').' of this bootcamp.</p>';
     		    echo '<hr />';
     		}
     		
@@ -344,7 +334,7 @@ $( document ).ready(function() {
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
     			<li>Bootcamp Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
-    			<li>Bootcamp Duration is <b><?= count($bootcamp['c__child_intents']) ?> <?= ucwords($bootcamp['b_sprint_unit']).((count($bootcamp['c__child_intents'])==1?'':'s')) ?></b></li>
+    			<li>Bootcamp Duration is <b><?= $bootcamp['c__milestone_units'] ?> <?= ucwords($bootcamp['b_sprint_unit']).(($bootcamp['c__milestone_units']==1?'':'s')) ?></b></li>
     			<li>Bootcamp Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     		</ul>
     		<hr />
@@ -355,7 +345,7 @@ $( document ).ready(function() {
     		    $plural_prize = ( json_decode($focus_class['r_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
     		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($focus_class['r_completion_prizes'])).'</li></ol>' ?></div>
-    		<p>Completion Prize<?= $plural_prize ?> will be awarded to students who complete all <?= count($bootcamp['c__child_intents']) ?> milestones before the bootcamp end date on <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))) ?> <?= $start_times[$focus_class['r_start_time_mins']] ?> PST.</p>
+    		<p>Prize<?= $plural_prize ?> are awarded to students who complete all milestones by the bootcamp end time.</p>
     		<hr />
     		<?php } ?>
     		
@@ -383,7 +373,7 @@ $( document ).ready(function() {
     		
     		<h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4>
     		<?php if($focus_class['r_usd_price']>0){ ?>
-    		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Guarantee</a>. In other words you pay $<?= round($focus_class['r_usd_price']/count($bootcamp['c__child_intents'])); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= count($bootcamp['c__child_intents']) ?> <?= $bootcamp['b_sprint_unit'].(count($bootcamp['c__child_intents'])==1?'':'s') ?>.</p>
+    		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> with our <a href="https://support.mench.co/hc/en-us/articles/115002080031">Tuition Guarantee</a>. In other words you pay $<?= round($focus_class['r_usd_price']/$bootcamp['c__milestone_units']); ?>/<?= ucwords($bootcamp['b_sprint_unit']) ?> so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= $bootcamp['c__milestone_units'] ?> <?= $bootcamp['b_sprint_unit'].($bootcamp['c__milestone_units']==1?'':'s') ?>.</p>
     		<?php } else { ?>
     		<p>This bootcamp is <b>FREE</b>.</p>
     		<?php } ?>
@@ -401,7 +391,7 @@ $( document ).ready(function() {
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="material-icons">keyboard_arrow_right</i></a>
+	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
 	<div>Admission Ends in <span id="reg3"></span></div>
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>

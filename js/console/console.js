@@ -21,7 +21,7 @@ function open_tip(intent_id){
 	if(!$("div#content_"+intent_id).html().length){
 		
 		//Show loader:
-		$("div#content_"+intent_id).html('<img src="/img/round_load.gif" class="loader" />');
+		$("div#content_"+intent_id).html('<img src="/img/round_yellow_load.gif" class="loader" />');
 		
 		//Let's check to see if this user has already seen this:
 		$.post("/api_v1/load_tip", { intent_id:intent_id } , function(data) {
@@ -46,6 +46,35 @@ function close_tip(intent_id){
 	$("div#content_"+intent_id).hide();
 	$('#hb_'+intent_id).fadeIn('slow');
 }
+
+
+jQuery.fn.extend({
+    insertAtCaret: function(myValue){
+        return this.each(function(i) {
+            if (document.selection) {
+                //For browsers like Internet Explorer
+                this.focus();
+                sel = document.selection.createRange();
+                sel.text = myValue;
+                this.focus();
+            }
+            else if (this.selectionStart || this.selectionStart == '0') {
+                //For browsers like Firefox and Webkit based
+                var startPos = this.selectionStart;
+                var endPos = this.selectionEnd;
+                var scrollTop = this.scrollTop;
+                this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+                this.focus();
+                this.selectionStart = startPos + myValue.length;
+                this.selectionEnd = startPos + myValue.length;
+                this.scrollTop = scrollTop;
+            } else {
+                this.value += myValue;
+                this.focus();
+            }
+        })
+    }
+});
 
 
 //Function to load all help messages throughout the console:
@@ -85,12 +114,16 @@ function switch_to(hashtag_name){
 
 //To keep state of the horizontal menu using URL hashtags:
 function focu_hash(the_hash){
-	var hash = the_hash.substring(1); //Puts hash in variable, and removes the # character
-  	//Open specific menu with a 100ms delay to fix TOP NAV bug
-	//Detect if this Exists:
-	if($('#'+hash+'.tab-pane').attr('class').indexOf("hidden")<=0){
-		$('.tab-pane, #topnav > li').removeClass('active');
-		$('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+	if(!the_hash.length){
+		return false;
+	} else {
+        var hash = the_hash.substring(1); //Puts hash in variable, and removes the # character
+        //Open specific menu with a 100ms delay to fix TOP NAV bug
+        //Detect if this Exists:
+        if($('#'+hash+'.tab-pane').attr('class').indexOf("hidden")<=0){
+            $('.tab-pane, #topnav > li').removeClass('active');
+            $('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+        }
 	}
 }
 

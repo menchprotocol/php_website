@@ -14,7 +14,7 @@ $website = $this->config->item('website');
 				</ul>
 				<ul class="pull-right">
                     <li class="legal-name bg-glow"><i><img src="/img/bp_128.png" /><?= $website['legaL_name'] ?></i></li>
-                    <li><i>v<?= $website['version'] ?></i></li>
+                    <li><i>V<?= $website['version'] ?></i></li>
                 </ul>
             </nav>
         </div>

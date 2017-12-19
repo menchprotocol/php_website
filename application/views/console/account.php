@@ -7,6 +7,7 @@ if(!(count($ufetch)==1)){
     redirect_message('/console','Session expired.');
 }
 $udata = $ufetch[0];
+$message_max = $this->config->item('message_max');
 ?>
 <script>
 $(document).ready(function() {
@@ -22,7 +23,7 @@ $(document).ready(function() {
 //Count text area characters:
 function changeBio() {
     var len = $('#u_bio').val().length;
-    if (len > 420) {
+    if (len > <?= $message_max ?>) {
     	$('#charNum').addClass('overload').text(len);
     } else {
         $('#charNum').removeClass('overload').text(len);
@@ -46,14 +47,6 @@ function trigger_link_watch(link_id,prepend_url){
 	});
 }
 
-function load_referrals(u_id){
-	$('#referral_data').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
-
-	$.post("/api_v1/load_referrals", {u_id:u_id} , function(data) {
-		//Update UI to confirm with user:
-		$('#referral_data').html(data).hide().fadeIn();
-    });
-}
 
 function update_account(){
 	
@@ -191,8 +184,8 @@ function insert_gravatar(){
 			<li>Make sure to include your strong suits and tangible accomplishments.</li>
 			<li>Your Introductory Message will be displayed on your bootcamp landing page.</li>
 		</ul>
-		<textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($udata['u_bio'])),0,420); ?></textarea>
-        <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/420</div>
+		<textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($udata['u_bio'])),0,$message_max); ?></textarea>
+        <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
         
         
         
@@ -331,25 +324,6 @@ function insert_gravatar(){
         	
         	<div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History <span id="hb_728" class="help_button" intent-id="728"></span></h4></div>
         	<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No payouts yet.</div>
-        		
-        	
-        	<div class="title" style="margin-top:30px;"><h4><i class="fa fa-history" aria-hidden="true"></i> Referral History <span id="hb_728" class="help_button" intent-id="728"></span></h4></div>
-        	<div class="help_body maxout" id="content_728"></div>
-        	<?php 
-        	$engagements = $this->Db_model->e_fetch(array(
-        	    'e_recipient_u_id' => $udata['u_id'],
-        	    //e_type_id=45,46,47 is affiliate related!
-        	    'e_type_id >=' => "45",
-        	    'e_type_id <=' => "47",
-        	));
-        	if(count($engagements)>0){
-        	    
-        	    echo '<div id="referral_data"><a href="javascript:load_referrals('.$udata['u_id'].')" class="btn btn-primary">Load '.count($engagements).' Referral Activity</a></div>';
-        	    
-        	} else {
-        	    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No affiliate referrals yet. Visit your Bootcamp\'s Settings tab to get started.</div>';
-        	}
-        	?>
     	
     	
     	

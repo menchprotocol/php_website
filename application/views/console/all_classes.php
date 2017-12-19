@@ -2,7 +2,7 @@
 
 <?php
 if(count($bootcamp['c__classes'])>0){
-    echo '<div class="list-group">';
+    echo '<div class="list-group maxout">';
     foreach($bootcamp['c__classes'] as $class){
         echo '<a href="/console/'.$bootcamp['b_id'].'/classes/'.$class['r_id'].'" class="list-group-item">';
             echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
@@ -15,10 +15,9 @@ if(count($bootcamp['c__classes'])>0){
     }
     echo '</div>';
 } else {
-    echo '<div class="alert alert-info" role="alert">No classes created yet.</div>';
+    echo '<div class="alert alert-info maxout" role="alert">No classes created yet.</div>';
 }
-
 ?>
 
 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newClassModal">New</a>
-<span>or <a href="#" data-toggle="modal" data-target="#ScheduleClasses"><u>Schedule Classes</u></a></span>
+<?php /* This is distraction for now... <span>or <a href="#" data-toggle="modal" data-target="#ScheduleClasses"><u>Schedule Classes</u></a></span> */ ?>
