@@ -94,7 +94,7 @@ class Db_model extends CI_Model {
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
 	    foreach($match_columns as $key=>$value){
-	        if($value){
+	        if(!is_null($value)){
                 $this->db->where($key,$value);
             } else {
                 $this->db->where($key);
@@ -1104,7 +1104,7 @@ class Db_model extends CI_Model {
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
 	    foreach($match_columns as $key=>$value){
-	        if($value){
+	        if(!is_null($value)){
 	            $this->db->where($key,$value);
 	        } else {
 	            $this->db->where($key);

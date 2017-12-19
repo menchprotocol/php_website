@@ -194,7 +194,7 @@ a.badge-primary:hover {
 /* iPhone devide tweak: */
 .marvel-device.iphone-x {
     width: 345px;
-    height: 700px;
+    height: 640px;
     margin: 0;
     display: block;
     margin-bottom: 40px;
@@ -234,7 +234,7 @@ a.badge-primary:hover {
 }
 
 .ix-msg{
-	height:500px;
+	height:440px;
 }
 
 .ix-kyb{
