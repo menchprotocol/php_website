@@ -1984,8 +1984,64 @@ function time_format($t,$format=0,$plus_days=0){
         return date("Y/m/d",$timestamp);
     } elseif($format==7){
         return date(( $this_year ? "D M j, g:i a" : "D M j, Y, g:i a" ),$timestamp);
-    } 
-    
+    }
+}
+
+function message_validation($i_status,$i_message,$i_media_type=null /*Only set for editing*/){
+    $CI =& get_instance();
+    $message_max = $CI->config->item('message_max');
+    $check_urls = (!$i_media_type || $i_media_type=='text');
+    if($check_urls){
+        $urls = extract_urls($i_message);
+    }
+
+    if(!isset($i_status) || !(intval($i_status)==$i_status)){
+        return array(
+            'status' => 0,
+            'message' => 'Missing Status',
+        );
+    } elseif(!isset($i_message) || strlen($i_message)<=0){
+        return array(
+            'status' => 0,
+            'message' => 'Missing Message',
+        );
+    } elseif($check_urls && count($urls)>1){
+        return array(
+            'status' => 0,
+            'message' => 'Max 1 URL per Message',
+        );
+    } elseif(substr_count($i_message,'{first_name}')>1){
+        return array(
+            'status' => 0,
+            'message' => '{first_name} can be used only once',
+        );
+    } elseif($i_status==3 && substr_count($i_message,'{first_name}')>0){
+        return array(
+            'status' => 0,
+            'message' => '{first_name} not allowed in Featured',
+        );
+    } elseif(strlen($i_message)>$message_max){
+        return array(
+            'status' => 0,
+            'message' => 'Max is '.$message_max.' Characters',
+        );
+    } elseif($i_message!=strip_tags($i_message)){
+        return array(
+            'status' => 0,
+            'message' => 'HTML Code is not allowed',
+        );
+    } elseif(!preg_match('//u', $i_message)){
+        //Log engagement for this:
+        return array(
+            'status' => 0,
+            'message' => 'Message must be UTF8',
+        );
+    } else {
+        return array(
+            'status' => 1,
+            'urls' => ( $check_urls ? $urls : null ),
+        );
+    }
 }
 
 function time_diff($t,$second_time=null){

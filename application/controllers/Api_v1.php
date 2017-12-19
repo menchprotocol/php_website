@@ -2210,7 +2210,6 @@ class Api_v1 extends CI_Controller {
 	
 	function message_create(){
 
-        $message_max = $this->config->item('message_max');
 	    $udata = auth(2);
 	    if(!$udata){
 	        echo_json(array(
@@ -2227,103 +2226,74 @@ class Api_v1 extends CI_Controller {
 	            'status' => 0,
 	            'message' => 'Invalid Bootcamp',
 	        ));
-	    } elseif(!isset($_POST['i_status'])){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Status',
-	        ));
-        } elseif(!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Message',
-            ));
-        } elseif(substr_count($_POST['i_message'],'{first_name}')>1){
-            echo_json(array(
-                'status' => 0,
-                'message' => '{first_name} can be used only once',
-            ));
-        } elseif($_POST['i_status']==3 && substr_count($_POST['i_message'],'{first_name}')>0){
-            echo_json(array(
-                'status' => 0,
-                'message' => '{first_name} not allowed in Featured',
-            ));
-        } elseif(strlen($_POST['i_message'])>$message_max){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Max is '.$message_max.' Characters',
-            ));
-        } elseif($_POST['i_message'] != strip_tags($_POST['i_message'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'HTML Code is not allowed',
-            ));
 	    } else {
-	        
-	        //Detect potential URL:
-	        $urls = extract_urls($_POST['i_message']);
-	        if(count($urls)>1){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Max 1 URL per Message',
-	            ));
-	        } else {
-	            
-	            //Detect file type:
-	            if(count($urls)==1 && trim($urls[0])==trim($_POST['i_message'])){
-	                
-	                //This message is a URL only, perform raw URL to file conversion
-	                //This feature only available for newly created message, NOT in editing mode!
-	                $mime = remote_mime($urls[0]);
-	                $i_media_type = mime_type($mime);
-	                if($i_media_type=='file'){
-	                    $i_media_type = 'text';
-	                }
-	                
-	            } else {
-	                //This channel is all text:
-	                $i_media_type = 'text'; //Possible: text,image,video,audio,file
-	            }
-	            
-	            //Create Message:
-	            $i = $this->Db_model->i_create(array(
-	                'i_creator_id' => $udata['u_id'],
-	                'i_c_id' => intval($_POST['pid']),
-	                'i_b_id' => intval($_POST['b_id']),
-	                'i_media_type' => $i_media_type,
-	                'i_message' => trim($_POST['i_message']),
-	                'i_url' => ( count($urls)==1 ? $urls[0] : null ),
-	                'i_status' => intval($_POST['i_status']),
-	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-	                    'i_status >=' => 0,
-	                    'i_status <' => 4, //But not private notes if any
-	                    'i_c_id' => intval($_POST['pid']),
-	                )),
-	            ));
-	            
-	            //Fetch full message:
-	            $new_messages = $this->Db_model->i_fetch(array(
-	                'i_id' => $i['i_id'],
-	            ));
-	            
-	            //Log engagement:
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_json' => json_encode(array(
-	                    'input' => $_POST,
-	                    'after' => $new_messages[0],
-	                )),
-	                'e_type_id' => 34, //Message added
-	                'e_i_id' => intval($new_messages[0]['i_id']),
-	                'e_c_id' => intval($_POST['pid']),
-	                'e_b_id' => $new_messages[0]['i_b_id'], //Share with bootcamp team
-	            ));
-	            
-	            //Print the challenge:
-	            echo_json(array(
-	                'status' => 1,
-	                'message' => echo_message($new_messages[0],$_POST['level']),
-	            ));
-	        }    
+
+	        //Make sure message is all good:
+            $validation = message_validation($_POST['i_status'],$_POST['i_message']);
+
+            if(!$validation['status']){
+
+                //There was some sort of an error:
+                echo_json($validation);
+
+            } else {
+
+                //Detect file type:
+                if(count($validation['urls'])==1 && trim($validation['urls'][0])==trim($_POST['i_message'])){
+
+                    //This message is a URL only, perform raw URL to file conversion
+                    //This feature only available for newly created message, NOT in editing mode!
+                    $mime = remote_mime($validation['urls'][0]);
+                    $i_media_type = mime_type($mime);
+                    if($i_media_type=='file'){
+                        $i_media_type = 'text';
+                    }
+
+                } else {
+                    //This channel is all text:
+                    $i_media_type = 'text'; //Possible: text,image,video,audio,file
+                }
+
+                //Create Message:
+                $i = $this->Db_model->i_create(array(
+                    'i_creator_id' => $udata['u_id'],
+                    'i_c_id' => intval($_POST['pid']),
+                    'i_b_id' => intval($_POST['b_id']),
+                    'i_media_type' => $i_media_type,
+                    'i_message' => trim($_POST['i_message']),
+                    'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
+                    'i_status' => intval($_POST['i_status']),
+                    'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                            'i_status >=' => 0,
+                            'i_status <' => 4, //But not private notes if any
+                            'i_c_id' => intval($_POST['pid']),
+                        )),
+                ));
+
+                //Fetch full message:
+                $new_messages = $this->Db_model->i_fetch(array(
+                    'i_id' => $i['i_id'],
+                ));
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_json' => json_encode(array(
+                        'input' => $_POST,
+                        'after' => $new_messages[0],
+                    )),
+                    'e_type_id' => 34, //Message added
+                    'e_i_id' => intval($new_messages[0]['i_id']),
+                    'e_c_id' => intval($_POST['pid']),
+                    'e_b_id' => $new_messages[0]['i_b_id'], //Share with bootcamp team
+                ));
+
+                //Print the challenge:
+                echo_json(array(
+                    'status' => 1,
+                    'message' => echo_message($new_messages[0],$_POST['level']),
+                ));
+            }
 	    }   
 	}
 	
@@ -2351,84 +2321,74 @@ class Api_v1 extends CI_Controller {
 	            'status' => 0,
 	            'message' => 'Invalid Intent ID',
 	        ));
-	    } elseif(($_POST['i_media_type']=='text') && (!isset($_POST['i_message']) || strlen($_POST['i_message'])<=0)){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Text Message',
-	        ));
-	    } elseif(!isset($_POST['i_status'])){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Status',
-	        ));
 	    } else {
-	        //Fetch Message:
-	        $messages = $this->Db_model->i_fetch(array(
-	            'i_id' => intval($_POST['i_id']),
-	            'i_status >=' => 0,
-	        ));
-	        
-	        //Fetch URLs for Text:
-	        if($_POST['i_media_type']=='text'){
-	            $urls = extract_urls($_POST['i_message']);
-	        }
-	        
-	        if($_POST['i_media_type']=='text' && count($urls)>1){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Max 1 URL/Message ',
-	            ));
-	        } elseif(!isset($messages[0])){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Message Not Found',
-	            ));
-	        } else {
-	            
-	            //Define what needs to be updated:
-	            $to_update = array(
-	                'i_creator_id' => $udata['u_id'],
-	                'i_timestamp' => date("Y-m-d H:i:s"),
-	                'i_status' => intval($_POST['i_status']),
-	            );
-	            
-	            //Is this a text message?
-	            if($_POST['i_media_type']=='text'){
-	                $to_update['i_message'] = trim($_POST['i_message']);
-	                $to_update['i_url'] = ( count($urls)==1 ? $urls[0] : null );
-	            }
-	            
-	            //Now update the DB:
-	            $this->Db_model->i_update( intval($_POST['i_id']) , $to_update );
-	            
-	            //Refetch the message for display purposes:
-	            $new_messages = $this->Db_model->i_fetch(array(
-	                'i_id' => intval($_POST['i_id']),
-	            ));
-	            
-	            //Log engagement:
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_json' => json_encode(array(
-	                    'input' => $_POST,
-	                    'before' => $messages[0],
-	                    'after' => $new_messages[0],
-	                )),
-	                'e_type_id' => 36, //Message edited
-	                'e_i_id' => $messages[0]['i_id'],
-	                'e_c_id' => intval($_POST['pid']),
-	                'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
-	            ));
 
-	            //Print the challenge:
-	            echo_json(array(
-	                'status' => 1,
-	                'message' => echo_i($new_messages[0]),
-	                'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'top'),
-	                'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
-	                'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
-	            ));
-	        }
+            //Fetch Message:
+            $messages = $this->Db_model->i_fetch(array(
+                'i_id' => intval($_POST['i_id']),
+                'i_status >=' => 0,
+            ));
+
+            //Make sure message is all good:
+            $validation = message_validation($_POST['i_status'],$_POST['i_message'],$_POST['i_media_type']);
+
+            if(!isset($messages[0])){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Message Not Found',
+                ));
+            } elseif(!$validation['status']){
+
+                //There was some sort of an error:
+                echo_json($validation);
+
+            } else {
+
+                //All good, lets move on:
+                //Define what needs to be updated:
+                $to_update = array(
+                    'i_creator_id' => $udata['u_id'],
+                    'i_timestamp' => date("Y-m-d H:i:s"),
+                    'i_status' => intval($_POST['i_status']),
+                );
+
+                //Is this a text message?
+                if($_POST['i_media_type']=='text'){
+                    $to_update['i_message'] = trim($_POST['i_message']);
+                    $to_update['i_url'] = ( isset($validation['urls'][0]) ? $validation['urls'][0] : null );
+                }
+
+                //Now update the DB:
+                $this->Db_model->i_update( intval($_POST['i_id']) , $to_update );
+
+                //Refetch the message for display purposes:
+                $new_messages = $this->Db_model->i_fetch(array(
+                    'i_id' => intval($_POST['i_id']),
+                ));
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_json' => json_encode(array(
+                        'input' => $_POST,
+                        'before' => $messages[0],
+                        'after' => $new_messages[0],
+                    )),
+                    'e_type_id' => 36, //Message edited
+                    'e_i_id' => $messages[0]['i_id'],
+                    'e_c_id' => intval($_POST['pid']),
+                    'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
+                ));
+
+                //Print the challenge:
+                echo_json(array(
+                    'status' => 1,
+                    'message' => echo_i($new_messages[0]),
+                    'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'top'),
+                    'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
+                    'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
+                ));
+            }
 	    }
 	}
 	
