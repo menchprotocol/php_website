@@ -1737,7 +1737,7 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && intval($udata['u_status'])>=2 ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && intval($udata['u_status'])>=2 ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }
@@ -2008,12 +2008,16 @@ function time_diff($t,$second_time=null){
 	);
 	
 	foreach ($tokens as $unit => $text) {
-		if ($time < $unit) continue;
+		if ($time<$unit && $unit>1) continue;
 		if($unit>=2592000 && fmod(($time / $unit),1)>=0.33 && fmod(($time / $unit),1)<=.67){
 		    $numberOfUnits = number_format(($time / $unit),1);
 		} else {
 		    $numberOfUnits = number_format(($time / $unit),0);
 		}
+
+		if($numberOfUnits<1 && $unit==1){
+            $numberOfUnits = 1; //Change "0 seconds" to "1 second"
+        }
 		
 		return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
 	}

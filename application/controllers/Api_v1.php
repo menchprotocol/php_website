@@ -2252,6 +2252,11 @@ class Api_v1 extends CI_Controller {
                 'status' => 0,
                 'message' => 'Max is '.$message_max.' Characters',
             ));
+        } elseif($_POST['i_message'] != strip_tags($_POST['i_message'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'HTML Code is not allowed',
+            ));
 	    } else {
 	        
 	        //Detect potential URL:

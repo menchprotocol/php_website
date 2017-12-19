@@ -73,10 +73,12 @@ $(document).ready(function() {
 
     //Make iPhone X Sticky for scrolling longer lists
     $(".main-panel").scroll(function() {
-        $("#iphonex").css('top',($(this).scrollTop()-70)); //PX also set in style.css for initial load
-        $("#modifybox").css('top',($(this).scrollTop()-0)); //PX also set in style.css for initial load
-        // $("#iphonex").css('right',($(this).scrollTop()-55)); //55px also set in style.css for initial load
-        // alert($("#iphonecol").width());
+        var top_position = $(this).scrollTop();
+        clearTimeout($.data(this, 'scrollTimer'));
+        $.data(this, 'scrollTimer', setTimeout(function() {
+            $("#iphonex").css('top',(top_position-70)); //PX also set in style.css for initial load
+            $("#modifybox").css('top',(top_position-0)); //PX also set in style.css for initial load
+        }, 34));
     });
 
 
