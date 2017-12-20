@@ -244,11 +244,16 @@ class Db_model extends CI_Model {
 	}
 	
 	
-	function ba_fetch($match_columns){
+	function ba_fetch($match_columns,$fetch_extra=false){
 	    //Fetch the admins of the bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
-	    $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_u_id = u.u_id');
+        $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_u_id = u.u_id');
+        if($fetch_extra){
+            //This is a HACK!
+            $this->db->join('v5_bootcamps b', 'ba.ba_b_id = b.b_id');
+            $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+        }
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }

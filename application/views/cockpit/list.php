@@ -132,7 +132,7 @@ if($object_name=='bootcamps'){
 } elseif($object_name=='users'){
     
     $users = $this->Db_model->u_fetch(array(
-        'u_status >=' => 0,
+        'u_status' => 2,
     ));
     ?>
 
@@ -161,10 +161,11 @@ if($object_name=='bootcamps'){
     	<tr>
     		<th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
-    		<th>User</th>
-    		<th><i class="fa fa-commenting" aria-hidden="true"></i></th>
-    		<th>Joined</th>
-            <th>Engagements</th>
+            <th>Instructor</th>
+            <th>Bootcamps</th>
+            <th>Joined</th>
+            <th><i class="fa fa-commenting" aria-hidden="true"></i> Messages</th>
+            <th><i class="fa fa-eye" aria-hidden="true"></i> Read</th>
             <th>Timezone</th>
             <th>Actions</th>
     	</tr>
@@ -172,26 +173,52 @@ if($object_name=='bootcamps'){
     <tbody>
     <?php
     foreach($users as $user){
-        
-        //Fetch last activity:
-        $engagements = $this->Db_model->e_fetch(array(
-            'e_initiator_u_id' => $user['u_id'],
-        ));
-        
+
+        //Fetch messages if activated MenchBot:
+        unset($messages);
+        unset($read_message);
         if(strlen($user['u_fb_id'])>4){
             $messages = $this->Db_model->e_fetch(array(
                 '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
-                '(e_type_id=6 OR e_type_id=7)' => null,
+                '(e_type_id IN (6,7))' => null,
             ));
+            $read_message = $this->Db_model->e_fetch(array(
+                '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
+                'e_type_id' => 1,
+            ),1);
         }
+
+        //Fetch Bootcamps:
+        $instructor_bootcamps = $this->Db_model->ba_fetch(array(
+            'ba.ba_u_id' => $user['u_id'],
+            'ba.ba_status >=' => 0,
+            'b.b_status >=' => 0,
+        ) , true /*To Fetch more details*/ );
         
         echo '<tr>';
         echo '<td>'.$user['u_id'].'</td>';
         echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
-        echo '<td>'.$user['u_fname'].' '.$user['u_lname'].'</td>';
-        echo '<td>'.( strlen($user['u_fb_id'])>4 ? intval(count($messages)) : messenger_activation_url('381488558920384',$user['u_id']) ).'</td>';
+        echo '<td><a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a></td>';
+        echo '<td>';
+            //Display Bootcamps:
+            if(count($instructor_bootcamps)>0){
+                foreach ($instructor_bootcamps as $counter=>$ib){
+                    //Fetch last activity:
+                    $bootcamp_building_engagements = $this->Db_model->e_fetch(array(
+                        'e_initiator_u_id' => $user['u_id'],
+                        'e_b_id' => $ib['b_id'],
+                        '(e_type_id IN (15,17,37,18,14,16,13,10,25,11,20,21,23,22,19,34,35,39,36,12,38,43,44,48))' => null,
+                    ));
+
+                    echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($bootcamp_building_engagements[0]) ? time_format($bootcamp_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($bootcamp_building_engagements)>=100 ? '100+' : count($bootcamp_building_engagements) ).'</div>';
+                }
+            } else {
+                echo '---';
+            }
+        echo '</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
-        echo '<td><a href="/cockpit/engagements?e_recipient_u_id='.$user['u_id'].'">Recipient &raquo;</a> | <a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'">'.( count($engagements)>=100 ? '100+' : count($engagements) ).' Initiated &raquo;</a></td>';
+        echo '<td>'.( isset($messages[0]) ? time_format($messages[0]['e_timestamp'],1) : '---' ).'/'.( ( strlen($user['u_fb_id'])>4 ? count($messages)>=100 ? '100+' : count($messages) : '<a href="'.messenger_activation_url('381488558920384',$user['u_id']).'">URL</a>' ) ).'</td>';
+        echo '<td>'.( isset($read_message[0]) ? time_format($read_message[0]['e_timestamp'],1) : '---' ).'</td>';
         echo '<td>'.$user['u_timezone'].'</td>';
         echo '<td>';
             if(isset($_GET['pid']) && strlen($user['u_fb_id'])>4 && $user['u_status']>=2){
@@ -200,7 +227,7 @@ if($object_name=='bootcamps'){
                     'e_type_id' => 7,
                     'e_recipient_u_id' => $user['u_id'],
                     'e_c_id' => intval($_GET['pid']),
-                ));
+                ),1);
                 if(count($sent_messages)>0){
                     //Already sent!
                     echo '<i class="fa fa-check-circle" aria-hidden="true"></i>';
