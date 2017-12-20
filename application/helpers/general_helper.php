@@ -199,41 +199,45 @@ function echo_i($i,$first_name=null,$fb_format=false){
     }
     
     //Proceed to Send Message:
-    if($i['i_media_type']=='text' && strlen($i['i_message'])>0){
-        
-        
-        //Do we have a {first_name} replacement?
-        if($first_name){
-            //Tweak the name:
-            $i['i_message'] = str_replace('{first_name}', $first_name, $i['i_message']);
-        }
-        
-        //Does this message also have a link?
-        if(strlen($i['i_url'])>0){
-            
-            $CI =& get_instance();
-            $website = $CI->config->item('website');
-            $url = $website['url'].'ref/'.$i['i_id'];
-            
+    if($i['i_media_type']=='text'){
+
+        if(strlen($i['i_message'])<1){
+            //Should not be possible?!
+            return false;
+        } else {
+            //Do we have a {first_name} replacement?
+            if($first_name){
+                //Tweak the name:
+                $i['i_message'] = str_replace('{first_name}', $first_name, $i['i_message']);
+            }
+
+            //Does this message also have a link?
+            if(strlen($i['i_url'])>0){
+
+                $CI =& get_instance();
+                $website = $CI->config->item('website');
+                $url = $website['url'].'ref/'.$i['i_id'];
+
+                if($fb_format){
+                    //Messenger format:
+                    $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+                } else {
+                    //HTML format:
+                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+                }
+            }
+
+            //Now return the template:
             if($fb_format){
-                //Messenger format:
-                $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+                //Messenger array:
+                return array(
+                    'text' => $i['i_message'],
+                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+                );
             } else {
                 //HTML format:
-                $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+                $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
             }
-        }
-        
-        //Now return the template:
-        if($fb_format){
-            //Messenger array:
-            return array(
-                $i['i_media_type'] => $i['i_message'],
-                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-            );
-        } else {
-            //HTML format:
-            $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
         }
         
     } elseif(strlen($i['i_url'])>0) {
@@ -247,7 +251,6 @@ function echo_i($i,$first_name=null,$fb_format=false){
                     'type' => $i['i_media_type'],
                     'payload' => array(
                         'url' => $i['i_url'],
-                        'is_reusable' => true, //This can likely be reused within the class
                     ),
                 ),
                 'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
@@ -2359,7 +2362,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                     'e_i_id' => $i['i_id'], //The message that is being dripped
                 ));
                 
-            } elseif(in_array($i['i_status'],array(1,3))){
+            } elseif($i['i_status']==1){
                 
                 //These are to be instantly distributed:
                 array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
@@ -2416,7 +2419,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             'e_i_id' => $i['i_id'], //The message that is being dripped
                         ));
                         
-                    } elseif(in_array($i['i_status'],array(1,3))){
+                    } elseif($i['i_status']==1){
                         
                         //These are to be instantly distributed:
                         array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
@@ -2470,7 +2473,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                                     'e_i_id' => $i['i_id'], //The message that is being dripped
                                 ));
                                 
-                            } elseif(in_array($i['i_status'],array(1,3))){
+                            } elseif($i['i_status']==1){
                                 
                                 //These are to be instantly distributed:
                                 array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
