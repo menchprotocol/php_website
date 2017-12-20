@@ -745,7 +745,7 @@ function calculate_bootcamp_status($b){
         $milestone_anchor = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
         
         
-        //Milestone Messages
+        //Milestone Landing Page Messages
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
         $qualified_messages = 0;
@@ -759,6 +759,24 @@ function calculate_bootcamp_status($b){
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
             'anchor' => '<b>Add a '.status_bible('i',3).' Message</b> to '.$milestone_anchor.$c['c_objective'],
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+        //Milestone On Start Messages
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $qualified_messages = 0;
+        if(count($c['c__messages'])>0){
+            foreach($c['c__messages'] as $i){
+                $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
+            }
+        }
+        $us_status = ( $qualified_messages>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
+            'anchor' => '<b>Add a '.status_bible('i',1).' Message</b> to '.$milestone_anchor.$c['c_objective'],
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
@@ -829,7 +847,7 @@ function calculate_bootcamp_status($b){
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']>=3 && $i['i_status']<4 && $i['i_media_type']=='video' ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']==3 && $i['i_media_type']=='video' ? 1 : 0 );
         }
     }
     $us_status = ( $qualified_messages>0 ? 1 : 0 );
