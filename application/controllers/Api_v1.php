@@ -21,6 +21,44 @@ class Api_v1 extends CI_Controller {
 	/* ******************************
 	 * Miscs
 	 ****************************** */
+
+	function dispatch_message(){
+
+        //Auth user and check required variables:
+        $udata = auth(2);
+
+        if(!$udata){
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+            return false;
+
+        } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0) {
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+            return false;
+
+        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0) {
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing User ID',
+            ));
+            return false;
+
+        } else {
+
+            //All seems good, attempt dispatch:
+            echo_json(tree_message(intval($_POST['pid']), 0, '381488558920384', intval($_POST['u_id']), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
+
+        }
+
+    }
 	
 	function algolia($pid=null){
 	    //Used to update local host:

@@ -246,71 +246,102 @@ class Scraper extends CI_Controller {
 	    echo '<head><meta http-equiv="refresh" content="2"></head>';
 	    echo $count.' Updated on '.date("Y-m-d H:i:s");
 	}
-	
-	function udemy_csv(){
-	    
-	    if(!isset($_GET['cat'])){
-	        die('Missing category');
-	    }
-	    
-	    $to_print = $this->Db_model->il_fetch(array(
-	        'il_timestamp !=' => null, //Fetch courses that have never been updated before
-	        'il_udemy_user_id >' => 0,
-	        'il_student_count >' => 0,
-	        'il_udemy_category' => urldecode($_GET['cat']),
-	    ));
-	    
-	    header("Content-type: application/octet-stream");
-	    header("Content-Disposition: attachment; filename=".urldecode($_GET['cat'])." Udemy Instructors.xls");
-	    header("Pragma: no-cache");
-	    header("Expires: 0");
-	    
-	    echo "#";
-	    echo "\tUdemy ID";
-	    echo "\tFirst Name";
-	    echo "\tLast Name";
-	    echo "\tOverview";
-	    
-	    echo "\tCourses";
-	    echo "\tStudents";
-	    echo "\tEngagement Rate";
-	    
-	    //To Collect:
-	    echo "\tEmail";
-	    echo "\tIs Company";
-	    
-	    
-	    echo "\tUdemy URL";
-	    echo "\tWebsite";
-	    echo "\tFacebook";
-	    echo "\tTwitter";
-	    echo "\tYouTube";
-	    echo "\tLinkedIn";
-	    echo "\r\n";
-	    
-	    $counter = 0;
-	    foreach($to_print as $tp){
-	        $counter++;
-	        echo $counter;
-	        echo "\t".$tp['il_udemy_user_id'];
-	        echo "\t".$tp['il_first_name'];
-	        echo "\t".$tp['il_last_name'];
-	        echo "\t".trim(str_replace("\n",' ',$tp['il_overview']));
-	        
-	        echo "\t".intval($tp['il_course_count']);
-	        echo "\t".intval($tp['il_student_count']);
-	        echo "\t".( $tp['il_student_count']>0 ? ($tp['il_review_count']/$tp['il_student_count']*100) : 0 );
-	        
-	        echo "\t";
-	        echo "\t";
-	        
-	        echo "\t".$tp['il_url'];
-	        echo "\t".trim($tp['il_website']);
-	        echo "\t".trim($tp['il_facebook']);
-	        echo "\t".trim($tp['il_twitter']);
-	        echo "\t".trim($tp['il_youtube']);
-	        echo "\t".trim($tp['il_linkedin']);
-	        echo "\r\n";
-	    }
-	}
+
+    function udemy_csv(){
+
+        if(!isset($_GET['cat'])){
+            die('Missing category');
+        }
+
+        $to_print = $this->Db_model->il_fetch(array(
+            'il_timestamp !=' => null, //Fetch courses that have never been updated before
+            'il_udemy_user_id >' => 0,
+            'il_student_count >' => 0,
+            'il_udemy_category' => urldecode($_GET['cat']),
+        ));
+
+        header("Content-type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=".urldecode($_GET['cat'])." Udemy Instructors.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        echo "#";
+        echo "\tUdemy ID";
+        echo "\tFirst Name";
+        echo "\tLast Name";
+        echo "\tOverview";
+
+        echo "\tCourses";
+        echo "\tStudents";
+        echo "\tEngagement Rate";
+
+        //To Collect:
+        echo "\tEmail";
+        echo "\tIs Company";
+
+
+        echo "\tUdemy URL";
+        echo "\tWebsite";
+        echo "\tFacebook";
+        echo "\tTwitter";
+        echo "\tYouTube";
+        echo "\tLinkedIn";
+        echo "\r\n";
+
+        $counter = 0;
+        foreach($to_print as $tp){
+            $counter++;
+            echo $counter;
+            echo "\t".$tp['il_udemy_user_id'];
+            echo "\t".$tp['il_first_name'];
+            echo "\t".$tp['il_last_name'];
+            echo "\t".trim(str_replace("\n",' ',$tp['il_overview']));
+
+            echo "\t".intval($tp['il_course_count']);
+            echo "\t".intval($tp['il_student_count']);
+            echo "\t".( $tp['il_student_count']>0 ? ($tp['il_review_count']/$tp['il_student_count']*100) : 0 );
+
+            echo "\t";
+            echo "\t";
+
+            echo "\t".$tp['il_url'];
+            echo "\t".trim($tp['il_website']);
+            echo "\t".trim($tp['il_facebook']);
+            echo "\t".trim($tp['il_twitter']);
+            echo "\t".trim($tp['il_youtube']);
+            echo "\t".trim($tp['il_linkedin']);
+            echo "\r\n";
+        }
+    }
+
+
+
+    function inactive_instructors(){
+
+        $to_print = $this->Db_model->u_fetch(array(
+            'u_status' => 2,
+            'u_fb_id < ' => 300,
+        ));
+
+        header("Content-type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=Inactive Mench Instructors.xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        echo "#";
+        echo "\tFirst Name";
+        echo "\tLast Name";
+        echo "\tEmail";
+        echo "\r\n";
+
+        $counter = 0;
+        foreach($to_print as $tp){
+            $counter++;
+            echo $counter;
+            echo "\t".$tp['u_fname'];
+            echo "\t".$tp['u_lname'];
+            echo "\t".$tp['u_email'];
+            echo "\r\n";
+        }
+    }
 }

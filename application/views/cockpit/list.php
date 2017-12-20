@@ -134,9 +134,28 @@ if($object_name=='bootcamps'){
     $users = $this->Db_model->u_fetch(array(
         'u_status >=' => 0,
     ));
-    
     ?>
-    <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:650px;">
+
+    <script>
+        function dispatch_message(u_id,pid){
+            $('#dispatch_message_'+u_id).html('Sending...').hide().fadeIn();
+            //Save the rest of the content:
+            $.post("/api_v1/dispatch_message", {
+                u_id:u_id,
+                pid:pid,
+            } , function(data) {
+
+                if(data.status){
+                    //Update UI to confirm with user:
+                    $('#dispatch_message_'+u_id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>').hide().fadeIn();
+                } else {
+                    alert('ERROR: '+data.message);
+                }
+
+            });
+        }
+    </script>
+    <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:100%;">
     <thead>
     	<tr>
     		<th style="width:40px;">ID</th>
@@ -144,7 +163,9 @@ if($object_name=='bootcamps'){
     		<th>User</th>
     		<th><i class="fa fa-commenting" aria-hidden="true"></i></th>
     		<th>Joined</th>
-    		<th>Engagements</th>
+            <th>Engagements</th>
+            <th>Timezone</th>
+            <th>Actions</th>
     	</tr>
     </thead>
     <tbody>
@@ -170,6 +191,8 @@ if($object_name=='bootcamps'){
         echo '<td>'.( strlen($user['u_fb_id'])>4 ? intval(count($messages)) : messenger_activation_url('381488558920384',$user['u_id']) ).'</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
         echo '<td><a href="/cockpit/engagements?e_recipient_u_id='.$user['u_id'].'">Recipient &raquo;</a> | <a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'">'.( count($engagements)>=100 ? '100+' : count($engagements) ).' Initiated &raquo;</a></td>';
+        echo '<td>'.$user['u_timezone'].'</td>';
+        echo '<td>'.( isset($_GET['pid']) && strlen($user['u_fb_id'])>4 ? '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].')">Send</a></span>' : '' ).'</td>';
         echo '</tr>';
     }
     echo '</tbody>';
