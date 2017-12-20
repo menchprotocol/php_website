@@ -150,6 +150,7 @@ if($object_name=='bootcamps'){
                     $('#dispatch_message_'+u_id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>').hide().fadeIn();
                 } else {
                     alert('ERROR: '+data.message);
+                    $('#dispatch_message_'+u_id).html('ERROR').hide().fadeIn();
                 }
 
             });
@@ -192,7 +193,23 @@ if($object_name=='bootcamps'){
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
         echo '<td><a href="/cockpit/engagements?e_recipient_u_id='.$user['u_id'].'">Recipient &raquo;</a> | <a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'">'.( count($engagements)>=100 ? '100+' : count($engagements) ).' Initiated &raquo;</a></td>';
         echo '<td>'.$user['u_timezone'].'</td>';
-        echo '<td>'.( isset($_GET['pid']) && strlen($user['u_fb_id'])>4 ? '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].')">Send</a></span>' : '' ).'</td>';
+        echo '<td>';
+            if(isset($_GET['pid']) && strlen($user['u_fb_id'])>4 && $user['u_status']>=2){
+                //Lets check their history:
+                $sent_messages = $this->Db_model->e_fetch(array(
+                    'e_type_id' => 7,
+                    'e_recipient_u_id' => $user['u_id'],
+                    'e_c_id' => intval($_GET['pid']),
+                ));
+                if(count($sent_messages)>0){
+                    //Already sent!
+                    echo '<i class="fa fa-check-circle" aria-hidden="true"></i>';
+                } else {
+                    //Show send button:
+                    echo '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].')">Send</a></span>';
+                }
+            }
+        echo '</td>';
         echo '</tr>';
     }
     echo '</tbody>';
