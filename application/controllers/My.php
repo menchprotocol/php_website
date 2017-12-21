@@ -40,7 +40,7 @@ class My extends CI_Controller {
 	    if($message_id>0){
 	        $messages = $this->Db_model->i_fetch(array(
 	            'i_id' => $message_id,
-	            'i_status >=' => 0, //Not deleted
+	            'i_status >=' => 1, //Not deleted
 	        ));
 	        
 	        if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){

@@ -319,7 +319,7 @@ function echo_message($i,$level=0){
             //Right side reverse:
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level,1).'</li>';
+            $echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],array(-1,4)),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
 		    $echo_ui .= '</ul>';
 	    
@@ -1108,12 +1108,16 @@ function calculate_bootcamp_status($b){
     ));
     
     //Profile counter:
+    /*
     $profile_counter = ( strlen($bfl['u_website_url'])>0 ? 1 : 0 );
     $u_social_account = $CI->config->item('u_social_account');
     foreach($u_social_account as $sa_key=>$sa){
         $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
     }
-    
+    *.
+     *
+     */
+
     $estimated_minutes = 30;
     $progress_possible += $estimated_minutes;
     $required_social_profiles = 3;
@@ -1398,6 +1402,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
                 's_mini_icon' => 'fa-tint',
                 'u_min_status'  => 1,
             ),
+            /*
             3 => array(
                 's_name'  => 'Landing Page',
                 's_color' => '#2f2639', //dark
@@ -1405,6 +1410,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
                 's_mini_icon' => 'fa-bullhorn',
                 'u_min_status'  => 1,
             ),
+	        */
 	        4 => array(
     	        's_name'  => 'Private Note',
     	        's_color' => '#2f2639', //dark
