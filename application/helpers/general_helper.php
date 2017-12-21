@@ -319,7 +319,7 @@ function echo_message($i,$level=0){
             //Right side reverse:
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
-            //$echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],array(-1,4)),'dropup',$level,1).'</li>';
+            $echo_ui .= '<li class="pull-right edit-on">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],array(-1,4),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
 		    $echo_ui .= '</ul>';
 	    
@@ -743,25 +743,7 @@ function calculate_bootcamp_status($b){
         
         //Prepare key variables:
         $milestone_anchor = ucwords($b['b_sprint_unit']).' #'.$c['cr_outbound_rank'].' ';
-        
-        
-        //Milestone Landing Page Messages
-        $estimated_minutes = 15;
-        $progress_possible += $estimated_minutes;
-        $qualified_messages = 0;
-        if(count($c['c__messages'])>0){
-            foreach($c['c__messages'] as $i){
-                $qualified_messages += ( $i['i_status']==3 ? 1 : 0 );
-            }
-        }
-        $us_status = ( $qualified_messages>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
-            'anchor' => '<b>Add a '.status_bible('i',3).' Message</b> to '.$milestone_anchor.$c['c_objective'],
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
+
 
         //Milestone On Start Messages
         $estimated_minutes = 15;
@@ -847,14 +829,14 @@ function calculate_bootcamp_status($b){
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']==3 && $i['i_media_type']=='video' ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']==1 && $i['i_media_type']=='video' ? 1 : 0 );
         }
     }
     $us_status = ( $qualified_messages>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_c_id'],
-        'anchor' => '<b>Add a '.status_bible('i',3).' Video Message</b> to Action Plan',
+        'anchor' => '<b>Add an '.status_bible('i',1).' Video Message</b> to Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1070,7 +1052,7 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-    
+
     //u_country_code && u_current_city
     $estimated_minutes = 30;
     $progress_possible += $estimated_minutes;
@@ -1079,6 +1061,19 @@ function calculate_bootcamp_status($b){
     array_push( $checklist , array(
         'href' => $account_href,
         'anchor' => '<b>Set Location</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+    //u_timezone
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href.'#communication',
+        'anchor' => '<b>Set Timezone</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1108,7 +1103,7 @@ function calculate_bootcamp_status($b){
     ));
     
     //Profile counter:
-    //$profile_counter = ( strlen($bfl['u_website_url'])>0 ? 1 : 0 );
+    $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
     $profile_counter = 1;
     $u_social_account = $CI->config->item('u_social_account');
     foreach($u_social_account as $sa_key=>$sa){
@@ -1370,7 +1365,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    ),
 	    'i' => array(
 	        -1 => array(
-	            's_name'  => 'Archived',
+	            's_name'  => 'Delete',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Message removed.',
 	            'u_min_status'  => 1,
@@ -1972,11 +1967,6 @@ function message_validation($i_status,$i_message,$i_media_type=null /*Only set f
         return array(
             'status' => 0,
             'message' => '{first_name} can be used only once',
-        );
-    } elseif($i_status==3 && substr_count($i_message,'{first_name}')>0){
-        return array(
-            'status' => 0,
-            'message' => '{first_name} not allowed in Featured',
         );
     } elseif(strlen($i_message)>$message_max){
         return array(

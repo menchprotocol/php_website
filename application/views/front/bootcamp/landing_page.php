@@ -162,7 +162,7 @@ $( document ).ready(function() {
     
     		<?php 
     		foreach($bootcamp['c__messages'] as $i){
-    		    if($i['i_status']>=3 && $i['i_status']<4){
+    		    if($i['i_status']==1){
     		        //Publish to Landing Page!
     		        echo echo_i($i);
     		    }
@@ -188,18 +188,18 @@ $( document ).ready(function() {
                 echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($bootcamp['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].($sprint['c_duration_multiplier']>1 ? '-'.$ending_unit : '' ).': '.$sprint['c_objective'].'</a></h4>';
                     echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
                         
-                        $messages_shown = 0;
-                        foreach($sprint['c__messages'] as $i){
-                            if($i['i_status']>=3 && $i['i_status']<4){
-                                //Publish to Landing Page!
-                                echo echo_i($i);
-                                $messages_shown++;
+                        //Display all Active Tasks:
+                        if(count($sprint['c__child_intents'])>0){
+                            echo '<ul>';
+                            foreach($sprint['c__child_intents'] as $task){
+                                echo '<li>'.$task['c_objective'].'</li>';
                             }
+                            echo '</ul>';
                         }
                         
                         echo '<div class="title-sub">';
                         if($sprint['c__estimated_hours']>0){
-                            echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp;';
+                            echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' to Complete &nbsp;';
                         }
                         echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,calculate_duration($bootcamp,$ending_unit)).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
                         echo '</div>';

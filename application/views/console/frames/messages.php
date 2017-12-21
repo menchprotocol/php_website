@@ -516,7 +516,7 @@ if(!isset($intents[0])){
     echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message'.$c_id.'" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top: 2px; padding: 5px 8px; margin-right:46px;">ADD</a></li>';
 
     echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-    echo echo_status_dropdown('i','i_status'.$c_id,($level==1?3:1),($level==1?array(-1,4):($level==3?array(-1,3,4):array(-1,4))),'dropup',$level,1);
+    echo echo_status_dropdown('i','i_status'.$c_id,1,array(-1,4),'dropup',$level,1);
     echo '</li>';
 
     echo '</ul>';
