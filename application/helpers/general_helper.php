@@ -1108,7 +1108,8 @@ function calculate_bootcamp_status($b){
     ));
     
     //Profile counter:
-    $profile_counter = ( strlen($bfl['u_website_url'])>0 ? 1 : 0 );
+    //$profile_counter = ( strlen($bfl['u_website_url'])>0 ? 1 : 0 );
+    $profile_counter = 1;
     $u_social_account = $CI->config->item('u_social_account');
     foreach($u_social_account as $sa_key=>$sa){
         $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
