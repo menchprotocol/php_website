@@ -207,7 +207,7 @@ if($object_name=='bootcamps'){
                     $bootcamp_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],
                         'e_b_id' => $ib['b_id'],
-                        '(e_type_id IN (15,17,37,18,14,16,13,10,25,11,20,21,23,22,19,34,35,39,36,12,38,43,44,48))' => null,
+                        '(e_type_id IN (15,17,37,18,14,16,13,20,21,23,22,19,34,35,39,36,38,43,44))' => null,
                     ));
 
                     echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($bootcamp_building_engagements[0]) ? time_format($bootcamp_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($bootcamp_building_engagements)>=100 ? '100+' : count($bootcamp_building_engagements) ).'</div>';

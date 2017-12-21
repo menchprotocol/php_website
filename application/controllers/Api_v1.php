@@ -565,7 +565,7 @@ class Api_v1 extends CI_Controller {
 	            'e_json' => json_encode($_POST),
 	            'e_type_id' => 9, //Support Needing Graceful Errors
 	        ));
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us for more details.</div>');
+	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 	        return false;
 	    } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
 	        //Bad password
@@ -574,7 +574,7 @@ class Api_v1 extends CI_Controller {
 	    }
 	    
         if($users[0]['u_status']==1){
-            //Regular user, they are required to be assigned to at-least one bootcamp to be able to login:
+            //Regular user, they are required to be assigned to at-least 1 active bootcamp to be able to login:
             $bootcamps = $this->Db_model->u_bootcamps(array(
                 'ba.ba_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
@@ -584,11 +584,11 @@ class Api_v1 extends CI_Controller {
             if(count($bootcamps)<=0){
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $users[0]['u_id'],
-                    'e_message' => 'login() denied because user is not assigned to any bootcamps.',
+                    'e_message' => 'login() denied because instructor is not assigned to any bootcamps.',
                     'e_json' => json_encode($_POST),
                     'e_type_id' => 9, //Support Needing Graceful Errors
                 ));
-                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You are not assigned to any bootcamps.</div>');
+                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your instructor account is idle. <a href="https://calendly.com/shervine/demo"><u>Schedule a call with us</u></a> to have it reactivated.</div>');
                 return false;
             }
         }
