@@ -365,7 +365,7 @@ class Api_v1 extends CI_Controller {
 	                //Existing user that is never enrolled here!
 	                $admission_application = array(
 	                    'ru_r_id' 	        => $focus_class['r_id'],
-	                    'ru_u_id' 	        => $udata['u_id'],
+                        'ru_u_id' 	        => $udata['u_id'],
 	                    'ru_affiliate_u_id' => 0,
 	                );
 	                
@@ -499,11 +499,23 @@ class Api_v1 extends CI_Controller {
 	    
 	    //Attach timestamp:
 	    $_POST['answers']['pst_timestamp'] = date("Y-m-d H:i:s");
-	    
+
+	    //Set updating data:
+        $update_data = array(
+            'ru_application_survey' => json_encode($_POST['answers']),
+        );
+
+        //Is this a free bootcamp? If so, we can set the status to Pending Review:
+        if(doubleval($admissions[0]['r_usd_price'])==0){
+            //Yes, change the status to Pending Review:
+            $update_data['ru_status'] = 2;
+
+            //TODO Log engagement:
+
+        }
+
 	    //Save answers:
-	    $this->Db_model->ru_update( intval($_POST['ru_id']) , array(
-	        'ru_application_survey' => json_encode($_POST['answers']),
-	    ));
+	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
 	    
 	    //Log Engagement:
 	    $this->Db_model->e_create(array(
@@ -526,7 +538,7 @@ class Api_v1 extends CI_Controller {
 	function login(){
 	    
 	    //Setting for admin logins:
-	    $master_password = 'ma5terpa55';
+	    $master_password = 'pi980oll';
 	    
 	    if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');

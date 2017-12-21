@@ -189,9 +189,6 @@ $config['core_objects'] = array(
         'o_name' => 'Message',
         'o_names' => 'Messages',
     ),
-    'ct' => array(
-        'o_name' => 'Bootcamp Categories',
-    ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
         'o_names' => 'Bootcamps',

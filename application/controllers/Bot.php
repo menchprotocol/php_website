@@ -38,144 +38,10 @@ class Bot extends CI_Controller {
 	}
 	function fetch_settings($botkey){
 	    print_r($this->Facebook_model->fetch_settings($botkey));
-	}	
-	
-	function send_message(){
-	    
-	    /*
-	    if(!isset($_POST) || count($_POST)<1){
-	        $_POST['b_id'] = 1;
-	        $_POST['sender_u_id'] = 1;
-	        $_POST['receiver_u_id'] = 1;
-	        $_POST['message_type'] = 'text';
-	        $_POST['auth_hash'] = md5( $_POST['sender_u_id'] . $_POST['receiver_u_id'] . $_POST['message_type'] . '7H6hgtgtfii87' );
-	        $_POST['text_payload'] = 'Hi This is a Test...';
-	    }
-	    */
-	    
-	    //Auth user and check required variables:
-	    if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Bootcamp ID',
-	        ));
-	    } elseif(!isset($_POST['sender_u_id']) || intval($_POST['sender_u_id'])<=0){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Sender/Instructor ID',
-	        ));
-	    } elseif(!isset($_POST['receiver_u_id']) || intval($_POST['receiver_u_id'])<=0){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Receiver/Student ID',
-	        ));
-	    } elseif(!isset($_POST['message_type']) || !in_array($_POST['message_type'],array('text','audio','video','image','file'))){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Invalid Message Type',
-	        ));
-	    } elseif(!isset($_POST['auth_hash']) || !(md5( $_POST['sender_u_id'] . $_POST['receiver_u_id'] . $_POST['message_type'] . '7H6hgtgtfii87' ) == $_POST['auth_hash'])){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Invalid Auth Hash',
-	        ));
-	    } elseif($_POST['message_type']=='text' && (!isset($_POST['text_payload']) || strlen($_POST['text_payload'])<1)){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Text Payload',
-	        ));
-	    } elseif(in_array($_POST['message_type'],array('audio','video','image','file')) && !isset($_POST['attach_url'])){
-	        echo_json(array(
-	            'status' => 0,
-	            'message' => 'Missing Attachment URL',
-	        ));	        
-	    } else {
-	        
-	        //Fetch instructor/Bootcamp:
-	        $fetch_instructors = $this->Db_model->ba_fetch(array(
-	            'ba.ba_b_id' => intval($_POST['b_id']),
-	            'ba.ba_u_id' => intval($_POST['sender_u_id']),
-	            'ba.ba_status >=' => 0,
-	            'u.u_status >=' => 0,
-	        ));
-	        
-	        //Fetch Student:
-	        $admissions = $this->Db_model->remix_admissions(array(
-	            'ru.ru_u_id'	=> intval($_POST['receiver_u_id']),
-	            'r.r_b_id'	    => intval($_POST['b_id']),
-	        ));
-	        
-	        //Validate Student ID:
-	        if(!(count($fetch_instructors)==1)){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Instructor Not Assigned to Bootcamp',
-	            ));
-	        } elseif(count($admissions)<=0){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Student Not Enrolled in Bootcamp',
-	            ));
-	        } elseif(count($admissions)>=2){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Student Enrolled On Mutiple Bootcamps',
-	            ));
-	        } elseif(strlen($admissions[0]['u_fb_id'])<5){
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Student Not Activated Messenger Yet',
-	            ));
-	        } else {
-	            
-	            //Proceed to Send Message:
-	            if($_POST['message_type']=='text'){
-	                //Create Engagement message to be saved:
-	                $e_message = $_POST['text_payload'];
-	                $fb_message = array(
-	                    'text' => $_POST['text_payload'],
-	                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-	                );
-	            } else {
-	                //Create Engagement message to be saved:
-	                $e_message = '/attach '.$_POST['message_type'].':'.trim($_POST['attach_url']);
-	                $fb_message = array(
-	                    'attachment' => array(
-	                        'type' => $_POST['message_type'],
-	                        'payload' => array(
-	                            'url' => $_POST['attach_url'],
-	                            'is_reusable' => false,
-	                        ),
-	                    ),
-	                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-	                );
-	            }
-	            
-	            //Send Message:
-	            $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'] , array($fb_message), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
-	            
-	            //Log Engagement:
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => intval($_POST['sender_u_id']),
-	                'e_recipient_u_id' => intval($_POST['receiver_u_id']),
-	                'e_message' => $e_message,
-	                'e_json' => json_encode($_POST),
-	                'e_type_id' => 7, //Outbound Message
-	                'e_b_id' => $admissions[0]['b_id'],
-	                'e_r_id' => $admissions[0]['r_id'],
-	            ));
-	            
-	            //Show success:
-	            echo_json(array(
-	                'status' => 1,
-	                'message' => 'Message sent',
-	            ));
-	            
-	        }
-	    }
 	}
-	
-	
+
+
+
 	function facebook_webhook(){
 		
 		/*
@@ -500,6 +366,7 @@ class Bot extends CI_Controller {
 	        ));
 	        
 	        if(count($enrollments)==1){
+
 	            //Fetch class data to grab bootcamp ID:
 	            $classes = $this->Db_model->r_fetch(array(
 	                'r.r_id' => $enrollments[0]['ru_r_id'],
@@ -539,6 +406,9 @@ class Bot extends CI_Controller {
 	                    'e_r_id' => $classes[0]['r_id'],
 	                    'e_t_id' => $transaction['t_id'],
 	                ));
+
+	                //TODO Log engagement for new pending student needing review:
+
 	            }
 	        }
 	    }

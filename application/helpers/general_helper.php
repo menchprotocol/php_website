@@ -1108,7 +1108,7 @@ function calculate_bootcamp_status($b){
     ));
     
     //Profile counter:
-    $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
+    $profile_counter = ( strlen($bfl['u_website_url'])>0 ? 1 : 0 );
     $u_social_account = $CI->config->item('u_social_account');
     foreach($u_social_account as $sa_key=>$sa){
         $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
@@ -1265,7 +1265,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	$status_index = array(
 	    'b' => array(
 	        -1 => array(
-	            's_name'  => 'Archive',
+	            's_name'  => 'Archived',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Bootcamp archived by lead instructor.',
 	            'u_min_status'  => 1,
@@ -1332,7 +1332,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
         	    's_mini_icon' => 'fa-times-circle',
     	    ),
     	    -1 => array(
-        	    's_name'  => 'Archive',
+        	    's_name'  => 'Archived',
     	        's_color' => '#2f2639', //dark
         	    's_desc'  => 'Class removed by bootcamp leader before it was started.',
         	    'u_min_status'  => 2,
@@ -1369,7 +1369,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    ),
 	    'i' => array(
 	        -1 => array(
-	            's_name'  => 'Archive',
+	            's_name'  => 'Archived',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Message removed.',
 	            'u_min_status'  => 1,
@@ -1416,7 +1416,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	    
 	    'cr' => array(
 	        -1 => array(
-	            's_name'  => 'Archive',
+	            's_name'  => 'Archived',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Task link removed.',
 	            'u_min_status'  => 1,
@@ -1577,13 +1577,12 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        2 => array(
-	            's_name'  => 'Pending Admission',
+	            's_name'  => 'Pending Review',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            's_mini_icon' => 'fa-pause-circle',
 	            'u_min_status'  => 999, //System insertion only
 	        ),
-	        
 	        
 	        /*
 	        3 => array(
@@ -1593,6 +1592,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	        ),
 	        */
+
 	        4 => array(
 	            's_name'  => 'Bootcamp Student',
 	            's_color' => '#2f2639', //dark
@@ -1602,79 +1602,13 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        
 	        //Completion
-	        5 => array(
+	        7 => array(
 	            's_name'  => 'Bootcamp Graduate',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
 	            's_mini_icon' => 'fa-graduation-cap',
 	            'u_min_status'  => 1,
 	        ),
-	    ),
-	    
-	    'ct' => array(
-    	    //Withrew after course has started:
-    	    1 => array(
-    	    's_name'  => 'Development',
-    	    's_mini_icon' => 'fa-code',
-    	    ),
-	        7 => array(
-	            's_name'  => 'Business',
-	            's_mini_icon' => 'fa-handshake-o',
-	        ),
-	        9=> array(
-	            's_name'  => 'IT & Software',
-	            's_mini_icon' => 'fa-laptop',
-	        ),
-	        10=> array(
-	            's_name'  => 'Design',
-	            's_mini_icon' => 'fa-paint-brush',
-	        ),
-	        13=> array(
-	            's_name'  => 'Marketing',
-	            's_mini_icon' => 'fa-bullseye',
-	        ),
-    	    2=> array(
-    	    's_name'  => 'Music',
-    	    's_mini_icon' => 'fa-music',
-    	    ),
-    	    3=> array(
-    	    's_name'  => 'Teacher Training',
-    	    's_mini_icon' => 'fa-graduation-cap',
-    	    ),
-    	    4=> array(
-    	    's_name'  => 'Language',
-    	    's_mini_icon' => 'fa-language',
-    	    ),
-	        /*
-    	    5=> array(
-    	    's_name'  => 'Academics',
-    	    's_mini_icon' => 'fa-flask',
-    	    ),
-    	    12=> array(
-    	    's_name'  => 'Lifestyle',
-    	    's_mini_icon' => 'fa-repeat',
-    	    ),
-    	    */
-    	    
-    	    8=> array(
-    	    's_name'  => 'Office Productivity',
-    	    's_mini_icon' => 'fa-briefcase',
-    	    ),
-    	    
-    	    11=> array(
-    	    's_name'  => 'Personal Development',
-    	    's_mini_icon' => 'fa-smile-o',
-    	    ),
-    	    
-    	    14=> array(
-    	    's_name'  => 'Health & Fitness',
-    	    's_mini_icon' => 'fa-heartbeat',
-    	    ),
-	        
-    	    15=> array(
-    	    's_name'  => 'Photography',
-    	    's_mini_icon' => 'fa-camera',
-    	    ),
 	    ),
 	);	
 	
