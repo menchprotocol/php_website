@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.21,
+    'version' => 1.22,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -113,7 +113,7 @@ $config['file_limit_mb'] = 200; //The max file size to be uploaded
 
 
 //No bootcamps can be created using these hashtags
-//URL structure is: https://mench.co/HASHTAG
+//URL structure is: https://mench.co/URLKEY
 $config['reserved_hashtags'] = array(
     'bootcamps',
     'bootcamp',

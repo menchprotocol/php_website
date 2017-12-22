@@ -588,7 +588,7 @@ class Api_v1 extends CI_Controller {
                     'e_json' => json_encode($_POST),
                     'e_type_id' => 9, //Support Needing Graceful Errors
                 ));
-                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your instructor account is idle. <a href="https://calendly.com/shervine/demo"><u>Schedule a call with us</u></a> to have it reactivated.</div>');
+                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your instructor account is idle. <a href="https://calendly.com/shervine"><u>Schedule a call with us</u></a> to have it reactivated.</div>');
                 return false;
             }
         }
@@ -657,8 +657,10 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
 	    } elseif(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
-	    } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-	        die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
+        } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+            die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
+        } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
+            die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
 	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://')){
 	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
 	    } elseif(strlen($_POST['u_bio'])>$message_max){
@@ -677,7 +679,7 @@ class Api_v1 extends CI_Controller {
 	    $u_update = array(
 	        'u_fname' => trim($_POST['u_fname']),
 	        'u_lname' => trim($_POST['u_lname']),
-	        'u_email' => $_POST['u_email'],
+	        'u_email' => trim(strtolower($_POST['u_email'])),
 	        'u_phone' => $_POST['u_phone'],
 	        'u_image_url' => $_POST['u_image_url'],
 	        'u_gender' => $_POST['u_gender'],
@@ -686,7 +688,8 @@ class Api_v1 extends CI_Controller {
 	        'u_timezone' => $_POST['u_timezone'],
 	        'u_language' => join(',',$_POST['u_language']),
 	        'u_bio' => trim($_POST['u_bio']),
-	        'u_skype_username' => trim($_POST['u_skype_username']),
+            'u_skype_username' => trim($_POST['u_skype_username']),
+            'u_paypal_email' => ( isset($_POST['u_paypal_email']) ? trim(strtolower($_POST['u_paypal_email'])) : null ),
 	    );
 	    
 	    //Some more checks:
@@ -1361,7 +1364,7 @@ class Api_v1 extends CI_Controller {
         
         //Check for duplicates:
         $bootcamps = $this->Db_model->c_full_fetch(array(
-            'b.b_url_key' => $generated_key,
+            'LOWER(b.b_url_key)' => strtolower($generated_key),
         ));
         if(count($bootcamps)>0){
             //Ooops, we have a duplicate:
@@ -1579,7 +1582,7 @@ class Api_v1 extends CI_Controller {
 
                 //Validate URL Key to be unique:
                 $duplicate_bootcamps = $this->Db_model->c_full_fetch(array(
-                    'b.b_url_key' => $_POST['b_url_key'],
+                    'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
                     'b.b_id !=' => intval($_POST['b_id']),
                 ));
 

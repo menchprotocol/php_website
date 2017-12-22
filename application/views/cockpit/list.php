@@ -130,6 +130,9 @@ if($object_name=='bootcamps'){
     <?php
     
 } elseif($object_name=='users'){
+
+    //TODO Define Instructors we'd be focused on:
+    $qualified_instructors = array();
     
     $users = $this->Db_model->u_fetch(array(
         'u_status' => 2,

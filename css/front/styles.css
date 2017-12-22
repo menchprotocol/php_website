@@ -377,6 +377,14 @@ h5, .h5 {
 .dashboard .row {
 	margin-bottom:10px;
 }
+.landing_page_url{
+    color:#3C4858 !important;
+    text-decoration:none;
+}
+.landing_page_url:hover{
+    color:#3C4858;
+    text-decoration:underline !important;
+}
 .is_empty { color:#999 !important; }
 .active>.is_empty { color:#2f2639 !important; }
 .main-plain .container{ padding:30px; }

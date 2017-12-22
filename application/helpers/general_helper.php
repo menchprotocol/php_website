@@ -1121,6 +1121,19 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
+
+
+    //u_paypal_email
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($bl['u_paypal_email'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => $account_href.'#finance',
+        'anchor' => '<b>Set Paypal Email for Payouts</b> in '.$account_anchor,
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     
     //u_terms_agreement_time

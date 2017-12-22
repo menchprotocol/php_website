@@ -177,21 +177,25 @@ class Front extends CI_Controller {
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
-	    
-	    //Validate bootcamp:
-	    if(!isset($bootcamps[0]) || ($bootcamps[0]['b_status']<=0 && (!isset($udata['u_status']) || $udata['u_status']<=1))){
-	        //Invalid key, redirect back:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
-	    }
-	    
+
+
+        //Validate bootcamp:
+        if(!isset($bootcamps[0])){
+            //Invalid key, redirect back:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+        } elseif($bootcamps[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
+        }
+
+
 	    //Validate Class:
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
 	    if(!$focus_class){
-	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : $bootcamp['c_objective'].' does not have any classes open for admission.' ).'</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : 'Missing a class that is open for admission.' ).'</div>');
 	    }
-	    
-    
+
+
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => $bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
@@ -208,17 +212,22 @@ class Front extends CI_Controller {
 	
 	function bootcamp_apply($b_url_key,$r_id=null){
 	    //The start of the funnel for email, first name & last name
-	    
-	    //Fetch data:
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b.b_url_key' => $b_url_key,
-	    ));
-	    
-	    //Validate bootcamp:
-	    if(!isset($bootcamps[0])){
-	        //Invalid key, redirect back:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
-	    }
+
+        //Fetch data:
+        $udata = $this->session->userdata('user');
+        $bootcamps = $this->Db_model->c_full_fetch(array(
+            'LOWER(b.b_url_key)' => strtolower($b_url_key),
+        ));
+
+
+        //Validate bootcamp:
+        if(!isset($bootcamps[0])){
+            //Invalid key, redirect back:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+        } elseif($bootcamps[0]['b_status']<2){
+            //Here we don't even let instructors move forward to apply!
+            redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after bootcamp is published live.</div>');
+        }
 	    
 	    //Validate Class ID that it's still the latest:
 	    $bootcamp = $bootcamps[0];

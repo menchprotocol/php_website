@@ -80,7 +80,8 @@ function update_account(){
 		u_youtube_username:$('#u_youtube_username').val(),
 		u_fb_username:$('#u_fb_username').val(),
 		u_instagram_username:$('#u_instagram_username').val(),
-		u_skype_username:$('#u_skype_username').val(),
+        u_skype_username:$('#u_skype_username').val(),
+        u_paypal_email:$('#u_paypal_email').val(),
 		/*
 		u_quora_username:$('#u_quora_username').val(),
 		u_stackoverflow_username:$('#u_stackoverflow_username').val(),
@@ -264,18 +265,19 @@ function insert_gravatar(){
             </select>
             <span class="material-input"></span>
         </div>
-        
-        
-      
-        
-        
+
+
+
+
+
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
         <div class="form-group label-floating is-empty">
-            <input type="email" required id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_email'] ?>" class="form-control border">
+            <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_email'] ?>" class="form-control border">
             <span class="material-input"></span>
         </div>
-        
-        
+
+
+
         
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-phone-square" aria-hidden="true"></i> Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
         <div class="form-group label-floating is-empty">
@@ -319,15 +321,28 @@ function insert_gravatar(){
     
     
     <div class="tab-pane" id="finance" style="max-width:none !important;">
-        	
-        	
-        	
-        	<div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History <span id="hb_728" class="help_button" intent-id="728"></span></h4></div>
+
+
+
+
+        <div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History <span id="hb_728" class="help_button" intent-id="728"></span></h4></div>
         	<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No payouts yet.</div>
-    	
-    	
-    	
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
+
+
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+        <div class="form-group label-floating is-empty">
+            <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_paypal_email'] ?>" class="form-control border">
+            <span class="material-input"></span>
+        </div>
+
+
+
+
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
         <ul>
         	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
         	<li>I have read and understood my bootcamp's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Tuition Guarantee <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
@@ -347,11 +362,11 @@ function insert_gravatar(){
             	</label>
             </div>
         </div>
-        
-        <?php if(!$has_agreed){ ?>
+
+
         <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
-        <?php } ?>
-        
+
+
     </div>
     
 </div>

@@ -59,7 +59,7 @@ $(document).ready(function() {
     });
 
 
-    //Enforce Alphanumeric for Hashtag:
+    //Enforce Alphanumeric for URL Key:
     $('#b_url_key').keypress(function (e) {
         var regex = new RegExp("^[a-zA-Z0-9]+$");
         var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);

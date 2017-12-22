@@ -97,7 +97,7 @@ if(count($unread_notifications)>0){
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</i></span></a></li> */ ?>
-						<li><a href="/console/account"><?= (strlen($udata['u_image_url'])>4 ? '<img src="'.$udata['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i>') ?> My Account</a></li>
+                        <li><a href="/console/account"><?= (strlen($udata['u_image_url'])>4 ? '<img src="'.$udata['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i>') ?> My Account</a></li>
 					</ul>
 				</div>
 				<?php } ?>
@@ -109,7 +109,7 @@ if(count($unread_notifications)>0){
 	    	<div class="sidebar-wrapper">
 	    		<?php 
 	    		if(isset($bootcamp)){
-	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i><span id="top-left-title">'.$bootcamp['c_objective'].'</span></div>';
+	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i><a href="/'.$bootcamp['b_url_key'].'" class="landing_page_url" id="top-left-title" data-toggle="tooltip" data-placement="bottom" title="Visit Landing Page">'.$bootcamp['c_objective'].'</a></div>';
 	    		}
 	    		?>
 	    		<ul class="nav" style="margin-top: 0;">
