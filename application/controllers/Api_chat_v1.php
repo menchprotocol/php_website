@@ -18,6 +18,18 @@ class Api_chat_v1 extends CI_Controller{
 
     function update_admission_status(){
 
+        //Dummy test data:
+        /*
+        $_POST = array(
+            'b_id' => 1,
+            'initiator_u_id' => 2,
+            'recipient_u_ids' => array(1),
+            'status_change_note' => 'Awesome student and was very helpful in accomplishing the essence of the work which is why this was great lol',
+            'ru_status' => 7,
+        );
+        $_POST['auth_hash'] = md5( $_POST['initiator_u_id'] . $_POST['ru_status'] . '7H6hgtgtfii87' );
+        */
+
         //Change user status:
         if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
             echo_json(array(
@@ -29,22 +41,17 @@ class Api_chat_v1 extends CI_Controller{
                 'status' => 0,
                 'message' => 'Missing Instructor ID',
             ));
-        } elseif(!isset($_POST['recipient_u_id']) || intval($_POST['recipient_u_id'])<=0){
+        } elseif(!isset($_POST['recipient_u_ids']) || !is_array($_POST['recipient_u_ids']) || count($_POST['recipient_u_ids'])<1){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Student ID',
-            ));
-        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Class ID',
+                'message' => 'Missing Student ID Array',
             ));
         } elseif(!isset($_POST['ru_status']) || intval($_POST['ru_status'])<=0){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Admission Status',
             ));
-        } elseif(!isset($_POST['auth_hash']) || !(md5( $_POST['recipient_u_id'] . $_POST['r_id'] . $_POST['ru_status'] . '7H6hgtgtfii87' ) == $_POST['auth_hash'])){
+        } elseif(!isset($_POST['auth_hash']) || !(md5( $_POST['initiator_u_id'] . $_POST['ru_status'] . '7H6hgtgtfii87' ) == $_POST['auth_hash'])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Auth Hash',
@@ -60,80 +67,138 @@ class Api_chat_v1 extends CI_Controller{
                 'u.u_status >=' => 1,
             ));
 
-            //Fetch Student:
-            $admissions = $this->Db_model->remix_admissions(array(
-                'ru.ru_u_id'	=> intval($_POST['recipient_u_id']),
-                'r.r_b_id'	    => intval($_POST['b_id']),
-                'r.r_id'	    => intval($_POST['r_id']),
-            ));
-
-            //Validate Student ID:
             if(!(count($fetch_instructors)==1)){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Instructor Not Assigned to Bootcamp',
                 ));
-            } elseif(count($admissions)<1){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Student Not Enrolled in Bootcamp',
-                ));
-            } elseif(count($admissions)>1){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Student Enrolled On Multiple Bootcamps',
-                ));
-            } elseif(!in_array($admissions[0]['ru_status'],array(2,4))){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Admission status can only be changed if original status is '.trim(strip_tags(status_bible('ru',2))).' or '.trim(strip_tags(status_bible('ru',4))),
-                ));
-            } elseif($admissions[0]['ru_status']==2 && !in_array($_POST['ru_status'],array(-1,4))){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'You can only change the status of a new student to '.trim(strip_tags(status_bible('ru',-1))).' or '.trim(strip_tags(status_bible('ru',4))),
-                ));
-            } elseif($admissions[0]['ru_status']==2 && $_POST['ru_status']==-1 && (!isset($_POST['status_change_note']) || strlen($_POST['status_change_note'])<50)){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Rejecting the application of a new student requires a descriptive note at-least 50 characters long.',
-                ));
-            } elseif($admissions[0]['ru_status']==4 && !in_array($_POST['ru_status'],array(-3,7))){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'You can only change the status of an admitted student to '.trim(strip_tags(status_bible('ru',-3))).' or '.trim(strip_tags(status_bible('ru',7))),
-                ));
-            } elseif($admissions[0]['ru_status']==4 && (!isset($_POST['status_change_note']) || strlen($_POST['status_change_note'])<50)){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Changing the status of an admitted student requires a descriptive note at-least 50 characters long.',
-                ));
             } else {
 
-                //Proceed to Change Status:
-                $this->Db_model->ru_update( $admissions[0]['ru_id'] , array(
-                    'ru_status' => intval($_POST['ru_status']),
-                ));
+                //Fetch Student:
+                $unified_current_ru_status = null;
+                $error_array = null;
+                $admission_array = array(); //To store all admission data...
 
-                //Log Status change engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => intval($_POST['initiator_u_id']),
-                    'e_recipient_u_id' => intval($_POST['recipient_u_id']),
-                    'e_message' => ( isset($_POST['status_change_note']) ? trim($_POST['status_change_note']) : '' ), //Notes by the instructor
-                    'e_json' => json_encode($_POST),
-                    'e_type_id' => 000, //TODO Admission Status Change
-                    'e_b_id' => $admissions[0]['b_id'],
-                    'e_r_id' => $admissions[0]['r_id'],
-                ));
+                foreach($_POST['recipient_u_ids'] as $u_id){
 
-                //Show success:
-                echo_json(array(
-                    'status' => 1,
-                    'message' => 'Status Updated Successfully',
-                ));
+                    //Fetch the admission for this student:
+                    $admissions = $this->Db_model->remix_admissions(array(
+                        'ru.ru_u_id'	=> intval($u_id),
+                        'r.r_b_id'	    => intval($_POST['b_id']),
+                    ));
+
+                    if(count($admissions)<1){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Not Enrolled in this Bootcamp',
+                        );
+                        break;
+                    } elseif(count($admissions)>1){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Enrolled On Multiple Bootcamps',
+                        );
+                        break;
+                    } elseif(!in_array($admissions[0]['ru_status'],array(2,4))){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Admission status can only be changed if original status is ['.trim(strip_tags(status_bible('ru',2))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
+                        );
+                        break;
+                    } elseif($admissions[0]['ru_status']==4 && count($_POST['recipient_u_ids'])>1){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => 'Setting status to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).'] requires select only 1 student at a time with a unique note.',
+                        );
+                        break;
+                    } elseif($unified_current_ru_status && !($unified_current_ru_status==$admissions[0]['ru_status'])){
+                        //Ooops, this status if different from the previous student! This cannot happen.
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => 'Selecting multiple students requires having the same status of either ['.trim(strip_tags(status_bible('ru',2))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
+                        );
+                        break;
+                    } elseif($admissions[0]['ru_status']==2 && !in_array($_POST['ru_status'],array(-1,4))){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' is a new student. Status can only set to ['.trim(strip_tags(status_bible('ru',-1))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
+                        );
+                        break;
+                    } elseif($admissions[0]['ru_status']==2 && $_POST['ru_status']==-1 && (!isset($_POST['status_change_note']) || strlen($_POST['status_change_note'])<50)){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => 'Setting status to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).'] requires a descriptive note that is 50+ characters long.',
+                        );
+                        break;
+                    } elseif($admissions[0]['ru_status']==4 && !in_array($_POST['ru_status'],array(-3,7))){
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' is an admitted student. Status can only set to ['.trim(strip_tags(status_bible('ru',-3))).'] or ['.trim(strip_tags(status_bible('ru',7))).']',
+                        );
+                        break;
+                    } elseif($admissions[0]['ru_status']==4 && (!isset($_POST['status_change_note']) || strlen($_POST['status_change_note'])<50)) {
+                        $error_array = array(
+                            'status' => 0,
+                            'message' => 'Setting status to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).'] requires a descriptive note that is 50+ characters long.',
+                        );
+                        break;
+                    } else {
+
+                        //Now check if multiple students and if all their IDs match!
+                        if(!$unified_current_ru_status){
+                            $unified_current_ru_status = $admissions[0]['ru_status'];
+                        }
+
+                        //Append admission data:
+                        array_push($admission_array,$admissions[0]);
+
+                    }
+                }
+
+                //Validate Student ID:
+                if($error_array && is_array($error_array)) {
+
+                    //Oooops, we had some sort of an error!
+                    echo_json($error_array);
+
+                } else {
+
+                    //Proceed to Change Status for all students:
+                    foreach($admission_array as $admission){
+
+                        //Change status:
+                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                            'ru_status' => intval($_POST['ru_status']),
+                        ));
+
+                        //Log Status change engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => intval($_POST['initiator_u_id']),
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_message' => 'Student status changes from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']'.( isset($_POST['status_change_note']) ? ' with this instructor note: '.trim($_POST['status_change_note']) : null ), //Notes by the instructor
+                            'e_json' => json_encode(array(
+                                'post' => $_POST,
+                                'admission' => $admission,
+                            )),
+                            'e_type_id' => 51, //Admission Status Change
+                            'e_b_id' => $admission['b_id'],
+                            'e_r_id' => $admission['r_id'],
+                        ));
+                    }
+
+                    //Show success:
+                    echo_json(array(
+                        'status' => 1,
+                        'message' => 'Status successfully updated for '.( count($admission_array)==1 ? $admission_array[0]['u_fname'].' '.$admission_array[0]['u_lname'] : count($admission_array).' students' ),
+                    ));
+
+                }
             }
         }
     }
+
+
+
 
 
     function send_message(){

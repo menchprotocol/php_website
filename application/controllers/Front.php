@@ -187,7 +187,6 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
         }
 
-
 	    //Validate Class:
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
@@ -199,7 +198,7 @@ class Front extends CI_Controller {
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => $bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'message' => ( $bootcamp['b_status']<=0 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> ADMIN VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as an instructor.<br />This bootcamp is hidden from the public until published live.</div>' : null ),
+	        'message' => ( $bootcamp['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a Mench instructor.<br />This bootcamp is hidden from the public until published live.</div>' : null ),
 	        'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(
@@ -218,7 +217,6 @@ class Front extends CI_Controller {
         $bootcamps = $this->Db_model->c_full_fetch(array(
             'LOWER(b.b_url_key)' => strtolower($b_url_key),
         ));
-
 
         //Validate bootcamp:
         if(!isset($bootcamps[0])){
@@ -253,6 +251,7 @@ class Front extends CI_Controller {
 	            'active_classes' => $active_classes,
 	            'title' => 'Join '.$bootcamp['c_objective'],
 	        );
+
 	        //Load apply page:
 	        $this->load->view('front/shared/p_header' , $data);
 	        $this->load->view('front/bootcamp/choose_class' , $data); //TODO Build this
@@ -277,7 +276,7 @@ class Front extends CI_Controller {
 	        $this->load->view('front/shared/p_header' , $data);
 	        $this->load->view('front/bootcamp/apply' , $data);
 	        $this->load->view('front/shared/p_footer');
+
 	    }
 	}
-	
 }

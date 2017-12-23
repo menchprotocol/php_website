@@ -289,7 +289,7 @@ class Bot extends CI_Controller {
 					            //Log engagement to give extra care:
 					            $this->Db_model->e_create(array(
 					                'e_initiator_u_id' => $u_id,
-					                'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/',
+					                'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox/?selected_item_id='.$user_id,
 					                'e_json' => json_encode($json_data),
 					                'e_type_id' => 9, //Support Needing Graceful Errors
 					            ));

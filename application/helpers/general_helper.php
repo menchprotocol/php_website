@@ -647,6 +647,10 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 }
 
 function echo_json($array){
+    if(isset($array['status']) && $array['status']==0){
+        //This is an error, return 405:
+        header("HTTP/1.0 405 Method Not Allowed");
+    }
     header('Content-Type: application/json');
     echo json_encode($array);
 }

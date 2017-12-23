@@ -243,11 +243,11 @@ $config['engagement_references'] = array(
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(26,33,6,15,30,31,37),
+        'subscription' => array(26,33,6,15,30,31,37,51),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(26,3,4,5,8,9,15,29,30,31,37),
+        'subscription' => array(26,3,4,5,8,9,15,30,31,37,51),
     ),
 );
 
