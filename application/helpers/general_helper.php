@@ -2445,7 +2445,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
 
         if($bootcamp_data && $bootcamp_data['level']==2){
             //This is a Milestone Message initiator, append a custom welcome message:
-            $this->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
+            $CI->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
                 array(
                     'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
                     //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
@@ -2464,7 +2464,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         //Do we have more messages waiting?
         if($next_payload){
             //We have more tasks for this milestone to show, give them more context:
-            $this->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
+            $CI->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
                 array(
                     'text' => 'Next we will review your milestone tasks...',
                     //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
