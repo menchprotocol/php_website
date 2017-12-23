@@ -10,6 +10,12 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
+	function tree($pid,$depth=0,$u_id=null,$b_id=0){
+	    if(!$u_id){
+            $u_id = 1;
+        }
+        echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
+    }
 	function cleanm(){
 	    $messages = $this->Db_model->i_fetch(array(
 	        'i_status >=' => 0,
