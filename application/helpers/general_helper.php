@@ -556,9 +556,8 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         //Right content
         $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-            if($udata['u_fb_id']>0 && $level<3){
-                //TODO Introduce messaging simluations
-                //$ui .= '<a class="badge badge-primary" href="#simulate-'.$intent['c_id'].'" style="margin-right:6px;" data-toggle="tooltip" title="Simulate messages sent to students on '.$core_objects['level_'.($level-1)]['o_name'].' start." data-placement="left"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
+            if($udata['u_fb_id']>0 && $level==2 && $udata['u_status']>=3){
+                $ui .= '<a id="simulate_'.$intent['c_id'].'" class="badge badge-primary btn-mls" href="javascript:tree_message('.$intent['c_id'].','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when '.$core_objects['level_'.($level-1)]['o_name'].' starts" data-placement="top"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
             }
 
             //Enable total hours/milestone reporting...
@@ -1039,7 +1038,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_phone'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href.'#communication',
+        'href' => ( $account_href ? $account_href.'#communication' : null ),
         'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1076,7 +1075,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href.'#communication',
+        'href' => ( $account_href ? $account_href.'#communication' : null ),
         'anchor' => '<b>Set Timezone</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1088,7 +1087,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_language'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href.'#communication',
+        'href' => ( $account_href ? $account_href.'#communication' : null ),
         'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1120,7 +1119,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( $profile_counter>=$required_social_profiles ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
     array_push( $checklist , array(
-        'href' => $account_href.'#communication',
+        'href' => ( $account_href ? $account_href.'#communication' : null ),
         'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1133,7 +1132,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_paypal_email'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href.'#finance',
+        'href' => ( $account_href ? $account_href.'#finance' : null ),
         'anchor' => '<b>Set Paypal Email for Payouts</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1146,7 +1145,7 @@ function calculate_bootcamp_status($b){
     $us_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => $account_href.'#finance',
+        'href' => ( $account_href ? $account_href.'#finance' : null ),
         'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -2245,12 +2244,8 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     $mench_bots = $CI->config->item('mench_bots');
     $e_initiator_u_id = ( isset($udata['u_id']) ? intval($udata['u_id']) : 0 );
     $e_recipient_u_id = intval($e_recipient_u_id); //Just making sure
-    
-    //Fetch tree and its messages:
-    $tree = $CI->Db_model->c_fetch(array(
-        'c.c_id' => $intent_id,
-    ) , $outbound_levels , array('i') /* Append messages to the return */ );
-    
+    $bootcamps = array();
+    $bootcamp_data = null;
     
     
     //Make sure we have the core components checked:
@@ -2264,7 +2259,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'status' => 0,
             'message' => 'Invalid Bot ID',
         );
-    } elseif($outbound_levels<0 || $outbound_levels>2){
+    } elseif($outbound_levels<0 || $outbound_levels>1){
         return array(
             'status' => 0,
             'message' => 'Invalid Outbound Level',
@@ -2274,6 +2269,29 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'status' => 0,
             'message' => 'Invalid Notification type',
         );
+    }
+
+    //Fetch tree and its messages:
+    $tree = $CI->Db_model->c_fetch(array(
+        'c.c_id' => $intent_id,
+    ) , $outbound_levels , array('i') /* Append messages to the return */ );
+
+
+    if($b_id){
+
+        $bootcamps = $CI->Db_model->c_full_fetch(array(
+            'b.b_id' => $b_id,
+        ));
+
+        if(!isset($bootcamps[0])){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp ID',
+            );
+        } else {
+            //Fetch intent relative to the bootcamp by doing an array search:
+            $bootcamp_data = extract_level( $bootcamps[0] , $intent_id );
+        }
     }
     
     //Validate recipient:
@@ -2296,8 +2314,11 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     
     //Define key variables:
     $instant_messages = array();
+    $current_instant_pid = 0;
     $drip_count = 0;
-    
+    $next_payload = null; //To be set to the next intent with active messages:
+
+
     if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
         //We have messages for the very first level!
         foreach($tree[0]['c__messages'] as $i){
@@ -2306,29 +2327,16 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 //Increase counter:
                 $drip_count++;
                 
-                //This has a drip sequence, subscribe the user for later messages on this:
-                $CI->Db_model->e_create(array(
-                    'e_initiator_u_id' => $e_initiator_u_id,
-                    'e_recipient_u_id' => $e_recipient_u_id,
-                    'e_c_id' => $intent_id,
-                    'e_message' => 'Scheduled to drip...', //Stage 1 Message
-                    'e_json' => json_encode(array(
-                        'outbound_levels' => $outbound_levels,
-                        'original_tree' => $tree,
-                        'top_c_id' => $intent_id,
-                    )),
-                    'e_cron_job' => 0, //drip this thread later on using its cron job...
-                    'e_type_id' => 49, //Messenger drip tree
-                    'e_b_id' => $b_id, //If set...
-                    'e_r_id' => $r_id, //If set...
-                    'e_i_id' => $i['i_id'], //The message that is being dripped
-                ));
-                
             } elseif($i['i_status']==1){
                 
-                //These are to be instantly distributed:
+                //Track this intents messages:
+                if(!$current_instant_pid){
+                    $current_instant_pid = $tree[0]['c_id'];
+                }
+
+                //Add message to instant stream:
                 array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
-                
+
                 //Long sent engagement:
                 $CI->Db_model->e_create(array(
                     'e_initiator_u_id' => $e_initiator_u_id,
@@ -2336,24 +2344,23 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                     'e_c_id' => $intent_id,
                     'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
                     'e_json' => json_encode(array(
-                        'outbound_levels' => $outbound_levels,
-                        'original_tree' => $tree,
-                        'top_c_id' => $intent_id,
+                        'depth' => $outbound_levels,
+                        'tree' => $tree[0],
                     )),
                     'e_type_id' => 7, //Outbound message
                     'e_b_id' => $b_id, //If set...
                     'e_r_id' => $r_id, //If set...
                     'e_i_id' => $i['i_id'], //The message that is being dripped
                 ));
+
             }
         }
     }
     
     
-    if($outbound_levels>=1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
+    if($outbound_levels==1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
         //We have some child intents, see if they have any messages:
         foreach($tree[0]['c__child_intents'] as $level1){
-            
             //Does this intent have messages?
             if(isset($level1['c__messages']) && count($level1['c__messages'])>0){
                 foreach($level1['c__messages'] as $i){
@@ -2363,117 +2370,160 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                         //Increase counter:
                         $drip_count++;
                         
-                        //This has a drip sequence, subscribe the user for later messages on this:
-                        $CI->Db_model->e_create(array(
-                            'e_initiator_u_id' => $e_initiator_u_id,
-                            'e_recipient_u_id' => $e_recipient_u_id,
-                            'e_c_id' => $level1['c_id'],
-                            'e_message' => 'Scheduled to drip...', //Stage 1 Message
-                            'e_json' => json_encode(array(
-                                'outbound_levels' => $outbound_levels,
-                                'original_tree' => $tree,
-                                'top_c_id' => $intent_id,
-                            )),
-                            'e_cron_job' => 0, //drip this thread later on using its cron job...
-                            'e_type_id' => 49, //Messenger drip message
-                            'e_b_id' => $b_id, //If set...
-                            'e_r_id' => $r_id, //If set...
-                            'e_i_id' => $i['i_id'], //The message that is being dripped
-                        ));
-                        
                     } elseif($i['i_status']==1){
-                        
-                        //These are to be instantly distributed:
-                        array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
-                        
-                        //Long sent engagement:
-                        $CI->Db_model->e_create(array(
-                            'e_initiator_u_id' => $e_initiator_u_id,
-                            'e_recipient_u_id' => $e_recipient_u_id,
-                            'e_c_id' => $level1['c_id'],
-                            'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
-                            'e_json' => json_encode(array(
-                                'outbound_levels' => $outbound_levels,
-                                'original_tree' => $tree,
-                                'top_c_id' => $intent_id,
-                            )),
-                            'e_type_id' => 7, //Outbound message
-                            'e_b_id' => $b_id, //If set...
-                            'e_r_id' => $r_id, //If set...
-                            'e_i_id' => $i['i_id'], //The message that is being dripped
-                        ));
+
+                        if(!$current_instant_pid){
+                            $current_instant_pid = $level1['c_id'];
+                        }
+
+                        if($current_instant_pid==$level1['c_id']){
+
+                            //Yes, this is the first one to be dispatched:
+                            //These are to be instantly distributed:
+                            array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
+
+                            //Long sent engagement:
+                            $CI->Db_model->e_create(array(
+                                'e_initiator_u_id' => $e_initiator_u_id,
+                                'e_recipient_u_id' => $e_recipient_u_id,
+                                'e_c_id' => $level1['c_id'],
+                                'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
+                                'e_json' => json_encode(array(
+                                    'depth' => $outbound_levels,
+                                    'tree' => $tree[0],
+                                )),
+                                'e_type_id' => 7, //Outbound message
+                                'e_b_id' => $b_id, //If set...
+                                'e_r_id' => $r_id, //If set...
+                                'e_i_id' => $i['i_id'], //The message that is being dripped
+                            ));
+
+                        } else {
+
+                            //If not set, this is the next message:
+                            if(!$next_payload){
+                                $next_payload = 'nextmessage_'.$level1['c_id'].'_'; //Engagement ID to be appended
+                            }
+
+                            //Increase the future messaging counter:
+                            $drip_count++;
+
+                        }
                     }
                 }
             }
-            
+
             //Any child intents and a need to go Deeper?
-            if($outbound_levels>=2 && isset($level1['c__child_intents']) && count($level1['c__child_intents'])>0){
+            /*
+            if($outbound_levels==2 && isset($level1['c__child_intents']) && count($level1['c__child_intents'])>0){
                 //We have some child intents, see if they have any messages:
                 foreach($level1['c__child_intents'] as $level2){
                     if(isset($level2['c__messages']) && count($level2['c__messages'])>0){
                         foreach($level2['c__messages'] as $i){
                             if($i['i_status']==2){
-                                
+
                                 //Increase counter:
                                 $drip_count++;
-                                
-                                //This has a drip sequence, subscribe the user for later messages on this:
-                                $CI->Db_model->e_create(array(
-                                    'e_initiator_u_id' => $e_initiator_u_id,
-                                    'e_recipient_u_id' => $e_recipient_u_id,
-                                    'e_c_id' => $level2['c_id'],
-                                    'e_message' => 'Scheduled to drip...', //Stage 1 Message
-                                    'e_json' => json_encode(array(
-                                        'outbound_levels' => $outbound_levels,
-                                        'original_tree' => $tree,
-                                        'top_c_id' => $intent_id,
-                                    )),
-                                    'e_cron_job' => 0, //drip this thread later on using its cron job...
-                                    'e_type_id' => 49, //Messenger drip message
-                                    'e_b_id' => $b_id, //If set...
-                                    'e_r_id' => $r_id, //If set...
-                                    'e_i_id' => $i['i_id'], //The message that is being dripped
-                                ));
-                                
+
                             } elseif($i['i_status']==1){
-                                
+
                                 //These are to be instantly distributed:
-                                array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
-                                
+                                array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true ));
+
                                 //Long sent engagement:
-                                $CI->Db_model->e_create(array(
-                                    'e_initiator_u_id' => $e_initiator_u_id,
-                                    'e_recipient_u_id' => $e_recipient_u_id,
-                                    'e_c_id' => $level2['c_id'],
-                                    'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
-                                    'e_json' => json_encode(array(
-                                        'outbound_levels' => $outbound_levels,
-                                        'original_tree' => $tree,
-                                        'top_c_id' => $intent_id,
-                                    )),
-                                    'e_type_id' => 7, //Outbound message
-                                    'e_b_id' => $b_id, //If set...
-                                    'e_r_id' => $r_id, //If set...
-                                    'e_i_id' => $i['i_id'], //The message that is being dripped
-                                ));
                             }
                         }
                     }
                 }
             }
+            */
+
         }
     }
-    
-    
-    //Dispatch all Instant Messages, their engagements have already been logged:
-    $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
-    //TODO check to make sure this matches the total number of logged engagements?
+
+    //Anything to be sent instantly?
+    if(count($instant_messages)>0){
+
+        if($bootcamp_data && $bootcamp_data['level']==2){
+            //This is a Milestone Message initiator, append a custom welcome message:
+            $this->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
+                array(
+                    'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
+                    //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+                ),
+                array(
+                    'text' => 'This '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
+                    //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+                ),
+            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
+        }
+
+        //Dispatch all Instant Messages, their engagements have already been logged:
+        $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
+
+
+        //Do we have more messages waiting?
+        if($next_payload){
+            //We have more tasks for this milestone to show, give them more context:
+            $this->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
+                array(
+                    'text' => 'Next we will review your milestone tasks...',
+                    //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+                ),
+            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
+        }
+
+    }
+
+
+    //Anything pending to be sent later?
+    if($drip_count>0){
+
+        //This has a drip sequence, subscribe the user for later messages on this:
+        $logged_engagement = $CI->Db_model->e_create(array(
+            'e_initiator_u_id' => $e_initiator_u_id,
+            'e_recipient_u_id' => $e_recipient_u_id,
+            'e_message' => 'Scheduled to drip...', //Stage 1 Message
+            'e_json' => json_encode(array(
+                'depth' => $outbound_levels,
+                'tree' => $tree[0],
+                'bootcamps' => $bootcamps,
+                'bootcamp_data' => $bootcamp_data,
+                'pre_id_payload' => $next_payload,
+            )),
+            'e_cron_job' => 0, //Stream is not complete and will be picked up by the cron job
+            'e_type_id' => 49, //Messenger Active Stream
+            'e_b_id' => $b_id, //If set...
+            'e_r_id' => $r_id, //If set...
+            'e_c_id' => $intent_id,
+        ));
+
+        //Should we display the next button?
+        if($next_payload && isset($logged_engagement['e_id'])){
+
+            //Show next button to user:
+            $CI->Facebook_model->send_message( $botkey , array(
+                'recipient' => array(
+                    'id' => $recipients[0]['u_fb_id'],
+                ),
+                'quick_replies' => array(
+                    array(
+                        'content_type' => 'text',
+                        'title' => 'Next',
+                        'payload' => $next_payload.$logged_engagement['e_id'], //Append engagement ID
+                    ),
+                ),
+                'notification_type' => $notification_type,
+            ));
+
+        }
+    }
     
     
     //Successful:
     return array(
         'status' => 1,
-        'message' => 'Sent '.count($instant_messages).' instant messages and scheduled '.$drip_count.' drip messages',
+        'message' => 'Sent '.count($instant_messages).' instant messages and scheduled '.$drip_count.' future messages',
         //Extra field for success only:
         'stats' => array(
             'instant' => count($instant_messages),

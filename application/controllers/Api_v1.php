@@ -205,9 +205,9 @@ class Api_v1 extends CI_Controller {
 	                //Log Email Engagement:
 	                $this->Db_model->e_create(array(
 	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                    'e_message' => 'Student received email with link to their applications: https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'],
 	                    'e_json' => json_encode(array(
-	                        'input' => $_POST,
+                            'url' => 'https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'],
+                            'input' => $_POST,
 	                        'udata' => $udata,
 	                    )),
 	                    'e_type_id' => 28, //Email sent
@@ -292,9 +292,9 @@ class Api_v1 extends CI_Controller {
 	                //Log Engagement:
 	                $this->Db_model->e_create(array(
 	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                    'e_message' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
                         'e_json' => json_encode(array(
-	                        'input' => $_POST,
+                            'url' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
+                            'input' => $_POST,
 	                        'udata' => $udata,
 	                        'rudata' => $enrollments[0],
 	                    )),
@@ -430,9 +430,9 @@ class Api_v1 extends CI_Controller {
 	                        //Log Engagement:
 	                        $this->Db_model->e_create(array(
 	                            'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                            'e_message' => 'https://mench.co/my/applications?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
 	                            'e_json' => json_encode(array(
-	                                'input' => $_POST,
+                                    'url' => 'https://mench.co/my/applications?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
+                                    'input' => $_POST,
 	                                'udata' => $udata,
 	                                'rudata' => $rudata,
 	                            )),
@@ -1016,13 +1016,21 @@ class Api_v1 extends CI_Controller {
     	    
 	    
 	}
+
+	function simulate_milestone(){
+	    //Dispatch Messages:
+        tree_message($_POST['c_id'], $_POST['depth'], '381488558920384', $_POST['u_id'], 'REGULAR', $_POST['b_id']);
+        echo '<i class="fa fa-check-circle" style="color:#3C4858;" aria-hidden="true"></i>';
+    }
+
 	function class_timeline(){
+
 	    //Displays the class timeline based on some inputs:
 	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pick a start date to see class timeline.</span>');
 	    } elseif(!isset($_POST['r_start_time_mins'])){
 	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pick a start time to see class timeline.</span>');
-	    } elseif(!isset($_POST['c__child_intent_count']) || intval($_POST['c__child_intent_count'])<=0){
+	    } elseif(!isset($_POST['c__milestone_units']) || intval($_POST['c__milestone_units'])<=0){
 	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Add some Milestones to your Action Plan to see class timeline.</span>');
 	    } elseif(!isset($_POST['b_sprint_unit'])){
 	        die('<span style="color:#FF0000;">Error: Missing Milestone Duration.</span>');
@@ -1032,7 +1040,7 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Missing Bootcamp Status.</span>');
 	    }
 	    
-	    $_POST['c__child_intent_count'] = intval($_POST['c__child_intent_count']);
+	    $_POST['c__milestone_units'] = intval($_POST['c__milestone_units']);
 	    //Incldue config variables:
         $sprint_units = $this->config->item('sprint_units');
         $start_times = $this->config->item('start_times');
@@ -1044,9 +1052,9 @@ class Api_v1 extends CI_Controller {
 	        echo '<li>Admission Ends: <b>'.time_format($_POST['r_start_date'],2,-1).' 11:59pm PST</b></li>';
 	        echo '<li>Class Starts: <b>'.time_format($_POST['r_start_date'],2).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
 	        echo '<li>Instant Payout by: <b>'.time_format($_POST['r_start_date'],2).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-	        echo '<li>Bootcamp Duration: <b>'.$_POST['c__child_intent_count'].' '.ucwords($_POST['b_sprint_unit']).'s <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
-	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__child_intent_count']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__child_intent_count'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
+	        echo '<li>Bootcamp Duration: <b>'.$_POST['c__milestone_units'].' '.ucwords($_POST['b_sprint_unit']).($_POST['c__milestone_units']==1?'':'s').' <a href="/console/'.$_POST['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></b></li>';
+	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__milestone_units']))).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
+    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__milestone_units'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
     	    echo '</ul>';
 	}
 	

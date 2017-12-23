@@ -503,8 +503,12 @@ if(!isset($intents[0])){
     echo '<div id="i_message_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:
     echo '<span id="charNum'.$c_id.'">0</span>/'.$message_max;
-    //{first_name}
-    echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-id-card-o" aria-hidden="true"></i> {first_name}</a>';
+
+    if($level>1){
+        //{first_name}
+        echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-id-card-o" aria-hidden="true"></i> {first_name}</a>';
+    }
+
     //Choose a file:
     $file_limit_mb = $this->config->item('file_limit_mb');
     echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="top"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload File</label></div>';

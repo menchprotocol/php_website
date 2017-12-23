@@ -167,8 +167,7 @@ if($object_name=='bootcamps'){
             <th>Instructor</th>
             <th>Bootcamps</th>
             <th>Joined</th>
-            <th><i class="fa fa-commenting" aria-hidden="true"></i> Messages</th>
-            <th><i class="fa fa-eye" aria-hidden="true"></i> Read</th>
+            <th colspan="4"><i class="fa fa-commenting" aria-hidden="true"></i> Latest Message / <i class="fa fa-eye" aria-hidden="true"></i> Read (Total)</th>
             <th>Timezone</th>
             <th>Actions</th>
     	</tr>
@@ -220,8 +219,10 @@ if($object_name=='bootcamps'){
             }
         echo '</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
-        echo '<td>'.( isset($messages[0]) ? time_format($messages[0]['e_timestamp'],1) : '---' ).'/'.( ( strlen($user['u_fb_id'])>4 ? count($messages)>=100 ? '100+' : count($messages) : '<a href="'.messenger_activation_url('381488558920384',$user['u_id']).'">URL</a>' ) ).'</td>';
-        echo '<td>'.( isset($read_message[0]) ? time_format($read_message[0]['e_timestamp'],1) : '---' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? '<a href="https://www.facebook.com/menchbot/inbox" target="_blank">'.( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).'</a> on' : '<a href="'.messenger_activation_url('381488558920384',$user['u_id']).'" style="color:#CCC;">Activation URL</a>' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
+        echo '<td>'.( isset($read_message[0]) ? '<i class="fa fa-eye" aria-hidden="true"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
         echo '<td>'.$user['u_timezone'].'</td>';
         echo '<td>';
             if(isset($_GET['pid']) && strlen($user['u_fb_id'])>4 && $user['u_status']>=2){

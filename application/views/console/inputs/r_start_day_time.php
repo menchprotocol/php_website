@@ -25,7 +25,7 @@ function update_timeline(){
 	$.post("/api_v1/class_timeline", {
 
 		//Communication:
-		c__child_intent_count:$('#c__child_intent_count').val(),
+        c__milestone_units:$('#c__milestone_units').val(),
 		b_status:$('#b_status').val(),
 		b_id:$('#b_id').val(),
 		b_sprint_unit:$('#b_sprint_unit').val(),
@@ -42,8 +42,8 @@ function update_timeline(){
 }
 </script>
 
-<?php if(isset($c__child_intent_count)){ ?>
-<input type="hidden" id="c__child_intent_count" value="<?= $c__child_intent_count ?>" />
+<?php if(isset($c__milestone_units)){ ?>
+<input type="hidden" id="c__milestone_units" value="<?= $c__milestone_units ?>" />
 <?php } ?>
 <?php if(isset($b_sprint_unit)){ ?>
 <input type="hidden" id="b_sprint_unit" value="<?= $b_sprint_unit ?>" />

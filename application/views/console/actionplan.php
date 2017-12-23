@@ -364,7 +364,7 @@ function intents_sort(c_id,level){
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
             var increments = ( level==2 ? parseInt($('.c_objective_'+pid).attr('current-duration')) : 1 ); //The default for all nodes
-            var prefix = ( level==2 ? '<span class="b_sprint_unit">'+$('#current_units').text()+'</span>' : '<i class="fa fa-check-square-o" aria-hidden="true"></i>' ); //The default for all nodes
+            var prefix = ( level==2 ? '<i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit">'+$('#current_units').text()+'</span>' : '<i class="fa fa-check-square-o" aria-hidden="true"></i>' ); //The default for all nodes
 
             if(status>=1){
 
@@ -834,6 +834,25 @@ function save_modify(){
     }
 }
 
+
+function tree_message(c_id,u_id){
+
+    $.post("/api_v1/simulate_milestone", {
+
+        c_id:c_id,
+        depth:1,
+        b_id:$('#b_id').val(),
+        u_id:u_id,
+
+    }, function(data) {
+
+        //SHow inner tooltips:
+        $('#simulate_'+c_id).attr('href','#');
+        $('#simulate_'+c_id).html(data);
+
+    });
+}
+
 </script>
 
 
@@ -861,6 +880,39 @@ function save_modify(){
         echo '<div id="bootcamp-objective" class="list-group">';
             echo echo_cr($bootcamp['b_id'],$bootcamp,'outbound',$level,$bootcamp['b_sprint_unit']);
         echo '</div>';
+
+        /*
+        ?>
+
+        <ul id="topnav" class="nav nav-pills nav-pills-primary">
+          <li id="nav_input" class="active"><a href="#input" data-toggle="tab" onclick="update_hash('input')"><i class="fa fa-sign-in" aria-hidden="true"></i> Input</a></li>
+          <li id="nav_process"><a href="#process" data-toggle="tab" onclick="update_hash('process')"><i class="fa fa-refresh" aria-hidden="true"></i> Process</a></li>
+          <li id="nav_output "><a href="#output" data-toggle="tab" onclick="update_hash('output')"><i class="fa fa-sign-out" aria-hidden="true"></i> Output</a></li>
+
+            <li id="nav_milestones" class="active"><a href="#milestones" data-toggle="tab" onclick="update_hash('milestones')"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</a></li>
+            <li id="nav_audience"><a href="#audience" data-toggle="tab" onclick="update_hash('audience')"><i class="fa fa-bullseye" aria-hidden="true"></i> Audience</a></li>
+            <li id="nav_prerequisites"><a href="#prerequisites" data-toggle="tab" onclick="update_hash('prerequisites')"><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites</a></li>
+            <li id="nav_questions"><a href="#questions" data-toggle="tab" onclick="update_hash('questions')"><i class="fa fa-question-circle" aria-hidden="true"></i> Questions</a></li>
+            <li id="nav_prizes"><a href="#prizes" data-toggle="tab" onclick="update_hash('prizes')"><i class="fa fa-trophy" aria-hidden="true"></i> Prizes</a></li>
+        </ul>
+
+
+        <div class="tab-content tab-space">
+
+            <div class="tab-pane" id="entry">
+
+            </div>
+            <div class="tab-pane active" id="milestones">
+
+            </div>
+            <div class="tab-pane" id="outcome">
+
+            </div>
+        </div>
+
+
+        <?php
+        */
 
         //Milestone Expand/Contract all if more than 2
         if(count($intent['c__child_intents'])>2){

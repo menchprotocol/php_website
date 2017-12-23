@@ -71,7 +71,7 @@ $('#r_start_date').keyup(function(e){
       		<input type="hidden" id="r_b_id" value="<?= $bootcamp['b_id'] ?>" />
       		
 			<?php $this->load->view('console/inputs/r_start_day_time' , array(
-			    'c__child_intent_count' => count($bootcamp['c__child_intents']),
+			    'c__milestone_units' => $bootcamp['c__milestone_units'],
 			    'b_sprint_unit' => $bootcamp['b_sprint_unit'],
 			    'b_id' => $bootcamp['b_id'],
 			    'b_status' => $bootcamp['b_status'],
