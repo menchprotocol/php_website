@@ -2246,15 +2246,10 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     $e_recipient_u_id = intval($e_recipient_u_id); //Just making sure
     $bootcamps = array();
     $bootcamp_data = null;
-    
-    
+
+
     //Make sure we have the core components checked:
-    if(!isset($tree[0])){
-        return array(
-            'status' => 0,
-            'message' => 'Invalid Intent ID',
-        );
-    } elseif(!array_key_exists($botkey,$mench_bots)){
+    if(!array_key_exists($botkey,$mench_bots)){
         return array(
             'status' => 0,
             'message' => 'Invalid Bot ID',
@@ -2276,8 +2271,12 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         'c.c_id' => $intent_id,
     ) , $outbound_levels , array('i') /* Append messages to the return */ );
 
-
-    if($b_id){
+    if(!isset($tree[0])){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid Intent ID',
+        );
+    } elseif($b_id){
 
         $bootcamps = $CI->Db_model->c_full_fetch(array(
             'b.b_id' => $b_id,
