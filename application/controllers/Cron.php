@@ -47,8 +47,8 @@ class Cron extends CI_Controller {
 	                                
 	                                //Store to local DB:
 	                                $new_file_url = save_file($att['payload']['url'],$json_data);
-	                                
-	                                //Update engagement data:
+
+                                    //Update engagement data:
 	                                $this->Db_model->e_update( $ep['e_id'] , array(
 	                                    'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
 	                                    'e_cron_job' => 1, //Mark as done

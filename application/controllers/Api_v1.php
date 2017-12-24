@@ -2205,7 +2205,7 @@ class Api_v1 extends CI_Controller {
 	        }
 	        
 	        //Upload to S3:
-	        $new_file_url = save_file( $temp_local , $_FILES[$_POST['upload_type']] , true );
+	        $new_file_url = trim(save_file( $temp_local , $_FILES[$_POST['upload_type']] , true ));
 	        
 	        //What happened?
 	        if(!$new_file_url){
@@ -2222,7 +2222,12 @@ class Api_v1 extends CI_Controller {
 	            $i_media_type = mime_type($mime);
 	            
 	            //Create Message:
-	            $message = '/attach '.$i_media_type.':'.trim($new_file_url);
+	            $message = '/attach '.$i_media_type.':'.$new_file_url;
+
+                if(in_array($i_media_type,array('image','audio','video','file'))){
+                    //Save file via Facebook Attachments:
+                    $fb_save = $this->Facebook_model->save_attachment('381488558920384',$i_media_type,$new_file_url);
+                }
 	            
 	            //Create message:
 	            $i = $this->Db_model->i_create(array(
@@ -2232,7 +2237,8 @@ class Api_v1 extends CI_Controller {
 	                'i_media_type' => $i_media_type,
 	                'i_message' => $message,
 	                'i_url' => $new_file_url,
-	                'i_status' => intval($_POST['i_status']),
+                    'i_status' => intval($_POST['i_status']),
+                    'i_fb_att_id' => ( isset($fb_save['attachment_id']) ? $fb_save['attachment_id'] : 0 ),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
 	                    'i_status >=' => 0,
 	                    'i_status <' => 4, //But not private notes if any
