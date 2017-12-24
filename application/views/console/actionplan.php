@@ -837,19 +837,18 @@ function save_modify(){
 
 function tree_message(c_id,u_id){
 
-    $.post("/api_v1/simulate_milestone", {
+    //Show loading:
+    $('#simulate_'+c_id).attr('href','#');
+    $('#simulate_'+c_id).html('<span><img src="/img/round_load.gif" style="width:24px;" class="loader" /></span>');
 
+    $.post("/api_v1/simulate_milestone", {
         c_id:c_id,
         depth:1,
         b_id:$('#b_id').val(),
         u_id:u_id,
-
     }, function(data) {
-
-        //SHow inner tooltips:
-        $('#simulate_'+c_id).attr('href','#');
+        //Show success:
         $('#simulate_'+c_id).html(data);
-
     });
 }
 

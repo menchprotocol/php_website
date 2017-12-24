@@ -263,11 +263,25 @@ class Bot extends CI_Controller {
 					
 					if($u_id){
 
+					    //Fetch user profile:
+                        $users = $this->Db_model->u_fetch(array(
+                            'u_id' => $u_id,
+                        ));
+
                         //Is the student asking for the next message thread?
-                        if(isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next' && !$sent_from_us){
+                        if(!$sent_from_us && isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next'){
 
                             //We have a continuation request in a message thread:
                             $mt = array(); //locate the thread
+                            $instant_messages = array();
+                            $thread = array();
+                            $current_instant_pid = null;
+                            $pending_thread_count = 0;
+                            $active_outbound = 0;
+                            $current_thread_outbound = 0;
+                            $current_thread_title = null;
+
+
                             //Quick reply clicked?
                             if($quick_reply_payload && substr_count($quick_reply_payload,'messagethread_')==1){
                                 //Validate inputs:
@@ -298,12 +312,6 @@ class Bot extends CI_Controller {
 
                                 //Lets extract the json and see where we're at with the message thread and if anything is left:
                                 $thread = objectToArray(json_decode($mt[0]['e_json']));
-                                $instant_messages = array();
-                                $current_instant_pid = null;
-                                $pending_thread_count = 0;
-                                $active_outbound = 0;
-                                $current_thread_outbound = 0;
-                                $current_thread_title = null;
 
                                 foreach($thread['tree']['c__child_intents'] as $level1_key=>$level1){
                                     if($level1['c_status']>=1){
@@ -315,6 +323,7 @@ class Bot extends CI_Controller {
                                                 //Here we only care about ON START messages not sent before:
                                                 if($i['i_status']==1 && !isset($i['message_sent_time'])){
 
+                                                    //Can only work on one active intent at a time:
                                                     if(!$current_instant_pid){
                                                         //Assign focused intent:
                                                         $current_instant_pid = $level1['c_id'];
@@ -329,7 +338,7 @@ class Bot extends CI_Controller {
 
                                                         //Yes, this is the first one to be dispatched:
                                                         //These are to be instantly distributed:
-                                                        array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
+                                                        array_push( $instant_messages , echo_i($i, $users[0]['u_fname'], true /*Facebook Format*/ ));
 
                                                         //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
                                                         $thread['tree']['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
@@ -368,17 +377,10 @@ class Bot extends CI_Controller {
                             if(count($instant_messages)>0){
 
                                 if(isset($bootcamp_data) && $bootcamp_data['level']==3){
-
-                                    //Construct some messages to welcome them to this milestone.
-                                    $initial_messages = array();
-
-                                    //Is this the very first Milestone? Welcome them to the bootcamp:
-                                    array_push( $initial_messages , array(
-                                        'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
-                                    ));
-
                                     //This is a Milestone Message initiator, append a custom welcome message:
-                                    $this->Facebook_model->batch_messages( '381488558920384', $user_id , $initial_messages, 'REGULAR');
+                                    $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
+                                        'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
+                                    ), 'REGULAR');
                                 }
 
                                 //Dispatch all Instant Messages, their engagements have already been logged:
@@ -423,6 +425,7 @@ class Bot extends CI_Controller {
                                         'notification_type' => 'REGULAR',
                                     ));
                                 }
+
                             }
                         }
 
