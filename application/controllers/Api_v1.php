@@ -1019,7 +1019,7 @@ class Api_v1 extends CI_Controller {
 
 	function simulate_milestone(){
 	    //Dispatch Messages:
-        tree_message($_POST['c_id'], $_POST['depth'], '381488558920384', $_POST['u_id'], 'REGULAR', $_POST['b_id']);
+        tree_message($_POST['c_id'], $_POST['depth'], '381488558920384', $_POST['u_id'], 'REGULAR', $_POST['b_id'], 0, false);
         //Show Success:
         echo '<i class="fa fa-check-circle" style="color:#3C4858;" aria-hidden="true"></i>';
     }

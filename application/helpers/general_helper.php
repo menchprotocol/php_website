@@ -2239,7 +2239,7 @@ function fetchMax($input_array,$searchKey){
 }
 
 
-function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages only, 1 means 1 level down, etc... */, $botkey, $e_recipient_u_id, $notification_type='REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id=0, $r_id=0){
+function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages only, 1 means 1 level down, etc... */, $botkey, $e_recipient_u_id, $notification_type='REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id=0, $r_id=0, $schedule_drip=true){
     
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -2330,26 +2330,28 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 //Increase counter:
                 $drip_count++;
 
-                //Log drip message:
-                $CI->Db_model->e_create(array(
-                    'e_initiator_u_id' => $e_initiator_u_id,
-                    'e_recipient_u_id' => $e_recipient_u_id,
-                    'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ),
-                    'e_json' => json_encode(array(
-                        'pid' => $intent_id,
-                        'depth' => $outbound_levels,
-                        'tree' => $tree[0],
-                        'bootcamps' => $bootcamps,
-                        'bootcamp_data' => $bootcamp_data,
-                        'drip_count' => $drip_count,
-                    )),
-                    'e_cron_job' => 0, //Scheduled Drip
-                    'e_type_id' => 52, //Drip sequence
-                    'e_b_id' => $b_id,
-                    'e_r_id' => $r_id, //If set...
-                    'e_i_id' => $i['i_id'],
-                    'e_c_id' => $i['i_c_id'],
-                ));
+                if($schedule_drip){
+                    //Log drip message:
+                    $CI->Db_model->e_create(array(
+                        'e_initiator_u_id' => $e_initiator_u_id,
+                        'e_recipient_u_id' => $e_recipient_u_id,
+                        'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ),
+                        'e_json' => json_encode(array(
+                            'pid' => $intent_id,
+                            'depth' => $outbound_levels,
+                            'tree' => $tree[0],
+                            'bootcamps' => $bootcamps,
+                            'bootcamp_data' => $bootcamp_data,
+                            'drip_count' => $drip_count,
+                        )),
+                        'e_cron_job' => 0, //Scheduled Drip
+                        'e_type_id' => 52, //Drip sequence
+                        'e_b_id' => $b_id,
+                        'e_r_id' => $r_id, //If set...
+                        'e_i_id' => $i['i_id'],
+                        'e_c_id' => $i['i_c_id'],
+                    ));
+                }
                 
             } elseif($i['i_status']==1){
                 
@@ -2401,26 +2403,28 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             //Increase counter:
                             $drip_count++;
 
-                            //Log drip message:
-                            $CI->Db_model->e_create(array(
-                                'e_initiator_u_id' => $e_initiator_u_id,
-                                'e_recipient_u_id' => $e_recipient_u_id,
-                                'e_message' => ($i['i_media_type'] == 'text' ? $i['i_message'] : '/attach ' . $i['i_media_type'] . ':' . $i['i_url']),
-                                'e_json' => json_encode(array(
-                                    'pid' => $intent_id,
-                                    'depth' => $outbound_levels,
-                                    'tree' => $tree[0],
-                                    'bootcamps' => $bootcamps,
-                                    'bootcamp_data' => $bootcamp_data,
-                                    'drip_count' => $drip_count,
-                                )),
-                                'e_cron_job' => 0, //Scheduled Drip
-                                'e_type_id' => 52, //Drip sequence
-                                'e_b_id' => $b_id,
-                                'e_r_id' => $r_id, //If set...
-                                'e_i_id' => $i['i_id'],
-                                'e_c_id' => $i['i_c_id'],
-                            ));
+                            if($schedule_drip){
+                                //Log drip message:
+                                $CI->Db_model->e_create(array(
+                                    'e_initiator_u_id' => $e_initiator_u_id,
+                                    'e_recipient_u_id' => $e_recipient_u_id,
+                                    'e_message' => ($i['i_media_type'] == 'text' ? $i['i_message'] : '/attach ' . $i['i_media_type'] . ':' . $i['i_url']),
+                                    'e_json' => json_encode(array(
+                                        'pid' => $intent_id,
+                                        'depth' => $outbound_levels,
+                                        'tree' => $tree[0],
+                                        'bootcamps' => $bootcamps,
+                                        'bootcamp_data' => $bootcamp_data,
+                                        'drip_count' => $drip_count,
+                                    )),
+                                    'e_cron_job' => 0, //Scheduled Drip
+                                    'e_type_id' => 52, //Drip sequence
+                                    'e_b_id' => $b_id,
+                                    'e_r_id' => $r_id, //If set...
+                                    'e_i_id' => $i['i_id'],
+                                    'e_c_id' => $i['i_c_id'],
+                                ));
+                            }
 
                         } elseif ($i['i_status'] == 1) {
 
@@ -2429,7 +2433,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                                 $current_thread_outbound = $active_outbound;
                             }
 
-                            if ($current_instant_pid == $level1['c_id']) {
+                            if ($current_instant_pid == $level1['c_id']){
 
                                 //Yes, this is the first one to be dispatched:
                                 //These are to be instantly distributed:
@@ -2534,11 +2538,13 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     //Successful:
     return array(
         'status' => 1,
-        'message' => 'Sent '.count($instant_messages).' instant messages and scheduled '.$drip_count.' future messages',
+        'message' => 'Sent '.count($instant_messages).' instant messages',
         //Extra field for success only:
         'stats' => array(
             'instant' => count($instant_messages),
             'drip' => $drip_count,
+            'drip_enabled' => ( $schedule_drip ? 1 : 0 ),
+            'thread_pending' => $pending_thread_count,
         ),
     );
 }
