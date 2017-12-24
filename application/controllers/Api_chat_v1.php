@@ -302,14 +302,17 @@ class Api_chat_v1 extends CI_Controller{
                 }
 
                 //Send Message:
-                $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'] , array($fb_message), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
+                $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'], array($fb_message) );
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => intval($_POST['initiator_u_id']),
                     'e_recipient_u_id' => intval($_POST['recipient_u_id']),
                     'e_message' => $e_message,
-                    'e_json' => json_encode($_POST),
+                    'e_json' => json_encode(array(
+                        'post' => $_POST,
+                        'fb_msg' => $fb_message,
+                    )),
                     'e_type_id' => 7, //Outbound Message
                     'e_b_id' => $admissions[0]['b_id'],
                     'e_r_id' => $admissions[0]['r_id'],

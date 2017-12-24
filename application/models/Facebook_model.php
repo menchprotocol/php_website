@@ -124,40 +124,86 @@ class Facebook_model extends CI_Model {
 	        ));
 	    }
 	}
-	
-	
-	function send_message($botkey,$payload){
-	    
-	    $mench_bots = $this->config->item('mench_bots');
-	    if(!array_key_exists($botkey,$mench_bots)){
-	        die('Invalid Bot Key');
-	    }
 
-		//Make the call for add/update
-	    $ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token='.$mench_bots[$botkey]['access_token']);
-		curl_setopt_array($ch, array(
-				CURLOPT_CUSTOMREQUEST => 'POST',
-				CURLOPT_RETURNTRANSFER => TRUE,
-				CURLOPT_HTTPHEADER => array(
-						'Content-Type: application/json; charset=utf-8'
-				),
-				CURLOPT_POSTFIELDS => json_encode($payload)
-		));
-		
-		// Send the request
-		$response = curl_exec($ch);
-		
-		// Check for CURL errors
-		if($response === FALSE){
-		    $this->Db_model->e_create(array(
-		        'e_message' => 'send_message() CURL Failed in sending message via ['.$botkey.'] Messenger.',
-		        'e_json' => json_encode($payload),
-		        'e_type_id' => 8, //Platform Error
-		    ));
-		}
-		
-		return objectToArray(json_decode($response));
-	}
-	
-	
+
+    function save_attachment($botkey,$type,$url){
+
+        $mench_bots = $this->config->item('mench_bots');
+        if(!array_key_exists($botkey,$mench_bots)){
+            die('Invalid Bot Key');
+        }
+
+        $payload = array(
+            'message' => array(
+                'attachment' => array(
+                    'type' => $type,
+                    'payload' => array(
+                        'is_reusable' => true,
+                        'url' => $url,
+                    ),
+                ),
+            )
+        );
+
+        //Make the call for add/update
+        $ch = curl_init('https://graph.facebook.com/v2.6/me/message_attachments?access_token='.$mench_bots[$botkey]['access_token']);
+        curl_setopt_array($ch, array(
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json; charset=utf-8'
+            ),
+            CURLOPT_POSTFIELDS => json_encode($payload),
+        ));
+
+        // Send the request
+        $response = curl_exec($ch);
+
+        // Check for CURL errors
+        if($response === FALSE){
+            $this->Db_model->e_create(array(
+                'e_message' => 'save_attachment() CURL Failed in sending message via ['.$botkey.'] Messenger.',
+                'e_json' => json_encode($payload),
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
+
+        return objectToArray(json_decode($response));
+    }
+
+
+    function send_message($botkey,$payload){
+
+        $mench_bots = $this->config->item('mench_bots');
+        if(!array_key_exists($botkey,$mench_bots)){
+            die('Invalid Bot Key');
+        }
+
+        //Make the call for add/update
+        $ch = curl_init('https://graph.facebook.com/v2.6/me/messages?access_token='.$mench_bots[$botkey]['access_token']);
+        curl_setopt_array($ch, array(
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json; charset=utf-8'
+            ),
+            CURLOPT_POSTFIELDS => json_encode($payload)
+        ));
+
+        // Send the request
+        $response = curl_exec($ch);
+
+        // Check for CURL errors
+        if($response === FALSE){
+            $this->Db_model->e_create(array(
+                'e_message' => 'send_message() CURL Failed in sending message via ['.$botkey.'] Messenger.',
+                'e_json' => json_encode($payload),
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
+
+        return objectToArray(json_decode($response));
+    }
+
+
 }
