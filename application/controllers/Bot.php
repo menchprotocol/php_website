@@ -275,6 +275,16 @@ class Bot extends CI_Controller {
                             $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
                                 'text' => 'hii',
                             ), 'REGULAR');
+                            //Send the real message:
+                            $this->Facebook_model->send_message( '381488558920384' , array(
+                                'recipient' => array(
+                                    'id' => $user_id,
+                                ),
+                                'message' => array(
+                                    'text' => 'helloo',
+                                ),
+                                'notification_type' => 'REGULAR',
+                            ));
 
                             //We have a continuation request in a message thread:
                             $mt = array(); //locate the thread
