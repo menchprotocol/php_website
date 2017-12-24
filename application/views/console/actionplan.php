@@ -839,7 +839,7 @@ function tree_message(c_id,u_id){
 
     //Show loading:
     $('#simulate_'+c_id).attr('href','#');
-    $('#simulate_'+c_id).html('<span><img src="/img/round_load.gif" style="width:18px;" class="loader" /></span>');
+    $('#simulate_'+c_id).html('<span><img src="/img/round_load.gif" style="width:16px;height:16px;" class="loader" /></span>');
 
     $.post("/api_v1/simulate_milestone", {
         c_id:c_id,

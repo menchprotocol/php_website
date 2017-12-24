@@ -386,7 +386,7 @@ class Bot extends CI_Controller {
                                 }
 
                                 //Dispatch all Instant Messages, their engagements have already been logged:
-                                $this->Facebook_model->batch_messages( '381488558920384', $user_id, $instant_messages;
+                                $this->Facebook_model->batch_messages( '381488558920384', $user_id, $instant_messages);
 
                             } else {
 
@@ -434,8 +434,8 @@ class Bot extends CI_Controller {
                                     //This thread is one, let the student know"
                                     $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
                                         array(
-                                            'text' => 'That\'s all for now. You can always review your milestones & tasks by clicking the 🚩 Action Plan button in the menu below.',
-                                        ),
+                                            'text' => 'That is all for now. You can always review your milestones & tasks by clicking the 🚩 Action Plan button in the menu below.',
+                                        )
                                     ));
                                 }
 
