@@ -2493,12 +2493,14 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 'recipient' => array(
                     'id' => $recipients[0]['u_fb_id'],
                 ),
-                'text' => 'Next we will review your milestone tasks...',
-                'quick_replies' => array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => $next_payload.$logged_engagement['e_id'], //Append engagement ID
+                'message' => array(
+                    'text' => 'Next we will review your milestone tasks...',
+                    'quick_replies' => array(
+                        array(
+                            'content_type' => 'text',
+                            'title' => 'Next',
+                            'payload' => $next_payload.$logged_engagement['e_id'], //Append engagement ID
+                        ),
                     ),
                 ),
                 'notification_type' => 'REGULAR',
