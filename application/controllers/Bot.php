@@ -49,8 +49,6 @@ class Bot extends CI_Controller {
                     'i_fb_att_id' => $fb_save['attachment_id'],
                 ));
             }
-
-            i_file_size
             echo print_r($fb_save,true).') '.$head['content-length'].' --- '.$i['i_media_type'].'>>>'.$i['i_url'].'<br />';
         }
 
