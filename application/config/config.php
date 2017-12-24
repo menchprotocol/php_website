@@ -109,7 +109,7 @@ $config['mench_bots'] = array(
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
-$config['file_limit_mb'] = 200; //The max file size to be uploaded
+$config['file_limit_mb'] = 30; //The max file size to be uploaded
 
 
 //No bootcamps can be created using these hashtags

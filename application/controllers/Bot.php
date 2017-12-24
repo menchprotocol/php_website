@@ -14,46 +14,7 @@ class Bot extends CI_Controller {
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
 
-    function size($type,$limit){
-        $i_messages = $this->Db_model->i_fetch(array(
-            'i_file_size' => 0,
-            'i_media_type' => $type,
-            'i_status >=' => 0, //Published in any form. This may need more logic
-        ),$limit);
 
-
-        foreach($i_messages as $i){
-            $head = array_change_key_case(get_headers($i['i_url'], TRUE));
-            $this->Db_model->i_update( intval($i['i_id']) , array(
-                'i_file_size' => $head['content-length'],
-            ));
-            echo $head['content-length'].' --- '.$i['i_media_type'].'>>>'.$i['i_url'].'<br />';
-        }
-    }
-
-    function tt($type,$limit=20){
-        $i_messages = $this->Db_model->i_fetch(array(
-            'i_fb_att_id' => 0,
-            'i_media_type' => $type,
-            'i_status >=' => 0, //Published in any form. This may need more logic
-        ),$limit);
-
-        $done = 0;
-        foreach($i_messages as $i){
-            $head = array_change_key_case(get_headers($i['i_url'], TRUE));
-
-            $fb_save = $this->Facebook_model->save_attachment('381488558920384',$i['i_media_type'],$i['i_url']);
-            if(isset($fb_save['attachment_id'])){
-                $done++;
-                $this->Db_model->i_update( intval($i['i_id']) , array(
-                    'i_fb_att_id' => $fb_save['attachment_id'],
-                ));
-            }
-            echo print_r($fb_save,true).') '.$head['content-length'].' --- '.$i['i_media_type'].'>>>'.$i['i_url'].'<br />';
-        }
-
-        echo $done.'/'.count($i_messages);
-    }
 
 	function cleanm(){
 	    $messages = $this->Db_model->i_fetch(array(

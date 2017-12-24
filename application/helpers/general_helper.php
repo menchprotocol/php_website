@@ -244,14 +244,25 @@ function echo_i($i,$first_name=null,$fb_format=false){
         
         //Valid media file with URL:
         if($fb_format){
+
+            //Do we have this saved in FB Servers?
+            if($i['i_fb_att_id']>0){
+                //Yesss, use that:
+                $payload = array(
+                    'attachment_id' => $i['i_fb_att_id'],
+                );
+            } else {
+                //No, upload file:
+                $payload = array(
+                    'url' => $i['i_url'],
+                );
+            }
             
             //Messenger array:
             return array(
                 'attachment' => array(
                     'type' => $i['i_media_type'],
-                    'payload' => array(
-                        'url' => $i['i_url'],
-                    ),
+                    'payload' => $payload,
                 ),
                 'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
             );
