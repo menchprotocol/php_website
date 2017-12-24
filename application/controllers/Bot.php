@@ -382,19 +382,21 @@ class Bot extends CI_Controller {
                                         array(
                                             'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
                                         )
-                                    ), 'REGULAR');
+                                    ));
                                 }
 
                                 //Dispatch all Instant Messages, their engagements have already been logged:
-                                $this->Facebook_model->batch_messages( '381488558920384', $user_id, $instant_messages, 'REGULAR');
+                                $this->Facebook_model->batch_messages( '381488558920384', $user_id, $instant_messages;
 
                             } else {
+
                                 //NO pending messages found, let student know nothing was found
                                 $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
                                     array(
                                         'text' => 'No pending messages found!',
                                     )
-                                ), 'REGULAR');
+                                ));
+
                             }
 
 
@@ -427,6 +429,13 @@ class Bot extends CI_Controller {
                                             ),
                                         ),
                                         'notification_type' => 'REGULAR',
+                                    ));
+                                } else {
+                                    //This thread is one, let the student know"
+                                    $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
+                                        array(
+                                            'text' => 'That\'s all for now. You can always review your milestones & tasks by clicking the 🚩 Action Plan button in the menu below.',
+                                        ),
                                     ));
                                 }
 
