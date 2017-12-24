@@ -2460,18 +2460,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         //Dispatch all Instant Messages, their engagements have already been logged:
         $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
 
-
-        //Do we have more messages waiting?
-        if($next_payload){
-            //We have more tasks for this milestone to show, give them more context:
-            $CI->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
-                array(
-                    'text' => 'Next we will review your milestone tasks...',
-                    //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                ),
-            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
-        }
-
     }
 
 
@@ -2505,6 +2493,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 'recipient' => array(
                     'id' => $recipients[0]['u_fb_id'],
                 ),
+                'text' => 'Next we will review your milestone tasks...',
                 'quick_replies' => array(
                     array(
                         'content_type' => 'text',
@@ -2512,7 +2501,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                         'payload' => $next_payload.$logged_engagement['e_id'], //Append engagement ID
                     ),
                 ),
-                'notification_type' => $notification_type,
+                'notification_type' => 'REGULAR',
             ));
 
         }
