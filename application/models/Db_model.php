@@ -526,7 +526,7 @@ class Db_model extends CI_Model {
 	 * i Messages
 	 ****************************** */
 	
-	function i_fetch($match_columns){
+	function i_fetch($match_columns,$limit=0){
 		$this->db->select('*');
 		$this->db->from('v5_messages i');
 		$this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
@@ -535,6 +535,9 @@ class Db_model extends CI_Model {
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
+		if($limit>0){
+            $this->db->limit($limit);
+        }
 		$this->db->order_by('i_rank');
 		$q = $this->db->get();
 		return $q->result_array();

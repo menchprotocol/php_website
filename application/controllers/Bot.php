@@ -14,9 +14,25 @@ class Bot extends CI_Controller {
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
 
-    function tt(){
-	    $rr = $this->Facebook_model->save_attachment('381488558920384','image','https://s3foundation.s3-us-west-2.amazonaws.com/cf0adf77ba8759a7cfaf6c86d6bcf9e4.jpg');
-	    echo_json($rr);
+    function tt($limit=20){
+        $i_messages = $this->Db_model->i_fetch(array(
+            'i_fb_att_id' => 0,
+            'i_fb_att_id' => 0,
+            'i_status >=' => 0, //Published in any form. This may need more logic
+        ),$limit);
+
+        $done = 0;
+        foreach($i_messages as $i){
+            $fb_save = $this->Facebook_model->save_attachment('381488558920384',$i['i_media_type'],$i['i_url']);
+            if(isset($fb_save['attachment_id'])){
+                $done++;
+                $this->Db_model->i_update( intval($i['i_id']) , array(
+                    'i_fb_att_id' => $fb_save['attachment_id'],
+                ));
+            }
+        }
+
+        echo $done.'/'.count($i_messages);
     }
 
 	function cleanm(){
