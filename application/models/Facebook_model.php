@@ -101,7 +101,8 @@ class Facebook_model extends CI_Model {
 	    }
 	    
 	    foreach($messages as $count=>$message){
-	        
+
+	        /*
 	        $this->Facebook_model->send_message( $botkey , array(
 	            'recipient' => array(
 	                'id' => $u_fb_id,
@@ -110,8 +111,9 @@ class Facebook_model extends CI_Model {
 	        ));
 	        
 	        //To have them see the typing...
-	        sleep(rand(0,3));
-	        
+	        sleep(rand(0,3)); //This is risky as it delays processors and can cause issues if the user types in something twice for example...
+            */
+
 	        //Send the real message:
 	        $this->Facebook_model->send_message( $botkey , array(
 	            'recipient' => array(
