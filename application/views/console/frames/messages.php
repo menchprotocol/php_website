@@ -416,41 +416,40 @@ if(!isset($intents[0])){
 
 
     function msg_create(){
+        if($('#i_message'+c_id).val().length>0){
+            //Lock message:
+            message_form_lock();
 
-        //Lock message:
-        message_form_lock();
+            //Update backend:
+            $.post("/api_v1/message_create", {
 
+                b_id:$('#b_id').val(),
+                pid:c_id, //Synonymous
+                i_message:$('#i_message'+c_id).val(),
+                i_status:$('#i_status'+c_id).val(),
+                level:level,
 
+            }, function(data) {
 
-        //Update backend:
-        $.post("/api_v1/message_create", {
+                //Empty Inputs Fields if success:
+                if(data.status){
 
-            b_id:$('#b_id').val(),
-            pid:c_id, //Synonymous
-            i_message:$('#i_message'+c_id).val(),
-            i_status:$('#i_status'+c_id).val(),
-            level:level,
+                    //Adjust counter by one:
+                    message_count++;
+                    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
 
-        }, function(data) {
-
-            //Empty Inputs Fields if success:
-            if(data.status){
-
-                //Adjust counter by one:
-                message_count++;
-                window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
-
-                //Reset input field:
-                $( "#i_message"+c_id ).val("");
-                changeMessage();
-            }
+                    //Reset input field:
+                    $( "#i_message"+c_id ).val("");
+                    changeMessage();
+                }
 
 
 
-            //Unlock field:
-            message_form_unlock(data);
+                //Unlock field:
+                message_form_unlock(data);
 
-        });
+            });
+        }
     }
 </script>
 

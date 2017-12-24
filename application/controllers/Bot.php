@@ -281,7 +281,6 @@ class Bot extends CI_Controller {
                             $current_thread_outbound = 0;
                             $current_thread_title = null;
 
-
                             //Quick reply clicked?
                             if($quick_reply_payload && substr_count($quick_reply_payload,'messagethread_')==1){
                                 //Validate inputs:
@@ -307,7 +306,7 @@ class Bot extends CI_Controller {
                                 ),1);
                             }
 
-                            //Did we find anything?
+                            //Did we find anything? Then look for pending messages (if any) in this thread:
                             if(count($mt)>0) {
 
                                 //Lets extract the json and see where we're at with the message thread and if anything is left:
@@ -371,7 +370,6 @@ class Bot extends CI_Controller {
                                     }
                                 }
                             }
-
 
                             //Anything to be sent instantly?
                             if(count($instant_messages)>0){
