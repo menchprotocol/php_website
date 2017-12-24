@@ -238,8 +238,42 @@ class Bot extends CI_Controller {
 					$u_id = $this->Db_model->activate_bot($entry['id'], $user_id, null);
 					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
-					
-					
+					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
+
+
+                    if(isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next' && !$sent_from_us){
+
+                        //We have a continuation request in a message thread:
+                        if($quick_reply_payload && substr_count($quick_reply_payload,'messagethread_')==1){
+
+                            //Validate inputs:
+                            $parts = explode('_',$quick_reply_payload);
+                            $e_id = intval($parts[1]);
+                            if($pid>0 && $e_id>0){
+                                //Fetch engagement from DB to see where we are and then continue:
+                                $mt = $this->Db_model->e_fetch(array('e_id' => $e_id),1);
+                            }
+
+                        } else {
+
+                            //Lets see if we can find the last next message with an active thread information:
+                            $mt = $this->Db_model->e_fetch(array(
+                                'e_recipient_u_id' => $u_id, //This user
+                                'e_cron_job' => 0, //Still pending its cron work
+                                'e_type_id' => 49, //Message thread
+                            ),1);
+
+                        }
+
+                        if(count($mt)>0){
+
+                        }
+
+
+                    }
+
+
+
 					if($metadata=='system_logged'){
 					    //This is already logged! No need to take further action!
 					    json_encode(array('complete'=>'yes'));
