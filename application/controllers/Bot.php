@@ -241,48 +241,15 @@ class Bot extends CI_Controller {
 					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 
 
-                    if(isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next' && !$sent_from_us){
-
-                        //We have a continuation request in a message thread:
-                        if($quick_reply_payload && substr_count($quick_reply_payload,'messagethread_')==1){
-
-                            //Validate inputs:
-                            $parts = explode('_',$quick_reply_payload);
-                            $e_id = intval($parts[1]);
-                            if($pid>0 && $e_id>0){
-                                //Fetch engagement from DB to see where we are and then continue:
-                                $mt = $this->Db_model->e_fetch(array('e_id' => $e_id),1);
-                            }
-
-                        } else {
-
-                            //Lets see if we can find the last next message with an active thread information:
-                            $mt = $this->Db_model->e_fetch(array(
-                                'e_recipient_u_id' => $u_id, //This user
-                                'e_cron_job' => 0, //Still pending its cron work
-                                'e_type_id' => 49, //Message thread
-                            ),1);
-
-                        }
-
-                        if(count($mt)>0){
-
-                        }
-
-
+					//Is this a non loggable inbound message?
+                    if($metadata=='system_logged'){
+                        //This is already logged! No need to take further action!
+                        json_encode(array('complete'=>'yes'));
+                        return false;
+                        exit; //This should not trigger?! Not sure...
                     }
-
-
-
-					if($metadata=='system_logged'){
-					    //This is already logged! No need to take further action!
-					    json_encode(array('complete'=>'yes'));
-					    return false;
-					    exit; //This should not trigger?! Not sure...
-					}
 					
-					
-					//Start data reparation for message inbound OR outbound engagement:
+					//Start data preparation for logging message inbound OR outbound engagement:
 					$eng_data = array(
 					    'e_initiator_u_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
 						'e_json' => json_encode($json_data),
@@ -295,8 +262,172 @@ class Bot extends CI_Controller {
 					
 					
 					if($u_id){
-					    
-					    //Fetch for admission to append to this message:
+
+                        //Is the student asking for the next message thread?
+                        if(isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next' && !$sent_from_us){
+
+                            //We have a continuation request in a message thread:
+                            $mt = array(); //locate the thread
+                            //Quick reply clicked?
+                            if($quick_reply_payload && substr_count($quick_reply_payload,'messagethread_')==1){
+                                //Validate inputs:
+                                $parts = explode('_',$quick_reply_payload);
+                                $e_id = intval($parts[1]);
+                                if($e_id>0){
+                                    //Fetch engagement from DB to see where we are and then continue:
+                                    $mt = $this->Db_model->e_fetch(array(
+                                        'e_id' => $e_id,
+                                        'e_type_id' => 49, //Message thread
+                                        'e_cron_job' => 0, //Still pending
+                                    ),1);
+                                }
+                            }
+
+                            //Pending thread for this user?
+                            if(count($mt)<1) {
+                                //Lets see if we can find the last next message with an active thread information:
+                                $mt = $this->Db_model->e_fetch(array(
+                                    'e_recipient_u_id' => $u_id, //This user
+                                    'e_type_id' => 49, //Message thread
+                                    'e_cron_job' => 0, //Still pending
+                                ),1);
+                            }
+
+                            //Did we find anything?
+                            if(count($mt)>0) {
+
+                                //Lets extract the json and see where we're at with the message thread and if anything is left:
+                                $thread = objectToArray(json_decode($mt[0]['e_json']));
+                                $instant_messages = array();
+                                $current_instant_pid = null;
+                                $pending_thread_count = 0;
+                                $active_outbound = 0;
+                                $current_thread_outbound = 0;
+                                $current_thread_title = null;
+
+                                foreach($thread['tree']['c__child_intents'] as $level1_key=>$level1){
+                                    if($level1['c_status']>=1){
+                                        $active_outbound++;
+
+                                        //Does this intent have messages?
+                                        if(isset($level1['c__messages']) && count($level1['c__messages'])>0){
+                                            foreach($level1['c__messages'] as $key=>$i){
+                                                //Here we only care about ON START messages not sent before:
+                                                if($i['i_status']==1 && !isset($i['message_sent_time'])){
+
+                                                    if(!$current_instant_pid){
+                                                        //Assign focused intent:
+                                                        $current_instant_pid = $level1['c_id'];
+                                                        $current_thread_outbound = $active_outbound;
+                                                        $current_thread_title = $level1['c_objective'];
+
+                                                        //Extract bootcamp data for this intent:
+                                                        $bootcamp_data = extract_level( $thread['bootcamps'][0] , $level1['c_id'] );
+                                                    }
+
+                                                    if($current_instant_pid==$level1['c_id']){
+
+                                                        //Yes, this is the first one to be dispatched:
+                                                        //These are to be instantly distributed:
+                                                        array_push( $instant_messages , echo_i($i, $recipients[0]['u_fname'], true /*Facebook Format*/ ));
+
+                                                        //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
+                                                        $thread['tree']['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
+
+                                                        //Log sent engagement:
+                                                        $this->Db_model->e_create(array(
+                                                            'e_initiator_u_id' => $mt[0]['e_initiator_u_id'],
+                                                            'e_recipient_u_id' => $mt[0]['e_recipient_u_id'],
+                                                            'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
+                                                            'e_json' => json_encode(array(
+                                                                'tree' => $thread['tree'],
+                                                            )),
+                                                            'e_type_id' => 7, //Outbound message
+                                                            'e_b_id' => $mt[0]['e_b_id'], //If set...
+                                                            'e_r_id' => $mt[0]['e_r_id'], //If set...
+                                                            'e_i_id' => $i['i_id'], //The message that is being dripped
+                                                            'e_c_id' => $current_instant_pid,
+                                                        ));
+
+                                                    } else {
+
+                                                        //Increase the future messaging counter:
+                                                        $pending_thread_count++;
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        //Future depth 2+ goes here...
+                                    }
+                                }
+                            }
+
+
+                            //Anything to be sent instantly?
+                            if(count($instant_messages)>0){
+
+                                if(isset($bootcamp_data) && $bootcamp_data['level']==3){
+
+                                    //Construct some messages to welcome them to this milestone.
+                                    $initial_messages = array();
+
+                                    //Is this the very first Milestone? Welcome them to the bootcamp:
+                                    array_push( $initial_messages , array(
+                                        'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
+                                    ));
+
+                                    //This is a Milestone Message initiator, append a custom welcome message:
+                                    $this->Facebook_model->batch_messages( '381488558920384', $user_id , $initial_messages, 'REGULAR');
+                                }
+
+                                //Dispatch all Instant Messages, their engagements have already been logged:
+                                $this->Facebook_model->batch_messages( '381488558920384', $user_id, $instant_messages, 'REGULAR');
+
+                            } else {
+                                //NO pending messages found, let student know nothing was found
+                                $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
+                                    'text' => 'No pending messages found!',
+                                ), 'REGULAR');
+                            }
+
+
+                            //Do we need to update?
+                            if(count($mt)>0) {
+
+                                //Update the thread data:
+                                $this->Db_model->e_update( $mt[0]['e_id'] , array(
+                                    'e_message' => $pending_thread_count.' messages pending in this thread',
+                                    'e_json' => json_encode($thread),
+                                    'e_cron_job' => ( $pending_thread_count>0 ? 0 : 1 ),
+                                ));
+
+                                //Anything pending to be sent later?
+                                if($pending_thread_count>0){
+
+                                    //Show next button to user:
+                                    $this->Facebook_model->send_message( '381488558920384' , array(
+                                        'recipient' => array(
+                                            'id' => $user_id,
+                                        ),
+                                        'message' => array(
+                                            'text' => 'I\'ll brief you on your next task when you say "Next"',
+                                            'quick_replies' => array(
+                                                array(
+                                                    'content_type' => 'text',
+                                                    'title' => 'Next',
+                                                    'payload' => 'messagethread_'.$mt[0]['e_id'], //Append engagement ID
+                                                ),
+                                            ),
+                                        ),
+                                        'notification_type' => 'REGULAR',
+                                    ));
+                                }
+                            }
+                        }
+
+
+                        //Fetch for admission to append to this message:
 					    $admissions = $this->Db_model->ru_fetch(array(
 					        'r.r_status >='	   => 1, //Open for admission
 					        'r.r_status <='	   => 2, //Running
