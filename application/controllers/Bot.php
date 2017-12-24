@@ -17,8 +17,7 @@ class Bot extends CI_Controller {
     function tt($limit=20){
         $i_messages = $this->Db_model->i_fetch(array(
             'i_fb_att_id' => 0,
-            'i_media_type !=' => 'text',
-            'i_media_type !=' => 'video',
+            'i_media_type' => 'image',
             'i_status >=' => 0, //Published in any form. This may need more logic
         ),$limit);
 
