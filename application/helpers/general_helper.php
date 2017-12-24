@@ -646,10 +646,12 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 }
 
 function echo_json($array){
+    /*
     if(isset($array['status']) && $array['status']==0){
         //This is an error, return 400:
         header("HTTP/1.0 400 Bad Request");
     }
+    */
     header('Content-Type: application/json');
     echo json_encode($array);
 }

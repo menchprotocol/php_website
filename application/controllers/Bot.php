@@ -271,6 +271,11 @@ class Bot extends CI_Controller {
                         //Is the student asking for the next message thread?
                         if(!$sent_from_us && isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next'){
 
+                            //Testing:
+                            $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
+                                'text' => 'hii',
+                            ), 'REGULAR');
+
                             //We have a continuation request in a message thread:
                             $mt = array(); //locate the thread
                             $instant_messages = array();
@@ -330,7 +335,9 @@ class Bot extends CI_Controller {
                                                         $current_thread_title = $level1['c_objective'];
 
                                                         //Extract bootcamp data for this intent:
-                                                        $bootcamp_data = extract_level( $thread['bootcamps'][0] , $level1['c_id'] );
+                                                        if(isset($thread['bootcamps'][0])){
+                                                            $bootcamp_data = extract_level( $thread['bootcamps'][0] , $level1['c_id'] );
+                                                        }
                                                     }
 
                                                     if($current_instant_pid==$level1['c_id']){
@@ -374,7 +381,7 @@ class Bot extends CI_Controller {
                             //Anything to be sent instantly?
                             if(count($instant_messages)>0){
 
-                                if(isset($bootcamp_data) && $bootcamp_data['level']==3){
+                                if(isset($bootcamp_data['level']) && $bootcamp_data['level']==3){
                                     //This is a Milestone Message initiator, append a custom welcome message:
                                     $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
                                         'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
