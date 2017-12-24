@@ -14,10 +14,10 @@ class Bot extends CI_Controller {
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
 
-    function tt($limit=20){
+    function tt($type,$limit=20){
         $i_messages = $this->Db_model->i_fetch(array(
             'i_fb_att_id' => 0,
-            'i_media_type' => 'image',
+            'i_media_type' => $type,
             'i_status >=' => 0, //Published in any form. This may need more logic
         ),$limit);
 
