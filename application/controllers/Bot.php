@@ -271,21 +271,6 @@ class Bot extends CI_Controller {
                         //Is the student asking for the next message thread?
                         if(!$sent_from_us && isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next'){
 
-                            //Testing:
-                            $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
-                                'text' => 'hii',
-                            ), 'REGULAR');
-                            //Send the real message:
-                            $this->Facebook_model->send_message( '381488558920384' , array(
-                                'recipient' => array(
-                                    'id' => $user_id,
-                                ),
-                                'message' => array(
-                                    'text' => 'helloo',
-                                ),
-                                'notification_type' => 'REGULAR',
-                            ));
-
                             //We have a continuation request in a message thread:
                             $mt = array(); //locate the thread
                             $instant_messages = array();
@@ -394,7 +379,9 @@ class Bot extends CI_Controller {
                                 if(isset($bootcamp_data['level']) && $bootcamp_data['level']==3){
                                     //This is a Milestone Message initiator, append a custom welcome message:
                                     $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
-                                        'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
+                                        array(
+                                            'text' => 'Task '.$current_thread_outbound.'/'.$active_outbound.' is '.$current_thread_title.':',
+                                        )
                                     ), 'REGULAR');
                                 }
 
@@ -404,7 +391,9 @@ class Bot extends CI_Controller {
                             } else {
                                 //NO pending messages found, let student know nothing was found
                                 $this->Facebook_model->batch_messages( '381488558920384', $user_id , array(
-                                    'text' => 'No pending messages found!',
+                                    array(
+                                        'text' => 'No pending messages found!',
+                                    )
                                 ), 'REGULAR');
                             }
 
