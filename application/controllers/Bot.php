@@ -29,6 +29,8 @@ class Bot extends CI_Controller {
                 $this->Db_model->i_update( intval($i['i_id']) , array(
                     'i_fb_att_id' => $fb_save['attachment_id'],
                 ));
+            } else {
+                echo $i['i_media_type'].'>>>'.$i['i_url'].'<br />';
             }
         }
 
