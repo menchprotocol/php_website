@@ -135,7 +135,7 @@ if($object_name=='bootcamps'){
     $qualified_instructors = array();
     
     $users = $this->Db_model->u_fetch(array(
-        'u_status' => 2,
+        'u_status >=' => 2,
     ));
     ?>
 
