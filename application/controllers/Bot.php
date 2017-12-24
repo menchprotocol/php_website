@@ -30,7 +30,7 @@ class Bot extends CI_Controller {
                     'i_fb_att_id' => $fb_save['attachment_id'],
                 ));
             } else {
-                echo $i['i_media_type'].'>>>'.$i['i_url'].'<br />';
+                echo $fb_save.') '.$i['i_media_type'].'>>>'.$i['i_url'].'<br />';
             }
         }
 
