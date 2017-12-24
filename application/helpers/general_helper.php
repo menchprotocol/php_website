@@ -2444,17 +2444,17 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     if(count($instant_messages)>0){
 
         if($bootcamp_data && $bootcamp_data['level']==2){
+
+            //Construct some messages to welcome them to this milestone.
+            $initial_messages = array();
+
+            //Is this the very first Milestone? Welcome them to the bootcamp:
+            array_push( $initial_messages , array(
+                'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
+            ));
+
             //This is a Milestone Message initiator, append a custom welcome message:
-            $CI->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , array(
-                array(
-                    'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
-                    //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                ),
-                array(
-                    'text' => 'This '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
-                    //'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                ),
-            ), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
+            $CI->Facebook_model->batch_messages( '381488558920384', $recipients[0]['u_fb_id'] , $initial_messages, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/ );
         }
 
         //Dispatch all Instant Messages, their engagements have already been logged:
@@ -2498,10 +2498,10 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         ));
 
         //Should we display the next button?
-        if($next_payload && isset($logged_engagement['e_id'])){
+        if($next_payload){
 
             //Show next button to user:
-            $CI->Facebook_model->send_message( $botkey , array(
+            $CI->Facebook_model->send_message( '381488558920384' , array(
                 'recipient' => array(
                     'id' => $recipients[0]['u_fb_id'],
                 ),
