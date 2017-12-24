@@ -838,17 +838,22 @@ function save_modify(){
 function tree_message(c_id,u_id){
 
     //Show loading:
-    $('#simulate_'+c_id).attr('href','#').html('<span><img src="/img/round_load.gif" style="width:16px;height:16px;" class="loader" /></span>');
+    $('#simulate_'+c_id).attr('href','#').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
 
-    $.post("/api_v1/simulate_milestone", {
-        c_id:c_id,
-        depth:1,
-        b_id:$('#b_id').val(),
-        u_id:u_id,
-    }, function(data) {
-        //Show success:
-        $('#simulate_'+c_id).html(data);
-    });
+    //Disapper in a while:
+    setTimeout(function() {
+        //Hide the editor & saving results:
+        $.post("/api_v1/simulate_milestone", {
+            c_id:c_id,
+            depth:1,
+            b_id:$('#b_id').val(),
+            u_id:u_id,
+        }, function(data) {
+            //Show success:
+            $('#simulate_'+c_id).html(data);
+        });
+    }, 334);
+
 }
 
 </script>

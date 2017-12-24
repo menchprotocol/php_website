@@ -567,7 +567,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         //Right content
         $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-            if($udata['u_fb_id']>0 && $level==2 && $udata['u_status']>=3){
+            if($udata['u_fb_id']>0 && $level==2){
                 $ui .= '<a id="simulate_'.$intent['c_id'].'" class="badge badge-primary btn-mls" href="javascript:tree_message('.$intent['c_id'].','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when '.$core_objects['level_'.($level-1)]['o_name'].' starts" data-placement="top"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
             }
 
