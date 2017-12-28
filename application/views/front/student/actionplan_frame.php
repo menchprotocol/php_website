@@ -1,11 +1,11 @@
 <script>
 
-<?php if(is_dev() || isset($_GET['dev'])){ ?>
+<?php if(is_dev()){ ?>
 
     $(document).ready(function() {
         //Load shervin for Development:
         var psid = '1443101719058431';
-        $.post("/my/display_actionplan/"+psid+"/<?= intval($b_id) ?>/<?= intval($c_id) ?>?dev=1", {}, function(data) {
+        $.post("/my/display_actionplan/"+psid+"/<?= intval($b_id) ?>/<?= intval($c_id) ?>", {}, function(data) {
             //Update UI to confirm with user:
             $( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
         });
