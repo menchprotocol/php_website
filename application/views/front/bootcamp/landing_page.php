@@ -134,7 +134,7 @@ $( document ).ready(function() {
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= $bootcamp['c__milestone_units'] ?> <?= ucwords($bootcamp['b_sprint_unit']).( $bootcamp['c__milestone_units']==1 ? '' : 's') ?></b></li>
             	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($bootcamp))) ?></b></li>
-            	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'])) ?> Per <?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
+            	<li>Commitment: <b><?= echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'], 1)) ?> Per <?= ucwords($bootcamp['b_sprint_unit']) ?></b></li>
             	
             	<?php if(strlen($focus_class['r_meeting_frequency'])>0 && !($focus_class['r_meeting_frequency']=="0")){ ?>
             	<li>Mentorship: <b><?= echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']) ?></b></li>

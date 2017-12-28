@@ -20,7 +20,7 @@ $(document).ready(function() {
 
 <?php
 $website = $this->config->item('website');
-$rounded_hours = round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units']);
+$rounded_hours = round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'] , 1);
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootcamp['b_url_key'].'</div>';
 ?>
 <div class="title"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
