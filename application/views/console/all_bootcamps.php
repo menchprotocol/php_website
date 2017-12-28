@@ -14,7 +14,7 @@ if(count($bootcamps)>0){
         
         echo '<ul class="below_list">';
         
-        echo '<li style="min-width:100px;"><i class="fa fa-flag" aria-hidden="true"></i> '.count($bootcamp['c__child_intents']).' '.ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's' ).'</li>';
+        echo '<li style="min-width:100px;"><i class="fa fa-flag" aria-hidden="true"></i> '.$bootcamp['c__milestone_units'].' '.ucwords($bootcamp['b_sprint_unit']).( $bootcamp['c__milestone_units']==1 ? '' : 's' ).'</li>';
         echo '<li style="min-width:115px;"><i class="fa fa-tasks" aria-hidden="true"></i> '.$launch_status['progress'].'% Ready</li>';
         echo '<li>'.status_bible('b',$bootcamp['b_status'],0,'right').'</li>';
         
