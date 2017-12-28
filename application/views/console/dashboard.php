@@ -26,7 +26,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 <div class="help_body maxout" id="content_2272"></div>
 <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $bootcamp['c_objective'] ?></b></div>
 <div><?= count($bootcamp['c__active_intents']) .' Milestone'.( count($bootcamp['c__active_intents'])==1 ? '' : 's' ).' in '.$bootcamp['c__milestone_units'].' '.ucwords($bootcamp['b_sprint_unit']).($bootcamp['c__milestone_units']==1?'':'s') ?></div>
-<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours<?= ( count($bootcamp['c__child_intents'])>0 ? ' = '.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']) : '' ) ?></div>
+<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours<?= ( $bootcamp['c__milestone_units']>0 ? ' = '.round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units']).' Hours/'.ucwords($bootcamp['b_sprint_unit']) : '' ) ?></div>
     <div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>
 
 <div style="margin-left:-5px"><?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>

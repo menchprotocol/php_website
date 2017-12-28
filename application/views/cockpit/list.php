@@ -14,7 +14,7 @@ function echo_row($bootcamp,$counter){
     echo '<td>'.$bootcamp['b_id'].'</td>';
     echo '<td>'.status_bible('b',$bootcamp['b_status'],1,'right').'</td>';
     echo '<td><a href="/console/'.$bootcamp['b_id'].'">'.$bootcamp['c_objective'].'</a></td>';
-    echo '<td><a href="/console/'.$bootcamp['b_id'].'/actionplan">'.count($bootcamp['c__child_intents']).' '.ucwords($bootcamp['b_sprint_unit']).( count($bootcamp['c__child_intents'])==1 ? '' : 's' ).'</a></td>';
+    echo '<td><a href="/console/'.$bootcamp['b_id'].'/actionplan">'.$bootcamp['c__milestone_units'].' '.ucwords($bootcamp['b_sprint_unit']).( $bootcamp['c__milestone_units']==1 ? '' : 's' ).'</a></td>';
     echo '<td>'.$launch_status['progress'].'%</td>';
     echo '<td><a href="/console/'.$bootcamp['b_id'].'/classes">'.count($bootcamp['c__classes']).'</a></td>';
     echo '<td>'.$bootcamp['c__message_tree_count'].'</td>';
