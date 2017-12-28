@@ -189,7 +189,7 @@ $start_times = $this->config->item('start_times');
         	?>
     	</li>
     	<li>Start Time: <b><?= time_format($admission['r_start_date'],2).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
-    	<li>Duration: <b><?= count($admission['c__child_intents']) ?> <?= ucwords($admission['b_sprint_unit']).( count($admission['c__child_intents'])==1 ? '' : 's') ?></b></li>
+    	<li>Duration: <b><?= $admission['c__milestone_units'] ?> <?= ucwords($admission['b_sprint_unit']).( $admission['c__milestone_units']==1 ? '' : 's') ?></b></li>
     	<li>End Time: <b><?= time_format($admission['r_start_date'],2,(calculate_duration($admission))).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
     	<li>Your Commitment: <b><?= echo_hours(round($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?>/<?= ucwords($admission['b_sprint_unit']) ?></b></li>
     	<?php if(strlen($admission['r_meeting_frequency'])>0 && !($admission['r_meeting_frequency']=="0")){ ?>
