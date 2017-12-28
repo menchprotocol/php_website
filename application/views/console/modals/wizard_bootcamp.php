@@ -60,7 +60,6 @@ function move_ui(adjustment){
 			
 			c_objective:$('#c_objective').val(),
      		b_sprint_unit:$('input[name=b_sprint_unit]:checked').val(),
-     		milestone_list:fetch_submit('milestones_list'),
      		r_start_date:$('#r_start_date').val(),
     		r_start_time_mins:$('#r_start_time_mins').val(),
     		

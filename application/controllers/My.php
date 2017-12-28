@@ -91,14 +91,14 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	}
 	
-	function display_actionplan($u_fb_id,$b_id=null,$c_id=null){
+	function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 	    
 	    //Fetch bootcamps for this user:
 	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
-	        die('<h3>Milestones</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
+	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
 	    } elseif(!is_dev() && (!isset($_GET['sr']) || !parse_signed_request($_GET['sr']))){
-	        die('<h3>Milestones</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
+	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
 	    
 	    if(!($b_id && $c_id)){
@@ -132,16 +132,6 @@ class My extends CI_Controller {
 	            
 	            //Reload with specific directions:
 	            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
-	            
-	        } else {
-	            
-	            //List bootcamps:
-	            echo '<ol class="breadcrumb"><li>My Bootcamps</li></ol>';
-	            echo '<div id="list-outbound" class="list-group">';
-	            foreach($admissions as $admission){
-	                echo echo_c($admission,$admission,0);
-	            }
-	            echo '</div>';
 	            
 	        }
 	        

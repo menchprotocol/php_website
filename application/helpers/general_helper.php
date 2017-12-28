@@ -80,7 +80,7 @@ function extract_level($b,$c_id){
     $view_data['breadcrumb'] = array(
         array(
             'link' => null,
-            'anchor' => 'Action Plan <span id="hb_592" class="help_button" intent-id="592"></span>',
+            'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>',
         ),
     );
 
@@ -90,6 +90,7 @@ function extract_level($b,$c_id){
         //Level 1 (The bootcamp itself)
         $view_data['level'] = 1;
         $view_data['sprint_index'] = 0;
+        $view_data['sprint_duration_multiplier'] = 0;
         $view_data['intent'] = $b;
         $view_data['title'] = 'Action Plan | '.$b['c_objective'];
         $view_data['breadcrumb_p'] = array(
@@ -108,6 +109,7 @@ function extract_level($b,$c_id){
                 //Found this as level 2:
                 $view_data['level'] = 2;
                 $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
+                $view_data['sprint_duration_multiplier'] = $sprint['c_duration_multiplier'];
                 $view_data['intent'] = $sprint;
                 $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': '.$sprint['c_objective'];
                 $view_data['breadcrumb_p'] = array(
@@ -131,8 +133,9 @@ function extract_level($b,$c_id){
                         //This is level 3:
                         $view_data['level'] = 3;
                         $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
+                        $view_data['sprint_duration_multiplier'] = $sprint['c_duration_multiplier'];
                         $view_data['intent'] = $task;
-                        $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
+                        $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': '.( $task['c_complete_is_bonus_task']=='t' ? 'Bonus ' : '' ).'Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
                         $view_data['breadcrumb_p'] = array(
                             array(
                                 'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
@@ -144,7 +147,7 @@ function extract_level($b,$c_id){
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => '<i class="fa fa-list-ul" aria-hidden="true"></i> Task '.$task['cr_outbound_rank'].': '.$task['c_objective'],
+                                'anchor' => ( $task['c_complete_is_bonus_task']=='t' ? '<i class="fa fa-gift" aria-hidden="true"></i> Bonus' : '<i class="fa fa-list-ul" aria-hidden="true"></i>' ).' Task '.$task['cr_outbound_rank'].': '.$task['c_objective'],
                             ),
                         );
                         
@@ -167,7 +170,7 @@ function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
 function echo_hours($int_time){
-    return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : $int_time.($int_time==1?' Hour':' Hours') );
+    return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : round($int_time).($int_time==1?' Hour':' Hours') );
 }
 
 function echo_video($video_url){
@@ -346,7 +349,7 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
         $ui = '<span class="title-sub" style="text-transform:none !important;">';
 
         if($c_id){
-            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">0</span>';
+            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.( $c_time_estimate==0.05 ? '3m' : '0').'</span>';
             $ui .= ' <i class="fa fa-clock-o" aria-hidden="true"></i>';
         } else {
 
@@ -409,60 +412,71 @@ function echo_br($admin){
 
 
 //This is used for My/actionplan display for Students:
-function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
+function echo_c($b,$c,$level,$us_data=null,$sprint_index=null,$previous_item,$next_item){
     /* 
      * $b = Bootcamp object
      * $c = Intent object
      * $level Legend:
-     *    1 = Action Plan / Top Level
      *    2 = Milestone (Day or Week)
      *    3 = Task
      * 
      * * */
 
-    //Calculate deadlines if level 2 Milestones items to see which one to show!
-    $unlocked_action_plan = false;
-    $is_now = '';
-    if($level==2){
-        if($sprint_index>=2){
-            //This the second milestone or more, make sure the previous milestone is done before unlocking this
-            //We need to check if all child tasks are marked as complete:
-            $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
-            $last_milestone = ( $sprint_index - 2 );
-                
-            
-            if($last_milestone>=0){
-                foreach($b['c__child_intents'][$last_milestone]['c__child_intents'] as $task){
-                    if(!isset($us_data[$task['c_id']])){
-                        //No submission for this, definitely not done!
-                        $aggregate_status = -2; //A special meaning here, which is not found
-                        break;
-                    } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
-                        $aggregate_status = $us_data[$task['c_id']]['us_status'];
-                    }
-                }
-            }   
-        }
-
-        //Do some time calculations for the point system:
-        $open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index-1)))))+(intval($b['r_start_time_mins'])*60);
-        $next_open_date = strtotime(time_format($b['r_start_date'],2,(calculate_duration($b,($sprint_index)))))+(intval($b['r_start_time_mins'])*60);
-        $is_current = (time() >= $open_date);
-        $next_is_current = (time() >= $next_open_date);
-        $unlocked_action_plan = ( $is_current && ( $sprint_index<2 || $aggregate_status>0 ) );
-        $is_now = ( $is_current && !$next_is_current ? ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> HERE NOW</span>' : '' );
+    if(!in_array($level,array(2,3))){
+        //Show not happen as this function only shows Milestones and Tasks
+        return false;
     }
 
-    $show_a = true; //Most cases
+
+    //Determine some variables for this second Milestone onwards:
+    $unlocked_action_plan = false; //Everything is locked by default, unless we see that they have done the previous steps
+    $current_is_due = false;
+    $next_is_due = false;
+
+
+    if($level==2){
+
+        //Calculate deadlines if level 2 Milestones items to see which one to show!
+        $open_date = strtotime(time_format($b['r_start_date'],2,(($sprint_index-1) * ( $b['b_sprint_unit']=='week' ? 7 : 1 ))))+(intval($b['r_start_time_mins'])*60);
+        $next_open_date = strtotime(time_format($b['r_start_date'],2,(($sprint_index+$c['c_duration_multiplier']-1) * ( $b['b_sprint_unit']=='week' ? 7 : 1 ))))+(intval($b['r_start_time_mins'])*60);
+
+        //IF this is the second milestone or more, make sure the previous milestone is done before unlocking this
+        $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
+        if(!is_null($previous_item) && isset($previous_item['c__child_intents'])){
+            foreach($previous_item['c__child_intents'] as $task){
+                if($task['c_complete_is_bonus_task']=='t'){
+                    continue;
+                }
+                if(!isset($us_data[$task['c_id']])){
+                    //No submission for this, definitely not done!
+                    $aggregate_status = -2; //A special meaning here, which is not found
+                    break;
+                } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
+                    $aggregate_status = $us_data[$task['c_id']]['us_status'];
+                }
+            }
+        }
+
+        //Determine key variables:
+        $current_is_due = (time() >= $open_date);
+        $next_is_due = (time() >= $next_open_date);
+        $unlocked_action_plan = ( $current_is_due && $aggregate_status>0 );
+
+    } elseif($level==3){
+
+        //TODO Consider Bonus tasks here with some sort of a loop: $previous_item['c_complete_is_bonus_task']=='t'
+        $unlocked_action_plan = ( !isset($previous_item['c_id']) || isset($us_data[$previous_item['c_id']]) );
+
+    }
+
+
+
+
     //Left content
-    if($level==0){
-        //Not possible for now as each student can take 1 bootcamp at a time.
-        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-        $ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> ';
-    } elseif($level==3 || $unlocked_action_plan){
+    if($unlocked_action_plan){
+
         $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
         $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-        
         
         
         if($level==2){
@@ -494,44 +508,52 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null){
             }
         }
         
-        //if($c['cr_outbound_rank']<=1){
-        //$ui .= '<i class="fa fa-check-circle initial" aria-hidden="true"></i> ';
-        //}
-        
     } else {
-        $show_a = false; //Not here, its locked
+
         $ui = '<li class="list-group-item">';
         $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
+
     }
-    
+
+    //Left side starter:
     if($level==2){
-        //Show milestone abbrevation like "W1" or "D4"
-        $ui .= '<span class="inline-level">'.strtoupper(substr($b['b_sprint_unit'],0,1)).$c['cr_outbound_rank'].'</span>';
+        //Show counter:
+        $ui .= '<span title="Starts '.date("Y-m-d",$open_date).' and ends '.date("Y-m-d",$next_open_date).'">'.ucwords($b['b_sprint_unit']).' '.$sprint_index.($c['c_duration_multiplier']>1 ? '-'.($sprint_index+$c['c_duration_multiplier']-1) :'').':</span> ';
+    } elseif($level==3){
+        //Show counter:
+        $ui .= '<span>Task '.$sprint_index.':</span> ';
     }
-    
+
+    //Intent title:
     $ui .= $c['c_objective'].' ';
-    
+
+
     $ui .= '<span class="sub-stats">';
-        
-    //Other settings:
-    if($show_a && $level==2 && isset($c['c__estimated_hours'])){
+
+        //Enable total hours/milestone reporting...
+        if($level==2 && isset($c['c__estimated_hours'])){
             $ui .= echo_time($c['c__estimated_hours'],1);
-    } elseif($level==3 && isset($c['c_time_estimate'])){
+        } elseif($level==3 && isset($c['c_time_estimate'])){
             $ui .= echo_time($c['c_time_estimate'],1);
-    }
-        
-    if($show_a && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-        //This sprint has Assignments:
-        $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
-    }
-    
-    $ui .= $is_now;
-    
-    //TODO Need to somehow fetch classes in here...
-    //$ui .= '<span class="title-sub"><i class="fa fa-calendar" aria-hidden="true"></i>'.time_format($admission['r_start_date'],5,calculate_duration($b,$c['cr_outbound_rank'])).'</span>';
+        }
+
+        if($unlocked_action_plan && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+            //This sprint has Assignments:
+            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
+        }
+
     $ui .= '</span>';
-    
-    $ui .= ($show_a ? '</a>' : '</li>');
+
+
+    //The Current focus sign for the focused Task/Milestone:
+    if($level==2 && $current_is_due && !$next_is_due){
+        $ui .= ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
+    } elseif($level==3 && $c['c_complete_is_bonus_task']=='t'){
+        $ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS</span>';
+    }
+
+    $ui .= ( $unlocked_action_plan ? '</a>' : '</li>');
+
     return $ui;
 }
 
@@ -615,7 +637,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         } elseif ($level>=3){
 
             //Tasks
-            $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $core_objects['level_'.($level-1)]['o_icon'].' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFTING</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</span> ';
+            $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $core_objects['level_'.($level-1)]['o_icon'].' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFTING</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'"  c_complete_is_bonus_task="'.($intent['c_complete_is_bonus_task']=='t'?1:0).'" c_complete_instructions="'.$intent['c_complete_instructions'].'">'.$intent['c_objective'].'</span> <i class="fa fa-gift bonus_task_'.$intent['c_id'].' '.( $intent['c_complete_is_bonus_task']=='t' ? '' : 'hidden').'" title="Bonus Task" data-toggle="tooltip" aria-hidden="true"></i> ';
 
         }
 
@@ -733,9 +755,56 @@ function calculate_bootcamp_status($b){
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
     $checklist = array();
-    
-    
-    
+
+
+    //Check some of the high-priority Action Plan Lists:
+
+    //Transformations
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
+        'anchor' => '<b>Set Transformations</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+    //Target Audience
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_target_audience'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'anchor' => '<b>Set Target Audience</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+    //Prerequisites
+    $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_prerequisites'])>0 && !($b['b_prerequisites']==json_encode($default_class_prerequisites)) ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'anchor' => '<b>'.( strlen($b['b_prerequisites'])>0 ? 'Edit' : 'Set' ).' Prerequisites</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+
+
+
+
+
+
+
+
     //Do we have enough Milestones?
     $estimated_minutes = 60;
     $required_milestones = ( $b['b_sprint_unit']=='week' ? 2 : 3 ); //Minimum 3 days or 1 week
@@ -805,17 +874,6 @@ function calculate_bootcamp_status($b){
                 //Create task object:
                 $task_anchor = $milestone_anchor.'Task #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
 
-                //c_time_estimate
-                $estimated_minutes = 5;
-                $progress_possible += $estimated_minutes;
-                $us_status = ( $c2['c_time_estimate']>0 ? 1 : 0 );
-                $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-                array_push( $checklist , array(
-                    'href' => '/console/'.$b['b_id'].'/actionplan#modify-'.$c2['c_id'],
-                    'anchor' => '<b>Estimate Completion Time</b> for '.$task_anchor,
-                    'us_status' => $us_status,
-                    'time_min' => $estimated_minutes,
-                ));
 
                 //Messages for Tasks:
                 $estimated_minutes = 15;
@@ -884,51 +942,7 @@ function calculate_bootcamp_status($b){
         ));
     }
     
-    //r_max_students
-    $estimated_minutes = 5;
-    $progress_possible += $estimated_minutes;
-    if($focus_class){
-        $us_status = ( strlen($focus_class['r_max_students'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'],
-            'anchor' => '<b>Set Max Students</b> for '.time_format($focus_class['r_start_date'],4).' Class',
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
-    
-    //r_prerequisites
-    $estimated_minutes = 10;
-    $progress_possible += $estimated_minutes;
-    if($focus_class){
-        $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
-        $us_status = ( strlen($focus_class['r_prerequisites'])>0 && !($focus_class['r_prerequisites']==json_encode($default_class_prerequisites)) ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'],
-            'anchor' => '<b>Edit Prerequisites</b> for '.time_format($focus_class['r_start_date'],4).' Class',
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
-    
-    
-    //r_application_questions
-    $estimated_minutes = 10;
-    $progress_possible += $estimated_minutes;
-    if($focus_class){
-        $default_class_questions = $CI->config->item('default_class_questions');
-        $us_status = ( strlen($focus_class['r_application_questions'])>0 && !($focus_class['r_application_questions']==json_encode($default_class_questions)) ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'],
-            'anchor' => '<b>Edit Application Questions</b> for '.time_format($focus_class['r_start_date'],4).' Class',
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
-    
+
     //r_response_time_hours
     $estimated_minutes = 5;
     $progress_possible += $estimated_minutes;
@@ -965,7 +979,7 @@ function calculate_bootcamp_status($b){
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support',
-            'anchor' => '<b>Set Office Hours Contact Message</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'anchor' => '<b>Set Weekly group call contact message</b> for '.time_format($focus_class['r_start_date'],4).' Class',
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
@@ -985,21 +999,7 @@ function calculate_bootcamp_status($b){
         ));
     }
     
-    //r_completion_prizes
-    $estimated_minutes = 10;
-    $progress_possible += $estimated_minutes;
-    if($focus_class){
-        $default_class_prizes = $CI->config->item('default_class_prizes');
-        $us_status = ( !($focus_class['r_completion_prizes']==json_encode($default_class_prizes)) ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#pricing',
-            'anchor' => '<b>Edit Completion Prizes</b> for '.time_format($focus_class['r_start_date'],4).' Class',
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
-    
+
     //r_cancellation_policy
     $estimated_minutes = 10;
     $progress_possible += $estimated_minutes;
@@ -1012,7 +1012,21 @@ function calculate_bootcamp_status($b){
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
-    }    
+    }
+
+    //r_max_students
+    $estimated_minutes = 5;
+    $progress_possible += $estimated_minutes;
+    if($focus_class){
+        $us_status = ( strlen($focus_class['r_max_students'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#admission',
+            'anchor' => '<b>Set Max Students</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
     
     //r_status
     $estimated_minutes = 5;
@@ -1021,13 +1035,12 @@ function calculate_bootcamp_status($b){
         $us_status = ( $focus_class['r_status']==1 ? 1 : 0 );
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#settings',
+            'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#admission',
             'anchor' => '<b>Set Class Status to '.status_bible('r',1).'</b> for '.time_format($focus_class['r_start_date'],4).' Class',
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
     }
-    
     
     
     
@@ -1168,6 +1181,34 @@ function calculate_bootcamp_status($b){
     /* *****************************
      *  Bootcamp Settings
      *******************************/
+
+
+    //Application Questions
+    $default_class_questions = $CI->config->item('default_class_questions');
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_application_questions'])>0 && !($b['b_application_questions']==json_encode($default_class_questions)) ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'anchor' => '<b>'.( strlen($b['b_application_questions'])>0 ? 'Edit' : 'Set' ).' Application Questions</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+    //Prizes
+    $default_class_prizes = $CI->config->item('default_class_prizes');
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( !($b['b_completion_prizes']==json_encode($default_class_prizes)) ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
+        'anchor' => '<b>Edit Completion Prizes</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
     
     
     //b_status
@@ -1181,7 +1222,6 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-    
     
     
     //Return the final message:
@@ -1753,7 +1793,7 @@ function filter_class($classes,$r_id=null){
     }
     
     foreach($classes as $class){
-        if($class['r_status']==1 && !date_is_past($class['r_start_date']) && ($class['r__current_admissions']<$class['r_max_students'] || !$class['r_max_students']) && (!$r_id || ($r_id==$class['r_id']))){
+        if($class['r_status']==1 && !date_is_past($class['r_start_date']) && (!$r_id || ($r_id==$class['r_id']))){
             return $class;
             break;
         }
@@ -2027,7 +2067,8 @@ function time_diff($t,$second_time=null){
     } else {
         $second_time = strtotime(substr($second_time,0,19));
     }
-    $time = $second_time - strtotime(substr($t,0,19)); // to get the time since that moment
+
+    $time = $second_time - ( is_int($t) ? $t : strtotime(substr($t,0,19)) ); // to get the time since that moment
 	$is_future = ( $time<0 );
 	$time = abs($time);
 	$tokens = array (

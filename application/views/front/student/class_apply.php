@@ -20,8 +20,8 @@ function move_ui(adjustment){
 		}		
 
 		<?php
-		if(strlen($admission['r_application_questions'])>0){
-    	    foreach(json_decode($admission['r_application_questions']) as $index=>$question){
+		if(strlen($admission['b_application_questions'])>0){
+    	    foreach(json_decode($admission['b_application_questions']) as $index=>$question){
     	        //Now show the JS check for these fields:
     	        ?>
     	        if(the_id=='check_question_<?= ($index+1) ?>' && $('#question_<?= ($index+1) ?>').val().length<1 ){
@@ -84,8 +84,8 @@ function move_ui(adjustment){
 			answers: {
 				'prerequisites' : {
 					<?php
-	        		if(strlen($admission['r_prerequisites'])>0){
-	        		    foreach(json_decode($admission['r_prerequisites']) as $index=>$prereq){
+	        		if(strlen($admission['b_prerequisites'])>0){
+	        		    foreach(json_decode($admission['b_prerequisites']) as $index=>$prereq){
 	            	        //Now show the JS check for these fields:
 	            	        ?>
 	            	        '<?= ($index+1) ?>' : {
@@ -99,8 +99,8 @@ function move_ui(adjustment){
 			    },
 			    'questions' : {
 	    		    <?php
-	        		if(strlen($admission['r_application_questions'])>0){
-	            	    foreach(json_decode($admission['r_application_questions']) as $index=>$question){
+	        		if(strlen($admission['b_application_questions'])>0){
+	            	    foreach(json_decode($admission['b_application_questions']) as $index=>$question){
 	            	        //Now show the JS check for these fields:
 	            	        ?>
 	            	        '<?= ($index+1) ?>' : {
@@ -206,12 +206,12 @@ $start_times = $this->config->item('start_times');
 </div>
 
 
-<?php if(strlen($admission['r_prerequisites'])>0){ ?>
+<?php if(strlen($admission['b_prerequisites'])>0){ ?>
 <div class="wizard-box" id="confirm_pre_requisites">
 	<p>Below it's the list with all the prerequisites needed to apply for this bootcamp.</p>
 	<p>Select all the ones you currently meet:</p>
 	<?php
-	foreach(json_decode($admission['r_prerequisites']) as $index=>$prereq){
+	foreach(json_decode($admission['b_prerequisites']) as $index=>$prereq){
 	    ?>
 	    <div class="form-group label-floating is-empty">
         	<div class="checkbox" style="margin:0; padding:0;">
@@ -228,15 +228,15 @@ $start_times = $this->config->item('start_times');
 <?php } ?>
 
 
-<?php if(strlen($admission['r_application_questions'])>0){ ?>
+<?php if(strlen($admission['b_application_questions'])>0){ ?>
 
     <div class="wizard-box">
     	<p>Thanks! That was pretty easy right?</p>
-    	<p>The next <?= count(json_decode($admission['r_application_questions'])) ?> questions would help the instructor to learn more about yourself and your current skills.</p>
+    	<p>The next <?= count(json_decode($admission['b_application_questions'])) ?> questions would help the instructor to learn more about yourself and your current skills.</p>
     </div>
     
     <?php
-    foreach(json_decode($admission['r_application_questions']) as $index=>$question){
+    foreach(json_decode($admission['b_application_questions']) as $index=>$question){
         ?>
         <div class="wizard-box" id="check_question_<?= ($index+1) ?>">
         	<p><?= $question ?></p>

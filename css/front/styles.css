@@ -330,6 +330,16 @@ h5, .h5 {
     margin-bottom:5px;
 }
 .flag { width:22px; height:14px; border-radius:3px; border:1px solid #CCC; }
+.list_status{
+    font-size:16px !important;
+    padding-left:5px;
+    height:26px;
+    display:inline-block;
+}
+.list_status img{
+    width:24px;
+    height:24px;
+}
 .social-input{
 	padding: 0 !important;
     line-height: 100%;
@@ -353,6 +363,10 @@ h5, .h5 {
 	display:inline-block;
 	margin-right:20px;
 	color:#666;
+}
+
+#bootcamp_start{
+    display: inline !important;
 }
 .btn-mls{margin-right:6px; background-color:#E5E5E5;}
 .btn-mls:hover{background-color:#FFF; color:#000 !important;}

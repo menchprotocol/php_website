@@ -1,4 +1,4 @@
-<div class="help_body maxout below_h" id="content_593"></div>
+<div class="help_body maxout below_h" id="content_2274"></div>
 
 <?php
 if(count($bootcamp['c__classes'])>0){

@@ -857,8 +857,8 @@ class Api_v1 extends CI_Controller {
 	            ),
                 'weekly_office_hours' => array(
                     'weight' => 0.10, //The percentage of importance for this factor relative to other pricing_factors
-                    'name' => 'Weekly Office Hours',
-                    'desc' => 'The total number of weekly office hours available that students can ask questions and get instant answers',
+                    'name' => 'Weekly Group Sessions',
+                    'desc' => 'The total number of weekly hours spent supporting students as a group',
                     'industry_is' => 40,
                     'mench_is' => 0, //To be calculated
                     'mench_what_if' => ( isset($_POST['whatif_weekly_office_hours']) && intval($_POST['whatif_weekly_office_hours'])>0 ? intval($_POST['whatif_weekly_office_hours']) : null ),
@@ -1124,20 +1124,12 @@ class Api_v1 extends CI_Controller {
 	        //Did we build it?
 	        if(!$class_data){
 	            
-	            //Fetch default questions:
-	            $default_class_questions = $this->config->item('default_class_questions');
-	            $default_class_prerequisites = $this->config->item('default_class_prerequisites');
-	            $default_class_prizes = $this->config->item('default_class_prizes');
-	            
 	            //Generate core data:
 	            $class_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
 	                'r_start_time_mins' => intval($_POST['r_start_time_mins']),
 	                'r_status' => intval($_POST['r_status']),
-	                'r_prerequisites' => json_encode($default_class_prerequisites),
-	                'r_application_questions' => json_encode($default_class_questions),
-	                'r_completion_prizes' => json_encode($default_class_prizes),
 	            );
 	            
 	            //Default message:
@@ -1294,10 +1286,6 @@ class Api_v1 extends CI_Controller {
 	        'r_usd_price' => ( strlen($_POST['r_usd_price'])>0 && floatval($_POST['r_usd_price'])>=0 ? floatval($_POST['r_usd_price']) : null ),
 	        'r_min_students' => intval($_POST['r_min_students']),
 	        'r_max_students' => ( strlen($_POST['r_max_students'])>0 && intval($_POST['r_max_students'])>=0 ? intval($_POST['r_max_students']) : null ),
-	        //List items:
-	        'r_application_questions' => ( isset($_POST['r_application_questions']) && is_array($_POST['r_application_questions']) && count($_POST['r_application_questions'])>0 ? json_encode($_POST['r_application_questions']) : null ),
-	        'r_prerequisites' => ( isset($_POST['r_prerequisites']) && is_array($_POST['r_prerequisites']) && count($_POST['r_prerequisites'])>0 ? json_encode($_POST['r_prerequisites']) : null ),
-	        'r_completion_prizes' => ( isset($_POST['r_completion_prizes']) && is_array($_POST['r_completion_prizes']) && count($_POST['r_completion_prizes'])>0 ? json_encode($_POST['r_completion_prizes']) : null ),
 	    );
 	    
 	    if(isset($_POST['r_live_office_hours_check']) && !intval($_POST['r_live_office_hours_check'])){
@@ -1379,15 +1367,23 @@ class Api_v1 extends CI_Controller {
             //Ooops, we have a duplicate:
             $generated_key = $generated_key.'-'.rand(0,99999);
         }
-        
-        
+
+        //Fetch default list values:
+        $default_class_questions = $this->config->item('default_class_questions');
+        $default_class_prerequisites = $this->config->item('default_class_prerequisites');
+        $default_class_prizes = $this->config->item('default_class_prizes');
+
         //Create new bootcamp:
         $bootcamp = $this->Db_model->b_create(array(
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
             'b_sprint_unit' => $_POST['b_sprint_unit'],
             'b_c_id' => $intent['c_id'],
+            'b_prerequisites' => json_encode($default_class_prerequisites),
+            'b_application_questions' => json_encode($default_class_questions),
+            'b_completion_prizes' => json_encode($default_class_prizes),
         ));
+
         if(intval($bootcamp['b_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
@@ -1557,6 +1553,12 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Missing Time Estimate',
             ));
             return false;
+        } elseif($_POST['level']>=3 && (!isset($_POST['c_complete_url_required']) || !isset($_POST['c_complete_notes_required']) || !isset($_POST['c_complete_is_bonus_task']) || !isset($_POST['c_complete_instructions']))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Completion Settings',
+            ));
+            return false;
         } elseif(count($bootcamps)<=0){
             echo_json(array(
                 'status' => 0,
@@ -1681,6 +1683,10 @@ class Api_v1 extends CI_Controller {
                 'c_objective' => trim($_POST['c_objective']),
                 'c_status' => intval($_POST['c_status']),
                 'c_time_estimate' => floatval($_POST['c_time_estimate']),
+                'c_complete_url_required' => ( intval($_POST['c_complete_url_required']) ? 't' : 'f' ),
+                'c_complete_notes_required' => ( intval($_POST['c_complete_notes_required']) ? 't' : 'f' ),
+                'c_complete_is_bonus_task' => ( intval($_POST['c_complete_is_bonus_task']) ? 't' : 'f' ),
+                'c_complete_instructions' => trim(str_replace('"','',str_replace('\'','',$_POST['c_complete_instructions']))),
             );
 
         }
@@ -1764,7 +1770,8 @@ class Api_v1 extends CI_Controller {
 	    //Create intent:
 	    $new_intent = $this->Db_model->c_create(array(
 	        'c_creator_id' => $udata['u_id'],
-	        'c_objective' => trim($_POST['c_objective']),
+            'c_objective' => trim($_POST['c_objective']),
+            'c_time_estimate' => ( $_POST['next_level']>=3 ? '0.05' : '0' ), //3 min default task
 	    ));
 	    
 	    //Log Engagement for New Intent:
@@ -2051,6 +2058,48 @@ class Api_v1 extends CI_Controller {
                     'message' => 'Move completed',
                 ));
             }
+        }
+    }
+
+
+    function save_b_list(){
+        //Auth user and Load object:
+        $udata = auth(2);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Login again to Continue.',
+            ));
+        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_target_audience','b_prerequisites','b_application_questions','b_transformations','b_completion_prizes'))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Group ID',
+            ));
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp ID',
+            ));
+        } else {
+
+            //Updatye bootcamp:
+            $this->Db_model->b_update( intval($_POST['b_id']) , array(
+                $_POST['group_id'] => ( isset($_POST['new_sort']) && is_array($_POST['new_sort']) && count($_POST['new_sort'])>0 ? json_encode($_POST['new_sort']) : null ),
+            ));
+
+            //Log Engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_json' => json_encode($_POST),
+                'e_type_id' => 53, //Bootcamp List Modified
+                'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+            ));
+
+            //Display message:
+            echo_json(array(
+                'status' => 1,
+                'message' => '<i class="fa fa-check" aria-hidden="true"></i> Saved',
+            ));
         }
     }
 

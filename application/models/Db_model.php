@@ -597,7 +597,7 @@ class Db_model extends CI_Model {
 		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: api_v1/r_create() when duplicating a class
 		    $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
-		        'ru.ru_status >'	=> 0, //Anyone who has paid anything
+		        'ru.ru_status >='	=> 0, //Anyone who is enrolled
 		    )));
 		}
 		

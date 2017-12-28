@@ -79,9 +79,6 @@ jQuery.fn.extend({
 
 //Function to load all help messages throughout the console:
 $(document).ready(function() {	
-	//Each Message includes two elements on the page:
-	//<span class="help_button" intent-id="597"></span> Containing the button for the Help message that is always accessible by user even after they clicked the "Got It" button
-	//<div id="content_597"></div> Where the actual message would be loaded on the page, which is usally close to the help button
 	if($("span.help_button")[0]){
 		var loaded_messages = [];
 		var intent_id = 0;
@@ -121,8 +118,10 @@ function focu_hash(the_hash){
         //Open specific menu with a 100ms delay to fix TOP NAV bug
         //Detect if this Exists:
         if($('#'+hash+'.tab-pane').attr('class').indexOf("hidden")<=0){
-            $('.tab-pane, #topnav > li').removeClass('active');
-            $('#'+hash+'.tab-pane, #nav_'+hash).addClass('active');
+            $('#topnav>li').removeClass('active');
+            $('.tab-pane').removeClass('active');
+            $('#nav_'+hash).addClass('active');
+            $('#'+hash+'.tab-pane').addClass('active');
         }
 	}
 }
@@ -191,111 +190,4 @@ function copyToClipboard(elem) {
   return succeed;
 }
 
-/* ******************************** */
-/* ******************************** */
-/* Simple List Management Functions */
-/* ******************************** */
-/* ******************************** */
 
-function initiate_list(group_id,placeholder,prefix,current_items){
-
-	//Is the ID on the page?
-	if(!($('#'+group_id).length)){
-		return false;
-	}
-
-	//Add the add line:
-	$('#'+group_id).html('<div class="list-group-item list_input">'+
-			'<div class="input-group">'+
-			'<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'"></div>'+
-			'<span class="input-group-addon" style="padding-right:0;">'+
-			'<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fa fa-plus" aria-hidden="true"></i></span></span>'+
-			'</span>'+
-			'</div>'+
-			'</div>');
-	
-	//Initiate sort:
-	var theobject = document.getElementById(group_id);
- 	var sort = Sortable.create( theobject , {
- 		  animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
- 		  handle: ".fa-sort", // Restricts sort start click/touch to the specified element
- 		  draggable: ".is_sortable", // Specifies which items inside the element should be sortable
- 		  onUpdate: function (evt/**Event*/){
- 			  do_item_resort(group_id);
- 		  }
- 	});
-
- 	//Add initial items:
-	if(current_items.length>0){
-		$.each(current_items, function( index, value ) {
-    		add_item(group_id,prefix,value);
-    	});
-	}    	
-
- 	//Also watch for the enter key:
- 	$('#'+group_id+' input[type=text]').keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-        	add_item(group_id,prefix,null);
-            return true;
-        }
-    });
-    
-    //And watch for the Add button click:
-	$('#'+group_id+'>div .badge-primary').click(function (e) {
-		add_item(group_id,prefix,null);
-    });
-}
-
-function do_item_resort(group_id){
-	//Fetch new sort:
- 	var sort_rank = 0;
- 	$( '#'+group_id+'>li' ).each(function() {
- 		sort_rank++;
- 		//Update sort handler:
- 		var current_handler = $( this ).find( '.inline-level' ).html();
- 		var handler_parts = current_handler.split("#");
- 		$( this ).find( '.inline-level' ).html(handler_parts[0]+'#'+sort_rank);
- 	});
-}
-
-function confirm_remove(element){
-	var group_id = element.parent().parent().parent().attr('id');
-	var r = confirm("Remove this item?");
-	if (r == true) {
-		element.parent().parent().remove();
-		do_item_resort(group_id);
-	}
-}
-
-function add_item(group_id,prefix,current_value){
-	if($('#'+group_id+' input[type=text]').val().length>0 || (current_value && current_value.length>0)){
-		var next_item = $( '#'+group_id+'>li' ).length + 1;
-		var do_focus = false;
-		if(!current_value || current_value.length<1){
-			current_value = $('#'+group_id+' input[type=text]').val();
-			do_focus = true;
-		}
-		$('#'+group_id+'>div').before( '<li class="list-group-item is_sortable">'+
-				'<span class="pull-right"><i class="fa fa-sort"></i> &nbsp;<i class="fa fa-trash" onclick="confirm_remove($(this));"></i></span>'+
-				'<span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
-				'</li>');
-		
-		//Reset input field and re-focus only if manually added:
-		if(do_focus){
-			$('#'+group_id+' input[type=text]').val('').focus();
-		}
-		
-	} else {
-		alert('Error: field is empty!');
-	}
-}
-
-function fetch_submit(group_id){
-	//Prepares the input values to be sent via AJAX for processing:
-	var final_array = [];
-	$( '#'+group_id+'>li' ).each(function() {
- 		final_array.push($( this ).find( '.theitem' ).text());
- 	});
- 	return final_array;
-}

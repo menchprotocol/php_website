@@ -1,4 +1,4 @@
-<div class="help_body maxout below_h" id="content_594"></div>
+<div class="help_body maxout below_h" id="content_2275"></div>
 <?php 
 if($udata['u_status']>=3){
     

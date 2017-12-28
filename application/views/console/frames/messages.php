@@ -156,9 +156,6 @@ if(!isset($intents[0])){
             handle: ".fa-bars", // Restricts sort start click/touch to the specified element
             draggable: ".is_sortable", // Specifies which items inside the element should be sortable
             onUpdate: function (evt/**Event*/){
-                //Set processing status:
-                //$( ".edit-updates" ).html('<img src="/img/round_load.gif" class="loader" />');
-
                 //Fetch new sort:
                 var new_sort = [];
                 var sort_rank = 0;

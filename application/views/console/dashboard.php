@@ -14,7 +14,7 @@ $(document).ready(function() {
 
 <div class="maxout">
 
-<div class="help_body below_h" id="content_597"></div>
+<div class="help_body below_h" id="content_2273"></div>
 
 
 
@@ -22,8 +22,8 @@ $(document).ready(function() {
 $website = $this->config->item('website');
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootcamp['b_url_key'].'</div>';
 ?>
-<div class="title"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_592" class="help_button" intent-id="592"></span></h4></div>
-<div class="help_body maxout" id="content_592"></div>
+<div class="title"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
+<div class="help_body maxout" id="content_2272"></div>
 <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $bootcamp['c_objective'] ?></b></div>
 <div><?= count($bootcamp['c__active_intents']) .' Milestone'.( count($bootcamp['c__active_intents'])==1 ? '' : 's' ).' in '.$bootcamp['c__milestone_units'].' '.ucwords($bootcamp['b_sprint_unit']).($bootcamp['c__milestone_units']==1?'':'s') ?></div>
 <div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours<?= ( count($bootcamp['c__child_intents'])>0 ? ' = '.round($bootcamp['c__estimated_hours']/count($bootcamp['c__child_intents'])).' Hours/'.ucwords($bootcamp['b_sprint_unit']) : '' ) ?></div>
@@ -50,8 +50,8 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_593" class="help_button" intent-id="593"></span></h4></div>
-    <div class="help_body maxout" id="content_593"></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
+    <div class="help_body maxout" id="content_2274"></div>
     <div><?= count($bootcamp['c__classes']) ?> Class<?= (count($bootcamp['c__classes'])==1?'':'es') ?></div>
 <?php 
 //Fetch class:
@@ -70,8 +70,8 @@ if($focus_class){
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/students" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_594" class="help_button" intent-id="594"></span></h4></div>
-    <div class="help_body maxout" id="content_594"></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/students" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2275" class="help_button" intent-id="2275"></span></h4></div>
+    <div class="help_body maxout" id="content_2275"></div>
 <?php 
 //Fetch admission stats:
 $admissions_accepted = $this->Db_model->ru_fetch(array(

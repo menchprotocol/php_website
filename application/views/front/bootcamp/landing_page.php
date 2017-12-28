@@ -38,7 +38,7 @@ $available_classes = 0;
 $class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Available Classes</h4>';
 $class_selection .= '<div id="class_list" class="list-group" style="max-width:none !important;">';
 foreach($bootcamp['c__classes'] as $class){
-    if($class['r_status']==1 && !date_is_past($class['r_start_date']) && ($class['r__current_admissions']<$class['r_max_students'] || !$class['r_max_students'])){
+    if($class['r_status']==1 && !date_is_past($class['r_start_date'])){
         $available_classes++;
         if($class['r_id']==$focus_class['r_id']){
             $class_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
@@ -50,6 +50,17 @@ foreach($bootcamp['c__classes'] as $class){
         
         $class_selection .= '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b> &nbsp; ';
         $class_selection .= '<i class="fa fa-usd" aria-hidden="true"></i> '.(strlen($class['r_usd_price'])>0 ? number_format($class['r_usd_price']) : 'FREE' ).' &nbsp; ';
+        if($class['r_max_students']>0){
+            $class_selection .= '<i class="fa fa-user" aria-hidden="true"></i> '.$class['r_max_students'].' Seats';
+            if($class['r__current_admissions']>=$class['r_max_students']){
+                //Class is full:
+                $class_selection .= ' <span style="color:#FF0000;">(FULL, '.($class['r__current_admissions']-$class['r_max_students']).' in Waiting List)</span>';
+            } elseif(($class['r__current_admissions']/$class['r_max_students'])>0.66){
+                //Running low on space:
+                $class_selection .= ' <span style="color:#FF0000;">('.($class['r_max_students']-$class['r__current_admissions']).' Remaining)</span>';
+            }
+            $class_selection .= ' &nbsp; ';
+        }
         if($class['r_id']==$focus_class['r_id']){
             $class_selection .= '<span class="label label-default" style="background-color:#fedd16; color:#000;">CURRENTLY VIEWING</span>';
         }
@@ -130,17 +141,25 @@ $( document ).ready(function() {
             	<?php } ?>
             	
             	<?php if($total_office_hours>0){ ?>
-            	<li>Office Hours: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
+            	<li>Group Calls: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
             	<?php } ?>
-            	
             	
             	<?php if($focus_class['r_max_students']>0){ ?>
-            		<li>Maximum Seats: <b><?= $focus_class['r_max_students'] ?> Seats</b></li>
-                	<?php if(($focus_class['r__current_admissions']/$focus_class['r_max_students'])>=0.5){ ?>
-                	<li>Seats Remaining: <b><?= ($focus_class['r_max_students']-$focus_class['r__current_admissions']) ?>/<?= $focus_class['r_max_students'] ?></b></li>
-                	<?php } ?>
+            		<li>Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
+                        <?php
+                        if($focus_class['r__current_admissions']>=$focus_class['r_max_students']){
+                            //Class is full:
+                            echo ' <div style="color:#FF0000;">(FULL, '.($focus_class['r__current_admissions']-$focus_class['r_max_students']).' in Waiting List)</div>';
+                        } elseif(($focus_class['r__current_admissions']/$focus_class['r_max_students'])>0.66){
+                            //Running low on space:
+                            echo ' <span style="color:#FF0000;">('.($focus_class['r_max_students']-$focus_class['r__current_admissions']).' Remaining)</span>';
+                        }
+                        ?>
+                    </li>
             	<?php } ?>
+
             	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? '*' : '' ); ?></b><?= ( $focus_class['r_usd_price']>0 ? ' ($'.round($focus_class['r_usd_price']/$bootcamp['c__milestone_units']).'/'.ucwords($bootcamp['b_sprint_unit']).')' : '') ?></li>
+
             </ul>
             
             <?php if($focus_class['r_usd_price']>0){ ?>
@@ -148,8 +167,8 @@ $( document ).ready(function() {
             <?php } ?>
             
             <div style="padding:10px 0 30px; text-align:center;">
-            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            	<div>Admission Ends in <span id="reg1"></span></div>
+            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            	<div style="font-size:1.2em;">Ends in <span id="reg1"></span></div>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
@@ -160,23 +179,27 @@ $( document ).ready(function() {
     
     <div class="col-md-8">
     
-    		<?php 
-    		foreach($bootcamp['c__messages'] as $i){
-    		    if($i['i_status']==1){
-    		        //Publish to Landing Page!
-    		        echo echo_i($i);
-    		    }
-    		}
-            ?>
-    		
-    		<h3>Prerequisites</h3>
-    		<div id="r_prerequisites"><?= ( strlen($focus_class['r_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($focus_class['r_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
-    		
-    		
-    		
-    		
+        <?php
+        foreach($bootcamp['c__messages'] as $i){
+            if($i['i_status']==1){
+                //Publish to Landing Page!
+                echo echo_i($i);
+            }
+        }
+        ?>
 
-    		<h3>Action Plan</h3>
+
+        <h3>Transformations</h3>
+        <div id="b_transformations"><?= ( strlen($bootcamp['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+
+        <h3>Target Audience</h3>
+        <div id="b_target_audience"><?= ( strlen($bootcamp['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_target_audience'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+
+        <h3>Prerequisites</h3>
+        <div id="b_prerequisites"><?= ( strlen($bootcamp['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
+
+
+        <h3>Action Plan</h3>
     		<div id="c_goals_list">
     		<?php 
             foreach($bootcamp['c__child_intents'] as $sprint){
@@ -227,8 +250,8 @@ $( document ).ready(function() {
     		
     		
     		if(count($office_hours_ui)>0 || $total_office_hours>0){
-    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours</h4>';
-    		    echo '<p>You can access <b>'.echo_hours($total_office_hours).' Per Week</b> of live office hours during these timeslots:</p>';
+    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Group Calls</h4>';
+    		    echo '<p>You can access <b>'.echo_hours($total_office_hours).' Per Week</b> of live group support during these time-slots:</p>';
     		    echo '<ul style="list-style:none; margin-left:-30px;">';
     		    foreach($office_hours_ui as $oa_ui){
     		        echo '<li>'.$oa_ui.'</li>';
@@ -305,9 +328,9 @@ $( document ).ready(function() {
     		
     		
     		
-    		
-    		
-    		
+
+
+
     		<?php if($bootcamp['b_id']==1){ ?>
     		<h3>Student Testimonials</h3>
     		<ul style="margin-left:-15px;">
@@ -341,11 +364,11 @@ $( document ).ready(function() {
     		
     		
     		
-    		<?php if(strlen($focus_class['r_completion_prizes'])>0){ 
-    		    $plural_prize = ( json_decode($focus_class['r_completion_prizes'])==1 ? '' : 's' ); ?>
+    		<?php if(strlen($bootcamp['b_completion_prizes'])>0){
+    		    $plural_prize = ( json_decode($bootcamp['b_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
-    		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($focus_class['r_completion_prizes'])).'</li></ol>' ?></div>
-    		<p>Prize<?= $plural_prize ?> are awarded to students who complete all milestones by the bootcamp end time.</p>
+    		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_completion_prizes'])).'</li></ol>' ?></div>
+    		<p>Prize<?= $plural_prize ?> are awarded to students who complete all milestones by the Bootcamp end time.</p>
     		<hr />
     		<?php } ?>
     		
@@ -391,8 +414,8 @@ $( document ).ready(function() {
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Reserve Seat For <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-	<div>Admission Ends in <span id="reg3"></span></div>
+	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+	<div style="font-size:1.2em;">Ends in <span id="reg3"></span></div>
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
 

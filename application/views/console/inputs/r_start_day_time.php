@@ -55,7 +55,7 @@ function update_timeline(){
 <input type="hidden" id="b_status" value="<?= $b_status ?>" />
 <?php } ?>
 
-<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Start Day & Time <span id="hb_625" class="help_button" intent-id="625"></span></h4></div>
+<div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Class Start Time <span id="hb_625" class="help_button" intent-id="625"></span></h4></div>
 <div class="help_body maxout" id="content_625"></div>
 
 <div class="form-group label-floating is-empty">

@@ -100,7 +100,7 @@ $(document).ready(function() {
     changeCloseDates();
 	
     //Tuition Calculator:
-    $( "#r_response_time_hours, #r_meeting_frequency, #r_meeting_duration" /* #r_student_reach, #r_min_students, #r_max_students */ ).change(function() {
+    $( "#r_response_time_hours, #r_meeting_frequency, #r_meeting_duration" /* #r_min_students, #r_max_students */ ).change(function() {
         if(load_calculator){
         	update_tuition_calculator();
         }
@@ -172,19 +172,12 @@ function save_r(){
 		r_closed_dates:$('#r_closed_dates').val(),
 		r_start_time_mins:$('#r_start_time_mins').val(),
 		
-		
 		//Class:
 		r_status:$('#r_status').val(),
 		r_usd_price:$('#r_usd_price').val(),
-		r_student_reach:$('#r_student_reach').val(),
 		r_min_students:$('#r_min_students').val(),
 		r_max_students:$('#r_max_students').val(),
 		r_cancellation_policy:$('input[name=r_cancellation_policy]:checked').val(),
-		
-		//Item lists:
-		r_application_questions: fetch_submit('r_application_questions'),
-		r_prerequisites: fetch_submit('r_prerequisites'),
-		r_completion_prizes: fetch_submit('r_completion_prizes'),
 	};
 	
 	//Now merge into timeline dates:
@@ -215,64 +208,19 @@ function save_r(){
 <input type="hidden" id="b_sprint_unit" value="<?= $bootcamp['b_sprint_unit'] ?>" />
 
 
-
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_screening" class="active"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-eye" aria-hidden="true"></i> Screening</a></li>
-  <li id="nav_support"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
+  <li id="nav_support" class="active"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
   <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-calculator" aria-hidden="true"></i> Pricing</a></li>
-  <li id="nav_settings"><a href="#settings" data-toggle="tab" onclick="update_hash('settings')"><i class="fa fa-pencil" aria-hidden="true"></i> Details</a></li>
+  <li id="nav_admission"><a href="#admission" data-toggle="tab" onclick="update_hash('admission')"><i class="fa fa-tags" aria-hidden="true"></i> Admission</a></li>
 </ul>
 
 
 
 
 <div class="tab-content tab-space">
-
-
-        <div class="tab-pane active" id="screening">
-        
-        
-        <div class="title"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span></h4></div>
-        <div class="help_body maxout" id="content_610"></div>
-        <script>
-        $(document).ready(function() {
-        	initiate_list('r_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : '[]' ) ?>);
-        });
-        </script>
-        <div id="r_prerequisites" class="list-group"></div>
     
     
-    
-    	<div class="title" style="margin-top:30px;"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions <span id="hb_611" class="help_button" intent-id="611"></span></h4></div>
-        <div class="help_body maxout" id="content_611"></div>
-        <script>
-        $(document).ready(function() {
-        	initiate_list('r_application_questions','+ New Application Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : '[]' ) ?>);
-        });
-        </script>
-        <div id="r_application_questions" class="list-group"></div>
-    
-    
-    	<div style="display:block; margin-top:30px;">
-            <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students <span id="hb_612" class="help_button" intent-id="612"></span></h4></div>
-            <div class="help_body maxout" id="content_612"></div>
-            <div class="input-group">
-            	<input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border" />
-            </div>
-            <br />
-        </div>
-        
-        
-        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students <span id="hb_613" class="help_button" intent-id="613"></span></h4></div>
-        <div class="help_body maxout" id="content_613"></div>
-        <div class="input-group">
-          <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border" />
-        </div>
-        
-    </div>
-    
-    
-    <div class="tab-pane" id="support">
+    <div class="tab-pane active" id="support">
     
     	<?php itip(630); ?>
 		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
@@ -327,7 +275,7 @@ function save_r(){
 
 
 
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Office Hours <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_616" class="help_button" intent-id="616"></span></h4></div>
+		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Group Calls <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_616" class="help_button" intent-id="616"></span></h4></div>
 		<div class="help_body maxout" id="content_616"></div>
 		
 		
@@ -335,13 +283,13 @@ function save_r(){
 		<div class="checkbox">
         	<label>
         		<input type="checkbox" id="r_live_office_hours_check" <?= strlen($class['r_live_office_hours'])>0 ? 'checked' : '' ?>>
-        		Enable Weekly Office Hours
+        		Offer Weekly Group Calls
         	</label>
         </div>
 		
 		<div class="has_office_hours" style="display:<?= strlen($class['r_live_office_hours'])>0 ? 'block' : 'none' ?>;">
 			
-			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Office Hour Contact Method <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
+			<div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Group Call Contact Method <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
 			<div class="help_body maxout" id="content_617"></div>
             <div class="form-group label-floating is-empty">
                 <textarea class="form-control text-edit border msg msgin" style="min-height:50px; padding:3px;" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
@@ -407,33 +355,12 @@ function save_r(){
               echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the class\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
         	echo '</ul></div>';
         }
-        ?>        
-        
-        
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-gift" aria-hidden="true"></i> Optional Completion Prizes <span id="hb_623" class="help_button" intent-id="623"></span></h4></div>
-        <div class="help_body maxout" id="content_623"></div>
-        <script>
-        $(document).ready(function() {
-        	initiate_list('r_completion_prizes','+ New Prize','<i class="fa fa-gift"></i>',<?= ( strlen($class['r_completion_prizes'])>0 ? $class['r_completion_prizes'] : '[]' ) ?>);
-        });
-        </script>
-        <div id="r_completion_prizes" class="list-group"></div>
+        ?>
     </div>
     
     
-    <div class="tab-pane" id="settings">
-    
-        <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$class['r_status']) ); ?>		
-		
-		<div style="display:block; margin-top:20px;">
-            <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel ID <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
-            <div class="help_body maxout" id="content_718"></div>
-            <div class="input-group">
-            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border" />
-            </div>
-            <br />
-        </div>
-		
+    <div class="tab-pane" id="admission">
+
         <?php $this->load->view('console/inputs/r_start_day_time' , array(
             'c__milestone_units' => $bootcamp['c__milestone_units'],
             'b_sprint_unit' => $bootcamp['b_sprint_unit'],
@@ -442,6 +369,37 @@ function save_r(){
             'r_start_date' => $class['r_start_date'],
             'r_start_time_mins' => $class['r_start_time_mins'],
         )); ?>
+
+
+        <div style="display:block; margin-top:30px;">
+            <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students <span id="hb_612" class="help_button" intent-id="612"></span></h4></div>
+            <div class="help_body maxout" id="content_612"></div>
+            <div class="input-group">
+                <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border" />
+            </div>
+            <br />
+        </div>
+
+
+        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students <span id="hb_613" class="help_button" intent-id="613"></span></h4></div>
+        <div class="help_body maxout" id="content_613"></div>
+        <div class="input-group">
+            <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border" />
+        </div>
+
+
+        <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$class['r_status']) ); ?>
+
+
+        <div style="display:block; margin-top:20px;">
+            <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel ID <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+            <div class="help_body maxout" id="content_718"></div>
+            <div class="input-group">
+            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border" />
+            </div>
+            <br />
+        </div>
+
     	
     </div>
 </div>

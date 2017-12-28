@@ -69,7 +69,7 @@ if(isset($udata['u_fb_id']) && $udata['u_fb_id']>0){
 
 //Show them if >0
 if(count($unread_notifications)>0){
-    echo '<a id="msgnotif" href="javascript:mark_read()" data-toggle="tooltip" title="Unread notifications sent by your assistant. Click to dismiss." data-placement="top"><i class="fa fa-bell" aria-hidden="true"></i> '.count($unread_notifications).' New</a>';
+    echo '<a id="msgnotif" href="javascript:mark_read()" data-toggle="tooltip" title="Unread notifications. Click to dismiss." data-placement="top"><i class="fa fa-bell" aria-hidden="true"></i> '.count($unread_notifications).' New</a>';
 }
 ?>
 

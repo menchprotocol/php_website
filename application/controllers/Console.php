@@ -154,7 +154,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Dashboard <span id="hb_597" class="help_button" intent-id="597"></span>',
+	                'anchor' => 'Dashboard <span id="hb_2273" class="help_button" intent-id="2273"></span>',
 	            ),
 	        ),
 	    ));
@@ -174,7 +174,7 @@ class Console extends CI_Controller {
 		if(!isset($bootcamps[0])){
 		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
 		}
-		
+
 		//Fetch intent relative to the bootcamp by doing an array search:
 		$view_data = extract_level( $bootcamps[0] , ( intval($pid)>0 ? $pid : $bootcamps[0]['c_id'] ) );
 		if(!$view_data){
@@ -210,7 +210,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Classes <span id="hb_593" class="help_button" intent-id="593"></span>',
+	                'anchor' => 'Classes <span id="hb_2274" class="help_button" intent-id="2274"></span>',
 	            ),
 	        ),
 	    );
@@ -306,7 +306,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Students <span id="hb_594" class="help_button" intent-id="594"></span>',
+	                'anchor' => 'Students <span id="hb_2275" class="help_button" intent-id="2275"></span>',
 	            ),
 	        ),
 	    ));

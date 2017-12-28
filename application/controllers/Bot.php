@@ -15,6 +15,47 @@ class Bot extends CI_Controller {
     }
 
 
+    function class(){
+        $classes = $this->Db_model->r_fetch(array(
+            'r_status >=' => 0,
+        ));
+        $class_count = 0;
+        foreach($classes as $class){
+            $this->Db_model->b_update( $class['r_b_id'] , array(
+                'b_prerequisites' => ( strlen($class['r_prerequisites'])>0 ? $class['r_prerequisites'] : null ),
+                'b_application_questions' => ( strlen($class['r_application_questions'])>0 ? $class['r_application_questions'] : null ),
+                'b_completion_prizes' => ( strlen($class['r_completion_prizes'])>0 ? $class['r_completion_prizes'] : null ),
+            ));
+            $class_count++;
+        }
+        echo $class_count.' Classes Updated<br />';
+    }
+
+    function task(){
+        $bootcamps = $this->Db_model->c_full_fetch(array(
+            'b.b_status >=' => 0,
+            'b.b_id' => 1,
+        ));
+        $task_updates = 0;
+        foreach($bootcamps as $b){
+            if(isset($b['c__child_intents']) && count($b['c__child_intents'])>0){
+                foreach($b['c__child_intents'] as $milestone){
+                    if(isset($milestone['c__child_intents']) && count($milestone['c__child_intents'])>0){
+                        foreach($milestone['c__child_intents'] as $task){
+                            if($task['c_time_estimate']==0){
+                                //Update to 3 minute minimum:
+                                $this->Db_model->c_update( $task['c_id'] , array(
+                                    'c_time_estimate' => '0.05', //3 min
+                                ));
+                                $task_updates++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        echo $task_updates.' Tasks updated for '.count($bootcamps).' bootcamps';
+    }
 
 	function cleanm(){
 	    $messages = $this->Db_model->i_fetch(array(

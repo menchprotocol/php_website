@@ -190,6 +190,7 @@ if($object_name=='bootcamps'){
             ),1);
         }
 
+
         //Fetch Bootcamps:
         $instructor_bootcamps = $this->Db_model->ba_fetch(array(
             'ba.ba_u_id' => $user['u_id'],

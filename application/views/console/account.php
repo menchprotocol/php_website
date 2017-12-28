@@ -325,7 +325,7 @@ function insert_gravatar(){
 
 
 
-        <div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History <span id="hb_728" class="help_button" intent-id="728"></span></h4></div>
+        <div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History</h4></div>
         	<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No payouts yet.</div>
 
 

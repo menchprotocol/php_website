@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.30,
+    'version' => 1.39,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -253,8 +253,7 @@ $config['engagement_subscriptions'] = array(
 
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0','0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
-
+$config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
 
 
 //That is auto added to all bootcamp teams as Adviser role:
@@ -902,20 +901,6 @@ $config['r_meeting_frequency'] = array(
     "24" => "24 Sessions Total",
 );
 $config['r_meeting_duration'] = array('0.25','0.5','1','2','3','5');
-
-$config['r_student_reach'] = array(
-    "0" => "Select Student Reach...",
-    "50" => "0 - 99",
-    "500" => "100 - 1k",
-    "2500" => "1k - 5k",
-    "7500" => "5k - 10k",
-    "15000" => "10k - 20k",
-    "35000" => "20k - 50k",
-    "75000" => "50k - 100k",
-    "150000" => "100k - 200k",
-    "350000" => "200k - 500k",
-    "750000" => "500k+",
-);
 
 
 //Engagement mediums and corresponding actions that result in a new engagement

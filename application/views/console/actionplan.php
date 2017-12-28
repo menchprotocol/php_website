@@ -39,7 +39,6 @@ function format_hours(dbl_hour){
 
 $(document).ready(function() {
 
-
     //Deletion warning to Tasks & Milestone drop down:
     $('#c_status_2').change(function() {
         if(parseInt($(this).val())<0){
@@ -96,6 +95,9 @@ $(document).ready(function() {
                     load_modify(hash_parts[1],level_id);
                 }
             }
+        } else {
+            //Perhaps a menu change?
+            focu_hash(window.location.hash);
         }
     }
 
@@ -389,7 +391,7 @@ function intents_sort(c_id,level){
 
                 //Give relative position:
                 new_sort[sort_rank] = cr_id;
-                $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fa fa-pencil-square"></i> DRAFTING</b>');
+                $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fa fa-pencil-square"></i> DRAFT</b>');
             }
         }
  	});
@@ -588,6 +590,12 @@ function load_modify(c_id, level){
             //Fetch current status
             $('#modifybox #c_status_3').val($('.c_objective_'+c_id).attr('current-status'));
 
+            //Completion settings:
+            document.getElementById("c_complete_url_required").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_url_required'));
+            document.getElementById("c_complete_notes_required").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_notes_required'));
+            document.getElementById("c_complete_is_bonus_task").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_is_bonus_task'));
+            $("#c_complete_instructions").val($('.c_objective_'+c_id).attr('c_complete_instructions'));
+
         }
 
         //Make the frame visible:
@@ -650,6 +658,10 @@ function save_modify(){
 
             modify_data['c_objective'] = $('#c_objective3 .c_objective_input').val();
             modify_data['c_time_estimate'] = $('#c_time_estimate').val();
+            modify_data['c_complete_url_required'] = (document.getElementById('c_complete_url_required').checked ? 1 : 0);
+            modify_data['c_complete_notes_required'] = (document.getElementById('c_complete_notes_required').checked ? 1 : 0);
+            modify_data['c_complete_is_bonus_task'] = (document.getElementById('c_complete_is_bonus_task').checked ? 1 : 0);
+            modify_data['c_complete_instructions'] = $('#c_complete_instructions').val().replace('"', '').replace('\'', '');
             modify_data['c_status'] = $('#c_status_3').val();
 
         }
@@ -755,6 +767,18 @@ function save_modify(){
                     var task_deficit = modify_data['c_time_estimate'] - current_hours_task;
                     var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-node-id'));
 
+                    //Update Completion Settings (All the time):
+                    $('.c_objective_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
+                    $('.c_objective_'+modify_data['pid']).attr('c_complete_notes_required'  , modify_data['c_complete_notes_required']);
+                    $('.c_objective_'+modify_data['pid']).attr('c_complete_is_bonus_task'   , modify_data['c_complete_is_bonus_task']);
+                    $('.c_objective_'+modify_data['pid']).attr('c_complete_instructions'    , modify_data['c_complete_instructions']);
+                    $('#c_complete_instructions').val(modify_data['c_complete_instructions']); //Maybe ' or " has been removed
+
+                    if(modify_data['c_complete_is_bonus_task']){
+                        $('.bonus_task_'+modify_data['pid']).removeClass('hidden');
+                    } else {
+                        $('.bonus_task_'+modify_data['pid']).addClass('hidden');
+                    }
 
                     //Update status?
                     var current_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
@@ -856,6 +880,165 @@ function tree_message(c_id,u_id){
 
 }
 
+
+
+
+
+/* ******************************** */
+/* ******************************** */
+/* Simple List Management Functions */
+/* ******************************** */
+/* ******************************** */
+
+function initiate_list(group_id,placeholder,prefix,current_items){
+
+    //Is the ID on the page? Should be...
+    if(!($('#'+group_id).length)){
+        return false;
+    }
+
+    //Add the add line:
+    $('#'+group_id).html('<div class="list-group-item list_input">'+
+        '<div class="input-group">'+
+        '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'"></div>'+
+        '<span class="input-group-addon" style="padding-right:0;">'+
+        '<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fa fa-plus" aria-hidden="true"></i></span></span>'+
+        '</span>'+
+        '</div>'+
+        '</div>');
+
+    //Initiate sort:
+    var theobject = document.getElementById(group_id);
+    var sort = Sortable.create( theobject , {
+        animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+        handle: ".fa-bars", // Restricts sort start click/touch to the specified element
+        draggable: ".is_sortable", // Specifies which items inside the element should be sortable
+        onUpdate: function (evt/**Event*/){
+            save_items(group_id);
+        }
+    });
+
+    //Add initial items:
+    if(current_items.length>0){
+        $.each(current_items, function( index, value ) {
+            add_item(group_id,prefix,value);
+        });
+    }
+
+    //Also watch for the enter key:
+    $('#'+group_id+' input[type=text]').keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) {
+            add_item(group_id,prefix,null);
+
+            //Save the changes:
+            save_items(group_id);
+            return true;
+        }
+    });
+
+    //And watch for the Add button click:
+    $('#'+group_id+'>div .badge-primary').click(function (e) {
+        //Add to UI:
+        add_item(group_id,prefix,null);
+
+        //Save the changes:
+        save_items(group_id);
+    });
+}
+
+function save_items(group_id){
+    //Fetch new sort:
+    var new_sort = [];
+    var sort_rank = 0;
+
+    $( '#'+group_id+'>li' ).each(function() {
+        sort_rank++;
+        //Update sort handler:
+        var current_handler = $( this ).find( '.inline-level' ).html();
+        var handler_parts = current_handler.split("#");
+        $( this ).find( '.inline-level' ).html(handler_parts[0]+'#'+sort_rank);
+
+        //Organize for saving:
+        new_sort.push($( this ).find( '.theitem' ).text());
+    });
+
+    //Show Updating:
+    //$('#'+group_id+'_status').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
+
+    //Update backend:
+    $.post("/api_v1/save_b_list", {group_id:group_id, new_sort:new_sort, b_id:$('#b_id').val()}, function(data) {
+
+        //Update UI to confirm with user? Keep it simple for now...
+        if(!data.status){
+            //Some error!
+            $('#'+group_id+'_status').html('<span style="color:#FF0000;">Error: '+data.message+'</span>');
+        } else {
+            /*
+            $('#'+group_id+'_status').html('<span>'+data.message+'</span>');
+            //Disapper in a while:
+            setTimeout(function() {
+                //Hide the editor & saving results:
+                $('#'+group_id+'_status').html('&nbsp;');
+            }, 560);
+            */
+        }
+
+    });
+}
+
+function confirm_remove(element){
+    var group_id = element.parent().parent().parent().attr('id');
+    console.log(group_id);
+
+
+    var r = confirm("Remove this item?");
+    if (r == true) {
+        element.parent().parent().remove();
+        save_items(group_id);
+    }
+}
+
+function initiate_edit(element){
+    var group_id = element.parent().parent().parent().attr('id');
+    console.log(group_id);
+    var new_item = prompt( "Modify:" , element.parent().parent().find( '.theitem' ).text() );
+    if (new_item == null || new_item == "") {
+        //Cancelled!
+    } else {
+        element.parent().parent().find( '.theitem' ).text(new_item);
+        save_items(group_id);
+    }
+
+}
+
+function add_item(group_id,prefix,current_value){
+    if($('#'+group_id+' input[type=text]').val().length>0 || (current_value && current_value.length>0)){
+
+        var next_item = $( '#'+group_id+'>li' ).length + 1;
+        var do_focus = false;
+        if(!current_value || current_value.length<1){
+            current_value = $('#'+group_id+' input[type=text]').val();
+            do_focus = true;
+        }
+        $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
+            '<span class="pull-right">'+
+                '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fa fa-trash"></i></a> '+
+                '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fa fa-pencil-square-o"></i></a>'+
+            '</span>'+
+            '<i class="fa fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
+            '</li>');
+
+        //Reset input field and re-focus only if manually added:
+        if(do_focus){
+            $('#'+group_id+' input[type=text]').val('').focus();
+        }
+
+    } else {
+        alert('Error: field is empty!');
+    }
+}
+
 </script>
 
 
@@ -869,7 +1052,7 @@ function tree_message(c_id,u_id){
 	<div class="col-xs-6">
 
 
-        <div class="help_body below_h" id="content_592"></div>
+        <div class="help_body below_h" id="content_2272"></div>
 		<?php
 
         //Show relevant tips:
@@ -884,68 +1067,118 @@ function tree_message(c_id,u_id){
             echo echo_cr($bootcamp['b_id'],$bootcamp,'outbound',$level,$bootcamp['b_sprint_unit']);
         echo '</div>';
 
-        /*
         ?>
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
-          <li id="nav_input" class="active"><a href="#input" data-toggle="tab" onclick="update_hash('input')"><i class="fa fa-sign-in" aria-hidden="true"></i> Input</a></li>
-          <li id="nav_process"><a href="#process" data-toggle="tab" onclick="update_hash('process')"><i class="fa fa-refresh" aria-hidden="true"></i> Process</a></li>
-          <li id="nav_output "><a href="#output" data-toggle="tab" onclick="update_hash('output')"><i class="fa fa-sign-out" aria-hidden="true"></i> Output</a></li>
-
-            <li id="nav_milestones" class="active"><a href="#milestones" data-toggle="tab" onclick="update_hash('milestones')"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</a></li>
-            <li id="nav_audience"><a href="#audience" data-toggle="tab" onclick="update_hash('audience')"><i class="fa fa-bullseye" aria-hidden="true"></i> Audience</a></li>
-            <li id="nav_prerequisites"><a href="#prerequisites" data-toggle="tab" onclick="update_hash('prerequisites')"><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites</a></li>
-            <li id="nav_questions"><a href="#questions" data-toggle="tab" onclick="update_hash('questions')"><i class="fa fa-question-circle" aria-hidden="true"></i> Questions</a></li>
-            <li id="nav_prizes"><a href="#prizes" data-toggle="tab" onclick="update_hash('prizes')"><i class="fa fa-trophy" aria-hidden="true"></i> Prizes</a></li>
+          <li id="nav_screening"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-sign-in" aria-hidden="true"></i> Screening</a></li>
+          <li id="nav_milestones" class="active"><a href="#milestones" data-toggle="tab" onclick="update_hash('milestones')"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</a></li>
+          <li id="nav_outcomes"><a href="#outcomes" data-toggle="tab" onclick="update_hash('outcomes')"><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</a></li>
         </ul>
 
 
         <div class="tab-content tab-space">
 
-            <div class="tab-pane" id="entry">
+            <div class="tab-pane" id="screening">
+
+                <div class="title"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="help_body maxout" id="content_426"></div>
+                <script>
+                    $(document).ready(function() {
+                        initiate_list('b_target_audience','+ New Target Audience','<i class="fa fa-address-book" aria-hidden="true"></i>',<?= ( strlen($bootcamp['b_target_audience'])>0 ? $bootcamp['b_target_audience'] : '[]' ) ?>);
+                    });
+                </script>
+                <div id="b_target_audience" class="list-group"></div>
+
+
+
+                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="help_body maxout" id="content_610"></div>
+                <script>
+                    $(document).ready(function() {
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($bootcamp['b_prerequisites'])>0 ? $bootcamp['b_prerequisites'] : '[]' ) ?>);
+                    });
+                </script>
+                <div id="b_prerequisites" class="list-group"></div>
+
+
+
+                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-question-circle" aria-hidden="true"></i> Application Questions <span id="hb_611" class="help_button" intent-id="611"></span> <span id="b_application_questions_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="help_body maxout" id="content_611"></div>
+                <script>
+                    $(document).ready(function() {
+                        initiate_list('b_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($bootcamp['b_application_questions'])>0 ? $bootcamp['b_application_questions'] : '[]' ) ?>);
+                    });
+                </script>
+                <div id="b_application_questions" class="list-group"></div>
+
 
             </div>
+
+
+
+
             <div class="tab-pane active" id="milestones">
+                <?php
+                //Milestone Expand/Contract all if more than 2
+                if(count($intent['c__child_intents'])>2){
+                    echo '<div id="milestone_view">';
+                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
+                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                    echo '</div>';
+                }
+                //Milestones List:
+                echo '<div id="list-outbound" class="list-group">';
 
-            </div>
-            <div class="tab-pane" id="outcome">
-
-            </div>
-        </div>
-
-
-        <?php
-        */
-
-        //Milestone Expand/Contract all if more than 2
-        if(count($intent['c__child_intents'])>2){
-            echo '<div id="milestone_view">';
-            echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
-            echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
-            echo '</div>';
-        }
-        //Milestones List:
-        echo '<div id="list-outbound" class="list-group">';
-
-            foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit'],$bootcamp['b_id']);
-            }
-            ?>
-            <div class="list-group-item list_input">
-        		<div class="input-group">
-        			<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="<?= $core_objects['c']['maxlength'] ?>" id="addnode" placeholder=""></div>
-        			<span class="input-group-addon" style="padding-right:8px;">
+                foreach($intent['c__child_intents'] as $key=>$sub_intent){
+                    echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit'],$bootcamp['b_id']);
+                }
+                ?>
+                <div class="list-group-item list_input">
+                    <div class="input-group">
+                        <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="<?= $core_objects['c']['maxlength'] ?>" id="addnode" placeholder=""></div>
+                        <span class="input-group-addon" style="padding-right:8px;">
         				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
         					<div><i class="fa fa-plus"></i></div>
         				</span>
         			</span>
-        		</div>
-        	</div>
-        	<?php
-        echo '</div>';
-        ?>
+                    </div>
+                </div>
+                <?php
+                echo '</div>';
+                ?>
+            </div>
+
+
+
+
+            <div class="tab-pane" id="outcomes">
+
+                <div class="title"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Transformations <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="help_body maxout" id="content_2271"></div>
+                <script>
+                    $(document).ready(function() {
+                        initiate_list('b_transformations','+ New Transformation','<i class="fa fa-diamond"></i>',<?= ( strlen($bootcamp['b_transformations'])>0 ? $bootcamp['b_transformations'] : '[]' ) ?>);
+                    });
+                </script>
+                <div id="b_transformations" class="list-group"></div>
+
+
+
+
+                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Prizes (Optional) <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="help_body maxout" id="content_623"></div>
+                <script>
+                    $(document).ready(function() {
+                        initiate_list('b_completion_prizes','+ New Prize','<i class="fa fa-trophy"></i>',<?= ( strlen($bootcamp['b_completion_prizes'])>0 ? $bootcamp['b_completion_prizes'] : '[]' ) ?>);
+                    });
+                </script>
+                <div id="b_completion_prizes" class="list-group"></div>
+            </div>
+        </div>
 
 	</div>
+
+
 	<div class="col-xs-6" id="iphonecol">
 
         <div id="modifybox" class="hidden" node-id="0" level="0">
@@ -973,19 +1206,19 @@ function tree_message(c_id,u_id){
 
 
             <div class="levelz level1 hidden">
-                <div class="title" style="margin-top:40px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+                <div class="title" style="margin-top:15px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
                 <div class="help_body maxout" id="content_627"></div>
                 <?= echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
                 <div style="clear:both; margin:0; padding:0;"></div>
             </div>
 
 
-            <div class="levelz level1 hidden" style="margin-top:15px;">
+            <div class="levelz level1 hidden" style="margin-top:0px;">
                 <?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
             </div>
 
 
-            <div class="levelz level1 hidden" style="margin-top:30px;">
+            <div class="levelz level1 hidden" style="margin-top:15px;">
                 <div class="title"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
                 <div class="help_body maxout" id="content_725"></div>
                 <div class="form-group label-floating is-empty">
@@ -1001,11 +1234,7 @@ function tree_message(c_id,u_id){
 
 
 
-
-
-
-
-            <div class="levelz level2 hidden" style="margin-top:30px;">
+            <div class="levelz level2 hidden" style="margin-top:15px;">
                 <div class="title"><h4><i class="fa fa-calendar-plus-o" aria-hidden="true"></i> Extend Milestone <span id="hb_601" class="help_button" intent-id="601"></span></h4></div>
                 <div class="help_body maxout" id="content_601"></div>
                 <div class="form-group label-floating is-empty">
@@ -1022,7 +1251,7 @@ function tree_message(c_id,u_id){
 
 
 
-            <div class="levelz level3 hidden" style="margin-top:30px;">
+            <div class="levelz level3 hidden" style="margin-top:15px;">
                 <?php $times = $this->config->item('c_time_options'); ?>
                 <div class="title"><h4><i class="fa fa-clock-o"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
                 <div class="help_body maxout" id="content_609"></div>
@@ -1037,8 +1266,26 @@ function tree_message(c_id,u_id){
 
 
 
+            <div class="levelz level3 hidden" style="margin-top:15px;">
+                <div class="title"><h4><i class="fa fa-check-square"></i> Task Completion Settings <span id="hb_2284" class="help_button" intent-id="2284"></span></h4></div>
+                <div class="help_body maxout" id="content_2284"></div>
+                <div class="form-group label-floating is-empty">
+                    <div class="checkbox">
+                        <label><input type="checkbox" id="c_complete_url_required" />URL Required&nbsp;</label>
+                        <label><input type="checkbox" id="c_complete_notes_required" />Notes Required&nbsp;</label>
+                        <label class="<?= ( $udata['u_id']==1 && 0 ? '' : 'hidden') ?>"><input type="checkbox" id="c_complete_is_bonus_task" /><i class="fa fa-gift" aria-hidden="true"></i> Bonus Task</label>
+                    </div>
+                    <div class="input-group border">
+                        <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">Instructions:</span>
+                        <input type="text" id="c_complete_instructions" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="" maxlength="70" class="form-control" placeholder="Mark as Complete after doing X & Y..." />
+                    </div>
+                </div>
+            </div>
 
-            <div class="levelz level2 hidden" style="margin-top:30px;">
+
+
+
+            <div class="levelz level2 hidden" style="margin-top:15px;">
                 <div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Milestone Status</h4></div>
                 <div class="form-group label-floating is-empty">
                     <select class="form-control input-mini border" id="c_status_2">
@@ -1052,7 +1299,7 @@ function tree_message(c_id,u_id){
             </div>
 
 
-            <div class="levelz level3 hidden" style="margin-top:30px;">
+            <div class="levelz level3 hidden" style="margin-top:15px;">
                 <div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Task Status</h4></div>
                 <div class="form-group label-floating is-empty">
                     <select class="form-control input-mini border" id="c_status_3">
@@ -1067,7 +1314,13 @@ function tree_message(c_id,u_id){
 
             <div id="delete_warning"></div>
 
-            <table width="100%" style="margin-top:15px;"><tr><td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
+
+
+
+
+
+
+            <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
         </div>
 
 
