@@ -2589,7 +2589,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     
     //Successful:
     return array(
-        'status' => 1,
+        'status' => ( count($instant_messages)>0 ? 1 : 0 ),
         'message' => 'Sent '.count($instant_messages).' instant messages',
         //Extra field for success only:
         'stats' => array(
