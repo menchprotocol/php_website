@@ -34,7 +34,6 @@ class Bot extends CI_Controller {
     function task(){
         $bootcamps = $this->Db_model->c_full_fetch(array(
             'b.b_status >=' => 0,
-            'b.b_id' => 123,
         ));
         $task_updates = 0;
         foreach($bootcamps as $b){
