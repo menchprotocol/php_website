@@ -444,7 +444,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null,$previous_item,$ne
         $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
         if(!is_null($previous_item) && isset($previous_item['c__child_intents'])){
             foreach($previous_item['c__child_intents'] as $task){
-                if($task['c_complete_is_bonus_task']=='t'){
+                if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
                     continue;
                 }
                 if(!isset($us_data[$task['c_id']])){
@@ -538,8 +538,16 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null,$previous_item,$ne
         }
 
         if($unlocked_action_plan && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            //This sprint has Assignments:
-            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.count($c['c__child_intents']).'</span>';
+            //This sprint has Assignments, count the active ones:
+            $active_assinments = 0;
+            foreach($c['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $active_assinments++;
+                }
+            }
+            if($active_assinments>0){
+                $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$active_assinments.'</span>';
+            }
         }
 
     $ui .= '</span>';
