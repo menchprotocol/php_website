@@ -755,10 +755,10 @@ function save_modify(){
                                     intents_sort(0, 2);
                                 }, 377);
                             }, 1597);
-                        } else {
-                            //Resort all Milestones to illustrate changes on UI:
-                            intents_sort(0, 2);
                         }
+
+                        //Resort all Milestones to illustrate changes on UI:
+                        intents_sort(0, 2);
                     }
 
                 } else if(modify_data['level']>=3){
