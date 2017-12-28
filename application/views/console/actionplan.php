@@ -374,6 +374,8 @@ function intents_sort(c_id,level){
                 $('#t_estimate_'+pid).removeClass('crossout');
 
                 sort_rank++;
+                //Store in DB:
+                new_sort[sort_rank] = cr_id;
 
                 //Update sort handler:
                 $( "#cr_"+cr_id+" .inline-level-"+level ).html( prefix + ' #' + ( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1)) );
@@ -382,9 +384,6 @@ function intents_sort(c_id,level){
                 if(increments>1){
                     sort_rank = sort_rank + increments - 1;
                 }
-
-                //Store in DB:
-                new_sort[sort_rank] = cr_id;
 
             } else {
 
