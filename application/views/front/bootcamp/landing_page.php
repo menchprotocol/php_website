@@ -371,7 +371,7 @@ $( document ).ready(function() {
     		    $plural_prize = ( json_decode($bootcamp['b_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
     		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_completion_prizes'])).'</li></ol>' ?></div>
-    		<p>Prize<?= $plural_prize ?> are awarded to students who complete all milestones by the ootcamp end time.</p>
+    		<p>Prize<?= $plural_prize ?> are awarded to students who complete all milestones by the Bootcamp end time.</p>
     		<hr />
     		<?php } ?>
     		
