@@ -1,6 +1,6 @@
 <script>
 
-<?php if(is_dev()){ ?>
+<?php if(is_dev() || isset($_GET['dev'])){ ?>
 
     $(document).ready(function() {
         //Load shervin for Development:

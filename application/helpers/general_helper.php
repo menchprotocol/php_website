@@ -1793,7 +1793,7 @@ function filter_class($classes,$r_id=null){
     }
     
     foreach($classes as $class){
-        if($class['r_status']==1 && !date_is_past($class['r_start_date']) && (!$r_id || ($r_id==$class['r_id']))){
+        if($class['r_status']>=1 && !date_is_past($class['r_start_date']) && (!$r_id || ($r_id==$class['r_id']))){
             return $class;
             break;
         }
