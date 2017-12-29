@@ -247,7 +247,7 @@ $config['engagement_subscriptions'] = array(
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(26,3,4,5,8,9,15,30,31,37,51),
+        'subscription' => array(26,8,9,15,30,31,37,51),
     ),
 );
 

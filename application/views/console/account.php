@@ -143,21 +143,24 @@ function insert_gravatar(){
             </div>
         </div>
         
-        
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-picture-o" aria-hidden="true"></i> Picture</h4></div>
-        <ul>
-        	<li>Used as your instructor profile photo in your bootcamp landing pages.</li>
-        	<li>Link to any URL that hosts your photo, starting with "https://"</li>
-        	<?php if(strlen($udata['u_email'])>0){ ?>
-        	<li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
-        	<?php } ?>
-        </ul>
-        <div class="row" style="margin:0 0 0 0;">
-        	<div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-            	<img src="<?= ( strlen($udata['u_image_url'])>0 ? $udata['u_image_url'] : '/img/bp_128.png' ) ?>" class="profile-pic" />
-            </div>
-            <div class="col-xs-10" style="padding-left:5px; padding-right:0;">
-            	<input type="url" required id="u_image_url" value="<?= $udata['u_image_url'] ?>" class="form-control border">
+
+
+        <div style="display: none;">
+            <div class="title" style="margin-top:30px;"><h4><i class="fa fa-picture-o" aria-hidden="true"></i> Picture</h4></div>
+            <ul>
+                <li>Used as your instructor profile photo in your bootcamp landing pages.</li>
+                <li>Link to any URL that hosts your photo, starting with "https://"</li>
+                <?php if(strlen($udata['u_email'])>0){ ?>
+                    <li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+                <?php } ?>
+            </ul>
+            <div class="row" style="margin:0 0 0 0;">
+                <div class="col-xs-2" style="padding-left:0; padding-right:5px;">
+                    <img src="<?= ( strlen($udata['u_image_url'])>0 ? $udata['u_image_url'] : '/img/bp_128.png' ) ?>" class="profile-pic" />
+                </div>
+                <div class="col-xs-10" style="padding-left:5px; padding-right:0;">
+                    <input type="url" required id="u_image_url" value="<?= $udata['u_image_url'] ?>" class="form-control border">
+                </div>
             </div>
         </div>
         
