@@ -145,7 +145,7 @@ function insert_gravatar(){
         
 
 
-        <div style="display: none;">
+        <div style="display: block;">
             <div class="title" style="margin-top:30px;"><h4><i class="fa fa-picture-o" aria-hidden="true"></i> Picture</h4></div>
             <ul>
                 <li>Used as your instructor profile photo in your bootcamp landing pages.</li>
