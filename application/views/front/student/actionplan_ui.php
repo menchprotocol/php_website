@@ -43,8 +43,8 @@ function mark_done(){
 		b_id:$('#b_id').val(),
 		r_id:$('#r_id').val(),
         c_id:$('#c_id').val(),
-        next_c_id: <?= $next_intent['c_id'] ?>,
-        next_level: <?= $next_level ?>,
+        next_c_id: <?= ( isset($next_intent['c_id']) ? intval($next_intent['c_id']) : 0 ) ?>,
+        next_level: <?= ( isset($next_level) ? intval($next_level) : 0 ) ?>,
 
 	} , function(data) {
 		//Update UI to confirm with user:
