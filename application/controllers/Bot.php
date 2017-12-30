@@ -270,6 +270,7 @@ class Bot extends CI_Controller {
                         ));
 
                         //Is the student asking for the next message thread?
+                        /*
                         if(!$sent_from_us && isset($im['message']['text']) && strtolower(trim($im['message']['text']))=='next'){
 
                             //We have a continuation request in a message thread:
@@ -338,12 +339,13 @@ class Bot extends CI_Controller {
 
                                                     if($current_instant_pid==$level1['c_id']){
 
+                                                        //TODO Look at general_helper/tree_message() for an updated version of this section with a new implementation of echo_i
                                                         //Yes, this is the first one to be dispatched:
                                                         //These are to be instantly distributed:
-                                                        array_push( $instant_messages , echo_i($i, $users[0]['u_fname'], true /*Facebook Format*/ ));
+                                                        array_push( $instant_messages , echo_i($i, $users[0]['u_fname'], true ));
 
                                                         //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
-                                                        $thread['tree']['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
+                                                        //$thread['tree']['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
 
                                                         //Log sent engagement:
                                                         $this->Db_model->e_create(array(
@@ -369,7 +371,6 @@ class Bot extends CI_Controller {
                                                 }
                                             }
                                         }
-                                        //Future depth 2+ goes here...
                                     }
                                 }
                             }
@@ -442,7 +443,7 @@ class Bot extends CI_Controller {
 
                             }
                         }
-
+                        */
 
                         //Fetch for admission to append to this message:
 					    $admissions = $this->Db_model->ru_fetch(array(
