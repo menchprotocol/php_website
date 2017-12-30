@@ -2392,6 +2392,9 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         array_push( $instant_messages , array(
             'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
         ));
+        array_push( $instant_messages , array(
+            'text' => 'The target outcome for this week is to '.$bootcamps[0]['c_objective'].'.',
+        ));
     }
 
     //See if the milestone has messages for it self:
@@ -2488,7 +2491,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             if($bootcamp_data && $bootcamp_data['level']==2) {
                 //Let them know how many tasks:
                 array_push($instant_messages, array(
-                    'text' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . trim(strip_tags(echo_time($tree[0]['c__estimated_hours'], 0))) . ' in total.',
+                    'text' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . trim(strip_tags(echo_time($bootcamps[0]['c__estimated_hours'], 0))) . ' in total.',
                 ));
             }
 
@@ -2543,8 +2546,13 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             if($starting_message_count==count($instant_messages)){
                                 //This is the very first message for this Task being added:
                                 array_push( $instant_messages , array(
-                                    'text' => 'Your first task is ['.$level1['c_objective'].'] which is estimated to take about '.trim(strip_tags(echo_time($level1['c_time_estimate'],0))).' to complete.',
+                                    'text' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.$level1['c_objective'].' which is estimated to take about '.trim(strip_tags(echo_time($level1['c_time_estimate'],0))).' to complete.',
                                 ));
+                                if($active_tasks>1){
+                                    array_push( $instant_messages , array(
+                                        'text' => 'Once completed I will instantly unlock your next task and send your more instructions on how to go about completing it.',
+                                    ));
+                                }
                             }
 
 
@@ -2577,17 +2585,16 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
 
 
                 if($starting_message_count==count($instant_messages)){
-                    //Create custom message based on Task Completion Settings:
-                    array_push( $instant_messages , array(
-                        //TODO Implement submission requirements notes: requires a URL + Completion Notes
-                        'text' => 'Completing this '.strip_tags(echo_time($level1['c_time_estimate'],0)).' task will earn you '.round($level1['c_time_estimate']*60).' points if completed before the end of this milestone.',
-                    ));
-                } else {
                     //ooops no message found for this task! let the user know:
                     array_push( $instant_messages , array(
                         'text' => 'This task has no messages from your instructor.',
                     ));
                 }
+
+                //Create custom message based on Task Completion Settings:
+                array_push( $instant_messages , array(
+                    'text' => 'Completing this '.strip_tags(echo_time($level1['c_time_estimate'],0)).' task will earn you '.round($level1['c_time_estimate']*60).' points if completed before the end of this milestone.',
+                ));
 
                 //Level 1 depth only deals with a single intent, so we'll always end here:
                 break;
