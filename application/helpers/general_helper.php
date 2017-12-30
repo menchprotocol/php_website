@@ -2393,7 +2393,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
         ));
         array_push( $instant_messages , array(
-            'text' => 'The target outcome for this week is to '.$bootcamps[0]['c_objective'].'.',
+            'text' => 'The target outcome for this milestone is to '.$bootcamp_data['intent']['c_objective'].'.',
         ));
     }
 
@@ -2491,7 +2491,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             if($bootcamp_data && $bootcamp_data['level']==2) {
                 //Let them know how many tasks:
                 array_push($instant_messages, array(
-                    'text' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . trim(strip_tags(echo_time($bootcamps[0]['c__estimated_hours'], 0))) . ' in total.',
+                    'text' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0))) . ' in total.',
                 ));
             }
 
