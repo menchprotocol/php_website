@@ -2390,10 +2390,10 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     //This is the very first message for this milestone!
     if($outbound_levels==1 && $bootcamp_data && $bootcamp_data['level']==2){
         array_push( $instant_messages , array(
-            'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' Milestone!',
+            'text' => 'Welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone!',
         ));
         array_push( $instant_messages , array(
-            'text' => 'The target outcome for this milestone is to '.$bootcamp_data['intent']['c_objective'].'.',
+            'text' => 'The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
         ));
     }
 
@@ -2546,7 +2546,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             if($starting_message_count==count($instant_messages)){
                                 //This is the very first message for this Task being added:
                                 array_push( $instant_messages , array(
-                                    'text' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.$level1['c_objective'].' which is estimated to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
+                                    'text' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.strtolower($level1['c_objective']).' which is estimated to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
                                 ));
                                 if($active_tasks>1){
                                     array_push( $instant_messages , array(
@@ -2600,7 +2600,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 ));
                 array_push( $instant_messages , array(
                     //TODO mention the class average response time here:
-                    'text' => 'If you needed more assistance simply send me a voice, video or text message and I will forward it to your instructor team for a timely response.',
+                    'text' => 'If you needed more assistance simply send me a voice, video or text message and I will forward it to your instructor team for a timely response. Let\' do it!',
                 ));
 
                 //Level 1 depth only deals with a single intent, so we'll always end here:
