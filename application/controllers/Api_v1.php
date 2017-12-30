@@ -1839,8 +1839,10 @@ class Api_v1 extends CI_Controller {
 	        || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
 	        || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
 	            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
-	    } elseif(!isset($_POST['us_on_time_score'])){
-	        die('<span style="color:#FF0000;">Error: Missing point score.</span>');
+        } elseif(!isset($_POST['us_on_time_score'])){
+            die('<span style="color:#FF0000;">Error: Missing point score.</span>');
+        } elseif(!isset($_POST['next_c_id']) || !isset($_POST['next_level']) || intval($_POST['next_c_id'])<1 || intval($_POST['next_level'])<1){
+            die('<span style="color:#FF0000;">Error: Missing next task information.</span>');
 	    } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
 	        die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
 	    }
@@ -1852,7 +1854,16 @@ class Api_v1 extends CI_Controller {
 	    if(count($original_intents)<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid task ID.</span>');
 	    }
-	    
+
+        //Fetch next intent:
+        $next_intents = $this->Db_model->c_fetch(array(
+            'c.c_id' => intval($_POST['next_c_id']),
+        ));
+        if(count($next_intents)<=0){
+            die('<span style="color:#FF0000;">Error: Invalid next task ID.</span>');
+        }
+        $next_level = intval($_POST['next_level']);
+
 	    
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
@@ -1865,22 +1876,27 @@ class Api_v1 extends CI_Controller {
 	        'us_student_notes' => trim($_POST['us_notes']),
 	        'us_status' => 1, //Submitted
 	    ));
-	    
-	    
-	    //Log Engagement for New Intent Link:
+
+        //Send next message to student:
+        $message_result = tree_message($next_intents[0]['c_id'], ($next_level==3 ? 0 : 1 /* Next Milestone */), '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']), true);
+
+
+        //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $us_data['us_student_id'],
 	        'e_message' => $us_data['us_student_notes'],
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
-	            'us_data' => $us_data,
+                'us_data' => $us_data,
+                'next_level' => $next_level,
+                'next_c' => $next_intents[0],
+                'message_result' => $message_result,
 	        )),
 	        'e_type_id' => 33, //Marked as Done Report
 	        'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
 	        'e_r_id' => $us_data['us_r_id'],
 	        'e_c_id' => $us_data['us_c_id'],
 	    ));
-	    
 	    
 	    //Show result:
 	    echo_us($us_data);

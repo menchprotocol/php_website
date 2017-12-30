@@ -34,7 +34,7 @@ function mark_done(){
 
 	
 	//Save the rest of the content:
-	$.post("/api_v1/completion_report", {	
+	$.post("/api_v1/completion_report", {
 
 		page_loaded:<?= time() ?>,
 		us_notes:us_notes,
@@ -42,8 +42,10 @@ function mark_done(){
 		u_id:$('#u_id').val(),
 		b_id:$('#b_id').val(),
 		r_id:$('#r_id').val(),
-		c_id:$('#c_id').val(),
-		
+        c_id:$('#c_id').val(),
+        next_c_id: <?= $next_intent['c_id'] ?>,
+        next_level: <?= $next_level ?>,
+
 	} , function(data) {
 		//Update UI to confirm with user:
 		$('#save_report').html(data).hide().fadeIn();
