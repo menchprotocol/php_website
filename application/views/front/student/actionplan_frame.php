@@ -32,7 +32,7 @@
             var psid = thread_context.psid;
             var signed_request = thread_context.signed_request;
             //Fetch Page:
-            $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
+            $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request<?= isset($_GET['a']) ? '&a=1' : '' ?>, {}, function(data) {
                 //Update UI to confirm with user:
                 $( "#page_content").html(data);
             });
