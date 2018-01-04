@@ -107,6 +107,7 @@ if($object_name=='bootcamps'){
     		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
+    		<th style="width:30px;">&nbsp;</th>
     		<th>Bootcamp Outcome</th>
     		<th style="width:100px;"><i class="fa fa-flag" aria-hidden="true"></i></th>
     		<th style="width:40px;"><i class="fa fa-tasks" aria-hidden="true"></i></th>
@@ -140,7 +141,7 @@ if($object_name=='bootcamps'){
     ?>
 
     <script>
-        function dispatch_message(u_id,pid){
+        function dispatch_message(u_id,pid,depth){
             $('#dispatch_message_'+u_id).html('Sending...').hide().fadeIn();
             //Save the rest of the content:
             $.post("/api_v1/dispatch_message", {
@@ -236,7 +237,7 @@ if($object_name=='bootcamps'){
                 ),1);
                 if(count($sent_messages)>0){
                     //Already sent!
-                    echo '<i class="fa fa-check-circle" aria-hidden="true"></i>';
+                    echo '<i class="fa fa-check-circle" aria-hidden="true"></i> ';
                 }
 
                 //Show send button:
