@@ -43,7 +43,7 @@ class Api_v1 extends CI_Controller {
             ));
             return false;
 
-        } elseif(!isset($_POST['depth']) || intval($_POST['depth'])<=0) {
+        } elseif(!isset($_POST['depth']) || intval($_POST['depth'])<0) {
 
             echo_json(array(
                 'status' => 0,

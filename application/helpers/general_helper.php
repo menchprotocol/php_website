@@ -2468,7 +2468,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             //Return message:
             return array(
                 'status' => 1,
-                'message' => 'Milestone ',
+                'message' => 'Milestone not due yet.',
             );
 
         }
