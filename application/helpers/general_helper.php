@@ -605,7 +605,7 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null,$previous_item,$ne
     if($level==2 && $current_is_due && !$next_is_due){
         $ui .= ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
     } elseif($level==3 && $c['c_complete_is_bonus_task']=='t'){
-        $ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS</span>';
+        $ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS TASK</span>';
     }
 
     $ui .= ( $unlocked_action_plan ? '</a>' : '</li>');
@@ -1402,21 +1402,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        1 => array(
 	            's_name'  => 'Request To Publish',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Bootcamp submit to be reviewed by Mench team to be published live.',
+	            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-eye',
 	        ),
 	        2 => array(
     	        's_name'  => 'Published Privately',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'A private bootcamps where students can join using a special URL.',
+    	        's_desc'  => 'A private bootcamps where students can join only if they kow the Landing Page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
 	        3 => array(
     	        's_name'  => 'Published to Mench',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'A high-completion-rate Bootcamp with a proven history of high completion rate published on the Mench marketplace.',
+    	        's_desc'  => 'A Bootcamp with a proven history of high completion rate published on the Mench marketplace.',
     	        'u_min_status'  => 3, //Can only be done by admin
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
@@ -1455,21 +1455,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
     	    -1 => array(
         	    's_name'  => 'Archived',
     	        's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Class removed by bootcamp leader before it was started.',
+        	    's_desc'  => 'Class archived before it was started.',
         	    'u_min_status'  => 2,
         	    's_mini_icon' => 'fa-trash',
     	    ),
 	        0 => array(
 	            's_name'  => 'Drafting',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Class not yet ready for admission as its being modified.',
+	            's_desc'  => 'Class under development and not listed on landing page.',
 	            'u_min_status'  => 2,
 	            's_mini_icon' => 'fa-pencil-square',
 	        ),
 	        1 => array(
     	        's_name'  => 'Admission Open',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Class is open for student admission.',
+    	        's_desc'  => 'Class published live and is open for student admission.',
     	        'u_min_status'  => 2,
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
@@ -1733,7 +1733,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            'u_min_status'  => 1,
 	        ),
 	    ),
-	);	
+	);
 	
 	
 	//Return results:
@@ -2401,8 +2401,9 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             //Fetch intent relative to the bootcamp by doing an array search:
             $bootcamp_data = extract_level( $bootcamps[0] , $intent_id );
         }
+
     }
-    
+
     //Validate recipient:
     $recipients = $CI->Db_model->u_fetch(array(
         'u_id' => $e_recipient_u_id,
@@ -2437,6 +2438,42 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         'depth' => $outbound_levels,
     );
 
+
+    if($bootcamp_data && $bootcamp_data['level']==2 && $r_id){
+
+        //See if this milestone is due yet...
+        $class = filter($bootcamps[0]['c__classes'],'r_id',$r_id);
+
+        if(!$class){
+            //This is fishy!
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Class ID',
+            );
+        }
+
+        $open_date = strtotime(time_format($class['r_start_date'],2,(($bootcamp_data['sprint_index']-1) * ( $bootcamps[0]['b_sprint_unit']=='week' ? 7 : 1 ))))+(intval($class['r_start_time_mins'])*60);
+
+        if(time()<$open_date){
+
+            //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
+            array_push( $instant_messages , echo_i( array_merge( array(
+                'i_media_type' => 'text',
+                'i_message' => 'Awesome, you completed the current milestone. No more updates for now. I\'ll send you a message when your next milestone starts.',
+            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+            //Send message:
+            $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
+
+            //Return message:
+            return array(
+                'status' => 1,
+                'message' => 'Milestone ',
+            );
+
+        }
+    }
+
     //This is the very first message for this milestone!
     if($outbound_levels==1 && $bootcamp_data && $bootcamp_data['level']==2){
 
@@ -2467,6 +2504,8 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     }
 
     //See if the milestone/task has messages for it self:
+    $starting_message_count = count($instant_messages);
+
     if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
         //We have messages for the very first level!
         foreach($tree[0]['c__messages'] as $key=>$i){
@@ -2519,20 +2558,13 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         }
     }
 
-    if($bootcamp_data && $bootcamp_data['level']==2 && count($instant_messages)==0){
+
+    if($bootcamp_data && $starting_message_count==count($instant_messages) && in_array($bootcamp_data['level'],array(2,3))){
 
         //Ooops no message for this Milestone:
         array_push( $instant_messages , echo_i( array_merge( array(
             'i_media_type' => 'text',
-            'i_message' => 'This milestone has no messages from your instructor.',
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-    } elseif($bootcamp_data && $bootcamp_data['level']==3 && count($instant_messages)==0){
-
-        //Ooops no message for this Task:
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => 'This task has no messages from your instructor.',
+            'i_message' => 'This '.( $bootcamp_data['level']==2 ? 'milestone' : 'task' ).' has no messages from your instructor.',
         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
     }

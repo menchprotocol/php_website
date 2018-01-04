@@ -17,13 +17,12 @@ $(document).ready(function() {
 <div class="help_body below_h" id="content_2273"></div>
 
 
-
 <?php
 $website = $this->config->item('website');
-if(isset($bootcamp['c__milestone_units']) && $bootcamp['c__milestone_units'] > 0){	
+if(isset($bootcamp['c__milestone_units']) && $bootcamp['c__milestone_units'] > 0){
 	$rounded_hours = round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'] , 1);
 } else {
-	$rounded_hours = 'N/A';
+	$rounded_hours = 0;
 }
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootcamp['b_url_key'].'</div>';
 ?>
@@ -31,7 +30,13 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 <div class="help_body maxout" id="content_2272"></div>
 <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $bootcamp['c_objective'] ?></b></div>
 <div><?= count($bootcamp['c__active_intents']) .' Milestone'.( count($bootcamp['c__active_intents'])==1 ? '' : 's' ).' in '.$bootcamp['c__milestone_units'].' '.ucwords($bootcamp['b_sprint_unit']).($bootcamp['c__milestone_units']==1?'':'s') ?></div>
-<div><?= $bootcamp['c__task_count'] ?> Task<?= ($bootcamp['c__task_count']==1?'':'s') ?> = <?= round($bootcamp['c__estimated_hours'],1) ?> Hours<?= ( $bootcamp['c__milestone_units']>0 ? ' = '.$rounded_hours.' Hour'.($rounded_hours==1?'':'s').'/'.ucwords($bootcamp['b_sprint_unit']) : '' ) ?></div>
+<div>
+    <?php
+    echo $bootcamp['c__task_count'] .' Task'.($bootcamp['c__task_count']==1?'':'s');
+    echo ' = '. round($bootcamp['c__estimated_hours'],1) .' Hours';
+    echo ( $bootcamp['c__milestone_units']>0 ? ' = '.$rounded_hours.' Hour'.($rounded_hours==1?'':'s').'/'.ucwords($bootcamp['b_sprint_unit']) : '' );
+    ?>
+</div>
     <div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>
 
 <div style="margin-left:-5px"><?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>
@@ -41,10 +46,6 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 <div><a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u><?= number_format($bootcamp['c__estimated_hours']*60) ?> Points <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a></div>
 <div></div>
 <?php } */ ?>
-
-
-
-
 
 
 

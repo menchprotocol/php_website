@@ -43,6 +43,14 @@ class Api_v1 extends CI_Controller {
             ));
             return false;
 
+        } elseif(!isset($_POST['depth']) || intval($_POST['depth'])<=0) {
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Depth',
+            ));
+            return false;
+
         } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0) {
 
             echo_json(array(
@@ -54,7 +62,7 @@ class Api_v1 extends CI_Controller {
         } else {
 
             //All seems good, attempt dispatch:
-            echo_json(tree_message(intval($_POST['pid']), 0, '381488558920384', intval($_POST['u_id']), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
+            echo_json(tree_message(intval($_POST['pid']), intval($_POST['depth']), '381488558920384', intval($_POST['u_id']), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
 
         }
 
@@ -485,6 +493,7 @@ class Api_v1 extends CI_Controller {
 	    
 	    //Make sure we got all this data:
 	    if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
+
 	        //Log this error:
 	        $this->Db_model->e_create(array(
 	            'e_initiator_u_id' => $_POST['u_id'],
@@ -496,9 +505,18 @@ class Api_v1 extends CI_Controller {
 	        //Error:
 	        die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
 	    }
-	    
+
 	    //Attach timestamp:
 	    $_POST['answers']['pst_timestamp'] = date("Y-m-d H:i:s");
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $_POST['u_id'],
+            'e_json' => json_encode($_POST),
+            'e_type_id' => 26, //Application submitted
+            'e_b_id' => $admissions[0]['b_id'], //Share with bootcamp team
+            'e_r_id' => $admissions[0]['r_id'],
+        ));
 
 	    //Set updating data:
         $update_data = array(
@@ -507,29 +525,28 @@ class Api_v1 extends CI_Controller {
 
         //Is this a free bootcamp? If so, we can set the status to Pending Review:
         if(doubleval($admissions[0]['r_usd_price'])==0){
+
             //Yes, change the status to Pending Review:
             $update_data['ru_status'] = 2;
 
-            //TODO Log engagement:
+            //Log Engagement that this is now ready
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $_POST['u_id'],
+                'e_json' => json_encode($_POST),
+                'e_type_id' => 30, //Free Application Completed
+                'e_b_id' => $admissions[0]['b_id'], //Share with bootcamp team
+                'e_r_id' => $admissions[0]['r_id'],
+            ));
 
         }
 
 	    //Save answers:
 	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
-	    
-	    //Log Engagement:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $_POST['u_id'],
-	        'e_json' => json_encode($_POST),
-	        'e_type_id' => 26, //Application submitted
-	        'e_b_id' => $admissions[0]['b_id'], //Share with bootcamp team
-	        'e_r_id' => $admissions[0]['r_id'],
-	    ));
+
 	    
 	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
-	    //The "pay_r_id" variable makes the next page redirect to paypal automatically:
+	    //The "pay_r_id" variable makes the next page redirect to paypal automatically for PAID classes
 	    //Show message & redirect:
-	    sleep(1);
 	    echo '<script> setTimeout(function() { window.location = "/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'].'" }, 1000); </script>';
 	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted!</div>';
 	}
@@ -1230,8 +1247,9 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-        } elseif(strtotime($_POST['r_start_date'])<time()){
-            die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
+        //} elseif(strtotime($_POST['r_start_date'])<time()){
+            //TODO Put back in place
+            //die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
@@ -2310,7 +2328,7 @@ class Api_v1 extends CI_Controller {
                     'i_status' => intval($_POST['i_status']),
                     'i_fb_att_id' => ( isset($fb_save['attachment_id']) ? $fb_save['attachment_id'] : 0 ),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-	                    'i_status >=' => 0,
+	                    'i_status >=' => 1,
 	                    'i_status <' => 4, //But not private notes if any
 	                    'i_c_id' => intval($_POST['pid']),
 	                )),
@@ -2402,7 +2420,7 @@ class Api_v1 extends CI_Controller {
                     'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
                     'i_status' => intval($_POST['i_status']),
                     'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                            'i_status >=' => 0,
+                            'i_status >=' => 1,
                             'i_status <' => 4, //But not private notes if any
                             'i_c_id' => intval($_POST['pid']),
                         )),

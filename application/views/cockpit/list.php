@@ -145,6 +145,7 @@ if($object_name=='bootcamps'){
             //Save the rest of the content:
             $.post("/api_v1/dispatch_message", {
                 u_id:u_id,
+                depth:depth,
                 pid:pid,
             } , function(data) {
 
@@ -238,7 +239,7 @@ if($object_name=='bootcamps'){
                     echo '<i class="fa fa-check-circle" aria-hidden="true"></i>';
                 } else {
                     //Show send button:
-                    echo '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].')">Send</a></span>';
+                    echo '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">Send</a></span>';
                 }
             }
         echo '</td>';

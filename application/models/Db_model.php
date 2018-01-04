@@ -1171,16 +1171,52 @@ class Db_model extends CI_Model {
 		$link_data['e_id'] = $this->db->insert_id();
 		
 		
-		//Do we need to notify the admin about this engagement?
+		//Notify relevant subscribers about this notification:
 		if($link_data['e_id']>0 && $link_data['e_type_id']>0){
-		    
+
 		    //load model:
 		    $this->load->model('Email_model');
-		    
+
+
 		    //Detect matches:
-		    $engagement_subscriptions = $this->config->item('engagement_subscriptions');
+            $engagement_subscriptions = $this->config->item('engagement_subscriptions');
+            $instructor_subscriptions = $this->config->item('instructor_subscriptions');
 		    $engagement_references = $this->config->item('engagement_references');
-		    
+
+
+		    //Do we have any instructor subscription:
+            if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_type_id'],$instructor_subscriptions)){
+
+                //Just do this one:
+                if(!isset($engagements[0])){
+                    //Fetch Engagement Data:
+                    $engagements = $this->Db_model->e_fetch(array(
+                        'e_id' => $link_data['e_id']
+                    ));
+                }
+
+                //Did we find it? We should have:
+                if(isset($engagements[0])){
+
+                    //Fetch all Bootcamp Instructors and Notify them:
+                    $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+                        'ba.ba_b_id' => $link_data['e_b_id'],
+                        'ba.ba_status >=' => 2, //co-instructors & lead instructor
+                        'u.u_status >=' => 1, //Must be a user level 1 or higher
+                        'u.u_fb_id >' => 0, //Activated messenger
+                    ));
+
+                    //Send notifications to current instructor
+                    foreach($bootcamp_instructors as $bi){
+                        //Send Message:
+                        $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(array(
+                            'text' => 'New Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' ).': '.trim(strip_tags($engagements[0]['a_desc'])).'. Review here: https://mench.co/console/'.$link_data['e_b_id'].'/students',
+                        )));
+                    }
+                }
+            }
+
+		    //Individual subscriptions:
 		    foreach($engagement_subscriptions as $subscription){
 		        if(in_array($link_data['e_type_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
 		            

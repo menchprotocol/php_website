@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.4,
+    'version' => 1.49,
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'name' => 'Mench',
@@ -240,6 +240,11 @@ $config['engagement_references'] = array(
         'object_code' => 't',
     ),
 );
+
+//The engagements that need to be communicated to instructors:
+$config['instructor_subscriptions'] = array(26,29,30,33);
+
+//User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
@@ -254,7 +259,6 @@ $config['engagement_subscriptions'] = array(
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
-
 
 //That is auto added to all bootcamp teams as Adviser role:
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time

@@ -901,7 +901,7 @@ function initiate_list(group_id,placeholder,prefix,current_items){
     //Add the add line:
     $('#'+group_id).html('<div class="list-group-item list_input">'+
         '<div class="input-group">'+
-        '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'" maxlength="100"></div>'+
+        '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'" maxlength="140"></div>'+
         '<span class="input-group-addon" style="padding-right:0;">'+
         '<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fa fa-plus" aria-hidden="true"></i></span></span>'+
         '</span>'+
@@ -1002,8 +1002,8 @@ function initiate_edit(element){
     var new_item = prompt( "Modify:" , element.parent().parent().find( '.theitem' ).text() );
     if (new_item == null || new_item == "") {
         //Cancelled!
-    } else if (new_item.length>100) {
-        alert('ERROR: Cannot be more than 100 characters');
+    } else if (new_item.length>140) {
+        alert('ERROR: Cannot be more than 140 characters');
     } else {
         element.parent().parent().find( '.theitem' ).text(new_item);
         save_items(group_id);
