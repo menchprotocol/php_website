@@ -237,10 +237,10 @@ if($object_name=='bootcamps'){
                 if(count($sent_messages)>0){
                     //Already sent!
                     echo '<i class="fa fa-check-circle" aria-hidden="true"></i>';
-                } else {
-                    //Show send button:
-                    echo '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">Send</a></span>';
                 }
+
+                //Show send button:
+                echo '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">'.(count($sent_messages)>0 ? 'Resend' : 'Send').'</a></span>';
             }
         echo '</td>';
         echo '</tr>';

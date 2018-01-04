@@ -1210,7 +1210,9 @@ class Db_model extends CI_Model {
                     foreach($bootcamp_instructors as $bi){
                         //Send Message:
                         $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(array(
-                            'text' => 'New Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' ).': '.trim(strip_tags($engagements[0]['a_desc'])).'. Review here: https://mench.co/console/'.$link_data['e_b_id'].'/students',
+                            'text' => '[⚠️ System Notification]
+
+'.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' ).': '.trim(strip_tags($engagements[0]['a_desc'])).'. Review here: https://mench.co/console/'.$link_data['e_b_id'].'/students',
                         )));
                     }
                 }
