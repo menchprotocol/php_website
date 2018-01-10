@@ -63,7 +63,7 @@ class Email_model extends CI_Model {
         if($html_message){
 
             //Send Email:
-            return $this->send_single_email(array($udata['u_email']),$intents[0]['c_objective'],$html_message);
+            return $this->send_single_email(array($udata['u_email']),$tree[0]['c_objective'],$html_message);
 
         } else {
 
