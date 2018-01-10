@@ -357,6 +357,7 @@ function intents_sort(c_id,level){
     var new_sort = [];
  	var sort_rank = 0;
  	var is_properly_sorted = true; //Assume good unless proven otherwise
+    var drafting_ids = [];
 
  	$( "#"+s_element+" "+s_draggable ).each(function() {
         //Make sure this is NOT the dummy drag in box
@@ -368,15 +369,13 @@ function intents_sort(c_id,level){
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
             var increments = ( level==2 ? parseInt($('.c_objective_'+pid).attr('current-duration')) : 1 ); //The default for all nodes
             var prefix = ( level==2 ? '<i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit">'+$('#current_units').text()+'</span>' : '<i class="fa fa-check-square-o" aria-hidden="true"></i>' ); //The default for all nodes
-            var draft_counter = 0;
 
             if(status>=1){
 
                 //Remove potential line throughs:
                 $('#t_estimate_'+pid).removeClass('crossout');
 
-                sort_rank += 10;
-                draft_counter = 0; //Reset this
+                sort_rank++;
 
                 //Store in DB:
                 new_sort[sort_rank] = cr_id;
@@ -384,7 +383,7 @@ function intents_sort(c_id,level){
                 //Is the Outbound rank correct? Check DB value:
                 var db_rank = parseInt($('.c_objective_'+pid).attr('outbound-rank'));
 
-                if(level==2 && !((db_rank*10)==sort_rank) && !c_id){
+                if(level==2 && !(db_rank==sort_rank) && !c_id){
                     is_properly_sorted = false;
                     console.log('Intent #'+pid+' detected out of sync.');
                 }
@@ -394,7 +393,7 @@ function intents_sort(c_id,level){
 
                 //Did we have an extended Milestone? Add the extra time now so it does not impact the base ranking number:
                 if(increments>1){
-                    sort_rank += 10 * (increments - 1);
+                    sort_rank += (increments - 1);
                 }
 
             } else {
@@ -402,11 +401,8 @@ function intents_sort(c_id,level){
                 //Add line through:
                 $('#t_estimate_'+pid).addClass('crossout');
 
-                draft_counter++;
-
-                //Give relative position:
-                //This method breaks down if more than 10 drafting items in a row!
-                new_sort[sort_rank+draft_counter] = cr_id;
+                //Save temporarily so we can later give proper index based on all active ones:
+                drafting_ids[(drafting_ids.length)] = cr_id;
 
                 $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fa fa-pencil-square"></i> DRAFT</b>');
 
@@ -414,12 +410,21 @@ function intents_sort(c_id,level){
         }
  	});
 
+ 	//Append drafting messages as they always go last:
+ 	if(drafting_ids.length>0){
+        for (var i = 0, len = drafting_ids.length; i < len; i++) {
+            sort_rank++;
+            //Store in DB:
+            new_sort[sort_rank] = drafting_ids[i];
+        }
+    }
+
 
  	if(level==2 && !is_properly_sorted && !c_id){
  	    //Sorting issue detected on Milestone load:
         c_id = parseInt($('#pid').val());
-
     }
+
     console.log(new_sort);
 
     //It might be zero for lists that have jsut been emptied
@@ -462,6 +467,7 @@ function load_intent_sort(pid,level){
 
 	//Enable between list moves:
 	if(level=="3"){
+
         settings['group'] = "tasklists";
         settings['ghostClass'] = "drop-task-here";
         settings['onAdd'] = function (evt) {

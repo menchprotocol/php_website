@@ -426,6 +426,7 @@ class Api_v1 extends CI_Controller {
 	        'color' => '#FF0000',
 	        'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Unknown error, try again.',
 	    )));
+
 	}
 	
 	
@@ -2167,7 +2168,7 @@ class Api_v1 extends CI_Controller {
                     $this->Db_model->cr_update( intval($cr_id) , array(
                         'cr_creator_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
-                        'cr_outbound_rank' => intval(floor($rank/10)), //Might have decimal for DRAFTING milestones/tasks
+                        'cr_outbound_rank' => intval($rank), //Might have decimal for DRAFTING milestones/tasks
                     ));
                 }
 
