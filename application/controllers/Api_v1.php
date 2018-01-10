@@ -207,7 +207,7 @@ class Api_v1 extends CI_Controller {
 
                 //Send the email to their application:
                 $this->load->model('Email_model');
-                $email_sent = $this->Email_model->email_intent($enrollments[0]['b_id'],2697,$udata);
+                $email_sent = $this->Email_model->email_intent($focus_class['r_b_id'],2697,$udata);
 
 	            if($email_sent){
 	                //show the error:
@@ -282,7 +282,7 @@ class Api_v1 extends CI_Controller {
 	            //Yes they are in, lets email:
 	            //Send email and log engagement:
                 $this->load->model('Email_model');
-                $email_sent = $this->Email_model->email_intent($enrollments[0]['b_id'],2697,$udata);
+                $email_sent = $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
 
 	            if($email_sent){
 	                //Redirect to application:
