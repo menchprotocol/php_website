@@ -286,8 +286,9 @@ class Api_v1 extends CI_Controller {
 
 	            if($email_sent){
 	                //Redirect to application:
+                    $application_status_salt = $this->config->item('application_status_salt');
 	                die(echo_json(array(
-	                    'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
+	                    'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
 	                )));
 	            }
 	        }
@@ -405,12 +406,12 @@ class Api_v1 extends CI_Controller {
 
                         //Send the email to their application:
                         $this->load->model('Email_model');
-                        $email_sent = $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
 
 	                    if($email_sent){
 	                        //Redirect to application:
+                            $application_status_salt = $this->config->item('application_status_salt');
 	                        die(echo_json(array(
-	                            'hard_redirect' => '/my/class_application/'.$rudata['ru_id'].'?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
+	                            'hard_redirect' => '/my/class_application/'.$rudata['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
 	                        )));
 	                    }
 	                }
