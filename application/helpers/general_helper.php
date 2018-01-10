@@ -355,7 +355,7 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
 
             if(isset($i['e_recipient_u_id'])){
                 //Fetch the details of the user:
-                $users = $this->Db_model->u_fetch(array(
+                $users = $CI->Db_model->u_fetch(array(
                     'u_id' => intval($i['e_recipient_u_id']),
                     'u_status >=' => 0,
                 ));
