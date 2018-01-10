@@ -336,6 +336,12 @@ h5, .h5 {
     height:26px;
     display:inline-block;
 }
+.video-embed-page{
+    max-width:560px;
+    margin:0 auto;
+    font-size:18px;
+    line-height:120%;
+}
 .list_status img{
     width:24px;
     height:24px;

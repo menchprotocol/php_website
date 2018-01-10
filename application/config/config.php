@@ -6,10 +6,10 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.5,
+    'version' => 1.59,
+    'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
-    'name' => 'Mench',
     'email' => 'shervin@mench.co',
 );
 
@@ -242,17 +242,17 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(26,29,30,33);
+$config['instructor_subscriptions'] = array(30); //26,29,33
 
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(26,33,6,15,30,31,37,51),
+        'subscription' => array(33,6,15,31,37,51),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(26,8,9,15,30,31,37,51),
+        'subscription' => array(8,9,15,31,37,51),
     ),
 );
 
@@ -263,7 +263,6 @@ $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5
 //That is auto added to all bootcamp teams as Adviser role:
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time
 $config['message_max'] = 420; //Max number of characters allowed in messages
-
 
 
 $config['refund_policies'] = array(

@@ -356,33 +356,45 @@ function intents_sort(c_id,level){
     //Fetch new sort:
     var new_sort = [];
  	var sort_rank = 0;
+ 	var is_properly_sorted = true; //Assume good unless proven otherwise
 
  	$( "#"+s_element+" "+s_draggable ).each(function() {
         //Make sure this is NOT the dummy drag in box
  	    if(!$(this).hasClass('dropin-box')){
 
- 	        //Fetch variables for this intent:
+            //Fetch variables for this intent:
             var pid = parseInt($(this).attr('node-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
             var increments = ( level==2 ? parseInt($('.c_objective_'+pid).attr('current-duration')) : 1 ); //The default for all nodes
             var prefix = ( level==2 ? '<i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit">'+$('#current_units').text()+'</span>' : '<i class="fa fa-check-square-o" aria-hidden="true"></i>' ); //The default for all nodes
+            var draft_counter = 0;
 
             if(status>=1){
 
                 //Remove potential line throughs:
                 $('#t_estimate_'+pid).removeClass('crossout');
 
-                sort_rank++;
+                sort_rank += 10;
+                draft_counter = 0; //Reset this
+
                 //Store in DB:
                 new_sort[sort_rank] = cr_id;
+
+                //Is the Outbound rank correct? Check DB value:
+                var db_rank = parseInt($('.c_objective_'+pid).attr('outbound-rank'));
+
+                if(level==2 && !((db_rank*10)==sort_rank) && !c_id){
+                    is_properly_sorted = false;
+                    console.log('Intent #'+pid+' detected out of sync.');
+                }
 
                 //Update sort handler:
                 $( "#cr_"+cr_id+" .inline-level-"+level ).html( prefix + ' #' + ( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1)) );
 
                 //Did we have an extended Milestone? Add the extra time now so it does not impact the base ranking number:
                 if(increments>1){
-                    sort_rank = sort_rank + increments - 1;
+                    sort_rank += 10 * (increments - 1);
                 }
 
             } else {
@@ -390,14 +402,27 @@ function intents_sort(c_id,level){
                 //Add line through:
                 $('#t_estimate_'+pid).addClass('crossout');
 
+                draft_counter++;
+
                 //Give relative position:
-                new_sort[sort_rank] = cr_id;
+                //This method breaks down if more than 10 drafting items in a row!
+                new_sort[sort_rank+draft_counter] = cr_id;
+
                 $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fa fa-pencil-square"></i> DRAFT</b>');
+
             }
         }
  	});
 
- 	//It might be zero for lists that have jsut been emptied
+
+ 	if(level==2 && !is_properly_sorted && !c_id){
+ 	    //Sorting issue detected on Milestone load:
+        c_id = parseInt($('#pid').val());
+
+    }
+    console.log(new_sort);
+
+    //It might be zero for lists that have jsut been emptied
  	if(sort_rank>0 && c_id){
         //Update backend:
         $.post("/api_v1/intents_sort", { pid:c_id, b_id:$('#b_id').val(), new_sort:new_sort }, function(data) {
@@ -1118,7 +1143,7 @@ function add_item(group_id,prefix,current_value){
             <div class="tab-pane active" id="milestones">
                 <?php
                 //Milestone Expand/Contract all if more than 2
-                if(count($intent['c__child_intents'])>2){
+                if(count($intent['c__child_intents'])>0){
                     echo '<div id="milestone_view">';
                     echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
                     echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
@@ -1256,7 +1281,7 @@ function add_item(group_id,prefix,current_value){
                 <select class="form-control input-mini border timer_3" id="c_time_estimate">
                     <?php
                     foreach($times as $time){
-                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>~'.echo_hours($time).' = '.round($time*60).' On-Time Points OR '.floor($time*60*0.5).' Late Point'.(round($time*60)==1?'':'s').'</option>';
+                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).' / '.round($time*60).' Points</option>';
                     }
                     ?>
                 </select>

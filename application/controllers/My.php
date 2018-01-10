@@ -32,25 +32,102 @@ class My extends CI_Controller {
 	    )));
 	    */
 	}
-	
-	
+
+
 	function load_url($message_id){
-	    
+
+	    //Default variable:
+        $embed_html = false;
+
 	    //Loads the URL:
 	    if($message_id>0){
+
 	        $messages = $this->Db_model->i_fetch(array(
 	            'i_id' => $message_id,
 	            'i_status >=' => 1, //Not deleted
 	        ));
 	        
 	        if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){
-	            header('Location: '.$messages[0]['i_url']);
-	            return true;
+
+	            //Is this an embed video?
+                $embed_html = detect_embed_video($messages[0]['i_url'],$messages[0]['i_message']);
+
+	            //Do we have an active user?
+                $udata = $this->session->userdata('user');
+                if(isset($udata['u_id']) && intval($udata['u_id'])>0){
+
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => intval($udata['u_id']),
+                        'e_type_id' => 41, //Message link clicked
+                        'e_b_id' => $messages[0]['i_b_id'],
+                        'e_c_id' => $messages[0]['i_c_id'],
+                        'e_i_id' => $messages[0]['i_id'],
+                    ));
+
+                    if(!$embed_html){
+                        //Now redirect:
+                        header('Location: '.$messages[0]['i_url']);
+                        return true;
+                    }
+
+                } else {
+
+                    //See if its being clicked through Messenger:
+                    ?>
+                    <script>
+                        (function(d, s, id){
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) {return;}
+                            js = d.createElement(s); js.id = id;
+                            js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'Messenger'));
+
+                        //the Messenger Extensions JS SDK is done loading:
+                        window.extAsyncInit = function() {
+                            //Get context:
+                            MessengerExtensions.getContext('1782431902047009',
+                                function success(thread_context){
+                                    // success
+                                    //User ID was successfully obtained.
+                                    var psid = thread_context.psid;
+                                    //Fetch Page:
+                                    $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
+                                        <?php if(!$embed_html){ ?>
+                                        //Redirect to target URL:
+                                        window.location = '<?= $messages[0]['i_url'] ?>';
+                                        <?php } ?>
+                                    });
+                                },
+                                function error(err){
+                                    <?php if(!$embed_html){ ?>
+                                    //Redirect to target URL anyways:
+                                    window.location = '<?= $messages[0]['i_url'] ?>';
+                                    <?php } ?>
+                                }
+                            );
+                        };
+                    </script>
+                    <?php
+                }
 	        }
 	    }
-	    
-	    //Still here?
-	    redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Message ID.</div>');    
+
+        //Was this an embed video? Show it here:
+        if($embed_html){
+            //Loadup the embed on Mench:
+            $this->load->view('front/shared/p_header' , array(
+                'title' => 'Watch Online Video',
+            ));
+            $this->load->view('front/embed_video' , array(
+                'embed_html' => $embed_html,
+            ));
+            $this->load->view('front/shared/p_footer');
+        } else {
+            //Still here? show basic error:
+            echo 'Error: Invalid Message ID. URL may have been deleted by instructor.';
+        }
 	}
 	
 	function leaderboard(){
@@ -90,6 +167,37 @@ class My extends CI_Controller {
 	    $this->load->view('front/student/actionplan_frame' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
+
+	function log_messenger_click($u_fb_id,$i_id){
+	    if(intval($u_fb_id)>0 && intval($i_id)>0){
+
+	        //Fetch message:
+            $messages = $this->Db_model->i_fetch(array(
+                'i_id' => $i_id,
+                'i_status >=' => 1, //Not deleted
+            ));
+
+            //Fetch their admissions:
+            $admissions = $this->Db_model->remix_admissions(array(
+                'u.u_fb_id' => $u_fb_id,
+                'ru.ru_status >=' => 0, //Initiated admission or higher
+            ));
+
+            if(count($admissions)>0 && count($messages)>0){
+
+                //Log link click!
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $admissions[0]['u_id'],
+                    'e_type_id' => 41, //Message link clicked
+                    'e_b_id' => $admissions[0]['b_id'],
+                    'e_r_id' => $admissions[0]['r_id'],
+                    'e_c_id' => $messages[0]['i_c_id'],
+                    'e_i_id' => $messages[0]['i_id'],
+                ));
+
+            }
+        }
+    }
 	
 	function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 	    
@@ -97,8 +205,7 @@ class My extends CI_Controller {
 	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
 	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');
-	    } elseif(!is_dev() && 0
-            && (!isset($_GET['sr']) || !parse_signed_request($_GET['sr']))){
+	    } elseif(!is_dev() && (!isset($_GET['sr']) || !parse_signed_request($_GET['sr']))){
 	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
 	    
@@ -113,7 +220,7 @@ class My extends CI_Controller {
 	        //How many?
 	        if(count($admissions)<=0){
 	            //Ooops, they dont have anything!
-	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Join a bootcamp below to get started.</div>');
+	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
 	            //Nothing found for this user!
 	            die('<script> window.location = "/"; </script>');
 	        }

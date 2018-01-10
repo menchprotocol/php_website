@@ -4,7 +4,8 @@
 
     $(document).ready(function() {
         //Load shervin for Development:
-        var psid = '1443101719058431';
+        var psid = '1443101719058431'; //Shervin
+        //var psid = '1614565628581807'; //Sam
         $.post("/my/display_actionplan/"+psid+"/<?= intval($b_id) ?>/<?= intval($c_id) ?>", {}, function(data) {
             //Update UI to confirm with user:
             $( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');

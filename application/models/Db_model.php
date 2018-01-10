@@ -597,7 +597,7 @@ class Db_model extends CI_Model {
 		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: api_v1/r_create() when duplicating a class
 		    $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
 		        'ru.ru_r_id'	    => $value['r_id'],
-		        'ru.ru_status >='	=> 0, //Anyone who is enrolled
+		        'ru.ru_status >='	=> 2, //Anyone who is admitted
 		    )));
 		}
 		
@@ -1173,10 +1173,6 @@ class Db_model extends CI_Model {
 		
 		//Notify relevant subscribers about this notification:
 		if($link_data['e_id']>0 && $link_data['e_type_id']>0){
-
-		    //load model:
-		    $this->load->model('Email_model');
-
 
 		    //Detect matches:
             $engagement_subscriptions = $this->config->item('engagement_subscriptions');

@@ -45,6 +45,8 @@ function mark_done(){
         c_id:$('#c_id').val(),
         next_c_id: <?= ( isset($next_intent['c_id']) ? intval($next_intent['c_id']) : 0 ) ?>,
         next_level: <?= ( isset($next_level) ? intval($next_level) : 0 ) ?>,
+        require_notes:<?= ( $intent['c_complete_notes_required']=='t' ? 1 : 0 ) ?>,
+        require_url:<?= ( $intent['c_complete_url_required']=='t' ? 1 : 0 ) ?>,
 
 	} , function(data) {
 		//Update UI to confirm with user:
@@ -112,39 +114,40 @@ if($class_start_time>time()){
     <?php
 }
 
-//Overview:
-if($level>1){
-    //Messages:
-    echo '<h4><i class="fa fa-commenting" aria-hidden="true"></i> Messages</h4>';
-    echo '<div class="tips_content">';
-    $displayed_messages = 0;
-    if(count($i_messages)>0){
-        foreach($i_messages as $i){
-            if($i['i_status']==1){
-                echo '<div class="tip_bubble">';
-                echo echo_i($i,$admission['u_fname']);
-                echo '</div>';
-                $displayed_messages++;
-            }
+//Count active Messages:
+$displayed_messages = 0;
+if(count($i_messages)>0){
+    foreach($i_messages as $i){
+        if($i['i_status']==1){
+            $displayed_messages++;
         }
     }
-    if($displayed_messages==0){
-        echo '<div class="quill_content">None yet.</div>';
+}
+
+
+//Overview:
+if($displayed_messages>0){
+    $load_open = ( $level>=3 && !isset($us_data[$intent['c_id']]) );
+    //Messages:
+    echo '<h4 style="margin-top:20px;"><a href="javascript:$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
+    echo '<div class="tips_content messages_ap" style="display:'.( $load_open ? 'block' : 'none' ).';">';
+    foreach($i_messages as $i){
+        if($i['i_status']==1){
+            echo '<div class="tip_bubble">';
+            echo echo_i($i,$admission['u_fname']);
+            echo '</div>';
+        }
     }
     echo '</div>';
 }
 
 
 
-if($level>2){
+if($level>=3){
     
     echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
-    
-    //Do we have a time estimate for this task?
-    if($intent['c_time_estimate']>0){
-        echo '<div class="quill_content">Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'which equals <b>'.round($intent['c_time_estimate']*60).' Points</b> if completed on-time.</div>';
-    }
-    
+
+
     echo '<div id="save_report" class="quill_content">';
     if(isset($us_data[$intent['c_id']])){
 
@@ -152,22 +155,38 @@ if($level>2){
 
     } else {
 
+        if($intent['c_complete_url_required']=='t' && $intent['c_complete_notes_required']=='t'){
+            $red_note = 'a URL & Completion Notes';
+            $textarea_note = 'Include a URL & completion notes (and optional instructor feedback) to mark as complete';
+        } elseif($intent['c_complete_url_required']=='t'){
+            $red_note = 'a URL';
+            $textarea_note = 'Include a URL (and optional instructor feedback) to mark as complete';
+        } elseif($intent['c_complete_notes_required']=='t'){
+            $red_note = 'Completion Notes';
+            $textarea_note = 'Include completion notes (and optional instructor feedback) to mark as complete';
+        } else {
+            $red_note = null;
+            $textarea_note = 'Include optional instructor feedback to mark as complete';
+        }
+
+        //What instructions do we need to give?
+        if(strlen($intent['c_complete_instructions'])>0){
+            echo '<div>'.$intent['c_complete_instructions'].'</div>';
+        }
+        if($red_note) {
+            echo '<div style="color:#FF0000;">Completing this task requires ' . $red_note . '.</div>';
+        }
+        echo '<div>Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'which equals <b>'.round($intent['c_time_estimate']*60).' Points</b> if completed on-time.</div>';
         echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
+
+
+        //Submission button visible after first button was clicked:
         echo '<div class="mark_done" style="display:none;">';
-            if(strlen($intent['c_complete_instructions'])>0){
-                echo '<div>Instructions to Mark as Complete: '.$intent['c_complete_instructions'].'</div>';
-            }
-
-            if($intent['c_complete_url_required']=='t' || $intent['c_complete_notes_required']=='t') {
-                echo '<div style="color:#FF0000;">Requires ' . ($intent['c_complete_url_required'] == 't' ? 'URL' : '') . ($intent['c_complete_notes_required'] == 't' ? ($intent['c_complete_url_required'] == 't' ? ' and ' : '') . 'Notes' : '') . ':</div>';
-                echo '<textarea id="us_notes" class="form-control maxout"></textarea>';
-            } else {
-                echo '<textarea id="us_notes" class="form-control maxout" placeholder="Add Optional Feedback, Notes or URL"></textarea>';
-            }
-
+            echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
             echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
         echo '</div>';
-        
+
+
         if($ontime_secs_left>0){
             //Still on time:
             echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="ontime_dueby"></span>';
@@ -208,7 +227,35 @@ if($level<3){
         if(isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=0){
             $done_count++;
         }
-        echo echo_c($admission,$sub_intent,($level+1),$us_data,$sprint_index,( $key>0 ? $intent['c__child_intents'][($key-1)] : null), ( isset($intent['c__child_intents'][($key+1)]) ? $intent['c__child_intents'][($key+1)] : null));
+
+
+        //Find the next and previous items:
+        $previous_item = null;
+        $next_item = null;
+        $previous_key = $key;
+        $next_key = $key;
+
+        while(!$previous_item){
+            $previous_key--;
+            if(!isset($intent['c__child_intents'][$previous_key])){
+                break;
+            } elseif($intent['c__child_intents'][$previous_key]['c_status']>=1){
+                $previous_item = $intent['c__child_intents'][$previous_key];
+                break;
+            }
+        }
+        while(!$next_item){
+            $next_key++;
+            if(!isset($intent['c__child_intents'][$next_key])){
+                break;
+            } elseif($intent['c__child_intents'][$next_key]['c_status']>=1){
+                $next_item = $intent['c__child_intents'][$next_key];
+                break;
+            }
+        }
+
+        //Show line:
+        echo echo_c($admission,$sub_intent,($level+1),$us_data,$sprint_index,$previous_item,$next_item);
         //Now increment more for next round:
         $sprint_index += ($sub_intent['c_duration_multiplier']-1);
     }

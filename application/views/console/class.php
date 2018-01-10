@@ -24,12 +24,6 @@ function adjust_mentorship_sessions(){
 	} else {
 		$('#r_meeting_duration').fadeIn();
 	}
-	
-	if(val=='d1' || val=='w1' || val=='w2' || val=='w3' || val=='w5'){
-		$('#frequency_details').html('(Excluding <i class="fa fa-coffee" aria-hidden="true"></i> Break Milestone)');
-	} else {
-		$('#frequency_details').html('');
-	}
 }
 
 function update_tuition_calculator(){

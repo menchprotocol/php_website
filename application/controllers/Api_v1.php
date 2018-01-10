@@ -204,23 +204,12 @@ class Api_v1 extends CI_Controller {
 	                'e_json' => json_encode($_POST),
 	                'e_type_id' => 9, //Support Needing Graceful Errors
 	            ));
-	            
-	            //Send the email to their application:
-	            if(email_application_url($udata)){
-	                
-	                $application_status_salt = $this->config->item('application_status_salt');
-	                
-	                //Log Email Engagement:
-	                $this->Db_model->e_create(array(
-	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                    'e_json' => json_encode(array(
-                            'url' => 'https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'],
-                            'input' => $_POST,
-	                        'udata' => $udata,
-	                    )),
-	                    'e_type_id' => 28, //Email sent
-	                ));
-	                
+
+                //Send the email to their application:
+                $this->load->model('Email_model');
+                $email_sent = $this->Email_model->email_intent($enrollments[0]['b_id'],2697,$udata);
+
+	            if($email_sent){
 	                //show the error:
 	                die(echo_json(array(
 	                    'goto_section' => 0,
@@ -292,23 +281,10 @@ class Api_v1 extends CI_Controller {
 	        if(isset($enrollments[0]['ru_id']) && $enrollments[0]['ru_id']>0){
 	            //Yes they are in, lets email:
 	            //Send email and log engagement:
-	            if(email_application_url($udata)){
-	                
-	                $application_status_salt = $this->config->item('application_status_salt');
-	                $u_key = md5($udata['u_id'].$application_status_salt);
-	                
-	                //Log Engagement:
-	                $this->Db_model->e_create(array(
-	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-                        'e_json' => json_encode(array(
-                            'url' => 'https://mench.co/my/applications?u_key='.$u_key.'&u_id='.$udata['u_id'],
-                            'input' => $_POST,
-	                        'udata' => $udata,
-	                        'rudata' => $enrollments[0],
-	                    )),
-	                    'e_type_id' => 28, //Email sent
-	                ));
-	                
+                $this->load->model('Email_model');
+                $email_sent = $this->Email_model->email_intent($enrollments[0]['b_id'],2697,$udata);
+
+	            if($email_sent){
 	                //Redirect to application:
 	                die(echo_json(array(
 	                    'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
@@ -426,27 +402,12 @@ class Api_v1 extends CI_Controller {
 	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
 	                        'e_r_id' => $focus_class['r_id'],
 	                    ));
-	                    
-	                   
-	                        
-	                    //Send email and log engagement:
-	                    if(email_application_url($udata)){
-	                        //Fetch variables:
-	                        $application_status_salt = $this->config->item('application_status_salt');
-	                        $udata['u_key'] = md5($udata['u_id'].$application_status_salt);
-	                        
-	                        //Log Engagement:
-	                        $this->Db_model->e_create(array(
-	                            'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                            'e_json' => json_encode(array(
-                                    'url' => 'https://mench.co/my/applications?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
-                                    'input' => $_POST,
-	                                'udata' => $udata,
-	                                'rudata' => $rudata,
-	                            )),
-	                            'e_type_id' => 28, //Email sent
-	                        ));
-	                        
+
+                        //Send the email to their application:
+                        $this->load->model('Email_model');
+                        $email_sent = $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
+
+	                    if($email_sent){
 	                        //Redirect to application:
 	                        die(echo_json(array(
 	                            'hard_redirect' => '/my/class_application/'.$rudata['ru_id'].'?u_key='.$udata['u_key'].'&u_id='.$udata['u_id'],
@@ -1638,6 +1599,12 @@ class Api_v1 extends CI_Controller {
                         'message' => 'URL Key should be at least 5 characters long',
                     ));
                     return false;
+                } elseif(ctype_digit($_POST['b_url_key'])){
+                    echo_json(array(
+                        'status' => 0,
+                        'message' => 'URL Key should have at-least 1 letter.',
+                    ));
+                    return false;
                 } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
                     echo_json(array(
                         'status' => 0,
@@ -1864,6 +1831,14 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
 	        die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
 	    }
+
+	    //See if we have all that is required:
+        if($_POST['require_url'] && count(extract_urls($_POST['us_notes']))<1){
+            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        }
+        if($_POST['require_notes'] && count(extract_urls($_POST['us_notes'],true))<1){
+            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        }
 	    
 	    //Fetch intent:
 	    $original_intents = $this->Db_model->c_fetch(array(
@@ -1875,17 +1850,10 @@ class Api_v1 extends CI_Controller {
 
         //Fetch next intent:
         $next_level = intval($_POST['next_level']);
-        if(intval($_POST['next_c_id'])>0){
-            $next_intents = $this->Db_model->c_fetch(array(
-                'c.c_id' => intval($_POST['next_c_id']),
-            ));
-            if(count($next_intents)<=0){
-                die('<span style="color:#FF0000;">Error: Invalid next task ID.</span>');
-            }
-
-            $message_result = tree_message($next_intents[0]['c_id'], ($next_level==3 ? 0 : 1 /* Next Milestone */), '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']), true);
-        }
-
+        $next_c_id = intval($_POST['next_c_id']);
+        $next_intents = $this->Db_model->c_fetch(array(
+            'c.c_id' => $next_c_id,
+        ));
 	    
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
@@ -1919,6 +1887,15 @@ class Api_v1 extends CI_Controller {
 	    
 	    //Show result:
 	    echo_us($us_data);
+
+        //Show next Button if its a Task within this Milestone:
+        if($next_level==3 && $next_c_id>0){
+            //Show button for next task:
+            echo '<div><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next Task <i class="fa fa-arrow-right"></i></a></div>';
+        } elseif($next_level==2 && isset($next_intents[0])){
+            //Attempt to dispatch some messages:
+            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']), true);
+        }
 	}
 
 
@@ -2177,6 +2154,7 @@ class Api_v1 extends CI_Controller {
                     'message' => 'Invalid PID',
                 ));
             } else {
+
                 //Fetch for the record:
                 $outbounds_before = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_id' => intval($_POST['pid']),
@@ -2188,7 +2166,7 @@ class Api_v1 extends CI_Controller {
                     $this->Db_model->cr_update( intval($cr_id) , array(
                         'cr_creator_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
-                        'cr_outbound_rank' => intval($rank),
+                        'cr_outbound_rank' => intval(floor($rank/10)), //Might have decimal for DRAFTING milestones/tasks
                     ));
                 }
 

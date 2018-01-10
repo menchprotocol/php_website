@@ -67,7 +67,14 @@ class Api_chat_v1 extends CI_Controller{
                 'u.u_status >=' => 1,
             ));
 
-            if(!(count($fetch_instructors)==1)){
+            if(count($fetch_instructors)<1){
+                //Maybe they are a super admin?
+                $users = $this->Db_model->u_fetch(array(
+                    'u_id' => intval($_POST['initiator_u_id']),
+                ));
+            }
+
+            if(!(count($fetch_instructors)==1) && (!isset($users[0]) || $users[0]['u_status']<=2)){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Instructor Not Assigned to Bootcamp',
@@ -171,6 +178,7 @@ class Api_chat_v1 extends CI_Controller{
                             'ru_status' => intval($_POST['ru_status']),
                         ));
 
+
                         //Log Status change engagement:
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => intval($_POST['initiator_u_id']),
@@ -184,6 +192,18 @@ class Api_chat_v1 extends CI_Controller{
                             'e_b_id' => $admission['b_id'],
                             'e_r_id' => $admission['r_id'],
                         ));
+
+
+                        //DO we need to communicate?
+                        if(intval($_POST['ru_status']) == 4){
+
+                            //Send the email to their application:
+                            $this->load->model('Email_model');
+
+                            //Admission Email:
+                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2698,$admission);
+
+                        }
                     }
 
                     //Show success:
@@ -250,6 +270,13 @@ class Api_chat_v1 extends CI_Controller{
                 'u.u_status >=' => 1,
             ));
 
+            if(count($fetch_instructors)<1){
+                //Maybe they are a super admin?
+                $users = $this->Db_model->u_fetch(array(
+                    'u_id' => intval($_POST['initiator_u_id']),
+                ));
+            }
+
             //Fetch Student:
             $admissions = $this->Db_model->remix_admissions(array(
                 'ru.ru_u_id'	=> intval($_POST['recipient_u_id']),
@@ -257,7 +284,7 @@ class Api_chat_v1 extends CI_Controller{
             ));
 
             //Validate Student ID:
-            if(!(count($fetch_instructors)==1)){
+            if(!(count($fetch_instructors)==1) && (!isset($users[0]) || $users[0]['u_status']<=2)){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Instructor Not Assigned to Bootcamp',

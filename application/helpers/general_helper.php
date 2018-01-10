@@ -135,12 +135,60 @@ function extract_level($b,$c_id){
                 //Perhaps a level 3?
                 foreach($sprint['c__child_intents'] as $task_key=>$task){
                     if($task['c_id']==$c_id){
+
+
+                        //Find the next intent:
+                        $next_intent = null;
+                        $next_level = 0;
+                        $next_task_key = $task_key;
+                        $next_milestone_key = $sprint_key;
+
+                        while(!$next_intent){
+
+                            $next_task_key += 1;
+
+                            if(!isset($sprint['c__child_intents'][$next_task_key]['c_id'])){
+
+                                //Find the next active milestone since there are no more tasks:
+                                while(!$next_intent){
+
+                                    $next_milestone_key += 1;
+
+                                    if(!isset($b['c__child_intents'][$next_milestone_key]['c_id'])){
+
+                                        //Next milestone does not exist, return Bootcamp:
+                                        $next_intent = $b;
+                                        $next_level = 1;
+                                        break;
+
+                                    } elseif($b['c__child_intents'][$next_milestone_key]['c_status']>=1){
+
+                                        $next_intent = $b['c__child_intents'][$next_milestone_key];
+                                        $next_level = 2;
+                                        break;
+
+                                    }
+                                }
+
+                                //Break either way:
+                                break;
+
+                            } elseif($sprint['c__child_intents'][$next_task_key]['c_status']>=1){
+
+                                $next_intent = $sprint['c__child_intents'][$next_task_key];
+                                $next_level = 3;
+                                break;
+
+                            }
+                        }
+
+
                         //This is level 3:
                         $view_data['level'] = 3;
                         $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                         $view_data['sprint_duration_multiplier'] = $sprint['c_duration_multiplier'];
-                        $view_data['next_intent'] = ( isset($sprint['c__child_intents'][($task_key+1)]['c_id']) ? $sprint['c__child_intents'][($task_key+1)] : ( isset($b['c__child_intents'][($sprint_key+1)]['c_id']) ? $b['c__child_intents'][($sprint_key+1)] : $b ) ); //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
-                        $view_data['next_level'] = ( isset($sprint['c__child_intents'][($task_key+1)]['c_id']) ? 3 : ( isset($b['c__child_intents'][($sprint_key+1)]['c_id']) ? 2 : 1 ) ); //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
+                        $view_data['next_intent'] = $next_intent; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
+                        $view_data['next_level'] = $next_level; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
                         $view_data['intent'] = $task;
                         $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': '.( $task['c_complete_is_bonus_task']=='t' ? 'Bonus ' : '' ).'Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
                         $view_data['breadcrumb_p'] = array(
@@ -180,23 +228,62 @@ function echo_hours($int_time){
     return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : round($int_time).($int_time==1?' Hour':' Hours') );
 }
 
-function echo_video($video_url){
-    //Support youtube and direct video URLs
-    if(substr_count($video_url,'youtube.com/watch?v=')==1){
-        //This is youtube:
-        //We can also define start and end time by adding this: &start=4&end=9
-        return '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.one_two_explode('youtube.com/watch?v=','&',$video_url).'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+function detect_embed_video($url,$full_message){
+
+    $embed_code = null;
+
+    //See if $url has a valid embed video in it, and tranform it if it does:
+    if(substr_count($url,'youtube.com/watch?v=')==1 || substr_count($url,'youtu.be/')==1){
+
+        //Seems to be youtube:
+        if(substr_count($url,'youtube.com/watch?v=')==1){
+            $video_id = trim(one_two_explode('youtube.com/watch?v=','&',$url));
+        } elseif(substr_count($url,'youtu.be/')==1){
+            $video_id = trim(one_two_explode('youtu.be/','?',$url));
+        }
+
+        //This should be 11 characters!
+        if(strlen($video_id)==11){
+            //TODO later we can also define start and end time by adding this: &start=4&end=9
+            $embed_code = '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+        }
+
+    } elseif(substr_count($url,'vimeo.com/')==1){
+
+        //Seems to be Vimeo:
+        $video_id = trim(one_two_explode('vimeo.com/','?',$url));
+
+        //This should be an integer!
+        if(intval($video_id)==$video_id){
+            $embed_code = '<div class="yt-container"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+        }
+
+    } elseif(substr_count($url,'wistia.com/medias/')==1){
+
+        //Seems to be Wistia:
+        $video_id = trim(one_two_explode('wistia.com/medias/','?',$url));
+
+        $embed_code = '<script src="https://fast.wistia.com/embed/medias/'.$video_id.'.jsonp" async></script>
+<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
+<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
+<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
+<div class="wistia_embed wistia_async_'.$video_id.' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div>
+</div>
+</div>';
+
+    }
+
+    if($embed_code){
+        return trim(str_replace($url,$embed_code,$full_message));
     } else {
-        //This is a direct video URL:
-        return '<video width="100%" onclick="this.play()" controls><source src="'.$video_url.'" type="video/mp4">Your browser does not support the video tag.</video>';
+        //Not matched with an embed rule:
+        return false;
     }
 }
 
-
-
-function echo_i($i,$first_name=null,$fb_format=false){
+function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
     
-    //Must be one of these 5 types:
+    //Must be one of these types:
     if(!isset($i['i_media_type']) || !in_array($i['i_media_type'],array('text','video','audio','image','file'))){
         return false;
     }
@@ -216,33 +303,125 @@ function echo_i($i,$first_name=null,$fb_format=false){
     if($i['i_media_type']=='text'){
 
         if(strlen($i['i_message'])<=0){
-
-            //Should not be possible?!
+            //Should not happen!
             return false;
+        }
 
-        } else {
+        //Do we have a {first_name} replacement?
+        if($first_name){
+            //Tweak the name:
+            $i['i_message'] = str_replace('{first_name}', trim($first_name), $i['i_message']);
+        }
 
-            //Do we have a {first_name} replacement?
-            if($first_name){
-                //Tweak the name:
-                $i['i_message'] = str_replace('{first_name}', trim($first_name), $i['i_message']);
-            }
+        //Does this message also have a link?
+        if(isset($i['i_url']) && isset($i['i_id']) && intval($i['i_id'])>0 && strlen($i['i_url'])>0){
 
-            //Does this message also have a link?
-            if(isset($i['i_url']) && isset($i['i_id']) && intval($i['i_id'])>0 && strlen($i['i_url'])>0){
+            $website = $CI->config->item('website');
+            $url = $website['url'].'ref/'.$i['i_id'];
 
-                $website = $CI->config->item('website');
-                $url = $website['url'].'ref/'.$i['i_id'];
+            if($fb_format){
+                //Messenger format, simply replace the link with a trackable one:
+                $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+            } else {
 
-                if($fb_format){
-                    //Messenger format:
-                    $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+                //Is this a supported embed video URL?
+                $embed_html = detect_embed_video($i['i_url'],$i['i_message']);
+                if($embed_html){
+                    $i['i_message'] = trim(str_replace($i['i_url'], $embed_html, $i['i_message']));
                 } else {
                     //HTML format:
                     $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
                 }
+
+            }
+        }
+
+
+        //These would be set if a command is detected:
+        $button_url = null;
+        $button_title = null;
+
+        //Do we have any commands?
+        if(substr_count($i['i_message'],'{button}')>0){
+
+            if(isset($i['i_c_id']) && isset($i['e_b_id'])){
+                //Remove the button code:
+                $button_title = 'Open in 🚩Action Plan';
+                $button_url = 'https://mench.co/my/actionplan/'.intval($i['e_b_id']).'/'.intval($i['i_c_id']);
+                $command = '{button}';
             }
 
+        } elseif(substr_count($i['i_message'],'{admissions}')>0) {
+
+            if(isset($i['e_recipient_u_id'])){
+                //Fetch the details of the user:
+                $users = $this->Db_model->u_fetch(array(
+                    'u_id' => intval($i['e_recipient_u_id']),
+                    'u_status >=' => 0,
+                ));
+
+                if (count($users) > 0) {
+                    //Fetch salt:
+                    $application_status_salt = $CI->config->item('application_status_salt');
+
+                    //append their My Account Button/URL:
+                    $button_title = '🎟️ Bootcamp Admission';
+                    $button_url = 'https://mench.co/my/applications?u_key=' . md5($users[0]['u_id'] . $application_status_salt) . '&u_id=' . $users[0]['u_id'];
+                    $command = '{admissions}';
+                }
+            }
+
+        } elseif(substr_count($i['i_message'],'{menchbot}')>0) {
+
+            if(isset($i['e_recipient_u_id'])){
+                $button_url = messenger_activation_url('381488558920384',intval($i['e_recipient_u_id']));
+                if ($button_url) {
+                    //append their My Account Button/URL:
+                    $button_title = '🤖 Activate MenchBot';
+                    $command = '{menchbot}';
+                }
+            }
+
+        }
+
+
+        if($button_url && $button_title){
+
+            //Append the button to the message:
+            if($fb_format){
+
+                $i['i_message'] = trim(str_replace($command, '', $i['i_message']));
+
+                //Messenger array:
+                $fb_message = array(
+                    'attachment' => array(
+                        'type' => 'template',
+                        'payload' => array(
+                            'template_type' => 'button',
+                            'text' => $i['i_message'],
+                            'buttons' => array(
+                                array(
+                                    'type' => 'web_url',
+                                    'url' => $button_url,
+                                    'title' => $button_title,
+                                ),
+                            ),
+                        ),
+                    ),
+                    'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+                );
+
+            } else {
+                //HTML format:
+                $i['i_message'] = trim(str_replace($command, '<div class="msg"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
+                $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
+            }
+
+
+
+        } else {
+
+            //Regular without any special commands in it!
             //Now return the template:
             if($fb_format){
                 //Messenger array:
@@ -256,9 +435,9 @@ function echo_i($i,$first_name=null,$fb_format=false){
             }
 
         }
-        
+
     } elseif(strlen($i['i_url'])>0) {
-        
+
         //Valid media file with URL:
         if($fb_format){
 
@@ -335,16 +514,18 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
 
-function extract_urls($text){
+function extract_urls($text,$inverse=false){
     $text = preg_replace('/[[:^print:]]/', ' ', $text); //Replace non-ascii characters with space
     $parts = preg_split('/\s+/', $text);
-    $urls = array();
+    $return = array();
     foreach($parts as $part){
-        if(filter_var($part, FILTER_VALIDATE_URL)){
-            array_push($urls,$part);
+        if(!$inverse && filter_var($part, FILTER_VALIDATE_URL)){
+            array_push($return,$part);
+        } elseif($inverse && !filter_var($part, FILTER_VALIDATE_URL) && strlen($part)>0){
+            array_push($return,$part);
         }
     }
-    return $urls;
+    return $return;
 }
 
 function echo_uploader($i){
@@ -409,7 +590,7 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
                 $ui .= round($c_time_estimate*60).($micro?'m':' Minutes');
             } else {
                 //Hours:
-                $ui .= round($c_time_estimate,1).($micro?'h':' Hour'.(round($c_time_estimate,1)==1?'':'s'));
+                $ui .= ( round($c_time_estimate,0)==intval($c_time_estimate) ? '' : '~' ).round($c_time_estimate,0).($micro?'h':' Hour'.(round($c_time_estimate,1)==1?'':'s'));
             }
         }
 
@@ -688,12 +869,12 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         } elseif($level==2){
 
             //Milestone:
-            $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-minus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'">'.$core_objects['level_'.($level-1)]['o_icon'].' <span class="b_sprint_unit">'.ucwords($b_sprint_unit).'</span> #0</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" current-duration="'.$intent['c_duration_multiplier'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
+            $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-minus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'">'.$core_objects['level_'.($level-1)]['o_icon'].' <span class="b_sprint_unit">'.ucwords($b_sprint_unit).'</span> #0</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'"  current-duration="'.$intent['c_duration_multiplier'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
 
         } elseif ($level>=3){
 
             //Tasks
-            $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $core_objects['level_'.($level-1)]['o_icon'].' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFTING</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'"  c_complete_is_bonus_task="'.($intent['c_complete_is_bonus_task']=='t'?1:0).'" c_complete_instructions="'.$intent['c_complete_instructions'].'">'.$intent['c_objective'].'</span> <i class="fa fa-gift bonus_task_'.$intent['c_id'].' '.( $intent['c_complete_is_bonus_task']=='t' ? '' : 'hidden').'" title="Bonus Task" data-toggle="tooltip" aria-hidden="true"></i> ';
+            $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $core_objects['level_'.($level-1)]['o_icon'].' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFTING</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'"  c_complete_is_bonus_task="'.($intent['c_complete_is_bonus_task']=='t'?1:0).'" c_complete_instructions="'.$intent['c_complete_instructions'].'">'.$intent['c_objective'].'</span> <i class="fa fa-gift bonus_task_'.$intent['c_id'].' '.( $intent['c_complete_is_bonus_task']=='t' ? '' : 'hidden').'" title="Bonus Task" data-toggle="tooltip" aria-hidden="true"></i> ';
 
         }
 
@@ -1409,14 +1590,14 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        2 => array(
     	        's_name'  => 'Published Privately',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'A private bootcamps where students can join only if they kow the Landing Page URL.',
+    	        's_desc'  => 'A private Bootcamp where students can join only if they kow the Landing Page URL.',
     	        'u_min_status'  => 3, //Can only be done by admin
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
 	        3 => array(
     	        's_name'  => 'Published to Mench',
 	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'A Bootcamp with a proven history of high completion rate published on the Mench marketplace.',
+    	        's_desc'  => 'A Bootcamp published on the Mench marketplace.',
     	        'u_min_status'  => 3, //Can only be done by admin
     	        's_mini_icon' => 'fa-bullhorn',
 	        ),
@@ -1675,22 +1856,21 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	            's_mini_icon' => 'fa-times-circle',
 	        ),
 	        -1 => array(
-	            's_name'  => 'Admission Rejected',
+	            's_name'  => 'Application Rejected',
 	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Application rejected by bootcamp leader before start date. Students receives a full refund.',
+	            's_desc'  => 'Application rejected by Bootcamp leader before start date. Students receives a full refund.',
 	            'u_min_status'  => 1,
 	            's_mini_icon' => 'fa-times-circle',
 	        ),
 	        
 	        //Post Application
 	        0 => array(
-    	        's_name'  => 'Admission Initiated',
+    	        's_name'  => 'Application Started',
 	            's_color' => '#2f2639', //dark
     	        's_desc'  => 'Student has started the application process but has not completed it yet.',
     	        'u_min_status'  => 999, //System insertion only
     	        's_mini_icon' => 'fa-pencil-square',
 	        ),
-	        
 	        /*
 	        1 => array(
 	            's_name'  => 'Applied - Pending Full Payment',
@@ -1700,7 +1880,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        2 => array(
-	            's_name'  => 'Pending Review',
+	            's_name'  => 'Application Pending Admission',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            's_mini_icon' => 'fa-pause-circle',
@@ -2232,22 +2412,6 @@ function minutes_to_hours($mins){
     return floor(($mins/60)).':'.fmod($mins,60);
 }
 
-function email_application_url($udata){
-    $to_array = array($udata['u_email']);
-    $CI =& get_instance();
-    $subject = 'Mench Bootcamp Application';
-    $application_status_salt = $CI->config->item('application_status_salt');
-    $application_status_url = 'https://mench.co/my/applications?u_key='.md5($udata['u_id'].$application_status_salt).'&u_id='.$udata['u_id'];
-    $html_message = null; //Start
-    $html_message .= '<div>Hi '.$udata['u_fname'].',</div><br />';
-    $html_message .= '<div>Here is your bootcamp application link so you can easily access it in the future:</div><br />';
-    $html_message .= '<div><a href="'.$application_status_url.'" target="_blank">'.$application_status_url.'</a></div><br />';
-    $html_message .= '<div>Talk soon.</div>';
-    $html_message .= '<div>Team Mench</div>';
-    $CI->load->model('Email_model');
-    return $CI->Email_model->send_single_email($to_array,$subject,$html_message);
-}
-
 
 function object_link($object,$id,$b_id=0){
     //Loads the name (and possibly URL) for $object with id=$id
@@ -2459,7 +2623,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
             array_push( $instant_messages , echo_i( array_merge( array(
                 'i_media_type' => 'text',
-                'i_message' => 'Awesome, you completed the current milestone. No more updates for now. I\'ll send you a message when your next milestone starts.',
+                'i_message' => 'Awesome, you completed the current milestone. No more updates for now. I will send you a message when your next milestone starts.',
             ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
             //Send message:
@@ -2475,7 +2639,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     }
 
     //This is the very first message for this milestone!
-    if($outbound_levels==1 && $bootcamp_data && $bootcamp_data['level']==2){
+    if($bootcamp_data && $bootcamp_data['level']==2){
 
         //Add message to instant stream:
         array_push( $instant_messages , echo_i( array_merge( array(
@@ -2487,6 +2651,54 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'i_media_type' => 'text',
             'i_message' => 'The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.', //Supports {first_name} for text messages, but NOT i_url as that needs i_id for tracking (Unless add without tracking?)
         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+        //How many tasks?
+        $active_tasks = 0;
+        $bonus_tasks = 0; //TODO implement later on...
+        foreach($tree[0]['c__child_intents'] as $task){
+            if($task['c_status']>=1){
+                $active_tasks++;
+            }
+        }
+
+        if($active_tasks==0){
+
+            //Let students know there are no tasks for this milestone:
+            array_push( $instant_messages , echo_i( array_merge( array(
+                'i_media_type' => 'text',
+                'i_message' => 'This milestone has no tasks.',
+            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+        } else {
+
+            //Let them know how many tasks:
+            array_push( $instant_messages , echo_i( array_merge( array(
+                'i_media_type' => 'template',
+                'i_url' => 'https://mench.co/my/actionplan/'.$b_id.'/'.$intent_id,
+                'button_title' => 'View '.$active_tasks.' Task'.($active_tasks == 1 ? '' : 's'),
+                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total.',
+            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+
+            $fb_message = array(
+                'attachment' => array(
+                    'type' => $i['i_media_type'],
+                    'payload' => array(
+                        'template_type' => 'button',
+                        'text' => $i['i_message'],
+                        'buttons' => array(
+                            array(
+                                'type' => 'web_url',
+                                'url' => $i[''],
+                                'title' => $i[''],
+                            ),
+                        ),
+                    ),
+                ),
+                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
+            );
+
+        }
 
     } elseif($outbound_levels==0 && $bootcamp_data && $bootcamp_data['level']==3){
 
@@ -2558,7 +2770,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         }
     }
 
-
+    //We have some messages, huh?
     if($bootcamp_data && $starting_message_count==count($instant_messages) && in_array($bootcamp_data['level'],array(2,3))){
 
         //Ooops no message for this Milestone:
@@ -2582,28 +2794,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         }
 
         //Count how many tasks and let them know:
-        if($active_tasks==0){
-
-            //Let students know there are no tasks for this milestone:
-            if($bootcamp_data && $bootcamp_data['level']==2){
-
-                array_push( $instant_messages , echo_i( array_merge( array(
-                    'i_media_type' => 'text',
-                    'i_message' => 'This milestone has no tasks.',
-                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-            }
-
-        } else {
-
-            if($bootcamp_data && $bootcamp_data['level']==2) {
-                //Let them know how many tasks:
-                array_push( $instant_messages , echo_i( array_merge( array(
-                    'i_media_type' => 'text',
-                    'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total.',
-                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-            }
+        if($active_tasks>0){
 
             foreach($tree[0]['c__child_intents'] as $level1_key=>$level1){
 

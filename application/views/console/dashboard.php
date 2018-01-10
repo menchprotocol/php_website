@@ -34,7 +34,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
     <?php
     echo $bootcamp['c__task_count'] .' Task'.($bootcamp['c__task_count']==1?'':'s');
     echo ' = '. round($bootcamp['c__estimated_hours'],1) .' Hours';
-    echo ( $bootcamp['c__milestone_units']>0 ? ' = '.$rounded_hours.' Hour'.($rounded_hours==1?'':'s').'/'.ucwords($bootcamp['b_sprint_unit']) : '' );
+    echo ( $bootcamp['c__milestone_units']>0 ? '<div>'.$rounded_hours.' Hour'.($rounded_hours==1?'':'s').'/'.ucwords($bootcamp['b_sprint_unit']).'</div>' : '' );
     ?>
 </div>
     <div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>
@@ -57,8 +57,8 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 
 
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
-    <div class="help_body maxout" id="content_2274"></div>
-    <div><?= count($bootcamp['c__classes']) ?> Class<?= (count($bootcamp['c__classes'])==1?'':'es') ?></div>
+<div class="help_body maxout" id="content_2274"></div>
+<div><?= count($bootcamp['c__classes']) ?> Class<?= (count($bootcamp['c__classes'])==1?'':'es') ?></div>
 <?php 
 //Fetch class:
 $focus_class = filter_class($bootcamp['c__classes'],null);
@@ -75,26 +75,38 @@ if($focus_class){
 
 
 
-
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/students" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2275" class="help_button" intent-id="2275"></span></h4></div>
     <div class="help_body maxout" id="content_2275"></div>
 <?php 
 //Fetch admission stats:
-$admissions_accepted = $this->Db_model->ru_fetch(array(
-  	'r.r_b_id'	       => $bootcamp['b_id'],
-  	'r.r_status >='	   => 1, //Open for admission and up
-  	'ru.ru_status >='  => 4, //Enrolled & Graduated
-));
-$admissions_pending = $this->Db_model->ru_fetch(array(
-    'r.r_b_id'	       => $bootcamp['b_id'],
-    'r.r_status >='	   => 1, //Open for admission and up
-    'ru.ru_status <'   => 4,
-    'ru.ru_status >='  => 0,
-));
-?>
-<div><?= count($admissions_accepted) ?> Students</div>
-<div><?= count($admissions_pending) ?> Pending Admission</div>
 
+$student_funnel = array(
+    0 => count($this->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $bootcamp['b_id'],
+        'r.r_status >='	   => 1, //Open for admission and up
+        'ru.ru_status'     => 0,
+    ))),
+    2 => count($this->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $bootcamp['b_id'],
+        'r.r_status >='	   => 1, //Open for admission and up
+        'ru.ru_status'     => 2,
+    ))),
+    4 => count($this->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $bootcamp['b_id'],
+        'r.r_status >='	   => 1, //Open for admission and up
+        'ru.ru_status'     => 4,
+    ))),
+    7 => count($this->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $bootcamp['b_id'],
+        'r.r_status >='	   => 1, //Open for admission and up
+        'ru.ru_status'     => 7,
+    ))),
+);
+
+foreach($student_funnel as $ru_status=>$count){
+    echo '<div><span style="width:40px; display:inline-block">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
+}
+?>
 
 
 

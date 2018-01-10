@@ -178,7 +178,6 @@ class Front extends CI_Controller {
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
 
-
         //Validate bootcamp:
         if(!isset($bootcamps[0])){
             //Invalid key, redirect back:
@@ -191,8 +190,13 @@ class Front extends CI_Controller {
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
 	    if(!$focus_class){
-	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'This class of '.$bootcamp['c_objective'].' has expired.' : 'Missing a class that is open for admission.' ).'</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'Class is expired.' : 'Error: You must <a href="/console/'.$bootcamp['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
 	    }
+
+	    if($bootcamp['c__milestone_units']<=0){
+	        //No active milestones:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Error: You must <a href="/console/'.$bootcamp['b_id'].'/actionplan"><b><u>Create Some Milestones</u></b></a> before loading the landing page.</div>');
+        }
 
 
 	    //Load home page:

@@ -10,6 +10,10 @@ if(count($bootcamp['c__classes'])>0){
             if(strlen($class['r_usd_price'])>0){
                 echo '<i class="fa fa-usd" aria-hidden="true"></i> '.number_format($class['r_usd_price'],( fmod($class['r_usd_price'],1)==0?0:2 )).' &nbsp; ';
             }
+            if(strlen($class['r_max_students'])>0 || $class['r__current_admissions']>0){
+                $maximum = ( strlen($class['r_max_students'])>0 ? ( $class['r_max_students']==0 ? 'Infinity' : $class['r_max_students'] ) : 'Not-Set' );
+                echo '<span data-toggle="tooltip" data-placement="top" title="'.$class['r__current_admissions'].' Student'.($class['r__current_admissions']==1?'':'s').' pending admission. Max capacity is '.$maximum.'."><i class="fa fa-user" aria-hidden="true"></i> '.$class['r__current_admissions'].'/'.$maximum.'</span> &nbsp; ';
+            }
             echo status_bible('r',$class['r_status'],0,'top');
         echo '</a>';
     }
