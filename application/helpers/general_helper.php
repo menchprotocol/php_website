@@ -292,6 +292,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
     
     if(!$fb_format){
         //HTML format:
+        $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:18px;"'; //We do this for email templates that do not support CSS and also for internal website...
         $echo_ui = '';
         $echo_ui .= '<div class="i_content">';
     } else {
@@ -399,7 +400,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 //HTML format replaces the button with the command:
                 $i['i_message'] = trim(str_replace($command, '<div class="msg"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
                 //Return HTML code:
-                $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
+                $echo_ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
             }
 
         } else {
@@ -414,7 +415,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 );
             } else {
                 //HTML format:
-                $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
+                $echo_ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
             }
 
         }
@@ -448,7 +449,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             
         } else {
             //HTML media format:
-            $echo_ui .= '<div>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+            $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
         }
         
     } else {
