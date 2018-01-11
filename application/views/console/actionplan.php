@@ -283,7 +283,8 @@ function new_intent(pid,next_level){
 
  	//Update backend:
  	$.post("/api_v1/intent_create", {b_id:b_id, pid:pid, c_objective:intent_name, next_level:next_level}, function(data) {
- 		//Update UI to confirm with user:
+
+ 	    //Update UI to confirm with user:
  		$( "#temp"+next_level ).remove();
 
  		//Add new
@@ -302,6 +303,20 @@ function new_intent(pid,next_level){
 
  		//Tooltips:
  		$('[data-toggle="tooltip"]').tooltip();
+
+ 		//Add the new time:
+        var task_deficit = 0.05; //3 minutes is the default for new tasks
+        var current_hours_bootcamp = parseFloat($('.hours_level_1').attr('current-hours'));
+        var current_hours_milestone = parseFloat($('#t_estimate_'+pid).attr('current-hours'));
+        var current_milestone_status = parseInt($('.c_objective_'+pid).attr('current-status'));
+
+        //Update Miletsone:
+        $('#t_estimate_'+pid).attr('current-hours',(current_hours_milestone + task_deficit)).text(format_hours((current_hours_milestone + task_deficit)));
+        //Only update Bootcamp if Milestone is active:
+        if(current_milestone_status>0){
+            $('.hours_level_1').attr('current-hours',(current_hours_bootcamp + task_deficit)).text(format_hours((current_hours_bootcamp + task_deficit)));
+        }
+
  	});
 
  	//Prevent form submission:
@@ -427,8 +442,6 @@ function intents_sort(c_id,level){
  	    //Sorting issue detected on Milestone load:
         c_id = parseInt($('#pid').val());
     }
-
-    console.log(new_sort);
 
     //It might be zero for lists that have jsut been emptied
  	if(sort_rank>0 && c_id){
@@ -805,7 +818,7 @@ function save_modify(){
                     //Update Completion Settings (All the time):
                     $('.c_objective_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
                     $('.c_objective_'+modify_data['pid']).attr('c_complete_notes_required'  , modify_data['c_complete_notes_required']);
-                    $('.c_objective_'+modify_data['pid']).attr('c_complete_is_bonus_task'   , modify_data['c_complete_is_bonus_task']);
+                    //$('.c_objective_'+modify_data['pid']).attr('c_complete_is_bonus_task'   , modify_data['c_complete_is_bonus_task']);
                     $('.c_objective_'+modify_data['pid']).attr('c_complete_instructions'    , modify_data['c_complete_instructions']);
                     $('#c_complete_instructions').val(modify_data['c_complete_instructions']); //Maybe ' or " has been removed
 
@@ -871,6 +884,7 @@ function save_modify(){
                                 $('.hours_level_1').attr('current-hours',(current_hours_bootcamp + task_deficit)).text(format_hours((current_hours_bootcamp + task_deficit)));
                             }
                         }
+
                         //Always update the task:
                         $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(format_hours(modify_data['c_time_estimate']));
                     }
