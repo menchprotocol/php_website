@@ -95,14 +95,14 @@ class My extends CI_Controller {
                                     $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
                                         <?php if(!$embed_html){ ?>
                                         //Redirect to target URL:
-                                        window.location = '<?= $messages[0]['i_url'] ?>';
+                                        window.location.href = '<?= $messages[0]['i_url'] ?>';
                                         <?php } ?>
                                     });
                                 },
                                 function error(err){
                                     <?php if(!$embed_html){ ?>
                                     //Redirect to target URL anyways:
-                                    window.location = '<?= $messages[0]['i_url'] ?>';
+                                    window.location.href = '<?= $messages[0]['i_url'] ?>';
                                     <?php } ?>
                                 }
                             );

@@ -2470,6 +2470,8 @@ function object_link($object,$id,$b_id=0){
             //Transaction
             //TODO later...
         } elseif($object=='i'){
+
+            /*
             //Fetch message conent:
             $matching_messages = $CI->Db_model->i_fetch(array(
                 'i_id' => $id,
@@ -2478,6 +2480,8 @@ function object_link($object,$id,$b_id=0){
                 //TODO Link to profile or chat widget link maybe?
                 return echo_i($matching_messages[0]);
             }
+            */
+
         }
     }
     
