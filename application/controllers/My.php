@@ -75,22 +75,33 @@ class My extends CI_Controller {
                     //See if its being clicked through Messenger:
                     ?>
                     <script>
-                        //Get context:
-                        alert('sssss');
-                        MessengerExtensions.getContext('1782431902047009',
-                            function success(thread_context){
-                                //User ID was successfully obtained.
-                                alert('aaaaa');
-                                var psid = thread_context.psid;
-                                //Fetch Page:
-                                $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
-                                    document.getElementById("redirect_controller").innerHTML = data;
-                                });
-                            },
-                            function error(err){
-                                //Do nothing...
-                            }
-                        );
+                        (function(d, s, id){
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id)) {return;}
+                            js = d.createElement(s); js.id = id;
+                            js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'Messenger'));
+
+                        //the Messenger Extensions JS SDK is done loading:
+                        window.extAsyncInit = function() {
+                            alert('sss');
+                            //Get context:
+                            MessengerExtensions.getContext('1782431902047009',
+                                function success(thread_context){
+                                    alert('ssff');
+                                    //User ID was successfully obtained.
+                                    var psid = thread_context.psid;
+                                    //Fetch Page:
+                                    $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
+                                        document.getElementById("redirect_controller").innerHTML = data;
+                                    });
+                                },
+                                function error(err){
+                                    //Do nothing...
+                                }
+                            );
+                        };
                     </script>
                     <?php
                 }
