@@ -103,7 +103,7 @@ class Cockpit extends CI_Controller {
 	    }
 	    
 	    //Fetch engagements with possible filters:
-	    $engagements = $this->Db_model->e_fetch($match_columns);
+	    $engagements = $this->Db_model->e_fetch($match_columns,50);
 	    
 	    //This lists all users based on the permissions of the user
 	    $this->load->view('console/shared/d_header', array(

@@ -43,21 +43,9 @@
             $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Action Plan can only be accessed from Facebook Messenger. ('+err+')</div>');
           }
         );
-
-
-        //Optionally you can close webview like this:
-        function close_webview(){
-            MessengerExtensions.requestCloseBrowser(function success() {
-                // webview closed
-            }, function error(err) {
-                // an error occurred
-            });
-        }
-
     };
 
 <?php } ?>
-
 </script>
 
 <div id="page_content"><div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div></div>

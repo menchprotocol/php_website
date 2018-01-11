@@ -27,11 +27,6 @@ window.extAsyncInit = function() {
     	$("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: Access allowed via Facebook Messenger only.</div>');
     });
 };
-
-//Optionally you can close webview like this:
-function close_webview(){
-	window.location = 'https://www.messenger.com/closeWindow/?display_text=Closing....';
-}
 </script>
 
 <div id="page_content"><div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div></div>

@@ -30,11 +30,6 @@ window.extAsyncInit = function() {
     });
 	*/
 };
-
-//Optionally you can close webview like this:
-function close_webview(){
-	window.location = 'https://www.messenger.com/closeWindow/?display_text=Closing....';
-}
 </script>
 
 
