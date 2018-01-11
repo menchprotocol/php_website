@@ -136,9 +136,9 @@ $(document).ready(function() {
 
 <style>
 .wizard-box * { line-height:110%; }
-.wizard-box { font-size:0.9em; }
+.wizard-box { font-size:0.8em; }
 .wizard-box label { font-size:0.8em; }
-.wizard-box p, .wizard-box ul { margin-bottom:20px; }
+.wizard-box p, .wizard-box ul { margin-bottom:15px; }
 .wizard-box ul li { margin-bottom:10px; }
 .wizard-box a { text-decoration:underline; }
 .wizard-box h4 { margin:0 0 15px 0; padding:0; font-size:1.2em; }

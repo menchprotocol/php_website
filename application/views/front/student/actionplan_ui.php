@@ -211,9 +211,9 @@ if($level>=3){
 if($level<3){
     echo '<h4>';
         if($level==1){
-            echo '<i class="fa fa-flag" aria-hidden="true"></i> '.$sprint_units[$admission['b_sprint_unit']]['name'].' Milestones';
+            echo '<i class="fa fa-flag" aria-hidden="true"></i> Milestones';
         } elseif($level==2){
-            echo '<i class="fa fa-list-ul" aria-hidden="true"></i> '.ucwords($admission['b_sprint_unit']).' '.$sprint_index.( $intent['c_duration_multiplier']>1 ? '-'.($sprint_index+$intent['c_duration_multiplier']-1) : '' ).' Tasks';
+            echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Tasks';
         }
         echo ' <span class="sub-title">'.echo_time($intent['c__estimated_hours'],1).'</span>';
     echo '</h4>';
