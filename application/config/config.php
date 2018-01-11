@@ -312,6 +312,7 @@ $config['default_class_prizes'] = array(
 $config['default_class_prerequisites'] = array(
     'An internet-connected computer',
     'Fluent in English',
+    'Facebook Messenger (Facebook Account Not Required)',
     'etc... (Delete this)',
 );
 
