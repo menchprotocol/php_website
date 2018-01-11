@@ -85,13 +85,15 @@ class My extends CI_Controller {
 
                         //the Messenger Extensions JS SDK is done loading:
                         window.extAsyncInit = function() {
-                            alert('sss');
                             //Get context:
                             MessengerExtensions.getContext('1782431902047009',
                                 function success(thread_context){
-                                    alert('ssff');
+
                                     //User ID was successfully obtained.
                                     var psid = thread_context.psid;
+
+                                    alert('ssff'+psid);
+
                                     //Fetch Page:
                                     $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
                                         document.getElementById("redirect_controller").innerHTML = data;
