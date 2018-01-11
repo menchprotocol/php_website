@@ -93,17 +93,11 @@ class My extends CI_Controller {
                                     var psid = thread_context.psid;
                                     //Fetch Page:
                                     $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
-                                        <?php if(!$embed_html){ ?>
-                                        //Redirect to target URL:
-                                        window.location.href = '<?= $messages[0]['i_url'] ?>';
-                                        <?php } ?>
+                                        document.getElementById("redirect_controller").innerHTML = data;
                                     });
                                 },
                                 function error(err){
-                                    <?php if(!$embed_html){ ?>
-                                    //Redirect to target URL anyways:
-                                    window.location.href = '<?= $messages[0]['i_url'] ?>';
-                                    <?php } ?>
+                                    //Do nothing...
                                 }
                             );
                         };
@@ -125,7 +119,7 @@ class My extends CI_Controller {
             $this->load->view('front/shared/p_footer');
         } else {
             //Still here? show basic error:
-            echo 'Error: Invalid Message ID. URL may have been deleted by instructor.';
+            echo '<div id="redirect_controller">Error: Invalid Message ID. URL may have been deleted by instructor.</div>';
         }
 	}
 	
@@ -193,6 +187,8 @@ class My extends CI_Controller {
                     'e_c_id' => $messages[0]['i_c_id'],
                     'e_i_id' => $messages[0]['i_id'],
                 ));
+
+                echo '<script> window.location.href = \''.$messages[0]['i_url'].'\'; </script>';
 
             }
         }
