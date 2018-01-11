@@ -35,6 +35,7 @@ class Bot extends CI_Controller {
 	function bb(){
         $b_id = 1;
         $udata = auth(1,1,$b_id);
+        $this->load->model('Email_model');
         $res = $this->Email_model->email_intent($b_id,2697,$udata);
         echo_json($res);
     }
