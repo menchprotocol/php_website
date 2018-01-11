@@ -24,12 +24,12 @@ class Email_model extends CI_Model {
         //Fetch this intent:
         $tree = $this->Db_model->c_fetch(array(
             'c.c_id' => $c_id,
-        ) , 0 , array('i') /* Append messages to the return */ );
+        ) , 1 , array('i') /* Append messages to the return */ );
 
 
         //Count active Messages:
         $html_message = null;
-        if(count($tree)==1 &&  isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0 && isset($udata['u_email']) && isset($udata['u_email'])){
+        if(count($tree)==1 && isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0 && isset($udata['u_id']) && isset($udata['u_email'])){
             foreach($tree[0]['c__messages'] as $i){
                 if($i['i_status']==1){
 
@@ -52,6 +52,7 @@ class Email_model extends CI_Model {
                         'e_type_id' => 28, //Email message sent
                         'e_c_id' => $c_id,
                         'e_i_id' => $i['i_id'],
+                        'e_b_id' => $b_id,
                     ));
 
                     //Grow Message:
@@ -62,8 +63,11 @@ class Email_model extends CI_Model {
 
         if($html_message){
 
-            //Send Email:
-            return $this->send_single_email(array($udata['u_email']),$tree[0]['c_objective'],$html_message);
+            //Send email:
+            $sent_status = $this->send_single_email(array($udata['u_email']),$tree[0]['c_objective'],$html_message);
+
+            //Return positive:
+            return true;
 
         } else {
 
@@ -78,6 +82,7 @@ class Email_model extends CI_Model {
                     'tree' => ( isset($tree[0]) ? $tree[0] : null ),
                 )),
                 'e_c_id' => $c_id,
+                'e_b_id' => $b_id,
             ));
 
             return false;
