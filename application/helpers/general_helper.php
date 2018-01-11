@@ -292,7 +292,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
     
     if(!$fb_format){
         //HTML format:
-        $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:18px;"'; //We do this for email templates that do not support CSS and also for internal website...
+        $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"'; //We do this for email templates that do not support CSS and also for internal website...
         $echo_ui = '';
         $echo_ui .= '<div class="i_content">';
     } else {
@@ -386,9 +386,12 @@ function echo_i($i,$first_name=null,$fb_format=false){
                             'text' => $i['i_message'],
                             'buttons' => array(
                                 array(
+                                    'title' => $button_title,
                                     'type' => 'web_url',
                                     'url' => $button_url,
-                                    'title' => $button_title,
+                                    'webview_height_ratio' => 'tall',
+                                    'webview_share_button' => 'hide',
+                                    'messenger_extensions' => true,
                                 ),
                             ),
                         ),
