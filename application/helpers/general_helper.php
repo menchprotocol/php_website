@@ -2638,35 +2638,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'i_message' => '🚩 ​{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
-
-        //How many tasks?
-        $active_tasks = 0;
-        $bonus_tasks = 0; //TODO implement later on...
-        foreach($tree[0]['c__child_intents'] as $task){
-            if($task['c_status']>=1){
-                $active_tasks++;
-            }
-        }
-
-
-        if($active_tasks==0){
-
-            //Let students know there are no tasks for this milestone:
-            array_push( $instant_messages , echo_i( array_merge( array(
-                'i_media_type' => 'text',
-                'i_message' => 'This milestone has no tasks.',
-            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-        } else {
-
-            //Let them know how many tasks:
-            array_push( $instant_messages , echo_i( array_merge( array(
-                'i_media_type' => 'text',
-                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //The {button} command will show a link to the action plan for this milestone...
-            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-        }
-
     } elseif($outbound_levels==0 && $bootcamp_data && $bootcamp_data['level']==3){
 
         //This is a task, likely due to completing the previous task:
@@ -2746,6 +2717,36 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'i_message' => 'This '.( $bootcamp_data['level']==2 ? 'milestone' : 'task' ).' has no messages from your instructor.',
         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
+    }
+
+
+    if($bootcamp_data && $bootcamp_data['level']==2){
+        //How many tasks?
+        $active_tasks = 0;
+        $bonus_tasks = 0; //TODO implement later on...
+        foreach($tree[0]['c__child_intents'] as $task){
+            if($task['c_status']>=1){
+                $active_tasks++;
+            }
+        }
+
+        if($active_tasks==0){
+
+            //Let students know there are no tasks for this milestone:
+            array_push( $instant_messages , echo_i( array_merge( array(
+                'i_media_type' => 'text',
+                'i_message' => 'This milestone has no tasks.',
+            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+        } else {
+
+            //Let them know how many tasks:
+            array_push( $instant_messages , echo_i( array_merge( array(
+                'i_media_type' => 'text',
+                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //The {button} command will show a link to the action plan for this milestone...
+            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+        }
     }
 
     
