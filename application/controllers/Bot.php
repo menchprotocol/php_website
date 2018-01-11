@@ -13,19 +13,6 @@ class Bot extends CI_Controller {
 	function tree($pid,$depth=0,$u_id=1,$b_id=0){
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
-
-	function cleanm(){
-	    $messages = $this->Db_model->i_fetch(array(
-	        'i_status >=' => 0,
-        ));
-	    foreach ($messages as $m){
-	        //Check if this is valid?
-            $validation = message_validation($m['i_status'],$m['i_message']);
-            if(!$validation['status']){
-                echo '<a href="https://mench.co/console/'.$m['i_b_id'].'/actionplan#messages-'.$m['i_c_id'].'">'.$validation['message'].'</a> ||| '.$m['i_id'].' ||| '.$m['i_message'].'<hr />';
-            }
-        }
-    }
 	
 	function t(){
 	    

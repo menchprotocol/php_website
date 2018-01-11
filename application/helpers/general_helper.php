@@ -281,7 +281,7 @@ function detect_embed_video($url,$full_message){
     }
 }
 
-function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
+function echo_i($i,$first_name=null,$fb_format=false){
     
     //Must be one of these types:
     if(!isset($i['i_media_type']) || !in_array($i['i_media_type'],array('text','video','audio','image','file'))){
@@ -300,12 +300,8 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
     }
     
     //Proceed to Send Message:
-    if($i['i_media_type']=='text'){
+    if($i['i_media_type']=='text' && strlen($i['i_message'])>0){
 
-        if(strlen($i['i_message'])<=0){
-            //Should not happen!
-            return false;
-        }
 
         //Do we have a {first_name} replacement?
         if($first_name){
@@ -320,14 +316,16 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
             $url = $website['url'].'ref/'.$i['i_id'];
 
             if($fb_format){
+
                 //Messenger format, simply replace the link with a trackable one:
                 $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+
             } else {
 
                 //Is this a supported embed video URL?
                 $embed_html = detect_embed_video($i['i_url'],$i['i_message']);
                 if($embed_html){
-                    $i['i_message'] = trim(str_replace($i['i_url'], $embed_html, $i['i_message']));
+                    $i['i_message'] = $embed_html;
                 } else {
                     //HTML format:
                     $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
@@ -337,62 +335,48 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
         }
 
 
-        //These would be set if a command is detected:
+
+        //Does this message include a special command?
         $button_url = null;
         $button_title = null;
+        $command = null;
 
         //Do we have any commands?
-        if(substr_count($i['i_message'],'{button}')>0){
+        if(substr_count($i['i_message'],'{button}')>0 && isset($i['i_c_id']) && isset($i['e_b_id'])){
 
-            if(isset($i['i_c_id']) && isset($i['e_b_id'])){
-                //Remove the button code:
-                $button_title = 'Open in 🚩Action Plan';
-                $button_url = 'https://mench.co/my/actionplan/'.intval($i['e_b_id']).'/'.intval($i['i_c_id']);
-                $command = '{button}';
-            }
+            $button_title = 'Open in 🚩Action Plan';
+            $button_url = 'https://mench.co/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
+            $command = '{button}';
 
-        } elseif(substr_count($i['i_message'],'{admissions}')>0) {
+        } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
 
-            if(isset($i['e_recipient_u_id'])){
-                //Fetch the details of the user:
-                $users = $CI->Db_model->u_fetch(array(
-                    'u_id' => intval($i['e_recipient_u_id']),
-                    'u_status >=' => 0,
-                ));
+            //Fetch salt:
+            $application_status_salt = $CI->config->item('application_status_salt');
+            //append their My Account Button/URL:
+            $button_title = '🎟️ Bootcamp Admission';
+            $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
+            $command = '{admissions}';
 
-                if (count($users) > 0) {
-                    //Fetch salt:
-                    $application_status_salt = $CI->config->item('application_status_salt');
+        } elseif(substr_count($i['i_message'],'{menchbot}')>0 && isset($i['e_recipient_u_id'])) {
 
-                    //append their My Account Button/URL:
-                    $button_title = '🎟️ Bootcamp Admission';
-                    $button_url = 'https://mench.co/my/applications?u_key=' . md5($users[0]['u_id'] . $application_status_salt) . '&u_id=' . $users[0]['u_id'];
-                    $command = '{admissions}';
-                }
-            }
-
-        } elseif(substr_count($i['i_message'],'{menchbot}')>0) {
-
-            if(isset($i['e_recipient_u_id'])){
-                $button_url = messenger_activation_url('381488558920384',intval($i['e_recipient_u_id']));
-                if ($button_url) {
-                    //append their My Account Button/URL:
-                    $button_title = '🤖 Activate MenchBot';
-                    $command = '{menchbot}';
-                }
+            $button_url = messenger_activation_url('381488558920384',$i['e_recipient_u_id']);
+            if ($button_url) {
+                //append their My Account Button/URL:
+                $button_title = '🤖 Activate MenchBot';
+                $command = '{menchbot}';
             }
 
         }
 
-
-        if($button_url && $button_title){
+        if($command){
 
             //Append the button to the message:
             if($fb_format){
 
+                //Remove the command from the message:
                 $i['i_message'] = trim(str_replace($command, '', $i['i_message']));
 
-                //Messenger array:
+                //Return Messenger array:
                 $fb_message = array(
                     'attachment' => array(
                         'type' => 'template',
@@ -412,12 +396,11 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
                 );
 
             } else {
-                //HTML format:
+                //HTML format replaces the button with the command:
                 $i['i_message'] = trim(str_replace($command, '<div class="msg"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
+                //Return HTML code:
                 $echo_ui .= '<div class="msg">'.nl2br($i['i_message']).'</div>';
             }
-
-
 
         } else {
 
@@ -469,8 +452,10 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
         }
         
     } else {
+
         //Something was wrong:
         return false;
+
     }
 
     //Log engagement if Facebook and return:
@@ -490,7 +475,7 @@ function echo_i($i,$first_name=null,$fb_format=false,$recipient_u_id=0){
             )),
             'e_type_id' => 7, //Outbound message
             'e_r_id' => ( isset($i['e_r_id'])    ? $i['e_r_id']  :0), //If set...
-            'e_b_id' => ( isset($i['i_b_id'])    ? $i['i_b_id']  :0), //If set...
+            'e_b_id' => ( isset($i['e_b_id'])    ? $i['e_b_id']  :0), //If set...
             'e_i_id' => ( isset($i['i_id'])      ? $i['i_id']    :0), //The message that is being dripped
             'e_c_id' => ( isset($i['i_c_id'])    ? $i['i_c_id']  :0),
         ));
@@ -1880,7 +1865,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
 	        ),
 	        */
 	        2 => array(
-	            's_name'  => 'Application Pending Admission',
+	            's_name'  => 'Pending Admission',
 	            's_color' => '#2f2639', //dark
 	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
 	            's_mini_icon' => 'fa-pause-circle',
@@ -2051,6 +2036,7 @@ function echo_chat($botkey,$unread_notifications_count=0){
     return '<div class="fb-customerchat" minimized="'.( $unread_notifications_count ? 'false' : 'true' ).'" page_id="'.$botkey.'"></div>';
     //ref="'.( isset($udata['u_id']) && strlen($udata['u_fb_id'])<4 ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"
 }
+
 
 function messenger_activation_url($botkey,$u_id=null){
     $CI =& get_instance();
@@ -2520,6 +2506,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     $e_recipient_u_id = intval($e_recipient_u_id); //Just making sure
     $bootcamps = array();
     $bootcamp_data = null;
+    $outbound_levels = 0; //Override this for now and only focus on dispatching tasks at 1 level!
 
 
     //Make sure we have the core components checked:
@@ -2543,7 +2530,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     //Fetch tree and its messages:
     $tree = $CI->Db_model->c_fetch(array(
         'c.c_id' => $intent_id,
-    ) , $outbound_levels , array('i') /* Append messages to the return */ );
+    ) , 1 , array('i') /* Append messages to the return */ );
 
     if(!isset($tree[0])){
         return array(
@@ -2595,9 +2582,9 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     $custom_message_e_data = array(
         'e_initiator_u_id' => $e_initiator_u_id,
         'e_recipient_u_id' => $e_recipient_u_id,
-        'i_b_id' => $b_id,
         'i_c_id' => 0,
         'e_r_id' => $r_id,
+        'e_b_id' => $b_id,
         'tree' => $tree[0],
         'depth' => $outbound_levels,
     );
@@ -2644,13 +2631,9 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         //Add message to instant stream:
         array_push( $instant_messages , echo_i( array_merge( array(
             'i_media_type' => 'text',
-            'i_message' => '{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone!', //Supports {first_name} for text messages, but NOT i_url as that needs i_id for tracking (Unless add without tracking?)
+            'i_message' => '🚩 ​{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => 'The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.', //Supports {first_name} for text messages, but NOT i_url as that needs i_id for tracking (Unless add without tracking?)
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
         //How many tasks?
         $active_tasks = 0;
@@ -2660,6 +2643,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 $active_tasks++;
             }
         }
+
 
         if($active_tasks==0){
 
@@ -2673,30 +2657,9 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
 
             //Let them know how many tasks:
             array_push( $instant_messages , echo_i( array_merge( array(
-                'i_media_type' => 'template',
-                'i_url' => 'https://mench.co/my/actionplan/'.$b_id.'/'.$intent_id,
-                'button_title' => 'View '.$active_tasks.' Task'.($active_tasks == 1 ? '' : 's'),
-                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total.',
+                'i_media_type' => 'text',
+                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //The {button} command will show a link to the action plan for this milestone...
             ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-
-            $fb_message = array(
-                'attachment' => array(
-                    'type' => $i['i_media_type'],
-                    'payload' => array(
-                        'template_type' => 'button',
-                        'text' => $i['i_message'],
-                        'buttons' => array(
-                            array(
-                                'type' => 'web_url',
-                                'url' => $i[''],
-                                'title' => $i[''],
-                            ),
-                        ),
-                    ),
-                ),
-                'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-            );
 
         }
 
@@ -2759,8 +2722,8 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 array_push( $instant_messages , echo_i(array_merge( $i , array(
                     'e_initiator_u_id' => $e_initiator_u_id,
                     'e_recipient_u_id' => $e_recipient_u_id,
-                    'i_b_id' => $b_id,
                     'i_c_id' => $intent_id,
+                    'e_b_id' => $b_id,
                     'e_r_id' => $r_id,
                     'tree' => $tree[0],
                     'depth' => $outbound_levels,
@@ -2878,7 +2841,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                             array_push( $instant_messages , echo_i( array_merge( $i , array(
                                 'e_initiator_u_id' => $e_initiator_u_id,
                                 'e_recipient_u_id' => $e_recipient_u_id,
-                                'i_b_id' => $b_id,
                                 'i_c_id' => $i['i_c_id'],
                                 'e_r_id' => $r_id,
                                 'tree' => $tree[0],
@@ -2920,7 +2882,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         }
     }
 
-
     //Anything to be sent instantly?
     if(count($instant_messages)>0){
 
@@ -2929,48 +2890,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
 
     }
 
-
-    //This is the Next button function which is currently parked...
-    /*
-    if(0){
-
-        //This has a drip sequence, subscribe the user for later messages on this:
-        $logged_engagement = $CI->Db_model->e_create(array(
-            'e_initiator_u_id' => $e_initiator_u_id,
-            'e_recipient_u_id' => $e_recipient_u_id,
-            'e_message' => $pending_thread_count.' messages pending in this thread', //Stage 1 Message
-            'e_json' => json_encode(array(
-                'depth' => $outbound_levels,
-                'tree' => $tree[0],
-                'bootcamps' => $bootcamps,
-                'bootcamp_data' => $bootcamp_data,
-            )),
-            'e_cron_job' => 0, //Stream is not complete and will be picked up by the cron job
-            'e_type_id' => 49, //Messenger Active Stream
-            'e_b_id' => $b_id, //If set...
-            'e_r_id' => $r_id, //If set...
-            'e_c_id' => $intent_id,
-        ));
-
-        //Show next button to user:
-        $CI->Facebook_model->send_message( '381488558920384' , array(
-            'recipient' => array(
-                'id' => $recipients[0]['u_fb_id'],
-            ),
-            'message' => array(
-                'text' => 'I\'ll brief you on '.($bootcamps[0]['b_sprint_unit']=='week'?'this week\'s':'today\'s').' tasks when you say "Next"',
-                'quick_replies' => array(
-                    array(
-                        'content_type' => 'text',
-                        'title' => 'Next',
-                        'payload' => 'messagethread_'.$logged_engagement['e_id'], //Append engagement ID
-                    ),
-                ),
-            ),
-            'notification_type' => 'REGULAR',
-        ));
-    }
-    */
 
     //Successful:
     return array(

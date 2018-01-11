@@ -60,7 +60,6 @@ class My extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => intval($udata['u_id']),
                         'e_type_id' => 41, //Message link clicked
-                        'e_b_id' => $messages[0]['i_b_id'],
                         'e_c_id' => $messages[0]['i_c_id'],
                         'e_i_id' => $messages[0]['i_id'],
                     ));

@@ -103,7 +103,7 @@ class Api_v1 extends CI_Controller {
 	    //Build UI friendly Message:
 	    $help_content = null;
 	    foreach($messages as $i){
-	        $help_content .= echo_i($i,$udata['u_fname']);
+	        $help_content .= echo_i(array_merge($i,array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']);
 	    }
 	    
 	    //Return results:
@@ -406,6 +406,7 @@ class Api_v1 extends CI_Controller {
 
                         //Send the email to their application:
                         $this->load->model('Email_model');
+                        $email_sent = $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
 
 	                    if($email_sent){
 	                        //Redirect to application:
@@ -2301,7 +2302,6 @@ class Api_v1 extends CI_Controller {
 	            $i = $this->Db_model->i_create(array(
 	                'i_creator_id' => $udata['u_id'],
 	                'i_c_id' => intval($_POST['pid']),
-	                'i_b_id' => intval($_POST['b_id']),
 	                'i_media_type' => $i_media_type,
 	                'i_message' => $message,
 	                'i_url' => $new_file_url,
@@ -2330,13 +2330,16 @@ class Api_v1 extends CI_Controller {
 	                'e_type_id' => 34, //Message added
 	                'e_i_id' => intval($new_messages[0]['i_id']),
 	                'e_c_id' => intval($new_messages[0]['i_c_id']),
-	                'e_b_id' => $new_messages[0]['i_b_id'], //Share with bootcamp team
+	                'e_b_id' => intval($_POST['b_id']),
 	            ));
 	            
 	            //Echo message:
 	            echo_json(array(
 	                'status' => 1,
-	                'message' => echo_message($new_messages[0],$_POST['level']),
+	                'message' => echo_message(array_merge($new_messages[0],array(
+	                    'e_b_id'=>intval($_POST['b_id']),
+                        'e_recipient_u_id'=>$udata['u_id'],
+                    )),$_POST['level']),
 	            ));
 	        }
 	    }
@@ -2394,7 +2397,6 @@ class Api_v1 extends CI_Controller {
                 $i = $this->Db_model->i_create(array(
                     'i_creator_id' => $udata['u_id'],
                     'i_c_id' => intval($_POST['pid']),
-                    'i_b_id' => intval($_POST['b_id']),
                     'i_media_type' => $i_media_type,
                     'i_message' => trim($_POST['i_message']),
                     'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
@@ -2421,13 +2423,16 @@ class Api_v1 extends CI_Controller {
                     'e_type_id' => 34, //Message added
                     'e_i_id' => intval($new_messages[0]['i_id']),
                     'e_c_id' => intval($_POST['pid']),
-                    'e_b_id' => $new_messages[0]['i_b_id'], //Share with bootcamp team
+                    'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
                 ));
 
                 //Print the challenge:
                 echo_json(array(
                     'status' => 1,
-                    'message' => echo_message($new_messages[0],$_POST['level']),
+                    'message' => echo_message(array_merge($new_messages[0],array(
+                        'e_b_id'=>intval($_POST['b_id']),
+                        'e_recipient_u_id'=>$udata['u_id'],
+                    )),$_POST['level']),
                 ));
             }
 	    }   
@@ -2497,7 +2502,7 @@ class Api_v1 extends CI_Controller {
                 //Now update the DB:
                 $this->Db_model->i_update( intval($_POST['i_id']) , $to_update );
 
-                //Refetch the message for display purposes:
+                //Re-fetch the message for display purposes:
                 $new_messages = $this->Db_model->i_fetch(array(
                     'i_id' => intval($_POST['i_id']),
                 ));
@@ -2513,13 +2518,12 @@ class Api_v1 extends CI_Controller {
                     'e_type_id' => 36, //Message edited
                     'e_i_id' => $messages[0]['i_id'],
                     'e_c_id' => intval($_POST['pid']),
-                    'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
                 ));
 
                 //Print the challenge:
                 echo_json(array(
                     'status' => 1,
-                    'message' => echo_i($new_messages[0]),
+                    'message' => echo_i(array_merge($new_messages[0],array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']),
                     'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'top'),
                     'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
                     'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
@@ -2566,7 +2570,6 @@ class Api_v1 extends CI_Controller {
 	        'e_type_id' => 35, //Message deleted
 	        'e_i_id' => intval($messages[0]['i_id']),
 	        'e_c_id' => intval($_POST['pid']),
-	        'e_b_id' => $messages[0]['i_b_id'], //Share with bootcamp team
 	    ));
 	    
 	    //Show result:

@@ -10,6 +10,7 @@
 $message_max = $this->config->item('message_max');
 $core_objects = $this->config->item('core_objects');
 $i_statuses = status_bible('i', null);
+$udata = $this->session->userdata('user');
 $i_messages = $this->Db_model->i_fetch(array(
     'i_c_id' => $c_id,
     'i_status >=' => 0, //Published in any form. This may need more logic
@@ -472,7 +473,10 @@ if(!isset($intents[0])){
     if(count($i_messages)>0){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
         foreach($i_messages as $i){
-            echo echo_message($i,$level);
+            echo echo_message(array_merge($i,array(
+                'e_b_id'=>$b_id,
+                'e_recipient_u_id'=>$udata['u_id'],
+            )),$level);
         }
         echo '</div>';
     } else {

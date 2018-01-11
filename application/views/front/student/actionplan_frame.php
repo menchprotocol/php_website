@@ -39,8 +39,8 @@
             });
           },
           function error(err){
-            // error
-            $("#page_content").html('<div class="alert alert-danger" role="alert">ERROR: '+err+'</div>');
+            // error, likely as the user is not accessing the action plan from Messenger:
+            $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Action Plan can only be accessed from Facebook Messenger.</div>');
           }
         );
     };

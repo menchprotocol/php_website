@@ -1253,6 +1253,7 @@ class Db_model extends CI_Model {
 		                $html_message .= '<div style="font-size:0.8em;">Engagement ID '.$engagements[0]['e_id'].'</div>';
 		                
 		                //Send email:
+                        $this->load->model('Email_model');
 		                $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);
 		            }
 		        }
