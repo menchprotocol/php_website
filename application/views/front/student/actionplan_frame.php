@@ -40,7 +40,7 @@
           },
           function error(err){
             // error, likely as the user is not accessing the action plan from Messenger:
-            $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Action Plan can only be accessed from Facebook Messenger.</div>');
+            $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Action Plan can only be accessed from Facebook Messenger. ('+err+')</div>');
           }
         );
     };
