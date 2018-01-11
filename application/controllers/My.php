@@ -90,12 +90,12 @@ class My extends CI_Controller {
                                 function success(thread_context){
 
                                     //User ID was successfully obtained.
-                                    var psid = thread_context.psid;
+                                    var psid = ;
 
                                     alert('ssff'+psid);
 
                                     //Fetch Page:
-                                    $.post("/my/log_messenger_click/"+psid+"/<?= $message_id ?>", {}, function(data) {
+                                    $.post("/my/log_messenger_click", { psid:thread_context.psid, i_id:<?= $message_id ?> }, function(data) {
                                         document.getElementById("redirect_controller").innerHTML = data;
                                     });
                                 },
@@ -106,6 +106,7 @@ class My extends CI_Controller {
                         };
                     </script>
                     <?php
+
                 }
 	        }
 	    }
@@ -164,8 +165,12 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	}
 
-	function log_messenger_click($u_fb_id,$i_id){
-	    if(intval($u_fb_id)>0 && intval($i_id)>0){
+	function log_messenger_click(){
+
+        $u_fb_id = intval($_POST['psid']);
+        $i_id = intval($_POST['psid']);
+
+	    if($u_fb_id && $i_id){
 
 	        //Fetch message:
             $messages = $this->Db_model->i_fetch(array(
@@ -191,7 +196,7 @@ class My extends CI_Controller {
                     'e_i_id' => $messages[0]['i_id'],
                 ));
 
-                echo '<script> window.location.href = \''.$messages[0]['i_url'].'\'; </script>';
+                echo '<script> alert("sss0"); window.location.href = \''.$messages[0]['i_url'].'\'; </script>';
 
             }
         }
