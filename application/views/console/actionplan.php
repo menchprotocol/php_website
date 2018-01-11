@@ -289,12 +289,15 @@ function new_intent(pid,next_level){
  		//Add new
         add_to_list(sort_list_id,sort_handler,data);
 
- 		//Resort:
+ 		//Re-adjust sorting:
  		load_intent_sort(pid,next_level);
 
  		if(next_level==2){
  		    //Adjust the Milestone count:
             intents_sort(0,2);
+        } else {
+            //Adjust task sorting:
+            intents_sort(pid,next_level);
         }
 
  		//Tooltips:
