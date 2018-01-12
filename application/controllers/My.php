@@ -36,127 +36,40 @@ class My extends CI_Controller {
 
 	function load_url($message_id){
 
-	    //Default variable:
-        $embed_html = false;
-
 	    //Loads the URL:
 	    if($message_id>0){
-
 	        $messages = $this->Db_model->i_fetch(array(
 	            'i_id' => $message_id,
 	            'i_status >=' => 1, //Not deleted
 	        ));
-	        
-	        if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){
-
-	            //Is this an embed video?
-                $embed_html = detect_embed_video($messages[0]['i_url'],$messages[0]['i_message']);
-
-	            //Do we have an active user?
-                $udata = $this->session->userdata('user');
-                if(isset($udata['u_id']) && intval($udata['u_id'])>0){
-
-                    //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => intval($udata['u_id']),
-                        'e_type_id' => 41, //Message link clicked
-                        'e_c_id' => $messages[0]['i_c_id'],
-                        'e_i_id' => $messages[0]['i_id'],
-                    ));
-
-                    if(!$embed_html){
-                        //Now redirect:
-                        header('Location: '.$messages[0]['i_url']);
-                        return true;
-                    }
-
-                } else {
-
-                    //See if its being clicked through Messenger:
-                    ?>
-                    <script>
-                        (function(d, s, id){
-                            var js, fjs = d.getElementsByTagName(s)[0];
-                            if (d.getElementById(id)) {return;}
-                            js = d.createElement(s); js.id = id;
-                            js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-                            fjs.parentNode.insertBefore(js, fjs);
-                        }(document, 'script', 'Messenger'));
-
-                        //the Messenger Extensions JS SDK is done loading:
-                        window.extAsyncInit = function() {
-                            //Get context:
-                            MessengerExtensions.getContext('1782431902047009',
-                                function success(thread_context){
-                                    alert('<?= $message_id ?>');
-                                    //Fetch Page:
-                                    $.post("/my/log_messenger_click", { psid:thread_context.psid, i_id:<?= $message_id ?> }, function(data) {
-                                        alert('sss');
-                                        document.getElementById("redirect_controller").innerHTML = data;
-                                    });
-                                },
-                                function error(err){
-                                    //Do nothing...
-                                }
-                            );
-                        };
-                    </script>
-                    <?php
-
-                }
-	        }
 	    }
 
-        function log_messenger_click(){
+        if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){
 
-            $u_fb_id = intval($_POST['psid']);
-            $i_id = intval($_POST['i_id']);
+            //Is this an embed video?
+            $embed_html = detect_embed_video($messages[0]['i_url'],$messages[0]['i_message']);
 
-            if($u_fb_id && $i_id){
-
-                //Fetch message:
-                $messages = $this->Db_model->i_fetch(array(
-                    'i_id' => $i_id,
-                    'i_status >=' => 1, //Not deleted
+            if(!$embed_html){
+                //Now redirect:
+                header('Location: '.$messages[0]['i_url']);
+            } else {
+                $this->load->view('front/shared/p_header' , array(
+                    'title' => 'Watch Online Video',
                 ));
-
-                //Fetch their admissions:
-                $admissions = $this->Db_model->remix_admissions(array(
-                    'u.u_fb_id' => $u_fb_id,
-                    'ru.ru_status >=' => 0, //Initiated admission or higher
+                $this->load->view('front/embed_video' , array(
+                    'embed_html' => $embed_html,
                 ));
-
-                if(count($admissions)>0 && count($messages)>0){
-
-                    //Log link click!
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $admissions[0]['u_id'],
-                        'e_type_id' => 41, //Message link clicked
-                        'e_b_id' => $admissions[0]['b_id'],
-                        'e_r_id' => $admissions[0]['r_id'],
-                        'e_c_id' => $messages[0]['i_c_id'],
-                        'e_i_id' => $messages[0]['i_id'],
-                    ));
-
-                    echo '<script> window.location.href = \''.$messages[0]['i_url'].'\'; </script>';
-
-                }
+                $this->load->view('front/shared/p_footer');
             }
-        }
 
-        //Was this an embed video? Show it here:
-        if($embed_html){
-            //Loadup the embed on Mench:
+        } else {
             $this->load->view('front/shared/p_header' , array(
                 'title' => 'Watch Online Video',
             ));
-            $this->load->view('front/embed_video' , array(
-                'embed_html' => $embed_html,
+            $this->load->view('front/error_message' , array(
+                'error' => 'Invalid Message ID, likely because message has been deleted.',
             ));
             $this->load->view('front/shared/p_footer');
-        } else {
-            //Still here? show basic error:
-            echo '<div id="redirect_controller">Error: Invalid Message ID. URL may have been deleted by instructor.</div>';
         }
 	}
 	
