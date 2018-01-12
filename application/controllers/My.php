@@ -88,8 +88,10 @@ class My extends CI_Controller {
                             //Get context:
                             MessengerExtensions.getContext('1782431902047009',
                                 function success(thread_context){
+                                    alert('<?= $message_id ?>');
                                     //Fetch Page:
                                     $.post("/my/log_messenger_click", { psid:thread_context.psid, i_id:<?= $message_id ?> }, function(data) {
+                                        alert('sss');
                                         document.getElementById("redirect_controller").innerHTML = data;
                                     });
                                 },
