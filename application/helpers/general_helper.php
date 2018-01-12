@@ -354,7 +354,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             //Fetch salt:
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
-            $button_title = '🎟️ Bootcamp Admission';
+            $button_title = '🎟️ My Bootcamp Application';
             $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
             $command = '{admissions}';
 

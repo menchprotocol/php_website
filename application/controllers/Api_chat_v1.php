@@ -45,7 +45,7 @@ class Api_chat_v1 extends CI_Controller{
                 'status' => 0,
                 'message' => 'Missing Student ID Array',
             ));
-        } elseif(!isset($_POST['ru_status']) || intval($_POST['ru_status'])<=0){
+        } elseif(!isset($_POST['ru_status'])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Admission Status',
