@@ -186,11 +186,28 @@ class Api_chat_v1 extends CI_Controller{
 
                             //Send the email to their application:
                             $this->load->model('Email_model');
-
-                            //Admission Email:
                             $email_sent = $this->Email_model->email_intent($admission['b_id'],2698,$admission);
 
+                        } elseif (intval($_POST['ru_status']) == -1){
+
+                            //Send the email to their application:
+                            $this->load->model('Email_model');
+                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2799,$admission);
+
+                        } elseif (intval($_POST['ru_status']) == 7){
+
+                            //Send the email to their application:
+                            $this->load->model('Email_model');
+                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2800,$admission);
+
+                        } elseif (intval($_POST['ru_status']) == -3){
+
+                            //Send the email to their application:
+                            $this->load->model('Email_model');
+                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2801,$admission);
+
                         }
+
                     }
 
                     //Show success:
