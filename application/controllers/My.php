@@ -88,12 +88,6 @@ class My extends CI_Controller {
                             //Get context:
                             MessengerExtensions.getContext('1782431902047009',
                                 function success(thread_context){
-
-                                    //User ID was successfully obtained.
-                                    var psid = ;
-
-                                    alert('ssff'+psid);
-
                                     //Fetch Page:
                                     $.post("/my/log_messenger_click", { psid:thread_context.psid, i_id:<?= $message_id ?> }, function(data) {
                                         document.getElementById("redirect_controller").innerHTML = data;
@@ -110,6 +104,43 @@ class My extends CI_Controller {
                 }
 	        }
 	    }
+
+        function log_messenger_click(){
+
+            $u_fb_id = intval($_POST['psid']);
+            $i_id = intval($_POST['i_id']);
+
+            if($u_fb_id && $i_id){
+
+                //Fetch message:
+                $messages = $this->Db_model->i_fetch(array(
+                    'i_id' => $i_id,
+                    'i_status >=' => 1, //Not deleted
+                ));
+
+                //Fetch their admissions:
+                $admissions = $this->Db_model->remix_admissions(array(
+                    'u.u_fb_id' => $u_fb_id,
+                    'ru.ru_status >=' => 0, //Initiated admission or higher
+                ));
+
+                if(count($admissions)>0 && count($messages)>0){
+
+                    //Log link click!
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $admissions[0]['u_id'],
+                        'e_type_id' => 41, //Message link clicked
+                        'e_b_id' => $admissions[0]['b_id'],
+                        'e_r_id' => $admissions[0]['r_id'],
+                        'e_c_id' => $messages[0]['i_c_id'],
+                        'e_i_id' => $messages[0]['i_id'],
+                    ));
+
+                    echo '<script> window.location.href = \''.$messages[0]['i_url'].'\'; </script>';
+
+                }
+            }
+        }
 
         //Was this an embed video? Show it here:
         if($embed_html){
@@ -165,42 +196,7 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	}
 
-	function log_messenger_click(){
 
-        $u_fb_id = intval($_POST['psid']);
-        $i_id = intval($_POST['i_id']);
-
-	    if($u_fb_id && $i_id){
-
-	        //Fetch message:
-            $messages = $this->Db_model->i_fetch(array(
-                'i_id' => $i_id,
-                'i_status >=' => 1, //Not deleted
-            ));
-
-            //Fetch their admissions:
-            $admissions = $this->Db_model->remix_admissions(array(
-                'u.u_fb_id' => $u_fb_id,
-                'ru.ru_status >=' => 0, //Initiated admission or higher
-            ));
-
-            if(count($admissions)>0 && count($messages)>0){
-
-                //Log link click!
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $admissions[0]['u_id'],
-                    'e_type_id' => 41, //Message link clicked
-                    'e_b_id' => $admissions[0]['b_id'],
-                    'e_r_id' => $admissions[0]['r_id'],
-                    'e_c_id' => $messages[0]['i_c_id'],
-                    'e_i_id' => $messages[0]['i_id'],
-                ));
-
-                echo '<script> alert("sss0"); window.location.href = \''.$messages[0]['i_url'].'\'; </script>';
-
-            }
-        }
-    }
 	
 	function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 	    
