@@ -268,7 +268,6 @@ function new_intent(pid,next_level){
     var b_id = $('#b_id').val();
     var intent_name = input_field.val();
 
-
  	if(intent_name.length<1){
  		alert('Error: Missing Outcome. Try Again...');
         input_field.focus();
@@ -288,14 +287,19 @@ function new_intent(pid,next_level){
  		$( "#temp"+next_level ).remove();
 
  		//Add new
-        add_to_list(sort_list_id,sort_handler,data);
+        add_to_list(sort_list_id,sort_handler,data.html);
 
  		//Re-adjust sorting:
  		load_intent_sort(pid,next_level);
 
  		if(next_level==2){
- 		    //Adjust the Milestone count:
+
+            //Adjust the Milestone count:
             intents_sort(0,2);
+
+            //Re-adjust sorting for inner tasks:
+            load_intent_sort(data.c_id,3);
+
         } else {
             //Adjust task sorting:
             intents_sort(pid,next_level);

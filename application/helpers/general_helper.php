@@ -873,7 +873,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
             $ui .= '<div id="list-outbound-'.$intent['c_id'].'" class="list-group task-group" node-id="'.$intent['c_id'].'">';
             //This line enables the in-between list moves to happen for empty lists:
-            $ui .= '<div class="is_task_sortable dropin-box" style="height:3px;">&nbsp;</div>';
+            $ui .= '<div class="is_task_sortable dropin-box" style="height:1px;">&nbsp;</div>';
             if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
                 foreach($intent['c__child_intents'] as $sub_intent){
                     $ui .= echo_cr($b_id,$sub_intent,$direction,($level+1),$b_sprint_unit,$intent['c_id']);

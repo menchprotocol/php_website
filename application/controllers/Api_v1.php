@@ -1813,9 +1813,13 @@ class Api_v1 extends CI_Controller {
 	    
 	    //Update Algolia:
 	    $this->Db_model->sync_algolia($new_intent['c_id']);
-	    
+
 	    //Return result:
-	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit'],intval($_POST['pid']));
+        echo_json(array(
+            'status' => 1,
+            'c_id' => $new_intent['c_id'],
+            'html' => echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit'],intval($_POST['pid'])),
+        ));
 	}
 	
 
