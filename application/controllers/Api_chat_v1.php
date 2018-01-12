@@ -24,7 +24,6 @@ class Api_chat_v1 extends CI_Controller{
             'b_id' => 1,
             'initiator_u_id' => 2,
             'recipient_u_ids' => array(1),
-            'status_change_note' => 'Awesome student and was very helpful in accomplishing the essence of the work which is why this was great lol',
             'ru_status' => 7,
         );
         $_POST['auth_hash'] = md5( $_POST['initiator_u_id'] . $_POST['ru_status'] . '7H6hgtgtfii87' );
@@ -131,22 +130,10 @@ class Api_chat_v1 extends CI_Controller{
                             'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' is a new student. Status can only set to ['.trim(strip_tags(status_bible('ru',-1))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
                         );
                         break;
-                    } elseif($admissions[0]['ru_status']==2 && $_POST['ru_status']==-1 && (!isset($_POST['status_change_note']) || strlen($_POST['status_change_note'])<50)){
-                        $error_array = array(
-                            'status' => 0,
-                            'message' => 'Setting status to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).'] requires a descriptive note that is 50+ characters long.',
-                        );
-                        break;
                     } elseif($admissions[0]['ru_status']==4 && !in_array($_POST['ru_status'],array(-3,7))){
                         $error_array = array(
                             'status' => 0,
                             'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' is an admitted student. Status can only set to ['.trim(strip_tags(status_bible('ru',-3))).'] or ['.trim(strip_tags(status_bible('ru',7))).']',
-                        );
-                        break;
-                    } elseif($admissions[0]['ru_status']==4 && (!isset($_POST['status_change_note']) || strlen($_POST['status_change_note'])<50)) {
-                        $error_array = array(
-                            'status' => 0,
-                            'message' => 'Setting status to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).'] requires a descriptive note that is 50+ characters long.',
                         );
                         break;
                     } else {
@@ -183,7 +170,7 @@ class Api_chat_v1 extends CI_Controller{
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => intval($_POST['initiator_u_id']),
                             'e_recipient_u_id' => $admission['u_id'],
-                            'e_message' => 'Student status changes from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']'.( isset($_POST['status_change_note']) ? ' with this instructor note: '.trim($_POST['status_change_note']) : null ), //Notes by the instructor
+                            'e_message' => 'Student status changes from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']', //Notes by the instructor
                             'e_json' => json_encode(array(
                                 'post' => $_POST,
                                 'admission' => $admission,
