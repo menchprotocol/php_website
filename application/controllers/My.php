@@ -168,7 +168,7 @@ class My extends CI_Controller {
 	function log_messenger_click(){
 
         $u_fb_id = intval($_POST['psid']);
-        $i_id = intval($_POST['psid']);
+        $i_id = intval($_POST['i_id']);
 
 	    if($u_fb_id && $i_id){
 
