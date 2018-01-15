@@ -45,7 +45,7 @@ class Cron extends CI_Controller {
                         }
                     }
 
-                    if($first_milestone_c_id){
+                    if($first_milestone_c_id || 1){
                         //We found this milestone!
 
                         //Change the status:
@@ -61,7 +61,7 @@ class Cron extends CI_Controller {
                         foreach($admitted as $u){
                             //Inform Students on First Milestone:
                             if($u['u_id']==1){
-                                tree_message($first_milestone_c_id, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
+                                tree_message(890, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
 
                             }
                         }
