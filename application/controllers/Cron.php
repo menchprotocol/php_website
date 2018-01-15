@@ -10,6 +10,11 @@ class Cron extends CI_Controller {
 	}
 
 
+	function test($u_id){
+        echo_json(tree_message(890, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103));
+    }
+
+
 	function class_kickstart(){
 
 	    //Searches for any class that might be starting and kick starts its messages:
