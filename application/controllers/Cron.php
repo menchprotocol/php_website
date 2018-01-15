@@ -11,21 +11,29 @@ class Cron extends CI_Controller {
 
 
 	function class_kickstart(){
+
 	    //Searches for any class that might be starting and kick starts its messages:
         $classes = $this->Db_model->r_fetch(array(
             'r_status' => 1,
             'r_start_date' => date("Y-m-d"),
         ));
+
+
+
         foreach($classes as $class){
             //See if they have students and they are more than the minimum:
-            if($class['r_id']==103 && $class['r__confirmed_admissions']>0 && $class['r__confirmed_admissions']>=$class['r_min_students']){
+            if($class['r_id']==103){
 
                 //Fetch Bootcamp Data:
                 $bootcamps = $this->Db_model->c_full_fetch(array(
                     'b.b_id' => $class['r_b_id'],
                 ));
 
+                //$class =
+                //if($class['r__confirmed_admissions']>0 && $class['r__confirmed_admissions']>=$class['r_min_students']){}
+
                 if(count($bootcamps)==1 && $bootcamps[0]['b_status']>=2){
+
                     //Found a published Bootcamp!
                     //Find first due milestone:
 
