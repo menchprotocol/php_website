@@ -8,7 +8,65 @@ class Cron extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 	}
-	
+
+
+	function class_kickstart(){
+	    //Searches for any class that might be starting and kick starts its messages:
+        $classes = $this->Db_model->r_fetch(array(
+            'r_status' => 1,
+            'r_start_date' => date("Y-m-d"),
+        ));
+        foreach($classes as $class){
+            //See if they have students and they are more than the minimum:
+            if($class['r_id']==103 && $class['r__confirmed_admissions']>0 && $class['r__confirmed_admissions']>=$class['r_min_students']){
+
+                //Fetch Bootcamp Data:
+                $bootcamps = $this->Db_model->c_full_fetch(array(
+                    'b.b_id' => $class['r_b_id'],
+                ));
+
+                if(count($bootcamps)==1 && $bootcamps[0]['b_status']>=2){
+                    //Found a published Bootcamp!
+                    //Find first due milestone:
+
+                    $first_milestone_c_id = 0;
+                    foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                        if($milestone['c_status']>=1){
+                            $first_milestone_c_id = $milestone['c_id'];
+                            break;
+                        }
+                    }
+
+                    if($first_milestone_c_id){
+                        //We found this milestone!
+
+                        //Change the status:
+                        $this->Db_model->r_update( $class['r_id'] , array('r_status' => 2));
+
+                        //Fetch all admitted & activated students:
+                        $admitted = $this->Db_model->ru_fetch(array(
+                            'ru.ru_r_id'	    => $class['r_id'],
+                            'ru.ru_status >='	=> 4, //Anyone who is admitted
+                            'u.u_fb_id >'	    => 0, //Activated MenchBot
+                        ));
+
+                        foreach($admitted as $u){
+                            //Inform Students on First Milestone:
+                            if($u['u_id']==1){
+                                tree_message($first_milestone_c_id, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
+
+                            }
+                        }
+                    }
+                }
+
+                echo_json(array(
+                    'admitted' => $admitted,
+                    'class' => $class,
+                ));
+            }
+        }
+    }
 	
 	function bot_save_files(){
 	    /*
