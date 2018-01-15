@@ -49,7 +49,7 @@ class Cron extends CI_Controller {
                         //We found this milestone!
 
                         //Change the status:
-                        $this->Db_model->r_update( $class['r_id'] , array('r_status' => 2));
+                        //$this->Db_model->r_update( $class['r_id'] , array('r_status' => 2));
 
                         //Fetch all admitted & activated students:
                         $admitted = $this->Db_model->ru_fetch(array(
