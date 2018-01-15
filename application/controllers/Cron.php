@@ -13,10 +13,37 @@ class Cron extends CI_Controller {
     function test($u_id){
         echo_json(tree_message(890, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103));
     }
+
     //1760422603989011
-    function profile($u_fb_id){
-        echo_json($this->Facebook_model->fetch_profile('381488558920384',$u_fb_id));
+    function profile(){
+
+        $admitted = $this->Db_model->ru_fetch(array(
+            'ru.ru_r_id'	    => 103,
+            'ru.ru_status >='	=> 4, //Anyone who is admitted
+            'u.u_fb_id >'	    => 0, //Activated MenchBot
+        ));
+        $updated = 0;
+        foreach($admitted as $u){
+            if(!($u['u_id']==295)){
+                continue;
+            }
+            //Fetch profile:
+            $profile = $this->Facebook_model->fetch_profile('381488558920384',$u['u_fb_id']);
+            if(strlen($profile['first_name'])>0 && strlen($profile['last_name'])>0){
+                //Update local:
+                $this->Db_model->u_update( $u['u_id'] , array(
+                    'u_fname' => $profile['first_name'],
+                    'u_lname' => $profile['last_name'],
+                ));
+                $updated++;
+            }
+        }
+
+        echo $updated;
     }
+
+    //Update FB:
+
 
 
 	function class_kickstart(){
