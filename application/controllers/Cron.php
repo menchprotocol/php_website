@@ -14,7 +14,10 @@ class Cron extends CI_Controller {
         echo_json(tree_message(890, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103));
     }
 
-    //1760422603989011
+    function s(){
+        echo_json($this->Facebook_model->fetch_profile('381488558920384','1670125439677259'));
+    }
+
     function profile(){
 
         $admitted = $this->Db_model->ru_fetch(array(
