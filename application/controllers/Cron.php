@@ -23,23 +23,27 @@ class Cron extends CI_Controller {
             'u.u_fb_id >'	    => 0, //Activated MenchBot
         ));
         $updated = 0;
+        $profiles = array();
         foreach($admitted as $u){
-            if(!($u['u_id']==295)){
-                continue;
-            }
+
             //Fetch profile:
             $profile = $this->Facebook_model->fetch_profile('381488558920384',$u['u_fb_id']);
-            if(strlen($profile['first_name'])>0 && strlen($profile['last_name'])>0){
+
+            if(strlen($profile['first_name'])>0 && strlen($profile['last_name'])>0 && ( !($profile['first_name']==$u['u_fname']) || !($profile['last_name']==$u['u_lname']) )){
                 //Update local:
                 $this->Db_model->u_update( $u['u_id'] , array(
                     'u_fname' => $profile['first_name'],
                     'u_lname' => $profile['last_name'],
                 ));
                 $updated++;
+                array_push($profiles,$profile);
             }
         }
 
-        echo $updated;
+        echo_json(array(
+            'updated' => $updated,
+            'profiles' => $profiles,
+        ));
     }
 
     //Update FB:
