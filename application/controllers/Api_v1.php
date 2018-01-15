@@ -420,7 +420,6 @@ class Api_v1 extends CI_Controller {
 	        }
 	    }
 	    
-	    
 	    //Ooops, what happened?
 	    die(echo_json(array(
 	        'goto_section' => 0,
@@ -429,7 +428,6 @@ class Api_v1 extends CI_Controller {
 	    )));
 
 	}
-	
 	
 	//When they submit the application in step 2 of their admission:
 	function submit_application(){
@@ -503,6 +501,11 @@ class Api_v1 extends CI_Controller {
             ));
 
         }
+
+        //They should not activate their MenchBot:
+        $this->load->model('Email_model');
+        $email_sent = $this->Email_model->email_intent($admissions[0]['b_id'],2805,$admissions[0]);
+
 
 	    //Save answers:
 	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
@@ -807,6 +810,321 @@ class Api_v1 extends CI_Controller {
         }
     }
 
+    function load_leaderboard(){
+
+	    //Function called form /MY/leaderboard (student Menchbot) and /Console/Student tab for Instructors!
+        if(isset($_POST['psid'])){
+
+            //Fetch all their admissions:
+            $admissions = $this->Db_model->remix_admissions(array(
+                'u.u_fb_id' => $_POST['psid'],
+                'ru.ru_status' => 4, //Actively enrolled in
+            ));
+
+            //How many?
+            if(count($admissions)<=0){
+                //Ooops, they dont have anything!
+                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
+                //Nothing found for this user!
+                die('<script> window.location = "/"; </script>');
+            }
+
+            //How Many?
+            if(count($admissions)==1){
+                //Log Engagement
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $admissions[0]['u_id'],
+                    'e_json' => json_encode($admissions),
+                    'e_type_id' => 54, //leaderboard Opened
+                    'e_b_id' => $admissions[0]['b_id'],
+                    'e_r_id' => $admissions[0]['r_id'],
+                ));
+
+                //Set core variables so we can load as we progress:
+                $_POST['b_id'] = $admissions[0]['b_id'];
+                $_POST['r_id'] = $admissions[0]['r_id'];
+            }
+        }
+
+        //Resume loading:
+        if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+
+            die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
+
+        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+
+            die('<span style="color:#FF0000;">Error: Invalid Class ID</span>');
+
+        } else {
+
+            //Was this an instructor-side request?
+            $is_instructor = (isset($_POST['is_instructor']) && $_POST['is_instructor']);
+            if($is_instructor){
+                //Authenticate to ensure it's an instructor:
+                $udata = auth(1,1,$_POST['b_id']);
+            }
+
+            //Now fetch the Bootcamp:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => intval($_POST['b_id']),
+            ));
+            if(!isset($bootcamps[0])){
+                die('<span style="color:#FF0000;">Error: Bootcamp Not Found</span>');
+            } elseif(count($bootcamps[0]['c__child_intents'])<1){
+                die('<span style="color:#FF0000;">Error: No Milestones Yet</span>');
+            }
+
+            //Fetch the class:
+            $bootcamp = $bootcamps[0];
+            $class = filter($bootcamp['c__classes'],'r_id',intval($_POST['r_id']));
+            if(!$class){
+                die('<span style="color:#FF0000;">Error: Class Not Found</span>');
+            }
+
+            //Set some settings:
+            $loadboard_students = $this->Db_model->fetch_leaderboard($class['r_id']);
+            $countries_all = $this->config->item('countries_all');
+            $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
+            $show_ranking_top = ceil(count($loadboard_students) * $show_top );
+            $trophy = '<i class="fa fa-trophy" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Up-to-date and eligible for winning the completion prizes"></i>';
+
+            //Are we started? If so, we can calculate the total point:
+            $points_awarded = ($class['r__current_milestone']<0 || $class['r__current_milestone']>1);
+            $possible_points = 0;
+            if($is_instructor && $points_awarded){
+                //Calculate how many total points was possible for this completed or mid-way class:
+                foreach($bootcamp['c__child_intents'] as $milestone) {
+                    if($milestone['c_status']>=1 && ($class['r__current_milestone']<0 || $milestone['cr_outbound_rank']<$class['r__current_milestone'])){
+                        //Now go through all the tasks:
+                        foreach($milestone['c__child_intents'] as $task) {
+                            if($task['c_status']>=1 && !($task['c_complete_is_bonus_task']=='t')){
+                                $possible_points += ( $task['c_time_estimate'] * 60 );
+                            }
+                        }
+                    }
+                }
+            }
+
+            echo '<table class="table table-condensed table-striped" style="max-width:'.( $is_instructor ? '100%' : '420px' ).'; background-color:#E0E0E0; font-size:18px;">';
+
+            //First generate Leaderboard's top message:
+            echo '<tr style="font-weight:bold; ">';
+            echo '<td colspan="7" style="border:1px solid #999; font-size:1em; padding:10px 0; border-bottom:none; text-align:center;">';
+                echo '<i class="fa fa-calendar" aria-hidden="true"></i> ';
+                //Do some time calculations for the point system:
+                if($class['r__current_milestone']==0){
+                    //Not started yet!
+                    //TODO maybe have a count down timer to make it nicer?
+                    echo 'Class not yet started.';
+                } elseif($class['r__current_milestone']<0){
+                    //Ended!
+                    echo 'Class ended on '.time_format($class['r__class_end_time'],0).' PST';
+                } else {
+                    //During the class:
+                    echo 'Currently @ '.ucwords($bootcamp['b_sprint_unit']).' '.$class['r__current_milestone'];
+                    //echo ' Due '. time_format($class['r__milestones_due'][$class['r__current_milestone']],0).' PST'
+                }
+            echo '</td>';
+            echo '</tr>';
+
+            //Now its header:
+            echo '<tr style="font-weight:bold;">';
+            echo '<td style="border:1px solid #999; border-right:none; width:50px;">Rank</td>';
+            echo '<td style="border:1px solid #999; border-left:none; border-right:none; width:30px;">&nbsp;</td>';
+            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:320px;">Student</td>';
+            echo '<td style="border:1px solid #999; border-left:none; '.( $is_instructor ? 'border-right:none;' : '' ).' text-align:left;">Points</td>';
+            if($is_instructor){
+                echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left;">On-Time</td>';
+                echo '<td style="border:1px solid #999; border-left:none; text-align:left;">'.$trophy.'</td>';
+            }
+            echo '</tr>';
+
+            //Now list all students in order:
+            if(count($loadboard_students)>0){
+
+
+                //List students:
+                $rank = 1; //Keeps track of student rankings, which is equal if points are equal
+                $counter = 0; //Keeps track of student counts
+                $bborder = '';
+
+                foreach($loadboard_students as $key=>$ls){
+
+                    if($show_ranking_top==$counter){
+                        echo '<tr>';
+                        echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;"><span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all tasks by the end of the class will win the completion prizes.">Ranking for top '.($show_top*100).'% only</span></td>';
+                        echo '</tr>';
+                    }
+
+                    $counter++;
+                    if($key>0 && ($ls['points']<$loadboard_students[($key-1)]['points'] || $ls['points']==0)){
+                        $rank++;
+                    }
+
+
+
+                    if(!isset($loadboard_students[($key+1)])){
+                        //This is the last item, add a botton border:
+                        $bborder = 'border-bottom:1px solid #999;';
+                    }
+
+                    echo '<tr>';
+                    echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.( $is_instructor || $counter<=$show_ranking_top ? echo_rank($rank).( $counter>$show_ranking_top && $rank>1 ? ' <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Only top '.($show_top*100).'% are ranked in student-facing leaderboard"></i>' : '' ) : '' ).'</td>';
+                    echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.( isset($countries_all[strtoupper($ls['u_country_code'])]) ? '<img data-toggle="tooltip" data-placement="right" title="'.$countries_all[strtoupper($ls['u_country_code'])].'" src="/img/flags/'.strtolower($ls['u_country_code']).'.png" class="flag" style="margin-top:-3px;" />' : '' ).'</td>';
+                    echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
+
+                    if(!$is_instructor) {
+                        //Show basic list for students:
+                        echo $ls['u_fname'].' '.$ls['u_lname'];
+                    } else {
+
+                        echo '<a href="javascript:view_el('.$ls['u_id'].','.$bootcamp['c_id'].')" class="plain">';
+                        echo '<i class="pointer fa fa-caret-right" id="pointer_'.$ls['u_id'].'_'.$bootcamp['c_id'].'" aria-hidden="true"></i> ';
+                        echo $ls['u_fname'].' '.$ls['u_lname'];
+                        echo '</a>';
+
+                        echo '<div style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" id="c_el_'.$ls['u_id'].'_'.$bootcamp['c_id'].'" class="hidden">';
+
+                        //Fetch student submissions so far:
+                        $us_data = $this->Db_model->us_fetch(array(
+                            'us_r_id' => $class['r_id'],
+                            'us_student_id' => $ls['u_id'],
+                        ));
+
+                        //Go through all the milestones that are due up to now:
+                        $possible_points = 0;
+                        foreach($bootcamp['c__child_intents'] as $milestone) {
+                            if($milestone['c_status']>=1){
+
+                                $milestone_started = ($milestone['cr_outbound_rank']<=$class['r__current_milestone'] || $class['r__current_milestone']<0);
+                                $required_tasks = 0;
+                                $completed_tasks = 0;
+                                $bonus_tasks = 0; //TODO implement later...
+                                $pending_revisions = 0; //TODO Implement later...
+                                $points_earned = 0;
+
+
+                                $task_details = null; //To show details when clicked
+                                //Calculate the task completion rate and points for this
+                                foreach($milestone['c__child_intents'] as $task) {
+                                    if($task['c_status']>=1 && !($task['c_complete_is_bonus_task']=='t')){
+
+                                        $required_tasks++;
+                                        if($milestone['cr_outbound_rank']<$class['r__current_milestone'] || $class['r__current_milestone']<0){
+                                            $possible_points += round($task['c_time_estimate']*60);
+                                        }
+
+                                        //What is the status of this task?
+                                        if(isset($us_data[$task['c_id']])){
+
+                                            //This student has made a submission:
+                                            $us_task_status = $us_data[$task['c_id']]['us_status'];
+                                            $completed_tasks += ( $us_task_status>=1 ? 1 : 0 );
+                                            $points_earned += 0;
+
+                                        } elseif(!$milestone_started) {
+
+                                            //Locked:
+                                            $us_task_status = -2;
+
+                                        } else {
+
+                                            //Not submitted yet:
+                                            $us_task_status = 0;
+
+                                        }
+
+                                        $task_details .= '<div>';
+
+
+                                        $task_details .= '</div>';
+
+                                        //Now show the task submission details:
+                                        $task_details .= '<a href="javascript:view_el('.$ls['u_id'].','.$task['c_id'].')" class="plain">';
+                                        $task_details .= '<i class="pointer fa fa-caret-right" id="pointer_'.$ls['u_id'].'_'.$task['c_id'].'" aria-hidden="true"></i> ';
+                                        $task_details .= status_bible('us',$us_task_status,1,'right');
+                                        $task_details .= ' <span data-toggle="tooltip" title="'.$task['c_objective'].'">Task '.$task['cr_outbound_rank'].'</span>';
+
+                                        $task_details .= ( isset($us_data[$task['c_id']]) ? ' '.status_bible('us_time',($us_data[$task['c_id']]['us_on_time_score']*2),false,'top') . ( strlen($us_data[$task['c_id']]['us_student_notes'])>0 ? ' <i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" title="Submission has notes"></i>' : '' ) : '' );
+                                        $task_details .= '</a>';
+
+                                        $task_details .= '<div id="c_el_'.$ls['u_id'].'_'.$task['c_id'].'" class="hidden" style="margin-left:5px;">';
+
+                                        if(isset($us_data[$task['c_id']])){
+                                            $task_details .= '<div style="width:280px; overflow:hidden; font-size:0.9em; padding:5px; border:1px solid #999;">'.( strlen($us_data[$task['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$task['c_id']]['us_student_notes']) : 'Notes not added.' ).'</div>';
+                                        } else {
+                                            $task_details .= '<p>Nothing submitted yet.</p>';
+                                        }
+                                        $task_details .= '</div>';
+
+
+                                    }
+                                }
+
+
+
+                                //What is the milestone status based on its tasks?
+                                if($pending_revisions>0){
+                                    //Some of its tasks are pending revision:
+                                    $us_milestone_status = -1;
+                                } elseif($completed_tasks>=$required_tasks){
+                                    //Completed all tasks:
+                                    $us_milestone_status = 1;
+                                } elseif(!$milestone_started){
+                                    //Not yet started, still locked:
+                                    $us_milestone_status = -2;
+                                } else {
+                                    //Pending completion:
+                                    $us_milestone_status = 0;
+                                }
+
+                                //Now its content:
+                                echo '<div>';
+                                echo '<a href="javascript:view_el('.$ls['u_id'].','.$milestone['c_id'].')" class="plain">';
+                                echo '<i class="pointer fa fa-caret-right" id="pointer_'.$ls['u_id'].'_'.$milestone['c_id'].'" aria-hidden="true"></i> ';
+                                echo '<span data-toggle="tooltip" title="'.$milestone['c_objective'].'">'.status_bible('us',$us_milestone_status,1,'right').' '.ucwords($bootcamp['b_sprint_unit']).' '.$milestone['cr_outbound_rank'].( $milestone['c_duration_multiplier']>1 ? '-'.($milestone['cr_outbound_rank']+$milestone['c_duration_multiplier']-1) : '' ).'</span>';
+                                echo '</a>';
+
+                                if($milestone['cr_outbound_rank']==$class['r__current_milestone']){
+                                    echo ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
+                                }
+
+                                echo '</div>';
+
+                                echo '<div id="c_el_'.$ls['u_id'].'_'.$milestone['c_id'].'" style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" class="hidden">';
+                                echo $task_details;
+                                echo '</div>';
+
+                            }
+                        }
+
+                        echo '</div>';
+                    }
+
+
+                    echo '</td>';
+                    echo '<td valign="top" style="'.$bborder.( $is_instructor ? '' : 'border-right:1px solid #999;' ).'text-align:left; vertical-align:top;">'.( $is_instructor || $counter<=$show_ranking_top ? number_format($ls['points'],0) : '').'</td>';
+
+                    if($is_instructor){
+                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.( $possible_points>0 ? '<span data-toggle="tooltip" title="Earned '.$ls['points'].'/'.$possible_points.' points">'.( $possible_points ? round( $ls['points']/$possible_points*100 ).'%' : '' ).'</span>' : '100%' ).'</td>';
+                        echo '<td valign="top" style="'.$bborder.'border-right:1px solid #999; text-align:left; vertical-align:top;">'.( !$possible_points || $ls['points']>=$possible_points  ? $trophy : '' ).'</td>';
+                    }
+
+                    echo '</tr>';
+                }
+
+            } else {
+                //No students admitted yet:
+                echo '<tr style="font-weight:bold; ">';
+                echo '<td colspan="7" style="border:1px solid #999; font-size:1.2em; padding:15px 0; text-align:center;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No Students Admitted Yet</td>';
+                echo '</tr>';
+            }
+
+            echo '</table>';
+
+        }
+
+    }
 
 	function tuition_calculator(){
 	    //Displays the class timeline based on some inputs:
@@ -1090,6 +1408,7 @@ class Api_v1 extends CI_Controller {
 	            ));
 	            
 	            if(count($classes)==1){
+
 	                //Port the settings:
 	                $class_data = $classes[0];
 	                $eng_message = time_format($_POST['r_start_date'],1).' class created by copying '.time_format($class_data['r_start_date'],1).' class settings.';
@@ -1098,10 +1417,14 @@ class Api_v1 extends CI_Controller {
 	                $class_data['r_start_date'] = $new_date;
 	                $class_data['r_start_time_mins'] = intval($_POST['r_start_time_mins']);
 	                $class_data['r_status'] = intval($_POST['r_status']); //Override with input status
-	                
-	                //The following data are unique and should NOT be copied:
-	                unset($class_data['r_id']);
-	                unset($class_data['r__current_admissions']); //This is a dummy placeholder
+
+	                //Remove all additional appended data and certain non-replicatable data fields like r_id:
+                    foreach($class_data as $key=>$value){
+                        if(substr_count($key,'r__')>0 || in_array($key,array('r_id'))){
+                            //This is an appended data field:
+                            unset($class_data[$key]);
+                        }
+                    }
 	            }
 	        }
 	        

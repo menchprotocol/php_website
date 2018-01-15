@@ -13,7 +13,7 @@ class Bot extends CI_Controller {
 	function tree($pid,$depth=0,$u_id=1,$b_id=0){
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
-	
+
 	function t(){
 	    
 	    $urls = extract_urls('For tips on how to exactly use the software, just search for free tutorials on Youtube or go back to the recording lessons on my 8 hour course creation course on Udemy https://www.udemy.com/how-to-create-an-awesome-online-course');
@@ -546,6 +546,11 @@ class Bot extends CI_Controller {
 	            ));
 	            
 	            if(count($classes)==1){
+
+	                //Fetch Student:
+                    $users = $this->Db_model->u_fetch(array(
+                        'u_id' => $enrollments[0]['ru_u_id'],
+                    ));
 	                
 	                //Define numbers:
 	                $amount = floatval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
@@ -568,6 +573,10 @@ class Bot extends CI_Controller {
 	                $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
 	                    'ru_status' => 2, //For now this is the default since we don't accept partial payments
 	                ));
+
+	                //Inform the Student:
+                    $this->load->model('Email_model');
+                    $email_sent = $this->Email_model->email_intent($classes[0]['r_b_id'],2807,$users[0]);
 	                
 	                //Log Engagement
 	                $this->Db_model->e_create(array(

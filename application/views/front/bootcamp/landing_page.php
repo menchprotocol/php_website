@@ -166,14 +166,12 @@ $( document ).ready(function() {
             </ul>
             
             <div style="padding:10px 0 30px; text-align:center;">
+                <div class="btn btn-primary btn-round countdown"><span id="reg1"></span></div>
             	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            	<div style="font-size:1.2em;">Ends in <span id="reg1"></span></div>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
     </div>
-    
-    
     
     
     <div class="col-md-8">
@@ -411,13 +409,14 @@ $( document ).ready(function() {
     		
     		
     		
-    </div>    
+    </div>
 </div>
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-	<div style="font-size:1.2em;">Ends in <span id="reg3"></span></div>
+	<div class="btn btn-primary btn-round countdown"><span id="reg3"></span></div>
+    <br />
+    <a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
 

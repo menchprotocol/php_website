@@ -109,6 +109,22 @@ function switch_to(hashtag_name){
 	$('#topnav a[href="#'+hashtag_name+'"]').tab('show');
 }
 
+function view_el(u_id,c_id){
+    //This function toggles the student card report
+    //Determine its current state:
+    if($('#c_el_'+u_id+'_'+c_id).hasClass('hidden')){
+        //Need to show it now:
+        $('#c_el_'+u_id+'_'+c_id).removeClass('hidden');
+        $('#pointer_'+u_id+'_'+c_id).removeClass('fa-caret-right');
+        $('#pointer_'+u_id+'_'+c_id).addClass('fa-caret-down');
+    } else {
+        //Need to hide it now:
+        $('#c_el_'+u_id+'_'+c_id).addClass('hidden');
+        $('#pointer_'+u_id+'_'+c_id).removeClass('fa-caret-down');
+        $('#pointer_'+u_id+'_'+c_id).addClass('fa-caret-right');
+    }
+}
+
 //To keep state of the horizontal menu using URL hashtags:
 function focu_hash(the_hash){
 	if(!the_hash.length){

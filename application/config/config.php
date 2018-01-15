@@ -6,13 +6,20 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.6,
+    'version' => 1.61,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.co',
 );
 
+$config['mench_pricing'] = array(
+    'share_operator' => 0.7, //This goes to Bootcamp Lead Instructor, and he decides how to gets divided among his team
+    'share_distributor' => 0.2, //What goes to the distributor who got the student to purchase the seat, paid along side the performance payout
+    'share_platform' => 0.1, //Includes CC processing fee's via Paypal to get money to instructor
+    //Top three should total 1
+    'instant_payout' => 0.4, //What percentage of money paid to instructor on Day 1 of the Bootcamp, Remainder is paid via Performance Payout
+);
 
 //All active bots connected to the platform:
 $config['mench_bots'] = array(
@@ -53,50 +60,51 @@ $config['mench_bots'] = array(
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
+
+                        array(
+                            'title' => '🏆 Leaderboard',
+                            'type' => 'web_url',
+                            'url' => 'https://mench.co/my/leaderboard',
+                            'webview_height_ratio' => 'tall',
+                            'webview_share_button' => 'hide',
+                            'messenger_extensions' => true,
+                        ),
                         /*
-                         array(
-                         'title' => '🏆 Leaderboard',
-                         'type' => 'web_url',
-                         'url' => 'https://mench.co/my/leaderboard',
-                         'messenger_extensions' => true,
-                         'webview_height_ratio' => 'tall',
-                         'webview_share_button' => 'hide',
-                         ),
-                         array(
-                         'title' => '⚙ My Account',
-                         'type' => 'web_url',
-                         'url' => 'https://mench.co/my/account',
-                         'messenger_extensions' => true,
-                         'webview_height_ratio' => 'tall',
-                         'webview_share_button' => 'hide',
-                         ),
-                         /*
-                         array(
-                         'title' => 'My Dashboard',
-                         'type' => 'nested',
-                         'call_to_actions' => array(
-                         array(
-                         'title' => 'Leaderboard',
-                         'type' => 'web_url',
-                         'url' => 'https://mench.co/my/ledaerboard',
-                         'webview_height_ratio' => 'tall',
-                         'webview_share_button' => 'hide',
-                         ),
-                         array(
-                         'title' => 'Assignments',
-                         'type' => 'web_url',
-                         'url' => 'https://mench.co/my/assignments',
-                         'webview_height_ratio' => 'tall',
-                         'webview_share_button' => 'hide',
-                         ),
-                         ),
-                         ),
-                         array(
-                         'title' => 'Help & Support',
-                         'type' => 'postback',
-                         'payload' => 'HISTORY_PAYLOAD',
-                         ),
-                         */
+                        array(
+                        'title' => '⚙ My Account',
+                        'type' => 'web_url',
+                        'url' => 'https://mench.co/my/account',
+                        'messenger_extensions' => true,
+                        'webview_height_ratio' => 'tall',
+                        'webview_share_button' => 'hide',
+                        ),
+                        /*
+                        array(
+                        'title' => 'My Dashboard',
+                        'type' => 'nested',
+                        'call_to_actions' => array(
+                        array(
+                        'title' => 'Leaderboard',
+                        'type' => 'web_url',
+                        'url' => 'https://mench.co/my/ledaerboard',
+                        'webview_height_ratio' => 'tall',
+                        'webview_share_button' => 'hide',
+                        ),
+                        array(
+                        'title' => 'Assignments',
+                        'type' => 'web_url',
+                        'url' => 'https://mench.co/my/assignments',
+                        'webview_height_ratio' => 'tall',
+                        'webview_share_button' => 'hide',
+                        ),
+                        ),
+                        ),
+                        array(
+                        'title' => 'Help & Support',
+                        'type' => 'postback',
+                        'payload' => 'HISTORY_PAYLOAD',
+                        ),
+                        */
                     ),
                 ),
             ),
@@ -414,33 +422,6 @@ $config['u_social_account'] = array(
         'sa_postfix' => '',
         'sa_icon' => '<i class="fa fa-calendar-check-o" aria-hidden="true"></i>',
     ),
-    
-    /*
-    'u_quora_username' => array(
-        'sa_name' => 'Quora',
-        'sa_prefix' => 'https://www.quora.com/profile/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-quora" aria-hidden="true"></i>',
-    ),
-    'u_stackoverflow_username' => array(
-        'sa_name' => 'Stack Overflow',
-        'sa_prefix' => 'https://stackoverflow.com/users/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-stack-overflow" aria-hidden="true"></i>',
-    ),
-    'u_medium_username' => array(
-        'sa_name' => 'Medium',
-        'sa_prefix' => 'https://medium.com/@',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-medium" aria-hidden="true"></i>',
-    ),
-    'u_dribbble_username' => array(
-        'sa_name' => 'dribbble',
-        'sa_prefix' => 'https://dribbble.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-dribbble" aria-hidden="true"></i>',
-    ),
-    */
 );
 
 
@@ -930,6 +911,365 @@ $config['e_mediums'] = array(
             5 => 'Optin',
             6 => 'Inbound Message',
             7 => 'Outbound Message',
+        ),
+    ),
+);
+
+
+$config['object_statuses'] = array(
+    'b' => array(
+        -1 => array(
+            's_name'  => 'Archived',
+            's_desc'  => 'Bootcamp archived by lead instructor.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-trash',
+        ),
+        0 => array(
+            's_name'  => 'Drafting',
+            's_desc'  => 'Bootcamp under development. Admissions starts when published live.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-pencil-square',
+        ),
+        1 => array(
+            's_name'  => 'Request To Publish',
+            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-eye',
+        ),
+        2 => array(
+            's_name'  => 'Published Privately',
+            's_desc'  => 'A private Bootcamp where students can join only if they kow the Landing Page URL.',
+            'u_min_status'  => 3, //Can only be done by admin
+            's_mini_icon' => 'fa-bullhorn',
+        ),
+        3 => array(
+            's_name'  => 'Published to Mench',
+            's_desc'  => 'A Bootcamp published on the Mench marketplace.',
+            'u_min_status'  => 3, //Can only be done by admin
+            's_mini_icon' => 'fa-bullhorn',
+        ),
+    ),
+    'c' => array(
+        -1 => array(
+            's_name'  => 'Delete',
+            's_desc'  => 'Item removed.',
+            'u_min_status'  => 1, //Not possible for now.
+            's_mini_icon' => 'fa-trash',
+        ),
+        0 => array(
+            's_name'  => 'Drafting',
+            's_desc'  => 'Task being drafted and not accessible by students until published live',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-pencil-square',
+        ),
+        1 => array(
+            's_name'  => 'Published',
+            's_desc'  => 'Task is active and accessible by students.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-bullhorn',
+        ),
+    ),
+    'r' => array(
+        -2 => array(
+            's_name'  => 'Cancel',
+            's_desc'  => 'Class was cancelled after it had started.',
+            'u_min_status'  => 3,
+            's_mini_icon' => 'fa-times-circle',
+        ),
+        -1 => array(
+            's_name'  => 'Archived',
+            's_desc'  => 'Class archived before it was started.',
+            'u_min_status'  => 2,
+            's_mini_icon' => 'fa-trash',
+        ),
+        0 => array(
+            's_name'  => 'Drafting',
+            's_desc'  => 'Class under development and not listed on landing page.',
+            'u_min_status'  => 2,
+            's_mini_icon' => 'fa-pencil-square',
+        ),
+        1 => array(
+            's_name'  => 'Admission Open',
+            's_desc'  => 'Class published live and is open for student admission.',
+            'u_min_status'  => 2,
+            's_mini_icon' => 'fa-bullhorn',
+        ),
+        2 => array(
+            's_name'  => 'Running',
+            's_desc'  => 'Class has admitted students and is currently running.',
+            'u_min_status'  => 3,
+            's_mini_icon' => 'fa-play-circle',
+        ),
+        3 => array(
+            's_name'  => 'Completed',
+            's_desc'  => 'Class was operated completely until its last day.',
+            'u_min_status'  => 3,
+            's_mini_icon' => 'fa-graduation-cap',
+        ),
+    ),
+    'i' => array(
+        -1 => array(
+            's_name'  => 'Delete',
+            's_desc'  => 'Message removed.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-trash',
+        ),
+        /*
+        0 => array(
+            's_name'  => 'Drafting',
+            's_desc'  => 'Message not visible to students while drafting.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-pencil-square',
+        ),
+        */
+        1 => array(
+            's_name'  => 'On Start',
+            's_desc'  => 'Messages sent to student when milestone starts.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-bolt',
+        ),
+        2 => array(
+            's_name'  => 'Drip',
+            's_desc'  => 'Messages sent to enrolled students sometime during the milestone. Drip messages sent in same order you choose.',
+            's_mini_icon' => 'fa-tint',
+            'u_min_status'  => 1,
+        ),
+        /*
+        3 => array(
+            's_name'  => 'Landing Page',
+            's_desc'  => 'Messages published on the Landing Page giving prospect students an overview of your Bootcamp.',
+            's_mini_icon' => 'fa-bullhorn',
+            'u_min_status'  => 1,
+        ),
+        4 => array(
+            's_name'  => 'Private Note',
+            's_desc'  => 'This Message is taken by the instructor team on a particular student and is visible to the entire team.',
+            's_mini_icon' => 'fa-eye-slash',
+            'u_min_status'  => 1,
+        ),
+        */
+    ),
+
+    'cr' => array(
+        -1 => array(
+            's_name'  => 'Archived',
+            's_desc'  => 'Task link removed.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-trash',
+        ),
+        1 => array(
+            's_name'  => 'Publish',
+            's_desc'  => 'Task link is active.',
+            'u_min_status'  => 1,
+        ),
+    ),
+
+    //User related statuses:
+
+    'ba' => array(
+        -1 => array(
+            's_name'  => 'Revoked',
+            's_desc'  => 'Bootcamp access revoked.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-minus-circle',
+        ),
+        1 => array(
+            's_name'  => 'Adviser',
+            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the bootcamp configurations.',
+            's_mini_icon' => 'fa-comments-o',
+            'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team.php view file
+        ),
+        2 => array(
+            's_name'  => 'Co-Instructor',
+            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-user-plus',
+        ),
+        3 => array(
+            's_name'  => 'Lead Instructor',
+            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-star',
+        ),
+    ),
+
+    'u' => array(
+        -2 => array(
+            's_name'  => 'Merged',
+            's_desc'  => 'User merged with another user',
+            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
+            's_mini_icon' => 'fa-user-times',
+        ),
+        -1 => array(
+            's_name'  => 'Delete',
+            's_desc'  => 'User no longer active.',
+            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
+            's_mini_icon' => 'fa-user-times',
+        ),
+        0 => array(
+            's_name'  => 'Pending',
+            's_desc'  => 'User added by the students but has not yet claimed their account.',
+            'u_min_status'  => 999, //System only
+            's_mini_icon' => 'fa-user-o',
+        ),
+        1 => array(
+            's_name'  => 'Active',
+            's_desc'  => 'User active.',
+            's_mini_icon' => 'fa-user',
+            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
+        ),
+        2 => array(
+            's_name'  => 'Lead Instructor',
+            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
+            's_mini_icon' => 'fa-star',
+            'u_min_status'  => 3, //Only admins can approve leaders
+        ),
+        3 => array(
+            's_name'  => 'Mench Admin',
+            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
+            's_mini_icon' => 'fa-shield',
+            'u_min_status'  => 3, //Only admins can create other admins
+        ),
+    ),
+
+    'us' => array(
+        //This is not stored in DB:
+        -2 => array(
+            's_name'  => 'Locked',
+            's_desc'  => 'Pending milestone start.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-lock',
+        ),
+        -1 => array(
+            's_name'  => 'Requires Revision',
+            's_desc'  => 'Submission has been reviewed and improvement suggestions are pending implementation',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-exclamation-triangle',
+        ),
+        0 => array(
+            's_name'  => 'Pending Completion',
+            's_desc'  => 'Task is pending completion',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-square-o',
+        ),
+        1 => array(
+            's_name'  => 'Marked as Complete',
+            's_desc'  => 'Student marked as complete',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-check-square',
+        ),
+    ),
+    //This is not in the DB but it reflects the timing of when students submitted their tasks:
+    'us_time' => array(
+        //This is not stored in DB:
+        0 => array(
+            's_name'  => 'Really Late',
+            's_desc'  => 'Student completed task much later than expected and did not earn any points',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-thumbs-o-down',
+        ),
+        1 => array(
+            's_name'  => 'A Little Late',
+            's_desc'  => 'Student completed task a little later than expected and received half points',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-hand-rock-o',
+        ),
+        2 => array(
+            's_name'  => 'On-Time',
+            's_desc'  => 'Student completed task on time and received full points',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-thumbs-o-up',
+        ),
+    ),
+
+    't' => array(
+        -2 => array(
+            's_name'  => 'Payout',
+            's_desc'  => 'Payment sent to instructors and affiliates.',
+            'u_min_status'  => 999,
+        ),
+        -1 => array(
+            's_name'  => 'Refund Payment',
+            's_desc'  => 'Transaction hold the exact amount of refund issues to the student.',
+            'u_min_status'  => 999,
+        ),
+        0 => array(
+            's_name'  => 'Payment Refunded',
+            's_desc'  => 'Payment has been fully or partially refunded and a new transaction has been added to reflect the exact refund.',
+            'u_min_status'  => 999,
+        ),
+        1 => array(
+            's_name'  => 'Payment Received',
+            's_desc'  => 'Payment received from students for a class admission.',
+            'u_min_status'  => 999,
+        ),
+    ),
+
+    'ru' => array(
+
+        //Withrew after course has started:
+        -3 => array(
+            's_name'  => 'Student Dispelled',
+            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-times-circle',
+        ),
+        //Withrew prior to course has started:
+        -2 => array(
+            's_name'  => 'Student Withdrew',
+            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date.',
+            'u_min_status'  => 999, //Only done by Student themselves
+            's_mini_icon' => 'fa-times-circle',
+        ),
+        -1 => array(
+            's_name'  => 'Application Rejected',
+            's_desc'  => 'Application rejected by Bootcamp leader before start date. Students receives a full refund.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-times-circle',
+        ),
+
+        //Post Application
+        0 => array(
+            's_name'  => 'Application Started',
+            's_desc'  => 'Student has started the application process but has not completed it yet.',
+            'u_min_status'  => 999, //System insertion only
+            's_mini_icon' => 'fa-pencil-square',
+        ),
+        /*
+        1 => array(
+            's_name'  => 'Applied - Pending Full Payment',
+            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full.',
+            'u_min_status'  => 999, //System insertion only
+        ),
+        */
+        2 => array(
+            's_name'  => 'Pending Admission',
+            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
+            's_mini_icon' => 'fa-pause-circle',
+            'u_min_status'  => 999, //System insertion only
+        ),
+
+        /*
+        3 => array(
+            's_name'  => 'Invitation Sent',
+            's_desc'  => 'Admins have full access to all bootcamp features.',
+            'u_min_status'  => 1,
+        ),
+        */
+
+        4 => array(
+            's_name'  => 'Bootcamp Student',
+            's_desc'  => 'Student admitted making them ready to participate in bootcamp.',
+            's_mini_icon' => 'fa-user',
+            'u_min_status'  => 1,
+        ),
+
+        //Completion
+        7 => array(
+            's_name'  => 'Bootcamp Graduate',
+            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
+            's_mini_icon' => 'fa-graduation-cap',
+            'u_min_status'  => 1,
         ),
     ),
 );

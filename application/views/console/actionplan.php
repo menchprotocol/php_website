@@ -1215,7 +1215,7 @@ function add_item(group_id,prefix,current_value){
 
 
 
-                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Prizes (Optional) <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Prizes <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_623"></div>
                 <script>
                     $(document).ready(function() {

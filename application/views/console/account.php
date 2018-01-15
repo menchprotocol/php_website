@@ -72,24 +72,21 @@ function update_account(){
 		
 		u_password_current:$('#u_password_current').val(),
 		u_password_new:$('#u_password_new').val(),
-		
+
+        //Social accounts:
+        u_fb_username:$('#u_fb_username').val(),
 		u_website_url:$('#u_website_url').val(),
 		u_linkedin_username:$('#u_linkedin_username').val(),
 		u_github_username:$('#u_github_username').val(),
 		u_twitter_username:$('#u_twitter_username').val(),
 		u_youtube_username:$('#u_youtube_username').val(),
-		u_fb_username:$('#u_fb_username').val(),
 		u_instagram_username:$('#u_instagram_username').val(),
         u_skype_username:$('#u_skype_username').val(),
+        u_calendly_username:$('#u_calendly_username').val(),
+
+        //Payout email:
         u_paypal_email:$('#u_paypal_email').val(),
-		/*
-		u_quora_username:$('#u_quora_username').val(),
-		u_stackoverflow_username:$('#u_stackoverflow_username').val(),
-		u_medium_username:$('#u_medium_username').val(),
-		u_dribbble_username:$('#u_dribbble_username').val(),
-		*/
-		u_calendly_username:$('#u_calendly_username').val(),
-		
+
 	} , function(data) {
 		//Update UI to confirm with user:
 		$('.update_u_results').html(data).hide().fadeIn();

@@ -10,9 +10,10 @@ $class_start_time = strtotime($admission['r_start_date']) + (intval($admission['
 $due_date = time_format($admission['r_start_date'],2,(($sprint_index+$sprint_duration_multiplier-1) * ( $admission['b_sprint_unit']=='week' ? 7 : 1 )));
 $due_late_date = time_format($admission['r_start_date'],2,(($sprint_index+$sprint_duration_multiplier) * ( $admission['b_sprint_unit']=='week' ? 7 : 1 )));
 
-$ontime_secs_left = (strtotime($due_date) - time())+((24*3600)-1);
-$alittle_late_secs = ( $admission['b_sprint_unit']=='week' ? (7*24*3600) : (24*3600) ); //Duplicate logic as $due_late_date (1x Milestone Duration)
+$ontime_secs_left = ( strtotime($due_date) + (intval($admission['r_start_time_mins'])*60) - time());
+$alittle_late_secs = ( $admission['b_sprint_unit']=='week' ? 7 : 1 )*24*3600; //"A little late" = 1x Milestone Duration
 $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
+
 ?>
 <script>
 
@@ -31,7 +32,6 @@ function mark_done(){
 	//Show spinner:
 	$('.mark_done').hide();
 	$('#save_report').html('<img src="/img/round_yellow_load.gif" class="loader" />').hide().fadeIn();
-
 	
 	//Save the rest of the content:
 	$.post("/api_v1/completion_report", {

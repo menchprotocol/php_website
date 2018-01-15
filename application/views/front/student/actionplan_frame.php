@@ -39,9 +39,18 @@
             });
           },
           function error(err){
-            // error, likely as the user is not accessing the action plan from Messenger:
-            //$("#page_content").html('<div class="alert alert-danger" role="alert">Error: Action Plan can only be accessed from Facebook Messenger. ('+err+')</div>')
-            $("#page_content").html('<div class="alert alert-alert" role="alert">Visit messenger.com using your PC to access the action plan via messenger for Desktop.</div>');
+
+            //Ooops, there was sone sort of an error! Let's see if the student
+            MessengerExtensions.getSupportedFeatures(function success(result) {
+                  if(result.supported_features.indexOf("context")<0) {
+                      $("#page_content").html('<div class="alert alert-alert" role="alert">Visit www.messenger.com using your PC to access this page using messenger for web.</div>');
+                  } else {
+                      $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Authentication failed</div>');
+                  }
+            }, function error(err) {
+                $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Failed to authenticate</div>');
+            });
+
           }
         );
     };

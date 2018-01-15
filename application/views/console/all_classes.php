@@ -19,7 +19,7 @@ if(count($bootcamp['c__classes'])>0){
     }
     echo '</div>';
 } else {
-    echo '<div class="alert alert-info maxout" role="alert">No classes created yet.</div>';
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No classes yet.</div>';
 }
 ?>
 

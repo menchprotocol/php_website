@@ -7,8 +7,24 @@ class Db_model extends CI_Model {
 	function __construct() {
 		parent::__construct();
 	}
-	
-	
+
+
+	function fetch_leaderboard($r_id){
+        return objectToArray($this->db->query("
+SELECT ru.*, u.*, COALESCE(us.points, 0) AS points
+FROM v5_class_students ru
+JOIN v5_users u ON u.u_id = ru.ru_u_id
+LEFT JOIN
+  (SELECT us_student_id,
+          SUM(us.us_on_time_score * us.us_time_estimate * 60) AS points
+   FROM v5_user_submissions us
+   WHERE us_status >= 1
+   GROUP BY 1) us ON ru.ru_u_id = us.us_student_id
+WHERE ru.ru_status >= 4
+  AND ru_r_id = ".$r_id."
+  AND u_fb_id > 0
+ORDER BY points DESC, ru_id ASC")->result());
+    }
 	/* ******************************
 	 * Remix functions that fetch a bunch of existing data:
 	 ****************************** */
@@ -446,7 +462,7 @@ class Db_model extends CI_Model {
 	    //Split locale into language and country
 	    $locale = explode('_',$fb_profile['locale'],2);
 	    
-	    //Do a Smart Update for select fields as linking:
+	    //Do an Update for selected fields as linking:
 	    $this->Db_model->u_update( $ref_u_id , array(
 	        'u_fb_id'         => $psid_sender_id,
 	        'u_image_url'     => ( strlen($matching_users[0]['u_image_url'])<5 ? $fb_profile['profile_pic'] : $matching_users[0]['u_image_url'] ),
@@ -507,21 +523,6 @@ class Db_model extends CI_Model {
 	    return $res;
 	}
 	
-	
-	function us_fetch_fancy($match_columns){
-	    $this->db->select('*');
-	    $this->db->from('v5_user_submissions us');
-	    $this->db->join('v5_users u', 'u.u_id = us.us_student_id');
-	    $this->db->join('v5_intents c', 'c.c_id = us.us_c_id');
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $this->db->order_by('us.us_student_id');
-	    $this->db->order_by('us.us_id','DESC');
-	    $q = $this->db->get();
-	    return $q->result_array();
-	}
-	
 	/* ******************************
 	 * i Messages
 	 ****************************** */
@@ -578,12 +579,12 @@ class Db_model extends CI_Model {
 	 * Classes
 	 ****************************** */
 	
-	function r_fetch($match_columns){
+	function r_fetch($match_columns , $bootcamp=null /* Passing this would load extra variables for the class as well! */ ){
 	    
 		//Missing anything?
 		$this->db->select('r.*');
-		$this->db->from('v5_classes r');
-		$this->db->join('v5_class_students ru', 'ru.ru_r_id = r.r_id', 'left');
+        $this->db->from('v5_classes r');
+        $this->db->join('v5_class_students ru', 'ru.ru_r_id = r.r_id', 'left');
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -592,13 +593,71 @@ class Db_model extends CI_Model {
 		$q = $this->db->get();
 		
 		$runs = $q->result_array();
-		foreach($runs as $key=>$value){
+		foreach($runs as $key=>$class){
+
 		    //Fetch admission count:
-		    //TODO NOTE: Anything you add here, make sure to remove from controller/function: api_v1/r_create() when duplicating a class
-		    $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
-		        'ru.ru_r_id'	    => $value['r_id'],
-		        'ru.ru_status >='	=> 2, //Anyone who is admitted
-		    )));
+		    //NOTE: Anything added here with prefix "r__" will be removed on api_v1/r_create() when duplicating a class
+            $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status >='	=> 2, //Anyone who is pending admission
+            )));
+            $runs[$key]['r__confirmed_admissions'] = count($this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status >='	=> 4, //Anyone who is admitted
+                'u.u_fb_id >'	    => 0, //Activated MenchBot
+            )));
+
+            if($bootcamp){
+
+                //Fetch financial data:
+                $mench_pricing = $this->config->item('mench_pricing');
+                //Figure out total instructor earnings:
+                $this->db->select('SUM(t_total) as usd_transactions');
+                $this->db->from('v5_transactions t');
+                $this->db->join('v5_class_students ru' , 'ru.ru_id = t.t_ru_id');
+                $this->db->where('ru_r_id',$class['r_id']);
+                $this->db->where('t_status IN (-1,0,1)');
+                $q = $this->db->get();
+                $earnings = $q->row_array();
+                //For now calculate operator and distributor for the instructor as they would be doing both:
+                $runs[$key]['r__usd_earnings'] = ($earnings['usd_transactions'] * ($mench_pricing['share_distributor']+$mench_pricing['share_operator'])); //Calculates the total earnings for this class so far
+
+
+                //Now calculate start time and end time for this class:
+                $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']) + ( $class['r_start_time_mins'] * 60 );
+                $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + ( $bootcamp['c__milestone_units'] * $bootcamp['c__milestone_secs'] );
+
+                //We're in the middle of this class, let's find out where:
+                $runs[$key]['r__milestones_due'] = array(); //Will hold all the dates for the milestone...
+                foreach($bootcamp['c__child_intents'] as $intent) {
+                    if($intent['c_status']>=1){
+                        $runs[$key]['r__milestones_due'][$intent['cr_outbound_rank']] = $runs[$key]['r__class_start_time'] + ($intent['cr_outbound_rank'] * $bootcamp['c__milestone_secs']);
+                    }
+                }
+
+                //We'd now need to calculate Due Date to determine where the class currently is!
+                //There are 3 situations for $class_position: Class not started yet (0), On a particular Milestone (), or Class has ended (-1)
+                if($runs[$key]['r__class_start_time']>time()){
+                    //Not yet started, so no leaderboard:
+                    $runs[$key]['r__current_milestone'] = 0;
+                } elseif($runs[$key]['r__class_end_time']<time()){
+                    //Class has ended
+                    $runs[$key]['r__current_milestone'] = -1;
+                } else {
+                    //See which one of the milestones is being workined on now...
+                    if(count($runs[$key]['r__milestones_due'])>0){
+                        foreach($runs[$key]['r__milestones_due'] as $cr_outbound_rank=>$due_timestamp){
+                            if(time()<$due_timestamp){
+                                $runs[$key]['r__current_milestone'] = $cr_outbound_rank;
+                                break;
+                            }
+                        }
+                    } else {
+                        //This will happen when there are no active milestones:
+                        $runs[$key]['r__current_milestone'] = 0; //We count this as not started for now...
+                    }
+                }
+            }
 		}
 		
 		return $runs;
@@ -713,6 +772,7 @@ class Db_model extends CI_Model {
 	    $this->db->select('*');
 	    $this->db->from('v5_bootcamps b');
 	    $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -721,29 +781,33 @@ class Db_model extends CI_Model {
 	    
 	    //Now append more data:
 	    foreach($bootcamps as $key=>$c){
-	        //Start estimating hours calculation:
-	        $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
-	        
 	        
 	        //Bootcamp Messages:
-	        $bootcamp_messages = $this->Db_model->i_fetch(array(
-	            'i_status >=' => 0,
-	            'i_status <' => 4, //But not private notes if any
-	            'i_c_id' => $c['c_id'],
-	        ));
+            $bootcamps[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                'i_status >=' => 0,
+                'i_status <' => 4, //But not private notes if any
+                'i_c_id' => $c['c_id'],
+            ));
+
+            //Fetch team:
+            $bootcamps[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
+                'ba.ba_b_id' => $c['b_id'],
+                'ba.ba_status >=' => 0,
+                'u.u_status >=' => 0,
+            ));
 	        
 	        //Fetch Sub-intents:
+            $bootcamps[$key]['c__milestone_secs'] = ( $c['b_sprint_unit']=='week' ? 7 : 1 )*24*3600;
             $bootcamps[$key]['c__active_intents'] = array();
             $bootcamps[$key]['c__task_count'] = 0;
-	        $bootcamps[$key]['c__message_tree_count'] = count($bootcamp_messages);
-	        $bootcamps[$key]['c__messages'] = $bootcamp_messages;
-	        $bootcamps[$key]['c__milestone_units'] = 0; //Keep track of total milestone units:
+            $bootcamps[$key]['c__milestone_units'] = 0; //Keep track of total milestone units:
+            $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
+            $bootcamps[$key]['c__message_tree_count'] = count($bootcamps[$key]['c__messages']);
 	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	            'cr.cr_inbound_id' => $c['c_id'],
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
 	        ));
-	        
 	        foreach($bootcamps[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
 
                 //Count Messages:
@@ -817,19 +881,13 @@ class Db_model extends CI_Model {
                     $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
 	            }
 	        }
-	        
-	        //Fetch Classes:
-	        $bootcamps[$key]['c__classes'] = $this->r_fetch(array(
-	            'r.r_b_id' => $c['b_id'],
-	            'r.r_status >=' => 0,
-	        ));
-	        
-	        //Fetch admins:
-	        $bootcamps[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
-	            'ba.ba_b_id' => $c['b_id'],
-	            'ba.ba_status >=' => 0,
-	            'u.u_status >=' => 0,
-	        ));
+
+            //Fetch Classes last to leverage the currently gathered data for some other calculations inside the r_fetch() function:
+            $bootcamps[$key]['c__classes'] = $this->r_fetch(array(
+                'r.r_b_id' => $c['b_id'],
+                'r.r_status >=' => 0,
+            ) , $bootcamps[$key] /* Passing this would load extra variables for the class */ );
+
 	    }
 	    
 	    return $bootcamps;

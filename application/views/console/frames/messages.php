@@ -457,7 +457,7 @@ if(!isset($intents[0])){
     <div class="ix-tip"><div style="font-size:1.3em;"><?= $core_objects['level_'.($level-1)]['o_icon'].' '.$intents[0]['c_objective'] ?></div>Messages are automatically sent to students during the <?= ( $level>1 ? 'milestone' : 'bootcamp' ) ?>.</div>
     <?php
     if($level>=1 && $level<=2){
-        //echo '<div class="ix-tip">'.status_bible('i',3, false, 'bottom',1).' messages are also displayed on the landing page.</div>';
+        //echo '<div class="ix-tip">'.status_bible('i',3, false, 'bottom').' messages are also displayed on the landing page.</div>';
     }
 
     //Show relevant tips:

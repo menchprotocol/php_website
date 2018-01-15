@@ -245,7 +245,7 @@ function detect_embed_video($url,$full_message){
         //This should be 11 characters!
         if(strlen($video_id)==11){
             //TODO later we can also define start and end time by adding this: &start=4&end=9
-            $embed_code = '<div class="yt-container"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            $embed_code = '<div class="yt-container" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
         }
 
     } elseif(substr_count($url,'vimeo.com/')==1){
@@ -255,7 +255,7 @@ function detect_embed_video($url,$full_message){
 
         //This should be an integer!
         if(intval($video_id)==$video_id){
-            $embed_code = '<div class="yt-container"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+            $embed_code = '<div class="yt-container" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
         }
 
     } elseif(substr_count($url,'wistia.com/medias/')==1){
@@ -850,7 +850,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
             $ui .= '<div class="inline-level" style="margin:9px 0 0 1px; width:100%; clear:both;">';
 
 
-            $ui .= '<span id="status_holder">'.status_bible('b',$intent['b_status'],0,'right',0).'</span> &nbsp;&nbsp; ';
+            $ui .= '<span id="status_holder">'.status_bible('b',$intent['b_status'],0,'right').'</span> &nbsp;&nbsp; ';
             $ui .= '<span style="margin-left:3px; font-weight:500;" data-toggle="tooltip" title="Timelapse between milestones" data-placement="right"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span></span> &nbsp; ';
             $ui .= '<div style="font-weight:500; margin-right: 13px;"><i class="fa fa-link" aria-hidden="true" style="font-size: 0.9em; margin-left: 3px; margin-right: 3px;"></i><a href="/'.$intent['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="" class="landing_page_url" data-original-title="Open Landing Page"><span style="color:#555; font-weight:300; padding-left:3px;">https://mench.co/</span><span class="url_anchor">'.$intent['b_url_key'].'</span></a></div>';
             $ui .= '</div>';
@@ -1275,134 +1275,138 @@ function calculate_bootcamp_status($b){
      *  Leader profile (for them only)
      *********************************/
     //This must exist:
-    $bl = $b['b__admins'][0];
-    $udata = $CI->session->userdata('user');
-    $is_my_account = ( $b['b__admins'][0]['u_id']==$udata['u_id'] );
-    $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account' );
-    $account_href = ( $is_my_account ? '/console/account' : null );
-    
-    
-
-    
-    //u_phone
-    $estimated_minutes = 5;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_phone'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => ( $account_href ? $account_href.'#communication' : null ),
-        'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-    
-    //u_image_url
-    $estimated_minutes = 10;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_image_url'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => $account_href,
-        'anchor' => '<b>Set Picture</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-    //u_country_code && u_current_city
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => $account_href,
-        'anchor' => '<b>Set Location</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
+    $bl = ( isset($b['b__admins'][0]) ? $b['b__admins'][0] : null );
+    if($bl){
+        $udata = $CI->session->userdata('user');
+        $is_my_account = ( $bl['u_id']==$udata['u_id'] );
+        $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account' );
+        $account_href = ( $is_my_account ? '/console/account' : null );
 
 
-    //u_timezone
-    $estimated_minutes = 15;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => ( $account_href ? $account_href.'#communication' : null ),
-        'anchor' => '<b>Set Timezone</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-    
-    //u_language
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_language'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => ( $account_href ? $account_href.'#communication' : null ),
-        'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-    
-    //u_bio
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_bio'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => $account_href,
-        'anchor' => '<b>Set Introductory Message</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-    
-    //Profile counter:
-    $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
-    $profile_counter = 1;
-    $u_social_account = $CI->config->item('u_social_account');
-    foreach($u_social_account as $sa_key=>$sa){
-        $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
+
+
+        //u_phone
+        $estimated_minutes = 5;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_phone'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+        //u_image_url
+        $estimated_minutes = 10;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_image_url'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => $account_href,
+            'anchor' => '<b>Set Picture</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+        //u_country_code && u_current_city
+        $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => $account_href,
+            'anchor' => '<b>Set Location</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+
+        //u_timezone
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'anchor' => '<b>Set Timezone</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+        //u_language
+        $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_language'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+        //u_bio
+        $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_bio'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => $account_href,
+            'anchor' => '<b>Set Introductory Message</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+        //Profile counter:
+        $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
+        $profile_counter = 1;
+        $u_social_account = $CI->config->item('u_social_account');
+        foreach($u_social_account as $sa_key=>$sa){
+            $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
+        }
+
+        $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $required_social_profiles = 3;
+        $us_status = ( $profile_counter>=$required_social_profiles ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+
+        //u_paypal_email
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_paypal_email'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#finance' : null ),
+            'anchor' => '<b>Set Paypal Email for Payouts</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+
+        //u_terms_agreement_time
+        $estimated_minutes = 45;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#finance' : null ),
+            'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
     }
 
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $required_social_profiles = 3;
-    $us_status = ( $profile_counter>=$required_social_profiles ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
-    array_push( $checklist , array(
-        'href' => ( $account_href ? $account_href.'#communication' : null ),
-        'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
 
 
-    //u_paypal_email
-    $estimated_minutes = 15;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_paypal_email'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => ( $account_href ? $account_href.'#finance' : null ),
-        'anchor' => '<b>Set Paypal Email for Payouts</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-    
-    
-    //u_terms_agreement_time
-    $estimated_minutes = 45;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => ( $account_href ? $account_href.'#finance' : null ),
-        'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-        
     
     /* *****************************
      *  Bootcamp Settings
@@ -1504,21 +1508,31 @@ function echo_ordinal($number){
     }
 }
 
+function show_s($count){
+    return ( $count==1?'':'s' );
+}
+
+
 function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_ids=array(),$direction='dropdown',$level=0,$mini=0){
+
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     $inner_tooltip = ($direction=='dropup'?'top':'top');
-    $now = status_bible($object,$current_status_id,$mini,$inner_tooltip,$level);
+
+    if(is_array($object)){
+        $statuses = $object;
+    } else {
+        $statuses = status_bible($object,null,false,'bottom');
+    }
+    $now = status_bible($object,$current_status_id,$mini,$inner_tooltip);
     
     $return_ui = '';
-    $return_ui .= '<input type="hidden" id="'.$input_name.'" value="'.$current_status_id.'" /> 
-    <div style="display:inline-block;" class="'.$direction.'">
-    	<a href="#" style="margin: 0; background-color:#FFF;" class="btn btn-simple dropdown-toggle border" id="ui_'.$input_name.'" data-toggle="dropdown">
-        	'.( $now ? $now : 'Select...' ).'
-        	<b class="caret"></b>
-    	</a>
-        <ul class="dropdown-menu">';
-    $statuses = status_bible($object,null,false,'bottom',$level);
+    $return_ui .= '<input type="hidden" id="'.$input_name.'" value="'.$current_status_id.'" />';
+    $return_ui .= '<div style="display:inline-block;" class="'.$direction.'">';
+    $return_ui .= '<a href="#" style="margin: 0; background-color:#FFF;" class="btn btn-simple dropdown-toggle border" id="ui_'.$input_name.'" data-toggle="dropdown">';
+    $return_ui .= ( $now ? $now : 'Select...' );
+    $return_ui .= '<b class="caret"></b></a><ul class="dropdown-menu">';
+
     $count = 0;
     foreach($statuses as $intval=>$status){
         if(isset($status['u_min_status']) && ($udata['u_status']<$status['u_min_status'] || in_array($intval,$exclude_ids))){
@@ -1526,8 +1540,8 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
             continue;
         }
         $count++;
-        $return_ui .= '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip,$level).'</a></li>';
-        $return_ui .= '<li style="display:none;" class="'.$input_name.'_'.$intval.'" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,$mini,$inner_tooltip,$level).'</li>'; //For UI replacement
+        $return_ui .= '<li><a href="javascript:update_dropdown(\''.$input_name.'\','.$intval.','.$count.');">'.status_bible($object,$intval,0,$inner_tooltip).'</a></li>';
+        $return_ui .= '<li style="display:none;" class="'.$input_name.'_'.$intval.'" id="'.$input_name.'_'.$count.'">'.status_bible($object,$intval,$mini,$inner_tooltip).'</li>'; //For UI replacement
     }
     $return_ui .= '</ul></div>';
     return $return_ui;
@@ -1550,378 +1564,43 @@ function hourformat($fancy_hour){
 }
 
 
-function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom',$level=0){
+function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
 	
     //IF you make any changes, make sure to also reflect in the view/console/guides/status_bible.php as well
-	$status_index = array(
-	    'b' => array(
-	        -1 => array(
-	            's_name'  => 'Archived',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Bootcamp archived by lead instructor.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-trash',
-	        ),
-	        0 => array(
-	            's_name'  => 'Drafting',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Bootcamp under development. Admissions starts when published live.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-pencil-square',
-	        ),
-	        1 => array(
-	            's_name'  => 'Request To Publish',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-eye',
-	        ),
-	        2 => array(
-    	        's_name'  => 'Published Privately',
-	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'A private Bootcamp where students can join only if they kow the Landing Page URL.',
-    	        'u_min_status'  => 3, //Can only be done by admin
-    	        's_mini_icon' => 'fa-bullhorn',
-	        ),
-	        3 => array(
-    	        's_name'  => 'Published to Mench',
-	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'A Bootcamp published on the Mench marketplace.',
-    	        'u_min_status'  => 3, //Can only be done by admin
-    	        's_mini_icon' => 'fa-bullhorn',
-	        ),
-	    ),
-	    'c' => array(
-	        -1 => array(
-	            's_name'  => 'Delete',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Item removed.',
-	            'u_min_status'  => 1, //Not possible for now.
-	            's_mini_icon' => 'fa-trash',
-	        ),
-	        0 => array(
-	            's_name'  => 'Drafting',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Task being drafted and not accessible by students until published live',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-pencil-square',
-	        ),
-	        1 => array(
-	            's_name'  => 'Published',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Task is active and accessible by students.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-bullhorn',
-	        ),
-	    ),
-	    'r' => array(
-    	    -2 => array(
-        	    's_name'  => 'Cancel',
-    	        's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Class was cancelled after it had started.',
-        	    'u_min_status'  => 3,
-        	    's_mini_icon' => 'fa-times-circle',
-    	    ),
-    	    -1 => array(
-        	    's_name'  => 'Archived',
-    	        's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Class archived before it was started.',
-        	    'u_min_status'  => 2,
-        	    's_mini_icon' => 'fa-trash',
-    	    ),
-	        0 => array(
-	            's_name'  => 'Drafting',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Class under development and not listed on landing page.',
-	            'u_min_status'  => 2,
-	            's_mini_icon' => 'fa-pencil-square',
-	        ),
-	        1 => array(
-    	        's_name'  => 'Admission Open',
-	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Class published live and is open for student admission.',
-    	        'u_min_status'  => 2,
-    	        's_mini_icon' => 'fa-bullhorn',
-	        ),
-	        2 => array(
-    	        's_name'  => 'Running',
-	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Class has admitted students and is currently running.',
-    	        'u_min_status'  => 3,
-    	        's_mini_icon' => 'fa-play-circle',
-	        ),
-	        3 => array(
-    	        's_name'  => 'Completed',
-	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Class was operated completely until its last day.',
-    	        'u_min_status'  => 3,
-    	        's_mini_icon' => 'fa-graduation-cap',
-	        ),
-	    ),
-	    'i' => array(
-	        -1 => array(
-	            's_name'  => 'Delete',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Message removed.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-trash',
-	        ),
-	        /*
-	        0 => array(
-	            's_name'  => 'Drafting',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Message not visible to students while drafting.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-pencil-square',
-	        ),
-	        */
-            1 => array(
-                's_name'  => 'On Start',
-                's_color' => '#2f2639', //dark
-                's_desc'  => 'Messages sent to enrolled students as soon as '.( $level==1 ? 'bootcamp' : 'milestone' ).' starts.',
-                'u_min_status'  => 1,
-                's_mini_icon' => 'fa-bolt',
-            ),
-            2 => array(
-                's_name'  => 'Drip',
-                's_color' => '#2f2639', //dark
-                's_desc'  => 'Messages sent to enrolled students sometime during the '.( $level==1 ? 'bootcamp' : 'milestone' ).'. Drip messages sent in same order you choose.',
-                's_mini_icon' => 'fa-tint',
-                'u_min_status'  => 1,
-            ),
-            /*
-            3 => array(
-                's_name'  => 'Landing Page',
-                's_color' => '#2f2639', //dark
-                's_desc'  => 'Messages published on the Landing Page giving prospect students an overview of your Bootcamp.',
-                's_mini_icon' => 'fa-bullhorn',
-                'u_min_status'  => 1,
-            ),
-	        */
-	        4 => array(
-    	        's_name'  => 'Private Note',
-    	        's_color' => '#2f2639', //dark
-    	        's_desc'  => 'This Message is taken by the instructor team on a particular student and is visible to the entire team.',
-    	        's_mini_icon' => 'fa-eye-slash',
-    	        'u_min_status'  => 1,
-	        ),
-	    ),
-	    
-	    'cr' => array(
-	        -1 => array(
-	            's_name'  => 'Archived',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Task link removed.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-trash',
-	        ),
-	        1 => array(
-	            's_name'  => 'Publish',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Task link is active.',
-	            'u_min_status'  => 1,
-	        ),
-	    ),
-	    
-	    //User related statuses:
-	    
-	    'ba' => array(
-	        -1 => array(
-	            's_name'  => 'Revoked',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Bootcamp access revoked.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-minus-circle',
-	        ),
-	        1 => array(
-	            's_name'  => 'Adviser',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the bootcamp configurations.',
-                's_mini_icon' => 'fa-comments-o',
-	            'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team.php view file
-	        ),
-	        2 => array(
-	            's_name'  => 'Co-Instructor',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-user-plus',
-	        ),
-	        3 => array(
-	            's_name'  => 'Lead Instructor',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-star',
-	        ),
-	    ),
-	    
-	    'u' => array(
-	        -2 => array(
-	            's_name'  => 'Merged',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User merged with another user',
-	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
-	            's_mini_icon' => 'fa-user-times',
-	        ),
-	        -1 => array(
-	            's_name'  => 'Delete',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User no longer active.',
-	            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
-	            's_mini_icon' => 'fa-user-times',
-	        ),
-	        0 => array(
-	            's_name'  => 'Pending',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User added by the students but has not yet claimed their account.',
-	            'u_min_status'  => 999, //System only
-	            's_mini_icon' => 'fa-user-o',
-	        ),
-	        1 => array(
-	            's_name'  => 'Active',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User active.',
-	            's_mini_icon' => 'fa-user',
-	            'u_min_status'  => 3, //Only admins can downgrade users from a leader status
-	        ),
-	        2 => array(
-	            's_name'  => 'Lead Instructor',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
-	            's_mini_icon' => 'fa-star',
-	            'u_min_status'  => 3, //Only admins can approve leaders
-	        ),
-	        3 => array(
-	            's_name'  => 'Mench Admin',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
-	            's_mini_icon' => 'fa-shield',
-	            'u_min_status'  => 3, //Only admins can create other admins
-	        ),
-	    ),
-	    
-	    'us' => array(
-	        -1 => array(
-	            's_name'  => 'Requires Revision',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Submission has been reviewed and improvement suggestions are pending implementation',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-exclamation-triangle',
-	        ),
-	        0 => array(
-	            's_name'  => 'Pending Completion',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Task is pending completion',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-square-o',
-	        ),
-    	    1 => array(
-        	    's_name'  => 'Marked Done',
-    	        's_color' => '#2f2639', //dark
-        	    's_desc'  => 'Marked as complete',
-        	    'u_min_status'  => 1,
-        	    's_mini_icon' => 'fa-check-square',
-    	    ),
-	    ),
-	    
-	    
-	    'ru' => array(
-	        
-	        //Withrew after course has started:
-	        -3 => array(
-	            's_name'  => 'Student Dispelled',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-times-circle',
-	        ),
-	        //Withrew prior to course has started:
-	        -2 => array(
-	            's_name'  => 'Student Withdrew',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date.',
-	            'u_min_status'  => 999, //Only done by Student themselves
-	            's_mini_icon' => 'fa-times-circle',
-	        ),
-	        -1 => array(
-	            's_name'  => 'Application Rejected',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Application rejected by Bootcamp leader before start date. Students receives a full refund.',
-	            'u_min_status'  => 1,
-	            's_mini_icon' => 'fa-times-circle',
-	        ),
-	        
-	        //Post Application
-	        0 => array(
-    	        's_name'  => 'Application Started',
-	            's_color' => '#2f2639', //dark
-    	        's_desc'  => 'Student has started the application process but has not completed it yet.',
-    	        'u_min_status'  => 999, //System insertion only
-    	        's_mini_icon' => 'fa-pencil-square',
-	        ),
-	        /*
-	        1 => array(
-	            's_name'  => 'Applied - Pending Full Payment',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full.',
-	            'u_min_status'  => 999, //System insertion only
-	        ),
-	        */
-	        2 => array(
-	            's_name'  => 'Pending Admission',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
-	            's_mini_icon' => 'fa-pause-circle',
-	            'u_min_status'  => 999, //System insertion only
-	        ),
-	        
-	        /*
-	        3 => array(
-	            's_name'  => 'Invitation Sent',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Admins have full access to all bootcamp features.',
-	            'u_min_status'  => 1,
-	        ),
-	        */
-
-	        4 => array(
-	            's_name'  => 'Bootcamp Student',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student admitted making them ready to participate in bootcamp.',
-	            's_mini_icon' => 'fa-user',
-	            'u_min_status'  => 1,
-	        ),
-	        
-	        //Completion
-	        7 => array(
-	            's_name'  => 'Bootcamp Graduate',
-	            's_color' => '#2f2639', //dark
-	            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
-	            's_mini_icon' => 'fa-graduation-cap',
-	            'u_min_status'  => 1,
-	        ),
-	    ),
-	);
-	
+    $CI =& get_instance();
+	$status_index = $CI->config->item('object_statuses');
 	
 	//Return results:
 	if(is_null($object)){
+
 		//Everything
 	    return $status_index;
+
 	} elseif(is_null($status)){
+
 		//Object Specific
-	    return ( isset($status_index[$object]) ? $status_index[$object] : false );
+        if(is_array($object) && count($object)>0){
+            return $object;
+        } else {
+            return ( isset($status_index[$object]) ? $status_index[$object] : false );
+        }
+
 	} else {
-	    $status = intval($status);
-	    if(!isset($status_index[$object][$status])){
-	        return false;
-	    }
-	    
-		//We have two skins for displaying statuses:
-	    return '<span class="status-label" style="color:'.( isset($status_index[$object][$status]['s_color']) ? $status_index[$object][$status]['s_color'] : '#2f2639').';" '.(isset($status_index[$object][$status]['s_desc'])?'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_desc'].'" aria-hidden="true"':'').'><i class="fa '.( isset($status_index[$object][$status]['s_mini_icon']) ? $status_index[$object][$status]['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$status_index[$object][$status]['s_name']).'</span>';
-	    
-	    //Older version: return '<span class="label label-default" style="background-color:'.$status_index[$object][$status]['s_color'].';" data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$status_index[$object][$status]['s_desc'].'">'.strtoupper($status_index[$object][$status]['s_name']).' <i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+
+        $status = intval($status);
+        if(is_array($object) && count($object)>0){
+            $result = $object[$status];
+        } else {
+            $result = $status_index[$object][$status];
+        }
+
+        if(!$result){
+            //Could not find matching item
+            return false;
+        } else {
+            //We have two skins for displaying statuses:
+            return '<span class="status-label" style="color:#2f2639;" '.(isset($result['s_desc'])?'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" aria-hidden="true"':'').'><i class="fa '.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
+        }
 	}
 }
 
@@ -2177,6 +1856,17 @@ function boost_power(){
 	ini_set('max_execution_time', 600);
 }
 
+function echo_rank($rank){
+    if($rank==1){
+        return '🥇';
+    } elseif($rank==2){
+        return '🥈';
+    } elseif($rank==3){
+        return '🥉';
+    } else {
+        return $rank;
+    }
+}
 
 function objectToArray( $object ) {
 	if( !is_object( $object ) && !is_array( $object ) ) {
@@ -2214,7 +1904,7 @@ function time_format($t,$format=0,$plus_days=0){
         return 'NOW';
     }
     
-    $timestamp = ( strlen(intval($t))==strlen($t) ? $t : strtotime(substr($t,0,19)) ) + ($plus_days*24*3600) + ($plus_days>0 ? (12*3600) : 0); //Added this last part to consider the end of days for dates
+    $timestamp = ( is_numeric($t) ? $t : strtotime(substr($t,0,19)) ) + ($plus_days*24*3600) + ($plus_days>0 ? (12*3600) : 0); //Added this last part to consider the end of days for dates
     $this_year = ( date("Y")==date("Y",$timestamp) );
     if($format==0){
         return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),$timestamp);
@@ -2358,7 +2048,7 @@ function one_two_explode($one,$two,$content){
 
 
 function make_links_clickable($text){
-    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1"><u>$1</u></a>', $text);
+    return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
 
 function format_e_message($e_message){

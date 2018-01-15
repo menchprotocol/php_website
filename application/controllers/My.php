@@ -73,17 +73,6 @@ class My extends CI_Controller {
         }
 	}
 	
-	function leaderboard(){
-	    $data = array(
-	        'title' => '🏆Leaderboard',
-	    );
-	    //Load apply page:
-	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/my_leaderboard' , $data);
-	    $this->load->view('front/shared/p_footer');
-	}
-	
-	
 	function display_account(){
 	    
 	    echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
@@ -97,24 +86,34 @@ class My extends CI_Controller {
 	    $this->load->view('front/student/my_account' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
-	
-	
-	function actionplan($b_id=null,$c_id=null){
-	    //Load apply page:
-	    $data = array(
-	        'title' => '🚩 Action Plan',
-	        'b_id' => $b_id,
-	        'c_id' => $c_id,
-	    );
-	    $this->load->view('front/shared/p_header' , $data);
-	    $this->load->view('front/student/actionplan_frame' , $data);
-	    $this->load->view('front/shared/p_footer');
-	}
 
 
-	
-	function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
-	    
+    function actionplan($b_id=null,$c_id=null){
+        //Load apply page:
+        $data = array(
+            'title' => '🚩 Action Plan',
+            'b_id' => $b_id,
+            'c_id' => $c_id,
+        );
+        $this->load->view('front/shared/p_header' , $data);
+        $this->load->view('front/student/actionplan_frame' , $data);
+        $this->load->view('front/shared/p_footer');
+    }
+
+
+    function leaderboard(){
+        //Load apply page:
+        $data = array(
+            'title' => '🏆 Leaderboard',
+        );
+        $this->load->view('front/shared/p_header' , $data);
+        $this->load->view('front/student/leaderboard_frame' , $data);
+        $this->load->view('front/shared/p_footer');
+    }
+
+
+    function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
+
 	    //Fetch bootcamps for this user:
 	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!

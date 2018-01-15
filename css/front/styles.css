@@ -296,6 +296,11 @@ a.badge-primary:hover {
 .card-title .title-sub { display:block; font-size:0.8em; font-family:Lato; color:#999; font-weight:normal; line-height:110% !important; padding:0 !important; margin:5px 0 10px !important; }
 .card-title .title-sub i { width:20px; text-align:center; }
 
+.tight{
+    margin:0 !important;
+    paddding:0 !important;
+}
+.plain{ text-decoration:none; }
 .price>h4>span{ font-size:0.6em; }
 .yellow { color:rgba(254, 221, 22, 0.91) !important; }
 .list-group-item .title-main { display:inline; }
@@ -323,7 +328,7 @@ p a, td a { text-decoration:underline; }
 .panel-body img { max-width:100% !important; }
 .list-group-item .inline-level { color:#2f2639; font-size:0.9em; padding-right:5px; }
 .list-group-item .inline-level .status-label { color:#AAA; font-weight:normal !important; }
-
+.table tbody tr td { cursor:default !important; }
 h5, .h5 {
     font-size: 0.9em;
     font-weight:bold;
@@ -336,11 +341,34 @@ h5, .h5 {
     height:26px;
     display:inline-block;
 }
+.full-width{
+    width:100% !important;
+    max-width:none !important;
+}
 .video-embed-page{
     max-width:560px;
     margin:0 auto;
     font-size:18px;
     line-height:120%;
+}
+.inlineform .form-group{
+    display: inline !important;
+}
+.countdown{
+    margin:0 0 10px 0 !important;
+    background-color:#3C4858 !important;
+    color:#FFF !important;
+    font-size:1.5em !important;
+    font-weight:300 !important;
+    cursor:default !important;
+}
+.countdown:hover{
+    cursor:default !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+.countdown sup{
+    margin:0 3px 0 0 !important;
 }
 .list_status img{
     width:24px;
