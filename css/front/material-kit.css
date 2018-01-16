@@ -4309,7 +4309,8 @@ hr.on-light {
   margin: 15px 0 15px;
 }
 .info p {
-  color: #999999;
+  color: #666;
+  font-size: 1.1em;
 }
 
 .info-horizontal .icon {

@@ -300,6 +300,8 @@ a.badge-primary:hover {
     margin:0 !important;
     paddding:0 !important;
 }
+.videocontent {width:80%; max-width:640px;}
+.icon-default{color:#3C4858 !important; }
 .plain{ text-decoration:none; }
 .price>h4>span{ font-size:0.6em; }
 .yellow { color:rgba(254, 221, 22, 0.91) !important; }

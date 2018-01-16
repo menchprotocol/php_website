@@ -2070,7 +2070,14 @@ function format_e_message($e_message){
             } elseif($segments[0]=='audio'){
                 $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                $e_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                //$e_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                $e_message .= '<video class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" data-setup="{}">
+    <source src="'.$sub_segments[0].'" type="video/mp4">
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript
+    </p>
+  </video>';
+
             } elseif($segments[0]=='file'){
                 $e_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
             }
