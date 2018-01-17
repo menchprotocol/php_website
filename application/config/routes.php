@@ -22,6 +22,7 @@ $route['login']						= "front/login"; //Bootcamp Operator login
  ****************************** */
 $route['application_status'] 	            = "my/applications"; //Deprecated on 2017-10-18, give it 3-4 months before removing
 $route['ref/(:num)'] 	                    = "my/load_url/$1"; //For URL loading and embed video playbacks
+$route['webview_video/(:num)'] 	            = "my/webview_video/$1";
 
 
 /* ******************************

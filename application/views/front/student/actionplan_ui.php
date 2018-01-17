@@ -134,10 +134,11 @@ if($displayed_messages>0){
     foreach($i_messages as $i){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
-            echo echo_i(array_merge($i,array(
+            echo echo_i( array_merge( $i , array(
+                'messenger_webview' => 1, //TO embed the video
                 'e_b_id'=>$admission['b_id'],
                 'e_recipient_u_id'=>$admission['u_id'],
-            )),$admission['u_fname']);
+            )) , $admission['u_fname'] );
             echo '</div>';
         }
     }

@@ -171,7 +171,6 @@ class Front extends CI_Controller {
 	
 	function bootcamp_load($b_url_key,$r_id=null){
 	    
-	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
 	    $bootcamps = $this->Db_model->c_full_fetch(array(
@@ -197,7 +196,6 @@ class Front extends CI_Controller {
 	        //No active milestones:
             redirect_message('/','<div class="alert alert-danger" role="alert">Error: You must <a href="/console/'.$bootcamp['b_id'].'/actionplan"><b><u>Create Some Milestones</u></b></a> before loading the landing page.</div>');
         }
-
 
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(

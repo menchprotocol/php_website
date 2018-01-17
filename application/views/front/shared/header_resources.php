@@ -16,7 +16,6 @@ $website = $this->config->item('website');
 <link href="/css/console/material-dashboard.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
 <link href="/css/front/material-kit.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
 <link href="/css/front/styles.css?v=v<?= $website['version'] ?>" rel="stylesheet" />
-<link href="//vjs.zencdn.net/6.6.0/video-js.css" rel="stylesheet">
 
 <!-- Core JS Files -->
 <script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
@@ -27,5 +26,4 @@ $website = $this->config->item('website');
 <script src="/js/lib/jquery.countdownTimer.min.js" type="text/javascript"></script>
 <script src="/js/lib/highlight.min.js"></script>
 <script src="/js/lib/simplebar.js"></script>
-<script src="//vjs.zencdn.net/6.6.0/video.js"></script>
 <!-- END SHARED RESOURCES -->

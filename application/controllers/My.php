@@ -33,13 +33,41 @@ class My extends CI_Controller {
 	    */
 	}
 
+	function webview_video($i_id){
 
-	function load_url($message_id){
+
+        if($i_id>0){
+            $messages = $this->Db_model->i_fetch(array(
+                'i_id' => $i_id,
+                'i_media_type' => 'video',
+                'i_status >=' => 1, //Not deleted
+            ));
+        }
+
+        if(isset($messages[0]) && strlen($messages[0]['i_url'])>0){
+
+            //Show video
+            echo '<div>'.format_e_message('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
+
+        } else {
+
+            $this->load->view('front/shared/p_header' , array(
+                'title' => 'Watch Online Video',
+            ));
+            $this->load->view('front/error_message' , array(
+                'error' => 'Invalid Message ID, likely because message has been deleted.',
+            ));
+            $this->load->view('front/shared/p_footer');
+        }
+    }
+
+
+	function load_url($i_id){
 
 	    //Loads the URL:
-	    if($message_id>0){
+	    if($i_id>0){
 	        $messages = $this->Db_model->i_fetch(array(
-	            'i_id' => $message_id,
+	            'i_id' => $i_id,
 	            'i_status >=' => 1, //Not deleted
 	        ));
 	    }
@@ -63,6 +91,7 @@ class My extends CI_Controller {
             }
 
         } else {
+
             $this->load->view('front/shared/p_header' , array(
                 'title' => 'Watch Online Video',
             ));

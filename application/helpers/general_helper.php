@@ -451,8 +451,20 @@ function echo_i($i,$first_name=null,$fb_format=false){
             );
             
         } else {
-            //HTML media format:
-            $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+
+            //Facebook Messenger Webview removes the full screen option from HTML5's <video> tag, so we need an iframe:
+            if(isset($i['messenger_webview']) && $i['i_media_type']=='video'){
+
+                //HTML media format:
+                $echo_ui .= '<iframe src="https://mench.co/webview_video/'.$i['i_id'].'" width="295" height="166" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>';
+
+            } else {
+
+                //HTML media format:
+                $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+
+            }
+
         }
         
     } else {
@@ -2064,20 +2076,13 @@ function format_e_message($e_message){
             }
             $segments = explode(':',$attachment,2);
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
-            
+
             if($segments[0]=='image'){
                 $e_message .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
             } elseif($segments[0]=='audio'){
                 $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                //$e_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
-                $e_message .= '<video class="video-js vjs-default-skin" controls preload="auto" width="640" height="264" data-setup="{}">
-    <source src="'.$sub_segments[0].'" type="video/mp4">
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript
-    </p>
-  </video>';
-
+                $e_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
                 $e_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
             }

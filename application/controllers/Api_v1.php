@@ -1136,7 +1136,7 @@ class Api_v1 extends CI_Controller {
 	    //Set standards for Tuition Calculator:
 	    $calculator_logic = array(
 	        'base_usd_price' => 11400, //Standard price in the coding bootcamp industry
-	        'target_savings' => 0.4, //How much Mench plans to be cheaper because we're fully online
+	        'target_savings' => 0.33, //How much Mench plans to be cheaper because we're fully online
 	        'pricing_factors' => array(
 	            'handson_work' => array(
 	                'weight' => 0.40, //The percentage of importance for this factor relative to other pricing_factors
