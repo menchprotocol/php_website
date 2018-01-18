@@ -516,11 +516,11 @@ if(!isset($intents[0])){
 
     echo '<ul style="list-style:none;">';
 
-    echo '<li class="pull-left" style="margin-left:-28px; padding-left: 0; margin-top: 4px;"><span class="message_status" id="message_status'.$c_id.'"><span class="when_to">Message Dispatch Time:</span></span></li>';
+    echo '<li class="pull-left" style="margin-left:-28px; padding-left: 0; margin-top: 4px;"><span class="message_status" id="message_status'.$c_id.'"><span class="when_to '.( $level>=3 ? 'hidden' : '' ).'">Message Dispatch Time:</span></span></li>';
     echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message'.$c_id.'" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top: 2px; padding: 5px 8px; margin-right:46px;">ADD</a></li>';
 
     echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-    echo echo_status_dropdown('i','i_status'.$c_id,1,array(-1,4),'dropup',$level,1);
+    echo echo_status_dropdown('i','i_status'.$c_id,1, ( $level>=3 ? array(-1,2,4) : array(-1,4) ),'dropup',$level,1);
     echo '</li>';
 
     echo '</ul>';

@@ -1318,7 +1318,7 @@ class Api_v1 extends CI_Controller {
 
 	function simulate_milestone(){
 	    //Dispatch Messages:
-        $results = tree_message($_POST['c_id'], $_POST['depth'], '381488558920384', $_POST['u_id'], 'REGULAR', $_POST['b_id'], 0, false);
+        $results = tree_message($_POST['c_id'], $_POST['depth'], '381488558920384', $_POST['u_id'], 'REGULAR', $_POST['b_id'], 0);
 
         if($results['status']){
             echo '<i class="fa fa-check-circle" style="color:#3C4858;" title="SUCCESS: '.$results['message'].'" aria-hidden="true"></i>';
@@ -2224,7 +2224,7 @@ class Api_v1 extends CI_Controller {
             echo '<div><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next Task <i class="fa fa-arrow-right"></i></a></div>';
         } elseif($next_level==2 && isset($next_intents[0])){
             //Attempt to dispatch some messages:
-            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']), true);
+            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
         }
 	}
 
