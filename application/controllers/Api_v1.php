@@ -993,6 +993,8 @@ class Api_v1 extends CI_Controller {
 
                         //Go through all the milestones that are due up to now:
                         $possible_points = 0;
+                        $points_earned = 0;
+
                         foreach($bootcamp['c__child_intents'] as $milestone) {
                             if($milestone['c_status']>=1){
 
@@ -1001,7 +1003,6 @@ class Api_v1 extends CI_Controller {
                                 $completed_tasks = 0;
                                 $bonus_tasks = 0; //TODO implement later...
                                 $pending_revisions = 0; //TODO Implement later...
-                                $points_earned = 0;
 
 
                                 $task_details = null; //To show details when clicked
@@ -1010,7 +1011,9 @@ class Api_v1 extends CI_Controller {
                                     if($task['c_status']>=1 && !($task['c_complete_is_bonus_task']=='t')){
 
                                         $required_tasks++;
-                                        if($milestone['cr_outbound_rank']<$class['r__current_milestone'] || $class['r__current_milestone']<0){
+                                        $should_count = ($milestone['cr_outbound_rank']<$class['r__current_milestone'] || $class['r__current_milestone']<0);
+
+                                        if($should_count){
                                             $possible_points += round($task['c_time_estimate']*60);
                                         }
 
@@ -1020,7 +1023,9 @@ class Api_v1 extends CI_Controller {
                                             //This student has made a submission:
                                             $us_task_status = $us_data[$task['c_id']]['us_status'];
                                             $completed_tasks += ( $us_task_status>=1 ? 1 : 0 );
-                                            $points_earned += 0;
+                                            if($should_count){
+                                                $points_earned += ( $completed_tasks ? round($us_data[$task['c_id']]['us_time_estimate']*$us_data[$task['c_id']]['us_on_time_score']*60) : 0 );
+                                            }
 
                                         } elseif(!$milestone_started) {
 
@@ -1106,7 +1111,7 @@ class Api_v1 extends CI_Controller {
                     echo '<td valign="top" style="'.$bborder.( $is_instructor ? '' : 'border-right:1px solid #999;' ).'text-align:left; vertical-align:top;">'.( $is_instructor || $counter<=$show_ranking_top ? number_format($ls['points'],0) : '').'</td>';
 
                     if($is_instructor){
-                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.( $possible_points>0 ? '<span data-toggle="tooltip" title="Earned '.$ls['points'].'/'.$possible_points.' points">'.( $possible_points ? round( $ls['points']/$possible_points*100 ).'%' : '' ).'</span>' : '100%' ).'</td>';
+                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.( $possible_points>0 ? '<span data-toggle="tooltip" title="Excluding current milestone, student earned '.$points_earned.'/'.$possible_points.' possible points">'.( $possible_points ? round( $points_earned/$possible_points*100 ).'%' : '' ).'</span>' : '100%' ).'</td>';
                         echo '<td valign="top" style="'.$bborder.'border-right:1px solid #999; text-align:left; vertical-align:top;">'.( !$possible_points || $ls['points']>=$possible_points  ? $trophy : '' ).'</td>';
                     }
 

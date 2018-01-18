@@ -19,6 +19,7 @@ LEFT JOIN
           SUM(us.us_on_time_score * us.us_time_estimate * 60) AS points
    FROM v5_user_submissions us
    WHERE us_status >= 1
+     AND us_r_id = ".$r_id."
    GROUP BY 1) us ON ru.ru_u_id = us.us_student_id
 WHERE ru.ru_status >= 4
   AND ru_r_id = ".$r_id."
