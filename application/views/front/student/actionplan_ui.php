@@ -17,6 +17,25 @@ $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
 ?>
 <script>
 
+
+$( document ).ready(function() {
+    $("#ontime_dueby").countdowntimer({
+        startDate : "<?= date('Y/m/d H:i:s'); ?>",
+        dateAndTime : "<?= date('Y/m/d H:i:s' , $ontime_secs_left+time()); ?>",
+        size : "lg",
+        regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+    });
+    $("#late_dueby").countdowntimer({
+        startDate : "<?= date('Y/m/d H:i:s'); ?>",
+        dateAndTime : "<?= date('Y/m/d H:i:s' , $alittle_late_secs+time()); ?>",
+        size : "lg",
+        regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+    });
+});
+
+
 function mark_done(){
 
 	//Inactive for now! Maybe introduce later...
@@ -57,6 +76,7 @@ function mark_done(){
 			scrollTop: $('#save_report').offset().top
 		}, 150);
     });
+
 }
 
 

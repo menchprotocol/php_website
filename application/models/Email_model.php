@@ -32,31 +32,12 @@ class Email_model extends CI_Model {
         if(count($tree)==1 && isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0 && isset($udata['u_id']) && isset($udata['u_email'])){
             foreach($tree[0]['c__messages'] as $i){
                 if($i['i_status']==1){
-
-                    //Generate HTML message:
-                    $this_message = echo_i(array_merge( $i , array(
+                    //Grow Message:
+                    $html_message .= echo_i(array_merge( $i , array(
                         'e_recipient_u_id' => $udata['u_id'],
                         'e_b_id' => $b_id,
                         'i_c_id' => $c_id,
                     )), $udata['u_fname'], false );
-
-                    //Log Engagement per message:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => 0, //System initiates these types of emails from this function
-                        'e_recipient_u_id' => $udata['u_id'], //The user that updated the account
-                        'e_message' => $this_message,
-                        'e_json' => json_encode(array(
-                            'udata' => $udata,
-                            'tree' => $tree[0],
-                        )),
-                        'e_type_id' => 28, //Email message sent
-                        'e_c_id' => $c_id,
-                        'e_i_id' => $i['i_id'],
-                        'e_b_id' => $b_id,
-                    ));
-
-                    //Grow Message:
-                    $html_message .= $this_message;
                 }
             }
         }
@@ -65,6 +46,21 @@ class Email_model extends CI_Model {
 
             //Send email:
             $sent_status = $this->send_single_email(array($udata['u_email']),$tree[0]['c_objective'],$html_message);
+
+            //Log engagement once:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => 0, //System initiates these types of emails from this function
+                'e_recipient_u_id' => $udata['u_id'], //The user that updated the account
+                'e_message' => $tree[0]['c_objective'],
+                'e_json' => json_encode(array(
+                    'udata' => $udata,
+                    'html' => $html_message,
+                    'tree' => $tree[0],
+                )),
+                'e_type_id' => 28, //Email message sent
+                'e_c_id' => $c_id,
+                'e_b_id' => $b_id,
+            ));
 
             //Return positive:
             return true;

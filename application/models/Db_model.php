@@ -471,7 +471,9 @@ ORDER BY points DESC, ru_id ASC")->result());
 	        'u_timezone'      => $fb_profile['timezone'],
 	        'u_gender'        => strtolower(substr($fb_profile['gender'],0,1)),
 	        'u_language'      => ( $matching_users[0]['u_language']=='en' && !($matching_users[0]['u_language']==$locale[0]) ? $locale[0] : $matching_users[0]['u_language'] ),
-	        'u_country_code'  => $locale[1],
+            'u_country_code'  => $locale[1],
+            'u_fname'         => $fb_profile['first_name'], //Update their original names with FB
+            'u_lname'         => $fb_profile['last_name'], //Update their original names with FB
 	    ));
 	    
 	    //Log Activation Engagement:
@@ -490,7 +492,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    ));
 	    
 	    if(isset($matching_users[0])){
-	        if($matching_users[0]['u_status']>=2){
+	        if($matching_users[0]['u_status']==2){
 	            //Lead instructors:
 	            tree_message(918, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
 	        } else {
