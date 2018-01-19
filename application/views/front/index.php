@@ -13,16 +13,16 @@ $udata = $this->session->userdata('user');
 <div class="row text-center">
     <div class="col-md-4">
         <div class="info">
-            <div class="icon icon-default mtweak"><i class="fa fa-bandcamp" aria-hidden="true"></i></div>
-            <h3 class="info-title">Knowledge</h3>
-            <p>Building an engaging curriculum that inspires students to take action is no peace of cake. We share best-practices that help package your expertise into an effecitve "Action Plan" that gets your students results.</p>
+            <div class="icon icon-default mtweak"><i class="fa fa-microchip" aria-hidden="true"></i></div>
+            <h3 class="info-title">Technology</h3>
+            <p>We give you a full-stack technology designed to maximize student engagements. We automate notifications and reminders to help you take more of your student through the finishing line.</p>
         </div>
     </div>
     <div class="col-md-4">
         <div class="info">
-            <div class="icon icon-default mtweak"><i class="fa fa-microchip" aria-hidden="true"></i></div>
-            <h3 class="info-title">Technology</h3>
-            <p>We give you a full-stack technology designed to maximize student engagements. We automate notifications and reminders to help you take more of your student through the finishing line.</p>
+            <div class="icon icon-default mtweak"><i class="fa fa-bandcamp" aria-hidden="true"></i></div>
+            <h3 class="info-title">Knowledge</h3>
+            <p>Building an engaging curriculum that inspires students to take action is no peace of cake. We share best-practices that help package your expertise into an effecitve "Action Plan" that gets your students results.</p>
         </div>
     </div>
     <div class="col-md-4">
