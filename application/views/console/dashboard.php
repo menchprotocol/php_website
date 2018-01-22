@@ -91,6 +91,11 @@ $student_funnel = array(
         'r.r_status >='	   => 1, //Open for admission and up
         'ru.ru_status'     => 2,
     ))),
+    -1 => count($this->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $bootcamp['b_id'],
+        'r.r_status >='	   => 1, //Open for admission and up
+        'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
+    ))),
     4 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
         'r.r_status >='	   => 1, //Open for admission and up

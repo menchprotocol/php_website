@@ -250,17 +250,17 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52); //26,29,33
+$config['instructor_subscriptions'] = array(30,52,56,57); //26,29,33
 
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(15,31,37),
+        'subscription' => array(9,15,31,37,56,57,58),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,31,37,52),
+        'subscription' => array(8,9,15,31,37,56,57,58),
     ),
 );
 
@@ -970,15 +970,21 @@ $config['object_statuses'] = array(
         ),
     ),
     'r' => array(
+        -3 => array(
+            's_name'  => 'Abandoned',
+            's_desc'  => 'Class was cancelled after it had started, likely for reasons beyond the instructors control',
+            'u_min_status'  => 3,
+            's_mini_icon' => 'fa-times-circle',
+        ),
         -2 => array(
-            's_name'  => 'Cancel',
-            's_desc'  => 'Class was cancelled after it had started.',
+            's_name'  => 'Cancelled',
+            's_desc'  => 'Class was cancelled before it had started as it did not meet its minimum student admission requirement',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Class archived before it was started.',
+            's_desc'  => 'Class archived by instructor before any students getting admitted',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-trash',
         ),
@@ -1211,7 +1217,7 @@ $config['object_statuses'] = array(
         -3 => array(
             's_name'  => 'Student Dispelled',
             's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
-            'u_min_status'  => 1,
+            'u_min_status'  => 2,
             's_mini_icon' => 'fa-times-circle',
         ),
         //Withrew prior to course has started:
@@ -1223,12 +1229,10 @@ $config['object_statuses'] = array(
         ),
         -1 => array(
             's_name'  => 'Application Rejected',
-            's_desc'  => 'Application rejected by Bootcamp leader before start date. Students receives a full refund.',
+            's_desc'  => 'Application rejected before start date. Incomplete applications will be auto rejected on class start date.',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-times-circle',
         ),
-
-        //Post Application
         0 => array(
             's_name'  => 'Application Started',
             's_desc'  => 'Student has started the application process but has not completed it yet.',
@@ -1244,7 +1248,7 @@ $config['object_statuses'] = array(
         */
         2 => array(
             's_name'  => 'Pending Admission',
-            's_desc'  => 'Student has applied, paid in full and is pending application review & approval.',
+            's_desc'  => 'Student has completed application and payment (for paid classes) and is pending admission.',
             's_mini_icon' => 'fa-pause-circle',
             'u_min_status'  => 999, //System insertion only
         ),
@@ -1267,7 +1271,7 @@ $config['object_statuses'] = array(
         //Completion
         7 => array(
             's_name'  => 'Bootcamp Graduate',
-            's_desc'  => 'Student completed class and completed all Milestones as approved by lead instructor.',
+            's_desc'  => 'Student completed class and completed all milestones as approved by lead instructor.',
             's_mini_icon' => 'fa-graduation-cap',
             'u_min_status'  => 1,
         ),

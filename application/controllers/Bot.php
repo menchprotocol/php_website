@@ -559,8 +559,8 @@ class Bot extends CI_Controller {
 	                //Insert transaction:
 	                $transaction = $this->Db_model->t_create(array(
                         't_ru_id' => $enrollments[0]['ru_id'],
-                        't_r_id' => $enrollments[0]['r_id'],
-                        't_u_d' => $enrollments[0]['u_id'],
+                        't_r_id' => $enrollments[0]['ru_r_id'],
+                        't_u_d' => $enrollments[0]['ru_u_id'],
                         't_status' => 1, //Payment received from Student
 	                    't_timestamp' => date("Y-m-d H:i:s"),
 	                    't_creator_id' => $enrollments[0]['ru_u_id'],

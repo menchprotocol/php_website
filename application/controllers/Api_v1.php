@@ -1517,7 +1517,7 @@ class Api_v1 extends CI_Controller {
 	                'before' => @unserialize($classes[0]['r_live_office_hours']),
 	                'after' => @unserialize($r_update['r_live_office_hours']),
 	            )),
-	            'e_type_id' => 24, //Class Schedule Update
+	            'e_type_id' => 13, //Class Updated
 	            'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
 	            'e_r_id' => intval($_POST['r_id']),
 	        ));
