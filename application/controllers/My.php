@@ -35,7 +35,6 @@ class My extends CI_Controller {
 
 	function webview_video($i_id){
 
-
         if($i_id>0){
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => $i_id,

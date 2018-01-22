@@ -3,7 +3,7 @@
 <?php if(is_dev()){ ?>
 
     $(document).ready(function() {
-        //Load shervin for Development:
+        //Load shervin for Development Server:
         var psid = '1443101719058431'; //Shervin
         //var psid = '1614565628581807'; //Sam
         $.post("/my/display_actionplan/"+psid+"/<?= intval($b_id) ?>/<?= intval($c_id) ?>", {}, function(data) {

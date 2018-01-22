@@ -452,16 +452,14 @@ function echo_i($i,$first_name=null,$fb_format=false){
             
         } else {
 
-            //Facebook Messenger Webview removes the full screen option from HTML5's <video> tag, so we need an iframe:
+            //HTML media format:
+            $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+
+            //Facebook Messenger Webview adds an additional button to view full screen:
             if(isset($i['messenger_webview']) && $i['i_media_type']=='video'){
 
                 //HTML media format:
-                $echo_ui .= '<iframe src="https://mench.co/webview_video/'.$i['i_id'].'" width="295" height="166" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>';
-
-            } else {
-
-                //HTML media format:
-                $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+                $echo_ui .= '<div><a href="https://mench.co/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
 
             }
 
