@@ -14,7 +14,7 @@ class Cron extends CI_Controller {
         echo_json(tree_message(890, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103));
     }
 
-    function s(){
+    function profile(){
         echo_json($this->Facebook_model->fetch_profile('381488558920384','1670125439677259'));
     }
 
@@ -317,101 +317,247 @@ class Cron extends CI_Controller {
     }
 
 
-    function profile(){
+    function next_milestone(){
 
-        $admitted = $this->Db_model->ru_fetch(array(
-            'ru.ru_r_id'	    => 103,
-            'ru.ru_status >='	=> 4, //Anyone who is admitted
-            'u.u_fb_id >'	    => 0, //Activated MenchBot
-        ));
-        $updated = 0;
-        $profiles = array();
-        foreach($admitted as $u){
+        $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404,1);
+        $incomplete = array(324);
 
-            //Fetch profile:
-            $profile = $this->Facebook_model->fetch_profile('381488558920384',$u['u_fb_id']);
-
-            if(strlen($profile['first_name'])>0 && strlen($profile['last_name'])>0 && ( !($profile['first_name']==$u['u_fname']) || !($profile['last_name']==$u['u_lname']) )){
-                //Update local:
-                $this->Db_model->u_update( $u['u_id'] , array(
-                    'u_fname' => $profile['first_name'],
-                    'u_lname' => $profile['last_name'],
-                ));
-                $updated++;
-                array_push($profiles,$profile);
-            }
+	    foreach($completed as $u_id){
+            tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
         }
 
-        echo_json(array(
-            'updated' => $updated,
-            'profiles' => $profiles,
+	    exit;
+
+        foreach($incomplete as $u_id){
+            tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
+        }
+
+	    //Starts the next milestone and notifies students who are ready to move on:
+        $classes = $this->Db_model->r_fetch(array(
+            'r_id' => 103, //For start...
+            'r_status' => 2,
         ));
+
+        foreach($classes as $key=>$class){
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $class['r_b_id'],
+            ));
+
+            //Now override $class with the more complete version:
+            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
+
+
+            //Fetch all active students for this class:
+            $stats = array(
+                'total' => 0,
+                'pending' => 0,
+                'completed' => 0,
+            );
+            $accepted_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 4,
+            ));
+
+            foreach($accepted_admissions as $u){
+                $stats['total']++;
+
+                //Count their previous submission:
+
+
+                if(1){
+                    $stats['pending']++;
+                } else {
+                    $stats['completed']++;
+
+                    //Inform Students on First Milestone:
+                    tree_message(946, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
+                }
+            }
+
+            //Now lets send them a message based on their status:
+
+
+            //echo_json($accepted_admissions);
+        }
+
+        //print_r($classes);
     }
-
-    //Update FB:
-
-
 
 	function class_kickstart(){
 
+	    //This function is solely responsible to get the class started and dispatch its very first milestone messages IF it does start
 	    //Searches for any class that might be starting and kick starts its messages:
         $classes = $this->Db_model->r_fetch(array(
             'r_status' => 1,
-            'r_start_date' => date("Y-m-d"),
+            'r_start_date <=' => date("Y-m-d"),
         ));
 
+        foreach($classes as $key=>$class){
+
+            //Make sure the start time has already passed:
+            if( time() < ( strtotime($class['r_start_date']) + ($class['r_start_time_mins']*60) )){
+                //Not started yet!
+                continue;
+            }
+
+            //Include email model as we might need some communications:
+            $this->load->model('Email_model');
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $class['r_b_id'],
+            ));
+
+            //Now override $class with the more complete version:
+            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
+
+            //Uncomment for For QA:
+            $classes[$key] = $class; $classes[$key]['bootcamp'] = $bootcamps[0]; continue;
+
+            //Auto withdraw all incomplete admission requests:
+            $incomplete_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 0,
+            ));
+            if(count($incomplete_admissions)>0){
+                foreach($incomplete_admissions as $admission){
+
+                    //Auto withdraw:
+                    $this->Db_model->ru_update( $admission['ru_id'] , array(
+                        'ru_status' => -2,
+                    ));
+
+                    //Inform the student of auto withdrawal:
+                    $this->Email_model->email_intent($admission['b_id'],3016,$admission);
+                }
+            }
 
 
-        foreach($classes as $class){
-            //See if they have students and they are more than the minimum:
-            if($class['r_id']==103){
+            //Auto reject all applications that were not yet accepted:
+            $pending_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 2,
+            ));
+            if(count($pending_admissions)>0){
+                foreach($pending_admissions as $admission){
 
-                //Fetch Bootcamp Data:
-                $bootcamps = $this->Db_model->c_full_fetch(array(
-                    'b.b_id' => $class['r_b_id'],
+                    //Auto reject:
+                    $this->Db_model->ru_update( $admission['ru_id'] , array(
+                        'ru_status' => -1,
+                    ));
+
+                    //Inform the student of rejection:
+                    $this->Email_model->email_intent($admission['b_id'],2799,$admission);
+
+                    //Was this a paid class? Let admin know to manually process refunds
+                    //TODO automate refunds through Paypal API later on...
+                    if($class['r_usd_price']>0){
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_message' => 'Need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start',
+                            'e_type_id' => 58, //Class Manual Refund
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
+                    }
+                }
+            }
+
+
+            //What should happen to the class it self?
+            //Lets see how many admitted students we have?
+            $accepted_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 4,
+            ));
+            if(count($accepted_admissions)<$class['r_min_students']){
+
+                //Cancel this class as it does not have enough students admitted:
+                $this->Db_model->r_update( $class['r_id'] , array(
+                    'r_status' => -2, //Class was cancelled
                 ));
 
-                //$class =
-                //if($class['r__confirmed_admissions']>0 && $class['r__confirmed_admissions']>=$class['r_min_students']){}
+                //Change the status of all students that had been accepted, if any, and notify admin for refunds:
+                //Note that this process is kind-of similar to Api_chat_v1/update_admission_status() but not fully as it also includes ru_status=0
+                if(count($accepted_admissions)>0){
+                    foreach($accepted_admissions as $admission){
+                        //Reject their admission:
 
-                if(count($bootcamps)==1 && $bootcamps[0]['b_status']>=2){
-
-                    //Found a published Bootcamp!
-                    //Find first due milestone:
-
-                    $first_milestone_c_id = 0;
-                    foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                        if($milestone['c_status']>=1){
-                            $first_milestone_c_id = $milestone['c_id'];
-                            break;
-                        }
                     }
 
-                    if($first_milestone_c_id || 1){
-                        //We found this milestone!
-
-                        //Change the status:
-                        //$this->Db_model->r_update( $class['r_id'] , array('r_status' => 2));
-
-                        //Fetch all admitted & activated students:
-                        $admitted = $this->Db_model->ru_fetch(array(
-                            'ru.ru_r_id'	    => $class['r_id'],
-                            'ru.ru_status >='	=> 4, //Anyone who is admitted
-                            'u.u_fb_id >'	    => 0, //Activated MenchBot
+                    //Was this a paid class? Let admin know to manually process refunds
+                    //TODO automate refunds through Paypal API later on...
+                    if($class['r_usd_price']>0){
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_message' => 'Need to manually refund the '.$class['r__current_admissions'].' students who paid for this class via Paypal',
+                            'e_type_id' => 58, //Class Manual Refund
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
                         ));
-
-                        foreach($admitted as $u){
-                            //Inform Students on First Milestone:
-                            tree_message(890, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
-                        }
                     }
                 }
 
-                echo_json(array(
-                    'admitted' => $admitted,
-                    'class' => $class,
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'], //The user
+                    'e_message' => readable_updates($classes[0],$r_update,'r_'),
+                    'e_json' => json_encode(array(
+                        'input' => $_POST,
+                        'before' => $classes[0],
+                        'after' => $r_update,
+                    )),
+                    'e_type_id' => 56, //Class Cancelled
+                    'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
+                    'e_r_id' => intval($_POST['r_id']),
                 ));
+
+            } else {
+
+                //The class is ready to get started!
+                //Change the status to running:
+                $this->Db_model->r_update( $class['r_id'] , array(
+                    'r_status' => 2, //Class Running
+                ));
+
+                //Find first due milestone to dispatch its messages to all students:
+                $first_milestone_c_id = 0;
+                foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                    if($milestone['c_status']>=1){
+                        $first_milestone_c_id = $milestone['c_id'];
+                        break;
+                    }
+                }
+
+                if($first_milestone_c_id || 1){
+                    //We found this milestone!
+
+                    //Change the status:
+                    //$this->Db_model->r_update( $class['r_id'] , array('r_status' => 2));
+
+                    //Fetch all admitted & activated students:
+                    $admitted = $this->Db_model->ru_fetch(array(
+                        'ru.ru_r_id'	    => $class['r_id'],
+                        'ru.ru_status >='	=> 4, //Anyone who is admitted
+                        'u.u_fb_id >'	    => 0, //Activated MenchBot
+                    ));
+
+                    foreach($admitted as $u){
+                        //Inform Students on First Milestone:
+                        tree_message(890, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
+                    }
+                }
+
             }
+
+            echo_json(array(
+                'admitted' => $admitted,
+                'class' => $class,
+            ));
+
         }
     }
 	
