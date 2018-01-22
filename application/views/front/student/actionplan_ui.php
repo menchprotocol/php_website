@@ -21,14 +21,14 @@ $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
 $( document ).ready(function() {
     $("#ontime_dueby").countdowntimer({
         startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d H:i:s' , $ontime_secs_left+time()); ?>",
+        dateAndTime : "<?= date('Y/m/d H:i:s' , (strtotime($ontime_secs_left))); ?>",
         size : "lg",
         regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
         regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
     });
     $("#late_dueby").countdowntimer({
         startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d H:i:s' , $alittle_late_secs+time()); ?>",
+        dateAndTime : "<?= date('Y/m/d H:i:s' , $alittle_late_secs); ?>",
         size : "lg",
         regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
         regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -155,7 +155,7 @@ if($displayed_messages>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                'messenger_webview' => 1, //TO embed the video
+                'show_new_window' => 1, //TO embed the video
                 'e_b_id'=>$admission['b_id'],
                 'e_recipient_u_id'=>$admission['u_id'],
             )) , $admission['u_fname'] );

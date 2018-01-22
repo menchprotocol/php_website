@@ -38,15 +38,19 @@ class My extends CI_Controller {
         if($i_id>0){
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => $i_id,
-                'i_media_type' => 'video',
                 'i_status >=' => 1, //Not deleted
             ));
         }
 
-        if(isset($messages[0]) && strlen($messages[0]['i_url'])>0){
+        if(isset($messages[0]) && strlen($messages[0]['i_url'])>0 && in_array($messages[0]['i_media_type'],array('text','video'))){
 
-            //Show video
-            echo '<div>'.format_e_message('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
+            if($messages[0]['i_media_type']=='video'){
+                //Show video
+                echo '<div>'.format_e_message('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
+            } else {
+                //Show embed video:
+                echo detect_embed_video($messages[0]['i_url'],$messages[0]['i_url']);
+            }
 
         } else {
 

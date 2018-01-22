@@ -327,6 +327,13 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 $embed_html = detect_embed_video($i['i_url'],$i['i_message']);
                 if($embed_html){
                     $i['i_message'] = $embed_html;
+
+                    //Facebook Messenger Webview adds an additional button to view full screen:
+                    if(isset($i['show_new_window'])){
+                        //HTML media format:
+                        $i['i_message'] .= '<div><a href="https://mench.co/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
+                    }
+
                 } else {
                     //HTML format:
                     $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
@@ -456,11 +463,9 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
 
             //Facebook Messenger Webview adds an additional button to view full screen:
-            if(isset($i['messenger_webview']) && $i['i_media_type']=='video'){
-
+            if(isset($i['show_new_window']) && $i['i_media_type']=='video'){
                 //HTML media format:
                 $echo_ui .= '<div><a href="https://mench.co/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
-
             }
 
         }
