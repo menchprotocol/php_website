@@ -324,32 +324,37 @@ class Cron extends CI_Controller {
 
 
 
+        $accepted_admissions = $this->Db_model->ru_fetch(array(
+            'ru.ru_r_id'	    => 103,
+            'ru.ru_status'	    => 4,
+            'u.u_fb_id >'	    => 0, //Activated
+        ));
+
         foreach($completed as $u_id){
             //tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
         }
 
-        foreach($incomplete as $u_id){
+        $counter = 0;
+        foreach($accepted_admissions as $u){
 
-            $users = $this->Db_model->u_fetch(array(
-                'u_id' => $u_id,
-            ));
-
-            if(count($users)==1){
-                //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
-                unset($instant_messages);
-                $instant_messages = array();
-                array_push( $instant_messages , echo_i( array(
-                    'i_media_type' => 'text',
-                    'i_message' => 'Hi {first_name}, we just moved on to our next Milestone which would become available to you once you finish all your week 1 tasks. Let me know what\'s preventing you from completing your week 1 tasks, and I\'d be happy to assist you in catching-up to the rest of the class who now moved on to week 2.',
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $users[0]['u_id'],
-                    'e_r_id' => 103,
-                    'e_b_id' => 67,
-                ), $users[0]['u_fname'], true ));
-
-                //Send message:
-                $this->Facebook_model->batch_messages('381488558920384', $users[0]['u_fb_id'], $instant_messages);
+            if(in_array($u['u_id'],$completed)){
+                continue;
             }
+
+            //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
+            unset($instant_messages);
+            $instant_messages = array();
+            array_push( $instant_messages , echo_i( array(
+                'i_media_type' => 'text',
+                'i_message' => 'Hi {first_name}, we just moved on to our next Milestone which would become available to you once you finish all your week 1 tasks. Let me know what\'s preventing you from completing your week 1 tasks, and I\'d be happy to assist you in catching-up to the rest of the class who now moved on to week 2.',
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $u['u_id'],
+                'e_r_id' => 103,
+                'e_b_id' => 67,
+            ), $u['u_fname'], true ));
+
+            //Send message:
+            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], $instant_messages);
         }
 
 
