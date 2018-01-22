@@ -321,7 +321,7 @@ class Cron extends CI_Controller {
 
         //Runs every hour and informs instructors/admins of new messages received recently
         //Define settings:
-	    $seconds_ago = 7200*2; //Defines how much to go back, should be equal to cron job frequency
+	    $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
 
         //Create query:
         $mench_cs_fb_ids = $this->config->item('mench_cs_fb_ids');
@@ -403,7 +403,7 @@ class Cron extends CI_Controller {
             foreach($notify_messages as $key=>$msg){
 
                 //Prepare the message Body:
-                $message = '💡 You have unreplied messages from '.count($msg['message_threads']).' student'.show_s(count($msg['message_threads'])).' in the past '.round($seconds_ago/3600).' hours:'."\n\n";
+                $message = '💡 You have unreplied messages from '.count($msg['message_threads']).' student'.show_s(count($msg['message_threads'])).' in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
