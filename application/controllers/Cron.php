@@ -323,14 +323,14 @@ class Cron extends CI_Controller {
         $incomplete = array(324);
 
 	    foreach($completed as $u_id){
-            tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
+            //tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
         }
-
-	    exit;
 
         foreach($incomplete as $u_id){
             tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
         }
+
+        exit;
 
 	    //Starts the next milestone and notifies students who are ready to move on:
         $classes = $this->Db_model->r_fetch(array(
