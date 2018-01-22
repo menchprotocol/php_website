@@ -1710,6 +1710,7 @@ function filter_class($classes,$r_id=null){
     }
     
     foreach($classes as $class){
+        //date_is_past() is key as deadline is last midnight MAX
         if($class['r_status']>=1 && !date_is_past($class['r_start_date']) && (!$r_id || ($r_id==$class['r_id']))){
             return $class;
             break;
@@ -2298,7 +2299,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         'tree' => $tree[0],
         'depth' => $outbound_levels,
     );
-
 
     if($bootcamp_data && $bootcamp_data['level']==2 && $r_id){
 

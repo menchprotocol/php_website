@@ -614,6 +614,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 
                 //Fetch financial data:
                 $mench_pricing = $this->config->item('mench_pricing');
+
                 //Figure out total instructor earnings:
                 $this->db->select('SUM(t_total) as usd_transactions');
                 $this->db->from('v5_transactions t');

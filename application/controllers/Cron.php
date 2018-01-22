@@ -317,17 +317,18 @@ class Cron extends CI_Controller {
     }
 
 
-    function unread_new_messages(){
+    function unreplied_messages(){
 
         //Runs every hour and informs instructors/admins of new messages received recently
         //Define settings:
-	    $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
-        $cs_team = array(1,2); //ID of Mench admins who receive unassigned message notifications
+	    $seconds_ago = 7200*2; //Defines how much to go back, should be equal to cron job frequency
 
         //Create query:
+        $mench_cs_fb_ids = $this->config->item('mench_cs_fb_ids');
 	    $after_time = date("Y-m-d H:i:s",(time()-$seconds_ago));
-        $q = $this->db->query('SELECT u_status, u_fname, e_initiator_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY e_initiator_u_id, u_status, u_fname');
+        $q = $this->db->query('SELECT u_fname, u_lname, e_initiator_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY e_initiator_u_id, u_status, u_fname, u_lname');
         $new_messages = $q->result_array();
+        $notify_messages = array();
         foreach($new_messages as $key=>$nm){
 
             //Lets see if their inbound messages has been responded by the instructor:
@@ -336,7 +337,6 @@ class Cron extends CI_Controller {
                 'e_timestamp >' => $after_time,
                 '(e_initiator_u_id='.$nm['e_initiator_u_id'].' OR e_recipient_u_id='.$nm['e_initiator_u_id'].')' => null,
             ));
-
 
             if(count($messages)>$nm['received_messages']){
                 //We also sent some messages, see who sent them, and if we need to notify the admin:
@@ -350,13 +350,83 @@ class Cron extends CI_Controller {
 
             if($new_messages[$key]['notify']){
                 //Lets see who is responsible for this student:
-                $responsible_fb_ids = $this->Db_model->fetch_responsible_users();
-            }
+                unset($notify_fb_ids);
+                $notify_fb_ids = array();
+                $bootcamp_data = array();
 
-            $new_messages[$key]['all'] = count($messages);
+                //Checks to see who is responsible for this user, likely to receive update messages or something...
+                $admissions = $this->Db_model->remix_admissions(array(
+                    'ru_u_id'	     => $nm['e_initiator_u_id'],
+                    'ru_status <='	 => 4,
+                    'ru_status >='	 => 0,
+                ));
+                if(count($admissions)==1){
+                    $bootcamp_data = array(
+                        'b_id' => $admissions[0]['b_id'],
+                        'c_objective' => $admissions[0]['c_objective'],
+                    );
+                    //Fetch the admins for this admission:
+                    foreach($admissions[0]['b__admins'] as $admin){
+                        if($admin['u_fb_id']>0){
+                            array_push($notify_fb_ids,array(
+                                'u_fname' => $admin['u_fname'],
+                                'u_lname' => $admin['u_lname'],
+                                'u_id' => $admin['u_id'],
+                                'u_fb_id' => $admin['u_fb_id'],
+                            ));
+                        }
+                    }
+                }
+
+                //We had some instructors assigned?
+                if(count($notify_fb_ids)==0){
+                    //Did not find any admin, or no admissions, set mench CS team:
+                    $notify_fb_ids = $mench_cs_fb_ids;
+                }
+
+                //Group these messages based on their receivers:
+                $md5_key = substr(md5(print_r($bootcamp_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
+                if(!isset($notify_messages[$md5_key])){
+                    $notify_messages[$md5_key] = array(
+                        'notify_admins' => $notify_fb_ids,
+                        'bootcamp_data' => $bootcamp_data,
+                        'message_threads' => array(),
+                    );
+                }
+
+                array_push($notify_messages[$md5_key]['message_threads'] , $new_messages[$key]);
+            }
         }
 
-        echo_json($new_messages);
+        //Now see if we need to notify any admin:
+        if(count($notify_messages)>0){
+            foreach($notify_messages as $key=>$msg){
+
+                //Prepare the message Body:
+                $message = '💡 You have unreplied messages from '.count($msg['message_threads']).' student'.show_s(count($msg['message_threads'])).' in the past '.round($seconds_ago/3600).' hours:'."\n\n";
+                foreach($msg['message_threads'] as $thread){
+                    $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
+                }
+                if(count($msg['bootcamp_data'])>0 && strlen($message)<580){
+                    $message .= "\n\n".'You can see and reply to these messages sent to ['.$msg['bootcamp_data']['c_objective'].'] here:'."\n\n".'https://mench.co/console/'.$msg['bootcamp_data']['b_id'].'/students';
+                }
+
+                $notify_messages[$key]['admin_message'] = $message;
+
+                //Send message to all admins:
+                foreach($msg['notify_admins'] as $admin){
+                    $this->Facebook_model->batch_messages('381488558920384', $admin['u_fb_id'], array(echo_i( array(
+                        'i_media_type' => 'text',
+                        'i_message' => substr($message,0,620), //Make sure this is not too long!
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $admin['u_id'],
+                        'e_b_id' => ( count($msg['bootcamp_data'])>0 ? $msg['bootcamp_data']['b_id'] : 0),
+                    ), $admin['u_fname'], true )));
+                }
+            }
+        }
+
+        echo_json($notify_messages);
     }
 
 

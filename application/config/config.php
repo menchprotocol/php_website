@@ -251,6 +251,20 @@ $config['engagement_references'] = array(
 
 //The engagements that need to be communicated to instructors:
 $config['instructor_subscriptions'] = array(30,52,56,57); //26,29,33
+$config['mench_cs_fb_ids'] = array(
+    array(
+        'u_fname' => 'Shervin',
+        'u_lname' => 'Enayati',
+        'u_id' => 1,
+        'u_fb_id' => '1443101719058431',
+    ),
+    array(
+        'u_fname' => 'Miguel',
+        'u_lname' => 'Hernandez',
+        'u_id' => 2,
+        'u_fb_id' => '1234880879950857',
+    )
+);
 
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
