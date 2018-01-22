@@ -319,8 +319,8 @@ class Cron extends CI_Controller {
 
     function next_milestone(){
 
-        $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404,1);
-        $incomplete = array(324);
+        $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404);
+        $incomplete = array(1);//324
 
 	    foreach($completed as $u_id){
             //tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
