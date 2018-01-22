@@ -9,9 +9,9 @@ class Cron extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-
-    function jason($u_id){
-        echo_json(tree_message(890, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103));
+    function lazaro(){
+        echo_json(tree_message(896, 0, '381488558920384', 422, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 68, 104));
+        echo_json(tree_message(896, 0, '381488558920384', 416, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 68, 104));
     }
 
     function profile(){
@@ -317,11 +317,53 @@ class Cron extends CI_Controller {
     }
 
 
+    function unread_new_messages(){
+
+        //Runs every hour and informs instructors/admins of new messages received recently
+        //Define settings:
+	    $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
+        $cs_team = array(1,2); //ID of Mench admins who receive unassigned message notifications
+
+        //Create query:
+	    $after_time = date("Y-m-d H:i:s",(time()-$seconds_ago));
+        $q = $this->db->query('SELECT u_status, u_fname, e_initiator_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY e_initiator_u_id, u_status, u_fname');
+        $new_messages = $q->result_array();
+        foreach($new_messages as $key=>$nm){
+
+            //Lets see if their inbound messages has been responded by the instructor:
+            $messages = $this->Db_model->e_fetch(array(
+                'e_type_id IN (6,7)' => null,
+                'e_timestamp >' => $after_time,
+                '(e_initiator_u_id='.$nm['e_initiator_u_id'].' OR e_recipient_u_id='.$nm['e_initiator_u_id'].')' => null,
+            ));
+
+
+            if(count($messages)>$nm['received_messages']){
+                //We also sent some messages, see who sent them, and if we need to notify the admin:
+                $last_message = $messages[0]; //This is the latest message
+                $new_messages[$key]['notify'] = ( $last_message['e_type_id']==7 && $last_message['e_initiator_u_id']>0 ? 0 : 1 );
+            } else {
+                //No responses, we must notify:
+                $new_messages[$key]['notify'] = 1;
+            }
+
+
+            if($new_messages[$key]['notify']){
+                //Lets see who is responsible for this student:
+                $responsible_fb_ids = $this->Db_model->fetch_responsible_users();
+            }
+
+            $new_messages[$key]['all'] = count($messages);
+        }
+
+        echo_json($new_messages);
+    }
+
+
     function next_milestone(){
 
         $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404);
         $incomplete = array(1);//324
-
 
 
         $accepted_admissions = $this->Db_model->ru_fetch(array(
@@ -340,6 +382,10 @@ class Cron extends CI_Controller {
             if(in_array($u['u_id'],$completed)){
                 continue;
             }
+
+            $counter++;
+            echo $counter.') '.$u['u_fname'].'<br />';
+            continue;
 
             //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
             unset($instant_messages);
