@@ -325,22 +325,6 @@ $( document ).ready(function() {
                 $admin_count++;
             }
             ?>
-    		
-    		
-    		
-
-
-
-    		<?php if($bootcamp['b_id']==1){ ?>
-    		<h3>Student Testimonials</h3>
-    		<ul style="margin-left:-15px;">
-    			<li>"This bootcamp format is very motivating. I'm enjoying the process and I like the email updates as well. The content is well organized. Great job!" <b>- Trisch Loren</b></li>
-    			<li>"Thanks so much for lighting a fire under my butt with this bootcamp. I've been talking about doing this course for about five years. I'm so excited to finally be doing it!!!" <b>- Linda Salazar</b></li>
-    			<li>"I can't believe how much I've gotten done in your bootcamp. I thought for sure I'd run out of steam after 4 or 6 weeks, but you've actually created an environment that's giving me more and more energy every week you put forward a new challenge. Amazing. So much gratitude to you." <b>- Donna Barker</b></li>
-    		</ul>
-    		<p>You can <a href="https://support.mench.co/hc/en-us/articles/115002079731">Read More Testimonials</a> from our first bootcamp.</p>
-    		<?php } ?>
-    
     
     
     

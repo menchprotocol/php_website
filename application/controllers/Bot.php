@@ -530,6 +530,7 @@ class Bot extends CI_Controller {
 	
 	
 	function paypal_webhook(){
+
 	    //Called when the paypal payment is complete:
 	    if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
 	        //Seems like a valid Paypal IPN Call:
@@ -560,7 +561,7 @@ class Bot extends CI_Controller {
 	                $transaction = $this->Db_model->t_create(array(
                         't_ru_id' => $enrollments[0]['ru_id'],
                         't_r_id' => $enrollments[0]['ru_r_id'],
-                        't_u_d' => $enrollments[0]['ru_u_id'],
+                        't_u_id' => $enrollments[0]['ru_u_id'],
                         't_status' => 1, //Payment received from Student
 	                    't_timestamp' => date("Y-m-d H:i:s"),
 	                    't_creator_id' => $enrollments[0]['ru_u_id'],
