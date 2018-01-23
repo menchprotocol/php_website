@@ -138,7 +138,7 @@ class Api_v1 extends CI_Controller {
         }
 
         //Show message:
-        die('<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>');
+        echo '<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>';
         echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
 
     }
