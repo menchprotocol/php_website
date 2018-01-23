@@ -139,12 +139,37 @@ class Api_v1 extends CI_Controller {
 
         //Show message:
         die('<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>');
+        echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
 
     }
 
     function update_new_password(){
         //This function updates the user's new password as requested via a password reset:
+        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0 || !isset($_POST['timestamp']) || intval($_POST['timestamp'])<=0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash'])<10){
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Core Variables.</div>';
+        } elseif(!($_POST['p_hash']==md5($_POST['u_id'] . 'p@ssWordR3s3t' . $_POST['timestamp']))){
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid hash key.</div>';
+        } elseif(!isset($_POST['new_pass']) || strlen($_POST['new_pass'])<6){
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: New password must be longer than 6 characters. Try again.</div>';
+        } else {
+            //All seems good, lets update their account:
+            $this->Db_model->u_update( intval($_POST['u_id']) , array(
+                'u_password' => md5($_POST['new_pass']),
+            ));
 
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => intval($_POST['u_id']),
+                'e_type_id' => 59, //Password reset
+            ));
+
+            //Log all sessions out:
+            $this->session->sess_destroy();
+
+            //Show message:
+            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/login"><u>login here</u></a>.</div>';
+            echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
+        }
     }
 	
 	function funnel_progress(){

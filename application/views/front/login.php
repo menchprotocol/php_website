@@ -24,14 +24,14 @@
 
 	    <form method="post" action="/api_v1/login">
 	    <input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
-		<div class="input-group" style="margin-bottom: 5px;">
+		<div class="input-group pass_success" style="margin-bottom: 5px;">
 			<span class="input-group-addon">
 				<i class="material-icons">email</i>
 			</span>
 			<div class="form-group is-empty"><input type="email" id="u_email" name="u_email" required="required" class="form-control" placeholder="Email"><span class="material-input"></span></div>
 		</div>
 	
-		<div class="input-group pass">
+		<div class="input-group pass pass_success">
 			<span class="input-group-addon">
 				<i class="material-icons">lock_outline</i>
 			</span>
@@ -53,7 +53,7 @@
         <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
         */?>
 
-	    <div id="loginb" class="submit-btn">
+	    <div id="loginb" class="submit-btn pass_success">
             <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
             <a class="btn btn-primary pass btn-raised btn-round" style="display: none;" href="javascript:request_password_reset();">Request Password Reset</a>
             <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a href="javascript:$('.pass').toggle();">Forgot Password</a></span>
