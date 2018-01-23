@@ -365,6 +365,14 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
             $command = '{admissions}';
 
+        } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_recipient_u_id'])) {
+
+            //append their My Account Button/URL:
+            $timestamp = time();
+            $button_title = '👉 Reset Password Here';
+            $button_url = 'https://mench.co/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+            $command = '{passwordreset}';
+
         } elseif(substr_count($i['i_message'],'{menchbot}')>0 && isset($i['e_recipient_u_id'])) {
 
             $button_url = messenger_activation_url('381488558920384',$i['e_recipient_u_id']);
@@ -1679,7 +1687,7 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && intval($udata['u_status'])>=2 ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && (intval($udata['u_status'])>=2 || (intval($udata['u_status'])==1 && isset($udata['bootcamp_permissions']))) ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }

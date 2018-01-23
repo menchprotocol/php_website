@@ -118,6 +118,34 @@ class Api_v1 extends CI_Controller {
 	/* ******************************
 	 * Users
 	 ****************************** */
+
+    function request_password_reset(){
+        //We need an email input:
+        if(!isset($_POST['email'])){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Email.</div>');
+        } elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Email.</div>');
+        }
+
+        //Attempt to fetch this user:
+        $matching_users = $this->Db_model->u_fetch(array(
+            'u_email' => strtolower($_POST['email']),
+        ));
+        if(count($matching_users)>0){
+            $this->load->model('Email_model');
+            //Dispatch the password reset node:
+            $this->Email_model->email_intent(0,3030,$matching_users[0]);
+        }
+
+        //Show message:
+        die('<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>');
+
+    }
+
+    function update_new_password(){
+        //This function updates the user's new password as requested via a password reset:
+
+    }
 	
 	function funnel_progress(){
 	    
@@ -522,7 +550,8 @@ class Api_v1 extends CI_Controller {
 	function login(){
 	    
 	    //Setting for admin logins:
-	    $master_password = 'pi980oll';
+	    $master_password = 'pi980ollmaster';
+        $website = $this->config->item('website');
 	    
 	    if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
@@ -536,12 +565,22 @@ class Api_v1 extends CI_Controller {
 	    $users = $this->Db_model->u_fetch(array(
 	        'u_email' => strtolower($_POST['u_email']),
 	    ));
+
+        //See if they have any active admissions:
+        $admissions = array();
+	    if(count($users)==1){
+            $admissions = $this->Db_model->remix_admissions(array(
+                'ru_u_id' => $users[0]['u_id'],
+                'ru_status >=' => 0, //We would drill into this further...
+            ));
+        }
 	    
 	    if(count($users)==0){
 	        //Not found!
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not found.</div>');
 	        return false;
-	    } elseif($users[0]['u_status']<=0){
+	    } elseif($users[0]['u_status']<0){
+
 	        //Inactive account
 	        $this->Db_model->e_create(array(
 	            'e_initiator_u_id' => $users[0]['u_id'],
@@ -556,32 +595,47 @@ class Api_v1 extends CI_Controller {
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
 	        return false;
 	    }
-	    
+
+        $co_instructors = array();
         if($users[0]['u_status']==1){
-            //Regular user, they are required to be assigned to at-least 1 active bootcamp to be able to login:
-            $bootcamps = $this->Db_model->u_bootcamps(array(
+            //Regular user, see if they are assigned to any Bootcamp as co-instructor
+            $co_instructors = $this->Db_model->u_bootcamps(array(
                 'ba.ba_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
                 'b.b_status >=' => 0,
             ));
-            
-            if(count($bootcamps)<=0){
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $users[0]['u_id'],
-                    'e_message' => 'login() denied because instructor is not assigned to any bootcamps.',
-                    'e_json' => json_encode($_POST),
-                    'e_type_id' => 9, //Support Needing Graceful Errors
-                ));
-                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your instructor account is idle. <a href="https://calendly.com/shervine"><u>Schedule a call with us</u></a> to have it reactivated.</div>');
-                return false;
-            }
         }
+
+        $session_data = array();
+	    //Are they admin?
+	    if($users[0]['u_status']>=2 || count($co_instructors)>0){
+	        //They have admin rights:
+            $session_data['user'] = $users[0];
+        }
+        //Are they an active student?
+        if(count($admissions)>0){
+            //They have admin rights:
+            $session_data['uadmission'] = $admissions[0];
+        }
+
+        //Applicable for instructors only:
+        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
+        $is_instructor = (isset($session_data['user']) && count($session_data['user'])>0);
+        $is_student = (isset($session_data['uadmission']) && count($session_data['uadmission'])>0);
+
+        if($is_instructor && !$is_chrome){
+            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
+            return false;
+        } elseif(!$is_instructor && !$is_student){
+            //We assume this is a student request:
+            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: No active Bootcamp found. You can only login as a student after you have been approved by your instructor.</div>');
+            return false;
+        }
+
         
         //All good to go!
         //Load session and redirect:
-        $this->session->set_userdata(array(
-            'user' => $users[0],
-        ));
+        $this->session->set_userdata($session_data);
         
         //Append user IP and agent information
         unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
@@ -596,7 +650,7 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $users[0]['u_id'],
                 'e_json' => json_encode($users[0]),
-                'e_type_id' => 10, //Admin login
+                'e_type_id' => 10, //login
             ));
         }
             
@@ -605,7 +659,13 @@ class Api_v1 extends CI_Controller {
             header( 'Location: '.$_POST['url'] );
         } else {
             //Default:
-            header( 'Location: /console' );
+            if($is_instructor){
+                //Instructor default:
+                header( 'Location: /console' );
+            } else {
+                //Student default:
+                header( 'Location: /my/actionplan' );
+            }
         }
 	}
 	

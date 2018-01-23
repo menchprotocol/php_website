@@ -27,7 +27,7 @@ class Front extends CI_Controller {
 	    }
 	    
 		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Login as Instructor',
+				'title' => 'Login',
 		));
 		$this->load->view('front/login');
 		$this->load->view('front/shared/f_footer');

@@ -12,50 +12,68 @@
         });
     });
 
-<?php } else { ?>
+<?php } else {
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'Messenger'));
+    //Do they have a local session? (i.e. Browser login):
+    $uadmission = $this->session->userdata('uadmission');
+    if(isset($uadmission) && count($uadmission)>0){
 
-    //the Messenger Extensions JS SDK is done loading:
-    window.extAsyncInit = function() {
+        //Fetch page instantly as we know who this is:
+        ?>
+        $.post("/my/display_actionplan/<?= $uadmission['u_fb_id'] ?>/<?= $uadmission['b_id'] ?>/<?= $uadmission['b_c_id'] ?>", {}, function(data) {
+            //Update UI to confirm with user:
+            $( "#page_content").html(data);
+        });
+        <?php
 
-        //Get context:
-        MessengerExtensions.getContext('1782431902047009',
-          function success(thread_context){
-            // success
-            //User ID was successfully obtained.
-            var psid = thread_context.psid;
-            var signed_request = thread_context.signed_request;
-            //Fetch Page:
-            $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
-                //Update UI to confirm with user:
-                $( "#page_content").html(data);
-            });
-          },
-          function error(err){
+    } else {
 
-            //Ooops, there was sone sort of an error! Let's see if the student
-            MessengerExtensions.getSupportedFeatures(function success(result) {
-                  if(result.supported_features.indexOf("context")<0) {
-                      $("#page_content").html('<div class="alert alert-alert" role="alert">Visit www.messenger.com using your PC to access this page using messenger for web.</div>');
-                  } else {
-                      $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Authentication failed</div>');
-                  }
-            }, function error(err) {
-                $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Failed to authenticate</div>');
-            });
+        //Use Facebook to see if we can find this user's identity:
+        ?>
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'Messenger'));
 
-          }
-        );
-    };
+        //the Messenger Extensions JS SDK is done loading:
+        window.extAsyncInit = function() {
 
-<?php } ?>
+            //Get context:
+            MessengerExtensions.getContext('1782431902047009',
+                function success(thread_context){
+                    // success
+                    //User ID was successfully obtained.
+                    var psid = thread_context.psid;
+                    var signed_request = thread_context.signed_request;
+                    //Fetch Page:
+                    $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
+                        //Update UI to confirm with user:
+                        $( "#page_content").html(data);
+                    });
+                },
+                function error(err){
+
+                    //Ooops, there was sone sort of an error! Let's see if the student
+                    MessengerExtensions.getSupportedFeatures(function success(result) {
+                        if(result.supported_features.indexOf("context")<0) {
+                            $("#page_content").html('<div class="alert alert-alert" role="alert">Visit www.messenger.com using your PC to access this page using messenger for web.</div>');
+                        } else {
+                            $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Authentication failed</div>');
+                        }
+                    }, function error(err) {
+                        $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Failed to authenticate</div>');
+                    });
+
+                }
+            );
+        };
+        <?php
+    }
+}
+?>
 </script>
 
 <div id="page_content"><div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div></div>

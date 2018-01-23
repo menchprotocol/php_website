@@ -132,6 +132,14 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
+    function reset_pass(){
+        $data = array(
+            'title' => 'Passsord Reset',
+        );
+        $this->load->view('front/shared/p_header' , $data);
+        $this->load->view('front/student/password_reset');
+        $this->load->view('front/shared/p_footer');
+    }
 
     function leaderboard(){
         //Load apply page:
@@ -146,7 +154,7 @@ class My extends CI_Controller {
 
     function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 
-	    //Fetch bootcamps for this user:
+        //Fetch bootcamps for this user:
 	    if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
 	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Invalid user ID.</div>');

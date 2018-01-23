@@ -1,6 +1,7 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
+$uadmission = $this->session->userdata('uadmission');
 $website = $this->config->item('website');
 $mench_bots = $this->config->item('mench_bots');
 ?><!doctype html>
@@ -97,6 +98,9 @@ if(count($unread_notifications)>0){
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</i></span></a></li> */ ?>
+                        <?php if(isset($uadmission) && count($uadmission)>0 && $udata['u_id']==1){ ?>
+                            <li data-toggle="tooltip" data-placement="bottom" title="A web-based console for students to access their Action Plan, Leaderboard and Account Details."><a href="/my/actionplan"><i class="fa fa-graduation-cap" aria-hidden="true"></i><span> Student Hub</i></span></a></li>
+                        <?php } ?>
                         <li><a href="/console/account"><?= (strlen($udata['u_image_url'])>4 ? '<img src="'.$udata['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i>') ?> My Account</a></li>
 					</ul>
 				</div>

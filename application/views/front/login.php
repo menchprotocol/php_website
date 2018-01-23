@@ -1,4 +1,4 @@
-<h1>Login as Instructor</h1>
+<h1>Login</h1>
 <br />
 
 <div class="login-content">
@@ -6,9 +6,39 @@
 	<?php 
 	//Check to make sure it's Chrome:
     $website = $this->config->item('website');
-	if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false || isset($_GET['skip'])) {
 	    ?>
+        <script>
+            //Show loading:
+            function request_password_reset(){
+                //Show loading:
+                $('#pass_reset').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
+                //Hide the editor & saving results:
+                $.post("/api_v1/request_password_reset", {
+                    email:$('#u_email').val(),
+                }, function(data) {
+                    //Show success:
+                    $('#pass_reset').html(data);
+                });
+            }
+        </script>
 
+	    <form method="post" action="/api_v1/login">
+	    <input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
+		<div class="input-group" style="margin-bottom: 5px;">
+			<span class="input-group-addon">
+				<i class="material-icons">email</i>
+			</span>
+			<div class="form-group is-empty"><input type="email" id="u_email" name="u_email" required="required" class="form-control" placeholder="Email"><span class="material-input"></span></div>
+		</div>
+	
+		<div class="input-group pass">
+			<span class="input-group-addon">
+				<i class="material-icons">lock_outline</i>
+			</span>
+			<div class="form-group is-empty"><input type="password" name="u_password" required="required" placeholder="Password" class="form-control"><span class="material-input"></span></div>
+		</div>
+
+        <?php /*
         <script>
             $(document).ready(function() {
                 var isMobile = false; //initiate as false
@@ -19,38 +49,23 @@
                     $('#mobile-no').show();
                 }
             });
-
         </script>
-
-	    <form method="post" action="/api_v1/login">
-	    <input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
-		<div class="input-group" style="margin-bottom: 5px;">
-			<span class="input-group-addon">
-				<i class="material-icons">email</i>
-			</span>
-			<div class="form-group is-empty"><input type="email" name="u_email" required="required" class="form-control" placeholder="Email"><span class="material-input"></span></div>
-		</div>
-	
-		<div class="input-group">
-			<span class="input-group-addon">
-				<i class="material-icons">lock_outline</i>
-			</span>
-			<div class="form-group is-empty"><input type="password" name="u_password" required="required" placeholder="Password" class="form-control"><span class="material-input"></span></div>
-		</div>
-
         <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
+        */?>
 
-	    <div id="loginb" class="submit-btn"><input type="submit" class="btn btn-primary btn-raised btn-round" value="Login"></div>
+	    <div id="loginb" class="submit-btn">
+            <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
+            <a class="btn btn-primary pass btn-raised btn-round" style="display: none;" href="javascript:request_password_reset();">Request Password Reset</a>
+            <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a href="javascript:$('.pass').toggle();">Forgot Password</a></span>
+            <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:$('.pass').toggle();">Cancel</a></span>
+        </div>
 	    </form>
-	    <?php
-	} else {
-	    echo '<br /><div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>';
-	}
-	?>
+
+        <div id="pass_reset"></div>
+
 	<br />
 	
 	<div class="extra-info">
 		<p>Want to Run a Bootcamp? <a href="<?= typeform_url('nh4s2u') ?>">Signup As Instructor <i class="fa fa-sign-in"></i></a></p>
-		<p>Forgot Password? <a href="/contact">Contact Us <i class="fa fa-comment" aria-hidden="true"></i></a></p>
 	</div>
 </div>
