@@ -13,7 +13,6 @@ $due_late_date = time_format($admission['r_start_date'],2,(($sprint_index+$sprin
 $ontime_secs_left = ( strtotime($due_date) + (intval($admission['r_start_time_mins'])*60) - time());
 $alittle_late_secs = ( $admission['b_sprint_unit']=='week' ? 7 : 1 )*24*3600; //"A little late" = 1x Milestone Duration
 $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
-
 ?>
 <script>
 
@@ -21,14 +20,14 @@ $qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
 $( document ).ready(function() {
     $("#ontime_dueby").countdowntimer({
         startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d H:i:s' , (strtotime($ontime_secs_left))); ?>",
+        dateAndTime : "<?= date('Y/m/d H:i:s' , strtotime($due_date)); ?>",
         size : "lg",
         regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
         regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
     });
     $("#late_dueby").countdowntimer({
         startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d H:i:s' , $alittle_late_secs); ?>",
+        dateAndTime : "<?= date('Y/m/d H:i:s' , strtotime($due_late_date)); ?>",
         size : "lg",
         regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
         regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"

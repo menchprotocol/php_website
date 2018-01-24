@@ -1,6 +1,7 @@
 <?php 
 //Attempt to fetch session variables:
 $udata = $this->session->userdata('user');
+$uadmission = $this->session->userdata('uadmission');
 $website = $this->config->item('website');
 ?><!doctype html>
 <html lang="en">
@@ -54,9 +55,12 @@ $website = $this->config->item('website');
         	<div class="collapse navbar-collapse">
         		<ul class="nav navbar-nav navbar-right">
     				<?php
-    				if(isset($udata['u_id'])){
-    					echo '<li id="isloggedin"><a href="/console">'.$this->lang->line('m_name').' <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
-    				} else {
+                    if(isset($udata['u_id'])){
+                        echo '<li id="isloggedin"><a href="/console">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+                    } elseif(isset($uadmission['u_id'])){
+                        echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+                    } else {
+                        //Logged Out!
     				    echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Build a Bootcamp</a></li>';
     				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
     				}

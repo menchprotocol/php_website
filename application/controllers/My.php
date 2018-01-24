@@ -134,7 +134,7 @@ class My extends CI_Controller {
 
     function reset_pass(){
         $data = array(
-            'title' => 'Passsord Reset',
+            'title' => 'Password Reset',
         );
         $this->load->view('front/shared/p_header' , $data);
         $this->load->view('front/student/password_reset');

@@ -633,7 +633,7 @@ class Api_v1 extends CI_Controller {
 
         $session_data = array();
 	    //Are they admin?
-	    if($users[0]['u_status']>=2 || count($co_instructors)>0){
+	    if($users[0]['u_status']>=2 /* || count($co_instructors)>0 */){
 	        //They have admin rights:
             $session_data['user'] = $users[0];
         }
@@ -990,7 +990,7 @@ class Api_v1 extends CI_Controller {
                 }
             }
 
-            echo '<table class="table table-condensed table-striped" style="max-width:'.( $is_instructor ? '100%' : '420px' ).'; background-color:#E0E0E0; font-size:18px;">';
+            echo '<table class="table table-condensed table-striped" style="max-width:'.( $is_instructor ? '100%' : '420px' ).'; background-color:#E0E0E0; font-size:18px; margin:0 auto; display:block;">';
 
             //First generate Leaderboard's top message:
             echo '<tr style="font-weight:bold; ">';
