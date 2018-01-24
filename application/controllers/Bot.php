@@ -580,7 +580,13 @@ class Bot extends CI_Controller {
 
 	                //Inform the Student:
                     $this->load->model('Email_model');
-                    $email_sent = $this->Email_model->email_intent($classes[0]['r_b_id'],2807,$users[0]);
+                    if($enrollments[0]['u_fb_id']<=0){
+                        //They should activate their MenchBot IF not already done so:
+                        $this->Email_model->email_intent($classes[0]['r_b_id'],2805,$users[0]);
+                    } else {
+                        //They will get notified that we're reviewing their application
+                        $this->Email_model->email_intent($classes[0]['r_b_id'],2807,$users[0]);
+                    }
 	                
 	                //Log Engagement
 	                $this->Db_model->e_create(array(

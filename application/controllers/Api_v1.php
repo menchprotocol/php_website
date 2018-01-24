@@ -553,12 +553,16 @@ class Api_v1 extends CI_Controller {
                 'e_r_id' => $admissions[0]['r_id'],
             ));
 
+            //Notify student:
+            $this->load->model('Email_model');
+            if($enrollments[0]['u_fb_id']<=0){
+                //They should activate their MenchBot IF not already done so:
+                $this->Email_model->email_intent($admissions[0]['b_id'],2805,$admissions[0]);
+            } else {
+                //They will get notified that we're reviewing their application
+                $this->Email_model->email_intent($admissions[0]['b_id'],2807,$admissions[0]);
+            }
         }
-
-        //They should not activate their MenchBot:
-        $this->load->model('Email_model');
-        $email_sent = $this->Email_model->email_intent($admissions[0]['b_id'],2805,$admissions[0]);
-
 
 	    //Save answers:
 	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
