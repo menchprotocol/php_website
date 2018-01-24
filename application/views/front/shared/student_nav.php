@@ -18,7 +18,7 @@ $navigation = array(
         }
 
         //Logout button:
-        echo '<li class="pull-right"><a href="/api_v1/logout">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>';
+        echo '<li class="pull-right"><a href="/api_v1/logout">Logout <i class="fa fa-power-off" aria-hidden="true"></i></a></li>';
 
         //Is this a logged-in admin?
         $udata = $this->session->userdata('user');
