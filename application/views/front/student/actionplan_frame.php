@@ -63,16 +63,8 @@
                 },
                 function error(err){
 
-                    //Ooops, there was sone sort of an error! Let's see if the student
-                    MessengerExtensions.getSupportedFeatures(function success(result) {
-                        if(result.supported_features.indexOf("context")<0) {
-                            $("#page_content").html('<div class="alert alert-alert" role="alert">Visit www.messenger.com using your PC to access this page using messenger for web.</div>');
-                        } else {
-                            $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Authentication failed</div>');
-                        }
-                    }, function error(err) {
-                        $("#page_content").html('<div class="alert alert-danger" role="alert">Error: Failed to authenticate</div>');
-                    });
+                    //Give them instructions on how to access via mench.co:
+                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> This version of Facebook Messenger does not support loading websites.<br /><br />Solution: login to <a href="https://mench.co/login" target="_blank"><u>mench.co</u></a> to access your Bootcamp content. Use <b><u>Forgot Password</u></b> to generate a new password if you do not have one.</div>');
 
                 }
             );

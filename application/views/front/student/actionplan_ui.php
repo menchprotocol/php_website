@@ -146,6 +146,7 @@ if(count($i_messages)>0){
 
 //Overview:
 if($displayed_messages>0){
+    $uadmission = $this->session->userdata('uadmission');
     $load_open = ( $level>=3 && !isset($us_data[$intent['c_id']]) );
     //Messages:
     echo '<h4 style="margin-top:20px;"><a href="javascript:$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
@@ -154,7 +155,7 @@ if($displayed_messages>0){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
-                'show_new_window' => 1, //TO embed the video
+                ( isset($uadmission) && count($uadmission)>0 ? 'noshow' : 'show_new_window' ) => 1, //TO embed the video
                 'e_b_id'=>$admission['b_id'],
                 'e_recipient_u_id'=>$admission['u_id'],
             )) , $admission['u_fname'] );
