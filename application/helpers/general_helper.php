@@ -1758,6 +1758,11 @@ function filter_class($classes,$r_id=null){
     if(!$classes || count($classes)<=0){
         return false;
     }
+
+    if(count($classes)>1){
+        //Reverse it to find the closes one:
+        $classes = array_reverse($classes);
+    }
     
     foreach($classes as $class){
         //date_is_past() is key as deadline is last midnight MAX

@@ -11,10 +11,6 @@ foreach($bootcamps as $count=>$bootcamp){
     if(!$focus_class){
         continue;
     }
-    
-    if(fmod($count,4)==0){
-        echo '</div><div class="row">';
-    }
 
     echo '<div class="col-sm-6 col-md-4">
 			<div class="card card-product">
@@ -46,6 +42,10 @@ foreach($bootcamps as $count=>$bootcamp){
 				</div>
 			</div>
 		</div>';
+
+    if(fmod($count,3)==0){
+        echo '</div><div class="row">';
+    }
 }
 ?>
 </div>

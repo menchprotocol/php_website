@@ -37,6 +37,8 @@ if(isset($office_hours) && is_array($office_hours)){
 $available_classes = 0;
 $class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Available Classes</h4>';
 $class_selection .= '<div id="class_list" class="list-group" style="max-width:none !important;">';
+$bootcamp['c__classes'] = array_reverse($bootcamp['c__classes']);
+
 foreach($bootcamp['c__classes'] as $class){
     if($class['r_status']==1 && !date_is_past($class['r_start_date'])){
         $available_classes++;
