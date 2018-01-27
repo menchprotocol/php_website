@@ -323,22 +323,11 @@ function insert_gravatar(){
     <div class="tab-pane" id="finance" style="max-width:none !important;">
 
 
-
-
-        <div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History</h4></div>
-        	<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No payouts yet.</div>
-
-
-
-
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+        <div class="title"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_paypal_email'] ?>" class="form-control border">
             <span class="material-input"></span>
         </div>
-
-
-
 
 
 

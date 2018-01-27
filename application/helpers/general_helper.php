@@ -1025,6 +1025,17 @@ function date_is_past($date){
     return ((strtotime($date)-(24*3600))<strtotime(date("F j, Y")));
 }
 
+
+function prep_prerequisites($b){
+    //Appends system-enforced prerequisites based on Bootcamp settings:
+    $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
+    if($b['c__estimated_hours']>0){
+        array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($b['c__estimated_hours']).' in '.$b['c__milestone_units'].' '.$b['b_sprint_unit'].show_s($b['c__milestone_units']).' (Average '.echo_hours(round($b['c__estimated_hours']/$b['c__milestone_units'])) .' per '. $b['b_sprint_unit'].')');
+    }
+    return $pre_req_array;
+}
+
+
 function calculate_bootcamp_status($b){
     
     $CI =& get_instance();

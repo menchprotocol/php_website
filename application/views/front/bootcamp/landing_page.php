@@ -193,13 +193,8 @@ $( document ).ready(function() {
         <div id="b_target_audience"><?= ( strlen($bootcamp['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_target_audience'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Prerequisites</h3>
-        <?php
-        $pre_req_array = ( strlen($bootcamp['b_prerequisites'])>0 ? json_decode($bootcamp['b_prerequisites']) : array() );
-        if($bootcamp['c__estimated_hours']>0){
-            array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($bootcamp['c__estimated_hours']).' in '.$bootcamp['c__milestone_units'].' '.$bootcamp['b_sprint_unit'].show_s($bootcamp['c__milestone_units']).' (Average '.echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'])) .' per '. $bootcamp['b_sprint_unit'].')');
-        }
-        ?>
-        <div id="b_prerequisites"><?= ( strlen($bootcamp['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
+        <?php $pre_req_array = prep_prerequisites($bootcamp); ?>
+        <div id="b_prerequisites"><?= ( count($pre_req_array)>0 /* Should always be true! */ ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
 
 
         <h3>Action Plan</h3>

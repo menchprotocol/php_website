@@ -331,9 +331,6 @@ function save_r(){
         </div>
         <br />
         
-      
-        
-        
         
         
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy <span id="hb_622" class="help_button" intent-id="622"></span></h4></div>
@@ -351,6 +348,25 @@ function save_r(){
               echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the class\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
         	echo '</ul></div>';
         }
+        ?>
+
+
+
+        <?php
+        /*
+        echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-history" aria-hidden="true"></i> Transaction History</h4></div>';
+        //Attempt to fetch all payouts:
+        $class_transactions = $this->Db_model->t_fetch(array(
+            't.t_ru_id' => $enrollment['ru_id'],
+        ));
+        if(count($class_transactions)<1){
+            //Class is not yet started:
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No transactions yet.</div>';
+        } else {
+            //List all transactions:
+
+        }
+        */
         ?>
     </div>
     

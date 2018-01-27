@@ -42,7 +42,7 @@ foreach($admissions as $admission){
                 <input type="hidden" name="cmd" value="_xclick">
                 <input type="hidden" name="business" value="EYKXCMCJHEBA8">
                 <input type="hidden" name="lc" value="US">
-                <input type="hidden" name="item_name" value="Bootcamp Tuition: <?= $admission['c_objective'] ?>">
+                <input type="hidden" name="item_name" value="<?= $admission['c_objective'] ?>">
                 <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
                 <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
                 <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">

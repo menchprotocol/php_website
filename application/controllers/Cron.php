@@ -9,9 +9,9 @@ class Cron extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-	function merge(){
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b_status >' => 0,
+	function up(){
+	    $transactions = $this->Db_model->t_fetch(array(
+            't.t_r_id' => 0,
         ));
 
 	    //Now lets see which ones have descriptions:

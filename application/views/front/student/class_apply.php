@@ -1,10 +1,6 @@
 <?php
 //Expand Prerequisites:
-$pre_req_array = ( strlen($admission['b_prerequisites'])>0 ? json_decode($admission['b_prerequisites']) : array() );
-if($admission['c__estimated_hours']>0){
-    array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($admission['c__estimated_hours']).' in '.$admission['c__milestone_units'].' '.$admission['b_sprint_unit'].show_s($admission['c__milestone_units']).' (Average '.echo_hours(round($admission['c__estimated_hours']/$admission['c__milestone_units'])) .' per '. $admission['b_sprint_unit'].')');
-}
-
+$pre_req_array = prep_prerequisites($admission);
 ?>
 <script>
 var current_section = 1; //The index for the wizard
