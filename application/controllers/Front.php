@@ -180,7 +180,7 @@ class Front extends CI_Controller {
         //Validate bootcamp:
         if(!isset($bootcamps[0])){
             //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bootcamps[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
         }
@@ -200,7 +200,7 @@ class Front extends CI_Controller {
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => $bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'message' => ( $bootcamp['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this bootcamp only because you are logged-in as a Mench instructor.<br />This bootcamp is hidden from the public until published live.</div>' : null ),
+	        'message' => ( $bootcamp['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Bootcamp only because you are logged-in as a Mench instructor.<br />This bootcamp is hidden from the public until published live.</div>' : null ),
 	        'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(
@@ -223,10 +223,10 @@ class Front extends CI_Controller {
         //Validate bootcamp:
         if(!isset($bootcamps[0])){
             //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid bootcamp URL.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bootcamps[0]['b_status']<2){
             //Here we don't even let instructors move forward to apply!
-            redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after bootcamp is published live.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Bootcamp is published live.</div>');
         }
 	    
 	    //Validate Class ID that it's still the latest:
@@ -243,7 +243,7 @@ class Front extends CI_Controller {
 	    if(count($active_classes)<1){
 	        
 	        //Ooops, no active classes!
-	        redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">No active classes found for this bootcamp.</div>');
+	        redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">No active classes found for this Bootcamp.</div>');
 	        
 	    } elseif(!$r_id && count($active_classes)>1){
 	        

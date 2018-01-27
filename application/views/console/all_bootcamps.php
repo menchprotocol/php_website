@@ -41,7 +41,7 @@ if(count($bootcamps)>0){
     }
     echo '</div>';
 } else {
-    echo '<div class="alert alert-info" role="alert">No bootcamps created yet.</div>';
+    echo '<div class="alert alert-info" role="alert">No Bootcamps created yet.</div>';
 }
 
 //New Bootcamp Button:

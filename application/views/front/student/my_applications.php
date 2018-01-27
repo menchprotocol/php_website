@@ -10,7 +10,7 @@ foreach($admissions as $admission){
     
     echo '<hr />';
     echo '<h4>'.$admission['c_objective'].'</h4>';
-    echo '<p>Complete the following steps to apply to this bootcamp:</h4>';
+    echo '<p>Complete the following steps to apply to this Bootcamp:</h4>';
     
     
     //Account, always created at this point:

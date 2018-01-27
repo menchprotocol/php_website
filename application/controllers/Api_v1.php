@@ -292,7 +292,7 @@ class Api_v1 extends CI_Controller {
                     //show the error:
                     die(echo_json(array(
                         'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You can take 1 bootcamp at a time. We emailed you a link to manage your current admissions. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.</div>',
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You can take 1 Bootcamp at a time. We emailed you a link to manage your current admissions. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.</div>',
                     )));
                 }
             }
@@ -778,7 +778,7 @@ class Api_v1 extends CI_Controller {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid bootcamp ID</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
             die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
         } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
@@ -803,7 +803,7 @@ class Api_v1 extends CI_Controller {
             //How many?
             if(count($admissions)<=0){
                 //Ooops, they dont have anything!
-                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
+                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a Bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
                 //Nothing found for this user!
                 die('<script> window.location = "/"; </script>');
             }

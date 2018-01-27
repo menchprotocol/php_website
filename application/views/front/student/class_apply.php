@@ -169,7 +169,7 @@ $(document).ready(function() {
 	<p>Hi <?= $admission['u_fname'] ?>,</p>
 	<p>Welcome to the bootcamp application.</p>
 	<p>We just sent an email to <b><?= $admission['u_email'] ?></b> with a link to this application so you can easily access it at anytime.</p>
-	<p>We're so excited to have you here! We're about to ask you a few questions to find out if you're a good fit for this bootcamp.</p>
+	<p>We're so excited to have you here! We're about to ask you a few questions to find out if you're a good fit for this Bootcamp.</p>
 	<p>This application should take about 5 minutes to complete.</p>
 </div>
 
@@ -178,7 +178,7 @@ $start_times = $this->config->item('start_times');
 ?>
 
 <div class="wizard-box" id="overview_agree">
-	<p>Confirm that you commit to participating and doing the required work for this bootcamp:</p>
+	<p>Confirm that you commit to participating and doing the required work for this Bootcamp:</p>
 	<ul>
 		<li>Bootcamp Outcome: <b><?= $admission['c_objective'] ?></b></li>
     	<li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>: 
@@ -211,7 +211,7 @@ $start_times = $this->config->item('start_times');
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="confirm_pre_requisites">
-	<p>Below it's the list with all the prerequisites needed to apply for this bootcamp.</p>
+	<p>Below it's the list with all the prerequisites needed to apply for this Bootcamp.</p>
 	<p>Select all the ones you currently meet:</p>
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
@@ -256,7 +256,7 @@ $start_times = $this->config->item('start_times');
 
 <?php if($admission['r_usd_price']>0){ ?>
 <div class="wizard-box" id="refund_agreement">
-	<p>This bootcamp offers a <b><?= ucwords($admission['r_cancellation_policy']); ?></b> refund policy:</p>
+	<p>This Bootcamp offers a <b><?= ucwords($admission['r_cancellation_policy']); ?></b> refund policy:</p>
 	<?php 
 	$full_days = calculate_refund(calculate_duration($admission),'full',$admission['r_cancellation_policy']);
 	$prorated_days = calculate_refund(calculate_duration($admission),'prorated',$admission['r_cancellation_policy']);

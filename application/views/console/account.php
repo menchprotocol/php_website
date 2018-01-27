@@ -145,7 +145,7 @@ function insert_gravatar(){
         <div style="display: block;">
             <div class="title" style="margin-top:30px;"><h4><i class="fa fa-picture-o" aria-hidden="true"></i> Picture</h4></div>
             <ul>
-                <li>Used as your instructor profile photo in your bootcamp landing pages.</li>
+                <li>Used as your instructor profile photo in your Bootcamp landing pages.</li>
                 <li>Link to any URL that hosts your photo, starting with "https://"</li>
                 <?php if(strlen($udata['u_email'])>0){ ?>
                     <li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
@@ -183,7 +183,7 @@ function insert_gravatar(){
 		<ul class="maxout">
 			<li>Give the Mench community an overview of your professional background.</li>
 			<li>Make sure to include your strong suits and tangible accomplishments.</li>
-			<li>Your Introductory Message will be displayed on your bootcamp landing page.</li>
+			<li>Your Introductory Message will be displayed on your Bootcamp landing page.</li>
 		</ul>
 		<textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($udata['u_bio'])),0,$message_max); ?></textarea>
         <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
@@ -334,7 +334,7 @@ function insert_gravatar(){
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
         <ul>
         	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
-        	<li>I have read and understood my bootcamp's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Tuition Guarantee <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        	<li>I have read and understood my Bootcamp's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Tuition Guarantee <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
