@@ -23,7 +23,7 @@ foreach($admissions as $admission){
     
     if($admission['r_usd_price']>0){
         //Payment
-        echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="'.($paid ? 'javascript:void(0)' : 'javascript:$(\'#paypal_'.$admission['ru_id'].'\').submit()').';">Step 3: Initiate Payment for $'.$admission['r_usd_price'].' Tuition on <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+        echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Initiate Payment for $'.$admission['r_usd_price'].' Tuition on <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         if(!$paid){
             ?>
             

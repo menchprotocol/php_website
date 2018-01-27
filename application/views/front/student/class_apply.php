@@ -1,4 +1,11 @@
-<?php //print_r($admission); ?>
+<?php
+//Expand Prerequisites:
+$pre_req_array = ( strlen($admission['b_prerequisites'])>0 ? json_decode($admission['b_prerequisites']) : array() );
+if($admission['c__estimated_hours']>0){
+    array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($admission['c__estimated_hours']).' in '.$admission['c__milestone_units'].' '.$admission['b_sprint_unit'].show_s($admission['c__milestone_units']).' (Average '.echo_hours(round($admission['c__estimated_hours']/$admission['c__milestone_units'])) .' per '. $admission['b_sprint_unit'].')');
+}
+
+?>
 <script>
 var current_section = 1; //The index for the wizard
 
@@ -84,8 +91,8 @@ function move_ui(adjustment){
 			answers: {
 				'prerequisites' : {
 					<?php
-	        		if(strlen($admission['b_prerequisites'])>0){
-	        		    foreach(json_decode($admission['b_prerequisites']) as $index=>$prereq){
+	        		if(count($pre_req_array)>0){
+	        		    foreach($pre_req_array as $index=>$prereq){
 	            	        //Now show the JS check for these fields:
 	            	        ?>
 	            	        '<?= ($index+1) ?>' : {
@@ -159,7 +166,7 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Apply to <?= $admission['c_objective'] ?> Starting <?= time_format($admission['r_start_date'],4) ?></p>
+<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?> - Starting <?= time_format($admission['r_start_date'],4) ?></p>
 
 
 <div class="wizard-box">
@@ -206,12 +213,12 @@ $start_times = $this->config->item('start_times');
 </div>
 
 
-<?php if(strlen($admission['b_prerequisites'])>0){ ?>
+<?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="confirm_pre_requisites">
 	<p>Below it's the list with all the prerequisites needed to apply for this bootcamp.</p>
 	<p>Select all the ones you currently meet:</p>
 	<?php
-	foreach(json_decode($admission['b_prerequisites']) as $index=>$prereq){
+	foreach($pre_req_array as $index=>$prereq){
 	    ?>
 	    <div class="form-group label-floating is-empty">
         	<div class="checkbox" style="margin:0; padding:0;">

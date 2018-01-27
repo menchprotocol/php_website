@@ -41,8 +41,8 @@
 	    <div id="loginb" class="submit-btn pass_success">
             <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
             <a class="btn btn-primary pass btn-raised btn-round" style="display: none;" href="javascript:request_password_reset();">Request Password Reset</a>
-            <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a href="javascript:$('.pass').toggle();">Forgot Password</a></span>
-            <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:$('.pass').toggle();">Cancel</a></span>
+            <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a href="javascript:void(0)" onclick="$('.pass').toggle()">Forgot Password</a></span>
+            <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)" onclick="$('.pass').toggle()">Cancel</a></span>
         </div>
 	    </form>
 
@@ -51,6 +51,7 @@
 	<br />
 	
 	<div class="extra-info">
-		<p>Want to Run a Bootcamp? <a href="<?= typeform_url('nh4s2u') ?>">Signup As Instructor <i class="fa fa-sign-in"></i></a></p>
+        <p>Are you a Student? <a href="https://support.mench.co/hc/en-us/articles/360000304852">Activate MenchBot</a></p>
+        <p>Want to Run a Bootcamp? <a href="/launch">Signup As Instructor</a></p>
 	</div>
 </div>

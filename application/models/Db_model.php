@@ -202,13 +202,6 @@ ORDER BY points DESC, ru_id ASC")->result());
 			    'e_type_id' => 8, //Platform Error
 			));
 			return false;
-		} elseif(!isset($insert_columns['u_lname'])){
-		    $this->Db_model->e_create(array(
-		        'e_message' => 'u_create() missing u_lname.',
-		        'e_json' => json_encode($insert_columns),
-		        'e_type_id' => 8, //Platform Error
-		    ));
-			return false;
 		}
 		
 		//Missing anything?
@@ -216,37 +209,21 @@ ORDER BY points DESC, ru_id ASC")->result());
 			$insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
 		}
 		if(!isset($insert_columns['u_url_key'])){
-			$insert_columns['u_url_key'] = preg_replace("/[^A-Za-z0-9]/", '', $insert_columns['u_fname'].$insert_columns['u_lname']);
-		}
-		
-		
-		//Check u_url_key to be unique, and if not, add a number and increment:
-		$original_u_url_key = $insert_columns['u_url_key'];
-		$is_duplicate = true;
-		$increment = 0;
-		while($is_duplicate){
-			$matching_users = $this->u_fetch(array(
-					'u_url_key' => $insert_columns['u_url_key'],
-			));
-			
-			if(count($matching_users)==0){
-				//Yes!
-				$is_duplicate = false;
-				break;
-			} else {
-				//This is a duplicate:
-				$increment++;
-				$insert_columns['u_url_key'] = $original_u_url_key.$increment;
-			}
+			$insert_columns['u_url_key'] = generate_url_key($insert_columns['u_fname']);
 		}
 		
 		//Lets now add:
 		$this->db->insert('v5_users', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['u_id'] = $this->db->insert_id();
+
+		//Fetch to return:
+        $users = $this->Db_model->u_fetch(array(
+            'u_id' => $insert_columns['u_id'],
+        ));
 		
-		//Fetch inserted id:
-		$insert_columns['u_id'] = $this->db->insert_id();
-		
-		return $insert_columns;
+		return $users[0];
 	}
 	
 	function u_update($user_id,$update_columns){
@@ -333,7 +310,8 @@ ORDER BY points DESC, ru_id ASC")->result());
 	            $udata = $this->Db_model->u_create(array(
 	                'u_fb_id' 			=> $psid_sender_id,
 	                'u_fname' 			=> $fb_profile['first_name'],
-	                'u_lname' 			=> $fb_profile['last_name'],
+                    'u_lname' 			=> $fb_profile['last_name'],
+                    'u_url_key' 		=> generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
 	                'u_timezone' 		=> $fb_profile['timezone'],
 	                'u_image_url' 		=> $fb_profile['profile_pic'],
 	                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
@@ -474,6 +452,7 @@ ORDER BY points DESC, ru_id ASC")->result());
             'u_country_code'  => $locale[1],
             'u_fname'         => $fb_profile['first_name'], //Update their original names with FB
             'u_lname'         => $fb_profile['last_name'], //Update their original names with FB
+            'u_url_key'       => generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
 	    ));
 	    
 	    //Log Activation Engagement:
@@ -592,7 +571,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 			$this->db->where($key,$value);
 		}
 		$this->db->group_by('r.r_id');
-		$this->db->order_by('r.r_start_date','ASC');
+		$this->db->order_by('r.r_start_date','DESC'); //Most recent class at top
 		$q = $this->db->get();
 		
 		$runs = $q->result_array();

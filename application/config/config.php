@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.8,
+    'version' => 1.85,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -342,51 +342,51 @@ $config['default_class_prerequisites'] = array(
 $config['start_times'] = array(
     0 => 'Midnight',
     30 => '12:30am',
-    60 => '1:00am',
+    60 => '1am',
     90 => '1:30am',
-    120 => '2:00am',
+    120 => '2am',
     150 => '2:30am',
-    180 => '3:00am',
+    180 => '3am',
     210 => '3:30am',
-    240 => '4:00am',
+    240 => '4am',
     270 => '4:30am',
-    300 => '5:00am',
+    300 => '5am',
     330 => '5:30am',
-    360 => '6:00am',
+    360 => '6am',
     390 => '6:30am',
-    420 => '7:00am',
+    420 => '7am',
     450 => '7:30am',
-    480 => '8:00am',
+    480 => '8am',
     510 => '8:30am',
-    540 => '9:00am',
+    540 => '9am',
     570 => '9:30am',
-    600 => '10:00am',
+    600 => '10am',
     630 => '10:30am',
-    660 => '11:00am',
+    660 => '11am',
     690 => '11:30am',
     720 => 'Noon',
     750 => '12:30pm',
-    780 => '1:00pm',
+    780 => '1pm',
     810 => '1:30pm',
-    840 => '2:00pm',
+    840 => '2pm',
     870 => '2:30pm',
-    900 => '3:00pm',
+    900 => '3pm',
     930 => '3:30pm',
-    960 => '4:00pm',
+    960 => '4pm',
     990 => '4:30pm',
-    1020 => '5:00pm',
+    1020 => '5pm',
     1050 => '5:30pm',
-    1080 => '6:00pm',
+    1080 => '6pm',
     1110 => '6:30pm',
-    1140 => '7:00pm',
+    1140 => '7pm',
     1170 => '7:30pm',
-    1200 => '8:00pm',
+    1200 => '8pm',
     1230 => '8:30pm',
-    1260 => '9:00pm',
+    1260 => '9pm',
     1290 => '9:30pm',
-    1320 => '10:00pm',
+    1320 => '10pm',
     1350 => '10:30pm',
-    1380 => '11:00pm',
+    1380 => '11pm',
     1410 => '11:30pm',
     1439 => '11:59pm',
 );
@@ -934,31 +934,31 @@ $config['object_statuses'] = array(
     'b' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Bootcamp archived by lead instructor.',
+            's_desc'  => 'Bootcamp archived by lead instructor',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-trash',
         ),
         0 => array(
             's_name'  => 'Drafting',
-            's_desc'  => 'Bootcamp under development. Admissions starts when published live.',
+            's_desc'  => 'Bootcamp under development. Admissions starts when published live',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-pencil-square',
         ),
         1 => array(
             's_name'  => 'Request To Publish',
-            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live.',
+            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-eye',
         ),
         2 => array(
             's_name'  => 'Published Privately',
-            's_desc'  => 'A private Bootcamp where students can join only if they kow the Landing Page URL.',
+            's_desc'  => 'Students can join only if they know the Landing Page URL',
             'u_min_status'  => 3, //Can only be done by admin
             's_mini_icon' => 'fa-bullhorn',
         ),
         3 => array(
             's_name'  => 'Published to Mench',
-            's_desc'  => 'A Bootcamp published on the Mench marketplace.',
+            's_desc'  => 'A Bootcamp published on the Mench marketplace',
             'u_min_status'  => 3, //Can only be done by admin
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -966,7 +966,7 @@ $config['object_statuses'] = array(
     'c' => array(
         -1 => array(
             's_name'  => 'Delete',
-            's_desc'  => 'Item removed.',
+            's_desc'  => 'Item removed',
             'u_min_status'  => 1, //Not possible for now.
             's_mini_icon' => 'fa-trash',
         ),
@@ -978,7 +978,7 @@ $config['object_statuses'] = array(
         ),
         1 => array(
             's_name'  => 'Published',
-            's_desc'  => 'Task is active and accessible by students.',
+            's_desc'  => 'Task is active and accessible by students',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -1004,25 +1004,25 @@ $config['object_statuses'] = array(
         ),
         0 => array(
             's_name'  => 'Drafting',
-            's_desc'  => 'Class under development and not listed on landing page.',
+            's_desc'  => 'Class under development and not listed on landing page',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-pencil-square',
         ),
         1 => array(
             's_name'  => 'Admission Open',
-            's_desc'  => 'Class published live and is open for student admission.',
+            's_desc'  => 'Class published live and is open for student admission',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-bullhorn',
         ),
         2 => array(
             's_name'  => 'Running',
-            's_desc'  => 'Class has admitted students and is currently running.',
+            's_desc'  => 'Class has admitted students and is currently running',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-play-circle',
         ),
         3 => array(
             's_name'  => 'Completed',
-            's_desc'  => 'Class was operated completely until its last day.',
+            's_desc'  => 'Class was operated completely until its last day',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-graduation-cap',
         ),
@@ -1037,33 +1037,33 @@ $config['object_statuses'] = array(
         /*
         0 => array(
             's_name'  => 'Drafting',
-            's_desc'  => 'Message not visible to students while drafting.',
+            's_desc'  => 'Message not visible to students while drafting',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-pencil-square',
         ),
         */
         1 => array(
             's_name'  => 'On Start',
-            's_desc'  => 'Messages sent to student when milestone starts.',
+            's_desc'  => 'Messages sent to student when milestone starts',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-bolt',
         ),
         2 => array(
             's_name'  => 'Drip',
-            's_desc'  => 'Messages sent to enrolled students sometime during the milestone. Drip messages sent in same order you choose.',
+            's_desc'  => 'Messages sent to enrolled students sometime during the milestone. Drip messages sent in same order you choose',
             's_mini_icon' => 'fa-tint',
             'u_min_status'  => 1,
         ),
         /*
         3 => array(
             's_name'  => 'Landing Page',
-            's_desc'  => 'Messages published on the Landing Page giving prospect students an overview of your Bootcamp.',
+            's_desc'  => 'Messages published on the Landing Page giving prospect students an overview of your Bootcamp',
             's_mini_icon' => 'fa-bullhorn',
             'u_min_status'  => 1,
         ),
         4 => array(
             's_name'  => 'Private Note',
-            's_desc'  => 'This Message is taken by the instructor team on a particular student and is visible to the entire team.',
+            's_desc'  => 'This Message is taken by the instructor team on a particular student and is visible to the entire team',
             's_mini_icon' => 'fa-eye-slash',
             'u_min_status'  => 1,
         ),
@@ -1073,13 +1073,13 @@ $config['object_statuses'] = array(
     'cr' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Task link removed.',
+            's_desc'  => 'Task link removed',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-trash',
         ),
         1 => array(
             's_name'  => 'Publish',
-            's_desc'  => 'Task link is active.',
+            's_desc'  => 'Task link is active',
             'u_min_status'  => 1,
         ),
     ),
@@ -1089,25 +1089,25 @@ $config['object_statuses'] = array(
     'ba' => array(
         -1 => array(
             's_name'  => 'Revoked',
-            's_desc'  => 'Bootcamp access revoked.',
+            's_desc'  => 'Bootcamp access revoked',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-minus-circle',
         ),
         1 => array(
             's_name'  => 'Adviser',
-            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the bootcamp configurations.',
+            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the bootcamp configurations',
             's_mini_icon' => 'fa-comments-o',
             'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team.php view file
         ),
         2 => array(
             's_name'  => 'Co-Instructor',
-            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them.',
+            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-user-plus',
         ),
         3 => array(
             's_name'  => 'Lead Instructor',
-            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate.',
+            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-star',
         ),
@@ -1122,31 +1122,31 @@ $config['object_statuses'] = array(
         ),
         -1 => array(
             's_name'  => 'Delete',
-            's_desc'  => 'User no longer active.',
+            's_desc'  => 'User no longer active',
             'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
             's_mini_icon' => 'fa-user-times',
         ),
         0 => array(
             's_name'  => 'Pending',
-            's_desc'  => 'User added by the students but has not yet claimed their account.',
+            's_desc'  => 'User added by the students but has not yet claimed their account',
             'u_min_status'  => 999, //System only
             's_mini_icon' => 'fa-user-o',
         ),
         1 => array(
             's_name'  => 'Active',
-            's_desc'  => 'User active.',
+            's_desc'  => 'User active',
             's_mini_icon' => 'fa-user',
             'u_min_status'  => 3, //Only admins can downgrade users from a leader status
         ),
         2 => array(
             's_name'  => 'Lead Instructor',
-            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps.',
+            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps',
             's_mini_icon' => 'fa-star',
             'u_min_status'  => 3, //Only admins can approve leaders
         ),
         3 => array(
             's_name'  => 'Mench Admin',
-            's_desc'  => 'User part of Mench team who facilitates bootcamp operations.',
+            's_desc'  => 'User part of Mench team who facilitates bootcamp operations',
             's_mini_icon' => 'fa-shield',
             'u_min_status'  => 3, //Only admins can create other admins
         ),
@@ -1156,7 +1156,7 @@ $config['object_statuses'] = array(
         //This is not stored in DB:
         -2 => array(
             's_name'  => 'Locked',
-            's_desc'  => 'Pending milestone start.',
+            's_desc'  => 'Pending milestone start',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-lock',
         ),
@@ -1205,22 +1205,22 @@ $config['object_statuses'] = array(
     't' => array(
         -2 => array(
             's_name'  => 'Payout',
-            's_desc'  => 'Payment sent to instructors and affiliates.',
+            's_desc'  => 'Payment sent to instructors and affiliates',
             'u_min_status'  => 999,
         ),
         -1 => array(
             's_name'  => 'Refund Payment',
-            's_desc'  => 'Transaction hold the exact amount of refund issues to the student.',
+            's_desc'  => 'Transaction hold the exact amount of refund issues to the student',
             'u_min_status'  => 999,
         ),
         0 => array(
             's_name'  => 'Payment Refunded',
-            's_desc'  => 'Payment has been fully or partially refunded and a new transaction has been added to reflect the exact refund.',
+            's_desc'  => 'Payment has been fully or partially refunded and a new transaction has been added to reflect the exact refund',
             'u_min_status'  => 999,
         ),
         1 => array(
             's_name'  => 'Payment Received',
-            's_desc'  => 'Payment received from students for a class admission.',
+            's_desc'  => 'Payment received from students for a class admission',
             'u_min_status'  => 999,
         ),
     ),
@@ -1230,39 +1230,39 @@ $config['object_statuses'] = array(
         //Withrew after course has started:
         -3 => array(
             's_name'  => 'Student Dispelled',
-            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader.',
+            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-times-circle',
         ),
         //Withrew prior to course has started:
         -2 => array(
             's_name'  => 'Student Withdrew',
-            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date.',
+            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date',
             'u_min_status'  => 999, //Only done by Student themselves
             's_mini_icon' => 'fa-times-circle',
         ),
         -1 => array(
             's_name'  => 'Application Rejected',
-            's_desc'  => 'Application rejected before start date. Incomplete applications will be auto rejected on class start date.',
+            's_desc'  => 'Application rejected before start date. Incomplete applications will be auto rejected on class start date',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-times-circle',
         ),
         0 => array(
             's_name'  => 'Application Started',
-            's_desc'  => 'Student has started the application process but has not completed it yet.',
+            's_desc'  => 'Student has started the application process but has not completed it yet',
             'u_min_status'  => 999, //System insertion only
             's_mini_icon' => 'fa-pencil-square',
         ),
         /*
         1 => array(
             's_name'  => 'Applied - Pending Full Payment',
-            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full.',
+            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full',
             'u_min_status'  => 999, //System insertion only
         ),
         */
         2 => array(
             's_name'  => 'Pending Admission',
-            's_desc'  => 'Student has completed application and payment (for paid classes) and is pending admission.',
+            's_desc'  => 'Student has completed application and payment (for paid classes) and is pending admission',
             's_mini_icon' => 'fa-pause-circle',
             'u_min_status'  => 999, //System insertion only
         ),
@@ -1270,14 +1270,14 @@ $config['object_statuses'] = array(
         /*
         3 => array(
             's_name'  => 'Invitation Sent',
-            's_desc'  => 'Admins have full access to all bootcamp features.',
+            's_desc'  => 'Admins have full access to all bootcamp features',
             'u_min_status'  => 1,
         ),
         */
 
         4 => array(
             's_name'  => 'Bootcamp Student',
-            's_desc'  => 'Student admitted making them ready to participate in bootcamp.',
+            's_desc'  => 'Student admitted making them ready to participate in bootcamp',
             's_mini_icon' => 'fa-user',
             'u_min_status'  => 1,
         ),
@@ -1285,7 +1285,7 @@ $config['object_statuses'] = array(
         //Completion
         7 => array(
             's_name'  => 'Bootcamp Graduate',
-            's_desc'  => 'Student completed class and completed all milestones as approved by lead instructor.',
+            's_desc'  => 'Student completed class and completed all milestones as approved by lead instructor',
             's_mini_icon' => 'fa-graduation-cap',
             'u_min_status'  => 1,
         ),

@@ -2,6 +2,7 @@
 
     $(document).ready(function() {
 
+
         if(window.location.hash){
             focu_hash(window.location.hash);
         }
@@ -13,10 +14,25 @@
             load_leaderboard($(this).val());
         });
 
+        adjust_chat_height();
+        $(window).on('resize', function(){
+            adjust_chat_height();
+        });
+
         //TODO Remove:
         //$("#class_focus").on("focus", function(){load_leaderboard($(this).val());});
 
     });
+
+    function adjust_chat_height(){
+        var min_chat_height = 420; //yeaaah
+        var window_height = $(window).height();
+        var chat_height = window_height - 266;
+        if(chat_height<min_chat_height){
+            chat_height = min_chat_height;
+        }
+        $('#chatwidget').css('height',chat_height);
+    }
 
     function load_leaderboard(r_id){
 
@@ -57,7 +73,7 @@
 <div class="tab-content tab-space full-width">
 
     <div class="tab-pane active full-width" id="chat">
-        <?= '<iframe src="https://chat.mench.co/?bootcampId='.$bootcamp['b_id'].'&instructorId='.$udata['u_id'].'&token='.md5($bootcamp['b_id'].'ChatiFrameS@lt'.$udata['u_id']).'" width="100%" height="500" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>'; ?>
+        <?= '<iframe src="https://chat.mench.co/?bootcampId='.$bootcamp['b_id'].'&instructorId='.$udata['u_id'].'&token='.md5($bootcamp['b_id'].'ChatiFrameS@lt'.$udata['u_id']).'" width="100%" id="chatwidget" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>'; ?>
     </div>
 
     <div class="tab-pane" id="leaderboard">
@@ -74,6 +90,8 @@
                 $classes_array[$class['r_id']] = $class;
             }
         }
+
+
 
         if(count($classes_array)>0){
 

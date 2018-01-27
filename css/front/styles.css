@@ -241,8 +241,14 @@ a.badge-primary:hover {
 	
 }
 
-
-
+.form-el{
+    padding:10px;
+    border-radius: 3px;
+    font-size:24px !important;
+    font-weight:300;
+    width: 100%;
+    border:0;
+}
 
 .est-time{
 	width: 36px;
@@ -256,6 +262,7 @@ a.badge-primary:hover {
 .progress{
 	margin-bottom:0;
 }
+#chatwidget{ overflow: hidden; }
 .toggle-done{
 	font-weight: bold;
     font-size: 0.8em;

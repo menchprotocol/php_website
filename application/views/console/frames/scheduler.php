@@ -42,7 +42,7 @@
 
 <table width="100%" style="display:none;"><tr>
 	<td style="text-align:right; width:120px; padding-right:20px;">
-		<a href="javascript:$('#schedule').jqs('reset');" style="background-color: #CCC;">Clear All</a>
+		<a href="javascript:void(0)" onclick="$('#schedule').jqs('reset')" style="background-color: #CCC;">Clear All</a>
 	</td>
 </tr></table>
 

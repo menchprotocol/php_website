@@ -1203,11 +1203,11 @@ function add_item(group_id,prefix,current_value){
 
             <div class="tab-pane" id="outcomes">
 
-                <div class="title"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Transformations <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="title"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_2271"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_transformations','+ New Transformation','<i class="fa fa-diamond"></i>',<?= ( strlen($bootcamp['b_transformations'])>0 ? $bootcamp['b_transformations'] : '[]' ) ?>);
+                        initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($bootcamp['b_transformations'])>0 ? $bootcamp['b_transformations'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_transformations" class="list-group"></div>
@@ -1233,7 +1233,7 @@ function add_item(group_id,prefix,current_value){
 
         <div id="modifybox" class="hidden" node-id="0" level="0">
 
-            <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:$('#modifybox').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+            <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
 
             <div id="c_objective1" class="levelz level1 hidden">
                 <?php $this->load->view('console/inputs/c_objective' , array(
@@ -1321,17 +1321,12 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_2284"></div>
                 <div class="form-group label-floating is-empty">
                     <div class="checkbox">
-                        <label><input type="checkbox" id="c_complete_url_required" />URL Required&nbsp;</label>
                         <label><input type="checkbox" id="c_complete_notes_required" />Notes Required&nbsp;</label>
-                        <label class="<?= ( $udata['u_id']==1 && 0 ? '' : 'hidden') ?>"><input type="checkbox" id="c_complete_is_bonus_task" /><i class="fa fa-gift" aria-hidden="true"></i> Bonus Task</label>
-                    </div>
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">Instructions:</span>
-                        <input type="text" id="c_complete_instructions" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="" maxlength="70" class="form-control" placeholder="Mark as Complete after doing X & Y..." />
+                        <label><input type="checkbox" id="c_complete_url_required" />URL Required&nbsp;</label>
+                        <label class="hidden"><input type="checkbox" id="c_complete_is_bonus_task" /><i class="fa fa-gift" aria-hidden="true"></i> Bonus Task</label>
                     </div>
                 </div>
             </div>
-
 
 
 
@@ -1375,7 +1370,7 @@ function add_item(group_id,prefix,current_value){
 
 
         <div class="marvel-device iphone-x hidden" id="iphonex" node-id="">
-            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:$('#iphonex').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
             <div class="notch">
                 <div class="camera"></div>
                 <div class="speaker"></div>

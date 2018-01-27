@@ -267,9 +267,9 @@ class Front extends CI_Controller {
 	            //Invalid class ID, redirect back:
 	            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer active.</div>');
 	        }
-	        
+
 	        $data = array(
-	            'title' => 'Reserve Seat in '.$bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
+	            'title' => 'Join '.$bootcamp['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
 	            'focus_class' => $focus_class,
 	            'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
 	        );

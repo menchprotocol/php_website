@@ -808,6 +808,34 @@ function echo_c($b,$c,$level,$us_data=null,$sprint_index=null,$previous_item,$ne
 }
 
 
+function generate_url_key($string){
+    $CI =& get_instance();
+
+    //Strip clean:
+    $string = preg_replace("/[^A-Za-z0-9]/", '', $string);
+
+    //Check u_url_key to be unique, and if not, add a number and increment:
+    $is_duplicate = true;
+    $increment = 0;
+    while($is_duplicate){
+        $matching_users = $CI->Db_model->u_fetch(array(
+            'u_url_key' => $string,
+        ));
+        if(count($matching_users)==0){
+            //Yes!
+            $is_duplicate = false;
+            break;
+        } else {
+            //This is a duplicate:
+            $increment++;
+            $string = $string.$increment;
+        }
+    }
+
+    return $string;
+}
+
+
 function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0){
     
     $CI =& get_instance();
@@ -1009,14 +1037,14 @@ function calculate_bootcamp_status($b){
 
     //Check some of the high-priority Action Plan Lists:
 
-    //Transformations
+    //Skills You Will Gain
     $estimated_minutes = 30;
     $progress_possible += $estimated_minutes;
     $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Set Transformations</b> in Action Plan',
+        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1071,7 +1099,7 @@ function calculate_bootcamp_status($b){
     
     //Now check each Milestone and its Task List:
     foreach($b['c__child_intents'] as $milestone_num=>$c){
-        
+
         if($c['c_status']<0){
             continue; //Don't check unpublished Milestones, which is not even possible for now...
         }
@@ -1146,17 +1174,17 @@ function calculate_bootcamp_status($b){
         }
     }
     
-    
+
     //Bootcamp Messages:
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']==1 && $i['i_media_type']=='video' ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']==1 && ( $i['i_media_type']=='video' || ($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_video($i['i_url'],$i['i_message']))) ? 1 : 0 );
         }
     }
-    $us_status = ( $qualified_messages>0 ? 1 : 0 );
+    $us_status = ( $qualified_messages ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_c_id'],
@@ -1164,11 +1192,11 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-    
+
     /* *****************************
      *  classes
      *******************************/
-    
+
     //Let's see if we can find a drafting or published class:
     $focus_class = null;
     if(isset($b['c__classes']) && count($b['c__classes'])>0){
@@ -1179,8 +1207,8 @@ function calculate_bootcamp_status($b){
             }
         }
     }
-    
-    
+
+
     //Did we NOT have a next class?
     if(!$focus_class){
         //Missing class all together!
@@ -1191,7 +1219,7 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
+
 
     //r_response_time_hours
     $estimated_minutes = 5;
@@ -1206,7 +1234,7 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
+
     //r_meeting_frequency
     $estimated_minutes = 10;
     $progress_possible += $estimated_minutes;
@@ -1220,7 +1248,7 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
+
     //r_live_office_hours
     if($focus_class && strlen($focus_class['r_live_office_hours'])>0){
         $estimated_minutes = 5;
@@ -1234,7 +1262,7 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
+
     //r_usd_price
     $estimated_minutes = 20;
     $progress_possible += $estimated_minutes;
@@ -1248,12 +1276,12 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
+
 
     //r_cancellation_policy
-    $estimated_minutes = 10;
-    $progress_possible += $estimated_minutes;
     if($focus_class && $focus_class['r_usd_price']>0){
+        $estimated_minutes = 10;
+        $progress_possible += $estimated_minutes;
         $us_status = ( strlen($focus_class['r_cancellation_policy'])>0 ? 1 : 0 );
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
@@ -1277,7 +1305,7 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
+
     //r_status
     $estimated_minutes = 5;
     $progress_possible += $estimated_minutes;
@@ -1291,8 +1319,8 @@ function calculate_bootcamp_status($b){
             'time_min' => $estimated_minutes,
         ));
     }
-    
-    
+
+
     
     
     /* *******************************
@@ -1480,7 +1508,7 @@ function calculate_bootcamp_status($b){
     
     //Return the final message:
     return array(
-        'stage' => '<i class="fa fa-tasks" aria-hidden="true"></i> Bootcamp Launch Checklist',
+        'stage' => '<i class="fa fa-tasks" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> Bootcamp Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
         'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your bootcamp status to '.status_bible('b',2).'. At this time you can launch your bootcamp by inviting your students to join.',
         'check_list' => $checklist,

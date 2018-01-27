@@ -178,7 +178,7 @@ echo '<div id="list-checklist" class="list-group maxout">';
 echo $check_list;
 echo '</div>';
 if($count_done>0){
-    echo '<div class="toggle-done"><a href="javascript:$(\'.checklist-done\').toggleClass(\'checklist-done-see\');"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Tasks</a></div>';
+    echo '<div class="toggle-done"><a href="javascript:void(0)" onclick="$(\'.checklist-done\').toggleClass(\'checklist-done-see\')"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Tasks</a></div>';
 }
 if($launch_status['progress']==100){
     echo '<p>'.$launch_status['completion_message'].'</p>';

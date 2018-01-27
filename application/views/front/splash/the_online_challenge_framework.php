@@ -19,7 +19,7 @@ $udata = $this->session->userdata('user');
                     <h1 class="home-p">Empower Your Students to Succeed</h1>
                     <h4 class="home-p">Infrastructure for experts to build & operate online Bootcamps designed to maximize student engagements.</h4>
 
-                    <a href="/launch" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Build a Bootcamp <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
+                    <a href="/launch" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Launch a Bootcamp <i class="fa fa-rocket" style="font-size:1.2em;" aria-hidden="true"></i></a>
 				</div>
 				<div class="col-sm-3">&nbsp;</div>
             </div>

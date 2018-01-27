@@ -39,6 +39,6 @@ $udata = $this->session->userdata('user');
 <div class="row text-center">
     <div class="col-md-12">
         <br />
-        <a href="/launch" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;">Learn More <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>
+        <a href="/launch" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;">Launch a Bootcamp <i class="fa fa-rocket" style="font-size:1.2em;"aria-hidden="true"></i></a>
     </div>
 </div>

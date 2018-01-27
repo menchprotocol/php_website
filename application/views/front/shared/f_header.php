@@ -3,6 +3,7 @@
 $udata = $this->session->userdata('user');
 $uadmission = $this->session->userdata('uadmission');
 $website = $this->config->item('website');
+$url_part_1 = $this->uri->segment(1);
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -25,9 +26,8 @@ $website = $this->config->item('website');
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	
 	<?php $this->load->view('front/shared/header_resources' ); ?>
-	
+
 	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
-	
 	
 	<?php /* if(isset($udata['u_email'])){ ?>
 	    <script> zE( function () { zE.identify({name: '<?= $udata['u_fname'] ?> <?= $udata['u_lname'] ?>', email: '<?= $udata['u_email'] ?>'}); }); </script>
@@ -59,11 +59,13 @@ $website = $this->config->item('website');
                         echo '<li id="isloggedin"><a href="/console">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
                     } elseif(isset($uadmission['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
-                    } else {
+                    } elseif(!($url_part_1=='login')) {
                         //Logged Out!
-    				    echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Build a Bootcamp</a></li>';
     				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
-    				}
+    				} else {
+                        //This is the login page, show the Launch Button:
+                        //echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch a Bootcamp</a></li>';
+                    }
     				?>
         		</ul>
         	</div>

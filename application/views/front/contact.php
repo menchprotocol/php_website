@@ -1,9 +1,8 @@
 <div class="contact-content">
 
 	<h1>Let's Connect</h1>
-	
-	<p><b>Chat with us</b> using the chat/support button on the bottom-right of your screen, or:</p>
-	
+
+    <?php /*<p><b>Chat with us</b> using the chat/support button on the bottom-right of your screen, or:</p>*/ ?>
 	
 	<div class="row" style="margin-top:30px;">
 		<div class="col-md-3 col-sm-4">

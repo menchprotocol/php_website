@@ -146,6 +146,8 @@ $( document ).ready(function() {
             	<?php if($total_office_hours>0){ ?>
             	<li>Group Calls: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
             	<?php } ?>
+
+                <li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? ' <span style="font-weight:300; font-size: 0.9em;">(<a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>)</span>' : '' ); ?></b></li>
             	
             	<?php if($focus_class['r_max_students']>0){ ?>
             		<li>Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
@@ -161,13 +163,11 @@ $( document ).ready(function() {
                     </li>
             	<?php } ?>
 
-            	<li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? ' <span style="font-weight:300; font-size: 0.9em;">(<a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>)</span>' : '' ); ?></b></li>
-
             </ul>
             
             <div style="padding:10px 0 30px; text-align:center;">
                 <div class="btn btn-primary btn-round countdown"><span id="reg1"></span></div>
-            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            	<a href="/<?= $bootcamp['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
@@ -186,14 +186,20 @@ $( document ).ready(function() {
         ?>
 
 
-        <h3>Transformations</h3>
+        <h3>Skills You Will Gain</h3>
         <div id="b_transformations"><?= ( strlen($bootcamp['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Target Audience</h3>
         <div id="b_target_audience"><?= ( strlen($bootcamp['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_target_audience'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Prerequisites</h3>
-        <div id="b_prerequisites"><?= ( strlen($bootcamp['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_prerequisites'])).'</li></ol>' : 'None' ) ?></div>
+        <?php
+        $pre_req_array = ( strlen($bootcamp['b_prerequisites'])>0 ? json_decode($bootcamp['b_prerequisites']) : array() );
+        if($bootcamp['c__estimated_hours']>0){
+            array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($bootcamp['c__estimated_hours']).' in '.$bootcamp['c__milestone_units'].' '.$bootcamp['b_sprint_unit'].show_s($bootcamp['c__milestone_units']).' (Average '.echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'])) .' per '. $bootcamp['b_sprint_unit'].')');
+        }
+        ?>
+        <div id="b_prerequisites"><?= ( strlen($bootcamp['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
 
 
         <h3>Action Plan</h3>
@@ -222,20 +228,15 @@ $( document ).ready(function() {
 
                     echo '<div class="title-sub">';
                     if($sprint['c__estimated_hours']>0){
-                        echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' to Complete &nbsp;';
+                        echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp; ';
                     }
-                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Due '.time_format($focus_class['r_start_date'],2,calculate_duration($bootcamp,$ending_unit)).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
+                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Complete By '.time_format($focus_class['r_start_date'],2,calculate_duration($bootcamp,$ending_unit)).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
                     echo '</div>';
                 echo '</div>';
             echo '</div>';
         }
         ?>
         </div>
-
-
-        <?php if($bootcamp['c__estimated_hours']>0){ ?>
-        <p>Completing this <?= $bootcamp['c__milestone_units'] ?> <?= $bootcamp['b_sprint_unit'] ?> bootcamp is estimated to take <?= echo_hours($bootcamp['c__estimated_hours']) ?> which is about <?= echo_hours(round($bootcamp['c__estimated_hours']/$bootcamp['c__milestone_units'])) ?> per <?= $bootcamp['b_sprint_unit'] ?>.</p>
-        <?php } ?>
     		
     		
     		
@@ -247,12 +248,12 @@ $( document ).ready(function() {
     		    echo '<p>You will receive a total of <b>'.gross_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration'],$bootcamp['b_sprint_unit'],$bootcamp['c__milestone_units']).'</b> of 1-on-1 mentorship ('.echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']).') during the '.$bootcamp['c__milestone_units'].' '.$bootcamp['b_sprint_unit'].($bootcamp['c__milestone_units']==1?'':'s').' of this bootcamp.</p>';
     		    echo '<hr />';
     		}
-    		
+
     		
     		if(count($office_hours_ui)>0 || $total_office_hours>0){
     		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Group Calls</h4>';
     		    echo '<p>You can access <b>'.echo_hours($total_office_hours).' Per Week</b> of live group support during these time-slots:</p>';
-    		    echo '<ul style="list-style:none; margin-left:-30px;">';
+    		    echo '<ul style="list-style:none; margin-left:-20px;">';
     		    foreach($office_hours_ui as $oa_ui){
     		        echo '<li>'.$oa_ui.'</li>';
     		    }
@@ -263,8 +264,8 @@ $( document ).ready(function() {
     		    echo '<hr />';
     		}
     		?>
-    		
-    		
+
+
     		
     		
     		<?php if(strlen($focus_class['r_response_time_hours'])>0){ ?>
@@ -339,10 +340,10 @@ $( document ).ready(function() {
     		
     		<h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
-    			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (End in <span id="reg2"></span>)</li>
-    			<li>Bootcamp Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
-    			<li>Bootcamp Duration is <b><?= $bootcamp['c__milestone_units'] ?> <?= ucwords($bootcamp['b_sprint_unit']).(($bootcamp['c__milestone_units']==1?'':'s')) ?></b></li>
-    			<li>Bootcamp Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
+    			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (Ends in <span id="reg2"></span>)</li>
+    			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
+    			<li>Class Duration is <b><?= $bootcamp['c__milestone_units'] ?> <?= ucwords($bootcamp['b_sprint_unit']).(($bootcamp['c__milestone_units']==1?'':'s')) ?></b></li>
+    			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     		</ul>
     		<hr />
     		
@@ -352,7 +353,7 @@ $( document ).ready(function() {
     		    $plural_prize = ( json_decode($bootcamp['b_completion_prizes'])==1 ? '' : 's' ); ?>
     		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
     		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_completion_prizes'])).'</li></ol>' ?></div>
-    		<p>Prize<?= $plural_prize ?> are awarded to students who complete all milestones by the Bootcamp end time.</p>
+    		<p>Awarded for completing all milestones by the end time of <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST.</p>
     		<hr />
     		<?php } ?>
     		
@@ -384,14 +385,16 @@ $( document ).ready(function() {
     		<?php } else { ?>
     		<p>This bootcamp is <b>FREE</b>.</p>
     		<?php } ?>
-    		<p>Ready to unleash your full potential?</p>
-    		
-    		
-    		
-    		
-    		
-    		
-    		
+            <hr />
+            <p>Ready to unleash your full potential?</p>
+            <p>Class admission ends in:</p>
+
+
+
+
+
+
+
     		
     </div>
 </div>

@@ -176,16 +176,14 @@ class Api_v1 extends CI_Controller {
 	    
 	    $this->load->helper('cookie');
 	    
-	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['current_section'])){
+	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['u_fname']) || !isset($_POST['u_email'])){
 	        die(json_encode(array(
-	            'goto_section' => 0,
-	            'color' => '#FF0000',
-	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Class ID',
+	            'status' => 0,
+	            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Core Data</div>',
 	        )));
 	    }
 	    
 	    //Fetch inputs:
-	    $current_section = intval($_POST['current_section']);
 	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	        'r.r_status' => 1,
@@ -196,291 +194,179 @@ class Api_v1 extends CI_Controller {
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],intval($_POST['r_id']));
 	    
-	    
 	    //Display results:
-	    if(!isset($bootcamp) || !isset($classes[0]) || $bootcamp['b_id']<1 || !($focus_class['r_id']==intval($_POST['r_id']))){
-	        die(echo_json(array(
-	            'goto_section' => 0,
-	            'color' => '#FF0000',
-	            'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid Class ID',
-	        )));
-	    }	    
-	    
-	    if($current_section==1){
-	        
-	        //EMAIL
-	        if(!isset($_POST['u_email']) || strlen($_POST['u_email'])<1 || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-	            //Invalid
-	            die(echo_json(array(
-	                'goto_section' => 0,
-	                'color' => '#FF0000',
-	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid email, try again.',
-	            )));
-	        }
-	        
-	        
-	        //Fetch user data to see if already registered:
-	        $users = $this->Db_model->u_fetch(array(
-	            'u_email' => strtolower($_POST['u_email']),
-	        ));
-	        
-	        if(count($users)==0){
-	            //Nope, lets continue:
-	            die(echo_json(array(
-	                'goto_section' => 2,
-	            )));
-	        }
-	        
-	        //This is a registered user!
-	        $udata = $users[0];
+	    if(!isset($bootcamp) || !isset($classes[0]) || $bootcamp['b_id']<1 || !($focus_class['r_id']==intval($_POST['r_id']))) {
 
-	        
-	        //Check their current application status(es):
-	        $enrollments = $this->Db_model->ru_fetch(array(
-	            'r.r_status >='	   => 1, //Open for admission
-	            'r.r_status <='	   => 2, //Running
-	            'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
-	            'ru.ru_u_id'	   => $udata['u_id'],
-	        ));
-	        
-	        
-	        if((count($enrollments)==1 && !($enrollments[0]['ru_r_id']==$focus_class['r_id'])) || (count($enrollments)>=2)/* <-- This should never happen! */){
-	            
-	            //Ooops, registered in another class, must first deal with that
-	            //Currently users can only enroll in one class at a time
-	            //TODO Make more sophisticated to understand start & end dates and enable multiple if dates do not overlap
-	            
-	            //Log engagement:
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is not allowed!',
-	                'e_json' => json_encode($_POST),
-	                'e_type_id' => 9, //Support Needing Graceful Errors
-	            ));
+            die(echo_json(array(
+                'status' => 0,
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid Class ID</div>',
+            )));
 
-                //Send the email to their application:
+        } elseif(!isset($_POST['u_email']) || strlen($_POST['u_email'])<1 || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+
+            die(echo_json(array(
+                'status' => 0,
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid email, try again.</div>',
+            )));
+
+        }
+
+        //Fetch user data to see if already registered:
+        $users = $this->Db_model->u_fetch(array(
+            'u_email' => strtolower($_POST['u_email']),
+        ));
+
+        if(count($users)==0){
+
+            if(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<2){
+                //Invalid First name,
+                die(echo_json(array(
+                    'status' => 0,
+                    'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid first name, try again.</div>',
+                )));
+            } else {
+
+                //Create new user:
+                $udata = $this->Db_model->u_create(array(
+                    'u_fb_id' 			=> 0, //MenchBot not active at start
+                    'u_status' 			=> 0, //Since nothing is yet validated
+                    'u_language' 		=> 'en', //Since they answered initial questions in English
+                    'u_email' 			=> trim(strtolower($_POST['u_email'])),
+                    'u_fname' 			=> trim($_POST['u_fname']),
+                ));
+
+                //Log Engagement for registration:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
+                    'e_json' => json_encode(array(
+                        'input' => $_POST,
+                        'udata' => $udata,
+                    )),
+                    'e_type_id' => 27, //New Student Lead
+                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+                    'e_r_id' => $focus_class['r_id'],
+                ));
+            }
+
+        } else {
+
+            //This is a registered user!
+            $udata = $users[0];
+
+            //Check their current application status(es):
+            $enrollments = $this->Db_model->ru_fetch(array(
+                'r.r_status >='	   => 1, //Open for admission
+                'r.r_status <='	   => 2, //Running
+                'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
+                'ru.ru_u_id'	   => $udata['u_id'],
+            ));
+
+            //TODO Make more sophisticated to understand start & end dates and enable multiple if dates do not overlap
+            if(count($enrollments)>0){
+
+                //Send the email to their admission page:
                 $this->load->model('Email_model');
-                $email_sent = $this->Email_model->email_intent($focus_class['r_b_id'],2697,$udata);
+                $this->Email_model->email_intent($focus_class['r_b_id'],2697,$udata);
 
-	            if($email_sent){
-	                //show the error:
-	                die(echo_json(array(
-	                    'goto_section' => 0,
-	                    'color' => '#FF0000',
-	                    'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: You can take 1 bootcamp at a time. We emailed you a link to manage your current bootcamps. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.',
-	                )));
-	            }
-	            
-	            
-	        } elseif(count($enrollments)==0){
-	            
-	            //Existing user that is never enrolled here!
-	            $admission_application = array(
-	                'ru_r_id' 	        => $focus_class['r_id'],
-	                'ru_u_id' 	        => $udata['u_id'],
-	                'ru_affiliate_u_id' => 0,
-	            );
-	            
-	            //Lets see if they have an affiliate Cookie:
-	            $aff_cookie = get_cookie('menchref');
-	            if(isset($aff_cookie) && $aff_cookie && strlen($aff_cookie)>10){
-	                //Seems to be something here, lets see:
-	                $cookie_parts = explode('-',$aff_cookie);
-	                if(intval($cookie_parts[0]) && $cookie_parts[1]==md5( intval($cookie_parts[0]) . 'c00ki3' . $cookie_parts[2] . intval($cookie_parts[3]) )){
-	                    //Yes, this is a match!
-	                    $admission_application['ru_affiliate_u_id'] = intval($cookie_parts[0]);
-	                }
-	            }
-	            
-	            //Lets start their admission application:
-	            $enrollments[0] = $this->Db_model->ru_create($admission_application);
-	            
-	            //Did we have an affiliate?
-	            if($admission_application['ru_affiliate_u_id']){
-	                //Log Affiliate Engagement:
-	                $this->Db_model->e_create(array(
-	                    'e_initiator_u_id' => $udata['u_id'], //The User ID
-	                    'e_message' => 'User initiated admission. Pending payment and lead instructor approval.',
-	                    'e_json' => json_encode(array(
-	                        'input' => $_POST,
-	                        'udata' => $udata,
-	                        'rudata' => $enrollments[0],
-	                        'cookie' => $aff_cookie,
-	                        'initial_e_id' => intval($cookie_parts[3]),
-	                    )),
-	                    'e_type_id' => 46, //Affiliate User Initiated Admission
-	                    'e_b_id' => $bootcamp['b_id'],
-	                    'e_r_id' => $focus_class['r_id'],
-	                    'e_recipient_u_id' => $admission_application['ru_affiliate_u_id'], //The affiliate ID
-	                ));
-	            }
-	            
-	            //Assume all good, Log engagement:
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_json' => json_encode(array(
-	                    'input' => $_POST,
-	                    'udata' => $udata,
-	                    'rudata' => $enrollments[0],
-	                )),
-	                'e_type_id' => 29, //Joined Class
-	                'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
-	                'e_r_id' => $focus_class['r_id'],
-	            ));
-	            
-	        }
-	        	        
-	        
-	        if(isset($enrollments[0]['ru_id']) && $enrollments[0]['ru_id']>0){
-	            //Yes they are in, lets email:
-	            //Send email and log engagement:
-                $this->load->model('Email_model');
-                $email_sent = $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
+                //They are enrolled in a Class, let's see where:
+                if($enrollments[0]['ru_r_id']==$focus_class['r_id']){
 
-	            if($email_sent){
-	                //Redirect to application:
-                    $application_status_salt = $this->config->item('application_status_salt');
-	                die(echo_json(array(
-	                    'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
-	                )));
-	            }
-	        }
-	        
-	    } elseif($current_section==2){
-	        
-	        if(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<2){
-	            //Invalid
-	            die(echo_json(array(
-	                'goto_section' => 0,
-	                'color' => '#FF0000',
-	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid first name, try again.',
-	            )));
-	        } else {
-	            //Nope, lets continue:
-	            die(echo_json(array(
-	                'goto_section' => 3,
-	            )));
-	        }
-	        
-	    } elseif($current_section==3){
-	        
-	        if(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<2){
-	            
-	            //Invalid
-	            die(echo_json(array(
-	                'goto_section' => 0,
-	                'color' => '#FF0000',
-	                'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Invalid last name, try again.',
-	            )));
-	            
-	        } else {
-	            
-	            //Register User:
-	            $udata = $this->Db_model->u_create(array(
-	                'u_fb_id' 			=> 0,
-	                'u_status' 			=> 0, //Since nothing is yet validated
-	                'u_language' 		=> 'en', //Since they answered initial questions in English
-	                'u_email' 			=> trim($_POST['u_email']),
-	                'u_fname' 			=> trim($_POST['u_fname']),
-	                'u_lname' 			=> trim($_POST['u_lname']),
-	            ));
-	            
-	            if($udata['u_id']>0){
-	                
-	                //Log Engagement for registration:
-	                $this->Db_model->e_create(array(
-	                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                    'e_json' => json_encode(array(
-	                        'input' => $_POST,
-	                        'udata' => $udata,
-	                    )),
-	                    'e_type_id' => 27, //New Student Lead
-	                    'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
-	                    'e_r_id' => $focus_class['r_id'],
-	                ));
-	                
-	                
-	                //Existing user that is never enrolled here!
-	                $admission_application = array(
-	                    'ru_r_id' 	        => $focus_class['r_id'],
-                        'ru_u_id' 	        => $udata['u_id'],
-	                    'ru_affiliate_u_id' => 0,
-	                );
-	                
-	                //Lets see if they have an affiliate Cookie:
-	                $aff_cookie = get_cookie('menchref');
-	                if(isset($aff_cookie) && $aff_cookie && strlen($aff_cookie)>10){
-	                    //Seems to be something here, lets see:
-	                    $cookie_parts = explode('-',$aff_cookie);
-	                    if(intval($cookie_parts[0]) && $cookie_parts[1]==md5( intval($cookie_parts[0]) . 'c00ki3' . $cookie_parts[2] . intval($cookie_parts[3]) )){
-	                        //Yes, this is a match!
-	                        $admission_application['ru_affiliate_u_id'] = intval($cookie_parts[0]);
-	                    }
-	                }
-	                
-	                //Insert Enrollment Status since they are new:
-	                $rudata = $this->Db_model->ru_create($admission_application);
-	                
-	                //Did it work?
-	                if($rudata['ru_id']>0){
-	                    
-	                    //Did we have an affiliate?
-	                    if($admission_application['ru_affiliate_u_id']){
-	                        //Log Affiliate Engagement:
-	                        $this->Db_model->e_create(array(
-	                            'e_initiator_u_id' => $udata['u_id'], //The User ID
-	                            'e_message' => 'User initiated admission. Pending payment and lead instructor approval. Intial click Tracker ID is #'.intval($cookie_parts[3]),
-	                            'e_json' => json_encode(array(
-	                                'input' => $_POST,
-	                                'udata' => $udata,
-	                                'rudata' => $rudata,
-	                                'initial_e_id' => intval($cookie_parts[3]),
-	                                'cookie' => $aff_cookie,
-	                            )),
-	                            'e_type_id' => 46, //Affiliate User Initiated Admission
-	                            'e_b_id' => $bootcamp['b_id'],
-	                            'e_r_id' => $focus_class['r_id'],
-	                            'e_recipient_u_id' => $admission_application['ru_affiliate_u_id'], //The affiliate ID
-	                        ));
-	                    }
-	                    
-	                    //Log Engagement:
-	                    $this->Db_model->e_create(array(
-	                        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	                        'e_json' => json_encode(array(
-	                            'input' => $_POST,
-	                            'udata' => $udata,
-	                            'rudata' => $rudata,
-	                        )),
-	                        'e_type_id' => 29, //Joined Class
-	                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
-	                        'e_r_id' => $focus_class['r_id'],
-	                    ));
+                    die(echo_json(array(
+                        'status' => 0,
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. We emailed you a link to manage your current admissions.</div>',
+                    )));
 
-                        //Send the email to their application:
-                        $this->load->model('Email_model');
-                        $email_sent = $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
+                } else {
 
-	                    if($email_sent){
-	                        //Redirect to application:
-                            $application_status_salt = $this->config->item('application_status_salt');
-	                        die(echo_json(array(
-	                            'hard_redirect' => '/my/class_application/'.$rudata['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
-	                        )));
-	                    }
-	                }
-	            }
-	        }
-	    }
-	    
-	    //Ooops, what happened?
-	    die(echo_json(array(
-	        'goto_section' => 0,
-	        'color' => '#FF0000',
-	        'message' => '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>ERROR</b>: Unknown error, try again.',
-	    )));
+                    //They are already enrolled somewhere else:
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $udata['u_id'],
+                        'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is not allowed!',
+                        'e_json' => json_encode($_POST),
+                        'e_type_id' => 9, //Support Needing Graceful Errors
+                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
+                        'e_r_id' => $focus_class['r_id'],
+                    ));
 
+                    //show the error:
+                    die(echo_json(array(
+                        'status' => 0,
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You can take 1 bootcamp at a time. We emailed you a link to manage your current admissions. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.</div>',
+                    )));
+                }
+            }
+        }
+
+
+        //At this point we have a user, but no admission:
+        //Existing user that is never enrolled here!
+        $admission_application = array(
+            'ru_r_id' 	        => $focus_class['r_id'],
+            'ru_u_id' 	        => $udata['u_id'],
+            'ru_affiliate_u_id' => 0,
+        );
+
+        //Lets see if they have an affiliate Cookie:
+        $aff_cookie = get_cookie('menchref');
+        if(isset($aff_cookie) && $aff_cookie && strlen($aff_cookie)>10){
+            //Seems to be something here, lets see:
+            $cookie_parts = explode('-',$aff_cookie);
+            if(intval($cookie_parts[0]) && $cookie_parts[1]==md5( intval($cookie_parts[0]) . 'c00ki3' . $cookie_parts[2] . intval($cookie_parts[3]) )){
+
+                //Yes, this is a match!
+                $admission_application['ru_affiliate_u_id'] = intval($cookie_parts[0]);
+
+                //Log Affiliate Engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'], //The User ID
+                    'e_message' => 'User initiated admission. Pending payment and lead instructor approval.',
+                    'e_json' => json_encode(array(
+                        'input' => $_POST,
+                        'udata' => $udata,
+                        'rudata' => $enrollments[0],
+                        'cookie' => $aff_cookie,
+                        'initial_e_id' => intval($cookie_parts[3]),
+                    )),
+                    'e_type_id' => 46, //Affiliate User Initiated Admission
+                    'e_b_id' => $bootcamp['b_id'],
+                    'e_r_id' => $focus_class['r_id'],
+                    'e_recipient_u_id' => $admission_application['ru_affiliate_u_id'], //The affiliate ID
+                ));
+            }
+        }
+
+        //Lets start their admission application:
+        $enrollments[0] = $this->Db_model->ru_create($admission_application);
+
+        //Log engagement for Application Started:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_json' => json_encode(array(
+                'input' => $_POST,
+                'udata' => $udata,
+                'rudata' => $enrollments[0],
+            )),
+            'e_type_id' => 29, //Application Started
+            'e_b_id' => $bootcamp['b_id'],
+            'e_r_id' => $focus_class['r_id'],
+        ));
+
+        //Send the email to their admission page:
+        $this->load->model('Email_model');
+        $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
+
+
+        //Redirect to application:
+        $application_status_salt = $this->config->item('application_status_salt');
+        die(echo_json(array(
+            'status' => 1,
+            'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
+        )));
 	}
+
+
+
 	
 	//When they submit the application in step 2 of their admission:
 	function submit_application(){
@@ -998,7 +884,7 @@ class Api_v1 extends CI_Controller {
                 }
             }
 
-            echo '<table class="table table-condensed table-striped" style="max-width:'.( $is_instructor ? '100%' : '420px' ).'; background-color:#E0E0E0; font-size:18px; margin:0 auto; display:block;">';
+            echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; margin:0 auto; display:block; '.( $is_instructor ? 'max-width:100%; width:549px; float:left; margin-bottom:12px;' : 'max-width:420px;' ).'">';
 
             //First generate Leaderboard's top message:
             echo '<tr style="font-weight:bold; ">';
@@ -2258,14 +2144,24 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Missing next task information.</span>');
 	    } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
 	        die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
-	    }
 
-	    //See if we have all that is required:
-        if($_POST['require_url'] && count(extract_urls($_POST['us_notes']))<1){
+	    //Submission settings:
+	    } elseif($_POST['require_url'] && count(extract_urls($_POST['us_notes']))<1){
             die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        }
-        if($_POST['require_notes'] && count(extract_urls($_POST['us_notes'],true))<1){
+        } elseif($_POST['require_notes'] && strlen($_POST['us_notes'])<1){
             die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        }
+
+        //Now make sure this student has not submitted this task before:
+        $us_data = $this->Db_model->us_fetch(array(
+            'us_student_id' => intval($_POST['u_id']),
+            'us_r_id' => intval($_POST['r_id']),
+            'us_c_id' => intval($_POST['c_id']),
+            'us_status' => 1,
+        ));
+
+	    if(count($us_data)>0){
+            die('<span style="color:#FF0000;">Error: You have already marked this task as complete. You cannot re-submit it, but you can share updates with your instructor on MenchBot.</span>');
         }
 	    
 	    //Fetch intent:
@@ -2286,11 +2182,11 @@ class Api_v1 extends CI_Controller {
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
 	        'us_b_id' => intval($_POST['b_id']),
+            'us_student_id' => intval($_POST['u_id']),
 	        'us_r_id' => intval($_POST['r_id']),
 	        'us_c_id' => intval($_POST['c_id']),
 	        'us_on_time_score' => floatval($_POST['us_on_time_score']),
 	        'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
-	        'us_student_id' => intval($_POST['u_id']),
 	        'us_student_notes' => trim($_POST['us_notes']),
 	        'us_status' => 1, //Submitted
 	    ));

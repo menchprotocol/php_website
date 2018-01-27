@@ -154,9 +154,9 @@ $udata = $this->session->userdata('user');
 			<div class="col-md-8 col-md-offset-2" style="text-align:center;">
 				<?php
 	    		if(isset($udata['u_id'])){
-	    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a>';
+	    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">Console <i class="fa fa-chevron-circle-right" style="font-size:1.2em;" aria-hidden="true"></i></a>';
 	    		} else {
-	    		    echo '<a href="'.typeform_url('nh4s2u').'" class="btn btn-danger btn-raised btn-lg bg-glow glow">Signup As Instructor <i class="fa fa-sign-in"></i><div class="ripple-container"></div></a>';
+	    		    echo '<a href="'.typeform_url('nh4s2u').'" class="btn btn-danger btn-raised btn-lg bg-glow glow">Signup As Instructor <i class="fa fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';
 	    		    echo '<p class="sub-button">Or <a href="https://support.mench.co/hc/en-us/articles/115002079731">Read More Testimonials</a> or <a href="/login">Login</a></p>';
 	    		}
 	    		?>

@@ -9,6 +9,52 @@ class Cron extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
+	function merge(){
+	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	        'b_status >' => 0,
+        ));
+
+	    //Now lets see which ones have descriptions:
+        foreach($bootcamps as $bootcamp){
+            $found = 0;
+            foreach($bootcamp['c__child_intents'] as $milestone) {
+                if($milestone['c_status']>=0){
+                    foreach($milestone['c__child_intents'] as $task) {
+                        if(strlen($task['c_complete_instructions'])>0 && $task['c_status']>=0){
+
+                            //Insert into messages:
+                            $i = $this->Db_model->i_create(array(
+                                'i_creator_id' => 1,
+                                'i_c_id' => $task['c_id'],
+                                'i_media_type' => 'text',
+                                'i_message' => trim($task['c_complete_instructions']),
+                                'i_url' => null,
+                                'i_status' => 1,
+                                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                                    'i_status >=' => 1,
+                                    'i_status <' => 4, //But not private notes if any
+                                    'i_c_id' => $task['c_id'],
+                                )),
+                            ));
+
+                            if($i['i_id']>0){
+                                $this->Db_model->c_update( $task['c_id'] , array(
+                                    'c_complete_instructions' => null,
+                                ));
+                                $found++;
+
+                                echo '<a href="/console/'.$bootcamp['b_id'].'/actionplan#modify-'.$task['c_id'].'" title="'.$bootcamp['c_objective'].'">'.$task['c_objective'].'</a>: '.$task['c_complete_instructions'].'<br />';
+                            }
+                        }
+                    }
+                }
+            }
+            if($found>0){
+                echo '<hr />';
+            }
+        }
+    }
+
     function lazaro(){
         echo_json(tree_message(896, 0, '381488558920384', 422, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 68, 104));
         echo_json(tree_message(896, 0, '381488558920384', 416, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 68, 104));
@@ -765,9 +811,5 @@ class Cron extends CI_Controller {
 	    //Echo message for cron job:
 	    echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
 	}
-	
-	
-	
-	
-	
+
 }
