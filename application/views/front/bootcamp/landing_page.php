@@ -254,7 +254,7 @@ $( document ).ready(function() {
     		    }
     		    echo '</ul>';
     		    if(strlen($focus_class['r_closed_dates'])>0){
-    		        echo '<p>'.$focus_class['r_closed_dates'].'</p>';
+    		        echo '<p>Close Dates: '.$focus_class['r_closed_dates'].'</p>';
     		    }
     		    echo '<hr />';
     		}
