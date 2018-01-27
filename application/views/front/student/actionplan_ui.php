@@ -194,9 +194,6 @@ if($level>=3){
         }
 
         //What instructions do we need to give?
-        if(strlen($intent['c_complete_instructions'])>0){
-            echo '<div>'.$intent['c_complete_instructions'].'</div>';
-        }
         if($red_note) {
             echo '<div style="color:#FF0000;">Completing this task requires ' . $red_note . '.</div>';
         }

@@ -646,8 +646,6 @@ function load_modify(c_id, level){
             document.getElementById("c_complete_url_required").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_url_required'));
             document.getElementById("c_complete_notes_required").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_notes_required'));
             document.getElementById("c_complete_is_bonus_task").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_is_bonus_task'));
-            $("#c_complete_instructions").val($('.c_objective_'+c_id).attr('c_complete_instructions'));
-
         }
 
         //Make the frame visible:
@@ -713,7 +711,6 @@ function save_modify(){
             modify_data['c_complete_url_required'] = (document.getElementById('c_complete_url_required').checked ? 1 : 0);
             modify_data['c_complete_notes_required'] = (document.getElementById('c_complete_notes_required').checked ? 1 : 0);
             modify_data['c_complete_is_bonus_task'] = (document.getElementById('c_complete_is_bonus_task').checked ? 1 : 0);
-            modify_data['c_complete_instructions'] = $('#c_complete_instructions').val().replace('"', '').replace('\'', '');
             modify_data['c_status'] = $('#c_status_3').val();
 
         }
@@ -823,8 +820,6 @@ function save_modify(){
                     $('.c_objective_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
                     $('.c_objective_'+modify_data['pid']).attr('c_complete_notes_required'  , modify_data['c_complete_notes_required']);
                     //$('.c_objective_'+modify_data['pid']).attr('c_complete_is_bonus_task'   , modify_data['c_complete_is_bonus_task']);
-                    $('.c_objective_'+modify_data['pid']).attr('c_complete_instructions'    , modify_data['c_complete_instructions']);
-                    $('#c_complete_instructions').val(modify_data['c_complete_instructions']); //Maybe ' or " has been removed
 
                     if(modify_data['c_complete_is_bonus_task']){
                         $('.bonus_task_'+modify_data['pid']).removeClass('hidden');

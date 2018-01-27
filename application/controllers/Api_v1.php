@@ -1846,7 +1846,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Missing Time Estimate',
             ));
             return false;
-        } elseif($_POST['level']>=3 && (!isset($_POST['c_complete_url_required']) || !isset($_POST['c_complete_notes_required']) || !isset($_POST['c_complete_is_bonus_task']) || !isset($_POST['c_complete_instructions']))){
+        } elseif($_POST['level']>=3 && (!isset($_POST['c_complete_url_required']) || !isset($_POST['c_complete_notes_required']) || !isset($_POST['c_complete_is_bonus_task']))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
@@ -1985,7 +1985,6 @@ class Api_v1 extends CI_Controller {
                 'c_complete_url_required' => ( intval($_POST['c_complete_url_required']) ? 't' : 'f' ),
                 'c_complete_notes_required' => ( intval($_POST['c_complete_notes_required']) ? 't' : 'f' ),
                 'c_complete_is_bonus_task' => ( intval($_POST['c_complete_is_bonus_task']) ? 't' : 'f' ),
-                'c_complete_instructions' => trim(str_replace('"','',str_replace('\'','',$_POST['c_complete_instructions']))),
             );
 
         }

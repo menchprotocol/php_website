@@ -915,7 +915,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         } elseif ($level>=3){
 
             //Tasks
-            $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $core_objects['level_'.($level-1)]['o_icon'].' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFT</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'"  c_complete_is_bonus_task="'.($intent['c_complete_is_bonus_task']=='t'?1:0).'" c_complete_instructions="'.$intent['c_complete_instructions'].'">'.$intent['c_objective'].'</span> <i class="fa fa-gift bonus_task_'.$intent['c_id'].' '.( $intent['c_complete_is_bonus_task']=='t' ? '' : 'hidden').'" title="Bonus Task" data-toggle="tooltip" aria-hidden="true"></i> ';
+            $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $core_objects['level_'.($level-1)]['o_icon'].' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFT</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'"  c_complete_is_bonus_task="'.($intent['c_complete_is_bonus_task']=='t'?1:0).'">'.$intent['c_objective'].'</span> <i class="fa fa-gift bonus_task_'.$intent['c_id'].' '.( $intent['c_complete_is_bonus_task']=='t' ? '' : 'hidden').'" title="Bonus Task" data-toggle="tooltip" aria-hidden="true"></i> ';
 
         }
 
@@ -1132,7 +1132,7 @@ function calculate_bootcamp_status($b){
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
-            'anchor' => '<b>Add a '.status_bible('i',1).' Message</b> to '.$milestone_anchor.$c['c_objective'],
+            'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$milestone_anchor.$c['c_objective'],
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
@@ -1177,7 +1177,7 @@ function calculate_bootcamp_status($b){
                 $progress_gained += ( $us_status ? $estimated_minutes : 0 );
                 array_push( $checklist , array(
                     'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c2['c_id'],
-                    'anchor' => '<b>Add an '.status_bible('i',1).' Message</b> to '.$task_anchor,
+                    'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$task_anchor,
                     'us_status' => $us_status,
                     'time_min' => $estimated_minutes,
                 ));
@@ -1199,7 +1199,7 @@ function calculate_bootcamp_status($b){
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_c_id'],
-        'anchor' => '<b>Add an '.status_bible('i',1).' Video Message</b> to Action Plan',
+        'anchor' => '<b>Add '.status_bible('i',1).' Video Message</b> to Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
