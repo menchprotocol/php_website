@@ -11,10 +11,12 @@ class Cron extends CI_Controller {
 
     /* ******************************
      * System
+     * /usr/bin/php /var/www/us/index.php cron student_reminder_complete_application
      ****************************** */
 
     function class_kickstart(){
 
+        //Cron Settings: 1,31 * * * *
         //This function is solely responsible to get the class started and dispatch its very first milestone messages IF it does start
         //Searches for any class that might be starting and kick starts its messages:
         $classes = $this->Db_model->r_fetch(array(
@@ -85,7 +87,7 @@ class Cron extends CI_Controller {
                     $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
 
                     //Inform the student of auto rejection because they missed deadline:
-                    $this->Email_model->email_intent($admission['b_id'],3016,$admission);
+                    $this->Email_model->email_intent($class['r_b_id'],3016,$admission);
                 }
             }
 
@@ -107,7 +109,7 @@ class Cron extends CI_Controller {
                     $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
 
                     //Inform the student of rejection:
-                    $this->Email_model->email_intent($admission['b_id'],2799,$admission);
+                    $this->Email_model->email_intent($class['r_b_id'],2799,$admission);
 
                     //Was this a paid class? Let admin know to manually process refunds
                     //TODO automate refunds through Paypal API later on...
@@ -169,7 +171,7 @@ class Cron extends CI_Controller {
                         $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
 
                         //Inform the student of rejection:
-                        $this->Email_model->email_intent($admission['b_id'],3017,$admission);
+                        $this->Email_model->email_intent($class['r_b_id'],3017,$admission);
 
                         //Was this a paid class? Let admin know to manually process refunds
                         //TODO automate refunds through Paypal API later on...
@@ -214,7 +216,7 @@ class Cron extends CI_Controller {
                         $stats[$class['r_id']]['students']['accepted']['menchbot_active']++;
 
                         //They already have MenchBot activated, send message:
-                        $message_result = tree_message($first_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $admission['b_id'], $admission['r_id']);
+                        $message_result = tree_message($first_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
 
                     } else {
 
@@ -222,7 +224,7 @@ class Cron extends CI_Controller {
                         $stats[$class['r_id']]['students']['accepted']['menchbot_inactive']++;
 
                         //No MenchBot activated yet! Remind them again:
-                        $this->Email_model->email_intent($admission['b_id'],3120,$admission);
+                        $this->Email_model->email_intent($class['r_b_id'],3120,$admission);
 
                     }
                 }
@@ -247,6 +249,7 @@ class Cron extends CI_Controller {
 
     function drip(){
 
+        //Cron Settings: 0,30 * * * *
 	    //Set drip setting variables:
         $drip_settings = array(
             'buffer_bootcamp_start' => 0.1,
@@ -550,6 +553,8 @@ class Cron extends CI_Controller {
 
     function next_milestone(){
 
+        //Cron Settings: 1,31 * * * *
+
         exit;
 
         $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404);
@@ -648,6 +653,9 @@ class Cron extends CI_Controller {
     }
 
     function bot_save_files(){
+
+        //Cron Settings: * * * * *
+
         /*
          * This cron job looks for all engagements with Facebook attachments
          * that are pending upload (i.e. e_cron_job=0) and uploads their
@@ -713,6 +721,7 @@ class Cron extends CI_Controller {
 
     function instructor_notify_student_activity(){
 
+        //Cron Settings: 0 */2 * * * *
         //Runs every hour and informs instructors/admins of new messages received recently
         //Define settings:
         $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
@@ -850,14 +859,15 @@ class Cron extends CI_Controller {
 	 ****************************** */
 
     function student_reminder_complete_application(){
-
+        //Cron Settings: 15 * * * *
     }
 
     function student_reminder_group_call_starting(){
-
+        //Cron Settings: 20,50 * * * *
     }
 
     function student_reminder_complete_milestone(){
+        //Cron Settings: 45 * * * *
         //Send reminders to students to complete their tasks:
 
     }
