@@ -1021,6 +1021,16 @@ function mime_type($mime){
     }
 }
 
+function on_time_term($score){
+    if($score==1){
+        return 'ON-TIME';
+    } elseif($score==0.5){
+        return 'A LITTLE LATE';
+    } elseif($score==0){
+        return 'REALLY LATE';
+    }
+}
+
 function date_is_past($date){
     return ((strtotime($date)-(24*3600))<strtotime(date("F j, Y")));
 }

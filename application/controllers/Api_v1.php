@@ -460,8 +460,7 @@ class Api_v1 extends CI_Controller {
 	    echo '<script> setTimeout(function() { window.location = "/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'].'" }, 1000); </script>';
 	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted!</div>';
 	}
-	
-	
+
 	function login(){
 	    
 	    //Setting for admin logins:
@@ -601,8 +600,6 @@ class Api_v1 extends CI_Controller {
 	    $this->session->sess_destroy();
 	    header( 'Location: /' );
 	}
-	
-
 	
 	function account_update(){
 	    
@@ -1345,8 +1342,7 @@ class Api_v1 extends CI_Controller {
     	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(calculate_duration(array('b_sprint_unit'=>$_POST['b_sprint_unit']),$_POST['c__milestone_units'])+13)).' 6:00pm PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
     	    echo '</ul>';
 	}
-	
-	
+
 	function r_create(){
 	    $udata = auth(2);
 	    if(!$udata){
@@ -1505,9 +1501,7 @@ class Api_v1 extends CI_Controller {
 	    //Show result:
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
-	
-	
-	
+
 	function class_edit(){
 
         $message_max = $this->config->item('message_max');
@@ -1608,10 +1602,6 @@ class Api_v1 extends CI_Controller {
 	    //Show result:
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
-	
-	
-	
-	
 	
 	/* ******************************
 	 * b Bootcamps
@@ -1757,8 +1747,7 @@ class Api_v1 extends CI_Controller {
         echo '<script> setTimeout(function() { window.location = "/console/'.$bootcamp['b_id'].'" }, 1000); </script>';
         echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Going to Bootcamp Dashboard...</div>';
 	}
-	
-	
+
 	function save_modify(){
 
         //Auth user and check required variables:
@@ -2023,15 +2012,7 @@ class Api_v1 extends CI_Controller {
         ));
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/* ******************************
 	 * c Intents
 	 ****************************** */
@@ -2128,8 +2109,6 @@ class Api_v1 extends CI_Controller {
         ));
 	}
 	
-
-	
 	function completion_report(){
 	    
 	    if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
@@ -2162,6 +2141,28 @@ class Api_v1 extends CI_Controller {
 	    if(count($us_data)>0){
             die('<span style="color:#FF0000;">Error: You have already marked this task as complete. You cannot re-submit it, but you can share updates with your instructor on MenchBot.</span>');
         }
+
+        //Fetch student name and details:
+        $matching_users = $this->Db_model->u_fetch(array(
+            'u_id' => intval($_POST['u_id']),
+        ));
+
+        if(!(count($matching_users)==1)){
+            die('<span style="color:#FF0000;">Error: Invalid User ID!</span>');
+        }
+
+        //Fetch Bootcamp & Class:
+        $bootcamps = $this->Db_model->c_full_fetch(array(
+            'b.b_id' => intval($_POST['b_id']),
+        ));
+        if(!(count($bootcamps)==1)){
+            die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID!</span>');
+        }
+        $focus_class = filter($bootcamps[0]['c__classes'],'r_id',intval($_POST['r_id']));
+        if(!$focus_class){
+            die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
+        }
+
 	    
 	    //Fetch intent:
 	    $original_intents = $this->Db_model->c_fetch(array(
@@ -2181,7 +2182,7 @@ class Api_v1 extends CI_Controller {
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
 	        'us_b_id' => intval($_POST['b_id']),
-            'us_student_id' => intval($_POST['u_id']),
+            'us_student_id' => $matching_users[0]['u_id'],
 	        'us_r_id' => intval($_POST['r_id']),
 	        'us_c_id' => intval($_POST['c_id']),
 	        'us_on_time_score' => floatval($_POST['us_on_time_score']),
@@ -2193,7 +2194,7 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $us_data['us_student_id'],
+	        'e_initiator_u_id' => $matching_users[0]['u_id'],
 	        'e_message' => $us_data['us_student_notes'],
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -2207,8 +2208,46 @@ class Api_v1 extends CI_Controller {
 	        'e_r_id' => $us_data['us_r_id'],
 	        'e_c_id' => $us_data['us_c_id'],
 	    ));
+
+	    //Send email to all instructors of this Bootcamp:
+        $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+            'ba.ba_b_id' => intval($_POST['b_id']),
+            'ba.ba_status >=' => 2, //co-instructors & lead instructor
+            'u.u_status >=' => 1, //Must be a user level 1 or higher
+        ));
+        $student_name = ( isset($matching_users[0]['u_fname']) && strlen($matching_users[0]['u_fname'])>0 ? $matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'] : 'System' );
+        $subject = '⚠️ Notification: Task Completed by '.$student_name;
+        $bootcamp_chat_url = 'https://mench.co/console/'.intval($_POST['b_id']).'/students';
+        $this->load->model('Email_model');
+        //Send notifications to current instructor
+        foreach($bootcamp_instructors as $bi){
+            //Make sure this instructor has an email on file
+            if(strlen($bi['u_email'])>0){
+                //Task Completion Email:
+                //Draft HTML message for this:
+                $html_message  = '<div>Hi '.$bi['u_fname'].' 👋​</div>';
+                $html_message .= '<br />';
+                $html_message .= '<div>A new Task Completion report is ready for your review:</div>';
+                $html_message .= '<br />';
+                $html_message .= '<div>Bootcamp: '.$bootcamps[0]['c_objective'].'</div>';
+                $html_message .= '<div>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
+                $html_message .= '<div>Student: '.$student_name.'</div>';
+                $html_message .= '<div>Submitted: '.on_time_term($_POST['us_on_time_score']).'</div>';
+                $html_message .= '<div>Task: '.$original_intents[0]['c_objective'].'</div>';
+                $html_message .= '<div>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
+                $html_message .= '<div>Completion Notes: '.nl2br(trim($_POST['us_notes'])).'</div>';
+                $html_message .= '<br />';
+                $html_message .= '<div>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
+                $html_message .= '<br />';
+                $html_message .= '<div>Cheers,</div>';
+                $html_message .= '<div>Team Mench</div>';
+                $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
+                //Send Email:
+                $this->Email_model->send_single_email(array($bi['u_email']),$subject,$html_message);
+            }
+        }
 	    
-	    //Show result:
+	    //Show result to student:
 	    echo_us($us_data);
 
         //Show next Button if its a Task within this Milestone:
@@ -2220,8 +2259,6 @@ class Api_v1 extends CI_Controller {
             $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
         }
 	}
-
-
 	
 	function intent_link(){
 	    
@@ -2314,9 +2351,6 @@ class Api_v1 extends CI_Controller {
 	    echo echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit'],intval($_POST['pid']));
 	}
 
-
-
-
 	function migrate_task(){
 
         //Auth user and Load object:
@@ -2399,7 +2433,6 @@ class Api_v1 extends CI_Controller {
             }
         }
     }
-
 
     function save_b_list(){
         //Auth user and Load object:
@@ -2521,12 +2554,6 @@ class Api_v1 extends CI_Controller {
             }
         }
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	/* ******************************
@@ -2664,9 +2691,7 @@ class Api_v1 extends CI_Controller {
 	        }
 	    }
 	}
-	
-	
-	
+
 	function message_create(){
 
 	    $udata = auth(2);
@@ -2895,8 +2920,7 @@ class Api_v1 extends CI_Controller {
 	    //Show result:
 	    die('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
 	}
-	
-	
+
 	function messages_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);

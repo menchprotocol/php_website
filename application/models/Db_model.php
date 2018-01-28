@@ -1220,6 +1220,7 @@ ORDER BY points DESC, ru_id ASC")->result());
             $instructor_subscriptions = $this->config->item('instructor_subscriptions');
 		    $engagement_references = $this->config->item('engagement_references');
 
+		    //Email: The [33] Engagement ID corresponding to task completion is a email system for instructors to give them more context on certain activities
 
 		    //Do we have any instructor subscription:
             if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_type_id'],$instructor_subscriptions)){
@@ -1243,14 +1244,34 @@ ORDER BY points DESC, ru_id ASC")->result());
                         'u.u_fb_id >' => 0, //Activated messenger
                     ));
 
-                    //Send notifications to current instructor
-                    foreach($bootcamp_instructors as $bi){
-                        //Send Message:
-                        $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(array(
-                            'text' => '[⚠️ System Notification]
+                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
 
-'.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' ).': '.trim(strip_tags($engagements[0]['a_desc'])).'. Review here: https://mench.co/console/'.$link_data['e_b_id'].'/students',
-                        )));
+                    //Send notifications to current instructor
+                    $instructor_emails = array();
+                    foreach($bootcamp_instructors as $bi){
+
+                        if(in_array($link_data['e_type_id'],$instructor_subscriptions)){
+                            //MenchBot notifications:
+                            $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(array(
+                                'text' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc'])).'. Review here: https://mench.co/console/'.$link_data['e_b_id'].'/students',
+                            )));
+                        }
+
+                        if(strlen($bi['u_email'])>0){
+                            array_push($instructor_emails,$bi['u_email']);
+                        }
+
+                        if(in_array($link_data['e_type_id'],$instructor_emails)){
+
+                        }
+                    }
+
+                    if($link_data['e_type_id']==33 && count($instructor_emails)>0){
+                        //Task Completion Email:
+                        //Draft HTML message for this:
+                        $html_message .= '<div></div>';
+                        //Email Notification:
+                        $this->send_single_email(array($bi['u_email']),$subject,$html_message);
                     }
                 }
             }

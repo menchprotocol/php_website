@@ -250,7 +250,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57); //26,29,33
+$config['instructor_subscriptions'] = array(30,52,56,57);
 $config['mench_cs_fb_ids'] = array(
     array(
         'u_fname' => 'Shervin',
