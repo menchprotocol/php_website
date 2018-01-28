@@ -1,16 +1,14 @@
-
-
 <?php if(is_dev() && 0){ ?>
     <script>
-    $(document).ready(function() {
-        //Load shervin for Development Server:
-        var psid = '1443101719058431'; //Shervin
-        //var psid = '1614565628581807'; //Sam
-        $.post("/my/display_actionplan/"+psid+"/<?= intval($b_id) ?>/<?= intval($c_id) ?>", {}, function(data) {
-            //Update UI to confirm with user:
-            $( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
+        $(document).ready(function() {
+            //Load shervin for Development Server:
+            var psid = '1443101719058431'; //Shervin
+            //var psid = '1614565628581807'; //Sam
+            $.post("/my/display_actionplan/"+psid+"/<?= intval($b_id) ?>/<?= intval($c_id) ?>", {}, function(data) {
+                //Update UI to confirm with user:
+                $( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
+            });
         });
-    });
     </script>
 <?php } else {
 
@@ -20,15 +18,15 @@
 
         //Include header:
         $this->load->view('front/shared/student_nav' , array(
-                'current' => 'actionplan',
+            'current' => 'actionplan',
         ));
 
         //Fetch page instantly as we know who this is:
         ?>
         <script>
-        $.post("/my/display_actionplan/<?= $uadmission['u_fb_id'] ?>/<?= (isset($b_id) ? intval($b_id) : $uadmission['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uadmission['b_c_id']) ?>", {}, function(data) {
-            $( "#page_content").html(data);
-        });
+            $.post("/my/display_actionplan/<?= $uadmission['u_fb_id'] ?>/<?= (isset($b_id) ? intval($b_id) : $uadmission['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uadmission['b_c_id']) ?>", {}, function(data) {
+                $( "#page_content").html(data);
+            });
         </script>
         <?php
 
@@ -37,38 +35,38 @@
         //Use Facebook to see if we can find this user's identity:
         ?>
         <script>
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'Messenger'));
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'Messenger'));
 
-        //the Messenger Extensions JS SDK is done loading:
-        window.extAsyncInit = function() {
+            //the Messenger Extensions JS SDK is done loading:
+            window.extAsyncInit = function() {
 
-            //Get context:
-            MessengerExtensions.getContext('1782431902047009',
-                function success(thread_context){
-                    // success
-                    //User ID was successfully obtained.
-                    var psid = thread_context.psid;
-                    var signed_request = thread_context.signed_request;
-                    //Fetch Page:
-                    $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
-                        //Update UI to confirm with user:
-                        $( "#page_content").html(data);
-                    });
-                },
-                function error(err){
+                //Get context:
+                MessengerExtensions.getContext('1782431902047009',
+                    function success(thread_context){
+                        // success
+                        //User ID was successfully obtained.
+                        var psid = thread_context.psid;
+                        var signed_request = thread_context.signed_request;
+                        //Fetch Page:
+                        $.post("/my/display_actionplan/"+psid+"/<?= (isset($b_id) ? intval($b_id) : 0) ?>/<?= ( isset($c_id) ? intval($c_id) : 0) ?>?sr="+signed_request, {}, function(data) {
+                            //Update UI to confirm with user:
+                            $( "#page_content").html(data);
+                        });
+                    },
+                    function error(err){
 
-                    //Give them instructions on how to access via mench.co:
-                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> This version of Facebook Messenger does not support loading websites.<br /><br />Solution: login to <a href="https://mench.co/login" target="_blank"><u>mench.co</u></a> to access your Bootcamp content. Use <b><u>Forgot Password</u></b> to generate a new password if you do not have one.</div>');
+                        //Give them instructions on how to access via mench.co:
+                        $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> This version of Facebook Messenger does not support loading websites.<br /><br />Solution: login to <a href="https://mench.co/login" target="_blank"><u>mench.co</u></a> to access your Bootcamp content. Use <b><u>Forgot Password</u></b> to generate a new password if you do not have one.</div>');
 
-                }
-            );
-        };
+                    }
+                );
+            };
         </script>
         <?php
     }

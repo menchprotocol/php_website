@@ -113,7 +113,6 @@ class Api_v1 extends CI_Controller {
 	        'help_content' => $help_content,
 	    ));
 	}
-
 	
 	/* ******************************
 	 * Users
@@ -364,9 +363,6 @@ class Api_v1 extends CI_Controller {
             'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
         )));
 	}
-
-
-
 	
 	//When they submit the application in step 2 of their admission:
 	function submit_application(){
@@ -748,12 +744,9 @@ class Api_v1 extends CI_Controller {
 	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 	
-	
 	/* ******************************
 	 * r Classes
 	 ****************************** */
-	
-
 	
 	function mark_read(){
 	    //Log a Messenger Read engagement to remove the notifications
@@ -767,7 +760,6 @@ class Api_v1 extends CI_Controller {
 	        echo 'success'; //This will suce the notification
 	    }   
 	}
-
 
 	function load_iphone(){
         $udata = auth(1);
@@ -881,7 +873,7 @@ class Api_v1 extends CI_Controller {
                 }
             }
 
-            echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; margin:0 auto; display:block; '.( $is_instructor ? 'max-width:100%; width:549px; float:left; margin-bottom:12px;' : 'max-width:420px;' ).'">';
+            echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
             //First generate Leaderboard's top message:
             echo '<tr style="font-weight:bold; ">';
@@ -910,6 +902,7 @@ class Api_v1 extends CI_Controller {
             echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:320px;">Student</td>';
             echo '<td style="border:1px solid #999; border-left:none; '.( $is_instructor ? 'border-right:none;' : '' ).' text-align:left;">Points</td>';
             if($is_instructor){
+                echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left;">'.ucwords($bootcamp['b_sprint_unit']).'</td>';
                 echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left;">On-Time</td>';
                 echo '<td style="border:1px solid #999; border-left:none; text-align:left;">'.$trophy.'</td>';
             }
@@ -1087,6 +1080,7 @@ class Api_v1 extends CI_Controller {
                     echo '<td valign="top" style="'.$bborder.( $is_instructor ? '' : 'border-right:1px solid #999;' ).'text-align:left; vertical-align:top;">'.( $is_instructor || $counter<=$show_ranking_top ? number_format($ls['points'],0) : '').'</td>';
 
                     if($is_instructor){
+                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.$ls['ru_current_milestone'].'</td>';
                         echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.( $possible_points>0 ? '<span data-toggle="tooltip" title="Excluding current milestone, student earned '.$points_earned.'/'.$possible_points.' possible points">'.( $possible_points ? round( $points_earned/$possible_points*100 ).'%' : '' ).'</span>' : '100%' ).'</td>';
                         echo '<td valign="top" style="'.$bborder.'border-right:1px solid #999; text-align:left; vertical-align:top;">'.( !$possible_points || $ls['points']>=$possible_points  ? $trophy : '' ).'</td>';
                     }
@@ -2143,12 +2137,14 @@ class Api_v1 extends CI_Controller {
         }
 
         //Fetch student name and details:
-        $matching_users = $this->Db_model->u_fetch(array(
-            'u_id' => intval($_POST['u_id']),
+        $matching_admissions = $this->Db_model->ru_fetch(array(
+            'ru_u_id' => intval($_POST['u_id']),
+            'ru_r_id' => intval($_POST['r_id']),
+            'ru_status' => 4, //Active students can submit tasks
         ));
 
-        if(!(count($matching_users)==1)){
-            die('<span style="color:#FF0000;">Error: Invalid User ID!</span>');
+        if(!(count($matching_admissions)==1)){
+            die('<span style="color:#FF0000;">Error: Invalid Admission Status!</span>');
         }
 
         //Fetch Bootcamp & Class:
@@ -2182,7 +2178,7 @@ class Api_v1 extends CI_Controller {
 	    //Now update the DB:
 	    $us_data = $this->Db_model->us_create(array(
 	        'us_b_id' => intval($_POST['b_id']),
-            'us_student_id' => $matching_users[0]['u_id'],
+            'us_student_id' => $matching_admissions[0]['u_id'],
 	        'us_r_id' => intval($_POST['r_id']),
 	        'us_c_id' => intval($_POST['c_id']),
 	        'us_on_time_score' => floatval($_POST['us_on_time_score']),
@@ -2194,7 +2190,7 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $matching_users[0]['u_id'],
+	        'e_initiator_u_id' => $matching_admissions[0]['u_id'],
 	        'e_message' => $us_data['us_student_notes'],
 	        'e_json' => json_encode(array(
 	            'input' => $_POST,
@@ -2215,7 +2211,7 @@ class Api_v1 extends CI_Controller {
             'ba.ba_status >=' => 2, //co-instructors & lead instructor
             'u.u_status >=' => 1, //Must be a user level 1 or higher
         ));
-        $student_name = ( isset($matching_users[0]['u_fname']) && strlen($matching_users[0]['u_fname'])>0 ? $matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'] : 'System' );
+        $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
         $subject = '⚠️ Notification: Task Completed by '.$student_name;
         $bootcamp_chat_url = 'https://mench.co/console/'.intval($_POST['b_id']).'/students';
         $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
@@ -2237,7 +2233,7 @@ class Api_v1 extends CI_Controller {
                 $html_message .= '<div'.$div_style.'>Submitted: '.on_time_term($_POST['us_on_time_score']).'</div>';
                 $html_message .= '<div'.$div_style.'>Task: '.$original_intents[0]['c_objective'].'</div>';
                 $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
-                $html_message .= '<div'.$div_style.'>Completion Notes: '.nl2br(trim($_POST['us_notes'])).'</div>';
+                $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
                 $html_message .= '<br />';
                 $html_message .= '<div'.$div_style.'>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
                 $html_message .= '<br />';
@@ -2254,11 +2250,38 @@ class Api_v1 extends CI_Controller {
 
         //Show next Button if its a Task within this Milestone:
         if($next_level==3 && $next_c_id>0){
+
             //Show button for next task:
             echo '<div><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next Task <i class="fa fa-arrow-right"></i></a></div>';
-        } elseif($next_level==2 && isset($next_intents[0])){
-            //Attempt to dispatch some messages:
-            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+
+        } elseif($next_level==2){
+
+            if(isset($next_intents[0])){
+
+                //We have a next milestone:
+                //We also need to change ru_current_milestone to reflect this advancement
+                //Fetch the rank of the next milestone:
+                foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                    if($milestone['c_id']==$next_intents[0]['c_id']){
+                        //This is the next milestone, update the student positioning here...
+                        $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                            'ru_current_milestone' => $milestone['cr_outbound_rank'],
+                        ));
+                        break;
+                    }
+                }
+
+                //Attempt to dispatch some messages:
+                $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+
+            } else {
+
+                //Last task of the last milestone
+                //TODO send custom message here...
+                //Attempt to dispatch some messages:
+                $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+
+            }
         }
 	}
 	
@@ -2556,7 +2579,6 @@ class Api_v1 extends CI_Controller {
             }
         }
 	}
-	
 	
 	/* ******************************
 	 * i Messages

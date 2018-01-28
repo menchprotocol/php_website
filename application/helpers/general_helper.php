@@ -136,7 +136,6 @@ function extract_level($b,$c_id){
                 foreach($sprint['c__child_intents'] as $task_key=>$task){
                     if($task['c_id']==$c_id){
 
-
                         //Find the next intent:
                         $next_intent = null;
                         $next_level = 0;
