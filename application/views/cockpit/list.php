@@ -134,10 +134,18 @@ if($object_name=='bootcamps'){
 
     //TODO Define Instructors we'd be focused on:
     $qualified_instructors = array();
-    
-    $users = $this->Db_model->u_fetch(array(
-        'u_status >=' => 2,
-    ));
+
+    if(isset($_GET['r_id'])){
+        $users = $this->Db_model->ru_fetch(array(
+            'ru_r_id' => $_GET['r_id'],
+            'ru_status' => 4,
+        ));
+    } else {
+        $users = $this->Db_model->u_fetch(array(
+            'u_status >=' => 2,
+        ));
+    }
+
     ?>
 
     <script>
@@ -164,9 +172,10 @@ if($object_name=='bootcamps'){
     <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:100%;">
     <thead>
     	<tr>
-    		<th style="width:40px;">ID</th>
+            <th style="width:40px;">#</th>
+            <th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
-            <th>Instructor</th>
+            <th>User</th>
             <th>Bootcamps</th>
             <th>Joined</th>
             <th colspan="4"><i class="fa fa-commenting" aria-hidden="true"></i> Latest Message / <i class="fa fa-eye" aria-hidden="true"></i> Read (Total)</th>
@@ -176,7 +185,7 @@ if($object_name=='bootcamps'){
     </thead>
     <tbody>
     <?php
-    foreach($users as $user){
+    foreach($users as $key=>$user){
 
         //Fetch messages if activated MenchBot:
         unset($messages);
@@ -201,9 +210,12 @@ if($object_name=='bootcamps'){
         ) , true /*To Fetch more details*/ );
         
         echo '<tr>';
+        echo '<td>'.($key+1).'</td>';
         echo '<td>'.$user['u_id'].'</td>';
         echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
         echo '<td><a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a></td>';
+
+
         echo '<td>';
             //Display Bootcamps:
             if(count($instructor_bootcamps)>0){
@@ -228,7 +240,12 @@ if($object_name=='bootcamps'){
         echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
         echo '<td>'.$user['u_timezone'].'</td>';
         echo '<td>';
-            if(isset($_GET['pid']) && strlen($user['u_fb_id'])>4 && $user['u_status']>=2){
+
+            if(strlen($user['u_email'])>0){
+                echo '<a href="mailto:'.$user['u_email'].'" title="Email '.$user['u_email'].'"><i class="fa fa-envelope" aria-hidden="true"></i></a>&nbsp;';
+            }
+
+            if(isset($_GET['pid']) && strlen($user['u_fb_id'])>4){
                 //Lets check their history:
                 $sent_messages = $this->Db_model->e_fetch(array(
                     'e_type_id' => 7,
@@ -241,7 +258,7 @@ if($object_name=='bootcamps'){
                 }
 
                 //Show send button:
-                echo '<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">'.(count($sent_messages)>0 ? 'Resend' : 'Send').'</a></span>';
+                echo '&nbsp;<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">'.(count($sent_messages)>0 ? 'Resend' : 'Send').'</a></span>';
             }
         echo '</td>';
         echo '</tr>';
