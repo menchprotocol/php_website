@@ -79,31 +79,25 @@ if($focus_class){
     <div class="help_body maxout" id="content_2275"></div>
 <?php 
 //Fetch admission stats:
-
 $student_funnel = array(
     0 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
-        'r.r_status >='	   => 1, //Open for admission and up
         'ru.ru_status'     => 0,
     ))),
     2 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
-        'r.r_status >='	   => 1, //Open for admission and up
         'ru.ru_status'     => 2,
     ))),
     -1 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
-        'r.r_status >='	   => 1, //Open for admission and up
         'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
     ))),
     4 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
-        'r.r_status >='	   => 1, //Open for admission and up
         'ru.ru_status'     => 4,
     ))),
     7 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
-        'r.r_status >='	   => 1, //Open for admission and up
         'ru.ru_status'     => 7,
     ))),
 );
