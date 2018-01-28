@@ -2218,6 +2218,7 @@ class Api_v1 extends CI_Controller {
         $student_name = ( isset($matching_users[0]['u_fname']) && strlen($matching_users[0]['u_fname'])>0 ? $matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'] : 'System' );
         $subject = '⚠️ Notification: Task Completed by '.$student_name;
         $bootcamp_chat_url = 'https://mench.co/console/'.intval($_POST['b_id']).'/students';
+        $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
         $this->load->model('Email_model');
         //Send notifications to current instructor
         foreach($bootcamp_instructors as $bi){
@@ -2225,22 +2226,23 @@ class Api_v1 extends CI_Controller {
             if(strlen($bi['u_email'])>0){
                 //Task Completion Email:
                 //Draft HTML message for this:
-                $html_message  = '<div>Hi '.$bi['u_fname'].' 👋​</div>';
+                $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
                 $html_message .= '<br />';
-                $html_message .= '<div>A new Task Completion report is ready for your review:</div>';
+                $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
                 $html_message .= '<br />';
-                $html_message .= '<div>Bootcamp: '.$bootcamps[0]['c_objective'].'</div>';
-                $html_message .= '<div>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
-                $html_message .= '<div>Student: '.$student_name.'</div>';
-                $html_message .= '<div>Submitted: '.on_time_term($_POST['us_on_time_score']).'</div>';
-                $html_message .= '<div>Task: '.$original_intents[0]['c_objective'].'</div>';
-                $html_message .= '<div>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
-                $html_message .= '<div>Completion Notes: '.nl2br(trim($_POST['us_notes'])).'</div>';
+                $html_message .= '<div'.$div_style.'>Bootcamp: '.$bootcamps[0]['c_objective'].'</div>';
+                $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
                 $html_message .= '<br />';
-                $html_message .= '<div>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
+                $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
+                $html_message .= '<div'.$div_style.'>Submitted: '.on_time_term($_POST['us_on_time_score']).'</div>';
+                $html_message .= '<div'.$div_style.'>Task: '.$original_intents[0]['c_objective'].'</div>';
+                $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
+                $html_message .= '<div'.$div_style.'>Completion Notes: '.nl2br(trim($_POST['us_notes'])).'</div>';
                 $html_message .= '<br />';
-                $html_message .= '<div>Cheers,</div>';
-                $html_message .= '<div>Team Mench</div>';
+                $html_message .= '<div'.$div_style.'>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
+                $html_message .= '<br />';
+                $html_message .= '<div'.$div_style.'>Cheers,</div>';
+                $html_message .= '<div'.$div_style.'>Team Mench</div>';
                 $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
                 //Send Email:
                 $this->Email_model->send_single_email(array($bi['u_email']),$subject,$html_message);
