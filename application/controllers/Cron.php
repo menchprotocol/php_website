@@ -9,59 +9,240 @@ class Cron extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-	function up(){
-	    $transactions = $this->Db_model->t_fetch(array(
-            't.t_r_id' => 0,
+    /* ******************************
+     * System
+     ****************************** */
+
+    function class_kickstart(){
+
+        //This function is solely responsible to get the class started and dispatch its very first milestone messages IF it does start
+        //Searches for any class that might be starting and kick starts its messages:
+        $classes = $this->Db_model->r_fetch(array(
+            'r_status' => 1,
+            'r_start_date <=' => date("Y-m-d"),
         ));
 
-	    //Now lets see which ones have descriptions:
-        foreach($bootcamps as $bootcamp){
-            $found = 0;
-            foreach($bootcamp['c__child_intents'] as $milestone) {
-                if($milestone['c_status']>=0){
-                    foreach($milestone['c__child_intents'] as $task) {
-                        if(strlen($task['c_complete_instructions'])>0 && $task['c_status']>=0){
+        //Include email model for certain communications:
+        $this->load->model('Email_model');
+        $start_times = $this->config->item('start_times');
 
-                            //Insert into messages:
-                            $i = $this->Db_model->i_create(array(
-                                'i_creator_id' => 1,
-                                'i_c_id' => $task['c_id'],
-                                'i_media_type' => 'text',
-                                'i_message' => trim($task['c_complete_instructions']),
-                                'i_url' => null,
-                                'i_status' => 1,
-                                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                                    'i_status >=' => 1,
-                                    'i_status <' => 4, //But not private notes if any
-                                    'i_c_id' => $task['c_id'],
-                                )),
-                            ));
+        //Generate stats for this cron run:
+        $stats = array();
 
-                            if($i['i_id']>0){
-                                $this->Db_model->c_update( $task['c_id'] , array(
-                                    'c_complete_instructions' => null,
-                                ));
-                                $found++;
+        foreach($classes as $key=>$class){
 
-                                echo '<a href="/console/'.$bootcamp['b_id'].'/actionplan#modify-'.$task['c_id'].'" title="'.$bootcamp['c_objective'].'">'.$task['c_objective'].'</a>: '.$task['c_complete_instructions'].'<br />';
-                            }
-                        }
+            //Make sure the start time has already passed:
+            if( time() < ( strtotime($class['r_start_date']) + ($class['r_start_time_mins']*60) )){
+
+                //Add to report:
+                $stats[$class['r_id']] = array(
+                    'b_id' => $class['r_b_id'],
+                    'initial_status' => $class['r_status'],
+                    'message' => 'Class starts at '.$start_times[$class['r_start_time_mins']].' PST (Not yet started).',
+                );
+
+                //Not started yet!
+                continue;
+            }
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $class['r_b_id'],
+            ));
+
+            //Now override $class with the more complete version:
+            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
+
+            //Append stats array for cron reporting:
+            $stats[$class['r_id']] = array(
+                'b_id' => $class['r_b_id'],
+                'initial_status' => $class['r_status'],
+                'new_status' => 0, //To be updated
+                'students' => array(
+                    'rejected_incomplete' => 0, //Rejected because their application was incomplete by the time the class started
+                    'rejected_pending' => 0, //Rejected because their application was not approved by instructor by the time the class started
+                    'rejected_class_cancelled' => 0, //Rejected because the class did not start (see reasons below)
+                    'accepted' => array(
+                        'menchbot_active' => 0,
+                        'menchbot_inactive' => 0,
+                    ),
+                ),
+            );
+
+            //Auto withdraw all incomplete admission requests:
+            $incomplete_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 0,
+            ));
+            if(count($incomplete_admissions)>0){
+
+                //Update counter:
+                $stats[$class['r_id']]['students']['rejected_incomplete'] = count($incomplete_admissions);
+
+                foreach($incomplete_admissions as $admission){
+
+                    //Auto reject:
+                    $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
+
+                    //Inform the student of auto rejection because they missed deadline:
+                    $this->Email_model->email_intent($admission['b_id'],3016,$admission);
+                }
+            }
+
+
+            //Auto reject all applications that were not yet accepted:
+            $pending_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 2,
+            ));
+
+            if(count($pending_admissions)>0){
+
+                //Update counter:
+                $stats[$class['r_id']]['students']['rejected_pending'] = count($pending_admissions);
+
+                foreach($pending_admissions as $admission){
+
+                    //Auto reject:
+                    $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
+
+                    //Inform the student of rejection:
+                    $this->Email_model->email_intent($admission['b_id'],2799,$admission);
+
+                    //Was this a paid class? Let admin know to manually process refunds
+                    //TODO automate refunds through Paypal API later on...
+                    if($class['r_usd_price']>0){
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_message' => 'Need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start because the instructor did not approve them on time.',
+                            'e_type_id' => 58, //Class Manual Refund
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
                     }
                 }
             }
-            if($found>0){
-                echo '<hr />';
+
+
+
+            /*
+             * Now make sure class meets are requirements to get started:
+             *
+             * 1. Minimum required studnets have already been admitted
+             * 2. Action Plan has at-least 1 Published Milestone
+             *
+             */
+
+            //Lets see how many admitted students we have?
+            $accepted_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 4, //Admitted students
+            ));
+
+            //Find first due milestone to dispatch its messages to all students:
+            $first_milestone_c_id = 0;
+            foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                if($milestone['c_status']>=1){
+                    $first_milestone_c_id = $milestone['c_id'];
+                    break;
+                }
+            }
+
+            if($first_milestone_c_id==0 || count($accepted_admissions)==0 || count($accepted_admissions)<$class['r_min_students']){
+
+                //Cancel this class as it does not have enough students admitted:
+                $stats[$class['r_id']]['new_status'] = -2; //Class was cancelled
+                $this->Db_model->r_update( $class['r_id'] , array('r_status' => $stats[$class['r_id']]['new_status']));
+
+                $cancellation_reason = ( $first_milestone_c_id==0 ? 'because there was no published Milestones' : 'because the class had ['.count($accepted_admissions).'] admitted students, which did not meet the minimum required students of ['.$class['r_min_students'].']' );
+
+                //Change the status of all students that had been accepted, if any, and notify admin for refunds:
+                //Note that this process is kind-of similar to Api_chat_v1/update_admission_status() but not fully as it also includes ru_status=0
+                if(count($accepted_admissions)>0){
+
+                    //Update counter:
+                    $stats[$class['r_id']]['students']['rejected_class_cancelled'] = count($accepted_admissions);
+
+                    foreach($accepted_admissions as $admission){
+                        //Auto reject:
+                        $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
+
+                        //Inform the student of rejection:
+                        $this->Email_model->email_intent($admission['b_id'],3017,$admission);
+
+                        //Was this a paid class? Let admin know to manually process refunds
+                        //TODO automate refunds through Paypal API later on...
+                        if($class['r_usd_price']>0){
+                            $this->Db_model->e_create(array(
+                                'e_initiator_u_id' => 0, //System
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_message' => 'Need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start '.$cancellation_reason.'.',
+                                'e_type_id' => 58, //Class Manual Refund
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ));
+                        }
+                    }
+                }
+
+                //Log Class Cancellation engagement & Notify Admin/Instructor:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => 0, //System
+                    'e_message' => 'Class did not start because '.$cancellation_reason.'.',
+                    'e_json' => json_encode(array(
+                        'minimum' => $class['r_min_students'],
+                        'admitted' => $accepted_admissions,
+                    )),
+                    'e_type_id' => 56, //Class Cancelled
+                    'e_b_id' => $class['r_b_id'],
+                    'e_r_id' => $class['r_id'],
+                ));
+
+            } else {
+
+                //The class is ready to get started!
+                //Change the status to running:
+                $stats[$class['r_id']]['new_status'] = 2; //Class Running
+                $this->Db_model->r_update( $class['r_id'] , array('r_status' => $stats[$class['r_id']]['new_status']));
+
+                //Dispatch appropriate Message to Students
+                foreach($accepted_admissions as $admission){
+                    if($admission['u_fb_id']>0){
+
+                        //Update counter:
+                        $stats[$class['r_id']]['students']['accepted']['menchbot_active']++;
+
+                        //They already have MenchBot activated, send message:
+                        $message_result = tree_message($first_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $admission['b_id'], $admission['r_id']);
+
+                    } else {
+
+                        //Update counter:
+                        $stats[$class['r_id']]['students']['accepted']['menchbot_inactive']++;
+
+                        //No MenchBot activated yet! Remind them again:
+                        $this->Email_model->email_intent($admission['b_id'],3120,$admission);
+
+                    }
+                }
+
+                //Log Class Cancellation engagement & Notify Admin/Instructor:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => 0, //System
+                    'e_message' => 'Class started successfully with ['.count($accepted_admissions).'] admitted students.',
+                    'e_json' => json_encode(array(
+                        'admitted' => $accepted_admissions,
+                    )),
+                    'e_type_id' => 60, //Class kick-started
+                    'e_b_id' => $class['r_b_id'],
+                    'e_r_id' => $class['r_id'],
+                ));
             }
         }
-    }
 
-    function lazaro(){
-        echo_json(tree_message(896, 0, '381488558920384', 422, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 68, 104));
-        echo_json(tree_message(896, 0, '381488558920384', 416, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 68, 104));
-    }
-
-    function profile(){
-        echo_json($this->Facebook_model->fetch_profile('381488558920384','1670125439677259'));
+        //Echo Summary:
+        echo_json($stats);
     }
 
     function drip(){
@@ -87,6 +268,7 @@ class Cron extends CI_Controller {
             $bootcamps = $this->Db_model->c_full_fetch(array(
                 'b.b_id' => $class['r_b_id'],
             ));
+
             //Now override $class with the more complete version:
             $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
 
@@ -99,7 +281,6 @@ class Cron extends CI_Controller {
 
             //Now lets loop through the Bootcamp and Milestone levels to see if we have any drip messages pending
             $drip_stats = array(
-                'active_students' => array(), //To be populated if drip detected
                 'd_bootcamp' => array(
                     'c_id' => $bootcamps[0]['b_c_id'],
                     'send' => array(),
@@ -182,19 +363,18 @@ class Cron extends CI_Controller {
                         if(!in_array($i['i_id'],$drip_stats['d_bootcamp']['sent_ids'])){
 
                             //Fetch active students in this class:
-                            $drip_stats['active_students'] = $this->Db_model->ru_fetch(array(
+                            $class_students = $this->Db_model->ru_fetch(array(
                                 'ru.ru_r_id'	    => $class['r_id'],
                                 'ru.ru_status'	    => 4, //Bootcamp students
-                                'u.u_status >'	    => 0, //Active user
                                 'u.u_fb_id >'	    => 0, //Activated MenchBot
                             ));
-                            $drip_stats['d_bootcamp']['drips_sent'] = count($drip_stats['active_students']);
+                            $drip_stats['d_bootcamp']['drips_sent'] = count($class_students);
 
                             //Did we find any?
                             if($drip_stats['d_bootcamp']['drips_sent']>0){
 
                                 //Send drip message to all students:
-                                foreach($drip_stats['active_students'] as $u){
+                                foreach($class_students as $u){
                                     //Send this message & log sent engagement using the echo_i() function:
                                     $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array_merge( $i , array(
                                         'e_initiator_u_id' => 0, //System
@@ -205,10 +385,11 @@ class Cron extends CI_Controller {
                                 }
 
                                 //Log engagement for the entire Drip batch:
+                                //TODO log per student
                                 $this->Db_model->e_create(array(
                                     'e_initiator_u_id' => 0, //System
                                     'e_recipient_u_id' => 0, //No particular person, likely a group of students
-                                    'e_message' => 'Bootcamp-level drip message sent to '.count($drip_stats['active_students']).' students',
+                                    'e_message' => 'Bootcamp-level drip message sent to all '.count($class_students).' class students',
                                     'e_json' => json_encode(array(
                                         'i' => $i,
                                         'drip_stats' => $drip_stats['d_bootcamp'],
@@ -304,23 +485,27 @@ class Cron extends CI_Controller {
                         //Note that if the instructor changes the order of the Drips mid-way, this would still work, kind of...
                         if(!in_array($i['i_id'],$drip_stats['d_milestone']['sent_ids'])){
 
-                            //Fetch active students only if not already fetched at the Bootcamp-level:
-                            if(count($drip_stats['active_students'])==0){
-                                $drip_stats['active_students'] = $this->Db_model->ru_fetch(array(
-                                    'ru.ru_r_id'	    => $class['r_id'],
-                                    'ru.ru_status'	    => 4, //Bootcamp students
-                                    'u.u_status >'	    => 0, //Active user
-                                    'u.u_fb_id >'	    => 0, //Activated MenchBot
-                                ));
+                            //Fetch active students who are at the current milestone:
+                            $fetch_filters = array(
+                                'ru.ru_r_id'	            => $class['r_id'],
+                                'ru.ru_status'	            => 4, //Bootcamp students
+                                'u.u_fb_id >'	            => 0, //Activated MenchBot
+                            );
+
+                            if($class['r__current_milestone']>=2){
+                                //Since we're at Week 2, we only need to send these Drip messages to students who have reached this week:
+                                $fetch_filters['ru.ru_current_milestone >='] = $class['r__current_milestone'];
                             }
 
-                            $drip_stats['d_milestone']['drips_sent'] = count($drip_stats['active_students']);
+                            $milestone_students = $this->Db_model->ru_fetch($fetch_filters);
+
+                            $drip_stats['d_milestone']['drips_sent'] = count($milestone_students);
 
                             //Did we find any?
                             if($drip_stats['d_milestone']['drips_sent']>0){
 
                                 //Send drip message to all students:
-                                foreach($drip_stats['active_students'] as $u){
+                                foreach($milestone_students as $u){
                                     //Send this message & log sent engagement using the echo_i() function:
                                     $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array_merge( $i , array(
                                         'e_initiator_u_id' => 0, //System
@@ -331,10 +516,11 @@ class Cron extends CI_Controller {
                                 }
 
                                 //Log engagement for the entire Drip batch:
+                                //TODO change to logging per student
                                 $this->Db_model->e_create(array(
                                     'e_initiator_u_id' => 0, //System
                                     'e_recipient_u_id' => 0, //No particular person, likely a group of students
-                                    'e_message' => 'Milestone-level drip message sent to '.count($drip_stats['active_students']).' students',
+                                    'e_message' => 'Milestone-level drip message sent to '.count($milestone_students).' students at this milestone',
                                     'e_json' => json_encode(array(
                                         'i' => $i,
                                         'drip_stats' => $drip_stats['d_milestone'],
@@ -362,16 +548,181 @@ class Cron extends CI_Controller {
         echo_json($results);
     }
 
+    function next_milestone(){
 
-    function unreplied_messages(){
+        exit;
+
+        $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404);
+        $incomplete = array(1);//324
+
+
+        $accepted_admissions = $this->Db_model->ru_fetch(array(
+            'ru.ru_r_id'	    => 103,
+            'ru.ru_status'	    => 4,
+            'u.u_fb_id >'	    => 0, //Activated
+        ));
+
+        foreach($completed as $u_id){
+            //tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
+        }
+
+        $counter = 0;
+        foreach($accepted_admissions as $u){
+
+            if(in_array($u['u_id'],$completed)){
+                continue;
+            }
+
+            $counter++;
+            echo $counter.') '.$u['u_fname'].'<br />';
+            continue;
+
+            //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
+            unset($instant_messages);
+            $instant_messages = array();
+            array_push( $instant_messages , echo_i( array(
+                'i_media_type' => 'text',
+                'i_message' => 'Hi {first_name}, we just moved on to our next Milestone which would become available to you once you finish all your week 1 tasks. Let me know what\'s preventing you from completing your week 1 tasks, and I\'d be happy to assist you in catching-up to the rest of the class who now moved on to week 2.',
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $u['u_id'],
+                'e_r_id' => 103,
+                'e_b_id' => 67,
+            ), $u['u_fname'], true ));
+
+            //Send message:
+            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], $instant_messages);
+        }
+
+
+        //Starts the next milestone and notifies students who are ready to move on:
+        $classes = $this->Db_model->r_fetch(array(
+            'r_id' => 103, //For start...
+            'r_status' => 2,
+        ));
+
+        foreach($classes as $key=>$class){
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $class['r_b_id'],
+            ));
+
+            //Now override $class with the more complete version:
+            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
+
+
+            //Fetch all active students for this class:
+            $stats = array(
+                'total' => 0,
+                'pending' => 0,
+                'completed' => 0,
+            );
+            $accepted_admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_r_id'	    => $class['r_id'],
+                'ru.ru_status'	    => 4,
+            ));
+
+            foreach($accepted_admissions as $u){
+                $stats['total']++;
+
+                //Count their previous submission:
+
+
+                if(1){
+                    $stats['pending']++;
+                } else {
+                    $stats['completed']++;
+
+                    //Inform Students on First Milestone:
+                    tree_message(946, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
+                }
+            }
+
+            //Now lets send them a message based on their status:
+
+
+            //echo_json($accepted_admissions);
+        }
+
+        //print_r($classes);
+    }
+
+    function bot_save_files(){
+        /*
+         * This cron job looks for all engagements with Facebook attachments
+         * that are pending upload (i.e. e_cron_job=0) and uploads their
+         * attachments to amazon S3 and then changes status to e_cron_job=1
+         *
+         */
+
+        $max_per_batch = 10; //Max number of scans per run
+
+        $e_pending = $this->Db_model->e_fetch(array(
+            'e_cron_job' => 0, //Pending file upload to S3
+            'e_type_id >=' => 6, //Messages only
+            'e_type_id <=' => 7, //Messages only
+        ));
+
+        $counter = 0;
+        foreach($e_pending as $ep){
+
+            //Prepare variables:
+            $json_data = objectToArray(json_decode($ep['e_json']));
+
+            //Loop through entries:
+            foreach($json_data['entry'] as $entry) {
+                //loop though the messages:
+                foreach($entry['messaging'] as $im){
+                    //This should only be a message
+                    if(isset($im['message'])) {
+                        //This should be here
+                        if(isset($im['message']['attachments'])){
+                            //We should have attachments:
+                            foreach($im['message']['attachments'] as $att){
+                                //This one too! It should be one of these:
+                                if(in_array($att['type'],array('image','audio','video','file'))){
+
+                                    //Store to local DB:
+                                    $new_file_url = save_file($att['payload']['url'],$json_data);
+
+                                    //Update engagement data:
+                                    $this->Db_model->e_update( $ep['e_id'] , array(
+                                        'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+                                        'e_cron_job' => 1, //Mark as done
+                                    ));
+
+                                    //Increase counter:
+                                    $counter++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if($counter>=$max_per_batch){
+                break; //done for now
+            }
+        }
+        //Echo message for cron job:
+        echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
+    }
+
+    /* ******************************
+	 * Instructor
+	 ****************************** */
+
+    function instructor_notify_student_activity(){
 
         //Runs every hour and informs instructors/admins of new messages received recently
         //Define settings:
-	    $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
+        $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
 
         //Create query:
         $mench_cs_fb_ids = $this->config->item('mench_cs_fb_ids');
-	    $after_time = date("Y-m-d H:i:s",(time()-$seconds_ago));
+        $after_time = date("Y-m-d H:i:s",(time()-$seconds_ago));
+
+
+        //Fetch student inbound messages that have not yet been replied to:
         $q = $this->db->query('SELECT u_fname, u_lname, e_initiator_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY e_initiator_u_id, u_status, u_fname, u_lname');
         $new_messages = $q->result_array();
         $notify_messages = array();
@@ -444,17 +795,36 @@ class Cron extends CI_Controller {
             }
         }
 
+        //Fetch student assignment submissions:
+        //TODO later, we have an open issue for this
+        /*
+        $task_submissions = $this->Db_model->us_fetch(array(
+            'us_timestamp >=' => $after_time,
+            'us_status' => 1, //This is the default when submitted by the student
+        ));
+
+        $q = $this->db->query('SELECT u_fname, u_lname, u_id, COUNT(us_id) as tasks_submitted FROM v5_user_submissions us JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY u_id, u_status, u_fname, u_lname');
+        $new_messages = $q->result_array();
+
+
+        if(count($task_submissions)>0){
+            foreach($task_submissions){
+
+            }
+        }
+        */
+
         //Now see if we need to notify any admin:
         if(count($notify_messages)>0){
             foreach($notify_messages as $key=>$msg){
 
                 //Prepare the message Body:
-                $message = '💡 You have unreplied messages from '.count($msg['message_threads']).' student'.show_s(count($msg['message_threads'])).' in the past '.round($seconds_ago/3600).' hours:'."\n";
+                $message = '💡 Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
                 if(count($msg['bootcamp_data'])>0 && strlen($message)<580){
-                    $message .= "\n\n".'You can see and reply to these messages sent to ['.$msg['bootcamp_data']['c_objective'].'] here:'."\n\n".'https://mench.co/console/'.$msg['bootcamp_data']['b_id'].'/students';
+                    $message .= "\n\n".'Communicate with your ['.$msg['bootcamp_data']['c_objective'].'] students here:'."\n\n".'https://mench.co/console/'.$msg['bootcamp_data']['b_id'].'/students';
                 }
 
                 $notify_messages[$key]['admin_message'] = $message;
@@ -475,341 +845,21 @@ class Cron extends CI_Controller {
         echo_json($notify_messages);
     }
 
+    /* ******************************
+	 * Students
+	 ****************************** */
 
-    function next_milestone(){
+    function student_reminder_complete_application(){
 
-        $completed = array(258,271,314,317,336,354,358,369,370,371,372,374,389,393,404);
-        $incomplete = array(1);//324
-
-
-        $accepted_admissions = $this->Db_model->ru_fetch(array(
-            'ru.ru_r_id'	    => 103,
-            'ru.ru_status'	    => 4,
-            'u.u_fb_id >'	    => 0, //Activated
-        ));
-
-        foreach($completed as $u_id){
-            //tree_message(946, 0, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 67, 103);
-        }
-
-        $counter = 0;
-        foreach($accepted_admissions as $u){
-
-            if(in_array($u['u_id'],$completed)){
-                continue;
-            }
-
-            $counter++;
-            echo $counter.') '.$u['u_fname'].'<br />';
-            continue;
-
-            //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
-            unset($instant_messages);
-            $instant_messages = array();
-            array_push( $instant_messages , echo_i( array(
-                'i_media_type' => 'text',
-                'i_message' => 'Hi {first_name}, we just moved on to our next Milestone which would become available to you once you finish all your week 1 tasks. Let me know what\'s preventing you from completing your week 1 tasks, and I\'d be happy to assist you in catching-up to the rest of the class who now moved on to week 2.',
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $u['u_id'],
-                'e_r_id' => 103,
-                'e_b_id' => 67,
-            ), $u['u_fname'], true ));
-
-            //Send message:
-            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], $instant_messages);
-        }
-
-
-
-        exit;
-
-	    //Starts the next milestone and notifies students who are ready to move on:
-        $classes = $this->Db_model->r_fetch(array(
-            'r_id' => 103, //For start...
-            'r_status' => 2,
-        ));
-
-        foreach($classes as $key=>$class){
-
-            //Fetch full Bootcamp/Class data for this:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ));
-
-            //Now override $class with the more complete version:
-            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
-
-
-            //Fetch all active students for this class:
-            $stats = array(
-                'total' => 0,
-                'pending' => 0,
-                'completed' => 0,
-            );
-            $accepted_admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_r_id'	    => $class['r_id'],
-                'ru.ru_status'	    => 4,
-            ));
-
-            foreach($accepted_admissions as $u){
-                $stats['total']++;
-
-                //Count their previous submission:
-
-
-                if(1){
-                    $stats['pending']++;
-                } else {
-                    $stats['completed']++;
-
-                    //Inform Students on First Milestone:
-                    tree_message(946, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
-                }
-            }
-
-            //Now lets send them a message based on their status:
-
-
-            //echo_json($accepted_admissions);
-        }
-
-        //print_r($classes);
     }
 
-	function class_kickstart(){
+    function student_reminder_group_call_starting(){
 
-	    //This function is solely responsible to get the class started and dispatch its very first milestone messages IF it does start
-	    //Searches for any class that might be starting and kick starts its messages:
-        $classes = $this->Db_model->r_fetch(array(
-            'r_status' => 1,
-            'r_start_date <=' => date("Y-m-d"),
-        ));
-
-        foreach($classes as $key=>$class){
-
-            //Make sure the start time has already passed:
-            if( time() < ( strtotime($class['r_start_date']) + ($class['r_start_time_mins']*60) )){
-                //Not started yet!
-                continue;
-            }
-
-            //Include email model as we might need some communications:
-            $this->load->model('Email_model');
-
-            //Fetch full Bootcamp/Class data for this:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ));
-
-            //Now override $class with the more complete version:
-            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
-
-            //Uncomment for For QA:
-            $classes[$key] = $class; $classes[$key]['bootcamp'] = $bootcamps[0]; continue;
-
-            //Auto withdraw all incomplete admission requests:
-            $incomplete_admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_r_id'	    => $class['r_id'],
-                'ru.ru_status'	    => 0,
-            ));
-            if(count($incomplete_admissions)>0){
-                foreach($incomplete_admissions as $admission){
-
-                    //Auto withdraw:
-                    $this->Db_model->ru_update( $admission['ru_id'] , array(
-                        'ru_status' => -2,
-                    ));
-
-                    //Inform the student of auto withdrawal:
-                    $this->Email_model->email_intent($admission['b_id'],3016,$admission);
-                }
-            }
-
-
-            //Auto reject all applications that were not yet accepted:
-            $pending_admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_r_id'	    => $class['r_id'],
-                'ru.ru_status'	    => 2,
-            ));
-            if(count($pending_admissions)>0){
-                foreach($pending_admissions as $admission){
-
-                    //Auto reject:
-                    $this->Db_model->ru_update( $admission['ru_id'] , array(
-                        'ru_status' => -1,
-                    ));
-
-                    //Inform the student of rejection:
-                    $this->Email_model->email_intent($admission['b_id'],2799,$admission);
-
-                    //Was this a paid class? Let admin know to manually process refunds
-                    //TODO automate refunds through Paypal API later on...
-                    if($class['r_usd_price']>0){
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_message' => 'Need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start',
-                            'e_type_id' => 58, //Class Manual Refund
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-                    }
-                }
-            }
-
-
-            //What should happen to the class it self?
-            //Lets see how many admitted students we have?
-            $accepted_admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_r_id'	    => $class['r_id'],
-                'ru.ru_status'	    => 4,
-            ));
-            if(count($accepted_admissions)<$class['r_min_students']){
-
-                //Cancel this class as it does not have enough students admitted:
-                $this->Db_model->r_update( $class['r_id'] , array(
-                    'r_status' => -2, //Class was cancelled
-                ));
-
-                //Change the status of all students that had been accepted, if any, and notify admin for refunds:
-                //Note that this process is kind-of similar to Api_chat_v1/update_admission_status() but not fully as it also includes ru_status=0
-                if(count($accepted_admissions)>0){
-                    foreach($accepted_admissions as $admission){
-                        //Reject their admission:
-
-                    }
-
-                    //Was this a paid class? Let admin know to manually process refunds
-                    //TODO automate refunds through Paypal API later on...
-                    if($class['r_usd_price']>0){
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_message' => 'Need to manually refund the '.$class['r__current_admissions'].' students who paid for this class via Paypal',
-                            'e_type_id' => 58, //Class Manual Refund
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-                    }
-                }
-
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'], //The user
-                    'e_message' => readable_updates($classes[0],$r_update,'r_'),
-                    'e_json' => json_encode(array(
-                        'input' => $_POST,
-                        'before' => $classes[0],
-                        'after' => $r_update,
-                    )),
-                    'e_type_id' => 56, //Class Cancelled
-                    'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
-                    'e_r_id' => intval($_POST['r_id']),
-                ));
-
-            } else {
-
-                //The class is ready to get started!
-                //Change the status to running:
-                $this->Db_model->r_update( $class['r_id'] , array(
-                    'r_status' => 2, //Class Running
-                ));
-
-                //Find first due milestone to dispatch its messages to all students:
-                $first_milestone_c_id = 0;
-                foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                    if($milestone['c_status']>=1){
-                        $first_milestone_c_id = $milestone['c_id'];
-                        break;
-                    }
-                }
-
-                if($first_milestone_c_id || 1){
-                    //We found this milestone!
-
-                    //Change the status:
-                    //$this->Db_model->r_update( $class['r_id'] , array('r_status' => 2));
-
-                    //Fetch all admitted & activated students:
-                    $admitted = $this->Db_model->ru_fetch(array(
-                        'ru.ru_r_id'	    => $class['r_id'],
-                        'ru.ru_status >='	=> 4, //Anyone who is admitted
-                        'u.u_fb_id >'	    => 0, //Activated MenchBot
-                    ));
-
-                    foreach($admitted as $u){
-                        //Inform Students on First Milestone:
-                        tree_message(890, 0, '381488558920384', $u['u_id'], 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $class['r_b_id'], $class['r_id']);
-                    }
-                }
-
-            }
-
-            echo_json(array(
-                'admitted' => $admitted,
-                'class' => $class,
-            ));
-
-        }
     }
-	
-	function bot_save_files(){
-	    /*
-	     * This cron job looks for all engagements with Facebook attachments
-	     * that are pending upload (i.e. e_cron_job=0) and uploads their
-	     * attachments to amazon S3 and then changes status to e_cron_job=1
-	     * 
-	     */
-	    
-	    $max_per_batch = 10; //Max number of scans per run
-	    
-	    $e_pending = $this->Db_model->e_fetch(array(
-	        'e_cron_job' => 0, //Pending file upload to S3
-	        'e_type_id >=' => 6, //Messages only
-	        'e_type_id <=' => 7, //Messages only
-	    ));
-	    
-	    $counter = 0;
-	    foreach($e_pending as $ep){
-	        
-	        //Prepare variables:
-	        $json_data = objectToArray(json_decode($ep['e_json']));
-	        
-	        //Loop through entries:
-	        foreach($json_data['entry'] as $entry) {
-	            //loop though the messages:
-	            foreach($entry['messaging'] as $im){
-	                //This should only be a message
-	                if(isset($im['message'])) {
-	                    //This should be here
-	                    if(isset($im['message']['attachments'])){
-	                        //We should have attachments:
-	                        foreach($im['message']['attachments'] as $att){
-	                            //This one too! It should be one of these:
-	                            if(in_array($att['type'],array('image','audio','video','file'))){
-	                                
-	                                //Store to local DB:
-	                                $new_file_url = save_file($att['payload']['url'],$json_data);
 
-                                    //Update engagement data:
-	                                $this->Db_model->e_update( $ep['e_id'] , array(
-	                                    'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
-	                                    'e_cron_job' => 1, //Mark as done
-	                                ));
-	                                
-	                                //Increase counter:
-	                                $counter++;
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	        if($counter>=$max_per_batch){
-	            break; //done for now
-	        }
-	    }
-	    //Echo message for cron job:
-	    echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
-	}
+    function student_reminder_complete_milestone(){
+        //Send reminders to students to complete their tasks:
+
+    }
 
 }
