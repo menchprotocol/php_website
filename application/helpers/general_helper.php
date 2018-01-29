@@ -136,6 +136,7 @@ function extract_level($b,$c_id){
                 foreach($sprint['c__child_intents'] as $task_key=>$task){
                     if($task['c_id']==$c_id){
 
+
                         //Find the next intent:
                         $next_intent = null;
                         $next_level = 0;
@@ -1022,7 +1023,7 @@ function mime_type($mime){
 
 function on_time_term($score){
     if($score==1){
-        return 'ON-TIME';
+        return 'ON TIME';
     } elseif($score==0.5){
         return 'A LITTLE LATE';
     } elseif($score==0){

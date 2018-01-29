@@ -1082,7 +1082,7 @@ class Api_v1 extends CI_Controller {
                     if($is_instructor){
                         echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.$ls['ru_current_milestone'].'</td>';
                         echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">'.( $possible_points>0 ? '<span data-toggle="tooltip" title="Excluding current milestone, student earned '.$points_earned.'/'.$possible_points.' possible points">'.( $possible_points ? round( $points_earned/$possible_points*100 ).'%' : '' ).'</span>' : '100%' ).'</td>';
-                        echo '<td valign="top" style="'.$bborder.'border-right:1px solid #999; text-align:left; vertical-align:top;">'.( !$possible_points || $ls['points']>=$possible_points  ? $trophy : '' ).'</td>';
+                        echo '<td valign="top" style="'.$bborder.'border-right:1px solid #999; text-align:left; vertical-align:top;">'.( $ls['ru_current_milestone']>=$class['r__current_milestone'] ? $trophy : '' ).'</td>';
                     }
 
                     echo '</tr>';
@@ -1344,7 +1344,7 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
         } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
             die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-        } elseif(strtotime($_POST['r_start_date'])<time()){
+        } elseif((strtotime($_POST['r_start_date'])+($_POST['r_start_time_mins']*60))<time()){
             die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
 	    } elseif(!isset($_POST['r_start_time_mins'])){
 	        die('<span style="color:#FF0000;">Error: Enter valid start time.</span>');
@@ -1506,7 +1506,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
 	        //TODO make sure its monday
 	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-        //} elseif(strtotime($_POST['r_start_date'])<time()){
+        //} elseif((strtotime($_POST['r_start_date'])+($_POST['r_start_time_mins']*60))){
             //TODO Put back in place
             //die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){

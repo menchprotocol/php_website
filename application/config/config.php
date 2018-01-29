@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.86,
+    'version' => 1.9,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -250,7 +250,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57,60);
+$config['instructor_subscriptions'] = array(30,52,56,57,60,61);
 $config['mench_cs_fb_ids'] = array(
     array(
         'u_fname' => 'Shervin',
@@ -270,11 +270,11 @@ $config['mench_cs_fb_ids'] = array(
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,31,37,56,57,58,60),
+        'subscription' => array(9,15,31,37,56,57,58,60,61),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,31,37,56,57,58,60),
+        'subscription' => array(8,9,15,31,37,56,57,58,60,61),
     ),
 );
 
@@ -388,7 +388,6 @@ $config['start_times'] = array(
     1350 => '10:30pm',
     1380 => '11pm',
     1410 => '11:30pm',
-    1439 => '11:59pm',
 );
 
 
