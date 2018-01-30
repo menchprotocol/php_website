@@ -393,7 +393,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             ));
             if(count($matching_users)==1){
                 //We found it, append the name:
-                $i['i_message'] .= ' -'.$matching_users[0]['u_fname'].$matching_users[0]['u_fname'];
+                $i['i_message'] .= ' -'.$matching_users[0]['u_fname'].$matching_users[0]['u_lname'];
             } else {
                 $i['i_message'] .= ' -MenchBot';
             }
