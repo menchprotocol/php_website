@@ -59,11 +59,11 @@ function update_timeline(){
 <div class="help_body maxout" id="content_625"></div>
 
 <div class="form-group label-floating is-empty">
-    <input type="text" id="r_start_date" value="<?= ( isset($r_start_date) ? date("m/d/Y",strtotime($r_start_date)) : '' )  ?>" style="width:120px;display:inline-block;" class="form-control border" />
+    <input type="text" id="r_start_date" <?= (isset($disabled) ? $disabled : '') ?> value="<?= ( isset($r_start_date) ? date("m/d/Y",strtotime($r_start_date)) : '' )  ?>" style="width:120px;display:inline-block;" class="form-control border <?= (isset($disabled) ? $disabled : '') ?>" />
     <span class="material-input"></span>
 </div>
 <div class="form-group label-floating is-empty" style="margin-left:130px; margin-top:-36px;">
-    <select class="form-control input-mini border" id="r_start_time_mins">
+    <select class="form-control input-mini border <?= (isset($disabled) ? $disabled : '') ?>" <?= (isset($disabled) ? $disabled : '') ?> id="r_start_time_mins">
     	<?php
     	foreach($start_times as $minutes=>$fancy_time){
     	    echo '<option value="'.$minutes.'" '.( isset($r_start_time_mins) && $r_start_time_mins==$minutes ? 'selected="selected"' : '' ).'>'.$fancy_time.' PST</option>';

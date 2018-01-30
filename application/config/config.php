@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.9,
+    'version' => 1.91,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -36,11 +36,11 @@ $config['mench_bots'] = array(
             'greeting' => array(
                 array(
                     'locale' => 'default',
-                    'text' => 'I\'m an Assistant Bot for Mench Bootcamps. I\'ll help with:
+                    'text' => 'I\'m Mench, An assistant Bot that would help you with:
 
 - Notifications/Reminders
 - Managing your Action Plan
-- Chat with Instructor & Mench Team',
+- Chat with your Instructor',
                 ),
             ),
             'whitelisted_domains' => array(
@@ -60,7 +60,6 @@ $config['mench_bots'] = array(
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
                         ),
-
                         array(
                             'title' => '🏆 Leaderboard',
                             'type' => 'web_url',
@@ -270,11 +269,11 @@ $config['mench_cs_fb_ids'] = array(
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,31,37,56,57,58,60,61),
+        'subscription' => array(9,15,37,56,57,58,60,61),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,31,37,56,57,58,60,61),
+        'subscription' => array(8,9,15,37,56,57,58,60,61),
     ),
 );
 
@@ -990,8 +989,8 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fa-times-circle',
         ),
         -2 => array(
-            's_name'  => 'Cancelled',
-            's_desc'  => 'Class was cancelled before it had started as it did not meet its minimum student admission requirement',
+            's_name'  => 'Disqualified',
+            's_desc'  => 'Class was not qualified to start likely because it did not meet its minimum admission requirements',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),

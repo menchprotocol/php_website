@@ -1636,6 +1636,28 @@ function hourformat($fancy_hour){
     }
 }
 
+function class_status_change($current_status,$has_applicants){
+    if($current_status==-3){
+        return array(-2,-1,0,1,2,3);
+    } elseif($current_status==-2){
+        return array(-3,-1,0,1,2,3);
+    } elseif($current_status==-1){
+        return array(-3,-2,2,3);
+    } elseif($current_status==0){
+        return array(-3,-2,2,3);
+    } elseif($current_status==1 && $has_applicants){
+        return array(-2,-1,0,2,3);
+    } elseif($current_status==1 && !$has_applicants){
+        return array(-3,-2,2,3);
+    } elseif($current_status==2){
+        return array(-2,-1,0,1,3);
+    } elseif($current_status==3){
+        return array(-3,-2,-1,0,1,2);
+    } else {
+        //Should not happen!
+        return array();
+    }
+}
 
 function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
 	

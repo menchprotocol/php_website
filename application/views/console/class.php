@@ -4,6 +4,10 @@ $sprint_units = $this->config->item('sprint_units');
 $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
+
+//Determine lock down status:
+$disabled = ( $current_applicants>0 || $class['r_status']>=2 ? 'disabled' : null );
+
 ?>
 <script>
 
@@ -25,6 +29,18 @@ function adjust_mentorship_sessions(){
 		$('#r_meeting_duration').fadeIn();
 	}
 }
+
+function hide_refunds(){
+    //See what the current price is:
+    var price = $('#r_usd_price').val();
+    if(price.length && parseInt(price)==0){
+        //Seems like a free Bootcamp, hide refunds:
+        $('#refund_policies').addClass('hidden');
+    } else {
+        $('#refund_policies').removeClass('hidden');
+    }
+}
+
 
 function update_tuition_calculator(){
 
@@ -83,6 +99,12 @@ function initiate_calculator(){
 }
 
 $(document).ready(function() {
+
+    //Need to hide the price?
+    hide_refunds();
+    $( "#r_usd_price" ).change(function() {
+        hide_refunds();
+    });
     
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
@@ -211,8 +233,6 @@ function save_r(){
 </ul>
 
 
-
-
 <div class="tab-content tab-space">
     
     
@@ -221,7 +241,7 @@ function save_r(){
     	<?php itip(630); ?>
 		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
         <div class="help_body maxout" id="content_614"></div>
-        <select class="form-control input-mini border" id="r_response_time_hours">
+        <select class="form-control input-mini border <?= $disabled ?>" id="r_response_time_hours" <?= $disabled ?>>
         <option value="">Select Responsiveness</option>
         <?php 
         $r_response_options = $this->config->item('r_response_options');
@@ -240,7 +260,7 @@ function save_r(){
         <table style="width:100%;">
         	<tr>
         		<td style="width:150px;">
-        			<select class="form-control input-mini border" id="r_meeting_frequency">
+        			<select class="form-control input-mini border <?= $disabled ?>" id="r_meeting_frequency" <?= $disabled ?>>
                         <?php
                         if(strlen($class['r_meeting_frequency'])==0){
                             echo '<option value="">Select...</option>';
@@ -253,7 +273,7 @@ function save_r(){
                     </select>
         		</td>
         		<td style="width:160px;">
-        			<select class="form-control input-mini border" id="r_meeting_duration">
+        			<select class="form-control input-mini border <?= $disabled ?>" id="r_meeting_duration" <?= $disabled ?>>
                         <?php
                         $r_meeting_duration = $this->config->item('r_meeting_duration');
                         foreach($r_meeting_duration as $time){
@@ -278,7 +298,7 @@ function save_r(){
 		<input type="hidden" id="r_live_office_hours_val" value="<?= strlen($class['r_live_office_hours'])>0 ? '1' : '0' ?>" />
 		<div class="checkbox">
         	<label>
-        		<input type="checkbox" id="r_live_office_hours_check" <?= strlen($class['r_live_office_hours'])>0 ? 'checked' : '' ?>>
+        		<input type="checkbox" class="<?= $disabled ?>" <?= $disabled ?> id="r_live_office_hours_check" <?= strlen($class['r_live_office_hours'])>0 ? 'checked' : '' ?>>
         		Offer Weekly Group Calls
         	</label>
         </div>
@@ -327,28 +347,30 @@ function save_r(){
         <div class="help_body maxout" id="content_621"></div>
         <div class="input-group">
         	<span class="input-group-addon addon-lean">USD $</span>
-        	<input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= isset($class['r_usd_price']) && floatval($class['r_usd_price'])>=0 ? $class['r_usd_price'] : null ?>" class="form-control border" />
+        	<input type="number" min="0" step="0.01" style="width:100px; margin-bottom:-5px;" id="r_usd_price" value="<?= isset($class['r_usd_price']) && floatval($class['r_usd_price'])>=0 ? $class['r_usd_price'] : null ?>" class="form-control border <?= $disabled ?>" <?= $disabled ?> />
         </div>
         <br />
         
         
-        
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy <span id="hb_622" class="help_button" intent-id="622"></span></h4></div>
-        <div class="help_body maxout" id="content_622"></div>
-        <?php
-        $refund_policies = $this->config->item('refund_policies');
-        foreach($refund_policies as $type=>$terms){
-            echo '<div class="radio">
-        	<label>
-        		<input type="radio" name="r_cancellation_policy" value="'.$type.'" '.( isset($class['r_cancellation_policy']) && $class['r_cancellation_policy']==$type ? 'checked="true"' : '' ).' />
-        		'.ucwords($type).'
-        	</label>
-        	<ul style="margin-left:15px;">';
-            echo '<li>Full Refund: '.( $terms['full']>0 ? '<b>Before '.($terms['full']*100).'%</b> of the class\'s elapsed time' : ( $terms['prorated']>0 ? '<b>Before Start Date</b> of the class' : '<b>None</b> After Admission' ) ).'.</li>';
-              echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the class\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
-        	echo '</ul></div>';
-        }
-        ?>
+
+        <div id="refund_policies">
+            <div class="title" style="margin-top:30px;"><h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy <span id="hb_622" class="help_button" intent-id="622"></span></h4></div>
+            <div class="help_body maxout" id="content_622"></div>
+            <?php
+            $refund_policies = $this->config->item('refund_policies');
+            foreach($refund_policies as $type=>$terms){
+                echo '<div class="radio">
+                <label>
+                    <input type="radio" '.$disabled.' class="'.$disabled.'" name="r_cancellation_policy" value="'.$type.'" '.( isset($class['r_cancellation_policy']) && $class['r_cancellation_policy']==$type ? 'checked="true"' : '' ).' />
+                    '.ucwords($type).'
+                </label>
+                <ul style="margin-left:15px;">';
+                echo '<li>Full Refund: '.( $terms['full']>0 ? '<b>Before '.($terms['full']*100).'%</b> of the class\'s elapsed time' : ( $terms['prorated']>0 ? '<b>Before Start Date</b> of the class' : '<b>None</b> After Admission' ) ).'.</li>';
+                echo '<li>Pro-rated Refund: '.( $terms['prorated']>0 ? '<b>Before '.($terms['prorated']*100).'%</b> of the class\'s elapsed time' : '<b>None</b> After Admission' ).'.</li>';
+                echo '</ul></div>';
+            }
+            ?>
+        </div>
 
 
 
@@ -380,14 +402,23 @@ function save_r(){
             'b_status' => $bootcamp['b_status'],
             'r_start_date' => $class['r_start_date'],
             'r_start_time_mins' => $class['r_start_time_mins'],
+            'disabled' => $disabled,
         )); ?>
 
 
-        <div style="display:block; margin-top:30px;">
+        <?php
+        $this->load->view('console/inputs/r_status' , array(
+            'r_status' => $class['r_status'],
+            'removal_status' => class_status_change($class['r_status'],$current_applicants),
+        ));
+        ?>
+
+
+        <div style="display:block; margin-top:20px;">
             <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students <span id="hb_612" class="help_button" intent-id="612"></span></h4></div>
             <div class="help_body maxout" id="content_612"></div>
             <div class="input-group">
-                <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border" />
+                <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= ($class['r_status']>=2 ? 'disabled' : '') ?> id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border <?= ($class['r_status']>=2 ? 'disabled' : '') ?>" />
             </div>
             <br />
         </div>
@@ -396,22 +427,19 @@ function save_r(){
         <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students <span id="hb_613" class="help_button" intent-id="613"></span></h4></div>
         <div class="help_body maxout" id="content_613"></div>
         <div class="input-group">
-            <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border" />
+            <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= ($class['r_status']>=2 ? 'disabled' : '') ?> id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border <?= ($class['r_status']>=2 ? 'disabled' : '') ?>" />
         </div>
 
 
-        <?php $this->load->view('console/inputs/r_status' , array('r_status'=>$class['r_status']) ); ?>
 
-
-        <div style="display:block; margin-top:20px;">
+        <div style="display:block; margin-top:30px;">
             <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel ID <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
             <div class="help_body maxout" id="content_718"></div>
             <div class="input-group">
-            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border" />
+            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" <?= ($class['r_status']>=2 ? 'disabled' : '') ?> id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border <?= ($class['r_status']>=2 ? 'disabled' : '') ?>" />
             </div>
             <br />
         </div>
-
     	
     </div>
 </div>

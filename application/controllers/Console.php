@@ -264,10 +264,17 @@ class Console extends CI_Controller {
 		if(!$class){
 		    redirect_message('/console/'.$b_id.'/classes' , '<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 		}
+
+		//See how many applied?
+        $current_applicants = count($this->Db_model->ru_fetch(array(
+            'ru.ru_r_id'	    => $class['r_id'],
+            'ru.ru_status >='	=> 0, //Anyone who has started an applications
+        )));
 		
 		$view_data = array(
 		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$bootcamps[0]['c_objective'],
-		    'bootcamp' => $bootcamps[0],
+            'bootcamp' => $bootcamps[0],
+            'current_applicants' => $current_applicants,
 		    'class' => $class,
 		    'breadcrumb' => array(
 		        array(
@@ -276,7 +283,7 @@ class Console extends CI_Controller {
 		        ),
 		        array(
 		            'link' => null,
-		            'anchor' => time_format($class['r_start_date'],1),
+		            'anchor' => time_format($class['r_start_date'],1).( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' started an application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Application'.show_s($current_applicants).'</span>' : '' ),
 		        ),
 		    ),
 		);

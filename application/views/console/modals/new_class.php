@@ -83,7 +83,7 @@ $('#r_start_date').keyup(function(e){
 			
 			<?php
 			if($bootcamp['b_status']>=2){
-			    $this->load->view('console/inputs/r_status' , array('r_status'=>1,'removal_status'=>array(-1,-2,2,3)) );
+			    $this->load->view('console/inputs/r_status' , array('r_status'=>1,'removal_status'=>array(-1,-2,-3,2,3)) );
 			} else {
 			    //Since bootcamp is pending, lets have the class open by default so instructor makes 1 les decision here:
 			    echo '<input type="hidden" id="r_status" value="1" />';

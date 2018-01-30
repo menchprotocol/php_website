@@ -1186,6 +1186,13 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .i_content{
     padding-bottom:10px;
 }
+.frame{
+    background-color:#CCC;
+    color:#000;
+    border-radius:5px;
+    padding:3px 10px;
+    box-shadow: 0 6px 10px -10px rgba(156, 39, 176, 0.28), 0 4px 10px 0px rgba(0, 0, 0, 0.12), 0 7px 4px -5px rgba(156, 39, 176, 0.2);
+}
 .i_content audio, .i_content video{ width:100%; }
 .disabled{
 	background-color: #EFEFEF !important;

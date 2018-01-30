@@ -1576,7 +1576,19 @@ class Api_v1 extends CI_Controller {
 	    
 	    //Save
 	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
-	    
+
+
+	    //Determine what type of engagement is this?
+        if($r_update['r_status']==-3 && $r_update['r_status']!=$classes[0]['r_status']){
+            //Abandoned:
+            $e_type_id = 57;
+        } elseif($r_update['r_status']==-1 && $r_update['r_status']!=$classes[0]['r_status']){
+            //Aerchived:
+            $e_type_id = 16;
+        } else {
+            //Simply updated:
+            $e_type_id = 13;
+        }
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
@@ -1587,11 +1599,10 @@ class Api_v1 extends CI_Controller {
 	            'before' => $classes[0],
 	            'after' => $r_update,
 	        )),
-	        'e_type_id' => ($r_update['r_status']<0 && $r_update['r_status']!=$classes[0]['r_status'] ? 16 : 13), //Class Setting Updated/Deleted
+	        'e_type_id' => $e_type_id,
 	        'e_b_id' => $classes[0]['r_b_id'], //Share with bootcamp team
 	        'e_r_id' => intval($_POST['r_id']),
 	    ));
-	    
 	    
 	    //Show result:
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');

@@ -1,3 +1,12 @@
+<?php
+//Determine lock down status:
+$current_applicants = count($this->Db_model->ru_fetch(array(
+    'ru.ru_r_id'	    => $class['r_id'],
+    'ru.ru_status >='	=> 0, //Anyone who has started an applications
+)));
+$disabled = ( $current_applicants>0 || $class['r_status']>=2 ? 'disabled' : null );
+$website = $this->config->item('website');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
     <link href="/css/lib/jquery.schedule.min.css" rel="stylesheet" />
     <script src="/js/lib/jquery.schedule.min.js"></script>
+    <link href="/css/front/styles.css?v=<?= $website['version'] ?>" rel="stylesheet" />
     <style type="text/css">
     * {
         font-family: "Lato", "Helvetica", "Arial", sans-serif;
@@ -46,7 +56,7 @@
 	</td>
 </tr></table>
 
-<div id="schedule" class="jqs-demo"></div>
+<div id="schedule" class="jqs-demo <?= $disabled ?>"></div>
 
 
 
@@ -60,7 +70,7 @@
 	
     $(function () {
         $("#schedule").jqs({
-            mode: "edit",
+            mode: "<?= ( $disabled ? 'read' : 'edit' ) ?>",
             confirm: false,
             hour: 12,
             days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
