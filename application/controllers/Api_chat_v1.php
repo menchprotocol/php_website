@@ -338,7 +338,7 @@ class Api_chat_v1 extends CI_Controller{
                 $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'], array(echo_i(array(
                     'i_media_type' => $_POST['message_type'],
                     'i_message' => $_POST['text_payload'],
-                    'i_url' => $_POST['attach_url'],
+                    'i_url' => (isset($_POST['attach_url']) ? $_POST['attach_url'] : null ),
                     'e_initiator_u_id' => $_POST['initiator_u_id'],
                     'e_recipient_u_id' => $_POST['recipient_u_id'],
                     'e_b_id' => $admissions[0]['b_id'],
