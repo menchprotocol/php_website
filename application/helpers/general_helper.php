@@ -388,7 +388,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
         //Detect the initiator of this message and append their signature to make it clear who is talking:
         if(isset($i['e_initiator_u_id']) && intval($i['e_initiator_u_id'])>0){
             //We have one, see who it is:
-            $matching_users = $this->Db_model->u_fetch(array(
+            $matching_users = $CI->Db_model->u_fetch(array(
                 'u_id' => $i['e_initiator_u_id'],
             ));
             if(count($matching_users)==1){
