@@ -16,7 +16,7 @@ class Cron extends CI_Controller {
 
     function class_kickstart(){
 
-        //Cron Settings: 1,31 * * * *
+        //Cron Settings: 0,30 * * * *
         //This function is solely responsible to get the class started and dispatch its very first milestone messages IF it does start
         //Searches for any class that might be starting and kick starts its messages:
         $classes = $this->Db_model->r_fetch(array(
@@ -34,7 +34,7 @@ class Cron extends CI_Controller {
         foreach($classes as $key=>$class){
 
             //Make sure the start time has already passed:
-            if( time() < ( strtotime($class['r_start_date']) + ($class['r_start_time_mins']*60) )){
+            if( time() < ( strtotime($class['r_start_date']) + (($class['r_start_time_mins']-1)*60) )){
 
                 //Add to report:
                 $stats[$class['r_id']] = array(
@@ -558,7 +558,7 @@ class Cron extends CI_Controller {
 
     function next_milestone(){
 
-        //Cron Settings: 1,31 * * * *
+        //Cron Settings: 0,30 * * * *
         //Moves the class from one milestone to another.
         //Only applicable for the 2nd milesone or higher
         //The first milestone is triggered with the class_kickstart() cron function above

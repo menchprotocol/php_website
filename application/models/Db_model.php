@@ -607,7 +607,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 
 
                 //Now calculate start time and end time for this class:
-                $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']) + ( $class['r_start_time_mins'] * 60 );
+                $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']) + ( ($class['r_start_time_mins']-1) * 60 );
                 $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + ( $bootcamp['c__milestone_units'] * $bootcamp['c__milestone_secs'] );
 
                 //We're in the middle of this class, let's find out where:
