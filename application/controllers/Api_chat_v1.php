@@ -323,6 +323,11 @@ class Api_chat_v1 extends CI_Controller{
                 ));
             } else {
 
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'System Temporarily Down for Maintenance',
+                ));
+
                 //Send Message & log engagement via echo_i() function
                 $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'], array(echo_i(array(
                     'i_media_type' => $_POST['message_type'],
