@@ -165,12 +165,13 @@ class Api_chat_v1 extends CI_Controller{
                             'ru_status' => intval($_POST['ru_status']),
                         ));
 
-
                         //Log Status change engagement:
+                        $old_status = trim(strip_tags(status_bible('ru',$unified_current_ru_status)));
+                        $new_status = trim(strip_tags(status_bible('ru',intval($_POST['ru_status']))));
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => intval($_POST['initiator_u_id']),
                             'e_recipient_u_id' => $admission['u_id'],
-                            'e_message' => 'Student status changes from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']', //Notes by the instructor
+                            'e_message' => 'Student status changed from ['.$old_status.'] to ['.$new_status.']', //Notes by the instructor
                             'e_json' => json_encode(array(
                                 'post' => $_POST,
                                 'admission' => $admission,
@@ -180,34 +181,46 @@ class Api_chat_v1 extends CI_Controller{
                             'e_r_id' => $admission['r_id'],
                         ));
 
+                        if(intval($_POST['ru_status'])<0 && $admissions['r_usd_price']>0){
+                            //Was this a paid class? Let admin know to manually process refunds
+                            //TODO automate refunds through Paypal API later on...
+                            $this->Db_model->e_create(array(
+                                'e_initiator_u_id' => intval($_POST['initiator_u_id']),
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_message' => 'Need to manually refund $['.$admissions['r_usd_price'].'] to ['.$admissions['u_fname'].' '.$admissions['u_lname'].'] as the instructor changed the status from ['.$old_status.'] to ['.$new_status.']',
+                                'e_json' => json_encode(array(
+                                    'post' => $_POST,
+                                    'admission' => $admission,
+                                )),
+                                'e_type_id' => 58, //Class Manual Refund
+                                'e_b_id' => $admissions['r_b_id'],
+                                'e_r_id' => $admissions['r_id'],
+                            ));
+                        }
 
                         //DO we need to communicate?
+                        $this->load->model('Email_model');
                         if(intval($_POST['ru_status']) == 4){
 
                             //Send the email to their application:
-                            $this->load->model('Email_model');
                             $email_sent = $this->Email_model->email_intent($admission['b_id'],2698,$admission);
 
                         } elseif (intval($_POST['ru_status']) == -1){
 
                             //Send the email to their application:
-                            $this->load->model('Email_model');
                             $email_sent = $this->Email_model->email_intent($admission['b_id'],2799,$admission);
 
                         } elseif (intval($_POST['ru_status']) == 7){
 
                             //Send the email to their application:
-                            $this->load->model('Email_model');
                             $email_sent = $this->Email_model->email_intent($admission['b_id'],2800,$admission);
 
                         } elseif (intval($_POST['ru_status']) == -3){
 
                             //Send the email to their application:
-                            $this->load->model('Email_model');
                             $email_sent = $this->Email_model->email_intent($admission['b_id'],2801,$admission);
 
                         }
-
                     }
 
                     //Show success:
@@ -310,50 +323,23 @@ class Api_chat_v1 extends CI_Controller{
                 ));
             } else {
 
-                //Proceed to Send Message:
-                if($_POST['message_type']=='text'){
-                    //Create Engagement message to be saved:
-                    $e_message = $_POST['text_payload'];
-                    $fb_message = array(
-                        'text' => $_POST['text_payload'],
-                        'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                    );
-                } else {
-                    //Create Engagement message to be saved:
-                    $e_message = '/attach '.$_POST['message_type'].':'.trim($_POST['attach_url']);
-                    $fb_message = array(
-                        'attachment' => array(
-                            'type' => $_POST['message_type'],
-                            'payload' => array(
-                                'url' => $_POST['attach_url'],
-                            ),
-                        ),
-                        'metadata' => 'system_logged', //Prevents from duplicate logging via the echo webhook
-                    );
-                }
-
-                //Send Message:
-                $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'], array($fb_message) );
-
-                //Log Engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => intval($_POST['initiator_u_id']),
-                    'e_recipient_u_id' => intval($_POST['recipient_u_id']),
-                    'e_message' => $e_message,
-                    'e_json' => json_encode(array(
-                        'post' => $_POST,
-                        'fb_msg' => $fb_message,
-                    )),
-                    'e_type_id' => 7, //Outbound Message
+                //Send Message & log engagement via echo_i() function
+                $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'], array(echo_i(array(
+                    'i_media_type' => $_POST['message_type'],
+                    'i_message' => $_POST['text_payload'],
+                    'i_url' => $_POST['attach_url'],
+                    'e_initiator_u_id' => $_POST['initiator_u_id'],
+                    'e_recipient_u_id' => $_POST['recipient_u_id'],
                     'e_b_id' => $admissions[0]['b_id'],
                     'e_r_id' => $admissions[0]['r_id'],
-                ));
+                ), $admissions[0]['u_fname'], true )));
 
                 //Show success:
                 echo_json(array(
                     'status' => 1,
                     'message' => 'Message sent',
                 ));
+
             }
         }
     }

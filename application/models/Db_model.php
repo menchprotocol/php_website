@@ -1245,33 +1245,24 @@ ORDER BY points DESC, ru_id ASC")->result());
                     ));
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                    $url = 'https://mench.co/console/'.$link_data['e_b_id'].'/students';
 
                     //Send notifications to current instructor
-                    $instructor_emails = array();
                     foreach($bootcamp_instructors as $bi){
-
                         if(in_array($link_data['e_type_id'],$instructor_subscriptions)){
+
                             //MenchBot notifications:
-                            $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(array(
-                                'text' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc'])).'. Review here: https://mench.co/console/'.$link_data['e_b_id'].'/students',
-                            )));
+                            $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc'])).'. Review here: '.$url,
+                                'i_url' => $url,
+                                'e_initiator_u_id' => 0, //System/MenchBot
+                                'e_recipient_u_id' => $bi['u_id'],
+                                'e_b_id' => $link_data['e_b_id'],
+                                'e_r_id' => ( isset($link_data['e_r_id']) ? $link_data['e_r_id'] : 0 ),
+                            ), $bi['u_fname'], true )));
+
                         }
-
-                        if(strlen($bi['u_email'])>0){
-                            array_push($instructor_emails,$bi['u_email']);
-                        }
-
-                        if(in_array($link_data['e_type_id'],$instructor_emails)){
-
-                        }
-                    }
-
-                    if($link_data['e_type_id']==33 && count($instructor_emails)>0){
-                        //Task Completion Email:
-                        //Draft HTML message for this:
-                        $html_message .= '<div></div>';
-                        //Email Notification:
-                        $this->send_single_email(array($bi['u_email']),$subject,$html_message);
                     }
                 }
             }

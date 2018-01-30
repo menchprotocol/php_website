@@ -384,6 +384,24 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
         }
 
+
+        //Detect the initiator of this message and append their signature to make it clear who is talking:
+        if(isset($i['e_initiator_u_id']) && intval($i['e_initiator_u_id'])>0){
+            //We have one, see who it is:
+            $matching_users = $this->Db_model->u_fetch(array(
+                'u_id' => $i['e_initiator_u_id'],
+            ));
+            if(count($matching_users)==1){
+                //We found it, append the name:
+                $i['i_message'] .= ' -'.$matching_users[0]['u_fname'].$matching_users[0]['u_fname'];
+            } else {
+                $i['i_message'] .= ' -MenchBot';
+            }
+        } else {
+            $i['i_message'] .= ' -MenchBot';
+        }
+
+
         if($command){
 
             //Append the button to the message:
@@ -2386,6 +2404,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         'tree' => $tree[0],
         'depth' => $outbound_levels,
     );
+
 
     if($bootcamp_data && $bootcamp_data['level']==2 && $r_id){
 

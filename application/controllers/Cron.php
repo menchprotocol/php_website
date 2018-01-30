@@ -254,7 +254,7 @@ class Cron extends CI_Controller {
     //TODO Enable for students that are left behind (Currently only works for students on the most recent milestone)
     function drip(){
 
-        //Cron Settings: 0,30 * * * *
+        //Cron Settings: 15,45 * * * *
 	    //Set drip setting variables:
         $drip_settings = array(
             'buffer_bootcamp_start' => 0.1,
