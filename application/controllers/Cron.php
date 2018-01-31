@@ -112,12 +112,11 @@ class Cron extends CI_Controller {
                     $this->Email_model->email_intent($class['r_b_id'],2799,$admission);
 
                     //Was this a paid class? Let admin know to manually process refunds
-                    //TODO automate refunds through Paypal API later on...
                     if($class['r_usd_price']>0){
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => 0, //System
                             'e_recipient_u_id' => $admission['u_id'],
-                            'e_message' => 'Need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start because the instructor did not approve them on time.',
+                            'e_message' => 'Investigation needed. May need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start because the instructor did not approve them on time.',
                             'e_type_id' => 58, //Class Manual Refund
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -179,7 +178,7 @@ class Cron extends CI_Controller {
                             $this->Db_model->e_create(array(
                                 'e_initiator_u_id' => 0, //System
                                 'e_recipient_u_id' => $admission['u_id'],
-                                'e_message' => 'Need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start '.$cancellation_reason.'.',
+                                'e_message' => 'Investigation needed. May need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start '.$cancellation_reason.'.',
                                 'e_type_id' => 58, //Class Manual Refund
                                 'e_b_id' => $class['r_b_id'],
                                 'e_r_id' => $class['r_id'],

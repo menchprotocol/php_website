@@ -165,61 +165,70 @@ class Api_chat_v1 extends CI_Controller{
                             'ru_status' => intval($_POST['ru_status']),
                         ));
 
-                        //Log Status change engagement:
-                        $old_status = trim(strip_tags(status_bible('ru',$unified_current_ru_status)));
-                        $new_status = trim(strip_tags(status_bible('ru',intval($_POST['ru_status']))));
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => intval($_POST['initiator_u_id']),
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_message' => 'Student status changed from ['.$old_status.'] to ['.$new_status.']', //Notes by the instructor
-                            'e_json' => json_encode(array(
-                                'post' => $_POST,
-                                'admission' => $admission,
-                            )),
-                            'e_type_id' => 51, //Admission Status Change
-                            'e_b_id' => $admission['b_id'],
-                            'e_r_id' => $admission['r_id'],
-                        ));
+                        //What is this status change?
+                        $email_c_id = 0;
+                        $engagement_type_id = 0;
+                        if(intval($_POST['ru_status']) == 4){
 
-                        if(intval($_POST['ru_status'])<0 && $admissions['r_usd_price']>0){
-                            //Was this a paid class? Let admin know to manually process refunds
-                            //TODO automate refunds through Paypal API later on...
+                            //Application Approved
+                            $email_c_id = 2698;
+                            $engagement_type_id = 62;
+
+                        } elseif (intval($_POST['ru_status']) == -1){
+
+                            //Application Rejected
+                            $email_c_id = 2799;
+                            $engagement_type_id = 63;
+
+                        } elseif (intval($_POST['ru_status']) == 7){
+
+                            //Student Graduated
+                            $email_c_id = 2800;
+                            $engagement_type_id = 64;
+
+                        } elseif (intval($_POST['ru_status']) == -3){
+
+                            //Student Removed
+                            $email_c_id = 2801;
+                            $engagement_type_id = 65;
+
+                        }
+
+                        if($email_c_id){
+                            //Send email:
+                            $this->load->model('Email_model');
+                            $this->Email_model->email_intent($admission['b_id'],$email_c_id,$admission);
+                        }
+
+                        if($engagement_type_id){
+                            //Log Engagement
                             $this->Db_model->e_create(array(
                                 'e_initiator_u_id' => intval($_POST['initiator_u_id']),
                                 'e_recipient_u_id' => $admission['u_id'],
-                                'e_message' => 'Need to manually refund $['.$admissions['r_usd_price'].'] to ['.$admissions['u_fname'].' '.$admissions['u_lname'].'] as the instructor changed the status from ['.$old_status.'] to ['.$new_status.']',
+                                'e_message' => 'Student status for '.$admission['u_fname'].' '.$admission['u_lname'].' changed to '.strtolower(trim(strip_tags(status_bible('ru',-1)))),
+                                'e_json' => json_encode(array(
+                                    'post' => $_POST,
+                                )),
+                                'e_type_id' => $engagement_type_id,
+                                'e_b_id' => $admission['r_b_id'],
+                                'e_r_id' => $admission['r_id'],
+                            ));
+                        }
+
+                        //We might need to look into a reund:
+                        if(in_array($_POST['ru_status'],array(-1,-3)) && $admission['r_usd_price']>0){
+                            $this->Db_model->e_create(array(
+                                'e_initiator_u_id' => intval($_POST['initiator_u_id']),
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_message' => 'Investigation needed. May need to manually refund $['.$admission['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as the instructor changed the status from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']',
                                 'e_json' => json_encode(array(
                                     'post' => $_POST,
                                     'admission' => $admission,
                                 )),
                                 'e_type_id' => 58, //Class Manual Refund
-                                'e_b_id' => $admissions['r_b_id'],
-                                'e_r_id' => $admissions['r_id'],
+                                'e_b_id' => $admission['r_b_id'],
+                                'e_r_id' => $admission['r_id'],
                             ));
-                        }
-
-                        //DO we need to communicate?
-                        $this->load->model('Email_model');
-                        if(intval($_POST['ru_status']) == 4){
-
-                            //Send the email to their application:
-                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2698,$admission);
-
-                        } elseif (intval($_POST['ru_status']) == -1){
-
-                            //Send the email to their application:
-                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2799,$admission);
-
-                        } elseif (intval($_POST['ru_status']) == 7){
-
-                            //Send the email to their application:
-                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2800,$admission);
-
-                        } elseif (intval($_POST['ru_status']) == -3){
-
-                            //Send the email to their application:
-                            $email_sent = $this->Email_model->email_intent($admission['b_id'],2801,$admission);
-
                         }
                     }
 

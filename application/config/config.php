@@ -249,7 +249,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57,60,61);
+$config['instructor_subscriptions'] = array(30,52,56,57,60,61,66);
 $config['mench_cs_fb_ids'] = array(
     array(
         'u_fname' => 'Shervin',
@@ -269,11 +269,11 @@ $config['mench_cs_fb_ids'] = array(
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,37,56,57,58,60,61),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,64,65,66),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,66),
     ),
 );
 
@@ -983,14 +983,14 @@ $config['object_statuses'] = array(
     ),
     'r' => array(
         -3 => array(
-            's_name'  => 'Abandoned',
-            's_desc'  => 'Class was cancelled after it had started, likely for reasons beyond the instructors control',
+            's_name'  => 'Cancelled',
+            's_desc'  => 'Class cancelled after it had started, likely for reasons beyond the instructors control',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
         -2 => array(
-            's_name'  => 'Disqualified',
-            's_desc'  => 'Class was not qualified to start likely because it did not meet its minimum admission requirements',
+            's_name'  => 'Expired',
+            's_desc'  => 'Class start time passed without meeting the minimum student admission requirement',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
@@ -1227,8 +1227,8 @@ $config['object_statuses'] = array(
 
         //Withrew after course has started:
         -3 => array(
-            's_name'  => 'Student Dispelled',
-            's_desc'  => 'Student was dispelled due to misconduct. Refund at the discretion of bootcamp leader',
+            's_name'  => 'Student Removed',
+            's_desc'  => 'Student was removed from class for reasons known to the instructor',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-times-circle',
         ),
