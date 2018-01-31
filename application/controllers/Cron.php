@@ -916,13 +916,15 @@ class Cron extends CI_Controller {
 
     function student_reminder_group_call_starting(){
 
-        //Cron Settings: 0,20,30,50 * * * *
-        //Cron timing designed with the assumption that Group Calls start at either 0 Minutes or 30 minutes (based on calendar restrictions)
+        //Cron Settings: 0,20,30,50 * * * * (ATTENTION: Logic dependant on these exact times!)
+
         /*
+         * Cron timing designed with the assumption that Group Calls start at either 0 Minutes or 30 minutes (based on calendar restrictions)
          * Sends out 2x reminders before the group call:
          *
-         * - 1 Hour before call
-         * - 10 minutes before call
+         * - 2 hours before call to instructor
+         * - 1 Hour before call to students
+         * - 10 minutes before call to both student and instructor
          *
          */
 
@@ -945,6 +947,7 @@ class Cron extends CI_Controller {
         //For every cron we're looking for one of these two:
         $tenmin_start = ( in_array($minute,array(20,50)) ? $hour + ( $minute==20 ? 0.5 : 1 ) : null );
         $onehour_start = ( in_array($minute,array(0,30)) ? $hour + ( $minute==30 ? 1.5 : 1 ) : null );
+        $twohour_start = ( in_array($minute,array(0,30)) ? $hour + 1 + ( $minute==30 ? 1.5 : 1 ) : null );
 
         $running_classes = $this->Db_model->r_fetch(array(
             'r_status' => 2, //Only running classes
@@ -990,8 +993,10 @@ class Cron extends CI_Controller {
                 continue;
             }
 
-            //We're trying to populate this if a match is found:
-            $reminder_message = null;
+            //We're trying to populate these if a match is found:
+            $student_message = null;
+            $instructor_message = null;
+
             //Let's see:
             foreach($group_call_schedule[$today]['periods'] as $key=>$period){
 
@@ -1000,45 +1005,80 @@ class Cron extends CI_Controller {
                 //$end_hour = hourformat($period[1]);
                 //$meeting_duration = $end_hour - $start_hour;
 
-                if($onehour_start && $onehour_start==$start_hour){
+                if($twohour_start && $twohour_start==$start_hour){
+
+                    //Trigger 2 hours notice:
+                    $instructor_message = '📅 Reminder: your ['.$bootcamps[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n".$class['r_office_hour_instructions']."\n\n".'If not correct, you have 1 hour to update this contact method here:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
+
+                } elseif($onehour_start && $onehour_start==$start_hour){
+
                     //Trigger 1 hour notice:
-                    $reminder_message = 'Hi {first_name}, just a reminder that our group call will start in 1 hour from now. Join the call by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
+                    $student_message = 'Hi {first_name}, just a reminder that our group call will start in 1 hour from now. Join the call by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
+
                 } elseif($tenmin_start && $tenmin_start==$start_hour){
+
                     //Trigger 10 minute notice:
-                    $reminder_message = '{first_name} we\'re starting our group call in 10 minutes. Would love to have you on-board. Join by following the instructions above 🙌';
+                    $student_message = '{first_name} we\'re starting our group call in 10 minutes. Would love to have you on-board. Join by following the instructions above 🙌';
+                    $instructor_message = '{first_name} your class group call should start in 10 minutes. All your students have already been notified 🙌';
+
                 }
 
-                if($reminder_message){
+                if($student_message || $instructor_message){
+
+                    if($instructor_message){
+                        //Fetch co-instructors:
+                        $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+                            'ba.ba_b_id'        => $class['r_b_id'],
+                            'ba.ba_status >='   => 1, //Must be an actively assigned instructor
+                            'u.u_status >='     => 1, //Must be a user level 1 or higher
+                            'u.u_fb_id >'	    => 0, //Activated MenchBot
+                        ));
+
+                        //Send drip message to all students:
+                        foreach($bootcamp_instructors as $u){
+                            //Send this message & log sent engagement using the echo_i() function:
+                            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $instructor_message,
+                                'e_initiator_u_id' => 0, //System
+                                'e_recipient_u_id' => $u['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $u['u_fname'], true )));
+                        }
+                    }
+
+                    if($student_message){
+                        //Fetch all Students in This Class:
+                        $class_students = $this->Db_model->ru_fetch(array(
+                            'ru.ru_r_id'	    => $class['r_id'],
+                            'ru.ru_status'	    => 4, //Bootcamp students
+                            'u.u_fb_id >'	    => 0, //Activated MenchBot
+                        ));
+
+                        //Send drip message to all students:
+                        foreach($class_students as $u){
+                            //Send this message & log sent engagement using the echo_i() function:
+                            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $student_message,
+                                'e_initiator_u_id' => 0, //System
+                                'e_recipient_u_id' => $u['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $u['u_fname'], true )));
+                        }
+                    }
 
                     //Save for reporting:
-                    $stats[$class['r_id']] = $reminder_message;
-
-                    //Fetch all Students in This Class:
-                    $class_students = $this->Db_model->ru_fetch(array(
-                        'ru.ru_r_id'	    => $class['r_id'],
-                        'ru.ru_status'	    => 4, //Bootcamp students
-                        'u.u_fb_id >'	    => 0, //Activated MenchBot
-                    ));
-
-                    //Send drip message to all students:
-                    foreach($class_students as $u){
-                        //Send this message & log sent engagement using the echo_i() function:
-                        $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
-                            'i_media_type' => 'text',
-                            'i_message' => $reminder_message,
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $u['u_id'],
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ), $u['u_fname'], true )));
-                    }
+                    $stats[$class['r_id']] = $student_message.' '.$instructor_message;
 
                     //Nothing more to do here:
                     break;
                 }
             }
 
-            if(!$reminder_message){
+            if(!$student_message && !$instructor_message){
                 //Time not matched:
                 $stats[$class['r_id']] = 'Time not matched';
             }
