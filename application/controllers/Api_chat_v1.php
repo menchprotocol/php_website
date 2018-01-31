@@ -205,7 +205,7 @@ class Api_chat_v1 extends CI_Controller{
                             $this->Db_model->e_create(array(
                                 'e_initiator_u_id' => intval($_POST['initiator_u_id']),
                                 'e_recipient_u_id' => $admission['u_id'],
-                                'e_message' => 'Student status for '.$admission['u_fname'].' '.$admission['u_lname'].' changed to '.strtolower(trim(strip_tags(status_bible('ru',-1)))),
+                                'e_message' => 'Student status for '.$admission['u_fname'].' '.$admission['u_lname'].' changed from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']',
                                 'e_json' => json_encode(array(
                                     'post' => $_POST,
                                 )),
