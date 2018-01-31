@@ -17,6 +17,30 @@ class Api_v1 extends CI_Controller {
 	function index(){
 		die('nothing here...');
 	}
+
+	function config(){
+        if($_GET['token']!='1f8e38384ddc45d0d19c706e21950643'){
+            echo_json(array(
+                'status' => 0,
+                'messsage' => 'Invalid Token',
+            ));
+            return false;
+        }
+
+        //Fetch all config:
+        $config = $this->config->config;
+        $display_config = array();
+        //Strip the secret ones:
+        foreach($config['show_in_api'] as $key){
+            $display_config[$key] = $config[$key];
+        }
+
+        echo_json(array(
+            'status' => 0,
+            'messsage' => 'Success',
+            'config' => $display_config,
+        ));
+    }
 	
 	/* ******************************
 	 * Miscs
