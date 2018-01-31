@@ -568,7 +568,11 @@ ORDER BY points DESC, ru_id ASC")->result());
         $this->db->from('v5_classes r');
         $this->db->join('v5_class_students ru', 'ru.ru_r_id = r.r_id', 'left');
 		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
 		}
 		$this->db->group_by('r.r_id');
 		$this->db->order_by('r.r_start_date','DESC'); //Most recent class at top

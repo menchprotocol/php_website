@@ -667,7 +667,7 @@ class Cron extends CI_Controller {
                                 //Ooops, they have yet not finished, notify them that class has moved on:
                                 $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
                                     'i_media_type' => 'text',
-                                    'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone! '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$bootcamps[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'. I would love to know what is preventing you from finishing your remaining '.$bootcamps[0]['b_sprint_unit'].' '.$admission['ru_current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
+                                    'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$bootcamps[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$bootcamps[0]['b_sprint_unit'].' '.$admission['ru_current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
                                     'e_initiator_u_id' => 0,
                                     'e_recipient_u_id' => $admission['u_id'],
                                     'e_b_id' => $class['r_b_id'],
@@ -915,7 +915,137 @@ class Cron extends CI_Controller {
     }
 
     function student_reminder_group_call_starting(){
-        //Cron Settings: 20,50 * * * *
+
+        //Cron Settings: 0,20,30,50 * * * *
+        //Cron timing designed with the assumption that Group Calls start at either 0 Minutes or 30 minutes (based on calendar restrictions)
+        /*
+         * Sends out 2x reminders before the group call:
+         *
+         * - 1 Hour before call
+         * - 10 minutes before call
+         *
+         */
+
+        //Cron stats file so we know what happened in each run...
+        $stats = array();
+        $today = date("N")-1;
+        $hour = date("G"); //Based on the cron settings
+        $minute = date("i"); //Based on the cron settings
+
+        if(!in_array($minute,array(0,20,30,50))){
+            //This should not happen, log an error:
+            $error = 'student_reminder_group_call_starting() can only run on minutes [0,20,30,50]. Its now minute ['.$minute.']';
+            $this->Db_model->e_create(array(
+                'e_message' => $error,
+                'e_type_id' => 8, //Platform Error
+            ));
+            die($error);
+        }
+
+        //For every cron we're looking for one of these two:
+        $tenmin_start = ( in_array($minute,array(20,50)) ? $hour + ( $minute==20 ? 0.5 : 1 ) : null );
+        $onehour_start = ( in_array($minute,array(0,30)) ? $hour + ( $minute==30 ? 1.5 : 1 ) : null );
+
+        $running_classes = $this->Db_model->r_fetch(array(
+            'r_status' => 2, //Only running classes
+            'r_live_office_hours IS NOT NULL' => null, //They have active Group Calls
+        ));
+
+        foreach($running_classes as $class) {
+
+            $group_call_schedule = unserialize($class['r_live_office_hours']);
+
+            if(!isset($group_call_schedule[$today]['periods']) || count($group_call_schedule[$today]['periods'])==0){
+                //Nothing found for today:
+                $stats[$class['r_id']] = 'No group calls scheduled for today.';
+                continue;
+            }
+
+            if(strlen($class['r_office_hour_instructions'])==0){
+                //Ooops, this should not happen:
+                $this->Db_model->e_create(array(
+                    'e_message' => 'Class with group call schedule is missing contact instructions. Inform instructor.',
+                    'e_type_id' => 8, //Platform Error
+                    'e_b_id' => $class['r_b_id'],
+                    'e_r_id' => $class['r_id'],
+                ));
+
+                //Skip this:
+                $stats[$class['r_id']] = 'Missing group call instructions. Error logged.';
+                continue;
+            }
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $class['r_b_id'],
+            ));
+
+            //Now override $class with the more complete version:
+            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
+
+            //Make sure Class is still running
+            if(time()>$class['r__class_end_time']){
+                //Class is finished, but still instructor has not submitted final report which is why r_status=2
+                $stats[$class['r_id']] = 'Class already finished.';
+                continue;
+            }
+
+            //We're trying to populate this if a match is found:
+            $reminder_message = null;
+            //Let's see:
+            foreach($group_call_schedule[$today]['periods'] as $key=>$period){
+
+                $start_hour = hourformat($period[0]);
+                //Not mentioning meeting duration for now:
+                //$end_hour = hourformat($period[1]);
+                //$meeting_duration = $end_hour - $start_hour;
+
+                if($onehour_start && $onehour_start==$start_hour){
+                    //Trigger 1 hour notice:
+                    $reminder_message = 'Hi {first_name}, just a reminder that our group call will start in 1 hour from now. Join the call by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
+                } elseif($tenmin_start && $tenmin_start==$start_hour){
+                    //Trigger 10 minute notice:
+                    $reminder_message = '{first_name} we\'re starting our group call in 10 minutes. Would love to have you on-board. Join by following the instructions above 🙌';
+                }
+
+                if($reminder_message){
+
+                    //Save for reporting:
+                    $stats[$class['r_id']] = $reminder_message;
+
+                    //Fetch all Students in This Class:
+                    $class_students = $this->Db_model->ru_fetch(array(
+                        'ru.ru_r_id'	    => $class['r_id'],
+                        'ru.ru_status'	    => 4, //Bootcamp students
+                        'u.u_fb_id >'	    => 0, //Activated MenchBot
+                    ));
+
+                    //Send drip message to all students:
+                    foreach($class_students as $u){
+                        //Send this message & log sent engagement using the echo_i() function:
+                        $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
+                            'i_media_type' => 'text',
+                            'i_message' => $reminder_message,
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $u['u_id'],
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ), $u['u_fname'], true )));
+                    }
+
+                    //Nothing more to do here:
+                    break;
+                }
+            }
+
+            if(!$reminder_message){
+                //Time not matched:
+                $stats[$class['r_id']] = 'Time not matched';
+            }
+        }
+
+        //Show stats:
+        echo_json($stats);
     }
 
     function student_reminder_complete_milestone(){

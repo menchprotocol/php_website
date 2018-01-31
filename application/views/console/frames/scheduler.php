@@ -1,10 +1,6 @@
 <?php
 //Determine lock down status:
-$current_applicants = count($this->Db_model->ru_fetch(array(
-    'ru.ru_r_id'	    => $class['r_id'],
-    'ru.ru_status >='	=> 0, //Anyone who has started an applications
-)));
-$disabled = ( $current_applicants>0 || $class['r_status']>=2 ? 'disabled' : null );
+$disabled = ( isset($_GET['disabled']) && $_GET['disabled']=='disabled' ? 'disabled' : null );
 $website = $this->config->item('website');
 ?>
 <!DOCTYPE html>

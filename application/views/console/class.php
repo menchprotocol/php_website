@@ -6,7 +6,9 @@ $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 
 //Determine lock down status:
-$disabled = ( $current_applicants>0 || $class['r_status']>=2 ? 'disabled' : null );
+$is_admin = ( $udata['u_status']>=3 );
+$disabled = ( !$is_admin && ($current_applicants>0 || $class['r_status']>=2) ? 'disabled' : null );
+$soft_disabled = ( !$is_admin && $class['r_status']>=2 ? 'disabled' : null );
 
 ?>
 <script>
@@ -314,7 +316,7 @@ function save_r(){
             
             <div class="title"><h4><i class="fa fa-calendar" aria-hidden="true"></i> Weekly Schedule PST <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
             <div class="help_body maxout" id="content_618"></div>
-            <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler" scrolling="no" class="scheduler-iframe"></iframe>
+            <iframe id="weekschedule" src="/console/<?= $bootcamp['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler?disabled=<?= $disabled ?>" scrolling="no" class="scheduler-iframe"></iframe>
 		</div>
 		
 		
@@ -418,7 +420,7 @@ function save_r(){
             <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students <span id="hb_612" class="help_button" intent-id="612"></span></h4></div>
             <div class="help_body maxout" id="content_612"></div>
             <div class="input-group">
-                <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= ($class['r_status']>=2 ? 'disabled' : '') ?> id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border <?= ($class['r_status']>=2 ? 'disabled' : '') ?>" />
+                <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border <?= $soft_disabled ?>" />
             </div>
             <br />
         </div>
@@ -427,7 +429,7 @@ function save_r(){
         <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students <span id="hb_613" class="help_button" intent-id="613"></span></h4></div>
         <div class="help_body maxout" id="content_613"></div>
         <div class="input-group">
-            <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= ($class['r_status']>=2 ? 'disabled' : '') ?> id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border <?= ($class['r_status']>=2 ? 'disabled' : '') ?>" />
+            <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border <?= $soft_disabled ?>" />
         </div>
 
 
@@ -436,7 +438,7 @@ function save_r(){
             <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel ID <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
             <div class="help_body maxout" id="content_718"></div>
             <div class="input-group">
-            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" <?= ($class['r_status']>=2 ? 'disabled' : '') ?> id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border <?= ($class['r_status']>=2 ? 'disabled' : '') ?>" />
+            	<input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border <?= $soft_disabled ?>" />
             </div>
             <br />
         </div>
