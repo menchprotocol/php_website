@@ -289,12 +289,14 @@ class Api_v1 extends CI_Controller {
             if(count($enrollments)>0){
 
                 //See if the dates of existing enrollments overlap:
+                $overlapping_admission = false;
                 foreach($enrollments as $admission){
-                    //Send the email to their admission page:
-                    $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
 
                     //They are enrolled in a Class, let's see where:
                     if($admission['ru_r_id']==$focus_class['r_id']){
+
+                        //Send the email to their admission page:
+                        $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
 
                         die(echo_json(array(
                             'status' => 0,
@@ -303,25 +305,35 @@ class Api_v1 extends CI_Controller {
 
                     } elseif(($focus_class['r__class_start_time']>=$admission['r__class_start_time'] && $focus_class['r__class_start_time']<$admission['r__class_end_time']) || ($focus_class['r__class_end_time']>=$admission['r__class_start_time'] && $focus_class['r__class_end_time']<$admission['r__class_end_time'])){
 
-                        //Either start time or end time falls within this class!
-                        $message = 'Admission blocked because students can only join 1 Bootcamp at a time. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'] with current status ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].'.( $admission['ru_status']==0 ? ' You can still drop-out of this Bootcamp as your application is not complete.' : '' )."\n\n".'This overlaps with your request to join ['.$bootcamp['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.';
+                        $overlapping_admission = true;
+                        break;
 
-                        //Log engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => $udata['u_id'],
-                            'e_message' => $message,
-                            'e_json' => json_encode($_POST),
-                            'e_type_id' => 9, //Support Needing Graceful Errors
-                            'e_b_id' => $bootcamp['b_id'],
-                            'e_r_id' => $focus_class['r_id'],
-                        ));
-
-                        //show the error:
-                        die(echo_json(array(
-                            'status' => 0,
-                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.nl2br($message).'</div>',
-                        )));
                     }
+                }
+
+                if($overlapping_admission){
+
+                    //Send the email to their admission page:
+                    $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
+
+                    //Either start time or end time falls within this class!
+                    $message = 'Admission blocked because students can only join 1 Bootcamp at a time. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'] with current status ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].'.( $admission['ru_status']==0 ? ' You can still drop-out of this Bootcamp as your application is not complete.' : '' )."\n\n".'This overlaps with your request to join ['.$bootcamp['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.';
+
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $udata['u_id'],
+                        'e_message' => $message,
+                        'e_json' => json_encode($_POST),
+                        'e_type_id' => 9, //Support Needing Graceful Errors
+                        'e_b_id' => $bootcamp['b_id'],
+                        'e_r_id' => $focus_class['r_id'],
+                    ));
+
+                    //show the error:
+                    die(echo_json(array(
+                        'status' => 0,
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.nl2br($message).'</div>',
+                    )));
                 }
             }
         }
