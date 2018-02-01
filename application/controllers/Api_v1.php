@@ -1957,7 +1957,27 @@ class Api_v1 extends CI_Controller {
                 $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
 
 
-                //Log Engagement for Bootcamp Edited:
+                //Bootcamp Edit is the default engagement:
+                $engagement_type_id = 18;
+
+                //Did the status change? Log Engagement for this:
+                if(!(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
+                    if(intval($_POST['b_status'])<0){
+                        //Archived:
+                        $engagement_type_id = 17;
+                    } elseif(intval($_POST['b_status'])==1) {
+                        //Request to publish
+                        $engagement_type_id = 37;
+                    } elseif(intval($_POST['b_status'])==2) {
+                        //Published Privately
+                        $engagement_type_id = 67;
+                    } elseif(intval($_POST['b_status'])==3) {
+                        //Published to Marketplace
+                        $engagement_type_id = 68;
+                    }
+                }
+
+                //Log engagement:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $udata['u_id'],
                     'e_message' => readable_updates($bootcamps[0],$b_update,'b_'),
@@ -1966,24 +1986,9 @@ class Api_v1 extends CI_Controller {
                         'before' => $bootcamps[0],
                         'after' => $b_update,
                     )),
-                    'e_type_id' => ( $b_update['b_status']<0 && $b_update['b_status']!=$bootcamps[0]['b_status'] ? 17 : 18 ), //Bootcamp Deleted or Updated
-                    'e_b_id' => intval($_POST['b_id']),
+                    'e_type_id' => $engagement_type_id,
+                    'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
                 ));
-
-
-                //Is this a request to publish?
-                if(intval($_POST['b_status'])==1 && !(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $udata['u_id'],
-                        'e_json' => json_encode(array(
-                            'input' => $_POST,
-                            'before' => $bootcamps[0],
-                            'after' => $b_update,
-                        )),
-                        'e_type_id' => 37, //Request to publish
-                        'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
-                    ));
-                }
             }
 
         } elseif($_POST['level']==2){

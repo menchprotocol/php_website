@@ -883,7 +883,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	function b_fetch($match_columns){
 	    //Missing anything?
 	    $this->db->select('*');
-	    $this->db->from('v5_bootcamps b');
+        $this->db->from('v5_bootcamps b');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }

@@ -1007,7 +1007,7 @@ class Cron extends CI_Controller {
                 if($twohour_start && $twohour_start==$start_hour){
 
                     //Trigger 2 hours notice:
-                    $instructor_message = '📅 Reminder: your ['.$bootcamps[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n".$class['r_office_hour_instructions']."\n\n".'If not correct, you have 1 hour to update this contact method here:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
+                    $instructor_message = '📅 Reminder: your ['.$bootcamps[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour to update this contact method here:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
 
                 } elseif($onehour_start && $onehour_start==$start_hour){
 
@@ -1017,12 +1017,34 @@ class Cron extends CI_Controller {
                 } elseif($tenmin_start && $tenmin_start==$start_hour){
 
                     //Trigger 10 minute notice:
-                    $student_message = '{first_name} we\'re starting our group call in 10 minutes. Would love to have you on-board. Join by following the instructions above 🙌';
+                    $student_message = '[Automated Reminder] We\'re starting our group call in 10 minutes. You can join by following the instructions above 🙌';
                     $instructor_message = '{first_name} your class group call should start in 10 minutes. All your students have already been notified 🙌';
 
                 }
 
                 if($student_message || $instructor_message){
+
+                    if($student_message){
+                        //Fetch all Students in This Class:
+                        $class_students = $this->Db_model->ru_fetch(array(
+                            'ru.ru_r_id'	    => $class['r_id'],
+                            'ru.ru_status'	    => 4, //Bootcamp students
+                            'u.u_fb_id >'	    => 0, //Activated MenchBot
+                        ));
+
+                        //Send drip message to all students:
+                        foreach($class_students as $u){
+                            //Send this message & log sent engagement using the echo_i() function:
+                            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $student_message,
+                                'e_initiator_u_id' => 0, //System
+                                'e_recipient_u_id' => $u['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $u['u_fname'], true )));
+                        }
+                    }
 
                     if($instructor_message){
                         //Fetch co-instructors:
@@ -1039,28 +1061,6 @@ class Cron extends CI_Controller {
                             $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
                                 'i_media_type' => 'text',
                                 'i_message' => $instructor_message,
-                                'e_initiator_u_id' => 0, //System
-                                'e_recipient_u_id' => $u['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $u['u_fname'], true )));
-                        }
-                    }
-
-                    if($student_message){
-                        //Fetch all Students in This Class:
-                        $class_students = $this->Db_model->ru_fetch(array(
-                            'ru.ru_r_id'	    => $class['r_id'],
-                            'ru.ru_status'	    => 4, //Bootcamp students
-                            'u.u_fb_id >'	    => 0, //Activated MenchBot
-                        ));
-
-                        //Send drip message to all students:
-                        foreach($class_students as $u){
-                            //Send this message & log sent engagement using the echo_i() function:
-                            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $student_message,
                                 'e_initiator_u_id' => 0, //System
                                 'e_recipient_u_id' => $u['u_id'],
                                 'e_b_id' => $class['r_b_id'],

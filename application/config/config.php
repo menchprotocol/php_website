@@ -629,7 +629,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57,60,61,66);
+$config['instructor_subscriptions'] = array(30,52,56,57,60,61,66,67,68);
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time //TODO Merge with variable below
 $config['mench_cs_fb_ids'] = array(
     array(
@@ -650,11 +650,11 @@ $config['mench_cs_fb_ids'] = array(
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,64,65,66),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,64,65,66,67,68),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,66),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,66,67,68),
     ),
 );
 
