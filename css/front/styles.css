@@ -1181,6 +1181,10 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	text-align: center;
 }
 
+.alert{
+    line-height: 120% !important;
+    font-weight: 300 !important;
+}
 .dropdown-menu{ margin-top: -20px !important; }
 .dropdown-menu li > a { padding: 7px 10px; }
 .i_content{

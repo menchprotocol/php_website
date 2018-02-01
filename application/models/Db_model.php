@@ -31,31 +31,28 @@ ORDER BY points DESC, ru_id ASC")->result());
 	 ****************************** */
 	
 	function remix_admissions($matching_criteria){
+
 	    $admissions = $this->Db_model->ru_fetch($matching_criteria);
 	    
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
-	        $classes = $this->Db_model->r_fetch(array(
-	            'r.r_id' => $enrollment['ru_r_id'],
-	        ));
-	        if(count($classes)<=0){
+            //Fetch bootcamp:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $enrollment['r_b_id'],
+            ));
+            if(count($bootcamps)<=0){
+                return false;
+            }
+
+            //Fetch Class:
+            $class = filter($bootcamps[0]['c__classes'],'r_id',$enrollment['ru_r_id']);
+	        if(count($class)<=0){
 	            return false;
 	        }
+
 	        //Merge in:
-	        $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
-	        
-	        
-	        //Fetch bootcamp:
-	        $bootcamps = $this->Db_model->c_full_fetch(array(
-	            'b.b_id' => $classes[0]['r_b_id'],
-	        ));
-	        if(count($bootcamps)<=0){
-	            return false;
-	        }
-	        //Merge in:
+            $admissions[$key] = array_merge($admissions[$key] , $class);
 	        $admissions[$key] = array_merge($admissions[$key] , $bootcamps[0]);
-	        
-	        //Fetch transactions:
 	        $admissions[$key]['ru__transactions'] = $this->Db_model->t_fetch(array(
 	            't.t_ru_id' => $enrollment['ru_id'],
 	        ));
@@ -1249,7 +1246,7 @@ ORDER BY points DESC, ru_id ASC")->result());
                     ));
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
-                    $url = 'https://mench.co/console/'.$link_data['e_b_id'].'/students';
+                    $url = 'https://mench.co/console/'.$link_data['e_b_id'];
 
                     //Send notifications to current instructor
                     foreach($bootcamp_instructors as $bi){
@@ -1258,7 +1255,7 @@ ORDER BY points DESC, ru_id ASC")->result());
                             //MenchBot notifications:
                             $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(echo_i(array(
                                 'i_media_type' => 'text',
-                                'i_message' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc'])).'. Review here: '.$url,
+                                'i_message' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc'])).' ['.$url.']',
                                 'i_url' => $url,
                                 'e_initiator_u_id' => 0, //System/MenchBot
                                 'e_recipient_u_id' => $bi['u_id'],

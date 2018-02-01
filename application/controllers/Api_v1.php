@@ -198,6 +198,7 @@ class Api_v1 extends CI_Controller {
 	function funnel_progress(){
 	    
 	    $this->load->helper('cookie');
+        $this->load->model('Email_model');
 	    
 	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['u_fname']) || !isset($_POST['u_email'])){
 	        die(json_encode(array(
@@ -277,46 +278,50 @@ class Api_v1 extends CI_Controller {
             $udata = $users[0];
 
             //Check their current application status(es):
-            $enrollments = $this->Db_model->ru_fetch(array(
+            $enrollments = $this->Db_model->remix_admissions(array(
                 'r.r_status >='	   => 1, //Open for admission
                 'r.r_status <='	   => 2, //Running
                 'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
                 'ru.ru_u_id'	   => $udata['u_id'],
             ));
 
-            //TODO Make more sophisticated to understand start & end dates and enable multiple if dates do not overlap
+
             if(count($enrollments)>0){
 
-                //Send the email to their admission page:
-                $this->load->model('Email_model');
-                $this->Email_model->email_intent($focus_class['r_b_id'],2697,$udata);
+                //See if the dates of existing enrollments overlap:
+                foreach($enrollments as $admission){
+                    //Send the email to their admission page:
+                    $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
 
-                //They are enrolled in a Class, let's see where:
-                if($enrollments[0]['ru_r_id']==$focus_class['r_id']){
+                    //They are enrolled in a Class, let's see where:
+                    if($admission['ru_r_id']==$focus_class['r_id']){
 
-                    die(echo_json(array(
-                        'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. We emailed you a link to manage your current admissions.</div>',
-                    )));
+                        die(echo_json(array(
+                            'status' => 0,
+                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. Your current status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).']. We emailed you a link to manage your current admissions.</div>',
+                        )));
 
-                } else {
+                    } elseif(($focus_class['r__class_start_time']>=$admission['r__class_start_time'] && $focus_class['r__class_start_time']<$admission['r__class_end_time']) || ($focus_class['r__class_end_time']>=$admission['r__class_start_time'] && $focus_class['r__class_end_time']<$admission['r__class_end_time'])){
 
-                    //They are already enrolled somewhere else:
-                    //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $udata['u_id'],
-                        'e_message' => 'Student attempted to enroll in a 2nd Bootcamp which is not allowed!',
-                        'e_json' => json_encode($_POST),
-                        'e_type_id' => 9, //Support Needing Graceful Errors
-                        'e_b_id' => $bootcamp['b_id'], //Share with bootcamp team
-                        'e_r_id' => $focus_class['r_id'],
-                    ));
+                        //Either start time or end time falls within this class!
+                        $message = 'Admission blocked because students can only join 1 Bootcamp at a time. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'] with current status ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].'.( $admission['ru_status']==0 ? ' You can still drop-out of this Bootcamp as your application is not complete.' : '' )."\n\n".'This overlaps with your request to join ['.$bootcamp['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.';
 
-                    //show the error:
-                    die(echo_json(array(
-                        'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You can take 1 Bootcamp at a time. We emailed you a link to manage your current admissions. If your other bootcamp has not yet started, you may withdraw your application and apply for this one instead.</div>',
-                    )));
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => $udata['u_id'],
+                            'e_message' => $message,
+                            'e_json' => json_encode($_POST),
+                            'e_type_id' => 9, //Support Needing Graceful Errors
+                            'e_b_id' => $bootcamp['b_id'],
+                            'e_r_id' => $focus_class['r_id'],
+                        ));
+
+                        //show the error:
+                        die(echo_json(array(
+                            'status' => 0,
+                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.nl2br($message).'</div>',
+                        )));
+                    }
                 }
             }
         }
@@ -376,7 +381,6 @@ class Api_v1 extends CI_Controller {
         ));
 
         //Send the email to their admission page:
-        $this->load->model('Email_model');
         $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
 
 

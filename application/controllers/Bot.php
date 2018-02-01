@@ -15,14 +15,15 @@ class Bot extends CI_Controller {
     }
 
 	function t(){
-	    
-	    $urls = extract_urls('For tips on how to exactly use the software, just search for free tutorials on Youtube or go back to the recording lessons on my 8 hour course creation course on Udemy https://www.udemy.com/how-to-create-an-awesome-online-course');
-	    print_r($urls);
-	    /*
-	    echo_json($this->Db_model->c_fetch(array(
-	        'c.c_id' => 917,
-	    ) , 2 , array('i') ));
-	    */
+
+        $enrollments = $this->Db_model->remix_admissions(array(
+            'r.r_status >='	   => 1, //Open for admission
+            'r.r_status <='	   => 2, //Running
+            'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
+            'ru.ru_u_id'	   => 2,
+        ));
+
+        echo_json($enrollments);
 	}
 	function set_settings($botkey){
 	    echo_json($this->Facebook_model->set_settings($botkey));

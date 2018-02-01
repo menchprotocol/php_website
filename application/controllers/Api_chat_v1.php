@@ -99,12 +99,6 @@ class Api_chat_v1 extends CI_Controller{
                             'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Not Enrolled in this Bootcamp',
                         );
                         break;
-                    } elseif(count($admissions)>1){
-                        $error_array = array(
-                            'status' => 0,
-                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Enrolled On Multiple Bootcamps',
-                        );
-                        break;
                     } elseif(!in_array($admissions[0]['ru_status'],array(2,4))){
                         $error_array = array(
                             'status' => 0,
