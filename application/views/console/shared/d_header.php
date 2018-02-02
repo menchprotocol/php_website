@@ -76,7 +76,7 @@ if(count($unread_notifications)>0){
 
 	<div class="wrapper" id="console">
 	
-		<nav class="navbar navbar-transparent navbar-absolute">
+		<div class="navbar navbar-transparent navbar-absolute">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse">
@@ -107,7 +107,7 @@ if(count($unread_notifications)>0){
 				<?php } ?>
 				
 			</div>
-		</nav>
+		</div>
 		
 	    <div class="sidebar" id="mainsidebar" data-color="purple">
 	    	<div class="sidebar-wrapper">

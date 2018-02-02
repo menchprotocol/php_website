@@ -17,7 +17,7 @@ class Email_model extends CI_Model {
 	}
 
 
-	function email_intent($b_id, $c_id, $udata){
+	function email_intent($b_id, $c_id, $udata, $r_id=0){
 
 	    //Send out the title and all the messages of this intent to the user:
 
@@ -36,6 +36,7 @@ class Email_model extends CI_Model {
                     $html_message .= echo_i(array_merge( $i , array(
                         'e_recipient_u_id' => $udata['u_id'],
                         'e_b_id' => $b_id,
+                        'e_r_id' => $r_id,
                         'i_c_id' => $c_id,
                     )), $udata['u_fname'], false );
                 }
@@ -60,6 +61,7 @@ class Email_model extends CI_Model {
                 'e_type_id' => 28, //Email message sent
                 'e_c_id' => $c_id,
                 'e_b_id' => $b_id,
+                'e_r_id' => $r_id,
             ));
 
             //Return positive:
@@ -79,6 +81,7 @@ class Email_model extends CI_Model {
                 )),
                 'e_c_id' => $c_id,
                 'e_b_id' => $b_id,
+                'e_r_id' => $r_id,
             ));
 
             return false;

@@ -77,22 +77,6 @@ jQuery.fn.extend({
 });
 
 
-//Function to load all help messages throughout the console:
-$(document).ready(function() {	
-	if($("span.help_button")[0]){
-		var loaded_messages = [];
-		var intent_id = 0;
-		$( "span.help_button" ).each(function() {
-			intent_id = parseInt($( this ).attr('intent-id'));
-			if(intent_id>0 && $("div#content_"+intent_id)[0] && !(jQuery.inArray(intent_id,loaded_messages)!=-1)){
-				//Its valid as all elements match! Let's continue:
-				loaded_messages.push(intent_id);
-				//Load the Tip icon so they can access the tip if they like:
-				$('#hb_'+intent_id).html('<a class="tipbtn" href="javascript:open_tip('+intent_id+')">'+tips_button+'</a>'); //Load the button
-			}
-		});
-	}
-});
 
 function mark_read(){
 	$('#msgnotif').attr('href','#').css('color','#AAA');
@@ -125,27 +109,52 @@ function view_el(u_id,c_id){
     }
 }
 
+//Function to load all help messages throughout the console:
+$(document).ready(function() {
+    if($("span.help_button")[0]){
+        var loaded_messages = [];
+        var intent_id = 0;
+        $( "span.help_button" ).each(function() {
+            intent_id = parseInt($( this ).attr('intent-id'));
+            if(intent_id>0 && $("div#content_"+intent_id)[0] && !(jQuery.inArray(intent_id,loaded_messages)!=-1)){
+                //Its valid as all elements match! Let's continue:
+                loaded_messages.push(intent_id);
+                //Load the Tip icon so they can access the tip if they like:
+                $('#hb_'+intent_id).html('<a class="tipbtn" href="javascript:open_tip('+intent_id+')">'+tips_button+'</a>'); //Load the button
+            }
+        });
+    }
+
+
+    $('#topnav li a').click(function(event) {
+        event.preventDefault();
+        var hash = $(this).attr('href').replace('#', '');
+        window.location.hash = hash;
+        adjust_hash(hash);
+    });
+});
+
+
+function adjust_hash(hash){
+    if(hash.length>0 && $('#tab'+hash).length && !$('#tab'+hash).hasClass("hidden")){
+        //Adjust Header:
+        $('#topnav>li').removeClass('active');
+        $('#nav_'+hash).addClass('active');
+        //Adjust Tab:
+        $('.tab-pane').removeClass('active');
+        $('#tab'+hash).addClass('active');
+    }
+}
+
 //To keep state of the horizontal menu using URL hashtags:
-function focu_hash(the_hash){
+function focus_hash(the_hash){
 	if(!the_hash.length){
 		return false;
 	} else {
         var hash = the_hash.substring(1); //Puts hash in variable, and removes the # character
         //Open specific menu with a 100ms delay to fix TOP NAV bug
         //Detect if this Exists:
-        if($('#'+hash+'.tab-pane').attr('class').indexOf("hidden")<=0){
-            $('#topnav>li').removeClass('active');
-            $('.tab-pane').removeClass('active');
-            $('#nav_'+hash).addClass('active');
-            $('#'+hash+'.tab-pane').addClass('active');
-        }
-	}
-}
-
-function update_hash(hash){
-	window.location.hash = hash;
-	if(!(typeof e === 'undefined')){
-		e.preventDefault();
+        adjust_hash(hash);
 	}
 }
 

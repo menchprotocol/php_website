@@ -100,6 +100,9 @@ function initiate_calculator(){
 	update_tuition_calculator();
 }
 
+//Detect any possible hashes that controll the menu?
+
+
 $(document).ready(function() {
 
     //Need to hide the price?
@@ -107,10 +110,10 @@ $(document).ready(function() {
     $( "#r_usd_price" ).change(function() {
         hide_refunds();
     });
-    
-	//Detect any possible hashes that controll the menu?
-	if(window.location.hash) {
-		focu_hash(window.location.hash);
+
+
+    if(window.location.hash) {
+        focus_hash(window.location.hash);
     }
 
     //Update counters:
@@ -219,8 +222,6 @@ function save_r(){
 </script>
 
 
-
-
 <input type="hidden" id="r_id" value="<?= $class['r_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $class['r_b_id'] ?>" />
 <input type="hidden" id="c__milestone_units" value="<?= $bootcamp['c__milestone_units'] ?>" />
@@ -229,16 +230,16 @@ function save_r(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_support" class="active"><a href="#support" data-toggle="tab" onclick="update_hash('support')"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-  <li id="nav_pricing"><a href="#pricing" data-toggle="tab" onclick="update_hash('pricing')"><i class="fa fa-calculator" aria-hidden="true"></i> Pricing</a></li>
-  <li id="nav_admission"><a href="#admission" data-toggle="tab" onclick="update_hash('admission')"><i class="fa fa-tags" aria-hidden="true"></i> Admission</a></li>
+  <li id="nav_support" class="active"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
+  <li id="nav_pricing"><a href="#pricing"><i class="fa fa-calculator" aria-hidden="true"></i> Pricing</a></li>
+  <li id="nav_admission"><a href="#admission"><i class="fa fa-tags" aria-hidden="true"></i> Admission</a></li>
 </ul>
 
 
 <div class="tab-content tab-space">
     
     
-    <div class="tab-pane active" id="support">
+    <div class="tab-pane active" id="tabsupport">
     
     	<?php itip(630); ?>
 		<div class="title"><h4><i class="fa fa-bolt" aria-hidden="true"></i> Response Time <span class="badge pricing-badge" data-toggle="tooltip" title="Changing this setting will change the suggested price of the Tuition Calculator. Checkout the Pricing tab for more details." data-placement="bottom"><i class="fa fa-calculator" aria-hidden="true"></i></span> <span id="hb_614" class="help_button" intent-id="614"></span></h4></div>
@@ -331,10 +332,7 @@ function save_r(){
     	
     </div>
     
-    
-    
-    
-    <div class="tab-pane" id="pricing">
+    <div class="tab-pane" id="tabpricing">
     
         
         <div style="display:block;">
@@ -395,7 +393,7 @@ function save_r(){
     </div>
     
     
-    <div class="tab-pane" id="admission">
+    <div class="tab-pane" id="tabadmission">
 
         <?php $this->load->view('console/inputs/r_start_day_time' , array(
             'c__milestone_units' => $bootcamp['c__milestone_units'],

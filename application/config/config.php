@@ -4,6 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //Settime zone to PST:
 date_default_timezone_set('America/Los_Angeles');
 
+//Primary website variables:
+$config['website'] = array(
+    'version' => 1.94,
+    'name' => 'Mench',
+    'legaL_name' => 'Mench Media Inc.',
+    'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
+    'email' => 'shervin@mench.co',
+);
+
 //This would hide sensitive config variables from the /api_v1/config end point used to sync data among other servers
 $config['show_in_api'] = array(
     'language',
@@ -19,17 +28,6 @@ $config['show_in_api'] = array(
     'languages',
     'countries_all',
 );
-
-//Primary website variables:
-$config['website'] = array(
-    'version' => 1.91,
-    'name' => 'Mench',
-    'legaL_name' => 'Mench Media Inc.',
-    'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
-    'email' => 'shervin@mench.co',
-);
-
-
 
 $config['mench_pricing'] = array(
     'share_operator' => 0.7, //This goes to Bootcamp Lead Instructor, and he decides how to gets divided among his team

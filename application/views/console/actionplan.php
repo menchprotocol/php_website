@@ -97,7 +97,7 @@ $(document).ready(function() {
             }
         } else {
             //Perhaps a menu change?
-            focu_hash(window.location.hash);
+            focus_hash(window.location.hash);
         }
     }
 
@@ -1108,22 +1108,22 @@ function add_item(group_id,prefix,current_value){
             itip(602);
         }
         */
-        echo '<div id="bootcamp-objective" class="list-group">';
+        echo '<div id="bootcamp-objective" class="list-group maxout">';
             echo echo_cr($bootcamp['b_id'],$bootcamp,'outbound',$level,$bootcamp['b_sprint_unit']);
         echo '</div>';
 
         ?>
 
-        <ul id="topnav" class="nav nav-pills nav-pills-primary">
-          <li id="nav_screening"><a href="#screening" data-toggle="tab" onclick="update_hash('screening')"><i class="fa fa-sign-in" aria-hidden="true"></i> Screening</a></li>
-          <li id="nav_milestones" class="active"><a href="#milestones" data-toggle="tab" onclick="update_hash('milestones')"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</a></li>
-          <li id="nav_outcomes"><a href="#outcomes" data-toggle="tab" onclick="update_hash('outcomes')"><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</a></li>
-        </ul>
 
+        <ul id="topnav" class="nav nav-pills nav-pills-primary">
+          <li id="nav_screening"><a href="#screening"><i class="fa fa-sign-in" aria-hidden="true"></i> Screening</a></li>
+          <li id="nav_milestones" class="active"><a href="#milestones"><i class="fa fa-flag" aria-hidden="true"></i> Milestones</a></li>
+          <li id="nav_outcomes"><a href="#outcomes"><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</a></li>
+        </ul>
 
         <div class="tab-content tab-space">
 
-            <div class="tab-pane" id="screening">
+            <div class="tab-pane" id="tabscreening">
 
                 <div class="title"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_426"></div>
@@ -1159,10 +1159,7 @@ function add_item(group_id,prefix,current_value){
 
             </div>
 
-
-
-
-            <div class="tab-pane active" id="milestones">
+            <div class="tab-pane active" id="tabmilestones">
                 <?php
                 //Milestone Expand/Contract all if more than 2
                 if(count($intent['c__child_intents'])>0){
@@ -1193,10 +1190,7 @@ function add_item(group_id,prefix,current_value){
                 ?>
             </div>
 
-
-
-
-            <div class="tab-pane" id="outcomes">
+            <div class="tab-pane" id="taboutcomes">
 
                 <div class="title"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_2271"></div>
@@ -1219,6 +1213,7 @@ function add_item(group_id,prefix,current_value){
                 </script>
                 <div id="b_completion_prizes" class="list-group"></div>
             </div>
+
         </div>
 
 	</div>

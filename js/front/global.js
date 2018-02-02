@@ -17,6 +17,7 @@ ga('send', 'pageview');
     a.appendChild(r);
 })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 
+
 //Facebook SDK for JavaScript
 window.fbAsyncInit = function() {
   FB.init({
@@ -35,16 +36,6 @@ window.fbAsyncInit = function() {
  }(document, 'script', 'facebook-jssdk'));
 
 
-//This is necessary for the Facebook Messenger Chat button to work!
-$( document ).ready(function() {
-	if($('.bg-glow').length){
-		setInterval(function(){
-	    	$('.bg-glow').toggleClass('glow');
-	    }, 500);
-	}
-});
-
-
 function adj(){
 	var scroll = $(window).scrollTop();
      //>=, not <=
@@ -57,6 +48,13 @@ function adj(){
 }
 
 $(document).ready(function() {
+
+    //This is necessary (!) for the Facebook Messenger Chat button to work:
+    if($('.bg-glow').length){
+        setInterval(function(){
+            $('.bg-glow').toggleClass('glow');
+        }, 500);
+    }
 
 	//Navbar landing page?
 	if(!$(".navbar").hasClass("no-adj")){

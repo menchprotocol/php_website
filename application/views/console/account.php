@@ -13,7 +13,7 @@ $message_max = $this->config->item('message_max');
 $(document).ready(function() {
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
-		focu_hash(window.location.hash);
+		focus_hash(window.location.hash);
     }
 
 	//Counter:
@@ -114,18 +114,19 @@ function insert_gravatar(){
 </p>
 
 
+
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_profile" class="active"><a href="#profile" data-toggle="tab" onclick="update_hash('profile')"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
-  <li id="nav_communication"><a href="#communication" data-toggle="tab" onclick="update_hash('communication')"><i class="fa fa-share-alt" aria-hidden="true"></i> Communication</a></li>
-  <li id="nav_finance"><a href="#finance" data-toggle="tab" onclick="update_hash('finance')"><i class="fa fa-bar-chart" aria-hidden="true"></i> Finance</a></li>
-  <li id="nav_password"><a href="#password" data-toggle="tab" onclick="update_hash('password')"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
+  <li id="nav_profile" class="active"><a href="#profile"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
+  <li id="nav_communication"><a href="#communication"><i class="fa fa-share-alt" aria-hidden="true"></i> Communication</a></li>
+  <li id="nav_finance"><a href="#finance"><i class="fa fa-bar-chart" aria-hidden="true"></i> Finance</a></li>
+  <li id="nav_password"><a href="#password"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
 </ul>
 
 
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="profile">
+    <div class="tab-pane active" id="tabprofile">
     	
     	<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
     	
@@ -212,26 +213,9 @@ function insert_gravatar(){
         
         <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
     </div>
+
     
-    
-    <div class="tab-pane" id="password">
-    	<div class="title"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> Current Password</h4></div>
-        <div class="form-group label-floating is-empty">
-            <input type="password" id="u_password_current" style="max-width: 260px;" class="form-control border">
-            <span class="material-input"></span>
-        </div>
-        
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> New Password</h4></div>
-        <div class="form-group label-floating is-empty">
-            <input type="password" id="u_password_new" style="max-width: 260px;" class="form-control border">
-            <span class="material-input"></span>
-        </div>
-        
-        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
-    </div>
-    
-    
-    <div class="tab-pane" id="communication">
+    <div class="tab-pane" id="tabcommunication">
     
     
      	<div class="title"><h4><i class="fa fa-language" aria-hidden="true"></i> Fluent Languages</h4></div>
@@ -312,15 +296,7 @@ function insert_gravatar(){
     </div>
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="tab-pane" id="finance" style="max-width:none !important;">
+    <div class="tab-pane" id="tabfinance" style="max-width:none !important;">
 
 
         <div class="title"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
@@ -357,5 +333,22 @@ function insert_gravatar(){
 
 
     </div>
-    
+
+
+    <div class="tab-pane" id="tabpassword">
+        <div class="title"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> Current Password</h4></div>
+        <div class="form-group label-floating is-empty">
+            <input type="password" id="u_password_current" style="max-width: 260px;" class="form-control border">
+            <span class="material-input"></span>
+        </div>
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> New Password</h4></div>
+        <div class="form-group label-floating is-empty">
+            <input type="password" id="u_password_new" style="max-width: 260px;" class="form-control border">
+            <span class="material-input"></span>
+        </div>
+
+        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
+    </div>
+
 </div>

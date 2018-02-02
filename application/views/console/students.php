@@ -4,7 +4,7 @@
 
 
         if(window.location.hash){
-            focu_hash(window.location.hash);
+            focus_hash(window.location.hash);
         }
 
         //Load leaderboard on start:
@@ -66,17 +66,17 @@
 <div class="help_body maxout below_h" id="content_2275"></div>
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary full-width">
-    <li id="nav_chat" class="active"><a href="#chat" data-toggle="tab" onclick="update_hash('chat')"><i class="fa fa-comments" aria-hidden="true"></i> Chat</a></li>
-    <li id="nav_leaderboard"><a href="#leaderboard" data-toggle="tab" onclick="update_hash('leaderboard')"><i class="fa fa-trophy" aria-hidden="true"></i> Leaderboard</a></li>
+    <li id="nav_chat" class="active"><a href="#chat"><i class="fa fa-comments" aria-hidden="true"></i> Chat</a></li>
+    <li id="nav_leaderboard"><a href="#leaderboard"><i class="fa fa-trophy" aria-hidden="true"></i> Leaderboard</a></li>
 </ul>
 
 <div class="tab-content tab-space full-width">
 
-    <div class="tab-pane active full-width" id="chat">
+    <div class="tab-pane active full-width" id="tabchat">
         <?= '<iframe src="https://chat.mench.co/?bootcampId='.$bootcamp['b_id'].'&instructorId='.$udata['u_id'].'&token='.md5($bootcamp['b_id'].'ChatiFrameS@lt'.$udata['u_id']).'" width="100%" id="chatwidget" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>'; ?>
     </div>
 
-    <div class="tab-pane" id="leaderboard">
+    <div class="tab-pane" id="tableaderboard">
 
         <?php
         //Generate list of classes based on the format accepted by the echo_status_dropdown() function
