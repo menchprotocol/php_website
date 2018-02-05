@@ -954,7 +954,7 @@ class Api_v1 extends CI_Controller {
             //Are we started? If so, we can calculate the total point:
             $points_awarded = ($class['r__current_milestone']<0 || $class['r__current_milestone']>=1);
             $possible_points = 0;
-            if($is_instructor && $points_awarded){
+            if($points_awarded){
                 //Calculate how many total points was possible for this completed or mid-way class:
                 foreach($bootcamp['c__child_intents'] as $milestone) {
                     if($milestone['c_status']>=1){
