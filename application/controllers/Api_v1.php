@@ -994,9 +994,11 @@ class Api_v1 extends CI_Controller {
             echo '<tr style="font-weight:bold; font-size:0.8em;">';
             echo '<td style="border:1px solid #999; border-right:none; width:38px;">Rank</td>';
             echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; padding-left:30px;">Student</td>';
-            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:64px;">Progress</td>';
-            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">'.ucwords($bootcamp['b_sprint_unit']).'</td>';
-            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">Task</td>';
+            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:60px;">Progress</td>';
+            if($is_instructor){
+                echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">'.ucwords($bootcamp['b_sprint_unit']).'</td>';
+                echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">Task</td>';
+            }
             echo '<td style="border:1px solid #999; border-left:none; border-right:1px solid #999; width:25px;">&nbsp;</td>';
             echo '</tr>';
 
@@ -1056,7 +1058,6 @@ class Api_v1 extends CI_Controller {
                         ));
 
                         //Go through all the milestones that are due up to now:
-                        $points_earned = 0;
                         $open_task_shown = false;
 
                         foreach($bootcamp['c__child_intents'] as $milestone) {
@@ -1081,9 +1082,6 @@ class Api_v1 extends CI_Controller {
                                             //This student has made a submission:
                                             $us_task_status = $us_data[$task['c_id']]['us_status'];
                                             $completed_tasks += ( $us_task_status>=1 ? 1 : 0 );
-                                            if($milestone['cr_outbound_rank']<=$class['r__current_milestone'] || $class['r__current_milestone']<0){
-                                                $points_earned += ( $completed_tasks ? $us_data[$task['c_id']]['us_time_estimate'] : 0 );
-                                            }
 
                                         } elseif(!$milestone_started || $open_task_shown) {
 
@@ -1170,35 +1168,37 @@ class Api_v1 extends CI_Controller {
                     //Progress, Milestone & Tasks:
                     if($ls['ru_current_milestone']>$class['r__total_milestones']){
                         //They have completed it all, show them as winners!
-                        echo '<td valign="top" colspan="3" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                        echo '<td valign="top" colspan="'.($is_instructor?'3':'1').'" style="'.$bborder.'text-align:left; vertical-align:top;">';
                         echo '<i class="fa fa-trophy" aria-hidden="true"></i> WINNER';
                         echo '</td>';
                     } else {
                         //Progress:
                         echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
                         if($ranking_visible){
-                            if($possible_points>0 && isset($points_earned)){
-                                echo '<span title="'.$points_earned.'/'.$possible_points.'">'.round( $points_earned/$possible_points*100 ).'%</span>';
+                            if($possible_points>0){
+                                echo '<span title="'.$ls['points'].'/'.$possible_points.'">'.round( $ls['points']/$possible_points*100 ).'%</span>';
                             } else {
                                 echo '---';
                             }
                         }
                         echo '</td>';
 
-                        //Milestone:
-                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
-                        if($ranking_visible){
-                            echo $ls['ru_current_milestone'];
-                        }
-                        echo '</td>';
+                        if($is_instructor){
+                            //Milestone:
+                            echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                            if($ranking_visible){
+                                echo $ls['ru_current_milestone'];
+                            }
+                            echo '</td>';
 
 
-                        //Task:
-                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
-                        if($ranking_visible){
-                            echo $ls['ru_current_task'];
+                            //Task:
+                            echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                            if($ranking_visible){
+                                echo $ls['ru_current_task'];
+                            }
+                            echo '</td>';
                         }
-                        echo '</td>';
                     }
 
 
