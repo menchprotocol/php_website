@@ -2433,10 +2433,20 @@ class Api_v1 extends CI_Controller {
 
         } elseif($next_level==3 && isset($next_intents[0])){
 
-            //This is the next milestone, update the student positioning here...
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_current_task' => $next_intents[0]['cr_outbound_rank'], //They advanced by 1 Task
-            ));
+            //Find the Task:
+            foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                if($milestone['c_status']>=1){
+                    foreach($milestone['c__child_intents'] as $task){
+                        if($task['c_id']==$next_intents[0]['c_id']){
+                            //This is the next milestone, update the student positioning here...
+                            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                                'ru_current_task' => $task['cr_outbound_rank'],
+                            ));
+                            break;
+                        }
+                    }
+                }
+            }
 
             //Show button for next task:
             echo '<div><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next Task <i class="fa fa-arrow-right"></i></a></div>';
