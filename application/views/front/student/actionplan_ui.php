@@ -56,7 +56,6 @@ function mark_done(){
 
 		page_loaded:<?= time() ?>,
 		us_notes:us_notes,
-		us_on_time_score:<?= $ontime_secs_left>0 ? '1.00' : ( $qualify_for_little_late ? '0.50' : '0.00' ) ?>,
 		u_id:$('#u_id').val(),
 		b_id:$('#b_id').val(),
 		r_id:$('#r_id').val(),
@@ -135,8 +134,8 @@ if($class_start_time>time()){
 
 //Count active Messages:
 $displayed_messages = 0;
-if(count($i_messages)>0){
-    foreach($i_messages as $i){
+if(count($intent['c__messages'])>0){
+    foreach($intent['c__messages'] as $i){
         if($i['i_status']==1){
             $displayed_messages++;
         }
@@ -147,11 +146,14 @@ if(count($i_messages)>0){
 //Overview:
 if($displayed_messages>0){
     $uadmission = $this->session->userdata('uadmission');
+
+    //Only load the 3rd Level Task messages that are not yet complete by default, because everything else has already been communicated to the student
     $load_open = ( $level>=3 && !isset($us_data[$intent['c_id']]) );
+
     //Messages:
     echo '<h4 style="margin-top:20px;"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
     echo '<div class="tips_content messages_ap" style="display:'.( $load_open ? 'block' : 'none' ).';">';
-    foreach($i_messages as $i){
+    foreach($intent['c__messages'] as $i){
         if($i['i_status']==1){
             echo '<div class="tip_bubble">';
             echo echo_i( array_merge( $i , array(
@@ -190,14 +192,14 @@ if($level>=3){
             $textarea_note = 'Include completion notes (and optional instructor feedback) to mark as complete';
         } else {
             $red_note = null;
-            $textarea_note = 'Include optional instructor feedback to mark as complete';
+            $textarea_note = 'Include optional feedback for your instructor';
         }
 
         //What instructions do we need to give?
         if($red_note) {
-            echo '<div style="color:#FF0000;">Completing this task requires ' . $red_note . '.</div>';
+            echo '<div style="color:#FF0000;">Completing this Task requires ' . $red_note . '</div>';
         }
-        echo '<div>Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'which equals <b>'.round($intent['c_time_estimate']*60).' Points</b> if completed on-time.</div>';
+        echo '<div>Estimated completion time is '.echo_time($intent['c_time_estimate'],1).'</div>';
         echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
@@ -207,16 +209,9 @@ if($level>=3){
             echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
         echo '</div>';
 
+        //Show when this Milestone is due:
+        echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="ontime_dueby"></span>';
 
-        if($ontime_secs_left>0){
-            //Still on time:
-            echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="ontime_dueby"></span>';
-        } else {
-            echo '<span style="text-decoration: line-through;">&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Was due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST</span>';
-            if($qualify_for_little_late && $sprint_index>0 && $intent['c_time_estimate']>0){
-                echo '<div style="padding-left:22px;"><b>Earn '.floor($intent['c_time_estimate']*30).' late points</b> by '.$due_late_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="late_dueby"></span></div>';
-            }
-        }
     }
     echo '</div>';
 }

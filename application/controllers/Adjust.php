@@ -11,10 +11,7 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-    //This is an error on purpose to test the error logging:
-    asd
-
-    function ru_current_milestone(){
+    function ru_current_task_milestone(){
         //Go through all admissions for running classes:
         $classes = $this->Db_model->r_fetch(array(
             'r.r_status' => 2,
@@ -24,6 +21,7 @@ class Adjust extends CI_Controller {
         $stats = array();
 
         foreach($classes as $class){
+
             //Fetch all the students of these classes, and see where they are at:
 
             //Fetch full Bootcamp/Class data for this:
@@ -64,6 +62,15 @@ class Adjust extends CI_Controller {
                                         //We need to update:
                                         $this->Db_model->ru_update( $admission['ru_id'] , array(
                                             'ru_current_milestone' => $milestone['cr_outbound_rank'],
+                                        ));
+                                        //Increase counter:
+                                        $stats[$class['r_id']]++;
+                                    }
+
+                                    if(!($task['cr_outbound_rank']==$admission['ru_current_task'])){
+                                        //We need to update:
+                                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                                            'ru_current_task' => $task['cr_outbound_rank'],
                                         ));
                                         //Increase counter:
                                         $stats[$class['r_id']]++;

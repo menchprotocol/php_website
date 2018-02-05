@@ -435,28 +435,6 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fa-check-square',
         ),
     ),
-    //This is not in the DB but it reflects the timing of when students submitted their tasks:
-    'us_time' => array(
-        //This is not stored in DB:
-        0 => array(
-            's_name'  => 'Really Late',
-            's_desc'  => 'Student completed task much later than expected and did not earn any points',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-thumbs-o-down',
-        ),
-        1 => array(
-            's_name'  => 'A Little Late',
-            's_desc'  => 'Student completed task a little later than expected and received half points',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-hand-rock-o',
-        ),
-        2 => array(
-            's_name'  => 'On-Time',
-            's_desc'  => 'Student completed task on time and received full points',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-thumbs-o-up',
-        ),
-    ),
 
     't' => array(
         -2 => array(

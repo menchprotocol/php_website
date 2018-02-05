@@ -161,97 +161,149 @@ class My extends CI_Controller {
 	    } elseif(!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
 	        die('<h3>Action Plan</h3><div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
+
+
+        //Fetch all their admissions:
+        $admission_filters = array(
+            'u.u_fb_id' => $u_fb_id,
+            'ru.ru_status' => 4, //Actively enrolled in
+        );
+	    if($b_id>0){
+	        //Enhance our search and make it specific to this $b_id:
+            $admission_filters['r.r_b_id'] = $b_id;
+        }
+        $admissions = $this->Db_model->remix_admissions($admission_filters);
+
+
+        if(count($admissions)<=0){
+            //Ooops, they dont have anything! This should not happen...
+            $this->Db_model->e_create(array(
+                'e_message' => 'Student admission not found for [u_fb_id='.$u_fb_id.']',
+                'e_initiator_u_id' => 0, //System
+                'e_type_id' => 8, //Platform Error
+                'e_b_id' => $b_id,
+            ));
+
+            //Redirect User:
+            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You are not enrolled in a Bootcamp.</div>');
+            //Nothing found for this user!
+            die('<script> window.location = "/"; </script>');
+        }
+
 	    
-	    if(!($b_id && $c_id)){
-	        
-	        //Fetch all their admissions:
-	        $admissions = $this->Db_model->remix_admissions(array(
-	            'u.u_fb_id' => $u_fb_id,
-	            'ru.ru_status' => 4, //Actively enrolled in
-	        ));
-	        
-	        //How many?
-	        if(count($admissions)<=0){
-	            //Ooops, they dont have anything!
-	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
-	            //Nothing found for this user!
-	            die('<script> window.location = "/"; </script>');
-	        }
-	        
-	        //How Many?
-	        if(count($admissions)==1){
-	            
-	            //Log Engagement
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $admissions[0]['u_id'],
-	                'e_json' => $admissions,
-	                'e_type_id' => 32, //actionplan Opened
-	                'e_b_id' => $admissions[0]['b_id'],
-	                'e_r_id' => $admissions[0]['r_id'],
-	                'e_c_id' => $admissions[0]['c_id'],
-	            ));
-	            
-	            //Reload with specific directions:
-	            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
-	            
-	        }
-	        
-	    } else {
-	        
-	        //Fetch user & all their admissions:
-	        $admissions = $this->Db_model->remix_admissions(array(
-	            'u.u_fb_id' => $u_fb_id,
-	            'u_status >=' => 0,
-	            'ru.ru_status' => 4, //Actively enrolled in
-	        ));
+	    if(!$b_id || !$c_id){
+            //Log Engagement for opening the Action Plan, which happens without $b_id & $c_id
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $admissions[0]['u_id'],
+                'e_json' => $admissions,
+                'e_type_id' => 32, //actionplan Opened
+                'e_b_id' => $admissions[0]['b_id'],
+                'e_r_id' => $admissions[0]['r_id'],
+                'e_c_id' => $admissions[0]['c_id'],
+            ));
 
-
-	        
-	        //We have directions on what to load:
-	        $bootcamps = $this->Db_model->c_full_fetch(array(
-	            'b.b_id' => $b_id,
-	        ));
-	        
-	        
-	        
-	        if(count($bootcamps)>0 && count($admissions)>0){
-	            
-	            //Check if this admission matches this bootcamp
-	            $admission = null;
-	            foreach($admissions as $a_test_case){
-	                foreach($bootcamps as $b_test_case){
-	                    if($b_test_case['b_id'] == $a_test_case['b_id']){
-	                        $admission = $a_test_case;
-	                        break;
-	                    }
-	                }
-	                if($admission){
-	                    break;
-	                }
-	            }
-	            
-	            if($admission){
-	                //Fetch intent relative to the bootcamp by doing an array search:
-	                $view_data = extract_level( $bootcamps[0] , $c_id );
-	                //Append user to data:
-	                $view_data['admission'] = $admission;
-	                $view_data['us_data'] = $this->Db_model->us_fetch(array(
-	                    'us_r_id' => $admission['r_id'],
-	                    'us_student_id' => $admission['u_id'],
-	                ));
-	            }
-	        }
-	        
-	        if(!$admission || !$view_data){
-	            //Ooops, they dont have anything!
-	            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
-	            //Nothing found for this user!
-	            die('<script> window.location = "/my/actionplan"; </script>');
-	        }	        
-	        
-	        //Load UI:
-	        $this->load->view('front/student/actionplan_ui.php' , $view_data);
+            //Reload with specific directions:
+            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
+            return true;
 	    }
+
+
+        if(count($admissions)>1){
+            //TODO Inform the student that they have an upcoming class:
+        }
+
+
+        $bootcamps = array();
+        if($admissions[0]['r_status']>=2){
+
+            //This is a running class, fetch the copy of the action plan:
+            $cache_action_plans = $this->Db_model->e_fetch(array(
+                'e_type_id' => 70,
+                'e_r_id' => $admissions[0]['r_id'],
+            ),1,true);
+
+            if(count($cache_action_plans)>0){
+
+                //Assign this cache to the Bootcamp:
+                array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
+
+            } else {
+                //Ooops, this should not happen for a running class!
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $admissions[0]['u_id'],
+                    'e_message' => 'Missing Action Plan Copy for a Running Class',
+                    'e_json' => $admissions,
+                    'e_type_id' => 8, //Platform Error
+                    'e_b_id' => $b_id,
+                    'e_r_id' => $admissions[0]['r_id'],
+                    'e_c_id' => $c_id,
+                ));
+            }
+        }
+
+        if(count($bootcamps)==0){
+
+            //This class is not yet started, fetch the live Action Plan:
+            $bootcamps = $this->Db_model->c_full_fetch(array(
+                'b.b_id' => $b_id,
+            ));
+
+            if(count($bootcamps)==0){
+
+                //There is an issue here!
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $admissions[0]['u_id'],
+                    'e_message' => 'Failed to load Bootcamp data in the student Action Plan',
+                    'e_json' => $admissions,
+                    'e_type_id' => 8, //Platform Error
+                    'e_b_id' => $b_id,
+                    'e_r_id' => $admissions[0]['r_id'],
+                    'e_c_id' => $c_id,
+                ));
+
+                //Redirect User:
+                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Bootcamp Not Found.</div>');
+
+                //Nothing found for this user!
+                die('<script> window.location = "/"; </script>');
+            }
+        }
+
+
+        //Fetch intent relative to the bootcamp by doing an array search:
+        $view_data = extract_level( $bootcamps[0] , $c_id );
+        if($view_data){
+
+            //Append more data:
+            $view_data['admission'] = $admissions[0];
+            $view_data['us_data'] = $this->Db_model->us_fetch(array(
+                'us_r_id' => $admissions[0]['r_id'],
+                'us_student_id' => $admissions[0]['u_id'],
+            ));
+
+        } else {
+
+            //This should not happen either:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $admissions[0]['u_id'],
+                'e_message' => 'Failed to load Bootcamp data in the Student Action Plan',
+                'e_json' => $admissions,
+                'e_type_id' => 8, //Platform Error
+                'e_b_id' => $b_id,
+                'e_r_id' => $admissions[0]['r_id'],
+                'e_c_id' => $c_id,
+            ));
+
+            //Ooops, they dont have anything!
+            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
+            //Nothing found for this user!
+            die('<script> window.location = "/my/actionplan"; </script>');
+
+        }
+
+        //All good, Load UI:
+        $this->load->view('front/student/actionplan_ui.php' , $view_data);
+
 	}
 	
 	

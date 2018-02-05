@@ -32,7 +32,7 @@ if($object_name=='engagements'){
     }
 
     //Fetch engagements with possible filters:
-    $engagements = $this->Db_model->e_fetch($match_columns,50);
+    $engagements = $this->Db_model->e_fetch($match_columns,100);
 
     ?>
 

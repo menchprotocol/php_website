@@ -182,9 +182,18 @@ class Console extends CI_Controller {
 		$view_data = extract_level( $bootcamps[0] , ( intval($pid)>0 ? $pid : $bootcamps[0]['c_id'] ) );
 		if(!$view_data){
 		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
-		}
+		} else {
+		    //Append universal (Flat design) breadcrumb:
+            $view_data['breadcrumb'] = array(
+                array(
+                    'link' => null,
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>',
+                ),
+            );
+        }
 		
 		if(isset($_GET['raw'])){
+		    //For testing purposes:
 		    echo_json($view_data);
 		    exit;
 		}

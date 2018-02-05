@@ -14,41 +14,8 @@ class Bot extends CI_Controller {
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
 
-    function e_json(){
 
-	    //Fetch
-        $engagements = $this->Db_model->e_fetch(array(
-            'LENGTH(e_json)>0' => null,
-        ),500);
 
-        foreach($engagements as $e){
-            //Insert into new table:
-            $this->db->insert('v5_engagement_blob', array(
-                'ej_e_id' => $e['e_id'],
-                'ej_e_blob' => serialize(objectToArray(json_decode($e['e_json']))),
-            ));
-
-            //Remove from old table:
-            $this->Db_model->e_update( $e['e_id'] , array(
-                'e_json' => null,
-                'e_has_blob' => 't',
-            ));
-        }
-
-        echo '<meta http-equiv="refresh" content="0">';
-    }
-
-	function t(){
-
-        $enrollments = $this->Db_model->remix_admissions(array(
-            'r.r_status >='	   => 1, //Open for admission
-            'r.r_status <='	   => 2, //Running
-            'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
-            'ru.ru_u_id'	   => 2,
-        ));
-
-        echo_json($enrollments);
-	}
 	function set_settings($botkey){
 	    echo_json($this->Facebook_model->set_settings($botkey));
 	}

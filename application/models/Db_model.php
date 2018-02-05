@@ -16,7 +16,7 @@ FROM v5_class_students ru
 JOIN v5_users u ON u.u_id = ru.ru_u_id
 LEFT JOIN
   (SELECT us_student_id,
-          SUM(us.us_on_time_score * us.us_time_estimate * 60) AS points
+          SUM(us.us_time_estimate) AS points
    FROM v5_user_submissions us
    WHERE us_status >= 1
      AND us_r_id = ".$r_id."
@@ -691,6 +691,10 @@ ORDER BY points DESC, ru_id ASC")->result());
 		foreach($match_columns as $key=>$value){
 		    $this->db->where($key,$value);
 		}
+
+		//Order by sooner class first:
+        $this->db->order_by('r.r_start_date','ASC');
+
 		$q = $this->db->get();
 		return $q->result_array();
 	}
