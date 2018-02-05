@@ -1177,7 +1177,7 @@ class Api_v1 extends CI_Controller {
                         //Progress:
                         echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
                         if($ranking_visible){
-                            if($possible_points>0){
+                            if($possible_points>0 && isset($points_earned)){
                                 echo '<span title="'.$points_earned.'/'.$possible_points.'">'.round( $points_earned/$possible_points*100 ).'%</span>';
                             } else {
                                 echo '---';
