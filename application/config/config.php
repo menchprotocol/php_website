@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.94,
+    'version' => 1.95,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -627,7 +627,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57,60,61,66,67,68);
+$config['instructor_subscriptions'] = array(30,52,56,57,60,61,66,67,68,70);
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time //TODO Merge with variable below
 $config['mench_cs_fb_ids'] = array(
     array(
@@ -644,6 +644,9 @@ $config['mench_cs_fb_ids'] = array(
     )
 );
 
+//Define what counts as a meaningful Bootcamp engagement by the instructor team:
+$config['meaningful_bootcamp_engagements']  = array(15,17,37,18,14,16,13,20,21,23,22,19,34,35,39,36,38,43,44);
+
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
@@ -655,7 +658,6 @@ $config['engagement_subscriptions'] = array(
         'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,66,67,68),
     ),
 );
-
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');

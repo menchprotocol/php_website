@@ -132,14 +132,14 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    if(!isset($insert_columns['ru_r_id'])){
 	        $this->Db_model->e_create(array(
 	            'e_message' => 'ru_create() missing ru_r_id.',
-	            'e_json' => json_encode($insert_columns),
+	            'e_json' => $insert_columns,
 	            'e_type_id' => 8, //Platform Error
 	        ));
 	        return false;
 	    } elseif(!isset($insert_columns['ru_u_id'])){
 	        $this->Db_model->e_create(array(
 	            'e_message' => 'ru_create() missing ru_u_id.',
-	            'e_json' => json_encode($insert_columns),
+	            'e_json' => $insert_columns,
 	            'e_type_id' => 8, //Platform Error
 	        ));
 	        return false;
@@ -195,7 +195,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 		if(!isset($insert_columns['u_fname'])){
 			$this->Db_model->e_create(array(
 			    'e_message' => 'u_create() missing u_fname.',
-			    'e_json' => json_encode($insert_columns),
+			    'e_json' => $insert_columns,
 			    'e_type_id' => 8, //Platform Error
 			));
 			return false;
@@ -332,7 +332,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	            //Inconsistent data:
 	            $this->Db_model->e_create(array(
 	                'e_message' => 'activate_bot() Found multiple users for Facebook ID ['.$psid_sender_id.'].',
-	                'e_json' => json_encode($current_fb_users),
+	                'e_json' => $current_fb_users,
 	                'e_type_id' => 8, //Platform Error
 	            ));
 	            
@@ -376,7 +376,6 @@ ORDER BY points DESC, ru_id ASC")->result());
 	        $this->Db_model->e_create(array(
 	            'e_initiator_u_id' => $ref_u_id,
 	            'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
-	            'e_json' => json_encode($json_data),
 	            'e_type_id' => 9, //Support Needing Graceful Errors
 	        ));
 	        
@@ -413,7 +412,6 @@ ORDER BY points DESC, ru_id ASC")->result());
 	            $this->Db_model->e_create(array(
 	                'e_initiator_u_id' => $ref_u_id,
 	                'e_message' => 'Facebook Webhook failed to activate user because Messenger account is associated with another Mench account.',
-	                'e_json' => json_encode($json_data),
 	                'e_type_id' => 9, //Support Needing Graceful Errors
 	                'e_recipient_u_id' => $current_fb_users[0]['u_id'],
 	            ));
@@ -455,10 +453,9 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    //Log Activation Engagement:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $ref_u_id,
-	        'e_json' => json_encode(array(
-	            'fb_webhook' => $json_data,
+	        'e_json' => array(
 	            'fb_profile' => $fb_profile,
-	        )),
+	        ),
 	        'e_type_id' => 31, //Messenger Activated
 	    ));
 	    
@@ -558,7 +555,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	 * Classes
 	 ****************************** */
 	
-	function r_fetch($match_columns , $bootcamp=null /* Passing this would load extra variables for the class as well! */ ){
+	function r_fetch($match_columns , $bootcamp=null /* Passing this would load extra variables for the class as well! */, $sorting='DESC' ){
 	    
 		//Missing anything?
 		$this->db->select('r.*');
@@ -572,7 +569,8 @@ ORDER BY points DESC, ru_id ASC")->result());
             }
 		}
 		$this->db->group_by('r.r_id');
-		$this->db->order_by('r.r_start_date','DESC'); //Most recent class at top
+        $this->db->order_by('r.r_start_date',$sorting); //Most recent class at top
+        $this->db->order_by('r.r_start_time_mins',$sorting); //Most recent class at top
 		$q = $this->db->get();
 		
 		$runs = $q->result_array();
@@ -613,9 +611,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 
                 //We're in the middle of this class, let's find out where:
                 $runs[$key]['r__milestones_due'] = array(); //Will hold all the dates for the milestone...
+                //Figure out the totals:
+                $runs[$key]['r__last_milestone_starts'] = 0;
+                $runs[$key]['r__total_milestones'] = 0;
                 foreach($bootcamp['c__child_intents'] as $intent) {
                     if($intent['c_status']>=1){
                         $runs[$key]['r__milestones_due'][$intent['cr_outbound_rank']] = $runs[$key]['r__class_start_time'] + ($intent['cr_outbound_rank'] * $bootcamp['c__milestone_secs']);
+                        //Addup the totals:
+                        $runs[$key]['r__last_milestone_starts'] = intval($intent['cr_outbound_rank']);
+                        $runs[$key]['r__total_milestones'] += $intent['c_duration_multiplier'];
                     }
                 }
 
@@ -682,8 +686,8 @@ ORDER BY points DESC, ru_id ASC")->result());
 	function ru_fetch($match_columns){
 		$this->db->select('*');
 		$this->db->from('v5_class_students ru');
-		$this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 		$this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
+        $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 		foreach($match_columns as $key=>$value){
 		    $this->db->where($key,$value);
 		}
@@ -748,8 +752,6 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    //Return everything that was collected:
 	    return $intents;
 	}
-	
-	
 	
 	function c_full_fetch($match_columns){
 	    //Missing anything?
@@ -877,14 +879,17 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    return $bootcamps;
 	}
 	
-	function b_fetch($match_columns){
+	function b_fetch($match_columns,$c_fetch=false,$order_by='b_id'){
 	    //Missing anything?
 	    $this->db->select('*');
         $this->db->from('v5_bootcamps b');
+        if($c_fetch){
+            $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+        }
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
-	    $this->db->order_by('b_id','DESC');
+	    $this->db->order_by($order_by,'DESC');
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
@@ -1146,13 +1151,55 @@ ORDER BY points DESC, ru_id ASC")->result());
 	
 	
 	
+	function ej_fetch($match_columns=array()){
+        $this->db->select('*');
+        $this->db->from('v5_engagement_blob ej');
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
+    function snapshot_action_plan($b_id,$r_id){
+
+	    //Saves a copy of the Action Plan for the Class to use it:
+        $bootcamps = $this->Db_model->c_full_fetch(array(
+            'b.b_id' => $b_id,
+        ));
+
+        if(count($bootcamps)<1){
+            return false;
+        }
+
+        //Remove unnecessary fields:
+        unset($bootcamps[0]['b__admins']);
+        unset($bootcamps[0]['c__classes']);
+
+        $this->Db_model->e_create(array(
+            'e_json' => $bootcamps[0],
+            'e_type_id' => 70, //Action Plan Snapshot
+            'e_b_id' => $bootcamps[0]['b_id'],
+            'e_c_id' => $bootcamps[0]['b_c_id'],
+            'e_r_id' => $r_id,
+        ));
+
+        return true;
+
+    }
 	
-	
-	function e_fetch($match_columns=array(),$limit=100){
+	function e_fetch($match_columns=array(),$limit=100,$fetch_blob=false){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
+	    if($fetch_blob){
+            $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
+        }
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
 	            $this->db->where($key,$value);
@@ -1186,44 +1233,68 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    if(!isset($link_data['e_timestamp'])){
 	        $link_data['e_timestamp'] = date("Y-m-d H:i:s");
 	    }
-	    if(!isset($link_data['e_json'])){
-	        $link_data['e_json'] = null;
-	    }
 	    if(!isset($link_data['e_message'])){
 	        $link_data['e_message'] = null;
 	    }
 		
 	    
 		//Now check required fields:
-		if(!isset($link_data['e_type_id'])){
+		if(!isset($link_data['e_type_id']) || intval($link_data['e_type_id'])<=0){
 		    //Log this error:
 		    $this->Db_model->e_create(array(
-		        'e_initiator_u_id' => $link_data['e_initiator_u_id'],
-		        'e_message' => 'e_create() Function missing [e_type_id] variable.',
-		        'e_json' => json_encode($link_data),
-		        'e_type_id' => 8, //Platform Error
-		    ));
+                'e_initiator_u_id' => $link_data['e_initiator_u_id'],
+                'e_message' => 'e_create() Function missing [e_type_id] variable.',
+                'e_json' => $link_data,
+                'e_type_id' => 8, //Platform Error
+            ));
 			return false;
 		}
+
+		//Do we have a json attachment for this engagement?
+		$save_blob = null;
+        if(isset($link_data['e_json']) && strlen(print_r($link_data['e_json'],true))>0){
+            if(is_array($link_data['e_json']) && count($link_data['e_json'])>0){
+                $save_blob = $link_data['e_json'];
+                $link_data['e_has_blob'] = 't';
+            } else {
+                //Wring data type:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $link_data['e_initiator_u_id'],
+                    'e_message' => 'e_create() Function had e_json variable that was not an array!',
+                    'e_json' => $link_data,
+                    'e_type_id' => 8, //Platform Error
+                ));
+            }
+        }
+
+        //Remove e_json from here to keep v5_engagements small and lean
+        unset($link_data['e_json']);
 		
 		//Lets log:
 		$this->db->insert('v5_engagements', $link_data);
 
 		//Fetch inserted id:
 		$link_data['e_id'] = $this->db->insert_id();
-		
-		
-		//Notify relevant subscribers about this notification:
-		if($link_data['e_id']>0 && $link_data['e_type_id']>0){
 
-		    //Detect matches:
+		if($link_data['e_id']>0){
+
+		    //Did we have a blob to save?
+            if($save_blob){
+                //Save this in a separate field:
+                $this->db->insert('v5_engagement_blob', array(
+                    'ej_e_id' => $link_data['e_id'],
+                    'ej_e_blob' => serialize($save_blob),
+                ));
+            }
+
+            //Notify relevant subscribers about this notification:
             $engagement_subscriptions = $this->config->item('engagement_subscriptions');
             $instructor_subscriptions = $this->config->item('instructor_subscriptions');
-		    $engagement_references = $this->config->item('engagement_references');
+            $engagement_references = $this->config->item('engagement_references');
 
-		    //Email: The [33] Engagement ID corresponding to task completion is a email system for instructors to give them more context on certain activities
+            //Email: The [33] Engagement ID corresponding to task completion is a email system for instructors to give them more context on certain activities
 
-		    //Do we have any instructor subscription:
+            //Do we have any instructor subscription:
             if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_type_id'],$instructor_subscriptions)){
 
                 //Just do this one:
@@ -1268,55 +1339,63 @@ ORDER BY points DESC, ru_id ASC")->result());
                 }
             }
 
-		    //Individual subscriptions:
-		    foreach($engagement_subscriptions as $subscription){
-		        if(in_array($link_data['e_type_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
-		            
-		            //Just do this one:
-		            if(!isset($engagements[0])){
-		                //Fetch Engagement Data:
-		                $engagements = $this->Db_model->e_fetch(array(
-		                    'e_id' => $link_data['e_id']
-		                ));
-		            }
-		            
-		            //Did we find it? We should have:
-		            if(isset($engagements[0])){
-		                $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
-		                
-		                //Compose email:
-		                $html_message = null; //Start
-		                $html_message .= '<div>Hi Mench Admin,</div><br />';
-		                $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
-		                
-		                
-		                //Lets go through all references to see what is there:
-		                foreach($engagement_references as $engagement_field=>$er){
-		                    if(intval($engagements[0][$engagement_field])>0){
-		                        //Yes we have a value here:
-		                        $html_message .= '<div>'.$er['name'].': '.object_link($er['object_code'], $engagements[0][$engagement_field], $engagements[0]['e_b_id']).'</div>';
-		                    }
-		                }
-		                
-		                if(strlen($engagements[0]['e_message'])>0){
-		                    $html_message .= '<div>Message:<br />'.format_e_message($engagements[0]['e_message']).'</div>';
-		                }
-		                $html_message .= '<br />';
-		                $html_message .= '<div>Cheers,</div>';
-		                $html_message .= '<div>Mench Engagement Watcher</div>';
-		                $html_message .= '<div style="font-size:0.8em;">Engagement ID '.$engagements[0]['e_id'].'</div>';
-		                
-		                //Send email:
+            //Individual subscriptions:
+            foreach($engagement_subscriptions as $subscription){
+                if(in_array($link_data['e_type_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
+
+                    //Just do this one:
+                    if(!isset($engagements[0])){
+                        //Fetch Engagement Data:
+                        $engagements = $this->Db_model->e_fetch(array(
+                            'e_id' => $link_data['e_id']
+                        ));
+                    }
+
+                    //Did we find it? We should have:
+                    if(isset($engagements[0])){
+                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+
+                        //Compose email:
+                        $html_message = null; //Start
+                        $html_message .= '<div>Hi Mench Admin,</div><br />';
+                        $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
+
+
+                        //Lets go through all references to see what is there:
+                        foreach($engagement_references as $engagement_field=>$er){
+                            if(intval($engagements[0][$engagement_field])>0){
+                                //Yes we have a value here:
+                                $html_message .= '<div>'.$er['name'].': '.object_link($er['object_code'], $engagements[0][$engagement_field], $engagements[0]['e_b_id']).'</div>';
+                            }
+                        }
+
+                        if(strlen($engagements[0]['e_message'])>0){
+                            $html_message .= '<div>Message:<br />'.format_e_message($engagements[0]['e_message']).'</div>';
+                        }
+                        $html_message .= '<br />';
+                        $html_message .= '<div>Cheers,</div>';
+                        $html_message .= '<div>Mench Engagement Watcher</div>';
+                        $html_message .= '<div style="font-size:0.8em;">Engagement ID '.$engagements[0]['e_id'].'</div>';
+
+                        //Send email:
                         $this->load->model('Email_model');
-		                $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);
-		            }
-		        }
-		    }
-		}
+                        $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);
+                    }
+                }
+            }
+
+        } else {
+		    //This should not happen! Report:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $link_data['e_initiator_u_id'],
+                'e_message' => 'e_create() Function failed to insert into DB for an unknown reason!',
+                'e_json' => $link_data,
+                'e_type_id' => 8, //Platform Error
+            ));
+            return false;
+        }
 		
-		
-		
-		//Boya!
+		//Return:
 		return $link_data;
 	}
 	

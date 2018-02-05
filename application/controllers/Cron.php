@@ -191,10 +191,10 @@ class Cron extends CI_Controller {
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => 0, //System
                     'e_message' => 'Class did not start because '.$cancellation_reason.'.',
-                    'e_json' => json_encode(array(
+                    'e_json' => array(
                         'minimum' => $class['r_min_students'],
                         'admitted' => $accepted_admissions,
-                    )),
+                    ),
                     'e_type_id' => 56, //Class Cancelled
                     'e_b_id' => $class['r_b_id'],
                     'e_r_id' => $class['r_id'],
@@ -208,8 +208,21 @@ class Cron extends CI_Controller {
                 $this->Db_model->r_update( $class['r_id'] , array(
                     'r_status' => $stats[$class['r_id']]['new_status'],
                     'r_cache__current_milestone' => 1, //First Milestone is getting started, note it here
-                    'r_cache__action_plan' => json_encode($bootcamps[0]), //A Cache copy of the Action Plan & Entire Bootcamp at this point in time
                 ));
+
+
+                //Take snapshot of Action Plan ONLY IF not already taken for this class:
+                $cache_action_plans = $this->Db_model->e_fetch(array(
+                    'e_type_id' => 70,
+                    'e_r_id' => $class['r_id'],
+                ),1);
+
+                //This should be zero, as all snapshots are taken upon class start time:
+                if(count($cache_action_plans)==0){
+                    //Save Action Plan only if not already done so:
+                    $this->Db_model->snapshot_action_plan($bootcamps[0]['b_id'],$class['r_id']);
+                }
+
 
                 //Dispatch appropriate Message to Students
                 foreach($accepted_admissions as $admission){
@@ -236,13 +249,14 @@ class Cron extends CI_Controller {
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => 0, //System
                     'e_message' => 'Class started successfully with ['.count($accepted_admissions).'] admitted students.',
-                    'e_json' => json_encode(array(
+                    'e_json' => array(
                         'admitted' => $accepted_admissions,
-                    )),
+                    ),
                     'e_type_id' => 60, //Class kick-started
                     'e_b_id' => $class['r_b_id'],
                     'e_r_id' => $class['r_id'],
                 ));
+
             }
         }
 
@@ -397,10 +411,10 @@ class Cron extends CI_Controller {
                                     'e_initiator_u_id' => 0, //System
                                     'e_recipient_u_id' => 0, //No particular person, likely a group of students
                                     'e_message' => 'Bootcamp-level drip message sent to all '.count($class_students).' class students',
-                                    'e_json' => json_encode(array(
+                                    'e_json' => array(
                                         'i' => $i,
                                         'drip_stats' => $drip_stats['d_bootcamp'],
-                                    )),
+                                    ),
                                     'e_type_id' => 52, //Drip sent, Instructors are subscribed and will be notified about this...
                                     'e_b_id' => $class['r_b_id'],
                                     'e_r_id' => $class['r_id'],
@@ -528,10 +542,10 @@ class Cron extends CI_Controller {
                                     'e_initiator_u_id' => 0, //System
                                     'e_recipient_u_id' => 0, //No particular person, likely a group of students
                                     'e_message' => 'Milestone-level drip message sent to '.count($milestone_students).' students at this milestone',
-                                    'e_json' => json_encode(array(
+                                    'e_json' => array(
                                         'i' => $i,
                                         'drip_stats' => $drip_stats['d_milestone'],
-                                    )),
+                                    ),
                                     'e_type_id' => 52, //Drip sent, Instructors are subscribed and will be notified about this...
                                     'e_b_id' => $class['r_b_id'],
                                     'e_r_id' => $class['r_id'],
@@ -609,7 +623,7 @@ class Cron extends CI_Controller {
                     //Log Error engagement:
                     $this->Db_model->e_create(array(
                         'e_message' => $stats[$class['r_id']],
-                        'e_json' => json_encode($bootcamps[0]),
+                        'e_json' => $bootcamps[0],
                         'e_type_id' => 8, //Platform Error
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
@@ -631,7 +645,7 @@ class Cron extends CI_Controller {
                         $stats[$class['r_id']] = 'ERROR: Class has 0 admitted students';
                         $this->Db_model->e_create(array(
                             'e_message' => $stats[$class['r_id']],
-                            'e_json' => json_encode($bootcamps[0]),
+                            'e_json' => $bootcamps[0],
                             'e_type_id' => 8, //Platform Error
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -685,10 +699,10 @@ class Cron extends CI_Controller {
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => 0, //System
                             'e_message' => $stats[$class['r_id']],
-                            'e_json' => json_encode(array(
+                            'e_json' => array(
                                 'bootcamp' => $bootcamps[0],
                                 'accepted_admissions' => $accepted_admissions,
-                            )),
+                            ),
                             'e_type_id' => 61, //Class Milestone Advanced
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -720,44 +734,55 @@ class Cron extends CI_Controller {
             'e_cron_job' => 0, //Pending file upload to S3
             'e_type_id >=' => 6, //Messages only
             'e_type_id <=' => 7, //Messages only
-        ));
+        ), $max_per_batch, true);
 
         $counter = 0;
         foreach($e_pending as $ep){
 
             //Prepare variables:
-            $json_data = objectToArray(json_decode($ep['e_json']));
+            $json_data = unserialize($ep['ej_e_blob']);
 
             //Loop through entries:
-            foreach($json_data['entry'] as $entry) {
-                //loop though the messages:
-                foreach($entry['messaging'] as $im){
-                    //This should only be a message
-                    if(isset($im['message'])) {
-                        //This should be here
-                        if(isset($im['message']['attachments'])){
-                            //We should have attachments:
-                            foreach($im['message']['attachments'] as $att){
-                                //This one too! It should be one of these:
-                                if(in_array($att['type'],array('image','audio','video','file'))){
+            if(is_array($json_data) && isset($json_data['entry']) && count($json_data['entry'])>0){
+                foreach($json_data['entry'] as $entry) {
+                    //loop though the messages:
+                    foreach($entry['messaging'] as $im){
+                        //This should only be a message
+                        if(isset($im['message'])) {
+                            //This should be here
+                            if(isset($im['message']['attachments'])){
+                                //We should have attachments:
+                                foreach($im['message']['attachments'] as $att){
+                                    //This one too! It should be one of these:
+                                    if(in_array($att['type'],array('image','audio','video','file'))){
 
-                                    //Store to local DB:
-                                    $new_file_url = save_file($att['payload']['url'],$json_data);
+                                        //Store to local DB:
+                                        $new_file_url = save_file($att['payload']['url'],$json_data);
 
-                                    //Update engagement data:
-                                    $this->Db_model->e_update( $ep['e_id'] , array(
-                                        'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
-                                        'e_cron_job' => 1, //Mark as done
-                                    ));
+                                        //Update engagement data:
+                                        $this->Db_model->e_update( $ep['e_id'] , array(
+                                            'e_message' => ( strlen($ep['e_message'])>0 ? $ep['e_message']."\n\n" : '' ).'/attach '.$att['type'].':'.$new_file_url, //Makes the file preview available on the message
+                                            'e_cron_job' => 1, //Mark as done
+                                        ));
 
-                                    //Increase counter:
-                                    $counter++;
+                                        //Increase counter:
+                                        $counter++;
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            } else {
+                //This should not happen, report:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => 0, //System
+                    'e_message' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
+                    'e_json' => $json_data,
+                    'e_type_id' => 8, //System Error
+                ));
             }
+
             if($counter>=$max_per_batch){
                 break; //done for now
             }

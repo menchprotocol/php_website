@@ -150,18 +150,6 @@ $(document).ready(function() {
 
 
 
-    //Watch the expand/close all buttons for Milestones:
-    $('#milestone_view .expand_all').click(function (e) {
-        $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('node-id'),1);
-        });
-    });
-    $('#milestone_view .close_all').click(function (e) {
-        $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('node-id'),0);
-        });
-    });
-
 
 	//Add new Milestone:
     $('#dir_handle').click(function (e) {
@@ -230,25 +218,6 @@ function add_to_list(sort_list_id,sort_handler,html_content){
     } else {
         //Empty list, add before input filed:
         $( "#"+sort_list_id).prepend(html_content);
-    }
-}
-
-//$(\'.menu-cont-'.$intent['c_id'].', #list-outbound-'.$intent['c_id'].'\').toggle();
-//id="'.$intent['c_id'].'" class="fa "
-function ms_toggle(c_id,new_state=null){
-    if(new_state === null){
-        //Detect new state:
-        new_state = ( $('#list-outbound-'+c_id).hasClass('hidden') ? 1 : 0 );
-    }
-
-    if(new_state){
-        //open:
-        $('#list-outbound-'+c_id).removeClass('hidden');
-        $('#handle-'+c_id).removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
-    } else {
-        //Close:
-        $('#list-outbound-'+c_id).addClass('hidden');
-        $('#handle-'+c_id).removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
     }
 }
 
@@ -1204,7 +1173,7 @@ function add_item(group_id,prefix,current_value){
 
 
 
-                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Prizes <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Awards <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_623"></div>
                 <script>
                     $(document).ready(function() {
@@ -1298,7 +1267,7 @@ function add_item(group_id,prefix,current_value){
                 <select class="form-control input-mini border timer_3" id="c_time_estimate">
                     <?php
                     foreach($times as $time){
-                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).' / '.round($time*60).' Points</option>';
+                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).'</option>';
                     }
                     ?>
                 </select>

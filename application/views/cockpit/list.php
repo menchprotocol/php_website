@@ -1,75 +1,184 @@
-<?php 
 
-function echo_row($bootcamp,$counter){
-    //Calculate their progress:
-    $CI =& get_instance();
-    $launch_status = calculate_bootcamp_status($bootcamp);
-    //Fetch last activity:
-    $engagements = $CI->Db_model->e_fetch(array(
-        'e_b_id' => $bootcamp['b_id'],
-    ),250);
-    
-    echo '<tr>';
-    echo '<td>'.$counter.'</td>';
-    echo '<td>'.$bootcamp['b_id'].'</td>';
-    echo '<td>'.status_bible('b',$bootcamp['b_status'],1,'right').'</td>';
-    echo '<td><a href="/console/'.$bootcamp['b_id'].'">'.$bootcamp['c_objective'].'</a></td>';
-    echo '<td><a href="/console/'.$bootcamp['b_id'].'/actionplan">'.$bootcamp['c__milestone_units'].' '.ucwords($bootcamp['b_sprint_unit']).( $bootcamp['c__milestone_units']==1 ? '' : 's' ).'</a></td>';
-    echo '<td>'.$launch_status['progress'].'%</td>';
-    echo '<td><a href="/console/'.$bootcamp['b_id'].'/classes">'.count($bootcamp['c__classes']).'</a></td>';
-    echo '<td>'.$bootcamp['c__message_tree_count'].'</td>';
-    echo '<td>';
-    foreach($bootcamp['b__admins'] as $key=>$instructor){
-        
-        //Fetch more details:
-        if(strlen($instructor['u_fb_id'])>4){
-            $messages = $CI->Db_model->e_fetch(array(
-                '(e_initiator_u_id='.$instructor['u_id'].' OR e_recipient_u_id='.$instructor['u_id'].')' => null,
-                '(e_type_id=6 OR e_type_id=7)' => null,
-            ));
+<ul class="nav nav-pills nav-pills-primary">
+    <li class="<?= ( $object_name=='engagements' ? 'active' : '') ?>"><a href="/cockpit/browse/engagements"><i class="fa fa-eye" aria-hidden="true"></i> Engagements</a></li>
+    <li class="<?= ( $object_name=='bootcamps' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
+    <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
+    <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
+</ul>
+<hr />
+
+<?php
+
+if($object_name=='engagements'){
+
+    //Define engagement filters:
+    $engagement_references = $this->config->item('engagement_references');
+    $e_type_id = $this->Db_model->a_fetch();
+    $engagement_filters = array(
+        'e_type_id' => 'Choose Engagement Type',
+        'e_initiator_u_id' => 'Initiator User ID',
+        'e_recipient_u_id' => 'Recipient User ID',
+        'e_b_id' => 'Bootcamp ID',
+        'e_r_id' => 'Class ID',
+        'e_c_id' => 'Intent ID',
+    );
+    $title_suffix = '';
+    $match_columns = array();
+    foreach($engagement_filters as $key=>$value){
+        if(isset($_GET[$key]) && intval($_GET[$key])>0){
+            $match_columns[$key] = intval($_GET[$key]);
+            $title_suffix .= ' | '.$value.' '.intval($_GET[$key]);
         }
-        
-        echo '<div><a href="/cockpit/engagements?e_initiator_u_id='.$instructor['u_id'].'" title="User ID '.$instructor['u_id'].'">'.$instructor['u_fname'].' '.$instructor['u_lname'].'</a> '.( strlen($instructor['u_fb_id'])>4 ? '<i class="fa fa-commenting" aria-hidden="true"></i> '.intval(count($messages)) : messenger_activation_url('381488558920384',$instructor['u_id']) ).'</div>';
     }
-    echo '</td>';
-    echo '<td>'. ( count($engagements)>0 ? time_format($engagements[0]['e_timestamp'],1) : 'Never' ) .'</td>';
-    echo '<td><a href="/cockpit/engagements?e_b_id='.$bootcamp['b_id'].'">'.( count($engagements)>=100 ? '100+' : count($engagements) ).'</a></td>';
-    
-    echo '</tr>';
-}
 
+    //Fetch engagements with possible filters:
+    $engagements = $this->Db_model->e_fetch($match_columns,50);
 
-if($object_name=='bootcamps'){
+    ?>
+
+    <style>
+        table, tr, td, th { text-align:left !important; font-size:14px; cursor:default !important; line-height:120% !important; }
+        th { font-weight:bold !important; }
+        td { padding:5px 0 !important; }
+    </style>
+
+    <?php
+//Display filters:
+    echo '<form action="" method="GET">';
+    echo '<table class="table table-condensed"><tr>';
+    foreach($engagement_filters as $key=>$value){
+        echo '<td><div style="padding-right:5px;">';
+        if(isset(${$key})){ //We have a list to show:
+            echo '<select name="'.$key.'" class="border" style="width:160px;">';
+            echo '<option value="0">'.$value.'</option>';
+            foreach(${$key} as $key2=>$value2){
+                echo '<option value="'.$key2.'" '.((isset($_GET[$key]) && intval($_GET[$key])==$key2)?'selected="selected"':'').'>'.$value2.'</option>';
+            }
+            echo '</select>';
+        } else {
+            //show text input
+            echo '<input type="text" name="'.$key.'" placeholder="'.$value.'" value="'.((isset($_GET[$key]))?$_GET[$key]:'').'" class="form-control border">';
+        }
+        echo '</div></td>';
+    }
+    echo '<td><input type="submit" class="btn btn-sm btn-primary" value="Apply" /></td>';
+    echo '</tr></table>';
+    echo '</form>';
+    ?>
+
+    <table class="table table-condensed table-striped">
+        <thead>
+        <tr>
+            <th style="width:120px;">Time</th>
+            <th style="width:120px;">Action</th>
+            <th><div style="padding-left:10px;">Message</div></th>
+            <th style="width:300px;">References</th>
+            <th style="width:30px; text-align:center !important;">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        //Fetch objects
+        foreach($engagements as $e){
+            echo '<tr>';
+            echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
+            echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].' (Type #'.$e['a_id'].')" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
+            echo '<td><div style="max-width:300px; padding-left:10px;">'.( strlen($e['e_message'])>0 ? format_e_message($e['e_message']) : '' ).( $e['e_cron_job']==0 ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
+            echo '<td>';
+            //Lets go through all references to see what is there:
+            foreach($engagement_references as $engagement_field=>$er){
+                if($er['object_code']=='i'){
+                    continue;
+                }
+                if(intval($e[$engagement_field])>0 && 0){
+                    //Yes we have a value here:
+                    echo '<div>'.$er['name'].': '.object_link($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';
+                } elseif(intval($e[$engagement_field])>0) {
+                    echo '<div>'.$er['name'].': #'.$e[$engagement_field].'</div>';
+                }
+            }
+            echo '</td>';
+            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/blob/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" aria-hidden="true" data-placement="left"><i class="fa fa-search-plus" id="icon_'.$e['e_id'].'" aria-hidden="true"></i></a>' : '' ).'</td>';
+            echo '</tr>';
+        }
+        ?>
+        </tbody>
+    </table>
+    <?php
+
+} elseif($object_name=='bootcamps'){
+
+    //A function to echo the Bootcamp rows:
+    function echo_row($bootcamp,$counter){
+        echo '<tr>';
+        echo '<td>'.$counter.'</td>';
+        echo '<td>'.$bootcamp['b_id'].'</td>';
+        echo '<td><a href="/console/'.$bootcamp['b_id'].'">'.$bootcamp['c_objective'].'</a></td>';
+        echo '<td>'.status_bible('b',$bootcamp['b_status'],0,'right').'</td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
+
+        echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
+        echo $bootcamp['student_funnel'][0].' -> '.$bootcamp['student_funnel'][2].' -> <b>'.$bootcamp['student_funnel'][4].'</b> ('.$bootcamp['student_funnel'][-1].')';
+        echo '</span></td>';
+
+        echo '<td>'. ( count($bootcamp['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$bootcamp['b_id'].'">'.( count($bootcamp['engagements'])>=1000 ? '1000+' : count($bootcamp['engagements']) ).'</a> ('.time_format($bootcamp['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
+        echo '</tr>';
+    }
     
     //User Bootcamps:    
     $bootcamps = $this->Db_model->b_fetch(array(
         'b.b_status >=' => 0,
-    ));
-    
+    ),true,'b_status');
+
     //Did we find any?
+    $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
+
+
     foreach($bootcamps as $key=>$mb){
-        //Fetch full bootcamp:
-        $this_full = $this->Db_model->c_full_fetch(array(
-            'b.b_id' => $mb['b_id'],
+        //Fetch Leader:
+        $bootcamps[$key]['leaders'] = $this->Db_model->ba_fetch(array(
+            'ba.ba_b_id' => $mb['b_id'],
+            'ba.ba_status' => 3,
         ));
-        $bootcamps[$key] = $this_full[0];
+
+        //Fetch last activity:
+        $bootcamps[$key]['engagements'] = $this->Db_model->e_fetch(array(
+            'e_b_id' => $mb['b_id'],
+            '(e_type_id IN ('.join(',',$meaningful_bootcamp_engagements).'))' => null,
+        ),1000);
+
+        $bootcamps[$key]['student_funnel'] = array(
+            0 => count($this->Db_model->ru_fetch(array(
+                'r.r_b_id'	       => $mb['b_id'],
+                'ru.ru_status'     => 0,
+            ))),
+            2 => count($this->Db_model->ru_fetch(array(
+                'r.r_b_id'	       => $mb['b_id'],
+                'ru.ru_status'     => 2,
+            ))),
+            4 => count($this->Db_model->ru_fetch(array(
+                'r.r_b_id'	       => $mb['b_id'],
+                'ru.ru_status'     => 4,
+            ))),
+            -1 => count($this->Db_model->ru_fetch(array(
+                'r.r_b_id'	       => $mb['b_id'],
+                'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
+            ))),
+        );
     }
     
     ?>
+
     <table class="table table-condensed table-striped left-table" style="font-size:0.8em;">
     <thead>
-    	<tr>
+    	<tr style="background-color:#333; color:#fff; font-weight:bold;">
      		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
-    		<th style="width:30px;">&nbsp;</th>
-    		<th>Bootcamp Outcome</th>
-    		<th style="width:100px;"><i class="fa fa-flag" aria-hidden="true"></i></th>
-    		<th style="width:40px;"><i class="fa fa-tasks" aria-hidden="true"></i></th>
-    		<th style="width:40px;"><i class="fa fa-calendar" aria-hidden="true"></i></th>
-    		<th style="width:40px;"><i class="fa fa-commenting" aria-hidden="true"></i></th>
-    		<th>Instructor(s)</th>
-    		<th>Last Activity</th>
-    		<th>Engagements</th>
+    		<th>Bootcamp</th>
+            <th>Status</th>
+    		<th>Lead Instructor</th>
+            <th>Admission Funnel</th>
+    		<th>Activity (Last)</th>
     	</tr>
     </thead>
     <tbody>
@@ -83,17 +192,15 @@ if($object_name=='bootcamps'){
     
     foreach($bootcamps as $bootcamp){
         $is_mench_team = false;
-        foreach($bootcamp['b__admins'] as $key=>$instructor){
+        foreach($bootcamp['leaders'] as $key=>$instructor){
             if($instructor['u_status']>=3){
                 $is_mench_team = true;
                 break;
             }
         }
-        
         //Group based on who is the admin:
         array_push($bootcamp_groups[( $is_mench_team ? 'mench_team' : 'instructor' )],$bootcamp);
     }
-    
     
     foreach($bootcamp_groups['instructor'] as $bootcamp){
         $counter++;
@@ -103,19 +210,14 @@ if($object_name=='bootcamps'){
     </tbody>
     
     <thead>
-    	<tr>
-    		<th style="width:40px;">#</th>
-    		<th style="width:40px;">ID</th>
-    		<th style="width:30px;">&nbsp;</th>
-    		<th style="width:30px;">&nbsp;</th>
-    		<th>Bootcamp Outcome</th>
-    		<th style="width:100px;"><i class="fa fa-flag" aria-hidden="true"></i></th>
-    		<th style="width:40px;"><i class="fa fa-tasks" aria-hidden="true"></i></th>
-    		<th style="width:40px;"><i class="fa fa-calendar" aria-hidden="true"></i></th>
-    		<th style="width:40px;"><i class="fa fa-commenting" aria-hidden="true"></i></th>
-    		<th>Mench Team Member</th>
-    		<th>Last Activity</th>
-    		<th>Engagements</th>
+    	<tr style="background-color:#333; color:#fff; font-weight:bold;">
+            <th style="width:40px;">#</th>
+            <th style="width:40px;">ID</th>
+            <th>Bootcamp</th>
+            <th>Status</th>
+            <th>Lead Instructor</th>
+            <th>Admission Funnel</th>
+            <th>Activity (Last)</th>
     	</tr>
     </thead>
     
@@ -129,8 +231,107 @@ if($object_name=='bootcamps'){
     </tbody>
     </table>
     <?php
-    
+
+} elseif($object_name=='classes'){
+
+
+    $classes = $this->Db_model->r_fetch(array(
+        'r_status IN (1,2)' => null, //Running Classes
+    ),null,'ASC');
+
+    //Include email model for certain communications:
+    $start_times = $this->config->item('start_times');
+    ?>
+    <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:100%;">
+    <thead>
+    <tr>
+        <th style="width:40px;">#</th>
+        <th>Bootcamp</th>
+        <th>Lead Instructor</th>
+        <th>Class</th>
+        <th>Status</th>
+        <th>Tuition</th>
+        <th>Admission Funnel</th>
+        <th>Action Plan</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    foreach($classes as $key=>$class) {
+
+        //Fetch Full Bootcamp:
+        $bootcamps = $this->Db_model->b_fetch(array(
+            'b.b_id' => $class['r_b_id'],
+        ),true);
+
+        //Fetch Leader:
+        $leaders = $this->Db_model->ba_fetch(array(
+            'ba.ba_b_id' => $class['r_b_id'],
+            'ba.ba_status' => 3,
+        ));
+
+        echo '<tr>';
+        echo '<td>'.($key+1).'</td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
+        echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format($class['r_start_date'],1).' '.$start_times[$class['r_start_time_mins']].'</a></td>';
+        echo '<td>'.status_bible('r',$class['r_status']).'</td>';
+        echo '<td>'.echo_price($class['r_usd_price']).'</td>';
+        echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted/Max (Rejected)">';
+        $student_funnel = array(
+            0 => count($this->Db_model->ru_fetch(array(
+                'r.r_id'	       => $class['r_id'],
+                'ru.ru_status'     => 0,
+            ))),
+            2 => count($this->Db_model->ru_fetch(array(
+                'r.r_id'	       => $class['r_id'],
+                'ru.ru_status'     => 2,
+            ))),
+            4 => count($this->Db_model->ru_fetch(array(
+                'r.r_id'	       => $class['r_id'],
+                'ru.ru_status'     => 4,
+            ))),
+            -1 => count($this->Db_model->ru_fetch(array(
+                'r.r_id'	       => $class['r_id'],
+                'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
+            ))),
+        );
+        echo $student_funnel[0].' -> '.$student_funnel[2].' -> <b style="color:'.( $student_funnel[4]>=$class['r_min_students'] ? '#00CC00' : '#FF0000' ).';" title="Minimum is '.$class['r_min_students'].'">'.$student_funnel[4].'</b>/'.$class['r_max_students'].' ('.$student_funnel[-1].')';
+        echo '</span></td>';
+
+        //Does it have a cache action plan?
+        $engagements = $this->Db_model->e_fetch(array(
+            'e_type_id' => 70,
+            'e_r_id' => $class['r_id'],
+        ),1);
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'#actionplan" target="_blank" data-toggle="tooltip" title="See the latest cache copy of the Action Plan" aria-hidden="true" data-placement="left">'.( count($engagements)==1 ? time_format($engagements[0]['e_timestamp'],0) : 'None' ).'</a></td>';
+
+        echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+
 } elseif($object_name=='users'){
+
+
+    $engagement_filters = array(
+        'r_id' => 'Class ID',
+        'pid' => 'Message ID',
+    );
+
+    echo '<form action="" method="GET">';
+    echo '<table class="table table-condensed"><tr>';
+    foreach($engagement_filters as $key=>$value){
+        echo '<td><div style="padding-right:5px;">';
+        echo '<input type="text" name="'.$key.'" placeholder="'.$value.'" value="'.((isset($_GET[$key]))?$_GET[$key]:'').'" class="form-control border">';
+        echo '</div></td>';
+    }
+    echo '<td><input type="submit" class="btn btn-sm btn-primary" value="Apply" /></td>';
+    echo '</tr></table>';
+    echo '</form>';
+
+
 
     //TODO Define Instructors we'd be focused on:
     $qualified_instructors = array();
@@ -213,18 +414,20 @@ if($object_name=='bootcamps'){
         echo '<td>'.($key+1).'</td>';
         echo '<td>'.$user['u_id'].'</td>';
         echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
-        echo '<td><a href="/cockpit/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a></td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a></td>';
 
 
         echo '<td>';
             //Display Bootcamps:
             if(count($instructor_bootcamps)>0){
+                $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
+
                 foreach ($instructor_bootcamps as $counter=>$ib){
                     //Fetch last activity:
                     $bootcamp_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],
                         'e_b_id' => $ib['b_id'],
-                        '(e_type_id IN (15,17,37,18,14,16,13,20,21,23,22,19,34,35,39,36,38,43,44))' => null,
+                        '(e_type_id IN ('.join(',',$meaningful_bootcamp_engagements).'))' => null,
                     ));
 
                     echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($bootcamp_building_engagements[0]) ? time_format($bootcamp_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($bootcamp_building_engagements)>=100 ? '100+' : count($bootcamp_building_engagements) ).'</div>';

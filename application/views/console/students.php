@@ -19,7 +19,7 @@
             adjust_chat_height();
         });
 
-        //TODO Remove:
+        //TODO Only enable for faster testing:
         //$("#class_focus").on("focus", function(){load_leaderboard($(this).val());});
 
     });
@@ -82,28 +82,38 @@
         //Generate list of classes based on the format accepted by the echo_status_dropdown() function
         $classes_array = array();
         $focus_class_id = 0;
+
         foreach($bootcamp['c__classes'] as $class){
             if($class['r_status']>=1){
-                if(!$focus_class_id){
+                if(!$focus_class_id && date_is_past($class['r_start_date'])){
                     $focus_class_id = $class['r_id'];
                 }
                 $classes_array[$class['r_id']] = $class;
             }
         }
 
+        //Did we find any? If not, lets grab the very first class this time:
+        if(!$focus_class_id){
+            foreach($bootcamp['c__classes'] as $class){
+                if($class['r_status']>=1){
+                    if(!$focus_class_id){
+                        $focus_class_id = $class['r_id'];
+                    }
+                }
+            }
+        }
 
 
         if(count($classes_array)>0){
 
             ?>
-
             <input type="hidden" id="r_id" value="<?= $focus_class_id ?>" />
 
             <div class="title"><h4>Leaderboard for Class:
                     <span class="inlineform"><select id="class_focus" class="form-control input-mini border" style="display:inline !important;">
                     <?php
                     foreach($classes_array as $class){
-                        echo '<option value="'.$class['r_id'].'">'.time_format($class['r_start_date'],2).' ('.$class['r__confirmed_admissions'].' Student'.show_s($class['r__confirmed_admissions']).')</option>';
+                        echo '<option value="'.$class['r_id'].'" '.( $class['r_id']==$focus_class_id ? ' selected="selected"' : '' ).'>'.time_format($class['r_start_date'],2).' ('.$class['r__confirmed_admissions'].' Student'.show_s($class['r__confirmed_admissions']).')</option>';
                     }
                     ?>
                     </select></span> <span id="hb_2826" class="help_button" intent-id="2826"></span></h4></div>

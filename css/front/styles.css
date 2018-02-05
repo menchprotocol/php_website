@@ -312,7 +312,7 @@ a.badge-primary:hover {
 .price>h4>span{ font-size:0.6em; }
 .yellow { color:rgba(254, 221, 22, 0.91) !important; }
 .list-group-item .title-main { display:inline; }
-.card-description img, .mini-image { width:28px; height:28px; margin-top:-2px; border-radius: 50%; }
+.card-description img, .mini-image { width:24px; height:24px; margin-top:-2px; border-radius: 50%; }
 .profile-pic { width:50px; height:50px; margin:0 0 0 15px; border-radius: 50%; border:1px solid #CCC; }
 .userheader { line-height:110%; margin-bottom:15px; }
 .userheader>span { display:block; font-size:0.8em; font-weight:normal; margin:-8px 0 0 59px; }
@@ -343,6 +343,10 @@ h5, .h5 {
     margin-bottom:5px;
 }
 .flag { width:22px; height:14px; border-radius:3px; border:1px solid #CCC; }
+.messages-inline{
+    display:none;
+    margin:10px 0;
+}
 .list_status{
     font-size:16px !important;
     padding-left:5px;

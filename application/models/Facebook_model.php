@@ -25,7 +25,7 @@ class Facebook_model extends CI_Model {
 		    //Failed to fetch this profile:
 		    $this->Db_model->e_create(array(
 		        'e_message' => 'fetch_profile() failed to fetch user profile for Facebook ID ['.$psid_sender_id.'].',
-		        'e_json' => json_encode($fb_profile),
+		        'e_json' => $fb_profile,
 		        'e_type_id' => 8, //Platform Error
 		    ));
 		    
@@ -77,9 +77,9 @@ class Facebook_model extends CI_Model {
 		if($response === FALSE){
 		    $this->Db_model->e_create(array(
 		        'e_message' => 'set_settings() failed to update the settings for ['.$botkey.'] on Facebook.',
-		        'e_json' => json_encode(array(
+		        'e_json' => array(
 		            'payload' => $mench_bots[$botkey]['settings'],
-		        )),
+		        ),
 		        'e_type_id' => 8, //Platform Error
 		    ));
 		}
@@ -163,7 +163,7 @@ class Facebook_model extends CI_Model {
         if($response === FALSE){
             $this->Db_model->e_create(array(
                 'e_message' => 'save_attachment() CURL Failed in sending message via ['.$botkey.'] Messenger.',
-                'e_json' => json_encode($payload),
+                'e_json' => $payload,
                 'e_type_id' => 8, //Platform Error
             ));
         }
@@ -197,7 +197,7 @@ class Facebook_model extends CI_Model {
         if($response === FALSE){
             $this->Db_model->e_create(array(
                 'e_message' => 'send_message() CURL Failed in sending message via ['.$botkey.'] Messenger.',
-                'e_json' => json_encode($payload),
+                'e_json' => $payload,
                 'e_type_id' => 8, //Platform Error
             ));
         }

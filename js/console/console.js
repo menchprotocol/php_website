@@ -109,8 +109,41 @@ function view_el(u_id,c_id){
     }
 }
 
+function ms_toggle(c_id,new_state=null){
+    if(new_state === null){
+        //Detect new state:
+        new_state = ( $('#list-outbound-'+c_id).hasClass('hidden') ? 1 : 0 );
+    }
+
+    if(new_state){
+        //open:
+        $('#list-outbound-'+c_id).removeClass('hidden');
+        $('#handle-'+c_id).removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+    } else {
+        //Close:
+        $('#list-outbound-'+c_id).addClass('hidden');
+        $('#handle-'+c_id).removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+    }
+}
+
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
+
+    //Watch the expand/close all buttons for Milestones:
+    $('#milestone_view .expand_all').click(function (e) {
+        $( "#list-outbound>.is_sortable" ).each(function() {
+            ms_toggle($( this ).attr('node-id'),1);
+        });
+    });
+    $('#milestone_view .close_all').click(function (e) {
+        $( "#list-outbound>.is_sortable" ).each(function() {
+            ms_toggle($( this ).attr('node-id'),0);
+        });
+    });
+
+
+
+
     if($("span.help_button")[0]){
         var loaded_messages = [];
         var intent_id = 0;

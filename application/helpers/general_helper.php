@@ -136,7 +136,6 @@ function extract_level($b,$c_id){
                 foreach($sprint['c__child_intents'] as $task_key=>$task){
                     if($task['c_id']==$c_id){
 
-
                         //Find the next intent:
                         $next_intent = null;
                         $next_level = 0;
@@ -224,8 +223,8 @@ function extract_level($b,$c_id){
 function echo_price($r_usd_price){
     return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
 }
-function echo_hours($int_time){
-    return ( $int_time>0 && $int_time<1 ? round($int_time*60).' Minutes' : round($int_time).($int_time==1?' Hour':' Hours') );
+function echo_hours($int_time,$micro=false){
+    return ( $int_time>0 && $int_time<1 ? (round($int_time*60)==($int_time*60)?'':'~').round($int_time*60).($micro?'m':' Minutes') : (round($int_time)==$int_time?'':'~').round($int_time).($micro?'h':($int_time==1?' Hour':' Hours')));
 }
 
 function detect_embed_video($url,$full_message){
@@ -511,13 +510,13 @@ function echo_i($i,$first_name=null,$fb_format=false){
             'e_initiator_u_id' => ( isset($i['e_initiator_u_id']) ? $i['e_initiator_u_id'] : 0 ),
             'e_recipient_u_id' => ( isset($i['e_recipient_u_id']) ? $i['e_recipient_u_id'] : 0 ),
             'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
-            'e_json' => json_encode(array(
+            'e_json' => array(
                 'i' => $i,
                 'first_name' => $first_name,
                 'fb_message' => $fb_message,
                 'tree' => ( isset($i['tree']) ? $i['tree'] : null ),
                 'depth' => ( isset($i['depth']) ? $i['depth'] : null ),
-            )),
+            ),
             'e_type_id' => 7, //Outbound message
             'e_r_id' => ( isset($i['e_r_id'])    ? $i['e_r_id']  :0), //If set...
             'e_b_id' => ( isset($i['e_b_id'])    ? $i['e_b_id']  :0), //If set...
@@ -562,7 +561,7 @@ function echo_uploader($i){
     return '<img src="'.$i['u_image_url'].'" data-toggle="tooltip" title="Last modified by '.$i['u_fname'].' '.$i['u_lname'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right" />';
 }
 
-function echo_message($i,$level=0){
+function echo_message($i,$level=0,$editing_enabled=true){
 
     $echo_ui = '';
     $echo_ui .= '<div class="list-group-item is-msg is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
@@ -582,9 +581,11 @@ function echo_message($i,$level=0){
     	
         //Editing menu:
         $echo_ui .= '<ul class="msg-nav">';
-		    //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
-            $echo_ui .= '<li class="edit-off the_status" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
-            $echo_ui .= '<li class="i_uploader on-hover">'.echo_uploader($i).'</li>';
+        //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
+        $echo_ui .= '<li class="edit-off the_status" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
+        $echo_ui .= '<li class="i_uploader on-hover">'.echo_uploader($i).'</li>';
+
+        if($editing_enabled){
             $echo_ui .= '<li class="on-hover" style="margin: 0 0 0 8px;"><i class="fa fa-bars" style="color:#2f2639;"></i></li>';
             $echo_ui .= '<li class="on-hover" style="margin-right: 10px; margin-left: 6px;"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
             if($i['i_media_type']=='text' || $level<=2){
@@ -595,7 +596,8 @@ function echo_message($i,$level=0){
             $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
             $echo_ui .= '<li class="pull-right edit-on '.( $level>=3 ? 'hidden' : '' ).'">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],( $level>=3 ? array(-1,2,4) : array(-1,4) ),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
-		    $echo_ui .= '</ul>';
+        }
+        $echo_ui .= '</ul>';
 	    
     $echo_ui .= '</div>';
     $echo_ui .= '</div>';
@@ -609,7 +611,7 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
         $ui = '<span class="title-sub" style="text-transform:none !important;">';
 
         if($c_id){
-            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.( $c_time_estimate==0.05 ? '3m' : '0').'</span>';
+            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
             $ui .= ' <i class="fa fa-clock-o" aria-hidden="true"></i>';
         } else {
 
@@ -854,7 +856,7 @@ function generate_url_key($string){
 }
 
 
-function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0){
+function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0,$editing_enabled=true){
     
     $CI =& get_instance();
     $core_objects = $CI->config->item('core_objects');
@@ -865,6 +867,11 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
     $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : 0 );
     
 	if($direction=='outbound'){
+
+	    if(!$editing_enabled && $intent['c_status']<1){
+	        //Do not show drafting items in read-only mode:
+	        return false;
+        }
 
 	    if($level==1){
 
@@ -885,7 +892,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         //Right content
         $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-            if($udata['u_fb_id']>0 && $level==2){
+            if($udata['u_fb_id']>0 && $level==2 && $editing_enabled){
                 $ui .= '<a id="simulate_'.$intent['c_id'].'" class="badge badge-primary btn-mls" href="javascript:tree_message('.$intent['c_id'].','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when '.$core_objects['level_'.($level-1)]['o_name'].' starts" data-placement="top"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
             }
 
@@ -896,18 +903,22 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
                 $ui .= echo_time($intent['c_time_estimate'],1,1, $intent['c_id'], $level, $intent['c_status']);
             }
 
-            $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
+            if($editing_enabled){
+                $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
 
+                $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="load_iphone('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
+            } else {
+                //Show link to current section:
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
+            }
 
-        $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="load_iphone('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
         //Keep an eye out for inner message counter changes:
-
         $ui .= '</span> ';
 
 
 
         //Sorting & Then Left Content:
-        if($level>1) {
+        if($level>1 && $editing_enabled) {
             $ui .= '<i class="fa fa-bars" aria-hidden="true"></i> &nbsp;';
         }
 
@@ -919,16 +930,20 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
             $ui .= '<div class="inline-level" style="margin:9px 0 0 1px; width:100%; clear:both;">';
 
-
-            $ui .= '<span id="status_holder">'.status_bible('b',$intent['b_status'],0,'right').'</span> &nbsp;&nbsp; ';
             $ui .= '<span style="margin-left:3px; font-weight:500;" data-toggle="tooltip" title="Timelapse between milestones" data-placement="right"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span></span> &nbsp; ';
-            $ui .= '<div style="font-weight:500; margin-right: 13px;"><i class="fa fa-link" aria-hidden="true" style="font-size: 0.9em; margin-left: 3px; margin-right: 3px;"></i><a href="/'.$intent['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="" class="landing_page_url" data-original-title="Open Landing Page"><span style="color:#555; font-weight:300; padding-left:3px;">https://mench.co/</span><span class="url_anchor">'.$intent['b_url_key'].'</span></a></div>';
+
+            if($editing_enabled){
+                $ui .= '<span id="status_holder">'.status_bible('b',$intent['b_status'],0,'right').'</span> &nbsp;&nbsp; ';
+                $ui .= '<div style="font-weight:500; margin-right: 13px;"><i class="fa fa-link" aria-hidden="true" style="font-size: 0.9em; margin-left: 3px; margin-right: 3px;"></i><a href="/'.$intent['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="" class="landing_page_url" data-original-title="Open Landing Page"><span style="color:#555; font-weight:300; padding-left:3px;">https://mench.co/</span><span class="url_anchor">'.$intent['b_url_key'].'</span></a></div>';
+            }
+
             $ui .= '</div>';
 
         } elseif($level==2){
 
             //Milestone:
-            $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-minus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'">'.$core_objects['level_'.($level-1)]['o_icon'].' <span class="b_sprint_unit">'.ucwords($b_sprint_unit).'</span> #0</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'"  current-duration="'.$intent['c_duration_multiplier'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
+            //( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1))
+            $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-minus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'">'.$core_objects['level_'.($level-1)]['o_icon'].' <span class="b_sprint_unit">'.ucwords($b_sprint_unit).'</span> #'.$intent['cr_outbound_rank'].( $intent['c_duration_multiplier']>1 ? '-'.($intent['cr_outbound_rank']+$intent['c_duration_multiplier']-1) : '' ).'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'"  current-duration="'.$intent['c_duration_multiplier'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
 
         } elseif ($level>=3){
 
@@ -937,6 +952,15 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
         }
 
+        //For Class Action Plan Copy show the messages inline:
+        if(!$editing_enabled){
+            //Show Message Preview:
+            $ui .= '<div id="messages_'.$intent['c_id'].'" class="messages-inline">';
+            foreach($intent['c__messages'] as $i){
+                $ui .= echo_message($i,$level,$editing_enabled);
+            }
+            $ui .= '</div>';
+        }
 
         //Any tasks?
         if($level==2){
@@ -946,12 +970,13 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
             $ui .= '<div class="is_task_sortable dropin-box" style="height:1px;">&nbsp;</div>';
             if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
                 foreach($intent['c__child_intents'] as $sub_intent){
-                    $ui .= echo_cr($b_id,$sub_intent,$direction,($level+1),$b_sprint_unit,$intent['c_id']);
+                    $ui .= echo_cr($b_id,$sub_intent,$direction,($level+1),$b_sprint_unit,$intent['c_id'],$editing_enabled);
                 }
             }
 
             //Task Input field:
-            $ui .= '<div class="list-group-item list_input new-task-input">
+            if($editing_enabled){
+                $ui .= '<div class="list-group-item list_input new-task-input">
         		<div class="input-group">
         			<div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" node-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="'.$core_objects['c']['maxlength'].'" id="addnode'.$intent['c_id'].'" placeholder=""></form></div>
         			<span class="input-group-addon" style="padding-right:8px;">
@@ -961,6 +986,8 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         			</span>
         		</div>
         	</div>';
+            }
+
 
             $ui .= '</div>';
         }
@@ -1518,7 +1545,7 @@ function calculate_bootcamp_status($b){
     ));
 
 
-    //Prizes
+    //Completion Awards
     $default_class_prizes = $CI->config->item('default_class_prizes');
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
@@ -1526,7 +1553,7 @@ function calculate_bootcamp_status($b){
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Edit Completion Prizes</b> in Action Plan',
+        'anchor' => '<b>Modify Completion Awards</b> in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1920,7 +1947,7 @@ function save_file($file_url,$json_data,$is_local=false){
         } else {
             $CI->Db_model->e_create(array(
                 'e_message' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
-                'e_json' => json_encode($json_data),
+                'e_json' => $json_data,
                 'e_type_id' => 8, //Platform Error
             ));
             return false;
@@ -2671,7 +2698,6 @@ function html_new_run(){
 	return $return_string;
 }
 
-
 function html_run($run){
 	
 	$CI =& get_instance();
@@ -2703,7 +2729,7 @@ function html_run($run){
 	$return_string .= '<span><a href="/"><img src="https://www.gravatar.com/avatar/'.md5('ssasif').'?d=identicon" class="mini-image" /></a></span>';
 	
 	//COPY LANDING PAGE:
-	$return_string .= ' <span title="Click to Copy URL to share Plugin on Messenger." data-toggle="tooltip" class="hastt clickcopy" data-clipboard-text="httpurlhere"><img src="/img/icons/messenger.png" class="action_icon" /><b>112233</b></span>';
+	$return_string .= ' <span title="Click to Copy URL to share Plugin on Messenger." data-toggle="tooltip" class="hastt clickcopy" data-clipboard-text="httpurlhere"><img src="/img/messenger.png" class="action_icon" /><b>112233</b></span>';
 	
 	//Date
 	$return_string .= '<span title="Added TIME UTC" data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>TIME</span>';
@@ -2720,7 +2746,7 @@ function html_run($run){
 		//Make sure this is not a grandpa before showing the delete button:
 		$grandparents = $CI->config->item('grand_parents');
 		if(!($key==0 && array_key_exists($node[$key]['node_id'],$grandparents))){
-			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$node[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>';
+			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$node[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>'
 		}
 		
 		//Add search shortcuts:

@@ -53,11 +53,11 @@ class Email_model extends CI_Model {
                 'e_initiator_u_id' => 0, //System initiates these types of emails from this function
                 'e_recipient_u_id' => $udata['u_id'], //The user that updated the account
                 'e_message' => $tree[0]['c_objective'],
-                'e_json' => json_encode(array(
+                'e_json' => array(
                     'udata' => $udata,
                     'html' => $html_message,
                     'tree' => $tree[0],
-                )),
+                ),
                 'e_type_id' => 28, //Email message sent
                 'e_c_id' => $c_id,
                 'e_b_id' => $b_id,
@@ -75,10 +75,10 @@ class Email_model extends CI_Model {
                 'e_type_id' => 8, //Platform Error
                 'e_initiator_u_id' => 0, //System initiates these types of emails from this function
                 'e_recipient_u_id' => $udata['u_id'], //The user that updated the account
-                'e_json' => json_encode(array(
+                'e_json' => array(
                     'udata' => $udata,
                     'tree' => ( isset($tree[0]) ? $tree[0] : null ),
-                )),
+                ),
                 'e_c_id' => $c_id,
                 'e_b_id' => $b_id,
                 'e_r_id' => $r_id,

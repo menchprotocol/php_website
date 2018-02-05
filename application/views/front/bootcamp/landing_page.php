@@ -346,12 +346,11 @@ $( document ).ready(function() {
     		
     		
     		
-    		<?php if(strlen($bootcamp['b_completion_prizes'])>0){
-    		    $plural_prize = ( json_decode($bootcamp['b_completion_prizes'])==1 ? '' : 's' ); ?>
-    		<h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Prize<?= $plural_prize ?></h4>
-    		<div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_completion_prizes'])).'</li></ol>' ?></div>
-    		<p>Awarded for completing all milestones by the end time of <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST.</p>
-    		<hr />
+    		<?php if(strlen($bootcamp['b_completion_prizes'])>0){ ?>
+                <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($bootcamp['b_completion_prizes']))) ?></h4>
+                <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($bootcamp['b_completion_prizes'])).'</li></ol>' ?></div>
+                <p>Awarded for completing all milestones by the end time of <?= time_format($focus_class['r_start_date'],2,(calculate_duration($bootcamp))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST.</p>
+                <hr />
     		<?php } ?>
     		
     		
@@ -385,12 +384,6 @@ $( document ).ready(function() {
             <hr />
             <p>Ready to unleash your full potential?</p>
             <p>Class admission ends in:</p>
-
-
-
-
-
-
 
     		
     </div>

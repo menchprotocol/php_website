@@ -113,7 +113,7 @@ $udata = $this->session->userdata('user');
 		           	<div class="info info-horizontal">
 						<div class="description">
 							<h4 class="info-title">For Developers</h4>
-							<p>The moment you use Material Kit, you know you’ve never felt anything like it. With a single use, this powerfull UI Kit lets you do more than ever before. </p>
+							<p>The moment you use Material Kit, you know youï¿½ve never felt anything like it. With a single use, this powerfull UI Kit lets you do more than ever before. </p>
 						</div>
 		        	</div>
 
@@ -126,9 +126,6 @@ $udata = $this->session->userdata('user');
 				</div>
 
 				<div class="col-md-4">
-					<div class="phone-container">
-						<img src="/img/iphone2.png">
-					</div>
 				</div>
 
 				<div class="col-md-3">

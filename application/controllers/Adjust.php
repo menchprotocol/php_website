@@ -11,6 +11,9 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
+    //This is an error on purpose to test the error logging:
+    asd
+
     function ru_current_milestone(){
         //Go through all admissions for running classes:
         $classes = $this->Db_model->r_fetch(array(

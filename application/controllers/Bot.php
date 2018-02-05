@@ -14,6 +14,30 @@ class Bot extends CI_Controller {
         echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
     }
 
+    function e_json(){
+
+	    //Fetch
+        $engagements = $this->Db_model->e_fetch(array(
+            'LENGTH(e_json)>0' => null,
+        ),500);
+
+        foreach($engagements as $e){
+            //Insert into new table:
+            $this->db->insert('v5_engagement_blob', array(
+                'ej_e_id' => $e['e_id'],
+                'ej_e_blob' => serialize(objectToArray(json_decode($e['e_json']))),
+            ));
+
+            //Remove from old table:
+            $this->Db_model->e_update( $e['e_id'] , array(
+                'e_json' => null,
+                'e_has_blob' => 't',
+            ));
+        }
+
+        echo '<meta http-equiv="refresh" content="0">';
+    }
+
 	function t(){
 
         $enrollments = $this->Db_model->remix_admissions(array(
@@ -63,14 +87,14 @@ class Bot extends CI_Controller {
 		if(!isset($json_data['object']) || !isset($json_data['entry'])){
 		    $this->Db_model->e_create(array(
 		        'e_message' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
-		        'e_json' => json_encode($json_data),
+		        'e_json' => $json_data,
 		        'e_type_id' => 8, //Platform Error
 		    ));
 			return false;
 		} elseif(!$json_data['object']=='page'){
 		    $this->Db_model->e_create(array(
 		        'e_message' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
-		        'e_json' => json_encode($json_data),
+		        'e_json' => $json_data,
 		        'e_type_id' => 8, //Platform Error
 		    ));
 			return false;
@@ -84,14 +108,14 @@ class Bot extends CI_Controller {
 		    if(!isset($entry['id']) || !array_key_exists($entry['id'],$mench_bots)){
 			    $this->Db_model->e_create(array(
 			        'e_message' => 'facebook_webhook() unrecognized page/bot id ['.$entry['id'].'].',
-			        'e_json' => json_encode($json_data),
+			        'e_json' => $json_data,
 			        'e_type_id' => 8, //Platform Error
 			    ));
 				continue;
 			} elseif(!isset($entry['messaging'])){
 			    $this->Db_model->e_create(array(
 			        'e_message' => 'facebook_webhook() call missing messaging Array().',
-			        'e_json' => json_encode($json_data),
+			        'e_json' => $json_data,
 			        'e_type_id' => 8, //Platform Error
 			    ));
 				continue;
@@ -105,7 +129,7 @@ class Bot extends CI_Controller {
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
-				        'e_json' => json_encode($json_data),
+				        'e_json' => $json_data,
 				        'e_type_id' => 1, //Message Read
 				    ));
 					
@@ -114,7 +138,7 @@ class Bot extends CI_Controller {
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
-				        'e_json' => json_encode($json_data),
+				        'e_json' => $json_data,
 				        'e_type_id' => 2, //Message Delivered
 				    ));
 					
@@ -153,7 +177,7 @@ class Bot extends CI_Controller {
 					
 					$eng_data = array(
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
-						'e_json' => json_encode($json_data),
+						'e_json' => $json_data,
 					    'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], $ref),
 					);
 					
@@ -205,7 +229,7 @@ class Bot extends CI_Controller {
 					//Log engagement:
 				    $this->Db_model->e_create(array(
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
-				        'e_json' => json_encode($json_data),
+				        'e_json' => $json_data,
 				        'e_type_id' => 5, //Messenger Optin
 				    ));
 					
@@ -233,7 +257,7 @@ class Bot extends CI_Controller {
 					//Is this a non loggable inbound message?
                     if($metadata=='system_logged'){
                         //This is already logged! No need to take further action!
-                        json_encode(array('complete'=>'yes'));
+                        echo_json(array('complete'=>'yes'));
                         return false;
                         exit; //This should not trigger?! Not sure...
                     }
@@ -241,7 +265,7 @@ class Bot extends CI_Controller {
 					//Start data preparation for logging message inbound OR outbound engagement:
 					$eng_data = array(
 					    'e_initiator_u_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
-						'e_json' => json_encode($json_data),
+						'e_json' => $json_data,
 					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
 					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
 					    'e_recipient_u_id' => ( $sent_from_us ? $u_id : 0 ),
@@ -300,7 +324,7 @@ class Bot extends CI_Controller {
                             if(count($mt)>0) {
 
                                 //Lets extract the json and see where we're at with the message thread and if anything is left:
-                                $thread = objectToArray(json_decode($mt[0]['e_json']));
+                                $thread = objectToArray(json_decode($mt[0]['e_json'])); //DEPRECATED!
 
                                 foreach($thread['tree']['c__child_intents'] as $level1_key=>$level1){
                                     if($level1['c_status']>=1){
@@ -340,9 +364,9 @@ class Bot extends CI_Controller {
                                                             'e_initiator_u_id' => $mt[0]['e_initiator_u_id'],
                                                             'e_recipient_u_id' => $mt[0]['e_recipient_u_id'],
                                                             'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
-                                                            'e_json' => json_encode(array(
+                                                            'e_json' => array(
                                                                 'tree' => $thread['tree'],
-                                                            )),
+                                                            ),
                                                             'e_type_id' => 7, //Outbound message
                                                             'e_b_id' => $mt[0]['e_b_id'], //If set...
                                                             'e_r_id' => $mt[0]['e_r_id'], //If set...
@@ -396,7 +420,7 @@ class Bot extends CI_Controller {
                                 //Update the thread data:
                                 $this->Db_model->e_update( $mt[0]['e_id'] , array(
                                     'e_message' => $pending_thread_count.' messages pending in this thread',
-                                    'e_json' => json_encode($thread),
+                                    'e_json' => $thread,
                                     'e_cron_job' => ( $pending_thread_count>0 ? 0 : 1 ),
                                 ));
 
@@ -464,7 +488,7 @@ class Bot extends CI_Controller {
 					            $this->Db_model->e_create(array(
 					                'e_initiator_u_id' => $u_id,
 					                'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox',
-					                'e_json' => json_encode($json_data),
+					                'e_json' => $json_data,
 					                'e_type_id' => 9, //Support Needing Graceful Errors
 					            ));
 					        }   
@@ -504,7 +528,7 @@ class Bot extends CI_Controller {
 								//This should really not happen!
 							    $this->Db_model->e_create(array(
 							        'e_message' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
-							        'e_json' => json_encode($json_data),
+							        'e_json' => $json_data,
 							        'e_type_id' => 8, //Platform Error
 							    ));
 							}
@@ -519,7 +543,7 @@ class Bot extends CI_Controller {
 				    //This should really not happen!
 				    $this->Db_model->e_create(array(
 				        'e_message' => 'facebook_webhook() received unrecognized webhook call.',
-				        'e_json' => json_encode($json_data),
+				        'e_json' => $json_data,
 				        'e_type_id' => 8, //Platform Error
 				    ));
 				    
@@ -593,7 +617,7 @@ class Bot extends CI_Controller {
 	                $this->Db_model->e_create(array(
 	                    'e_initiator_u_id' => $enrollments[0]['ru_u_id'],
 	                    'e_message' => 'Received $'.$amount.' USD via PayPal.',
-	                    'e_json' => json_encode($_POST),
+	                    'e_json' => $_POST,
 	                    'e_type_id' => 30, //Application Completed with Potential Payment
 	                    'e_b_id' => $classes[0]['r_b_id'],
 	                    'e_r_id' => $classes[0]['r_id'],
@@ -862,9 +886,8 @@ Array
 			//TODO Log engagement
 			
 			//most likely this is the api.ai console.
-			header('Content-Type: application/json');
 			$chosen_reply = 'Testing intents on api.ai, huh? Currently we programmed to only respond in Facebook messanger directly!';
-			echo json_encode(array(
+			echo_json(array(
 					'speech' => $chosen_reply,
 					'displayText' => $chosen_reply,
 					'data' => array(), //Its only a text response

@@ -184,7 +184,7 @@ class My extends CI_Controller {
 	            //Log Engagement
 	            $this->Db_model->e_create(array(
 	                'e_initiator_u_id' => $admissions[0]['u_id'],
-	                'e_json' => json_encode($admissions),
+	                'e_json' => $admissions,
 	                'e_type_id' => 32, //actionplan Opened
 	                'e_b_id' => $admissions[0]['b_id'],
 	                'e_r_id' => $admissions[0]['r_id'],
@@ -204,6 +204,8 @@ class My extends CI_Controller {
 	            'u_status >=' => 0,
 	            'ru.ru_status' => 4, //Actively enrolled in
 	        ));
+
+
 	        
 	        //We have directions on what to load:
 	        $bootcamps = $this->Db_model->c_full_fetch(array(
