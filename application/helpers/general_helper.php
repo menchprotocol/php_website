@@ -1998,7 +1998,7 @@ function echo_rank($rank){
     } elseif($rank==3){
         return '🥉';
     } else {
-        return $rank;
+        return echo_ordinal($rank);
     }
 }
 
