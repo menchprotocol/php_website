@@ -12,12 +12,15 @@ class My extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 	
-	
+	function leaderboard(){
+	    //TODO Remove later, for compatibility only:
+        header( 'Location: /my/classmates');
+    }
+
 	function index(){
 	    //Nothing here:
 	    header( 'Location: /');
 	}
-	
 
 	function fetch(){
 	    //echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
