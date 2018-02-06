@@ -141,13 +141,13 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-    function leaderboard(){
+    function classmates(){
         //Load apply page:
         $data = array(
-            'title' => '🏆 Leaderboard',
+            'title' => '👥 Classmates',
         );
         $this->load->view('front/shared/p_header' , $data);
-        $this->load->view('front/student/leaderboard_frame' , $data);
+        $this->load->view('front/student/classmates_frame' , $data);
         $this->load->view('front/shared/p_footer');
     }
 

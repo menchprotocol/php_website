@@ -9,7 +9,7 @@ class Db_model extends CI_Model {
 	}
 
 
-	function fetch_leaderboard($r_id){
+	function fetch_classmates($r_id){
         return objectToArray($this->db->query("
 SELECT ru.*, u.*, COALESCE(us.points, 0) AS points
 FROM v5_class_students ru

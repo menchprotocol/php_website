@@ -7,11 +7,11 @@
             focus_hash(window.location.hash);
         }
 
-        //Load leaderboard on start:
-        load_leaderboard($('#r_id').val());
+        //Load Classmates on start:
+        load_classmates($('#r_id').val());
 
         $("#class_focus").on("change", function(){
-            load_leaderboard($(this).val());
+            load_classmates($(this).val());
         });
 
         adjust_chat_height();
@@ -20,7 +20,7 @@
         });
 
         //TODO Only enable for faster testing:
-        //$("#class_focus").on("focus", function(){load_leaderboard($(this).val());});
+        //$("#class_focus").on("focus", function(){load_classmates($(this).val());});
 
     });
 
@@ -34,13 +34,13 @@
         $('#chatwidget').css('height',chat_height);
     }
 
-    function load_leaderboard(r_id){
+    function load_classmates(r_id){
 
         //Show spinner:
-        $('#leaderboard_html').hide().fadeIn().html('<img src="/img/round_load.gif" style="margin:0 0 80px 0;" class="loader" />');
+        $('#classmates_html').hide().fadeIn().html('<img src="/img/round_load.gif" style="margin:0 0 80px 0;" class="loader" />');
 
         //Save the rest of the content:
-        $.post("/api_v1/load_leaderboard", {
+        $.post("/api_v1/load_classmates", {
 
             //Object IDs:
             b_id:$('#b_id').val(),
@@ -50,7 +50,7 @@
         } , function(data) {
 
             //Update UI to confirm with user:
-            $('#leaderboard_html').html(data).hide().fadeIn();
+            $('#classmates_html').html(data).hide().fadeIn();
 
             //Activate Tooltip:
             $('[data-toggle="tooltip"]').tooltip();
@@ -120,7 +120,7 @@
 
 
             <div class="help_body maxout" id="content_2826"></div>
-            <div id="leaderboard_html"></div>
+            <div id="classmates_html"></div>
             <br />
 
             <?php

@@ -459,18 +459,6 @@ h5, .h5 {
 .tooltip, .tooltip * {font-size:12px; margin:0; }
 .container-fluid .alert { margin-top:10px; }
 
-video::-internal-media-controls-download-button {
-    display:none;
-}
-
-video::-webkit-media-controls-enclosure {
-    overflow:hidden;
-}
-
-video::-webkit-media-controls-panel {
-    width: calc(100% + 30px); /* Adjust as needed */
-}
-
 
 .typicalform {max-width:50%;}
 .nav-pills:not(.nav-pills-icons) > li > a {
@@ -1339,8 +1327,6 @@ h4 .tip-badge{
 }
 
 
-// #funnel .sub-stats{display: block; margin-left:3px;}
-// #funnel .sub-stats .title-sub{ display: inline-block; width:68px; }
         
 #funnel h1, #funnel h2{
 	margin:0 0 10px 0 !important;

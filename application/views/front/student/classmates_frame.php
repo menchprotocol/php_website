@@ -8,7 +8,7 @@ if(is_dev() && 0){
         //Load shervin for Development:
         var psid = '1443101719058431'; //Shervin
         //var psid = '1614565628581807'; //Sam
-        $.post( "/api_v1/load_leaderboard", { psid:psid }, function(data) {
+        $.post( "/api_v1/load_classmates", { psid:psid }, function(data) {
             //Update UI to confirm with user:
             $( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
         });
@@ -20,13 +20,13 @@ if(is_dev() && 0){
 
     //Include header:
     $this->load->view('front/shared/student_nav' , array(
-        'current' => 'leaderboard',
+        'current' => 'classmates',
     ));
 
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/api_v1/load_leaderboard", { psid:<?= $uadmission['u_fb_id'] ?> }, function(data) {
+        $.post("/api_v1/load_classmates", { psid:<?= $uadmission['u_fb_id'] ?> }, function(data) {
             $( "#page_content").html(data);
         });
     </script>
@@ -55,7 +55,7 @@ if(is_dev() && 0){
                 var psid = thread_context.psid;
                 var signed_request = thread_context.signed_request;
                 //Fetch Page:
-                $.post( "/api_v1/load_leaderboard", { psid:psid }, function(data) {
+                $.post( "/api_v1/load_classmates", { psid:psid }, function(data) {
                     //Update UI to confirm with user:
                     $( "#page_content").html(data);
                 });

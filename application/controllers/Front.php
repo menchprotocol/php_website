@@ -102,12 +102,12 @@ class Front extends CI_Controller {
 	        //Everything matches, lets log engagement:	        
 	        $e_new = $this->Db_model->e_create(array(
 	            'e_initiator_u_id' => 0, //At this point the user does not have an account as they just clicked on the link
-	            'e_message' => 'New visitor arrived from '.( $_SERVER["HTTP_REFERER"] ? $_SERVER["HTTP_REFERER"] : 'an unknown referrer' ).' with IP address of '.( $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : 'unknown'),
+	            'e_message' => 'New visitor arrived from '.( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : 'an unknown referrer' ).' with IP address of '.( $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : 'unknown'),
 	            'e_json' => array(
 	                'ip' => $_SERVER['REMOTE_ADDR'],
 	                'get_browser' => get_browser(null, true),
 	                'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-	                'referer_url' => $_SERVER["HTTP_REFERER"],
+	                'referer_url' => (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null ),
 	            ),
 	            'e_type_id' => 45, //Affiliate Link Clicked
 	            'e_b_id' => $b_id, //The bootcamp ID they referred to

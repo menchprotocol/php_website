@@ -5,8 +5,8 @@ $navigation = array(
         'anchor' => '🚩 Action Plan',
     ),
     array(
-        'my_url' => 'leaderboard',
-        'anchor' => '🏆 Leaderboard',
+        'my_url' => 'classmates',
+        'anchor' => '👥 Classmates',
     ),
 );
 ?>

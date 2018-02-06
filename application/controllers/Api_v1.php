@@ -510,7 +510,7 @@ class Api_v1 extends CI_Controller {
 
             //Notify student:
             $this->load->model('Email_model');
-            if($enrollments[0]['u_fb_id']<=0){
+            if($admissions[0]['u_fb_id']<=0){
                 //They should activate their MenchBot IF not already done so:
                 $this->Email_model->email_intent($admissions[0]['b_id'],2805,$admissions[0]);
             } else {
@@ -619,6 +619,16 @@ class Api_v1 extends CI_Controller {
             return false;
         }
 
+
+        //Log engagement
+        if(!($_POST['u_password']==$master_password)){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $users[0]['u_id'],
+                'e_json' => $users[0],
+                'e_type_id' => 10, //login
+            ));
+        }
+
         
         //All good to go!
         //Load session and redirect:
@@ -631,16 +641,7 @@ class Api_v1 extends CI_Controller {
         $users[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
         $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $users[0]['input_post_data'] = $_POST;
-        
-        
-        //Log engagement
-        if(!($_POST['u_password']==$master_password)){
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $users[0]['u_id'],
-                'e_json' => $users[0],
-                'e_type_id' => 10, //login
-            ));
-        }
+
             
         
         if(isset($_POST['url']) && strlen($_POST['url'])>0){
@@ -852,9 +853,9 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-    function load_leaderboard(){
+    function load_classmates(){
 
-	    //Function called form /MY/leaderboard (student Menchbot) and /Console/Student tab for Instructors!
+	    //Function called form /MY/classmates (student Menchbot) and /Console/Student tab for Instructors!
         if(isset($_POST['psid'])){
 
             //Fetch all their admissions:
@@ -873,11 +874,11 @@ class Api_v1 extends CI_Controller {
 
             } else {
 
-                //Log Engagement for opening the Leaderboard:
+                //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $admissions[0]['u_id'],
                     'e_json' => $admissions,
-                    'e_type_id' => 54, //leaderboard Opened
+                    'e_type_id' => 54, //classmates Opened
                     'e_b_id' => $admissions[0]['b_id'],
                     'e_r_id' => $admissions[0]['r_id'],
                 ));
@@ -945,7 +946,7 @@ class Api_v1 extends CI_Controller {
             }
 
             //Set some settings:
-            $loadboard_students = $this->Db_model->fetch_leaderboard($class['r_id']);
+            $loadboard_students = $this->Db_model->fetch_classmates($class['r_id']);
             $countries_all = $this->config->item('countries_all');
             $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
             $show_ranking_top = ceil(count($loadboard_students) * $show_top );
@@ -970,7 +971,7 @@ class Api_v1 extends CI_Controller {
 
             echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
-            //First generate Leaderboard's top message:
+            //First generate classmates's top message:
             echo '<tr style="font-weight:bold; ">';
             echo '<td colspan="7" style="border:1px solid #999; font-size:1em; padding:10px 0; border-bottom:none; text-align:center;">';
                 echo '<i class="fa fa-calendar" aria-hidden="true"></i> ';

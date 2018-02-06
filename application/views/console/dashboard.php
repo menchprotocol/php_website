@@ -42,10 +42,6 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 <div style="margin-left:-5px"><?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>
     <div><i class="fa fa-link" style="font-size:15px;" aria-hidden="true"></i> <a href="/<?= $bootcamp['b_url_key'] ?>"><u><?= $website['url'] ?><b><?= $bootcamp['b_url_key'] ?></b></u></a> <a href="#" style="margin-top: 10px;" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a> <span id="hb_725" class="help_button" intent-id="725"></span></div>
     <div class="help_body maxout" id="content_725"></div>
-    <?php /* if(count($bootcamp['c__child_intents'])>0){ ?>
-<div><a href="https://support.mench.co/hc/en-us/articles/115002372531" target="_blank"><u><?= number_format($bootcamp['c__estimated_hours']*60) ?> Points <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a></div>
-<div></div>
-<?php } */ ?>
 
 
 

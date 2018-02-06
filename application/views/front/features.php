@@ -38,7 +38,7 @@ $udata = $this->session->userdata('user');
 			<div class="col-md-4">
 				<div class="info">
 					<div class="icon icon-primary"><i class="fa fa-trophy" aria-hidden="true"></i></div>
-					<h4 class="info-title">Leaderboard</h4>
+					<h4 class="info-title">Classmates</h4>
 					<p>It's how we gamify your challenge to increase engagement using our natural sense of competition.</p>
 				</div>
 			</div>

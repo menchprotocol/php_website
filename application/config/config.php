@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 1.95,
+    'version' => 2.0,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -77,9 +77,9 @@ $config['mench_bots'] = array(
                             'messenger_extensions' => true,
                         ),
                         array(
-                            'title' => '🏆 Leaderboard',
+                            'title' => '👥 Classmates',
                             'type' => 'web_url',
-                            'url' => 'https://mench.co/my/leaderboard',
+                            'url' => 'https://mench.co/my/classmates',
                             'webview_height_ratio' => 'tall',
                             'webview_share_button' => 'hide',
                             'messenger_extensions' => true,
@@ -98,13 +98,6 @@ $config['mench_bots'] = array(
                         'title' => 'My Dashboard',
                         'type' => 'nested',
                         'call_to_actions' => array(
-                        array(
-                        'title' => 'Leaderboard',
-                        'type' => 'web_url',
-                        'url' => 'https://mench.co/my/ledaerboard',
-                        'webview_height_ratio' => 'tall',
-                        'webview_share_button' => 'hide',
-                        ),
                         array(
                         'title' => 'Assignments',
                         'type' => 'web_url',
