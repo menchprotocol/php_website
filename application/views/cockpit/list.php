@@ -336,7 +336,7 @@ if($object_name=='engagements'){
     //TODO Define Instructors we'd be focused on:
     $qualified_instructors = array();
 
-    if(isset($_GET['r_id'])){
+    if(isset($_GET['r_id']) && intval($_GET['r_id'])>0){
         $users = $this->Db_model->ru_fetch(array(
             'ru_r_id' => $_GET['r_id'],
             'ru_status' => 4,
