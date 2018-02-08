@@ -178,11 +178,8 @@ class My extends CI_Controller {
                 'e_b_id' => $b_id,
             ));
 
-            //Redirect User:
-            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You are not a student of '.($b_id?'this':'any').' Bootcamp</div>');
-
-            //Nothing found for this user!
-            die('<script> window.location = "/"; </script>');
+            //Show Error:
+            die('<div class="alert alert-danger" role="alert">You are not a student of '.($b_id?'this':'any').' Bootcamp</div>');
         }
 
 	    
@@ -237,9 +234,7 @@ class My extends CI_Controller {
             ));
 
             //Ooops, they dont have anything!
-            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Invalid ID.</div>');
-            //Nothing found for this user!
-            die('<script> window.location = "/my/actionplan"; </script>');
+            die('<div class="alert alert-danger" role="alert">Invalid ID</div>');
 
         }
 

@@ -1064,10 +1064,7 @@ class Api_v1 extends CI_Controller {
                 ));
 
                 //Ooops, they dont have anything!
-                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a Bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
-
-                //Nothing found for this user!
-                die('<script> window.location = "/"; </script>');
+                die('<div class="alert alert-danger" role="alert">You are not a student of any Bootcamp</div>');
 
             } else {
 
