@@ -548,7 +548,7 @@ function sync_action_plan(){
             echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Action Plan not copied yet because this Class has not started. This would happen automatically when this Class starts.</div>';
         }
 
-        if(($class['r_status']==2 && $udata['u_status']>=2) || ($udata['u_id']==1)){
+        if($class['r_status']==2 && $udata['u_status']>=2){
             //Show button to update ONLY if class is running.
             ?>
             <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>

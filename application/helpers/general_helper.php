@@ -1277,7 +1277,7 @@ function calculate_bootcamp_status($b){
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/classes/'.$focus_class['r_id'].'#support',
-            'anchor' => '<b>Set Weekly group call contact message</b> for '.time_format($focus_class['r_start_date'],4).' Class',
+            'anchor' => '<b>Set Group Call Contact Method</b> for '.time_format($focus_class['r_start_date'],4).' Class',
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
