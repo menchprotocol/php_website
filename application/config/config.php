@@ -464,7 +464,7 @@ $config['object_statuses'] = array(
         //Withrew prior to course has started:
         -2 => array(
             's_name'  => 'Student Withdrew',
-            's_desc'  => 'Student withdrew Application before Class started. May be eligible for refund depending on Class refund policy',
+            's_desc'  => 'Student withdrew Application before Class started',
             'u_min_status'  => 999, //Only done by Student themselves
             's_mini_icon' => 'fa-times-circle',
         ),
@@ -604,7 +604,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57,60,61,66,67,68,70);
+$config['instructor_subscriptions'] = array(30,52,56,57,60,61,67,68,70);
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time //TODO Merge with variable below
 $config['mench_cs_fb_ids'] = array(
     array(
@@ -628,11 +628,11 @@ $config['meaningful_bootcamp_engagements']  = array(15,17,37,18,14,16,13,20,21,2
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,64,65,66,67,68),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,64,65,67,68),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,66,67,68),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,67,68),
     ),
 );
 

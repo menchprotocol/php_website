@@ -263,6 +263,7 @@ class Api_v1 extends CI_Controller {
                     $u_key = md5($udata['u_id'] . $application_status_salt);
 
                     //They still need to complete their application for this Class, redirect them to the next step:
+                    //Logic is inspired from my_applications.php file
                     if(strlen($duplicate_registries[0]['ru_application_survey'])==0){
                         //Need to complete the Application:
                         die(echo_json(array(
@@ -270,13 +271,11 @@ class Api_v1 extends CI_Controller {
                             'hard_redirect' => '/my/class_application/'.$duplicate_registries[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
                         )));
                     } elseif($duplicate_registries[0]['r_usd_price']>0){
-
                         //This must be the case if they have already completed the Application:
                         die(echo_json(array(
                             'status' => 0,
                             'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already submitted your Application Questionnaire for this class. To complete your application, we emailed you a link to pay your tuition online. Check your email to continue.</div>',
                         )));
-
                     } else {
                         //This should not happen! Log Error:
                         $this->Db_model->e_create(array(
@@ -501,6 +500,58 @@ class Api_v1 extends CI_Controller {
 	    echo '<script> setTimeout(function() { window.location = "/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'].'" }, 1000); </script>';
 	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted 🙌​</div>';
 	}
+
+	function withdraw_application(){
+        //Validate inputs:
+        $application_status_salt = $this->config->item('application_status_salt');
+        if(!isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+            //Log this error:
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Error: Invalid Inputs',
+            ));
+        } else {
+            //Attempt to withdraw user:
+            $admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_status'  => 0, //Initiated or higher as long as bootcamp is running!
+                'ru.ru_u_id'	=> $_POST['u_id'],
+                'ru.ru_id'	    => $_POST['ru_id'],
+            ));
+
+            if(count($admissions)==1){
+
+                //All good, withdraw:
+                $this->Db_model->ru_update( $_POST['ru_id'] , array(
+                    'ru_status' => -2, //For now this is the default since we don't accept partial payments
+                ));
+
+                //Log Engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $admissions[0]['u_id'], //System
+                    'e_type_id' => 66, //Application Withdraw
+                    'e_b_id' => $admissions[0]['r_b_id'],
+                    'e_r_id' => $admissions[0]['r_id'],
+                ));
+
+                //Inform User:
+                echo_json(array(
+                    'status' => 1,
+                    'message' => status_bible('ru',-2,0,'top'),
+                ));
+
+            } else {
+
+                //Error, Inform User:
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Withdraw no longer possible as your application status has changed.',
+                ));
+
+            }
+        }
+
+
+    }
 
 	function login(){
 	    

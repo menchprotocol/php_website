@@ -1,4 +1,47 @@
-<?php 
+<script>
+    function withdraw_application(ru_id){
+
+        //Confirm that they want to do this:
+        var r = confirm("Are you sure you want to withdraw your application?");
+        if (!(r == true)) {
+            return false;
+        }
+
+        //Show loader:
+        $('#process_withdrawal_'+ru_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Processing...').hide().fadeIn();
+
+        //Save the rest of the content:
+        $.post("/api_v1/withdraw_application", {
+
+            u_id:<?= $_GET['u_id'] ?>,
+            u_key:'<?= $_GET['u_key'] ?>',
+            ru_id:ru_id,
+
+        } , function(data) {
+
+            //OK, what happened?
+            if(data.status){
+
+                //Withdrawal was successful
+
+                //Update UI to confirm with user:
+                $('#hide_post_withdrawal_'+ru_id).fadeOut();
+                $('#withdraw_update_'+ru_id).html(data.message).hide().fadeIn();
+
+                //Reload tooldip:
+                $('[data-toggle="tooltip"]').tooltip();
+
+            } else {
+                //There was an error, show to user:
+                $('#process_withdrawal_'+ru_id).html('<b style="color:#FF0000;">'+data.message+'</b>');
+            }
+
+        });
+
+    }
+</script>
+
+<?php
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
 echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamp Applications</h3>';
 
@@ -82,7 +125,15 @@ foreach($admissions as $admission){
     }
     
     //Let them know the status of their application:
-    echo '<div style="font-size: 0.7em;">Current Status: '.status_bible('ru',$admission['ru_status'],0,'top').'</div>';
+    echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';
+
+    echo '<div style="font-size: 0.7em; margin-top:5px; padding-top:5px; border-top:2px solid #333;">';
+        echo '<a href="/'.$admission['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
+        if($admission['ru_status']==0){
+            //They can still withdraw their application:
+            echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="withdraw_application('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw My Application</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
+        }
+    echo '</div>';
 
     echo '</div>';
 }
