@@ -270,11 +270,13 @@ class Api_v1 extends CI_Controller {
                             'hard_redirect' => '/my/class_application/'.$duplicate_registries[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
                         )));
                     } elseif($duplicate_registries[0]['r_usd_price']>0){
+
                         //This must be the case if they have already completed the Application:
                         die(echo_json(array(
-                            'status' => 1,
-                            'hard_redirect' => '/my/applications?pay_r_id='.$duplicate_registries[0]['r_id'].'&u_key='.$u_key.'&u_id='.$udata['u_id'],
+                            'status' => 0,
+                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already submitted your Application Questionnaire for this class. To complete your application, we emailed you a link to pay your tuition online. Check your email to continue.</div>',
                         )));
+
                     } else {
                         //This should not happen! Log Error:
                         $this->Db_model->e_create(array(
