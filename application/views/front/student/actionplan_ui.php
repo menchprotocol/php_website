@@ -98,7 +98,7 @@ if($class['r__class_start_time']>time()){
     <?php
 } elseif($class['r__class_end_time']<time()){
     //Class has ended
-    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.time_diff($class['r__class_end_time']).'</div>';
+    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
 }
 
 
@@ -155,63 +155,67 @@ if($level>=3){
      ****************************** */
     echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
-
-    echo '<div id="save_report" class="quill_content">';
-    if(isset($us_data[$intent['c_id']])){
-
-        echo_us($us_data[$intent['c_id']]);
-
+    if($class['r__current_milestone']<0){
+        //Class if finished, no more submissions allowed!
+        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You cannot submit Tasks because Class has ended.</div>';
     } else {
+        echo '<div id="save_report" class="quill_content">';
+        if(isset($us_data[$intent['c_id']])){
 
-        if($intent['c_complete_url_required']=='t' && $intent['c_complete_notes_required']=='t'){
-            $red_note = 'a URL & completion notes';
-            $textarea_note = 'Include a URL & completion notes (and optional instructor feedback) to mark as complete';
-        } elseif($intent['c_complete_url_required']=='t'){
-            $red_note = 'a URL';
-            $textarea_note = 'Include a URL (and optional instructor feedback) to mark as complete';
-        } elseif($intent['c_complete_notes_required']=='t'){
-            $red_note = 'completion notes';
-            $textarea_note = 'Include completion notes (and optional instructor feedback) to mark as complete';
+            echo_us($us_data[$intent['c_id']]);
+
         } else {
-            $red_note = null;
-            $textarea_note = 'Include optional feedback for your instructor';
-        }
 
-        //What instructions do we need to give?
-        if($red_note) {
-            echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Task requires ' . $red_note . '</div>';
-        }
-        echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
-        echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
+            if($intent['c_complete_url_required']=='t' && $intent['c_complete_notes_required']=='t'){
+                $red_note = 'a URL & completion notes';
+                $textarea_note = 'Include a URL & completion notes (and optional instructor feedback) to mark as complete';
+            } elseif($intent['c_complete_url_required']=='t'){
+                $red_note = 'a URL';
+                $textarea_note = 'Include a URL (and optional instructor feedback) to mark as complete';
+            } elseif($intent['c_complete_notes_required']=='t'){
+                $red_note = 'completion notes';
+                $textarea_note = 'Include completion notes (and optional instructor feedback) to mark as complete';
+            } else {
+                $red_note = null;
+                $textarea_note = 'Include optional feedback for your instructor';
+            }
+
+            //What instructions do we need to give?
+            if($red_note) {
+                echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Task requires ' . $red_note . '</div>';
+            }
+            echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
+            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
-        //Submission button visible after first button was clicked:
-        echo '<div class="mark_done" style="display:none; margin-top:10px;">';
+            //Submission button visible after first button was clicked:
+            echo '<div class="mark_done" style="display:none; margin-top:10px;">';
             echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
             echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
-        echo '</div>';
+            echo '</div>';
 
 
-        //Show when this Milestone is due if not already passed:
-        if($sprint_index==$class['r__current_milestone'] && $class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']])){
-            ?>
-            <script>
-                $( document ).ready(function() {
-                    $("#ontime_dueby").countdowntimer({
-                        startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                        dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__milestones_due'][$class['r__current_milestone']]); ?>",
-                        size : "lg",
-                        regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
-                        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+            //Show when this Milestone is due if not already passed:
+            if($sprint_index==$class['r__current_milestone'] && $class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']])){
+                ?>
+                <script>
+                    $( document ).ready(function() {
+                        $("#ontime_dueby").countdowntimer({
+                            startDate : "<?= date('Y/m/d H:i:s'); ?>",
+                            dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__milestones_due'][$class['r__current_milestone']]); ?>",
+                            size : "lg",
+                            regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+                            regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+                        });
                     });
-                });
-            </script>
-            <div><i class="fa fa-calendar" aria-hidden="true"></i> Due in <span id="ontime_dueby"></span></div>
-            <?php
-        }
+                </script>
+                <div><i class="fa fa-calendar" aria-hidden="true"></i> Due in <span id="ontime_dueby"></span></div>
+                <?php
+            }
 
+        }
+        echo '</div>';
     }
-    echo '</div>';
 
 
 
@@ -220,7 +224,7 @@ if($level>=3){
      * Task Next/Previous Buttons
      ****************************** */
     $previous_on = (isset($previous_intent['c_id']));
-    $next_on = (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]) && $next_level>1);
+    $next_on = (($class['r__current_milestone']<0 || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]))) && $next_level>1);
     if($previous_on || $next_on){
         echo '<h4><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
@@ -315,7 +319,7 @@ if($level<3){
             }
 
             //Determine if this is locked or not
-            $unlocked_action_plan = ( $sub_intent['cr_outbound_rank']<=$class['r__current_milestone'] && $aggregate_status>0 );
+            $unlocked_action_plan = ($class['r__current_milestone']<0) || ( $sub_intent['cr_outbound_rank']<=$class['r__current_milestone'] && $aggregate_status>0 );
 
         } elseif($level==2){
 
