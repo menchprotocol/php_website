@@ -2508,7 +2508,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             //Let them know how many tasks:
             array_push( $instant_messages , echo_i( array_merge( array(
                 'i_media_type' => 'text',
-                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take about ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //The {button} command will show a link to the action plan for this milestone...
+                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //The {button} command will show a link to the action plan for this milestone...
             ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
         }

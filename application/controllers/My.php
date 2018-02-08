@@ -178,6 +178,14 @@ class My extends CI_Controller {
                 'e_b_id' => $b_id,
             ));
 
+            //Try this:
+            if($b_id){
+                die('<div class="alert alert-danger" role="alert">You are not a student of this Bootcamp.</div>');
+            } else {
+                die('<div class="alert alert-danger" role="alert">You are not a student of any Bootcamp.</div>');
+            }
+
+
             //Redirect User:
             $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Could not find any active Bootcamp admissions.</div>');
 
