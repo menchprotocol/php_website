@@ -273,7 +273,7 @@ class Api_v1 extends CI_Controller {
                         //This must be the case if they have already completed the Application:
                         die(echo_json(array(
                             'status' => 1,
-                            'hard_redirect' => '/my/applications?pay_r_id='.$duplicate_registries[0]['r_id'].'&u_key='.$u_key.'&u_id='.$_POST['u_id'],
+                            'hard_redirect' => '/my/applications?pay_r_id='.$duplicate_registries[0]['r_id'].'&u_key='.$u_key.'&u_id='.$udata['u_id'],
                         )));
                     } else {
                         //This should not happen! Log Error:
