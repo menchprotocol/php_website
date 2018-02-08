@@ -164,13 +164,13 @@ if($level>=3){
     } else {
 
         if($intent['c_complete_url_required']=='t' && $intent['c_complete_notes_required']=='t'){
-            $red_note = 'a URL & Completion Notes';
+            $red_note = 'a URL & completion notes';
             $textarea_note = 'Include a URL & completion notes (and optional instructor feedback) to mark as complete';
         } elseif($intent['c_complete_url_required']=='t'){
             $red_note = 'a URL';
             $textarea_note = 'Include a URL (and optional instructor feedback) to mark as complete';
         } elseif($intent['c_complete_notes_required']=='t'){
-            $red_note = 'Completion Notes';
+            $red_note = 'completion notes';
             $textarea_note = 'Include completion notes (and optional instructor feedback) to mark as complete';
         } else {
             $red_note = null;
@@ -179,7 +179,7 @@ if($level>=3){
 
         //What instructions do we need to give?
         if($red_note) {
-            echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Completing this Task requires ' . $red_note . '</div>';
+            echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Task requires ' . $red_note . '</div>';
         }
         echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
         echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
