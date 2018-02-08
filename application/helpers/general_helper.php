@@ -58,7 +58,7 @@ function filter_active_admission($admissions){
 
     if(count($admissions)<1){
 
-        return fasle;
+        return false;
 
     } elseif(count($admissions)>1){
 

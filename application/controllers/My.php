@@ -168,10 +168,6 @@ class My extends CI_Controller {
         $admissions = $this->Db_model->remix_admissions($admission_filters);
         $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
-        if($u_fb_id=='1443101719058431'){
-            die('<div class="alert alert-danger" role="alert">Shervin ['.count($admissions).'] & ['.(!$active_admission ? 'No' : 'yes').']</div>');
-        }
-
         if(!$active_admission){
 
             //Ooops, they dont have anything! Log for review, likely a new/curious Student:
@@ -182,16 +178,8 @@ class My extends CI_Controller {
                 'e_b_id' => $b_id,
             ));
 
-            //Try this:
-            if($b_id){
-                die('<div class="alert alert-danger" role="alert">You are not a student of this Bootcamp.</div>');
-            } else {
-                die('<div class="alert alert-danger" role="alert">You are not a student of any Bootcamp.</div>');
-            }
-
-
             //Redirect User:
-            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Could not find any active Bootcamp admissions.</div>');
+            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You are not a student of '.($b_id?'this':'any').' Bootcamp</div>');
 
             //Nothing found for this user!
             die('<script> window.location = "/"; </script>');
