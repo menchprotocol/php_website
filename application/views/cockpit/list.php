@@ -87,22 +87,13 @@ if($object_name=='engagements'){
             //Do we have a message?
             if(strlen($e['e_message'])>0){
                 $e['e_message'] = format_e_message($e['e_message']);
-            } else {
-                $e['e_message'] = '';
-            }
-
-            //Does this engagement reference another message using e_i_id>0?
-            $matching_messages = array();
-            if($e['e_i_id']>0){
+            } elseif($e['e_i_id']>0){
                 //Fetch message conent:
                 $matching_messages = $this->Db_model->i_fetch(array(
                     'i_id' => $e['e_i_id'],
                 ));
                 if(count($matching_messages)>0){
-                    if(strlen($e['e_message'])>0){
-                        $e['e_message'] .= '<hr />';
-                    }
-                    $e['e_message'] .= echo_i($matching_messages[0]);
+                    $e['e_message'] = echo_i($matching_messages[0]);
                 }
             }
 
