@@ -300,7 +300,7 @@ class Api_chat_v1 extends CI_Controller{
                     'status' => 0,
                     'message' => 'Student Not Enrolled in Bootcamp',
                 ));
-            } elseif(strlen($admissions[0]['u_fb_id'])<5){
+            } elseif(!$admissions[0]['u_fb_id']){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Student MenchBot Not Activated',

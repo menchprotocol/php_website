@@ -10,11 +10,13 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-	function tree($pid,$depth=0,$u_id=1,$b_id=0){
-        echo_json(tree_message($pid, $depth, '381488558920384', $u_id, 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id, 0));
+	function t(){
+        $udata = $this->Db_model->u_create(array(
+            'u_status' 			=> 1, //Since nothing is yet validated
+            'u_fname' 			=> 'Testing',
+            'u_fb_id' 			=> 0,
+        ));
     }
-
-
 
 	function set_settings($botkey){
 	    echo_json($this->Facebook_model->set_settings($botkey));
@@ -29,7 +31,7 @@ class Bot extends CI_Controller {
 		
 		/*
 		 * 
-		 * Used for all webhooks from facebook, including user messaging, delivery notifications, etc...
+		 * The master function for all inbound Facebook calls
 		 * 
 		 * */
 		
@@ -38,8 +40,7 @@ class Bot extends CI_Controller {
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
 		$mench_bots = $this->config->item('mench_bots');
-		
-		
+
 		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
 			echo $challenge;
 		}
@@ -190,9 +191,7 @@ class Bot extends CI_Controller {
 					
 				} elseif(isset($im['optin'])) {
 					
-					//TODO Validate the ref ID and log error if not valid.
-					//Decode ref variable intval($im['optin']['ref'])
-					
+					//Note: Never seen this happen yet!
 					//Log engagement:
 				    $this->Db_model->e_create(array(
 				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
@@ -572,7 +571,7 @@ class Bot extends CI_Controller {
 
 	                //Inform the Student:
                     $this->load->model('Email_model');
-                    if($admissions[0]['u_fb_id']<=0){
+                    if(!$admissions[0]['u_fb_id']){
                         //They should activate their MenchBot IF not already done so:
                         $this->Email_model->email_intent($classes[0]['r_b_id'],2805,$users[0]);
                     } else {

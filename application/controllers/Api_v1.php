@@ -223,7 +223,6 @@ class Api_v1 extends CI_Controller {
 
                 //Create new user:
                 $udata = $this->Db_model->u_create(array(
-                    'u_fb_id' 			=> 0, //MenchBot not active at start
                     'u_status' 			=> 0, //Since nothing is yet validated
                     'u_language' 		=> 'en', //Since they answered initial questions in English
                     'u_email' 			=> trim(strtolower($_POST['u_email'])),
@@ -481,7 +480,7 @@ class Api_v1 extends CI_Controller {
 
             //Notify student:
             $this->load->model('Email_model');
-            if($admissions[0]['u_fb_id']<=0){
+            if(!$admissions[0]['u_fb_id']){
                 //They should activate their MenchBot IF not already done so:
                 $this->Email_model->email_intent($admissions[0]['b_id'],2805,$admissions[0]);
             } else {
@@ -637,7 +636,7 @@ class Api_v1 extends CI_Controller {
         if($is_instructor && !$is_chrome){
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
             return false;
-        } elseif($is_student && !$is_instructor && $session_data['uadmission']['u_fb_id']<=0){
+        } elseif($is_student && !$is_instructor && !$session_data['uadmission']['u_fb_id']){
             //Make sure Messenger is already activated:
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You must activate your Facebook Messenger before logging in. We have already sent you an email with the Activation URL.</div>');
             return false;

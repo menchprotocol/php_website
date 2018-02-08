@@ -141,7 +141,7 @@ class My extends CI_Controller {
     function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 
         //Fetch bootcamps for this user:
-        if(strlen($u_fb_id)<=0){
+        if(!$u_fb_id){
 	        //There is an issue here!
 	        die('<div class="alert alert-danger" role="alert">Invalid user ID.</div>');
 	    } elseif(!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){

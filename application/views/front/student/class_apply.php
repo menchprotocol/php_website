@@ -280,7 +280,7 @@ $start_times = $this->config->item('start_times');
 
 
 
-<?php if(strlen($admission['u_fb_id'])<4){ ?>
+<?php if($admission['u_fb_id']>0){ ?>
 <div class="wizard-box">
 	<?php $mench_bots = $this->config->item('mench_bots'); ?>
 	<p><img src="/img/bp_48.png" alt="MenchBot" /> <b style="font-size:1.2em;">MenchBot Activation</b></p>

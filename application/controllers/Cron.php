@@ -306,7 +306,6 @@ class Cron extends CI_Controller {
         }
     }
 
-    //TODO Enable for students that are left behind (Currently only works for students on the most recent milestone)
     function drip(){
 
         //Cron Settings: 15,45 * * * *
@@ -1201,7 +1200,6 @@ class Cron extends CI_Controller {
         //Send reminders to students to complete their tasks:
 
     }
-
 
     function sync_ru_cache_milestones_tasks(){
 

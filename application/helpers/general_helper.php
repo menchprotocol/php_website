@@ -1817,7 +1817,7 @@ function echo_chat($botkey,$unread_notifications_count=0){
     //$bot_activation_salt = $CI->config->item('bot_activation_salt');
     //This is for the instructor bot:
     return '<div class="fb-customerchat" minimized="'.( $unread_notifications_count ? 'false' : 'true' ).'" page_id="'.$botkey.'"></div>';
-    //ref="'.( isset($udata['u_id']) && strlen($udata['u_fb_id'])<4 ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"
+    //ref="'.( isset($udata['u_id']) && !$udata['u_fb_id'] ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"
 }
 
 
@@ -2348,7 +2348,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
             'message' => 'Invalid Recipient ID',
         );
     }
-    if(strlen($recipients[0]['u_fb_id'])<4){
+    if(!$recipients[0]['u_fb_id']){
         return array(
             'status' => 0,
             'message' => 'Recipient has not activated this bot yet',

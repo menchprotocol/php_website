@@ -61,7 +61,6 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    return $admissions;
 	}
 
-
     function remix_bootcamps($match_columns){
         //Missing anything?
         $this->db->select('*');
@@ -188,7 +187,6 @@ ORDER BY points DESC, ru_id ASC")->result());
         return $bootcamps;
     }
 
-
     function t_fetch($match_columns){
 	    //Fetch the target gems:
 	    $this->db->select('*');
@@ -199,7 +197,6 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
-	
 	
 	function il_fetch($match_columns){
 	    //Fetch the target gems:
@@ -282,6 +279,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ru_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['ru_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error ru_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 	    
 	    return $insert_columns;
 	}
@@ -300,6 +306,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    
 	    //Fetch inserted id:
 	    $insert_columns['us_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['us_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error us_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 	    
 	    return $insert_columns;
 	}
@@ -312,6 +327,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    
 	    //Fetch inserted id:
 	    $insert_columns['t_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['t_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error t_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 	    
 	    return $insert_columns;
 	}
@@ -341,6 +365,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 
         //Fetch inserted id:
         $insert_columns['u_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['u_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error u_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 
 		//Fetch to return:
         $users = $this->Db_model->u_fetch(array(
@@ -404,11 +437,20 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    //Import some variables:
 	    $mench_bots = $this->config->item('mench_bots');
 	    $bot_activation_salt = $this->config->item('bot_activation_salt');
+
+
+	    if(!$psid_sender_id){
+	        //Ooops, this is not good:
+            $this->Db_model->e_create(array(
+                'e_message' => 'activate_bot() got called without psid_sender_id variable',
+                'e_type_id' => 8, //Platform Error
+            ));
+            return 0;
+        }
 	    
 	    //See who else might have this PSID id
 	    $current_fb_users = $this->Db_model->u_fetch(array(
 	        'u_fb_id' => $psid_sender_id,
-	        'u_status >=' => '0',
 	    ));
 	    
 	    if(!$ref){
@@ -491,10 +533,10 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    if(count($matching_users)<1){
 	        //Invalid user ID
 	        return 0;
-	    } elseif(strlen($matching_users[0]['u_fb_id'])>4 && $matching_users[0]['u_fb_id']==$psid_sender_id){
+	    } elseif($matching_users[0]['u_fb_id']>0 && $matching_users[0]['u_fb_id']==$psid_sender_id){
 	        //This is already an active user, we can return the ID:
 	        return $ref_u_id;
-	    } elseif(strlen($matching_users[0]['u_fb_id'])>4){
+	    } elseif($matching_users[0]['u_fb_id']>0){
 	        
 	        //Ooops, Mench user seems to be activated with a different Messenger account!
 	        tree_message(923, 0, $botkey, $ref_u_id, 'REGULAR', 0, 0);
@@ -502,7 +544,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
 	            'e_initiator_u_id' => $ref_u_id,
-	            'e_message' => 'MenchBot failed to activate user because Mench account is already activated with another Messenger account.',
+	            'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
 	            'e_type_id' => 9, //Support Needing Graceful Errors
 	        ));
 	        
@@ -520,7 +562,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	            if($current_fb_user['u_status']<=0 && strlen($current_fb_user['u_email'])<5){
 	                //We can de-activate & merge this account:
 	                $this->Db_model->u_update( $current_fb_users[0]['u_id'] , array(
-	                    'u_fb_id' => 0, //Give it up since not active
+	                    'u_fb_id' => NULL, //Give it up since not active
 	                    'u_status' => -2, //Merged account
 	                ));
 	                
@@ -538,7 +580,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	            //Log engagement:
 	            $this->Db_model->e_create(array(
 	                'e_initiator_u_id' => $ref_u_id,
-	                'e_message' => 'Facebook Webhook failed to activate user because Messenger account is associated with another Mench account.',
+	                'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
 	                'e_type_id' => 9, //Support Needing Graceful Errors
 	                'e_recipient_u_id' => $current_fb_users[0]['u_id'],
 	            ));
@@ -665,6 +707,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['i_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error i_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 		
 		return $insert_columns;
 	}
@@ -1059,6 +1110,16 @@ ORDER BY points DESC, ru_id ASC")->result());
 	function r_create($insert_columns){
 	    $this->db->insert('v5_classes', $insert_columns);
 	    $insert_columns['r_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['r_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error r_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
+
 	    return $insert_columns;
 	}
 	
@@ -1088,6 +1149,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    
 	    //Fetch inserted id:
 	    $insert_columns['b_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['b_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error b_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 	    
 	    return $insert_columns;
 	}
@@ -1116,6 +1186,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 		
 		//Fetch inserted id:
 		$insert_columns['c_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['c_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error c_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 		
 		return $insert_columns;
 	}
@@ -1150,6 +1229,15 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ba_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['ba_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error ba_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
 	    
 	    return $insert_columns;
 	}
@@ -1390,13 +1478,14 @@ ORDER BY points DESC, ru_id ASC")->result());
             }
 
         } else {
-		    //This should not happen! Report:
+
+            //Log this query Error
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $link_data['e_initiator_u_id'],
-                'e_message' => 'e_create() Function failed to insert into DB for an unknown reason!',
-                'e_json' => $link_data,
+                'e_message' => 'Query Error e_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
                 'e_type_id' => 8, //Platform Error
             ));
+
             return false;
         }
 		

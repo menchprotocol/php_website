@@ -412,7 +412,7 @@ if($object_name=='engagements'){
         //Fetch messages if activated MenchBot:
         unset($messages);
         unset($read_message);
-        if(strlen($user['u_fb_id'])>4){
+        if($user['u_fb_id']>0){
             $messages = $this->Db_model->e_fetch(array(
                 '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
                 '(e_type_id IN (6,7))' => null,
@@ -458,10 +458,10 @@ if($object_name=='engagements'){
             }
         echo '</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
-        echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? '<a href="https://www.facebook.com/menchbot/inbox" target="_blank">'.( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).'</a> on' : '<a href="'.messenger_activation_url('381488558920384',$user['u_id']).'" style="color:#CCC;">Activation URL</a>' ).'</td>';
-        echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<a href="https://www.facebook.com/menchbot/inbox" target="_blank">'.( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).'</a> on' : '<a href="'.messenger_activation_url('381488558920384',$user['u_id']).'" style="color:#CCC;">Activation URL</a>' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
         echo '<td>'.( isset($read_message[0]) ? '<i class="fa fa-eye" aria-hidden="true"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
-        echo '<td>'.( isset($messages[0]) && strlen($user['u_fb_id'])>4 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
         echo '<td>'.$user['u_timezone'].'</td>';
         echo '<td>';
 
@@ -469,7 +469,7 @@ if($object_name=='engagements'){
                 echo '<a href="mailto:'.$user['u_email'].'" title="Email '.$user['u_email'].'"><i class="fa fa-envelope" aria-hidden="true"></i></a>&nbsp;';
             }
 
-            if(isset($_GET['pid']) && strlen($user['u_fb_id'])>4){
+            if(isset($_GET['pid']) && $user['u_fb_id']>0){
                 //Lets check their history:
                 $sent_messages = $this->Db_model->e_fetch(array(
                     'e_type_id' => 7,

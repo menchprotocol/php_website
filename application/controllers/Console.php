@@ -77,7 +77,7 @@ class Console extends CI_Controller {
 		}
         */
 
-		$title = ( strlen($udata['u_fb_id'])>4 ? 'My Bootcamps' : '<img src="/img/bp_128.png" style="width:42px; margin-top: -4px;" /> MenchBot Activation') ;
+		$title = ( $udata['u_fb_id']>0 ? 'My Bootcamps' : '<img src="/img/bp_128.png" style="width:42px; margin-top: -4px;" /> MenchBot Activation') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
@@ -91,7 +91,7 @@ class Console extends CI_Controller {
 		));
 		
 		//Have they activated their Bot yet?
-		if(strlen($udata['u_fb_id'])>4){
+		if($udata['u_fb_id']>0){
 		    //Yes, show them their bootcamps:
 		    $this->load->view('console/all_bootcamps' , array(
 		        'bootcamps' => $my_bootcamps,
