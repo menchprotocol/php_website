@@ -83,13 +83,34 @@ if($object_name=='engagements'){
             echo '<tr>';
             echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
             echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].' (Type #'.$e['a_id'].')" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
-            echo '<td><div style="max-width:300px; padding-left:10px;">'.( strlen($e['e_message'])>0 ? format_e_message($e['e_message']) : '' ).( $e['e_cron_job']==0 ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
+
+            //Do we have a message?
+            if(strlen($e['e_message'])>0){
+                $e['e_message'] = format_e_message($e['e_message']);
+            } else {
+                $e['e_message'] = '';
+            }
+
+            //Does this engagement reference another message using e_i_id>0?
+            $matching_messages = array();
+            if($e['e_i_id']>0){
+                //Fetch message conent:
+                $matching_messages = $this->Db_model->i_fetch(array(
+                    'i_id' => $e['e_i_id'],
+                ));
+                if(count($matching_messages)>0){
+                    if(strlen($e['e_message'])>0){
+                        $e['e_message'] .= '<hr />';
+                    }
+                    $e['e_message'] .= echo_i($matching_messages[0]);
+                }
+            }
+
+            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_message'].( $e['e_cron_job']==0 ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
             echo '<td>';
+
             //Lets go through all references to see what is there:
             foreach($engagement_references as $engagement_field=>$er){
-                if($er['object_code']=='i'){
-                    continue;
-                }
                 if(intval($e[$engagement_field])>0){
                     //Yes we have a value here:
                     echo '<div>'.$er['name'].': '.object_link($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';
@@ -97,6 +118,7 @@ if($object_name=='engagements'){
                     echo '<div>'.$er['name'].': #'.$e[$engagement_field].'</div>';
                 }
             }
+
             echo '</td>';
             echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/blob/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" aria-hidden="true" data-placement="left"><i class="fa fa-search-plus" id="icon_'.$e['e_id'].'" aria-hidden="true"></i></a>' : '' ).'</td>';
             echo '</tr>';

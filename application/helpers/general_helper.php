@@ -2254,25 +2254,8 @@ function object_link($object,$id,$b_id=0){
                     return time_format($classes[0]['r_start_date'],1);
                 }
             }
-        } elseif($object=='cr'){
-            //TODO later...
-        } elseif($object=='t'){
-            //Transaction
-            //TODO later...
-        } elseif($object=='i'){
-
-            /*
-            //Fetch message conent:
-            $matching_messages = $CI->Db_model->i_fetch(array(
-                'i_id' => $id,
-            ));
-            if(isset($matching_messages[0])){
-                //TODO Link to profile or chat widget link maybe?
-                return echo_i($matching_messages[0]);
-            }
-            */
-
         }
+        //We would not do the other engagement types...
     }
     
     //Still here? Return default:

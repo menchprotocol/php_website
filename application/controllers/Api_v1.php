@@ -3128,7 +3128,7 @@ class Api_v1 extends CI_Controller {
                 echo_json(array(
                     'status' => 1,
                     'message' => echo_i(array_merge($new_messages[0],array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']),
-                    'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'top'),
+                    'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
                     'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
                     'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
                 ));
