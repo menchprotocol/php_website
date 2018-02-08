@@ -193,7 +193,7 @@ if($level>=3){
 
 
         //Show when this Milestone is due if not already passed:
-        if($class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']])){
+        if($sprint_index==$class['r__current_milestone'] && $class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']])){
             ?>
             <script>
                 $( document ).ready(function() {
