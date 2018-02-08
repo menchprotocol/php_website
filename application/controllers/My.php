@@ -164,15 +164,15 @@ class My extends CI_Controller {
             $admission_filters['r.r_b_id'] = $b_id;
         }
 
+        if($u_fb_id=='1443101719058431'){
+            die('<div class="alert alert-danger" role="alert">Shervin ['.$b_id.']</div>');
+        }
+
 
         $admissions = $this->Db_model->remix_admissions($admission_filters);
         $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
         if(!$active_admission){
-
-            if($u_fb_id=='1443101719058431'){
-                die('<div class="alert alert-danger" role="alert">Shervin.</div>');
-            }
 
             //Ooops, they dont have anything! Log for review, likely a new/curious Student:
             $this->Db_model->e_create(array(
