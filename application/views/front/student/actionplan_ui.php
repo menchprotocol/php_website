@@ -325,7 +325,7 @@ if($level<3){
 
             //TODO Consider Bonus tasks here with some sort of a loop: $previous_item['c_complete_is_bonus_task']=='t'
             $task_is_done = (isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=1);
-            $unlocked_action_plan = ( !isset($previous_item['c_id']) || isset($us_data[$previous_item['c_id']]) || $task_is_done );
+            $unlocked_action_plan = ( $class['r__current_milestone']<0 || !isset($previous_item['c_id']) || isset($us_data[$previous_item['c_id']]) || $task_is_done );
 
         }
 
