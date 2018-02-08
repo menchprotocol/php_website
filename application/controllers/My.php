@@ -145,14 +145,16 @@ class My extends CI_Controller {
     function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 
         //Fetch bootcamps for this user:
-        if($u_fb_id=='1443101719058431'){
-            die('<div class="alert alert-danger" role="alert">Shervin.</div>');
-        } elseif(strlen($u_fb_id)<=0){
+        if(strlen($u_fb_id)<=0){
 	        //There is an issue here!
 	        die('<div class="alert alert-danger" role="alert">Invalid user ID.</div>');
 	    } elseif(!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
 	        die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
+
+        if($u_fb_id=='1443101719058431'){
+            die('<div class="alert alert-danger" role="alert">Shervin.</div>');
+        }
 
 
         //Fetch all their admissions:
