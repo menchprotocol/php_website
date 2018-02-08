@@ -53,7 +53,6 @@ class My extends CI_Controller {
         }
     }
 
-
 	function load_url($i_id){
 
 	    //Loads the URL:
@@ -98,7 +97,6 @@ class My extends CI_Controller {
 	    //echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
 	}
 
-
 	function account(){
 	    //Load apply page:
 	    $data = array(
@@ -108,7 +106,6 @@ class My extends CI_Controller {
 	    $this->load->view('front/student/my_account' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
-
 
     function actionplan($b_id=null,$c_id=null){
         //Load apply page:
@@ -141,7 +138,6 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-
     function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
 
         //Fetch bootcamps for this user:
@@ -169,15 +165,6 @@ class My extends CI_Controller {
         $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
         if(!$active_admission){
-
-            //Ooops, they dont have anything! Log for review, likely a new/curious Student:
-            $this->Db_model->e_create(array(
-                'e_message' => 'Student admission not found for [u_fb_id='.$u_fb_id.']',
-                'e_initiator_u_id' => 0, //System
-                'e_type_id' => 9, //Support Attention Needed
-                'e_b_id' => $b_id,
-            ));
-
             //Show Error:
             die('<div class="alert alert-danger" role="alert">You are not a student of '.($b_id?'this':'any').' Bootcamp</div>');
         }
@@ -243,10 +230,6 @@ class My extends CI_Controller {
 
 	}
 	
-	
-	
-	
-	
 	function applications(){
 	    
 	    //List student applications
@@ -298,8 +281,6 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	}
 	
-	
-	
 	function class_application($ru_id){
 	    
 	    //List student applications
@@ -338,7 +319,5 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	    
 	}
-	
-	
 	
 }

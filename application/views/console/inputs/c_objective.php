@@ -6,7 +6,7 @@ $tip_index = array(
     3 => 607,
 );
 ?>
-<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Outcome <span id="hb_<?= $tip_index[$level] ?>" class="help_button" intent-id="<?= $tip_index[$level] ?>"></span></h4></div>
+<div class="title"><h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $core_objects['level_'.($level-1)]['o_name'] ?> Primary Outcome <span id="hb_<?= $tip_index[$level] ?>" class="help_button" intent-id="<?= $tip_index[$level] ?>"></span></h4></div>
 <div class="help_body maxout" id="content_<?= $tip_index[$level] ?>"></div>
 <div class="form-group label-floating is-empty">
     <div class="input-group border">

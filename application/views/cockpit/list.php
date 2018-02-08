@@ -325,7 +325,7 @@ if($object_name=='engagements'){
 
     $engagement_filters = array(
         'r_id' => 'Class ID',
-        'pid' => 'Message ID',
+        'pid' => 'Broadcast Message ID',
     );
 
     echo '<form action="" method="GET">';

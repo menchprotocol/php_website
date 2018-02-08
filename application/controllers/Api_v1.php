@@ -260,11 +260,32 @@ class Api_v1 extends CI_Controller {
 
                 if($duplicate_registries[0]['ru_status']==0){
 
-                    //They still need to complete their application for this Class, redirect them to their Application Page:
-                    die(echo_json(array(
-                        'status' => 1,
-                        'hard_redirect' => '/my/class_application/'.$duplicate_registries[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
-                    )));
+                    $u_key = md5($udata['u_id'] . $application_status_salt);
+
+                    //They still need to complete their application for this Class, redirect them to the next step:
+                    if(strlen($duplicate_registries[0]['ru_application_survey'])==0){
+                        //Need to complete the Application:
+                        die(echo_json(array(
+                            'status' => 1,
+                            'hard_redirect' => '/my/class_application/'.$duplicate_registries[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
+                        )));
+                    } elseif($duplicate_registries[0]['r_usd_price']>0){
+                        //This must be the case if they have already completed the Application:
+                        die(echo_json(array(
+                            'status' => 1,
+                            'hard_redirect' => '/my/applications?pay_r_id='.$duplicate_registries[0]['r_id'].'&u_key='.$u_key.'&u_id='.$_POST['u_id'],
+                        )));
+                    } else {
+                        //This should not happen! Log Error:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => $udata['u_id'],
+                            'e_message' => 'Student admission was incomplete, but they had already submitted their Questionnaire and the Class is Free!',
+                            'e_json' => $duplicate_registries,
+                            'e_type_id' => 8, //System Error
+                            'e_b_id' => $bootcamp['b_id'],
+                            'e_r_id' => $focus_class['r_id'],
+                        ));
+                    }
 
                 } else {
                     //Show them an error:
@@ -273,7 +294,6 @@ class Api_v1 extends CI_Controller {
                         'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. Your current status is ['.trim(strip_tags(status_bible('ru',$duplicate_registries[0]['ru_status']))).']. We emailed you a link to manage your admissions. Check your email to continue.</div>',
                     )));
                 }
-
 
             }
 
@@ -1055,13 +1075,6 @@ class Api_v1 extends CI_Controller {
             $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load
 
             if(!$active_admission){
-
-                //Ooops, they dont have anything! Log for review, likely a new/curious Student:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'Student admission not found for [u_fb_id='.$_POST['psid'].'] who tried accessing Classmates on MenchBot',
-                    'e_initiator_u_id' => 0, //System
-                    'e_type_id' => 9, //Support Attention Needed
-                ));
 
                 //Ooops, they dont have anything!
                 die('<div class="alert alert-danger" role="alert">You are not a student of any Bootcamp</div>');
