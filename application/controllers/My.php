@@ -152,10 +152,6 @@ class My extends CI_Controller {
 	        die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
 
-        if($u_fb_id=='1443101719058431'){
-            die('<div class="alert alert-danger" role="alert">Shervin.</div>');
-        }
-
 
         //Fetch all their admissions:
         $admission_filters = array(
@@ -173,6 +169,10 @@ class My extends CI_Controller {
         $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
         if(!$active_admission){
+
+            if($u_fb_id=='1443101719058431'){
+                die('<div class="alert alert-danger" role="alert">Shervin.</div>');
+            }
 
             //Ooops, they dont have anything! Log for review, likely a new/curious Student:
             $this->Db_model->e_create(array(
