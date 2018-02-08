@@ -90,7 +90,7 @@ if($object_name=='engagements'){
                 if($er['object_code']=='i'){
                     continue;
                 }
-                if(intval($e[$engagement_field])>0 && 0){
+                if(intval($e[$engagement_field])>0){
                     //Yes we have a value here:
                     echo '<div>'.$er['name'].': '.object_link($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';
                 } elseif(intval($e[$engagement_field])>0) {
@@ -118,7 +118,7 @@ if($object_name=='engagements'){
         echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
 
         echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
-        echo $bootcamp['student_funnel'][0].' -> '.$bootcamp['student_funnel'][2].' -> <b>'.$bootcamp['student_funnel'][4].'</b> ('.$bootcamp['student_funnel'][-1].')';
+        echo $bootcamp['student_funnel'][0].' &raquo; '.$bootcamp['student_funnel'][2].' &raquo; <b>'.$bootcamp['student_funnel'][4].'</b> ('.$bootcamp['student_funnel'][-1].')';
         echo '</span></td>';
 
         echo '<td>'. ( count($bootcamp['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$bootcamp['b_id'].'">'.( count($bootcamp['engagements'])>=1000 ? '1000+' : count($bootcamp['engagements']) ).'</a> ('.time_format($bootcamp['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
@@ -248,7 +248,8 @@ if($object_name=='engagements'){
         <th style="width:40px;">#</th>
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
-        <th>Class</th>
+        <th>Class Starts</th>
+        <th>Class Ends</th>
         <th>Status</th>
         <th>Tuition</th>
         <th>Admission Funnel</th>
@@ -259,10 +260,16 @@ if($object_name=='engagements'){
     <?php
     foreach($classes as $key=>$class) {
 
-        //Fetch Full Bootcamp:
-        $bootcamps = $this->Db_model->b_fetch(array(
-            'b.b_id' => $class['r_b_id'],
-        ),true);
+        if($class['r_status']>=2){
+            //Fetch Bootcamp from Action Plan Copy:
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
+        } else {
+            //Fetch Full Bootcamp:
+            $bootcamps = $this->Db_model->b_fetch(array(
+                'b.b_id' => $class['r_b_id'],
+            ),true);
+        }
 
         //Fetch Leader:
         $leaders = $this->Db_model->ba_fetch(array(
@@ -275,8 +282,13 @@ if($object_name=='engagements'){
         echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
         echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
         echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format($class['r_start_date'],1).' '.$start_times[$class['r_start_time_mins']].'</a></td>';
-        echo '<td>'.status_bible('r',$class['r_status']).'</td>';
-        echo '<td>'.echo_price($class['r_usd_price']).'</td>';
+        echo '<td>';
+        if($class['r_status']>=2){
+            echo '<b>'.time_format($class['r__class_end_time'],1).'</b> '.$start_times[$class['r_start_time_mins']];
+        }
+        echo '</td>';
+        echo '<td>'.status_bible('r',$class['r_status']).( $bootcamps[0]['b_status']<2 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is NOT Published" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
+        echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
         echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted/Max (Rejected)">';
         $student_funnel = array(
             0 => count($this->Db_model->ru_fetch(array(
@@ -296,15 +308,11 @@ if($object_name=='engagements'){
                 'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
             ))),
         );
-        echo $student_funnel[0].' -> '.$student_funnel[2].' -> <b style="color:'.( $student_funnel[4]>=$class['r_min_students'] ? '#00CC00' : '#FF0000' ).';" title="Minimum is '.$class['r_min_students'].'">'.$student_funnel[4].'</b>/'.$class['r_max_students'].' ('.$student_funnel[-1].')';
+        echo $student_funnel[0].' &raquo; '.$student_funnel[2].' &raquo; <b style="color:'.( $student_funnel[4]>=$class['r_min_students'] ? '#00CC00' : '#FF0000' ).';" title="Minimum is '.$class['r_min_students'].'">'.$student_funnel[4].'</b>/'.$class['r_max_students'].' ('.$student_funnel[-1].')';
         echo '</span></td>';
 
-        //Does it have a cache action plan?
-        $engagements = $this->Db_model->e_fetch(array(
-            'e_type_id' => 70,
-            'e_r_id' => $class['r_id'],
-        ),1);
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'#actionplan" target="_blank" data-toggle="tooltip" title="See the latest cache copy of the Action Plan" aria-hidden="true" data-placement="left">'.( count($engagements)==1 ? time_format($engagements[0]['e_timestamp'],0) : 'None' ).'</a></td>';
+        //Does it have a cache action plan? It should if its a running Class:
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'#actionplan" target="_blank" data-toggle="tooltip" title="See the latest cache copy of the Action Plan" aria-hidden="true" data-placement="left">'.( isset($bootcamps[0]['copy_timestamp']) ? time_format($bootcamps[0]['copy_timestamp'],0) : 'None' ).'</a></td>';
 
         echo '</tr>';
     }
@@ -414,7 +422,7 @@ if($object_name=='engagements'){
         echo '<td>'.($key+1).'</td>';
         echo '<td>'.$user['u_id'].'</td>';
         echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
-        echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a></td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
 
 
         echo '<td>';

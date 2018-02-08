@@ -17,8 +17,12 @@ class Api_v1 extends CI_Controller {
 	function index(){
 		die('nothing here...');
 	}
+	
+	/* ******************************
+	 * Miscs
+	 ****************************** */
 
-	function blob($e_id){
+    function blob($e_id){
         $udata = auth(3,1);
         //Fetch blob of engagement and display it on screen:
         $blobs = $this->Db_model->ej_fetch(array(
@@ -31,27 +35,7 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-    function sync_action_plan(){
-        $udata = auth(2,0,$_POST['b_id']);
-        if(!$udata){
-            echo '<span style="color:#FF0000;">Error: Session Expired.</span>';
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            echo '<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>';
-        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-            echo '<span style="color:#FF0000;">Error: Missing Class ID.</span>';
-        } else {
-            //All Good, start updating:
-            $saved = $this->Db_model->snapshot_action_plan($_POST['b_id'],$_POST['r_id']);
-            //Show Message:
-            if($saved){
-                echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
-            } else {
-                echo '<span style="color:#FF0000;">Unknown Error while trying to save the Action Plan</span>';
-            }
-        }
-    }
-
-	function config(){
+    function config(){
         if($_GET['token']!='1f8e38384ddc45d0d19c706e21950643'){
             echo_json(array(
                 'status' => 0,
@@ -74,57 +58,7 @@ class Api_v1 extends CI_Controller {
             'config' => $display_config,
         ));
     }
-	
-	/* ******************************
-	 * Miscs
-	 ****************************** */
 
-	function dispatch_message(){
-
-        //Auth user and check required variables:
-        $udata = auth(2);
-
-        if(!$udata){
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Session Expired',
-            ));
-            return false;
-
-        } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0) {
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Intent ID',
-            ));
-            return false;
-
-        } elseif(!isset($_POST['depth']) || intval($_POST['depth'])<0) {
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Depth',
-            ));
-            return false;
-
-        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0) {
-
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing User ID',
-            ));
-            return false;
-
-        } else {
-
-            //All seems good, attempt dispatch:
-            echo_json(tree_message(intval($_POST['pid']), intval($_POST['depth']), '381488558920384', intval($_POST['u_id']), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
-
-        }
-
-    }
-	
 	function algolia($pid=null){
 	    //Used to update local host:
 	    print_r($this->Db_model->sync_algolia($pid));
@@ -232,7 +166,8 @@ class Api_v1 extends CI_Controller {
 	    
 	    $this->load->helper('cookie');
         $this->load->model('Email_model');
-	    
+        $application_status_salt = $this->config->item('application_status_salt');
+
 	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['u_fname']) || !isset($_POST['u_email'])){
 	        die(echo_json(array(
 	            'status' => 0,
@@ -245,11 +180,14 @@ class Api_v1 extends CI_Controller {
 	        'r.r_id' => intval($_POST['r_id']),
 	        'r.r_status' => 1,
 	    ));
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
-	        'b.b_id' => $classes[0]['r_b_id'],
-	    ));
-	    $bootcamp = $bootcamps[0];
-	    $focus_class = filter_class($bootcamp['c__classes'],intval($_POST['r_id']));
+
+	    if(count($classes)==1){
+            $bootcamps = $this->Db_model->remix_bootcamps(array(
+                'b.b_id' => $classes[0]['r_b_id'],
+            ));
+            $bootcamp = $bootcamps[0];
+            $focus_class = filter_class($bootcamp['c__classes'],intval($_POST['r_id']));
+        }
 	    
 	    //Display results:
 	    if(!isset($bootcamp) || !isset($classes[0]) || $bootcamp['b_id']<1 || !($focus_class['r_id']==intval($_POST['r_id']))) {
@@ -310,74 +248,86 @@ class Api_v1 extends CI_Controller {
             //This is a registered user!
             $udata = $users[0];
 
+            //Make sure they have not enrolled in this Class before:
+            $duplicate_registries = $this->Db_model->ru_fetch(array(
+                'ru.ru_u_id'	   => $udata['u_id'],
+                'ru.ru_r_id'	   => $focus_class['r_id'],
+            ));
+            if(count($duplicate_registries)>0){
+
+                //Send the email to their admission page:
+                $this->Email_model->email_intent($duplicate_registries[0]['r_b_id'],2697,$udata);
+
+                if($duplicate_registries[0]['ru_status']==0){
+
+                    //They still need to complete their application for this Class, redirect them to their Application Page:
+                    die(echo_json(array(
+                        'status' => 1,
+                        'hard_redirect' => '/my/class_application/'.$duplicate_registries[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
+                    )));
+
+                } else {
+                    //Show them an error:
+                    die(echo_json(array(
+                        'status' => 0,
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. Your current status is ['.trim(strip_tags(status_bible('ru',$duplicate_registries[0]['ru_status']))).']. We emailed you a link to manage your admissions. Check your email to continue.</div>',
+                    )));
+                }
+
+
+            }
+
+
             //Check their current application status(es):
-            $enrollments = $this->Db_model->remix_admissions(array(
+            $admissions = $this->Db_model->remix_admissions(array(
+                'ru.ru_u_id'	   => $udata['u_id'],
+                'ru.ru_r_id !='	   => $focus_class['r_id'],
                 'r.r_status >='	   => 1, //Open for admission
                 'r.r_status <='	   => 2, //Running
-                'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
-                'ru.ru_u_id'	   => $udata['u_id'],
+                'ru.ru_status >='  => 0, //Initiated or higher
+                'ru.ru_status <='  => 4, //Active Student
             ));
 
+            if(count($admissions)>0){
 
-            if(count($enrollments)>0){
+                //They are enrolled in another Class, let's see if the dates overlap:
+                foreach($admissions as $admission){
 
-                //See if the dates of existing enrollments overlap:
-                $overlapping_admission = false;
-                foreach($enrollments as $admission){
-
-                    //They are enrolled in a Class, let's see where:
-                    if($admission['ru_r_id']==$focus_class['r_id']){
+                    if(($focus_class['r__class_start_time']>=$admission['r__class_start_time'] && $focus_class['r__class_start_time']<$admission['r__class_end_time']) || ($focus_class['r__class_end_time']>=$admission['r__class_start_time'] && $focus_class['r__class_end_time']<$admission['r__class_end_time'])){
 
                         //Send the email to their admission page:
                         $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
 
+                        //Either start time or end time falls within this class!
+                        $message = 'Admission blocked because you can join a maximum of 1 concurrent Bootcamps. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'].'."\n\n".'This overlaps with your request to join this Bootcamp ['.$bootcamp['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.'.( $admission['ru_status']==0 ? ' You can choose to withdraw your application from ['.$admission['c_objective'].'] because your current application status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].' : '' );
+
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => $udata['u_id'],
+                            'e_message' => $message,
+                            'e_json' => $_POST,
+                            'e_type_id' => 9, //Support Needing Graceful Errors
+                            'e_b_id' => $bootcamp['b_id'],
+                            'e_r_id' => $focus_class['r_id'],
+                        ));
+
+                        //show the error:
                         die(echo_json(array(
                             'status' => 0,
-                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. Your current status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).']. We emailed you a link to manage your current admissions.</div>',
+                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.nl2br($message).'</div>',
                         )));
 
-                    } elseif(($focus_class['r__class_start_time']>=$admission['r__class_start_time'] && $focus_class['r__class_start_time']<$admission['r__class_end_time']) || ($focus_class['r__class_end_time']>=$admission['r__class_start_time'] && $focus_class['r__class_end_time']<$admission['r__class_end_time'])){
-
-                        $overlapping_admission = true;
-                        break;
-
                     }
-                }
-
-                if($overlapping_admission){
-
-                    //Send the email to their admission page:
-                    $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
-
-                    //Either start time or end time falls within this class!
-                    $message = 'Admission blocked because students can only join 1 Bootcamp at a time. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'].'."\n\n".'This overlaps with your request to join ['.$bootcamp['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.'.( $admission['ru_status']==0 ? ' You can choose to withdraw your application from ['.$admission['c_objective'].'] because your current application status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].' : '' );
-
-                    //Log engagement:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $udata['u_id'],
-                        'e_message' => $message,
-                        'e_json' => $_POST,
-                        'e_type_id' => 9, //Support Needing Graceful Errors
-                        'e_b_id' => $bootcamp['b_id'],
-                        'e_r_id' => $focus_class['r_id'],
-                    ));
-
-                    //show the error:
-                    die(echo_json(array(
-                        'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.nl2br($message).'</div>',
-                    )));
                 }
             }
         }
 
 
-        //At this point we have a user, but no admission:
-        //Existing user that is never enrolled here!
+        //At this point we have a user, and they are clear to be admitted into this Class
         $admission_application = array(
             'ru_r_id' 	        => $focus_class['r_id'],
             'ru_u_id' 	        => $udata['u_id'],
-            'ru_affiliate_u_id' => 0,
+            'ru_affiliate_u_id' => 0, //TBD below
         );
 
         //Lets see if they have an affiliate Cookie:
@@ -397,7 +347,7 @@ class Api_v1 extends CI_Controller {
                     'e_json' => array(
                         'input' => $_POST,
                         'udata' => $udata,
-                        'rudata' => $enrollments[0],
+                        'rudata' => $admissions[0],
                         'cookie' => $aff_cookie,
                         'initial_e_id' => intval($cookie_parts[3]),
                     ),
@@ -410,7 +360,7 @@ class Api_v1 extends CI_Controller {
         }
 
         //Lets start their admission application:
-        $enrollments[0] = $this->Db_model->ru_create($admission_application);
+        $admissions[0] = $this->Db_model->ru_create($admission_application);
 
         //Log engagement for Application Started:
         $this->Db_model->e_create(array(
@@ -418,7 +368,7 @@ class Api_v1 extends CI_Controller {
             'e_json' => array(
                 'input' => $_POST,
                 'udata' => $udata,
-                'rudata' => $enrollments[0],
+                'rudata' => $admissions[0],
             ),
             'e_type_id' => 29, //Application Started
             'e_b_id' => $bootcamp['b_id'],
@@ -430,17 +380,17 @@ class Api_v1 extends CI_Controller {
 
 
         //Redirect to application:
-        $application_status_salt = $this->config->item('application_status_salt');
         die(echo_json(array(
             'status' => 1,
-            'hard_redirect' => '/my/class_application/'.$enrollments[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
+            'hard_redirect' => '/my/class_application/'.$admissions[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
         )));
+
 	}
 	
-	//When they submit the application in step 2 of their admission:
 	function submit_application(){
-	    
-	    $application_status_salt = $this->config->item('application_status_salt');
+
+        //When they submit the Application Questionnaire in step 2 of their admission:
+        $application_status_salt = $this->config->item('application_status_salt');
 	    if(intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['answers']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 	        
 	        //Log engagement:
@@ -493,7 +443,7 @@ class Api_v1 extends CI_Controller {
             'ru_application_survey' => json_encode($_POST['answers']),
         );
 
-        //Is this a free bootcamp? If so, we can set the status to Pending Review:
+        //Is this a free Bootcamp? If so, we can fast forward the payment step...
         if(doubleval($admissions[0]['r_usd_price'])==0){
 
             //Yes, change the status to Pending Review:
@@ -527,7 +477,7 @@ class Api_v1 extends CI_Controller {
 	    //The "pay_r_id" variable makes the next page redirect to paypal automatically for PAID classes
 	    //Show message & redirect:
 	    echo '<script> setTimeout(function() { window.location = "/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'].'" }, 1000); </script>';
-	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted!</div>';
+	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted 🙌​</div>';
 	}
 
 	function login(){
@@ -559,9 +509,11 @@ class Api_v1 extends CI_Controller {
         }
 	    
 	    if(count($users)==0){
+
 	        //Not found!
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not found.</div>');
 	        return false;
+
 	    } elseif($users[0]['u_status']<0){
 
 	        //Inactive account
@@ -573,10 +525,13 @@ class Api_v1 extends CI_Controller {
 	        ));
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
 	        return false;
+
 	    } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
+
 	        //Bad password
 	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
 	        return false;
+
 	    }
 
         $co_instructors = array();
@@ -818,10 +773,223 @@ class Api_v1 extends CI_Controller {
 	    //Show result:
 	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
-	
-	/* ******************************
-	 * r Classes
-	 ****************************** */
+
+    function completion_report(){
+
+        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
+            || !isset($_POST['b_id']) || intval($_POST['b_id'])<=0
+            || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
+            || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
+        } elseif(!isset($_POST['next_c_id']) || !isset($_POST['next_level'])){
+            die('<span style="color:#FF0000;">Error: Missing next task information.</span>');
+        } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
+            die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
+
+            //Submission settings:
+        } elseif($_POST['require_url'] && count(extract_urls($_POST['us_notes']))<1){
+            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        } elseif($_POST['require_notes'] && strlen($_POST['us_notes'])<1){
+            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        }
+
+        //Fetch student name and details:
+        $matching_admissions = $this->Db_model->ru_fetch(array(
+            'ru_u_id' => intval($_POST['u_id']),
+            'ru_r_id' => intval($_POST['r_id']),
+            'ru_status' => 4, //Active students can submit tasks
+        ));
+
+        if(!(count($matching_admissions)==1)){
+            die('<span style="color:#FF0000;">Error: Admission not found</span>');
+        }
+
+        //Fetch intent, an easy test to pass:
+        $original_intents = $this->Db_model->c_fetch(array(
+            'c.c_id' => intval($_POST['c_id']),
+        ));
+        if(count($original_intents)<=0){
+            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
+        }
+
+
+        //Fetch full Bootcamp/Class data for this:
+        $bootcamps = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
+        $focus_class = $bootcamps[0]['this_class'];
+
+
+        if(!$focus_class){
+            die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
+        } elseif(time()>$focus_class['r__class_end_time'] || $focus_class['r_status']>2){
+            die('<span style="color:#FF0000;">Error: Class has ended so you can no longer mark tasks as complete.</span>');
+        }
+
+        //Now make sure this student has not submitted this task before:
+        $us_data = $this->Db_model->us_fetch(array(
+            'us_student_id' => intval($_POST['u_id']),
+            'us_r_id' => intval($_POST['r_id']),
+            'us_c_id' => intval($_POST['c_id']),
+            'us_status' => 1,
+        ));
+
+        if(count($us_data)>0){
+            die('<span style="color:#FF0000;">Error: You have already marked this task as complete. You cannot re-submit it, but you can share updates with your instructor on MenchBot.</span>');
+        }
+
+        //Fetch next intent:
+        $next_level = intval($_POST['next_level']);
+        $next_c_id = intval($_POST['next_c_id']);
+        $next_intents = $this->Db_model->c_fetch(array(
+            'c.c_id' => $next_c_id,
+        ));
+
+
+        //Now update the DB:
+        $us_data = $this->Db_model->us_create(array(
+            'us_b_id' => intval($_POST['b_id']),
+            'us_student_id' => $matching_admissions[0]['u_id'],
+            'us_r_id' => intval($_POST['r_id']),
+            'us_c_id' => intval($_POST['c_id']),
+            'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
+            'us_student_notes' => trim($_POST['us_notes']),
+            'us_status' => 1, //Submitted
+        ));
+
+
+        //Log Engagement for new completion:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $matching_admissions[0]['u_id'],
+            'e_message' => $us_data['us_student_notes'],
+            'e_json' => array(
+                'input' => $_POST,
+                'us_data' => $us_data,
+                'next_level' => $next_level,
+                'next_c' => ( isset($next_intents[0]) ? $next_intents[0] : array() ),
+                'next_message_result' => ( isset($message_result) ? $message_result : array() ),
+            ),
+            'e_type_id' => 33, //Marked as Done Report
+            'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
+            'e_r_id' => $us_data['us_r_id'],
+            'e_c_id' => $us_data['us_c_id'],
+        ));
+
+
+        //Do we need to send any notifications?
+        if(strlen(trim($_POST['us_notes']))>0){
+
+            //Send email to all instructors of this Bootcamp:
+            $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+                'ba.ba_b_id' => intval($_POST['b_id']),
+                'ba.ba_status >=' => 2, //co-instructors & lead instructor
+                'u.u_status >=' => 1, //Must be a user level 1 or higher
+            ));
+
+            $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
+            $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
+            $bootcamp_chat_url = 'https://mench.co/console/'.intval($_POST['b_id']).'/students';
+            $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
+            $this->load->model('Email_model');
+            //Send notifications to current instructor
+            foreach($bootcamp_instructors as $bi){
+                //Make sure this instructor has an email on file
+                if(strlen($bi['u_email'])>0){
+                    //Task Completion Email:
+                    //Draft HTML message for this:
+                    $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bootcamps[0]['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
+                    $html_message .= '<div'.$div_style.'>Task: '.$original_intents[0]['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
+                    $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>Cheers,</div>';
+                    $html_message .= '<div'.$div_style.'>Team Mench</div>';
+                    $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
+                    //Send Email:
+                    $this->Email_model->send_single_email(array($bi['u_email']),$subject,$html_message);
+                }
+            }
+        }
+
+
+        //Show result to student:
+        echo_us($us_data);
+
+        //Show next Button if its a Task within this Milestone:
+        if($next_level<=1){
+
+            //Last task of the last milestone, update details and graduate:
+            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                'ru_current_milestone' => ($focus_class['r__total_milestones']+1), //Go 1 milestone after the total milestones to indicate completion
+                'ru_current_task' => 1, //They would be at the First task of the next Milestone
+            ));
+
+            //Send graduation message:
+            $this->Facebook_model->batch_messages( '381488558920384', $matching_admissions[0]['u_fb_id'], array(echo_i(array(
+                'i_media_type' => 'text',
+                'i_message' => 'Congratulations {first_name} for completing your Action Plan 🎉',
+                'e_initiator_u_id' => 0, //System/MenchBot
+                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                'e_b_id' => intval($_POST['b_id']),
+                'e_r_id' => intval($_POST['r_id']),
+            ), $matching_admissions[0]['u_fname'], true )));
+
+        } elseif($next_level==3 && isset($next_intents[0])){
+
+            //Find the Task:
+            foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                if($milestone['c_status']>=1){
+                    foreach($milestone['c__child_intents'] as $task){
+                        if($task['c_id']==$next_intents[0]['c_id']){
+                            //This is the next milestone, update the student positioning here...
+                            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                                'ru_current_task' => $task['cr_outbound_rank'],
+                            ));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //Show button for next task:
+            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
+
+        } elseif($next_level==2 && isset($next_intents[0])){
+
+            //We have a next milestone:
+            //We also need to change ru_current_milestone to reflect this advancement
+            //Fetch the rank of the next milestone:
+            foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                if($milestone['c_id']==$next_intents[0]['c_id']){
+                    //This is the next milestone, update the student positioning here...
+                    $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                        'ru_current_milestone' => $milestone['cr_outbound_rank'],
+                        'ru_current_task' => 1, //They would be at the First task of the next Milestone
+                    ));
+                    break;
+                }
+            }
+
+            //Attempt to dispatch some messages:
+            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+
+        } else {
+
+            //This should not happen!
+
+        }
+    }
+
+    /* ******************************
+     * r Classes
+     ****************************** */
 	
 	function mark_read(){
 	    //Log a Messenger Read engagement to remove the notifications
@@ -835,6 +1003,26 @@ class Api_v1 extends CI_Controller {
 	        echo 'success'; //This will suce the notification
 	    }   
 	}
+
+    function sync_action_plan(){
+        $udata = auth(2,0,$_POST['b_id']);
+        if(!$udata){
+            echo '<span style="color:#FF0000;">Error: Session Expired.</span>';
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo '<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>';
+        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+            echo '<span style="color:#FF0000;">Error: Missing Class ID.</span>';
+        } else {
+            //All Good, start updating:
+            $saved = $this->Db_model->snapshot_action_plan($_POST['b_id'],$_POST['r_id']);
+            //Show Message:
+            if($saved){
+                echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
+            } else {
+                echo '<span style="color:#FF0000;">Unknown Error while trying to save the Action Plan</span>';
+            }
+        }
+    }
 
 	function load_iphone(){
         $udata = auth(1);
@@ -861,14 +1049,23 @@ class Api_v1 extends CI_Controller {
             //Fetch all their admissions:
             $admissions = $this->Db_model->remix_admissions(array(
                 'u.u_fb_id' => $_POST['psid'],
-                'ru.ru_status' => 4, //Actively enrolled in
+                'ru.ru_status >=' => 4, //Actively enrolled in or Completed
+                'r.r_status >=' => 1, //Open for Admission or Higher
             ));
+            $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load
 
-            //How many?
-            if(count($admissions)<1){
+            if(!$active_admission){
+
+                //Ooops, they dont have anything! Log for review, likely a new/curious Student:
+                $this->Db_model->e_create(array(
+                    'e_message' => 'Student admission not found for [u_fb_id='.$_POST['psid'].'] who tried accessing Classmates on MenchBot',
+                    'e_initiator_u_id' => 0, //System
+                    'e_type_id' => 9, //Support Attention Needed
+                ));
 
                 //Ooops, they dont have anything!
                 $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You\'re not enrolled in a Bootcamp. Contact your instructor to obtain access to your bootcamp.</div>');
+
                 //Nothing found for this user!
                 die('<script> window.location = "/"; </script>');
 
@@ -876,16 +1073,15 @@ class Api_v1 extends CI_Controller {
 
                 //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $admissions[0]['u_id'],
-                    'e_json' => $admissions,
+                    'e_initiator_u_id' => $active_admission['u_id'],
                     'e_type_id' => 54, //classmates Opened
-                    'e_b_id' => $admissions[0]['b_id'],
-                    'e_r_id' => $admissions[0]['r_id'],
+                    'e_b_id' => $active_admission['b_id'],
+                    'e_r_id' => $active_admission['r_id'],
                 ));
 
                 //Set core variables so we can load as we progress:
-                $_POST['b_id'] = $admissions[0]['b_id'];
-                $_POST['r_id'] = $admissions[0]['r_id'];
+                $_POST['b_id'] = $active_admission['b_id'];
+                $_POST['r_id'] = $active_admission['r_id'];
 
             }
         }
@@ -909,40 +1105,17 @@ class Api_v1 extends CI_Controller {
             }
 
 
-            //See if we have a copy of this Action Plan:
-            $cache_action_plans = $this->Db_model->e_fetch(array(
-                'e_type_id' => 70,
-                'e_r_id' => intval($_POST['r_id']),
-            ),1,true);
-
-            if(count($cache_action_plans)>0){
-                //Assign this cache to the Bootcamp:
-                $bootcamps = array();
-                array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
-            } else {
-                //Fetch from live:
-                $bootcamps = $this->Db_model->c_full_fetch(array(
-                    'b.b_id' => intval($_POST['b_id']),
-                ));
-            }
-
-
-            if(!isset($bootcamps[0])){
-                die('<span style="color:#FF0000;">Error: Bootcamp Not Found</span>');
-            } elseif(count($bootcamps[0]['c__child_intents'])<1){
-                die('<span style="color:#FF0000;">Error: No Milestones Yet</span>');
-            }
-
-            //Fetch the class:
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
+            $class = $bootcamps[0]['this_class'];
             $bootcamp = $bootcamps[0];
-            $classes = $this->Db_model->r_fetch(array(
-                'r_id' => intval($_POST['r_id']),
-            ), $bootcamp);
 
-            if(count($classes)<1){
+
+            //Was it all good? Should be!
+            if(count($bootcamps[0]['c__child_intents'])<1){
+                die('<span style="color:#FF0000;">Error: No Milestones Yet</span>');
+            } elseif(!$class){
                 die('<span style="color:#FF0000;">Error: Class Not Found</span>');
-            } else {
-                $class = $classes[0];
             }
 
             //Set some settings:
@@ -985,7 +1158,7 @@ class Api_v1 extends CI_Controller {
                     echo 'Class ended on '.time_format($class['r__class_end_time'],0).' PST';
                 } else {
                     //During the class:
-                    echo 'Currently @ '.ucwords($bootcamp['b_sprint_unit']).' '.$class['r__current_milestone'];
+                    echo 'Currently @ '.ucwords($bootcamp['b_sprint_unit']).' '.$class['r__current_milestone'].' of '.$class['r__total_milestones'];
                     //echo ' Due '. time_format($class['r__milestones_due'][$class['r__current_milestone']],0).' PST'
                 }
             echo '</td>';
@@ -995,7 +1168,7 @@ class Api_v1 extends CI_Controller {
             echo '<tr style="font-weight:bold; font-size:0.8em;">';
             echo '<td style="border:1px solid #999; border-right:none; width:38px;">Rank</td>';
             echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; padding-left:30px;">Student</td>';
-            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:60px;">Progress</td>';
+            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:90px;">Progress</td>';
             if($is_instructor){
                 echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">'.ucwords($bootcamp['b_sprint_unit']).'</td>';
                 echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">Task</td>';
@@ -1025,7 +1198,7 @@ class Api_v1 extends CI_Controller {
                     }
 
                     //Should we show this ranking?
-                    $ranking_visible = ($is_instructor || (isset($_POST['psid']) && $admissions[0]['u_id']==$ls['u_id']) || $counter<=$show_ranking_top);
+                    $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$ls['u_id']) || $counter<=$show_ranking_top);
 
                     if(!isset($loadboard_students[($key+1)])){
                         //This is the last item, add a botton border:
@@ -1170,7 +1343,7 @@ class Api_v1 extends CI_Controller {
                     if($ls['ru_current_milestone']>$class['r__total_milestones']){
                         //They have completed it all, show them as winners!
                         echo '<td valign="top" colspan="'.($is_instructor?'3':'1').'" style="'.$bborder.'text-align:left; vertical-align:top;">';
-                        echo '<i class="fa fa-trophy" aria-hidden="true"></i> WINNER';
+                        echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">WINNER</span>';
                         echo '</td>';
                     } else {
                         //Progress:
@@ -1405,9 +1578,6 @@ class Api_v1 extends CI_Controller {
     	        echo '</tr>';
     	        
 	        echo '</table>';
-	        
-	        //TODO Give macro potential in the future:
-	        //echo '<p>Class Earning Potential: <b>22 Seats @ USD $15,000 - $22,000</b></p>';
 	    }
     	    
 	    
@@ -1770,7 +1940,7 @@ class Api_v1 extends CI_Controller {
         
         
         //Check for duplicates:
-        $bootcamps = $this->Db_model->c_full_fetch(array(
+        $bootcamps = $this->Db_model->b_fetch(array(
             'LOWER(b.b_url_key)' => strtolower($generated_key),
         ));
         if(count($bootcamps)>0){
@@ -1875,7 +2045,48 @@ class Api_v1 extends CI_Controller {
         echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Going to Bootcamp Dashboard...</div>';
 	}
 
-	function save_modify(){
+    function save_b_list(){
+        //Auth user and Load object:
+        $udata = auth(2);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Login again to Continue.',
+            ));
+        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_target_audience','b_prerequisites','b_application_questions','b_transformations','b_completion_prizes'))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Group ID',
+            ));
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp ID',
+            ));
+        } else {
+
+            //Updatye bootcamp:
+            $this->Db_model->b_update( intval($_POST['b_id']) , array(
+                $_POST['group_id'] => ( isset($_POST['new_sort']) && is_array($_POST['new_sort']) && count($_POST['new_sort'])>0 ? json_encode($_POST['new_sort']) : null ),
+            ));
+
+            //Log Engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_json' => $_POST,
+                'e_type_id' => 53, //Bootcamp List Modified
+                'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+            ));
+
+            //Display message:
+            echo_json(array(
+                'status' => 1,
+                'message' => '<i class="fa fa-check" aria-hidden="true"></i> Saved',
+            ));
+        }
+    }
+
+    function save_modify(){
 
         //Auth user and check required variables:
         $udata = auth(2);
@@ -2001,7 +2212,7 @@ class Api_v1 extends CI_Controller {
                 $reserved_hashtags = $this->config->item('reserved_hashtags');
 
                 //Validate URL Key to be unique:
-                $duplicate_bootcamps = $this->Db_model->c_full_fetch(array(
+                $duplicate_bootcamps = $this->Db_model->b_fetch(array(
                     'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
                     'b.b_id !=' => intval($_POST['b_id']),
                 ));
@@ -2240,244 +2451,7 @@ class Api_v1 extends CI_Controller {
             'html' => echo_cr($_POST['b_id'],$relations[0],'outbound',$_POST['next_level'],$bootcamps[0]['b_sprint_unit'],intval($_POST['pid'])),
         ));
 	}
-	
-	function completion_report(){
-	    
-	    if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
-	        || !isset($_POST['b_id']) || intval($_POST['b_id'])<=0
-	        || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
-	        || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-	            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
-        } elseif(!isset($_POST['next_c_id']) || !isset($_POST['next_level'])){
-            die('<span style="color:#FF0000;">Error: Missing next task information.</span>');
-	    } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
-	        die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
 
-	    //Submission settings:
-	    } elseif($_POST['require_url'] && count(extract_urls($_POST['us_notes']))<1){
-            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        } elseif($_POST['require_notes'] && strlen($_POST['us_notes'])<1){
-            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        }
-
-        //Fetch student name and details:
-        $matching_admissions = $this->Db_model->ru_fetch(array(
-            'ru_u_id' => intval($_POST['u_id']),
-            'ru_r_id' => intval($_POST['r_id']),
-            'ru_status' => 4, //Active students can submit tasks
-        ));
-
-        if(!(count($matching_admissions)==1)){
-            die('<span style="color:#FF0000;">Error: Admission not found</span>');
-        }
-
-        //Fetch intent, an easy test to pass:
-        $original_intents = $this->Db_model->c_fetch(array(
-            'c.c_id' => intval($_POST['c_id']),
-        ));
-        if(count($original_intents)<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
-        }
-
-
-
-        //Fetch Bootcamp (from cache) & Class:
-        $cache_action_plans = $this->Db_model->e_fetch(array(
-            'e_type_id' => 70,
-            'e_r_id' => intval($_POST['r_id']),
-        ),1,true);
-
-        $bootcamps = array();
-        if(count($cache_action_plans)>0){
-            //Assign this cache to the Bootcamp:
-            array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
-        }
-
-
-        if(!isset($bootcamps[0])){
-            die('<span style="color:#FF0000;">Error: Bootcamp Not Found</span>');
-        } elseif(count($bootcamps[0]['c__child_intents'])<1){
-            die('<span style="color:#FF0000;">Error: No Milestones Yet</span>');
-        }
-
-        //Fetch the class:
-        $focus_class = null;
-        $classes = $this->Db_model->r_fetch(array(
-            'r_id' => intval($_POST['r_id']),
-        ), $bootcamps[0]);
-
-        if(count($classes)>0){
-            $focus_class = $classes[0];
-        }
-
-        if(!$focus_class){
-            die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
-        } elseif(time()>$focus_class['r__class_end_time'] || $focus_class['r_status']>2){
-            die('<span style="color:#FF0000;">Error: Class has ended so you can no longer mark tasks as complete.</span>');
-        }
-
-        //Now make sure this student has not submitted this task before:
-        $us_data = $this->Db_model->us_fetch(array(
-            'us_student_id' => intval($_POST['u_id']),
-            'us_r_id' => intval($_POST['r_id']),
-            'us_c_id' => intval($_POST['c_id']),
-            'us_status' => 1,
-        ));
-
-        if(count($us_data)>0){
-            die('<span style="color:#FF0000;">Error: You have already marked this task as complete. You cannot re-submit it, but you can share updates with your instructor on MenchBot.</span>');
-        }
-
-        //Fetch next intent:
-        $next_level = intval($_POST['next_level']);
-        $next_c_id = intval($_POST['next_c_id']);
-        $next_intents = $this->Db_model->c_fetch(array(
-            'c.c_id' => $next_c_id,
-        ));
-
-	    
-	    //Now update the DB:
-	    $us_data = $this->Db_model->us_create(array(
-	        'us_b_id' => intval($_POST['b_id']),
-            'us_student_id' => $matching_admissions[0]['u_id'],
-	        'us_r_id' => intval($_POST['r_id']),
-	        'us_c_id' => intval($_POST['c_id']),
-	        'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
-	        'us_student_notes' => trim($_POST['us_notes']),
-	        'us_status' => 1, //Submitted
-	    ));
-
-
-        //Log Engagement for new completion:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $matching_admissions[0]['u_id'],
-	        'e_message' => $us_data['us_student_notes'],
-	        'e_json' => array(
-	            'input' => $_POST,
-                'us_data' => $us_data,
-                'next_level' => $next_level,
-                'next_c' => ( isset($next_intents[0]) ? $next_intents[0] : array() ),
-                'next_message_result' => ( isset($message_result) ? $message_result : array() ),
-	        ),
-	        'e_type_id' => 33, //Marked as Done Report
-	        'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
-	        'e_r_id' => $us_data['us_r_id'],
-	        'e_c_id' => $us_data['us_c_id'],
-	    ));
-
-
-	    //Do we need to send any notifications?
-	    if(strlen(trim($_POST['us_notes']))>0){
-
-            //Send email to all instructors of this Bootcamp:
-            $bootcamp_instructors = $this->Db_model->ba_fetch(array(
-                'ba.ba_b_id' => intval($_POST['b_id']),
-                'ba.ba_status >=' => 2, //co-instructors & lead instructor
-                'u.u_status >=' => 1, //Must be a user level 1 or higher
-            ));
-
-            $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
-            $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
-            $bootcamp_chat_url = 'https://mench.co/console/'.intval($_POST['b_id']).'/students';
-            $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
-            $this->load->model('Email_model');
-            //Send notifications to current instructor
-            foreach($bootcamp_instructors as $bi){
-                //Make sure this instructor has an email on file
-                if(strlen($bi['u_email'])>0){
-                    //Task Completion Email:
-                    //Draft HTML message for this:
-                    $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bootcamps[0]['c_objective'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
-                    $html_message .= '<div'.$div_style.'>Task: '.$original_intents[0]['c_objective'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
-                    $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Cheers,</div>';
-                    $html_message .= '<div'.$div_style.'>Team Mench</div>';
-                    $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
-                    //Send Email:
-                    $this->Email_model->send_single_email(array($bi['u_email']),$subject,$html_message);
-                }
-            }
-        }
-
-	    
-	    //Show result to student:
-	    echo_us($us_data);
-
-        //Show next Button if its a Task within this Milestone:
-        if($next_level<=1){
-
-            //Last task of the last milestone, update details and graduate:
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_current_milestone' => ($focus_class['r__total_milestones']+1), //Go 1 milestone after the total milestones to indicate completion
-            ));
-
-            //Send graduation message:
-            $this->Facebook_model->batch_messages( '381488558920384', $matching_admissions[0]['u_fb_id'], array(echo_i(array(
-                'i_media_type' => 'text',
-                'i_message' => 'Congratulations {first_name} for completing your Action Plan 🎉',
-                'e_initiator_u_id' => 0, //System/MenchBot
-                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                'e_b_id' => intval($_POST['b_id']),
-                'e_r_id' => intval($_POST['r_id']),
-            ), $matching_admissions[0]['u_fname'], true )));
-
-        } elseif($next_level==3 && isset($next_intents[0])){
-
-            //Find the Task:
-            foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                if($milestone['c_status']>=1){
-                    foreach($milestone['c__child_intents'] as $task){
-                        if($task['c_id']==$next_intents[0]['c_id']){
-                            //This is the next milestone, update the student positioning here...
-                            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                                'ru_current_task' => $task['cr_outbound_rank'],
-                            ));
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //Show button for next task:
-            echo '<div><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next Task <i class="fa fa-arrow-right"></i></a></div>';
-
-        } elseif($next_level==2 && isset($next_intents[0])){
-
-            //We have a next milestone:
-            //We also need to change ru_current_milestone to reflect this advancement
-            //Fetch the rank of the next milestone:
-            foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                if($milestone['c_id']==$next_intents[0]['c_id']){
-                    //This is the next milestone, update the student positioning here...
-                    $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                        'ru_current_milestone' => $milestone['cr_outbound_rank'],
-                        'ru_current_task' => 1, //They would be at the First task of the next Milestone:
-                    ));
-                    break;
-                }
-            }
-
-            //Attempt to dispatch some messages:
-            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
-
-        } else {
-
-            //This should not happen!
-
-        }
-	}
-	
 	function intent_link(){
 	    
 	    $udata = auth(2);
@@ -2652,47 +2626,6 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-    function save_b_list(){
-        //Auth user and Load object:
-        $udata = auth(2);
-        if(!$udata){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Login again to Continue.',
-            ));
-        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_target_audience','b_prerequisites','b_application_questions','b_transformations','b_completion_prizes'))){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Group ID',
-            ));
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp ID',
-            ));
-        } else {
-
-            //Updatye bootcamp:
-            $this->Db_model->b_update( intval($_POST['b_id']) , array(
-                $_POST['group_id'] => ( isset($_POST['new_sort']) && is_array($_POST['new_sort']) && count($_POST['new_sort'])>0 ? json_encode($_POST['new_sort']) : null ),
-            ));
-
-            //Log Engagement:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_json' => $_POST,
-                'e_type_id' => 53, //Bootcamp List Modified
-                'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
-            ));
-
-            //Display message:
-            echo_json(array(
-                'status' => 1,
-                'message' => '<i class="fa fa-check" aria-hidden="true"></i> Saved',
-            ));
-        }
-    }
-
 	function intents_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
@@ -2792,8 +2725,54 @@ class Api_v1 extends CI_Controller {
 	        echo 'clear_url_preview';
 	    }
 	}
-	
-	function message_attachment(){
+
+    function dispatch_message(){
+
+        //Auth user and check required variables:
+        $udata = auth(2);
+
+        if(!$udata){
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+            return false;
+
+        } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0) {
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+            return false;
+
+        } elseif(!isset($_POST['depth']) || intval($_POST['depth'])<0) {
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Depth',
+            ));
+            return false;
+
+        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0) {
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing User ID',
+            ));
+            return false;
+
+        } else {
+
+            //All seems good, attempt dispatch:
+            echo_json(tree_message(intval($_POST['pid']), intval($_POST['depth']), '381488558920384', intval($_POST['u_id']), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
+
+        }
+
+    }
+
+    function message_attachment(){
 	    
 	    $udata = auth(2);
 	    $file_limit_mb = $this->config->item('file_limit_mb');

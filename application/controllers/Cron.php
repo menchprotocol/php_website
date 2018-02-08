@@ -47,13 +47,13 @@ class Cron extends CI_Controller {
                 continue;
             }
 
-            //Fetch full Bootcamp/Class data for this:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ));
+            //Fetch full Bootcamp/Class data for this
+            //See if we have a copy of this Action Plan:
+            //This ensures we do not make another Copy if the instructor has already cached a copy before Class start time
+            //It's a feature that is not publicly available, and would likely not happen
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
 
-            //Now override $class with the more complete version:
-            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
 
             //Append stats array for cron reporting:
             $stats[$class['r_id']] = array(
@@ -127,19 +127,13 @@ class Cron extends CI_Controller {
 
 
 
-            /*
-             * Now make sure class meets are requirements to get started:
-             *
-             * 1. Minimum required studnets have already been admitted
-             * 2. Action Plan has at-least 1 Published Milestone
-             *
-             */
-
+            //lets prep for checking the conditions to get started
             //Lets see how many admitted students we have?
             $accepted_admissions = $this->Db_model->ru_fetch(array(
                 'ru.ru_r_id'	    => $class['r_id'],
                 'ru.ru_status'	    => 4, //Admitted students
             ));
+
 
             //Find first due milestone to dispatch its messages to all students:
             $first_milestone_c_id = 0;
@@ -150,13 +144,25 @@ class Cron extends CI_Controller {
                 }
             }
 
-            if($first_milestone_c_id==0 || count($accepted_admissions)==0 || count($accepted_admissions)<$class['r_min_students']){
+
+            //Now make sure class meets are requirements to get started with the following conditions:
+            $cancellation_reason = null; //If remains Null we're good to get started
+            if($bootcamps[0]['b_status']<2){
+                $cancellation_reason = 'because Bootcamp was not published';
+            } elseif($first_milestone_c_id==0) {
+                $cancellation_reason = 'because Bootcamp did not have any published Milestones';
+            } elseif(count($accepted_admissions)==0) {
+                $cancellation_reason = 'because the class had zero admitted students';
+            } elseif(count($accepted_admissions)<$class['r_min_students']) {
+                $cancellation_reason = 'because the class had ['.count($accepted_admissions).'] admitted students that did not meet the minimum required students of ['.$class['r_min_students'].']';
+            }
+
+            if($cancellation_reason){
 
                 //Cancel this class as it does not have enough students admitted:
                 $stats[$class['r_id']]['new_status'] = -2; //Class was cancelled
                 $this->Db_model->r_update( $class['r_id'] , array('r_status' => $stats[$class['r_id']]['new_status']));
 
-                $cancellation_reason = ( $first_milestone_c_id==0 ? 'because there was no published Milestones' : 'because the class had ['.count($accepted_admissions).'] admitted students, which did not meet the minimum required students of ['.$class['r_min_students'].']' );
 
                 //Change the status of all students that had been accepted, if any, and notify admin for refunds:
                 //Note that this process is kind-of similar to Api_chat_v1/update_admission_status() but not fully as it also includes ru_status=0
@@ -212,13 +218,7 @@ class Cron extends CI_Controller {
 
 
                 //Take snapshot of Action Plan ONLY IF not already taken for this class:
-                $cache_action_plans = $this->Db_model->e_fetch(array(
-                    'e_type_id' => 70,
-                    'e_r_id' => $class['r_id'],
-                ),1);
-
-                //This should be zero, as all snapshots are taken upon class start time:
-                if(count($cache_action_plans)==0){
+                if(!$bootcamps[0]['is_copy']){
                     //Save Action Plan only if not already done so:
                     $this->Db_model->snapshot_action_plan($bootcamps[0]['b_id'],$class['r_id']);
                 }
@@ -232,7 +232,7 @@ class Cron extends CI_Controller {
                         $stats[$class['r_id']]['students']['accepted']['menchbot_active']++;
 
                         //They already have MenchBot activated, send message:
-                        $message_result = tree_message($first_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
+                        tree_message($first_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
 
                     } else {
 
@@ -245,7 +245,8 @@ class Cron extends CI_Controller {
                     }
                 }
 
-                //Log Class Cancellation engagement & Notify Admin/Instructor:
+
+                //Log Class Kick-start engagement & Notify Admin/Instructor:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => 0, //System
                     'e_message' => 'Class started successfully with ['.count($accepted_admissions).'] admitted students.',
@@ -262,6 +263,47 @@ class Cron extends CI_Controller {
 
         //Echo Summary:
         echo_json($stats);
+    }
+
+    function class_end(){
+
+        exit; //To be built...
+        $email_c_id = 0;
+        $engagement_type_id = 0;
+        if (intval($_POST['ru_status']) == 7){
+
+            //Student Graduated
+            $email_c_id = 2800;
+            $engagement_type_id = 64;
+
+        } elseif (intval($_POST['ru_status']) == -3){
+
+            //Student Removed
+            $email_c_id = 2801;
+            $engagement_type_id = 65;
+
+        }
+
+        if($email_c_id){
+            //Send email:
+            $this->load->model('Email_model');
+            $this->Email_model->email_intent($admission['b_id'],$email_c_id,$admission);
+        }
+
+        if($engagement_type_id){
+            //Log Engagement
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => intval($_POST['initiator_u_id']),
+                'e_recipient_u_id' => $admission['u_id'],
+                'e_message' => 'Student status for '.$admission['u_fname'].' '.$admission['u_lname'].' changed from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']',
+                'e_json' => array(
+                    'post' => $_POST,
+                ),
+                'e_type_id' => $engagement_type_id,
+                'e_b_id' => $admission['r_b_id'],
+                'e_r_id' => $admission['r_id'],
+            ));
+        }
     }
 
     //TODO Enable for students that are left behind (Currently only works for students on the most recent milestone)
@@ -286,12 +328,9 @@ class Cron extends CI_Controller {
         foreach($classes as $class){
 
             //Fetch full Bootcamp/Class data for this:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ));
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
 
-            //Now override $class with the more complete version:
-            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
 
             //Make sure that we are in the middle of an active Milestone:
             if($class['r__current_milestone']<=0){
@@ -586,12 +625,8 @@ class Cron extends CI_Controller {
         foreach($running_classes as $class){
 
             //Fetch full Bootcamp/Class data for this:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ));
-
-            //Now override $class with the more complete version:
-            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
 
             //Where is the class at now?
             if($class['r__current_milestone']<=1 || $class['r__current_milestone']<=$class['r_cache__current_milestone']){
@@ -831,6 +866,7 @@ class Cron extends CI_Controller {
 
 
             if($new_messages[$key]['notify']){
+
                 //Lets see who is responsible for this student:
                 unset($notify_fb_ids);
                 $notify_fb_ids = array();
@@ -839,18 +875,19 @@ class Cron extends CI_Controller {
                 //Checks to see who is responsible for this user, likely to receive update messages or something...
                 $admissions = $this->Db_model->remix_admissions(array(
                     'ru_u_id'	     => $nm['e_initiator_u_id'],
-                    'ru_status <='	 => 4,
-                    'ru_status >='	 => 0,
+                    'ru_status >='	 => 0, //Instructors can send messages to students with ru_status>=0
                 ));
-                if(count($admissions)==1){
+                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+
+                if($active_admission){
                     $bootcamp_data = array(
-                        'b_id' => $admissions[0]['b_id'],
-                        'c_objective' => $admissions[0]['c_objective'],
+                        'b_id' => $active_admission['b_id'],
+                        'c_objective' => $active_admission['c_objective'],
                     );
                     //Fetch the admins for this admission:
-                    foreach($admissions[0]['b__admins'] as $admin){
+                    foreach($active_admission['b__admins'] as $admin){
                         if($admin['u_fb_id']>0){
-                            array_push($notify_fb_ids,array(
+                            array_push( $notify_fb_ids , array(
                                 'u_fname' => $admin['u_fname'],
                                 'u_lname' => $admin['u_lname'],
                                 'u_id' => $admin['u_id'],
@@ -904,12 +941,16 @@ class Cron extends CI_Controller {
             foreach($notify_messages as $key=>$msg){
 
                 //Prepare the message Body:
-                $message = '💡 Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
+                $message = null;
+                if(count($msg['bootcamp_data'])>0){
+                    $message .= '🎯 '.$msg['bootcamp_data']['c_objective']."\n";
+                }
+                $message .= '💡 Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
                 if(count($msg['bootcamp_data'])>0 && strlen($message)<580){
-                    $message .= "\n\n".'Communicate with your ['.$msg['bootcamp_data']['c_objective'].'] students here:'."\n\n".'https://mench.co/console/'.$msg['bootcamp_data']['b_id'].'/students';
+                    $message .= "\n\n".'https://mench.co/console/'.$msg['bootcamp_data']['b_id'].'/students';
                 }
 
                 $notify_messages[$key]['admin_message'] = $message;
@@ -1047,12 +1088,9 @@ class Cron extends CI_Controller {
             }
 
             //Fetch full Bootcamp/Class data for this:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ));
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
 
-            //Now override $class with the more complete version:
-            $class = filter($bootcamps[0]['c__classes'],'r_id',$class['r_id']);
 
             //Make sure Class is still running
             if(time()>$class['r__class_end_time']){
@@ -1076,17 +1114,18 @@ class Cron extends CI_Controller {
                 if($twohour_start && $twohour_start==$start_hour){
 
                     //Trigger 2 hours notice:
-                    $instructor_message = '📅 Reminder: your ['.$bootcamps[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour to update this contact method here:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
+                    $instructor_message = '📅 Reminder: your ['.$bootcamps[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
 
                 } elseif($onehour_start && $onehour_start==$start_hour){
 
                     //Trigger 1 hour notice:
-                    $student_message = 'Hi {first_name}, just a reminder that our group call will start in 1 hour from now. Join the call by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
+                    $student_message = 'Hi {first_name}, just a reminder that our group call will start in 1 hour from now. I will share instructions on how to join the call 10 minutes prior to the call. Stay tuned 🙌​';
 
                 } elseif($tenmin_start && $tenmin_start==$start_hour){
 
                     //Trigger 10 minute notice:
-                    $student_message = '[Automated Reminder] We\'re starting our group call in 10 minutes. You can join by following the instructions above 🙌';
+                    //TODO we can query last messages and if nothing else was sent from the previous reminder, we can further simplify this:
+                    $student_message = '[Automated Reminder] We\'re starting our group call in 10 minutes. You can join by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
                     $instructor_message = '{first_name} your class group call should start in 10 minutes. All your students have already been notified 🙌';
 
                 }
@@ -1094,6 +1133,7 @@ class Cron extends CI_Controller {
                 if($student_message || $instructor_message){
 
                     if($student_message){
+
                         //Fetch all Students in This Class:
                         $class_students = $this->Db_model->ru_fetch(array(
                             'ru.ru_r_id'	    => $class['r_id'],
@@ -1161,5 +1201,88 @@ class Cron extends CI_Controller {
         //Send reminders to students to complete their tasks:
 
     }
+
+
+    function sync_ru_cache_milestones_tasks(){
+
+        //Go through all admissions for running classes and updates the student positions in those classes:
+        $classes = $this->Db_model->r_fetch(array(
+            'r.r_status' => 2,
+        ));
+
+        $class_all = array();
+        $stats = array();
+
+        foreach($classes as $class){
+
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
+
+
+            //Fetch all the students of these classes, and see where they are at:
+            $class['students'] = $this->Db_model->ru_fetch(array(
+                'ru.ru_status'   => 4, //Initiated or higher as long as bootcamp is running!
+                'ru.ru_r_id'	 => $class['r_id'],
+            ));
+
+            $stats[$class['r_id']] = 0;
+            foreach($class['students'] as $admission){
+
+                //Fetch all their submissions so far:
+                $us_data = $this->Db_model->us_fetch(array(
+                    'us_student_id' => $admission['u_id'],
+                    'us_r_id' => $class['r_id'],
+                    'us_status' => 1,
+                ));
+
+                //Go through and see where it breaks down:
+                $stop = false;
+                foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                    if($milestone['c_status']>0){
+                        foreach($milestone['c__child_intents'] as $task){
+                            if($task['c_status']>0){
+                                //Has the student done this?
+                                if(!array_key_exists($task['c_id'],$us_data)){
+                                    //Nopes, not found, this is where the student is at!
+                                    if(!($milestone['cr_outbound_rank']==$admission['ru_current_milestone'])){
+                                        //We need to update:
+                                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                                            'ru_current_milestone' => $milestone['cr_outbound_rank'],
+                                        ));
+                                        //Increase counter:
+                                        $stats[$class['r_id']]++;
+                                    }
+
+                                    if(!($task['cr_outbound_rank']==$admission['ru_current_task'])){
+                                        //We need to update:
+                                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                                            'ru_current_task' => $task['cr_outbound_rank'],
+                                        ));
+                                        //Increase counter:
+                                        $stats[$class['r_id']]++;
+                                    }
+                                    $stop = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if($stop){
+                        break;
+                    }
+                }
+
+
+
+            }
+
+            //array_push($class_all,$class);
+        }
+
+        echo_json($stats);
+    }
+
 
 }

@@ -28,14 +28,9 @@ $(document).ready(function() {
 	$( function() {
 	    $( "#r_start_date" ).datepicker({
 	    	minDate : 1,
-            /*
-	    	beforeShowDay: function(date){
-	    		  var day = date.getDay();
-	    		  return [ ( <?= $bootcamp['b_sprint_unit']=='week' ? 'day==1' : 'day==1 || day==2 || day==3 || day==4 || day==5 || day==6 || day==0' ?> ) ,""];
-	    	},
-	    	*/
 		});
 	});
+
 
 	//Focus on the datepicker:
 	$('#newClassModal').on('shown.bs.modal', function () {

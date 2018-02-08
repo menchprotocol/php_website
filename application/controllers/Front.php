@@ -159,7 +159,7 @@ class Front extends CI_Controller {
 	        'title' => 'Browse Bootcamps',
 	    ));
 	    $this->load->view('front/bootcamp/browse' , array(
-	        'bootcamps' => $this->Db_model->c_full_fetch(array(
+	        'bootcamps' => $this->Db_model->remix_bootcamps(array(
 	            'b.b_status >=' => 2,
 	        )),
 	    ));
@@ -173,7 +173,7 @@ class Front extends CI_Controller {
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $bootcamps = $this->Db_model->remix_bootcamps(array(
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
 
@@ -216,7 +216,7 @@ class Front extends CI_Controller {
 
         //Fetch data:
         $udata = $this->session->userdata('user');
-        $bootcamps = $this->Db_model->c_full_fetch(array(
+        $bootcamps = $this->Db_model->remix_bootcamps(array(
             'LOWER(b.b_url_key)' => strtolower($b_url_key),
         ));
 

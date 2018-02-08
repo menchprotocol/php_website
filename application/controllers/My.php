@@ -22,20 +22,6 @@ class My extends CI_Controller {
 	    header( 'Location: /');
 	}
 
-	function fetch(){
-	    //echo_json($this->Db_model->c_fb_fetch('1443101719058431'));
-	    
-	    echo_json($this->Db_model->remix_admissions(array(
-	        'u.u_fb_id' => '1443101719058431',
-	        'ru.ru_status' => 4, //Actively enrolled in
-	    )));
-	    /*
-	    echo_json($this->Db_model->c_full_fetch(array(
-	        'b.b_id' => 1,
-	    )));
-	    */
-	}
-
 	function webview_video($i_id){
 
         if($i_id>0){
@@ -109,9 +95,10 @@ class My extends CI_Controller {
 	}
 	
 	function display_account(){
-	    
-	    echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
+	    //echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
 	}
+
+
 	function account(){
 	    //Load apply page:
 	    $data = array(
@@ -169,131 +156,83 @@ class My extends CI_Controller {
         //Fetch all their admissions:
         $admission_filters = array(
             'u.u_fb_id' => $u_fb_id,
-            'ru.ru_status' => 4, //Actively enrolled in
+            'ru.ru_status >=' => 4, //Actively enrolled in or Completed
+            'r.r_status >=' => 1, //Open for Admission or Higher
         );
 	    if($b_id>0){
 	        //Enhance our search and make it specific to this $b_id:
             $admission_filters['r.r_b_id'] = $b_id;
         }
+
+
         $admissions = $this->Db_model->remix_admissions($admission_filters);
+        $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
+        if(!$active_admission){
 
-        if(count($admissions)<=0){
-            //Ooops, they dont have anything! This should not happen...
+            //Ooops, they dont have anything! Log for review, likely a new/curious Student:
             $this->Db_model->e_create(array(
                 'e_message' => 'Student admission not found for [u_fb_id='.$u_fb_id.']',
                 'e_initiator_u_id' => 0, //System
-                'e_type_id' => 8, //Platform Error
+                'e_type_id' => 9, //Support Attention Needed
                 'e_b_id' => $b_id,
             ));
 
             //Redirect User:
-            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">You are not enrolled in a Bootcamp.</div>');
+            $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Could not find any active Bootcamp admissions.</div>');
+
             //Nothing found for this user!
             die('<script> window.location = "/"; </script>');
         }
 
 	    
 	    if(!$b_id || !$c_id){
+
             //Log Engagement for opening the Action Plan, which happens without $b_id & $c_id
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $admissions[0]['u_id'],
+                'e_initiator_u_id' => $active_admission['u_id'],
                 'e_json' => $admissions,
                 'e_type_id' => 32, //actionplan Opened
-                'e_b_id' => $admissions[0]['b_id'],
-                'e_r_id' => $admissions[0]['r_id'],
-                'e_c_id' => $admissions[0]['c_id'],
+                'e_b_id' => $active_admission['b_id'],
+                'e_r_id' => $active_admission['r_id'],
+                'e_c_id' => $active_admission['c_id'],
             ));
 
             //Reload with specific directions:
-            $this->display_actionplan($u_fb_id,$admissions[0]['b_id'],$admissions[0]['c_id']);
+            $this->display_actionplan($u_fb_id,$active_admission['b_id'],$active_admission['c_id']);
+
+            //Reload this function, this time with specific instructions on what to load:
             return true;
 	    }
 
 
-        if(count($admissions)>1){
-            //TODO Inform the student that they have an upcoming class:
-        }
-
-
-        $bootcamps = array();
-        if($admissions[0]['r_status']>=2){
-
-            //This is a running class, fetch the copy of the action plan:
-            $cache_action_plans = $this->Db_model->e_fetch(array(
-                'e_type_id' => 70,
-                'e_r_id' => $admissions[0]['r_id'],
-            ),1,true);
-
-            if(count($cache_action_plans)>0){
-
-                //Assign this cache to the Bootcamp:
-                array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
-
-            } else {
-                //Ooops, this should not happen for a running class!
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $admissions[0]['u_id'],
-                    'e_message' => 'Missing Action Plan Copy for a Running Class',
-                    'e_json' => $admissions,
-                    'e_type_id' => 8, //Platform Error
-                    'e_b_id' => $b_id,
-                    'e_r_id' => $admissions[0]['r_id'],
-                    'e_c_id' => $c_id,
-                ));
-            }
-        }
-
-        if(count($bootcamps)==0){
-
-            //This class is not yet started, fetch the live Action Plan:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
-                'b.b_id' => $b_id,
-            ));
-
-            if(count($bootcamps)==0){
-
-                //There is an issue here!
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $admissions[0]['u_id'],
-                    'e_message' => 'Failed to load Bootcamp data in the student Action Plan',
-                    'e_json' => $admissions,
-                    'e_type_id' => 8, //Platform Error
-                    'e_b_id' => $b_id,
-                    'e_r_id' => $admissions[0]['r_id'],
-                    'e_c_id' => $c_id,
-                ));
-
-                //Redirect User:
-                $this->session->set_flashdata('hm', '<div class="alert alert-danger" role="alert">Bootcamp Not Found.</div>');
-
-                //Nothing found for this user!
-                die('<script> window.location = "/"; </script>');
-            }
-        }
-
+        //Fetch full Bootcamp/Class data for this:
+        $bootcamps = fetch_action_plan_copy($b_id,$active_admission['r_id']);
+        $class = $bootcamps[0]['this_class'];
 
         //Fetch intent relative to the bootcamp by doing an array search:
         $view_data = extract_level( $bootcamps[0] , $c_id );
+
         if($view_data){
 
             //Append more data:
-            $view_data['admission'] = $admissions[0];
+            $view_data['class'] = $class;
+            $view_data['admission'] = $active_admission;
             $view_data['us_data'] = $this->Db_model->us_fetch(array(
-                'us_r_id' => $admissions[0]['r_id'],
-                'us_student_id' => $admissions[0]['u_id'],
+                'us_r_id' => $active_admission['r_id'],
+                'us_student_id' => $active_admission['u_id'],
             ));
 
         } else {
 
             //This should not happen either:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $admissions[0]['u_id'],
-                'e_message' => 'Failed to load Bootcamp data in the Student Action Plan',
+                'e_initiator_u_id' => $active_admission['u_id'],
+                'e_message' => 'extract_level() Failed to load Bootcamp data in the Student Action Plan',
                 'e_json' => $admissions,
                 'e_type_id' => 8, //Platform Error
                 'e_b_id' => $b_id,
-                'e_r_id' => $admissions[0]['r_id'],
+                'e_r_id' => $active_admission['r_id'],
                 'e_c_id' => $c_id,
             ));
 
@@ -340,17 +279,17 @@ class My extends CI_Controller {
 	    $admissions = $this->Db_model->remix_admissions(array(
 	        'ru.ru_u_id'	=> $udata['u_id'],
 	    ));
+
 	    //Did we find at-least one?
-	    if(count($admissions)<=0){
+	    if(count($admissions)<1){
 	        //Log this error:
 	        redirect_message('/','<div class="alert alert-danger" role="alert">You have not applied to join any bootcamp yet.</div>');
 	        exit;
 	    }
 	    
-	    
 	    //Validate Class ID that it's still the latest:
 	    $data = array(
-	        'title' => 'My Application Status',
+	        'title' => 'My Application(s) Status',
 	        'udata' => $udata,
 	        'u_id' => $_GET['u_id'],
 	        'u_key' => $_GET['u_key'],
@@ -378,7 +317,7 @@ class My extends CI_Controller {
 	    
 	    //Fetch all their addmissions:
 	    $admissions = $this->Db_model->remix_admissions(array(
-	        'ru.ru_id'	   => $ru_id,
+	        'ru.ru_id'	   => $ru_id, //Loading a very specific Admission ID
 	        'ru.ru_u_id'   => intval($_GET['u_id']),
 	    ));
 	    //Did we find at-least one?

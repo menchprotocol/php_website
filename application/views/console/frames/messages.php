@@ -103,9 +103,6 @@ if(!isset($intents[0])){
             // option2: value2
         });
 
-
-
-
         //Watch for message creation:
         $('#i_message'+c_id).keydown(function (e) {
             if (e.ctrlKey && e.keyCode == 13) {
@@ -152,6 +149,7 @@ if(!isset($intents[0])){
 
     function load_message_sorting(){
         var theobject = document.getElementById("message-sorting"+c_id);
+        var inner_content = null;
         var sort_msg = Sortable.create( theobject , {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             handle: ".fa-bars", // Restricts sort start click/touch to the specified element
@@ -175,6 +173,16 @@ if(!isset($intents[0])){
                         //$(".edit-updates>span").fadeOut();
                     }, 1000);
                 });
+            },
+            //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
+            onChoose: function (evt/**Event*/){
+                var iid = $(evt.item).attr('iid');
+                inner_content = $('#msg_body_'+iid).html();
+                $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fa fa-sort" aria-hidden="true"></i> Drag up/down to sort');
+            },
+            onEnd: function (evt/**Event*/){
+                var iid = $(evt.item).attr('iid');
+                $('#msg_body_'+iid).html(inner_content);
             }
         });
     }

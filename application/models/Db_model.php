@@ -37,7 +37,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
             //Fetch bootcamp:
-            $bootcamps = $this->Db_model->c_full_fetch(array(
+            $bootcamps = $this->Db_model->remix_bootcamps(array(
                 'b.b_id' => $enrollment['r_b_id'],
             ));
             if(count($bootcamps)<=0){
@@ -60,9 +60,136 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    
 	    return $admissions;
 	}
-	
-	
-	function t_fetch($match_columns){
+
+
+    function remix_bootcamps($match_columns){
+        //Missing anything?
+        $this->db->select('*');
+        $this->db->from('v5_bootcamps b');
+        $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        $bootcamps = $q->result_array();
+
+        //Now append more data:
+        foreach($bootcamps as $key=>$c){
+
+            //Bootcamp Messages:
+            $bootcamps[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                'i_status >=' => 0,
+                'i_status <' => 4, //But not private notes if any
+                'i_c_id' => $c['c_id'],
+            ));
+
+            //Fetch team:
+            $bootcamps[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
+                'ba.ba_b_id' => $c['b_id'],
+                'ba.ba_status >=' => 0,
+                'u.u_status >=' => 0,
+            ));
+
+            //Fetch Sub-intents:
+            $bootcamps[$key]['c__milestone_secs'] = ( $c['b_sprint_unit']=='week' ? 7 : 1 )*24*3600;
+            $bootcamps[$key]['c__active_intents'] = array();
+            $bootcamps[$key]['c__task_count'] = 0;
+            $bootcamps[$key]['c__milestone_units'] = 0; //Keep track of total milestone units:
+            $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
+            $bootcamps[$key]['c__message_tree_count'] = count($bootcamps[$key]['c__messages']);
+            $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                'cr.cr_inbound_id' => $c['c_id'],
+                'cr.cr_status >=' => 0,
+                'c.c_status >=' => 0,
+            ));
+            foreach($bootcamps[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
+
+                //Count Messages:
+                $milestone_messages = $this->Db_model->i_fetch(array(
+                    'i_status >=' => 0,
+                    'i_status <' => 4, //But not private notes if any
+                    'i_c_id' => $sprint_value['c_id'],
+                ));
+
+                //Assign messages:
+                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__messages'] = $milestone_messages;
+
+                //Addup message count:
+                $bootcamps[$key]['c__message_tree_count'] += ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
+                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
+
+                //NOTE: Milestones do *not* have a time estimate, so no point in trying to addem up here...
+
+                //Introduce sprint total time:
+                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = 0; //Because its always zero!
+
+                //Fetch sprint tasks at level 3:
+                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_id' => $sprint_value['c_id'],
+                    'cr.cr_status >=' => 0,
+                    'c.c_status >=' => 0,
+                ));
+
+                //Is this an active Milestone?
+                if($sprint_value['c_status']==1){
+                    //Create task array:
+                    $bootcamps[$key]['c__active_intents'][$sprint_value['c_id']] = array();
+
+                    //Addup the timeline:
+                    $bootcamps[$key]['c__milestone_units'] += $sprint_value['c_duration_multiplier'];
+                }
+
+                //Addup task values:
+                foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
+
+                    //Count Messages:
+                    $task_messages = $this->Db_model->i_fetch(array(
+                        'i_status >=' => 0,
+                        'i_status <' => 4, //But not private notes if any
+                        'i_c_id' => $task_value['c_id'],
+                    ));
+
+                    //Add messages:
+                    $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
+
+                    //Addup task estimated time for active tasks in active Milestones:
+                    if($task_value['c_status']==1){
+
+                        if($sprint_value['c_status']==1){
+                            $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+                            $bootcamps[$key]['c__task_count']++;
+                            //add to active tasks per milestone:
+                            array_push($bootcamps[$key]['c__active_intents'][$sprint_value['c_id']],$task_value['c_id']);
+                        }
+
+                        //Addup Milestone Hours for its Active Tasks Regardless of Milestone status:
+                        $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+
+                        //Increase message counts:
+                        $bootcamps[$key]['c__message_tree_count'] += count($task_messages);
+                        $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($task_messages);
+
+                    }
+
+                    //Always show task message count regardless of status:
+                    $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
+                }
+            }
+
+            //Fetch Classes last to leverage the currently gathered data for some other calculations inside the r_fetch() function:
+            $bootcamps[$key]['c__classes'] = $this->r_fetch(array(
+                'r.r_b_id' => $c['b_id'],
+                'r.r_status >=' => 0,
+            ) , $bootcamps[$key] /* Passing this would load extra variables for the class */ );
+
+        }
+
+        return $bootcamps;
+    }
+
+
+    function t_fetch($match_columns){
 	    //Fetch the target gems:
 	    $this->db->select('*');
 	    $this->db->from('v5_transactions t');
@@ -756,133 +883,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	    //Return everything that was collected:
 	    return $intents;
 	}
-	
-	function c_full_fetch($match_columns){
-	    //Missing anything?
-	    $this->db->select('*');
-	    $this->db->from('v5_bootcamps b');
-	    $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
 
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $q = $this->db->get();
-	    $bootcamps = $q->result_array();
-	    
-	    //Now append more data:
-	    foreach($bootcamps as $key=>$c){
-	        
-	        //Bootcamp Messages:
-            $bootcamps[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                'i_status >=' => 0,
-                'i_status <' => 4, //But not private notes if any
-                'i_c_id' => $c['c_id'],
-            ));
-
-            //Fetch team:
-            $bootcamps[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
-                'ba.ba_b_id' => $c['b_id'],
-                'ba.ba_status >=' => 0,
-                'u.u_status >=' => 0,
-            ));
-	        
-	        //Fetch Sub-intents:
-            $bootcamps[$key]['c__milestone_secs'] = ( $c['b_sprint_unit']=='week' ? 7 : 1 )*24*3600;
-            $bootcamps[$key]['c__active_intents'] = array();
-            $bootcamps[$key]['c__task_count'] = 0;
-            $bootcamps[$key]['c__milestone_units'] = 0; //Keep track of total milestone units:
-            $bootcamps[$key]['c__estimated_hours'] = $bootcamps[$key]['c_time_estimate'];
-            $bootcamps[$key]['c__message_tree_count'] = count($bootcamps[$key]['c__messages']);
-	        $bootcamps[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	            'cr.cr_inbound_id' => $c['c_id'],
-                'cr.cr_status >=' => 0,
-                'c.c_status >=' => 0,
-	        ));
-	        foreach($bootcamps[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
-
-                //Count Messages:
-                $milestone_messages = $this->Db_model->i_fetch(array(
-                    'i_status >=' => 0,
-                    'i_status <' => 4, //But not private notes if any
-                    'i_c_id' => $sprint_value['c_id'],
-                ));
-
-                //Assign messages:
-                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__messages'] = $milestone_messages;
-
-                //Addup message count:
-                $bootcamps[$key]['c__message_tree_count'] += ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
-                $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
-
-	            //NOTE: Milestones do *not* have a time estimate, so no point in trying to addem up here...
-
-	            //Introduce sprint total time:
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = 0; //Because its always zero!
-
-	            //Fetch sprint tasks at level 3:
-	            $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	                'cr.cr_inbound_id' => $sprint_value['c_id'],
-	                'cr.cr_status >=' => 0,
-                    'c.c_status >=' => 0,
-	            ));
-
-	            //Is this an active Milestone?
-	            if($sprint_value['c_status']==1){
-	                //Create task array:
-                    $bootcamps[$key]['c__active_intents'][$sprint_value['c_id']] = array();
-
-                    //Addup the timeline:
-                    $bootcamps[$key]['c__milestone_units'] += $sprint_value['c_duration_multiplier'];
-                }
-	            
-	            //Addup task values:
-	            foreach($bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
-
-                    //Count Messages:
-                    $task_messages = $this->Db_model->i_fetch(array(
-                        'i_status >=' => 0,
-                        'i_status <' => 4, //But not private notes if any
-                        'i_c_id' => $task_value['c_id'],
-                    ));
-
-                    //Add messages:
-                    $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
-
-	                //Addup task estimated time for active tasks in active Milestones:
-                    if($task_value['c_status']==1){
-
-                        if($sprint_value['c_status']==1){
-                            $bootcamps[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-                            $bootcamps[$key]['c__task_count']++;
-                            //add to active tasks per milestone:
-                            array_push($bootcamps[$key]['c__active_intents'][$sprint_value['c_id']],$task_value['c_id']);
-                        }
-
-                        //Addup Milestone Hours for its Active Tasks Regardless of Milestone status:
-                        $bootcamps[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-
-                        //Increase message counts:
-                        $bootcamps[$key]['c__message_tree_count'] += count($task_messages);
-                        $bootcamps[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($task_messages);
-
-                    }
-
-                    //Always show task message count regardless of status:
-                    $bootcamps[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
-	            }
-	        }
-
-            //Fetch Classes last to leverage the currently gathered data for some other calculations inside the r_fetch() function:
-            $bootcamps[$key]['c__classes'] = $this->r_fetch(array(
-                'r.r_b_id' => $c['b_id'],
-                'r.r_status >=' => 0,
-            ) , $bootcamps[$key] /* Passing this would load extra variables for the class */ );
-
-	    }
-	    
-	    return $bootcamps;
-	}
-	
 	function b_fetch($match_columns,$c_fetch=false,$order_by='b_id'){
 	    //Missing anything?
 	    $this->db->select('*');
@@ -1172,7 +1173,7 @@ ORDER BY points DESC, ru_id ASC")->result());
     function snapshot_action_plan($b_id,$r_id){
 
 	    //Saves a copy of the Action Plan for the Class to use it:
-        $bootcamps = $this->Db_model->c_full_fetch(array(
+        $bootcamps = $this->Db_model->remix_bootcamps(array(
             'b.b_id' => $b_id,
         ));
 

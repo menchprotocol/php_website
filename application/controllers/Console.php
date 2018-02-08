@@ -10,7 +10,7 @@ class Console extends CI_Controller {
 	}
 	
 	function raw($b_id){
-	    print_r($this->Db_model->c_full_fetch(array(
+	    print_r($this->Db_model->remix_bootcamps(array(
 	        'b.b_id' => $b_id
 	    )));
 	}
@@ -70,7 +70,7 @@ class Console extends CI_Controller {
         /*
 		foreach($my_bootcamps as $key=>$mb){
 		    //Fetch full bootcamp:
-		    $this_full = $this->Db_model->c_full_fetch(array(
+		    $this_full = $this->Db_model->remix_bootcamps(array(
 		        'b.b_id' => $mb['b_id'],
 		    ));
 		    $my_bootcamps[$key] = $this_full[0];
@@ -122,7 +122,7 @@ class Console extends CI_Controller {
 	function dashboard($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $bootcamps = $this->Db_model->remix_bootcamps(array(
 	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
@@ -171,7 +171,7 @@ class Console extends CI_Controller {
 	function actionplan($b_id,$pid=null){
 		
 	    $udata = auth(1,1,$b_id);
-		$bootcamps = $this->Db_model->c_full_fetch(array(
+		$bootcamps = $this->Db_model->remix_bootcamps(array(
 		    'b.b_id' => $b_id,
 		));
 		if(!isset($bootcamps[0])){
@@ -209,7 +209,7 @@ class Console extends CI_Controller {
 	function all_classes($b_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $bootcamps = $this->Db_model->remix_bootcamps(array(
 	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
@@ -240,7 +240,7 @@ class Console extends CI_Controller {
 	function scheduler($b_id,$r_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $bootcamps = $this->Db_model->remix_bootcamps(array(
 	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
@@ -264,7 +264,7 @@ class Console extends CI_Controller {
 	function load_class($b_id,$r_id){
 		//Authenticate:
 	    $udata = auth(1,1,$b_id);
-		$bootcamps = $this->Db_model->c_full_fetch(array(
+		$bootcamps = $this->Db_model->remix_bootcamps(array(
 		    'b.b_id' => $b_id,
 		));
 		if(!isset($bootcamps[0])){
@@ -311,7 +311,7 @@ class Console extends CI_Controller {
 	function students($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $bootcamps = $this->Db_model->remix_bootcamps(array(
 	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){
@@ -340,7 +340,7 @@ class Console extends CI_Controller {
 	function team($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->c_full_fetch(array(
+	    $bootcamps = $this->Db_model->remix_bootcamps(array(
 	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bootcamps[0])){

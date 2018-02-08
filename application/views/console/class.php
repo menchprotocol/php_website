@@ -5,7 +5,7 @@ $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 
-//Determine lock down status:
+//Determine lock down status based on User & Class situation:
 $is_admin = ( $udata['u_status']>=3 );
 $disabled = ( !$is_admin && ($current_applicants>0 || $class['r_status']>=2) ? 'disabled' : null );
 $soft_disabled = ( !$is_admin && $class['r_status']>=2 ? 'disabled' : null );
@@ -142,13 +142,6 @@ $(document).ready(function() {
 	$( function() {
 	    $( "#r_start_date" ).datepicker({
 	    	minDate : 1,
-            /*
-	    	beforeShowDay: function(date){
-	    		  var day = date.getDay(); 
-	    		  return [  ,""];
-	    	},
-	    	*/
-            <?php /* echo $bootcamp['b_sprint_unit']=='week' ? 'day==1' : 'day==1 || day==2 || day==3 || day==4 || day==5 || day==6 || day==0' */ ?>
 		});
 	});
 
@@ -180,7 +173,7 @@ $(document).ready(function() {
 
 function save_r(){
     //Show spinner:
-    $('#save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
+    $('.save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 
     //Save Scheduling iFrame content:
     if(parseInt($('#r_live_office_hours_val').val())){
@@ -218,11 +211,11 @@ function save_r(){
     //Save the rest of the content:
     $.post("/api_v1/class_edit", save_data , function(data) {
         //Update UI to confirm with user:
-        $('#save_r_results').html(data).hide().fadeIn();
+        $('.save_r_results').html(data).hide().fadeIn();
 
         //Disapper in a while:
         setTimeout(function() {
-            $('#save_r_results').fadeOut();
+            $('.save_r_results').fadeOut();
         }, 10000);
     });
 }
@@ -263,7 +256,7 @@ function sync_action_plan(){
     <li id="nav_support" class="active"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
     <li id="nav_pricing"><a href="#pricing"><i class="fa fa-calculator" aria-hidden="true"></i> Pricing</a></li>
     <li id="nav_admission"><a href="#admission"><i class="fa fa-tags" aria-hidden="true"></i> Admission</a></li>
-    <?php if(count($cache_action_plans)==1 || $udata['u_status']>=3){ ?>
+    <?php if(count($cache_action_plans)>0 || $udata['u_status']>=3){ ?>
         <li id="nav_actionplan"><a href="#actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></li>
     <?php } ?>
 </ul>
@@ -362,7 +355,7 @@ function sync_action_plan(){
 
 
         <br />
-        <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span id="save_r_results"></span></td></tr></table>
+        <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
 
     </div>
     
@@ -429,7 +422,7 @@ function sync_action_plan(){
             //Show button to update:
             ?>
             <br />
-            <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span id="save_r_results"></span></td></tr></table>
+            <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
             <?php
         }
         ?>
@@ -484,8 +477,7 @@ function sync_action_plan(){
         </div>
 
         <br />
-        <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span id="save_r_results"></span></td></tr></table>
-
+        <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
     </div>
 
     <div class="tab-pane" id="tabactionplan">
@@ -494,7 +486,7 @@ function sync_action_plan(){
         itip(3267);
 
         //Do we have a copy?
-        if(count($cache_action_plans)==1){
+        if(count($cache_action_plans)>0){
 
             $bootcamp = unserialize($cache_action_plans[0]['ej_e_blob']);
 

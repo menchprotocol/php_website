@@ -1,39 +1,4 @@
-<?php 
-//Fetch some variables:
-$sprint_units = $this->config->item('sprint_units');
-$application_status_salt = $this->config->item('application_status_salt');
-$start_times = $this->config->item('start_times');
-
-$class_start_time = strtotime($admission['r_start_date']) + (intval($admission['r_start_time_mins'])*60);
-
-//Do some time calculations for the point system:
-$due_date = time_format($admission['r_start_date'],2,(($sprint_index+$sprint_duration_multiplier-1) * ( $admission['b_sprint_unit']=='week' ? 7 : 1 )));
-$due_late_date = time_format($admission['r_start_date'],2,(($sprint_index+$sprint_duration_multiplier) * ( $admission['b_sprint_unit']=='week' ? 7 : 1 )));
-
-$ontime_secs_left = ( strtotime($due_date) + (intval($admission['r_start_time_mins'])*60) - time());
-$alittle_late_secs = ( $admission['b_sprint_unit']=='week' ? 7 : 1 )*24*3600; //"A little late" = 1x Milestone Duration
-$qualify_for_little_late = ( abs($ontime_secs_left) < $alittle_late_secs );
-?>
 <script>
-
-
-$( document ).ready(function() {
-    $("#ontime_dueby").countdowntimer({
-        startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d H:i:s' , strtotime($due_date)); ?>",
-        size : "lg",
-        regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
-        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
-    });
-    $("#late_dueby").countdowntimer({
-        startDate : "<?= date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?= date('Y/m/d H:i:s' , strtotime($due_late_date)); ?>",
-        size : "lg",
-        regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
-        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
-    });
-});
-
 
 function mark_done(){
 
@@ -77,23 +42,15 @@ function mark_done(){
 
 }
 
-
 function start_report(){
-	if(!parseInt($('#checklist_complete').val())){
+    $('.mark_done').toggle();
 
-		$('#initiate_done').html('<span style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You must first mark all sub-tasks (below) as done before being able to mark this task as done.</span>');
-		
-	} else {
-		$('.mark_done').toggle();
+    //Reposition to top:
+    //$('html,body').animate({ scrollTop: $('#save_report').offset().top }, 150);
 
-		//Reposition to top:
-		$('html,body').animate({
-			scrollTop: $('#save_report').offset().top
-		}, 150);
-
-		$('#us_notes').focus();
-	}
+    $('#us_notes').focus();
 }
+
 </script>
 
 <input type="hidden" id="u_id" value="<?= $admission['u_id'] ?>" />
@@ -101,9 +58,12 @@ function start_report(){
 <input type="hidden" id="r_id" value="<?= $admission['r_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $intent['c_id'] ?>" />
 
-
 <?php
-//Display Breadcrumb:
+
+
+/* ******************************
+ * Breadcrumb
+ ****************************** */
 echo '<ol class="breadcrumb">';
 foreach($breadcrumb_p as $link){
     if($link['link']){
@@ -114,25 +74,43 @@ foreach($breadcrumb_p as $link){
 }
 echo '</ol>';
 
-if($class_start_time>time()){
+
+
+
+/* ****************************************
+ * Class Not Started / Ended Notification
+ *************************************** */
+if($class['r__class_start_time']>time()){
     //Class has not yet started:
     ?>
     <script>
         $( document ).ready(function() {
             $("#bootcamp_start").countdowntimer({
                 startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                dateAndTime : "<?= date('Y/m/d H:i:s' , $class_start_time); ?>",
+                dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__class_start_time']); ?>",
                 size : "lg",
                 regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
                 regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
             });
         });
     </script>
-    <div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Bootcamp starts in <span id="bootcamp_start"></span></div>
+    <div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="bootcamp_start"></span></div>
     <?php
+} elseif($class['r__class_end_time']<time()){
+    //Class has ended
+    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.time_diff($class['r__class_end_time']).'</div>';
 }
 
-//Count active Messages:
+
+
+
+
+
+
+
+/* ******************************
+ * Intent ONSTART Messages
+ ****************************** */
 $displayed_messages = 0;
 if(count($intent['c__messages'])>0){
     foreach($intent['c__messages'] as $i){
@@ -141,14 +119,11 @@ if(count($intent['c__messages'])>0){
         }
     }
 }
-
-
-//Overview:
 if($displayed_messages>0){
     $uadmission = $this->session->userdata('uadmission');
 
     //Only load the 3rd Level Task messages that are not yet complete by default, because everything else has already been communicated to the student
-    $load_open = ( $level>=3 && !isset($us_data[$intent['c_id']]) );
+    $load_open = ( $level>=2 ); //&& !isset($us_data[$intent['c_id']])
 
     //Messages:
     echo '<h4 style="margin-top:20px;"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
@@ -169,8 +144,15 @@ if($displayed_messages>0){
 
 
 
+
+
+
 if($level>=3){
-    
+
+
+    /* ******************************
+     * Task Completion
+     ****************************** */
     echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
 
@@ -197,53 +179,92 @@ if($level>=3){
 
         //What instructions do we need to give?
         if($red_note) {
-            echo '<div style="color:#FF0000;">Completing this Task requires ' . $red_note . '</div>';
+            echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Completing this Task requires ' . $red_note . '</div>';
         }
-        echo '<div>Average time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
+        echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
         echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
         //Submission button visible after first button was clicked:
-        echo '<div class="mark_done" style="display:none;">';
+        echo '<div class="mark_done" style="display:none; margin-top:10px;">';
             echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
             echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
         echo '</div>';
 
-        //Show when this Milestone is due:
-        echo '&nbsp;<i class="fa fa-calendar" aria-hidden="true"></i> Due '.$due_date.' '.$start_times[$admission['r_start_time_mins']].' PST in <span id="ontime_dueby"></span>';
+
+        //Show when this Milestone is due if not already passed:
+        if($class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']])){
+            ?>
+            <script>
+                $( document ).ready(function() {
+                    $("#ontime_dueby").countdowntimer({
+                        startDate : "<?= date('Y/m/d H:i:s'); ?>",
+                        dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__milestones_due'][$class['r__current_milestone']]); ?>",
+                        size : "lg",
+                        regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+                        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+                    });
+                });
+            </script>
+            <div><i class="fa fa-calendar" aria-hidden="true"></i> Due in <span id="ontime_dueby"></span></div>
+            <?php
+        }
 
     }
     echo '</div>';
+
+
+
+
+    /* ******************************
+     * Task Next/Previous Buttons
+     ****************************** */
+    $previous_on = (isset($previous_intent['c_id']));
+    $next_on = (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]) && $next_level>1);
+    if($previous_on || $next_on){
+        echo '<h4><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
+        echo '<div style="font-size:0.8em;">';
+        if($previous_on){
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-black" style="margin:0 5px;"><i class="fa fa-arrow-left"></i> Previous</a>';
+        }
+        if($next_on){
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-black" style="margin:0 5px;">Next <i class="fa fa-arrow-right"></i></a>';
+        }
+        echo '</div>';
+    }
+
 }
 
 
 
 
 
-//Display Milestone list:
+
+
+/* ******************************
+ * Milestone/Task List
+ ****************************** */
+
 if($level<3){
+
     echo '<h4>';
         if($level==1){
             echo '<i class="fa fa-flag" aria-hidden="true"></i> Milestones';
         } elseif($level==2){
             echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Tasks';
         }
+        //Show aggregate hours:
         echo ' <span class="sub-title">'.echo_time($intent['c__estimated_hours'],1).'</span>';
     echo '</h4>';
 
     echo '<div id="list-outbound" class="list-group">';
-    
-    $sprint_index = 0;
-    $done_count = 0;
+
+    //This could be either a list of Milestones or Tasks, we'll know using $level
     foreach($intent['c__child_intents'] as $key=>$sub_intent){
+
         if($sub_intent['c_status']<1){
             continue;
         }
-        $sprint_index += 1; //One step of increment for the start:
-        if(isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=0){
-            $done_count++;
-        }
-
 
         //Find the next and previous items:
         $previous_item = null;
@@ -270,15 +291,138 @@ if($level<3){
             }
         }
 
-        //Show line:
-        echo echo_c($admission,$sub_intent,($level+1),$us_data,$sprint_index,$previous_item,$next_item);
-        //Now increment more for next round:
-        $sprint_index += ($sub_intent['c_duration_multiplier']-1);
+
+        //Determine some variables for this second Milestone onwards:
+        $unlocked_action_plan = false; //Everything is locked by default, unless we see that they have done the previous steps
+
+        if($level==1){
+
+            //IF this is the second milestone or more, make sure the previous milestone is done before unlocking this
+            $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
+            if(!is_null($previous_item) && isset($previous_item['c__child_intents'])){
+                foreach($previous_item['c__child_intents'] as $task){
+                    if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
+                        continue;
+                    }
+                    if(!isset($us_data[$task['c_id']])){
+                        //No submission for this, definitely not done!
+                        $aggregate_status = -2; //A special meaning here, which is not found
+                        break;
+                    } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
+                        $aggregate_status = $us_data[$task['c_id']]['us_status'];
+                    }
+                }
+            }
+
+            //Determine if this is locked or not
+            $unlocked_action_plan = ( $sub_intent['cr_outbound_rank']<=$class['r__current_milestone'] && $aggregate_status>0 );
+
+        } elseif($level==2){
+
+            //TODO Consider Bonus tasks here with some sort of a loop: $previous_item['c_complete_is_bonus_task']=='t'
+            $task_is_done = (isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=1);
+            $unlocked_action_plan = ( !isset($previous_item['c_id']) || isset($us_data[$previous_item['c_id']]) || $task_is_done );
+
+        }
+
+
+
+
+        //Left content
+        if($unlocked_action_plan){
+
+            $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$sub_intent['c_id'].'" class="list-group-item">';
+            $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+
+            if($level==1){
+
+                //We need to check if all child tasks are marked as complete:
+                $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
+                foreach($sub_intent['c__child_intents'] as $task){
+                    if($task['c_status']<1 || $task['c_complete_is_bonus_task']=='t'){
+                        //Skip Drafting & Bonus Tasks
+                        continue;
+                    }
+                    if(!isset($us_data[$task['c_id']])){
+                        //No submission for this, definitely not done!
+                        $aggregate_status = -2; //A special meaning here, which is not found
+                        break;
+                    } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
+                        $aggregate_status = $us_data[$task['c_id']]['us_status'];
+                    }
+                }
+
+                if($aggregate_status==-2){
+                    $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
+                } else {
+                    $ui .= status_bible('us',$aggregate_status,1).' ';
+                }
+
+            } elseif($level==2){
+                //This is a task, it needs to have a direct submission:
+                if(isset($us_data[$sub_intent['c_id']])){
+                    $ui .= status_bible('us',$us_data[$sub_intent['c_id']]['us_status'],1).' ';
+                } else {
+                    $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
+                }
+            }
+
+        } else {
+
+            $ui = '<li class="list-group-item">';
+            $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
+
+        }
+
+        //Left side starter:
+        if($level==1){
+            //Show counter:
+            $ui .= '<span title="Due '.date("Y-m-d H:i:s PST",$class['r__milestones_due'][$sub_intent['cr_outbound_rank']]).'">'.ucwords($admission['b_sprint_unit']).' '.$sub_intent['cr_outbound_rank'].($sub_intent['c_duration_multiplier']>1 ? '-'.($sub_intent['cr_outbound_rank']+$sub_intent['c_duration_multiplier']-1) :'').':</span> ';
+        } elseif($level==2){
+            //Show counter:
+            $ui .= '<span>Task '.$sub_intent['cr_outbound_rank'].':</span> ';
+        }
+
+        //Intent title:
+        $ui .= $sub_intent['c_objective'].' ';
+
+
+        $ui .= '<span class="sub-stats">';
+
+        //Enable total hours/milestone reporting...
+        if($level==1 && isset($sub_intent['c__estimated_hours'])){
+            $ui .= echo_time($sub_intent['c__estimated_hours'],1);
+        } elseif($level==2 && isset($sub_intent['c_time_estimate'])){
+            $ui .= echo_time($sub_intent['c_time_estimate'],1);
+        }
+
+        if($unlocked_action_plan && $level==1 && isset($sub_intent['c__child_intents']) && count($sub_intent['c__child_intents'])>0){
+            //This sprint has Assignments, count the active ones:
+            $active_assinments = 0;
+            foreach($sub_intent['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $active_assinments++;
+                }
+            }
+            if($active_assinments>0){
+                $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$active_assinments.'</span>';
+            }
+        }
+
+        $ui .= '</span>';
+
+
+        //The Current focus sign for the focused Task/Milestone:
+        if($level==1 && ($class['r__current_milestone']==$sub_intent['cr_outbound_rank'])){
+            $ui .= ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
+        } elseif($level==2 && $sub_intent['c_complete_is_bonus_task']=='t'){
+            $ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS TASK</span>';
+        }
+
+        $ui .= ( $unlocked_action_plan ? '</a>' : '</li>');
+
+        echo $ui;
     }
-    $checklist_done = ( $done_count == count($intent['c__child_intents']) );
     echo '</div>';
-} else {
-    $checklist_done = true;
 }
 ?>
-<input type="hidden" id="checklist_complete" value="<?= ( $checklist_done ? 1 : 0 ) ?>" />

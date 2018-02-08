@@ -527,22 +527,22 @@ class Bot extends CI_Controller {
 	    if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
 	        //Seems like a valid Paypal IPN Call:
 	        //Fetch Enrollment row:
-	        $enrollments = $this->Db_model->ru_fetch(array(
+	        $admissions = $this->Db_model->ru_fetch(array(
 	            'ru.ru_id' => intval($_POST['item_number']),
 	        ));
 	        
-	        if(count($enrollments)==1){
+	        if(count($admissions)==1){
 
 	            //Fetch class data to grab bootcamp ID:
 	            $classes = $this->Db_model->r_fetch(array(
-	                'r.r_id' => $enrollments[0]['ru_r_id'],
+	                'r.r_id' => $admissions[0]['ru_r_id'],
 	            ));
 	            
 	            if(count($classes)==1){
 
 	                //Fetch Student:
                     $users = $this->Db_model->u_fetch(array(
-                        'u_id' => $enrollments[0]['ru_u_id'],
+                        'u_id' => $admissions[0]['ru_u_id'],
                     ));
 	                
 	                //Define numbers:
@@ -551,12 +551,12 @@ class Bot extends CI_Controller {
 	                
 	                //Insert transaction:
 	                $transaction = $this->Db_model->t_create(array(
-                        't_ru_id' => $enrollments[0]['ru_id'],
-                        't_r_id' => $enrollments[0]['ru_r_id'],
-                        't_u_id' => $enrollments[0]['ru_u_id'],
+                        't_ru_id' => $admissions[0]['ru_id'],
+                        't_r_id' => $admissions[0]['ru_r_id'],
+                        't_u_id' => $admissions[0]['ru_u_id'],
                         't_status' => 1, //Payment received from Student
 	                    't_timestamp' => date("Y-m-d H:i:s"),
-	                    't_creator_id' => $enrollments[0]['ru_u_id'],
+	                    't_creator_id' => $admissions[0]['ru_u_id'],
 	                    't_paypal_id' => $_POST['txn_id'],
 	                    't_paypal_ipn' => json_encode($_POST),
 	                    't_currency' => $_POST['mc_currency'],
@@ -566,13 +566,13 @@ class Bot extends CI_Controller {
 	                ));
 	                
 	                //Update student's payment status:
-	                $this->Db_model->ru_update( $enrollments[0]['ru_id'] , array(
+	                $this->Db_model->ru_update( $admissions[0]['ru_id'] , array(
 	                    'ru_status' => 2, //For now this is the default since we don't accept partial payments
 	                ));
 
 	                //Inform the Student:
                     $this->load->model('Email_model');
-                    if($enrollments[0]['u_fb_id']<=0){
+                    if($admissions[0]['u_fb_id']<=0){
                         //They should activate their MenchBot IF not already done so:
                         $this->Email_model->email_intent($classes[0]['r_b_id'],2805,$users[0]);
                     } else {
@@ -582,7 +582,7 @@ class Bot extends CI_Controller {
 	                
 	                //Log Engagement
 	                $this->Db_model->e_create(array(
-	                    'e_initiator_u_id' => $enrollments[0]['ru_u_id'],
+	                    'e_initiator_u_id' => $admissions[0]['ru_u_id'],
 	                    'e_message' => 'Received $'.$amount.' USD via PayPal.',
 	                    'e_json' => $_POST,
 	                    'e_type_id' => 30, //Application Completed with Potential Payment

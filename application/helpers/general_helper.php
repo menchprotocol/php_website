@@ -1,7 +1,102 @@
 <?php
 
 function is_dev(){
-	return in_array($_SERVER['SERVER_NAME'],array('local.mench.co'));
+	return ( isset($_SERVER['SERVER_NAME']) && in_array($_SERVER['SERVER_NAME'],array('local.mench.co')) );
+}
+
+function fetch_action_plan_copy($b_id,$r_id){
+
+    $CI =& get_instance();
+
+    //See if we have a copy:
+    $cache_action_plans = $CI->Db_model->e_fetch(array(
+        'e_type_id' => 70,
+        'e_r_id' => $r_id,
+    ), 1, true);
+
+    if(count($cache_action_plans)>0){
+
+        //Assign this cache to the Bootcamp:
+        $bootcamps = array();
+
+        array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
+
+        //Now Fetch Class:
+        $classes = $CI->Db_model->r_fetch(array(
+            'r_id' => $r_id,
+        ), $bootcamps[0] );
+
+        $bootcamps[0]['this_class'] = $classes[0];
+
+        //Indicate this is a copy:
+        $bootcamps[0]['is_copy'] = 1;
+        $bootcamps[0]['copy_timestamp'] = $cache_action_plans[0]['e_timestamp'];
+
+    } else {
+
+        //Fetch from live:
+        $bootcamps = $CI->Db_model->remix_bootcamps(array(
+            'b.b_id' => $b_id,
+        ));
+
+        //Fetch it from the class object that is already included:
+        $bootcamps[0]['this_class'] = filter($bootcamps[0]['c__classes'],'r_id', $r_id);
+
+        //Indicate this is NOT a copy:
+        $bootcamps[0]['is_copy'] = 0;
+        $bootcamps[0]['copy_timestamp'] = null;
+
+    }
+
+    return $bootcamps;
+}
+
+
+function filter_active_admission($admissions){
+
+    //Determines the active admission of a student, especially useful if they have multiple admissions
+
+    if(count($admissions)<1){
+
+        return fasle;
+
+    } elseif(count($admissions)>1){
+
+        /*
+         * Ohh, let's try to figure this out. There are a few scenarios:
+         *
+         * 1. Multiple up-coming Bootcaps that do not overlap
+         * 2. A mix of past Bootcamps already completed, and some upcoming ones
+         * 3. A bunch of past Bootcamps that are all completed and none active
+         * 4. A mix and match of above?!
+         *
+         * ru_status & r_status and are guiding lights here to crack this puzzle
+         *
+         */
+
+        foreach($admissions as $admission){
+            //Now see whatssup:
+            if($admission['ru_status']>4 || $admission['r_status']>2){
+                //This is a completed Class:
+                $active_admission = $admission;
+            } elseif($admission['ru_status']==4 && $admission['r_status']<2){
+                //Class is not started yet:
+                $active_admission = $admission;
+            } else {
+                //This must be an active class:
+                $active_admission = $admission;
+                break; //This is what we care about the most, so make it have the last say
+            }
+        }
+
+        return $active_admission;
+
+    } elseif(count($admissions)==1){
+
+        //This is typical, treat this as their Active Admission since its the only one they got:
+        return $admissions[0];
+
+    }
 }
 
 function fetch_file_ext($url){
@@ -79,8 +174,6 @@ function extract_level($b,$c_id){
         $view_data['level'] = 1;
         $view_data['sprint_index'] = 0;
         $view_data['sprint_duration_multiplier'] = 0;
-        $view_data['next_intent'] = null; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
-        $view_data['next_level'] = 0; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
         $view_data['intent'] = $b;
         $view_data['title'] = 'Action Plan | '.$b['c_objective'];
         $view_data['breadcrumb_p'] = array(
@@ -89,11 +182,24 @@ function extract_level($b,$c_id){
                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
             ),
         );
+        //Not applicable at Bootcamp Level:
+        $view_data['next_intent'] = null; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
+        $view_data['next_level'] = 0; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
+        $view_data['previous_intent'] = null; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand previous move
+        $view_data['previous_level'] = 0; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand previous move
+
         return $view_data;
         
     } else {
+
+        //Perhaps a level 3?
+        $previous_intent = null; //We'd be trying to find this...
         
         foreach($b['c__child_intents'] as $sprint_key=>$sprint){
+
+            if($sprint['c_status']<1){
+                continue;
+            }
             
             if($sprint['c_id']==$c_id){
 
@@ -101,8 +207,6 @@ function extract_level($b,$c_id){
                 $view_data['level'] = 2;
                 $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                 $view_data['sprint_duration_multiplier'] = $sprint['c_duration_multiplier'];
-                $view_data['next_intent'] = null; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
-                $view_data['next_level'] = 0; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
                 $view_data['intent'] = $sprint;
                 $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': '.$sprint['c_objective'];
                 $view_data['breadcrumb_p'] = array(
@@ -115,13 +219,22 @@ function extract_level($b,$c_id){
                         'anchor' => $core_objects['level_1']['o_icon'].' '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': '.$sprint['c_objective'],
                     ),
                 );
+                //Not applicable at Milestone Level:
+                $view_data['next_intent'] = null;
+                $view_data['next_level'] = 0;
+                $view_data['previous_intent'] = null;
+                $view_data['previous_level'] = 0;
                 
                 return $view_data;
                 
             } else {
-                
-                //Perhaps a level 3?
+
                 foreach($sprint['c__child_intents'] as $task_key=>$task){
+
+                    if($task['c_status']<1){
+                        continue;
+                    }
+
                     if($task['c_id']==$c_id){
 
                         //Find the next intent:
@@ -176,6 +289,8 @@ function extract_level($b,$c_id){
                         $view_data['sprint_duration_multiplier'] = $sprint['c_duration_multiplier'];
                         $view_data['next_intent'] = $next_intent; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
                         $view_data['next_level'] = $next_level; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
+                        $view_data['previous_intent'] = $previous_intent;
+                        $view_data['previous_level'] = ( $previous_intent ? 3 : 1 ); //Previous is always a Task, never a Milestone (by design)
                         $view_data['intent'] = $task;
                         $view_data['title'] = 'Action Plan | '.ucwords($b['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].( $sprint['c_duration_multiplier']>1 ? '-'.($sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1) : '' ).': '.( $task['c_complete_is_bonus_task']=='t' ? 'Bonus ' : '' ).'Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
                         $view_data['breadcrumb_p'] = array(
@@ -194,6 +309,11 @@ function extract_level($b,$c_id){
                         );
                         
                         return $view_data;
+
+                    } else {
+
+                        $previous_intent = $task;
+
                     }
                 }
             }
@@ -208,8 +328,8 @@ function extract_level($b,$c_id){
 
 
 
-function echo_price($r_usd_price){
-    return ($r_usd_price>0?'$'.number_format($r_usd_price,0).' <span>USD</span>':'FREE');
+function echo_price($r_usd_price,$show_currency=true){
+    return ($r_usd_price>0?'$'.number_format($r_usd_price,0).($show_currency?' <span>USD</span>':''):'FREE');
 }
 function echo_hours($int_time,$micro=false){
     return ( $int_time>0 && $int_time<1 ? (round($int_time*60)==($int_time*60)?'':'~').round($int_time*60).($micro?'m':' Minutes') : (round($int_time)==$int_time?'':'~').round($int_time).($micro?'h':($int_time==1?' Hour':' Hours')));
@@ -557,7 +677,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
     $echo_ui .= '<div style="overflow:visible !important;">';
 	
 	    //Type & Delivery Method:    
-	    $echo_ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" style="margin:5px 0 0 0;">';
+	    $echo_ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" id="msg_body_'.$i['i_id'].'" style="margin:5px 0 0 0;">';
 	    $echo_ui .= echo_i($i);
     	$echo_ui .= '</div>';
 
@@ -574,7 +694,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
         $echo_ui .= '<li class="i_uploader on-hover">'.echo_uploader($i).'</li>';
 
         if($editing_enabled){
-            $echo_ui .= '<li class="on-hover" style="margin: 0 0 0 8px;"><i class="fa fa-bars" style="color:#2f2639;"></i></li>';
+            $echo_ui .= '<li class="on-hover" style="margin: 0 0 0 8px;"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2639;"></i></li>';
             $echo_ui .= '<li class="on-hover" style="margin-right: 10px; margin-left: 6px;"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
             if($i['i_media_type']=='text' || $level<=2){
                 $echo_ui .= '<li class="edit-off on-hover" style="margin-left:-4px;"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil-square-o"></i></a></li>';
@@ -661,161 +781,6 @@ function echo_br($admin){
 }
 
 
-//This is used for My/actionplan display for Students:
-function echo_c($b,$c,$level,$us_data=null,$sprint_index=null,$previous_item,$next_item){
-    /* 
-     * $b = Bootcamp object
-     * $c = Intent object
-     * $level Legend:
-     *    2 = Milestone (Day or Week)
-     *    3 = Task
-     * 
-     * * */
-
-    if(!in_array($level,array(2,3))){
-        //Show not happen as this function only shows Milestones and Tasks
-        return false;
-    }
-
-
-    //Determine some variables for this second Milestone onwards:
-    $unlocked_action_plan = false; //Everything is locked by default, unless we see that they have done the previous steps
-    $current_is_due = false;
-    $next_is_due = false;
-
-
-    if($level==2){
-
-        //Calculate deadlines if level 2 Milestones items to see which one to show!
-        $open_date = strtotime(time_format($b['r_start_date'],2,(($sprint_index-1) * ( $b['b_sprint_unit']=='week' ? 7 : 1 ))))+(intval($b['r_start_time_mins'])*60);
-        $next_open_date = strtotime(time_format($b['r_start_date'],2,(($sprint_index+$c['c_duration_multiplier']-1) * ( $b['b_sprint_unit']=='week' ? 7 : 1 ))))+(intval($b['r_start_time_mins'])*60);
-
-        //IF this is the second milestone or more, make sure the previous milestone is done before unlocking this
-        $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
-        if(!is_null($previous_item) && isset($previous_item['c__child_intents'])){
-            foreach($previous_item['c__child_intents'] as $task){
-                if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
-                    continue;
-                }
-                if(!isset($us_data[$task['c_id']])){
-                    //No submission for this, definitely not done!
-                    $aggregate_status = -2; //A special meaning here, which is not found
-                    break;
-                } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
-                    $aggregate_status = $us_data[$task['c_id']]['us_status'];
-                }
-            }
-        }
-
-        //Determine key variables:
-        $current_is_due = (time() >= $open_date);
-        $next_is_due = (time() >= $next_open_date);
-        $unlocked_action_plan = ( $current_is_due && $aggregate_status>0 );
-
-    } elseif($level==3){
-
-        //TODO Consider Bonus tasks here with some sort of a loop: $previous_item['c_complete_is_bonus_task']=='t'
-        $unlocked_action_plan = ( !isset($previous_item['c_id']) || isset($us_data[$previous_item['c_id']]) );
-
-    }
-
-
-
-
-    //Left content
-    if($unlocked_action_plan){
-
-        $ui = '<a href="/my/actionplan/'.$b['b_id'].'/'.$c['c_id'].'" class="list-group-item">';
-        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-        
-        
-        if($level==2){
-            
-            //We need to check if all child tasks are marked as complete:
-            $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
-            foreach($c['c__child_intents'] as $task){
-                if(!isset($us_data[$task['c_id']])){
-                    //No submission for this, definitely not done!
-                    $aggregate_status = -2; //A special meaning here, which is not found
-                    break;
-                } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
-                    $aggregate_status = $us_data[$task['c_id']]['us_status'];
-                }
-            }
-            
-            if($aggregate_status==-2){
-                $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
-            } else {
-                $ui .= status_bible('us',$aggregate_status,1).' ';
-            }
-            
-        } elseif($level==3){
-            //This is a task, it needs to have a direct submission:
-            if(isset($us_data[$c['c_id']])){
-                $ui .= status_bible('us',$us_data[$c['c_id']]['us_status'],1).' ';
-            } else {
-                $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
-            }
-        }
-        
-    } else {
-
-        $ui = '<li class="list-group-item">';
-        $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
-
-    }
-
-    //Left side starter:
-    if($level==2){
-        //Show counter:
-        $ui .= '<span title="Starts '.date("Y-m-d",$open_date).' and ends '.date("Y-m-d",$next_open_date).'">'.ucwords($b['b_sprint_unit']).' '.$sprint_index.($c['c_duration_multiplier']>1 ? '-'.($sprint_index+$c['c_duration_multiplier']-1) :'').':</span> ';
-    } elseif($level==3){
-        //Show counter:
-        $ui .= '<span>Task '.$sprint_index.':</span> ';
-    }
-
-    //Intent title:
-    $ui .= $c['c_objective'].' ';
-
-
-    $ui .= '<span class="sub-stats">';
-
-        //Enable total hours/milestone reporting...
-        if($level==2 && isset($c['c__estimated_hours'])){
-            $ui .= echo_time($c['c__estimated_hours'],1);
-        } elseif($level==3 && isset($c['c_time_estimate'])){
-            $ui .= echo_time($c['c_time_estimate'],1);
-        }
-
-        if($unlocked_action_plan && $level==2 && isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            //This sprint has Assignments, count the active ones:
-            $active_assinments = 0;
-            foreach($c['c__child_intents'] as $task){
-                if($task['c_status']>=1){
-                    $active_assinments++;
-                }
-            }
-            if($active_assinments>0){
-                $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$active_assinments.'</span>';
-            }
-        }
-
-    $ui .= '</span>';
-
-
-    //The Current focus sign for the focused Task/Milestone:
-    if($level==2 && $current_is_due && !$next_is_due){
-        $ui .= ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
-    } elseif($level==3 && $c['c_complete_is_bonus_task']=='t'){
-        $ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS TASK</span>';
-    }
-
-    $ui .= ( $unlocked_action_plan ? '</a>' : '</li>');
-
-    return $ui;
-}
-
-
 function generate_url_key($string){
     $CI =& get_instance();
 
@@ -823,6 +788,7 @@ function generate_url_key($string){
     $string = preg_replace("/[^A-Za-z0-9]/", '', $string);
 
     //Check u_url_key to be unique, and if not, add a number and increment:
+    $original_string = $string;
     $is_duplicate = true;
     $increment = 0;
     while($is_duplicate){
@@ -836,7 +802,7 @@ function generate_url_key($string){
         } else {
             //This is a duplicate:
             $increment++;
-            $string = $string.$increment;
+            $string = $original_string.$increment;
         }
     }
 
@@ -2045,13 +2011,13 @@ function time_format($t,$format=0,$plus_days=0){
     } elseif($format==1){
         return date(( $this_year ? "j M" : "j M Y" ),$timestamp);
     } elseif($format==2){
-        return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);
+        return date(( $this_year ? "D j M" : "j M Y" ),$timestamp);
     } elseif($format==3){
         return $timestamp;
     } elseif($format==4){
         return date(( $this_year ? "M j" : "M j Y" ),$timestamp);
     } elseif($format==5){
-        return date(( $this_year ? "D j M" : "D j M Y" ),$timestamp);
+        return date(( $this_year ? "D j M" : "j M Y" ),$timestamp);
     } elseif($format==6){
         return date("Y/m/d",$timestamp);
     } elseif($format==7){
@@ -2252,9 +2218,9 @@ function object_link($object,$id,$b_id=0){
             }
         } elseif($object=='b'){
             
-            $bootcamps = $CI->Db_model->c_full_fetch(array(
+            $bootcamps = $CI->Db_model->b_fetch(array(
                 'b.b_id' => $id,
-            ));
+            ),true);
             if(isset($bootcamps[0])){
                 if($b_id){
                     return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
@@ -2335,7 +2301,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     $udata = $CI->session->userdata('user');
     $mench_bots = $CI->config->item('mench_bots');
     //$e_initiator_u_id = ( isset($udata['u_id']) ? intval($udata['u_id']) : 0 );
-    $e_initiator_u_id = 0; //Always Zero to not Append Signature
+    $e_initiator_u_id = 0; //Always Zero to not Append Signature for automated messages, even if manually dispatched by a Mench admin
     $e_recipient_u_id = intval($e_recipient_u_id); //Just making sure
     $bootcamps = array();
     $bootcamp_data = null;
@@ -2372,7 +2338,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         );
     } elseif($b_id){
 
-        $bootcamps = $CI->Db_model->c_full_fetch(array(
+        $bootcamps = $CI->Db_model->remix_bootcamps(array(
             'b.b_id' => $b_id,
         ));
 
@@ -2638,18 +2604,9 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                 //Create custom message based on Task Completion Settings:
                 array_push( $instant_messages , echo_i( array_merge( array(
                     'i_media_type' => 'text',
-                    'i_message' => 'Completing this task will earn you '.round($level1['c_time_estimate']*60).' points if completed before the end of this milestone.',
-                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-                array_push( $instant_messages , echo_i( array_merge( array(
-                    'i_media_type' => 'text',
                     //TODO mention the class average response time here:
-                    'i_message' => 'If you needed more assistance simply send me a voice or text message and I will forward it to your instructor team for a timely response.',
+                    'i_message' => 'Completing this Task is estimated to take '.strip_tags(echo_time($level1['c_time_estimate'],0)).'. If you needed more assistance simply send me a message and I will forward it to your instructor for a timely response. Let\'s do it 🙌​',
                 ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-                array_push( $instant_messages , echo_i( array_merge( array(
-                    'i_media_type' => 'text',
-                    'i_message' => 'Let\'s do it!',
-                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
 
                 //Level 1 depth only deals with a single intent, so we'll always end here:
                 break;
@@ -2768,11 +2725,11 @@ function html_run($run){
 
 
 
-
 function echo_us($us_data){
     echo status_bible('us',$us_data['us_status']);
-    echo '<div style="margin:15px 0 10px;">Congratulations for completing this '.echo_time($us_data['us_time_estimate'],1).'Task on '.time_format($us_data['us_timestamp']).'.</div>';
-    echo '<div style="margin-bottom:10px;">Your Comments: '.( strlen($us_data['us_student_notes'])>0 ? nl2br(htmlentities($us_data['us_student_notes'])) : 'None' ).'</div>';
+    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#2f2639;"><i class="fa fa-clock-o initial"></i>Completion Time:</span> '.time_format($us_data['us_timestamp']).' PST</div>';
+    //echo '<div style="margin:15px 0 10px;">Congratulations for completing this '.echo_time($us_data['us_time_estimate'],1).'Task on '.time_format($us_data['us_timestamp']).'</div>';
+    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#2f2639;"><i class="fa fa-file-text initial"></i>Your Comments:</span> '.( strlen($us_data['us_student_notes'])>0 ? make_links_clickable(nl2br(htmlentities($us_data['us_student_notes']))) : 'None' ).'</div>';
 }
 
 

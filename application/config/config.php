@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.0,
+    'version' => 2.05,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -457,26 +457,26 @@ $config['object_statuses'] = array(
         //Withrew after course has started:
         -3 => array(
             's_name'  => 'Student Removed',
-            's_desc'  => 'Student was removed from class for reasons known to the instructor',
+            's_desc'  => 'Student removed from Class post-admission',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-times-circle',
         ),
         //Withrew prior to course has started:
         -2 => array(
             's_name'  => 'Student Withdrew',
-            's_desc'  => 'Student withdrew from the bootcamp. Refund given based on the class refund policy & withdrawal date',
+            's_desc'  => 'Student withdrew Application before Class started. May be eligible for refund depending on Class refund policy',
             'u_min_status'  => 999, //Only done by Student themselves
             's_mini_icon' => 'fa-times-circle',
         ),
         -1 => array(
             's_name'  => 'Application Rejected',
-            's_desc'  => 'Application rejected before start date. Incomplete applications will be auto rejected on class start date',
+            's_desc'  => 'Application not approved by instructor OR application auto-rejected because it was incomplete by the time the Class started',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-times-circle',
         ),
         0 => array(
             's_name'  => 'Application Started',
-            's_desc'  => 'Student has started the application process but has not completed it yet',
+            's_desc'  => 'Student initiated application but has not yet completed it',
             'u_min_status'  => 999, //System insertion only
             's_mini_icon' => 'fa-pencil-square',
         ),
@@ -489,7 +489,7 @@ $config['object_statuses'] = array(
         */
         2 => array(
             's_name'  => 'Pending Admission',
-            's_desc'  => 'Student has completed application and payment (for paid classes) and is pending admission',
+            's_desc'  => 'Student completed application and payment (for paid classes) and is pending instructor review and approval',
             's_mini_icon' => 'fa-pause-circle',
             'u_min_status'  => 999, //System insertion only
         ),
@@ -504,17 +504,23 @@ $config['object_statuses'] = array(
 
         4 => array(
             's_name'  => 'Bootcamp Student',
-            's_desc'  => 'Student admitted making them ready to participate in bootcamp',
+            's_desc'  => 'Admission accepted and student is ready to participate in Bootcamp',
             's_mini_icon' => 'fa-user',
             'u_min_status'  => 1,
         ),
 
-        //Completion
+        //Upon Class End Time:
+        6 => array(
+            's_name'  => 'Bootcamp Incomplete',
+            's_desc'  => 'Student unable to complete all Milestones by the Class end time',
+            's_mini_icon' => 'fa-minus-circle',
+            'u_min_status'  => 999, //System automatically updates to this status on Class end time
+        ),
         7 => array(
             's_name'  => 'Bootcamp Graduate',
-            's_desc'  => 'Student completed class and completed all milestones as approved by lead instructor',
+            's_desc'  => 'Student successfully completed all Milestones by the Class end time and graduated',
             's_mini_icon' => 'fa-graduation-cap',
-            'u_min_status'  => 1,
+            'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
     ),
 );

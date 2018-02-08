@@ -1136,7 +1136,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 }
 .btn-black .fa{
 	font-size:1.2em !important;
-	margin-right:22px !important;
+	margin-right:5px !important;
 }
 #funnel .body-container{
 	font-size:24px;

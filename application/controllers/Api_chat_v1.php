@@ -99,35 +99,23 @@ class Api_chat_v1 extends CI_Controller{
                             'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Not Enrolled in this Bootcamp',
                         );
                         break;
-                    } elseif(!in_array($admissions[0]['ru_status'],array(2,4))){
+                    } elseif(!in_array($admissions[0]['ru_status'],array(2))){
                         $error_array = array(
                             'status' => 0,
-                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' Admission status can only be changed if original status is ['.trim(strip_tags(status_bible('ru',2))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
-                        );
-                        break;
-                    } elseif($admissions[0]['ru_status']==4 && count($_POST['recipient_u_ids'])>1){
-                        $error_array = array(
-                            'status' => 0,
-                            'message' => 'Setting status to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).'] requires select only 1 student at a time with a unique note.',
+                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' admission status can only be changed if original status is ['.trim(strip_tags(status_bible('ru',2))).']',
                         );
                         break;
                     } elseif($unified_current_ru_status && !($unified_current_ru_status==$admissions[0]['ru_status'])){
                         //Ooops, this status if different from the previous student! This cannot happen.
                         $error_array = array(
                             'status' => 0,
-                            'message' => 'Selecting multiple students requires having the same status of either ['.trim(strip_tags(status_bible('ru',2))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
+                            'message' => 'Selecting multiple students requires all of them having the same status of ['.trim(strip_tags(status_bible('ru',2))).']',
                         );
                         break;
                     } elseif($admissions[0]['ru_status']==2 && !in_array($_POST['ru_status'],array(-1,4))){
                         $error_array = array(
                             'status' => 0,
                             'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' is a new student. Status can only set to ['.trim(strip_tags(status_bible('ru',-1))).'] or ['.trim(strip_tags(status_bible('ru',4))).']',
-                        );
-                        break;
-                    } elseif($admissions[0]['ru_status']==4 && !in_array($_POST['ru_status'],array(-3,7))){
-                        $error_array = array(
-                            'status' => 0,
-                            'message' => $admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].' is an admitted student. Status can only set to ['.trim(strip_tags(status_bible('ru',-3))).'] or ['.trim(strip_tags(status_bible('ru',7))).']',
                         );
                         break;
                     } else {
@@ -174,20 +162,23 @@ class Api_chat_v1 extends CI_Controller{
                             $email_c_id = 2799;
                             $engagement_type_id = 63;
 
-                        } elseif (intval($_POST['ru_status']) == 7){
-
-                            //Student Graduated
-                            $email_c_id = 2800;
-                            $engagement_type_id = 64;
-
-                        } elseif (intval($_POST['ru_status']) == -3){
-
-                            //Student Removed
-                            $email_c_id = 2801;
-                            $engagement_type_id = 65;
+                            //We might need to look into a refund, so log a new Engagement for this:
+                            $this->Db_model->e_create(array(
+                                'e_initiator_u_id' => intval($_POST['initiator_u_id']),
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_message' => 'Investigation needed. May need to manually refund $['.$admission['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as the instructor changed the status from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']',
+                                'e_json' => array(
+                                    'post' => $_POST,
+                                    'admission' => $admission,
+                                ),
+                                'e_type_id' => 58, //Class Manual Refund
+                                'e_b_id' => $admission['r_b_id'],
+                                'e_r_id' => $admission['r_id'],
+                            ));
 
                         }
 
+                        //Dispatch appropriate Messages:
                         if($email_c_id){
                             //Send email:
                             $this->load->model('Email_model');
@@ -204,22 +195,6 @@ class Api_chat_v1 extends CI_Controller{
                                     'post' => $_POST,
                                 ),
                                 'e_type_id' => $engagement_type_id,
-                                'e_b_id' => $admission['r_b_id'],
-                                'e_r_id' => $admission['r_id'],
-                            ));
-                        }
-
-                        //We might need to look into a reund:
-                        if(in_array($_POST['ru_status'],array(-1,-3)) && $admission['r_usd_price']>0){
-                            $this->Db_model->e_create(array(
-                                'e_initiator_u_id' => intval($_POST['initiator_u_id']),
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_message' => 'Investigation needed. May need to manually refund $['.$admission['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as the instructor changed the status from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']',
-                                'e_json' => array(
-                                    'post' => $_POST,
-                                    'admission' => $admission,
-                                ),
-                                'e_type_id' => 58, //Class Manual Refund
                                 'e_b_id' => $admission['r_b_id'],
                                 'e_r_id' => $admission['r_id'],
                             ));
@@ -293,14 +268,14 @@ class Api_chat_v1 extends CI_Controller{
             ));
         } else {
 
-            //Fetch instructor/Bootcamp:
+            //Validate Instructor Identity:
             $fetch_instructors = $this->Db_model->ba_fetch(array(
                 'ba.ba_b_id' => intval($_POST['b_id']),
                 'ba.ba_u_id' => intval($_POST['initiator_u_id']),
                 'ba.ba_status >=' => 0,
-                'u.u_status >=' => 1,
             ));
 
+            //If not found, maybe this is a Mench Admin?
             if(count($fetch_instructors)<1){
                 //Maybe they are a super admin?
                 $users = $this->Db_model->u_fetch(array(
@@ -308,14 +283,14 @@ class Api_chat_v1 extends CI_Controller{
                 ));
             }
 
-            //Fetch Student:
+            //Fetch Student admission:
             $admissions = $this->Db_model->remix_admissions(array(
-                'ru.ru_u_id'	=> intval($_POST['recipient_u_id']),
                 'r.r_b_id'	    => intval($_POST['b_id']),
+                'ru.ru_u_id'	=> intval($_POST['recipient_u_id']),
             ));
 
             //Validate Student ID:
-            if(!(count($fetch_instructors)==1) && (!isset($users[0]) || $users[0]['u_status']<=2)){
+            if(!(count($fetch_instructors)>0) && (!isset($users[0]) || $users[0]['u_status']<=2)){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Instructor Not Assigned to Bootcamp',
@@ -325,15 +300,15 @@ class Api_chat_v1 extends CI_Controller{
                     'status' => 0,
                     'message' => 'Student Not Enrolled in Bootcamp',
                 ));
-            } elseif(count($admissions)>1){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Student Enrolled On Multiple Bootcamps',
-                ));
             } elseif(strlen($admissions[0]['u_fb_id'])<5){
                 echo_json(array(
                     'status' => 0,
-                    'message' => 'Student Not Activated Messenger Yet',
+                    'message' => 'Student MenchBot Not Activated',
+                ));
+            } elseif(strlen($admissions[0]['ru_status'])<0){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Communication not allowed with a student with admission status ['.trim(strip_tags(status_bible('ru',$admissions[0]['ru_status']))).']',
                 ));
             } else {
 
