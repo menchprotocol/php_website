@@ -893,7 +893,7 @@ class Api_v1 extends CI_Controller {
 
         if(!$focus_class){
             die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
-        } elseif(time()>$focus_class['r__class_end_time'] || $focus_class['r_status']>2){
+        } elseif($focus_class['r__current_milestone']<0 || $focus_class['r_status']>2){
             die('<span style="color:#FF0000;">Error: Class has ended so you can no longer mark tasks as complete.</span>');
         }
 
@@ -1218,7 +1218,7 @@ class Api_v1 extends CI_Controller {
                     echo 'Class not yet started.';
                 } elseif($class['r__current_milestone']<0){
                     //Ended!
-                    echo 'Class ended on '.time_format($class['r__class_end_time'],0).' PST';
+                    echo 'Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago';
                 } else {
                     //During the class:
                     echo 'Currently @ '.ucwords($bootcamp['b_sprint_unit']).' '.$class['r__current_milestone'].' of '.$class['r__total_milestones'];
