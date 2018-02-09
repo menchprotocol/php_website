@@ -1419,7 +1419,7 @@ ORDER BY points DESC, ru_id ASC")->result());
                             //MenchBot notifications:
                             $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(echo_i(array(
                                 'i_media_type' => 'text',
-                                'i_message' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc'])).' ['.$url.']',
+                                'i_message' => $subject."\n\n".trim(strip_tags($engagements[0]['a_desc']))."\n\n".$url,
                                 'i_url' => $url,
                                 'e_initiator_u_id' => 0, //System/MenchBot
                                 'e_recipient_u_id' => $bi['u_id'],

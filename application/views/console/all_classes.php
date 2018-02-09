@@ -14,7 +14,7 @@ if(count($bootcamp['c__classes'])>0){
             }
 
             //Show Funnel:
-            echo '<span style="min-width:140px; display:inline-block;" data-toggle="tooltip" data-placement="left" title="'.( $class['r_status']>=2 ? 'Student Admission Overview: [Admitted] / [Max]' : 'Student Funnel Overview: [Started Application] -> [Completed Application] -> [Admitted] / [Max]' ).'"><i class="fa fa-user" aria-hidden="true"></i> ';
+            echo '<span style="min-width:140px; display:inline-block;" data-toggle="tooltip" data-placement="left" title="'.( $class['r_status']>=2 ? 'Student Admission Overview: [Admitted] / [Max Admissions]' : 'Student Funnel Overview: [Started Application] -> [Completed Application] -> [Admitted] / [Max Admissions]' ).'"><i class="fa fa-user" aria-hidden="true"></i> ';
             $student_funnel = array(
                 0 => count($this->Db_model->ru_fetch(array(
                     'r.r_id'	       => $class['r_id'],

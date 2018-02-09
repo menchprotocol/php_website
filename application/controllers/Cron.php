@@ -727,7 +727,7 @@ class Cron extends CI_Controller {
                         $this->Db_model->r_update( $class['r_id'] , array('r_cache__current_milestone' => $class['r__current_milestone']));
 
                         //Append message to stats:
-                        $stats[$class['r_id']] = 'Moved from '.$bootcamps[0]['b_sprint_unit'].' ['.$class['r_cache__current_milestone'].'] to '.$bootcamps[0]['b_sprint_unit'].' ['.$class['r__current_milestone'].'] with ['.$ontime.'] ON-TIME and ['.count($behind).'] BEHIND students';
+                        $stats[$class['r_id']] = 'Moved from ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r_cache__current_milestone'].'] to ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r__current_milestone'].'] with ['.$ontime.' ON-TIME] and ['.count($behind).' BEHIND] students';
 
                         //Log Engagement:
                         $this->Db_model->e_create(array(
@@ -1124,7 +1124,7 @@ class Cron extends CI_Controller {
 
                     //Trigger 10 minute notice:
                     //TODO we can query last messages and if nothing else was sent from the previous reminder, we can further simplify this:
-                    $student_message = '[Automated Reminder] We\'re starting our group call in 10 minutes. You can join by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
+                    $student_message = 'Our group call is starting in 10 minutes. You can join by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
                     $instructor_message = '{first_name} your class group call should start in 10 minutes. All your students have already been notified 🙌';
 
                 }
