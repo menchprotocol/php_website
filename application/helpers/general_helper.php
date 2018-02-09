@@ -578,6 +578,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 //No, upload file:
                 $payload = array(
                     'url' => $i['i_url'],
+                    'is_reusable' => false,
                 );
             }
             
