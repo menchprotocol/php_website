@@ -812,10 +812,13 @@ ORDER BY points DESC, ru_id ASC")->result());
                 } else {
                     //See which one of the milestones is being workined on now...
                     if(count($runs[$key]['r__milestones_due'])>0){
+                        $previous_milestone = 1; //Starting point
                         foreach($runs[$key]['r__milestones_due'] as $cr_outbound_rank=>$due_timestamp){
-                            if(time()<$due_timestamp){
-                                $runs[$key]['r__current_milestone'] = $cr_outbound_rank;
+                            if($due_timestamp>time()){
+                                $runs[$key]['r__current_milestone'] = $previous_milestone;
                                 break;
+                            } else {
+                                $previous_milestone = $cr_outbound_rank;
                             }
                         }
                     } else {
