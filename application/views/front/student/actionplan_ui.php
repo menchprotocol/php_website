@@ -123,7 +123,7 @@ if($displayed_messages>0){
     $uadmission = $this->session->userdata('uadmission');
 
     //Only load the 3rd Level Task messages that are not yet complete by default, because everything else has already been communicated to the student
-    $load_open = ( $level>=2 ); //&& !isset($us_data[$intent['c_id']])
+    $load_open = ( $level>=3 ); //&& !isset($us_data[$intent['c_id']])
 
     //Messages:
     echo '<h4 style="margin-top:20px;"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
@@ -298,34 +298,42 @@ if($level<3){
 
         //Determine some variables for this second Milestone onwards:
         $unlocked_action_plan = false; //Everything is locked by default, unless we see that they have done the previous steps
+        $class_has_ended = ($class['r__current_milestone']<0);
+        $is_first_item = (!isset($previous_item['c_id']));
 
         if($level==1){
 
-            //IF this is the second milestone or more, make sure the previous milestone is done before unlocking this
-            $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
-            if(!is_null($previous_item) && isset($previous_item['c__child_intents'])){
+            //Milestone List
+            //IF this is the second milestone or more, make sure all Tasks of previous Milestones are marked as Complete
+            $previous_milestone_tasks_completed = 1; //We assume its done, unless proven otherwise...
+
+            if(!$is_first_item && isset($previous_item['c__child_intents'])){
                 foreach($previous_item['c__child_intents'] as $task){
                     if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
                         continue;
                     }
                     if(!isset($us_data[$task['c_id']])){
                         //No submission for this, definitely not done!
-                        $aggregate_status = -2; //A special meaning here, which is not found
+                        $previous_milestone_tasks_completed = -2; //A special meaning here, which is not found
                         break;
-                    } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
-                        $aggregate_status = $us_data[$task['c_id']]['us_status'];
+                    } elseif($us_data[$task['c_id']]['us_status']<$previous_milestone_tasks_completed){
+                        //Task is submitted, but rejected by Instructor (status<1) so its not complete:
+                        $previous_milestone_tasks_completed = $us_data[$task['c_id']]['us_status'];
                     }
                 }
             }
 
             //Determine if this is locked or not
-            $unlocked_action_plan = ($class['r__current_milestone']<0) || ( $sub_intent['cr_outbound_rank']<=$class['r__current_milestone'] && $aggregate_status>0 );
+            $milestone_has_arrived = ( $sub_intent['cr_outbound_rank']<=$class['r__current_milestone'] );
+            $unlocked_action_plan = ( $class_has_ended || ($milestone_has_arrived && $previous_milestone_tasks_completed));
 
         } elseif($level==2){
 
+            //Task list:
             //TODO Consider Bonus tasks here with some sort of a loop: $previous_item['c_complete_is_bonus_task']=='t'
-            $task_is_done = (isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=1);
-            $unlocked_action_plan = ( $class['r__current_milestone']<0 || !isset($previous_item['c_id']) || isset($us_data[$previous_item['c_id']]) || $task_is_done );
+            $this_task_is_done = (isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=1);
+            $previous_task_is_done = (isset($us_data[$previous_item['c_id']]));
+            $unlocked_action_plan = ( $class_has_ended || $is_first_item || $previous_task_is_done || $this_task_is_done );
 
         }
 
@@ -335,33 +343,17 @@ if($level<3){
         //Left content
         if($unlocked_action_plan){
 
+            //Show link to enter this item:
             $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$sub_intent['c_id'].'" class="list-group-item">';
             $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
 
             if($level==1){
-
-                //We need to check if all child tasks are marked as complete:
-                $aggregate_status = 1; //We assume it's all done, unless proven otherwise:
-                foreach($sub_intent['c__child_intents'] as $task){
-                    if($task['c_status']<1 || $task['c_complete_is_bonus_task']=='t'){
-                        //Skip Drafting & Bonus Tasks
-                        continue;
-                    }
-                    if(!isset($us_data[$task['c_id']])){
-                        //No submission for this, definitely not done!
-                        $aggregate_status = -2; //A special meaning here, which is not found
-                        break;
-                    } elseif($us_data[$task['c_id']]['us_status']<$aggregate_status){
-                        $aggregate_status = $us_data[$task['c_id']]['us_status'];
-                    }
-                }
-
-                if($aggregate_status==-2){
+                //Milestone, either show it undone or the actual status of it:
+                if($previous_milestone_tasks_completed==-2){
                     $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
                 } else {
-                    $ui .= status_bible('us',$aggregate_status,1).' ';
+                    $ui .= status_bible('us',$previous_milestone_tasks_completed,1).' ';
                 }
-
             } elseif($level==2){
                 //This is a task, it needs to have a direct submission:
                 if(isset($us_data[$sub_intent['c_id']])){
@@ -373,6 +365,7 @@ if($level<3){
 
         } else {
 
+            //Task/Milestone is locked, do not show link:
             $ui = '<li class="list-group-item">';
             $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
 
