@@ -283,40 +283,25 @@ $config['object_statuses'] = array(
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-trash',
         ),
-        /*
-        0 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Message not visible to students while drafting',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-pencil-square',
-        ),
-        */
+        //No drafting for messages as it over-complicates things
         1 => array(
-            's_name'  => 'On Start',
-            's_desc'  => 'Messages sent to student when milestone starts',
+            's_name'  => 'On-Start',
+            's_desc'  => 'Listed in Action Plan as instructions on how to approach this item & successfully complete it. Also use to explaining WHY item is important',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-bolt',
         ),
         2 => array(
             's_name'  => 'Drip',
-            's_desc'  => 'Messages sent to enrolled students sometime during the milestone. Drip messages sent in same order you choose',
+            's_desc'  => 'Sent on Messenger in intervals after item starts & before Class ends. Use to repeat key principles over time to help student learn an insight',
             's_mini_icon' => 'fa-tint',
             'u_min_status'  => 1,
         ),
-        /*
         3 => array(
-            's_name'  => 'Landing Page',
-            's_desc'  => 'Messages published on the Landing Page giving prospect students an overview of your Bootcamp',
-            's_mini_icon' => 'fa-bullhorn',
+            's_name'  => 'On-Complete',
+            's_desc'  => 'Sent on Messenger as soon as item is complete. Use to review takeaways, unlock prizes or simply encourage students to keep pushing forward',
+            's_mini_icon' => 'fa-check-square',
             'u_min_status'  => 1,
         ),
-        4 => array(
-            's_name'  => 'Private Note',
-            's_desc'  => 'This Message is taken by the instructor team on a particular student and is visible to the entire team',
-            's_mini_icon' => 'fa-eye-slash',
-            'u_min_status'  => 1,
-        ),
-        */
     ),
 
     'cr' => array(
@@ -402,13 +387,14 @@ $config['object_statuses'] = array(
     ),
 
     'us' => array(
-        //This is not stored in DB:
+        //-2 is a status that is NOT in the DB, but rather calculated manually via actionplan_ui.php file
         -2 => array(
-            's_name'  => 'Locked',
-            's_desc'  => 'Pending milestone start',
+            's_name'  => 'Pending Completion',
+            's_desc'  => 'Item not yet completed by Student',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-lock',
+            's_mini_icon' => 'fa-square-o',
         ),
+        //These are DB item submission statuses:
         -1 => array(
             's_name'  => 'Requires Revision',
             's_desc'  => 'Submission has been reviewed and improvement suggestions are pending implementation',

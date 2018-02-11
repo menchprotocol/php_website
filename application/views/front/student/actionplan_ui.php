@@ -196,7 +196,7 @@ if($level>=3){
 
 
             //Show when this Milestone is due if not already passed:
-            if($sprint_index==$class['r__current_milestone'] && $class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']])){
+            if($sprint_index==$class['r__current_milestone'] && $class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']]) && $class['r__milestones_due'][$class['r__current_milestone']]>time()){
                 ?>
                 <script>
                     $( document ).ready(function() {
@@ -264,104 +264,65 @@ if($level<3){
     echo '<div id="list-outbound" class="list-group">';
 
     //This could be either a list of Milestones or Tasks, we'll know using $level
-    foreach($intent['c__child_intents'] as $key=>$sub_intent){
+    $previous_item_complete = true; //We start this as its true for the very first Task
+    foreach($intent['c__child_intents'] as $this_intent){
 
-        if($sub_intent['c_status']<1){
+        if($this_intent['c_status']<1){
+            //Drafting items should be skipped:
             continue;
         }
-
-        //Find the next and previous items:
-        $previous_item = null;
-        $next_item = null;
-        $previous_key = $key;
-        $next_key = $key;
-
-        while(!$previous_item){
-            $previous_key--;
-            if(!isset($intent['c__child_intents'][$previous_key])){
-                break;
-            } elseif($intent['c__child_intents'][$previous_key]['c_status']>=1){
-                $previous_item = $intent['c__child_intents'][$previous_key];
-                break;
-            }
-        }
-        while(!$next_item){
-            $next_key++;
-            if(!isset($intent['c__child_intents'][$next_key])){
-                break;
-            } elseif($intent['c__child_intents'][$next_key]['c_status']>=1){
-                $next_item = $intent['c__child_intents'][$next_key];
-                break;
-            }
-        }
-
-
-        //Determine some variables for this second Milestone onwards:
-        $unlocked_action_plan = false; //Everything is locked by default, unless we see that they have done the previous steps
-        $class_has_ended = ($class['r__current_milestone']<0);
-        $is_first_item = (!isset($previous_item['c_id']));
 
         if($level==1){
 
             //Milestone List
-            //IF this is the second milestone or more, make sure all Tasks of previous Milestones are marked as Complete
-            $previous_milestone_tasks_completed = 1; //We assume its done, unless proven otherwise...
+            $item_time_arrived = ( $this_intent['cr_outbound_rank']<=$class['r__current_milestone'] || $class['r__current_milestone']<0 /* Class Ended */ ); //Yes it has arrived
+            $child_task_count = 0;
+            $this_item_us_status = 1;
+            foreach($this_intent['c__child_intents'] as $task){
+                if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
+                    //Does not count:
+                    continue;
+                }
 
-            if(!$is_first_item && isset($previous_item['c__child_intents'])){
-                foreach($previous_item['c__child_intents'] as $task){
-                    if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
-                        continue;
-                    }
-                    if(!isset($us_data[$task['c_id']])){
-                        //No submission for this, definitely not done!
-                        $previous_milestone_tasks_completed = -2; //A special meaning here, which is not found
-                        break;
-                    } elseif($us_data[$task['c_id']]['us_status']<$previous_milestone_tasks_completed){
-                        //Task is submitted, but rejected by Instructor (status<1) so its not complete:
-                        $previous_milestone_tasks_completed = $us_data[$task['c_id']]['us_status'];
-                    }
+                //Count this as a task:
+                $child_task_count++;
+
+                //See the status:
+                if(!isset($us_data[$task['c_id']])) {
+                    $this_item_us_status = -2; //Incomplete
+                    //We know we can't go lowe than this:
+                    break;
+                } elseif($us_data[$task['c_id']]['us_status']<$this_item_us_status){
+                    //Go to the lower denominator
+                    $this_item_us_status = $us_data[$task['c_id']]['us_status'];
                 }
             }
-
-            //Determine if this is locked or not
-            $milestone_has_arrived = ( $sub_intent['cr_outbound_rank']<=$class['r__current_milestone'] );
-            $unlocked_action_plan = ( $class_has_ended || ($milestone_has_arrived && $previous_milestone_tasks_completed));
 
         } elseif($level==2){
 
-            //Task list:
-            //TODO Consider Bonus tasks here with some sort of a loop: $previous_item['c_complete_is_bonus_task']=='t'
-            $this_task_is_done = (isset($us_data[$sub_intent['c_id']]) && $us_data[$sub_intent['c_id']]['us_status']>=1);
-            $previous_task_is_done = (isset($us_data[$previous_item['c_id']]));
-            $unlocked_action_plan = ( $class_has_ended || $is_first_item || $previous_task_is_done || $this_task_is_done );
+            //Task List
+            $item_time_arrived = true; //If they can see the Task list, then all the times for all Tasks has arrived
+            $this_item_us_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['us_status'] : -2 );
 
         }
 
+        //Now determine the lock status of this item...
 
+        //Used in $unlocked_item logic in case instructor modifies Action Plan and Adds items before previously completed items:
+        $this_item_complete = ( $this_item_us_status>=1 );
 
+        //TODO later Consider Bonus tasks later...
+
+        //See Status:
+        $unlocked_item = $item_time_arrived && ( $previous_item_complete || $this_item_complete );
 
         //Left content
-        if($unlocked_action_plan){
+        if($unlocked_item){
 
             //Show link to enter this item:
-            $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$sub_intent['c_id'].'" class="list-group-item">';
+            $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$this_intent['c_id'].'" class="list-group-item">';
             $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-
-            if($level==1){
-                //Milestone, either show it undone or the actual status of it:
-                if($previous_milestone_tasks_completed==-2){
-                    $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
-                } else {
-                    $ui .= status_bible('us',$previous_milestone_tasks_completed,1).' ';
-                }
-            } elseif($level==2){
-                //This is a task, it needs to have a direct submission:
-                if(isset($us_data[$sub_intent['c_id']])){
-                    $ui .= status_bible('us',$us_data[$sub_intent['c_id']]['us_status'],1).' ';
-                } else {
-                    $ui .= '<i class="fa fa-square-o initial" aria-hidden="true"></i> ';
-                }
-            }
+            $ui .= status_bible('us',$this_item_us_status,1).' ';
 
         } else {
 
@@ -371,54 +332,50 @@ if($level<3){
 
         }
 
-        //Left side starter:
+        //Title on the left:
         if($level==1){
             //Show counter:
-            $ui .= '<span title="Due '.date("Y-m-d H:i:s PST",$class['r__milestones_due'][$sub_intent['cr_outbound_rank']]).'">'.ucwords($admission['b_sprint_unit']).' '.$sub_intent['cr_outbound_rank'].($sub_intent['c_duration_multiplier']>1 ? '-'.($sub_intent['cr_outbound_rank']+$sub_intent['c_duration_multiplier']-1) :'').':</span> ';
+            $ui .= '<span title="Due '.date("Y-m-d H:i:s PST",$class['r__milestones_due'][$this_intent['cr_outbound_rank']]).'">'.ucwords($admission['b_sprint_unit']).' '.$this_intent['cr_outbound_rank'].($this_intent['c_duration_multiplier']>1 ? '-'.($this_intent['cr_outbound_rank']+$this_intent['c_duration_multiplier']-1) :'').':</span> ';
         } elseif($level==2){
             //Show counter:
-            $ui .= '<span>Task '.$sub_intent['cr_outbound_rank'].':</span> ';
+            $ui .= '<span>Task '.$this_intent['cr_outbound_rank'].':</span> ';
         }
 
         //Intent title:
-        $ui .= $sub_intent['c_objective'].' ';
+        $ui .= $this_intent['c_objective'].' ';
 
 
         $ui .= '<span class="sub-stats">';
 
         //Enable total hours/milestone reporting...
-        if($level==1 && isset($sub_intent['c__estimated_hours'])){
-            $ui .= echo_time($sub_intent['c__estimated_hours'],1);
-        } elseif($level==2 && isset($sub_intent['c_time_estimate'])){
-            $ui .= echo_time($sub_intent['c_time_estimate'],1);
+        if($level==1 && isset($this_intent['c__estimated_hours'])){
+            $ui .= echo_time($this_intent['c__estimated_hours'],1);
+        } elseif($level==2 && isset($this_intent['c_time_estimate'])){
+            $ui .= echo_time($this_intent['c_time_estimate'],1);
         }
 
-        if($unlocked_action_plan && $level==1 && isset($sub_intent['c__child_intents']) && count($sub_intent['c__child_intents'])>0){
-            //This sprint has Assignments, count the active ones:
-            $active_assinments = 0;
-            foreach($sub_intent['c__child_intents'] as $task){
-                if($task['c_status']>=1){
-                    $active_assinments++;
-                }
-            }
-            if($active_assinments>0){
-                $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$active_assinments.'</span>';
-            }
+        if($level==1 && $unlocked_item && $child_task_count){
+            //Show the number of sub-Tasks:
+            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_task_count.'</span>';
         }
 
         $ui .= '</span>';
 
 
         //The Current focus sign for the focused Task/Milestone:
-        if($level==1 && ($class['r__current_milestone']==$sub_intent['cr_outbound_rank'])){
+        if($level==1 && ($class['r__current_milestone']==$this_intent['cr_outbound_rank'])){
             $ui .= ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
-        } elseif($level==2 && $sub_intent['c_complete_is_bonus_task']=='t'){
-            $ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS TASK</span>';
+        } elseif($level==2 && $this_intent['c_complete_is_bonus_task']=='t'){
+            //TODO Enable with Bonus Tasks:
+            //$ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS TASK</span>';
         }
 
-        $ui .= ( $unlocked_action_plan ? '</a>' : '</li>');
+        $ui .= ( $unlocked_item ? '</a>' : '</li>');
 
         echo $ui;
+
+        //Save this item's completion rate for the next run:
+        $previous_item_complete = $this_item_complete;
     }
     echo '</div>';
 }
