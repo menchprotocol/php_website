@@ -45,11 +45,7 @@
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
 echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamp Applications</h3>';
 
-if(count($admissions)==0){
-
-    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No admissions found</div>';
-
-} else {
+if(count($admissions)>0 && is_array($admissions)){
 
     //Reverse order, newest Class at top:
     $admissions = array_reverse($admissions);
@@ -143,7 +139,14 @@ if(count($admissions)==0){
 
         echo '</div>';
     }
+
+} else {
+
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No admissions found</div>';
+
 }
+
+
 
 echo '</div>';
 ?>
