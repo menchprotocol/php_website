@@ -2027,6 +2027,14 @@ function time_format($t,$format=0,$plus_days=0){
 }
 
 function message_validation($i_status,$i_message,$i_media_type=null /*Only set for editing*/){
+
+    if(in_array($i_media_type,array('video','image','audio','file'))){
+        return array(
+            'status' => 1,
+            'urls' => 'Media images cannot be edited',
+        );
+    }
+
     $CI =& get_instance();
     $message_max = $CI->config->item('message_max');
     $check_urls = (!$i_media_type || $i_media_type=='text');

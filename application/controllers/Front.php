@@ -105,7 +105,6 @@ class Front extends CI_Controller {
 	            'e_message' => 'New visitor arrived from '.( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : 'an unknown referrer' ).' with IP address of '.( $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : 'unknown'),
 	            'e_json' => array(
 	                'ip' => $_SERVER['REMOTE_ADDR'],
-	                'get_browser' => get_browser(null, true),
 	                'user_agent' => $_SERVER['HTTP_USER_AGENT'],
 	                'referer_url' => (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null ),
 	            ),

@@ -3194,7 +3194,7 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Make sure message is all good:
-            $validation = message_validation($_POST['i_status'],$_POST['i_message'],$_POST['i_media_type']);
+            $validation = message_validation($_POST['i_status'],( isset($_POST['i_message']) ? $_POST['i_message'] : null ),$_POST['i_media_type']);
 
             if(!isset($messages[0])){
                 echo_json(array(
