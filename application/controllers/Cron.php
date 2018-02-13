@@ -148,13 +148,13 @@ class Cron extends CI_Controller {
             //Now make sure class meets are requirements to get started with the following conditions:
             $cancellation_reason = null; //If remains Null we're good to get started
             if($bootcamps[0]['b_status']<2){
-                $cancellation_reason = 'because Bootcamp was not published';
+                $cancellation_reason = 'Bootcamp was not published';
             } elseif($first_milestone_c_id==0) {
-                $cancellation_reason = 'because Bootcamp did not have any published Milestones';
+                $cancellation_reason = 'Bootcamp did not have any published Milestones';
             } elseif(count($accepted_admissions)==0) {
-                $cancellation_reason = 'because the class had zero admitted students';
+                $cancellation_reason = 'no students applied/got-admitted into this Class';
             } elseif(count($accepted_admissions)<$class['r_min_students']) {
-                $cancellation_reason = 'because the class had ['.count($accepted_admissions).'] admitted students that did not meet the minimum required students of ['.$class['r_min_students'].']';
+                $cancellation_reason = 'only ['.count($accepted_admissions).'] students were admitted which was below the minimum requirement of ['.$class['r_min_students'].']';
             }
 
             if($cancellation_reason){
@@ -363,10 +363,15 @@ class Cron extends CI_Controller {
         echo $drip_sent.' Drip messages sent';
     }
 
-    function old_drip(){
+    function deprecated__drip(){
 
-        //This was the older cron for Drip messages that is now retired...
-
+        /*
+         * This was the older cron for Drip messages that is now retired...
+         *
+         * Keeping it because it has a logic of Intent/Milestone-Duration distribution method
+         * which may be useful later on...
+         *
+         * */
         exit;
         //Cron Settings: 15,45 * * * *
         //Set drip setting variables:
@@ -1038,16 +1043,17 @@ class Cron extends CI_Controller {
 
         //Cron Settings: 15 * * * *
 
-        exit; //Not building this for now since we're moving to Messenger ASAP
 
         $this->load->model('Email_model');
 
         //Fetch current incomplete applications:
         $incomplete_applications = $this->Db_model->ru_fetch(array(
-            'r.r_status'	=> 1, //Still Open For Admission
-            'ru.ru_status'  => 0, //Incomplete
-            'ru.ru_u_id'    => 1, //Testing Shervin for now TODO remove
+            'r.r_status'	=> 1, //Class still Open For Admission
+            'ru.ru_status'  => 0, //Application Incomplete
         ));
+
+        echo_json($incomplete_applications);
+        exit; //Not building this for now since we're moving to Messenger ASAP
 
         foreach($incomplete_applications as $admission){
 
