@@ -1056,7 +1056,7 @@ class Api_v1 extends CI_Controller {
                 $drip_time += $drip_intervals;
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => 0, //System
-                    'e_recipient_u_id' => $matching_admissions[0]['u_fb_id'],
+                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
                     'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
                     'e_json' => array(
                         'created_time' => date("Y-m-d H:i:s" , $start_time ),
