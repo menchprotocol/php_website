@@ -345,7 +345,13 @@ class Cron extends CI_Controller {
             $drip_sent++;
 
             //Send this message:
-            $this->Facebook_model->batch_messages('381488558920384', $matching_admissions[0]['u_fb_id'], array($json_data['i']));
+            $this->Facebook_model->batch_messages('381488558920384', $matching_admissions[0]['u_fb_id'], array(echo_i(array_merge( $json_data['i'] , array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                'i_c_id' => $json_data['i']['i_c_id'],
+                'e_b_id' => $e_message['e_b_id'],
+                'e_r_id' => $e_message['e_r_id'],
+            )), $matching_admissions[0]['u_fname'],true )));
 
             //Update Engagement:
             $this->Db_model->e_update( $e_message['e_id'] , array(

@@ -981,29 +981,18 @@ class Api_v1 extends CI_Controller {
         $task_messages = extract_level($bootcamps[0],$_POST['c_id']);
 
         foreach($task_messages['intent']['c__messages'] as $i){
-
-            if(!in_array($i['i_status'],array(2,3))){
-                continue;
-            }
-
             if($i['i_status']==2){
                 //Add a reference button to Drip messages:
                 $i['i_message'] = $i['i_message'].' {button}';
-            }
-
-            //Prepare the content:
-            $content = echo_i(array_merge( $i , array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                'i_c_id' => $i['i_c_id'],
-                'e_b_id' => intval($_POST['b_id']),
-                'e_r_id' => intval($_POST['r_id']),
-            )), $matching_admissions[0]['u_fname'],true );
-
-            if($i['i_status']==2){
-                array_push( $drip_messages , $content );
+                array_push($drip_messages , $i);
             } elseif($i['i_status']==3){
-                array_push( $on_complete_messages , $content );
+                array_push( $on_complete_messages , echo_i(array_merge( $i , array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    'i_c_id' => $i['i_c_id'],
+                    'e_b_id' => intval($_POST['b_id']),
+                    'e_r_id' => intval($_POST['r_id']),
+                )), $matching_admissions[0]['u_fname'],true ) );
             }
         }
 
@@ -1012,29 +1001,22 @@ class Api_v1 extends CI_Controller {
 
             //The Milestone does seem complete:
             foreach($task_messages['task_milestone']['c__messages'] as $i){
-
-                if(!in_array($i['i_status'],array(2,3))){
-                    continue;
-                }
-
                 if($i['i_status']==2){
+
                     //Add a reference button to Drip messages:
                     $i['i_message'] = $i['i_message'].' {button}';
-                }
+                    array_push($drip_messages, $i);
 
-                //Prepare the content:
-                $content = echo_i(array_merge( $i , array(
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                    'i_c_id' => $i['i_c_id'],
-                    'e_b_id' => intval($_POST['b_id']),
-                    'e_r_id' => intval($_POST['r_id']),
-                )), $matching_admissions[0]['u_fname'],true );
-
-                if($i['i_status']==2){
-                    array_push( $drip_messages , $content );
                 } elseif($i['i_status']==3){
-                    array_push( $on_complete_messages , $content );
+
+                    array_push( $on_complete_messages , echo_i(array_merge( $i , array(
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                        'i_c_id' => $i['i_c_id'],
+                        'e_b_id' => intval($_POST['b_id']),
+                        'e_r_id' => intval($_POST['r_id']),
+                    )), $matching_admissions[0]['u_fname'],true ));
+
                 }
             }
 
