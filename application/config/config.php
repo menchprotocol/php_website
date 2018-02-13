@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.05,
+    'version' => 2.1,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -290,16 +290,16 @@ $config['object_statuses'] = array(
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-bolt',
         ),
-        2 => array(
-            's_name'  => 'Drip',
-            's_desc'  => 'Sent on Messenger in intervals after item starts & before Class ends. Use to repeat key principles over time to help student learn an insight',
-            's_mini_icon' => 'fa-tint',
-            'u_min_status'  => 1,
-        ),
         3 => array(
             's_name'  => 'On-Complete',
-            's_desc'  => 'Sent on Messenger as soon as item is complete. Use to review takeaways, unlock prizes or simply encourage students to keep pushing forward',
+            's_desc'  => 'Sent on Messenger as soon as item is complete. Use to review takeaways and repeat key insights from item',
             's_mini_icon' => 'fa-check-square',
+            'u_min_status'  => 1,
+        ),
+        2 => array(
+            's_name'  => 'Drip',
+            's_desc'  => 'Sent on Messenger in intervals after item is complete & before Class ends. Drip messages help students retain learnings with repetition',
+            's_mini_icon' => 'fa-tint',
             'u_min_status'  => 1,
         ),
     ),
@@ -590,7 +590,7 @@ $config['engagement_references'] = array(
 );
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,52,56,57,60,61,67,68,70);
+$config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,70);
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time //TODO Merge with variable below
 $config['mench_cs_fb_ids'] = array(
     array(

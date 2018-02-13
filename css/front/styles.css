@@ -69,7 +69,6 @@ a.badge-primary:hover {
 #b_objective .fa {padding-right:3px;}
 
 .breadcrumb a { font-weight:bold; }
-.hidden {display:none;}
 .scheduler-iframe {
     width: 100%;
     height: 1000px;
@@ -234,7 +233,8 @@ a.badge-primary:hover {
 }
 
 .ix-msg{
-	height:440px;
+	height:380px;
+    padding-top:7px;
 }
 
 .ix-kyb{
@@ -335,7 +335,7 @@ p a, td a { text-decoration:underline; }
 .mono { font-family:monospace; background-color:#EFEFEF; padding:10px; line-height:180%; border-radius:3px; }
 .panel-body img { max-width:100% !important; }
 .list-group-item .inline-level { color:#2f2639; font-size:0.9em; padding-right:5px; }
-.list-group-item .inline-level .status-label { color:#AAA; font-weight:normal !important; }
+.list-group-item .inline-level .status-label { color:#2f2639; font-weight:normal !important; }
 .table tbody tr td { cursor:default !important; }
 h5, .h5 {
     font-size: 0.9em;
@@ -505,7 +505,6 @@ h5, .h5 {
 
 .msg-nav {list-style-type: none; margin: 0; padding:5px 0 0 0; }
 .msg-nav>li { margin-right:5px; display:inline-block; padding:0 5px 0 0; font-size:0.9em; color:#666; }
-.msg-nav li.edit-on, .edit-on { display:none; }
 .msg-nav>li>a { color:#2f2639; padding:3px 5px; border-radius:3px; }
 .msg-nav>li .btn { margin:-10px 0px 0 0 !important; padding:5px 8px; }
 .msg-nav li>.dropup { margin:-4px -8px 0 0 !important; padding:5px 8px; }
@@ -562,16 +561,17 @@ h5, .h5 {
 }
 
 .ix-tip{
-	line-height: 110%;
-    font-size: 13px;
-    font-weight: bold;
-    margin: 15px 50px 5px;
-    text-align: center;
-    background-color: #3C4858;
-    color:#FFF;
+    line-height: 110%;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 8px 7px;
+    text-align: left;
+    background-color: #FFF;
+    color: #999;
     padding: 6px 5px;
-    border-radius: 8px;
+    border-radius: 4px;
 }
+.no-messages{background-color: #FEDD1B; color:#222;}
 .list-messages>.is_sortable {
 	margin-left: 8px;
     margin-right: 15px;
@@ -681,7 +681,7 @@ color: #999;
 }
 .below_list li .status-label .fa {
     width: 12px;
-    margin-right: 3px;
+    margin-right: 3px;color:#2f2639;
 }
 
 .pointer{
@@ -1138,6 +1138,71 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	font-size:1.2em !important;
 	margin-right:5px !important;
 }
+
+.iphone-add-btn{
+    margin:2px 0 0 0;
+    padding:0;
+    line-height: 100%;
+    text-align:center;
+}
+.iphone-add-btn a{
+    padding:5px 12px;
+    margin:0 0 5px 0;
+    color: #2f2639 !important;
+}
+
+.iphone-title{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 340px;
+    height: 1.2em;
+    white-space: nowrap;
+    font-weight: bold;
+    padding-left: 8px;
+    margin: 1px 0 4px;
+    color: #000;
+}
+
+.iphone-nav-tabs {
+    padding-bottom:1px;
+    padding-left:8px;
+}
+
+.iphone-nav-tabs > li {
+    margin-right:5px;
+}
+.iphone-nav-tabs > li:last-of-type {
+    margin-right:0;
+}
+
+.iphone-nav-tabs .fa {
+    font-size:1.1em;
+}
+.iphone-nav-tabs a {
+    font-size:0.9em !important;
+    padding: 5px 7px 5px 3px !important;
+}
+
+.iphone-nav-tabs > li > a:hover, .iphone-nav-tabs > li > a:hover > .status-label, .iphone-nav-tabs > li > a:hover .fa {
+    border-radius: 0 !important;
+    background-color:#000 !important;
+    color:#FFFFFF !important;
+}
+
+.iphone-nav-tabs>.active>a:focus, .iphone-nav-tabs>.active>a:hover {
+    background-color:#000 !important;
+}
+
+.iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus {
+    background-color:#000;
+    transition:none;
+    border-radius: 0 !important;
+}
+
+.iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus, .iphone-nav-tabs > li.active > a > .status-label, .iphone-nav-tabs > li.active > a .fa {
+    color:#FFFFFF !important;
+}
+
 #funnel .body-container{
 	font-size:24px;
 	font-weight: normal;
@@ -1161,6 +1226,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 }
 
 .status-label{
+    color:#2f2639;
 	font-weight:bold;
 	text-transform:uppercase;
 	font-size:0.9em;
@@ -1170,7 +1236,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	font-size:1em;
 	width:22px;
 	display:inline-block;
-	text-align: center;
+	text-align: center;color:#2f2639;
 }
 
 .alert{
@@ -1268,7 +1334,7 @@ h4 .tip-badge{
     margin: -4px 0 0 5px;
 }
 .status-label{
-	cursor:help;
+	cursor:help;color:#2f2639;
 }
 .list-group-item>.input-group>.form-group>input[type="text"]{
     margin-bottom: -1px;
@@ -1284,7 +1350,7 @@ h4 .tip-badge{
 	background: #BABABA;
 }
 
-.dropdown-menu .status-label { display:block; }
+.dropdown-menu .status-label { display:block;color:#2f2639; }
 .copy_button{ cursor:pointer; font-size:0.9em; }
 #copy_button{display:none;}
 .btn-funnel {
@@ -1480,6 +1546,8 @@ margin:5px 0;
 .is-msg .on-hover{
     display:none !important;
 }
+
 .is-msg>div:hover .on-hover, .in-editing .on-hover{
     display:inline-block !important;
 }
+.hidden {display:none !important;}

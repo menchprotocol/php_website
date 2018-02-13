@@ -285,6 +285,7 @@ function extract_level($b,$c_id){
 
                         //This is level 3:
                         $view_data['level'] = 3;
+                        $view_data['task_milestone'] = $sprint; //Only available for Tasks
                         $view_data['sprint_index'] = $sprint['cr_outbound_rank'];
                         $view_data['sprint_duration_multiplier'] = $sprint['c_duration_multiplier'];
                         $view_data['next_intent'] = $next_intent; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
@@ -352,7 +353,7 @@ function detect_embed_video($url,$full_message){
         //This should be 11 characters!
         if(strlen($video_id)==11){
             //TODO later we can also define start and end time by adding this: &start=4&end=9
-            $embed_code = '<div class="yt-container" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
         }
 
     } elseif(substr_count($url,'vimeo.com/')==1){
@@ -362,7 +363,7 @@ function detect_embed_video($url,$full_message){
 
         //This should be an integer!
         if(intval($video_id)==$video_id){
-            $embed_code = '<div class="yt-container" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+            $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
         }
 
     } elseif(substr_count($url,'wistia.com/medias/')==1){
@@ -370,13 +371,7 @@ function detect_embed_video($url,$full_message){
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/','?',$url));
 
-        $embed_code = '<script src="https://fast.wistia.com/embed/medias/'.$video_id.'.jsonp" async></script>
-<script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-<div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-<div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-<div class="wistia_embed wistia_async_'.$video_id.' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div>
-</div>
-</div>';
+        $embed_code = '<script src="https://fast.wistia.com/embed/medias/'.$video_id.'.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_'.$video_id.' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
 
     }
 
@@ -673,7 +668,7 @@ function echo_uploader($i){
 function echo_message($i,$level=0,$editing_enabled=true){
 
     $echo_ui = '';
-    $echo_ui .= '<div class="list-group-item is-msg is_sortable" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
+    $echo_ui .= '<div class="list-group-item is-msg is_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
     $echo_ui .= '<input type="hidden" class="i_media_type" value="'.$i['i_media_type'].'" />';
     $echo_ui .= '<div style="overflow:visible !important;">';
 	
@@ -685,25 +680,30 @@ function echo_message($i,$level=0,$editing_enabled=true){
     	
     	if($i['i_media_type']=='text'){
     	    //Text editing:
-    	    $echo_ui .= '<textarea name="i_message" class="edit-on msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
+    	    $echo_ui .= '<textarea onkeyup="changeMessageEditing('.$i['i_id'].')" name="i_message" id="message_body_'.$i['i_id'].'" class="edit-on hidden msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
     	}
     	
         //Editing menu:
         $echo_ui .= '<ul class="msg-nav">';
         //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
-        $echo_ui .= '<li class="edit-off the_status" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
-        $echo_ui .= '<li class="i_uploader on-hover">'.echo_uploader($i).'</li>';
+        if($i['i_media_type']=='text'){
+            $CI =& get_instance();
+            $message_max = $CI->config->item('message_max');
+            $echo_ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
+        }
+        $echo_ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
+        $echo_ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_uploader($i).'</span></li>';
 
         if($editing_enabled){
-            $echo_ui .= '<li class="on-hover" style="margin: 0 0 0 8px;"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2639;"></i></li>';
-            $echo_ui .= '<li class="on-hover" style="margin-right: 10px; margin-left: 6px;"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash"></i></a></li>';
+            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2639;"></i></span></li>';
+            $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash" style="margin:0 7px 0 5px;"></i></a></span></li>';
             if($i['i_media_type']=='text' || $level<=2){
-                $echo_ui .= '<li class="edit-off on-hover" style="margin-left:-4px;"><a href="javascript:msg_start_edit('.$i['i_id'].');"><i class="fa fa-pencil-square-o"></i></a></li>';
+                $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fa fa-pencil-square-o"></i></a></span></li>';
             }
             //Right side reverse:
-            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on '.( $level>=3 ? 'hidden' : '' ).'">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],( $level>=3 ? array(-1,2,4) : array(-1,4) ),'dropup',$level,1).'</li>';
+            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on hidden">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level>1?array(-1):array(-1,2)),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
         }
         $echo_ui .= '</ul>';
@@ -1590,7 +1590,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
-    $inner_tooltip = ($direction=='dropup'?'top':'top');
+    $inner_tooltip = ($direction=='dropup'?null:'top');
 
     if(is_array($object)){
         $statuses = $object;
@@ -1694,7 +1694,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
             return false;
         } else {
             //We have two skins for displaying statuses:
-            return '<span class="status-label" style="color:#2f2639;" '.(isset($result['s_desc'])?'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" aria-hidden="true"':'').'><i class="fa '.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
+            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" aria-hidden="true"':'style="cursor:pointer;"').'><i class="fa '.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
         }
 	}
 }

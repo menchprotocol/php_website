@@ -2328,7 +2328,6 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   padding: 15px 0;
 }
 .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
-  background-color: #;
   color: #2f2639;
 }
 .nav-pills:not(.nav-pills-icons) > li > a {

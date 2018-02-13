@@ -915,34 +915,15 @@ class Api_v1 extends CI_Controller {
             'c.c_id' => $next_c_id,
         ));
 
-
         //Now update the DB:
         $us_data = $this->Db_model->us_create(array(
-            'us_b_id' => intval($_POST['b_id']),
             'us_student_id' => $matching_admissions[0]['u_id'],
+            'us_b_id' => intval($_POST['b_id']),
             'us_r_id' => intval($_POST['r_id']),
             'us_c_id' => intval($_POST['c_id']),
             'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
             'us_student_notes' => trim($_POST['us_notes']),
             'us_status' => 1, //Submitted
-        ));
-
-
-        //Log Engagement for new completion:
-        $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $matching_admissions[0]['u_id'],
-            'e_message' => $us_data['us_student_notes'],
-            'e_json' => array(
-                'input' => $_POST,
-                'us_data' => $us_data,
-                'next_level' => $next_level,
-                'next_c' => ( isset($next_intents[0]) ? $next_intents[0] : array() ),
-                'next_message_result' => ( isset($message_result) ? $message_result : array() ),
-            ),
-            'e_type_id' => 33, //Marked as Done Report
-            'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
-            'e_r_id' => $us_data['us_r_id'],
-            'e_c_id' => $us_data['us_c_id'],
         ));
 
 
@@ -991,13 +972,155 @@ class Api_v1 extends CI_Controller {
         }
 
 
+
+        //See if we need to dispatch any messages:
+        $on_complete_messages = array();
+        $drip_messages = array();
+
+        //Dispatch messages for this Task:
+        $task_messages = extract_level($bootcamps[0],$_POST['c_id']);
+
+        foreach($task_messages['intent']['c__messages'] as $i){
+
+            if(!in_array($i['i_status'],array(2,3))){
+                continue;
+            }
+
+            if($i['i_status']==2){
+                //Add a reference button to Drip messages:
+                $i['i_message'] = $i['i_message'].' {button}';
+            }
+
+            //Prepare the content:
+            $content = echo_i(array_merge( $i , array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                'i_c_id' => $i['i_c_id'],
+                'e_b_id' => intval($_POST['b_id']),
+                'e_r_id' => intval($_POST['r_id']),
+            )), $matching_admissions[0]['u_fname'],true );
+
+            if($i['i_status']==2){
+                array_push( $drip_messages , $content );
+            } elseif($i['i_status']==3){
+                array_push( $on_complete_messages , $content );
+            }
+        }
+
+        //Is a Milestone Completed? Dispatch potential messages:
+        if($next_level<=2){
+
+            //The Milestone does seem complete:
+            foreach($task_messages['task_milestone']['c__messages'] as $i){
+
+                if(!in_array($i['i_status'],array(2,3))){
+                    continue;
+                }
+
+                if($i['i_status']==2){
+                    //Add a reference button to Drip messages:
+                    $i['i_message'] = $i['i_message'].' {button}';
+                }
+
+                //Prepare the content:
+                $content = echo_i(array_merge( $i , array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    'i_c_id' => $i['i_c_id'],
+                    'e_b_id' => intval($_POST['b_id']),
+                    'e_r_id' => intval($_POST['r_id']),
+                )), $matching_admissions[0]['u_fname'],true );
+
+                if($i['i_status']==2){
+                    array_push( $drip_messages , $content );
+                } elseif($i['i_status']==3){
+                    array_push( $on_complete_messages , $content );
+                }
+            }
+
+            //Is the Bootcamp Complete?
+            if($next_level==1){
+                //Seems so!
+                foreach($bootcamps[0]['c__messages'] as $i){
+                    //Bootcamps only could have ON-COMPLETE messages:
+                    if($i['i_status']==3){
+                        array_push( $on_complete_messages , echo_i(array_merge( $i , array(
+                            'e_initiator_u_id' => 0,
+                            'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                            'i_c_id' => $i['i_c_id'],
+                            'e_b_id' => intval($_POST['b_id']),
+                            'e_r_id' => intval($_POST['r_id']),
+                        )), $matching_admissions[0]['u_fname'],true ));
+                    }
+                }
+            }
+        }
+
+        //Anything to be sent instantly?
+        if(count($on_complete_messages)>0 && $matching_admissions[0]['u_fb_id']>0){
+            //Dispatch all Instant Messages, their engagements have already been logged:
+            $this->Facebook_model->batch_messages('381488558920384', $matching_admissions[0]['u_fb_id'], $on_complete_messages);
+        }
+
+        //Any Drip Messages? Schedule them if we have some:
+        if(count($drip_messages)>0){
+
+            $start_time = time();
+            $drip_intervals = ($focus_class['r__class_end_time']-$start_time) / (count($drip_messages)+1);
+            $drip_time = $start_time;
+
+            foreach($drip_messages as $i){
+
+                $drip_time += $drip_intervals;
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => 0, //System
+                    'e_recipient_u_id' => $matching_admissions[0]['u_fb_id'],
+                    'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
+                    'e_json' => array(
+                        'created_time' => date("Y-m-d H:i:s" , $start_time ),
+                        'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
+                        'i_drip_count' => count($drip_messages),
+                        'i' => $i, //The actual message that would be sent
+                    ),
+                    'e_type_id' => 52, //Pending Drip
+                    'e_cron_job' => 0, //Pending for the Drip Cron
+                    'e_i_id' => $i['i_id'],
+                    'e_c_id' => $i['i_c_id'],
+                    'e_b_id' => intval($_POST['b_id']),
+                    'e_r_id' => intval($_POST['r_id']),
+                ));
+
+            }
+        }
+
+
+
         //Show result to student:
         echo_us($us_data);
 
-        //Show next Button if its a Task within this Milestone:
-        if($next_level<=1){
 
-            //Last task of the last milestone, update details and graduate:
+        //Log Engagement for new completion:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $matching_admissions[0]['u_id'],
+            'e_message' => $us_data['us_student_notes'],
+            'e_json' => array(
+                'input' => $_POST,
+                'scheduled_drip' => count($drip_messages),
+                'sent_oncomplete' => count($on_complete_messages),
+                'next_level' => $next_level,
+                'next_c' => ( isset($next_intents[0]) ? $next_intents[0] : array() ),
+            ),
+            'e_type_id' => 33, //Marked as Done Report
+            'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
+            'e_r_id' => $us_data['us_r_id'],
+            'e_c_id' => $us_data['us_c_id'],
+        ));
+
+
+        //See what the next level is...
+        if($next_level==1 && isset($next_intents[0])){
+
+            //The next level is the Bootcamp, which means this was the last Task:
             $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
                 'ru_current_milestone' => ($focus_class['r__total_milestones']+1), //Go 1 milestone after the total milestones to indicate completion
                 'ru_current_task' => 1, //They would be at the First task of the next Milestone
@@ -1012,6 +1135,26 @@ class Api_v1 extends CI_Controller {
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
             ), $matching_admissions[0]['u_fname'], true )));
+
+
+        } elseif($next_level==2 && isset($next_intents[0])){
+
+            //We have a next milestone:
+            //We also need to change ru_current_milestone to reflect this advancement
+            //Fetch the rank of the next milestone:
+            foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                if($milestone['c_id']==$next_intents[0]['c_id']){
+                    //This is the next milestone, update the student positioning here...
+                    $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                        'ru_current_milestone' => $milestone['cr_outbound_rank'],
+                        'ru_current_task' => 1, //They would be at the First task of the next Milestone
+                    ));
+                    break;
+                }
+            }
+
+            //Attempt to dispatch some messages:
+            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
 
         } elseif($next_level==3 && isset($next_intents[0])){
 
@@ -1032,25 +1175,6 @@ class Api_v1 extends CI_Controller {
 
             //Show button for next task:
             echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
-
-        } elseif($next_level==2 && isset($next_intents[0])){
-
-            //We have a next milestone:
-            //We also need to change ru_current_milestone to reflect this advancement
-            //Fetch the rank of the next milestone:
-            foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                if($milestone['c_id']==$next_intents[0]['c_id']){
-                    //This is the next milestone, update the student positioning here...
-                    $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                        'ru_current_milestone' => $milestone['cr_outbound_rank'],
-                        'ru_current_task' => 1, //They would be at the First task of the next Milestone
-                    ));
-                    break;
-                }
-            }
-
-            //Attempt to dispatch some messages:
-            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
 
         } else {
 
@@ -1299,7 +1423,8 @@ class Api_v1 extends CI_Controller {
                         foreach($bootcamp['c__child_intents'] as $milestone) {
                             if($milestone['c_status']>=1){
 
-                                $milestone_started = ($milestone['cr_outbound_rank']<=$class['r__current_milestone'] || $class['r__current_milestone']<0);
+                                $class_has_ended = ($class['r__current_milestone']<0);
+                                $milestone_started = ($milestone['cr_outbound_rank']<=$class['r__current_milestone'] || $class_has_ended);
                                 $required_tasks = 0;
                                 $completed_tasks = 0;
                                 $bonus_tasks = 0; //TODO implement later...
@@ -2782,9 +2907,6 @@ class Api_v1 extends CI_Controller {
 	        }
 	        //Set new flash data either way!
 	        $this->session->set_flashdata('first_url', $urls[0]);
-	    } else {
-	        //Special command detected by JS to clear the URL preview:
-	        echo 'clear_url_preview';
 	    }
 	}
 
@@ -2910,12 +3032,11 @@ class Api_v1 extends CI_Controller {
 	                'i_media_type' => $i_media_type,
 	                'i_message' => $message,
 	                'i_url' => $new_file_url,
-                    'i_status' => intval($_POST['i_status']),
+                    'i_status' => $_POST['i_status'],
                     'i_fb_att_id' => ( isset($fb_save['attachment_id']) ? $fb_save['attachment_id'] : 0 ),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-	                    'i_status >=' => 1,
-	                    'i_status <' => 4, //But not private notes if any
-	                    'i_c_id' => intval($_POST['pid']),
+	                    'i_status' => $_POST['i_status'],
+	                    'i_c_id' => $_POST['pid'],
 	                )),
 	            ));
 	            
@@ -2956,7 +3077,7 @@ class Api_v1 extends CI_Controller {
 	    if(!$udata){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Expired',
+	            'message' => 'Session Expired. Login and Try again.',
 	        ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        echo_json(array(
@@ -3003,12 +3124,11 @@ class Api_v1 extends CI_Controller {
                     'i_media_type' => $i_media_type,
                     'i_message' => trim($_POST['i_message']),
                     'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
-                    'i_status' => intval($_POST['i_status']),
+                    'i_status' => $_POST['i_status'],
                     'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                            'i_status >=' => 1,
-                            'i_status <' => 4, //But not private notes if any
-                            'i_c_id' => intval($_POST['pid']),
-                        )),
+                        'i_status' => $_POST['i_status'],
+                        'i_c_id' => intval($_POST['pid']),
+                    )),
                 ));
 
                 //Fetch full message:
@@ -3093,13 +3213,22 @@ class Api_v1 extends CI_Controller {
                 $to_update = array(
                     'i_creator_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
-                    'i_status' => intval($_POST['i_status']),
                 );
 
                 //Is this a text message?
                 if($_POST['i_media_type']=='text'){
                     $to_update['i_message'] = trim($_POST['i_message']);
                     $to_update['i_url'] = ( isset($validation['urls'][0]) ? $validation['urls'][0] : null );
+                }
+
+                if(!($_POST['initial_i_status']==$_POST['i_status'])){
+                    //Change the status:
+                    $to_update['i_status'] = $_POST['i_status'];
+                    //Put it at the end of the new list:
+                    $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                        'i_status' => $_POST['i_status'],
+                        'i_c_id' => intval($_POST['pid']),
+                    ));
                 }
 
                 //Now update the DB:
@@ -3140,77 +3269,110 @@ class Api_v1 extends CI_Controller {
 	    $udata = auth(2);
 	    
 	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired. Login and try again',
+            ));
 	    } elseif(!isset($_POST['i_id']) || intval($_POST['i_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Message id.</span>');
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Message ID',
+            ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
-	    }
-	    
-	    //Fetch Message:
-	    $messages = $this->Db_model->i_fetch(array(
-	        'i_id' => intval($_POST['i_id']),
-	        'i_status >=' => 0, //Not deleted
-	    ));
-	    if(!isset($messages[0])){
-	        die('<span style="color:#FF0000;">Error: Invalid Message id.</span>');
-	    }
-	    
-	    //Now update the DB:
-	    $this->Db_model->i_update( intval($_POST['i_id']) , array(
-	        'i_creator_id' => $udata['u_id'],
-	        'i_timestamp' => date("Y-m-d H:i:s"),
-	        'i_status' => -1, //Deleted by instructor
-	    ));
-	    
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => $messages[0],
-	        ),
-	        'e_type_id' => 35, //Message deleted
-	        'e_i_id' => intval($messages[0]['i_id']),
-	        'e_c_id' => intval($_POST['pid']),
-	    ));
-	    
-	    //Show result:
-	    die('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+	    } else {
+
+            //Fetch Message:
+            $messages = $this->Db_model->i_fetch(array(
+                'i_id' => intval($_POST['i_id']),
+                'i_status >=' => 0, //Not deleted
+            ));
+            if(!isset($messages[0])){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Message Not Found',
+                ));
+            } else {
+                //Now update the DB:
+                $this->Db_model->i_update( intval($_POST['i_id']) , array(
+                    'i_creator_id' => $udata['u_id'],
+                    'i_timestamp' => date("Y-m-d H:i:s"),
+                    'i_status' => -1, //Deleted by instructor
+                ));
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_json' => array(
+                        'input' => $_POST,
+                        'before' => $messages[0],
+                    ),
+                    'e_type_id' => 35, //Message deleted
+                    'e_i_id' => intval($messages[0]['i_id']),
+                    'e_c_id' => intval($_POST['pid']),
+                ));
+
+                echo_json(array(
+                    'status' => 1,
+                    'message' => '<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>',
+                ));
+            }
+        }
 	}
 
 	function messages_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
-	    
 	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired. Login and try again',
+            ));
 	    } elseif(!isset($_POST['new_sort']) || !is_array($_POST['new_sort']) || count($_POST['new_sort'])<=0){
-	        die('<span style="color:#FF0000;">Error: Nothing to sort.</span>');
+            echo_json(array(
+                'status' => 1, //Do not treat this as error as it could happen in moving Messages between types
+                'message' => 'There was nothing to sort',
+            ));
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>');
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp ID',
+            ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
-	        die('<span style="color:#FF0000;" class="i_error">Error: Invalid Intent ID.</span>');
-	    }
-	    
-	    //Update them all:
-	    foreach($_POST['new_sort'] as $i_rank=>$i_id){
-	        $this->Db_model->i_update( intval($i_id) , array(
-	            'i_rank' => intval($i_rank),
-	        ));
-	    }
-	    
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-    	    'e_initiator_u_id' => $udata['u_id'],
-    	    'e_json' => $_POST,
-    	    'e_type_id' => 39, //Messages sorted
-    	    'e_c_id' => intval($_POST['pid']),
-    	    'e_b_id' => intval($_POST['b_id']),
-	    ));
-	    
-	    //Show message:
-	    echo '<span><i class="fa fa-check" aria-hidden="true"></i> Sorted</span>';
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Intent ID',
+            ));
+	    } else {
+
+            //Update them all:
+            $sort_count = 0;
+            foreach($_POST['new_sort'] as $i_rank=>$i_id){
+                if(intval($i_id)>0){
+                    $sort_count++;
+                    $this->Db_model->i_update( $i_id , array(
+                        'i_rank' => intval($i_rank),
+                    ));
+                }
+            }
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_json' => $_POST,
+                'e_type_id' => 39, //Messages sorted
+                'e_c_id' => intval($_POST['pid']),
+                'e_b_id' => intval($_POST['b_id']),
+            ));
+
+            echo_json(array(
+                'status' => 1,
+                'message' => $sort_count.' Sorted', //Does not matter as its currently not displayed in UI
+            ));
+        }
 	}
 	
 }

@@ -1,20 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: shervinenayati
- * Date: 2017-12-11
- * Time: 12:11 AM
- */
 
 //Fetch Messages based on c_id:
 $message_max = $this->config->item('message_max');
 $core_objects = $this->config->item('core_objects');
 $i_statuses = status_bible('i', null);
 $udata = $this->session->userdata('user');
+$drip_enabled = ($level>1);
 $i_messages = $this->Db_model->i_fetch(array(
     'i_c_id' => $c_id,
-    'i_status >=' => 0, //Published in any form. This may need more logic
-    'i_status <' => 4, //But not private notes if any
+    'i_status >' => 0, //Published in any form
 ));
 
 //Fetch intent details:
@@ -23,9 +17,9 @@ $intents = $this->Db_model->c_fetch(array(
 ));
 
 if(!isset($intents[0])){
+    //This should never happen:
     die('Invalid input id.');
 }
-
 ?>
 
 <script>
@@ -46,7 +40,6 @@ if(!isset($intents[0])){
 
     //Count text area characters:
     function changeMessage() {
-
         //Update count:
         var len = $('#i_message'+c_id).val().length;
         if (len > max_length) {
@@ -54,18 +47,20 @@ if(!isset($intents[0])){
         } else {
             $('#charNum'+c_id).removeClass('overload').text(len);
         }
+    }
 
-        //Passon data to detect URLs:
-        /*
-        $.post("/api_v1/detect_url", { text:val.value } , function(data) {
-             //Update data
-             if(data=='clear_url_preview'){
-                 $('#url_preview').html("");
-             } else if(data.length>0){
-                 $('#url_preview').html(data);
-             }
-        });
-        */
+    function changeMessageEditing(i_id){
+        //See if this is a valid text message editing:
+        if(!($('#charNumEditing'+i_id).length)){
+            return false;
+        }
+        //Update count:
+        var len = $('#message_body_'+i_id).val().length;
+        if (len > max_length) {
+            $('#charNumEditing'+i_id).addClass('overload').text(len);
+        } else {
+            $('#charNumEditing'+i_id).removeClass('overload').text(len);
+        }
     }
 
     var isAdvancedUpload = function() {
@@ -94,9 +89,25 @@ if(!isset($intents[0])){
 
 
 
+    function load_message_type(i_status){
+
+        //Change Nav header:
+        $('.iphone-nav-tabs li').removeClass('active');
+        $('.nav_'+i_status).addClass('active');
+
+        //Change the master status:
+        $('#i_status_focus').val(i_status);
+
+        //Adjust UI for Messages:
+        $('.all_msg').addClass('hidden');
+        $('.msg_'+i_status).removeClass('hidden');
+
+        //Load sorting:
+        load_message_sorting();
+    }
 
 
-    $(document).ready(function() {
+    $(document).ready(function(){
         //Load Nice sort for iPhone X
         new SimpleBar(document.getElementById('intent_messages'+c_id), {
             // option1: value1,
@@ -110,8 +121,29 @@ if(!isset($intents[0])){
             }
         });
 
-        //Load sorting:
-        load_message_sorting();
+        var loading_i_status;
+        loading_i_status = 1; // We start off with ON-START messages
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+            var hash_parts = hash.split("-");
+            if(hash_parts.length==3){
+                //Seems right, lets assign:
+                loading_i_status = hash_parts[2];
+            }
+        }
+
+        //Function to control clicks on iPhone Message type header:
+        load_message_type(loading_i_status);
+
+
+        $('.iphone-nav-tabs a').click(function (e) {
+            //Detect new tab:
+            var parts = $(this).attr('href').split("-");
+            var i_status = parts[2];
+
+            //Load new message body into view:
+            load_message_type(i_status);
+        });
 
 
         //Watchout for file uplods:
@@ -146,6 +178,26 @@ if(!isset($intents[0])){
     });
 
 
+    function apply_message_sorting(i_status){
+        var new_sort = [];
+        var sort_rank = 0;
+        var this_iid = 0;
+        $( "#message-sorting"+c_id+">div.msg_"+i_status ).each(function() {
+            this_iid = parseInt($( this ).attr('iid'));
+            if(this_iid>0){
+                sort_rank++;
+                new_sort[sort_rank] = this_iid;
+            }
+        });
+
+        //Update backend:
+        $.post("/api_v1/messages_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:c_id}, function(data) {
+            if(!data.status){
+                //Show error:
+                alert('ERROR: '+data.message);
+            }
+        });
+    }
 
     function load_message_sorting(){
         var theobject = document.getElementById("message-sorting"+c_id);
@@ -155,38 +207,29 @@ if(!isset($intents[0])){
             handle: ".fa-bars", // Restricts sort start click/touch to the specified element
             draggable: ".is_sortable", // Specifies which items inside the element should be sortable
             onUpdate: function (evt/**Event*/){
-                //Fetch new sort:
-                var new_sort = [];
-                var sort_rank = 0;
-                $( "#message-sorting"+c_id+">div" ).each(function() {
-                    sort_rank++;
-                    new_sort[sort_rank] = $( this ).attr('iid');
-                });
-
-                //Update backend:
-                $.post("/api_v1/messages_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:c_id}, function(data) {
-                    //Update UI to confirm with user:
-                    //$( ".edit-updates" ).html(data);
-
-                    //Disapper in a while:
-                    setTimeout(function() {
-                        //$(".edit-updates>span").fadeOut();
-                    }, 1000);
-                });
+                //Apply new sort:
+                var i_status = $('#i_status_focus').val();
+                apply_message_sorting(i_status);
             },
             //The next two functions resolve a Bug with sorting iframes like YouTube embeds while also making the UI more informative
             onChoose: function (evt/**Event*/){
+                //See if this is a YouTube or Vimeo iFrame that needs to be temporarily removed:
                 var iid = $(evt.item).attr('iid');
-                inner_content = $('#msg_body_'+iid).html();
-                $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fa fa-sort" aria-hidden="true"></i> Drag up/down to sort');
+                if($('#ul-nav-'+iid).find('.video-sorting').length!==0){
+                    inner_content = $('#msg_body_'+iid).html();
+                    $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fa fa-sort" aria-hidden="true"></i> Drag up/down to sort video');
+                } else {
+                    inner_content = null;
+                }
             },
             onEnd: function (evt/**Event*/){
-                var iid = $(evt.item).attr('iid');
-                $('#msg_body_'+iid).html(inner_content);
+                if(inner_content){
+                    var iid = $(evt.item).attr('iid');
+                    $('#msg_body_'+iid).html(inner_content);
+                }
             }
         });
     }
-
 
 
 
@@ -196,43 +239,65 @@ if(!isset($intents[0])){
         var r = confirm("Delete Message?");
         if (r == true) {
             //Show processing:
+            var original_message = $("#ul-nav-"+i_id).html();
             $("#ul-nav-"+i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Deleting...</div>');
 
             //Delete and remove:
             $.post("/api_v1/message_delete", {i_id:i_id, pid:c_id}, function(data) {
+
                 //Update UI to confirm with user:
+                if(!data.status){
 
-                $("#ul-nav-"+i_id).html('<div>'+data+'</div>');
+                    //Show error:
+                    alert('ERROR: '+data.message);
 
-                //Adjust counter by one:
-                message_count--;
-                window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+                    //Put original message back:
+                    $("#ul-nav-"+i_id).html(original_message);
 
-                //Disapper in a while:
-                setTimeout(function() {
-                    $("#ul-nav-"+i_id).fadeOut();
+                    //Tooltips:
+                    $('[data-toggle="tooltip"]').tooltip();
+
+                } else {
+
+                    $("#ul-nav-"+i_id).html('<div>'+data.message+'</div>');
+
+                    //Adjust counter by one:
+                    message_count--;
+                    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+
+                    //Disapper in a while:
                     setTimeout(function() {
-                        $("#ul-nav-"+i_id).remove();
+                        $("#ul-nav-"+i_id).fadeOut();
+                        setTimeout(function() {
+                            //Remove first:
+                            $("#ul-nav-"+i_id).remove();
+
+                            //Adjust sort:
+                            apply_message_sorting($('#i_status_focus').val());
+                        }, 377);
                     }, 377);
-                }, 377);
+
+                }
             });
         }
     }
 
-    function msg_start_edit(i_id){
-
+    function msg_start_edit(i_id,initial_i_status){
         //Start editing:
         $("#ul-nav-"+i_id).addClass('in-editing');
-        $("#ul-nav-"+i_id+" .edit-off").hide();
-        $("#ul-nav-"+i_id+" .edit-on").fadeIn().css("display","inline-block");
+        $("#ul-nav-"+i_id+" .edit-off").addClass('hidden');
+        $("#ul-nav-"+i_id+" .edit-on").removeClass('hidden');
         $("#ul-nav-"+i_id+">div").css('width','100%');
         $("#ul-nav-"+i_id+" textarea").focus();
+
+        //Try to initiate the editor, which only applies to text messages:
+        changeMessageEditing(i_id);
 
         //Watch typing:
         $(document).keyup(function(e) {
             //Watch for action keys:
             if (e.ctrlKey && e.keyCode === 13){
-                message_save_updates(i_id);
+                message_save_updates(i_id,initial_i_status);
             } else if (e.keyCode === 27) {
                 msg_cancel_edit(i_id);
             }
@@ -242,12 +307,12 @@ if(!isset($intents[0])){
     function msg_cancel_edit(i_id,success=0){
         //Revert editing:
         $("#ul-nav-"+i_id).removeClass('in-editing');
-        $("#ul-nav-"+i_id+" .edit-off").fadeIn().css("display","inline-block");
-        $("#ul-nav-"+i_id+" .edit-on").hide();
+        $("#ul-nav-"+i_id+" .edit-off").removeClass('hidden');
+        $("#ul-nav-"+i_id+" .edit-on").addClass('hidden');
         $("#ul-nav-"+i_id+">div").css('width','inherit');
     }
 
-    function message_save_updates(i_id){
+    function message_save_updates(i_id,initial_i_status){
 
         //Show loader:
         $("#ul-nav-"+i_id+" .edit-updates").html('<div><img src="/img/round_load.gif" class="loader" /></div>');
@@ -255,12 +320,16 @@ if(!isset($intents[0])){
         //Revert View:
         msg_cancel_edit(i_id,1);
 
+        //Detect new status, and a potential change:
+        var new_i_status = $("#i_status_"+i_id).val();
+
         //Update message:
         $.post("/api_v1/message_update", {
 
             i_id:i_id,
             i_message:$("#ul-nav-"+i_id+" textarea").val(),
-            i_status:$("#i_status_"+i_id).val(),
+            initial_i_status:initial_i_status,
+            i_status:new_i_status,
             pid:c_id,
             level:level,
             i_media_type:$("#ul-nav-"+i_id+" .i_media_type").val(),
@@ -273,10 +342,40 @@ if(!isset($intents[0])){
                 if($("#ul-nav-"+i_id+" .i_media_type").val()=='text'){
                     $("#ul-nav-"+i_id+" .text_message").html(data.message);
                 }
-                //Update new status:
-                $("#ul-nav-"+i_id+" .the_status").html(data.new_status);
+
+                //Did the status change?
+                if(!(new_i_status==initial_i_status)){
+                    //Update new status:
+                    $("#ul-nav-"+i_id+" .the_status").html(data.new_status);
+
+                    //Switch message over to its section and inform the user:
+                    $("#ul-nav-"+i_id).removeClass('msg_'+initial_i_status).addClass('msg_'+new_i_status)
+
+                    //Note that we don't need to sort the new list as the new item would be added to its end
+
+                    //Remove possible "No message" info box:
+                    if($('.no-messages'+c_id+'_'+new_i_status).length){
+                        $('.no-messages'+c_id+'_'+new_i_status).hide();
+                    }
+
+                    setTimeout(function() {
+
+                        //Now move over to the new status tab:
+                        load_message_type(new_i_status);
+
+                        //Move item to last:
+                        $( "#message-sorting"+c_id ).append($("#ul-nav-"+i_id));
+
+                        //Sort original list as 1 message has been removed from it:
+                        apply_message_sorting(initial_i_status);
+
+                    }, 500);
+
+                }
+
                 //Update new uploader:
                 $("#ul-nav-"+i_id+" .i_uploader").html(data.new_uploader);
+
                 //Show success here
                 $("#ul-nav-"+i_id+" .edit-updates").html('<b>'+data.success_icon+'</b>');
 
@@ -291,7 +390,7 @@ if(!isset($intents[0])){
             //Disapper in a while:
             setTimeout(function() {
                 $("#ul-nav-"+i_id+" .edit-updates>b").fadeOut();
-            }, 3000);
+            }, 5000);
         });
     }
 
@@ -308,36 +407,36 @@ if(!isset($intents[0])){
 
 
 
-
+    var button_value = null;
     function message_form_lock(){
-        $('#add_message'+c_id).html('<span><img src="/img/round_yellow_load.gif" class="loader" /></span>');
-        $('#message_status'+c_id).html('');
-
+        var i_status = $('#i_status_focus').val();
+        button_value = $('#add_message_'+i_status+'_'+c_id).html();
+        $('#add_message_'+i_status+'_'+c_id).html('<span><img src="/img/round_yellow_load.gif" class="loader" /></span>');
+        $('#add_message_'+i_status+'_'+c_id).attr('href','#');
 
         $('.add-msg'+c_id).addClass('is-working');
         $('#i_message'+c_id).prop("disabled", true);
         $('.remove_loading').hide();
-        $('#add_message'+c_id).attr('href','#');
     }
 
 
     function message_form_unlock(result){
+        var i_status = $('#i_status_focus').val();
 
         //Update UI to unlock:
-        $('#add_message'+c_id).html('ADD');
         $('.add-msg'+c_id).removeClass('is-working');
-        $('#i_message'+c_id).prop("disabled", false);
         $('.remove_loading').fadeIn();
-        $('#add_message'+c_id).attr('href','javascript:msg_create();');
+
+        $('#add_message_'+i_status+'_'+c_id).html(button_value);
+        $('#add_message_'+i_status+'_'+c_id).attr('href','javascript:msg_create();');
 
         //Remove possible "No message" info box:
-        if($('.no-messages'+c_id).length){
-            $('.no-messages'+c_id).hide();
+        if($('.no-messages'+c_id+'_'+i_status).length){
+            $('.no-messages'+c_id+'_'+i_status).hide();
         }
 
         //Reset Focus:
-        $("#i_message"+c_id).focus();
-
+        $("#i_message"+c_id).prop("disabled", false).focus();
 
         //What was the result?
         if(result.status){
@@ -345,8 +444,8 @@ if(!isset($intents[0])){
             //Append data:
             $( "#message-sorting"+c_id ).append(result.message);
 
-            //Resort:
-            load_message_sorting();
+            //Resort/Re-adjust:
+            load_message_type(i_status);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -358,7 +457,7 @@ if(!isset($intents[0])){
 
         } else {
 
-            $('#message_status'+c_id).html('<b style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+result.message+'</b>');
+            alert('ERROR: '+result.message);
 
         }
     }
@@ -384,11 +483,10 @@ if(!isset($intents[0])){
             }
 
             ajaxData.append( 'upload_type', uploadType );
-            ajaxData.append( 'i_status', $('#i_status'+c_id).val() );
+            ajaxData.append( 'i_status', $('#i_status_focus').val() );
             ajaxData.append( 'level', level );
             ajaxData.append( 'pid', c_id );
             ajaxData.append( 'b_id', $('#b_id').val() );
-
 
             $.ajax({
                 url: '/api_v1/message_attachment',
@@ -404,7 +502,7 @@ if(!isset($intents[0])){
                 success: function(data) {
                     message_form_unlock(data);
 
-                    //Adjust counter by one:
+                    //Adjust Action Plan counter by one:
                     message_count++;
                     window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
                 },
@@ -420,63 +518,71 @@ if(!isset($intents[0])){
         }
     }
 
-
     function msg_create(){
-        if($('#i_message'+c_id).val().length>0){
-            //Lock message:
-            message_form_lock();
 
-            //Update backend:
-            $.post("/api_v1/message_create", {
-
-                b_id:$('#b_id').val(),
-                pid:c_id, //Synonymous
-                i_message:$('#i_message'+c_id).val(),
-                i_status:$('#i_status'+c_id).val(),
-                level:level,
-
-            }, function(data) {
-
-                //Empty Inputs Fields if success:
-                if(data.status){
-
-                    //Adjust counter by one:
-                    message_count++;
-                    window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
-
-                    //Reset input field:
-                    $( "#i_message"+c_id ).val("");
-                    changeMessage();
-                }
-
-
-
-                //Unlock field:
-                message_form_unlock(data);
-
-            });
+        if($('#i_message'+c_id).val().length==0){
+            alert('ERROR: Enter a message');
+            return false;
         }
+
+        //Lock message:
+        message_form_lock();
+
+        //Update backend:
+        $.post("/api_v1/message_create", {
+
+            b_id:$('#b_id').val(),
+            pid:c_id, //Synonymous
+            i_message:$('#i_message'+c_id).val(),
+            i_status:$('#i_status_focus').val(),
+            level:level,
+
+        }, function(data) {
+
+            //Empty Inputs Fields if success:
+            if(data.status){
+
+                //Adjust counter by one:
+                message_count++;
+                window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
+
+                //Reset input field:
+                $( "#i_message"+c_id ).val("");
+                changeMessage();
+            }
+
+            //Unlock field:
+            message_form_unlock(data);
+
+        });
     }
 </script>
 
 
+
+<div class="iphone-title"><?= $core_objects['level_'.($level-1)]['o_icon'].' '.$core_objects['level_'.($level-1)]['o_name'].': '.$intents[0]['c_objective'] ?></div>
+<ul class="nav nav-tabs iphone-nav-tabs">
+    <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= status_bible('i',1, false, null) ?></a></li>
+    <li role="presentation" class="nav_3"><a href="#messages-<?= $c_id ?>-3"><?= status_bible('i',3, false, null) ?></a></li>
+    <?php if($drip_enabled){ ?>
+    <li role="presentation" class="nav_2"><a href="#messages-<?= $c_id ?>-2"><?= status_bible('i',2, false, null) ?></a></li>
+    <?php } ?>
+</ul>
+<input type="hidden" id="i_status_focus" value="1" />
+
 <div class="ix-msg" id="intent_messages<?= $c_id ?>">
 
-    <div class="ix-tip"><div style="font-size:1.3em;"><?= $core_objects['level_'.($level-1)]['o_icon'].' '.$intents[0]['c_objective'] ?></div>Messages are automatically sent to students during the <?= ( $level>1 ? 'milestone' : 'bootcamp' ) ?>.</div>
     <?php
-    if($level>=1 && $level<=2){
-        //echo '<div class="ix-tip">'.status_bible('i',3, false, 'bottom').' messages are also displayed on the landing page.</div>';
-    }
+    //Give more information on each message type:
+    $i_desc = status_bible('i');
+    echo '<div class="ix-tip all_msg msg_1"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[1]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[2]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[3]['s_desc']).'.</div>';
 
-    //Show relevant tips:
-    if($level==1){
-        //itip(604);
-    } elseif($level==2){
-        //itip(605);
-    } elseif($level==3){
-        //itip(608);
-    }
 
+    $message_count_1 = 0;
+    $message_count_2 = 0;
+    $message_count_3 = 0;
 
     if(count($i_messages)>0){
         echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
@@ -485,15 +591,25 @@ if(!isset($intents[0])){
                 'e_b_id'=>$b_id,
                 'e_recipient_u_id'=>$udata['u_id'],
             )),$level);
+            //Increase counter:
+            ${'message_count_'.$i['i_status']}++;
         }
         echo '</div>';
     } else {
-        echo '<div class="ix-tip no-messages'.$c_id.'" style="background-color: #FEDD1B; color:#222;">No messages added yet!</div>';
         //Now show empty shell
-        echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages">';
-        echo '</div>';
+        echo '<div id="message-sorting'.$c_id.'" class="list-group list-messages"></div>';
     }
 
+    //Show no Message errors:
+    if($message_count_1==0){
+        echo '<div class="ix-tip no-messages'.$c_id.'_1 all_msg msg_1"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No '.status_bible('i',1, false, null).' Messages added yet</div>';
+    }
+    if($message_count_2==0){
+        echo '<div class="ix-tip no-messages'.$c_id.'_2 all_msg msg_2 hidden"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No '.status_bible('i',2, false, null).' Messages added yet</div>';
+    }
+    if($message_count_3==0){
+        echo '<div class="ix-tip no-messages'.$c_id.'_3 all_msg msg_3 hidden"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No '.status_bible('i',3, false, null).' Messages added yet</div>';
+    }
 
     ?>
 </div>
@@ -522,18 +638,10 @@ if(!isset($intents[0])){
     echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="top"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload File</label></div>';
     echo '</div>';
 
-    echo '<ul style="list-style:none;">';
+    echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.status_bible('i',1, false, null).' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.status_bible('i',2, false, null).' &nbsp; MESSAGE</a></div>';
+    echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.status_bible('i',3, false, null).' &nbsp; MESSAGE</a></div>';
 
-    echo '<li class="pull-left" style="margin-left:-28px; padding-left: 0; margin-top: 4px;"><span class="message_status" id="message_status'.$c_id.'"><span class="when_to '.( $level>=3 ? 'hidden' : '' ).'">Message Dispatch Time:</span></span></li>';
-    echo '<li class="pull-right"><a href="javascript:msg_create();" id="add_message'.$c_id.'" data-toggle="tooltip" title="or press CTRL+ENTER ;)" data-placement="top" class="btn btn-primary" style="margin-top: 2px; padding: 5px 8px; margin-right:46px;">ADD</a></li>';
-
-    echo '<li class="pull-right remove_loading" style="padding:2px 5px 0 0;">';
-    echo echo_status_dropdown('i','i_status'.$c_id,1, ( $level>=3 ? array(-1,2,4) : array(-1,4) ),'dropup',$level,1);
-    echo '</li>';
-
-    echo '</ul>';
-
-    echo '<div id="url_preview"></div>';
 
     echo '</form>';
     echo '</div>';

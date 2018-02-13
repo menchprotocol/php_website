@@ -308,8 +308,62 @@ class Cron extends CI_Controller {
 
     function drip(){
 
+        //Cron Settings: */5 * * * *
+
+        //Fetch pending drips
+        $e_pending = $this->Db_model->e_fetch(array(
+            'e_cron_job' => 0, //Pending
+            'e_type_id' => 52, //Scheduled Drip
+            'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
+            //Some standard checks to make sure, these should all be true:
+            'e_r_id >' => 0,
+            'e_c_id >' => 0,
+            'e_b_id >' => 0,
+            'e_recipient_u_id >' => 0,
+        ), 200, true);
+
+        $drip_sent = 0;
+        foreach($e_pending as $e_message){
+
+            //Fetch user data:
+            $matching_admissions = $this->Db_model->ru_fetch(array(
+                'ru_u_id' => $e_message['e_recipient_u_id'],
+                'ru_r_id' => $e_message['e_r_id'],
+                'ru_status >=' => 4, //Active student
+                'r_status' => 2, //Running Class
+            ));
+
+            if(count($matching_admissions)<1){
+                //Something has changed since this Drip has been scheduled...
+                return false;
+            }
+
+            //Prepare variables:
+            $json_data = unserialize($e_message['ej_e_blob']);
+
+            //Increase counter:
+            $drip_sent++;
+
+            //Send this message:
+            $this->Facebook_model->batch_messages('381488558920384', $matching_admissions[0]['u_fb_id'], array($json_data['i']));
+
+            //Update Engagement:
+            $this->Db_model->e_update( $e_message['e_id'] , array(
+                'e_cron_job' => 1, //Mark as done
+            ));
+        }
+
+        //Echo message for cron job:
+        echo $drip_sent.' Drip messages sent';
+    }
+
+    function old_drip(){
+
+        //This was the older cron for Drip messages that is now retired...
+
+        exit;
         //Cron Settings: 15,45 * * * *
-	    //Set drip setting variables:
+        //Set drip setting variables:
         $drip_settings = array(
             'buffer_bootcamp_start' => 0.1,
             'buffer_bootcamp_end' => 0.1,

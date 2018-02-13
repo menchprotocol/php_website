@@ -18,6 +18,11 @@ class Bot extends CI_Controller {
         ));
     }
 
+    function error(){
+        //This is meant to create an error to rest the log files:
+        echo $_GET['none'];
+    }
+
 	function set_settings($botkey){
 	    echo_json($this->Facebook_model->set_settings($botkey));
 	}

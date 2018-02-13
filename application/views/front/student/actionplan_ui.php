@@ -275,7 +275,7 @@ if($level<3){
         if($level==1){
 
             //Milestone List
-            $item_time_arrived = ( $this_intent['cr_outbound_rank']<=$class['r__current_milestone'] || $class['r__current_milestone']<0 /* Class Ended */ ); //Yes it has arrived
+            $item_time_arrived = ( $this_intent['cr_outbound_rank']<=$class['r__current_milestone'] ); //Yes it has arrived
             $child_task_count = 0;
             $this_item_us_status = 1;
             foreach($this_intent['c__child_intents'] as $task){
@@ -309,12 +309,13 @@ if($level<3){
         //Now determine the lock status of this item...
 
         //Used in $unlocked_item logic in case instructor modifies Action Plan and Adds items before previously completed items:
+        $class_ended = ($class['r__current_milestone']<0);
         $this_item_complete = ( $this_item_us_status>=1 );
 
         //TODO later Consider Bonus tasks later...
 
         //See Status:
-        $unlocked_item = $item_time_arrived && ( $previous_item_complete || $this_item_complete );
+        $unlocked_item = ($class_ended) || ($item_time_arrived && ( $previous_item_complete || $this_item_complete ));
 
         //Left content
         if($unlocked_item){
