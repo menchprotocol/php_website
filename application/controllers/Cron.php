@@ -640,7 +640,6 @@ class Cron extends CI_Controller {
 
         $running_classes = $this->Db_model->r_fetch(array(
             'r_status' => 2, //Only running classes
-            'r_id' => 15, //QA Testing
         ));
 
         //Cron stats file so we know what happened in each run...
@@ -680,7 +679,7 @@ class Cron extends CI_Controller {
                 } else {
 
                     //Do a count for stat reporting:
-                    $stats = array(
+                    $completion_stats = array(
                         'completed' => array(),
                         'incomplete_activated' => array(),
                         'incomplete_inactive' => array(),
@@ -690,27 +689,28 @@ class Cron extends CI_Controller {
                     foreach($accepted_admissions as $admission){
                         //See where the student is at, did they finish the previous milestone?
                         if($admission['u_fb_id']>0 && $admission['ru_current_milestone']>$class['r__total_milestones']){
-                            array_push($stats['completed'],$admission);
+                            array_push($completion_stats['completed'],$admission);
                         } elseif($admission['u_fb_id']>0) {
-                            array_push($stats['incomplete_activated'],$admission);
+                            array_push($completion_stats['incomplete_activated'],$admission);
                         } else {
                             //Nothing we would do with these students, only for statistics purposes:
-                            array_push($stats['incomplete_inactive'],$admission);
+                            array_push($completion_stats['incomplete_inactive'],$admission);
                         }
                     }
 
 
                     //How did the class do overall?
-                    if(count($accepted_admissions)<=count($stats['incomplete_inactive'])){
+                    $qualified_students = count($accepted_admissions) - count($completion_stats['incomplete_inactive']);
+                    if($qualified_students<=0){
                         //All students did not activate!
                         $r_cache__completion_rate = 0;
                     } else {
-                        $r_cache__completion_rate = round(count($stats['completed']) / (count($accepted_admissions) - count($stats['incomplete_inactive']) )*100);
+                        $r_cache__completion_rate = round(count($completion_stats['completed']) / $qualified_students *100);
                     }
 
 
                     //Graduate Students:
-                    foreach($stats['completed'] as $admission){
+                    foreach($completion_stats['completed'] as $admission){
 
                         //Send message:
                         /*
@@ -741,7 +741,7 @@ class Cron extends CI_Controller {
                     }
 
                     //Incomplete & Activated Students:
-                    foreach($stats['incomplete_activated'] as $admission){
+                    foreach($completion_stats['incomplete_activated'] as $admission){
 
                         //Send message:
                         /*
@@ -772,7 +772,7 @@ class Cron extends CI_Controller {
                     }
 
                     //Incomplete & Inactive Students:
-                    foreach($stats['incomplete_inactive'] as $admission){
+                    foreach($completion_stats['incomplete_inactive'] as $admission){
 
                         //Adjust status in admissions table:
                         $this->Db_model->ru_update( $admission['ru_id'] , array(
@@ -801,12 +801,13 @@ class Cron extends CI_Controller {
 
                     //Log Engagement:
                     $industry_completion = 10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] just ended with a ['.$r_cache__completion_rate.'%] completion rate. From the total admitted students of ['.count($accepted_admissions).'], you helped ['.count($stats['completed']).'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.$industry_completion.'% 🎉🎉🎉​' : '' );
+                    $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.$r_cache__completion_rate.'%] completion rate. From the total students of ['.$qualified_students.'], you helped ['.count($completion_stats['completed']).'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.$industry_completion.'% 🎉🎉🎉​' : '' );
 
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => 0, //System
                         'e_message' => $completion_message,
                         'e_type_id' => 69, //Class Completed
+                        'e_json' => $accepted_admissions,
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
                     ));
