@@ -249,7 +249,7 @@ if($object_name=='engagements'){
 
 
     $classes = $this->Db_model->r_fetch(array(
-        'r_status IN (1,2)' => null, //Running Classes
+        'r_status IN (1,2,3)' => null, //Running Classes
     ),null,'ASC');
 
     //Include email model for certain communications:
@@ -294,10 +294,10 @@ if($object_name=='engagements'){
         echo '<td>'.($key+1).'</td>';
         echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
         echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format($class['r_start_date'],1).' '.$start_times[$class['r_start_time_mins']].'</a></td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
         echo '<td>';
-        if($class['r_status']>=2){
-            echo '<b>'.time_format($class['r__class_end_time'],1).'</b> '.$start_times[$class['r_start_time_mins']];
+        if($class['r_cache__end_time']){
+            echo time_format($class['r_cache__end_time'],0);
         }
         echo '</td>';
         echo '<td>'.status_bible('r',$class['r_status']).( $bootcamps[0]['b_status']<2 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is Drafting which will prevent the Class from being Launched" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';

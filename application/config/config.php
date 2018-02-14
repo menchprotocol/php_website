@@ -608,17 +608,17 @@ $config['mench_cs_fb_ids'] = array(
 );
 
 //Define what counts as a meaningful Bootcamp engagement by the instructor team:
-$config['meaningful_bootcamp_engagements']  = array(15,17,37,18,14,16,13,20,21,23,22,19,34,35,39,36,38,43,44);
+$config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44);
 
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,64,65,67,68),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,64,65,67,68),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69),
     ),
 );
 

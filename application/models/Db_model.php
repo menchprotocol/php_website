@@ -796,8 +796,8 @@ ORDER BY points DESC, ru_id ASC")->result());
 
 
                 //Now calculate start time and end time for this class:
-                $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']) + ( ($class['r_start_time_mins']-1) * 60 );
-                $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + ( $bootcamp['c__milestone_units'] * $bootcamp['c__milestone_secs'] );
+                $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']) + ( $class['r_start_time_mins'] * 60 );
+                $runs[$key]['r__class_end_time'] = mktime(floor($class['r_start_time_mins']/60),intval(fmod($class['r_start_time_mins'],60)),0,date("n",strtotime($class['r_start_date'])),(date("j",strtotime($class['r_start_date']))+($bootcamp['c__milestone_units'] * $bootcamp['c__milestone_secs'] / 24 / 3600)),date("Y",strtotime($class['r_start_date'])));
 
                 //We're in the middle of this class, let's find out where:
                 $runs[$key]['r__milestones_due'] = array(); //Will hold all the dates for the milestone...
@@ -815,10 +815,10 @@ ORDER BY points DESC, ru_id ASC")->result());
 
                 //We'd now need to calculate Due Date to determine where the class currently is!
                 //There are 3 situations for $class_position: Class not started yet (0), On a particular Milestone (), or Class has ended (-1)
-                if($runs[$key]['r__class_start_time']>time()){
+                if($runs[$key]['r__class_start_time']>=time()){
                     //Not yet started, so no leaderboard:
                     $runs[$key]['r__current_milestone'] = 0;
-                } elseif($runs[$key]['r__class_end_time']<time()){
+                } elseif($runs[$key]['r__class_end_time']<=time()){
                     //Class has ended
                     $runs[$key]['r__current_milestone'] = -1;
                 } else {
@@ -1284,8 +1284,24 @@ ORDER BY points DESC, ru_id ASC")->result());
 
         //Remove unnecessary fields:
         unset($bootcamps[0]['b__admins']);
-        unset($bootcamps[0]['c__classes']);
+        unset($bootcamps[0]['c__classes']); //Our Class may not be in here!
 
+        //Also Update Class end Date:
+        //Fetch Class Details:
+        $classes = $this->Db_model->r_fetch(array(
+            'r_id' => $r_id,
+        ), $bootcamps[0] );
+
+        if(count($classes)<1){
+            return false;
+        }
+
+        //Take snapshot of Class End Time:
+        $this->Db_model->r_update( $r_id , array(
+            'r_cache__end_time' => date("Y-m-d H:i:s",$classes[0]['r__class_end_time']),
+        ));
+
+        //Save Action Plan Copy:
         $this->Db_model->e_create(array(
             'e_json' => $bootcamps[0],
             'e_type_id' => 70, //Action Plan Snapshot
