@@ -243,27 +243,24 @@ class My extends CI_Controller {
 	    //Is this a paypal success?
 	    if(isset($_GET['status']) && intval($_GET['status'])){
 	        //Give the PayPal webhook enough time to update the DB status:
-	        sleep(2);
+	        sleep(1);
 	    }
 	    
 	    //Search for class using form ID:
 	    $users = $this->Db_model->u_fetch(array(
 	        'u_id' => intval($_GET['u_id']),
 	    ));
-	    $udata = @$users[0];
-	    
+
+        if(count($users)==1){
+            $udata = $users[0];
+        } else {
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your bootcamp and re-apply to receive an email with your application status url.</div>');
+        }
 	    
 	    //Fetch all their addmissions:
-	    $admissions = $this->Db_model->remix_admissions(array(
-	        'ru.ru_u_id'	=> $udata['u_id'],
+	    $admissions = $this->Db_model->ru_fetch(array(
+	        'ru_u_id'	=> $udata['u_id'],
 	    ));
-
-	    //Did we find at-least one?
-	    if(count($admissions)<1){
-	        //Log this error:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">You have not applied to join any bootcamp yet.</div>');
-	        exit;
-	    }
 	    
 	    //Validate Class ID that it's still the latest:
 	    $data = array(
@@ -274,7 +271,7 @@ class My extends CI_Controller {
 	        'admissions' => $admissions,
 	        'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
 	    );
-	    
+
 	    //Load apply page:
 	    $this->load->view('front/shared/p_header' , $data);
 	    $this->load->view('front/student/my_applications' , $data);

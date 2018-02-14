@@ -1052,9 +1052,8 @@ class Cron extends CI_Controller {
             'ru.ru_status'  => 0, //Application Incomplete
         ));
 
-        echo_json($incomplete_applications);
-        exit; //Not building this for now since we're moving to Messenger ASAP
 
+        $stats = array();
         foreach($incomplete_applications as $admission){
 
             //Fetch existing reminders sent to this student:
@@ -1069,23 +1068,65 @@ class Cron extends CI_Controller {
             $admission_time = strtotime($admission['ru_timestamp']);
 
             //Send them a reminder to complete 24 hours after they start, only IF they started their application more than 6 days before the Class start:
-            if(($admission_time+(6*24*3600))<$admission_end_time && ($admission_time+(24*3600))>time() && !filter($reminders_sent,'e_c_id',3140)){
+            if(($admission_time+(6*24*3600))<$admission_end_time && ($admission_time+(24*3600))<time() && !filter($reminders_sent,'e_c_id',3140)){
                 $this->Email_model->email_intent($admission['r_b_id'],3140,$admission,$admission['r_id']);
+                array_push($stats,array(
+                    'email' => 3140,
+                    'ru_id' => $admission['ru_id'],
+                    'r_id' => $admission['r_id'],
+                    'u_id' => $admission['u_id'],
+                    'ru_timestamp' => $admission['ru_timestamp'],
+                    'r_start_date' => $admission['r_start_date'],
+                    'reminders' => $reminders_sent,
+                ));
             } elseif((time()+(72*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3127)){
                 $this->Email_model->email_intent($admission['r_b_id'],3127,$admission,$admission['r_id']);
+                array_push($stats,array(
+                    'email' => 3127,
+                    'ru_id' => $admission['ru_id'],
+                    'r_id' => $admission['r_id'],
+                    'u_id' => $admission['u_id'],
+                    'ru_timestamp' => $admission['ru_timestamp'],
+                    'r_start_date' => $admission['r_start_date'],
+                    'reminders' => $reminders_sent,
+                ));
             } elseif((time()+(48*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3128)){
                 $this->Email_model->email_intent($admission['r_b_id'],3128,$admission,$admission['r_id']);
+                array_push($stats,array(
+                    'email' => 3128,
+                    'ru_id' => $admission['ru_id'],
+                    'r_id' => $admission['r_id'],
+                    'u_id' => $admission['u_id'],
+                    'ru_timestamp' => $admission['ru_timestamp'],
+                    'r_start_date' => $admission['r_start_date'],
+                    'reminders' => $reminders_sent,
+                ));
             } elseif((time()+(24*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3129)){
                 $this->Email_model->email_intent($admission['r_b_id'],3129,$admission,$admission['r_id']);
+                array_push($stats,array(
+                    'email' => 3129,
+                    'ru_id' => $admission['ru_id'],
+                    'r_id' => $admission['r_id'],
+                    'u_id' => $admission['u_id'],
+                    'ru_timestamp' => $admission['ru_timestamp'],
+                    'r_start_date' => $admission['r_start_date'],
+                    'reminders' => $reminders_sent,
+                ));
             } elseif((time()+(2*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3130)){
                 $this->Email_model->email_intent($admission['r_b_id'],3130,$admission,$admission['r_id']);
+                array_push($stats,array(
+                    'email' => 3130,
+                    'ru_id' => $admission['ru_id'],
+                    'r_id' => $admission['r_id'],
+                    'u_id' => $admission['u_id'],
+                    'ru_timestamp' => $admission['ru_timestamp'],
+                    'r_start_date' => $admission['r_start_date'],
+                    'reminders' => $reminders_sent,
+                ));
             }
-
-            echo_json($admission);
-            break;
         }
 
-
+        echo_json($stats);
     }
 
     function student_reminder_group_call_starting(){

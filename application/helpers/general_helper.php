@@ -21,13 +21,6 @@ function fetch_action_plan_copy($b_id,$r_id){
 
         array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
 
-        //Now Fetch Class:
-        $classes = $CI->Db_model->r_fetch(array(
-            'r_id' => $r_id,
-        ), $bootcamps[0] );
-
-        $bootcamps[0]['this_class'] = $classes[0];
-
         //Indicate this is a copy:
         $bootcamps[0]['is_copy'] = 1;
         $bootcamps[0]['copy_timestamp'] = $cache_action_plans[0]['e_timestamp'];
@@ -39,13 +32,22 @@ function fetch_action_plan_copy($b_id,$r_id){
             'b.b_id' => $b_id,
         ));
 
-        //Fetch it from the class object that is already included:
+        // *Attempt* to fetch Class from current class object in Bootcamp:
         $bootcamps[0]['this_class'] = filter($bootcamps[0]['c__classes'],'r_id', $r_id);
 
         //Indicate this is NOT a copy:
         $bootcamps[0]['is_copy'] = 0;
         $bootcamps[0]['copy_timestamp'] = null;
 
+    }
+
+    if(!isset($bootcamps[0]['this_class']) || !$bootcamps[0]['this_class']){
+        //Now Fetch Class:
+        $classes = $CI->Db_model->r_fetch(array(
+            'r_id' => $r_id,
+        ), $bootcamps[0] );
+
+        $bootcamps[0]['this_class'] = $classes[0];
     }
 
     return $bootcamps;

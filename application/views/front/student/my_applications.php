@@ -53,14 +53,24 @@ if(count($admissions)>0 && is_array($admissions)){
     //Show all Student admissions:
     foreach($admissions as $admission){
 
-        //Determine the steps:
-        $applied = ( strlen($admission['ru_application_survey'])>0 );
-        $paid = ( count($admission['ru__transactions'])>0 );
-        $botactivated = ( $admission['u_fb_id']>0 );
+        //Fetch Admission Data:
+        $bootcamps = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
+        $class = $bootcamps[0]['this_class'];
+
+
+        //Fetch Bootcamp Data:
+        $live_bootcamps = $this->Db_model->b_fetch(array(
+            'b_id' => $admission['r_b_id'],
+        ));
+
+        //Fetch Payment:
+        $ru__transactions = $this->Db_model->t_fetch(array(
+            't.t_ru_id' => $admission['ru_id'],
+        ));
 
         echo '<div style="border:2px solid #000; padding:7px; margin-top:25px; border-radius:5px; background-color:#EFEFEF;">';
 
-        echo '<p><b>'.$admission['c_objective'].'</b> ('.time_format($admission['r_start_date'],4).' - '.time_format($admission['r__class_end_time'],4).') Application:</p>';
+        echo '<p><b>'.$bootcamps[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4).') Application:</p>';
 
 
         //Account, always created at this point:
@@ -69,17 +79,27 @@ if(count($admissions)>0 && is_array($admissions)){
 
         //Apply Form:
         $qa_title = 'Step 2: Submit Application Questionnaire';
-        if($applied){
+        if(strlen($admission['ru_application_survey'])>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$qa_title.'</label></div>';
         } else {
             echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="/my/class_application/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'"> '.$qa_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         }
 
 
-        if($admission['r_usd_price']>0){
+        if($class['r_usd_price']>0){
+
+            //See Total Payments:
+            $total_paid = 0;
+            foreach($ru__transactions as $t){
+                $total_paid += $t['t_total'];
+            }
+            $remaining_payment = $class['r_usd_price'] - $total_paid;
+            $paid = ( $remaining_payment<=0 );
+
             //Payment
-            echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Pay $'.$admission['r_usd_price'].' Bootcamp Tuition using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
-            if(!$paid){
+            echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Pay $'.$remaining_payment.($total_paid>0 ? ' (Already Paid $'.$total_paid.') remaining' :'').' Bootcamp Tuition using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+
+            if($remaining_payment>0){
                 ?>
 
                 <?php if(isset($_GET['pay_r_id']) && intval($_GET['pay_r_id']) && intval($_GET['pay_r_id'])==intval($admission['r_id'])){ ?>
@@ -97,12 +117,12 @@ if(count($admissions)>0 && is_array($admissions)){
                     <input type="hidden" name="cmd" value="_xclick">
                     <input type="hidden" name="business" value="EYKXCMCJHEBA8">
                     <input type="hidden" name="lc" value="US">
-                    <input type="hidden" name="item_name" value="<?= $admission['c_objective'] ?>">
+                    <input type="hidden" name="item_name" value="<?= $bootcamps[0]['c_objective'] ?>">
                     <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
                     <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
                     <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
                     <input type="hidden" name="custom_u_key" value="<?= $u_key ?>">
-                    <input type="hidden" name="amount" value="<?= $admission['r_usd_price'] ?>">
+                    <input type="hidden" name="amount" value="<?= $remaining_payment ?>">
                     <input type="hidden" name="currency_code" value="USD">
                     <input type="hidden" name="button_subtype" value="services">
                     <input type="hidden" name="no_note" value="1">
@@ -119,8 +139,8 @@ if(count($admissions)>0 && is_array($admissions)){
             }
         }
 
-        $bot_title = 'Step '.( $admission['r_usd_price']>0 ? '4' : '3' ).': Activate Your MenchBot on Facebook Messenger';
-        if($botactivated){
+        $bot_title = 'Step '.( $class['r_usd_price']>0 ? '4' : '3' ).': Activate Your MenchBot on Facebook Messenger';
+        if($admission['u_fb_id']>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
         } else {
             echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.messenger_activation_url('381488558920384',$admission['u_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
@@ -130,7 +150,7 @@ if(count($admissions)>0 && is_array($admissions)){
         echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';
 
         echo '<div style="font-size: 0.7em; margin-top:5px; padding-top:5px; border-top:2px solid #333;">';
-        echo '<a href="/'.$admission['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
+        echo '<a href="/'.$live_bootcamps[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
         if($admission['ru_status']==0){
             //They can still withdraw their application:
             echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="withdraw_application('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw My Application</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
@@ -142,11 +162,9 @@ if(count($admissions)>0 && is_array($admissions)){
 
 } else {
 
-    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No admissions found</div>';
+    echo '<br /><div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No applications found</div>';
 
 }
-
-
 
 echo '</div>';
 ?>

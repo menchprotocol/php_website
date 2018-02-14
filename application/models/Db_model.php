@@ -41,13 +41,25 @@ ORDER BY points DESC, ru_id ASC")->result());
                 'b.b_id' => $enrollment['r_b_id'],
             ));
             if(count($bootcamps)<=0){
-                return false;
+                $this->Db_model->e_create(array(
+                    'e_message' => 'remix_admissions() had invalid [r_b_id]='.$enrollment['r_b_id'],
+                    'e_json' => $matching_criteria,
+                    'e_type_id' => 8, //Platform Error
+                ));
+                unset($admissions[$key]);
+                continue;
             }
 
             //Fetch Class:
             $class = filter($bootcamps[0]['c__classes'],'r_id',$enrollment['ru_r_id']);
 	        if(count($class)<=0){
-	            return false;
+                $this->Db_model->e_create(array(
+                    'e_message' => 'remix_admissions() had invalid [r_id]='.$enrollment['ru_r_id'],
+                    'e_json' => $matching_criteria,
+                    'e_type_id' => 8, //Platform Error
+                ));
+                unset($admissions[$key]);
+                continue;
 	        }
 
 	        //Merge in:
