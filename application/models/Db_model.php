@@ -759,6 +759,7 @@ ORDER BY points DESC, ru_id ASC")->result());
             }
 		}
 		$this->db->group_by('r.r_id');
+        $this->db->order_by('r.r_status','DESC'); //Most recent class at top
         $this->db->order_by('r.r_start_date',$sorting); //Most recent class at top
         $this->db->order_by('r.r_start_time_mins',$sorting); //Most recent class at top
 		$q = $this->db->get();

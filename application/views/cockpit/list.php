@@ -261,8 +261,8 @@ if($object_name=='engagements'){
         <th style="width:40px;">#</th>
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
-        <th>Class Starts</th>
-        <th>Class Ends</th>
+        <th>Class Start Time</th>
+        <th>Class End Time</th>
         <th>Status</th>
         <th>Tuition</th>
         <th>Admission Funnel</th>
@@ -300,7 +300,15 @@ if($object_name=='engagements'){
             echo time_format($class['r_cache__end_time'],0);
         }
         echo '</td>';
-        echo '<td>'.status_bible('r',$class['r_status']).( $bootcamps[0]['b_status']<2 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is Drafting which will prevent the Class from being Launched" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
+        echo '<td>';
+            echo status_bible('r',$class['r_status']);
+            if($bootcamps[0]['b_status']<2){
+                echo ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is Drafting which will prevent the Class from being Launched" data-placement="bottom" style="color:#FF0000;"></i>';
+            }
+            if($class['r_status']==3){
+                echo ' '.$class['r_cache__completion_rate'].'%';
+            }
+        echo '</td>';
         echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
         echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted/Max (Rejected)">';
         $student_funnel = array(

@@ -698,7 +698,6 @@ class Cron extends CI_Controller {
                         }
                     }
 
-
                     //How did the class do overall?
                     $qualified_students = count($accepted_admissions) - count($completion_stats['incomplete_inactive']);
                     if($qualified_students<=0){
@@ -713,7 +712,6 @@ class Cron extends CI_Controller {
                     foreach($completion_stats['completed'] as $admission){
 
                         //Send message:
-                        /*
                         $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
                             'i_media_type' => 'text',
                             'i_message' => 'Congratulations {first_name} for completing all Milestones of your '.$bootcamps[0]['c_objective'].' Bootcamp on-time 🎉​​​',
@@ -722,7 +720,7 @@ class Cron extends CI_Controller {
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
                         ), $admission['u_fname'], true )));
-                        */
+
 
                         //Adjust status in admissions table:
                         $this->Db_model->ru_update( $admission['ru_id'] , array(
@@ -744,7 +742,6 @@ class Cron extends CI_Controller {
                     foreach($completion_stats['incomplete_activated'] as $admission){
 
                         //Send message:
-                        /*
                         $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
                             'i_media_type' => 'text',
                             'i_message' => '{first_name} I am sorry to say that your class ended and you were not able to complete all Milestones on-time 🙈​​​​',
@@ -753,7 +750,7 @@ class Cron extends CI_Controller {
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
                         ), $admission['u_fname'], true )));
-                        */
+
 
                         //Adjust status in admissions table:
                         $this->Db_model->ru_update( $admission['ru_id'] , array(
@@ -803,6 +800,7 @@ class Cron extends CI_Controller {
                     $industry_completion = 10; //Like Udemy, etc...
                     $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.$r_cache__completion_rate.'%] completion rate. From the total students of ['.$qualified_students.'], you helped ['.count($completion_stats['completed']).'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.$industry_completion.'% 🎉🎉🎉​' : '' );
 
+                    //Log Engagement for Class Completion:
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => 0, //System
                         'e_message' => $completion_message,
