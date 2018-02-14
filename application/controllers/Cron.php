@@ -731,6 +731,7 @@ class Cron extends CI_Controller {
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => 0, //System
                             'e_recipient_u_id' => $admission['u_id'],
+                            'e_json' => $admission,
                             'e_type_id' => 64, //Student Graduated
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -761,6 +762,7 @@ class Cron extends CI_Controller {
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => 0, //System
                             'e_recipient_u_id' => $admission['u_id'],
+                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
                             'e_type_id' => 71, //Student Incomplete Class
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -780,6 +782,7 @@ class Cron extends CI_Controller {
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => 0, //System
                             'e_recipient_u_id' => $admission['u_id'],
+                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
                             'e_type_id' => 71, //Student Incomplete Class
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
