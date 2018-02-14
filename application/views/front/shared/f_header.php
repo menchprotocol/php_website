@@ -9,13 +9,13 @@ $url_part_1 = $this->uri->segment(1);
 <head>
     <!--
 
-    WELCOME TO MENCH SOURCE CODE!
+    WELCOME TO MENCH SOURCE CODE 😻​
 
     INTERESTED IN HELPING US BUILD THE FUTURE OF EDUCATION?
 
-    YOU CAN WORK WITH US AS AN INDEPENDENT CONTRACTOR FROM ANYWHERE IN THE WORLD.
+    YOU CAN WORK WITH US FROM ANYWHERE IN THE WORLD
 
-    AND IF YOU ACHIEVE THE MENCH STATUS, YOU CAN ALSO APPLY TO WORK AS A CORE TEAM MEMBER.
+    EMAIL YOUR RESUME TO SUPPORT@MENCH.CO
 
     -->
 	<meta charset="utf-8" />
@@ -33,7 +33,7 @@ $url_part_1 = $this->uri->segment(1);
 	    <script> zE( function () { zE.identify({name: '<?= $udata['u_fname'] ?> <?= $udata['u_lname'] ?>', email: '<?= $udata['u_email'] ?>'}); }); </script>
 	<?php } */ ?>
 	
-	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id); } ?>
+	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id,(isset($purchase_value) ? $purchase_value : 0)); } ?>
 	
 </head>
 

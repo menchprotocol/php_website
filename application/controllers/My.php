@@ -241,9 +241,14 @@ class My extends CI_Controller {
 	    }
 	    
 	    //Is this a paypal success?
-	    if(isset($_GET['status']) && intval($_GET['status'])){
+        $purchase_value = 0;
+	    if(isset($_GET['status']) && intval($_GET['status'])==1){
 	        //Give the PayPal webhook enough time to update the DB status:
-	        sleep(1);
+	        sleep(2);
+
+	        //Capture Facebook Conversion:
+            //TODO This would capture again upon refresh, fix later...
+            $purchase_value = doubleval($_GET['purchase_value']);
 	    }
 	    
 	    //Search for class using form ID:
@@ -267,7 +272,8 @@ class My extends CI_Controller {
 	        'title' => 'My Application(s) Status',
 	        'udata' => $udata,
 	        'u_id' => $_GET['u_id'],
-	        'u_key' => $_GET['u_key'],
+            'u_key' => $_GET['u_key'],
+            'purchase_value' => $purchase_value, //Capture via Facebook Pixel
 	        'admissions' => $admissions,
 	        'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
 	    );

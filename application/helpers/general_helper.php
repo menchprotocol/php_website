@@ -2727,7 +2727,7 @@ function echo_us($us_data){
 }
 
 
-function echo_facebook_pixel($r_fb_pixel_id){
+function echo_facebook_pixel($r_fb_pixel_id,$purchase_value=0){
     return "<!-- Facebook Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -2739,7 +2739,7 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '".$r_fb_pixel_id."');
-fbq('track', 'PageView');
+". ( $purchase_value>0 ? "fbq('track', 'Purchase', {'value':'".$purchase_value."','currency':'USD'});" : "fbq('track', 'PageView');" ) ."
 </script>
 <noscript><img height=\"1\" width=\"1\" style=\"display:none\" src=\"https://www.facebook.com/tr?id=".$r_fb_pixel_id."&ev=PageView&noscript=1\" /></noscript>
 <!-- End Facebook Pixel Code -->";

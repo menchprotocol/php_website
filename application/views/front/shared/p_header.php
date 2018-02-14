@@ -16,7 +16,7 @@ $website = $this->config->item('website');
 
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
 
-	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id); } ?>
+	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id,(isset($purchase_value) ? $purchase_value : 0)); } ?>
 	
 </head>
 

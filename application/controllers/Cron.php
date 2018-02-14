@@ -1041,8 +1041,7 @@ class Cron extends CI_Controller {
 
     function student_reminder_complete_application(){
 
-        //Cron Settings: 15 * * * *
-
+        //Cron Settings: 10 * * * *
 
         $this->load->model('Email_model');
 
