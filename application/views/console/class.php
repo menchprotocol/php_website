@@ -6,9 +6,9 @@ $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 
 //Determine lock down status based on User & Class situation:
-$is_admin = ( $udata['u_status']>=3 );
-$disabled = ( !$is_admin && ($current_applicants>0 || $class['r_status']>=2) ? 'disabled' : null );
-$soft_disabled = ( !$is_admin && $class['r_status']>=2 ? 'disabled' : null );
+$admin_can_edit = ( $udata['u_status']>=3 && !($class['r_status']==3) );
+$disabled = ( !$admin_can_edit && ($current_applicants>0 || $class['r_status']>=2) ? 'disabled' : null );
+$soft_disabled = ( !$admin_can_edit && $class['r_status']>=2 ? 'disabled' : null );
 
 //Fetch the most recent cached action plans:
 $cache_action_plans = $this->Db_model->e_fetch(array(
