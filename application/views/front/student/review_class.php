@@ -63,9 +63,9 @@ $review_score_options = array(
 
 
 //Show Overview:
-echo '<div class="maxout"><b>Lead Instructor</b>: <img src="'.( strlen($admission['b__admins'][0]['u_image_url'])>0 ? $admission['b__admins'][0]['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$lead_instructor.'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Lead Instructor</b>: <img src="'.( strlen($admission['b__admins'][0]['u_image_url'])>0 ? $admission['b__admins'][0]['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$lead_instructor.'</div>';
 if(count($admission['b__admins'])>1){
-    echo '<div class="maxout"><b>Co-Instructor'.show_s((count($admission['b__admins'])-1)).'</b>: ';
+    echo '<div class="maxout" style="padding-bottom:7px;"><b>Co-Instructor'.show_s((count($admission['b__admins'])-1)).'</b>: ';
     //We have assistant instructors, list them here:
     foreach($admission['b__admins'] as $key=>$assistant){
         if($key==0){
@@ -79,8 +79,8 @@ if(count($admission['b__admins'])>1){
     }
     echo '</div>';
 }
-echo '<div class="maxout"><b>Bootcamp</b>: '.$admission['c_objective'].'</div>';
-echo '<div class="maxout"><b>Class</b>: '.time_format($admission['r_start_date'],2).' - '.time_format($admission['r_cache__end_time'],2).'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$admission['c_objective'].'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.time_format($admission['r_start_date'],2).' - '.time_format($admission['r_cache__end_time'],2).'</div>';
 echo '<div style="border-bottom:2px solid #000; margin:0 0 25px;">&nbsp;</div>';
 
 
