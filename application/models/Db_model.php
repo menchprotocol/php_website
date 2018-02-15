@@ -1442,6 +1442,8 @@ ORDER BY points DESC, ru_id ASC")->result());
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
                     $url = 'https://mench.co/console/'.$link_data['e_b_id'];
+
+                    //Determine the body of this notification, as we prefer the custom notes on e_message, and if not, we'd go with a_desc
                     $body = ( strlen($link_data['e_message'])>0 ? trim(strip_tags($link_data['e_message'])) : trim(strip_tags($engagements[0]['a_desc'])) );
 
                     //Send notifications to current instructor
@@ -1451,9 +1453,8 @@ ORDER BY points DESC, ru_id ASC")->result());
                             //MenchBot notifications:
                             $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(echo_i(array(
                                 'i_media_type' => 'text',
-                                'i_message' => $subject."\n\n".$body,
+                                'i_message' => $subject."\n\n".$body."\n\n".$url,
                                 'i_url' => $url,
-                                'i_button' => '🎯 Open Bootcamp',
                                 'e_initiator_u_id' => 0, //System/MenchBot
                                 'e_recipient_u_id' => $bi['u_id'],
                                 'e_b_id' => $link_data['e_b_id'],

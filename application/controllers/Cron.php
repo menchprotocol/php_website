@@ -707,19 +707,46 @@ class Cron extends CI_Controller {
                         $r_cache__completion_rate = round(count($completion_stats['completed']) / $qualified_students *100);
                     }
 
+                    $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array());
+
+
+                    //Fetch all Instructors:
+                    $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+                        'ba.ba_b_id'        => $class['r_b_id'],
+                        'ba.ba_status >='   => 1, //Must be an actively assigned instructor
+                        'u.u_status >='     => 1, //Must be a user level 1 or higher
+                        'u.u_fb_id >'	    => 0, //Activated MenchBot
+                    ));
+
+                    //Construct the review message and button:
+                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$bootcamp_instructors[0]['u_fname'].' '.$bootcamp_instructors[0]['u_lname'].' and help improve future Classes:';
+                    $review_button = '📣 Review '.$bootcamp_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
+
 
                     //Graduate Students:
                     foreach($completion_stats['completed'] as $admission){
 
                         //Send message:
-                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
-                            'i_media_type' => 'text',
-                            'i_message' => 'Congratulations {first_name} for completing all Milestones of your '.$bootcamps[0]['c_objective'].' Bootcamp on-time 🎉​​​',
-                            'e_initiator_u_id' => 0,
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ), $admission['u_fname'], true )));
+                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => 'Congratulations {first_name} for completing all Milestones of your '.$bootcamps[0]['c_objective'].' Bootcamp on-time 🎉​​​',
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $review_message,
+                                'i_button' => $review_button,
+                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                        ));
 
 
                         //Adjust status in admissions table:
@@ -743,14 +770,26 @@ class Cron extends CI_Controller {
                     foreach($completion_stats['incomplete_activated'] as $admission){
 
                         //Send message:
-                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
-                            'i_media_type' => 'text',
-                            'i_message' => '{first_name} I am sorry to say that your class ended and you were not able to complete all Milestones on-time 🙈​​​​',
-                            'e_initiator_u_id' => 0,
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ), $admission['u_fname'], true )));
+                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => '{first_name} your class just ended and you can no longer submit Tasks. Sorry to see that you were not able to complete all Milestones on-time 🙈​​​​',
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $review_message,
+                                'i_button' => $review_button,
+                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                        ));
 
 
                         //Adjust status in admissions table:
@@ -814,12 +853,6 @@ class Cron extends CI_Controller {
                     ));
 
                     //Send message to instructor team:
-                    $bootcamp_instructors = $this->Db_model->ba_fetch(array(
-                        'ba.ba_b_id'        => $class['r_b_id'],
-                        'ba.ba_status >='   => 1, //Must be an actively assigned instructor
-                        'u.u_status >='     => 1, //Must be a user level 1 or higher
-                        'u.u_fb_id >'	    => 0, //Activated MenchBot
-                    ));
                     foreach($bootcamp_instructors as $u){
                         //Send this message & log sent engagement using the echo_i() function:
                         $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(

@@ -130,7 +130,7 @@ class Api_v1 extends CI_Controller {
         }
 
         //Is this a new review, or updating an existing one?
-        $new_review = ( intval($admissions[0]['ru_review_score'])>0 );
+        $new_review = ( intval($admissions[0]['ru_review_score'])<0 );
         $has_text = ( strlen($_POST['ru_review_public_note'])>0 || strlen($_POST['ru_review_private_note'])>0 );
         $update_data = array(
             'ru_review_time' => date("Y-m-d H:i:s"),

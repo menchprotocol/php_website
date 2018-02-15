@@ -11,16 +11,33 @@ class Bot extends CI_Controller {
 	}
 
 	function t(){
-        $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array(echo_i(array(
-            'i_media_type' => 'text',
-            'i_message' => 'Sample text, {first_name} time to review aziz 🙈​​​​',
-            'i_url' => 'https://mench.co/my/review/437/'.substr(md5('437'.'r3vi3wS@lt'),0,6),
-            'i_button' => '📣 Review Jason',
-            'e_initiator_u_id' => 0,
-            'e_recipient_u_id' => 1,
-            'e_b_id' => 94,
-            'e_r_id' => 202,
-        ), 'Shervz', true )));
+
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_status >'	 => 5,
+            'u_fb_id >'	     => 0,
+            'u_id'	     => 2,
+        ));
+
+        foreach($admissions as $admission){
+            //FETCH lead instructor:
+            $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+                'ba.ba_b_id'        => $admission['r_b_id'],
+                'ba.ba_status >='   => 3, //Must be an actively assigned instructor
+            ));
+
+            //Send message asking for Feedback:
+            $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
+                'i_media_type' => 'text',
+                'i_message' => 'Hi {first_name}, we would love to collect your feedback and review for the class you took with ​​​'.$bootcamp_instructors[0]['u_fname'].' '.$bootcamp_instructors[0]['u_lname'].':',
+                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                'i_button' => '📣 Review '.$bootcamp_instructors[0]['u_fname'],
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $admission['u_id'],
+                'e_b_id' => $admission['r_b_id'],
+                'e_r_id' => $admission['r_id'],
+            ), $admission['u_fname'], true )));
+        }
+
     }
 
     function error(){
