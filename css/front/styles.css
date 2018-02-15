@@ -1514,7 +1514,16 @@ margin:5px 0;
 #modifybox input, #modifybox .input-group, #modifybox .form-control {
     background-color:#FFFFFF;
 }
-
+.form-textarea{
+    padding:5px;
+    border:0;
+    border-radius: 2px;
+    font-size:16px;
+    width:100%;
+    margin:7px 0;
+    min-height:100px;
+    line-height: 110%;
+}
 #modifybox h4, #modifybox .title{
     margin-top:0;
     padding-top:0;

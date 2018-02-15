@@ -11,11 +11,15 @@ class Bot extends CI_Controller {
 	}
 
 	function t(){
-        $udata = $this->Db_model->u_create(array(
-            'u_status' 			=> 1, //Since nothing is yet validated
-            'u_fname' 			=> 'Testing',
-            'u_fb_id' 			=> 0,
-        ));
+        $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array(echo_i(array(
+            'i_media_type' => 'text',
+            'i_message' => 'Sample text, {first_name} time to review aziz 🙈 {review}​​​​',
+            'i_url' => 'https://mench.co/my/review/437/'.substr(md5('437'.'r3vi3wS@lt'),0,6),
+            'e_initiator_u_id' => 0,
+            'e_recipient_u_id' => 1,
+            'e_b_id' => 94,
+            'e_r_id' => 202,
+        ), 'Shervz', true )));
     }
 
     function error(){

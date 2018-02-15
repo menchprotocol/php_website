@@ -109,6 +109,68 @@ class Api_v1 extends CI_Controller {
 	 * Users
 	 ****************************** */
 
+	function update_review(){
+        if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Admission Data.</div>');
+        } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Review Score must be between 1-10.</div>');
+        }
+
+        //Validate Admission:
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_id' => intval($_POST['ru_id']),
+        ));
+        if(count($admissions)<1){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => 0, //System
+                'e_message' => 'Validated review submission call failed to fetch admission data',
+                'e_type_id' => 8, //System Error
+            ));
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Unable to locate your Admission.</div>');
+        }
+
+        //Is this a new review, or updating an existing one?
+        $new_review = ( intval($admissions[0]['ru_review_score'])>0 );
+        $has_text = ( strlen($_POST['ru_review_public_note'])>0 || strlen($_POST['ru_review_private_note'])>0 );
+        $update_data = array(
+            'ru_review_time' => date("Y-m-d H:i:s"),
+            'ru_review_score' => $_POST['ru_review_score'],
+            'ru_review_public_note' => $_POST['ru_review_public_note'],
+            'ru_review_private_note' => $_POST['ru_review_private_note'],
+        );
+
+        //Save Engagement that is visible to instructor:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $admissions[0]['u_id'],
+            'e_message' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
+            'e_json' => $update_data,
+            'e_type_id' => 72, //Student Reviewed Class
+            'e_b_id' => $admissions[0]['r_b_id'],
+            'e_r_id' => $admissions[0]['r_id'],
+        ));
+
+        //Do they have a Private Feedback? Log a need attention Engagement to Mench team reads instantly:
+        if(strlen($_POST['ru_review_private_note'])>0){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $admissions[0]['u_id'],
+                'e_message' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
+                'e_json' => $update_data,
+                'e_type_id' => 9, //Support Needing Graceful Errors
+                'e_b_id' => $admissions[0]['r_b_id'],
+                'e_r_id' => $admissions[0]['r_id'],
+            ));
+        }
+
+        //Update data:
+        $this->Db_model->ru_update($admissions[0]['ru_id'], $update_data);
+
+        //Show success and thank student:
+        echo '<div class="alert alert-success">Review '.($new_review?'submitted':'updated').' 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
+
+        //TODO Encourage sharing IF reviewed highly...
+
+    }
+
     function request_password_reset(){
         //We need an email input:
         if(!isset($_POST['email'])){

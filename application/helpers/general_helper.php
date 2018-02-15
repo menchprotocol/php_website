@@ -414,7 +414,59 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $i['i_message'] = str_replace('{first_name}', trim($first_name), $i['i_message']);
         }
 
-        //Does this message also have a link?
+
+
+        //Does this message include a special command?
+        $button_url = null;
+        $button_title = null;
+        $command = null;
+
+        //Do we have any commands?
+        if(substr_count($i['i_message'],'{button}')>0 && isset($i['i_c_id']) && isset($i['e_b_id'])){
+
+            $button_title = 'Open in 🚩Action Plan';
+            $button_url = 'https://mench.co/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
+            $command = '{button}';
+
+        } elseif(substr_count($i['i_message'],'{review}')>0 && isset($i['i_url']) && strlen($i['i_url'])>0){
+
+            $button_title = '📣 Review My Instructor';
+            $button_url = $i['i_url'];
+            $command = '{review}';
+
+        } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
+
+            //Fetch salt:
+            $application_status_salt = $CI->config->item('application_status_salt');
+            //append their My Account Button/URL:
+            $button_title = '🎟️ My Bootcamp Application';
+            $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
+            $command = '{admissions}';
+
+        } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_recipient_u_id'])) {
+
+            //append their My Account Button/URL:
+            $timestamp = time();
+            $button_title = '👉 Reset Password Here';
+            $button_url = 'https://mench.co/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+            $command = '{passwordreset}';
+
+        } elseif(substr_count($i['i_message'],'{menchbot}')>0 && isset($i['e_recipient_u_id'])) {
+
+            $button_url = messenger_activation_url('381488558920384',$i['e_recipient_u_id']);
+            if ($button_url) {
+                //append their My Account Button/URL:
+                $button_title = '🤖 Activate MenchBot';
+                $command = '{menchbot}';
+            }
+
+        }
+
+
+
+
+
+        //Does this message also have a URL?
         if(isset($i['i_url']) && isset($i['i_id']) && intval($i['i_id'])>0 && strlen($i['i_url'])>0){
 
             $website = $CI->config->item('website');
@@ -448,45 +500,6 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
 
-        //Does this message include a special command?
-        $button_url = null;
-        $button_title = null;
-        $command = null;
-
-        //Do we have any commands?
-        if(substr_count($i['i_message'],'{button}')>0 && isset($i['i_c_id']) && isset($i['e_b_id'])){
-
-            $button_title = 'Open in 🚩Action Plan';
-            $button_url = 'https://mench.co/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
-            $command = '{button}';
-
-        } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
-
-            //Fetch salt:
-            $application_status_salt = $CI->config->item('application_status_salt');
-            //append their My Account Button/URL:
-            $button_title = '🎟️ My Bootcamp Application';
-            $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
-            $command = '{admissions}';
-
-        } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_recipient_u_id'])) {
-
-            //append their My Account Button/URL:
-            $timestamp = time();
-            $button_title = '👉 Reset Password Here';
-            $button_url = 'https://mench.co/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
-            $command = '{passwordreset}';
-
-        } elseif(substr_count($i['i_message'],'{menchbot}')>0 && isset($i['e_recipient_u_id'])) {
-
-            $button_url = messenger_activation_url('381488558920384',$i['e_recipient_u_id']);
-            if ($button_url) {
-                //append their My Account Button/URL:
-                $button_title = '🤖 Activate MenchBot';
-                $command = '{menchbot}';
-            }
-
-        }
 
 
         //Detect the initiator of this message and append their signature to make it clear who is talking:

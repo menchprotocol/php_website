@@ -283,7 +283,9 @@ class My extends CI_Controller {
 	    $this->load->view('front/student/my_applications' , $data);
 	    $this->load->view('front/shared/p_footer');
 	}
-	
+
+
+
 	function class_application($ru_id){
 	    
 	    //List student applications
@@ -322,5 +324,56 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_footer');
 	    
 	}
+
+
+	function review($ru_id,$ru_key){
+	    //Loadup the review system for the student's Class
+        if(!($ru_key==substr(md5($ru_id.'r3vi3wS@lt'),0,6))){
+            //There is an issue with the key, show error to user:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Review URL.</div>');
+            exit;
+        }
+
+        //Student is validated, loadup their Reivew portal:
+        $admissions = $this->Db_model->remix_admissions(array(
+            'ru.ru_id'     => $ru_id,
+        ));
+
+        //Should never happen:
+        if(count($admissions)<1){
+
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => 0, //System
+                'e_message' => 'Validated review URL failed to fetch admission data',
+                'e_type_id' => 8, //System Error
+            ));
+
+            //There is an issue with the key, show error to user:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Admission not found for placing a review.</div>');
+            exit;
+        }
+
+
+        $lead_instructor = $admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'];
+
+        //Assemble the data:
+        $data = array(
+            'title' => 'Review '.$lead_instructor.' - '.$admissions[0]['c_objective'],
+            'lead_instructor' => $lead_instructor,
+            'admission' => $admissions[0],
+            'ru_key' => $ru_key,
+            'ru_id' => $ru_id,
+        );
+
+        if(isset($_GET['raw'])){
+            echo_json($admissions[0]);
+            exit;
+        }
+
+        //Load apply page:
+        $this->load->view('front/shared/p_header' , $data);
+        $this->load->view('front/student/review_class' , $data);
+        $this->load->view('front/shared/p_footer');
+    }
 	
 }

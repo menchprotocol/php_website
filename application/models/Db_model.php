@@ -33,7 +33,8 @@ ORDER BY points DESC, ru_id ASC")->result());
 	function remix_admissions($matching_criteria){
 
 	    $admissions = $this->Db_model->ru_fetch($matching_criteria);
-	    
+
+
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
             //Fetch bootcamp:
@@ -69,7 +70,7 @@ ORDER BY points DESC, ru_id ASC")->result());
 	            't.t_ru_id' => $enrollment['ru_id'],
 	        ));
 	    }
-	    
+
 	    return $admissions;
 	}
 
