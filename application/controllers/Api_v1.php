@@ -165,7 +165,7 @@ class Api_v1 extends CI_Controller {
         $this->Db_model->ru_update($admissions[0]['ru_id'], $update_data);
 
         //Show success and thank student:
-        echo '<div class="alert alert-success">Review '.($new_review?'submitted':'updated').' 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
+        echo '<div class="alert alert-success">Thanks for '.($new_review?'submitting':'updating').' your review 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
 
         //TODO Encourage sharing IF reviewed highly...
 

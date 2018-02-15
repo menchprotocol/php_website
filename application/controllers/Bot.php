@@ -15,7 +15,6 @@ class Bot extends CI_Controller {
         $admissions = $this->Db_model->ru_fetch(array(
             'ru_status >'	 => 5,
             'u_fb_id >'	     => 0,
-            'u_id'	     => 2,
         ));
 
         foreach($admissions as $admission){
