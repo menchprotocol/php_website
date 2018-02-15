@@ -13,13 +13,16 @@
     });
 
     function update_review(){
+
         if($( "#ru_review_score" ).val()<1){
             alert('Select a score from 1-10 to save your review');
             return false;
         }
 
         //Update the review:
-        $('#save_review').html('<div style="padding-top:20px; padding-bottom:20px;"><img src="/img/round_load.gif" class="loader" /></div>');
+        $('#save_review').addClass('hidden');
+        $('#update_results').html('<div style="padding-top:20px; padding-bottom:20px;"><img src="/img/round_load.gif" class="loader" /></div>');
+
 
         //Load the frame:
         $.post("/api_v1/update_review", {
@@ -33,7 +36,7 @@
         }, function(data) {
 
             //Empty Inputs Fields if success:
-            $('#save_review').html(data);
+            $('#update_results').html(data);
 
         });
 
@@ -84,10 +87,11 @@ echo '<div style="border-bottom:2px solid #000; margin:0 0 25px;">&nbsp;</div>';
 
 
 //Show review inputs:
+echo '<div id="update_results"></div>'; //To be updated when submitted
 echo '<div id="save_review">';
 
     echo '<div class="maxout"><b><i class="fa fa-star" aria-hidden="true"></i> Review Score</b><br />From a scale of 1-10, how likely are you to recommend your Bootcamp experience to friends/family?</div>';
-    echo '<select class="form-control input-mini border" id="ru_review_score">';
+    echo '<select class="input-mini border" id="ru_review_score" style="padding:4px !important;">';
     if(!$has_reviewed){
         echo '<option value="0">Choose Score...</option>';
     }
@@ -111,6 +115,5 @@ echo '<div id="save_review">';
     echo '<br /><a href="javascript:void(0);" onclick="update_review()" class="btn btn-black">Submit Review</a>';
 
 echo '</div>';
-
 
 ?>
