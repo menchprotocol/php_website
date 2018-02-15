@@ -428,12 +428,6 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $button_url = 'https://mench.co/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
             $command = '{button}';
 
-        } elseif(substr_count($i['i_message'],'{review}')>0 && isset($i['i_url']) && strlen($i['i_url'])>0){
-
-            $button_title = '📣 Review My Instructor';
-            $button_url = $i['i_url'];
-            $command = '{review}';
-
         } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
 
             //Fetch salt:
@@ -459,6 +453,12 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 $button_title = '🤖 Activate MenchBot';
                 $command = '{menchbot}';
             }
+
+        } elseif(isset($i['i_button']) && strlen($i['i_button'])>0 && isset($i['i_url']) && strlen($i['i_url'])>0){
+
+            $button_title = trim($i['i_button']);
+            $button_url = $i['i_url'];
+            $command = '{inject_button}'; //Not used anywhere
 
         }
 

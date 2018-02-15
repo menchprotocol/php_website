@@ -2106,7 +2106,7 @@ class Api_v1 extends CI_Controller {
             //Abandoned:
             $e_type_id = 57;
         } elseif($r_update['r_status']==-1 && $r_update['r_status']!=$classes[0]['r_status']){
-            //Aerchived:
+            //Archived:
             $e_type_id = 16;
         } else {
             //Simply updated:
@@ -2116,7 +2116,7 @@ class Api_v1 extends CI_Controller {
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'], //The user
-	        'e_message' => readable_updates($classes[0],$r_update,'r_'),
+	        'e_message' => ( $e_type_id==13 ? readable_updates($classes[0],$r_update,'r_') : null ),
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => $classes[0],
@@ -2520,7 +2520,7 @@ class Api_v1 extends CI_Controller {
                 //Log engagement:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $udata['u_id'],
-                    'e_message' => readable_updates($bootcamps[0],$b_update,'b_'),
+                    'e_message' => ( $engagement_type_id==18 ? readable_updates($bootcamps[0],$b_update,'b_') : null ),
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $bootcamps[0],

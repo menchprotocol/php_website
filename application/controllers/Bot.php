@@ -13,8 +13,9 @@ class Bot extends CI_Controller {
 	function t(){
         $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array(echo_i(array(
             'i_media_type' => 'text',
-            'i_message' => 'Sample text, {first_name} time to review aziz 🙈 {review}​​​​',
+            'i_message' => 'Sample text, {first_name} time to review aziz 🙈​​​​',
             'i_url' => 'https://mench.co/my/review/437/'.substr(md5('437'.'r3vi3wS@lt'),0,6),
+            'i_button' => '📣 Review Jason',
             'e_initiator_u_id' => 0,
             'e_recipient_u_id' => 1,
             'e_b_id' => 94,
