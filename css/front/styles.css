@@ -1210,6 +1210,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	margin:0 !important;
 	padding:20px 0 !important;
 	text-align:left;
+    line-height: 120%;
 }
 
 #funnel .checkbox label {
