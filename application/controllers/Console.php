@@ -280,7 +280,7 @@ class Console extends CI_Controller {
 		//See how many applied?
         $current_applicants = count($this->Db_model->ru_fetch(array(
             'ru.ru_r_id'	    => $class['r_id'],
-            'ru.ru_status >='	=> 0, //Anyone who has started an applications
+            'ru.ru_status >='	=> 2, //Anyone who has completed their application
         )));
 		
 		$view_data = array(
@@ -295,7 +295,7 @@ class Console extends CI_Controller {
 		        ),
 		        array(
 		            'link' => null,
-		            'anchor' => time_format($class['r_start_date'],1).( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' started an application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Application'.show_s($current_applicants).'</span>' : '' ),
+		            'anchor' => time_format($class['r_start_date'],1).( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' completed their application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Application'.show_s($current_applicants).'</span>' : '' ),
 		        ),
 		    ),
 		);

@@ -19,7 +19,6 @@ $url_part_1 = $this->uri->segment(1);
 
     -->
 	<meta charset="utf-8" />
-	<meta name="robots" content="noindex">
 	<link rel="icon" type="image/png" href="/img/bp_16.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>

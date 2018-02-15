@@ -6,7 +6,6 @@ $website = $this->config->item('website');
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<meta name="robots" content="noindex">
 	<link rel="icon" type="image/png" href="/img/bp_16.png">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
@@ -17,7 +16,6 @@ $website = $this->config->item('website');
     <script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
 
 	<?php if(isset($r_fb_pixel_id) && strlen($r_fb_pixel_id)>1){ echo echo_facebook_pixel($r_fb_pixel_id,(isset($purchase_value) ? $purchase_value : 0)); } ?>
-	
 </head>
 
 <body id="funnel">
@@ -34,5 +32,4 @@ if(isset($hm) && $hm){
         echo $hm;
     }
 }
-
 ?>
