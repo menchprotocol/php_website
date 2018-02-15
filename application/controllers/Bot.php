@@ -10,34 +10,6 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-	function t(){
-
-        $admissions = $this->Db_model->ru_fetch(array(
-            'ru_status >'	 => 5,
-            'u_fb_id >'	     => 0,
-        ));
-
-        foreach($admissions as $admission){
-            //FETCH lead instructor:
-            $bootcamp_instructors = $this->Db_model->ba_fetch(array(
-                'ba.ba_b_id'        => $admission['r_b_id'],
-                'ba.ba_status >='   => 3, //Must be an actively assigned instructor
-            ));
-
-            //Send message asking for Feedback:
-            $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
-                'i_media_type' => 'text',
-                'i_message' => 'Hi {first_name}, we would love to collect your feedback and review for the class you took with ​​​'.$bootcamp_instructors[0]['u_fname'].' '.$bootcamp_instructors[0]['u_lname'].':',
-                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
-                'i_button' => '📣 Review '.$bootcamp_instructors[0]['u_fname'],
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $admission['u_id'],
-                'e_b_id' => $admission['r_b_id'],
-                'e_r_id' => $admission['r_id'],
-            ), $admission['u_fname'], true )));
-        }
-
-    }
 
     function error(){
         //This is meant to create an error to rest the log files:
