@@ -224,7 +224,7 @@ if($level>=3){
      * Task Next/Previous Buttons
      ****************************** */
     $previous_on = (isset($previous_intent['c_id']));
-    $next_on = (($class['r__current_milestone']<0 || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]))) && $next_level>1);
+    $next_on = (($class['r__current_milestone']<0 || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]) && ($next_level==3 || $next_intent['cr_outbound_rank']>=$class['r__current_milestone']))) && $next_level>1);
     if($previous_on || $next_on){
         echo '<h4><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
