@@ -2478,16 +2478,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         }
     }
 
-    //We have some messages, huh?
-    if($bootcamp_data && $starting_message_count==count($instant_messages) && in_array($bootcamp_data['level'],array(2,3))){
-
-        //Ooops no message for this Milestone:
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => 'This '.( $bootcamp_data['level']==2 ? 'milestone' : 'task' ).' has no messages from your instructor.',
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-    }
 
 
     if($bootcamp_data && $bootcamp_data['level']==2){
@@ -2597,14 +2587,6 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
                     }
                 }
 
-
-                if($starting_message_count==count($instant_messages)){
-                    //ooops no message found for this task! let the user know:
-                    array_push( $instant_messages , echo_i( array_merge( array(
-                        'i_media_type' => 'text',
-                        'i_message' => 'Oooops! This task has no messages from your instructor.',
-                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-                }
 
                 //Create custom message based on Task Completion Settings:
                 array_push( $instant_messages , echo_i( array_merge( array(
