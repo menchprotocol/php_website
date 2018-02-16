@@ -808,7 +808,7 @@ ORDER BY points DESC, ru_id ASC")->result());
                 $runs[$key]['r__total_milestones'] = 0;
                 foreach($bootcamp['c__child_intents'] as $intent) {
                     if($intent['c_status']>=1){
-                        $runs[$key]['r__milestones_due'][$intent['cr_outbound_rank']] = $runs[$key]['r__class_start_time'] + ($intent['cr_outbound_rank'] * $bootcamp['c__milestone_secs']);
+                        $runs[$key]['r__milestones_due'][$intent['cr_outbound_rank']] = $runs[$key]['r__class_start_time'] + ( ($intent['cr_outbound_rank'] + $intent['c_duration_multiplier'] - 1 ) * $bootcamp['c__milestone_secs']);
                         //Addup the totals:
                         $runs[$key]['r__last_milestone_starts'] = intval($intent['cr_outbound_rank']);
                         $runs[$key]['r__total_milestones'] += $intent['c_duration_multiplier'];
@@ -833,6 +833,19 @@ ORDER BY points DESC, ru_id ASC")->result());
                                 break;
                             }
                         }
+
+                        if(!isset($runs[$key]['r__current_milestone'])){
+                            //Did we find it? If not, report this:
+                            $this->Db_model->e_create(array(
+                                'e_message' => 'r_fetch() failed to set r__current_milestone variable ',
+                                'e_json' => $class,
+                                'e_type_id' => 8, //Platform Error
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ));
+                        }
+
+
                     } else {
                         //This will happen when there are no active milestones:
                         $runs[$key]['r__current_milestone'] = 0; //We count this as not started for now...

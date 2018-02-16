@@ -1197,7 +1197,7 @@ class Api_v1 extends CI_Controller {
                 }
             }
 
-            //Attempt to dispatch some messages:
+            //Attempt to dispatch milestone messages:
             $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
 
         } elseif($next_level==3 && isset($next_intents[0])){

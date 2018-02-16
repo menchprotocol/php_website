@@ -2345,9 +2345,23 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
         );
     } elseif($b_id){
 
-        $bootcamps = $CI->Db_model->remix_bootcamps(array(
-            'b.b_id' => $b_id,
-        ));
+        if($r_id){
+            //Fetch the copy of the Action Plan for the Class:
+            $bootcamps = fetch_action_plan_copy($b_id,$r_id);
+            $class = $bootcamps[0]['this_class'];
+
+            if(!$class){
+                //This is fishy!
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Class ID',
+                );
+            }
+        } else {
+            $bootcamps = $CI->Db_model->remix_bootcamps(array(
+                'b.b_id' => $b_id,
+            ));
+        }
 
         if(!isset($bootcamps[0])){
             return array(
@@ -2395,39 +2409,23 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     );
 
 
-    if($bootcamp_data && $bootcamp_data['level']==2 && $r_id){
+    //Is the user requesting a future Milestone?
+    if($bootcamp_data && $bootcamp_data['level']==2 && $r_id && $class['r__current_milestone']>1 && $class['r__current_milestone']<$bootcamp_data['sprint_index']){
 
-        //See if this milestone is due yet...
-        $class = filter($bootcamps[0]['c__classes'],'r_id',$r_id);
+        //This milestone is not started yet! Let the user know that they are up to date:
+        array_push( $instant_messages , echo_i( array_merge( array(
+            'i_media_type' => 'text',
+            'i_message' => 'Awesome, you completed the current Milestone. No more updates for now. I will send you a message when your next Milestone starts.',
+        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
-        if(!$class){
-            //This is fishy!
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Class ID',
-            );
-        }
+        //Send message:
+        $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
 
-        $open_date = strtotime(time_format($class['r_start_date'],2,(($bootcamp_data['sprint_index']-1) * ( $bootcamps[0]['b_sprint_unit']=='week' ? 7 : 1 ))))+(intval($class['r_start_time_mins'])*60);
-
-        if(time()<$open_date){
-
-            //Ooopsy, this milestone is not started yet! Let the user know that they are up to date:
-            array_push( $instant_messages , echo_i( array_merge( array(
-                'i_media_type' => 'text',
-                'i_message' => 'Awesome, you completed the current milestone. No more updates for now. I will send you a message when your next milestone starts.',
-            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-            //Send message:
-            $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
-
-            //Return message:
-            return array(
-                'status' => 1,
-                'message' => 'Milestone not due yet.',
-            );
-
-        }
+        //Return message:
+        return array(
+            'status' => 1,
+            'message' => 'Milestone not due yet.',
+        );
     }
 
     //This is the very first message for this milestone!
