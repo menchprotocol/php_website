@@ -63,7 +63,7 @@ $review_score_options = array(
 
 
 //Show Overview:
-echo '<div style="font-size:0.8em;">';
+echo '<div style="font-size:0.7em;">';
 
 echo '<div class="maxout" style="padding-bottom:7px;"><b>Lead Instructor</b>: <img src="'.( strlen($admission['b__admins'][0]['u_image_url'])>0 ? $admission['b__admins'][0]['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$lead_instructor.'</div>';
 if(count($admission['b__admins'])>1){
@@ -114,7 +114,7 @@ echo '<div id="save_review">';
 
     echo '</div>';
 
-    echo '<br /><a href="javascript:void(0);" onclick="update_review()" class="btn btn-black">Submit Review</a>';
+    echo '<br /><a href="javascript:void(0);" onclick="update_review()" class="btn btn-black">'.( !$has_reviewed ? 'Submit' : 'Update' ).' Review</a>';
 
 echo '</div>';
 echo '</div>';
