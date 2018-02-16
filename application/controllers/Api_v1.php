@@ -990,7 +990,7 @@ class Api_v1 extends CI_Controller {
 
 
         //Do we need to send any notifications?
-        if(strlen(trim($_POST['us_notes']))>0){
+        if(strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
 
             //Send email to all instructors of this Bootcamp:
             $bootcamp_instructors = $this->Db_model->ba_fetch(array(
