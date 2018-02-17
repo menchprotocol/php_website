@@ -1487,8 +1487,9 @@ class Cron extends CI_Controller {
         //Send reminders to students to complete their tasks:
 
         $admissions = $this->Db_model->ru_fetch(array(
-            'r.r_status'	    => 2, //Running
+            'r.r_status'	    => 2, //Running Class
             'ru.ru_status'      => 4, //Admitted Students
+            'u.u_fb_id >'       => 0, //Activated MenchBot
             'ru.ru_cache__current_milestone <= r.r_cache__current_milestone' => null, //Students that are behind
         ));
 
