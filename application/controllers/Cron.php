@@ -1489,19 +1489,19 @@ class Cron extends CI_Controller {
         $admissions = $this->Db_model->ru_fetch(array(
             'r.r_status'	    => 2, //Running
             'ru.ru_status'      => 4, //Admitted Students
-            'ru.ru_u_id'      => 1, //TODO REmove
+            'ru.ru_u_id'      => 406, //TODO REmove
             'ru.ru_cache__current_milestone <= r.r_cache__current_milestone' => null, //Students that are behind
         ));
 
         //Define the logic of these reminders
         $reminder_index = array(
             array(
-                'time_elapsed'   => 0.95,
+                'time_elapsed'   => 0.90,
                 'progress_below' => 1.00,
                 'reminder_c_id'  => 3139,
             ),
             array(
-                'time_elapsed'   => 0.80,
+                'time_elapsed'   => 0.75,
                 'progress_below' => 0.50,
                 'reminder_c_id'  => 3138,
             ),
@@ -1514,6 +1514,11 @@ class Cron extends CI_Controller {
                 'time_elapsed'   => 0.25,
                 'progress_below' => 0.10,
                 'reminder_c_id'  => 3136,
+            ),
+            array(
+                'time_elapsed'   => 0.10,
+                'progress_below' => 0.01,
+                'reminder_c_id'  => 3358,
             ),
         );
 
