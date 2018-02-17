@@ -9,23 +9,16 @@ class Db_model extends CI_Model {
 	}
 
 
-	function fetch_classmates($r_id){
+    function fetch_avg_class_completion($r_id){
         return objectToArray($this->db->query("
-SELECT ru.*, u.*, COALESCE(us.points, 0) AS points
+SELECT AVG(ru.ru_cache__completion_rate) AS cr
 FROM v5_class_students ru
 JOIN v5_users u ON u.u_id = ru.ru_u_id
-LEFT JOIN
-  (SELECT us_student_id,
-          SUM(us.us_time_estimate) AS points
-   FROM v5_user_submissions us
-   WHERE us_status >= 1
-     AND us_r_id = ".$r_id."
-   GROUP BY 1) us ON ru.ru_u_id = us.us_student_id
 WHERE ru.ru_status >= 4
   AND ru_r_id = ".$r_id."
-  AND u_fb_id > 0
-ORDER BY points DESC, ru_id ASC")->result());
+  AND u_fb_id > 0")->result());
     }
+
 	/* ******************************
 	 * Remix functions that fetch a bunch of existing data:
 	 ****************************** */
@@ -777,7 +770,6 @@ ORDER BY points DESC, ru_id ASC")->result());
             $runs[$key]['r__confirmed_admissions'] = count($this->Db_model->ru_fetch(array(
                 'ru.ru_r_id'	    => $class['r_id'],
                 'ru.ru_status >='	=> 4, //Anyone who is admitted
-                'u.u_fb_id >'	    => 0, //Activated MenchBot
             )));
 
             if($bootcamp){
@@ -888,22 +880,23 @@ ORDER BY points DESC, ru_id ASC")->result());
 	/* ******************************
 	 * Bootcamps
 	 ****************************** */
-	
-	function ru_fetch($match_columns){
-		$this->db->select('*');
-		$this->db->from('v5_class_students ru');
-		$this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
+
+    function ru_fetch($match_columns){
+        $this->db->select('*');
+        $this->db->from('v5_class_students ru');
+        $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
         $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
-		foreach($match_columns as $key=>$value){
-		    $this->db->where($key,$value);
-		}
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
 
-		//Order by sooner class first:
-        $this->db->order_by('r.r_start_date','ASC');
+        //Order by completion rate:
+        $this->db->order_by('ru.ru_cache__completion_rate','DESC');
+        $this->db->order_by('u.u_fb_id','ASC');
 
-		$q = $this->db->get();
-		return $q->result_array();
-	}
+        $q = $this->db->get();
+        return $q->result_array();
+    }
 	
 	
 	function c_fetch($match_columns, $outbound_levels=0, $append_obj=array()){

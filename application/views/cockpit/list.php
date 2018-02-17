@@ -262,11 +262,12 @@ if($object_name=='engagements'){
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
         <th>Class Start Time</th>
+        <th>&nbsp;</th>
         <th>Class End Time</th>
-        <th>Status</th>
+        <th>Elapsed</th>
+        <th>Progress</th>
         <th>Tuition</th>
-        <th>Admission Funnel</th>
-        <th>Action Plan</th>
+        <th>Student Stats</th>
     </tr>
     </thead>
     <tbody>
@@ -292,36 +293,55 @@ if($object_name=='engagements'){
 
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
-        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
+        echo '<td>';
+            echo '<a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
+        echo '</td>';
         echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
         echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
+        echo '<td>'.status_bible('r',$class['r_status'],true).'</td>';
         echo '<td>';
         if($class['r_cache__end_time']){
             echo time_format($class['r_cache__end_time'],0);
         }
+        if($bootcamps[0]['b_status']<2){
+            echo ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is Drafting which will prevent the Class from being Launched" data-placement="bottom" style="color:#FF0000;"></i>';
+        }
         echo '</td>';
+        echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';
+        if($class['r_status']==3){
+            echo '100%';
+        } elseif($class['r_status']==2){
+            echo round((time()-$class['r__class_start_time'])/($class['r__class_end_time']-$class['r__class_start_time'])*100).'%';
+        }
+        echo '</span></td>';
         echo '<td>';
-            echo status_bible('r',$class['r_status']);
-            if($bootcamps[0]['b_status']<2){
-                echo ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is Drafting which will prevent the Class from being Launched" data-placement="bottom" style="color:#FF0000;"></i>';
-            }
+        if($class['r_status']>=2){
+            //Query average completion rate for Activated students:
+            $average_completion = $this->Db_model->fetch_avg_class_completion($class['r_id']);
+            echo '<span data-toggle="tooltip" title="Average completion rate of all class students combined">'.round($average_completion[0]['cr']*100).'%</span>';
+        }
         echo '</td>';
         echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
         echo '<td>';
 
-        if($class['r_status']==3){
+        if($class['r_status']>=2){
             //Show Graduation Funnel:
             $admitted = count($this->Db_model->ru_fetch(array(
                 'r.r_id'	       => $class['r_id'],
-                'ru.ru_status >'   => 4,
+                'ru.ru_status >='   => 4,
+                'u.u_fb_id >'      => 0, //Activated is what really counts...
+            )));
+            $completed = count($this->Db_model->ru_fetch(array(
+                'r.r_id'	       => $class['r_id'],
+                'ru.ru_cache__current_milestone >'   => $class['r__total_milestones'],
                 'u.u_fb_id >'      => 0, //Activated is what really counts...
             )));
             echo '<span data-toggle="tooltip" title="Completion Rate (Total Admitted Students who Activated Messenger)">';
-            echo '<b>'.$class['r_cache__completion_rate'].'%</b> Completed ('.$admitted.')';
+            echo '<b>'.round($completed/$admitted*100).'%</b> Completed ('.$admitted.')';
             echo '</span>';
         } else {
             //Show Admission Funnel:
-            echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted/Max (Rejected)">';
+            echo '<span data-toggle="tooltip" title="Started Application -> Completed Application -> Admitted/Max Seats (Rejected)">';
             $student_funnel = array(
                 0 => count($this->Db_model->ru_fetch(array(
                     'r.r_id'	       => $class['r_id'],
@@ -344,9 +364,6 @@ if($object_name=='engagements'){
             echo '</span>';
         }
         echo '</td>';
-
-        //Does it have a cache action plan? It should if its a running Class:
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'#actionplan" target="_blank" data-toggle="tooltip" title="See the latest cache copy of the Action Plan" aria-hidden="true" data-placement="left">'.( isset($bootcamps[0]['copy_timestamp']) ? time_format($bootcamps[0]['copy_timestamp'],0) : 'None' ).'</a></td>';
 
         echo '</tr>';
     }

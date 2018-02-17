@@ -910,72 +910,66 @@ class Api_v1 extends CI_Controller {
 
     function completion_report(){
 
+	    //Validate integrity of request:
         if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
+            || !isset($_POST['page_load_time']) || !intval($_POST['page_load_time'])
+            || !isset($_POST['s_key']) || !($_POST['s_key']==md5($_POST['c_id'].$_POST['page_load_time'].'pag3l0aDSla7'.$_POST['u_id']))
             || !isset($_POST['b_id']) || intval($_POST['b_id'])<=0
             || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
             || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Inputs ID.</span>');
-        } elseif(!isset($_POST['next_c_id']) || !isset($_POST['next_level'])){
-            die('<span style="color:#FF0000;">Error: Missing next task information.</span>');
-        } elseif(!isset($_POST['page_loaded']) || (time()-intval($_POST['page_loaded']))>1800){
-            die('<span style="color:#FF0000;">Error: Page was idle for more than 30 minutes. Refresh the page and try again.</span>');
-
-            //Submission settings:
-        } elseif($_POST['require_url'] && count(extract_urls($_POST['us_notes']))<1){
-            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        } elseif($_POST['require_notes'] && strlen($_POST['us_notes'])<1){
-            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+            die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
         }
 
         //Fetch student name and details:
         $matching_admissions = $this->Db_model->ru_fetch(array(
             'ru_u_id' => intval($_POST['u_id']),
             'ru_r_id' => intval($_POST['r_id']),
-            'ru_status' => 4, //Active students can submit tasks
+            'ru_status' => 4, //Only Active students can submit tasks
         ));
 
         if(!(count($matching_admissions)==1)){
-            die('<span style="color:#FF0000;">Error: Admission not found</span>');
-        }
-
-        //Fetch intent, an easy test to pass:
-        $original_intents = $this->Db_model->c_fetch(array(
-            'c.c_id' => intval($_POST['c_id']),
-        ));
-        if(count($original_intents)<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
+            die('<span style="color:#FF0000;">Error: You can no longer submit Tasks</span>');
         }
 
 
-        //Fetch full Bootcamp/Class data for this:
+        //Fetch full Bootcamp/Class/Intent data from Action Plan copy:
         $bootcamps = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
         $focus_class = $bootcamps[0]['this_class'];
+        $intent_data = extract_level( $bootcamps[0] , intval($_POST['c_id']) );
 
 
         if(!$focus_class){
             die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
         } elseif($focus_class['r__current_milestone']<0 || $focus_class['r_status']>2){
             die('<span style="color:#FF0000;">Error: Class has ended so you can no longer mark tasks as complete.</span>');
+        } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
+            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
+        //Submission settings:
+        } elseif($intent_data['intent']['c_complete_url_required']=='t' && count(extract_urls($_POST['us_notes']))<1){
+            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        } elseif($intent_data['intent']['c_complete_notes_required']=='t' && strlen($_POST['us_notes'])<1){
+            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
         }
 
-        //Now make sure this student has not submitted this task before:
+
+        //Make sure student has not submitted this task before:
         $us_data = $this->Db_model->us_fetch(array(
             'us_student_id' => intval($_POST['u_id']),
             'us_r_id' => intval($_POST['r_id']),
             'us_c_id' => intval($_POST['c_id']),
-            'us_status' => 1,
         ));
 
-        if(count($us_data)>0){
+        if(count($us_data)>0 && $us_data[0]['us_status']==1){
             die('<span style="color:#FF0000;">Error: You have already marked this task as complete. You cannot re-submit it, but you can share updates with your instructor on MenchBot.</span>');
         }
 
-        //Fetch next intent:
-        $next_level = intval($_POST['next_level']);
-        $next_c_id = intval($_POST['next_c_id']);
-        $next_intents = $this->Db_model->c_fetch(array(
-            'c.c_id' => $next_c_id,
-        ));
+        //If we have a row that means us_status!=1, which means this is a resubmission
+        //TODO implement this once we have instructor review workflow
+        $is_resubmission = (count($us_data)>0);
+
+        //Calculate total new progress based on this new this submission:
+        $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bootcamps[0]['c__estimated_hours']) ),5);
+
 
         //Now update the DB:
         $us_data = $this->Db_model->us_create(array(
@@ -983,7 +977,7 @@ class Api_v1 extends CI_Controller {
             'us_b_id' => intval($_POST['b_id']),
             'us_r_id' => intval($_POST['r_id']),
             'us_c_id' => intval($_POST['c_id']),
-            'us_time_estimate' => $original_intents[0]['c_time_estimate'], //A snapshot of its time-estimate upon completion
+            'us_time_estimate' => $intent_data['intent']['c_time_estimate'], //A snapshot of its time-estimate upon completion, the Action Plan Copy might be updated later on...
             'us_student_notes' => trim($_POST['us_notes']),
             'us_status' => 1, //Submitted
         ));
@@ -1018,8 +1012,8 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
-                    $html_message .= '<div'.$div_style.'>Task: '.$original_intents[0]['c_objective'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($original_intents[0]['c_time_estimate'],0).'</div>';
+                    $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($intent_data['intent']['c_time_estimate'],0).'</div>';
                     $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>You can chat with this student here: <a href="'.$bootcamp_chat_url.'" target="_blank">'.$bootcamp_chat_url.'</a></div>';
@@ -1032,7 +1026,6 @@ class Api_v1 extends CI_Controller {
                 }
             }
         }
-
 
 
         //See if we need to dispatch any messages:
@@ -1059,7 +1052,7 @@ class Api_v1 extends CI_Controller {
         }
 
         //Is a Milestone Completed? Dispatch potential messages:
-        if($next_level<=2){
+        if($intent_data['next_level']<=2){
 
             //The Milestone does seem complete:
             foreach($task_messages['task_milestone']['c__messages'] as $i){
@@ -1083,7 +1076,7 @@ class Api_v1 extends CI_Controller {
             }
 
             //Is the Bootcamp Complete?
-            if($next_level==1){
+            if($intent_data['next_level']==1){
                 //Seems so!
                 foreach($bootcamps[0]['c__messages'] as $i){
                     //Bootcamps only could have ON-COMPLETE messages:
@@ -1143,31 +1136,33 @@ class Api_v1 extends CI_Controller {
         echo_us($us_data);
 
 
-        //Log Engagement for new completion:
+
+        //Log Engagement for completion:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $matching_admissions[0]['u_id'],
+            'e_initiator_u_id' => intval($_POST['u_id']),
             'e_message' => $us_data['us_student_notes'],
             'e_json' => array(
                 'input' => $_POST,
                 'scheduled_drip' => count($drip_messages),
                 'sent_oncomplete' => count($on_complete_messages),
-                'next_level' => $next_level,
-                'next_c' => ( isset($next_intents[0]) ? $next_intents[0] : array() ),
+                'next_level' => $intent_data['next_level'],
+                'next_c' => ( isset($intent_data['next_intent']) ? $intent_data['next_intent'] : array() ),
             ),
             'e_type_id' => 33, //Marked as Done Report
-            'e_b_id' => $us_data['us_b_id'], //Share with bootcamp team
-            'e_r_id' => $us_data['us_r_id'],
-            'e_c_id' => $us_data['us_c_id'],
+            'e_b_id' => intval($_POST['b_id']),
+            'e_r_id' => intval($_POST['r_id']),
+            'e_c_id' => intval($_POST['c_id']),
         ));
 
 
-        //See what the next level is...
-        if($next_level==1 && isset($next_intents[0])){
+        //Take action based on what the next level is...
+        if($intent_data['next_level']==1){
 
             //The next level is the Bootcamp, which means this was the last Task:
             $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_current_milestone' => ($focus_class['r__total_milestones']+1), //Go 1 milestone after the total milestones to indicate completion
-                'ru_current_task' => 1, //They would be at the First task of the next Milestone
+                'ru_cache__completion_rate' => $ru_cache__completion_rate, //Should be 1 (100% complete)
+                'ru_cache__current_milestone' => ($focus_class['r__total_milestones']+1), //Go 1 milestone after the total milestones to indicate completion
+                'ru_cache__current_task' => 1, //They would be at the First task of the next Milestone
             ));
 
             //Send graduation message:
@@ -1175,54 +1170,50 @@ class Api_v1 extends CI_Controller {
                 'i_media_type' => 'text',
                 'i_message' => 'Congratulations {first_name} for completing your Action Plan 🎉',
                 'e_initiator_u_id' => 0, //System/MenchBot
-                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                'e_recipient_u_id' => intval($_POST['u_id']),
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
             ), $matching_admissions[0]['u_fname'], true )));
 
 
-        } elseif($next_level==2 && isset($next_intents[0])){
+        } elseif($intent_data['next_level']==2){
 
             //We have a next milestone:
-            //We also need to change ru_current_milestone to reflect this advancement
-            //Fetch the rank of the next milestone:
-            foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                if($milestone['c_id']==$next_intents[0]['c_id']){
-                    //This is the next milestone, update the student positioning here...
-                    $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                        'ru_current_milestone' => $milestone['cr_outbound_rank'],
-                        'ru_current_task' => 1, //They would be at the First task of the next Milestone
-                    ));
-                    break;
-                }
-            }
+            //We also need to change ru_cache__current_milestone to reflect this advancement:
+            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                'ru_cache__completion_rate' => $ru_cache__completion_rate,
+                'ru_cache__current_milestone' => $intent_data['next_intent']['cr_outbound_rank'],
+                'ru_cache__current_task' => 1, //They would be at the First task of the next Milestone
+            ));
 
             //Attempt to dispatch milestone messages:
-            $message_result = tree_message($next_intents[0]['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+            $message_result = tree_message($intent_data['next_intent']['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
 
-        } elseif($next_level==3 && isset($next_intents[0])){
+            //TODO Show option to close window and see messages that have been sent in the Background?
 
-            //Find the Task:
-            foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                if($milestone['c_status']>=1){
-                    foreach($milestone['c__child_intents'] as $task){
-                        if($task['c_id']==$next_intents[0]['c_id']){
-                            //This is the next milestone, update the student positioning here...
-                            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                                'ru_current_task' => $task['cr_outbound_rank'],
-                            ));
-                            break;
-                        }
-                    }
-                }
-            }
+        } elseif($intent_data['next_level']==3){
+
+            //This is the next Task, update the student positioning here...
+            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                'ru_cache__completion_rate' => $ru_cache__completion_rate,
+                'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
+            ));
 
             //Show button for next task:
-            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$us_data['us_b_id'].'/'.$next_c_id.'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
+            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
 
         } else {
 
             //This should not happen!
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $_POST['u_id'],
+                'e_message' => 'completion_report() experienced fatal error where $intent_data/next_level was not 1,2 or 3',
+                'e_json' => $_POST,
+                'e_type_id' => 8, //Platform Error
+                'e_b_id' => $_POST['b_id'],
+                'e_r_id' => $_POST['r_id'],
+                'e_c_id' => $_POST['c_id'],
+            ));
 
         }
     }
@@ -1349,28 +1340,31 @@ class Api_v1 extends CI_Controller {
             }
 
             //Set some settings:
-            $loadboard_students = $this->Db_model->fetch_classmates($class['r_id']);
+            $class_filters = array(
+                'ru_r_id' => $class['r_id'],
+                'ru_status >=' => 4,
+            );
+            if(!$is_instructor){
+                //Students should only see Activated students, so filter the non-activated students out:
+                $class_filters['u_fb_id >'] = 0;
+            }
+            $loadboard_students = $this->Db_model->ru_fetch($class_filters);
             $countries_all = $this->config->item('countries_all');
             $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
-            $show_ranking_top = ceil(count($loadboard_students) * $show_top );
 
-
-            //Are we started? If so, we can calculate the total point:
-            $points_awarded = ($class['r__current_milestone']<0 || $class['r__current_milestone']>=1);
-            $possible_points = 0;
-            if($points_awarded){
-                //Calculate how many total points was possible for this completed or mid-way class:
-                foreach($bootcamp['c__child_intents'] as $milestone) {
-                    if($milestone['c_status']>=1){
-                        //Now go through all the tasks:
-                        foreach($milestone['c__child_intents'] as $task) {
-                            if($task['c_status']>=1 && !($task['c_complete_is_bonus_task']=='t')){
-                                $possible_points += $task['c_time_estimate'];
-                            }
-                        }
-                    }
-                }
+            if(!$is_instructor){
+                //Because we never fetched them!
+                $inactive_students = 0;
+            } else {
+                //We have fetched them, count them so the top ranking counts are synced for both the instructor and student view
+                $inactive_students = count($this->Db_model->ru_fetch(array(
+                    'ru_r_id' => $class['r_id'],
+                    'ru_status >=' => 4,
+                    'u_fb_id IS NULL' => null,
+                )));
             }
+
+            $show_ranking_top = ceil((count($loadboard_students)-$inactive_students) * $show_top );
 
             echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
@@ -1396,7 +1390,12 @@ class Api_v1 extends CI_Controller {
 
             //Now its header:
             echo '<tr style="font-weight:bold; font-size:0.8em;">';
-            echo '<td style="border:1px solid #999; border-right:none; width:38px;">Rank</td>';
+            if($is_instructor){
+                echo '<td style="border:1px solid #999; border-right:none; width:38px;">#</td>';
+                echo '<td style="border:1px solid #999; border-left:none; border-right:none; width:43px;">Rank</td>';
+            } else {
+                echo '<td style="border:1px solid #999; border-right:none; width:50px;">Rank</td>';
+            }
             echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; padding-left:30px;">Student</td>';
             echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:90px;">Progress</td>';
             if($is_instructor){
@@ -1413,22 +1412,29 @@ class Api_v1 extends CI_Controller {
                 $rank = 1; //Keeps track of student rankings, which is equal if points are equal
                 $counter = 0; //Keeps track of student counts
                 $bborder = '';
+                $none_activated_shown = false;
 
-                foreach($loadboard_students as $key=>$ls){
+                foreach($loadboard_students as $key=>$admission){
 
                     if($show_ranking_top==$counter){
                         echo '<tr>';
                         echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;"><span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all tasks by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span></td>';
                         echo '</tr>';
                     }
+                    if(!$none_activated_shown && $is_instructor && !$admission['u_fb_id']){
+                        echo '<tr>';
+                        echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;"><span>Messenger Not Yet Activated</span></td>';
+                        echo '</tr>';
+                        $none_activated_shown = true;
+                    }
 
                     $counter++;
-                    if($key>0 && ($ls['points']<$loadboard_students[($key-1)]['points'] || $ls['points']==0)){
+                    if($key>0 && $admission['ru_cache__completion_rate']<$loadboard_students[($key-1)]['ru_cache__completion_rate']){
                         $rank++;
                     }
 
                     //Should we show this ranking?
-                    $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$ls['u_id']) || $counter<=$show_ranking_top);
+                    $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top);
 
                     if(!isset($loadboard_students[($key+1)])){
                         //This is the last item, add a botton border:
@@ -1436,29 +1442,39 @@ class Api_v1 extends CI_Controller {
                     }
 
                     echo '<tr>';
-                    echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;" title="Student #'.$counter.'">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
+                    if($is_instructor){
+                        echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.$counter.'</td>';
+                        echo '<td valign="top" style="'.$bborder.'vertical-align:top; text-align:center; vertical-align:top;">'.( $ranking_visible && $admission['u_fb_id'] ? echo_rank($rank) : '' ).'</td>';
+                    } else {
+                        echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
+                    }
+
                     echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
-                    $student_name = '<img src="'.( strlen($ls['u_image_url'])>0 ? $ls['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$ls['u_fname'].' '.$ls['u_lname'];
+                    $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_fname'].' '.$admission['u_lname'];
 
 
-                    if(!$is_instructor) {
+                    if(!$is_instructor || !$admission['u_fb_id']) {
+
+                        if(!$admission['u_fb_id']){
+                            echo '<i class="fa fa-mobile" aria-hidden="true" data-toggle="tooltip" title="Messenger Not Yet Activated. Student Hidden from other Students until activated." style="color:#FF0000;"></i> ';
+                        }
 
                         //Show basic list for students:
                         echo $student_name;
 
                     } else {
 
-                        echo '<a href="javascript:view_el('.$ls['u_id'].','.$bootcamp['c_id'].')" class="plain">';
-                        echo '<i class="pointer fa fa-caret-right" id="pointer_'.$ls['u_id'].'_'.$bootcamp['c_id'].'" aria-hidden="true"></i> ';
+                        echo '<a href="javascript:view_el('.$admission['u_id'].','.$bootcamp['c_id'].')" class="plain">';
+                        echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$bootcamp['c_id'].'" aria-hidden="true"></i> ';
                         echo $student_name;
                         echo '</a>';
 
-                        echo '<div style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" id="c_el_'.$ls['u_id'].'_'.$bootcamp['c_id'].'" class="hidden">';
+                        echo '<div style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" id="c_el_'.$admission['u_id'].'_'.$bootcamp['c_id'].'" class="hidden">';
 
                         //Fetch student submissions so far:
                         $us_data = $this->Db_model->us_fetch(array(
                             'us_r_id' => $class['r_id'],
-                            'us_student_id' => $ls['u_id'],
+                            'us_student_id' => $admission['u_id'],
                         ));
 
                         //Go through all the milestones that are due up to now:
@@ -1508,15 +1524,15 @@ class Api_v1 extends CI_Controller {
                                         $task_details .= '</div>';
 
                                         //Now show the task submission details:
-                                        $task_details .= '<a href="javascript:view_el('.$ls['u_id'].','.$task['c_id'].')" class="plain">';
-                                        $task_details .= '<i class="pointer fa fa-caret-right" id="pointer_'.$ls['u_id'].'_'.$task['c_id'].'" aria-hidden="true"></i> ';
+                                        $task_details .= '<a href="javascript:view_el('.$admission['u_id'].','.$task['c_id'].')" class="plain">';
+                                        $task_details .= '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$task['c_id'].'" aria-hidden="true"></i> ';
                                         $task_details .= status_bible('us',$us_task_status,1,'right');
                                         $task_details .= ' <span data-toggle="tooltip" title="'.str_replace('"', "", str_replace("'", "", $task['c_objective'])).'">Task '.$task['cr_outbound_rank'].'</span>';
 
                                         $task_details .= ( isset($us_data[$task['c_id']]) ? ' ' . ( strlen($us_data[$task['c_id']]['us_student_notes'])>0 ? ' <i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" title="Submission has notes"></i>' : '' ) : '' );
                                         $task_details .= '</a>';
 
-                                        $task_details .= '<div id="c_el_'.$ls['u_id'].'_'.$task['c_id'].'" class="hidden" style="margin-left:5px;">';
+                                        $task_details .= '<div id="c_el_'.$admission['u_id'].'_'.$task['c_id'].'" class="hidden" style="margin-left:5px;">';
 
                                         if(isset($us_data[$task['c_id']])){
                                             $task_details .= '<div style="width:280px; overflow:hidden; font-size:0.9em; padding:5px; border:1px solid #999;">'.( strlen($us_data[$task['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$task['c_id']]['us_student_notes']) : 'Notes not added.' ).'</div>';
@@ -1547,8 +1563,8 @@ class Api_v1 extends CI_Controller {
 
                                 //Now its content:
                                 echo '<div>';
-                                echo '<a href="javascript:view_el('.$ls['u_id'].','.$milestone['c_id'].')" class="plain">';
-                                echo '<i class="pointer fa fa-caret-right" id="pointer_'.$ls['u_id'].'_'.$milestone['c_id'].'" aria-hidden="true"></i> ';
+                                echo '<a href="javascript:view_el('.$admission['u_id'].','.$milestone['c_id'].')" class="plain">';
+                                echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$milestone['c_id'].'" aria-hidden="true"></i> ';
                                 echo '<span data-toggle="tooltip" title="'.str_replace('"', "", str_replace("'", "", $milestone['c_objective'])).'">'.status_bible('us',$us_milestone_status,1,'right').' '.ucwords($bootcamp['b_sprint_unit']).' '.$milestone['cr_outbound_rank'].( $milestone['c_duration_multiplier']>1 ? '-'.($milestone['cr_outbound_rank']+$milestone['c_duration_multiplier']-1) : '' ).'</span>';
                                 echo '</a>';
 
@@ -1558,7 +1574,7 @@ class Api_v1 extends CI_Controller {
 
                                 echo '</div>';
 
-                                echo '<div id="c_el_'.$ls['u_id'].'_'.$milestone['c_id'].'" style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" class="hidden">';
+                                echo '<div id="c_el_'.$admission['u_id'].'_'.$milestone['c_id'].'" style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" class="hidden">';
                                 echo $task_details;
                                 echo '</div>';
 
@@ -1571,7 +1587,7 @@ class Api_v1 extends CI_Controller {
 
 
                     //Progress, Milestone & Tasks:
-                    if($ls['ru_current_milestone']>$class['r__total_milestones']){
+                    if($admission['ru_cache__current_milestone']>$class['r__total_milestones']){
                         //They have completed it all, show them as winners!
                         echo '<td valign="top" colspan="'.($is_instructor?'3':'1').'" style="'.$bborder.'text-align:left; vertical-align:top;">';
                         echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">WINNER</span>';
@@ -1580,11 +1596,7 @@ class Api_v1 extends CI_Controller {
                         //Progress:
                         echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
                         if($ranking_visible){
-                            if($possible_points>0){
-                                echo '<span title="'.$ls['points'].'/'.$possible_points.'">'.round( $ls['points']/$possible_points*100 ).'%</span>';
-                            } else {
-                                echo '---';
-                            }
+                            echo '<span>'.round( $admission['ru_cache__completion_rate']*100 ).'%</span>';
                         }
                         echo '</td>';
 
@@ -1592,7 +1604,7 @@ class Api_v1 extends CI_Controller {
                             //Milestone:
                             echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
                             if($ranking_visible){
-                                echo $ls['ru_current_milestone'];
+                                echo $admission['ru_cache__current_milestone'];
                             }
                             echo '</td>';
 
@@ -1600,7 +1612,7 @@ class Api_v1 extends CI_Controller {
                             //Task:
                             echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
                             if($ranking_visible){
-                                echo $ls['ru_current_task'];
+                                echo $admission['ru_cache__current_task'];
                             }
                             echo '</td>';
                         }
@@ -1608,7 +1620,7 @@ class Api_v1 extends CI_Controller {
 
 
 
-                    echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top; border-right:1px solid #999;">'.( isset($countries_all[strtoupper($ls['u_country_code'])]) ? '<img data-toggle="tooltip" data-placement="left" title="'.$countries_all[strtoupper($ls['u_country_code'])].'" src="/img/flags/'.strtolower($ls['u_country_code']).'.png" class="flag" style="margin-top:-3px;" />' : '' ).'</td>';
+                    echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top; border-right:1px solid #999;">'.( isset($countries_all[strtoupper($admission['u_country_code'])]) ? '<img data-toggle="tooltip" data-placement="left" title="'.$countries_all[strtoupper($admission['u_country_code'])].'" src="/img/flags/'.strtolower($admission['u_country_code']).'.png" class="flag" style="margin-top:-3px;" />' : '' ).'</td>';
 
                     echo '</tr>';
 

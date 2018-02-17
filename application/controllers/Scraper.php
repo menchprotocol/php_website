@@ -320,7 +320,7 @@ class Scraper extends CI_Controller {
 
         $to_print = $this->Db_model->u_fetch(array(
             'u_status' => 2,
-            'u_fb_id < ' => 1,
+            'u_fb_id IS NULL' => null,
         ));
 
         header("Content-type: application/octet-stream");

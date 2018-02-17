@@ -1,3 +1,4 @@
+<?php $page_load_time = time(); ?>
 <script>
 
 function mark_done(){
@@ -19,16 +20,13 @@ function mark_done(){
 	//Save the rest of the content:
 	$.post("/api_v1/completion_report", {
 
-		page_loaded:<?= time() ?>,
+        page_load_time:<?= $page_load_time ?>,
 		us_notes:us_notes,
-		u_id:$('#u_id').val(),
+        u_id:$('#u_id').val(),
+        s_key:$('#s_key').val(),
 		b_id:$('#b_id').val(),
 		r_id:$('#r_id').val(),
         c_id:$('#c_id').val(),
-        next_c_id: <?= ( isset($next_intent['c_id']) ? intval($next_intent['c_id']) : 0 ) ?>,
-        next_level: <?= ( isset($next_level) ? intval($next_level) : 0 ) ?>,
-        require_notes:<?= ( $intent['c_complete_notes_required']=='t' ? 1 : 0 ) ?>,
-        require_url:<?= ( $intent['c_complete_url_required']=='t' ? 1 : 0 ) ?>,
 
 	} , function(data) {
 		//Update UI to confirm with user:
@@ -53,10 +51,11 @@ function start_report(){
 
 </script>
 
-<input type="hidden" id="u_id" value="<?= $admission['u_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $admission['b_id'] ?>" />
 <input type="hidden" id="r_id" value="<?= $admission['r_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $intent['c_id'] ?>" />
+<input type="hidden" id="u_id" value="<?= $admission['u_id'] ?>" />
+<input type="hidden" id="s_key" value="<?= md5($intent['c_id'].$page_load_time.'pag3l0aDSla7'.$admission['u_id']) ?>" />
 
 <?php
 

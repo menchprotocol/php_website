@@ -265,6 +265,372 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
+    function next_milestone(){
+
+        //Cron Settings: 0,30 * * * *
+        //Moves the class from one milestone to another, Only applicable for the 2nd milesone or higher
+        //Also closes a Class if all Milestones are done...
+        //The first milestone is triggered with the class_kickstart() cron function above
+
+        $running_classes = $this->Db_model->r_fetch(array(
+            'r_status' => 2, //Only running classes
+        ));
+
+        //Cron stats file so we know what happened in each run...
+        $stats = array();
+
+        foreach($running_classes as $class){
+
+            //Fetch full Bootcamp/Class data for this:
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bootcamps[0]['this_class'];
+
+            //Where is the class at now?
+            if($class['r__current_milestone']<0){
+
+                //Class has ended, take necessary actions here:
+                //All good, ove on to dispatch phase...
+                //Fetch all the class students, and see which ones advance to this new milestone:
+                $accepted_admissions = $this->Db_model->ru_fetch(array(
+                    'ru.ru_r_id'	    => $class['r_id'],
+                    'ru.ru_status'	    => 4, //Admitted students
+                ));
+
+                if(count($accepted_admissions)==0){
+
+                    //Ooops, this is an error that should not happen, log engagemeng:
+                    $this->Db_model->e_create(array(
+                        'e_message' => 'ERROR: Class ended with 0 admitted students',
+                        'e_json' => $bootcamps[0],
+                        'e_type_id' => 8, //Platform Error
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
+
+                    //Show in Cron stats:
+                    $stats[$class['r_id']] = 'Class ended without any admitted students';
+
+                } else {
+
+                    //Do a count for stat reporting:
+                    $completion_stats = array(
+                        'completed' => array(),
+                        'incomplete_activated' => array(),
+                        'incomplete_inactive' => array(),
+                    );
+
+                    //Loop through students to see how did everyone do:
+                    foreach($accepted_admissions as $admission){
+                        //See where the student is at, did they finish the previous milestone?
+                        if($admission['u_fb_id']>0 && $admission['ru_cache__current_milestone']>$class['r__total_milestones']){
+                            array_push($completion_stats['completed'],$admission);
+                        } elseif($admission['u_fb_id']>0) {
+                            array_push($completion_stats['incomplete_activated'],$admission);
+                        } else {
+                            //Nothing we would do with these students, only for statistics purposes:
+                            array_push($completion_stats['incomplete_inactive'],$admission);
+                        }
+                    }
+
+                    //How did the class do overall?
+                    $qualified_students = count($accepted_admissions) - count($completion_stats['incomplete_inactive']);
+                    if($qualified_students<=0){
+                        //All students did not activate!
+                        $r_cache__completion_rate = 0;
+                    } else {
+                        $r_cache__completion_rate = number_format((count($completion_stats['completed']) / $qualified_students),5);
+                    }
+
+                    $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array());
+
+
+                    //Fetch all Instructors:
+                    $bootcamp_instructors = $this->Db_model->ba_fetch(array(
+                        'ba.ba_b_id'        => $class['r_b_id'],
+                        'ba.ba_status >='   => 1, //Must be an actively assigned instructor
+                        'u.u_status >='     => 1, //Must be a user level 1 or higher
+                        'u.u_fb_id >'	    => 0, //Activated MenchBot
+                    ));
+
+                    //Construct the review message and button:
+                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$bootcamp_instructors[0]['u_fname'].' '.$bootcamp_instructors[0]['u_lname'].' and help improve future Classes:';
+                    $review_button = '📣 Review '.$bootcamp_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
+
+
+                    //Graduate Students:
+                    foreach($completion_stats['completed'] as $admission){
+
+                        //Send message:
+                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => 'Congratulations {first_name} for completing all Milestones of your '.$bootcamps[0]['c_objective'].' Bootcamp on-time 🎉​​​',
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $review_message,
+                                'i_button' => $review_button,
+                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                        ));
+
+
+                        //Adjust status in admissions table:
+                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                            'ru_status' => 7, //Graduate
+                        ));
+
+                        //Log Engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_json' => $admission,
+                            'e_type_id' => 64, //Student Graduated
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
+
+                    }
+
+                    //Incomplete & Activated Students:
+                    foreach($completion_stats['incomplete_activated'] as $admission){
+
+                        //Send message:
+                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => '{first_name} your class just ended and you can no longer submit Tasks. Sorry to see that you were not able to complete all Milestones on-time 🙈​​​​',
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                            echo_i(array(
+                                'i_media_type' => 'text',
+                                'i_message' => $review_message,
+                                'i_button' => $review_button,
+                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ), $admission['u_fname'], true ),
+                        ));
+
+
+                        //Adjust status in admissions table:
+                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                            'ru_status' => 6, //Incomplete
+                        ));
+
+                        //Log Engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
+                            'e_type_id' => 71, //Student Incomplete Class
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
+
+                    }
+
+                    //Incomplete & Inactive Students:
+                    foreach($completion_stats['incomplete_inactive'] as $admission){
+
+                        //Adjust status in admissions table:
+                        $this->Db_model->ru_update( $admission['ru_id'] , array(
+                            'ru_status' => 6, //Incomplete
+                        ));
+
+                        //Log Engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
+                            'e_type_id' => 71, //Student Incomplete Class
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
+
+                    }
+
+
+                    //Update Class:
+                    $this->Db_model->r_update( $class['r_id'] , array(
+                        'r_status' => 3, //Completed
+                        'r_cache__current_milestone' => -1, //meaning its now complete
+                        'r_cache__completion_rate' => $r_cache__completion_rate,
+                    ));
+
+
+                    //Log Engagement:
+                    $industry_completion = 0.10; //Like Udemy, etc...
+                    $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.$qualified_students.'], you helped ['.count($completion_stats['completed']).'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
+
+                    //Log Engagement for Class Completion:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => 0, //System
+                        'e_message' => $completion_message,
+                        'e_type_id' => 69, //Class Completed
+                        'e_json' => $accepted_admissions,
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
+
+                    //Send message to instructor team:
+                    foreach($bootcamp_instructors as $u){
+                        //Send this message & log sent engagement using the echo_i() function:
+                        $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
+                            'i_media_type' => 'text',
+                            'i_message' => $completion_message,
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $u['u_id'],
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ), $u['u_fname'], true )));
+                    }
+
+                    //Show in Cron stats:
+                    $stats[$class['r_id']] = $completion_message;
+
+                }
+
+            } elseif($class['r__current_milestone']<=1){
+
+                //Should never be 0 (meaning not started) as r_status=2 (means it must have started)
+                //ALso if its 1, it means its still at the first milestone, nothing we need to do here...
+                $stats[$class['r_id']] = 'Skipped. Class has not passed its first week yet.';
+
+            } elseif($class['r__current_milestone']<$class['r_cache__current_milestone']){
+
+                //This should not happen as it means the Class has somehow gone backwards, log error:
+                $this->Db_model->e_create(array(
+                    'e_message' => 'Class seems to be moving backwards as current Milestone is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']',
+                    'e_json' => $bootcamps[0],
+                    'e_type_id' => 8, //Platform Error
+                    'e_b_id' => $class['r_b_id'],
+                    'e_r_id' => $class['r_id'],
+                ));
+
+            } elseif($class['r__current_milestone']==$class['r_cache__current_milestone']){
+
+                //Still during the current milestone
+                $stats[$class['r_id']] = 'Already up-to-date. Current Milestone is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']';
+
+            } elseif($class['r__current_milestone']>$class['r_cache__current_milestone']){
+
+                //We have advanced since the DB:
+                //r__current_milestone (real) milestone is 2 or higher
+                //First the c_id of the milestone to dispatch its messages:
+                $new_milestone_c_id = 0;
+                foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                    if($milestone['c_status']>=1 && $milestone['cr_outbound_rank']==$class['r__current_milestone']){
+                        //Gotcha, this is it!
+                        $new_milestone_c_id = $milestone['c_id'];
+                        break;
+                    }
+                }
+
+                if(!$new_milestone_c_id){
+
+                    //OOps, this should not happen, notify admin:
+                    $stats[$class['r_id']] = 'ERROR: Could not find new Milestone c_id with r__current_milestone = cr_outbound_rank = ['.$class['r__current_milestone'].']';
+
+                    //Log Error engagement:
+                    $this->Db_model->e_create(array(
+                        'e_message' => $stats[$class['r_id']],
+                        'e_json' => $bootcamps[0],
+                        'e_type_id' => 8, //Platform Error
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
+
+                } else {
+
+                    //All good, ove on to dispatch phase...
+                    //Fetch all the class students, and see which ones advance to this new milestone:
+                    $accepted_admissions = $this->Db_model->ru_fetch(array(
+                        'ru.ru_r_id'	    => $class['r_id'],
+                        'ru.ru_status'	    => 4, //Admitted students
+                        'u.u_fb_id >'	    => 0, //MenchBot Activated ONLY, otherwise they should be activated to join these communications
+                    ));
+
+                    if(count($accepted_admissions)>0){
+
+                        //Do a count for stat reporting:
+                        $ontime = 0;
+                        $behind = array();
+
+                        //Loop through students:
+                        foreach($accepted_admissions as $admission){
+                            //See where the student is at, did they finish the previous milestone?
+                            if($admission['ru_cache__current_milestone']>=$class['r__current_milestone']){
+
+                                $ontime++;
+
+                                //Yes, they are up to date:
+                                tree_message($new_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
+
+                            } else {
+
+                                //We do the message later to include the total number of students who advanced:
+                                array_push($behind,$admission);
+
+                            }
+                        }
+
+                        if(count($behind)>0){
+                            foreach($behind as $admission){
+                                //Ooops, they have yet not finished, notify them that class has moved on:
+                                $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
+                                    'i_media_type' => 'text',
+                                    'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$bootcamps[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$bootcamps[0]['b_sprint_unit'].' '.$admission['ru_cache__current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
+                                    'e_initiator_u_id' => 0,
+                                    'e_recipient_u_id' => $admission['u_id'],
+                                    'e_b_id' => $class['r_b_id'],
+                                    'e_r_id' => $class['r_id'],
+                                ), $admission['u_fname'], true )));
+                            }
+                        }
+
+                        //Update new status to classes:
+                        $this->Db_model->r_update( $class['r_id'] , array('r_cache__current_milestone' => $class['r__current_milestone']));
+
+                        //Append message to stats:
+                        $stats[$class['r_id']] = 'Moved from ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r_cache__current_milestone'].'] to ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r__current_milestone'].'] with ['.$ontime.' ON-TIME] and ['.count($behind).' BEHIND] students';
+
+                        //Log Engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => 0, //System
+                            'e_message' => $stats[$class['r_id']],
+                            'e_json' => array(
+                                'bootcamp' => $bootcamps[0],
+                                'accepted_admissions' => $accepted_admissions,
+                            ),
+                            'e_type_id' => 61, //Class Milestone Advanced
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                            'e_c_id' => $new_milestone_c_id,
+                        ));
+
+                    }
+                }
+            }
+        }
+
+        //Show cron summary:
+        echo_json($stats);
+    }
+
     function drip(){
 
         //Cron Settings: */5 * * * *
@@ -577,7 +943,7 @@ class Cron extends CI_Controller {
 
                             if($class['r__current_milestone']>=2){
                                 //Since we're at Week 2, we only need to send these Drip messages to students who have reached this week:
-                                $fetch_filters['ru.ru_current_milestone >='] = $class['r__current_milestone'];
+                                $fetch_filters['ru.ru_cache__current_milestone >='] = $class['r__current_milestone'];
                             }
 
                             $milestone_students = $this->Db_model->ru_fetch($fetch_filters);
@@ -629,372 +995,6 @@ class Cron extends CI_Controller {
 
         //Show results:
         echo_json($results);
-    }
-
-    function next_milestone(){
-
-        //Cron Settings: 0,30 * * * *
-        //Moves the class from one milestone to another, Only applicable for the 2nd milesone or higher
-        //Also closes a Class if all Milestones are done...
-        //The first milestone is triggered with the class_kickstart() cron function above
-
-        $running_classes = $this->Db_model->r_fetch(array(
-            'r_status' => 2, //Only running classes
-        ));
-
-        //Cron stats file so we know what happened in each run...
-        $stats = array();
-
-        foreach($running_classes as $class){
-
-            //Fetch full Bootcamp/Class data for this:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $bootcamps[0]['this_class'];
-
-            //Where is the class at now?
-            if($class['r__current_milestone']<0){
-
-                //Class has ended, take necessary actions here:
-                //All good, ove on to dispatch phase...
-                //Fetch all the class students, and see which ones advance to this new milestone:
-                $accepted_admissions = $this->Db_model->ru_fetch(array(
-                    'ru.ru_r_id'	    => $class['r_id'],
-                    'ru.ru_status'	    => 4, //Admitted students
-                ));
-
-                if(count($accepted_admissions)==0){
-
-                    //Ooops, this is an error that should not happen, log engagemeng:
-                    $this->Db_model->e_create(array(
-                        'e_message' => 'ERROR: Class ended with 0 admitted students',
-                        'e_json' => $bootcamps[0],
-                        'e_type_id' => 8, //Platform Error
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
-
-                    //Show in Cron stats:
-                    $stats[$class['r_id']] = 'Class ended without any admitted students';
-
-                } else {
-
-                    //Do a count for stat reporting:
-                    $completion_stats = array(
-                        'completed' => array(),
-                        'incomplete_activated' => array(),
-                        'incomplete_inactive' => array(),
-                    );
-
-                    //Loop through students to see how did everyone do:
-                    foreach($accepted_admissions as $admission){
-                        //See where the student is at, did they finish the previous milestone?
-                        if($admission['u_fb_id']>0 && $admission['ru_current_milestone']>$class['r__total_milestones']){
-                            array_push($completion_stats['completed'],$admission);
-                        } elseif($admission['u_fb_id']>0) {
-                            array_push($completion_stats['incomplete_activated'],$admission);
-                        } else {
-                            //Nothing we would do with these students, only for statistics purposes:
-                            array_push($completion_stats['incomplete_inactive'],$admission);
-                        }
-                    }
-
-                    //How did the class do overall?
-                    $qualified_students = count($accepted_admissions) - count($completion_stats['incomplete_inactive']);
-                    if($qualified_students<=0){
-                        //All students did not activate!
-                        $r_cache__completion_rate = 0;
-                    } else {
-                        $r_cache__completion_rate = round(count($completion_stats['completed']) / $qualified_students *100);
-                    }
-
-                    $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array());
-
-
-                    //Fetch all Instructors:
-                    $bootcamp_instructors = $this->Db_model->ba_fetch(array(
-                        'ba.ba_b_id'        => $class['r_b_id'],
-                        'ba.ba_status >='   => 1, //Must be an actively assigned instructor
-                        'u.u_status >='     => 1, //Must be a user level 1 or higher
-                        'u.u_fb_id >'	    => 0, //Activated MenchBot
-                    ));
-
-                    //Construct the review message and button:
-                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$bootcamp_instructors[0]['u_fname'].' '.$bootcamp_instructors[0]['u_lname'].' and help improve future Classes:';
-                    $review_button = '📣 Review '.$bootcamp_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
-
-
-                    //Graduate Students:
-                    foreach($completion_stats['completed'] as $admission){
-
-                        //Send message:
-                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => 'Congratulations {first_name} for completing all Milestones of your '.$bootcamps[0]['c_objective'].' Bootcamp on-time 🎉​​​',
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $review_message,
-                                'i_button' => $review_button,
-                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                        ));
-
-
-                        //Adjust status in admissions table:
-                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                            'ru_status' => 7, //Graduate
-                        ));
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_json' => $admission,
-                            'e_type_id' => 64, //Student Graduated
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
-                    }
-
-                    //Incomplete & Activated Students:
-                    foreach($completion_stats['incomplete_activated'] as $admission){
-
-                        //Send message:
-                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => '{first_name} your class just ended and you can no longer submit Tasks. Sorry to see that you were not able to complete all Milestones on-time 🙈​​​​',
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $review_message,
-                                'i_button' => $review_button,
-                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                        ));
-
-
-                        //Adjust status in admissions table:
-                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                            'ru_status' => 6, //Incomplete
-                        ));
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
-                            'e_type_id' => 71, //Student Incomplete Class
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
-                    }
-
-                    //Incomplete & Inactive Students:
-                    foreach($completion_stats['incomplete_inactive'] as $admission){
-
-                        //Adjust status in admissions table:
-                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                            'ru_status' => 6, //Incomplete
-                        ));
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
-                            'e_type_id' => 71, //Student Incomplete Class
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
-                    }
-
-
-                    //Update Class:
-                    $this->Db_model->r_update( $class['r_id'] , array(
-                        'r_status' => 3, //Completed
-                        'r_cache__current_milestone' => -1, //meaning its now complete
-                        'r_cache__completion_rate' => $r_cache__completion_rate,
-                    ));
-
-
-                    //Log Engagement:
-                    $industry_completion = 10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.$r_cache__completion_rate.'%] completion rate. From the total students of ['.$qualified_students.'], you helped ['.count($completion_stats['completed']).'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.$industry_completion.'% 🎉🎉🎉​' : '' );
-
-                    //Log Engagement for Class Completion:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => 0, //System
-                        'e_message' => $completion_message,
-                        'e_type_id' => 69, //Class Completed
-                        'e_json' => $accepted_admissions,
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
-
-                    //Send message to instructor team:
-                    foreach($bootcamp_instructors as $u){
-                        //Send this message & log sent engagement using the echo_i() function:
-                        $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
-                            'i_media_type' => 'text',
-                            'i_message' => $completion_message,
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $u['u_id'],
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ), $u['u_fname'], true )));
-                    }
-
-                    //Show in Cron stats:
-                    $stats[$class['r_id']] = $completion_message;
-
-                }
-
-            } elseif($class['r__current_milestone']<=1){
-
-                //Should never be 0 (meaning not started) as r_status=2 (means it must have started)
-                //ALso if its 1, it means its still at the first milestone, nothing we need to do here...
-                $stats[$class['r_id']] = 'Skipped. Class has not passed its first week yet.';
-
-            } elseif($class['r__current_milestone']<$class['r_cache__current_milestone']){
-
-                //This should not happen as it means the Class has somehow gone backwards, log error:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'Class seems to be moving backwards as current Milestone is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']',
-                    'e_json' => $bootcamps[0],
-                    'e_type_id' => 8, //Platform Error
-                    'e_b_id' => $class['r_b_id'],
-                    'e_r_id' => $class['r_id'],
-                ));
-
-            } elseif($class['r__current_milestone']==$class['r_cache__current_milestone']){
-
-                //Still during the current milestone
-                $stats[$class['r_id']] = 'Already up-to-date. Current Milestone is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']';
-
-            } elseif($class['r__current_milestone']>$class['r_cache__current_milestone']){
-
-                //We have advanced since the DB:
-                //r__current_milestone (real) milestone is 2 or higher
-                //First the c_id of the milestone to dispatch its messages:
-                $new_milestone_c_id = 0;
-                foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                    if($milestone['c_status']>=1 && $milestone['cr_outbound_rank']==$class['r__current_milestone']){
-                        //Gotcha, this is it!
-                        $new_milestone_c_id = $milestone['c_id'];
-                        break;
-                    }
-                }
-
-                if(!$new_milestone_c_id){
-
-                    //OOps, this should not happen, notify admin:
-                    $stats[$class['r_id']] = 'ERROR: Could not find new Milestone c_id with r__current_milestone = cr_outbound_rank = ['.$class['r__current_milestone'].']';
-
-                    //Log Error engagement:
-                    $this->Db_model->e_create(array(
-                        'e_message' => $stats[$class['r_id']],
-                        'e_json' => $bootcamps[0],
-                        'e_type_id' => 8, //Platform Error
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
-
-                } else {
-
-                    //All good, ove on to dispatch phase...
-                    //Fetch all the class students, and see which ones advance to this new milestone:
-                    $accepted_admissions = $this->Db_model->ru_fetch(array(
-                        'ru.ru_r_id'	    => $class['r_id'],
-                        'ru.ru_status'	    => 4, //Admitted students
-                        'u.u_fb_id >'	    => 0, //MenchBot Activated ONLY, otherwise they should be activated to join these communications
-                    ));
-
-                    if(count($accepted_admissions)>0){
-
-                        //Do a count for stat reporting:
-                        $ontime = 0;
-                        $behind = array();
-
-                        //Loop through students:
-                        foreach($accepted_admissions as $admission){
-                            //See where the student is at, did they finish the previous milestone?
-                            if($admission['ru_current_milestone']>=$class['r__current_milestone']){
-
-                                $ontime++;
-
-                                //Yes, they are up to date:
-                                tree_message($new_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
-
-                            } else {
-
-                                //We do the message later to include the total number of students who advanced:
-                                array_push($behind,$admission);
-
-                            }
-                        }
-
-                        if(count($behind)>0){
-                            foreach($behind as $admission){
-                                //Ooops, they have yet not finished, notify them that class has moved on:
-                                $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$bootcamps[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$bootcamps[0]['b_sprint_unit'].' '.$admission['ru_current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
-                                    'e_initiator_u_id' => 0,
-                                    'e_recipient_u_id' => $admission['u_id'],
-                                    'e_b_id' => $class['r_b_id'],
-                                    'e_r_id' => $class['r_id'],
-                                ), $admission['u_fname'], true )));
-                            }
-                        }
-
-                        //Update new status to classes:
-                        $this->Db_model->r_update( $class['r_id'] , array('r_cache__current_milestone' => $class['r__current_milestone']));
-
-                        //Append message to stats:
-                        $stats[$class['r_id']] = 'Moved from ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r_cache__current_milestone'].'] to ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r__current_milestone'].'] with ['.$ontime.' ON-TIME] and ['.count($behind).' BEHIND] students';
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_message' => $stats[$class['r_id']],
-                            'e_json' => array(
-                                'bootcamp' => $bootcamps[0],
-                                'accepted_admissions' => $accepted_admissions,
-                            ),
-                            'e_type_id' => 61, //Class Milestone Advanced
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                            'e_c_id' => $new_milestone_c_id,
-                        ));
-
-                    }
-                }
-            }
-        }
-
-        //Show cron summary:
-        echo_json($stats);
     }
 
     function bot_save_files(){
@@ -1486,84 +1486,71 @@ class Cron extends CI_Controller {
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their tasks:
 
-    }
-
-    function sync_ru_cache_milestones_tasks(){
-
-        //Go through all admissions for running classes and updates the student positions in those classes:
-        $classes = $this->Db_model->r_fetch(array(
-            'r.r_status' => 2,
+        $admissions = $this->Db_model->ru_fetch(array(
+            'r.r_status'	    => 2, //Running
+            'ru.ru_status'      => 4, //Admitted Students
+            'ru.ru_u_id'      => 1, //TODO REmove
+            'ru.ru_cache__current_milestone <= r.r_cache__current_milestone' => null, //Students that are behind
         ));
 
-        $class_all = array();
+        //Define the logic of these reminders
+        $reminder_index = array(
+            array(
+                'time_elapsed'   => 0.95,
+                'progress_below' => 1.00,
+                'reminder_c_id'  => 3139,
+            ),
+            array(
+                'time_elapsed'   => 0.80,
+                'progress_below' => 0.50,
+                'reminder_c_id'  => 3138,
+            ),
+            array(
+                'time_elapsed'   => 0.50,
+                'progress_below' => 0.25,
+                'reminder_c_id'  => 3137,
+            ),
+            array(
+                'time_elapsed'   => 0.25,
+                'progress_below' => 0.10,
+                'reminder_c_id'  => 3136,
+            ),
+        );
+
         $stats = array();
-
-        foreach($classes as $class){
-
+        foreach($admissions as $admission){
 
             //Fetch full Bootcamp/Class data for this:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $bootcamps = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
             $class = $bootcamps[0]['this_class'];
 
+            //See what % of the class time has elapsed?
+            $elapsed_class_percentage = round((time()-$class['r__class_start_time'])/($class['r__class_end_time']-$class['r__class_start_time']),5);
 
-            //Fetch all the students of these classes, and see where they are at:
-            $class['students'] = $this->Db_model->ru_fetch(array(
-                'ru.ru_status'   => 4, //Initiated or higher as long as bootcamp is running!
-                'ru.ru_r_id'	 => $class['r_id'],
-            ));
+            foreach ($reminder_index as $logic){
+                if($elapsed_class_percentage>=$logic['time_elapsed']){
+                    if($admission['ru_cache__completion_rate']<$logic['progress_below']){
+                        //See if we have reminded them already about this:
+                        $reminders_sent = $this->Db_model->e_fetch(array(
+                            'e_type_id' => 7, //Message sent
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_r_id' => $admission['r_id'],
+                            'e_c_id' => $logic['reminder_c_id'],
+                        ));
 
-            $stats[$class['r_id']] = 0;
-            foreach($class['students'] as $admission){
+                        if(count($reminders_sent)==0){
+                            //Nope, send this message out:
+                            tree_message($logic['reminder_c_id'], 0, '381488558920384', $admission['u_id'], 'REGULAR', $admission['r_b_id'], $admission['r_id']);
 
-                //Fetch all their submissions so far:
-                $us_data = $this->Db_model->us_fetch(array(
-                    'us_student_id' => $admission['u_id'],
-                    'us_r_id' => $class['r_id'],
-                    'us_status' => 1,
-                ));
-
-                //Go through and see where it breaks down:
-                $stop = false;
-                foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                    if($milestone['c_status']>0){
-                        foreach($milestone['c__child_intents'] as $task){
-                            if($task['c_status']>0){
-                                //Has the student done this?
-                                if(!array_key_exists($task['c_id'],$us_data)){
-                                    //Nopes, not found, this is where the student is at!
-                                    if(!($milestone['cr_outbound_rank']==$admission['ru_current_milestone'])){
-                                        //We need to update:
-                                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                                            'ru_current_milestone' => $milestone['cr_outbound_rank'],
-                                        ));
-                                        //Increase counter:
-                                        $stats[$class['r_id']]++;
-                                    }
-
-                                    if(!($task['cr_outbound_rank']==$admission['ru_current_task'])){
-                                        //We need to update:
-                                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                                            'ru_current_task' => $task['cr_outbound_rank'],
-                                        ));
-                                        //Increase counter:
-                                        $stats[$class['r_id']]++;
-                                    }
-                                    $stop = true;
-                                    break;
-                                }
-                            }
+                            //Show in stats:
+                            array_push($stats,$admission['u_fname'].' '.$admission['u_lname'].' done '.round($admission['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
                         }
                     }
-                    if($stop){
-                        break;
-                    }
+
+                    //Do not go further down the reminder types:
+                    break;
                 }
-
-
-
             }
-
-            //array_push($class_all,$class);
         }
 
         echo_json($stats);

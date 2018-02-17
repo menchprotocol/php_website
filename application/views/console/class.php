@@ -548,20 +548,24 @@ function sync_action_plan(){
             echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Action Plan not copied yet because this Class has not started. This would happen automatically when this Class starts.</div>';
         }
 
-        if($class['r_status']==2 && $udata['u_status']>=2){
-            //Show button to update ONLY if class is running.
-            ?>
-            <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
-            <div class="copy_ap" style="display:none;">
-                <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Tasks form previous Milestones they had already marked as complete. Update the Action Plan only if:</p>
-                <ul>
-                    <li>You have made changes to Messages only (Not added new Tasks or Milestones)</li>
-                    <li>You have made changes to Future Milestones that have not been unlocked yet</li>
-                </ul>
-                <p><a href="javascript:void(0);" onclick="sync_action_plan()">I Understand, Continue With Update &raquo;</a></p>
-            </div>
-            <div id="action_plan_status"></div>
-            <?php
+        if($class['r_status']==2){
+            //Show button to update ONLY if class is running
+            if($udata['u_status']>=3 && $udata['u_id']==1){
+                ?>
+                <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
+                <div class="copy_ap" style="display:none;">
+                    <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Tasks form previous Milestones they had already marked as complete. Update the Action Plan only if:</p>
+                    <ul>
+                        <li>You have made changes to Messages only (Not added new Tasks or Milestones)</li>
+                        <li>You have made changes to Future Milestones that have not been unlocked yet</li>
+                    </ul>
+                    <p><a href="javascript:void(0);" onclick="sync_action_plan()">I Understand, Continue With Update &raquo;</a></p>
+                </div>
+                <div id="action_plan_status"></div>
+                <?php
+            } else {
+                echo '<div>Contact us if you like to update a Copy of Your Action Plan.</div>';
+            }
         }
         ?>
     </div>
