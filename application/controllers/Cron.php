@@ -1489,7 +1489,6 @@ class Cron extends CI_Controller {
         $admissions = $this->Db_model->ru_fetch(array(
             'r.r_status'	    => 2, //Running
             'ru.ru_status'      => 4, //Admitted Students
-            'ru.ru_u_id'      => 406, //TODO REmove
             'ru.ru_cache__current_milestone <= r.r_cache__current_milestone' => null, //Students that are behind
         ));
 
