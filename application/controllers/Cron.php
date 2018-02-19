@@ -364,7 +364,7 @@ class Cron extends CI_Controller {
                         $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
                             echo_i(array(
                                 'i_media_type' => 'text',
-                                'i_message' => 'Congratulations {first_name} for completing all Milestones of your '.$bootcamps[0]['c_objective'].' Bootcamp on-time 🎉​​​',
+                                'i_message' => '{first_name} your class just ended. Congratulations for completing all Milestones on-time 🎉​​​',
                                 'e_initiator_u_id' => 0,
                                 'e_recipient_u_id' => $admission['u_id'],
                                 'e_b_id' => $class['r_b_id'],
@@ -407,7 +407,7 @@ class Cron extends CI_Controller {
                         $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
                             echo_i(array(
                                 'i_media_type' => 'text',
-                                'i_message' => '{first_name} your class just ended and you can no longer submit Tasks. Sorry to see that you were not able to complete all Milestones on-time 🙈​​​​',
+                                'i_message' => '{first_name} your class just ended. You can no longer submit Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​',
                                 'e_initiator_u_id' => 0,
                                 'e_recipient_u_id' => $admission['u_id'],
                                 'e_b_id' => $class['r_b_id'],
