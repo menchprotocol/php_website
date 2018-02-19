@@ -338,7 +338,7 @@ class Cron extends CI_Controller {
                         //All students did not activate!
                         $r_cache__completion_rate = 0;
                     } else {
-                        $r_cache__completion_rate = number_format((count($completion_stats['completed']) / $qualified_students),5);
+                        $r_cache__completion_rate = number_format((count($completion_stats['completed']) / $qualified_students),3);
                     }
 
                     $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array());

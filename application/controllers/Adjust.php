@@ -120,7 +120,7 @@ class Adjust extends CI_Controller {
                 }
 
                 //Calculate the total progress:
-                $ru_cache__completion_rate = number_format(($total_hours_done/$bootcamps[0]['c__estimated_hours']),5);
+                $ru_cache__completion_rate = number_format(($total_hours_done/$bootcamps[0]['c__estimated_hours']),3);
 
                 if($done_tasks==$total_tasks){
                     //They have done all Tasks
@@ -169,7 +169,7 @@ class Adjust extends CI_Controller {
 
             //Update Class:
             $this->Db_model->r_update( $class['r_id'], array(
-                'r_cache__completion_rate' => ( count($qualified_students)>0 ? number_format((count($completed_students) / count($qualified_students)), 5) : 0 ),
+                'r_cache__completion_rate' => ( count($qualified_students)>0 ? number_format((count($completed_students) / count($qualified_students)), 3) : 0 ),
             ));
         }
 

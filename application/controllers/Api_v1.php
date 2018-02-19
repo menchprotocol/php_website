@@ -968,7 +968,7 @@ class Api_v1 extends CI_Controller {
         $is_resubmission = (count($us_data)>0);
 
         //Calculate total new progress based on this new this submission:
-        $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bootcamps[0]['c__estimated_hours']) ),5);
+        $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bootcamps[0]['c__estimated_hours']) ),3);
 
 
         //Now update the DB:
