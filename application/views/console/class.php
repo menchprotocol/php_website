@@ -550,7 +550,7 @@ function sync_action_plan(){
 
         if($class['r_status']==2){
             //Show button to update ONLY if class is running
-            if($udata['u_status']>=3 && $udata['u_id']==1){
+            if($udata['u_status']>=2){
                 ?>
                 <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
                 <div class="copy_ap" style="display:none;">
