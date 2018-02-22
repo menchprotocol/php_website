@@ -377,7 +377,7 @@ $( document ).ready(function() {
     		
     		<h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4>
     		<?php if($focus_class['r_usd_price']>0){ ?>
-    		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> (Inlcudes <a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>) so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= $bootcamp['c__milestone_units'] ?> <?= $bootcamp['b_sprint_unit'].($bootcamp['c__milestone_units']==1?'':'s') ?>.</p>
+    		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> (Includes <a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>) so <?= $leader_fname ?> can provide you with everything you need to <b><?= $bootcamp['c_objective'] ?></b> in <?= $bootcamp['c__milestone_units'] ?> <?= $bootcamp['b_sprint_unit'].($bootcamp['c__milestone_units']==1?'':'s') ?>.</p>
     		<?php } else { ?>
     		<p>This bootcamp is <b>FREE</b>.</p>
     		<?php } ?>
