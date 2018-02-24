@@ -91,7 +91,7 @@ class Api_v1 extends CI_Controller {
 
                         if(!($bootcamps[0]['b_fp_id']==4)){ //DO NOT Remove for MenchBot just yet
                             //Remove settings:
-                            $this->Fb_model->set_fb_settings($bootcamps[0]['b_fp_id'],true);
+                            $this->Fb_model->delete_fb_settings($bootcamps[0]['b_fp_id']);
                         }
 
                         //Log engagement:

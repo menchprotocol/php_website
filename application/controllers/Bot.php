@@ -19,9 +19,13 @@ class Bot extends CI_Controller {
     function sets($fp_id,$remove=0){
         echo_json($this->Fb_model->set_fb_settings($fp_id,$remove));
     }
-    function fetchs($fp_id,$remove=0){
+    function deletes($fp_id,$remove=0){
+        echo_json($this->Fb_model->delete_fb_settings($fp_id));
+    }
+    function fetchs($fp_id){
         echo_json($this->Fb_model->fetch_fb_settings($fp_id));
     }
+
 
 	function facebook_webhook(){
 		

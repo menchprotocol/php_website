@@ -90,7 +90,7 @@ class Fb_model extends CI_Model {
 
 
 
-    function set_fb_settings($fp_id,$remove_settings=false){
+    function set_fb_settings($fp_id){
 
         //Fetch from DB:
         $pages = $this->Db_model->fp_fetch(array(
@@ -107,19 +107,12 @@ class Fb_model extends CI_Model {
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
-        );
-
-        if(!$remove_settings){
-
-            //Whitelist mench:
-            $setting['whitelisted_domains'] = array(
+            'whitelisted_domains' => array(
                 'http://local.mench.co',
                 'https://mench.co',
                 'https://mench.com',
-            );
-
-            //Add persistent menu:
-            $setting['persistent_menu'] = array(
+            ),
+            'persistent_menu' => array(
                 array(
                     'locale' => 'default',
                     'composer_input_disabled' => false,
@@ -142,22 +135,17 @@ class Fb_model extends CI_Model {
                         ),
                     ),
                 ),
+            ),
+        );
+
+        //Do we have a custom greeting?
+        if(strlen($pages[0]['fp_greeting'])>0){
+            $setting['greeting'] = array(
+                array(
+                    'locale' => 'default',
+                    'text' => $pages[0]['fp_greeting'], //If any
+                ),
             );
-
-            //Do we have a custom greeting?
-            if(strlen($pages[0]['fp_greeting'])>0){
-                $setting['greeting'] = array(
-                    array(
-                        'locale' => 'default',
-                        'text' => $pages[0]['fp_greeting'], //If any
-                    ),
-                );
-            }
-
-        } else {
-            //Remove these items:
-            $setting['whitelisted_domains'] = null;
-            $setting['persistent_menu'] = null;
         }
 
         //Make the call for add/update
@@ -170,6 +158,60 @@ class Fb_model extends CI_Model {
             ),
             //Set our standard menu:
             CURLOPT_POSTFIELDS => json_encode($setting)
+        ));
+
+        // Send the request
+        $response = curl_exec($ch);
+
+        // Check for CURL errors
+        if($response === FALSE){
+
+            $this->Db_model->e_create(array(
+                'e_message' => 'set_fb_settings() failed to update the settings',
+                'e_json' => $setting,
+                'e_type_id' => 8, //Platform Error
+                'e_fp_id' => $fp_id,
+            ));
+
+            return false;
+
+        } else {
+
+            return objectToArray(json_decode($response));
+
+        }
+    }
+
+    function delete_fb_settings($fp_id){
+
+        //Fetch from DB:
+        $pages = $this->Db_model->fp_fetch(array(
+            'fp_id' => $fp_id,
+        ));
+        if(isset($pages[0]['fp_access_token']) && strlen($pages[0]['fp_access_token'])>0){
+            $fp_access_token = $pages[0]['fp_access_token'];
+        } else {
+            return false; //Should not happen!
+        }
+
+        //The basic setting array:
+        $delete_setting = array(
+            'fields' => array(
+                'whitelisted_domains',
+                'persistent_menu',
+            ),
+        );
+
+        //Make the call for add/update
+        $ch = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='.$fp_access_token);
+        curl_setopt_array($ch, array(
+            CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json; charset=utf-8'
+            ),
+            //Set our standard menu:
+            CURLOPT_POSTFIELDS => json_encode($delete_setting)
         ));
 
         // Send the request
