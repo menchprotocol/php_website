@@ -649,30 +649,34 @@ WHERE ru.ru_status >= 4
 	        }
 	    }
 	}
-	
+
+
 	
 	
 	/* ******************************
 	 * us User Submissions
 	 ****************************** */
-	
-	function us_fetch($match_columns){
-	    $this->db->select('*');
-	    $this->db->from('v5_user_submissions');
-	    foreach($match_columns as $key=>$value){
-	        $this->db->where($key,$value);
-	    }
-	    $q = $this->db->get();
-	    $res = $q->result_array();
-	    
-	    //Put intent ID as key for easy accessing:
-	    foreach($res as $key=>$val){
-	        unset($res[$key]);
-	        $res[$val['us_c_id']] = $val;
-	    }
-	    
-	    return $res;
-	}
+
+    function us_fetch($match_columns){
+        $this->db->select('*');
+        $this->db->from('v5_user_submissions');
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        $res = $q->result_array();
+
+        //Put intent ID as key for easy accessing:
+        foreach($res as $key=>$val){
+            unset($res[$key]);
+            $res[$val['us_c_id']] = $val;
+        }
+
+        return $res;
+    }
+
+
+
 	
 	/* ******************************
 	 * i Messages
@@ -731,9 +735,73 @@ WHERE ru.ru_status >= 4
 		$this->db->update('v5_messages', $update_columns);
 		return $this->db->affected_rows();
 	}
-	
-	
-	
+
+
+    /* ******************************
+     * Facebook Pages
+     ****************************** */
+
+    function fp_fetch($match_columns,$id_adjust=false){
+        $this->db->select('*');
+        $this->db->from('v5_facebook_pages');
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        $res = $q->result_array();
+
+        if($id_adjust){
+            //Put Facebook Page ID as key for easy accessing:
+            foreach($res as $key=>$val){
+                unset($res[$key]);
+                $res[$val['fp_fb_id']] = $val;
+            }
+        }
+
+        return $res;
+    }
+
+    function fp_update($fp_id,$update_columns){
+        $this->db->where('fp_id', $fp_id);
+        $this->db->update('v5_facebook_pages', $update_columns);
+        return $this->db->affected_rows();
+    }
+
+    function fp_create($insert_columns){
+        //Missing anything?
+        if(!isset($insert_columns['fp_fb_id'])){
+            return false;
+        } elseif(!isset($insert_columns['fp_access_token'])){
+            return false;
+        } elseif(!isset($insert_columns['fp_name'])){
+            return false;
+        } elseif(!isset($insert_columns['fp_u_id'])){
+            return false;
+        }
+
+        //Autocomplete required
+        if(!isset($insert_columns['fp_timestamp'])){
+            $insert_columns['fp_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        //Lets now add:
+        $this->db->insert('v5_facebook_pages', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['fp_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['fp_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error fp_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
+
+        return $insert_columns;
+    }
+
 	
 	/* ******************************
 	 * Classes
@@ -1522,7 +1590,7 @@ WHERE ru.ru_status >= 4
             //Log this query Error
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error e_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
+                'e_json' => $link_data,
                 'e_type_id' => 8, //Platform Error
             ));
 

@@ -10,20 +10,10 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-
     function error(){
         //This is meant to create an error to rest the log files:
         echo $_GET['none'];
     }
-
-	function set_settings($botkey){
-	    echo_json($this->Facebook_model->set_settings($botkey));
-	}
-	function fetch_settings($botkey){
-	    print_r($this->Facebook_model->fetch_settings($botkey));
-	}
-
-
 
 	function facebook_webhook(){
 		

@@ -39,10 +39,6 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
 </div>
     <div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>
 
-<div style="margin-left:-5px"><?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>
-    <div><i class="fa fa-link" style="font-size:15px;" aria-hidden="true"></i> <a href="/<?= $bootcamp['b_url_key'] ?>"><u><?= $website['url'] ?><b><?= $bootcamp['b_url_key'] ?></b></u></a> <a href="#" style="margin-top: 10px;" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a> <span id="hb_725" class="help_button" intent-id="725"></span></div>
-    <div class="help_body maxout" id="content_725"></div>
-
 
 
 
@@ -92,6 +88,10 @@ $student_funnel = array(
         'r.r_b_id'	       => $bootcamp['b_id'],
         'ru.ru_status'     => 4,
     ))),
+    6 => count($this->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $bootcamp['b_id'],
+        'ru.ru_status'     => 6,
+    ))),
     7 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $bootcamp['b_id'],
         'ru.ru_status'     => 7,
@@ -105,10 +105,10 @@ foreach($student_funnel as $ru_status=>$count){
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/team" class="badge badge-primary badge-msg"><b><i class="fa fa-user-plus" aria-hidden="true"></i> Team <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_629" class="help_button" intent-id="629"></span></h4></div>
-    <div class="help_body maxout" id="content_629"></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fa fa-cog" aria-hidden="true"></i> Settings <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a></h4></div>
 <div>
 	<?php
+    echo 'Team: ';
     $mench_advisers = $this->config->item('mench_advisers');
     $total_advisers = count($mench_advisers);
     foreach($bootcamp['b__admins'] as $admin){
@@ -116,9 +116,6 @@ foreach($student_funnel as $ru_status=>$count){
             $total_advisers--;
         }
     }
-
-
-
 
 	foreach($bootcamp['b__admins'] as $key=>$instructor){
 	    if($key>0){
@@ -132,6 +129,9 @@ foreach($student_funnel as $ru_status=>$count){
 	?></div>
 </div>
 
+
+<div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>
+<div style="margin-top:-5px;">Landing Page: <a href="/<?= $bootcamp['b_url_key'] ?>"><u><?= $website['url'] ?><b><?= $bootcamp['b_url_key'] ?></b></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
 
 
 

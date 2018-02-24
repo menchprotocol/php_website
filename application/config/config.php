@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.16,
+    'version' => 2.25,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -29,6 +29,17 @@ $config['show_in_api'] = array(
     'countries_all',
 );
 
+$config['required_fb_permissions'] = array(
+    'public_profile' => 'Description', //Basic permission
+    //'email' => 'Description',
+    'manage_pages' => 'Description',
+    'pages_show_list' => 'Description',
+    'read_page_mailboxes' => 'Description',
+    'business_management' => 'Description',
+    'pages_messaging' => 'Description',
+    'pages_messaging_subscriptions' => 'Description',
+);
+
 $config['mench_pricing'] = array(
     'share_operator' => 0.7, //This goes to Bootcamp Lead Instructor, and he decides how to gets divided among his team
     'share_distributor' => 0.2, //What goes to the distributor who got the student to purchase the seat, paid along side the performance payout
@@ -40,7 +51,7 @@ $config['mench_pricing'] = array(
 //All active bots connected to the platform:
 $config['mench_bots'] = array(
     '381488558920384' => array(
-        'name' => 'MenchBot', //For Students
+        'name' => 'Mench',
         'fb_page_id' => '381488558920384',
         'fb_app_id' => '1782431902047009',
         'bot_ref_url' => 'https://m.me/menchbot',
@@ -62,6 +73,7 @@ $config['mench_bots'] = array(
             'whitelisted_domains' => array(
                 'http://local.mench.co',
                 'https://mench.co',
+                'https://mench.com',
             ),
             'persistent_menu' => array(
                 array(
@@ -161,6 +173,10 @@ $config['core_objects'] = array(
     'i' => array(
         'o_name' => 'Message',
         'o_names' => 'Messages',
+    ),
+    'fp' => array(
+        'o_name' => 'Facebook Page',
+        'o_names' => 'Facebook Pages',
     ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
@@ -331,7 +347,7 @@ $config['object_statuses'] = array(
             's_name'  => 'Adviser',
             's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the bootcamp configurations',
             's_mini_icon' => 'fa-comments-o',
-            'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team.php view file
+            'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team section of settings.php page view file
         ),
         2 => array(
             's_name'  => 'Co-Instructor',
@@ -509,6 +525,21 @@ $config['object_statuses'] = array(
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
     ),
+
+    'fp' => array(
+        -1 => array(
+            's_name'  => 'Unavailable',
+            's_desc'  => 'Facebook Page connection lost due to unexpected reasons. Select Refresh Permissions to regain access.',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-times-circle',
+        ),
+        1 => array(
+            's_name'  => 'Available',
+            's_desc'  => 'Facebook Page ready to be connected to a Mench Bootcamp',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-check-circle',
+        ),
+    ),
 );
 
 
@@ -587,6 +618,10 @@ $config['engagement_references'] = array(
         'name' => 'Transaction',
         'object_code' => 't',
     ),
+    'e_fp_id' => array(
+        'name' => 'Facebook Page',
+        'object_code' => 'fp',
+    ),
 );
 
 
@@ -613,16 +648,16 @@ $config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,70,72);
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73),
     ),
 );
 
 //Define what counts as a meaningful Bootcamp engagement by the instructor team:
-$config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44);
+$config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74);
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');

@@ -54,6 +54,19 @@ function fetch_action_plan_copy($b_id,$r_id){
 }
 
 
+function join_keys($input_array,$joiner=','){
+    $joined_string = null;
+    foreach($input_array as $key=>$value){
+        if($joined_string){
+            $joined_string .= $joiner;
+        }
+        $joined_string .= $key;
+    }
+    return $joined_string;
+}
+
+
+
 function filter_active_admission($admissions){
 
     //Determines the active admission of a student, especially useful if they have multiple admissions
@@ -701,12 +714,12 @@ function echo_message($i,$level=0,$editing_enabled=true){
         //Editing menu:
         $echo_ui .= '<ul class="msg-nav">';
         //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
+        $echo_ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
         if($i['i_media_type']=='text'){
             $CI =& get_instance();
             $message_max = $CI->config->item('message_max');
             $echo_ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
         }
-        $echo_ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
         $echo_ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_uploader($i).'</span></li>';
 
         if($editing_enabled){
@@ -763,23 +776,23 @@ function echo_br($admin){
     $ui = '<li id="ba_'.$admin['ba_id'].'" u-id="'.$admin['ba_id'].'" class="list-group-item is_sortable">';
     //Right content
     $ui .= '<span class="pull-right">';
-        //$ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
-        //$ui .= '<i class="fa fa-cog" aria-hidden="true"></i>';
-        //$ui .= '</span>';
-        $ui .= status_bible('ba',$admin['ba_status']);
+    //$ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
+    //$ui .= '<i class="fa fa-cog" aria-hidden="true"></i>';
+    //$ui .= '</span>';
+    $ui .= status_bible('ba',$admin['ba_status']);
 
-        //Is this a Mench Adviser?
-        if($admin['ba_status']==1){
-            //let them know how to get in touch:
-            $ui .= ' &nbsp; Get in touch using <img data-toggle="tooltip" data-placement="left" title="MenchBot on Facebook Messenger. Accessible via Console and other devices." src="/img/MessengerIcon.png" class="profile-icon" />';
-        }
+    //Is this a Mench Adviser?
+    if($admin['ba_status']==1){
+        //let them know how to get in touch:
+        $ui .= ' &nbsp; Get in touch using <img data-toggle="tooltip" data-placement="left" title="MenchBot on Facebook Messenger. Accessible via Console and other devices." src="/img/MessengerIcon.png" class="profile-icon" />';
+    }
 
-        //Are they shown on the profile?
-        if($admin['ba_team_display']=='t'){
-            $ui .= '&nbsp; <i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
-        } else {
-            $ui .= '&nbsp; <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
-        }
+    //Are they shown on the profile?
+    if($admin['ba_team_display']=='t'){
+        $ui .= '&nbsp; <i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
+    } else {
+        $ui .= '&nbsp; <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
+    }
 
     $ui .= '</span> ';
 
@@ -795,6 +808,7 @@ function echo_br($admin){
     $ui .= '</li>';
     return $ui;
 }
+
 
 
 function generate_url_key($string){
@@ -900,12 +914,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
             $ui .= '<div class="inline-level" style="margin:9px 0 0 1px; width:100%; clear:both;">';
 
-            $ui .= '<span style="margin-left:3px; font-weight:500;" data-toggle="tooltip" title="Timelapse between milestones" data-placement="right"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span></span> &nbsp; ';
-
-            if($editing_enabled){
-                $ui .= '<span id="status_holder">'.status_bible('b',$intent['b_status'],0,'right').'</span> &nbsp;&nbsp; ';
-                $ui .= '<div style="font-weight:500; margin-right: 13px;"><i class="fa fa-link" aria-hidden="true" style="font-size: 0.9em; margin-left: 3px; margin-right: 3px;"></i><a href="/'.$intent['b_url_key'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="" class="landing_page_url" data-original-title="Open Landing Page"><span style="color:#555; font-weight:300; padding-left:3px;">https://mench.co/</span><span class="url_anchor">'.$intent['b_url_key'].'</span></a></div>';
-            }
+            $ui .= '<span style="margin-left:0px; font-weight:500;"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span> Milestones</span> &nbsp; ';
 
             $ui .= '</div>';
 
@@ -927,7 +936,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
             //Show Message Preview:
             $ui .= '<div id="messages_'.$intent['c_id'].'" class="messages-inline">';
             foreach($intent['c__messages'] as $i){
-                $ui .= echo_message($i,$level,$editing_enabled);
+                $ui .= echo_message($i,$level, false);
             }
             $ui .= '</div>';
         }
@@ -1071,19 +1080,7 @@ function calculate_bootcamp_status($b){
     $checklist = array();
 
 
-    //Check some of the high-priority Action Plan Lists:
 
-    //Skills You Will Gain
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
 
     //Target Audience
     $estimated_minutes = 30;
@@ -1096,6 +1093,7 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
+
 
     //Prerequisites
     $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
@@ -1111,8 +1109,45 @@ function calculate_bootcamp_status($b){
     ));
 
 
+    //Application Questions
+    $default_class_questions = $CI->config->item('default_class_questions');
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_application_questions'])>0 && !($b['b_application_questions']==json_encode($default_class_questions)) ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'anchor' => '<b>'.( strlen($b['b_application_questions'])>0 ? 'Edit' : 'Set' ).' Application Questions</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
 
 
+    //Skills You Will Gain
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
+        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+    //Completion Awards
+    $default_class_prizes = $CI->config->item('default_class_prizes');
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( !($b['b_completion_prizes']==json_encode($default_class_prizes)) ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
+        'anchor' => '<b>Modify Completion Awards</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
 
 
 
@@ -1497,45 +1532,30 @@ function calculate_bootcamp_status($b){
 
     
     /* *****************************
-     *  Bootcamp Settings
+     *  Settings
      *******************************/
 
 
-    //Application Questions
-    $default_class_questions = $CI->config->item('default_class_questions');
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_application_questions'])>0 && !($b['b_application_questions']==json_encode($default_class_questions)) ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
-        'anchor' => '<b>'.( strlen($b['b_application_questions'])>0 ? 'Edit' : 'Set' ).' Application Questions</b> in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-
-    //Completion Awards
-    $default_class_prizes = $CI->config->item('default_class_prizes');
+    //Facebook Page
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
-    $us_status = ( !($b['b_completion_prizes']==json_encode($default_class_prizes)) ? 1 : 0 );
+    $us_status = ( $b['b_fp_id']>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Modify Completion Awards</b> in Action Plan',
+        'href' => '/console/'.$b['b_id'].'/settings',
+        'anchor' => '<b>Connect a Facebook Page</b> to this Bootcamp in settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-    
-    
+
+
     //b_status
     $estimated_minutes = 5;
     $progress_possible += $estimated_minutes;
     $us_status = ( $b['b_status']>=1 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#modify-'.$b['b_c_id'],
+        'href' => '/console/'.$b['b_id'].'/settings',
         'anchor' => '<b>Set Bootcamp Status to '.status_bible('b',1).'</b> in Settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
@@ -1544,7 +1564,7 @@ function calculate_bootcamp_status($b){
     
     //Return the final message:
     return array(
-        'stage' => '<i class="fa fa-tasks" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> Bootcamp Launch Checklist',
+        'stage' => '<i class="fa fa-tasks" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
         'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your bootcamp status to '.status_bible('b',2).'. At this time you can launch your bootcamp by inviting your students to join.',
         'check_list' => $checklist,
@@ -2265,7 +2285,7 @@ function object_link($object,$id,$b_id=0){
                     return '<span title="ID '.$id.'">'.$matching_users[0]['u_fname'].' '.$matching_users[0]['u_lname'].'</span>';
                 }
             }
-                
+
         } elseif($object=='r'){
             $classes = $CI->Db_model->r_fetch(array(
                 'r.r_id' => $id,
@@ -2277,6 +2297,15 @@ function object_link($object,$id,$b_id=0){
                 } else {
                     return time_format($classes[0]['r_start_date'],1);
                 }
+            }
+        } elseif($object=='fp'){
+            $pages = $CI->Db_model->fp_fetch(array(
+                'fp_id' => $id,
+            ));
+            if(isset($pages[0])){
+                return '<a href="https://www.facebook.com/'.$pages[0]['fp_fb_id'].'" target="_blank">'.$pages[0]['fp_name'].'</a>';
+            } else {
+                print_r($pages);
             }
         }
         //We would not do the other engagement types...

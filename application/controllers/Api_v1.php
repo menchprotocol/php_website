@@ -22,6 +22,252 @@ class Api_v1 extends CI_Controller {
 	 * Miscs
 	 ****************************** */
 
+	function log_engagement(){
+	    //Validate hash code:
+        if(!isset($_POST['e_hash_time']) || !isset($_POST['e_hash_code']) || strlen($_POST['e_hash_time'])<5 || strlen($_POST['e_hash_code'])<5 || !(md5($_POST['e_hash_time'].'hashcod3')==$_POST['e_hash_code'])){
+
+            echo_json(array(
+                'status' => 0,
+                'messsage' => 'invalid hash key',
+            ));
+
+        } else {
+
+            //Remove hash data:
+            unset($_POST['e_hash_time']);
+            unset($_POST['e_hash_code']);
+
+            //Log engagement:
+            $new_e = $this->Db_model->e_create($_POST);
+
+            //Show messages:
+            if($new_e['e_id']>0){
+                echo_json(array(
+                    'status' => 1,
+                    'messsage' => 'Logged Engagement #'.$new_e['e_id'],
+                ));
+            } else {
+                echo_json(array(
+                    'status' => 0,
+                    'messsage' => 'Invalid data structure for engagement logging',
+                ));
+            }
+
+        }
+    }
+
+	function load_facebook_pages(){
+
+        $udata = auth(2,0,$_POST['b_id']);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'messsage' => 'Session expired. Login to try again.',
+            ));
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'messsage' => 'Missing Bootcamp ID',
+            ));
+        } else {
+
+            //Validate Bootcamp and check current b_fb_
+            $bootcamps = $this->Db_model->b_fetch(array(
+                'b_id' => intval($_POST['b_id']),
+            ));
+            if(count($bootcamps)<1){
+                echo_json(array(
+                    'status' => 0,
+                    'messsage' => 'Invalid Bootcamp ID',
+                ));
+            } else {
+
+
+                //Do we need to update assigned page?
+                if(isset($_POST['b_fp_id']) && intval($_POST['b_fp_id'])>=0){
+
+                    //Do we already have a page connected? If so, log a disconnect engagement:
+                    if(intval($bootcamps[0]['b_fp_id'])>0){
+
+                        if(!($bootcamps[0]['b_fp_id']==4)){ //DO NOT Remove for MenchBot just yet
+                            //Remove settings:
+                            $this->Fb_model->set_fb_settings($bootcamps[0]['b_fp_id'],true);
+                        }
+
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => $udata['u_id'],
+                            'e_type_id' => 74, //Page Disconnected
+                            'e_b_id' => $_POST['b_id'],
+                            'e_fp_id' => $bootcamps[0]['b_fp_id'],
+                        ));
+                    }
+
+                    //We need to assign the new page ID to this Bootcamp:
+                    $current_b_fp_id = intval($_POST['b_fp_id']);
+                    $this->Db_model->b_update( intval($_POST['b_id']) , array(
+                        'b_fp_id' => $current_b_fp_id,
+                    ));
+
+                    if($current_b_fp_id>0){
+
+                        if(!($current_b_fp_id==4)){ //DO NOT Add for MenchBot just yet
+                            //Add settings:
+                            $this->Fb_model->set_fb_settings($current_b_fp_id);
+                        }
+
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_initiator_u_id' => $udata['u_id'],
+                            'e_type_id' => 73, //Page Connected
+                            'e_b_id' => $_POST['b_id'],
+                            'e_fp_id' => $current_b_fp_id,
+                        ));
+                    }
+
+                } else {
+                    //No new assignments, grab from the DB:
+                    $current_b_fp_id = intval($bootcamps[0]['b_fp_id']);
+                }
+
+
+                //Do we need to sync?
+                if(isset($_POST['login_response']['authResponse']['accessToken'])){
+                    //Sync Facebook Pages with local Database:
+                    //Fetch Existing Facebook Pages for this user:
+                    $db_pages = $this->Db_model->fp_fetch(array(
+                        'fp_u_id' => $udata['u_id'],
+                    ),true);
+
+                    //Load Facebook PHP SDK:
+                    require_once( 'application/libraries/Facebook/autoload.php' );
+
+                    $fb = new \Facebook\Facebook([
+                        'app_id' => '1782431902047009',
+                        'app_secret' => '05aea76d11b062951b40a5bee4251620',
+                        'default_graph_version' => 'v2.10',
+                        'default_access_token' => $_POST['login_response']['authResponse']['accessToken'],
+                    ]);
+
+                    //Fetch all Pages:
+                    try {
+                        $response = $fb->get('/me/accounts');
+                    } catch(FacebookExceptionsFacebookResponseException $e) {
+                        echo 'Graph returned an error: ' . $e->getMessage();
+                        exit;
+                    } catch(FacebookExceptionsFacebookSDKException $e) {
+                        echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                        exit;
+                    }
+                    $facebookPages = $response->getGraphEdge();
+
+                    //Now lets loop through their pages
+                    $current_fb_pages = array();
+                    foreach ($facebookPages as $page) {
+
+                        //Store this:
+                        array_push($current_fb_pages,$page['id']);
+
+                        if(array_key_exists($page['id'],$db_pages)){
+                            //We already had this in the Database, do we need to update?
+                            if(!($page['name']==$db_pages[$page['id']]['fp_name']) || !($page['access_token']==$db_pages[$page['id']]['fp_access_token']) || $db_pages[$page['id']]['fp_status']<1){
+                                //Either name or Access token has changed, update:
+                                $this->Db_model->fp_update( $db_pages[$page['id']]['fp_id'] , array(
+                                    'fp_access_token' => $page['access_token'],
+                                    'fp_name' => $page['name'],
+                                    'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
+                                    'fp_status' => 1, //Available
+                                ));
+                            }
+                        } else {
+                            //This is a new page, insert it:
+                            $this->Db_model->fp_create(array(
+                                'fp_fb_id' => $page['id'],
+                                'fp_access_token' => $page['access_token'],
+                                'fp_name' => $page['name'],
+                                'fp_u_id' => $udata['u_id'],
+                                'fp_status' => 1, //Available
+                            ));
+                        }
+                    }
+
+                    //Go through the existing DB pages to make sure we have them all:
+                    foreach($db_pages as $db_page) {
+                        if(!in_array($db_page['fp_fb_id'],$current_fb_pages)){
+                            //Ooops, it seems the user has lost access to this?!
+                            $this->Db_model->fp_update( $db_page['fp_id'] , array(
+                                'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
+                                'fp_status' => -1, //Unavailable
+                            ));
+                        }
+                    }
+                }
+
+
+                //Display facebook pages and let the instructor choose which one to assign to this Bootcamp
+                $ready_pages = $this->Db_model->fp_fetch(array(
+                    'fp_u_id' => $udata['u_id'],
+                    'fp_status' => 1, //Available Pages
+                ));
+
+
+                //Go through the pages and sync with DB:
+                $found_match = 0;
+                $pages_ui = '<div class="list-group maxout">';
+                if(count($ready_pages)>0){
+                    foreach($ready_pages as $page){
+                        $pages_ui .= '<li class="list-group-item">';
+
+                        //Right content
+                        $pages_ui .= '<span class="pull-right">';
+                        if($page['fp_id']==$current_b_fp_id){
+                            //This page is already assigned:
+                            $pages_ui .= '<b><i class="fa fa-check-circle" aria-hidden="true"></i> Connected</b> &nbsp;';
+                            $pages_ui .= '<a href="javascript:void(0);" onclick="load_fp(null,'.$current_b_fp_id.',0)" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-times-circle" aria-hidden="true"></i> Disconnect</a>';
+                            $found_match = $page['fp_id'];
+                        } else {
+                            //Give the option to connect:
+                            $pages_ui .= '<a href="javascript:void(0);" onclick="load_fp(null,'.$current_b_fp_id.','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-plug" aria-hidden="true"></i> Connect</a>';
+                        }
+
+                        $pages_ui .= '</span> ';
+
+                        //Left content
+                        //$pages_ui .= status_bible('fp',$page['fp_status'],true, 'right'); //Not needed as we're only showing available pages
+                        $pages_ui .= '<i class="fa fa-facebook-official" aria-hidden="true"></i> '.$page['fp_name'];
+                        $pages_ui .= ' <a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
+                        $pages_ui .= '</li>';
+                    }
+                } else {
+                    //No page found!
+                    $pages_ui .= '<li class="list-group-item" style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Facebook Pages found. Create a new one to continue...</li>';
+                }
+
+                //Link to create a new page:
+                $pages_ui .= '<a href="https://www.facebook.com/pages/create" class="list-group-item"><i class="fa fa-plus-square" style="color:#fedd16;" aria-hidden="true"></i> Create New Facebook Page</a>';
+
+                $pages_ui .= '</div>';
+
+
+
+                //Did we have a Match?
+                if(!$found_match){
+                    //Indicate to the user that they do not have a match:
+                    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Connect to a Facebook Page to activate Mench</div>';
+                    if($current_b_fp_id){
+                        //We have an assigned page but its not really assigned, remove it:
+                        $this->Db_model->b_update( intval($_POST['b_id']) , array(
+                            'b_fp_id' => 0,
+                        ));
+                    }
+                }
+
+                //Show the UI:
+                echo $pages_ui;
+            }
+        }
+    }
+
     function blob($e_id){
         $udata = auth(3,1);
         //Fetch blob of engagement and display it on screen:
@@ -36,6 +282,7 @@ class Api_v1 extends CI_Controller {
     }
 
     function config(){
+	    //TODO Deprecate?
         if($_GET['token']!='1f8e38384ddc45d0d19c706e21950643'){
             echo_json(array(
                 'status' => 0,
@@ -1412,15 +1659,24 @@ class Api_v1 extends CI_Controller {
                 $rank = 1; //Keeps track of student rankings, which is equal if points are equal
                 $counter = 0; //Keeps track of student counts
                 $bborder = '';
+                $top_ranking_shown = false;
                 $none_activated_shown = false;
 
                 foreach($loadboard_students as $key=>$admission){
 
-                    if($show_ranking_top==$counter){
+                    if($show_ranking_top<=$counter && !$top_ranking_shown && $admission['ru_cache__current_milestone']<=$class['r__total_milestones']){
                         echo '<tr>';
-                        echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;"><span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all tasks by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span></td>';
+                        echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;">';
+                        if($show_ranking_top==$counter){
+                            echo '<span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all tasks by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span>';
+                        } else {
+                            echo '<span>Above students have successfully <i class="fa fa-trophy" aria-hidden="true"></i> COMPLETED</span>';
+                        }
+                        echo '</td>';
                         echo '</tr>';
+                        $top_ranking_shown = true;
                     }
+
                     if(!$none_activated_shown && $is_instructor && !$admission['u_fb_id']){
                         echo '<tr>';
                         echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;"><span>Messenger Not Yet Activated</span></td>';
@@ -1434,7 +1690,7 @@ class Api_v1 extends CI_Controller {
                     }
 
                     //Should we show this ranking?
-                    $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top);
+                    $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top || $admission['ru_cache__current_milestone']>$class['r__total_milestones']);
 
                     if(!isset($loadboard_students[($key+1)])){
                         //This is the last item, add a botton border:
@@ -1590,7 +1846,7 @@ class Api_v1 extends CI_Controller {
                     if($admission['ru_cache__current_milestone']>$class['r__total_milestones']){
                         //They have completed it all, show them as winners!
                         echo '<td valign="top" colspan="'.($is_instructor?'3':'1').'" style="'.$bborder.'text-align:left; vertical-align:top;">';
-                        echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">WINNER</span>';
+                        echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">COMPLETED</span>';
                         echo '</td>';
                     } else {
                         //Progress:
@@ -2329,6 +2585,148 @@ class Api_v1 extends CI_Controller {
         }
     }
 
+    function save_settings(){
+
+        //Auth user and check required variables:
+        $udata = auth(2);
+
+        //Validate Bootcamp ID:
+        if(isset($_POST['b_id'])){
+            $bootcamps = $this->Db_model->b_fetch(array(
+                'b.b_id' => intval($_POST['b_id']),
+            ));
+        }
+
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session Expired',
+            ));
+            return false;
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0 || count($bootcamps)<1){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp ID',
+            ));
+            return false;
+	    } elseif(!isset($_POST['b_url_key'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp URL',
+            ));
+            return false;
+        } elseif(!isset($_POST['b_status'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp Status',
+            ));
+            return false;
+        }
+
+
+
+        //Did any of the Bootcamp fields change?
+        if(!($bootcamps[0]['b_status']==$_POST['b_status']) || !($bootcamps[0]['b_url_key']==$_POST['b_url_key'])){
+
+            //Fetch reserved terms:
+            $reserved_hashtags = $this->config->item('reserved_hashtags');
+
+            //Validate URL Key to be unique:
+            $duplicate_bootcamps = $this->Db_model->b_fetch(array(
+                'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
+                'b.b_id !=' => $_POST['b_id'],
+            ));
+
+            //Check URL Key:
+            if(in_array(strtolower($_POST['b_url_key']),$reserved_hashtags)){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => '"'.$_POST['b_url_key'].'" is a reserved URL.',
+                ));
+                return false;
+            } elseif(strlen($_POST['b_url_key'])>30){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'URL Key should be less than 30 characters',
+                ));
+                return false;
+            } elseif(strlen($_POST['b_url_key'])<4){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'URL Key should be at least 4 characters long',
+                ));
+                return false;
+            } elseif(ctype_digit($_POST['b_url_key'])){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'URL Key should include at-least 1 letter.',
+                ));
+                return false;
+            } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'URL Key can only include letters a-z and numbers 0-9',
+                ));
+                return false;
+            } elseif(count($duplicate_bootcamps)>0){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'URL Key <a href="/'.$_POST['b_url_key'].'" target="_blank">'.$_POST['b_url_key'].'</a> already taken.',
+                ));
+                return false;
+            }
+
+
+            //Update bootcamp:
+            $b_update = array(
+                'b_status' => $_POST['b_status'],
+                'b_url_key' => $_POST['b_url_key'],
+            );
+            $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
+
+
+            //Bootcamp Edit is the default engagement:
+            $engagement_type_id = 18;
+
+            //Did the status change? Log Engagement for this:
+            if(!(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
+                if(intval($_POST['b_status'])<0){
+                    //Archived:
+                    $engagement_type_id = 17;
+                } elseif(intval($_POST['b_status'])==1) {
+                    //Request to publish
+                    $engagement_type_id = 37;
+                } elseif(intval($_POST['b_status'])==2) {
+                    //Published Privately
+                    $engagement_type_id = 67;
+                } elseif(intval($_POST['b_status'])==3) {
+                    //Published to Marketplace
+                    $engagement_type_id = 68;
+                }
+            }
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_message' => ( $engagement_type_id==18 ? readable_updates($bootcamps[0],$b_update,'b_') : null ),
+                'e_json' => array(
+                    'input' => $_POST,
+                    'before' => $bootcamps[0],
+                    'after' => $b_update,
+                ),
+                'e_type_id' => $engagement_type_id,
+                'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+            ));
+
+        }
+
+        //Show success:
+        echo_json(array(
+            'status' => 1,
+            'message' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
+        ));
+    }
+
     function save_modify(){
 
         //Auth user and check required variables:
@@ -2378,18 +2776,6 @@ class Api_v1 extends CI_Controller {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Milestone Duration',
-            ));
-            return false;
-        } elseif($_POST['level']==1 && !isset($_POST['b_url_key'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp URL',
-            ));
-            return false;
-        } elseif($_POST['level']==1 && !isset($_POST['b_status'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp Status',
             ));
             return false;
         } elseif($_POST['level']==2 && !isset($_POST['c_duration_multiplier'])){
@@ -2448,98 +2834,26 @@ class Api_v1 extends CI_Controller {
                 );
             }
 
-            //Did any of the Bootcamp fields change?
-            if(!($bootcamps[0]['b_sprint_unit']==$_POST['b_sprint_unit']) || !($bootcamps[0]['b_status']==$_POST['b_status']) || !($bootcamps[0]['b_url_key']==$_POST['b_url_key'])){
-
-                //Fetch reserved terms:
-                $reserved_hashtags = $this->config->item('reserved_hashtags');
-
-                //Validate URL Key to be unique:
-                $duplicate_bootcamps = $this->Db_model->b_fetch(array(
-                    'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
-                    'b.b_id !=' => intval($_POST['b_id']),
-                ));
-
-                //Check URL Key:
-                if(in_array(strtolower($_POST['b_url_key']),$reserved_hashtags)){
-                    echo_json(array(
-                        'status' => 0,
-                        'message' => '"'.$_POST['b_url_key'].'" cannot be used as its reserved.',
-                    ));
-                    return false;
-                } elseif(strlen($_POST['b_url_key'])>30){
-                    echo_json(array(
-                        'status' => 0,
-                        'message' => 'URL Key should be less than 30 characters',
-                    ));
-                    return false;
-                } elseif(strlen($_POST['b_url_key'])<5){
-                    echo_json(array(
-                        'status' => 0,
-                        'message' => 'URL Key should be at least 5 characters long',
-                    ));
-                    return false;
-                } elseif(ctype_digit($_POST['b_url_key'])){
-                    echo_json(array(
-                        'status' => 0,
-                        'message' => 'URL Key should have at-least 1 letter.',
-                    ));
-                    return false;
-                } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
-                    echo_json(array(
-                        'status' => 0,
-                        'message' => 'URL Key can only include letters a-z and numbers 0-9',
-                    ));
-                    return false;
-                } elseif(count($duplicate_bootcamps)>0){
-                    echo_json(array(
-                        'status' => 0,
-                        'message' => 'URL Key <a href="/'.$_POST['b_url_key'].'" target="_blank">'.$_POST['b_url_key'].'</a> already taken.',
-                    ));
-                    return false;
-
-                }
+            //Did the Sprint duration change?
+            if(!($bootcamps[0]['b_sprint_unit']==$_POST['b_sprint_unit'])){
 
                 //Updatye bootcamp:
                 $b_update = array(
-                    'b_status' => $_POST['b_status'],
                     'b_sprint_unit' => $_POST['b_sprint_unit'],
-                    'b_url_key' => $_POST['b_url_key'],
                 );
                 $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
-
-
-                //Bootcamp Edit is the default engagement:
-                $engagement_type_id = 18;
-
-                //Did the status change? Log Engagement for this:
-                if(!(intval($_POST['b_status'])==intval($bootcamps[0]['b_status']))){
-                    if(intval($_POST['b_status'])<0){
-                        //Archived:
-                        $engagement_type_id = 17;
-                    } elseif(intval($_POST['b_status'])==1) {
-                        //Request to publish
-                        $engagement_type_id = 37;
-                    } elseif(intval($_POST['b_status'])==2) {
-                        //Published Privately
-                        $engagement_type_id = 67;
-                    } elseif(intval($_POST['b_status'])==3) {
-                        //Published to Marketplace
-                        $engagement_type_id = 68;
-                    }
-                }
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $udata['u_id'],
-                    'e_message' => ( $engagement_type_id==18 ? readable_updates($bootcamps[0],$b_update,'b_') : null ),
+                    'e_message' => readable_updates($bootcamps[0],$b_update,'b_'),
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $bootcamps[0],
                         'after' => $b_update,
                     ),
-                    'e_type_id' => $engagement_type_id,
-                    'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+                    'e_type_id' => 18,
+                    'e_b_id' => intval($_POST['b_id']),
                 ));
             }
 
@@ -2685,7 +2999,7 @@ class Api_v1 extends CI_Controller {
 	    ));
 	    
 	    //Update Algolia:
-	    $this->Db_model->sync_algolia($new_intent['c_id']);
+	    //$this->Db_model->sync_algolia($new_intent['c_id']);
 
 	    //Return result:
         echo_json(array(
@@ -3044,6 +3358,18 @@ class Api_v1 extends CI_Controller {
 	        ));
 	        
 	    } else {
+
+	        //Fetch Bootcamp:
+            $bootcamps = $this->Db_model->b_fetch(array(
+                'b.b_id' => $_POST['b_id'],
+            ));
+            if(count($bootcamps)<1){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Bootcamp ID.',
+                ));
+                return false;
+            }
 	        
 	        //First save file locally:
 	        $temp_local = "application/cache/temp_files/".$_FILES[$_POST['upload_type']]["name"];
@@ -3112,16 +3438,16 @@ class Api_v1 extends CI_Controller {
 	                'e_type_id' => 34, //Message added
 	                'e_i_id' => intval($new_messages[0]['i_id']),
 	                'e_c_id' => intval($new_messages[0]['i_c_id']),
-	                'e_b_id' => intval($_POST['b_id']),
+	                'e_b_id' => $bootcamps[0]['b_id'],
 	            ));
 	            
 	            //Echo message:
 	            echo_json(array(
 	                'status' => 1,
-	                'message' => echo_message(array_merge($new_messages[0],array(
-	                    'e_b_id'=>intval($_POST['b_id']),
+	                'message' => echo_message( array_merge($new_messages[0], array(
+	                    'e_b_id'=>$bootcamps[0]['b_id'],
                         'e_recipient_u_id'=>$udata['u_id'],
-                    )),$_POST['level']),
+                    )), $_POST['level']),
 	            ));
 	        }
 	    }
@@ -3146,6 +3472,17 @@ class Api_v1 extends CI_Controller {
 	            'message' => 'Invalid Bootcamp',
 	        ));
 	    } else {
+
+            $bootcamps = $this->Db_model->b_fetch(array(
+                'b.b_id' => $_POST['b_id'],
+            ));
+            if(count($bootcamps)<1){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Bootcamp ID.',
+                ));
+                return false;
+            }
 
 	        //Make sure message is all good:
             $validation = message_validation($_POST['i_status'],$_POST['i_message']);
@@ -3202,7 +3539,7 @@ class Api_v1 extends CI_Controller {
                     'e_type_id' => 34, //Message added
                     'e_i_id' => intval($new_messages[0]['i_id']),
                     'e_c_id' => intval($_POST['pid']),
-                    'e_b_id' => intval($_POST['b_id']), //Share with bootcamp team
+                    'e_b_id' => $bootcamps[0]['b_id'],
                 ));
 
                 //Print the challenge:
@@ -3211,7 +3548,7 @@ class Api_v1 extends CI_Controller {
                     'message' => echo_message(array_merge($new_messages[0],array(
                         'e_b_id'=>intval($_POST['b_id']),
                         'e_recipient_u_id'=>$udata['u_id'],
-                    )),$_POST['level']),
+                    )), $_POST['level']),
                 ));
             }
 	    }   

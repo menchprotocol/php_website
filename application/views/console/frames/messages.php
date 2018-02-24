@@ -16,9 +16,17 @@ $intents = $this->Db_model->c_fetch(array(
     'c.c_id' => $c_id,
 ));
 
+//Fetch Bootcamp:
+$bootcamps = $this->Db_model->b_fetch(array(
+    'b.b_id' => $b_id,
+));
+
 if(!isset($intents[0])){
     //This should never happen:
     die('Invalid input id.');
+} elseif(count($bootcamps)<1){
+    //This should never happen:
+    die('Invalid Bootcamp id.');
 }
 ?>
 
@@ -561,6 +569,7 @@ if(!isset($intents[0])){
 
 
 <div class="iphone-title"><?= $core_objects['level_'.($level-1)]['o_icon'].' '.$core_objects['level_'.($level-1)]['o_name'].': '.$intents[0]['c_objective'] ?></div>
+
 <ul class="nav nav-tabs iphone-nav-tabs">
     <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= status_bible('i',1, false, null) ?></a></li>
     <li role="presentation" class="nav_3"><a href="#messages-<?= $c_id ?>-3"><?= status_bible('i',3, false, null) ?></a></li>
@@ -568,17 +577,18 @@ if(!isset($intents[0])){
     <li role="presentation" class="nav_2"><a href="#messages-<?= $c_id ?>-2"><?= status_bible('i',2, false, null) ?></a></li>
     <?php } ?>
 </ul>
+
 <input type="hidden" id="i_status_focus" value="1" />
 
-<div class="ix-msg" id="intent_messages<?= $c_id ?>">
+<div class="ix-msg" style="height:380px; padding-top:7px;" id="intent_messages<?= $c_id ?>">
 
     <?php
+
     //Give more information on each message type:
     $i_desc = status_bible('i');
     echo '<div class="ix-tip all_msg msg_1"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[1]['s_desc']).'.</div>';
     echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[2]['s_desc']).'.</div>';
     echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[3]['s_desc']).'.</div>';
-
 
     $message_count_1 = 0;
     $message_count_2 = 0;
@@ -590,7 +600,7 @@ if(!isset($intents[0])){
             echo echo_message(array_merge($i,array(
                 'e_b_id'=>$b_id,
                 'e_recipient_u_id'=>$udata['u_id'],
-            )),$level);
+            )),$level );
             //Increase counter:
             ${'message_count_'.$i['i_status']}++;
         }
@@ -638,9 +648,11 @@ if(!isset($intents[0])){
     echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="top"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload File</label></div>';
     echo '</div>';
 
+
     echo '<div class="iphone-add-btn all_msg msg_1"><a href="javascript:msg_create();" id="add_message_1_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.status_bible('i',1, false, null).' &nbsp; MESSAGE</a></div>';
     echo '<div class="iphone-add-btn all_msg msg_2 hidden"><a href="javascript:msg_create();" id="add_message_2_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.status_bible('i',2, false, null).' &nbsp; MESSAGE</a></div>';
     echo '<div class="iphone-add-btn all_msg msg_3 hidden"><a href="javascript:msg_create();" id="add_message_3_'.$c_id.'" data-toggle="tooltip" title="or hit CTRL+ENTER ;)" data-placement="top" class="btn btn-primary">ADD '.status_bible('i',3, false, null).' &nbsp; MESSAGE</a></div>';
+
 
 
     echo '</form>';

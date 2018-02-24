@@ -10,6 +10,7 @@ $udata = $ufetch[0];
 $message_max = $this->config->item('message_max');
 ?>
 <script>
+
 $(document).ready(function() {
 	//Detect any possible hashes that controll the menu?
 	if(window.location.hash) {
@@ -105,6 +106,11 @@ function insert_gravatar(){
     alert('Gravatar URL for your email <?= $udata['u_email'] ?> was successfully inserted. Make sure to SAVE changes.');
 }
 </script>
+
+
+
+
+
 
 
 

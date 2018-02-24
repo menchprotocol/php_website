@@ -47,6 +47,63 @@ class Adjust extends CI_Controller {
         }
     }
 
+    function clone_bootcamp($b_id1,$b_id2_c_id){
+        //Create a replicate of a Bootcamp:
+        $bootcamps = $this->Db_model->remix_bootcamps(array(
+            'b.b_id' => $b_id1,
+        ));
+        if(count($bootcamps)<1){
+            return false;
+        }
+
+        //Start with Milestone & Tasks & Messages:
+        foreach($bootcamps[0]['c__child_intents'] as $milestone){
+
+            //Create intent:
+            $new_intent = $this->Db_model->c_create(array(
+                'c_creator_id' => 1,
+                'c_objective' => trim($milestone['c_objective']),
+                'c_time_estimate' => '0',
+            ));
+
+            //Create Link:
+            $relation = $this->Db_model->cr_create(array(
+                'cr_creator_id' => 1,
+                'cr_inbound_id'  => $b_id2_c_id,
+                'cr_outbound_id' => $new_intent['c_id'],
+                'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+                        'cr_status >=' => 1,
+                        'c_status >=' => 1,
+                        'cr_inbound_id' => $b_id2_c_id,
+                    )),
+            ));
+
+            foreach($milestone['c__child_intents'] as $task){
+
+                //Create intent:
+                $new_intent2 = $this->Db_model->c_create(array(
+                    'c_creator_id' => 1,
+                    'c_objective' => trim($task['c_objective']),
+                    'c_time_estimate' => '0.05', //3 min default task
+                ));
+
+                //Create Link:
+                $relation = $this->Db_model->cr_create(array(
+                    'cr_creator_id' => 1,
+                    'cr_inbound_id'  => $bootcamps[0]['b_c_id'],
+                    'cr_outbound_id' => $new_intent2['c_id'],
+                    'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+                            'cr_status >=' => 1,
+                            'c_status >=' => 1,
+                            'cr_inbound_id' => $bootcamps[0]['b_c_id'],
+                        )),
+                ));
+
+            }
+
+        }
+    }
+
 
     function sync_student_progress(){
 

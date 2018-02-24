@@ -37,20 +37,23 @@ class Facebook_model extends CI_Model {
 		}
 	}
 
-	
-	function fetch_settings($botkey){
-	    $mench_bots = $this->config->item('mench_bots');
-	    if(!array_key_exists($botkey,$mench_bots)){
-	        die('Invalid Bot Key');
-	    }
-	    $ch = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?fields=persistent_menu,get_started,greeting,whitelisted_domains&access_token='.$mench_bots[$botkey]['access_token']);
-		curl_setopt_array($ch, array(
-				CURLOPT_CUSTOMREQUEST => 'GET',
-				CURLOPT_RETURNTRANSFER => TRUE,
-		));
-		// Send the request
-		return objectToArray(json_decode(curl_exec($ch)));
-	}
+
+    function fetch_settings($botkey){
+        $mench_bots = $this->config->item('mench_bots');
+        if(!array_key_exists($botkey,$mench_bots)){
+            die('Invalid Bot Key');
+        }
+        $ch = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?fields=persistent_menu,get_started,greeting,whitelisted_domains&access_token='.$mench_bots[$botkey]['access_token']);
+        curl_setopt_array($ch, array(
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_RETURNTRANSFER => TRUE,
+        ));
+        // Send the request
+        return objectToArray(json_decode(curl_exec($ch)));
+    }
+
+
+
 	
 	function set_settings($botkey){
 		

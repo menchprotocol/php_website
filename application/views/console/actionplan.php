@@ -664,8 +664,6 @@ function save_modify(){
 
             modify_data['c_objective'] = $('#c_objective1 .c_objective_input').val();
             modify_data['b_sprint_unit'] = $('input[name=b_sprint_unit]:checked').val();
-            modify_data['b_url_key'] = $('#b_url_key').val();
-            modify_data['b_status'] = $('#b_status').val();
 
         } else if(modify_data['level']==2){
 
@@ -701,10 +699,6 @@ function save_modify(){
                     //Also adjust top left title:
                     $("#top-left-title").html(modify_data['c_objective']);
 
-                    //Update status:
-                    $('#status_holder').html($('.b_status_'+modify_data['b_status']).html());
-                    $('#status_holder [data-toggle="tooltip"]').tooltip();
-
                     if(modify_data['b_sprint_unit']=='day'){
                         $(".b_sprint_unit").text('Day');
                         $(".b_sprint_unit2").text('Daily');
@@ -712,10 +706,6 @@ function save_modify(){
                         $(".b_sprint_unit").text('Week');
                         $(".b_sprint_unit2").text('Weekly');
                     }
-
-                    //URL Update:
-                    $(".landing_page_url").attr("href", "/"+modify_data['b_url_key']);
-                    $(".url_anchor").text(modify_data['b_url_key']);
 
                     update_tree_input(); //Updates in text box for milestones...
 
@@ -1214,33 +1204,9 @@ function add_item(group_id,prefix,current_value){
             </div>
 
 
-            <div class="levelz level1 hidden">
-                <div class="title" style="margin-top:15px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
-                <div class="help_body maxout" id="content_627"></div>
-                <?= echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
-                <div style="clear:both; margin:0; padding:0;"></div>
-            </div>
-
-
-            <div class="levelz level1 hidden" style="margin-top:0px;">
+            <div class="levelz level1 hidden" style="margin-top:15px;">
                 <?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
             </div>
-
-
-            <div class="levelz level1 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
-                <div class="help_body maxout" id="content_725"></div>
-                <div class="form-group label-floating is-empty">
-                    <div class="input-group border">
-                        <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.co/</span>
-                        <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $bootcamp['b_url_key'] ?>" maxlength="30" class="form-control" />
-                    </div>
-                </div>
-            </div>
-
-
-
-
 
 
             <div class="levelz level2 hidden" style="margin-top:15px;">

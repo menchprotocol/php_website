@@ -341,8 +341,6 @@ class Cron extends CI_Controller {
                         $r_cache__completion_rate = number_format((count($completion_stats['completed']) / $qualified_students),3);
                     }
 
-                    $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array());
-
 
                     //Fetch all Instructors:
                     $bootcamp_instructors = $this->Db_model->ba_fetch(array(

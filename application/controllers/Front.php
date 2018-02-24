@@ -184,11 +184,18 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
         }
 
+
 	    //Validate Class:
 	    $bootcamp = $bootcamps[0];
 	    $focus_class = filter_class($bootcamp['c__classes'],$r_id);
 	    if(!$focus_class){
-	        redirect_message('/','<div class="alert alert-danger" role="alert">'.( $r_id ? 'Class is expired.' : 'Error: You must <a href="/console/'.$bootcamp['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
+	        if(isset($udata['u_status']) && $udata['u_status']>=2){
+	            //This is an admin, get them to the editing page:
+                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'You must <a href="/console/'.$bootcamp['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
+            } else {
+	            //This is a user, give them a standard error:
+                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Bootcamp.' ).'</div>');
+            }
 	    }
 
 	    if($bootcamp['c__milestone_units']<=0){

@@ -21,6 +21,7 @@ if($object_name=='engagements'){
         'e_b_id' => 'Bootcamp ID',
         'e_r_id' => 'Class ID',
         'e_c_id' => 'Intent ID',
+        'e_fp_id' => 'FB Page ID',
     );
     $title_suffix = '';
     $match_columns = array();

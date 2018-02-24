@@ -335,9 +335,10 @@ class Console extends CI_Controller {
 	    ));
 	    $this->load->view('console/shared/d_footer');
 	}
+
+
 	
-	
-	function team($b_id){
+	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
 	    $bootcamps = $this->Db_model->remix_bootcamps(array(
@@ -349,16 +350,16 @@ class Console extends CI_Controller {
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Team | '.$bootcamps[0]['c_objective'],
+	        'title' => 'Settings | '.$bootcamps[0]['c_objective'],
 	        'bootcamp' => $bootcamps[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Team <span id="hb_629" class="help_button" intent-id="629"></span>',
+	                'anchor' => 'Settings',
 	            ),
 	        ),
 	    ));
-	    $this->load->view('console/team' , array(
+	    $this->load->view('console/settings' , array(
 	        'bootcamp' => $bootcamps[0],
 	        'udata' => $udata,
 	    ));
