@@ -119,7 +119,6 @@ class Fb_model extends CI_Model {
             );
 
             //Add persistent menu:
-            /*
             $setting['persistent_menu'] = array(
                 array(
                     'locale' => 'default',
@@ -154,7 +153,6 @@ class Fb_model extends CI_Model {
                     ),
                 );
             }
-            */
 
         }
 
