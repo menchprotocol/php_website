@@ -91,7 +91,9 @@ class Api_v1 extends CI_Controller {
 
                         if(!($bootcamps[0]['b_fp_id']==4)){ //DO NOT Remove for MenchBot just yet
                             //Remove settings:
-                            $this->Fb_model->delete_fb_settings($bootcamps[0]['b_fp_id']);
+                            $delete_setting = $this->Fb_model->delete_fb_settings($bootcamps[0]['b_fp_id']);
+                        } else {
+                            $delete_setting = null;
                         }
 
                         //Log engagement:
@@ -99,6 +101,7 @@ class Api_v1 extends CI_Controller {
                             'e_initiator_u_id' => $udata['u_id'],
                             'e_type_id' => 74, //Page Disconnected
                             'e_b_id' => $_POST['b_id'],
+                            'e_json' => $delete_setting,
                             'e_fp_id' => $bootcamps[0]['b_fp_id'],
                         ));
                     }
@@ -113,13 +116,16 @@ class Api_v1 extends CI_Controller {
 
                         if(!($current_b_fp_id==4)){ //DO NOT Add for MenchBot just yet
                             //Add settings:
-                            $this->Fb_model->set_fb_settings($current_b_fp_id);
+                            $set_setting = $this->Fb_model->set_fb_settings($current_b_fp_id);
+                        } else {
+                            $set_setting = null;
                         }
 
                         //Log engagement:
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => $udata['u_id'],
                             'e_type_id' => 73, //Page Connected
+                            'e_json' => $set_setting,
                             'e_b_id' => $_POST['b_id'],
                             'e_fp_id' => $current_b_fp_id,
                         ));
