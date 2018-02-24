@@ -115,10 +115,11 @@ class Fb_model extends CI_Model {
             $setting['whitelisted_domains'] = array(
                 'http://local.mench.co',
                 'https://mench.co',
-                'https://mench.com',
+                //'https://mench.com', //To be added soon
             );
 
             //Add persistent menu:
+            /*
             $setting['persistent_menu'] = array(
                 array(
                     'locale' => 'default',
@@ -153,6 +154,7 @@ class Fb_model extends CI_Model {
                     ),
                 );
             }
+            */
 
         }
 
