@@ -19,6 +19,14 @@ ga('send', 'pageview');
 
 
 //Facebook SDK for JavaScript
+window.fbAsyncInit = function() {
+    FB.init({
+        appId            : '1782431902047009', //MenchBot
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v2.11'
+    });
+};
 (function(d, s, id){
    var js, fjs = d.getElementsByTagName(s)[0];
    if (d.getElementById(id)) {return;}
