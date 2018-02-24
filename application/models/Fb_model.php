@@ -103,7 +103,7 @@ class Fb_model extends CI_Model {
         }
 
         //The basic setting array:
-        $setting = array(
+        $setting1 = array(
             'get_started' => array(
                 'payload' => 'GET_STARTED',
             ),
@@ -112,6 +112,19 @@ class Fb_model extends CI_Model {
                 'https://mench.co',
                 'https://mench.com',
             ),
+        );
+        //Do we have a custom greeting?
+        if(strlen($pages[0]['fp_greeting'])>0){
+            $setting1['greeting'] = array(
+                array(
+                    'locale' => 'default',
+                    'text' => $pages[0]['fp_greeting'], //If any
+                ),
+            );
+        }
+
+        //The persistent menu which should be updated after we have set whitelisted_domains via setting1
+        $setting2 = array(
             'persistent_menu' => array(
                 array(
                     'locale' => 'default',
@@ -138,48 +151,34 @@ class Fb_model extends CI_Model {
             ),
         );
 
-        //Do we have a custom greeting?
-        if(strlen($pages[0]['fp_greeting'])>0){
-            $setting['greeting'] = array(
-                array(
-                    'locale' => 'default',
-                    'text' => $pages[0]['fp_greeting'], //If any
-                ),
-            );
-        }
 
         //Make the call for add/update
-        $ch = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='.$fp_access_token);
-        curl_setopt_array($ch, array(
+        $ch1 = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='.$fp_access_token);
+        curl_setopt_array($ch1, array(
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json; charset=utf-8'
-            ),
-            //Set our standard menu:
-            CURLOPT_POSTFIELDS => json_encode($setting)
+            CURLOPT_HTTPHEADER => array('Content-Type: application/json; charset=utf-8'),
+            CURLOPT_POSTFIELDS => json_encode($setting1)
         ));
+        $response1 = curl_exec($ch1);
 
-        // Send the request
-        $response = curl_exec($ch);
 
-        // Check for CURL errors
-        if($response === FALSE){
 
-            $this->Db_model->e_create(array(
-                'e_message' => 'set_fb_settings() failed to update the settings',
-                'e_json' => $setting,
-                'e_type_id' => 8, //Platform Error
-                'e_fp_id' => $fp_id,
-            ));
+        //Make the call for add/update
+        $ch2 = curl_init('https://graph.facebook.com/v2.6/me/messenger_profile?access_token='.$fp_access_token);
+        curl_setopt_array($ch2, array(
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_RETURNTRANSFER => TRUE,
+            CURLOPT_HTTPHEADER => array('Content-Type: application/json; charset=utf-8'),
+            CURLOPT_POSTFIELDS => json_encode($setting2)
+        ));
+        $response2 = curl_exec($ch2);
 
-            return false;
-
-        } else {
-
-            return objectToArray(json_decode($response));
-
-        }
+        //Return package:
+        return array(
+            'step1' => objectToArray(json_decode($response1)),
+            'step2' => objectToArray(json_decode($response2)),
+        );
     }
 
     function delete_fb_settings($fp_id){
