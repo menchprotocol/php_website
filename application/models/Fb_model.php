@@ -157,15 +157,7 @@ class Fb_model extends CI_Model {
         } else {
             //Remove these items:
             $setting['whitelisted_domains'] = array();
-            $setting['persistent_menu'] = array(
-                array(
-                    'locale' => 'default',
-                    'composer_input_disabled' => false,
-                    'call_to_actions' => array(
-
-                    ),
-                ),
-            );
+            $setting['persistent_menu'] = null;
         }
 
         //Make the call for add/update
