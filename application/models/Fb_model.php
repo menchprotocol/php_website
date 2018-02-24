@@ -156,7 +156,7 @@ class Fb_model extends CI_Model {
 
         } else {
             //Remove these items:
-            $setting['whitelisted_domains'] = array();
+            $setting['whitelisted_domains'] = null;
             $setting['persistent_menu'] = null;
         }
 
