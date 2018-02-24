@@ -31,13 +31,14 @@ $config['show_in_api'] = array(
 
 $config['required_fb_permissions'] = array(
     'public_profile' => 'Description', //Basic permission
-    //'email' => 'Description',
     'manage_pages' => 'Description',
     'pages_show_list' => 'Description',
-    'read_page_mailboxes' => 'Description',
-    'business_management' => 'Description',
     'pages_messaging' => 'Description',
     'pages_messaging_subscriptions' => 'Description',
+    //'email' => 'Description',
+    //'user_birthday' => 'Description',
+    //'read_page_mailboxes' => 'Description',
+    //'business_management' => 'Description',
 );
 
 $config['mench_pricing'] = array(
