@@ -150,7 +150,7 @@ $my_bootcamps = $this->Db_model->u_bootcamps(array(
                     //Refresh after success:
                     setTimeout(function() {
                         window.location = "/console/<?= $bootcamp['b_id'] ?>/actionplan"
-                    }, 1000);
+                    }, 1500);
 
                 } else {
 

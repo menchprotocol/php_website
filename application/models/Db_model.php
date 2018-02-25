@@ -607,6 +607,12 @@ WHERE ru.ru_status >= 4
 	    
 	    //Fetch their profile from Facebook:
 	    $fb_profile = $this->Facebook_model->fetch_profile($botkey,$psid_sender_id);
+
+
+	    if(!$fb_profile){
+	        //We could not fetch profile
+	        return false;
+        }
 	    
 	    //Split locale into language and country
 	    $locale = explode('_',$fb_profile['locale'],2);
