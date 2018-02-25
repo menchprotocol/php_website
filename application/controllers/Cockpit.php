@@ -62,6 +62,9 @@ class Cockpit extends CI_Controller {
 	
 	
 	function browse($object_name){
+
+        boost_power();
+
 	    //Authenticate level 3 or higher, redirect if not:
 	    $udata = auth(3,1);
 	    
