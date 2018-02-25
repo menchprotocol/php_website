@@ -297,7 +297,7 @@ class Api_v1 extends CI_Controller {
             ),
             'e_type_id' => 75, //Action Plan Imported
             'e_b_id' => $bootcamps_to[0]['b_id'],
-            'e_c_id' => $bootcamps_to[0]['b_c_id'],
+            'e_c_id' => $bootcamps_from[0]['b_c_id'],
         ));
 
 
