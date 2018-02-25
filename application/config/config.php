@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.25,
+    'version' => 2.26,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -649,16 +649,16 @@ $config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,70,72);
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.co'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
     ),
     array(
         'admin_emails' => array('shervin@mench.co'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
     ),
 );
 
 //Define what counts as a meaningful Bootcamp engagement by the instructor team:
-$config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74);
+$config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');

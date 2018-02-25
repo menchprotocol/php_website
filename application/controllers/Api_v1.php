@@ -22,7 +22,296 @@ class Api_v1 extends CI_Controller {
 	 * Miscs
 	 ****************************** */
 
-	function log_engagement(){
+	function import_content_loader(){
+
+        if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp source.',
+            ));
+            exit;
+        }
+
+        $udata = auth(2,0,$_POST['import_from_b_id']);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to try again.',
+            ));
+            exit;
+        }
+
+        $bootcamps = $this->Db_model->remix_bootcamps(array(
+            'b_id' => $_POST['import_from_b_id'],
+        ));
+        if(!(count($bootcamps)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp source.',
+            ));
+            exit;
+        }
+
+        $import_items = array(
+            //Action Plan stuff:
+            array(
+                'is_header' => 1,
+                'name' => '<h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bootcamps[0]['c_objective'].'</h4>',
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-commenting" aria-hidden="true"></i> Import Bootcamp-Level Messages',
+                'id' => 'b_level_messages',
+                'count' => count($bootcamps[0]['c__messages']),
+            ),
+
+            array(
+                'is_header' => 1,
+                'name' => '<h5><i class="fa fa-sign-in" aria-hidden="true"></i> Screening</h5>',
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-address-book" aria-hidden="true"></i> Override Target Audience',
+                'id' => 'b_target_audience',
+                'count' => ( strlen($bootcamps[0]['b_target_audience'])>0 ? count(json_decode($bootcamps[0]['b_target_audience'])) : 0 ),
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Override Prerequisites',
+                'id' => 'b_prerequisites',
+                'count' => ( strlen($bootcamps[0]['b_prerequisites'])>0 ? count(json_decode($bootcamps[0]['b_prerequisites'])) : 0 ),
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-question-circle" aria-hidden="true"></i> Override Application Questions',
+                'id' => 'b_application_questions',
+                'count' => ( strlen($bootcamps[0]['b_application_questions'])>0 ? count(json_decode($bootcamps[0]['b_application_questions'])) : 0 ),
+            ),
+
+
+            array(
+                'is_header' => 1,
+                'name' => '<h5><i class="fa fa-flag" aria-hidden="true"></i> Milestones</h5>',
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-flag" aria-hidden="true"></i> Import Published Milestones with all Tasks & Messages',
+                'id' => 'b_published_milestones',
+                'count' => count($bootcamps[0]['c__active_intents']),
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-flag" aria-hidden="true"></i> Import Drafting Milestones with all Tasks & Messages',
+                'id' => 'b_drafting_milestones',
+                'count' => (count($bootcamps[0]['c__child_intents'])-count($bootcamps[0]['c__active_intents'])),
+            ),
+
+
+            array(
+                'is_header' => 1,
+                'name' => '<h5><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</h5>',
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
+                'id' => 'b_transformations',
+                'count' => ( strlen($bootcamps[0]['b_transformations'])>0 ? count(json_decode($bootcamps[0]['b_transformations'])) : 0 ),
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-trophy" aria-hidden="true"></i> Override Completion Awards',
+                'id' => 'b_completion_prizes',
+                'count' => ( strlen($bootcamps[0]['b_completion_prizes'])>0 ? count(json_decode($bootcamps[0]['b_completion_prizes'])) : 0 ),
+            ),
+
+        );
+
+
+
+        //Generate UI:
+        $ui = '<p>Choose what to import:</p>'; //Start generating this...
+        foreach($import_items as $item){
+            if($item['is_header']){
+                $ui .= '<div class="title">'.$item['name'].'</div>';
+            } else {
+                $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" name="'.$item['id'].'" '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
+            }
+        }
+
+
+        echo_json(array(
+            'status' => 1,
+            'message' => null, //Not used, would load ui instead
+            'ui' => $ui,
+        ));
+    }
+
+    function import_process(){
+
+        if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0 || !isset($_POST['import_to_b_id']) || intval($_POST['import_to_b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp source.',
+            ));
+            exit;
+        } elseif(!isset($_POST['milestone_import_mode']) || intval($_POST['milestone_import_mode'])<1 || intval($_POST['milestone_import_mode'])>3){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Milestone Import Mode',
+            ));
+            exit;
+        } elseif(!isset($_POST['b_published_milestones']) || !isset($_POST['b_drafting_milestones'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Milestone Settings',
+            ));
+            exit;
+        }
+
+        $udata = auth(2,0,$_POST['import_from_b_id']);
+        $udata2 = auth(2,0,$_POST['import_to_b_id']);
+        if(!$udata || !$udata2){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to try again.',
+            ));
+            exit;
+        }
+
+        $bootcamps_from = $this->Db_model->remix_bootcamps(array(
+            'b_id' => $_POST['import_from_b_id'],
+        ));
+        $bootcamps_to = $this->Db_model->b_fetch(array(
+            'b_id' => $_POST['import_to_b_id'],
+        ));
+        if(!(count($bootcamps_from)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp from.',
+            ));
+            exit;
+        } elseif(!(count($bootcamps_to)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp to.',
+            ));
+            exit;
+        }
+
+
+        //We're good at this point
+        //Start copying potential lists first:
+        $lists = array(
+            'b_target_audience',
+            'b_prerequisites',
+            'b_application_questions',
+            'b_transformations',
+            'b_completion_prizes',
+        );
+        $b_lists = array();
+        foreach($lists as $list){
+            //Do we need this list?
+            if(isset($_POST[$list]) && intval($_POST[$list])){
+                //Yes, copy this guy:
+                $b_lists[$list] = $bootcamps_from[0][$list];
+            }
+        }
+        if(count($b_lists)>0){
+            //Copy to new Action Plan:
+            $this->Db_model->b_update( $_POST['import_to_b_id'] , $b_lists);
+        }
+
+
+
+        //Do we need to copy the Bootcamp-level message?
+        $b_level_messages_results = array();
+        if(isset($_POST['b_level_messages']) && intval($_POST['b_level_messages']) && count($bootcamps_from[0]['c__messages'])>0){
+            //Yes, import messages:
+            $b_level_messages_results = copy_messages($udata['u_id'],$bootcamps_from[0]['c__messages'],$bootcamps_to[0]['b_c_id']);
+        }
+
+
+        //Do we need to do any Milestones?
+        $new_intents = array();
+        if(intval($_POST['b_published_milestones']) || intval($_POST['b_drafting_milestones'])){
+            //Yes, we have either Published or Drafting Milestone copy request:
+
+            foreach($bootcamps_from[0]['c__child_intents'] as $milestone){
+
+                if($milestone['c_status']<0 || ($milestone['c_status']==0 && !intval($_POST['b_drafting_milestones'])) || ($milestone['c_status']==1 && !intval($_POST['b_published_milestones']))){
+                    continue;
+                }
+
+                unset($new_miletone);
+                $new_miletone = array();
+
+                //What modality is this?
+                if(intval($_POST['milestone_import_mode'])==3){
+
+                    //Copy intent:
+                    $new_miletone = copy_intent($udata['u_id'],$milestone,$bootcamps_to[0]['b_c_id']);
+
+                    if(count($milestone['c__messages'])>0){
+                        //Copy messages:
+                        $new_miletone['c__messages'] = copy_messages($udata['u_id'],$milestone['c__messages'],$new_miletone['c_id']);
+                    }
+
+                }
+
+
+
+                //Go through the Tasks:
+                $new_miletone['c__child_intents'] = array();
+                foreach($milestone['c__child_intents'] as $task){
+
+                    if(intval($_POST['milestone_import_mode'])==3){
+
+                        //Copy intent:
+                        $new_task = copy_intent($udata['u_id'],$task,$new_miletone['c_id']);
+
+                        if(count($task['c__messages'])>0) {
+                            //Copy messages:
+                            $new_task['c__messages'] = copy_messages($udata['u_id'], $task['c__messages'], $new_task['c_id']);
+                        }
+
+                        array_push( $new_miletone['c__child_intents'] , $new_task );
+
+                    }
+
+                }
+
+                array_push($new_intents,$new_miletone);
+
+            }
+        }
+
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_json' => array(
+                'import_settings' => $_POST,
+                'b_lists' => $b_lists,
+                'b_level_messages_results' => $b_level_messages_results,
+                'new_intents' => $new_intents,
+            ),
+            'e_type_id' => 75, //Action Plan Imported
+            'e_b_id' => $bootcamps_to[0]['b_id'],
+            'e_c_id' => $bootcamps_to[0]['b_c_id'],
+        ));
+
+
+
+        //Show message & redirect:
+        echo_json(array(
+            'status' => 1, //Success
+            'message' => '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Reloading Action Plan...</div>',
+        ));
+    }
+
+
+
+    function log_engagement(){
 	    //Validate hash code:
         if(!isset($_POST['e_hash_time']) || !isset($_POST['e_hash_code']) || strlen($_POST['e_hash_time'])<5 || strlen($_POST['e_hash_code'])<5 || !(md5($_POST['e_hash_time'].'hashcod3')==$_POST['e_hash_code'])){
 

@@ -201,7 +201,9 @@ class Console extends CI_Controller {
 		//Load views:
 		$this->load->view('console/shared/d_header' , $view_data);
 		$this->load->view('console/actionplan' , $view_data);
-		$this->load->view('console/shared/d_footer');
+		$this->load->view('console/shared/d_footer' , array(
+            'load_view' => 'console/modals/import_actionplan',
+        ));
 		
 	}
 	

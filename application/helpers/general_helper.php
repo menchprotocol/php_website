@@ -839,6 +839,87 @@ function generate_url_key($string){
     return $string;
 }
 
+function copy_messages($u_id,$c__messages,$c_id){
+    //This function strips and copies all $c__messages to $c_id recorded as $u_id
+    $CI =& get_instance();
+    $newly_created_messages = array();
+
+    foreach($c__messages as $i){
+
+        if($i['i_status']<=0){
+            continue; //Only do active messages, should not happen...
+        }
+
+        $new_i = array();
+        foreach($i as $key=>$value){
+            //Is this a message field?
+            if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_creator_id','i_c_id','i_timestamp','i_rank'))){
+                //Yes, move over:
+                $new_i[$key] = $value;
+            }
+        }
+
+        //Replace creator & c_id
+        $new_i['i_creator_id'] = $u_id;
+        $new_i['i_c_id'] = $c_id;
+        $new_i['i_rank'] = 1 + $CI->Db_model->max_value('v5_messages','i_rank', array(
+            'i_status' => $new_i['i_status'],
+            'i_c_id' => $c_id,
+        ));
+
+        //Create:
+        $i_create = $CI->Db_model->i_create($new_i);
+
+        //Append to total stats:
+        array_push($newly_created_messages,$i_create);
+    }
+
+    return $newly_created_messages;
+
+}
+
+function copy_intent($u_id,$intent,$c_id){
+
+    if($intent['c_status']<0){
+        return array();
+    }
+
+    $CI =& get_instance();
+    $new_c = array();
+    foreach($intent as $key=>$value){
+        //Is this a message field?
+        if(!(substr($key,0,3)=='c__') && substr($key,0,2)=='c_' && !in_array($key,array('c_id','c_timestamp','c_creator_id'))){
+            //Yes, move over:
+            $new_c[$key] = $value;
+        }
+    }
+
+    //Append creator:
+    $new_c['c_creator_id'] = $u_id;
+
+    //Create intent:
+    $new_intent = $CI->Db_model->c_create($new_c);
+
+    //Create Link:
+    $intent_relation = $CI->Db_model->cr_create(array(
+        'cr_creator_id' => $u_id,
+        'cr_inbound_id'  => $c_id,
+        'cr_outbound_id' => $new_intent['c_id'],
+        'cr_outbound_rank' => 1 + $CI->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+            'cr_status >=' => 1,
+            'c_status >=' => 1,
+            'cr_inbound_id' => $c_id,
+        )),
+    ));
+
+    //Return full package:
+    $new_intents = $CI->Db_model->cr_outbound_fetch(array(
+        'cr.cr_id' => $intent_relation['cr_id'],
+    ));
+
+    return $new_intents[0];
+}
+
 
 function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0,$editing_enabled=true){
     
@@ -914,7 +995,9 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
             $ui .= '<div class="inline-level" style="margin:9px 0 0 1px; width:100%; clear:both;">';
 
-            $ui .= '<span style="margin-left:0px; font-weight:500;"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span> Milestones</span> &nbsp; ';
+            $ui .= '<span style="margin-left:0px; font-weight:500;" class="pull-left"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span> Milestones</span> &nbsp; ';
+            $ui .= '<span style="margin-left:0px; margin-right:6px; font-weight:500;" class="pull-right"><a href="#" data-toggle="modal" data-target="#importActionPlan" title="Import parts of all of Screening, Milestones or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="left"><i class="fa fa-download" aria-hidden="true"></i>
+ Import</a></span>';
 
             $ui .= '</div>';
 

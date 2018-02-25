@@ -36,6 +36,10 @@ function format_hours(dbl_hour){
     }
 }
 
+function start_import(){
+    alert('starting...');
+}
+
 
 $(document).ready(function() {
 
