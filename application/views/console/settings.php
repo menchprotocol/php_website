@@ -197,7 +197,7 @@ function save_settings(){
     <li id="nav_pages"><a href="#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
     <?php } ?>
     <li id="nav_team"><a href="#team"><i class="fa fa-user-plus" aria-hidden="true"></i> Team</a></li>
-    <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li>
+    <!-- <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li> -->
 </ul>
 
 

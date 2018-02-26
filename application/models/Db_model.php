@@ -1466,14 +1466,6 @@ WHERE ru.ru_status >= 4
             if(is_array($link_data['e_json']) && count($link_data['e_json'])>0){
                 $save_blob = $link_data['e_json'];
                 $link_data['e_has_blob'] = 't';
-            } else {
-                //Wring data type:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $link_data['e_initiator_u_id'],
-                    'e_message' => 'e_create() Function had e_json variable that was not an array!',
-                    'e_json' => $link_data,
-                    'e_type_id' => 8, //Platform Error
-                ));
             }
         }
 
