@@ -399,21 +399,19 @@ class Api_v1 extends CI_Controller {
                     //Do we already have a page connected? If so, log a disconnect engagement:
                     if($page){
 
-                        if(!($page['fp_fb_id']=='381488558920384')){ //Do NOT adjust Mench as it's sensitive...
-                            //Remove settings:
-                            $e_json['messenger_profile'] = fb_graph($bootcamps[0]['b_fp_id'],'DELETE','me/messenger_profile' , array(
-                                //Define the settings to delete:
-                                'fields' => array(
-                                    'whitelisted_domains',
-                                    'persistent_menu',
-                                ),
-                                //We do NOT remove [get_started] because its a good feature for their bot to have
-                                //We do NOT remove [greeting] because it was set by them
-                            ));
+                        //Remove settings:
+                        $e_json['messenger_profile'] = fb_graph($bootcamps[0]['b_fp_id'],'DELETE','me/messenger_profile' , array(
+                            //Define the settings to delete:
+                            'fields' => array(
+                                'whitelisted_domains',
+                                'persistent_menu',
+                            ),
+                            //We do NOT remove [get_started] because its a good feature for their bot to have
+                            //We do NOT remove [greeting] because it was set by them
+                        ));
 
-                            //Remove app subscription:
-                            $e_json['subscribed_apps'] = fb_graph($page['fp_id'],'DELETE',$page['fp_fb_id'].'/subscribed_apps');
-                        }
+                        //Remove app subscription:
+                        $e_json['subscribed_apps'] = fb_graph($page['fp_id'],'DELETE',$page['fp_fb_id'].'/subscribed_apps');
 
                         //Log engagement:
                         $this->Db_model->e_create(array(
@@ -433,8 +431,9 @@ class Api_v1 extends CI_Controller {
                     //We need to assign the new page ID to this Bootcamp:
                     $current_b_fp_id = intval($_POST['b_fp_id']);
 
+
                     //Update either way:
-                    $this->Db_model->b_update( intval($_POST['b_id']) , array(
+                    $this->Db_model->b_update(intval($_POST['b_id']) , array(
                         'b_fp_id' => $current_b_fp_id,
                     ));
 
@@ -455,68 +454,65 @@ class Api_v1 extends CI_Controller {
                             return false;
                         }
 
-                        if(!($new_pages[0]['fp_fb_id']=='381488558920384')){ //DO NOT Add for MenchBot just yet
 
 
-                            //Subscribe to App so we get the messages funneled form them:
-                            $e_json['subscribed_apps'] = fb_graph($new_pages[0]['fp_id'],'POST',$new_pages[0]['fp_fb_id'].'/subscribed_apps',array(),$new_pages[0]);
+                        //Subscribe to App so we get the messages funneled form them:
+                        $e_json['subscribed_apps'] = fb_graph($new_pages[0]['fp_id'],'POST',$new_pages[0]['fp_fb_id'].'/subscribed_apps',array(),$new_pages[0]);
 
-                            //APP SETTING
+                        //APP SETTING
+                        //First white-label our domain so we can later set the persistent menu:
+                        $payload = array(
+                            'get_started' => array(
+                                'payload' => 'GET_STARTED',
+                            ),
+                            'whitelisted_domains' => array(
+                                'http://local.mench.co',
+                                'https://mench.co',
+                                'https://mench.com',
+                            ),
+                        );
 
-                            //First white-label our domain so we can later set the persistent menu:
-                            $payload = array(
-                                'get_started' => array(
-                                    'payload' => 'GET_STARTED',
-                                ),
-                                'whitelisted_domains' => array(
-                                    'http://local.mench.co',
-                                    'https://mench.co',
-                                    'https://mench.com',
-                                ),
+                        //TODO Implement page greeting
+                        if(0){
+                            $payload['greeting'] = array(
+                                //'locale' => 'default',
+                                //'text' => $pages[0]['fp_greeting'], //If any
                             );
+                        }
 
-                            //TODO Implement page greeting
-                            if(0){
-                                $payload['greeting'] = array(
-                                    //'locale' => 'default',
-                                    //'text' => $pages[0]['fp_greeting'], //If any
-                                );
-                            }
+                        //Update:
+                        $e_json['messenger_profile_base'] = fb_graph($new_pages[0]['fp_id'],'POST','me/messenger_profile' , $payload);
 
-                            //Update:
-                            $e_json['messenger_profile_base'] = fb_graph($new_pages[0]['fp_id'],'POST','me/messenger_profile' , $payload);
+                        //Wait until Facebook propagates changes of our whitelisted_domains setting:
+                        sleep(2);
 
-                            //Wait until Facebook propagates changes of our whitelisted_domains setting:
-                            sleep(2);
-
-                            //Now with the right permission, update persistent_menu:
-                            $e_json['messenger_profile_persistent_menu'] = fb_graph($new_pages[0]['fp_id'],'POST','me/messenger_profile' , array(
-                                'persistent_menu' => array(
-                                    array(
-                                        'locale' => 'default',
-                                        'composer_input_disabled' => false,
-                                        'call_to_actions' => array(
-                                            array(
-                                                'title' => '🚩 Action Plan',
-                                                'type' => 'web_url',
-                                                'url' => 'https://mench.co/my/actionplan',
-                                                'webview_height_ratio' => 'tall',
-                                                'webview_share_button' => 'hide',
-                                                'messenger_extensions' => true,
-                                            ),
-                                            array(
-                                                'title' => '👥 Classmates',
-                                                'type' => 'web_url',
-                                                'url' => 'https://mench.co/my/classmates',
-                                                'webview_height_ratio' => 'tall',
-                                                'webview_share_button' => 'hide',
-                                                'messenger_extensions' => true,
-                                            ),
+                        //Now with the right permission, update persistent_menu:
+                        $e_json['messenger_profile_persistent_menu'] = fb_graph($new_pages[0]['fp_id'],'POST','me/messenger_profile' , array(
+                            'persistent_menu' => array(
+                                array(
+                                    'locale' => 'default',
+                                    'composer_input_disabled' => false,
+                                    'call_to_actions' => array(
+                                        array(
+                                            'title' => '🚩 Action Plan',
+                                            'type' => 'web_url',
+                                            'url' => 'https://mench.co/my/actionplan',
+                                            'webview_height_ratio' => 'tall',
+                                            'webview_share_button' => 'hide',
+                                            'messenger_extensions' => true,
+                                        ),
+                                        array(
+                                            'title' => '👥 Classmates',
+                                            'type' => 'web_url',
+                                            'url' => 'https://mench.co/my/classmates',
+                                            'webview_height_ratio' => 'tall',
+                                            'webview_share_button' => 'hide',
+                                            'messenger_extensions' => true,
                                         ),
                                     ),
                                 ),
-                            ));
-                        }
+                            ),
+                        ));
 
                         //Log engagement:
                         $this->Db_model->e_create(array(
@@ -526,7 +522,6 @@ class Api_v1 extends CI_Controller {
                             'e_b_id' => $_POST['b_id'],
                             'e_fp_id' => $new_pages[0]['fp_id'],
                         ));
-
                     }
 
                 } else {
@@ -574,8 +569,10 @@ class Api_v1 extends CI_Controller {
                         array_push($current_fb_pages,$page['id']);
 
                         if(array_key_exists($page['id'],$db_pages)){
+
                             //We already had this in the Database, do we need to update?
                             if(!($page['name']==$db_pages[$page['id']]['fp_name']) || !($page['access_token']==$db_pages[$page['id']]['fp_access_token']) || $db_pages[$page['id']]['fp_status']<1){
+
                                 //Either name or Access token has changed, update:
                                 $this->Db_model->fp_update( $db_pages[$page['id']]['fp_id'] , array(
                                     'fp_access_token' => $page['access_token'],
@@ -583,7 +580,9 @@ class Api_v1 extends CI_Controller {
                                     'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
                                     'fp_status' => 1, //Available
                                 ));
+
                             }
+
                         } else {
                             //This is a new page, insert it:
                             $this->Db_model->fp_create(array(
@@ -599,11 +598,27 @@ class Api_v1 extends CI_Controller {
                     //Go through the existing DB pages to make sure we have them all:
                     foreach($db_pages as $db_page) {
                         if(!in_array($db_page['fp_fb_id'],$current_fb_pages)){
+
                             //Ooops, it seems the user has lost access to this?!
                             $this->Db_model->fp_update( $db_page['fp_id'] , array(
                                 'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
                                 'fp_status' => -1, //Unavailable
                             ));
+
+                            //Log engagement for checking this for a while:
+                            $this->Db_model->e_create(array(
+                                'e_initiator_u_id' => $udata['u_id'],
+                                'e_message' => 'Instructor seems to have lost access to a Facebook Page so we set its status to [-1]. Review code base and data to ensure this makes sense.',
+                                'e_json' => array(
+                                    'facebookPages' => $facebookPages,
+                                    'current_fb_pages' => $current_fb_pages,
+                                    'db_pages' => $db_pages,
+                                ),
+                                'e_type_id' => 9, //Support Needing Graceful Errors
+                                'e_fp_id' => $db_page['fp_id'],
+                                'e_b_id' => $_POST['b_id'],
+                            ));
+
                         }
                     }
                 }
@@ -634,7 +649,6 @@ class Api_v1 extends CI_Controller {
                             //Give the option to connect:
                             $pages_ui .= '<a href="javascript:void(0);" onclick="load_fp(null,'.$current_b_fp_id.','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-plug" aria-hidden="true"></i> Connect</a>';
                         }
-
                         $pages_ui .= '</span> ';
 
                         //Left content
