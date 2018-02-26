@@ -200,9 +200,6 @@ class Adjust extends CI_Controller {
         }
     }
 
-    function profile(){
-        echo_json($this->Facebook_model->fetch_profile('381488558920384','1670125439677259'));
-    }
 
 
 

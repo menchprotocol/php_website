@@ -996,8 +996,11 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
             $ui .= '<div class="inline-level" style="margin:9px 0 0 1px; width:100%; clear:both;">';
 
             $ui .= '<span style="margin-left:0px; font-weight:500;" class="pull-left"><i class="fa fa-flag" aria-hidden="true"></i> <span class="b_sprint_unit2">'.$sprint_units[$b_sprint_unit]['name'].'</span> Milestones</span> &nbsp; ';
-            $ui .= '<span style="margin-left:0px; margin-right:6px; font-weight:500;" class="pull-right"><a href="#" data-toggle="modal" data-target="#importActionPlan" title="Import parts of all of Screening, Milestones or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="left"><i class="fa fa-download" aria-hidden="true"></i>
- Import</a></span>';
+
+            if($editing_enabled){
+                //Show import button:
+                $ui .= '<span style="margin-left:0px; margin-right:6px; font-weight:500;" class="pull-right"><a href="#" data-toggle="modal" data-target="#importActionPlan" title="Import parts of all of Screening, Milestones or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="left"><i class="fa fa-download" aria-hidden="true"></i> Import</a></span>';
+            }
 
             $ui .= '</div>';
 
@@ -2074,6 +2077,149 @@ function boost_power(){
 	ini_set('memory_limit', '-1');
 	ini_set('max_execution_time', 600);
 }
+
+
+function fb_graph($fp_id,$action,$url,$post_fields=array(),$fp=null){
+
+    $CI =& get_instance();
+
+    if(!$fp){
+        //Fetch from DB:
+        $pages = $CI->Db_model->fp_fetch(array(
+            'fp_id' => $fp_id,
+        ));
+        if(!isset($pages[0]['fp_access_token']) || strlen($pages[0]['fp_access_token'])<1){
+            return array(
+                'status' => 0,
+                'message' => 'invalid fp_id ['.$fp_id.']',
+            );
+        } else {
+            $fp = $pages[0];
+        }
+    }
+
+    if(!in_array($action,array('GET','POST','DELETE'))){
+        return array(
+            'status' => 0,
+            'message' => '$action ['.$action.'] is invalid',
+        );
+    }
+
+    //Append access token of the page to the end of the call:
+    $url = $url.( substr_count($url,'?')>0 ? '&' : '?' ).'access_token='.$fp['fp_access_token'];
+
+    //Make the graph call:
+    $ch = curl_init('https://graph.facebook.com/v2.6/'.$url);
+
+    //Base setting:
+    $ch_setting = array(
+        CURLOPT_CUSTOMREQUEST => $action,
+        CURLOPT_RETURNTRANSFER => TRUE,
+    );
+
+    if(count($post_fields)>0){
+        $ch_setting[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
+        $ch_setting[CURLOPT_POSTFIELDS] = json_encode($post_fields);
+    }
+
+    //Apply settings:
+    curl_setopt_array($ch, $ch_setting);
+
+    //Process results and produce e_json
+    $result = objectToArray(json_decode(curl_exec($ch)));
+    $e_json = array(
+        'action' => $action,
+        'url' => $url,
+        'result' => $result,
+        'fp' => $fp,
+    );
+
+    //Did we have any issues?
+    if(!$result){
+
+        //Failed to fetch this profile:
+        $error_message = 'fb_graph() failed to '.$action.' '.$url;
+        $CI->Db_model->e_create(array(
+            'e_message' => $error_message,
+            'e_type_id' => 8, //Platform Error
+            'e_json' => $e_json,
+            'e_fp_id' => $fp_id,
+        ));
+
+        //There was an issue accessing this on FB
+        return array(
+            'status' => 0,
+            'message' => $error_message,
+            'e_json' => $e_json,
+        );
+
+    } else {
+
+        //All seems good, return:
+        return array(
+            'status' => 1,
+            'message' => 'Success',
+            'e_json' => $e_json,
+        );
+
+    }
+}
+
+
+//Sends out batch messages in an easier way:
+function fb_message( $fp_id , $u_fb_user_id , $messages , $notification_type='REGULAR'){
+
+    if(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
+        return array(
+            'status' => 0,
+            'message' => 'Invalid notification type ['.$notification_type.']',
+        );
+    } elseif(count($messages)<1){
+        return array(
+            'status' => 0,
+            'message' => 'No messages set',
+        );
+    }
+
+    $e_json = array();
+    $failed_count = 0;
+    foreach($messages as $message){
+
+        $process = fb_graph( $fp_id ,'GET','me/messages', array(
+            'recipient' => array(
+                'id' => $u_fb_user_id,
+            ),
+            'message' => $message,
+            'notification_type' => $notification_type,
+        ));
+
+        if(!$process['status']){
+            $failed_count++;
+        }
+
+        array_push( $e_json , $process );
+    }
+
+    if($failed_count>0){
+
+        return array(
+            'status' => 0,
+            'message' => 'Failed to send '.$failed_count.'/'.count($messages).' message'.show_s(count($messages)).'.',
+            'e_json' => $e_json,
+        );
+
+    } else {
+
+        return array(
+            'status' => 1,
+            'message' => 'Successfully sent '.count($messages).' message'.show_s(count($messages)),
+            'e_json' => $e_json,
+        );
+
+    }
+}
+
+
 
 function echo_rank($rank){
     if($rank==1){

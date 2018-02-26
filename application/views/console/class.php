@@ -468,7 +468,7 @@ function sync_action_plan(){
 
 
         <div style="display:block; margin-top:30px;">
-            <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel ID <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+            <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Admission Pixel Code <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
             <div class="help_body maxout" id="content_718"></div>
             <div class="input-group">
                 <input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border <?= $soft_disabled ?>" />

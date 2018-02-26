@@ -270,7 +270,7 @@ function save_settings(){
     </div>
 
     <div class="tab-pane" id="tabcoupons">
-        <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pending development; Scheduled for late March 🎉​</div>
+        <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pending development; Scheduled for March 2018 🎉​</div>
     </div>
 
 </div>

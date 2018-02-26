@@ -132,4 +132,4 @@ $autoload['language'] = array('mench');
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('Db_model','Facebook_model','Fb_model'); //'Apiai_model',
+$autoload['model'] = array('Db_model','Facebook_model'); //'Apiai_model',

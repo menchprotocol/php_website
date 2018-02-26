@@ -580,10 +580,10 @@ h5, .h5 {
 }
 .msg a {
 	text-decoration:underline;
-	max-width: 272px;
     overflow: hidden;
     display: inline-block;
 }
+
 .list-messages video {
 	border-top-left-radius:3px;
 	border-top-right-radius: 0.9em;

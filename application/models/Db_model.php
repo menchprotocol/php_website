@@ -467,14 +467,17 @@ WHERE ru.ru_status >= 4
 	            //This is a new user that needs to be registered!
 	            //Call facebook messenger API and get user details
 	            //https://developers.facebook.com/docs/messenger-platform/user-profile/
-	            $fb_profile = $this->Facebook_model->fetch_profile($botkey,$psid_sender_id);
-	            
-	            if(!$fb_profile){
-	                //This error has already been logged!
+                $graph_fetch = fb_graph(4,'GET',$psid_sender_id);
+
+	            if(!$graph_fetch['status']){
+	                //This error has already been logged inside fb_graph()
 	                //We cannot create this user:
 	                return 0;
 	            }
-	            
+
+	            //We're cool!
+                $fb_profile = $graph_fetch['e_json']['result'];
+
 	            //Split locale into language and country
 	            $locale = explode('_',$fb_profile['locale'],2);
 	            
@@ -605,15 +608,18 @@ WHERE ru.ru_status >= 4
 	     * *************************************
 	     */
 	    
-	    //Fetch their profile from Facebook:
-	    $fb_profile = $this->Facebook_model->fetch_profile($botkey,$psid_sender_id);
+	    //Fetch their profile from Facebook to update
+        $graph_fetch = fb_graph(4,'GET',$psid_sender_id);
 
-
-	    if(!$fb_profile){
-	        //We could not fetch profile
-	        return false;
+        if(!$graph_fetch['status']){
+            //This error has already been logged inside fb_graph()
+            //We cannot create this user:
+            return 0;
         }
-	    
+
+        //We're cool!
+        $fb_profile = $graph_fetch['e_json']['result'];
+
 	    //Split locale into language and country
 	    $locale = explode('_',$fb_profile['locale'],2);
 	    

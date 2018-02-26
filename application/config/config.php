@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.26,
+    'version' => 2.27,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -30,9 +30,9 @@ $config['show_in_api'] = array(
 );
 
 $config['required_fb_permissions'] = array(
-    'public_profile' => 'Description', //Basic permission
-    'manage_pages' => 'Description',
+    'public_profile' => 'Read public Facebook Profile', //Basic permission
     'pages_show_list' => 'Description',
+    'manage_pages' => 'Description',
     'pages_messaging' => 'Description',
     'pages_messaging_subscriptions' => 'Description',
     //'email' => 'Description',
