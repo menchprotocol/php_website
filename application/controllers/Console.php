@@ -77,7 +77,7 @@ class Console extends CI_Controller {
 		}
         */
 
-		$title = ( $udata['u_fb_id']>0 ? 'My Bootcamps' : '<img src="/img/bp_128.png" style="width:42px; margin-top: -4px;" /> MenchBot Activation') ;
+		$title = ( $udata['u_fb_id']>0 ? 'My Bootcamps' : '<img src="/img/bp_128.png" style="width:42px; margin-top: -4px;" /> Mench Activation') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(

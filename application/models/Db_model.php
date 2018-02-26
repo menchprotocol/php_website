@@ -1536,7 +1536,7 @@ WHERE ru.ru_status >= 4
                     foreach($bootcamp_instructors as $bi){
                         if(in_array($link_data['e_type_id'],$instructor_subscriptions)){
 
-                            //MenchBot notifications:
+                            //Mench notifications:
                             $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(echo_i(array(
                                 'i_media_type' => 'text',
                                 'i_message' => $subject."\n\n".$body."\n\n".$url,

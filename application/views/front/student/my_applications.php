@@ -139,7 +139,7 @@ if(count($admissions)>0 && is_array($admissions)){
             }
         }
 
-        $bot_title = 'Step '.( $class['r_usd_price']>0 ? '4' : '3' ).': Activate Your MenchBot on Facebook Messenger';
+        $bot_title = 'Step '.( $class['r_usd_price']>0 ? '4' : '3' ).': Activate Your Mench Personal Assistant on Messenger';
         if($admission['u_fb_id']>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
         } else {

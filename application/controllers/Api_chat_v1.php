@@ -303,7 +303,7 @@ class Api_chat_v1 extends CI_Controller{
             } elseif(!$admissions[0]['u_fb_id']){
                 echo_json(array(
                     'status' => 0,
-                    'message' => 'Student MenchBot Not Activated',
+                    'message' => 'Student Messenger Not Activated',
                 ));
             } elseif(strlen($admissions[0]['ru_status'])<0){
                 echo_json(array(
