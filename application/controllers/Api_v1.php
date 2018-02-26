@@ -381,19 +381,16 @@ class Api_v1 extends CI_Controller {
                         'fp_id' => $bootcamps[0]['b_fp_id'],
                     ));
 
-                    if(count($current_pages)<1){ //Should never happen...
+                    if(count($current_pages)<1){
+
+                        //Should never happen...
+                        $bootcamps[0]['b_fp_id'] = 0;
 
                         //Reset page:
                         $this->Db_model->b_update( $_POST['b_id'] , array(
                             'b_fp_id' => 0,
                         ));
 
-                        echo_json(array(
-                            'status' => 0,
-                            'message' => 'Invalid b_fp_id',
-                        ));
-
-                        return false;
                     } else {
                         $page = $current_pages[0];
                     }
