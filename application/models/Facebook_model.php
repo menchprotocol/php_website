@@ -58,16 +58,22 @@ class Facebook_model extends CI_Model {
             die('Invalid notification type');
         }
 
+        $stats = array();
         foreach($messages as $count=>$message){
+
             //Send the real message:
-            $this->Facebook_model->send_message( $botkey , array(
+            $result = $this->Facebook_model->send_message( $botkey , array(
                 'recipient' => array(
                     'id' => $u_fb_id,
                 ),
                 'message' => $message,
                 'notification_type' => $notification_type,
             ));
+
+            array_push($stats,$result);
         }
+
+        return $stats;
     }
 
 
