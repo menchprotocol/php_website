@@ -2079,7 +2079,7 @@ function boost_power(){
 }
 
 
-function fb_graph($fp_id,$action,$url,$post_fields=array(),$fp=null){
+function fb_graph($fp_id,$action,$url,$payload=array(),$fp=null){
 
     $CI =& get_instance();
 
@@ -2114,9 +2114,9 @@ function fb_graph($fp_id,$action,$url,$post_fields=array(),$fp=null){
         CURLOPT_RETURNTRANSFER => TRUE,
     );
 
-    if(count($post_fields)>0){
+    if(count($payload)>0){
         $ch_setting[CURLOPT_HTTPHEADER] = array('Content-Type: application/json; charset=utf-8');
-        $ch_setting[CURLOPT_POSTFIELDS] = json_encode($post_fields);
+        $ch_setting[CURLOPT_POSTFIELDS] = json_encode($payload);
     }
 
     //Apply settings:
@@ -2125,10 +2125,11 @@ function fb_graph($fp_id,$action,$url,$post_fields=array(),$fp=null){
     //Process results and produce e_json
     $result = objectToArray(json_decode(curl_exec($ch)));
     $e_json = array(
+        'fp' => $fp,
         'action' => $action,
+        'payload' => $payload,
         'url' => $url,
         'result' => $result,
-        'fp' => $fp,
     );
 
     //Did we have any issues?
