@@ -13,8 +13,10 @@ function show_fb_auth(error_message=null){
     $('#fb_login').removeClass('hidden');
     if(error_message){
         $('#login_message').html('<span style="color:#FF0000"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ERROR: '+error_message+'</span>');
+        $('#why_permissions').addClass('hidden');
     } else {
-        $('#login_message').html('<span style="color:#000">to connect your Facebook Page</span>');
+        $('#login_message').html('<span style="color:#000">to connect this Bootcamp to your Facebook Page</span>');
+        $('#why_permissions').removeClass('hidden');
     }
 }
 
@@ -230,7 +232,20 @@ function save_settings(){
 
         <?php itip(3531); ?>
         <div id="page_list"><img src="/img/round_load.gif" class="loader" /></div>
-        <div id="fb_login" class="hidden"><fb:login-button scope="<?= $permission_string ?>" onlogin="loadFacebookPages(0);"></fb:login-button> <span id="login_message"></span></div>
+        <div id="fb_login" class="hidden">
+            <fb:login-button scope="<?= $permission_string ?>" onlogin="loadFacebookPages(0);"></fb:login-button>
+            <span id="login_message"></span>
+            <div id="why_permissions" class="hidden">
+                <p style="margin-top:15px;">We need to be granted these <?= count($required_fb_permissions) ?> permissions to automate your messages:</p>
+                <ul style="list-style: decimal;">
+                <?php
+                foreach($required_fb_permissions as $key=>$desc){
+                    echo '<li><b>'.ucwords(str_replace('_',' ',$key)).':</b> '.$desc.'</li>';
+                }
+                ?>
+                </ul>
+            </div>
+        </div>
         <br />
 
     </div>

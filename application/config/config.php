@@ -30,15 +30,11 @@ $config['show_in_api'] = array(
 );
 
 $config['required_fb_permissions'] = array(
-    'public_profile' => 'Read public Facebook Profile', //Basic permission
-    'pages_show_list' => 'Description',
-    'manage_pages' => 'Description',
-    'pages_messaging' => 'Description',
-    'pages_messaging_subscriptions' => 'Description',
-    //'email' => 'Description',
-    //'user_birthday' => 'Description',
-    //'read_page_mailboxes' => 'Description',
-    //'business_management' => 'Description',
+    'public_profile' => 'Basic permission granted by Facebook so we can access your profile\'s publicly available information.', //Basic permission
+    'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Bootcamp.',
+    'manage_pages' => 'Enables us to connect Mench Personal Assistant to the Facebook Page you choose. You can disconnect at any time.',
+    'pages_messaging' => 'Enables us to send and receive messages through your Facebook Page. Cannot be used to send promotional/advertising content.',
+    'pages_messaging_subscriptions' => 'Enables us to send messages to your Students at any time after the first interaction for Milestone notification/reminders.',
 );
 
 $config['mench_pricing'] = array(

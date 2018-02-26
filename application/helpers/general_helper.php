@@ -1623,17 +1623,18 @@ function calculate_bootcamp_status($b){
 
 
     //Facebook Page
+    /*
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
     $us_status = ( $b['b_fp_id']>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings',
+        'href' => '/console/'.$b['b_id'].'/settings#pages',
         'anchor' => '<b>Connect a Facebook Page</b> to this Bootcamp in settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-
+    */
 
     //b_status
     $estimated_minutes = 5;
