@@ -412,7 +412,7 @@ class Api_v1 extends CI_Controller {
                             ));
 
                             //Remove app subscription:
-                            $e_json['subscribed_apps'] = fb_graph($bootcamps[0]['b_fp_id'],'DELETE',$bootcamps[0]['b_fp_id'].'/subscribed_apps');
+                            $e_json['subscribed_apps'] = fb_graph($page['fp_id'],'DELETE',$page['fp_fb_id'].'/subscribed_apps');
                         }
 
                         //Log engagement:
