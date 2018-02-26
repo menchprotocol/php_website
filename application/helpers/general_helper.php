@@ -2105,11 +2105,8 @@ function fb_graph($fp_id,$action,$url,$post_fields=array(),$fp=null){
         );
     }
 
-    //Append access token of the page to the end of the call:
-    $url = $url.( substr_count($url,'?')>0 ? '&' : '?' ).'access_token='.$fp['fp_access_token'];
-
     //Make the graph call:
-    $ch = curl_init('https://graph.facebook.com/v2.6/'.$url);
+    $ch = curl_init('https://graph.facebook.com/v2.6/'.$url.( substr_count($url,'?')>0 ? '&' : '?' ).'access_token='.$fp['fp_access_token']);
 
     //Base setting:
     $ch_setting = array(
