@@ -16,6 +16,15 @@ class Bot extends CI_Controller {
         echo $_GET['none'];
     }
 
+    function test(){
+        echo_json($this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array(echo_i(array(
+            'i_media_type' => 'text',
+            'i_message' => 'Testing Message...',
+            'e_initiator_u_id' => 0, //System
+            'e_recipient_u_id' => 1,
+        ), 'Shervin', true ))));
+    }
+
 
 	function facebook_webhook(){
 		

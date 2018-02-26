@@ -10,7 +10,7 @@ $config['website'] = array(
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
-    'email' => 'shervin@mench.co',
+    'email' => 'shervin@mench.com',
 );
 
 //This would hide sensitive config variables from the /api_v1/config end point used to sync data among other servers
@@ -648,11 +648,11 @@ $config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,70,72);
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
-        'admin_emails' => array('miguel@mench.co'),
+        'admin_emails' => array('miguel@mench.com'),
         'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
     ),
     array(
-        'admin_emails' => array('shervin@mench.co'),
+        'admin_emails' => array('shervin@mench.com'),
         'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
     ),
 );
