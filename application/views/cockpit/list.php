@@ -23,12 +23,16 @@ if($object_name=='engagements'){
         'e_c_id' => 'Intent ID',
         'e_fp_id' => 'FB Page ID',
     );
-    $title_suffix = '';
+
     $match_columns = array();
     foreach($engagement_filters as $key=>$value){
-        if(isset($_GET[$key]) && intval($_GET[$key])>0){
-            $match_columns[$key] = intval($_GET[$key]);
-            $title_suffix .= ' | '.$value.' '.intval($_GET[$key]);
+        if(isset($_GET[$key])){
+            if(substr_count($_GET[$key],',')>0){
+                //This is multiple IDs:
+                $match_columns[$key.' IN ('.$_GET[$key].')'] = null;
+            } elseif(intval($_GET[$key])>0) {
+                $match_columns[$key] = intval($_GET[$key]);
+            }
         }
     }
 

@@ -265,6 +265,10 @@ class Facebook_model extends CI_Model {
                             $this->Db_model->e_create(array(
                                 'e_initiator_u_id' => $u_id,
                                 'e_fp_id' => $fp['fp_id'],
+                                'e_json' => array(
+                                    'current_db' => $fs,
+                                    'current_page' => $fb_page,
+                                ),
                                 'e_b_id' => $b_id,
                                 'e_type_id' => 83, //Access Updated
                             ));
