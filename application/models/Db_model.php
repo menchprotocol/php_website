@@ -1140,12 +1140,15 @@ WHERE ru.ru_status >= 4
 	    return $intents;
 	}
 
-	function b_fetch($match_columns,$c_fetch=false,$order_by='b_id'){
+	function b_fetch($match_columns,$join_objects=array(),$order_by='b_id'){
 	    //Missing anything?
 	    $this->db->select('*');
         $this->db->from('v5_bootcamps b');
-        if($c_fetch){
+        if(in_array('c',$join_objects)){
             $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+        }
+        if(in_array('fp',$join_objects)){
+            $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
         }
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);

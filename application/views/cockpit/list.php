@@ -131,8 +131,9 @@ if($object_name=='engagements'){
         echo '<tr>';
         echo '<td>'.$counter.'</td>';
         echo '<td>'.$bootcamp['b_id'].'</td>';
+        echo '<td>'.status_bible('b',$bootcamp['b_status'],1,'right').'</td>';
         echo '<td><a href="/console/'.$bootcamp['b_id'].'">'.$bootcamp['c_objective'].'</a></td>';
-        echo '<td>'.status_bible('b',$bootcamp['b_status'],0,'right').'</td>';
+        echo '<td><a href="https://www.facebook.com/'.$bootcamp['fp_fb_id'].'">'.$bootcamp['fp_name'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
 
         echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
@@ -146,7 +147,7 @@ if($object_name=='engagements'){
     //User Bootcamps:    
     $bootcamps = $this->Db_model->b_fetch(array(
         'b.b_status >=' => 0,
-    ),true,'b_status');
+    ),array('c','fp'),'b_status');
 
     //Did we find any?
     $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
@@ -192,8 +193,9 @@ if($object_name=='engagements'){
     	<tr style="background-color:#333; color:#fff; font-weight:bold;">
      		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
+            <th>&nbsp;</th>
     		<th>Bootcamp</th>
-            <th>Status</th>
+            <th><i class="fa fa-plug"></i> Facebook Page</th>
     		<th>Lead Instructor</th>
             <th>Admission Funnel</th>
     		<th>Activity (Last)</th>
@@ -231,8 +233,9 @@ if($object_name=='engagements'){
     	<tr style="background-color:#333; color:#fff; font-weight:bold;">
             <th style="width:40px;">#</th>
             <th style="width:40px;">ID</th>
+            <th>&nbsp;</th>
             <th>Bootcamp</th>
-            <th>Status</th>
+            <th><i class="fa fa-plug"></i> Facebook Page</th>
             <th>Lead Instructor</th>
             <th>Admission Funnel</th>
             <th>Activity (Last)</th>
@@ -287,7 +290,7 @@ if($object_name=='engagements'){
             //Fetch Full Bootcamp:
             $bootcamps = $this->Db_model->b_fetch(array(
                 'b.b_id' => $class['r_b_id'],
-            ),true);
+            ),array('c'));
         }
 
         //Fetch Leader:

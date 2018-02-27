@@ -541,7 +541,7 @@ class Api_v1 extends CI_Controller {
                 $other_bootcamps = $this->Db_model->b_fetch(array(
                     'b.b_fp_id' => $page['fp_id'],
                     'b.b_id !=' => $_POST['b_id'],
-                ),true);
+                ),array('c'));
                 
                 $pages_list_ui .= '<li class="list-group-item">';
 

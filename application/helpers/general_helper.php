@@ -2352,7 +2352,7 @@ function object_link($object,$id,$b_id=0){
             
             $bootcamps = $CI->Db_model->b_fetch(array(
                 'b.b_id' => $id,
-            ),true);
+            ), array('c'));
             if(isset($bootcamps[0])){
                 if($b_id){
                     return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
