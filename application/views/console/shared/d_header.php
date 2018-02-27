@@ -13,9 +13,7 @@ $mench_bots = $this->config->item('mench_bots');
 
     INTERESTED IN HELPING US BUILD THE FUTURE OF EDUCATION?
 
-    YOU CAN WORK WITH US AS AN INDEPENDENT CONTRACTOR FROM ANYWHERE IN THE WORLD.
-
-    AND IF YOU ACHIEVE THE MENCH STATUS, YOU CAN ALSO APPLY TO WORK AS A CORE TEAM MEMBER.
+    SEND US YOUR RESUME TO SUPPORT@MENCH.COM
 
     -->
 	<meta charset="utf-8" />
@@ -42,40 +40,10 @@ $mench_bots = $this->config->item('mench_bots');
 
 <body id="console_body">
 
-<?php
-//Start the filtering array for unread notifications:
-$unread_notification_filters = array(
-    'e_recipient_u_id' => $udata['u_id'], //The instructor received these messages
-    'e_type_id' => "7", //Outbound messages towards instructors
-);
-
-//Fetch their last read engagement
-$last_read = $this->Db_model->e_fetch(array(
-    'e_initiator_u_id' => $udata['u_id'], //The reading of the message was initiated by student
-    'e_type_id' => "1", //Message read
-),1); //We only need the lates one!
-
-//Did we have any? If so, append that to the filter:
-if(count($last_read)>0){
-    $unread_notification_filters['e_timestamp >'] = $last_read[0]['e_timestamp'];
-}
-
-//See how many unread notifications we have:
-$unread_notifications = $this->Db_model->e_fetch($unread_notification_filters);
-
-//Facebook chat in console ONLY if activated already:
-if(isset($udata['u_fb_id']) && $udata['u_fb_id']>0){
-    echo echo_chat('381488558920384',count($unread_notifications));
-}
-
-//Show them if >0
-if(count($unread_notifications)>0){
-    echo '<a id="msgnotif" href="javascript:mark_read()" data-toggle="tooltip" title="Unread notifications. Click to dismiss." data-placement="top"><i class="fa fa-bell" aria-hidden="true"></i> '.count($unread_notifications).' New</a>';
-}
-?>
+    <!-- Messenger Chat Widget: -->
+    <div class="fb-customerchat" minimized="true" page_id="381488558920384"></div>
 
 	<div class="wrapper" id="console">
-	
 		<div class="navbar navbar-transparent navbar-absolute">
 			<div class="container-fluid">
 				<div class="navbar-header">

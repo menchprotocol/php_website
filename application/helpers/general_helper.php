@@ -1934,16 +1934,6 @@ function typeform_url($typeform_id){
 }
 
 
-function echo_chat($botkey,$unread_notifications_count=0){
-    //$CI =& get_instance();
-    //$udata = $CI->session->userdata('user');
-    //$bot_activation_salt = $CI->config->item('bot_activation_salt');
-    //This is for the instructor bot:
-    return '<div class="fb-customerchat" minimized="'.( $unread_notifications_count ? 'false' : 'true' ).'" page_id="'.$botkey.'"></div>';
-    //ref="'.( isset($udata['u_id']) && !$udata['u_fb_id'] ? 'msgact_'.$udata['u_id'].'_'.substr(md5($udata['u_id'].$bot_activation_salt),0,8) : '').'"
-}
-
-
 function messenger_activation_url($botkey,$u_id=null){
     $CI =& get_instance();
     $mench_bots = $CI->config->item('mench_bots');

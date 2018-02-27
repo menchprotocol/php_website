@@ -205,16 +205,17 @@ class Facebook_model extends CI_Model {
                     if(!($fb_page['name']==$fp['fp_name']) || !($fp['fp_status']==$target_fp_status)){
 
                         //Either name or Access token has changed, update:
-                        $this->Db_model->fp_update( $fp['fp_id'] , array(
+                        $update_data = array(
                             'fp_name' => $fb_page['name'],
                             'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
                             'fp_status' => $target_fp_status, //Available or Connected
-                        ));
+                        );
+                        $this->Db_model->fp_update( $fp['fp_id'], $update_data);
 
                         //Log engagement:
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => $u_id,
-                            'e_json' => $fb_page,
+                            'e_json' => $update_data,
                             'e_fp_id' => $fp['fp_id'],
                             'e_b_id' => $b_id,
                             'e_type_id' => 77, //Facebook Page Update
@@ -266,8 +267,10 @@ class Facebook_model extends CI_Model {
                                 'e_initiator_u_id' => $u_id,
                                 'e_fp_id' => $fp['fp_id'],
                                 'e_json' => array(
-                                    'current_db' => $fs,
-                                    'current_page' => $fb_page,
+                                    'remote_id' => $fb_page['id'],
+                                    'remote_access_token' => $fb_page['access_token'],
+                                    'page_local' => $fp,
+                                    'access_local' => $fp,
                                 ),
                                 'e_b_id' => $b_id,
                                 'e_type_id' => 83, //Access Updated

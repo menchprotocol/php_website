@@ -1814,19 +1814,6 @@ class Api_v1 extends CI_Controller {
     /* ******************************
      * r Classes
      ****************************** */
-	
-	function mark_read(){
-	    //Log a Messenger Read engagement to remove the notifications
-	    $udata = auth(1);
-	    if(isset($udata['u_id']) && $udata['u_id']>0 && strlen($_POST['botkey'])>4){
-	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $udata['u_id'],
-	            'e_json' => array('original_request'=>'console_chat'),
-	            'e_type_id' => 1, //Message Read
-	        ));
-	        echo 'success'; //This will suce the notification
-	    }   
-	}
 
     function sync_action_plan(){
         $udata = auth(2,0,$_POST['b_id']);

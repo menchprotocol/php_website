@@ -76,19 +76,6 @@ jQuery.fn.extend({
     }
 });
 
-
-
-function mark_read(){
-	$('#msgnotif').attr('href','#').css('color','#AAA');
-	//Log Read engagement:
-	$.post("/api_v1/mark_read", { botkey:'381488558920384' } , function(data) {
-		//Update UI to confirm with user:
-		if(data.length){
-			$('#msgnotif').fadeOut();
-		}
-    });
-}
-
 function switch_to(hashtag_name){
 	$('#topnav a[href="#'+hashtag_name+'"]').tab('show');
 }
