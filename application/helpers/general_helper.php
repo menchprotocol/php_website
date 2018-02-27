@@ -15,7 +15,7 @@ function lock_cron_for_processing($e_items){
     }
 }
 
-function fetch_action_plan_copy($b_id,$r_id,$current_b=null){
+function fetch_action_plan_copy($b_id,$r_id,$current_b=null,$release_cache=array()){
 
     $CI =& get_instance();
 
@@ -38,6 +38,14 @@ function fetch_action_plan_copy($b_id,$r_id,$current_b=null){
 
         //If we have this, we should replace it to have certain fields updated:
         if($current_b){
+
+            //Any items that we'd like to release its cache?
+            foreach($release_cache as $key){
+                //This replaces older values with new ones to ensures we get the most up to date view
+                $bootcamps[0][$key] = $current_b[0][$key];
+            }
+
+            //Replace:
             $bootcamps = array_replace_recursive($current_b,$bootcamps);
         }
 

@@ -127,12 +127,13 @@ class Front extends CI_Controller {
 	        header( 'Location: /'.$bootcamps[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
 	    }
 	}
-	
-	function instructors(){
+
+
+	function launch(){
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => 'Launch A Bootcamp',
 	    ));
-	    $this->load->view('front/instructors');
+	    $this->load->view('front/launch');
 	    $this->load->view('front/shared/f_footer');
 	}
 	
@@ -182,6 +183,8 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bootcamps[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
+        } elseif($bootcamps[0]['b_fp_id']<=0){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 
 
@@ -233,6 +236,8 @@ class Front extends CI_Controller {
         } elseif($bootcamps[0]['b_status']<2){
             //Here we don't even let instructors move forward to apply!
             redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Bootcamp is published live.</div>');
+        } elseif($bootcamps[0]['b_fp_id']<=0){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 	    
 	    //Validate Class ID that it's still the latest:

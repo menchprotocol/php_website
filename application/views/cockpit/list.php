@@ -272,10 +272,11 @@ if($object_name=='engagements'){
     <tr>
         <th style="width:40px;">#</th>
         <th>&nbsp;</th>
+        <th>&nbsp;</th>
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
-        <th>Class Start Time</th>
         <th>&nbsp;</th>
+        <th>Class Start Time</th>
         <th>Class End Time</th>
         <th>Elapsed</th>
         <th>Progress</th>
@@ -294,7 +295,7 @@ if($object_name=='engagements'){
 
         if($class['r_status']>=2){
             //Fetch Bootcamp from Action Plan Copy:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bootcamps);
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bootcamps,array('b_fp_id'));
             $class = $bootcamps[0]['this_class'];
         }
 
@@ -306,17 +307,17 @@ if($object_name=='engagements'){
 
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
-        echo '<td>'.( $bootcamps[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamps[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bootcamps[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '').'</td>';
+
+        echo '<td>'.( $bootcamps[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamps[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bootcamps[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
+        echo '<td class="'.( $bootcamps[0]['b_status']<2 ? 'redalert' : '' ).'">'.status_bible('b',$bootcamps[0]['b_status'],1,'right').'</td>';
+
         echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
         echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
         echo '<td>'.status_bible('r',$class['r_status'],true).'</td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
         echo '<td>';
         if($class['r_cache__end_time']){
             echo time_format($class['r_cache__end_time'],0);
-        }
-        if($bootcamps[0]['b_status']<2){
-            echo ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="Bootcamp Status is Drafting which will prevent the Class from being Launched" data-placement="bottom" style="color:#FF0000;"></i>';
         }
         echo '</td>';
         echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';

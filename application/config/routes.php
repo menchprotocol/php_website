@@ -10,8 +10,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['default_controller'] 		= "front"; // index() Landing page
 $route['terms'] 					= "front/terms";
-$route['start'] 					= "front/instructors"; //TODO remove later
-$route['launch'] 					= "front/instructors";
+$route['launch'] 					= "front/launch";
 $route['contact'] 					= "front/contact";
 $route['faq'] 					    = "front/faq"; //TODO Not in use?
 $route['ses'] 						= "front/ses"; //Raw session logs
