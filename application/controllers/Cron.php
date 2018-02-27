@@ -1122,7 +1122,7 @@ class Cron extends CI_Controller {
 
                         if($result['status'] && isset($result['e_json']['result']['attachment_id'])){
                             //Save attachment to DB:
-                            $db_result = $this->Db_model->i_create(array(
+                            $db_result = $this->Db_model->sy_create(array(
                                 'sy_i_id' => $ep['i_id'],
                                 'sy_fp_id' => $ep['fp_id'],
                                 'sy_fb_att_id' => $result['e_json']['result']['attachment_id'],
