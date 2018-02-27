@@ -37,10 +37,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$bootc
     echo ( $bootcamp['c__milestone_units']>0 ? '<div>'.$rounded_hours.' Hour'.($rounded_hours==1?'':'s').'/'.ucwords($bootcamp['b_sprint_unit']).'</div>' : '' );
     ?>
 </div>
-    <div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>
-
-
-
+<div><?= $bootcamp['c__message_tree_count'] ?> Message<?= ($bootcamp['c__message_tree_count']==1?'':'s') ?></div>
 
 
 
@@ -106,30 +103,30 @@ foreach($student_funnel as $ru_status=>$count){
 
 
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $bootcamp['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fa fa-cog" aria-hidden="true"></i> Settings <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a></h4></div>
-<div>
-	<?php
-    echo 'Team: ';
-    $mench_advisers = $this->config->item('mench_advisers');
-    $total_advisers = count($mench_advisers);
-    foreach($bootcamp['b__admins'] as $admin){
-        if(in_array($admin['u_id'],$mench_advisers)){
-            $total_advisers--;
-        }
+
+<div>Facebook Page: <?= ( $bootcamp['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamp['fp_fb_id'].'"><u>'.$bootcamp['fp_name'].'</u></a>' : 'Not Connected Yet' ) ?></div>
+
+<?php
+echo '<div>Team: ';
+$mench_advisers = $this->config->item('mench_advisers');
+$total_advisers = count($mench_advisers);
+foreach($bootcamp['b__admins'] as $admin){
+    if(in_array($admin['u_id'],$mench_advisers)){
+        $total_advisers--;
     }
+}
 
-	foreach($bootcamp['b__admins'] as $key=>$instructor){
-	    if($key>0){
-	        echo ', ';
-	    }
-	    echo $instructor['u_fname'].' '.$instructor['u_lname'];
-	}
-	if($total_advisers>0){
-        echo ' + '.$total_advisers.' Adviser'.( $total_advisers ==1? '' : 's');
+foreach($bootcamp['b__admins'] as $key=>$instructor){
+    if($key>0){
+        echo ', ';
     }
-	?></div>
-</div>
-
-
+    echo $instructor['u_fname'].' '.$instructor['u_lname'];
+}
+if($total_advisers>0){
+    echo ' + '.$total_advisers.' Adviser'.( $total_advisers ==1? '' : 's');
+}
+echo '</div>';
+?>
 <div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>
 <div style="margin-top:-5px;">Landing Page: <a href="/<?= $bootcamp['b_url_key'] ?>"><u><?= $website['url'] ?><b><?= $bootcamp['b_url_key'] ?></b></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
 

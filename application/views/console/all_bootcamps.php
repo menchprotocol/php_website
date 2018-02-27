@@ -27,6 +27,11 @@ if(count($bootcamps)>0){
         echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
         echo '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>'.$bootcamp['c_objective'].'</b>';
 
+        if($bootcamp['b_fp_id']>0){
+            //Show the connected Facebook Page
+            echo ' &nbsp;<span style="font-size:0.8em;" title="Bootcamp Connected to this Facebook Page" data-toggle="tooltip"><i class="fa fa-plug" aria-hidden="true"></i> '.$bootcamp['fp_name'].'</span>';
+        }
+
         /*
 
         //Calculate their progress:

@@ -72,6 +72,7 @@ WHERE ru.ru_status >= 4
         $this->db->select('*');
         $this->db->from('v5_bootcamps b');
         $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+        $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
 
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);
@@ -423,6 +424,7 @@ WHERE ru.ru_status >= 4
 	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_bootcamps b', 'b.b_c_id = c.c_id');
 	    $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_b_id = b.b_id');
+        $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
 	    $this->db->order_by('b.b_status', 'DESC');
 	    $this->db->order_by('c.c_objective', 'ASC');
 	    foreach($match_columns as $key=>$value){
