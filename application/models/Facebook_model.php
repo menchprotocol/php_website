@@ -95,7 +95,6 @@ class Facebook_model extends CI_Model {
         }
     }
 
-
     function fb_index_pages($u_id,$access_token,$b_id){
 
         if($u_id<1 || strlen($access_token)<1){
@@ -372,7 +371,6 @@ class Facebook_model extends CI_Model {
         return $admin_lost_pages;
     }
 
-
     function fb_page_connect($u_id,$fp_id,$b_id){
 
         //Connects $fp_id to $b_id as requested by $u_id, and does the integration if necessary...
@@ -558,8 +556,8 @@ class Facebook_model extends CI_Model {
 
 
 
-        //Remove Page integration?
-        if($b_connected_count==0){
+        //Remove Page integration? (Don't do it for Mench)
+        if($b_connected_count==0 && !($fp_pages[0]['fp_fb_id']=='381488558920384')){
 
             //Yup, not connected to any more Mench Programs:
             $e_json = array();
