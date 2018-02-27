@@ -194,7 +194,7 @@ class Console extends CI_Controller {
 		
 		if(isset($_GET['raw'])){
 		    //For testing purposes:
-		    echo_json($view_data);
+		    echo_json($view_data['bootcamp']);
 		    exit;
 		}
 		

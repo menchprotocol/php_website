@@ -271,6 +271,7 @@ if($object_name=='engagements'){
     <thead>
     <tr>
         <th style="width:40px;">#</th>
+        <th>&nbsp;</th>
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
         <th>Class Start Time</th>
@@ -286,15 +287,15 @@ if($object_name=='engagements'){
     <?php
     foreach($classes as $key=>$class) {
 
+        //Fetch Full Bootcamp:
+        $bootcamps = $this->Db_model->b_fetch(array(
+            'b.b_id' => $class['r_b_id'],
+        ), array('c','fp'));
+
         if($class['r_status']>=2){
             //Fetch Bootcamp from Action Plan Copy:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bootcamps);
             $class = $bootcamps[0]['this_class'];
-        } else {
-            //Fetch Full Bootcamp:
-            $bootcamps = $this->Db_model->b_fetch(array(
-                'b.b_id' => $class['r_b_id'],
-            ),array('c'));
         }
 
         //Fetch Leader:
@@ -305,9 +306,8 @@ if($object_name=='engagements'){
 
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
-        echo '<td>';
-            echo '<a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
-        echo '</td>';
+        echo '<td>'.( $bootcamps[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamps[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bootcamps[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '').'</td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
         echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
         echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
         echo '<td>'.status_bible('r',$class['r_status'],true).'</td>';

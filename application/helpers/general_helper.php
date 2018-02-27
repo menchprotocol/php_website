@@ -15,7 +15,7 @@ function lock_cron_for_processing($e_items){
     }
 }
 
-function fetch_action_plan_copy($b_id,$r_id){
+function fetch_action_plan_copy($b_id,$r_id,$current_b=null){
 
     $CI =& get_instance();
 
@@ -35,6 +35,11 @@ function fetch_action_plan_copy($b_id,$r_id){
         //Indicate this is a copy:
         $bootcamps[0]['is_copy'] = 1;
         $bootcamps[0]['copy_timestamp'] = $cache_action_plans[0]['e_timestamp'];
+
+        //If we have this, we should replace it to have certain fields updated:
+        if($current_b){
+            $bootcamps = array_replace_recursive($current_b,$bootcamps);
+        }
 
     } else {
 
