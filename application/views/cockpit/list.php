@@ -136,9 +136,13 @@ if($object_name=='engagements'){
         echo '<td><a href="https://www.facebook.com/'.$bootcamp['fp_fb_id'].'">'.$bootcamp['fp_name'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
 
-        echo '<td><span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
-        echo $bootcamp['student_funnel'][0].' &raquo; '.$bootcamp['student_funnel'][2].' &raquo; <b>'.$bootcamp['student_funnel'][4].'</b> ('.$bootcamp['student_funnel'][-1].')';
-        echo '</span></td>';
+        echo '<td>';
+        if($bootcamp['student_funnel'][0]>0 || $bootcamp['student_funnel'][2]>0 || $bootcamp['student_funnel'][4]>0 || $bootcamp['student_funnel'][-1]>0){
+            echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
+            echo $bootcamp['student_funnel'][0].' &raquo; '.$bootcamp['student_funnel'][2].' &raquo; <b>'.$bootcamp['student_funnel'][4].'</b> ('.$bootcamp['student_funnel'][-1].')';
+            echo '</span>';
+        }
+        echo '</td>';
 
         echo '<td>'. ( count($bootcamp['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$bootcamp['b_id'].'">'.( count($bootcamp['engagements'])>=1000 ? '1000+' : count($bootcamp['engagements']) ).'</a> ('.time_format($bootcamp['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
         echo '</tr>';
