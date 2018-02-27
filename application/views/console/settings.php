@@ -21,6 +21,7 @@ function show_fb_auth(error_message=null){
 }
 
 function loadFacebookPages(is_onstart){
+
     FB.getLoginStatus(function(login_response) {
         if(login_response.status=='connected'){
             //Check permissions to make sure we have all that we need:
@@ -73,7 +74,23 @@ function loadFacebookPages(is_onstart){
 
                         //All good, we have all the permissions we need
                         //loadup the Facebook pages for this user:
-                        load_fp(login_response,0,-1);
+                        $('#fb_login').addClass('hidden');
+                        $('#page_list').html('<img src="/img/round_load.gif" class="loader" />').removeClass('hidden');
+
+                        $.post("/api_v1/list_facebook_pages", {
+
+                            b_id:$('#b_id').val(),
+                            login_response:login_response,
+
+                        }, function(data) {
+
+                            //Update UI to confirm with user:
+                            $('#page_list').html(data);
+
+                            //Load ToolTip:
+                            $('[data-toggle="tooltip"]').tooltip();
+
+                        });
 
                     }
                 }
@@ -104,7 +121,8 @@ $(document).ready(function() {
 
 });
 
-function load_fp(login_response,current_b_fp_id,new_b_fp_id){
+
+function fb_connect(current_b_fp_id,new_b_fp_id){
 
     //DO we need to show warning?
     var confirm_action = null;
@@ -123,26 +141,30 @@ function load_fp(login_response,current_b_fp_id,new_b_fp_id){
         }
     }
 
-
-    //Show loader:
+    //Re-load the page:
     $('#fb_login').addClass('hidden');
     $('#page_list').html('<img src="/img/round_load.gif" class="loader" />').removeClass('hidden');
 
-    $.post("/api_v1/load_facebook_pages", {
+    $.post("/api_v1/fb_connect", {
+
         b_id:$('#b_id').val(),
-        login_response:login_response,
-        b_fp_id:new_b_fp_id,
+        current_b_fp_id:current_b_fp_id,
+        new_b_fp_id:new_b_fp_id,
+
     }, function(data) {
 
-        //Update UI to confirm with user:
-        $('#page_list').html(data);
+        if(!data.status){
+            //Ooops, something went wrong, show error:
+            alert('ERROR: '+data.message);
+        }
 
-        //Load ToolTip:
-        $('[data-toggle="tooltip"]').tooltip();
+        //Reload page listing:
+        loadFacebookPages(0);
 
     });
 
 }
+
 
 function save_settings(){
 
@@ -181,14 +203,10 @@ function save_settings(){
     });
 }
 
-
-
-
 </script>
 
 
 <input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
-
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">

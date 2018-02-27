@@ -338,7 +338,7 @@ if($object_name=='engagements'){
                 'u.u_fb_id >'      => 0, //Activated is what really counts...
             )));
             echo '<span data-toggle="tooltip" title="Completion Rate (Total Admitted Students who Activated Messenger)">';
-            echo '<b>'.round($completed/$admitted*100).'%</b> Completed ('.$admitted.')';
+            echo '<b>'.($admitted>0 ? round($completed/$admitted*100) : '0').'%</b> Completed ('.$admitted.')';
             echo '</span>';
         } else {
             //Show Admission Funnel:

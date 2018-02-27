@@ -467,10 +467,10 @@ WHERE ru.ru_status >= 4
 	            //This is a new user that needs to be registered!
 	            //Call facebook messenger API and get user details
 	            //https://developers.facebook.com/docs/messenger-platform/user-profile/
-                $graph_fetch = fb_graph(4,'GET',$psid_sender_id);
+                $graph_fetch = $this->Facebook_model->fb_graph(4,'GET',$psid_sender_id);
 
 	            if(!$graph_fetch['status']){
-	                //This error has already been logged inside fb_graph()
+	                //This error has already been logged inside $this->Facebook_model->fb_graph()
 	                //We cannot create this user:
 	                return 0;
 	            }
@@ -609,10 +609,10 @@ WHERE ru.ru_status >= 4
 	     */
 	    
 	    //Fetch their profile from Facebook to update
-        $graph_fetch = fb_graph(4,'GET',$psid_sender_id);
+        $graph_fetch = $this->Facebook_model->fb_graph(4,'GET',$psid_sender_id);
 
         if(!$graph_fetch['status']){
-            //This error has already been logged inside fb_graph()
+            //This error has already been logged inside $this->Facebook_model->fb_graph()
             //We cannot create this user:
             return 0;
         }
@@ -750,27 +750,24 @@ WHERE ru.ru_status >= 4
 
 
     /* ******************************
-     * Facebook Pages
+     * Facebook Pages/Admins
      ****************************** */
 
-    function fp_fetch($match_columns,$id_adjust=false){
-        $this->db->select('*');
-        $this->db->from('v5_facebook_pages');
-        foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
-        }
-        $q = $this->db->get();
-        $res = $q->result_array();
+    function fp_fetch($match_columns){
 
-        if($id_adjust){
-            //Put Facebook Page ID as key for easy accessing:
-            foreach($res as $key=>$val){
-                unset($res[$key]);
-                $res[$val['fp_fb_id']] = $val;
+        $this->db->select('*');
+        $this->db->from('v5_facebook_pages fp');
+        $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
+
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
             }
         }
-
-        return $res;
+        $q = $this->db->get();
+        return $q->result_array();
     }
 
     function fp_update($fp_id,$update_columns){
@@ -779,15 +776,20 @@ WHERE ru.ru_status >= 4
         return $this->db->affected_rows();
     }
 
+    function fs_update($fs_id,$update_columns){
+        $this->db->where('fs_id', $fs_id);
+        $this->db->update('v5_facebook_page_admins', $update_columns);
+        return $this->db->affected_rows();
+    }
+
     function fp_create($insert_columns){
+
         //Missing anything?
         if(!isset($insert_columns['fp_fb_id'])){
             return false;
-        } elseif(!isset($insert_columns['fp_access_token'])){
-            return false;
         } elseif(!isset($insert_columns['fp_name'])){
             return false;
-        } elseif(!isset($insert_columns['fp_u_id'])){
+        } elseif(!isset($insert_columns['fp_status'])){ //Need status to know whatssup
             return false;
         }
 
@@ -809,9 +811,48 @@ WHERE ru.ru_status >= 4
                 'e_json' => $insert_columns,
                 'e_type_id' => 8, //Platform Error
             ));
+            return false;
+        } else {
+            return $insert_columns;
+        }
+    }
+
+    function fs_create($insert_columns){
+
+        //Missing anything?
+        if(!isset($insert_columns['fs_access_token'])){
+            return false;
+        } elseif(!isset($insert_columns['fs_u_id'])){
+            return false;
+        } elseif(!isset($insert_columns['fs_fp_id'])){
+            return false;
         }
 
-        return $insert_columns;
+        //Autocomplete required
+        if(!isset($insert_columns['fs_timestamp'])){
+            $insert_columns['fs_timestamp'] = date("Y-m-d H:i:s");
+        }
+        if(!isset($insert_columns['fs_status'])){
+            $insert_columns['fs_status'] = 1; //Authorized
+        }
+
+        //Lets now add:
+        $this->db->insert('v5_facebook_page_admins', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['fs_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['fs_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error fs_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+            return false;
+        } else {
+            return $insert_columns;
+        }
     }
 
 	

@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.27,
+    'version' => 2.29,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -174,6 +174,10 @@ $config['core_objects'] = array(
     'fp' => array(
         'o_name' => 'Facebook Page',
         'o_names' => 'Facebook Pages',
+    ),
+    'fs' => array(
+        'o_name' => 'Facebook Page Access',
+        'o_names' => 'Facebook Pages Access',
     ),
     'level_0' => array(
         'o_name' => 'Bootcamp',
@@ -525,16 +529,37 @@ $config['object_statuses'] = array(
 
     'fp' => array(
         -1 => array(
-            's_name'  => 'Unavailable',
-            's_desc'  => 'Facebook Page connection lost due to unexpected reasons. Select Refresh Permissions to regain access.',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-times-circle',
+            's_name'  => 'Archived',
+            's_desc'  => 'Facebook Page not accessible by Mench',
+            'u_min_status'  => 999,
+            's_mini_icon' => 'fa-trash',
+        ),
+        0 => array(
+            's_name'  => 'Available',
+            's_desc'  => 'Facebook Page available but not connected to a Mench Bootcamp yet',
+            'u_min_status'  => 999,
+            's_mini_icon' => 'fa-play',
         ),
         1 => array(
-            's_name'  => 'Available',
-            's_desc'  => 'Facebook Page ready to be connected to a Mench Bootcamp',
+            's_name'  => 'Connected',
+            's_desc'  => 'Facebook Page connected to a Mench Bootcamp',
+            'u_min_status'  => 999,
+            's_mini_icon' => 'fa-plug',
+        ),
+    ),
+
+    'fs' => array(
+        -1 => array(
+            's_name'  => 'Access Revoked',
+            's_desc'  => 'Instructor is not authorized as the Facebook Page administrator',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-check-circle',
+            's_mini_icon' => 'fa-bookmark-o',
+        ),
+        1 => array(
+            's_name'  => 'Access Authorized',
+            's_desc'  => 'Instructor is an authorized Facebook Page administrator',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-bookmark',
         ),
     ),
 );

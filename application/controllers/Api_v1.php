@@ -344,353 +344,274 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-	function load_facebook_pages(){
 
-        $udata = auth(2,0,$_POST['b_id']);
-        $e_json = array(); //To be generated along the way...
+    function fb_connect(){
 
-        if(!$udata){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired. Login to try again.',
-            ));
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	    //Responsible to connect and disconnect the Facebook pages when instructors explicitly request this:
+        if(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Bootcamp ID',
             ));
-        } else {
+            return false;
 
-            //Validate Bootcamp and check current b_fb_
-            $bootcamps = $this->Db_model->b_fetch(array(
-                'b_id' => intval($_POST['b_id']),
+        } elseif(!isset($_POST['new_b_fp_id']) || intval($_POST['new_b_fp_id'])<0){
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing New Facebook Page ID',
             ));
-            if(count($bootcamps)<1){
+            return false;
+
+        } elseif(!isset($_POST['current_b_fp_id']) || intval($_POST['current_b_fp_id'])<0){
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Current Facebook Page ID',
+            ));
+            return false;
+
+        }
+
+        $udata = auth(2,0,$_POST['b_id']);
+        $bootcamps = $this->Db_model->b_fetch(array(
+            'b_id' => $_POST['b_id'],
+        ));
+
+        if(!$udata){
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to try again.',
+            ));
+            return false;
+
+        } elseif(count($bootcamps)<1){
+
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp ID',
+            ));
+            return false;
+
+        }
+
+        //Validate input Page IDs:
+        if($_POST['current_b_fp_id']>0){
+            $fp_pages = $this->Db_model->fp_fetch(array(
+                'fp_id' => $_POST['current_b_fp_id'],
+            ));
+            if(count($fp_pages)<1){
                 echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Bootcamp ID',
+                    'message' => 'Invalid Current Page ID',
                 ));
-            } else {
-
-
-                //Fetch Pages:
-                $page = null;
-                if(intval($bootcamps[0]['b_fp_id'])>0) {
-
-                    $current_pages = $this->Db_model->fp_fetch(array(
-                        'fp_id' => $bootcamps[0]['b_fp_id'],
-                    ));
-
-                    if(count($current_pages)<1){
-
-                        //Should never happen...
-                        $bootcamps[0]['b_fp_id'] = 0;
-
-                        //Reset page:
-                        $this->Db_model->b_update( $_POST['b_id'] , array(
-                            'b_fp_id' => 0,
-                        ));
-
-                    } else {
-                        $page = $current_pages[0];
-                    }
-                }
-
-
-                //Do we need to update assigned page?
-                if(isset($_POST['b_fp_id']) && intval($_POST['b_fp_id'])>=0){
-
-                    //Do we already have a page connected? If so, log a disconnect engagement:
-                    if($page){
-
-                        //Remove settings:
-                        $e_json['messenger_profile'] = fb_graph($bootcamps[0]['b_fp_id'],'DELETE','me/messenger_profile' , array(
-                            //Define the settings to delete:
-                            'fields' => array(
-                                'whitelisted_domains',
-                                'persistent_menu',
-                            ),
-                            //We do NOT remove [get_started] because its a good feature for their bot to have
-                            //We do NOT remove [greeting] because it was set by them
-                        ));
-
-                        //Remove app subscription:
-                        $e_json['subscribed_apps'] = fb_graph($page['fp_id'],'DELETE',$page['fp_fb_id'].'/subscribed_apps');
-
-                        //Log engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => $udata['u_id'],
-                            'e_type_id' => 74, //Page Disconnected
-                            'e_b_id' => $_POST['b_id'],
-                            'e_json' => $e_json,
-                            'e_fp_id' => $page['fp_id'],
-                        ));
-
-                        //Reset e_json for more processing:
-                        unset($e_json);
-                        $e_json = array();
-                    }
-
-
-                    //We need to assign the new page ID to this Bootcamp:
-                    $current_b_fp_id = intval($_POST['b_fp_id']);
-
-
-                    //Update either way:
-                    $this->Db_model->b_update(intval($_POST['b_id']) , array(
-                        'b_fp_id' => $current_b_fp_id,
-                    ));
-
-                    //Did the user request to connect a new page?
-                    //It might have been that they just wanted to disconnect with b_fp_id=0
-                    if($current_b_fp_id>=1){
-
-                        //Fetch this page:
-                        $new_pages = $this->Db_model->fp_fetch(array(
-                            'fp_id' => $current_b_fp_id,
-                        ));
-
-                        if(count($new_pages)<1){
-                            echo_json(array(
-                                'status' => 0,
-                                'message' => 'Invalid new b_fp_id to set',
-                            ));
-                            return false;
-                        }
-
-
-
-                        //Subscribe to App so we get the messages funneled form them:
-                        $e_json['subscribed_apps'] = fb_graph($new_pages[0]['fp_id'],'POST',$new_pages[0]['fp_fb_id'].'/subscribed_apps',array(),$new_pages[0]);
-
-                        //APP SETTING
-                        //First white-label our domain so we can later set the persistent menu:
-                        $payload = array(
-                            'get_started' => array(
-                                'payload' => 'GET_STARTED',
-                            ),
-                            'whitelisted_domains' => array(
-                                'http://local.mench.co',
-                                'https://mench.co',
-                                'https://mench.com',
-                            ),
-                        );
-
-                        //TODO Implement page greeting
-                        if(0){
-                            $payload['greeting'] = array(
-                                //'locale' => 'default',
-                                //'text' => $pages[0]['fp_greeting'], //If any
-                            );
-                        }
-
-                        //Update:
-                        $e_json['messenger_profile_base'] = fb_graph($new_pages[0]['fp_id'],'POST','me/messenger_profile' , $payload);
-
-                        //Wait until Facebook propagates changes of our whitelisted_domains setting:
-                        sleep(2);
-
-                        //Now with the right permission, update persistent_menu:
-                        $e_json['messenger_profile_persistent_menu'] = fb_graph($new_pages[0]['fp_id'],'POST','me/messenger_profile' , array(
-                            'persistent_menu' => array(
-                                array(
-                                    'locale' => 'default',
-                                    'composer_input_disabled' => false,
-                                    'call_to_actions' => array(
-                                        array(
-                                            'title' => '🚩 Action Plan',
-                                            'type' => 'web_url',
-                                            'url' => 'https://mench.co/my/actionplan',
-                                            'webview_height_ratio' => 'tall',
-                                            'webview_share_button' => 'hide',
-                                            'messenger_extensions' => true,
-                                        ),
-                                        array(
-                                            'title' => '👥 Classmates',
-                                            'type' => 'web_url',
-                                            'url' => 'https://mench.co/my/classmates',
-                                            'webview_height_ratio' => 'tall',
-                                            'webview_share_button' => 'hide',
-                                            'messenger_extensions' => true,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ));
-
-                        //Log engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => $udata['u_id'],
-                            'e_type_id' => 73, //Page Connected
-                            'e_json' => $e_json, //Save results
-                            'e_b_id' => $_POST['b_id'],
-                            'e_fp_id' => $new_pages[0]['fp_id'],
-                        ));
-                    }
-
-                } else {
-                    //No new assignments, grab from the DB:
-                    $current_b_fp_id = intval($bootcamps[0]['b_fp_id']);
-                }
-
-
-                //Sync local DB with newly fetched Facebook Data:
-                if(isset($_POST['login_response']['authResponse']['accessToken'])){
-
-                    //Sync Facebook Pages with local Database:
-                    //Fetch Existing Facebook Pages for this user:
-                    $db_pages = $this->Db_model->fp_fetch(array(
-                        'fp_u_id' => $udata['u_id'],
-                    ),true);
-
-                    //Load Facebook PHP SDK:
-                    require_once( 'application/libraries/Facebook/autoload.php' );
-
-                    $fb = new \Facebook\Facebook([
-                        'app_id' => '1782431902047009',
-                        'app_secret' => '05aea76d11b062951b40a5bee4251620',
-                        'default_graph_version' => 'v2.10',
-                        'default_access_token' => $_POST['login_response']['authResponse']['accessToken'],
-                    ]);
-
-                    //Fetch all Pages:
-                    try {
-                        $response = $fb->get('/me/accounts');
-                    } catch(FacebookExceptionsFacebookResponseException $e) {
-                        echo 'Graph returned an error: ' . $e->getMessage();
-                        exit;
-                    } catch(FacebookExceptionsFacebookSDKException $e) {
-                        echo 'Facebook SDK returned an error: ' . $e->getMessage();
-                        exit;
-                    }
-                    $facebookPages = $response->getGraphEdge();
-
-                    //Now lets loop through their pages
-                    $current_fb_pages = array();
-                    foreach ($facebookPages as $page) {
-
-                        //Store this:
-                        array_push($current_fb_pages,$page['id']);
-
-                        if(array_key_exists($page['id'],$db_pages)){
-
-                            //We already had this in the Database, do we need to update?
-                            if(!($page['name']==$db_pages[$page['id']]['fp_name']) || !($page['access_token']==$db_pages[$page['id']]['fp_access_token']) || $db_pages[$page['id']]['fp_status']<1){
-
-                                //Either name or Access token has changed, update:
-                                $this->Db_model->fp_update( $db_pages[$page['id']]['fp_id'] , array(
-                                    'fp_access_token' => $page['access_token'],
-                                    'fp_name' => $page['name'],
-                                    'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
-                                    'fp_status' => 1, //Available
-                                ));
-
-                            }
-
-                        } else {
-                            //This is a new page, insert it:
-                            $this->Db_model->fp_create(array(
-                                'fp_fb_id' => $page['id'],
-                                'fp_access_token' => $page['access_token'],
-                                'fp_name' => $page['name'],
-                                'fp_u_id' => $udata['u_id'],
-                                'fp_status' => 1, //Available
-                            ));
-                        }
-                    }
-
-                    //Go through the existing DB pages to make sure we have them all:
-                    foreach($db_pages as $db_page) {
-                        if(!in_array($db_page['fp_fb_id'],$current_fb_pages)){
-
-                            //Ooops, it seems the user has lost access to this?!
-                            $this->Db_model->fp_update( $db_page['fp_id'] , array(
-                                'fp_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
-                                'fp_status' => -1, //Unavailable
-                            ));
-
-                            //Log engagement for checking this for a while:
-                            $this->Db_model->e_create(array(
-                                'e_initiator_u_id' => $udata['u_id'],
-                                'e_message' => 'Instructor seems to have lost access to a Facebook Page so we set its status to [-1]. Review code base and data to ensure this makes sense.',
-                                'e_json' => array(
-                                    'facebookPages' => $facebookPages,
-                                    'current_fb_pages' => $current_fb_pages,
-                                    'db_pages' => $db_pages,
-                                ),
-                                'e_type_id' => 9, //Support Needing Graceful Errors
-                                'e_fp_id' => $db_page['fp_id'],
-                                'e_b_id' => $_POST['b_id'],
-                            ));
-
-                        }
-                    }
-                }
-
-
-                //List pages:
-                $ready_pages = $this->Db_model->fp_fetch(array(
-                    'fp_u_id' => $udata['u_id'],
-                    'fp_status' => 1, //Available Pages
-                ));
-
-
-                //List UI:
-                $found_match = 0;
-                $pages_ui = '<div class="list-group maxout">';
-                if(count($ready_pages)>0){
-                    foreach($ready_pages as $page){
-                        $pages_ui .= '<li class="list-group-item">';
-
-                        //Right content
-                        $pages_ui .= '<span class="pull-right">';
-                        if($page['fp_id']==$current_b_fp_id){
-                            //This page is already assigned:
-                            $pages_ui .= '<b><i class="fa fa-check-circle" aria-hidden="true"></i> Connected</b> &nbsp;';
-                            $pages_ui .= '<a href="javascript:void(0);" onclick="load_fp(null,'.$current_b_fp_id.',0)" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-times-circle" aria-hidden="true"></i> Disconnect</a>';
-                            $found_match = $page['fp_id'];
-                        } else {
-                            //Give the option to connect:
-                            $pages_ui .= '<a href="javascript:void(0);" onclick="load_fp(null,'.$current_b_fp_id.','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-plug" aria-hidden="true"></i> Connect</a>';
-                        }
-                        $pages_ui .= '</span> ';
-
-                        //Left content
-                        //$pages_ui .= status_bible('fp',$page['fp_status'],true, 'right'); //Not needed as we're only showing available pages
-                        $pages_ui .= '<i class="fa fa-facebook-official" aria-hidden="true"></i> '.$page['fp_name'];
-                        $pages_ui .= ' <a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
-                        $pages_ui .= '</li>';
-                    }
-                } else {
-                    //No page found!
-                    $pages_ui .= '<li class="list-group-item" style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Facebook Pages found. Create a new one to continue...</li>';
-                }
-
-                //Link to create a new Facebook page:
-                $pages_ui .= '<a href="https://www.facebook.com/pages/create" class="list-group-item"><i class="fa fa-plus-square" style="color:#fedd16;" aria-hidden="true"></i> Create New Facebook Page</a>';
-
-                $pages_ui .= '</div>';
-
-
-
-                //Did we have a Match?
-                if(!$found_match){
-
-                    //Indicate to the user that they do not have a match:
-                    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Connect to a Facebook Page to activate Mench</div>';
-                    if($current_b_fp_id){
-                        //We have an assigned page but its not really assigned, remove it:
-                        $this->Db_model->b_update( intval($_POST['b_id']) , array(
-                            'b_fp_id' => 0,
-                        ));
-                    }
-
-                }
-
-                //Show the UI:
-                echo $pages_ui;
+                return false;
             }
         }
+        if($_POST['new_b_fp_id']>0){
+            $fp_pages = $this->Db_model->fp_fetch(array(
+                'fp_id' => $_POST['new_b_fp_id'],
+            ));
+            if(count($fp_pages)<1){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid New Page ID',
+                ));
+                return false;
+            }
+        }
+
+
+        //Is this a disconnect only request?
+        $connection_status = false;
+        if($_POST['current_b_fp_id']>0 && $_POST['new_b_fp_id']==0){
+            //Disconnect
+            $connection_status = $this->Facebook_model->fb_page_disconnect($udata['u_id'], $_POST['current_b_fp_id'], $_POST['b_id']);
+        } elseif($_POST['new_b_fp_id']>0) {
+            //Connect, this code handles the disconnect of an existing page if any other page is connected already:
+            $connection_status = $this->Facebook_model->fb_page_connect($udata['u_id'], $_POST['new_b_fp_id'], $_POST['b_id']);
+        }
+
+
+        //Return result:
+        if($connection_status) {
+            //All good, let them know:
+            echo_json(array(
+                'status' => 1,
+                'message' => 'Success', //This is not shown...
+            ));
+        } else {
+            //Ooops, some error here...
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown error trying to process your request',
+            ));
+        }
+    }
+
+	function list_facebook_pages(){
+
+        $udata = auth(2,0,$_POST['b_id']);
+        if(!$udata){
+
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Session expired. Login to try again.</div>';
+            return false;
+
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Missing Bootcamp ID.</div>';
+            return false;
+
+        }
+
+        //Validate Bootcamp and later check current b_fb_id
+        $bootcamps = $this->Db_model->b_fetch(array(
+            'b_id' => intval($_POST['b_id']),
+        ));
+        if(count($bootcamps)<1){
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Invalid Bootcamp ID.</div>';
+            return false;
+        }
+
+
+        //Make sure we have their Access Token via the JS call that was made earlier...
+        if(!isset($_POST['login_response']['authResponse']['accessToken'])){
+            //We have an issue as we cannot access the user's access token, let them know:
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Cannot fetch your Facebook Access Token.</div>';
+            return false;
+        }
+
+
+        //Index and organize their pages:
+        $authorized_fp_ids = $this->Facebook_model->fb_index_pages($udata['u_id'],$_POST['login_response']['authResponse']['accessToken'],$_POST['b_id']);
+
+        if(!is_array($authorized_fp_ids)){
+
+            //Unknown processing error, let them know about this:
+            //This has already been logged via fb_index_pages()
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Unknown error while trying to list your Facebook Pages.</div>';
+            return false;
+
+        } elseif(intval($bootcamps[0]['b_fp_id'])>0 && !in_array($bootcamps[0]['b_fp_id'],$authorized_fp_ids)) {
+
+            //Is this Bootcamp currently connected to an un-authorized pages?
+            //OOOps, it does seem so! Disconnect the page:
+            $unauth_disconnect = $this->Facebook_model->fb_page_disconnect($udata['u_id'],$bootcamps[0]['b_fp_id'],$bootcamps[0]['b_id']);
+
+            //Reset this to zero:
+            $bootcamps[0]['b_fp_id'] = 0;
+
+            //Let them know:
+            $error_message = 'Bootcamp '.( $unauth_disconnect ? 'successfully' : 'had issues for getting' ).' disconnected from your unauthorized Facebook Page.';
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$error_message.'</div>';
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_type_id' => 9, //Admin review
+                'e_b_id' => $bootcamps[0]['b_id'],
+                'e_fp_id' => $bootcamps[0]['b_fp_id'],
+                'e_message' => $error_message,
+            ));
+
+        }
+
+
+
+        //Was any of their previously authorized pages revoked, handle this:
+        $admin_lost_pages = $this->Facebook_model->fb_revoke_access($udata['u_id'],$authorized_fp_ids,$_POST['b_id']);
+        if(count($admin_lost_pages)>0){
+            //Let them know that they lost access to certain pages that is no longer associated with their account:
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged in with your Facebook account.</div>';
+        }
+
+
+
+
+        //List pages:
+        $ready_pages = $this->Db_model->fp_fetch(array(
+            'fs_u_id' => $udata['u_id'],
+            'fs_status' => 1, //Have access
+            'fp_status >=' => 0, //Available or Connected
+        ));
+
+
+        //List UI:
+        $found_match = 0;
+        $pages_list_ui = '<div class="list-group maxout">';
+        if(count($ready_pages)>0){
+            foreach($ready_pages as $page){
+
+                //Fetch all other Bootcamps this page is connected to:
+                $other_bootcamps = $this->Db_model->b_fetch(array(
+                    'b.b_fp_id' => $page['fp_id'],
+                    'b.b_id !=' => $_POST['b_id'],
+                ),true);
+                
+                $pages_list_ui .= '<li class="list-group-item">';
+
+                //Right content
+                if($page['fp_status']>=0){
+                    $pages_list_ui .= '<span class="pull-right">';
+                    if($bootcamps[0]['b_fp_id']>0 && $page['fp_id']==$bootcamps[0]['b_fp_id'] && !$found_match){
+                        //This page is already assigned:
+                        $pages_list_ui .= '<b><i class="fa fa-plug" aria-hidden="true"></i> Connected</b> &nbsp;';
+                        $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bootcamps[0]['b_fp_id'].',0)" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-times-circle" aria-hidden="true"></i> Disconnect</a>';
+                        $found_match = $page['fp_id'];
+                    } else {
+                        //Give the option to connect:
+                        $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bootcamps[0]['b_fp_id'].','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-plug" aria-hidden="true"></i> Connect</a>';
+                    }
+                    $pages_list_ui .= '</span> ';
+                }
+
+                //Left content
+                $pages_list_ui .= status_bible('fp',$page['fp_status'],true, 'right');
+                $pages_list_ui .= ' '.$page['fp_name'];
+                $pages_list_ui .= ' <a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank" style="font-size:0.9em;"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
+
+
+                if(count($other_bootcamps)>0){
+                    //Show other connected Bootcamps:
+                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Page connections: ';
+                    foreach($other_bootcamps as $count=>$b){
+                        if($count>0){
+                            $pages_list_ui .= ', ';
+                        }
+                        $pages_list_ui .= '<a href="/console/'.$b['b_id'].'/settings">'.$b['c_objective'].'</a>';
+                    }
+                    $pages_list_ui .= '</div>';
+                }
+
+                //Do we have a Page greeting?
+                if(strlen($page['fp_greeting'])>0){
+                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;">'.nl2br($page['fp_greeting']).'</div>';
+                }
+
+                $pages_list_ui .= '</li>';
+            }
+        } else {
+            //No page found!
+            $pages_list_ui .= '<li class="list-group-item" style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Facebook Pages found. Create a new one to continue...</li>';
+        }
+
+        //Link to create a new Facebook page:
+        $pages_list_ui .= '<a href="https://www.facebook.com/pages/create" class="list-group-item"><i class="fa fa-plus-square" style="color:#fedd16;" aria-hidden="true"></i> Create New Facebook Page</a>';
+        $pages_list_ui .= '</div>';
+
+
+
+        //Did we have a Match?
+        if(!$found_match){
+            //Indicate to the user that they do not have a match:
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Connect to a Facebook Page to activate Mench</div>';
+        }
+
+        //Show the UI:
+        echo $pages_list_ui;
+
     }
 
     function blob($e_id){
