@@ -645,6 +645,11 @@ class Cron extends CI_Controller {
             'e_recipient_u_id >' => 0,
         ), 200, array('ej'));
 
+
+        //Lock item so other Cron jobs don't pick this up:
+        lock_cron_for_processing($e_pending);
+
+
         $drip_sent = 0;
         foreach($e_pending as $e_message){
 
@@ -1014,6 +1019,11 @@ class Cron extends CI_Controller {
             'e_type_id <=' => 7, //Messages only
         ), $max_per_batch, array('ej'));
 
+
+        //Lock item so other Cron jobs don't pick this up:
+        lock_cron_for_processing($e_pending);
+
+
         $counter = 0;
         foreach($e_pending as $ep){
 
@@ -1081,13 +1091,17 @@ class Cron extends CI_Controller {
          */
 
         $success_count = 0; //Track success
-        $max_per_batch = 144; //Max number of syncs per cron run
+        $max_per_batch = 55; //Max number of syncs per cron run
         $e_json = array();
 
         $e_pending = $this->Db_model->e_fetch(array(
             'e_cron_job' => 0, //Pending Sync
             'e_type_id' => 83, //Message Facebook Sync e_type_id=83
         ), $max_per_batch, array('i','fp'));
+
+
+        //Lock item so other Cron jobs don't pick this up:
+        lock_cron_for_processing($e_pending);
 
 
         if(count($e_pending)>0){
@@ -1141,12 +1155,20 @@ class Cron extends CI_Controller {
                             ));
                         }
 
+
+                        //Update engagement:
+                        $this->Db_model->e_update( $ep['e_id'], array(
+                            'e_cron_job' => 1, //Completed
+                        ));
+
+
                         //Save stats either way:
                         array_push($e_json,array(
                             'payload' => $payload,
                             'fb_result' => $result,
                             'db_result' => $db_result,
                         ));
+
                     }
                 }
             }

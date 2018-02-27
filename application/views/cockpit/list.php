@@ -102,7 +102,7 @@ if($object_name=='engagements'){
                 }
             }
 
-            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_message'].( $e['e_cron_job']==0 ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
+            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_message'].( in_array($e['e_cron_job'],array(0,-2)) ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
             echo '<td>';
 
             //Lets go through all references to see what is there:

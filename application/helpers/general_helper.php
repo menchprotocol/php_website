@@ -4,6 +4,17 @@ function is_dev(){
 	return ( isset($_SERVER['SERVER_NAME']) && in_array($_SERVER['SERVER_NAME'],array('local.mench.co')) );
 }
 
+function lock_cron_for_processing($e_items){
+    $CI =& get_instance();
+    foreach($e_items as $e){
+        if($e['e_id']>0 && $e['e_cron_job']==0){
+            $CI->Db_model->e_update( $e['e_id'] , array(
+                'e_cron_job' => -2, //Processing so other Cron jobs do not touch this...
+            ));
+        }
+    }
+}
+
 function fetch_action_plan_copy($b_id,$r_id){
 
     $CI =& get_instance();
