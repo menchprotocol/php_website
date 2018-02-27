@@ -494,28 +494,22 @@ class Api_v1 extends CI_Controller {
             echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Unknown error while trying to list your Facebook Pages.</div>';
             return false;
 
-        } elseif(intval($bootcamps[0]['b_fp_id'])>0 && !in_array($bootcamps[0]['b_fp_id'],$authorized_fp_ids)) {
+        }
 
-            //Is this Bootcamp currently connected to an un-authorized pages?
-            //OOOps, it does seem so! Disconnect the page:
-            $unauth_disconnect = $this->Facebook_model->fb_page_disconnect($udata['u_id'],$bootcamps[0]['b_fp_id'],$bootcamps[0]['b_id']);
+        //Do we have a page connected, or not?
+        if(intval($bootcamps[0]['b_fp_id'])>0 && !in_array($bootcamps[0]['b_fp_id'],$authorized_fp_ids)) {
 
-            //Reset this to zero:
-            $bootcamps[0]['b_fp_id'] = 0;
-
-            //Let them know:
-            $error_message = 'Bootcamp '.( $unauth_disconnect ? 'successfully' : 'had issues for getting' ).' disconnected from your unauthorized Facebook Page.';
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> '.$error_message.'</div>';
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_type_id' => 9, //Admin review
-                'e_b_id' => $bootcamps[0]['b_id'],
-                'e_fp_id' => $bootcamps[0]['b_fp_id'],
-                'e_message' => $error_message,
+            //Bootcamp connected to a page they do not control, fetch details and let them know:
+            $no_control_pages = $this->Db_model->fp_fetch(array(
+                'fp_id' => $bootcamps[0]['b_fp_id']
             ));
+            if(count($no_control_pages)>0){
+                echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-plug" aria-hidden="true"></i> Currently connected to a Page you don\'t control: <a href="https://www.facebook.com/'.$no_control_pages[0]['fp_fb_id'].'">'.$no_control_pages[0]['fp_name'].'</a></div>';
+            }
 
+        } elseif(intval($bootcamps[0]['b_fp_id'])==0){
+            //Indicate to the user that they do not have a match:
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Connect to a Facebook Page to activate Mench</div>';
         }
 
 
@@ -524,7 +518,7 @@ class Api_v1 extends CI_Controller {
         $admin_lost_pages = $this->Facebook_model->fb_revoke_access($udata['u_id'],$authorized_fp_ids,$_POST['b_id']);
         if(count($admin_lost_pages)>0){
             //Let them know that they lost access to certain pages that is no longer associated with their account:
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged in with your Facebook account.</div>';
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged into Facebook.</div>';
         }
 
 
@@ -539,7 +533,6 @@ class Api_v1 extends CI_Controller {
 
 
         //List UI:
-        $found_match = 0;
         $pages_list_ui = '<div class="list-group maxout">';
         if(count($ready_pages)>0){
             foreach($ready_pages as $page){
@@ -555,11 +548,10 @@ class Api_v1 extends CI_Controller {
                 //Right content
                 if($page['fp_status']>=0){
                     $pages_list_ui .= '<span class="pull-right">';
-                    if($bootcamps[0]['b_fp_id']>0 && $page['fp_id']==$bootcamps[0]['b_fp_id'] && !$found_match){
+                    if($bootcamps[0]['b_fp_id']>0 && $page['fp_id']==$bootcamps[0]['b_fp_id']){
                         //This page is already assigned:
                         $pages_list_ui .= '<b><i class="fa fa-plug" aria-hidden="true"></i> Connected</b> &nbsp;';
                         $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bootcamps[0]['b_fp_id'].',0)" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-times-circle" aria-hidden="true"></i> Disconnect</a>';
-                        $found_match = $page['fp_id'];
                     } else {
                         //Give the option to connect:
                         $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bootcamps[0]['b_fp_id'].','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-plug" aria-hidden="true"></i> Connect</a>';
@@ -575,12 +567,12 @@ class Api_v1 extends CI_Controller {
 
                 if(count($other_bootcamps)>0){
                     //Show other connected Bootcamps:
-                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Page connections: ';
+                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
                     foreach($other_bootcamps as $count=>$b){
                         if($count>0){
                             $pages_list_ui .= ', ';
                         }
-                        $pages_list_ui .= '<a href="/console/'.$b['b_id'].'/settings">'.$b['c_objective'].'</a>';
+                        $pages_list_ui .= '<a href="/console/'.$b['b_id'].'/settings#pages">'.$b['c_objective'].'</a>';
                     }
                     $pages_list_ui .= '</div>';
                 }
@@ -600,14 +592,6 @@ class Api_v1 extends CI_Controller {
         //Link to create a new Facebook page:
         $pages_list_ui .= '<a href="https://www.facebook.com/pages/create" class="list-group-item"><i class="fa fa-plus-square" style="color:#fedd16;" aria-hidden="true"></i> Create New Facebook Page</a>';
         $pages_list_ui .= '</div>';
-
-
-
-        //Did we have a Match?
-        if(!$found_match){
-            //Indicate to the user that they do not have a match:
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Connect to a Facebook Page to activate Mench</div>';
-        }
 
         //Show the UI:
         echo $pages_list_ui;
@@ -669,8 +653,7 @@ class Api_v1 extends CI_Controller {
 	    //Fetch Messages and the User's Got It Engagement History:
 	    $messages = $this->Db_model->i_fetch(array(
 	        'i_c_id' => intval($_POST['intent_id']),
-	        'i_status >=' => 0, //Published in any form. This may need more logic
-	        'i_status <' => 4, //But not private notes if any
+	        'i_status >' => 0, //Published in any form
 	    ));
 	    
 	    //Log an engagement for all messages
@@ -3734,11 +3717,6 @@ class Api_v1 extends CI_Controller {
 	            
 	            //Create Message:
 	            $message = '/attach '.$i_media_type.':'.$new_file_url;
-
-                if(in_array($i_media_type,array('image','audio','video','file'))){
-                    //Save file via Facebook Attachments:
-                    $fb_save = $this->Facebook_model->save_attachment('381488558920384',$i_media_type,$new_file_url);
-                }
 	            
 	            //Create message:
 	            $i = $this->Db_model->i_create(array(
@@ -3748,7 +3726,6 @@ class Api_v1 extends CI_Controller {
 	                'i_message' => $message,
 	                'i_url' => $new_file_url,
                     'i_status' => $_POST['i_status'],
-                    'i_fb_att_id' => ( isset($fb_save['attachment_id']) ? $fb_save['attachment_id'] : 0 ),
 	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
 	                    'i_status' => $_POST['i_status'],
 	                    'i_c_id' => $_POST['pid'],
@@ -3768,11 +3745,27 @@ class Api_v1 extends CI_Controller {
 	                    'file' => $_FILES,
 	                    'after' => $new_messages[0],
 	                ),
-	                'e_type_id' => 34, //Message added
+	                'e_type_id' => 34, //Message added e_type_id=34
 	                'e_i_id' => intval($new_messages[0]['i_id']),
 	                'e_c_id' => intval($new_messages[0]['i_c_id']),
 	                'e_b_id' => $bootcamps[0]['b_id'],
 	            ));
+
+
+                //Does it have an attachment and a connected Facebook Page? If so, save the attachment:
+                if($bootcamps[0]['b_fp_id']>0 && in_array($i_media_type,array('image','audio','video','file'))){
+                    //Log engagement for this to be done via a Cron Job:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $udata['u_id'],
+                        'e_type_id' => 83, //Message Facebook Sync e_type_id=83
+                        'e_i_id' => intval($new_messages[0]['i_id']),
+                        'e_c_id' => intval($new_messages[0]['i_c_id']),
+                        'e_b_id' => $bootcamps[0]['b_id'],
+                        'e_fp_id' => $bootcamps[0]['b_fp_id'],
+                        'e_cron_job' => 0, //Job pending
+                    ));
+                }
+
 	            
 	            //Echo message:
 	            echo_json(array(
@@ -3916,7 +3909,7 @@ class Api_v1 extends CI_Controller {
             //Fetch Message:
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => intval($_POST['i_id']),
-                'i_status >=' => 0,
+                'i_status >' => 0,
             ));
 
             //Make sure message is all good:
@@ -4014,7 +4007,7 @@ class Api_v1 extends CI_Controller {
             //Fetch Message:
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => intval($_POST['i_id']),
-                'i_status >=' => 0, //Not deleted
+                'i_status >' => 0, //Not deleted
             ));
             if(!isset($messages[0])){
                 echo_json(array(

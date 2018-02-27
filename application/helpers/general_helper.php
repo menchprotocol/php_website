@@ -12,7 +12,7 @@ function fetch_action_plan_copy($b_id,$r_id){
     $cache_action_plans = $CI->Db_model->e_fetch(array(
         'e_type_id' => 70,
         'e_r_id' => $r_id,
-    ), 1, true);
+    ), 1, array('ej'));
 
     if(count($cache_action_plans)>0){
 
@@ -592,10 +592,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
         if($fb_format){
 
             //Do we have this saved in FB Servers?
-            if(isset($i['i_fb_att_id']) && $i['i_fb_att_id']>0){
+            if(isset($i['sy_fb_att_id']) && $i['sy_fb_att_id']>0){
                 //Yesss, use that:
                 $payload = array(
-                    'attachment_id' => $i['i_fb_att_id'],
+                    'attachment_id' => $i['sy_fb_att_id'],
                 );
             } else {
                 //No, upload file:
@@ -2503,7 +2503,7 @@ function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages
     $instant_messages = array();
     $current_thread_outbound = 0; //Position of current intent
 
-    //This is used for engagement logging of custom messages (not stored in v5_messages) via the echo_i() function
+    //For engagement logging of custom messages (Messages that are not stored in v5_messages) via the echo_i() function
     $custom_message_e_data = array(
         'e_initiator_u_id' => $e_initiator_u_id,
         'e_recipient_u_id' => $e_recipient_u_id,

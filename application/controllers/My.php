@@ -27,7 +27,7 @@ class My extends CI_Controller {
         if($i_id>0){
             $messages = $this->Db_model->i_fetch(array(
                 'i_id' => $i_id,
-                'i_status >=' => 1, //Not deleted
+                'i_status >' => 0, //Not deleted
             ));
         }
 
@@ -59,7 +59,7 @@ class My extends CI_Controller {
 	    if($i_id>0){
 	        $messages = $this->Db_model->i_fetch(array(
 	            'i_id' => $i_id,
-	            'i_status >=' => 1, //Not deleted
+	            'i_status >' => 0, //Not deleted
 	        ));
 	    }
 

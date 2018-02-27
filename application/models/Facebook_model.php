@@ -486,11 +486,36 @@ class Facebook_model extends CI_Model {
             'b_fp_id' => $fp_id,
         ));
 
+
+
+        //Fetch all attachment messages of this Bootcamp and Sync to its Facebook Page:
+        $media_messages = $this->Db_model->i_fetch(array(
+            'i_status >' => 0, //Published in any form
+            'i_media_type IN (\'video\',\'audio\',\'image\',\'file\')' => null, //Attachments only
+            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bootcamps[0]['b_c_id'])).')' => null, //Entire Bootcamp Action Plan
+        ));
+        foreach($media_messages as $i){
+            //Craete a request to sync attachment:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $u_id,
+                'e_type_id' => 83, //Message Facebook Sync e_type_id=83
+                'e_i_id' => $i['i_id'],
+                'e_c_id' => $i['i_c_id'],
+                'e_b_id' => $b_id,
+                'e_fp_id' => $fp_id,
+                'e_cron_job' => 0, //Job pending
+            ));
+        }
+
+
         //Log Engagement
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $u_id,
             'e_fp_id' => $fp_id,
             'e_type_id' => 73, //Page Connected to Bootcamp
+            'e_json' => array(
+                'fb_sync_messages' => count($media_messages),
+            ),
             'e_b_id' => $b_id,
         ));
 
@@ -500,7 +525,7 @@ class Facebook_model extends CI_Model {
 
     function fb_page_disconnect($u_id,$fp_id,$b_id){
 
-        //Disconnects $fp_id from $b_id as requested by $u_id, and removes page integration if no longer connected to any Mench Program...
+        //Disconnects $fp_id from $b_id as requested by $u_id, and removes page integration if no longer connected to any Mench Bootcamp...
 
         //Validate both $fp_id & $b_id
         $fp_pages = $this->Db_model->fp_fetch(array(
@@ -559,7 +584,7 @@ class Facebook_model extends CI_Model {
         //Remove Page integration? (Don't do it for Mench)
         if($b_connected_count==0 && !($fp_pages[0]['fp_fb_id']=='381488558920384')){
 
-            //Yup, not connected to any more Mench Programs:
+            //Yup, not connected to any more Mench Bootcamps:
             $e_json = array();
             $e_json['messenger_profile'] = $this->Facebook_model->fb_graph($fp_id,'DELETE','me/messenger_profile' , array(
                 //Define the settings to delete:
@@ -594,7 +619,7 @@ class Facebook_model extends CI_Model {
 
 
     //Sends out batch messages in an easier way:
-    function fb_messaging($fp_id, $fp_psid, $messages, $notification_type='REGULAR'){
+    function fb_message($fp_id, $fp_psid, $messages, $notification_type='REGULAR'){
 
         if(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
             return array(
@@ -651,9 +676,6 @@ class Facebook_model extends CI_Model {
 
 
 
-
-
-
     function send_message($botkey,$payload){
         $mench_bots = $this->config->item('mench_bots');
         if(!array_key_exists($botkey,$mench_bots)){
@@ -682,8 +704,6 @@ class Facebook_model extends CI_Model {
         return objectToArray(json_decode($response));
     }
 
-
-
     function batch_messages( $botkey , $u_fb_id , $messages , $notification_type='REGULAR'){
 
         $mench_bots = $this->config->item('mench_bots');
@@ -710,52 +730,5 @@ class Facebook_model extends CI_Model {
 
         return $stats;
     }
-
-
-    function save_attachment($botkey,$type,$url){
-
-        $mench_bots = $this->config->item('mench_bots');
-        if(!array_key_exists($botkey,$mench_bots)){
-            die('Invalid Bot Key');
-        }
-
-        $payload = array(
-            'message' => array(
-                'attachment' => array(
-                    'type' => $type,
-                    'payload' => array(
-                        'is_reusable' => true,
-                        'url' => $url,
-                    ),
-                ),
-            )
-        );
-
-        //Make the call for add/update
-        $ch = curl_init('https://graph.facebook.com/v2.6/me/message_attachments?access_token='.$mench_bots[$botkey]['access_token']);
-        curl_setopt_array($ch, array(
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_RETURNTRANSFER => TRUE,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json; charset=utf-8'
-            ),
-            CURLOPT_POSTFIELDS => json_encode($payload),
-        ));
-
-        // Send the request
-        $response = curl_exec($ch);
-
-        // Check for CURL errors
-        if($response === FALSE){
-            $this->Db_model->e_create(array(
-                'e_message' => 'save_attachment() CURL Failed in sending message via ['.$botkey.'] Messenger.',
-                'e_json' => $payload,
-                'e_type_id' => 8, //Platform Error
-            ));
-        }
-
-        return objectToArray(json_decode($response));
-    }
-
 
 }

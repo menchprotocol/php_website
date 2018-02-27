@@ -84,8 +84,7 @@ WHERE ru.ru_status >= 4
 
             //Bootcamp Messages:
             $bootcamps[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                'i_status >=' => 0,
-                'i_status <' => 4, //But not private notes if any
+                'i_status >' => 0,
                 'i_c_id' => $c['c_id'],
             ));
 
@@ -112,8 +111,7 @@ WHERE ru.ru_status >= 4
 
                 //Count Messages:
                 $milestone_messages = $this->Db_model->i_fetch(array(
-                    'i_status >=' => 0,
-                    'i_status <' => 4, //But not private notes if any
+                    'i_status >' => 0,
                     'i_c_id' => $sprint_value['c_id'],
                 ));
 
@@ -150,8 +148,7 @@ WHERE ru.ru_status >= 4
 
                     //Count Messages:
                     $task_messages = $this->Db_model->i_fetch(array(
-                        'i_status >=' => 0,
-                        'i_status <' => 4, //But not private notes if any
+                        'i_status >' => 0,
                         'i_c_id' => $task_value['c_id'],
                     ));
 
@@ -693,23 +690,69 @@ WHERE ru.ru_status >= 4
 	/* ******************************
 	 * i Messages
 	 ****************************** */
-	
-	function i_fetch($match_columns,$limit=0){
-		$this->db->select('*');
-		$this->db->from('v5_messages i');
-		$this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
-		$this->db->join('v5_users u', 'u.u_id = i.i_creator_id');
-		$this->db->where('c.c_status >=',0); //Not yet implemented
-		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
-		}
-		if($limit>0){
+
+    function i_fetch($match_columns, $limit=0){
+        $this->db->select('*');
+        $this->db->from('v5_messages i');
+        $this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
+        $this->db->join('v5_users u', 'u.u_id = i.i_creator_id');
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+        if($limit>0){
             $this->db->limit($limit);
         }
-		$this->db->order_by('i_rank');
-		$q = $this->db->get();
-		return $q->result_array();
-	}
+        $this->db->order_by('i_rank');
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
+    function sy_fetch($match_columns){
+        $this->db->select('*');
+        $this->db->from('v5_message_fb_sync sy');
+        foreach($match_columns as $key=>$value){
+            $this->db->where($key,$value);
+        }
+        $q = $this->db->get();
+        return $q->result_array();
+    }
+
+    function sy_create($insert_columns){
+        //Missing anything?
+        if(!isset($insert_columns['sy_i_id'])){
+            return false;
+        } elseif(!isset($insert_columns['sy_fp_id'])){
+            return false;
+        } elseif(!isset($insert_columns['sy_fb_att_id'])){
+            return false;
+        }
+
+        //Autocomplete required
+        if(!isset($insert_columns['sy_timestamp'])){
+            $insert_columns['sy_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        //Lets now add:
+        $this->db->insert('v5_message_fb_sync', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['sy_id'] = $this->db->insert_id();
+
+        if(!$insert_columns['sy_id']){
+            //Log this query Error
+            $this->Db_model->e_create(array(
+                'e_message' => 'Query Error sy_create() : '.$this->db->_error_message(),
+                'e_json' => $insert_columns,
+                'e_type_id' => 8, //Platform Error
+            ));
+        }
+
+        return $insert_columns;
+    }
 	
 	function i_create($insert_columns){
 		//Missing anything?
@@ -1018,9 +1061,28 @@ WHERE ru.ru_status >= 4
         $q = $this->db->get();
         return $q->result_array();
     }
+
+
+    function fetch_c_tree($c_id){
+        //This function would fetch all the child c_id's for the input c_id
+        $c_tree = array(intval($c_id));
+        $child_intents = $this->Db_model->cr_outbound_fetch(array(
+            'cr.cr_inbound_id' => $c_id,
+            'cr.cr_status >=' => 0,
+            'c.c_status >=' => 0,
+        ));
+        if(count($child_intents)>0){
+            //Yes, it does, lets go through them recursively:
+            foreach($child_intents as $c){
+                //Do recursive
+                $c_tree = array_merge($c_tree,$this->fetch_c_tree($c['c_id']));
+            }
+        }
+        return $c_tree;
+    }
 	
 	
-	function c_fetch($match_columns, $outbound_levels=0, $append_obj=array()){
+	function c_fetch($match_columns, $outbound_levels=0, $join_objects=array()){
 	    
 	    //Always deal with ints here:
 	    $outbound_levels = intval($outbound_levels);
@@ -1037,14 +1099,13 @@ WHERE ru.ru_status >= 4
 	    
 	    
 	    //We had anything?
-	    if(count($intents)>0 && in_array('i',$append_obj)){
+	    if(count($intents)>0 && in_array('i',$join_objects)){
 	        $intents[0]['c__messages'] = array('ss');
 	        //Fetch Messages:
 	        foreach($intents as $key=>$value){
 	            $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
 	                'i_c_id' => $value['c_id'],
-	                'i_status >=' => 0, //Published in any form. This may need more logic
-	                'i_status <' => 4, //But not private notes if any
+	                'i_status >' => 0, //Published in any form
 	            ));
 	        }
 	    }
@@ -1058,7 +1119,7 @@ WHERE ru.ru_status >= 4
 	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                'cr.cr_inbound_id' => $value['c_id'],
 	                'cr.cr_status >' => 0,
-	            ) , $append_obj );
+	            ) , $join_objects );
 	            
 	            //need more depth?
 	            if(count($intents[$key]['c__child_intents'])>0 && $outbound_levels>=2){
@@ -1067,7 +1128,7 @@ WHERE ru.ru_status >= 4
 	                    $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
 	                        'cr.cr_inbound_id' => $value2['c_id'],
 	                        'cr.cr_status >' => 0,
-	                    ) , $append_obj );
+	                    ) , $join_objects );
 	                }
 	            }
 	        } 
@@ -1119,7 +1180,7 @@ WHERE ru.ru_status >= 4
 	}
 	
 	
-	function cr_outbound_fetch($match_columns,$append_obj=array()){
+	function cr_outbound_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
@@ -1133,13 +1194,12 @@ WHERE ru.ru_status >= 4
 		
 		//We had anything?
 		if(count($return)>0){
-		    if(in_array('i',$append_obj)){
+		    if(in_array('i',$join_objects)){
 		        //Fetch Messages:
 		        foreach($return as $key=>$value){
 		            $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
 		                'i_c_id' => $value['c_id'],
-		                'i_status >=' => 0, //Published in any form. This may need more logic
-		                'i_status <' => 4, //But not private notes if any
+		                'i_status >' => 0, //Published in any form
 		            ));
 		        }
 		    }
@@ -1443,13 +1503,19 @@ WHERE ru.ru_status >= 4
 
     }
 	
-	function e_fetch($match_columns=array(),$limit=100,$fetch_blob=false){
+	function e_fetch($match_columns=array(),$limit=100,$join_objects=array()){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
 	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
-	    if($fetch_blob){
+        if(in_array('ej',$join_objects)){
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
+        }
+        if(in_array('i',$join_objects)){
+            $this->db->join('v5_messages i', 'i.i_id=e.e_i_id','left');
+        }
+        if(in_array('fp',$join_objects)){
+            $this->db->join('v5_facebook_pages fp', 'fp.fp_id=e.e_fp_id','left');
         }
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){

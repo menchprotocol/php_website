@@ -14,7 +14,7 @@ $soft_disabled = ( !$admin_can_edit && $class['r_status']>=2 ? 'disabled' : null
 $cache_action_plans = $this->Db_model->e_fetch(array(
     'e_type_id' => 70,
     'e_r_id' => $class['r_id'],
-),1,true);
+),1,array('ej'));
 
 ?>
 <script>

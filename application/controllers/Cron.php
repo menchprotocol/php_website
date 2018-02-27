@@ -643,7 +643,7 @@ class Cron extends CI_Controller {
             'e_c_id >' => 0,
             'e_b_id >' => 0,
             'e_recipient_u_id >' => 0,
-        ), 200, true);
+        ), 200, array('ej'));
 
         $drip_sent = 0;
         foreach($e_pending as $e_message){
@@ -1012,7 +1012,7 @@ class Cron extends CI_Controller {
             'e_cron_job' => 0, //Pending file upload to S3
             'e_type_id >=' => 6, //Messages only
             'e_type_id <=' => 7, //Messages only
-        ), $max_per_batch, true);
+        ), $max_per_batch, array('ej'));
 
         $counter = 0;
         foreach($e_pending as $ep){
@@ -1067,6 +1067,98 @@ class Cron extends CI_Controller {
         }
         //Echo message for cron job:
         echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
+    }
+
+
+    function fb_sync_attachments(){
+
+        //Cron Settings: * * * * *
+
+        /*
+         * This cron job looks for all requests to sync Message attachments
+         * with Facebook, gets them done and marks the engagement as done
+         *
+         */
+
+        $success_count = 0; //Track success
+        $max_per_batch = 144; //Max number of syncs per cron run
+        $e_json = array();
+
+        $e_pending = $this->Db_model->e_fetch(array(
+            'e_cron_job' => 0, //Pending Sync
+            'e_type_id' => 83, //Message Facebook Sync e_type_id=83
+        ), $max_per_batch, array('i','fp'));
+
+
+        if(count($e_pending)>0){
+            foreach($e_pending as $ep){
+
+                //Does this meet the basic tests? It should...
+                if($ep['fp_id']>0 && $ep['i_id']>0 && strlen($ep['i_url'])>0 && filter_var($ep['i_url'], FILTER_VALIDATE_URL) && in_array($ep['i_media_type'],array('video','image','audio','file'))){
+
+                    //First make sure we don't already have this saved in v5_message_fb_sync already
+                    $synced_messages = $this->Db_model->sy_fetch(array(
+                        'sy_i_id' => $ep['i_id'],
+                        'sy_fp_id' => $ep['fp_id'],
+                    ));
+
+                    if(count($synced_messages)==0){
+
+                        $payload = array(
+                            'message' => array(
+                                'attachment' => array(
+                                    'type' => $ep['i_media_type'],
+                                    'payload' => array(
+                                        'is_reusable' => true,
+                                        'url' => $ep['i_url'],
+                                    ),
+                                ),
+                            )
+                        );
+
+                        //Attempt to save this:
+                        $result = $this->Facebook_model->fb_graph($ep['fp_id'], 'POST', 'me/message_attachments', $payload);
+                        $db_result = false;
+
+                        if($result['status'] && isset($result['e_json']['result']['attachment_id'])){
+                            //Save attachment to DB:
+                            $db_result = $this->Db_model->i_create(array(
+                                'sy_i_id' => $ep['i_id'],
+                                'sy_fp_id' => $ep['fp_id'],
+                                'sy_fb_att_id' => $result['e_json']['result']['attachment_id'],
+                            ));
+                        }
+
+                        //Did it go well?
+                        if($db_result){
+                            $success_count++;
+                        } else {
+                            //Log error:
+                            $this->Db_model->e_create(array(
+                                'e_message' => 'fb_sync_attachments() failed to sync attachment with Facebook',
+                                'e_json' => $ep,
+                                'e_type_id' => 8, //Platform Error
+                            ));
+                        }
+
+                        //Save stats either way:
+                        array_push($e_json,array(
+                            'payload' => $payload,
+                            'fb_result' => $result,
+                            'db_result' => $db_result,
+                        ));
+                    }
+                }
+            }
+        }
+
+        //Echo message for cron job:
+        echo_json(array(
+            'status' => ( $success_count==count($e_pending) && $success_count>0 ? 1 : 0 ),
+            'message' => $success_count.'/'.count($e_pending).' Message'.show_s(count($e_pending)).' successfully synced their attachment with Facebook',
+            'e_json' => $e_json,
+        ));
+
     }
 
     /* ******************************

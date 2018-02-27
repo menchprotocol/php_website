@@ -538,7 +538,7 @@ $config['object_statuses'] = array(
             's_name'  => 'Available',
             's_desc'  => 'Facebook Page available but not connected to a Mench Bootcamp yet',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-play',
+            's_mini_icon' => 'fa-facebook-official',
         ),
         1 => array(
             's_name'  => 'Connected',
