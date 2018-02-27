@@ -255,25 +255,11 @@ class Facebook_model extends CI_Model {
                         //Does it need updating?
                         if(!($fs['fs_access_token']==$fb_page['access_token']) || !($fs['fs_status']==1)){
 
-                            //Update instructor admin status:
+                            //Update instructor admin status, as this happens frequently...
                             $this->Db_model->fs_update( $fs['fs_id'] , array(
                                 'fs_access_token' => $fb_page['access_token'],
                                 'fs_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
                                 'fs_status' => 1, //Authorized
-                            ));
-
-                            //Log Engagement:
-                            $this->Db_model->e_create(array(
-                                'e_initiator_u_id' => $u_id,
-                                'e_fp_id' => $fp['fp_id'],
-                                'e_json' => array(
-                                    'remote_id' => $fb_page['id'],
-                                    'remote_access_token' => $fb_page['access_token'],
-                                    'page_local' => $fp,
-                                    'access_local' => $fp,
-                                ),
-                                'e_b_id' => $b_id,
-                                'e_type_id' => 83, //Access Updated
                             ));
 
                         }
