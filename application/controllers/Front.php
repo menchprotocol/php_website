@@ -184,7 +184,7 @@ class Front extends CI_Controller {
         } elseif($bootcamps[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
         } elseif($bootcamps[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
+            //redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 
 
@@ -237,7 +237,7 @@ class Front extends CI_Controller {
             //Here we don't even let instructors move forward to apply!
             redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Bootcamp is published live.</div>');
         } elseif($bootcamps[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
+            //redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 	    
 	    //Validate Class ID that it's still the latest:
