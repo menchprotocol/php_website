@@ -1500,7 +1500,7 @@ class Api_v1 extends CI_Controller {
         $matching_admissions = $this->Db_model->ru_fetch(array(
             'ru_u_id' => intval($_POST['u_id']),
             'ru_r_id' => intval($_POST['r_id']),
-            'ru_status' => 4, //Only Active students can submit tasks
+            'ru_status >=' => 4, //Only Active students can submit tasks
         ));
 
         if(!(count($matching_admissions)==1)){
