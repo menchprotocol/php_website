@@ -154,7 +154,7 @@ if($level>=3){
      ****************************** */
     echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
-    if($class['r__current_milestone']<0){
+    if($class['r__current_milestone']<0 && 0){
         //Class if finished, no more submissions allowed!
         echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You cannot submit Tasks because Class has ended.</div>';
     } else {
