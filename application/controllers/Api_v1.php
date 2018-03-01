@@ -1516,7 +1516,7 @@ class Api_v1 extends CI_Controller {
 
         if(!$focus_class){
             die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
-        } elseif($focus_class['r__current_milestone']<0 || $focus_class['r_status']>2){
+        } elseif(0 && ($focus_class['r__current_milestone']<0 || $focus_class['r_status']>2)){
             die('<span style="color:#FF0000;">Error: Class has ended so you can no longer mark tasks as complete.</span>');
         } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
             die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
