@@ -726,7 +726,7 @@ class Facebook_model extends CI_Model {
                 ));
             }
 
-            return $u['u_id'];
+            return intval($u['u_id']);
 
         }
 
@@ -772,7 +772,7 @@ class Facebook_model extends CI_Model {
             $this->Facebook_model->fb_foundation_message(921, $u['u_id'], $fp['fp_id']);
 
             //Return the newly created user ID:
-            return $u['u_id'];
+            return intval($u['u_id']);
         }
 
 
@@ -860,6 +860,9 @@ class Facebook_model extends CI_Model {
             ),
             'e_type_id' => 31, //Messenger Activated
         ));
+
+        //Return User ID:
+        return intval($u['u_id']);
 
     }
 
