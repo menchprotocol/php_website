@@ -39,6 +39,34 @@ class Bot extends CI_Controller {
         echo $this->Facebook_model->fb_activation_url($u_id,$fp_id);
     }
 
+    function send(){
+        $this->Facebook_model->fb_direct_messages(array(
+            array(
+                'i_media_type' => 'text',
+                'i_message' => '{first_name} your class just endedt Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​',
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => 1,
+                'e_fp_id' => 4,
+            ),
+            array(
+                'i_media_type' => 'text',
+                'i_message' => 'Sample message',
+                'i_button' => 'Review button',
+                'i_url' => 'https://mench.co/my/review/',
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => 1,
+                'e_fp_id' => 4,
+            ),
+            array(
+                'i_media_type' => 'image',
+                'i_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png',
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => 1,
+                'e_fp_id' => 4,
+            ),
+        ));
+    }
+
     function id($psid,$ref=null){
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => 4,

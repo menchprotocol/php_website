@@ -884,7 +884,7 @@ class Facebook_model extends CI_Model {
 
 
     //Sends out batch messages in an easier way:
-    function fb_send_messages($fp_id, $fp_psid, $messages, $u_fb_notification){
+    function fb_send_messages($fp_id, $fp_psid, $messages, $u_fb_notification='SILENT_PUSH'){
 
         if(count($messages)<1){
             return array(
@@ -935,6 +935,167 @@ class Facebook_model extends CI_Model {
     }
 
 
+    function fb_direct_messages($messages){
+
+        if(count($messages)<1){
+            return array(
+                'status' => 0,
+                'message' => 'No messages set',
+            );
+        }
+
+        $failed_count = 0;
+        $email_to_send = array();
+        $e_json = array(
+            'messages' => array(),
+            'email' => array(),
+        );
+
+        foreach($messages as $message){
+
+            //Make sure we have the necessary fields:
+            if(!isset($message['e_recipient_u_id']) || !isset($message['e_fp_id'])){
+                //Log error:
+                $this->Db_model->e_create(array(
+                    'e_json' => $message,
+                    'e_type_id' => 8, //Platform error
+                    'e_message' => 'fb_direct_messages() failed to send message as it was missing core variables',
+                ));
+                continue;
+            }
+
+            //Fetch user preferences:
+            if(isset($message['e_r_id']) && $message['e_r_id']>0){
+                //Fetch admission to class:
+                $users = $this->Db_model->ru_fetch(array(
+                    'ru_u_id' => $message['e_recipient_u_id'],
+                    'ru_r_id' => $message['e_r_id'],
+                ));
+            } else {
+                //Fetch user profile:
+                $users = $this->Db_model->ru_fetch(array(
+                    'u_id' => $message['e_recipient_u_id'],
+                ));
+            }
+
+            if(count($users)<1){
+
+                //Log error:
+                $this->Db_model->e_create(array(
+                    'e_recipient_u_id' => $message['e_recipient_u_id'],
+                    'e_fp_id' => $message['e_fp_id'],
+                    'e_json' => $message,
+                    'e_type_id' => 8, //Platform error
+                    'e_message' => 'fb_direct_messages() failed to fetch user details message as it was missing core variables',
+                ));
+                continue;
+
+            } else {
+
+                //Determine communication method:
+                $dispatch_fp_id = 0;
+                $dispatch_fp_psid = 0;
+                $u = array();
+
+                if(isset($users[0]['ru_fp_id']) && isset($users[0]['ru_fp_psid']) && $users[0]['ru_fp_id']>0 && $users[0]['ru_fp_psid']>0){
+                    //We fetched an admission with an active Messenger connection:
+                    $dispatch_fp_id = $users[0]['ru_fp_id'];
+                    $dispatch_fp_psid = $users[0]['ru_fp_psid'];
+                    $u = $users[0];
+                } elseif($users[0]['u_cache__fp_id']>0 && $users[0]['u_cache__fp_psid']>0){
+                    //We fetched an admission with an active Messenger connection:
+                    $dispatch_fp_id = $users[0]['u_cache__fp_id'];
+                    $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
+                    $u = $users[0];
+                } elseif(strlen($users[0]['e_email'])>0 && filter_var($users[0]['e_email'], FILTER_VALIDATE_EMAIL)){
+                    //User has not activated Messenger but has email:
+                    $u = $users[0];
+                } else {
+
+                    //This should technically not happen!
+                    //Log error:
+                    $this->Db_model->e_create(array(
+                        'e_recipient_u_id' => $message['e_recipient_u_id'],
+                        'e_fp_id' => $message['e_fp_id'],
+                        'e_json' => $message,
+                        'e_type_id' => 8, //Platform error
+                        'e_message' => 'fb_direct_messages() detected user without an active email/Messenger',
+                    ));
+                    continue;
+
+                }
+
+            }
+
+            //Send email or message?
+            if($dispatch_fp_id && $dispatch_fp_psid){
+
+                //Messenger:
+                $process = $this->Facebook_model->fb_graph($dispatch_fp_id ,'POST','me/messages', array(
+                    'recipient' => array(
+                        'id' => $dispatch_fp_psid,
+                    ),
+                    'message' => echo_i($message, $u['u_fname'],true),
+                    'notification_type' => $u['u_fb_notification'],
+                ));
+
+                if(!$process['status']){
+                    $failed_count++;
+                }
+
+                array_push( $e_json['messages'] , $process );
+
+            } else {
+
+                //This is an email request, combine the emails per user:
+                if(!isset($email_to_send[$u['u_id']])){
+                    $email_to_send[$u['u_id']] = array(
+                        'u_email' => $u['e_email'],
+                        'subject_line' => 'New Message from Mench', //Maybe change to something more relevant later?
+                        'html_message' => echo_i($message, $u['u_fname'],false),
+                        'r_reply_to_email' => ( isset($u['r_reply_to_email']) && filter_var($u['r_reply_to_email'], FILTER_VALIDATE_EMAIL) ? $u['r_reply_to_email'] : null ),
+                    );
+                } else {
+                    //Append message to this user:
+                    $email_to_send[$u['u_id']]['html_message'] .= echo_i($message, $u['u_fname'],false);
+                }
+            }
+        }
+
+
+        //Do we have to send message?
+        if(count($email_to_send)>0){
+            $this->load->model('Email_model');
+            //Yes, go through these emails and send them:
+            foreach($email_to_send as $email){
+                $process = $this->Email_model->send_single_email(array($email['u_email']),$email['subject_line'],$email['html_message'],( strlen($email['r_reply_to_email'])>0 ? $email['html_message'] : null ));
+
+                array_push( $e_json['email'] , $process );
+            }
+        }
+
+
+
+        if($failed_count>0){
+
+            return array(
+                'status' => 0,
+                'message' => 'Failed to send '.$failed_count.'/'.count($messages).' message'.show_s(count($messages)).'.',
+                'e_json' => $e_json,
+            );
+
+        } else {
+
+            return array(
+                'status' => 1,
+                'message' => 'Successfully sent '.count($messages).' message'.show_s(count($messages)),
+                'e_json' => $e_json,
+            );
+
+        }
+    }
+
+
 
 
 
@@ -945,7 +1106,6 @@ class Facebook_model extends CI_Model {
     function fb_foundation_message($c_id, $u_id, $fp_id=0, $b_id=0, $r_id=0, $depth=0, $override_u_fb_notification=null){
 
         $depth = 0; //Override this for now and only focus on dispatching tasks at 1 level!
-
 
         //Fetch recipient:
         $u_fb_psid = 0;
@@ -977,6 +1137,9 @@ class Facebook_model extends CI_Model {
             );
             if($fp_id>0){
                 $limits['ru_fp_id'] = $fp_id;
+            }
+            if($r_id>0){
+                $limits['ru_r_id'] = $r_id;
             }
             $fetch_users = $this->Db_model->ru_fetch($limits);
 
