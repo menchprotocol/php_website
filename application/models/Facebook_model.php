@@ -720,17 +720,6 @@ class Facebook_model extends CI_Model {
                         'u_cache__fp_psid' => null, //Remove from this user...
                     ));
 
-                    //Log user merged engagement:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $u['u_id'],
-                        'e_json' => array(
-                            'fb_ref' => $fb_ref,
-                            'ref_u_id' => $ref_u_id,
-                        ),
-                        'e_message' => 'User status merged',
-                        'e_type_id' => 9, //Support Needed
-                    ));
-
                     //Reset user as if we did not find this:
                     $u = array();
 
@@ -765,7 +754,7 @@ class Facebook_model extends CI_Model {
 
             //This is a new user that needs to be registered!
             //Call facebook messenger API and get user profile
-            $graph_fetch = $this->Facebook_model->fb_graph($fp['fp_id'],'GET',$fp_psid,array(),$fp);
+            $graph_fetch = $this->Facebook_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
 
             if(!$graph_fetch['status']){
                 //This error has already been logged
@@ -836,7 +825,7 @@ class Facebook_model extends CI_Model {
          */
 
         //Fetch their profile from Facebook to update
-        $graph_fetch = $this->Facebook_model->fb_graph(4,'GET',$fp_psid);
+        $graph_fetch = $this->Facebook_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
         if(!$graph_fetch['status']){
             //This error has already been logged inside $this->Facebook_model->fb_graph()
             //We cannot create this user:
