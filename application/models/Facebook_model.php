@@ -954,12 +954,12 @@ class Facebook_model extends CI_Model {
         foreach($messages as $message){
 
             //Make sure we have the necessary fields:
-            if(!isset($message['e_recipient_u_id']) || !isset($message['e_fp_id'])){
+            if(!isset($message['e_recipient_u_id'])){
                 //Log error:
                 $this->Db_model->e_create(array(
                     'e_json' => $message,
                     'e_type_id' => 8, //Platform error
-                    'e_message' => 'fb_direct_messages() failed to send message as it was missing core variables',
+                    'e_message' => 'fb_direct_messages() failed to send message as it was missing e_recipient_u_id',
                 ));
                 continue;
             }
@@ -983,7 +983,6 @@ class Facebook_model extends CI_Model {
                 //Log error:
                 $this->Db_model->e_create(array(
                     'e_recipient_u_id' => $message['e_recipient_u_id'],
-                    'e_fp_id' => $message['e_fp_id'],
                     'e_json' => $message,
                     'e_type_id' => 8, //Platform error
                     'e_message' => 'fb_direct_messages() failed to fetch user details message as it was missing core variables',
@@ -1007,7 +1006,7 @@ class Facebook_model extends CI_Model {
                     $dispatch_fp_id = $users[0]['u_cache__fp_id'];
                     $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
                     $u = $users[0];
-                } elseif(strlen($users[0]['e_email'])>0 && filter_var($users[0]['e_email'], FILTER_VALIDATE_EMAIL)){
+                } elseif(strlen($users[0]['u_email'])>0 && filter_var($users[0]['u_email'], FILTER_VALIDATE_EMAIL)){
                     //User has not activated Messenger but has email:
                     $u = $users[0];
                 } else {
@@ -1030,6 +1029,22 @@ class Facebook_model extends CI_Model {
             //Send email or message?
             if($dispatch_fp_id && $dispatch_fp_psid){
 
+                //Do we have a specific fp_id requested, and if so, does it match the one we found?
+                if(isset($message['e_fp_id']) && $message['e_fp_id']>0 && !($message['e_fp_id']==$dispatch_fp_id)){
+                    //Ooops, we seem to have an issue here...
+                    $this->Db_model->e_create(array(
+                        'e_recipient_u_id' => $message['e_recipient_u_id'],
+                        'e_fp_id' => $message['e_fp_id'],
+                        'e_json' => $message,
+                        'e_type_id' => 8, //Platform error
+                        'e_message' => 'fb_direct_messages() failed to send message because user FP ID ['.$dispatch_fp_id.'] was different that e_fp_id ['.$message['e_fp_id'].']',
+                    ));
+                    continue;
+                } else {
+                    //Override this data to the message data:
+                    $message['e_fp_id'] = $dispatch_fp_id;
+                }
+
                 //Messenger:
                 $process = $this->Facebook_model->fb_graph($dispatch_fp_id ,'POST','me/messages', array(
                     'recipient' => array(
@@ -1050,7 +1065,7 @@ class Facebook_model extends CI_Model {
                 //This is an email request, combine the emails per user:
                 if(!isset($email_to_send[$u['u_id']])){
                     $email_to_send[$u['u_id']] = array(
-                        'u_email' => $u['e_email'],
+                        'u_email' => $u['u_email'],
                         'subject_line' => 'New Message from Mench', //Maybe change to something more relevant later?
                         'html_message' => echo_i($message, $u['u_fname'],false),
                         'r_reply_to_email' => ( isset($u['r_reply_to_email']) && filter_var($u['r_reply_to_email'], FILTER_VALIDATE_EMAIL) ? $u['r_reply_to_email'] : null ),
