@@ -31,12 +31,6 @@ class Bot extends CI_Controller {
         echo_json($stats);
     }
 
-    function ru(){
-        echo_json($this->Db_model->ru_fetch(array(
-            '(u_cache__fp_psid=1443101719058431 AND u_cache__fp_id=4) OR (ru_fp_psid=1443101719058431 AND ru_fp_id=4)' => null,
-        )));
-    }
-
     function test(){
         echo_json($this->Facebook_model->fb_foundation_message(3139, 1, 0, 0 /*b_id*/, 0 /*r_id*/ , 0 /*depth*/, null));
     }
@@ -117,6 +111,7 @@ class Bot extends CI_Controller {
 			        'e_message' => 'facebook_webhook() call missing messaging Array().',
 			        'e_json' => $json_data,
 			        'e_type_id' => 8, //Platform Error
+                    'e_fp_id' => $fp_pages[0]['fp_id'],
 			    ));
 				continue;
 			}
@@ -131,6 +126,7 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 1, //Message Read
+                        'e_fp_id' => $fp_pages[0]['fp_id'],
 				    ));
 					
 				} elseif(isset($im['delivery'])) {
@@ -140,6 +136,7 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 2, //Message Delivered
+                        'e_fp_id' => $fp_pages[0]['fp_id'],
 				    ));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -179,6 +176,7 @@ class Bot extends CI_Controller {
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => $json_data,
 					    'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref),
+                        'e_fp_id' => $fp_pages[0]['fp_id'],
 					);
 					
 					/*
@@ -229,6 +227,7 @@ class Bot extends CI_Controller {
 				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 5, //Messenger Optin
+                        'e_fp_id' => $fp_pages[0]['fp_id'],
 				    ));
 					
 				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -268,6 +267,7 @@ class Bot extends CI_Controller {
 					    'e_recipient_u_id' => ( $sent_from_us ? $u_id : 0 ),
 					    'e_b_id' => 0, //Default, may be updated later...
 					    'e_r_id' => 0, //Default, may be updated later...
+                        'e_fp_id' => $fp_pages[0]['fp_id'],
 					);
 					
 					
@@ -311,6 +311,7 @@ class Bot extends CI_Controller {
 					                'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox',
 					                'e_json' => $json_data,
 					                'e_type_id' => 9, //Support Needing Graceful Errors
+                                    'e_fp_id' => $fp_pages[0]['fp_id'],
 					            ));
 					        }   
 					    }
@@ -351,6 +352,7 @@ class Bot extends CI_Controller {
 							        'e_message' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
 							        'e_json' => $json_data,
 							        'e_type_id' => 8, //Platform Error
+                                    'e_fp_id' => $fp_pages[0]['fp_id'],
 							    ));
 							}
 						}
@@ -366,6 +368,7 @@ class Bot extends CI_Controller {
 				        'e_message' => 'facebook_webhook() received unrecognized webhook call.',
 				        'e_json' => $json_data,
 				        'e_type_id' => 8, //Platform Error
+                        'e_fp_id' => $fp_pages[0]['fp_id'],
 				    ));
 				    
 				}
@@ -442,7 +445,6 @@ class Bot extends CI_Controller {
 	                    'e_type_id' => 30, //Application Completed with Potential Payment
 	                    'e_b_id' => $classes[0]['r_b_id'],
 	                    'e_r_id' => $classes[0]['r_id'],
-	                    'e_t_id' => $transaction['t_id'],
 	                ));
 	            }
 	        }

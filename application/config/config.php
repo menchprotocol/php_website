@@ -636,10 +636,6 @@ $config['engagement_references'] = array(
         'name' => 'Message',
         'object_code' => 'i',
     ),
-    'e_t_id' => array(
-        'name' => 'Transaction',
-        'object_code' => 't',
-    ),
     'e_fp_id' => array(
         'name' => 'Facebook Page',
         'object_code' => 'fp',
