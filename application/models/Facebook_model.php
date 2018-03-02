@@ -837,7 +837,7 @@ class Facebook_model extends CI_Model {
         $admissions = $this->Db_model->ru_fetch(array(
             'ru_u_id' => $u['u_id'],
             'ru_fp_id' => $fp['fp_id'], //Already set to this
-            'ru_fp_psid' => 0, //Not activated yet...
+            'ru_fp_psid' => null, //Not activated yet...
         ));
         foreach($admissions as $admission){
             $this->Db_model->ru_update( $admission['ru_id'], array(
