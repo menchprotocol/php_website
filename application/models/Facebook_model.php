@@ -710,18 +710,37 @@ class Facebook_model extends CI_Model {
 
             //Yes, make sure that there is no referral variable or if there is, its the same as this one:
             if($ref_u_id && !($u['u_id']==$ref_u_id)){
-                //Ooops, a registered user has clicked on a referral URL for another user trying to activate
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $u['u_id'],
-                    'e_recipient_u_id' => $ref_u_id,
-                    'e_json' => $this->Facebook_model->fb_foundation_message(923, $u['u_id'], $fp['fp_id']),
-                    'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
-                    'e_type_id' => 9, //Support Needing Graceful Errors
-                ));
-            }
 
-            return intval($u['u_id']);
+                //See what type of account is this, as it might be an empty shell:
+                if($u['u_status']==0 && slrlen($u['u_email'])<1){
+
+                    //Update this user to remove them:
+                    $this->Db_model->u_update( $u['u_id'] , array(
+                        'u_status'   => -2, //Merged
+                        'u_cache__fp_psid' => null, //Remove from this user...
+                    ));
+
+                    //Reset user as if we did not find this:
+                    $u = array();
+
+                    //Would continue...
+
+                } else {
+                    //Ooops, this is a legitimate user which we cannot override
+                    //Log engagement:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $u['u_id'],
+                        'e_recipient_u_id' => $ref_u_id,
+                        'e_json' => $this->Facebook_model->fb_foundation_message(923, $u['u_id'], $fp['fp_id']),
+                        'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
+                        'e_type_id' => 8, //Support Needing Graceful Errors
+                    ));
+                    return intval($u['u_id']);
+                }
+
+            } else {
+                return intval($u['u_id']);
+            }
 
         }
 
