@@ -489,14 +489,23 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $button_url = 'https://mench.co/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
             $command = '{passwordreset}';
 
-        } elseif(substr_count($i['i_message'],'{menchbot}')>0 && isset($i['e_recipient_u_id'])) {
+        } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_recipient_u_id']) && isset($i['e_b_id'])) {
 
-            $button_url = messenger_activation_url('381488558920384',$i['e_recipient_u_id']);
-            if ($button_url) {
-                //append their My Account Button/URL:
-                $button_title = '🤖 Activate MenchBot';
-                $command = '{menchbot}';
+            //Fetch Facebook Page from Bootcamp:
+            $bootcamps = $CI->Db_model->b_fetch(array(
+                'b.b_id' => $i['e_b_id'],
+            ));
+
+            if(isset($bootcamps[0]['b_fp_id']) && $bootcamps[0]['b_fp_id']>0){
+                $button_url = $this->Facebook_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
+                if ($button_url) {
+                    //append their My Account Button/URL:
+                    $button_title = '🤖 Activate Messenger (Chat with Instructor)';
+                    $command = '{messenger}';
+                }
             }
+
+
 
         } elseif(isset($i['i_button']) && strlen($i['i_button'])>0 && isset($i['i_url']) && strlen($i['i_url'])>0){
 
@@ -1962,18 +1971,6 @@ function filter_class($classes,$r_id=null){
 
 function typeform_url($typeform_id){
     return 'https://mench.typeform.com/to/'.$typeform_id;
-}
-
-
-function messenger_activation_url($botkey,$u_id){
-    $CI =& get_instance();
-    $mench_bots = $CI->config->item('mench_bots');
-    $bot_activation_salt = $CI->config->item('bot_activation_salt');
-    if(isset($mench_bots[$botkey]['bot_ref_url'])){
-        return $mench_bots[$botkey]['bot_ref_url'].($u_id?'?ref=msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8):''); //TODO: Maybe append some sort of hash for more security
-    } else {
-        return false;
-    }
 }
 
 function redirect_message($url,$message=null){

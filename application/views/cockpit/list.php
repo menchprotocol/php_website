@@ -509,7 +509,7 @@ if($object_name=='engagements'){
             }
         echo '</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
-        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<a href="https://www.facebook.com/menchbot/inbox" target="_blank">'.( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).'</a> on' : '<a href="'.messenger_activation_url('381488558920384',$user['u_id']).'" style="color:#CCC;">Activation URL</a>' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<a href="https://www.facebook.com/menchbot/inbox" target="_blank">'.( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).'</a> on' : '<a href="'.$this->Facebook_model->fb_activation_url($user['u_id'],4 /*Mench Facebook Page*/ ).'" style="color:#CCC;">Mench Act. URL</a>' ).'</td>';
         echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
         echo '<td>'.( isset($read_message[0]) ? '<i class="fa fa-eye" aria-hidden="true"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
         echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';

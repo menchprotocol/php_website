@@ -91,12 +91,14 @@ class Console extends CI_Controller {
 		));
 		
 		//Have they activated their Bot yet?
-		if($udata['u_fb_id']>0){
+		if($udata['u_cache__fp_psid']>0){
+
 		    //Yes, show them their bootcamps:
 		    $this->load->view('console/all_bootcamps' , array(
 		        'bootcamps' => $my_bootcamps,
 		        'udata' => $udata,
 		    ));
+
 		} else {
 		    
 		    //Fetch the ID from the Database to be up to date:

@@ -143,7 +143,7 @@ if(count($admissions)>0 && is_array($admissions)){
         if($admission['u_fb_id']>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
         } else {
-            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.messenger_activation_url('381488558920384',$admission['u_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Facebook_model->fb_activation_url($admission['u_id'],$live_bootcamps[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         }
 
         //Let them know the status of their application:
