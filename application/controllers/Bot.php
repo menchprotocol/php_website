@@ -41,6 +41,17 @@ class Bot extends CI_Controller {
         echo_json($this->Facebook_model->fb_foundation_message(3139, 1, 0, 0 /*b_id*/, 0 /*r_id*/ , 0 /*depth*/, null));
     }
 
+    function gen($u_id){
+        echo $this->Facebook_model->fb_activation_url($u_id,4);
+    }
+
+    function id($psid,$ref=null){
+        $fp_pages = $this->Db_model->fp_fetch(array(
+            'fp_id' => 4,
+        ));
+        echo_json($this->Facebook_model->fb_identify_activate($fp_pages[0],$psid,$ref));
+    }
+
 	function facebook_webhook(){
 		
 		/*
@@ -48,7 +59,6 @@ class Bot extends CI_Controller {
 		 * The master function for all inbound Facebook calls
 		 * 
 		 * */
-		
 		
 		//Facebook Webhook Authentication:
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );

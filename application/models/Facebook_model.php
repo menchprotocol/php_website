@@ -612,7 +612,8 @@ class Facebook_model extends CI_Model {
         return true;
     }
 
-    function fb_activation_url($u_id,$fp_id,$b_id){
+    function fb_activation_url($u_id,$fp_id){
+
 	    //Fetch the page:
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
@@ -625,8 +626,7 @@ class Facebook_model extends CI_Model {
                 'e_recipient_u_id' => $u_id,
                 'e_fp_id' => $fp_id,
                 'e_type_id' => 8, //Platform error
-                'e_message' => 'fb_activation_url() was dailed to generate an Messenger activation URL',
-                'e_b_id' => $b_id,
+                'e_message' => 'fb_activation_url() failed to generate activation URL as $fp_id=['.$fp_id.'] did not have fp_status=[1]',
             ));
 
             //Could not find this page!
@@ -643,25 +643,25 @@ class Facebook_model extends CI_Model {
 
 
 
-    function fb_identify($fp, $fp_psid, $fb_ref=null){
+    function fb_identify_activate($fp, $fp_psid, $fb_ref=null){
 
 	    /*
 	     *
-	     * Responsible to detect the identity of all inbound messages send to out server
+	     * Function will detect the user identity of all inbound messages
 	     *
 	     */
 
         if(!isset($fp['fp_id'])){
             //Ooops, this is not good:
             $this->Db_model->e_create(array(
-                'e_message' => 'fb_activate_user() got called with invalid $fp variable',
+                'e_message' => 'fb_identify_activate() got called with invalid $fp variable with $fp_psid=['.$fp_psid.']',
                 'e_type_id' => 8, //Platform Error
             ));
             return 0;
-        } elseif(!$fp_psid || $fp_psid<1){
+        } elseif($fp_psid<1){
             //Ooops, this is not good:
             $this->Db_model->e_create(array(
-                'e_message' => 'fb_activate_user() got called without $fp_psid variable',
+                'e_message' => 'fb_identify_activate() got called without $fp_psid variable',
                 'e_type_id' => 8, //Platform Error
                 'e_fp_id' => $fp['fp_id'],
             ));
@@ -671,7 +671,6 @@ class Facebook_model extends CI_Model {
 
         //Do we have a referral key? This would make life easier:
         $ref_u_id = 0;
-
         if($fb_ref){
             //We have a ref variable, make sure its valid:
             if(substr_count($fb_ref,'msgact_')==1){
@@ -688,43 +687,59 @@ class Facebook_model extends CI_Model {
 
 
         //Is this fp_id/fp_psid already registered?
-        $current_fb_users = $this->Db_model->ru_fetch(array(
-            '((u_cache__fp_psid='.$fp_psid.' AND u_cache__fp_id='.$fp['fp_id'].') OR (ru_fp_psid='.$fp_psid.' AND ru_fp_id='.$fp['fp_id'].'))' => null,
+        $u = array(); //Should be replaced with the user object
+
+        //First see if we have this user in the users table:
+        $fetch_users = $this->Db_model->u_fetch(array(
+            'u_cache__fp_id' => $fp['fp_id'],
+            'u_cache__fp_psid' => $fp_psid,
         ));
 
+        if(count($fetch_users)>0){
+            $u = $fetch_users[0];
+        } else {
 
-        if(count($current_fb_users)>0){
+            //See if we can find it in the admission table:
+            $fetch_users = $this->Db_model->ru_fetch(array(
+                'ru_fp_id' => $fp['fp_id'],
+                'ru_fp_psid' => $fp_psid,
+            ));
+
+            if(count($fetch_users)>0){
+                $u = $fetch_users[0];
+            }
+        }
+
+
+        if(count($u)>0 && $u['u_id']>0){
 
             //Yes, make sure that there is no referral variable or if there is, its the same as this one:
-            if($ref_u_id && !($current_fb_users[0]['u_id']==$ref_u_id)){
+            if($ref_u_id && !($u['u_id']==$ref_u_id)){
                 //Ooops, a registered user has clicked on a referral URL for another user trying to activate
-                tree_message(923, 0, $botkey, $u_id, 'REGULAR', 0, 0);
-
                 //Log engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $u_id,
+                    'e_initiator_u_id' => $u['u_id'],
+                    'e_recipient_u_id' => $ref_u_id,
+                    'e_json' => $this->Facebook_model->fb_foundation_message(923, $u['u_id'], $fp['fp_id']),
                     'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
                     'e_type_id' => 9, //Support Needing Graceful Errors
                 ));
             }
 
-            return $current_fb_users[0]['u_id'];
+            return $u['u_id'];
+
         }
 
 
-        //Not so fast! Let's continue looking for this user.
-
-
-
-        if(!$fb_ref){
+        //User not yet activated, lets see if we have a ref key?
+        if(!$ref_u_id){
 
             //We do not have a referral code, so its harder to authenticate and map the user.
             //It's also likely that they are new via Messenger, never visited the Mench website
             //This is validating to see if a sender is registered or not:
 
             //This is a new user that needs to be registered!
-            //Call facebook messenger API and get user details
-
+            //Call facebook messenger API and get user profile
             $graph_fetch = $this->Facebook_model->fb_graph($fp['fp_id'],'GET',$fp_psid,array(),$fp);
 
             if(!$graph_fetch['status']){
@@ -740,8 +755,7 @@ class Facebook_model extends CI_Model {
             $locale = explode('_',$fb_profile['locale'],2);
 
             //Create user
-            $udata = $this->Db_model->u_create(array(
-                'u_fb_id' 			=> $fp_psid,
+            $u = $this->Db_model->u_create(array(
                 'u_fname' 			=> $fb_profile['first_name'],
                 'u_lname' 			=> $fb_profile['last_name'],
                 'u_url_key' 		=> generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
@@ -750,88 +764,43 @@ class Facebook_model extends CI_Model {
                 'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                 'u_language' 		=> $locale[0],
                 'u_country_code' 	=> $locale[1],
+                'u_cache__fp_id'   => $fp['fp_id'],
+                'u_cache__fp_psid' => $fp_psid,
             ));
 
             //Non verified guest students:
-            tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
+            $this->Facebook_model->fb_foundation_message(921, $u['u_id'], $fp['fp_id']);
 
             //Return the newly created user ID:
-            return $udata['u_id'];
-
+            return $u['u_id'];
         }
 
 
 
 
+        
+        
+        
 
         //Fetch this account and see whatssup:
         $matching_users = $this->Db_model->u_fetch(array(
-            'u_id' => $u_id,
+            'u_id' => $ref_u_id,
         ));
-
         if(count($matching_users)<1){
-            //Invalid user ID
-            return 0;
-        } elseif($matching_users[0]['u_fb_id']>0 && $matching_users[0]['u_fb_id']==$fp_psid){
-            //This is already an active user, we can return the ID:
-            return $u_id;
-        } elseif($matching_users[0]['u_fb_id']>0){
-
-            //Ooops, Mench user seems to be activated with a different Messenger account!
-            tree_message(923, 0, $botkey, $u_id, 'REGULAR', 0, 0);
-
-            //Log engagement:
+            //Invalid user ID, should not happen...
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $u_id,
-                'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
-                'e_type_id' => 9, //Support Needing Graceful Errors
+                'e_initiator_u_id' => $ref_u_id,
+                'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
+                'e_type_id' => 8, //Platform Error
+                'e_fp_id' => $fp['fp_id'],
             ));
-
-            //Return false:
+            
             return 0;
+        } else {
+            $u = $matching_users[0];
         }
-
-
-
-        if(count($current_fb_users)>0){
-
-            //Some other users have this already, lets see who else has this:
-            $cleared_count = 0;
-            foreach($current_fb_users as $current_fb_user){
-                if($current_fb_user['u_status']<=0 && strlen($current_fb_user['u_email'])<5){
-                    //We can de-activate & merge this account:
-                    $this->Db_model->u_update( $current_fb_users[0]['u_id'] , array(
-                        'u_fb_id' => NULL, //Give it up since not active
-                        'u_status' => -2, //Merged account
-                    ));
-
-                    //This was cleared:
-                    $cleared_count++;
-                }
-            }
-
-            //Did we clear all?
-            if(!($cleared_count==count($current_fb_users))){
-
-                //We could not clear the entitlement of 1 or more of the users...
-                //This FB user is assigned to a different mench account, so we cannot activate them!
-                tree_message(924, 0, $botkey, $u_id, 'REGULAR', 0, 0);
-
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $u_id,
-                    'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
-                    'e_type_id' => 9, //Support Needing Graceful Errors
-                    'e_recipient_u_id' => $current_fb_users[0]['u_id'],
-                ));
-
-                //Return false!
-                return 0;
-
-            }
-        }
-
-
+        
+        
 
 
         //We are ready to activate!
@@ -842,7 +811,6 @@ class Facebook_model extends CI_Model {
 
         //Fetch their profile from Facebook to update
         $graph_fetch = $this->Facebook_model->fb_graph(4,'GET',$fp_psid);
-
         if(!$graph_fetch['status']){
             //This error has already been logged inside $this->Facebook_model->fb_graph()
             //We cannot create this user:
@@ -856,42 +824,43 @@ class Facebook_model extends CI_Model {
         $locale = explode('_',$fb_profile['locale'],2);
 
         //Do an Update for selected fields as linking:
-        $this->Db_model->u_update( $u_id , array(
-            'u_fb_id'         => $fp_psid,
-            'u_image_url'     => ( strlen($matching_users[0]['u_image_url'])<5 ? $fb_profile['profile_pic'] : $matching_users[0]['u_image_url'] ),
-            'u_status'        => ( $matching_users[0]['u_status']==0 ? 1 : $matching_users[0]['u_status'] ), //Activate their profile as well
-            'u_timezone'      => $fb_profile['timezone'],
-            'u_gender'        => strtolower(substr($fb_profile['gender'],0,1)),
-            'u_language'      => ( $matching_users[0]['u_language']=='en' && !($matching_users[0]['u_language']==$locale[0]) ? $locale[0] : $matching_users[0]['u_language'] ),
-            'u_country_code'  => $locale[1],
-            'u_fname'         => $fb_profile['first_name'], //Update their original names with FB
-            'u_lname'         => $fb_profile['last_name'], //Update their original names with FB
-            'u_url_key'       => generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
+        $this->Db_model->u_update( $u['u_id'] , array(
+            'u_image_url'      => ( strlen($u['u_image_url'])<5 ? $fb_profile['profile_pic'] : $u['u_image_url'] ),
+            'u_status'         => ( $u['u_status']==0 ? 1 : $u['u_status'] ), //Activate their profile as well
+            'u_timezone'       => $fb_profile['timezone'],
+            'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
+            'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
+            'u_country_code'   => $locale[1],
+            'u_fname'          => $fb_profile['first_name'], //Update their original names with FB
+            'u_lname'          => $fb_profile['last_name'], //Update their original names with FB
+            'u_url_key'        => generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
+            'u_cache__fp_id'   => $fp['fp_id'],
+            'u_cache__fp_psid' => $fp_psid,
         ));
 
-        //Log Activation Engagement:
+        //Go through all their admissions and set this:
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_u_id' => $u['u_id'],
+            'ru_fp_id' => $fp['fp_id'], //Already set to this
+            'ru_fp_psid' => 0, //Not activated yet...
+        ));
+        foreach($admissions as $admission){
+            $this->Db_model->ru_update( $admission['ru_id'], array(
+                'ru_fp_psid' => $fp_psid,
+            ));
+        }
+
+
+        //Log Activation Engagement & send message:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $u_id,
+            'e_initiator_u_id' => $u['u_id'],
             'e_json' => array(
                 'fb_profile' => $fb_profile,
+                'activation_msg' => $this->Facebook_model->fb_foundation_message(($u['u_status']==2 ? 918 : 926), $u['u_id'], $fp['fp_id']),
             ),
             'e_type_id' => 31, //Messenger Activated
         ));
 
-        //Fetch this user to see if they are an admin or not!
-        $matching_users = $this->u_fetch(array(
-            'u_id' => $u_id,
-        ));
-
-        if(isset($matching_users[0])){
-            if($matching_users[0]['u_status']==2){
-                //Lead instructors:
-                tree_message(918, 0, $botkey, $u_id, 'REGULAR', 0, 0);
-            } else {
-                //For students:
-                tree_message(926, 0, $botkey, $u_id, 'REGULAR', 0, 0);
-            }
-        }
     }
 
 
