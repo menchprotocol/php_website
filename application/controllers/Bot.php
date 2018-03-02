@@ -128,7 +128,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
+				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 1, //Message Read
 				    ));
@@ -137,7 +137,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
+				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 2, //Message Delivered
 				    ));
@@ -178,7 +178,7 @@ class Bot extends CI_Controller {
 					$eng_data = array(
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => $json_data,
-					    'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], $ref),
+					    'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref),
 					);
 					
 					/*
@@ -226,7 +226,7 @@ class Bot extends CI_Controller {
 					//Note: Never seen this happen yet!
 					//Log engagement:
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Db_model->activate_bot($entry['id'], $im['sender']['id'], null),
+				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 5, //Messenger Optin
 				    ));
@@ -246,8 +246,7 @@ class Bot extends CI_Controller {
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-					$u_id = $this->Db_model->activate_bot($entry['id'], $user_id, null);
-					$page_id = ( $sent_from_us ? $im['sender']['id'] : $im['recipient']['id'] );
+					$u_id = $this->Facebook_model->fb_identify_activate($fp_pages[0],$user_id,null);
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 
@@ -262,7 +261,7 @@ class Bot extends CI_Controller {
 					
 					//Start data preparation for logging message inbound OR outbound engagement:
 					$eng_data = array(
-					    'e_initiator_u_id' => ( $sent_from_us ? 0 /* TODO replaced with chat widget EXCEPT FB admin Inbox */ : $u_id ),
+					    'e_initiator_u_id' => ( $sent_from_us ? 0 : $u_id ),
 						'e_json' => $json_data,
 					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
 					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received

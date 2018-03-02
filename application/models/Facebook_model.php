@@ -637,11 +637,6 @@ class Facebook_model extends CI_Model {
         $bot_activation_salt = $this->config->item('bot_activation_salt');
         return 'https://m.me/'.$fp_pages[0]['fp_fb_id'].'?ref=msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8);
     }
-    
-    
-    
-
-
 
     function fb_identify_activate($fp, $fp_psid, $fb_ref=null){
 
@@ -918,8 +913,6 @@ class Facebook_model extends CI_Model {
 
         }
     }
-
-
 
 
 
