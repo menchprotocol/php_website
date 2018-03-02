@@ -120,6 +120,9 @@ class Bot extends CI_Controller {
 			foreach($entry['messaging'] as $im){
 				
 				if(isset($im['read'])){
+
+				    //Add delay to prevent concurrent request issues
+				    sleep(2);
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
@@ -130,6 +133,9 @@ class Bot extends CI_Controller {
 				    ));
 					
 				} elseif(isset($im['delivery'])) {
+
+                    //Add delay to prevent concurrent request issues
+                    sleep(2);
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
@@ -220,6 +226,9 @@ class Bot extends CI_Controller {
 					$this->Db_model->e_create($eng_data);
 					
 				} elseif(isset($im['optin'])) {
+
+                    //Add delay to prevent concurrent request issues
+                    sleep(2);
 					
 					//Note: Never seen this happen yet!
 					//Log engagement:
