@@ -128,7 +128,7 @@ if($total_advisers>0){
 echo '</div>';
 ?>
 <div>Bootcamp Status: <?= status_bible('b',$bootcamp['b_status'],0,'right') ?></div>
-<div style="margin-top:-5px;">Landing Page: <a href="/<?= $bootcamp['b_url_key'] ?>"><u><?= $website['url'] ?><b><?= $bootcamp['b_url_key'] ?></b></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
+<div style="margin-top:-5px;">Landing Page: <a href="/<?= $bootcamp['b_url_key'] ?>"><u><?= $website['url'] . $bootcamp['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
 
 
 

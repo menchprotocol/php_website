@@ -48,6 +48,40 @@ class Adjust extends CI_Controller {
     }
 
 
+    function psid(){
+
+        //Syncs the current communication methods for all students
+        $facebook_activated = $this->Db_model->u_fetch(array(
+            'u_fb_id >' => 0,
+        ));
+
+        $fp_id = 4; //MenchBot
+
+        foreach($facebook_activated as $u){
+
+            //Update their new field with the MenchBot:
+            $this->Db_model->u_update( $u['u_id'], array(
+                'u_cache__fp_id' => $fp_id,
+                'u_cache__fp_psid' => $u['u_fb_id'], //Merged account
+            ));
+
+            //Go through all their admissions and set this:
+            $admissions = $this->Db_model->ru_fetch(array(
+                'ru_u_id' => $u['u_id'],
+            ));
+            foreach($admissions as $admission){
+                $this->Db_model->ru_update( $admission['ru_id'], array(
+                    'ru_fp_id' => $fp_id,
+                    'ru_fp_psid' => $u['u_fb_id'], //Merged account
+                ));
+            }
+
+        }
+
+        echo count($facebook_activated).' Updated';
+
+    }
+
 
     function sync_student_progress(){
 

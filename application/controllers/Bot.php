@@ -16,7 +16,7 @@ class Bot extends CI_Controller {
         echo $_GET['none'];
     }
 
-    function test(){
+    function im(){
 	    $stats = array(
 	        'message' => echo_i(array(
                 'i_media_type' => 'text',
@@ -31,6 +31,15 @@ class Bot extends CI_Controller {
         echo_json($stats);
     }
 
+    function ru(){
+        echo_json($this->Db_model->ru_fetch(array(
+            '(u_cache__fp_psid=1443101719058431 AND u_cache__fp_id=4) OR (ru_fp_psid=1443101719058431 AND ru_fp_id=4)' => null,
+        )));
+    }
+
+    function test(){
+        echo_json($this->Facebook_model->fb_foundation_message(3139, 1, 0, 0 /*b_id*/, 0 /*r_id*/ , 0 /*depth*/, null));
+    }
 
 	function facebook_webhook(){
 		
@@ -72,15 +81,23 @@ class Bot extends CI_Controller {
 		    ));
 			return false;
 		}
-		
-		
+
+
 		//Loop through entries:
 		foreach($json_data['entry'] as $entry){
+
+		    //Validate the originating page to ensure its a valid Page connected to Mench
+            if(isset($entry['id'])){
+                $fp_pages = $this->Db_model->fp_fetch(array(
+                    'fp_fb_id' => $entry['id'],
+                    'fp_status' => 1, //Must be connected to Mench
+                ));
+            }
 			
 			//check the page ID:
-		    if(!isset($entry['id']) || !array_key_exists($entry['id'],$mench_bots)){
+		    if(!isset($fp_pages) || count($fp_pages)<1){
 			    $this->Db_model->e_create(array(
-			        'e_message' => 'facebook_webhook() unrecognized page/bot id ['.$entry['id'].'].',
+			        'e_message' => 'facebook_webhook() received message from unknown Page ID ['.$entry['id'].']',
 			        'e_json' => $json_data,
 			        'e_type_id' => 8, //Platform Error
 			    ));

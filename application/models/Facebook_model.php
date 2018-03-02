@@ -7,10 +7,7 @@ class Facebook_model extends CI_Model {
 	}
 
 
-
-
-
-
+	
     function fb_graph($fp_id,$action,$url,$payload=array(),$fp=null){
 
         if(!$fp){
@@ -615,34 +612,313 @@ class Facebook_model extends CI_Model {
         return true;
     }
 
+    function fb_activation_url($u_id,$fp_id,$b_id){
+	    //Fetch the page:
+        $fp_pages = $this->Db_model->fp_fetch(array(
+            'fp_id' => $fp_id,
+            'fp_status' => 1, //Must be connected to Mench
+        ));
+
+        if(!(count($fp_pages)==1)){
+            //Log Error:
+            $this->Db_model->e_create(array(
+                'e_recipient_u_id' => $u_id,
+                'e_fp_id' => $fp_id,
+                'e_type_id' => 8, //Platform error
+                'e_message' => 'fb_activation_url() was dailed to generate an Messenger activation URL',
+                'e_b_id' => $b_id,
+            ));
+
+            //Could not find this page!
+            return false;
+        }
+
+        //All good, return the activation URL:
+        $bot_activation_salt = $this->config->item('bot_activation_salt');
+        return 'https://m.me/'.$fp_pages[0]['fp_fb_id'].'?ref=msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8);
+    }
+    
+    
+    
+
+
+
+    function fb_identify($fp, $fp_psid, $fb_ref=null){
+
+	    /*
+	     *
+	     * Responsible to detect the identity of all inbound messages send to out server
+	     *
+	     */
+
+        if(!isset($fp['fp_id'])){
+            //Ooops, this is not good:
+            $this->Db_model->e_create(array(
+                'e_message' => 'fb_activate_user() got called with invalid $fp variable',
+                'e_type_id' => 8, //Platform Error
+            ));
+            return 0;
+        } elseif(!$fp_psid || $fp_psid<1){
+            //Ooops, this is not good:
+            $this->Db_model->e_create(array(
+                'e_message' => 'fb_activate_user() got called without $fp_psid variable',
+                'e_type_id' => 8, //Platform Error
+                'e_fp_id' => $fp['fp_id'],
+            ));
+            return 0;
+        }
+
+
+        //Do we have a referral key? This would make life easier:
+        $ref_u_id = 0;
+
+        if($fb_ref){
+            //We have a ref variable, make sure its valid:
+            if(substr_count($fb_ref,'msgact_')==1){
+                //Activate specific user
+                $parts = explode('_',$fb_ref);
+                $bot_activation_salt = $this->config->item('bot_activation_salt');
+                if(isset($parts[2]) && $parts[2]==substr(md5($parts[1].$bot_activation_salt),0,8)){
+                    $ref_u_id = intval($parts[1]); //This is the matches user id
+                }
+            }
+        }
+
+
+
+
+        //Is this fp_id/fp_psid already registered?
+        $current_fb_users = $this->Db_model->ru_fetch(array(
+            '((u_cache__fp_psid='.$fp_psid.' AND u_cache__fp_id='.$fp['fp_id'].') OR (ru_fp_psid='.$fp_psid.' AND ru_fp_id='.$fp['fp_id'].'))' => null,
+        ));
+
+
+        if(count($current_fb_users)>0){
+
+            //Yes, make sure that there is no referral variable or if there is, its the same as this one:
+            if($ref_u_id && !($current_fb_users[0]['u_id']==$ref_u_id)){
+                //Ooops, a registered user has clicked on a referral URL for another user trying to activate
+                tree_message(923, 0, $botkey, $u_id, 'REGULAR', 0, 0);
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $u_id,
+                    'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
+                    'e_type_id' => 9, //Support Needing Graceful Errors
+                ));
+            }
+
+            return $current_fb_users[0]['u_id'];
+        }
+
+
+        //Not so fast! Let's continue looking for this user.
+
+
+
+        if(!$fb_ref){
+
+            //We do not have a referral code, so its harder to authenticate and map the user.
+            //It's also likely that they are new via Messenger, never visited the Mench website
+            //This is validating to see if a sender is registered or not:
+
+            //This is a new user that needs to be registered!
+            //Call facebook messenger API and get user details
+
+            $graph_fetch = $this->Facebook_model->fb_graph($fp['fp_id'],'GET',$fp_psid,array(),$fp);
+
+            if(!$graph_fetch['status']){
+                //This error has already been logged
+                //We cannot create this user:
+                return 0;
+            }
+
+            //We're cool!
+            $fb_profile = $graph_fetch['e_json']['result'];
+
+            //Split locale into language and country
+            $locale = explode('_',$fb_profile['locale'],2);
+
+            //Create user
+            $udata = $this->Db_model->u_create(array(
+                'u_fb_id' 			=> $fp_psid,
+                'u_fname' 			=> $fb_profile['first_name'],
+                'u_lname' 			=> $fb_profile['last_name'],
+                'u_url_key' 		=> generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
+                'u_timezone' 		=> $fb_profile['timezone'],
+                'u_image_url' 		=> $fb_profile['profile_pic'],
+                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+                'u_language' 		=> $locale[0],
+                'u_country_code' 	=> $locale[1],
+            ));
+
+            //Non verified guest students:
+            tree_message(921, 0, $botkey, $udata['u_id'], 'REGULAR', 0, 0);
+
+            //Return the newly created user ID:
+            return $udata['u_id'];
+
+        }
+
+
+
+
+
+        //Fetch this account and see whatssup:
+        $matching_users = $this->Db_model->u_fetch(array(
+            'u_id' => $u_id,
+        ));
+
+        if(count($matching_users)<1){
+            //Invalid user ID
+            return 0;
+        } elseif($matching_users[0]['u_fb_id']>0 && $matching_users[0]['u_fb_id']==$fp_psid){
+            //This is already an active user, we can return the ID:
+            return $u_id;
+        } elseif($matching_users[0]['u_fb_id']>0){
+
+            //Ooops, Mench user seems to be activated with a different Messenger account!
+            tree_message(923, 0, $botkey, $u_id, 'REGULAR', 0, 0);
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $u_id,
+                'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
+                'e_type_id' => 9, //Support Needing Graceful Errors
+            ));
+
+            //Return false:
+            return 0;
+        }
+
+
+
+        if(count($current_fb_users)>0){
+
+            //Some other users have this already, lets see who else has this:
+            $cleared_count = 0;
+            foreach($current_fb_users as $current_fb_user){
+                if($current_fb_user['u_status']<=0 && strlen($current_fb_user['u_email'])<5){
+                    //We can de-activate & merge this account:
+                    $this->Db_model->u_update( $current_fb_users[0]['u_id'] , array(
+                        'u_fb_id' => NULL, //Give it up since not active
+                        'u_status' => -2, //Merged account
+                    ));
+
+                    //This was cleared:
+                    $cleared_count++;
+                }
+            }
+
+            //Did we clear all?
+            if(!($cleared_count==count($current_fb_users))){
+
+                //We could not clear the entitlement of 1 or more of the users...
+                //This FB user is assigned to a different mench account, so we cannot activate them!
+                tree_message(924, 0, $botkey, $u_id, 'REGULAR', 0, 0);
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $u_id,
+                    'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
+                    'e_type_id' => 9, //Support Needing Graceful Errors
+                    'e_recipient_u_id' => $current_fb_users[0]['u_id'],
+                ));
+
+                //Return false!
+                return 0;
+
+            }
+        }
+
+
+
+
+        //We are ready to activate!
+        /* *************************************
+         * Messenger Activation
+         * *************************************
+         */
+
+        //Fetch their profile from Facebook to update
+        $graph_fetch = $this->Facebook_model->fb_graph(4,'GET',$fp_psid);
+
+        if(!$graph_fetch['status']){
+            //This error has already been logged inside $this->Facebook_model->fb_graph()
+            //We cannot create this user:
+            return 0;
+        }
+
+        //We're cool!
+        $fb_profile = $graph_fetch['e_json']['result'];
+
+        //Split locale into language and country
+        $locale = explode('_',$fb_profile['locale'],2);
+
+        //Do an Update for selected fields as linking:
+        $this->Db_model->u_update( $u_id , array(
+            'u_fb_id'         => $fp_psid,
+            'u_image_url'     => ( strlen($matching_users[0]['u_image_url'])<5 ? $fb_profile['profile_pic'] : $matching_users[0]['u_image_url'] ),
+            'u_status'        => ( $matching_users[0]['u_status']==0 ? 1 : $matching_users[0]['u_status'] ), //Activate their profile as well
+            'u_timezone'      => $fb_profile['timezone'],
+            'u_gender'        => strtolower(substr($fb_profile['gender'],0,1)),
+            'u_language'      => ( $matching_users[0]['u_language']=='en' && !($matching_users[0]['u_language']==$locale[0]) ? $locale[0] : $matching_users[0]['u_language'] ),
+            'u_country_code'  => $locale[1],
+            'u_fname'         => $fb_profile['first_name'], //Update their original names with FB
+            'u_lname'         => $fb_profile['last_name'], //Update their original names with FB
+            'u_url_key'       => generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
+        ));
+
+        //Log Activation Engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $u_id,
+            'e_json' => array(
+                'fb_profile' => $fb_profile,
+            ),
+            'e_type_id' => 31, //Messenger Activated
+        ));
+
+        //Fetch this user to see if they are an admin or not!
+        $matching_users = $this->u_fetch(array(
+            'u_id' => $u_id,
+        ));
+
+        if(isset($matching_users[0])){
+            if($matching_users[0]['u_status']==2){
+                //Lead instructors:
+                tree_message(918, 0, $botkey, $u_id, 'REGULAR', 0, 0);
+            } else {
+                //For students:
+                tree_message(926, 0, $botkey, $u_id, 'REGULAR', 0, 0);
+            }
+        }
+    }
 
 
 
     //Sends out batch messages in an easier way:
-    function fb_message($fp_id, $fp_psid, $messages, $notification_type='REGULAR'){
+    function fb_send_messages($fp_id, $fp_psid, $messages, $u_fb_notification){
 
-        if(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
-            return array(
-                'status' => 0,
-                'message' => 'Invalid notification type ['.$notification_type.']',
-            );
-        } elseif(count($messages)<1){
+        if(count($messages)<1){
             return array(
                 'status' => 0,
                 'message' => 'No messages set',
             );
+        }
+        if($u_fb_notification && !in_array(strtoupper($u_fb_notification),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
+            $u_fb_notification = null;
         }
 
         $e_json = array();
         $failed_count = 0;
         foreach($messages as $message){
 
-            $process = $this->Facebook_model->fb_graph( $fp_id ,'GET','me/messages', array(
+            $process = $this->Facebook_model->fb_graph($fp_id ,'POST','me/messages', array(
                 'recipient' => array(
-                    'id' => $u_fb_user_id,
+                    'id' => $fp_psid,
                 ),
                 'message' => $message,
-                'notification_type' => $notification_type,
+                'notification_type' => $u_fb_notification,
             ));
 
             if(!$process['status']){
@@ -669,6 +945,327 @@ class Facebook_model extends CI_Model {
             );
 
         }
+    }
+
+
+
+
+
+
+
+
+
+
+    
+    function fb_foundation_message($c_id, $u_id, $fp_id=0, $b_id=0, $r_id=0, $depth=0, $override_u_fb_notification=null){
+
+        $depth = 0; //Override this for now and only focus on dispatching tasks at 1 level!
+
+
+        //Fetch recipient:
+        $u_fb_psid = 0;
+        $u = array(); //Should be replaced with the user object
+
+        //First see if we have this user in the users table:
+        $limits = array(
+            'u_id' => $u_id,
+            'u_cache__fp_psid > ' => 0,
+        );
+        if($fp_id>0){
+            $limits['u_cache__fp_id'] = $fp_id;
+        }
+        $fetch_users = $this->Db_model->u_fetch($limits);
+
+
+        if(count($fetch_users)>0){
+
+            $u = $fetch_users[0];
+            $u_fb_psid = $u['u_cache__fp_psid'];
+            $fp_id = $u['u_cache__fp_id'];
+
+        } else {
+
+            //See if we can find it in the admission table:
+            $limits = array(
+                'ru_u_id' => $u_id,
+                'ru_fp_psid > ' => 0,
+            );
+            if($fp_id>0){
+                $limits['ru_fp_id'] = $fp_id;
+            }
+            $fetch_users = $this->Db_model->ru_fetch($limits);
+
+            if(count($fetch_users)>0){
+
+                $u = $fetch_users[0];
+                $u_fb_psid = $u['ru_fp_psid'];
+                $fp_id = $u['ru_fp_id'];
+
+            }
+        }
+
+        //Fetch the page:
+        $fp_pages = array();
+        if($fp_id>0){
+            $fp_pages = $this->Db_model->fp_fetch(array(
+                'fp_id' => $fp_id,
+                'fp_status' => 1, //Must be connected to Mench otherwise we can't do much!
+            ));
+        }
+
+
+        //Do we need to override notification type?
+        if(count($u)>0 && $override_u_fb_notification && in_array(strtoupper($override_u_fb_notification),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
+            $u['u_fb_notification'] = $override_u_fb_notification;
+        }
+
+
+        //Fetch Bootcamp/Class if needed:
+        $bootcamps = array();
+        $bootcamp_data = null;
+        $class = null;
+        if($b_id){
+
+            //Fetch the copy of the Action Plan for the Class:
+            $bootcamps = fetch_action_plan_copy($b_id,$r_id);
+
+            //Fetch intent relative to the bootcamp by doing an array search:
+            $bootcamp_data = extract_level($bootcamps[0], $c_id);
+
+            //Do we have a Class?
+            if($r_id && $bootcamps[0]['this_class']){
+                $class = $bootcamps[0]['this_class'];
+            }
+
+        }
+
+
+        //Fetch intent and its messages with an appropriate depth
+        $fetch_depth = (($depth==1 || ($b_id && $bootcamp_data['level']==2)) ? 1 : ( $depth>1 ? $depth : 0 ));
+        $tree = $this->Db_model->c_fetch(array(
+            'c.c_id' => $c_id,
+        ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
+
+
+
+        //Check to see if we have any errors:
+        $error_message = null;
+        if(count($fp_pages)<1){
+            $error_message = 'Facebook Page ['.$fp_id.'] is not active';
+        } elseif(!isset($tree[0])){
+            $error_message = 'Invalid Intent ID ['.$c_id.']';
+        } elseif($b_id && count($bootcamps)<1){
+            $error_message = 'Failed to find Bootcamp ['.$b_id.']';
+        } elseif($b_id && !$bootcamp_data){
+            $error_message = 'Failed to locate intent ['.$c_id.'] in Bootcamp ['.$b_id.']';
+        } elseif($r_id && !$b_id){
+            $error_message = 'Cannot reference a Class without a Bootcamp';
+        } elseif($r_id && !$class){
+            $error_message = 'Failed to locate Class ['.$r_id.']';
+        } elseif($depth<0 || $depth>1){
+            $error_message = 'Invalid depth ['.$depth.']';
+        } elseif(intval($u_id)<1){
+            $error_message = 'Invalid User ID ['.$u_id.']';
+        } elseif(count($u)<1 || $u_fb_psid<1){
+            $error_message = 'User ID ['.$u_id.'] did not have a valid PSID connected to Page ['.$fp_id.']';
+        } elseif(!isset($u['u_fb_notification']) || !$u['u_fb_notification']){
+            $error_message = 'Missing user Messenger notification type';
+        }
+
+        if($error_message){
+            //Log error:
+            $this->Db_model->e_create(array(
+                'e_message' => 'fb_foundation_message() failed with error message ['.$error_message.']',
+                'e_type_id' => 8, //Platform Error
+                'e_c_id' => $c_id,
+                'e_fp_id' => $fp_id,
+                'e_recipient_u_id' => $u_id,
+                'e_b_id' => $b_id,
+                'e_r_id' => $r_id,
+            ));
+
+            //Return error:
+            return array(
+                'status' => 0,
+                'message' => $error_message,
+            );
+        }
+
+
+
+        //Define key variables:
+        $instant_messages = array();
+        $current_thread_outbound = 0; //Position of current intent
+
+        //For engagement logging of custom messages (Messages that are not stored in v5_messages) via the echo_i() function
+        $custom_message_e_data = array(
+            'e_initiator_u_id' => 0, //System, prevents any signatures from being appended...
+            'e_recipient_u_id' => $u_id,
+            'i_c_id' => $c_id,
+            'e_b_id' => $b_id,
+            'e_r_id' => $r_id,
+        );
+
+
+
+        //This is the very first message for this milestone!
+        if($b_id && $bootcamp_data['level']==2){
+
+            //Add message to instant stream:
+            array_push($instant_messages , echo_i(array_merge($custom_message_e_data, array(
+                'i_media_type' => 'text',
+                'i_message' => '🚩 ​{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
+            )), $u['u_fname'], true ));
+
+        }
+
+
+        //Append main object messages:
+        if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
+            //We have messages for the very first level!
+            foreach($tree[0]['c__messages'] as $key=>$i){
+                if($i['i_status']==1){
+                    //Add message to instant stream:
+                    array_push($instant_messages , echo_i(array_merge($i, $custom_message_e_data), $u['u_fname'], true ));
+                }
+            }
+        }
+
+
+        if($b_id && $bootcamp_data['level']==2){
+
+            //How many tasks?
+            $active_tasks = 0;
+            foreach($tree[0]['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $active_tasks++;
+                }
+            }
+
+            if($active_tasks==0){
+
+                //Let students know there are no tasks for this milestone:
+                array_push($instant_messages, echo_i(array_merge($custom_message_e_data, array(
+                    'i_media_type' => 'text',
+                    'i_message' => 'This Milestone has no Tasks!',
+                )), $u['u_fname'], true));
+
+            } else {
+
+                //Let them know how many tasks:
+                array_push($instant_messages, echo_i(array_merge($custom_message_e_data, array(
+                    'i_media_type' => 'text',
+                    'i_message' => 'To complete this Milestone you need to complete its ' . $active_tasks . ' task' .show_s($active_tasks). ' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Milestone
+                )), $u['u_fname'], true));
+
+            }
+        }
+
+
+        //This is only for milestones (Not tasks) as its level=1 (level=0 is for tasks...)
+        //TODO Optimize before launching...
+        if(0 && $depth==1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
+
+            $active_tasks = 0;
+            foreach($tree[0]['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $active_tasks++;
+                }
+            }
+
+            //Count how many tasks and let them know:
+            if($active_tasks>0){
+
+                foreach($tree[0]['c__child_intents'] as $level1_key=>$level1){
+
+                    if($level1['c_status']<1) {
+                        continue;
+                    }
+
+
+                    //Set initial counter:
+                    $starting_message_count = count($instant_messages);
+
+
+                    //Does this intent have messages?
+                    if (isset($level1['c__messages']) && count($level1['c__messages']) > 0) {
+                        //We do have a mesasage, lets see if they are active/drip:
+                        foreach ($level1['c__messages'] as $key => $i) {
+                            if ($i['i_status'] == 1) {
+
+                                if($starting_message_count==count($instant_messages)){
+
+                                    //This is the very first message for this Task being added:
+                                    array_push( $instant_messages , echo_i( array_merge( array(
+                                        'i_media_type' => 'text',
+                                        'i_message' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.strtolower($level1['c_objective']).'. Your instructor has estimated this task to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
+                                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+                                    if($active_tasks>1){
+                                        array_push( $instant_messages , echo_i( array_merge( array(
+                                            'i_media_type' => 'text',
+                                            'i_message' => 'Once completed I will instantly unlock your next task.',
+                                        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+                                    } else {
+                                        //The only task of this milestone:
+                                        array_push( $instant_messages , echo_i( array_merge( array(
+                                            'i_media_type' => 'text',
+                                            'i_message' => 'Once completed you will complete this milestone as this is its only task.',
+                                        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+                                    }
+
+                                    array_push( $instant_messages , echo_i( array_merge( array(
+                                        'i_media_type' => 'text',
+                                        'i_message' => 'Here is how you can go about completing this task:',
+                                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+                                }
+
+                                //Not needed as we don't have this logic active for now...
+                                //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
+                                //$tree[0]['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
+
+                                //Add message to instant stream:
+                                array_push( $instant_messages , echo_i( array_merge( $i , array(
+                                    'e_initiator_u_id' => 0, //System, prevents any signatures from being appended...
+                                    'e_recipient_u_id' => $u_id,
+                                    'i_c_id' => $i['i_c_id'],
+                                    'e_r_id' => $r_id,
+                                    'tree' => $tree[0],
+                                    'depth' => $depth,
+                                )), $recipients[0]['u_fname'], true /*Facebook Format*/ ));
+
+                            }
+                        }
+                    }
+
+
+                    //Create custom message based on Task Completion Settings:
+                    array_push( $instant_messages , echo_i( array_merge( array(
+                        'i_media_type' => 'text',
+                        //TODO mention the class average response time here:
+                        'i_message' => 'Completing this Task is estimated to take '.strip_tags(echo_time($level1['c_time_estimate'],0)).'. If you needed more assistance simply send me a message and I will forward it to your instructor for a timely response. Let\'s do it 🙌​',
+                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+                    //Level 1 depth only deals with a single intent, so we'll always end here:
+                    break;
+                }
+            }
+        }
+
+
+        //Anything to be sent instantly?
+        if(count($instant_messages)<=0){
+            //Successful:
+            return array(
+                'status' => 0,
+                'message' => 'No messages to be sent',
+            );
+        }
+
+
+        //All good, attempt to Dispatch all messages, their engagements have already been logged:
+        return $this->Facebook_model->fb_send_messages($fp_id, $u_fb_psid, $instant_messages, $u['u_fb_notification']);
     }
 
 
@@ -704,12 +1301,12 @@ class Facebook_model extends CI_Model {
         return objectToArray(json_decode($response));
     }
 
-    function batch_messages( $botkey , $u_fb_id , $messages , $notification_type='REGULAR'){
+    function batch_messages( $botkey , $u_fb_id , $messages , $u_fb_notification='REGULAR'){
 
         $mench_bots = $this->config->item('mench_bots');
         if(!array_key_exists($botkey,$mench_bots)){
             die('Invalid Bot Key');
-        } elseif(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
+        } elseif(!in_array(strtoupper($u_fb_notification),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
             die('Invalid notification type');
         }
 
@@ -722,7 +1319,7 @@ class Facebook_model extends CI_Model {
                     'id' => $u_fb_id,
                 ),
                 'message' => $message,
-                'notification_type' => $notification_type,
+                'notification_type' => $u_fb_notification,
             ));
 
             array_push($stats,$result);

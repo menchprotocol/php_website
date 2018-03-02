@@ -986,6 +986,7 @@ class Api_v1 extends CI_Controller {
             'ru_r_id' 	        => $focus_class['r_id'],
             'ru_u_id' 	        => $udata['u_id'],
             'ru_affiliate_u_id' => 0, //TBD below
+            'ru_fp_id'          => $bootcamp['b_fp_id'], //Current Page that the student should connect to
         );
 
         //Lets see if they have an affiliate Cookie:
@@ -1713,7 +1714,7 @@ class Api_v1 extends CI_Controller {
 
 
 
-        //Log Engagement for completion:
+        //Log Engagement for Task Completion:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => intval($_POST['u_id']),
             'e_message' => $us_data['us_student_notes'],
@@ -1742,6 +1743,8 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Send graduation message:
+            //4632
+            /*
             $this->Facebook_model->batch_messages( '381488558920384', $matching_admissions[0]['u_fb_id'], array(echo_i(array(
                 'i_media_type' => 'text',
                 'i_message' => 'Congratulations {first_name} for completing your Action Plan 🎉',
@@ -1750,7 +1753,7 @@ class Api_v1 extends CI_Controller {
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
             ), $matching_admissions[0]['u_fname'], true )));
-
+            */
 
         } elseif($intent_data['next_level']==2){
 
@@ -1762,8 +1765,19 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__current_task' => 1, //They would be at the First task of the next Milestone
             ));
 
-            //Attempt to dispatch milestone messages:
-            $message_result = tree_message($intent_data['next_intent']['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+            /*
+            //Is the next milestone available?
+            if($class['r__current_milestone']>1 && $class['r__current_milestone']<$bootcamp_data['sprint_index']){
+
+                //4631
+
+            } else {
+
+                //Dispatch milestone messages:
+                $message_result = tree_message($intent_data['next_intent']['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
+
+            }
+            */
 
             //TODO Show option to close window and see messages that have been sent in the Background?
 

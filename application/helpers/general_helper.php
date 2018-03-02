@@ -15,15 +15,19 @@ function lock_cron_for_processing($e_items){
     }
 }
 
-function fetch_action_plan_copy($b_id,$r_id,$current_b=null,$release_cache=array()){
+function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=array()){
 
     $CI =& get_instance();
+    $cache_action_plans = array();
 
-    //See if we have a copy:
-    $cache_action_plans = $CI->Db_model->e_fetch(array(
-        'e_type_id' => 70,
-        'e_r_id' => $r_id,
-    ), 1, array('ej'));
+    if($r_id){
+        //See if we have a copy:
+        $cache_action_plans = $CI->Db_model->e_fetch(array(
+            'e_type_id' => 70,
+            'e_r_id' => $r_id,
+        ), 1, array('ej'));
+    }
+
 
     if(count($cache_action_plans)>0){
 
@@ -56,8 +60,11 @@ function fetch_action_plan_copy($b_id,$r_id,$current_b=null,$release_cache=array
             'b.b_id' => $b_id,
         ));
 
-        // *Attempt* to fetch Class from current class object in Bootcamp:
-        $bootcamps[0]['this_class'] = filter($bootcamps[0]['c__classes'],'r_id', $r_id);
+        if($r_id){
+            // *Attempt* to fetch Class from current class object in Bootcamp:
+            $bootcamps[0]['this_class'] = filter($bootcamps[0]['c__classes'],'r_id', $r_id);
+        }
+
 
         //Indicate this is NOT a copy:
         $bootcamps[0]['is_copy'] = 0;
@@ -65,7 +72,7 @@ function fetch_action_plan_copy($b_id,$r_id,$current_b=null,$release_cache=array
 
     }
 
-    if(!isset($bootcamps[0]['this_class']) || !$bootcamps[0]['this_class']){
+    if($r_id && (!isset($bootcamps[0]['this_class']) || !$bootcamps[0]['this_class'])){
         //Now Fetch Class:
         $classes = $CI->Db_model->r_fetch(array(
             'r_id' => $r_id,
@@ -1958,7 +1965,7 @@ function typeform_url($typeform_id){
 }
 
 
-function messenger_activation_url($botkey,$u_id=null){
+function messenger_activation_url($botkey,$u_id){
     $CI =& get_instance();
     $mench_bots = $CI->config->item('mench_bots');
     $bot_activation_salt = $CI->config->item('bot_activation_salt');
