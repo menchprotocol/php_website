@@ -35,8 +35,8 @@ class Bot extends CI_Controller {
         echo_json($this->Facebook_model->fb_foundation_message(3139, 1, 0, 0 /*b_id*/, 0 /*r_id*/ , 0 /*depth*/, null));
     }
 
-    function gen($u_id){
-        echo $this->Facebook_model->fb_activation_url($u_id,4);
+    function gen($u_id,$fp_id=4){
+        echo $this->Facebook_model->fb_activation_url($u_id,$fp_id);
     }
 
     function id($psid,$ref=null){

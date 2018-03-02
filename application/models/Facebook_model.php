@@ -720,6 +720,17 @@ class Facebook_model extends CI_Model {
                         'u_cache__fp_psid' => null, //Remove from this user...
                     ));
 
+                    //Log user merged engagement:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $u['u_id'],
+                        'e_json' => array(
+                            'fb_ref' => $fb_ref,
+                            'ref_u_id' => $ref_u_id,
+                        ),
+                        'e_message' => 'User status merged',
+                        'e_type_id' => 9, //Support Needed
+                    ));
+
                     //Reset user as if we did not find this:
                     $u = array();
 
@@ -733,7 +744,7 @@ class Facebook_model extends CI_Model {
                         'e_recipient_u_id' => $ref_u_id,
                         'e_json' => $this->Facebook_model->fb_foundation_message(923, $u['u_id'], $fp['fp_id']),
                         'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
-                        'e_type_id' => 8, //Support Needing Graceful Errors
+                        'e_type_id' => 8, //Platform error
                     ));
                     return intval($u['u_id']);
                 }
@@ -778,8 +789,9 @@ class Facebook_model extends CI_Model {
                 'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                 'u_language' 		=> $locale[0],
                 'u_country_code' 	=> $locale[1],
-                'u_cache__fp_id'   => $fp['fp_id'],
-                'u_cache__fp_psid' => $fp_psid,
+                'u_cache__fp_id'    => $fp['fp_id'],
+                'u_cache__fp_psid'  => $fp_psid,
+                'u_status'          => 0, //For new users via Messenger
             ));
 
             //Non verified guest students:
