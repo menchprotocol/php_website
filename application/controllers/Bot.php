@@ -39,6 +39,7 @@ class Bot extends CI_Controller {
         echo $this->Facebook_model->fb_activation_url($u_id,$fp_id);
     }
 
+
     function send(){
         $this->Facebook_model->fb_direct_messages(array(
             array(
@@ -62,6 +63,23 @@ class Bot extends CI_Controller {
                 'e_recipient_u_id' => 1,
             ),
         ));
+    }
+
+    function m1(){
+        echo_json($this->Facebook_model->fb_intent_message(array(
+            'e_recipient_u_id' => 1,
+            'e_c_id' => 923,
+            'depth' => 0,
+        )));
+    }
+    function m2($c_id=2088){
+        echo_json($this->Facebook_model->fb_intent_message(array(
+            'e_recipient_u_id' => 1,
+            'e_c_id' => $c_id,
+            'depth' => 0,
+            'e_b_id' => 21,
+            'e_r_id' => 196,
+        )));
     }
 
     function id($psid,$ref=null){

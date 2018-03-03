@@ -1026,9 +1026,10 @@ class Facebook_model extends CI_Model {
 
             }
 
-            //Send email or message?
+            //Send using email or Messenger?
             if($dispatch_fp_id && $dispatch_fp_psid){
 
+                //Messenger...
                 //Do we have a specific fp_id requested, and if so, does it match the one we found?
                 if(isset($message['e_fp_id']) && $message['e_fp_id']>0 && !($message['e_fp_id']==$dispatch_fp_id)){
                     //Ooops, we seem to have an issue here...
@@ -1117,7 +1118,7 @@ class Facebook_model extends CI_Model {
 
 
 
-    
+
     function fb_foundation_message($c_id, $u_id, $fp_id=0, $b_id=0, $r_id=0, $depth=0, $override_u_fb_notification=null){
 
         $depth = 0; //Override this for now and only focus on dispatching tasks at 1 level!
@@ -1329,6 +1330,7 @@ class Facebook_model extends CI_Model {
         //TODO Optimize before launching...
         if(0 && $depth==1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
 
+            /*
             $active_tasks = 0;
             foreach($tree[0]['c__child_intents'] as $task){
                 if($task['c_status']>=1){
@@ -1396,7 +1398,7 @@ class Facebook_model extends CI_Model {
                                     'e_r_id' => $r_id,
                                     'tree' => $tree[0],
                                     'depth' => $depth,
-                                )), $recipients[0]['u_fname'], true /*Facebook Format*/ ));
+                                )), $recipients[0]['u_fname'], true ));
 
                             }
                         }
@@ -1414,6 +1416,7 @@ class Facebook_model extends CI_Model {
                     break;
                 }
             }
+            */
         }
 
 
@@ -1429,6 +1432,282 @@ class Facebook_model extends CI_Model {
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
         return $this->Facebook_model->fb_send_messages($fp_id, $u_fb_psid, $instant_messages, $u['u_fb_notification']);
+    }
+
+
+
+
+    function fb_intent_message($message){
+
+        //Validate key components that are required:
+        $error_message = null;
+        if(count($message)<1){
+            $error_message = 'Missing $message';
+        } elseif(!isset($message['e_recipient_u_id']) || $message['e_recipient_u_id']<1){
+            $error_message = 'Missing e_recipient_u_id';
+        } elseif(!isset($message['e_c_id']) || $message['e_c_id']<1) {
+            $error_message = 'Missing e_c_id';
+        }
+
+        if(!$error_message){
+
+            $message['depth'] = 0; //Override this for now and only focus on dispatching tasks at 1 level
+            $message['e_initiator_u_id'] = 0; //System, prevents any signatures from being appended...
+
+            //Tweak optional variables:
+            if(!isset($message['e_b_id']) || $message['e_b_id']<1){
+                $message['e_b_id'] = 0;
+            }
+            if(!isset($message['e_r_id']) || $message['e_r_id']<1){
+                $message['e_r_id'] = 0;
+            }
+            if(!isset($message['e_fp_id']) || $message['e_fp_id']<1){
+                $message['e_fp_id'] = 0;
+            }
+
+            //Fetch Bootcamp/Class if needed:
+            $bootcamps = array();
+            $bootcamp_data = null;
+            $class = null;
+
+            if($message['e_b_id']){
+                //Fetch the copy of the Action Plan for the Class:
+                $bootcamps = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
+
+                //Fetch intent relative to the bootcamp by doing an array search:
+                $bootcamp_data = extract_level($bootcamps[0], $message['e_c_id']);
+
+                //Do we have a Class?
+                if($message['e_r_id'] && $bootcamps[0]['this_class']){
+                    $class = $bootcamps[0]['this_class'];
+                }
+            }
+
+
+            //Fetch intent and its messages with an appropriate depth
+            $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $bootcamp_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
+            $tree = $this->Db_model->c_fetch(array(
+                'c.c_id' => $message['e_c_id'],
+            ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
+
+
+
+            //Check to see if we have any other errors:
+            if($message['e_r_id'] && !$message['e_b_id']){
+                $error_message = 'Had e_r_id=['.$message['e_r_id'].'] but missing e_b_id';
+            } elseif(!isset($tree[0])){
+                $error_message = 'Invalid Intent ID ['.$message['e_c_id'].']';
+            } elseif($message['e_b_id'] && count($bootcamps)<1){
+                $error_message = 'Failed to find Bootcamp ['.$message['e_b_id'].']';
+            } elseif($message['e_b_id'] && !$bootcamp_data){
+                $error_message = 'Failed to locate intent ['.$message['e_c_id'].'] in Bootcamp ['.$message['e_b_id'].']';
+            } elseif($message['e_r_id'] && !$message['e_b_id']){
+                $error_message = 'Cannot reference a Class without a Bootcamp';
+            } elseif($message['e_r_id'] && !$class){
+                $error_message = 'Failed to locate Class ['.$message['e_r_id'].']';
+            } elseif($message['depth']<0 || $message['depth']>1){
+                $error_message = 'Invalid depth ['.$message['depth'].']';
+            }
+        }
+
+        //Did we catch any errors?
+        if($error_message){
+            //Log error:
+            $this->Db_model->e_create(array(
+                'e_message' => 'fb_intent_message() error: '.$error_message,
+                'e_type_id' => 8, //Platform Error
+                'e_json' => $message,
+                'e_c_id' => $message['e_c_id'],
+                'e_fp_id' => $message['e_fp_id'],
+                'e_recipient_u_id' => $message['e_recipient_u_id'],
+                'e_initiator_u_id' => $message['e_initiator_u_id'],
+                'e_b_id' => $message['e_b_id'],
+                'e_r_id' => $message['e_r_id'],
+            ));
+
+            //Return error:
+            return array(
+                'status' => 0,
+                'message' => $error_message,
+            );
+        }
+
+
+        //Let's start adding-up the instant messages:
+        $instant_messages = array();
+
+
+        //This is the very first message for this milestone!
+        if($message['e_b_id'] && $bootcamp_data['level']==2){
+
+            //Add message to instant stream:
+            array_push($instant_messages , array_merge($message, array(
+                'i_media_type' => 'text',
+                'i_message' => '🚩 ​{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
+            )));
+
+        }
+
+
+        //Append main object messages:
+        if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
+            //We have messages for the very first level!
+            foreach($tree[0]['c__messages'] as $key=>$i){
+                if($i['i_status']==1){
+                    //Add message to instant stream:
+                    array_push($instant_messages , array_merge($message, $i));
+                }
+            }
+        }
+
+
+        if($message['e_b_id'] && $bootcamp_data['level']==2){
+
+            //How many tasks?
+            $active_tasks = 0;
+            foreach($tree[0]['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $active_tasks++;
+                }
+            }
+
+            if($active_tasks==0){
+
+                //Let students know there are no tasks for this milestone:
+                array_push($instant_messages , array_merge($message, array(
+                    'i_media_type' => 'text',
+                    'i_message' => 'This Milestone has no Tasks!',
+                )));
+
+            } else {
+
+                //Let them know how many tasks:
+                array_push($instant_messages , array_merge($message, array(
+                    'i_media_type' => 'text',
+                    'i_message' => 'To complete this Milestone you need to complete its '.$active_tasks.' task'.show_s($active_tasks).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Milestone
+                )));
+
+            }
+        }
+
+
+        //This is only for milestones (Not tasks) as its level=1 (level=0 is for tasks...)
+        if(0 && $message['depth']==1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
+
+            //TODO Optimize before launching...
+            /*
+            $active_tasks = 0;
+            foreach($tree[0]['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $active_tasks++;
+                }
+            }
+
+            //Count how many tasks and let them know:
+            if($active_tasks>0){
+
+                foreach($tree[0]['c__child_intents'] as $level1_key=>$level1){
+
+                    if($level1['c_status']<1) {
+                        continue;
+                    }
+
+
+                    //Set initial counter:
+                    $starting_message_count = count($instant_messages);
+
+
+                    //Does this intent have messages?
+                    if (isset($level1['c__messages']) && count($level1['c__messages']) > 0) {
+                        //We do have a mesasage, lets see if they are active/drip:
+                        foreach ($level1['c__messages'] as $key => $i) {
+                            if ($i['i_status'] == 1) {
+
+                                if($starting_message_count==count($instant_messages)){
+
+                                    //This is the very first message for this Task being added:
+                                    array_push( $instant_messages , echo_i( array_merge( array(
+                                        'i_media_type' => 'text',
+                                        'i_message' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.strtolower($level1['c_objective']).'. Your instructor has estimated this task to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
+                                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+                                    if($active_tasks>1){
+                                        array_push( $instant_messages , echo_i( array_merge( array(
+                                            'i_media_type' => 'text',
+                                            'i_message' => 'Once completed I will instantly unlock your next task.',
+                                        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+                                    } else {
+                                        //The only task of this milestone:
+                                        array_push( $instant_messages , echo_i( array_merge( array(
+                                            'i_media_type' => 'text',
+                                            'i_message' => 'Once completed you will complete this milestone as this is its only task.',
+                                        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+                                    }
+
+                                    array_push( $instant_messages , echo_i( array_merge( array(
+                                        'i_media_type' => 'text',
+                                        'i_message' => 'Here is how you can go about completing this task:',
+                                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+                                }
+
+                                //Not needed as we don't have this logic active for now...
+                                //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
+                                //$tree[0]['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
+
+                                //Add message to instant stream:
+                                array_push( $instant_messages , echo_i( array_merge( $i , array(
+                                    'e_initiator_u_id' => 0, //System, prevents any signatures from being appended...
+                                    'e_recipient_u_id' => $u_id,
+                                    'i_c_id' => $i['i_c_id'],
+                                    'e_r_id' => $r_id,
+                                    'tree' => $tree[0],
+                                    'depth' => $depth,
+                                )), $recipients[0]['u_fname'], true ));
+
+                            }
+                        }
+                    }
+
+                    //Create custom message based on Task Completion Settings:
+                    array_push( $instant_messages , echo_i( array_merge( array(
+                        'i_media_type' => 'text',
+                        //TODO mention the class average response time here:
+                        'i_message' => 'Completing this Task is estimated to take '.strip_tags(echo_time($level1['c_time_estimate'],0)).'. If you needed more assistance simply send me a message and I will forward it to your instructor for a timely response. Let\'s do it 🙌​',
+                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
+
+                    //Level 1 depth only deals with a single intent, so we'll always end here:
+                    break;
+                }
+            }
+
+            */
+        }
+
+
+        //Anything to be sent instantly?
+        if(count($instant_messages)<1){
+            $this->Db_model->e_create(array(
+                'e_message' => 'fb_intent_message() error: No messages to be sent after compiling everything',
+                'e_type_id' => 8, //Platform Error
+                'e_json' => $message,
+                'e_c_id' => $message['e_c_id'],
+                'e_fp_id' => $message['e_fp_id'],
+                'e_recipient_u_id' => $message['e_recipient_u_id'],
+                'e_initiator_u_id' => $message['e_initiator_u_id'],
+                'e_b_id' => $message['e_b_id'],
+                'e_r_id' => $message['e_r_id'],
+            ));
+
+            //Error:
+            return array(
+                'status' => 0,
+                'message' => 'No messages to be sent',
+            );
+        }
+
+        //All good, attempt to Dispatch all messages, their engagements have already been logged:
+        return $this->Facebook_model->fb_direct_messages($instant_messages);
     }
 
 
