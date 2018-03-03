@@ -505,13 +505,12 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 }
             }
 
-
-
         } elseif(isset($i['i_button']) && strlen($i['i_button'])>0 && isset($i['i_url']) && strlen($i['i_url'])>0){
 
             $button_title = trim($i['i_button']);
             $button_url = $i['i_url'];
             $command = '{inject_button}'; //Not used anywhere
+            $i['i_message'] .= $command;
 
         }
 
@@ -690,10 +689,11 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 'depth' => ( isset($i['depth']) ? $i['depth'] : null ),
             ),
             'e_type_id' => 7, //Outbound message
-            'e_r_id' => ( isset($i['e_r_id'])    ? $i['e_r_id']  :0), //If set...
-            'e_b_id' => ( isset($i['e_b_id'])    ? $i['e_b_id']  :0), //If set...
-            'e_i_id' => ( isset($i['i_id'])      ? $i['i_id']    :0), //The message that is being dripped
-            'e_c_id' => ( isset($i['i_c_id'])    ? $i['i_c_id']  :0),
+            'e_fp_id' => ( isset($i['e_fp_id'])   ? $i['e_fp_id'] :0), //If set...
+            'e_r_id'  => ( isset($i['e_r_id'])    ? $i['e_r_id']  :0), //If set...
+            'e_b_id'  => ( isset($i['e_b_id'])    ? $i['e_b_id']  :0), //If set...
+            'e_i_id'  => ( isset($i['i_id'])      ? $i['i_id']    :0), //The message that is being dripped
+            'e_c_id'  => ( isset($i['i_c_id'])    ? $i['i_c_id']  :0),
         ));
 
         //Return Facebook Message to be sent out:
