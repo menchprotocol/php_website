@@ -46,7 +46,6 @@ class Bot extends CI_Controller {
                 'i_message' => '{first_name} your class just endedt Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​',
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => 1,
-                'e_fp_id' => 4,
             ),
             array(
                 'i_media_type' => 'text',
@@ -55,14 +54,12 @@ class Bot extends CI_Controller {
                 'i_url' => 'https://mench.co/my/review/',
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => 1,
-                'e_fp_id' => 4,
             ),
             array(
                 'i_media_type' => 'image',
                 'i_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png',
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => 1,
-                'e_fp_id' => 4,
             ),
         ));
     }
