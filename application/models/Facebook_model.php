@@ -964,67 +964,72 @@ class Facebook_model extends CI_Model {
                 continue;
             }
 
-            //Fetch user preferences:
-            if(isset($message['e_r_id']) && $message['e_r_id']>0){
-                //Fetch admission to class:
-                $users = $this->Db_model->ru_fetch(array(
-                    'ru_u_id' => $message['e_recipient_u_id'],
-                    'ru_r_id' => $message['e_r_id'],
-                ));
-            } else {
-                //Fetch user profile:
-                $users = $this->Db_model->ru_fetch(array(
-                    'u_id' => $message['e_recipient_u_id'],
-                ));
-            }
-
-            if(count($users)<1){
-
-                //Log error:
-                $this->Db_model->e_create(array(
-                    'e_recipient_u_id' => $message['e_recipient_u_id'],
-                    'e_json' => $message,
-                    'e_type_id' => 8, //Platform error
-                    'e_message' => 'fb_direct_messages() failed to fetch user details message as it was missing core variables',
-                ));
-                continue;
-
-            } else {
-
-                //Determine communication method:
-                $dispatch_fp_id = 0;
-                $dispatch_fp_psid = 0;
-                $u = array();
-
-                if(isset($users[0]['ru_fp_id']) && isset($users[0]['ru_fp_psid']) && $users[0]['ru_fp_id']>0 && $users[0]['ru_fp_psid']>0){
-                    //We fetched an admission with an active Messenger connection:
-                    $dispatch_fp_id = $users[0]['ru_fp_id'];
-                    $dispatch_fp_psid = $users[0]['ru_fp_psid'];
-                    $u = $users[0];
-                } elseif($users[0]['u_cache__fp_id']>0 && $users[0]['u_cache__fp_psid']>0){
-                    //We fetched an admission with an active Messenger connection:
-                    $dispatch_fp_id = $users[0]['u_cache__fp_id'];
-                    $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
-                    $u = $users[0];
-                } elseif(strlen($users[0]['u_email'])>0 && filter_var($users[0]['u_email'], FILTER_VALIDATE_EMAIL)){
-                    //User has not activated Messenger but has email:
-                    $u = $users[0];
+            //TODO Implement simple caching to remember previous details like e_r_id
+            if(1){
+                //Fetch user preferences:
+                if(isset($message['e_r_id']) && $message['e_r_id']>0){
+                    //Fetch admission to class:
+                    $users = $this->Db_model->ru_fetch(array(
+                        'ru_u_id' => $message['e_recipient_u_id'],
+                        'ru_r_id' => $message['e_r_id'],
+                    ));
                 } else {
+                    //Fetch user profile:
+                    $users = $this->Db_model->ru_fetch(array(
+                        'u_id' => $message['e_recipient_u_id'],
+                    ));
+                }
 
-                    //This should technically not happen!
+                if(count($users)<1){
+
                     //Log error:
+                    $failed_count++;
                     $this->Db_model->e_create(array(
                         'e_recipient_u_id' => $message['e_recipient_u_id'],
-                        'e_fp_id' => $message['e_fp_id'],
                         'e_json' => $message,
                         'e_type_id' => 8, //Platform error
-                        'e_message' => 'fb_direct_messages() detected user without an active email/Messenger',
+                        'e_message' => 'fb_direct_messages() failed to fetch user details message as it was missing core variables',
                     ));
                     continue;
 
-                }
+                } else {
 
+                    //Determine communication method:
+                    $dispatch_fp_id = 0;
+                    $dispatch_fp_psid = 0;
+                    $u = array();
+
+                    if(isset($users[0]['ru_fp_id']) && isset($users[0]['ru_fp_psid']) && $users[0]['ru_fp_id']>0 && $users[0]['ru_fp_psid']>0){
+                        //We fetched an admission with an active Messenger connection:
+                        $dispatch_fp_id = $users[0]['ru_fp_id'];
+                        $dispatch_fp_psid = $users[0]['ru_fp_psid'];
+                        $u = $users[0];
+                    } elseif($users[0]['u_cache__fp_id']>0 && $users[0]['u_cache__fp_psid']>0){
+                        //We fetched an admission with an active Messenger connection:
+                        $dispatch_fp_id = $users[0]['u_cache__fp_id'];
+                        $dispatch_fp_psid = $users[0]['u_cache__fp_psid'];
+                        $u = $users[0];
+                    } elseif(strlen($users[0]['u_email'])>0 && filter_var($users[0]['u_email'], FILTER_VALIDATE_EMAIL)){
+                        //User has not activated Messenger but has email:
+                        $u = $users[0];
+                    } else {
+
+                        //This should technically not happen!
+                        //Log error:
+                        $failed_count++;
+                        $this->Db_model->e_create(array(
+                            'e_recipient_u_id' => $message['e_recipient_u_id'],
+                            'e_fp_id' => $message['e_fp_id'],
+                            'e_json' => $message,
+                            'e_type_id' => 8, //Platform error
+                            'e_message' => 'fb_direct_messages() detected user without an active email/Messenger',
+                        ));
+                        continue;
+                    }
+                }
             }
+
+
 
             //Send using email or Messenger?
             if($dispatch_fp_id && $dispatch_fp_psid){
@@ -1033,6 +1038,7 @@ class Facebook_model extends CI_Model {
                 //Do we have a specific fp_id requested, and if so, does it match the one we found?
                 if(isset($message['e_fp_id']) && $message['e_fp_id']>0 && !($message['e_fp_id']==$dispatch_fp_id)){
                     //Ooops, we seem to have an issue here...
+                    $failed_count++;
                     $this->Db_model->e_create(array(
                         'e_recipient_u_id' => $message['e_recipient_u_id'],
                         'e_fp_id' => $message['e_fp_id'],
