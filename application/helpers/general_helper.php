@@ -497,7 +497,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             ));
 
             if(isset($bootcamps[0]['b_fp_id']) && $bootcamps[0]['b_fp_id']>0 && isset($i['e_recipient_u_id']) && $i['e_recipient_u_id']>0){
-                $button_url = $this->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
+                $button_url = $CI->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
                 if($button_url) {
                     //append their My Account Button/URL:
                     $button_title = '🤖 Activate Messenger (Chat with Instructor)';
@@ -2142,23 +2142,23 @@ function time_format($t,$format=0,$plus_days=0){
     }
     
     $timestamp = ( is_numeric($t) ? $t : strtotime(substr($t,0,19)) ) + ($plus_days*24*3600) + ($plus_days>0 ? (12*3600) : 0); //Added this last part to consider the end of days for dates
-    $this_year = ( date("Y")==date("Y",$timestamp) );
+    $year = ( date("Y")==date("Y",$timestamp) );
     if($format==0){
-        return date(( $this_year ? "M j, g:i a" : "M j, Y, g:i a" ),$timestamp);
+        return date(( $year ? "M j, g:i a" : "M j, Y, g:i a" ),$timestamp);
     } elseif($format==1){
-        return date(( $this_year ? "j M" : "j M Y" ),$timestamp);
+        return date(( $year ? "j M" : "j M Y" ),$timestamp);
     } elseif($format==2){
-        return date(( $this_year ? "D j M" : "j M Y" ),$timestamp);
+        return date(( $year ? "D j M" : "j M Y" ),$timestamp);
     } elseif($format==3){
         return $timestamp;
     } elseif($format==4){
-        return date(( $this_year ? "M j" : "M j Y" ),$timestamp);
+        return date(( $year ? "M j" : "M j Y" ),$timestamp);
     } elseif($format==5){
-        return date(( $this_year ? "D j M" : "j M Y" ),$timestamp);
+        return date(( $year ? "D j M" : "j M Y" ),$timestamp);
     } elseif($format==6){
         return date("Y/m/d",$timestamp);
     } elseif($format==7){
-        return date(( $this_year ? "D M j, g:i a" : "D M j, Y, g:i a" ),$timestamp);
+        return date(( $year ? "D M j, g:i a" : "D M j, Y, g:i a" ),$timestamp);
     }
 }
 

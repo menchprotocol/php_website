@@ -905,6 +905,7 @@ class Comm_model extends CI_Model {
                 )),
             ),
             'e_type_id' => 31, //Messenger Activated
+            'e_fp_id' => $fp['fp_id'],
         ));
 
         //Return User ID:
