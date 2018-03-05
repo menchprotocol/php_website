@@ -636,7 +636,7 @@ class Comm_model extends CI_Model {
             'fp_status' => 1, //Must be connected to Mench
         ));
 
-        if(!(count($fp_pages)==1)){
+        if(count($fp_pages)<1){
             //Log Error:
             $this->Db_model->e_create(array(
                 'e_recipient_u_id' => $u_id,
