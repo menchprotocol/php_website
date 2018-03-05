@@ -11,16 +11,15 @@ class My extends CI_Controller {
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 	}
-	
-	function leaderboard(){
-	    //TODO Remove later, for compatibility only:
-        header( 'Location: /my/classmates');
-    }
 
 	function index(){
 	    //Nothing here:
 	    header( 'Location: /');
 	}
+
+    function ping(){
+        echo_json(array('status'=>'success'));
+    }
 
 	function webview_video($i_id){
 
@@ -138,23 +137,35 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-    function display_actionplan($u_fb_id,$b_id=0,$c_id=0){
+    function display_actionplan($ru_fp_psid,$b_id=0,$c_id=0){
+
+        $uadmission = array();
+	    if(!$ru_fp_psid){
+            $uadmission = $this->session->userdata('uadmission');
+        }
 
         //Fetch bootcamps for this user:
-        if(!$u_fb_id){
+        if(!$ru_fp_psid && count($uadmission)<1){
 	        //There is an issue here!
-	        die('<div class="alert alert-danger" role="alert">Invalid user ID.</div>');
-	    } elseif(!is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
+	        die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
+	    } elseif(count($uadmission)<1 && !is_dev() && isset($_GET['sr']) && !parse_signed_request($_GET['sr'])){
 	        die('<div class="alert alert-danger" role="alert">Unable to authenticate your origin.</div>');
 	    }
 
-
-        //Fetch all their admissions:
+        //Set admission filters:
         $admission_filters = array(
-            'u.u_fb_id' => $u_fb_id,
             'ru.ru_status >=' => 4, //Actively enrolled in or Completed
             'r.r_status >=' => 1, //Open for Admission or Higher
         );
+
+	    //Define user identifier:
+        if(count($uadmission)>0){
+            $admission_filters['u.u_id'] = $uadmission['u_id'];
+        } else {
+            $admission_filters['ru.ru_fp_psid'] = $ru_fp_psid;
+        }
+
+        //Fetch all their admissions:
 	    if($b_id>0){
 	        //Enhance our search and make it specific to this $b_id:
             $admission_filters['r.r_b_id'] = $b_id;
@@ -183,7 +194,7 @@ class My extends CI_Controller {
             ));
 
             //Reload with specific directions:
-            $this->display_actionplan($u_fb_id,$active_admission['b_id'],$active_admission['c_id']);
+            $this->display_actionplan($ru_fp_psid,$active_admission['b_id'],$active_admission['c_id']);
 
             //Reload this function, this time with specific instructions on what to load:
             return true;

@@ -19,7 +19,7 @@ if($users[0]['u_cache__fp_psid']>0){
         
         //Instructor Bot has NOT been activated by the instructor yet:
         echo '<p>Activate Mench to get a taste of how we automate communications over Facebook Messenger:</p>';
-        echo '<a href="'.$this->Facebook_model->fb_activation_url($users[0]['u_id'],4 /*Mench Facebook Page*/ ).'" class="btn btn-primary"> Say "Hi" to Mench &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
+        echo '<a href="'.$this->Comm_model->fb_activation_url($users[0]['u_id'],4 /*Mench Facebook Page*/ ).'" class="btn btn-primary"> Say "Hi" to Mench &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
     
     echo '</div>';
 }

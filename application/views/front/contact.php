@@ -12,7 +12,7 @@
 					</div>
 					<div class="description">
 						<h4 class="info-title">Email us</h4>
-						<p><a href="mailto:support@mench.co">support@mench.co</a></p>
+						<p><a href="mailto:support@mench.com">support@mench.com</a></p>
 					</div>
 	        	</div>
 			

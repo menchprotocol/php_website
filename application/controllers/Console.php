@@ -8,13 +8,10 @@ class Console extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 	}
-	
-	function raw($b_id){
-	    print_r($this->Db_model->remix_bootcamps(array(
-	        'b.b_id' => $b_id
-	    )));
-	}
-	
+
+    function ping(){
+        echo_json(array('status'=>'success'));
+    }
 	
 	/* ******************************
 	 * User & Help
@@ -77,7 +74,7 @@ class Console extends CI_Controller {
 		}
         */
 
-		$title = ( $udata['u_fb_id']>0 ? 'My Bootcamps' : '<img src="/img/bp_128.png" style="width:42px; margin-top: -4px;" /> Mench Activation') ;
+		$title = ( $udata['u_cache__fp_psid']>0 ? 'My Bootcamps' : 'Activate Messenger') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(

@@ -11,42 +11,6 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-    function duplicate_fb_users(){
-
-        //Fetch all users:
-        $users = $this->Db_model->u_fetch(array(
-            'u_fb_id >' => 0,
-        ));
-
-        foreach($users as $user){
-
-            //See if we have other users with the same FB id:
-            $duplicate_users = $this->Db_model->u_fetch(array(
-                'u_id !=' => $user['u_id'],
-                'u_fb_id' => $user['u_fb_id'],
-            ));
-
-            if(count($duplicate_users)>0){
-                //See whats happening with their Admissions:
-                echo 'FB Duplicate '.$user['u_id'].') '.$user['u_fname'].' '.$user['u_lname'].': '.count($duplicate_users).'<br />';
-            }
-
-            //See if we have other users with the same FB id:
-            $duplicate_users2 = $this->Db_model->u_fetch(array(
-                'u_id !=' => $user['u_id'],
-                'u_fname' => $user['u_fname'],
-                'u_lname' => $user['u_lname'],
-            ));
-
-            if(count($duplicate_users2)>0){
-                //See whats happening with their Admissions:
-                echo 'Name Duplicate '.$user['u_id'].') '.$user['u_fname'].' '.$user['u_lname'].': '.count($duplicate_users2).'<br />';
-            }
-
-
-        }
-    }
-
 
     function psid(){
 
@@ -193,13 +157,11 @@ class Adjust extends CI_Controller {
             $qualified_students = $this->Db_model->ru_fetch(array(
                 'ru.ru_r_id' => $class['r_id'],
                 'ru.ru_status >' => 5,
-                'u.u_fb_id >' => 0,
             ));
 
             $completed_students = $this->Db_model->ru_fetch(array(
                 'ru.ru_r_id' => $class['r_id'],
                 'ru.ru_status' => 7,
-                'u.u_fb_id >' => 0,
             ));
 
             //Update Class:

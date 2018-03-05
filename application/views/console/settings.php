@@ -20,6 +20,32 @@ function show_fb_auth(error_message=null){
     }
 }
 
+function refresh_integration(fp_id){
+
+    $('#simulate_'+fp_id).html('<img src="/img/round_load.gif" class="loader" />');
+
+    $.post("/api_v1/refresh_integration", {
+
+        b_id:$('#b_id').val(),
+        fp_id:fp_id,
+
+    }, function(data) {
+
+        //Update UI to confirm with user:
+        if(data.status){
+            $('#simulate_'+fp_id).html(data.message);
+        } else {
+            alert('ERROR: '+data.message);
+
+            $('#simulate_'+fp_id).html('<i class="fa fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" title="ERROR: '+data.message+'"></i>');
+
+            //Load ToolTip:
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+    });
+
+}
+
 function loadFacebookPages(is_onstart){
 
     FB.getLoginStatus(function(login_response) {
@@ -211,9 +237,7 @@ function save_settings(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
     <li id="nav_general" class="active"><a href="#general"><i class="fa fa-cog" aria-hidden="true"></i> General</a></li>
-    <?php if($udata['u_status']==3){ ?>
     <li id="nav_pages"><a href="#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
-    <?php } ?>
     <li id="nav_team"><a href="#team"><i class="fa fa-user-plus" aria-hidden="true"></i> Team</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li> -->
 </ul>

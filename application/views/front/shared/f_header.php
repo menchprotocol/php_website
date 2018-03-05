@@ -15,7 +15,7 @@ $url_part_1 = $this->uri->segment(1);
 
     YOU CAN WORK WITH US FROM ANYWHERE IN THE WORLD
 
-    EMAIL YOUR RESUME TO SUPPORT@MENCH.CO
+    EMAIL YOUR RESUME TO SUPPORT@MENCH.COM
 
     -->
 	<meta charset="utf-8" />

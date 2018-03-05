@@ -13,6 +13,10 @@ class Api_v1 extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 	}
+
+    function ping(){
+        echo_json(array('status'=>'success'));
+    }
 	
 	function index(){
 		die('nothing here...');
@@ -345,6 +349,23 @@ class Api_v1 extends CI_Controller {
     }
 
 
+    function page_redirect($fp_id,$fp_hash){
+
+	    if(!(md5($fp_id.'pageLinkHash000')==$fp_hash)){
+	        die('invalid key');
+        }
+
+        $fp_pages = $this->Db_model->fp_fetch(array(
+            'fp_id' => $fp_id,
+        ));
+        if(count($fp_pages)<1){
+            die('invalid ID');
+        }
+
+        //Go to the inbox app by Facebook
+        header( 'Location: https://www.facebook.com/'.$fp_pages[0]['fp_fb_id'].'/inbox/' );
+    }
+
     function fb_connect(){
 
 	    //Responsible to connect and disconnect the Facebook pages when instructors explicitly request this:
@@ -428,10 +449,10 @@ class Api_v1 extends CI_Controller {
         $connection_status = false;
         if($_POST['current_b_fp_id']>0 && $_POST['new_b_fp_id']==0){
             //Disconnect
-            $connection_status = $this->Facebook_model->fb_page_disconnect($udata['u_id'], $_POST['current_b_fp_id'], $_POST['b_id']);
+            $connection_status = $this->Comm_model->fb_page_disconnect($udata['u_id'], $_POST['current_b_fp_id'], $_POST['b_id']);
         } elseif($_POST['new_b_fp_id']>0) {
             //Connect, this code handles the disconnect of an existing page if any other page is connected already:
-            $connection_status = $this->Facebook_model->fb_page_connect($udata['u_id'], $_POST['new_b_fp_id'], $_POST['b_id']);
+            $connection_status = $this->Comm_model->fb_page_connect($udata['u_id'], $_POST['new_b_fp_id'], $_POST['b_id']);
         }
 
 
@@ -485,7 +506,7 @@ class Api_v1 extends CI_Controller {
 
 
         //Index and organize their pages:
-        $authorized_fp_ids = $this->Facebook_model->fb_index_pages($udata['u_id'],$_POST['login_response']['authResponse']['accessToken'],$_POST['b_id']);
+        $authorized_fp_ids = $this->Comm_model->fb_index_pages($udata['u_id'],$_POST['login_response']['authResponse']['accessToken'],$_POST['b_id']);
 
         if(!is_array($authorized_fp_ids)){
 
@@ -515,7 +536,7 @@ class Api_v1 extends CI_Controller {
 
 
         //Was any of their previously authorized pages revoked, handle this:
-        $admin_lost_pages = $this->Facebook_model->fb_revoke_access($udata['u_id'],$authorized_fp_ids,$_POST['b_id']);
+        $admin_lost_pages = $this->Comm_model->fb_detect_revoked($udata['u_id'],$authorized_fp_ids,$_POST['b_id']);
         if(count($admin_lost_pages)>0){
             //Let them know that they lost access to certain pages that is no longer associated with their account:
             echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged into Facebook.</div>';
@@ -548,6 +569,11 @@ class Api_v1 extends CI_Controller {
                 //Right content
                 if($page['fp_status']>=0){
                     $pages_list_ui .= '<span class="pull-right">';
+
+                    if($page['fp_status']==1 && $udata['u_status']>=3){
+                        $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:refresh_integration('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                    }
+
                     if($bootcamps[0]['b_fp_id']>0 && $page['fp_id']==$bootcamps[0]['b_fp_id']){
                         //This page is already assigned:
                         $pages_list_ui .= '<b><i class="fa fa-plug" aria-hidden="true"></i> Connected</b> &nbsp;';
@@ -760,9 +786,15 @@ class Api_v1 extends CI_Controller {
             'u_email' => strtolower($_POST['email']),
         ));
         if(count($matching_users)>0){
-            $this->load->model('Email_model');
             //Dispatch the password reset node:
-            $this->Email_model->email_intent(0,3030,$matching_users[0]);
+            $this->Comm_model->foundation_message(array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $matching_users[0]['u_id'],
+                'e_c_id' => 3030,
+                'depth' => 0,
+                'e_b_id' => 0,
+                'e_r_id' => 0,
+            ), true);
         }
 
         //Show message:
@@ -803,7 +835,6 @@ class Api_v1 extends CI_Controller {
 	function funnel_progress(){
 	    
 	    $this->load->helper('cookie');
-        $this->load->model('Email_model');
         $application_status_salt = $this->config->item('application_status_salt');
 
 	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['u_fname']) || !isset($_POST['u_email'])){
@@ -893,7 +924,14 @@ class Api_v1 extends CI_Controller {
             if(count($duplicate_registries)>0){
 
                 //Send the email to their admission page:
-                $this->Email_model->email_intent($duplicate_registries[0]['r_b_id'],2697,$udata);
+                $this->Comm_model->foundation_message(array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $udata['u_id'],
+                    'e_c_id' => 2697,
+                    'depth' => 0,
+                    'e_b_id' => $duplicate_registries[0]['r_b_id'],
+                    'e_r_id' => $duplicate_registries[0]['r_id'],
+                ), true);
 
                 if($duplicate_registries[0]['ru_status']==0){
 
@@ -953,8 +991,16 @@ class Api_v1 extends CI_Controller {
 
                     if(($focus_class['r__class_start_time']>=$admission['r__class_start_time'] && $focus_class['r__class_start_time']<$admission['r__class_end_time']) || ($focus_class['r__class_end_time']>=$admission['r__class_start_time'] && $focus_class['r__class_end_time']<$admission['r__class_end_time'])){
 
-                        //Send the email to their admission page:
-                        $this->Email_model->email_intent($admission['r_b_id'],2697,$udata);
+                        //Send email for a link to their admission page:
+                        $this->Comm_model->foundation_message(array(
+                            'e_initiator_u_id' => 0,
+                            'e_recipient_u_id' => $udata['u_id'],
+                            'e_c_id' => 2697,
+                            'depth' => 0,
+                            'e_b_id' => $admission['r_b_id'],
+                            'e_r_id' => $admission['r_id'],
+                        ), true);
+
 
                         //Either start time or end time falls within this class!
                         $message = 'Admission blocked because you can join a maximum of 1 concurrent Bootcamps. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'].'."\n\n".'This overlaps with your request to join this Bootcamp ['.$bootcamp['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.'.( $admission['ru_status']==0 ? ' You can choose to withdraw your application from ['.$admission['c_objective'].'] because your current application status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].' : '' );
@@ -1035,7 +1081,14 @@ class Api_v1 extends CI_Controller {
         ));
 
         //Send the email to their admission page:
-        $this->Email_model->email_intent($bootcamp['b_id'],2697,$udata);
+        $this->Comm_model->foundation_message(array(
+            'e_initiator_u_id' => 0,
+            'e_recipient_u_id' => $udata['u_id'],
+            'e_c_id' => 2697,
+            'depth' => 0,
+            'e_b_id' => $bootcamp['b_id'],
+            'e_r_id' => $focus_class['r_id'],
+        ), true);
 
 
         //Redirect to application:
@@ -1118,14 +1171,15 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Notify student:
-            $this->load->model('Email_model');
-            if(!$admissions[0]['u_fb_id']){
-                //They should activate their MenchBot IF not already done so:
-                $this->Email_model->email_intent($admissions[0]['b_id'],2805,$admissions[0]);
-            } else {
-                //They will get notified that we're reviewing their application
-                $this->Email_model->email_intent($admissions[0]['b_id'],2807,$admissions[0]);
-            }
+            $this->Comm_model->foundation_message(array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $admissions[0]['u_id'],
+                'e_c_id' => ( $admissions[0]['u_cache__fp_psid'] ? 2807 : 2805 ),
+                'depth' => 0,
+                'e_b_id' => $admissions[0]['b_id'],
+                'e_r_id' => $admissions[0]['r_id'],
+            ), true);
+
         }
 
 	    //Save answers:
@@ -1187,8 +1241,60 @@ class Api_v1 extends CI_Controller {
 
             }
         }
+    }
 
+    function refresh_integration(){
 
+        $udata = auth(2,0,$_POST['b_id']);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp ID',
+            ));
+        } elseif(!isset($_POST['fp_id']) || strlen($_POST['fp_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Page ID',
+            ));
+        } else {
+
+            //Fetch Page:
+            $fp_pages = $this->Db_model->fp_fetch(array(
+                'fp_id' => $_POST['fp_id'],
+            ));
+
+            if(count($fp_pages)<1){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Could not find page',
+                ));
+            } elseif(!($fp_pages[0]['fp_status']==1)){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Page is not currently integrated',
+                ));
+            } else {
+
+                //First remove integration:
+                $this->Comm_model->fb_page_integration($udata['u_id'],$fp_pages[0],$_POST['b_id'],0);
+
+                //Then add integration:
+                sleep(2);
+
+                $this->Comm_model->fb_page_integration($udata['u_id'],$fp_pages[0],$_POST['b_id'],1);
+
+                //Let user know:
+                echo_json(array(
+                    'status' => 1,
+                    'message' => '<i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" title="Success"></i>',
+                ));
+            }
+        }
     }
 
 	function login(){
@@ -1274,10 +1380,6 @@ class Api_v1 extends CI_Controller {
 
         if($is_instructor && !$is_chrome){
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
-            return false;
-        } elseif($is_student && !$is_instructor && !$session_data['uadmission']['u_fb_id']){
-            //Make sure Messenger is already activated:
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You must activate your Facebook Messenger before logging in. We have already sent you an email with the Activation URL.</div>');
             return false;
         } elseif(!$is_instructor && !$is_student){
             //We assume this is a student request:
@@ -1571,10 +1673,10 @@ class Api_v1 extends CI_Controller {
             ));
 
             $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
+
             $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
             $bootcamp_chat_url = 'https://mench.co/console/'.intval($_POST['b_id']).'/students';
             $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
-            $this->load->model('Email_model');
             //Send notifications to current instructor
             foreach($bootcamp_instructors as $bi){
                 //Make sure this instructor has an email on file
@@ -1599,7 +1701,18 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<div'.$div_style.'>Team Mench</div>';
                     $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
                     //Send Email:
-                    $this->Email_model->send_single_email(array($bi['u_email']),$subject,$html_message);
+                    $this->Comm_model->send_email(array($bi['u_email']), $subject, $html_message, array(
+                        'e_initiator_u_id' => ( isset($matching_admissions[0]['u_id']) ? $matching_admissions[0]['u_id'] : 0 ), //Student who made submission
+                        'e_recipient_u_id' => $bi['u_id'], //The admin
+                        'e_message' => $subject,
+                        'e_json' => array(
+                            'html' => $html_message,
+                        ),
+                        'e_type_id' => 28, //Email message sent
+                        'e_c_id' => $intent_data['intent']['c_id'],
+                        'e_b_id' => intval($_POST['b_id']),
+                        'e_r_id' => $focus_class['r_id'],
+                    ));
                 }
             }
         }
@@ -1618,13 +1731,13 @@ class Api_v1 extends CI_Controller {
                 $i['i_message'] = $i['i_message'].' {button}';
                 array_push($drip_messages , $i);
             } elseif($i['i_status']==3){
-                array_push( $on_complete_messages , echo_i(array_merge( $i , array(
+                array_push($on_complete_messages, array_merge($i , array(
                     'e_initiator_u_id' => 0,
                     'e_recipient_u_id' => $matching_admissions[0]['u_id'],
                     'i_c_id' => $i['i_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
-                )), $matching_admissions[0]['u_fname'],true ) );
+                )));
             }
         }
 
@@ -1641,13 +1754,13 @@ class Api_v1 extends CI_Controller {
 
                 } elseif($i['i_status']==3){
 
-                    array_push( $on_complete_messages , echo_i(array_merge( $i , array(
+                    array_push($on_complete_messages, array_merge($i , array(
                         'e_initiator_u_id' => 0,
                         'e_recipient_u_id' => $matching_admissions[0]['u_id'],
                         'i_c_id' => $i['i_c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => intval($_POST['r_id']),
-                    )), $matching_admissions[0]['u_fname'],true ));
+                    )));
 
                 }
             }
@@ -1658,22 +1771,22 @@ class Api_v1 extends CI_Controller {
                 foreach($bootcamps[0]['c__messages'] as $i){
                     //Bootcamps only could have ON-COMPLETE messages:
                     if($i['i_status']==3){
-                        array_push( $on_complete_messages , echo_i(array_merge( $i , array(
+                        array_push($on_complete_messages, array_merge($i , array(
                             'e_initiator_u_id' => 0,
                             'e_recipient_u_id' => $matching_admissions[0]['u_id'],
                             'i_c_id' => $i['i_c_id'],
                             'e_b_id' => intval($_POST['b_id']),
                             'e_r_id' => intval($_POST['r_id']),
-                        )), $matching_admissions[0]['u_fname'],true ));
+                        )));
                     }
                 }
             }
         }
 
         //Anything to be sent instantly?
-        if(count($on_complete_messages)>0 && $matching_admissions[0]['u_fb_id']>0){
+        if(count($on_complete_messages)>0){
             //Dispatch all Instant Messages, their engagements have already been logged:
-            $this->Facebook_model->batch_messages('381488558920384', $matching_admissions[0]['u_fb_id'], $on_complete_messages);
+            $this->Comm_model->send_message($on_complete_messages);
         }
 
         //Any Drip Messages? Schedule them if we have some:
@@ -1696,12 +1809,14 @@ class Api_v1 extends CI_Controller {
                         'i_drip_count' => count($drip_messages),
                         'i' => $i, //The actual message that would be sent
                     ),
-                    'e_type_id' => 52, //Pending Drip
+                    'e_type_id' => 52, //Pending Drip e_type_id=52
                     'e_cron_job' => 0, //Pending for the Drip Cron
                     'e_i_id' => $i['i_id'],
                     'e_c_id' => $i['i_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
+                    'e_fp_id' => $matching_admissions[0]['ru_fp_id'],
+
                 ));
 
             }
@@ -1743,17 +1858,13 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Send graduation message:
-            //4632
-            /*
-            $this->Facebook_model->batch_messages( '381488558920384', $matching_admissions[0]['u_fb_id'], array(echo_i(array(
-                'i_media_type' => 'text',
-                'i_message' => 'Congratulations {first_name} for completing your Action Plan 🎉',
-                'e_initiator_u_id' => 0, //System/MenchBot
+            $this->Comm_model->foundation_message(array(
                 'e_recipient_u_id' => intval($_POST['u_id']),
+                'e_c_id' => 4632, //As soon as Graduated message
+                'depth' => 0,
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
-            ), $matching_admissions[0]['u_fname'], true )));
-            */
+            ));
 
         } elseif($intent_data['next_level']==2){
 
@@ -1765,21 +1876,14 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__current_task' => 1, //They would be at the First task of the next Milestone
             ));
 
-            /*
-            //Is the next milestone available?
-            if($class['r__current_milestone']>1 && $class['r__current_milestone']<$bootcamp_data['sprint_index']){
-
-                //4631
-
-            } else {
-
-                //Dispatch milestone messages:
-                $message_result = tree_message($intent_data['next_intent']['c_id'], 0, '381488558920384', intval($_POST['u_id']), 'REGULAR', intval($_POST['b_id']), intval($_POST['r_id']));
-
-            }
-            */
-
-            //TODO Show option to close window and see messages that have been sent in the Background?
+            //Send appropriate Message:
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => intval($_POST['u_id']),
+                'e_c_id' => ( $intent_data['next_intent']['cr_outbound_rank']<=$focus_class['r__current_milestone'] ? $intent_data['next_intent']['c_id'] : 4631 /* Next milestone not started */ ),
+                'depth' => 0,
+                'e_b_id' => intval($_POST['b_id']),
+                'e_r_id' => intval($_POST['r_id']),
+            ));
 
         } elseif($intent_data['next_level']==3){
 
@@ -1854,12 +1958,21 @@ class Api_v1 extends CI_Controller {
 	    //Function called form /MY/classmates (student Menchbot) and /Console/Student tab for Instructors!
         if(isset($_POST['psid'])){
 
-            //Fetch all their admissions:
-            $admissions = $this->Db_model->remix_admissions(array(
-                'u.u_fb_id' => $_POST['psid'],
+            $ru_filter = array(
                 'ru.ru_status >=' => 4, //Actively enrolled in or Completed
                 'r.r_status >=' => 1, //Open for Admission or Higher
-            ));
+            );
+
+            if($_POST['psid']==0){
+                //Data is supposed to be in the session:
+                $uadmission = $this->session->userdata('uadmission');
+                $ru_filter['ru.ru_u_id'] = $uadmission['u_id'];
+            } else {
+                $ru_filter['ru.ru_fp_psid'] = $_POST['psid'];
+            }
+
+            //Fetch all their admissions:
+            $admissions = $this->Db_model->remix_admissions($ru_filter);
             $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load
 
             if(!$active_admission){
@@ -1921,27 +2034,10 @@ class Api_v1 extends CI_Controller {
                 'ru_r_id' => $class['r_id'],
                 'ru_status >=' => 4,
             );
-            if(!$is_instructor){
-                //Students should only see Activated students, so filter the non-activated students out:
-                $class_filters['u_fb_id >'] = 0;
-            }
             $loadboard_students = $this->Db_model->ru_fetch($class_filters);
             $countries_all = $this->config->item('countries_all');
             $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
-
-            if(!$is_instructor){
-                //Because we never fetched them!
-                $inactive_students = 0;
-            } else {
-                //We have fetched them, count them so the top ranking counts are synced for both the instructor and student view
-                $inactive_students = count($this->Db_model->ru_fetch(array(
-                    'ru_r_id' => $class['r_id'],
-                    'ru_status >=' => 4,
-                    'u_fb_id IS NULL' => null,
-                )));
-            }
-
-            $show_ranking_top = ceil((count($loadboard_students)-$inactive_students) * $show_top );
+            $show_ranking_top = ceil(count($loadboard_students) * $show_top );
 
             echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
@@ -1990,7 +2086,6 @@ class Api_v1 extends CI_Controller {
                 $counter = 0; //Keeps track of student counts
                 $bborder = '';
                 $top_ranking_shown = false;
-                $none_activated_shown = false;
 
                 foreach($loadboard_students as $key=>$admission){
 
@@ -2005,13 +2100,6 @@ class Api_v1 extends CI_Controller {
                         echo '</td>';
                         echo '</tr>';
                         $top_ranking_shown = true;
-                    }
-
-                    if(!$none_activated_shown && $is_instructor && !$admission['u_fb_id']){
-                        echo '<tr>';
-                        echo '<td colspan="7" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;"><span>Messenger Not Yet Activated</span></td>';
-                        echo '</tr>';
-                        $none_activated_shown = true;
                     }
 
                     $counter++;
@@ -2030,7 +2118,7 @@ class Api_v1 extends CI_Controller {
                     echo '<tr>';
                     if($is_instructor){
                         echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.$counter.'</td>';
-                        echo '<td valign="top" style="'.$bborder.'vertical-align:top; text-align:center; vertical-align:top;">'.( $ranking_visible && $admission['u_fb_id'] ? echo_rank($rank) : '' ).'</td>';
+                        echo '<td valign="top" style="'.$bborder.'vertical-align:top; text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
                     } else {
                         echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
                     }
@@ -2039,11 +2127,7 @@ class Api_v1 extends CI_Controller {
                     $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_fname'].' '.$admission['u_lname'];
 
 
-                    if(!$is_instructor || !$admission['u_fb_id']) {
-
-                        if(!$admission['u_fb_id']){
-                            echo '<i class="fa fa-mobile" aria-hidden="true" data-toggle="tooltip" title="Messenger Not Yet Activated. Student Hidden from other Students until activated." style="color:#FF0000;"></i> ';
-                        }
+                    if(!$is_instructor){
 
                         //Show basic list for students:
                         echo $student_name;
@@ -2414,7 +2498,13 @@ class Api_v1 extends CI_Controller {
 
 	function simulate_milestone(){
 	    //Dispatch Messages:
-        $results = tree_message($_POST['c_id'], $_POST['depth'], '381488558920384', $_POST['u_id'], 'REGULAR', $_POST['b_id'], 0);
+        $results = $this->Comm_model->foundation_message(array(
+            'e_recipient_u_id' => $_POST['u_id'],
+            'e_c_id' => $_POST['c_id'],
+            'depth' => $_POST['depth'],
+            'e_b_id' => $_POST['b_id'],
+            'e_r_id' => 0,
+        ));
 
         if($results['status']){
             echo '<i class="fa fa-check-circle" style="color:#3C4858;" title="SUCCESS: '.$results['message'].'" aria-hidden="true"></i>';
@@ -3650,7 +3740,13 @@ class Api_v1 extends CI_Controller {
         } else {
 
             //All seems good, attempt dispatch:
-            echo_json(tree_message(intval($_POST['pid']), intval($_POST['depth']), '381488558920384', intval($_POST['u_id']), 'REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, 0, 0));
+            echo_json($this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => intval($_POST['u_id']),
+                'e_c_id' => intval($_POST['pid']),
+                'depth' => intval($_POST['depth']),
+                'e_b_id' => 0,
+                'e_r_id' => 0,
+            )));
 
         }
 

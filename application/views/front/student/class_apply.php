@@ -282,10 +282,9 @@ $start_times = $this->config->item('start_times');
 
 <?php if($admission['b_fp_id']>0 && (!($admission['u_cache__fp_id']==$admission['b_fp_id']) || $admission['u_cache__fp_psid']<1)){ ?>
 <div class="wizard-box">
-	<?php $mench_bots = $this->config->item('mench_bots'); ?>
 	<p><b style="font-size:1.2em;">Activate Messenger</b></p>
 	<p>This Bootcamp offers a direct chat line with the instructor team using Facebook Messenger. Activate your Messenger by clicking on this link:</p>
-	<p style="margin:40px 0; font-weight:bold;"><a href="<?= $this->Facebook_model->fb_activation_url($admission['u_id'],$admission['b_fp_id']) ?>" target="_blank">Activate Messenger</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
+	<p style="margin:40px 0; font-weight:bold;"><a href="<?= $this->Comm_model->fb_activation_url($admission['u_id'],$admission['b_fp_id']) ?>" target="_blank">Activate Messenger</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
 </div>
 <?php } ?>
 

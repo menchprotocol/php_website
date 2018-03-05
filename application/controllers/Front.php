@@ -7,6 +7,10 @@ class Front extends CI_Controller {
 		parent::__construct();
 		$this->output->enable_profiler(FALSE);
 	}
+
+    function ping(){
+        echo_json(array('status'=>'success'));
+    }
 	
 	function index(){		
 		//Load home page:

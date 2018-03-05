@@ -15,6 +15,9 @@ class Api_chat_v1 extends CI_Controller{
         $this->output->enable_profiler(FALSE);
     }
 
+    function ping(){
+        echo_json(array('status'=>'success'));
+    }
 
     function update_admission_status(){
 
@@ -180,9 +183,15 @@ class Api_chat_v1 extends CI_Controller{
 
                         //Dispatch appropriate Messages:
                         if($email_c_id){
-                            //Send email:
-                            $this->load->model('Email_model');
-                            $this->Email_model->email_intent($admission['b_id'],$email_c_id,$admission);
+                            //Send email/Message:
+                            $this->Comm_model->foundation_message(array(
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_c_id' => $email_c_id,
+                                'depth' => 0,
+                                'e_b_id' => $admission['r_b_id'],
+                                'e_r_id' => $admission['r_id'],
+                            ));
                         }
 
                         if($engagement_type_id){
@@ -300,7 +309,7 @@ class Api_chat_v1 extends CI_Controller{
                     'status' => 0,
                     'message' => 'Student Not Enrolled in Bootcamp',
                 ));
-            } elseif(!$admissions[0]['u_fb_id']){
+            } elseif(!$admissions[0]['ru_fp_psid']){
                 echo_json(array(
                     'status' => 0,
                     'message' => 'Student Messenger Not Activated',
@@ -313,15 +322,17 @@ class Api_chat_v1 extends CI_Controller{
             } else {
 
                 //Send Message & log engagement via echo_i() function
-                $this->Facebook_model->batch_messages( '381488558920384', $admissions[0]['u_fb_id'], array(echo_i(array(
-                    'i_media_type' => $_POST['message_type'],
-                    'i_message' => $_POST['text_payload'],
-                    'i_url' => (isset($_POST['attach_url']) ? $_POST['attach_url'] : null ),
-                    'e_initiator_u_id' => $_POST['initiator_u_id'],
-                    'e_recipient_u_id' => $_POST['recipient_u_id'],
-                    'e_b_id' => $admissions[0]['b_id'],
-                    'e_r_id' => $admissions[0]['r_id'],
-                ), $admissions[0]['u_fname'], true )));
+                $this->Comm_model->send_message(array(
+                    array(
+                        'i_media_type' => $_POST['message_type'],
+                        'i_message' => $_POST['text_payload'],
+                        'i_url' => (isset($_POST['attach_url']) ? $_POST['attach_url'] : null ),
+                        'e_initiator_u_id' => $_POST['initiator_u_id'],
+                        'e_recipient_u_id' => $_POST['recipient_u_id'],
+                        'e_b_id' => $admissions[0]['b_id'],
+                        'e_r_id' => $admissions[0]['r_id'],
+                    ),
+                ));
 
                 //Show success:
                 echo_json(array(

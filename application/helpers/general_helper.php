@@ -497,7 +497,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             ));
 
             if(isset($bootcamps[0]['b_fp_id']) && $bootcamps[0]['b_fp_id']>0){
-                $button_url = $this->Facebook_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
+                $button_url = $this->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
                 if ($button_url) {
                     //append their My Account Button/URL:
                     $button_title = '🤖 Activate Messenger (Chat with Instructor)';
@@ -510,7 +510,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $button_title = trim($i['i_button']);
             $button_url = $i['i_url'];
             $command = '{inject_button}'; //Not used anywhere
-            $i['i_message'] .= $command;
+            $i['i_message'] .= $command; //To be replaced later on...
 
         }
 
@@ -625,19 +625,32 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
         }
 
-    } elseif(strlen($i['i_url'])>0) {
+    } elseif(in_array($i['i_media_type'],array('video','audio','image','file')) && strlen($i['i_url'])>0) {
 
         //Valid media file with URL:
         if($fb_format){
 
+            $payload = array();
+
             //Do we have this saved in FB Servers?
-            if(isset($i['sy_fb_att_id']) && $i['sy_fb_att_id']>0){
-                //Yesss, use that:
-                $payload = array(
-                    'attachment_id' => $i['sy_fb_att_id'],
-                );
-            } else {
-                //No, upload file:
+            if(isset($i['e_fp_id']) && $i['e_fp_id']>0 && isset($i['i_id']) && $i['i_id']>0){
+
+                //See if we have a cached version of this file for this page:
+                $synced_media_files = $CI->Db_model->sy_fetch(array(
+                    'sy_i_id' => $i['i_id'],
+                    'sy_fp_id' => $i['e_fp_id'],
+                ));
+
+                if(isset($synced_media_files[0]['sy_fb_att_id']) && $synced_media_files[0]['sy_fb_att_id']>0){
+                    //Yesss, use that:
+                    $payload = array(
+                        'attachment_id' => $synced_media_files[0]['sy_fb_att_id'],
+                    );
+                }
+            }
+
+            if(count($payload)<1){
+                //Use standard file:
                 $payload = array(
                     'url' => $i['i_url'],
                     'is_reusable' => false,
@@ -675,26 +688,6 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
     //Log engagement if Facebook and return:
     if($fb_format && count($fb_message)>0){
-
-        //Log Outbound Engagement:
-        $CI->Db_model->e_create(array(
-            'e_initiator_u_id' => ( isset($i['e_initiator_u_id']) ? $i['e_initiator_u_id'] : 0 ),
-            'e_recipient_u_id' => ( isset($i['e_recipient_u_id']) ? $i['e_recipient_u_id'] : 0 ),
-            'e_message' => ( $i['i_media_type']=='text' ? $i['i_message'] : '/attach '.$i['i_media_type'].':'.$i['i_url'] ), //For engagement dashboard...
-            'e_json' => array(
-                'i' => $i,
-                'first_name' => $first_name,
-                'fb_message' => $fb_message,
-                'tree' => ( isset($i['tree']) ? $i['tree'] : null ),
-                'depth' => ( isset($i['depth']) ? $i['depth'] : null ),
-            ),
-            'e_type_id' => 7, //Outbound message
-            'e_fp_id' => ( isset($i['e_fp_id'])   ? $i['e_fp_id'] :0), //If set...
-            'e_r_id'  => ( isset($i['e_r_id'])    ? $i['e_r_id']  :0), //If set...
-            'e_b_id'  => ( isset($i['e_b_id'])    ? $i['e_b_id']  :0), //If set...
-            'e_i_id'  => ( isset($i['i_id'])      ? $i['i_id']    :0), //The message that is being dripped
-            'e_c_id'  => ( isset($i['i_c_id'])    ? $i['i_c_id']  :0),
-        ));
 
         //Return Facebook Message to be sent out:
         return $fb_message;
@@ -997,7 +990,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         //Right content
         $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-            if($udata['u_fb_id']>0 && $level==2 && $editing_enabled){
+            if($udata['u_cache__fp_psid']>0 && $level==2 && $editing_enabled){
                 $ui .= '<a id="simulate_'.$intent['c_id'].'" class="badge badge-primary btn-mls" href="javascript:tree_message('.$intent['c_id'].','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when '.$core_objects['level_'.($level-1)]['o_name'].' starts" data-placement="top"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
             }
 
@@ -1200,6 +1193,7 @@ function calculate_bootcamp_status($b){
     
     $CI =& get_instance();
     $sprint_units = $CI->config->item('sprint_units');
+    $udata = $CI->session->userdata('user');
     //A function used on the dashboard to indicate what is left before launching the bootcamp
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
@@ -1526,7 +1520,6 @@ function calculate_bootcamp_status($b){
     //This must exist:
     $bl = ( isset($b['b__admins'][0]) ? $b['b__admins'][0] : null );
     if($bl){
-        $udata = $CI->session->userdata('user');
         $is_my_account = ( $bl['u_id']==$udata['u_id'] );
         $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account' );
         $account_href = ( $is_my_account ? '/console/account' : null );
@@ -1663,10 +1656,13 @@ function calculate_bootcamp_status($b){
 
 
     //Facebook Page
-    /*
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
-    $us_status = ( $b['b_fp_id']>0 ? 1 : 0 );
+
+
+
+    //Transition logic for instructors to remove Mench and add their own pages
+    $us_status = ( $b['b_fp_id']>0 && (!($bootcamp['b_fp_id']==4) || $udata['u_status']==3) ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#pages',
@@ -1674,7 +1670,7 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-    */
+
 
     //b_status
     $estimated_minutes = 5;
@@ -2435,321 +2431,6 @@ function fetchMax($input_array,$searchKey){
 	return $max_ui_rank;
 }
 
-
-function tree_message($intent_id, $outbound_levels=0 /* 0 is same level messages only, 1 means 1 level down, etc... */, $botkey, $e_recipient_u_id, $notification_type='REGULAR' /*REGULAR/SILENT_PUSH/NO_PUSH*/, $b_id=0, $r_id=0){
-    
-    $CI =& get_instance();
-    $udata = $CI->session->userdata('user');
-    $mench_bots = $CI->config->item('mench_bots');
-    //$e_initiator_u_id = ( isset($udata['u_id']) ? intval($udata['u_id']) : 0 );
-    $e_initiator_u_id = 0; //Always Zero to not Append Signature for automated messages, even if manually dispatched by a Mench admin
-    $e_recipient_u_id = intval($e_recipient_u_id); //Just making sure
-    $bootcamps = array();
-    $bootcamp_data = null;
-    $outbound_levels = 0; //Override this for now and only focus on dispatching tasks at 1 level!
-
-
-    //Make sure we have the core components checked:
-    if(!array_key_exists($botkey,$mench_bots)){
-        return array(
-            'status' => 0,
-            'message' => 'Invalid Bot ID',
-        );
-    } elseif($outbound_levels<0 || $outbound_levels>1){
-        return array(
-            'status' => 0,
-            'message' => 'Invalid Outbound Level',
-        );
-    } elseif(!in_array(strtoupper($notification_type),array('REGULAR','SILENT_PUSH','NO_PUSH'))){
-        return array(
-            'status' => 0,
-            'message' => 'Invalid Notification type',
-        );
-    }
-
-    //Fetch tree and its messages:
-    $tree = $CI->Db_model->c_fetch(array(
-        'c.c_id' => $intent_id,
-    ) , 1 , array('i') /* Append messages to the return */ );
-
-    if(!isset($tree[0])){
-        return array(
-            'status' => 0,
-            'message' => 'Invalid Intent ID',
-        );
-    } elseif($b_id){
-
-        if($r_id){
-            //Fetch the copy of the Action Plan for the Class:
-            $bootcamps = fetch_action_plan_copy($b_id,$r_id);
-            $class = $bootcamps[0]['this_class'];
-
-            if(!$class){
-                //This is fishy!
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Class ID',
-                );
-            }
-        } else {
-            $bootcamps = $CI->Db_model->remix_bootcamps(array(
-                'b.b_id' => $b_id,
-            ));
-        }
-
-        if(!isset($bootcamps[0])){
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Bootcamp ID',
-            );
-        } else {
-            //Fetch intent relative to the bootcamp by doing an array search:
-            $bootcamp_data = extract_level( $bootcamps[0] , $intent_id );
-        }
-
-    }
-
-    //Validate recipient:
-    $recipients = $CI->Db_model->u_fetch(array(
-        'u_id' => $e_recipient_u_id,
-    ));
-    
-    if(!isset($recipients[0])){
-        return array(
-            'status' => 0,
-            'message' => 'Invalid Recipient ID',
-        );
-    }
-    if(!$recipients[0]['u_fb_id']){
-        return array(
-            'status' => 0,
-            'message' => 'Recipient has not activated this bot yet',
-        );
-    }
-    
-    //Define key variables:
-    $instant_messages = array();
-    $current_thread_outbound = 0; //Position of current intent
-
-    //For engagement logging of custom messages (Messages that are not stored in v5_messages) via the echo_i() function
-    $custom_message_e_data = array(
-        'e_initiator_u_id' => $e_initiator_u_id,
-        'e_recipient_u_id' => $e_recipient_u_id,
-        'i_c_id' => $intent_id,
-        'e_r_id' => $r_id,
-        'e_b_id' => $b_id,
-        'tree' => $tree[0],
-        'depth' => $outbound_levels,
-    );
-
-
-    //Is the user requesting a future Milestone?
-    if($bootcamp_data && $bootcamp_data['level']==2 && $r_id && $class['r__current_milestone']>1 && $class['r__current_milestone']<$bootcamp_data['sprint_index']){
-
-        //This milestone is not started yet! Let the user know that they are up to date:
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => 'Awesome, you completed the current Milestone. No more updates for now. I will send you a message when your next Milestone starts.',
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-        //Send message:
-        $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
-
-        //Return message:
-        return array(
-            'status' => 1,
-            'message' => 'Milestone not due yet.',
-        );
-    }
-
-    //This is the very first message for this milestone!
-    if($bootcamp_data && $bootcamp_data['level']==2){
-
-        //Add message to instant stream:
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => '🚩 ​{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-    } elseif($outbound_levels==0 && $bootcamp_data && $bootcamp_data['level']==3){
-
-        //This is a task, likely due to completing the previous task:
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => 'Great job on your task completion. Let\'s move on...', //Supports {first_name} for text messages, but NOT i_url as that needs i_id for tracking (Unless add without tracking?)
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-        array_push( $instant_messages , echo_i( array_merge( array(
-            'i_media_type' => 'text',
-            'i_message' => 'The target outcome for your next task is to '.strtolower($bootcamp_data['intent']['c_objective']).'.', //Supports {first_name} for text messages, but NOT i_url as that needs i_id for tracking (Unless add without tracking?)
-        ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-    }
-
-    //See if the milestone/task has messages for it self:
-    $starting_message_count = count($instant_messages);
-
-    if(isset($tree[0]['c__messages']) && count($tree[0]['c__messages'])>0){
-        //We have messages for the very first level!
-        foreach($tree[0]['c__messages'] as $key=>$i){
-            if($i['i_status']==1){
-
-                //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
-                //$tree[0]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
-
-                //Add message to instant stream:
-                array_push( $instant_messages , echo_i(array_merge( $i , array(
-                    'e_initiator_u_id' => $e_initiator_u_id,
-                    'e_recipient_u_id' => $e_recipient_u_id,
-                    'i_c_id' => $intent_id,
-                    'e_b_id' => $b_id,
-                    'e_r_id' => $r_id,
-                    'tree' => $tree[0],
-                    'depth' => $outbound_levels,
-                )), $recipients[0]['u_fname'], true /*Facebook Format*/ ));
-
-            }
-        }
-    }
-
-
-
-    if($bootcamp_data && $bootcamp_data['level']==2){
-        //How many tasks?
-        $active_tasks = 0;
-        $bonus_tasks = 0; //TODO implement later on...
-        foreach($tree[0]['c__child_intents'] as $task){
-            if($task['c_status']>=1){
-                $active_tasks++;
-            }
-        }
-
-        if($active_tasks==0){
-
-            //Let students know there are no tasks for this milestone:
-            array_push( $instant_messages , echo_i( array_merge( array(
-                'i_media_type' => 'text',
-                'i_message' => 'This milestone has no tasks.',
-            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-        } else {
-
-            //Let them know how many tasks:
-            array_push( $instant_messages , echo_i( array_merge( array(
-                'i_media_type' => 'text',
-                'i_message' => 'To complete this milestone you need to complete its ' . $active_tasks . ' task' . ($active_tasks == 1 ? '' : 's') . ' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //The {button} command will show a link to the action plan for this milestone...
-            ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-        }
-    }
-
-    
-    //This is only for milestones (Not tasks) as its level=1 (level=0 is for tasks...)
-    if($outbound_levels==1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
-
-        $active_tasks = 0;
-        $bonus_tasks = 0; //TODO implement later on...
-        foreach($tree[0]['c__child_intents'] as $task){
-            if($task['c_status']>=1){
-                $active_tasks++;
-            }
-        }
-
-        //Count how many tasks and let them know:
-        if($active_tasks>0){
-
-            foreach($tree[0]['c__child_intents'] as $level1_key=>$level1){
-
-                if($level1['c_status']<1) {
-                    continue;
-                }
-
-
-                //Set initial counter:
-                $starting_message_count = count($instant_messages);
-
-
-                //Does this intent have messages?
-                if (isset($level1['c__messages']) && count($level1['c__messages']) > 0) {
-                    //We do have a mesasage, lets see if they are active/drip:
-                    foreach ($level1['c__messages'] as $key => $i) {
-                        if ($i['i_status'] == 1) {
-
-                            if($starting_message_count==count($instant_messages)){
-
-                                //This is the very first message for this Task being added:
-                                array_push( $instant_messages , echo_i( array_merge( array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.strtolower($level1['c_objective']).'. Your instructor has estimated this task to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
-                                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-                                if($active_tasks>1){
-                                    array_push( $instant_messages , echo_i( array_merge( array(
-                                        'i_media_type' => 'text',
-                                        'i_message' => 'Once completed I will instantly unlock your next task.',
-                                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-                                } else {
-                                    //The only task of this milestone:
-                                    array_push( $instant_messages , echo_i( array_merge( array(
-                                        'i_media_type' => 'text',
-                                        'i_message' => 'Once completed you will complete this milestone as this is its only task.',
-                                    ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-                                }
-
-                                array_push( $instant_messages , echo_i( array_merge( array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => 'Here is how you can go about completing this task:',
-                                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-                            }
-
-                            //Not needed as we don't have this logic active for now...
-                            //Mark this tree as sent for the stepping function that will later pick it up via the cron job:
-                            //$tree[0]['c__child_intents'][$level1_key]['c__messages'][$key]['message_sent_time'] = date("Y-m-d H:i:s");
-
-                            //Add message to instant stream:
-                            array_push( $instant_messages , echo_i( array_merge( $i , array(
-                                'e_initiator_u_id' => $e_initiator_u_id,
-                                'e_recipient_u_id' => $e_recipient_u_id,
-                                'i_c_id' => $i['i_c_id'],
-                                'e_r_id' => $r_id,
-                                'tree' => $tree[0],
-                                'depth' => $outbound_levels,
-                            )), $recipients[0]['u_fname'], true /*Facebook Format*/ ));
-
-                        }
-                    }
-                }
-
-
-                //Create custom message based on Task Completion Settings:
-                array_push( $instant_messages , echo_i( array_merge( array(
-                    'i_media_type' => 'text',
-                    //TODO mention the class average response time here:
-                    'i_message' => 'Completing this Task is estimated to take '.strip_tags(echo_time($level1['c_time_estimate'],0)).'. If you needed more assistance simply send me a message and I will forward it to your instructor for a timely response. Let\'s do it 🙌​',
-                ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
-
-                //Level 1 depth only deals with a single intent, so we'll always end here:
-                break;
-            }
-        }
-    }
-
-    //Anything to be sent instantly?
-    if(count($instant_messages)>0){
-
-        //Dispatch all Instant Messages, their engagements have already been logged:
-        $CI->Facebook_model->batch_messages($botkey, $recipients[0]['u_fb_id'], $instant_messages, $notification_type);
-
-    }
-
-
-    //Successful:
-    return array(
-        'status' => ( count($instant_messages)>0 ? 1 : 0 ),
-        'message' => 'Sent '.count($instant_messages).' instant messages',
-    );
-}
 
 function html_new_run(){
 	//Start generating the add new Run button:

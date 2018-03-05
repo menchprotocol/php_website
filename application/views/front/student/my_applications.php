@@ -139,11 +139,11 @@ if(count($admissions)>0 && is_array($admissions)){
             }
         }
 
-        $bot_title = 'Step '.( $class['r_usd_price']>0 ? '4' : '3' ).': Activate Your Mench Personal Assistant on Messenger';
-        if($admission['u_fb_id']>0){
+        $bot_title = 'Step '.( $class['r_usd_price']>0 ? '4' : '3' ).': Activate Messenger to Chat with your Instructor';
+        if($admission['u_cache__fp_psid']>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
         } else {
-            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Facebook_model->fb_activation_url($admission['u_id'],$live_bootcamps[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bootcamps[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         }
 
         //Let them know the status of their application:

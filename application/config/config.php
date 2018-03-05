@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.31,
+    'version' => 2.4,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
@@ -43,90 +43,6 @@ $config['mench_pricing'] = array(
     'share_platform' => 0.1, //Includes CC processing fee's via Paypal to get money to instructor
     //Top three should total 1
     'instant_payout' => 0.4, //What percentage of money paid to instructor on Day 1 of the Bootcamp, Remainder is paid via Performance Payout
-);
-
-//All active bots connected to the platform:
-$config['mench_bots'] = array(
-    '381488558920384' => array(
-        'name' => 'Mench',
-        'fb_page_id' => '381488558920384',
-        'fb_app_id' => '1782431902047009',
-        'bot_ref_url' => 'https://m.me/menchbot',
-        'access_token' => 'EAAZAVHMRbmyEBABP0jjfjHtDaZB1RKmffVlYnJHJHrXtP9fLTmDBQ1rtOjZC1VYj7zxQt7oyJui8QKjZANHAzPQZAeMjwCInynjFZAsy1szjCLOynijrrNaUeSTRRrCfHL2DITBMfo1qIyTESZBj8UIGciPfj7IHQKZB27rNbBlzeQZDZD',
-        'settings' => array(
-            'get_started' => array(
-                'payload' => 'GET_STARTED',
-            ),
-            'greeting' => array(
-                array(
-                    'locale' => 'default',
-                    'text' => 'I\'m Mench, An assistant Bot that would help you with:
-
-- Notifications/Reminders
-- Managing your Action Plan
-- Chat with your Instructor',
-                ),
-            ),
-            'whitelisted_domains' => array(
-                'http://local.mench.co',
-                'https://mench.co',
-                'https://mench.com',
-            ),
-            'persistent_menu' => array(
-                array(
-                    'locale' => 'default',
-                    'composer_input_disabled' => false,
-                    'call_to_actions' => array(
-                        array(
-                            'title' => '🚩 Action Plan',
-                            'type' => 'web_url',
-                            'url' => 'https://mench.co/my/actionplan',
-                            'webview_height_ratio' => 'tall',
-                            'webview_share_button' => 'hide',
-                            'messenger_extensions' => true,
-                        ),
-                        array(
-                            'title' => '👥 Classmates',
-                            'type' => 'web_url',
-                            'url' => 'https://mench.co/my/classmates',
-                            'webview_height_ratio' => 'tall',
-                            'webview_share_button' => 'hide',
-                            'messenger_extensions' => true,
-                        ),
-                        /*
-                        array(
-                        'title' => '⚙ My Account',
-                        'type' => 'web_url',
-                        'url' => 'https://mench.co/my/account',
-                        'messenger_extensions' => true,
-                        'webview_height_ratio' => 'tall',
-                        'webview_share_button' => 'hide',
-                        ),
-                        /*
-                        array(
-                        'title' => 'My Dashboard',
-                        'type' => 'nested',
-                        'call_to_actions' => array(
-                        array(
-                        'title' => 'Assignments',
-                        'type' => 'web_url',
-                        'url' => 'https://mench.co/my/assignments',
-                        'webview_height_ratio' => 'tall',
-                        'webview_share_button' => 'hide',
-                        ),
-                        ),
-                        ),
-                        array(
-                        'title' => 'Help & Support',
-                        'type' => 'postback',
-                        'payload' => 'HISTORY_PAYLOAD',
-                        ),
-                        */
-                    ),
-                ),
-            ),
-        ),
-    ),
 );
 
 $config['core_objects'] = array(
@@ -643,24 +559,10 @@ $config['engagement_references'] = array(
 );
 
 
-$config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time //TODO Merge with variable below
-$config['mench_cs_fb_ids'] = array(
-    array(
-        'u_fname' => 'Shervin',
-        'u_lname' => 'Enayati',
-        'u_id' => 1,
-        'u_fb_id' => '1443101719058431',
-    ),
-    array(
-        'u_fname' => 'Miguel',
-        'u_lname' => 'Hernandez',
-        'u_id' => 2,
-        'u_fb_id' => '1234880879950857',
-    )
-);
+$config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,70,72);
+$config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,69,70,72);
 
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
@@ -670,7 +572,7 @@ $config['engagement_subscriptions'] = array(
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75,84),
     ),
 );
 
@@ -678,7 +580,7 @@ $config['engagement_subscriptions'] = array(
 $config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','1','2','3','5','8','13');
+$config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','0.75','1','2','3','5','8','13');
 
 //That is auto added to all bootcamp teams as Adviser role:
 $config['message_max'] = 420; //Max number of characters allowed in messages

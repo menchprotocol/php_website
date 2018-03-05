@@ -10,6 +10,9 @@ class Bot extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
+    function ping(){
+        echo_json(array('status'=>'success'));
+    }
 
     function error(){
         //This is meant to create an error to rest the log files:
@@ -17,31 +20,7 @@ class Bot extends CI_Controller {
     }
 
     function im(){
-	    $stats = array(
-	        'message' => echo_i(array(
-                'i_media_type' => 'text',
-                'i_message' => 'Testing Message...',
-                'e_initiator_u_id' => 0, //System
-                'e_recipient_u_id' => 1,
-            ), 'Shervin', true ),
-        );
-
-        $stats['result'] = $this->Facebook_model->batch_messages('381488558920384', '1443101719058431', array($stats['message']));
-
-        echo_json($stats);
-    }
-
-    function test(){
-        echo_json($this->Facebook_model->fb_foundation_message(3139, 1, 0, 0 /*b_id*/, 0 /*r_id*/ , 0 /*depth*/, null));
-    }
-
-    function gen($u_id,$fp_id=4){
-        echo $this->Facebook_model->fb_activation_url($u_id,$fp_id);
-    }
-
-
-    function send(){
-        $this->Facebook_model->fb_direct_messages(array(
+        $this->Comm_model->send_message(array(
             array(
                 'i_media_type' => 'text',
                 'i_message' => '{first_name} your class just endedt Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​',
@@ -66,14 +45,14 @@ class Bot extends CI_Controller {
     }
 
     function m1(){
-        echo_json($this->Facebook_model->fb_intent_message(array(
+        echo_json($this->Comm_model->foundation_message(array(
             'e_recipient_u_id' => 1,
             'e_c_id' => 923,
             'depth' => 0,
         )));
     }
     function m2($c_id=2088){
-        echo_json($this->Facebook_model->fb_intent_message(array(
+        echo_json($this->Comm_model->foundation_message(array(
             'e_recipient_u_id' => 1,
             'e_c_id' => $c_id,
             'depth' => 0,
@@ -86,7 +65,18 @@ class Bot extends CI_Controller {
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => 4,
         ));
-        echo_json($this->Facebook_model->fb_identify_activate($fp_pages[0],$psid,$ref));
+        echo_json($this->Comm_model->fb_identify_activate($fp_pages[0],$psid,$ref));
+    }
+
+    function deauthorize(){
+	    //Called when someone de-authorizes our page
+        $json_data = json_decode(file_get_contents('php://input'), true);
+        //TODO maybe extract more info from $json_data, not sure how it looks like at this point...
+        $this->Db_model->e_create(array(
+            'e_message' => 'deauthorize() was called because instructor revoked some/all permission. Look at e_json log file for more information.',
+            'e_json' => $json_data,
+            'e_type_id' => 84, //Facebook Permission Deauthorized
+        ));
     }
 
 	function facebook_webhook(){
@@ -100,7 +90,6 @@ class Bot extends CI_Controller {
 		//Facebook Webhook Authentication:
 		$challenge = ( isset($_GET['hub_challenge']) ? $_GET['hub_challenge'] : null );
 		$verify_token = ( isset($_GET['hub_verify_token']) ? $_GET['hub_verify_token'] : null );
-		$mench_bots = $this->config->item('mench_bots');
 
 		if ($verify_token == '722bb4e2bac428aa697cc97a605b2c5a') {
 			echo $challenge;
@@ -169,7 +158,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
+				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 1, //Message Read
                         'e_fp_id' => $fp_pages[0]['fp_id'],
@@ -182,7 +171,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
+				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 2, //Message Delivered
                         'e_fp_id' => $fp_pages[0]['fp_id'],
@@ -224,7 +213,7 @@ class Bot extends CI_Controller {
 					$eng_data = array(
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => $json_data,
-					    'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref),
+					    'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref),
                         'e_fp_id' => $fp_pages[0]['fp_id'],
 					);
 					
@@ -249,8 +238,7 @@ class Bot extends CI_Controller {
 					}
 					*/
 					
-					
-					if($eng_data['e_initiator_u_id'] && $entry['id']=='381488558920384'){
+					if($eng_data['e_initiator_u_id']){
 					    //See if this student has any admissions:
 					    $admissions = $this->Db_model->ru_fetch(array(
 					        'r.r_status >='	   => 1, //Open for admission
@@ -276,7 +264,7 @@ class Bot extends CI_Controller {
 					//Note: Never seen this happen yet!
 					//Log engagement:
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Facebook_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
+				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
 				        'e_json' => $json_data,
 				        'e_type_id' => 5, //Messenger Optin
                         'e_fp_id' => $fp_pages[0]['fp_id'],
@@ -297,7 +285,7 @@ class Bot extends CI_Controller {
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-					$u_id = $this->Facebook_model->fb_identify_activate($fp_pages[0],$user_id,null);
+					$u_id = $this->Comm_model->fb_identify_activate($fp_pages[0],$user_id,null);
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 
@@ -457,7 +445,8 @@ class Bot extends CI_Controller {
 	                //Define numbers:
 	                $amount = floatval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
 	                $fee = floatval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] ));
-	                
+
+
 	                //Insert transaction:
 	                $transaction = $this->Db_model->t_create(array(
                         't_ru_id' => $admissions[0]['ru_id'],
@@ -480,14 +469,15 @@ class Bot extends CI_Controller {
 	                ));
 
 	                //Inform the Student:
-                    $this->load->model('Email_model');
-                    if(!$admissions[0]['u_fb_id']){
-                        //They should activate their MenchBot IF not already done so:
-                        $this->Email_model->email_intent($classes[0]['r_b_id'],2805,$users[0]);
-                    } else {
-                        //They will get notified that we're reviewing their application
-                        $this->Email_model->email_intent($classes[0]['r_b_id'],2807,$users[0]);
-                    }
+                    $this->Comm_model->foundation_message(array(
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $users[0]['u_id'],
+                        'e_c_id' => ( $admissions[0]['u_cache__fp_psid'] ? 2807 : 2805 ),
+                        'depth' => 0,
+                        'e_b_id' => $classes[0]['r_b_id'],
+                        'e_r_id' => $classes[0]['r_id'],
+                    ), true);
+
 	                
 	                //Log Engagement
 	                $this->Db_model->e_create(array(

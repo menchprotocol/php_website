@@ -1,22 +1,7 @@
 <?php
 $uadmission = $this->session->userdata('uadmission');
-if(is_dev() && 0){
 
-    ?>
-    <script>
-    $(document).ready(function() {
-        //Load shervin for Development:
-        var psid = '1443101719058431'; //Shervin
-        //var psid = '1614565628581807'; //Sam
-        $.post( "/api_v1/load_classmates", { psid:psid }, function(data) {
-            //Update UI to confirm with user:
-            $( "#page_content").html(data).append('<p style="font-size:0.6em; color:#999;">In local development mode</p>');
-        });
-    });
-    </script>
-    <?php
-
-} elseif(isset($uadmission) && count($uadmission)>0) {
+if(isset($uadmission) && count($uadmission)>0) {
 
     //Include header:
     $this->load->view('front/shared/student_nav' , array(
@@ -26,7 +11,7 @@ if(is_dev() && 0){
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/api_v1/load_classmates", { psid:<?= $uadmission['u_fb_id'] ?> }, function(data) {
+        $.post("/api_v1/load_classmates", { psid:0 }, function(data) {
             $( "#page_content").html(data);
         });
     </script>

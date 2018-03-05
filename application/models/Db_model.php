@@ -15,8 +15,7 @@ SELECT AVG(ru.ru_cache__completion_rate) AS cr
 FROM v5_class_students ru
 JOIN v5_users u ON u.u_id = ru.ru_u_id
 WHERE ru.ru_status >= 4
-  AND ru_r_id = ".$r_id."
-  AND u_fb_id > 0")->result());
+  AND ru_r_id = ".$r_id)->result());
     }
 
 	/* ******************************
@@ -788,31 +787,6 @@ WHERE ru.ru_status >= 4
 	}
 	
 	
-
-	function c_fb_fetch($fb_psid){
-	    //Fetch user's active bootcamps
-	    $this->db->select('c.*');
-	    
-	    $this->db->from('v5_class_students ru');
-	    $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
-	    $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
-	    $this->db->join('v5_bootcamps b', 'b.b_id = r.r_b_id');
-	    $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
-	    
-	    $this->db->where('u.u_fb_id',$fb_psid);
-	    $this->db->where('ru.ru_status >=',0);
-	    $this->db->where('r.r_status >=',1);
-	    $this->db->where('u.u_status >=',0);
-	    $this->db->where('b.b_status >=',2);
-	    $this->db->where('c.c_status >=',1);
-	    
-	    $this->db->order_by('r.r_start_date','ASC');
-	    $q = $this->db->get();
-	    
-	    return $q->result_array();
-	}
-	
-	
 	
 	
 	/* ******************************
@@ -834,7 +808,7 @@ WHERE ru.ru_status >= 4
 
         //Order by completion rate:
         $this->db->order_by('ru.ru_cache__completion_rate','DESC');
-        $this->db->order_by('u.u_fb_id','ASC');
+        $this->db->order_by('u.u_cache__fp_psid','ASC');
 
         $q = $this->db->get();
         return $q->result_array();
@@ -1403,7 +1377,6 @@ WHERE ru.ru_status >= 4
                         'ba.ba_b_id' => $link_data['e_b_id'],
                         'ba.ba_status >=' => 2, //co-instructors & lead instructor
                         'u.u_status >=' => 1, //Must be a user level 1 or higher
-                        'u.u_fb_id >' => 0, //Activated messenger
                     ));
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
@@ -1417,15 +1390,17 @@ WHERE ru.ru_status >= 4
                         if(in_array($link_data['e_type_id'],$instructor_subscriptions)){
 
                             //Mench notifications:
-                            $this->Facebook_model->batch_messages( '381488558920384', $bi['u_fb_id'], array(echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $subject."\n\n".$body."\n\n".$url,
-                                'i_url' => $url,
-                                'e_initiator_u_id' => 0, //System/MenchBot
-                                'e_recipient_u_id' => $bi['u_id'],
-                                'e_b_id' => $link_data['e_b_id'],
-                                'e_r_id' => ( isset($link_data['e_r_id']) ? $link_data['e_r_id'] : 0 ),
-                            ), $bi['u_fname'], true )));
+                            $this->Comm_model->send_message(array(
+                                array(
+                                    'i_media_type' => 'text',
+                                    'i_message' => $subject."\n\n".$body."\n\n".$url,
+                                    'i_url' => $url,
+                                    'e_initiator_u_id' => 0, //System/MenchBot
+                                    'e_recipient_u_id' => $bi['u_id'],
+                                    'e_b_id' => $link_data['e_b_id'],
+                                    'e_r_id' => ( isset($link_data['e_r_id']) ? $link_data['e_r_id'] : 0 ),
+                                ),
+                            ));
 
                         }
                     }
@@ -1434,6 +1409,7 @@ WHERE ru.ru_status >= 4
 
             //Individual subscriptions:
             foreach($engagement_subscriptions as $subscription){
+
                 if(in_array($link_data['e_type_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
 
                     //Just do this one:
@@ -1446,6 +1422,7 @@ WHERE ru.ru_status >= 4
 
                     //Did we find it? We should have:
                     if(isset($engagements[0])){
+
                         $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
 
                         //Compose email:
@@ -1471,8 +1448,7 @@ WHERE ru.ru_status >= 4
                         $html_message .= '<div style="font-size:0.8em;">Engagement ID '.$engagements[0]['e_id'].'</div>';
 
                         //Send email:
-                        $this->load->model('Email_model');
-                        $this->Email_model->send_single_email($subscription['admin_emails'],$subject,$html_message);
+                        $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);
                     }
                 }
             }

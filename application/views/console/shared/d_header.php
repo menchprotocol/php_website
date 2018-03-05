@@ -3,7 +3,6 @@
 $udata = $this->session->userdata('user');
 $uadmission = $this->session->userdata('uadmission');
 $website = $this->config->item('website');
-$mench_bots = $this->config->item('mench_bots');
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -62,7 +61,7 @@ $mench_bots = $this->config->item('mench_bots');
 					</span>
 				</div>
 				
-				<?php if($udata['u_fb_id']>0){ ?>
+				<?php if($udata['u_cache__fp_psid']>0){ ?>
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</span></a></li> */ ?>
@@ -98,10 +97,17 @@ $mench_bots = $this->config->item('mench_bots');
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/classes"><i class="fa fa-calendar" aria-hidden="true"></i><p>Classes</p></a></li>';
                 	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/students')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/students"><i class="fa fa-users" aria-hidden="true"></i><p>Students</p></a></li>';
-                	    
+
             	    //echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
-            	    
+
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$bootcamp['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$bootcamp['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
+
+            	    //Is it connected to a Facebook Page?
+                    if($bootcamp['b_fp_id']>0 && ( !($bootcamp['b_fp_id']==4) || $udata['u_status']==3 )){
+                        //Fetch page details:
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Access your student chat using your Facebook Page Inbox" href="/api_v1/page_redirect/'.$bootcamp['b_fp_id'].'/'.md5($bootcamp['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                    }
+
         		}
             	?>
             	</ul>

@@ -341,13 +341,13 @@ if($object_name=='engagements'){
             //Show Graduation Funnel:
             $admitted = count($this->Db_model->ru_fetch(array(
                 'r.r_id'	       => $class['r_id'],
-                'ru.ru_status >='   => 4,
-                'u.u_fb_id >'      => 0, //Activated is what really counts...
+                'ru.ru_status >='  => 4,
+                'ru.ru_fp_psid >'  => 0, //Activated is what really counts...
             )));
             $completed = count($this->Db_model->ru_fetch(array(
-                'r.r_id'	       => $class['r_id'],
-                'ru.ru_cache__current_milestone >'   => $class['r__total_milestones'],
-                'u.u_fb_id >'      => 0, //Activated is what really counts...
+                'r.r_id'	                        => $class['r_id'],
+                'ru.ru_cache__current_milestone >'  => $class['r__total_milestones'],
+                'ru.ru_fp_psid >'                   => 0, //Activated is what really counts...
             )));
             echo '<span data-toggle="tooltip" title="Completion Rate (Total Admitted Students who Activated Messenger)">';
             echo '<b>'.($admitted>0 ? round($completed/$admitted*100) : '0').'%</b> Completed ('.$admitted.')';
@@ -463,7 +463,7 @@ if($object_name=='engagements'){
         //Fetch messages if activated MenchBot:
         unset($messages);
         unset($read_message);
-        if($user['u_fb_id']>0){
+        if($user['u_cache__fp_psid']>0){
             $messages = $this->Db_model->e_fetch(array(
                 '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
                 '(e_type_id IN (6,7))' => null,
@@ -509,10 +509,10 @@ if($object_name=='engagements'){
             }
         echo '</td>';
         echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
-        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<a href="https://www.facebook.com/menchbot/inbox" target="_blank">'.( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).'</a> on' : '<a href="'.$this->Facebook_model->fb_activation_url($user['u_id'],4 /*Mench Facebook Page*/ ).'" style="color:#CCC;">Mench Act. URL</a>' ).'</td>';
-        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? ( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).' on' : '<a href="'.$this->Comm_model->fb_activation_url($user['u_id'],4 /*Mench Facebook Page*/ ).'" style="color:#CCC;">Mench Act. URL</a>' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
         echo '<td>'.( isset($read_message[0]) ? '<i class="fa fa-eye" aria-hidden="true"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
-        echo '<td>'.( isset($messages[0]) && $user['u_fb_id']>0 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
+        echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
         echo '<td>'.$user['u_timezone'].'</td>';
         echo '<td>';
 
@@ -520,7 +520,7 @@ if($object_name=='engagements'){
                 echo '<a href="mailto:'.$user['u_email'].'" title="Email '.$user['u_email'].'"><i class="fa fa-envelope" aria-hidden="true"></i></a>&nbsp;';
             }
 
-            if(isset($_GET['pid']) && $user['u_fb_id']>0){
+            if(isset($_GET['pid']) && $user['u_cache__fp_psid']>0){
                 //Lets check their history:
                 $sent_messages = $this->Db_model->e_fetch(array(
                     'e_type_id' => 7,

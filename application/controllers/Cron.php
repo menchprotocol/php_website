@@ -9,6 +9,10 @@ class Cron extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
+	function ping(){
+	    echo_json(array('status'=>'success'));
+    }
+
     /* ******************************
      * System
      * /usr/bin/php /var/www/us/index.php cron student_reminder_complete_application
@@ -25,7 +29,6 @@ class Cron extends CI_Controller {
         ));
 
         //Include email model for certain communications:
-        $this->load->model('Email_model');
         $start_times = $this->config->item('start_times');
 
         //Generate stats for this cron run:
@@ -64,10 +67,7 @@ class Cron extends CI_Controller {
                     'rejected_incomplete' => 0, //Rejected because their application was incomplete by the time the class started
                     'rejected_pending' => 0, //Rejected because their application was not approved by instructor by the time the class started
                     'rejected_class_cancelled' => 0, //Rejected because the class did not start (see reasons below)
-                    'accepted' => array(
-                        'menchbot_active' => 0,
-                        'menchbot_inactive' => 0,
-                    ),
+                    'accepted_started' => 0, //The students who got started with this Class
                 ),
             );
 
@@ -87,12 +87,20 @@ class Cron extends CI_Controller {
                     $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
 
                     //Inform the student of auto rejection because they missed deadline:
-                    $this->Email_model->email_intent($class['r_b_id'],3016,$admission);
+                    $this->Comm_model->foundation_message(array(
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $admission['u_id'],
+                        'e_c_id' => 3016,
+                        'depth' => 0,
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
                 }
             }
 
 
             //Auto reject all applications that were not yet accepted:
+            //TODO Maybe turn this into Auto accept?
             $pending_admissions = $this->Db_model->ru_fetch(array(
                 'ru.ru_r_id'	    => $class['r_id'],
                 'ru.ru_status'	    => 2,
@@ -106,10 +114,17 @@ class Cron extends CI_Controller {
                 foreach($pending_admissions as $admission){
 
                     //Auto reject:
-                    $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
+                    $this->Db_model->ru_update($admission['ru_id'] , array('ru_status' => -1));
 
                     //Inform the student of rejection:
-                    $this->Email_model->email_intent($class['r_b_id'],2799,$admission);
+                    $this->Comm_model->foundation_message(array(
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $admission['u_id'],
+                        'e_c_id' => 2799,
+                        'depth' => 0,
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
 
                     //Was this a paid class? Let admin know to manually process refunds
                     if($class['r_usd_price']>0){
@@ -176,7 +191,14 @@ class Cron extends CI_Controller {
                         $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
 
                         //Inform the student of rejection:
-                        $this->Email_model->email_intent($class['r_b_id'],3017,$admission);
+                        $this->Comm_model->foundation_message(array(
+                            'e_initiator_u_id' => 0,
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_c_id' => 3017,
+                            'depth' => 0,
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
 
                         //Was this a paid class? Let admin know to manually process refunds
                         //TODO automate refunds through Paypal API later on...
@@ -223,26 +245,38 @@ class Cron extends CI_Controller {
                     $this->Db_model->snapshot_action_plan($bootcamps[0]['b_id'],$class['r_id']);
                 }
 
+                $stats[$class['r_id']]['students']['accepted_started'] = count($accepted_admissions);
+
 
                 //Dispatch appropriate Message to Students
                 foreach($accepted_admissions as $admission){
-                    if($admission['u_fb_id']>0){
 
-                        //Update counter:
-                        $stats[$class['r_id']]['students']['accepted']['menchbot_active']++;
-
-                        //They already have MenchBot activated, send message:
-                        tree_message($first_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
-
+                    if(!($admission['ru_fp_psid']>0) || !($admission['ru_fp_id']>0)){
+                        //No Messenger activated yet! Remind them again:
+                        $this->Comm_model->foundation_message(array(
+                            'e_initiator_u_id' => 0,
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_c_id' => 3120,
+                            'depth' => 0,
+                            'e_b_id' => $class['r_b_id'],
+                            'e_r_id' => $class['r_id'],
+                        ));
                     } else {
-
-                        //Update counter:
-                        $stats[$class['r_id']]['students']['accepted']['menchbot_inactive']++;
-
-                        //No MenchBot activated yet! Remind them again:
-                        $this->Email_model->email_intent($class['r_b_id'],3120,$admission);
-
+                        //Override this as the user's primary Chatline:
+                        $this->Db_model->u_update( $admission['u_id'] , array(
+                            'ru_fp_id' => $admission['ru_fp_id'],
+                            'ru_fp_psid' => $admission['ru_fp_psid'],
+                        ));
                     }
+
+                    //Send message for their first Class:
+                    $this->Comm_model->foundation_message(array(
+                        'e_recipient_u_id' => $admission['u_id'],
+                        'e_c_id' => $first_milestone_c_id, //First Milestone of this Class
+                        'depth' => 0,
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
                 }
 
 
@@ -288,12 +322,11 @@ class Cron extends CI_Controller {
             //Where is the class at now?
             if($class['r__current_milestone']<0){
 
-                //Class has ended, take necessary actions here:
-                //All good, ove on to dispatch phase...
+                //Class ended
                 //Fetch all the class students, and see which ones advance to this new milestone:
                 $accepted_admissions = $this->Db_model->ru_fetch(array(
                     'ru.ru_r_id'	    => $class['r_id'],
-                    'ru.ru_status'	    => 4, //Admitted students
+                    'ru.ru_status >='	=> 4, //Admitted students
                 ));
 
                 if(count($accepted_admissions)==0){
@@ -312,190 +345,113 @@ class Cron extends CI_Controller {
 
                 } else {
 
-                    //Do a count for stat reporting:
-                    $completion_stats = array(
-                        'completed' => array(),
-                        'incomplete_activated' => array(),
-                        'incomplete_inactive' => array(),
-                    );
-
-                    //Loop through students to see how did everyone do:
-                    foreach($accepted_admissions as $admission){
-                        //See where the student is at, did they finish the previous milestone?
-                        if($admission['u_fb_id']>0 && $admission['ru_cache__current_milestone']>$class['r__total_milestones']){
-                            array_push($completion_stats['completed'],$admission);
-                        } elseif($admission['u_fb_id']>0) {
-                            array_push($completion_stats['incomplete_activated'],$admission);
-                        } else {
-                            //Nothing we would do with these students, only for statistics purposes:
-                            array_push($completion_stats['incomplete_inactive'],$admission);
-                        }
-                    }
-
-                    //How did the class do overall?
-                    $qualified_students = count($accepted_admissions) - count($completion_stats['incomplete_inactive']);
-                    if($qualified_students<=0){
-                        //All students did not activate!
-                        $r_cache__completion_rate = 0;
-                    } else {
-                        $r_cache__completion_rate = number_format((count($completion_stats['completed']) / $qualified_students),3);
-                    }
-
-
-                    //Fetch all Instructors:
-                    $bootcamp_instructors = $this->Db_model->ba_fetch(array(
-                        'ba.ba_b_id'        => $class['r_b_id'],
-                        'ba.ba_status >='   => 1, //Must be an actively assigned instructor
-                        'u.u_status >='     => 1, //Must be a user level 1 or higher
-                        'u.u_fb_id >'	    => 0, //Activated MenchBot
+                    //Fetch lead Instructor:
+                    $lead_instructors = $this->Db_model->ba_fetch(array(
+                        'ba.ba_b_id'            => $class['r_b_id'],
+                        'ba.ba_status >='       => 3, //Lead Instructor
+                        'u.u_status >='         => 1, //Must be a user level 1 or higher
                     ));
 
                     //Construct the review message and button:
-                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$bootcamp_instructors[0]['u_fname'].' '.$bootcamp_instructors[0]['u_lname'].' and help improve future Classes:';
-                    $review_button = '📣 Review '.$bootcamp_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
+                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$lead_instructors[0]['u_fname'].' '.$lead_instructors[0]['u_lname'].' and help improve future Classes:';
+                    $review_button = '📣 Review '.$lead_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
 
 
-                    //Graduate Students:
-                    foreach($completion_stats['completed'] as $admission){
 
-                        //Send message:
-                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => '{first_name} your class just ended. Congratulations for completing all Milestones on-time 🎉​​​',
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $review_message,
-                                'i_button' => $review_button,
-                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                        ));
+                    //Do a count for stat reporting:
+                    $completion_stats = array(
+                        'completed' => 0,
+                        'incomplete' => 0,
+                    );
 
+                    //Loop through students and make adjustments:
+                    foreach($accepted_admissions as $admission){
+
+                        //See where the student is at, did they finish the previous milestone?
+                        if($admission['ru_cache__current_milestone']>$class['r__total_milestones']){
+                            //Completed all milestones:
+                            $completion_stats['completed']++;
+                            $ru_status = 7; //Graduate
+                            $e_type_id = 64; //Student Graduated
+                            $i_message​​ = '{first_name} your class just ended. Congratulations for completing all Milestones on-time 🎉​';
+                        } else {
+                            //Did not complete:
+                            $completion_stats['incomplete']++;
+                            $ru_status = 6; //Incomplete
+                            $e_type_id = 71; //Student Incomplete Class
+                            $i_message​​ = '{first_name} your class just ended. You can no longer submit Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​';
+                        }
 
                         //Adjust status in admissions table:
                         $this->Db_model->ru_update( $admission['ru_id'] , array(
-                            'ru_status' => 7, //Graduate
+                            'ru_status' => $ru_status,
                         ));
 
                         //Log Engagement:
                         $this->Db_model->e_create(array(
                             'e_initiator_u_id' => 0, //System
                             'e_recipient_u_id' => $admission['u_id'],
-                            'e_json' => $admission,
-                            'e_type_id' => 64, //Student Graduated
+                            'e_json' => array(
+                                'admission' => $admission,
+                                'messages' => $this->Comm_model->send_message(array(
+                                    array(
+                                        'i_media_type' => 'text',
+                                        'i_message' => $i_message​​,
+                                        'e_initiator_u_id' => 0,
+                                        'e_recipient_u_id' => $admission['u_id'],
+                                        'e_b_id' => $class['r_b_id'],
+                                        'e_r_id' => $class['r_id'],
+                                    ),
+                                    //Ask to review message:
+                                    array(
+                                        'i_media_type' => 'text',
+                                        'i_message' => $review_message,
+                                        'i_button' => $review_button,
+                                        'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                                        'e_initiator_u_id' => 0,
+                                        'e_recipient_u_id' => $admission['u_id'],
+                                        'e_b_id' => $class['r_b_id'],
+                                        'e_r_id' => $class['r_id'],
+                                    ),
+                                )),
+                            ),
+                            'e_type_id' => $e_type_id,
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
                         ));
-
                     }
 
-                    //Incomplete & Activated Students:
-                    foreach($completion_stats['incomplete_activated'] as $admission){
-
-                        //Send message:
-                        $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => '{first_name} your class just ended. You can no longer submit Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​',
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                            echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $review_message,
-                                'i_button' => $review_button,
-                                'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $admission['u_fname'], true ),
-                        ));
-
-
-                        //Adjust status in admissions table:
-                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                            'ru_status' => 6, //Incomplete
-                        ));
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
-                            'e_type_id' => 71, //Student Incomplete Class
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
+                    //How did the class do overall?
+                    if(count($accepted_admissions)<1){
+                        $r_cache__completion_rate = 0;
+                    } else {
+                        $r_cache__completion_rate = number_format(($completion_stats['completed'] / count($accepted_admissions)),3);
                     }
-
-                    //Incomplete & Inactive Students:
-                    foreach($completion_stats['incomplete_inactive'] as $admission){
-
-                        //Adjust status in admissions table:
-                        $this->Db_model->ru_update( $admission['ru_id'] , array(
-                            'ru_status' => 6, //Incomplete
-                        ));
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_json' => $admission, //Stores whether or not they have u_fb_id activated at this time
-                            'e_type_id' => 71, //Student Incomplete Class
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
-                    }
-
 
                     //Update Class:
                     $this->Db_model->r_update( $class['r_id'] , array(
                         'r_status' => 3, //Completed
-                        'r_cache__current_milestone' => -1, //meaning its now complete
+                        'r_cache__current_milestone' => -1, //meaning Class is now complete
                         'r_cache__completion_rate' => $r_cache__completion_rate,
                     ));
 
 
                     //Log Engagement:
                     $industry_completion = 0.10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.$qualified_students.'], you helped ['.count($completion_stats['completed']).'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
+                    $completion_message = 'Your ['.$bootcamps[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
 
                     //Log Engagement for Class Completion:
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => 0, //System
                         'e_message' => $completion_message,
-                        'e_type_id' => 69, //Class Completed
-                        'e_json' => $accepted_admissions,
+                        'e_type_id' => 69, //Class Completed, sends message to instructor team...
+                        'e_json' => array(
+                            'stats' => $completion_stats,
+                            'admissions' => $accepted_admissions,
+                        ),
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
                     ));
-
-                    //Send message to instructor team:
-                    foreach($bootcamp_instructors as $u){
-                        //Send this message & log sent engagement using the echo_i() function:
-                        $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
-                            'i_media_type' => 'text',
-                            'i_message' => $completion_message,
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $u['u_id'],
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ), $u['u_fname'], true )));
-                    }
 
                     //Show in Cron stats:
                     $stats[$class['r_id']] = $completion_message;
@@ -539,10 +495,8 @@ class Cron extends CI_Controller {
                 }
 
                 if(!$new_milestone_c_id){
-
                     //OOps, this should not happen, notify admin:
                     $stats[$class['r_id']] = 'ERROR: Could not find new Milestone c_id with r__current_milestone = cr_outbound_rank = ['.$class['r__current_milestone'].']';
-
                     //Log Error engagement:
                     $this->Db_model->e_create(array(
                         'e_message' => $stats[$class['r_id']],
@@ -551,77 +505,101 @@ class Cron extends CI_Controller {
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
                     ));
+                    continue; //Go to next class...
+                }
 
-                } else {
 
-                    //All good, ove on to dispatch phase...
-                    //Fetch all the class students, and see which ones advance to this new milestone:
-                    $accepted_admissions = $this->Db_model->ru_fetch(array(
-                        'ru.ru_r_id'	    => $class['r_id'],
-                        'ru.ru_status'	    => 4, //Admitted students
-                        'u.u_fb_id >'	    => 0, //MenchBot Activated ONLY, otherwise they should be activated to join these communications
+
+                //All good, ove on to dispatch phase...
+                //Fetch all the class students, and see which ones advance to this new milestone:
+                $accepted_admissions = $this->Db_model->ru_fetch(array(
+                    'ru.ru_r_id'	    => $class['r_id'],
+                    'ru.ru_status'	    => 4, //Admitted students
+                ));
+
+                if(count($accepted_admissions)<1){
+                    //OOps, this should not happen, notify admin:
+                    $stats[$class['r_id']] = 'ERROR: Class has no admissions';
+                    //Log Error engagement:
+                    $this->Db_model->e_create(array(
+                        'e_message' => $stats[$class['r_id']],
+                        'e_json' => $bootcamps[0],
+                        'e_type_id' => 8, //Platform Error
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
                     ));
+                    continue; //Go to next class...
+                }
 
-                    if(count($accepted_admissions)>0){
 
-                        //Do a count for stat reporting:
-                        $ontime = 0;
-                        $behind = array();
+                //Do a count for stat reporting:
+                $ontime = 0;
+                $behind = array();
 
-                        //Loop through students:
-                        foreach($accepted_admissions as $admission){
-                            //See where the student is at, did they finish the previous milestone?
-                            if($admission['ru_cache__current_milestone']>=$class['r__current_milestone']){
+                //Loop through students:
+                foreach($accepted_admissions as $admission){
+                    //See where the student is at, did they finish the previous milestone?
+                    if($admission['ru_cache__current_milestone']>=$class['r__current_milestone']){
 
-                                $ontime++;
+                        $ontime++;
 
-                                //Yes, they are up to date:
-                                tree_message($new_milestone_c_id, 0, '381488558920384', $admission['u_id'], 'REGULAR', $class['r_b_id'], $class['r_id']);
-
-                            } else {
-
-                                //We do the message later to include the total number of students who advanced:
-                                array_push($behind,$admission);
-
-                            }
-                        }
-
-                        if(count($behind)>0){
-                            foreach($behind as $admission){
-                                //Ooops, they have yet not finished, notify them that class has moved on:
-                                $this->Facebook_model->batch_messages('381488558920384', $admission['u_fb_id'], array(echo_i(array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$bootcamps[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$bootcamps[0]['b_sprint_unit'].' '.$admission['ru_cache__current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
-                                    'e_initiator_u_id' => 0,
-                                    'e_recipient_u_id' => $admission['u_id'],
-                                    'e_b_id' => $class['r_b_id'],
-                                    'e_r_id' => $class['r_id'],
-                                ), $admission['u_fname'], true )));
-                            }
-                        }
-
-                        //Update new status to classes:
-                        $this->Db_model->r_update( $class['r_id'] , array('r_cache__current_milestone' => $class['r__current_milestone']));
-
-                        //Append message to stats:
-                        $stats[$class['r_id']] = 'Moved from ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r_cache__current_milestone'].'] to ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r__current_milestone'].'] with ['.$ontime.' ON-TIME] and ['.count($behind).' BEHIND] students';
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_message' => $stats[$class['r_id']],
-                            'e_json' => array(
-                                'bootcamp' => $bootcamps[0],
-                                'accepted_admissions' => $accepted_admissions,
-                            ),
-                            'e_type_id' => 61, //Class Milestone Advanced
+                        //Yes, they are up to date, send next milestone messages:
+                        $this->Comm_model->foundation_message(array(
+                            'e_recipient_u_id' => $admission['u_id'],
+                            'e_fp_id' => $admission['ru_fp_id'],
+                            'e_c_id' => $new_milestone_c_id,
+                            'depth' => 0,
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
-                            'e_c_id' => $new_milestone_c_id,
                         ));
 
+                    } else {
+                        //We do the message later to include the total number of students who advanced using $ontime value
+                        array_push($behind,$admission);
                     }
                 }
+
+                if(count($behind)>0){
+                    foreach($behind as $admission){
+                        //Ask behind students how we can help and give them stats on how the rest of the class is doing...
+                        $this->Comm_model->send_message(array(
+                            array(
+                                'i_media_type' => 'text',
+                                'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$bootcamps[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$bootcamps[0]['b_sprint_unit'].' '.$admission['ru_cache__current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
+                                'e_initiator_u_id' => 0,
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_b_id' => $class['r_b_id'],
+                                'e_r_id' => $class['r_id'],
+                            ),
+                        ));
+                    }
+                }
+
+                //Update new status to classes:
+                $this->Db_model->r_update( $class['r_id'] , array(
+                    'r_cache__current_milestone' => $class['r__current_milestone']
+                ));
+
+                //Message for admin:
+                $completion_message = 'Moved from ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r_cache__current_milestone'].'] to ['.ucwords($bootcamps[0]['b_sprint_unit']).' '.$class['r__current_milestone'].'] with ['.$ontime.' ON-TIME] and ['.count($behind).' BEHIND] students';
+
+                //Log Engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => 0, //System
+                    'e_message' => $completion_message,
+                    'e_json' => array(
+                        'bootcamp' => $bootcamps[0],
+                        'accepted_admissions' => $accepted_admissions,
+                    ),
+                    'e_type_id' => 61, //Class Milestone Advanced, sends message to instructor team...
+                    'e_b_id' => $class['r_b_id'],
+                    'e_r_id' => $class['r_id'],
+                    'e_c_id' => $new_milestone_c_id,
+                ));
+
+                //Append message to stats:
+                $stats[$class['r_id']] = $completion_message;
+
             }
         }
 
@@ -636,7 +614,7 @@ class Cron extends CI_Controller {
         //Fetch pending drips
         $e_pending = $this->Db_model->e_fetch(array(
             'e_cron_job' => 0, //Pending
-            'e_type_id' => 52, //Scheduled Drip
+            'e_type_id' => 52, //Scheduled Drip e_type_id=52
             'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
             'e_r_id >' => 0,
@@ -659,346 +637,54 @@ class Cron extends CI_Controller {
                 'ru_r_id' => $e_message['e_r_id'],
                 'ru_status >=' => 4, //Active student
                 'r_status' => 2, //Running Class
+                'ru_fp_psid >' => 0, //Messenger activated
+                'ru_fp_id >' => 0, //Messenger activated
             ));
-
-            if(count($matching_admissions)<1){
-                //Something has changed since this Drip has been scheduled...
-                return false;
-            }
 
             //Prepare variables:
             $json_data = unserialize($e_message['ej_e_blob']);
 
-            //Increase counter:
-            $drip_sent++;
+            if(count($matching_admissions)<1){
+                //Something has changed since this Drip has been scheduled...
+                //Log Engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $e_message['e_recipient_u_id'], //System
+                    'e_message' => 'Failed to send scheduled Drip message because could not find student admission',
+                    'e_json' => $json_data,
+                    'e_type_id' => 8, //System Error
+                    'e_b_id' => $e_message['e_b_id'],
+                    'e_r_id' => $e_message['e_r_id'],
+                    'e_c_id' => $json_data['i']['i_c_id'],
+                ));
+                continue;
+            }
 
             //Send this message:
-            $this->Facebook_model->batch_messages('381488558920384', $matching_admissions[0]['u_fb_id'], array(echo_i(array_merge( $json_data['i'] , array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                'i_c_id' => $json_data['i']['i_c_id'],
-                'e_b_id' => $e_message['e_b_id'],
-                'e_r_id' => $e_message['e_r_id'],
-            )), $matching_admissions[0]['u_fname'],true )));
+            $this->Comm_model->send_message(array(
+                array_merge($json_data['i'], array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    'i_c_id' => $json_data['i']['i_c_id'],
+                    'e_b_id' => $e_message['e_b_id'],
+                    'e_r_id' => $e_message['e_r_id'],
+                )),
+            ));
 
             //Update Engagement:
             $this->Db_model->e_update( $e_message['e_id'] , array(
                 'e_cron_job' => 1, //Mark as done
             ));
+
+            //Increase counter:
+            $drip_sent++;
         }
 
         //Echo message for cron job:
         echo $drip_sent.' Drip messages sent';
+
     }
 
-    function deprecated__drip(){
-
-        /*
-         * This was the older cron for Drip messages that is now retired...
-         *
-         * Keeping it because it has a logic of Intent/Milestone-Duration distribution method
-         * which may be useful later on...
-         *
-         * */
-        exit;
-        //Cron Settings: 15,45 * * * *
-        //Set drip setting variables:
-        $drip_settings = array(
-            'buffer_bootcamp_start' => 0.1,
-            'buffer_bootcamp_end' => 0.1,
-            'buffer_class_start' => 0.1,
-            'buffer_class_end' => 0.1,
-        );
-
-        //Now fetch all active classes:
-        $classes = $this->Db_model->r_fetch(array(
-            'r_status' => 2, //Running
-        ));
-
-        //Loop through the active classes to see whatssup!
-        $results = array();
-        foreach($classes as $class){
-
-            //Fetch full Bootcamp/Class data for this:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $bootcamps[0]['this_class'];
-
-
-            //Make sure that we are in the middle of an active Milestone:
-            if($class['r__current_milestone']<=0){
-                //This class has no active milestones!
-                //Should not happen as its status was 2!
-                continue;
-            }
-
-            //Now lets loop through the Bootcamp and Milestone levels to see if we have any drip messages pending
-            $drip_stats = array(
-                'd_bootcamp' => array(
-                    'c_id' => $bootcamps[0]['b_c_id'],
-                    'send' => array(),
-                    'send_ids' => array(),
-                    'sent' => array(),
-                    'sent_ids' => array(),
-                    'drips_sent' => 0, //Reflects total drip messages sent to students at this level
-                ),
-                'd_milestone' => array(
-                    'current_milestone' => array(), //Will be populated later...
-                    'c_id' => 0, //Will be populated later...
-                    'send' => array(),
-                    'send_ids' => array(),
-                    'sent' => array(),
-                    'sent_ids' => array(),
-                    'drips_sent' => 0, //Reflects total drip messages sent to students at this level
-                ),
-            );
-
-
-
-            /* **********************************
-             * **********************************
-             * Bootcamp-Level Drip Messages
-             * **********************************
-             * **********************************
-             */
-
-            //Addup total Bootcamp drip messages:
-            foreach($bootcamps[0]['c__messages'] as $i){
-                if($i['i_status']==2){
-                    array_push($drip_stats['d_bootcamp']['send'],$i);
-                    array_push($drip_stats['d_bootcamp']['send_ids'],$i['i_id']);
-                }
-            }
-
-            //Any drip messages at this level?
-            if(count($drip_stats['d_bootcamp']['send'])>0){
-
-                //Yes, lets see what has been sent so far from these messages
-                $drip_stats['d_bootcamp']['sent'] = $this->Db_model->e_fetch(array(
-                    'e_r_id' => $class['r_id'],
-                    'e_type_id' => 52, //Drip sent already
-                    'e_c_id' => $drip_stats['d_bootcamp']['c_id'],
-                    'e_i_id IN ('.join(',',$drip_stats['d_bootcamp']['send_ids']).')' => null, //Only consider the currently active, as the instructor might have deleted some...
-                ));
-                foreach($drip_stats['d_bootcamp']['sent'] as $i){
-                    array_push($drip_stats['d_bootcamp']['sent_ids'],$i['e_i_id']);
-                }
-
-                //Calculate timing:
-                $drip_stats['d_bootcamp']['start'] = $class['r__class_start_time'];
-                $drip_stats['d_bootcamp']['end'] = $class['r__class_end_time'];
-                //Whats the total class duration:
-                $drip_stats['d_bootcamp']['duration'] = ( $drip_stats['d_bootcamp']['end'] - $drip_stats['d_bootcamp']['start'] );
-                //See how much of the start we'd need to exclude:
-                $drip_stats['d_bootcamp']['remove_from_start'] = $drip_stats['d_bootcamp']['duration'] * $drip_settings['buffer_bootcamp_start'];
-                //And form the end:
-                $drip_stats['d_bootcamp']['remove_from_end'] = $drip_stats['d_bootcamp']['duration'] * $drip_settings['buffer_bootcamp_end'];
-                //This gives us the effective drip window that within which drip messages would be sent:
-                $drip_stats['d_bootcamp']['effective_drip_frame'] = $drip_stats['d_bootcamp']['duration'] - $drip_stats['d_bootcamp']['remove_from_start'] - $drip_stats['d_bootcamp']['remove_from_end'];
-                //Lets see how far apart each message should be:
-                $drip_stats['d_bootcamp']['drip_sequences'] = round($drip_stats['d_bootcamp']['effective_drip_frame'] / (count($drip_stats['d_bootcamp']['send']) + 1));
-                //And calculate the exact timing of each message based on how many has been sent so far...
-                $drip_stats['d_bootcamp']['next_drip_due'] = $drip_stats['d_bootcamp']['start'] + $drip_stats['d_bootcamp']['remove_from_start'] + ((count($drip_stats['d_bootcamp']['sent'])+1)*$drip_stats['d_bootcamp']['drip_sequences']);
-                $drip_stats['d_bootcamp']['next_drip_due_formatted'] = date("Y-m-d H:i:s", $drip_stats['d_bootcamp']['next_drip_due']);
-                //For QA purposes show all drip messages due:
-                $drip_stats['d_bootcamp']['all_drips'] = array();
-                foreach($drip_stats['d_bootcamp']['send'] as $key=>$i){
-                    $drip_stats['d_bootcamp']['all_drips'][($key+1)] = date("Y-m-d H:i:s",($drip_stats['d_bootcamp']['start'] + $drip_stats['d_bootcamp']['remove_from_start'] + (($key+1)*$drip_stats['d_bootcamp']['drip_sequences'])));
-                }
-
-
-                //See if we have any Drip messages left to be sent, and if the time for sending them has arrived:
-                if( count($drip_stats['d_bootcamp']['sent'])<count($drip_stats['d_bootcamp']['send']) && time()>$drip_stats['d_bootcamp']['next_drip_due'] ){
-                    //We Need to send the next Drip message in line:
-                    foreach($drip_stats['d_bootcamp']['send'] as $i){
-                        //Make sure this has not been sent before...
-                        //Note that if the instructor changes the order of the Drips mid-way, this would still work, kind of...
-                        if(!in_array($i['i_id'],$drip_stats['d_bootcamp']['sent_ids'])){
-
-                            //Fetch active students in this class:
-                            $class_students = $this->Db_model->ru_fetch(array(
-                                'ru.ru_r_id'	    => $class['r_id'],
-                                'ru.ru_status'	    => 4, //Bootcamp students
-                                'u.u_fb_id >'	    => 0, //Activated MenchBot
-                            ));
-                            $drip_stats['d_bootcamp']['drips_sent'] = count($class_students);
-
-                            //Did we find any?
-                            if($drip_stats['d_bootcamp']['drips_sent']>0){
-
-                                //Send drip message to all students:
-                                foreach($class_students as $u){
-                                    //Send this message & log sent engagement using the echo_i() function:
-                                    $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array_merge( $i , array(
-                                        'e_initiator_u_id' => 0, //System
-                                        'e_recipient_u_id' => $u['u_id'],
-                                        'e_b_id' => $class['r_b_id'],
-                                        'e_r_id' => $class['r_id'],
-                                    )), $u['u_fname'], true )));
-                                }
-
-                                //Log engagement for the entire Drip batch:
-                                //TODO log per student
-                                $this->Db_model->e_create(array(
-                                    'e_initiator_u_id' => 0, //System
-                                    'e_recipient_u_id' => 0, //No particular person, likely a group of students
-                                    'e_message' => 'Bootcamp-level drip message sent to all '.count($class_students).' class students',
-                                    'e_json' => array(
-                                        'i' => $i,
-                                        'drip_stats' => $drip_stats['d_bootcamp'],
-                                    ),
-                                    'e_type_id' => 52, //Drip sent, Instructors are subscribed and will be notified about this...
-                                    'e_b_id' => $class['r_b_id'],
-                                    'e_r_id' => $class['r_id'],
-                                    'e_i_id' => $i['i_id'],
-                                    'e_c_id' => $drip_stats['d_bootcamp']['c_id'],
-                                ));
-                            }
-
-                            //We always will send 1 drip message at a time, so break here:
-                            break;
-                        }
-                    }
-                }
-            }
-
-
-            /* **********************************
-             * **********************************
-             * Milestone-Level Drip Messages
-             * **********************************
-             * **********************************
-             */
-
-            //Addup total milestone Drip messages for current milestone:
-            foreach($bootcamps[0]['c__child_intents'] as $milestone){
-                if($milestone['cr_outbound_rank']==$class['r__current_milestone']){
-
-                    //We found the active Milestone for this class:
-                    $drip_stats['d_milestone']['current_milestone'] = $milestone;
-                    $drip_stats['d_milestone']['c_id'] = $milestone['c_id'];
-
-                    //Lets see if it has any Drip Messages:
-                    foreach($milestone['c__messages'] as $i){
-                        if($i['i_status']==2){
-                            array_push($drip_stats['d_milestone']['send'],$i);
-                            array_push($drip_stats['d_milestone']['send_ids'],$i['i_id']);
-                        }
-                    }
-
-                    //We're done here:
-                    break;
-                }
-            }
-
-            //Any drip messages at this level?
-            if(count($drip_stats['d_milestone']['send'])>0){
-
-                //Yes, lets see what has been sent so far from these messages
-                $drip_stats['d_milestone']['sent'] = $this->Db_model->e_fetch(array(
-                    'e_r_id' => $class['r_id'],
-                    'e_type_id' => 52, //Drip sent already
-                    'e_c_id' => $drip_stats['d_milestone']['c_id'],
-                    'e_i_id IN ('.join(',',$drip_stats['d_milestone']['send_ids']).')' => null, //Only consider the currently active, as the instructor might have deleted some...
-                ));
-                foreach($drip_stats['d_milestone']['sent'] as $i){
-                    array_push($drip_stats['d_milestone']['sent_ids'],$i['e_i_id']);
-                }
-
-                //Calculate timing:
-                $drip_stats['d_milestone']['end'] = $class['r__milestones_due'][$class['r__current_milestone']];
-                $drip_stats['d_milestone']['duration'] = $bootcamps[0]['c__milestone_secs'];
-                $drip_stats['d_milestone']['start'] = $drip_stats['d_milestone']['end'] - $drip_stats['d_milestone']['duration'];
-                //See how much of the start we'd need to exclude:
-                $drip_stats['d_milestone']['remove_from_start'] = $drip_stats['d_milestone']['duration'] * $drip_settings['buffer_class_start'];
-                //And form the end:
-                $drip_stats['d_milestone']['remove_from_end'] = $drip_stats['d_milestone']['duration'] * $drip_settings['buffer_class_end'];
-
-                //Rest is same as Bootcamp calculation:
-
-                //This gives us the effective drip window that within which drip messages would be sent:
-                $drip_stats['d_milestone']['effective_drip_frame'] = $drip_stats['d_milestone']['duration'] - $drip_stats['d_milestone']['remove_from_start'] - $drip_stats['d_milestone']['remove_from_end'];
-                //Lets see how far apart each message should be:
-                $drip_stats['d_milestone']['drip_sequences'] = round($drip_stats['d_milestone']['effective_drip_frame'] / (count($drip_stats['d_milestone']['send']) + 1));
-                //And calculate the exact timing of each message based on how many has been sent so far...
-                $drip_stats['d_milestone']['next_drip_due'] = $drip_stats['d_milestone']['start'] + $drip_stats['d_milestone']['remove_from_start'] + ((count($drip_stats['d_milestone']['sent'])+1)*$drip_stats['d_milestone']['drip_sequences']);
-                $drip_stats['d_milestone']['next_drip_due_formatted'] = date("Y-m-d H:i:s", $drip_stats['d_milestone']['next_drip_due']);
-                //For QA purposes show all drip messages due:
-                $drip_stats['d_milestone']['all_drips'] = array();
-                foreach($drip_stats['d_milestone']['send'] as $key=>$i){
-                    $drip_stats['d_milestone']['all_drips'][($key+1)] = date("Y-m-d H:i:s",($drip_stats['d_milestone']['start'] + $drip_stats['d_milestone']['remove_from_start'] + (($key+1)*$drip_stats['d_milestone']['drip_sequences'])));
-                }
-
-
-                //See if we have any Drip messages left to be sent, and if the time for sending them has arrived:
-                if( count($drip_stats['d_milestone']['sent'])<count($drip_stats['d_milestone']['send']) && time()>$drip_stats['d_milestone']['next_drip_due'] ){
-                    //We Need to send the next Drip message in line:
-                    foreach($drip_stats['d_milestone']['send'] as $i){
-                        //Make sure this has not been sent before...
-                        //Note that if the instructor changes the order of the Drips mid-way, this would still work, kind of...
-                        if(!in_array($i['i_id'],$drip_stats['d_milestone']['sent_ids'])){
-
-                            //Fetch active students who are at the current milestone:
-                            $fetch_filters = array(
-                                'ru.ru_r_id'	            => $class['r_id'],
-                                'ru.ru_status'	            => 4, //Bootcamp students
-                                'u.u_fb_id >'	            => 0, //Activated MenchBot
-                            );
-
-                            if($class['r__current_milestone']>=2){
-                                //Since we're at Week 2, we only need to send these Drip messages to students who have reached this week:
-                                $fetch_filters['ru.ru_cache__current_milestone >='] = $class['r__current_milestone'];
-                            }
-
-                            $milestone_students = $this->Db_model->ru_fetch($fetch_filters);
-
-                            $drip_stats['d_milestone']['drips_sent'] = count($milestone_students);
-
-                            //Did we find any?
-                            if($drip_stats['d_milestone']['drips_sent']>0){
-
-                                //Send drip message to all students:
-                                foreach($milestone_students as $u){
-                                    //Send this message & log sent engagement using the echo_i() function:
-                                    $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array_merge( $i , array(
-                                        'e_initiator_u_id' => 0, //System
-                                        'e_recipient_u_id' => $u['u_id'],
-                                        'e_b_id' => $class['r_b_id'],
-                                        'e_r_id' => $class['r_id'],
-                                    )), $u['u_fname'], true )));
-                                }
-
-                                //Log engagement for the entire Drip batch:
-                                //TODO change to logging per student
-                                $this->Db_model->e_create(array(
-                                    'e_initiator_u_id' => 0, //System
-                                    'e_recipient_u_id' => 0, //No particular person, likely a group of students
-                                    'e_message' => 'Milestone-level drip message sent to '.count($milestone_students).' students at this milestone',
-                                    'e_json' => array(
-                                        'i' => $i,
-                                        'drip_stats' => $drip_stats['d_milestone'],
-                                    ),
-                                    'e_type_id' => 52, //Drip sent, Instructors are subscribed and will be notified about this...
-                                    'e_b_id' => $class['r_b_id'],
-                                    'e_r_id' => $class['r_id'],
-                                    'e_i_id' => $i['i_id'],
-                                    'e_c_id' => $drip_stats['d_milestone']['c_id'],
-                                ));
-                            }
-
-                            //We always will send 1 drip message at a time, so break here:
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //Add to results array:
-            $results[$class['r_id']] = $drip_stats;
-        }
-
-        //Show results:
-        echo_json($results);
-    }
 
     function bot_save_files(){
 
@@ -1131,7 +817,7 @@ class Cron extends CI_Controller {
                         );
 
                         //Attempt to save this:
-                        $result = $this->Facebook_model->fb_graph($ep['fp_id'], 'POST', 'me/message_attachments', $payload);
+                        $result = $this->Comm_model->fb_graph($ep['fp_id'], 'POST', 'me/message_attachments', $payload);
                         $db_result = false;
 
                         if($result['status'] && isset($result['e_json']['result']['attachment_id'])){
@@ -1195,7 +881,6 @@ class Cron extends CI_Controller {
         $seconds_ago = 7200; //Defines how much to go back, should be equal to cron job frequency
 
         //Create query:
-        $mench_cs_fb_ids = $this->config->item('mench_cs_fb_ids');
         $after_time = date("Y-m-d H:i:s",(time()-$seconds_ago));
 
 
@@ -1243,34 +928,40 @@ class Cron extends CI_Controller {
                     );
                     //Fetch the admins for this admission:
                     foreach($active_admission['b__admins'] as $admin){
-                        if($admin['u_fb_id']>0){
-                            array_push( $notify_fb_ids , array(
-                                'u_fname' => $admin['u_fname'],
-                                'u_lname' => $admin['u_lname'],
-                                'u_id' => $admin['u_id'],
-                                'u_fb_id' => $admin['u_fb_id'],
-                            ));
-                        }
+                        //We can handle either email or messenger connection:
+                        array_push( $notify_fb_ids , array(
+                            'u_fname' => $admin['u_fname'],
+                            'u_lname' => $admin['u_lname'],
+                            'u_id' => $admin['u_id'],
+                        ));
                     }
                 }
 
-                //We had some instructors assigned?
-                if(count($notify_fb_ids)==0){
-                    //Did not find any admin, or no admissions, set mench CS team:
-                    $notify_fb_ids = $mench_cs_fb_ids;
-                }
+                //We found assigned instructors?
+                if(count($notify_fb_ids)>0){
 
-                //Group these messages based on their receivers:
-                $md5_key = substr(md5(print_r($bootcamp_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
-                if(!isset($notify_messages[$md5_key])){
-                    $notify_messages[$md5_key] = array(
-                        'notify_admins' => $notify_fb_ids,
-                        'bootcamp_data' => $bootcamp_data,
-                        'message_threads' => array(),
-                    );
-                }
+                    //Group these messages based on their receivers:
+                    $md5_key = substr(md5(print_r($bootcamp_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
+                    if(!isset($notify_messages[$md5_key])){
+                        $notify_messages[$md5_key] = array(
+                            'notify_admins' => $notify_fb_ids,
+                            'bootcamp_data' => $bootcamp_data,
+                            'message_threads' => array(),
+                        );
+                    }
 
-                array_push($notify_messages[$md5_key]['message_threads'] , $new_messages[$key]);
+                    array_push($notify_messages[$md5_key]['message_threads'] , $new_messages[$key]);
+
+                } else {
+
+                    //Log error:
+                    $this->Db_model->e_create(array(
+                        'e_message' => 'instructor_notify_student_activity() failed to find instructors for u_id=['.$nm['e_initiator_u_id'].'] Bootcamps',
+                        'e_json' => $nm,
+                        'e_type_id' => 8, //Platform Error
+                    ));
+
+                }
             }
         }
 
@@ -1314,13 +1005,17 @@ class Cron extends CI_Controller {
 
                 //Send message to all admins:
                 foreach($msg['notify_admins'] as $admin){
-                    $this->Facebook_model->batch_messages('381488558920384', $admin['u_fb_id'], array(echo_i( array(
-                        'i_media_type' => 'text',
-                        'i_message' => substr($message,0,620), //Make sure this is not too long!
-                        'e_initiator_u_id' => 0,
-                        'e_recipient_u_id' => $admin['u_id'],
-                        'e_b_id' => ( count($msg['bootcamp_data'])>0 ? $msg['bootcamp_data']['b_id'] : 0),
-                    ), $admin['u_fname'], true )));
+
+                    $this->Comm_model->send_message(array(
+                        array(
+                            'i_media_type' => 'text',
+                            'i_message' => substr($message,0,620), //Make sure this is not too long!
+                            'e_initiator_u_id' => 0, //System
+                            'e_recipient_u_id' => $admin['u_id'],
+                            'e_b_id' => ( isset($msg['bootcamp_data']['b_id']) ? $msg['bootcamp_data']['b_id'] : 0),
+                        ),
+                    ));
+
                 }
             }
         }
@@ -1335,8 +1030,6 @@ class Cron extends CI_Controller {
     function student_reminder_complete_application(){
 
         //Cron Settings: 10 * * * *
-
-        $this->load->model('Email_model');
 
         //Fetch current incomplete applications:
         $incomplete_applications = $this->Db_model->ru_fetch(array(
@@ -1359,55 +1052,37 @@ class Cron extends CI_Controller {
             $admission_end_time = strtotime($admission['r_start_date']) - 60; //11:59PM the night before start date
             $admission_time = strtotime($admission['ru_timestamp']);
 
+
+
+
             //Send them a reminder to complete 24 hours after they start, only IF they started their application more than 6 days before the Class start:
+            $reminder_c_id = 0;
             if(($admission_time+(6*24*3600))<$admission_end_time && ($admission_time+(24*3600))<time() && !filter($reminders_sent,'e_c_id',3140)){
-                $this->Email_model->email_intent($admission['r_b_id'],3140,$admission,$admission['r_id']);
-                array_push($stats,array(
-                    'email' => 3140,
-                    'ru_id' => $admission['ru_id'],
-                    'r_id' => $admission['r_id'],
-                    'u_id' => $admission['u_id'],
-                    'ru_timestamp' => $admission['ru_timestamp'],
-                    'r_start_date' => $admission['r_start_date'],
-                    'reminders' => $reminders_sent,
-                ));
+                $reminder_c_id = 3140;
             } elseif((time()+(72*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3127)){
-                $this->Email_model->email_intent($admission['r_b_id'],3127,$admission,$admission['r_id']);
-                array_push($stats,array(
-                    'email' => 3127,
-                    'ru_id' => $admission['ru_id'],
-                    'r_id' => $admission['r_id'],
-                    'u_id' => $admission['u_id'],
-                    'ru_timestamp' => $admission['ru_timestamp'],
-                    'r_start_date' => $admission['r_start_date'],
-                    'reminders' => $reminders_sent,
-                ));
+                $reminder_c_id = 3127;
             } elseif((time()+(48*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3128)){
-                $this->Email_model->email_intent($admission['r_b_id'],3128,$admission,$admission['r_id']);
-                array_push($stats,array(
-                    'email' => 3128,
-                    'ru_id' => $admission['ru_id'],
-                    'r_id' => $admission['r_id'],
-                    'u_id' => $admission['u_id'],
-                    'ru_timestamp' => $admission['ru_timestamp'],
-                    'r_start_date' => $admission['r_start_date'],
-                    'reminders' => $reminders_sent,
-                ));
+                $reminder_c_id = 3128;
             } elseif((time()+(24*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3129)){
-                $this->Email_model->email_intent($admission['r_b_id'],3129,$admission,$admission['r_id']);
-                array_push($stats,array(
-                    'email' => 3129,
-                    'ru_id' => $admission['ru_id'],
-                    'r_id' => $admission['r_id'],
-                    'u_id' => $admission['u_id'],
-                    'ru_timestamp' => $admission['ru_timestamp'],
-                    'r_start_date' => $admission['r_start_date'],
-                    'reminders' => $reminders_sent,
-                ));
+                $reminder_c_id = 3129;
             } elseif((time()+(2*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3130)){
-                $this->Email_model->email_intent($admission['r_b_id'],3130,$admission,$admission['r_id']);
-                array_push($stats,array(
-                    'email' => 3130,
+                $reminder_c_id = 3130;
+            }
+
+            if($reminder_c_id){
+                //Send reminder:
+                $this->Comm_model->foundation_message(array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $admission['u_id'],
+                    'e_c_id' => $reminder_c_id,
+                    'depth' => 0,
+                    'e_b_id' => $admission['r_b_id'],
+                    'e_r_id' => $admission['r_id'],
+                ));
+
+                //Push stats:
+                array_push($stats, array(
+                    'email' => $reminder_c_id,
                     'ru_id' => $admission['ru_id'],
                     'r_id' => $admission['r_id'],
                     'u_id' => $admission['u_id'],
@@ -1536,20 +1211,21 @@ class Cron extends CI_Controller {
                         $class_students = $this->Db_model->ru_fetch(array(
                             'ru.ru_r_id'	    => $class['r_id'],
                             'ru.ru_status'	    => 4, //Bootcamp students
-                            'u.u_fb_id >'	    => 0, //Activated MenchBot
                         ));
 
-                        //Send drip message to all students:
+                        //Inform all students:
                         foreach($class_students as $u){
                             //Send this message & log sent engagement using the echo_i() function:
-                            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $student_message,
-                                'e_initiator_u_id' => 0, //System
-                                'e_recipient_u_id' => $u['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $u['u_fname'], true )));
+                            $this->Comm_model->send_message(array(
+                                array(
+                                    'i_media_type' => 'text',
+                                    'i_message' => $student_message,
+                                    'e_initiator_u_id' => 0, //System
+                                    'e_recipient_u_id' => $u['u_id'],
+                                    'e_b_id' => $class['r_b_id'],
+                                    'e_r_id' => $class['r_id'],
+                                ),
+                            ));
                         }
                     }
 
@@ -1559,20 +1235,21 @@ class Cron extends CI_Controller {
                             'ba.ba_b_id'        => $class['r_b_id'],
                             'ba.ba_status >='   => 1, //Must be an actively assigned instructor
                             'u.u_status >='     => 1, //Must be a user level 1 or higher
-                            'u.u_fb_id >'	    => 0, //Activated MenchBot
                         ));
 
                         //Send drip message to all students:
                         foreach($bootcamp_instructors as $u){
                             //Send this message & log sent engagement using the echo_i() function:
-                            $this->Facebook_model->batch_messages('381488558920384', $u['u_fb_id'], array(echo_i(array(
-                                'i_media_type' => 'text',
-                                'i_message' => $instructor_message,
-                                'e_initiator_u_id' => 0, //System
-                                'e_recipient_u_id' => $u['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ), $u['u_fname'], true )));
+                            $this->Comm_model->send_message(array(
+                                array(
+                                    'i_media_type' => 'text',
+                                    'i_message' => $instructor_message,
+                                    'e_initiator_u_id' => 0, //System
+                                    'e_recipient_u_id' => $u['u_id'],
+                                    'e_b_id' => $class['r_b_id'],
+                                    'e_r_id' => $class['r_id'],
+                                ),
+                            ));
                         }
                     }
 
@@ -1601,8 +1278,7 @@ class Cron extends CI_Controller {
         $admissions = $this->Db_model->ru_fetch(array(
             'r.r_status'	    => 2, //Running Class
             'ru.ru_status'      => 4, //Admitted Students
-            'u.u_fb_id >'       => 0, //Activated MenchBot
-            'ru.ru_cache__current_milestone <= r.r_cache__current_milestone' => null, //Students that are behind
+            '(ru.ru_cache__current_milestone <= r.r_cache__current_milestone)' => null, //Students that are behind
         ));
 
         //Define the logic of these reminders
@@ -1638,7 +1314,7 @@ class Cron extends CI_Controller {
         foreach($admissions as $admission){
 
             //Fetch full Bootcamp/Class data for this:
-            $bootcamps = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
+            $bootcamps = fetch_action_plan_copy($admission['r_b_id'], $admission['r_id']);
             $class = $bootcamps[0]['this_class'];
 
             //See what % of the class time has elapsed?
@@ -1656,8 +1332,16 @@ class Cron extends CI_Controller {
                         ));
 
                         if(count($reminders_sent)==0){
+
                             //Nope, send this message out:
-                            tree_message($logic['reminder_c_id'], 0, '381488558920384', $admission['u_id'], 'REGULAR', $admission['r_b_id'], $admission['r_id']);
+                            $this->Comm_model->foundation_message(array(
+                                'e_initiator_u_id' => 0, //System
+                                'e_recipient_u_id' => $admission['u_id'],
+                                'e_c_id' => $logic['reminder_c_id'],
+                                'depth' => 0,
+                                'e_b_id' => $admission['r_b_id'],
+                                'e_r_id' => $admission['r_id'],
+                            ));
 
                             //Show in stats:
                             array_push($stats,$admission['u_fname'].' '.$admission['u_lname'].' done '.round($admission['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
