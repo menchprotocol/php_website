@@ -1662,7 +1662,7 @@ function calculate_bootcamp_status($b){
 
 
     //Transition logic for instructors to remove Mench and add their own pages
-    $us_status = ( $b['b_fp_id']>0 && (!($bootcamp['b_fp_id']==4) || $udata['u_status']==3) ? 1 : 0 );
+    $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $udata['u_status']==3) ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#pages',
