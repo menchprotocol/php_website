@@ -3143,7 +3143,7 @@ class Api_v1 extends CI_Controller {
         //Show success:
         echo_json(array(
             'status' => 1,
-            'message' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
+            'message' => '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>',
         ));
     }
 

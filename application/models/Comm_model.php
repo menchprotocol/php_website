@@ -1177,6 +1177,7 @@ class Comm_model extends CI_Model {
 
                 //Fetch intent relative to the bootcamp by doing an array search:
                 $bootcamp_data = extract_level($bootcamps[0], $message['e_c_id']);
+                //IF !$bootcamp_data it likely means that intent is a generic system notification not part of $message['e_b_id']
 
                 //Do we have a Class?
                 if($message['e_r_id'] && $bootcamps[0]['this_class']){
