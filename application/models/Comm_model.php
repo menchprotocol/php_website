@@ -912,7 +912,7 @@ class Comm_model extends CI_Model {
 
     }
 
-    function send_message($messages,$force_email=false){
+    function send_message($messages,$force_email=false,$intent_title_subject=false){
 
         if(count($messages)<1){
             return array(
@@ -944,7 +944,7 @@ class Comm_model extends CI_Model {
             //TODO Implement simple caching to remember $dispatch_fp_id & $dispatch_fp_psid && $u IF details such as e_r_id remain the same
             if(1){
 
-                //Fetch user preferences:
+                //Fetch user communication preferences:
                 $users = array();
                 if(!$force_email && isset($message['e_r_id']) && $message['e_r_id']>0){
                     //Fetch admission to class:
@@ -1077,9 +1077,20 @@ class Comm_model extends CI_Model {
                 //This is an email request, combine the emails per user:
                 if(!isset($email_to_send[$u['u_id']])){
 
+
+                    $subject_line = 'New Message from Mench'; //Default...
+                    if($intent_title_subject && isset($message['i_c_id']) && $message['i_c_id']>0){
+                        $intents = $this->Db_model->c_fetch(array(
+                            'c.c_id' => $message['i_c_id'],
+                        ));
+                        if(count($intents)>0){
+                            $subject_line = $intents[0]['c_objective'];
+                        }
+                    }
+
                     $email_variables = array(
                         'u_email' => $u['u_email'],
-                        'subject_line' => 'New Message from Mench',
+                        'subject_line' => $subject_line,
                         'html_message' => echo_i($message, $u['u_fname'],false),
                         'r_reply_to_email' => ( isset($u['r_reply_to_email']) && filter_var($u['r_reply_to_email'],FILTER_VALIDATE_EMAIL) ? $u['r_reply_to_email'] : null ),
                     );
@@ -1187,6 +1198,7 @@ class Comm_model extends CI_Model {
 
 
             //Fetch intent and its messages with an appropriate depth
+            $intent_title_subject = (!$message['e_b_id'] || !$bootcamp_data);
             $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $bootcamp_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_c_id'],
@@ -1407,7 +1419,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,(isset($message['force_email']) && $message['force_email']));
+        return $this->Comm_model->send_message($instant_messages,(isset($message['force_email']) && $message['force_email']),$intent_title_subject);
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){
