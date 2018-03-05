@@ -618,6 +618,18 @@ class Comm_model extends CI_Model {
 
     function fb_activation_url($u_id,$fp_id){
 
+        if($fp_id<1 || $u_id<1){
+            //Log Error:
+            $this->Db_model->e_create(array(
+                'e_recipient_u_id' => $u_id,
+                'e_fp_id' => $fp_id,
+                'e_type_id' => 8, //Platform error
+                'e_message' => 'fb_activation_url() failed to generate activation URL as $fp_id=['.$fp_id.'] OR $u_id=['.$u_id.']',
+            ));
+            //Could not find this page!
+            return false;
+        }
+
 	    //Fetch the page:
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
@@ -1188,8 +1200,6 @@ class Comm_model extends CI_Model {
                 $error_message = 'Invalid Intent ID ['.$message['e_c_id'].']';
             } elseif($message['e_b_id'] && count($bootcamps)<1){
                 $error_message = 'Failed to find Bootcamp ['.$message['e_b_id'].']';
-            } elseif($message['e_b_id'] && !$bootcamp_data){
-                $error_message = 'Failed to locate intent ['.$message['e_c_id'].'] in Bootcamp ['.$message['e_b_id'].']';
             } elseif($message['e_r_id'] && !$message['e_b_id']){
                 $error_message = 'Cannot reference a Class without a Bootcamp';
             } elseif($message['e_r_id'] && !$class){
@@ -1227,7 +1237,7 @@ class Comm_model extends CI_Model {
 
 
         //This is the very first message for this milestone!
-        if($message['e_b_id'] && $bootcamp_data['level']==2){
+        if($bootcamp_data && $message['e_b_id'] && $bootcamp_data['level']==2){
 
             //Add message to instant stream:
             array_push($instant_messages , array_merge($message, array(
@@ -1250,7 +1260,7 @@ class Comm_model extends CI_Model {
         }
 
 
-        if($message['e_b_id'] && $bootcamp_data['level']==2){
+        if($bootcamp_data && $message['e_b_id'] && $bootcamp_data['level']==2){
 
             //How many tasks?
             $active_tasks = 0;

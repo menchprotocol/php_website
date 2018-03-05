@@ -496,9 +496,9 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 'b.b_id' => $i['e_b_id'],
             ));
 
-            if(isset($bootcamps[0]['b_fp_id']) && $bootcamps[0]['b_fp_id']>0){
+            if(isset($bootcamps[0]['b_fp_id']) && $bootcamps[0]['b_fp_id']>0 && isset($i['e_recipient_u_id']) && $i['e_recipient_u_id']>0){
                 $button_url = $this->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
-                if ($button_url) {
+                if($button_url) {
                     //append their My Account Button/URL:
                     $button_title = '🤖 Activate Messenger (Chat with Instructor)';
                     $command = '{messenger}';
