@@ -182,9 +182,10 @@ class Api_chat_v1 extends CI_Controller{
                         }
 
                         //Dispatch appropriate Messages:
+                        $comm_log = null;
                         if($email_c_id){
                             //Send email/Message:
-                            $this->Comm_model->foundation_message(array(
+                            $comm_log = $this->Comm_model->foundation_message(array(
                                 'e_initiator_u_id' => 0,
                                 'e_recipient_u_id' => $admission['u_id'],
                                 'e_c_id' => $email_c_id,
@@ -202,6 +203,7 @@ class Api_chat_v1 extends CI_Controller{
                                 'e_message' => 'Student status for '.$admission['u_fname'].' '.$admission['u_lname'].' changed from ['.trim(strip_tags(status_bible('ru',$unified_current_ru_status))).'] to ['.trim(strip_tags(status_bible('ru',intval($_POST['ru_status'])))).']',
                                 'e_json' => array(
                                     'post' => $_POST,
+                                    'comm_log' => $comm_log,
                                 ),
                                 'e_type_id' => $engagement_type_id,
                                 'e_b_id' => $admission['r_b_id'],
