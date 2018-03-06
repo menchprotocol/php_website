@@ -1398,7 +1398,7 @@ class Comm_model extends CI_Model {
 
 
         //Anything to be sent instantly?
-        if(count($instant_messages)>0){
+        if(count($instant_messages)<1){
             //Nothing to be sent
             return array(
                 'status' => 0,
