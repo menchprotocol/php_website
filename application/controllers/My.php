@@ -176,16 +176,6 @@ class My extends CI_Controller {
         $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
         if(!$active_admission){
-
-            $this->Db_model->e_create(array(
-                'e_json' => array(
-                    '$admission_filters' => $admission_filters,
-                    '$admissions' => $admissions,
-                    '$active_admission' => $active_admission,
-                ),
-                'e_type_id' => 9, //actionplan Opened
-            ));
-
             //Show Error:
             die('<div class="alert alert-danger" role="alert">You are not a student of '.($b_id?'this':'any').' Bootcamp</div>');
         }
