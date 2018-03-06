@@ -81,6 +81,17 @@ class Bot extends CI_Controller {
         ));
     }
 
+    function t(){
+	    echo_json($this->Comm_model->foundation_message(array(
+            'e_initiator_u_id' => 0,
+            'e_recipient_u_id' => 1,
+            'e_c_id' => 2698,
+            'depth' => 0,
+            'e_b_id' => 188,
+            'e_r_id' => 244,
+        )));
+    }
+
 	function facebook_webhook(){
 		
 		/*
