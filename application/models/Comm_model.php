@@ -1401,20 +1401,8 @@ class Comm_model extends CI_Model {
 
 
         //Anything to be sent instantly?
-        if(count($instant_messages)<1){
-            $this->Db_model->e_create(array(
-                'e_message' => 'foundation_message() error: No messages to be sent after compiling everything',
-                'e_type_id' => 8, //Platform Error
-                'e_json' => $message,
-                'e_c_id' => $message['e_c_id'],
-                'e_fp_id' => $message['e_fp_id'],
-                'e_recipient_u_id' => $message['e_recipient_u_id'],
-                'e_initiator_u_id' => $message['e_initiator_u_id'],
-                'e_b_id' => $message['e_b_id'],
-                'e_r_id' => $message['e_r_id'],
-            ));
-
-            //Error:
+        if(count($instant_messages)>0){
+            //Nothing to be sent
             return array(
                 'status' => 0,
                 'message' => 'No messages to be sent',

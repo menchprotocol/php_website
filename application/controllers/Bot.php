@@ -71,15 +71,11 @@ class Bot extends CI_Controller {
 
     function deauthorize(){
 	    //Called when someone de-authorizes our page
-        $json_data = json_decode(file_get_contents('php://input'), true);
-
-        //TODO maybe extract more info from $json_data, not sure how it looks like at this point...
         $this->Db_model->e_create(array(
             'e_message' => 'deauthorize() was called because instructor revoked some/all permission. Look at e_json log file for more information.',
             'e_json' => array(
-                'php_input' => $json_data,
-                'POST' => @$_POST,
-                'GET' => @$_GET,
+                'POST' => $_POST,
+                'parse_signed_request' => parse_signed_request($_POST['signed_request']),
             ),
             'e_type_id' => 84, //Facebook Permission Deauthorized
         ));
