@@ -1103,7 +1103,7 @@ class Api_v1 extends CI_Controller {
 
         //When they submit the Application Questionnaire in step 2 of their admission:
         $application_status_salt = $this->config->item('application_status_salt');
-	    if(intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['answers']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+	    if(!isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['answers']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(

@@ -612,7 +612,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
             } else {
                 //HTML format replaces the button with the command:
-                $i['i_message'] = trim(str_replace($command, '<div class="msg"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
+                $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
                 //Return HTML code:
                 $echo_ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
             }

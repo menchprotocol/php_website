@@ -804,15 +804,13 @@ class Comm_model extends CI_Model {
                 'u_status'          => 0, //For new users via Messenger
             ));
 
-            //Non verified guest students:
-            /*
+            //New Student Without Admission:
             $this->Comm_model->foundation_message(array(
                 'e_recipient_u_id' => $u['u_id'],
                 'e_fp_id' => $fp['fp_id'],
                 'e_c_id' => 921,
                 'depth' => 0,
             ));
-            */
 
             //Return the newly created user ID:
             return intval($u['u_id']);
@@ -842,7 +840,6 @@ class Comm_model extends CI_Model {
         } else {
             $u = $matching_users[0];
         }
-        
         
 
 
