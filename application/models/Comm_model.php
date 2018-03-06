@@ -1054,11 +1054,11 @@ class Comm_model extends CI_Model {
                     'e_recipient_u_id' => ( isset($message['e_recipient_u_id']) ? $message['e_recipient_u_id'] : 0 ),
                     'e_message' => ( $message['i_media_type']=='text' ? $message['i_message'] : '/attach '.$message['i_media_type'].':'.$message['i_url'] ),
                     'e_json' => array(
-                        'i' => $message,
-                        'first_name' => $u['u_fname'],
+                        'input_message' => $message,
+                        'input_force_email' => ( $force_email ? 1 : 0 ),
+                        'input_intent_title_subject' => ( $intent_title_subject ? 1 : 0 ),
                         'payload' => $payload,
-                        'tree' => ( isset($message['tree']) ? $message['tree'] : null ),
-                        'depth' => ( isset($message['depth']) ? $message['depth'] : null ),
+                        'results' => $process,
                     ),
                     'e_type_id' => 7, //Outbound message
                     'e_fp_id' => ( isset($message['e_fp_id'])   ? $message['e_fp_id'] :0), //If set...
