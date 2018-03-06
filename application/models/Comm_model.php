@@ -393,8 +393,10 @@ class Comm_model extends CI_Model {
 
             if(strlen($fp['fp_greeting'])>0){
                 $payload['greeting'] = array(
-                    'locale' => 'default',
-                    'text' => $fp['fp_greeting'], //If any
+                    array(
+                        'locale' => 'default',
+                        'text' => $fp['fp_greeting'], //If any
+                    ),
                 );
             }
 
@@ -606,7 +608,7 @@ class Comm_model extends CI_Model {
         ));
 
 
-        //Remove Page integration? (Don't do it for Mench)
+        //Remove Page integration?
         if($b_connected_count==0){
             //Yup, not connected to any more Mench Bootcamps, remove the Integration:
             $this->Comm_model->fb_page_integration($u_id,$fp_pages[0],$b_id,0);
