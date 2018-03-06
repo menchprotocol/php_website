@@ -186,7 +186,7 @@ class My extends CI_Controller {
                     'admissions' => $admissions,
                     'active_admission' => $active_admission,
                 ),
-                'e_type_id' => 32, //actionplan Opened
+                'e_type_id' => 9, //Support Needed
                 'e_message' => 'Student failed to access the Action Plan',
                 'e_b_id' => $b_id,
                 'e_c_id' => $c_id,

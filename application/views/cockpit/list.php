@@ -16,6 +16,7 @@ if($object_name=='engagements'){
     $e_type_id = $this->Db_model->a_fetch();
     $engagement_filters = array(
         'e_type_id' => 'Choose Engagement Type',
+        'e_id' => 'Engagement ID',
         'e_initiator_u_id' => 'Initiator User ID',
         'e_recipient_u_id' => 'Recipient User ID',
         'e_b_id' => 'Bootcamp ID',
