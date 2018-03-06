@@ -910,10 +910,6 @@ class Cron extends CI_Controller {
             if($new_messages[$key]['notify']){
 
                 //Lets see who is responsible for this student:
-                unset($notify_fb_ids);
-                $notify_fb_ids = array();
-                $bootcamp_data = array();
-
                 //Checks to see who is responsible for this user, likely to receive update messages or something...
                 $admissions = $this->Db_model->remix_admissions(array(
                     'ru_u_id'	     => $nm['e_initiator_u_id'],
@@ -922,6 +918,9 @@ class Cron extends CI_Controller {
                 $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
                 if($active_admission){
+
+                    unset($notify_fb_ids);
+                    $notify_fb_ids = array();
                     $bootcamp_data = array(
                         'b_id' => $active_admission['b_id'],
                         'c_objective' => $active_admission['c_objective'],
@@ -935,32 +934,22 @@ class Cron extends CI_Controller {
                             'u_id' => $admin['u_id'],
                         ));
                     }
-                }
 
-                //We found assigned instructors?
-                if(count($notify_fb_ids)>0){
+                    if(count($notify_fb_ids)>0){
 
-                    //Group these messages based on their receivers:
-                    $md5_key = substr(md5(print_r($bootcamp_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
-                    if(!isset($notify_messages[$md5_key])){
-                        $notify_messages[$md5_key] = array(
-                            'notify_admins' => $notify_fb_ids,
-                            'bootcamp_data' => $bootcamp_data,
-                            'message_threads' => array(),
-                        );
+                        //Group these messages based on their receivers:
+                        $md5_key = substr(md5(print_r($bootcamp_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
+                        if(!isset($notify_messages[$md5_key])){
+                            $notify_messages[$md5_key] = array(
+                                'notify_admins' => $notify_fb_ids,
+                                'bootcamp_data' => $bootcamp_data,
+                                'message_threads' => array(),
+                            );
+                        }
+
+                        array_push($notify_messages[$md5_key]['message_threads'] , $new_messages[$key]);
+
                     }
-
-                    array_push($notify_messages[$md5_key]['message_threads'] , $new_messages[$key]);
-
-                } else {
-
-                    //Log error:
-                    $this->Db_model->e_create(array(
-                        'e_message' => 'instructor_notify_student_activity() failed to find instructors for u_id=['.$nm['e_initiator_u_id'].'] Bootcamps',
-                        'e_json' => $nm,
-                        'e_type_id' => 8, //Platform Error
-                    ));
-
                 }
             }
         }

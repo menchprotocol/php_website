@@ -805,12 +805,14 @@ class Comm_model extends CI_Model {
             ));
 
             //Non verified guest students:
+            /*
             $this->Comm_model->foundation_message(array(
                 'e_recipient_u_id' => $u['u_id'],
                 'e_fp_id' => $fp['fp_id'],
                 'e_c_id' => 921,
                 'depth' => 0,
             ));
+            */
 
             //Return the newly created user ID:
             return intval($u['u_id']);
