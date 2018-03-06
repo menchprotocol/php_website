@@ -524,10 +524,6 @@ $config['reserved_hashtags'] = array(
 //The core objects of the platform:
 
 $config['engagement_references'] = array(
-    'e_id' => array(
-        'name' => 'Engagement ID',
-        'object_code' => 'e',
-    ),
     'e_initiator_u_id' => array(
         'name' => 'Initiator',
         'object_code' => 'u',
