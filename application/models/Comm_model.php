@@ -1409,7 +1409,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,(isset($message['force_email']) && $message['force_email']),$intent_title_subject);
+        return $this->Comm_model->send_message($instant_messages,$force_email,$intent_title_subject);
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){
