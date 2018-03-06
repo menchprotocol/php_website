@@ -1959,7 +1959,7 @@ class Api_v1 extends CI_Controller {
         if(isset($_POST['psid'])){
 
             $ru_filter = array(
-                'ru.ru_status >=' => 4, //Actively enrolled in or Completed
+                'ru.ru_status >=' => 2, //Completed Application
                 'r.r_status >=' => 1, //Open for Admission or Higher
             );
 
@@ -1978,7 +1978,7 @@ class Api_v1 extends CI_Controller {
             if(!$active_admission){
 
                 //Ooops, they dont have anything!
-                die('<div class="alert alert-danger" role="alert">You are not a student of any Bootcamp</div>');
+                die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
 
             } else {
 

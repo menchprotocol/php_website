@@ -154,7 +154,7 @@ class My extends CI_Controller {
 
         //Set admission filters:
         $admission_filters = array(
-            'ru.ru_status >=' => 4, //Actively enrolled in or Completed
+            'ru.ru_status >=' => 2, //Completed Application
             'r.r_status >=' => 1, //Open for Admission or Higher
         );
 
@@ -193,7 +193,7 @@ class My extends CI_Controller {
             ));
 
             //Show Error:
-            die('<div class="alert alert-danger" role="alert">You are not a student of '.($b_id?'this':'any').' Bootcamp</div>');
+            die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
         }
 
 	    
