@@ -51,7 +51,7 @@ if(isset($uadmission) && count($uadmission)>0){
                 function error(err){
 
                     //Give them instructions on how to access via mench.co:
-                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> This version of Facebook Messenger does not support loading websites.<br /><br />Solution: login to <a href="https://mench.co/login" target="_blank"><u>mench.co</u></a> to access your Bootcamp content. Use <b><u>Forgot Password</u></b> to generate a new password if you do not have one.</div>');
+                    $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i><a href="https://mench.co/login" target="_blank"><u>Login</u></a> to access your Action Plan. Use <b><u>Forgot Password</u></b> if you never logged in before.</div>');
 
                 }
             );
