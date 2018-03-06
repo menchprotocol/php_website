@@ -436,6 +436,15 @@ function echo_i($i,$first_name=null,$fb_format=false){
         return false;
     }
 
+
+    //Do a quick hack to make these two variables inter-changable:
+    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['e_c_id'])){
+        $i['e_c_id'] = $i['i_c_id'];
+    } elseif(isset($i['e_c_id']) && $i['e_c_id']>0 && !isset($i['i_c_id'])){
+        $i['i_c_id'] = $i['e_c_id'];
+    }
+
+
     $CI =& get_instance();
     
     if(!$fb_format){
@@ -990,7 +999,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
         //Right content
         $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-            if($udata['u_cache__fp_psid']>0 && $level==2 && $editing_enabled){
+            if($level==2 && $editing_enabled){
                 $ui .= '<a id="simulate_'.$intent['c_id'].'" class="badge badge-primary btn-mls" href="javascript:tree_message('.$intent['c_id'].','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when '.$core_objects['level_'.($level-1)]['o_name'].' starts" data-placement="top"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
             }
 
@@ -1286,6 +1295,7 @@ function calculate_bootcamp_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
+
     
     
     //Now check each Milestone and its Task List:
