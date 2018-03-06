@@ -627,11 +627,14 @@ class Api_v1 extends CI_Controller {
     function blob($e_id){
         $udata = auth(3,1);
         //Fetch blob of engagement and display it on screen:
-        $blobs = $this->Db_model->ej_fetch(array(
+        $blobs = $this->Db_model->e_fetch(array(
             'ej_e_id' => $e_id,
-        ));
+        ),1,array('ej'));
         if(count($blobs)==1){
-            echo_json(unserialize($blobs[0]['ej_e_blob']));
+            echo_json(array(
+                'blob' => unserialize($blobs[0]['ej_e_blob']),
+                'e' => $blobs[0]
+            ));
         } else {
             echo_json(array('error'=>'Not Found'));
         }

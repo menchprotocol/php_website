@@ -17,8 +17,7 @@ if($object_name=='engagements'){
     $engagement_filters = array(
         'e_type_id' => 'Choose Engagement Type',
         'e_id' => 'Engagement ID',
-        'e_initiator_u_id' => 'Initiator User ID',
-        'e_recipient_u_id' => 'Recipient User ID',
+        'e_u_id' => 'User ID',
         'e_b_id' => 'Bootcamp ID',
         'e_r_id' => 'Class ID',
         'e_c_id' => 'Intent ID',
@@ -28,11 +27,21 @@ if($object_name=='engagements'){
     $match_columns = array();
     foreach($engagement_filters as $key=>$value){
         if(isset($_GET[$key])){
-            if(substr_count($_GET[$key],',')>0){
-                //This is multiple IDs:
-                $match_columns[$key.' IN ('.$_GET[$key].')'] = null;
-            } elseif(intval($_GET[$key])>0) {
-                $match_columns[$key] = intval($_GET[$key]);
+            if($key=='e_u_id'){
+                //We need to look for both inititors and recipients:
+                if(substr_count($_GET[$key],',')>0){
+                    //This is multiple IDs:
+                    $match_columns['(e_recipient_u_id IN ('.$_GET[$key].') OR e_initiator_u_id IN ('.$_GET[$key].'))'] = null;
+                } elseif(intval($_GET[$key])>0) {
+                    $match_columns['(e_recipient_u_id = '.$_GET[$key].' OR e_initiator_u_id = '.$_GET[$key].')'] = null;
+                }
+            } else {
+                if(substr_count($_GET[$key],',')>0){
+                    //This is multiple IDs:
+                    $match_columns[$key.' IN ('.$_GET[$key].')'] = null;
+                } elseif(intval($_GET[$key])>0) {
+                    $match_columns[$key] = intval($_GET[$key]);
+                }
             }
         }
     }
@@ -135,7 +144,7 @@ if($object_name=='engagements'){
         echo '<td>'.status_bible('b',$bootcamp['b_status'],1,'right').'</td>';
         echo '<td><a href="/console/'.$bootcamp['b_id'].'">'.$bootcamp['c_objective'].'</a></td>';
         echo '<td><a href="https://www.facebook.com/'.$bootcamp['fp_fb_id'].'">'.$bootcamp['fp_name'].'</a></td>';
-        echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
 
         echo '<td>';
         if($bootcamp['student_funnel'][0]>0 || $bootcamp['student_funnel'][2]>0 || $bootcamp['student_funnel'][4]>0 || $bootcamp['student_funnel'][-1]>0){
@@ -149,7 +158,7 @@ if($object_name=='engagements'){
         echo '</tr>';
     }
     
-    //User Bootcamps:    
+    //User Bootcamps:
     $bootcamps = $this->Db_model->b_fetch(array(
         'b.b_status >=' => 0,
     ),array('c','fp'),'b_status');
@@ -272,17 +281,14 @@ if($object_name=='engagements'){
     <thead>
     <tr>
         <th style="width:40px;">#</th>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
-        <th>&nbsp;</th>
         <th>Class Start Time</th>
         <th>Class End Time</th>
         <th>Elapsed</th>
         <th>Progress</th>
         <th>Tuition</th>
-        <th>Student Stats</th>
+        <th colspan="4">Performance Stats</th>
     </tr>
     </thead>
     <tbody>
@@ -309,12 +315,8 @@ if($object_name=='engagements'){
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
 
-        echo '<td>'.( $bootcamps[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamps[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bootcamps[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
-        echo '<td class="'.( $bootcamps[0]['b_status']<2 ? 'redalert' : '' ).'">'.status_bible('b',$bootcamps[0]['b_status'],1,'right').'</td>';
-
         echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
-        echo '<td>'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
-        echo '<td>'.status_bible('r',$class['r_status'],true).'</td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
         echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
         echo '<td>';
         if($class['r_cache__end_time']){
@@ -336,6 +338,20 @@ if($object_name=='engagements'){
         }
         echo '</td>';
         echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
+
+
+        echo '<td>'.( $bootcamps[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamps[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bootcamps[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
+
+
+
+        echo '<td class="'.( $bootcamps[0]['b_status']<2 ? 'redalert' : '' ).'">';
+        if($class['r_status']<2){
+            echo status_bible('b',$bootcamps[0]['b_status'],1,'right');
+        }
+        echo '</td>';
+
+
+        echo '<td>'.status_bible('r',$class['r_status'],true).'</td>';
         echo '<td>';
 
         if($class['r_status']>=2){
@@ -487,7 +503,7 @@ if($object_name=='engagements'){
         echo '<td>'.($key+1).'</td>';
         echo '<td>'.$user['u_id'].'</td>';
         echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
-        echo '<td><a href="/cockpit/browse/engagements?e_initiator_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
 
 
         echo '<td>';
