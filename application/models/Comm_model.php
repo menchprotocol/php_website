@@ -32,8 +32,30 @@ class Comm_model extends CI_Model {
             );
         }
 
+
+        //Start building GET URL:
+        $access_token_payload = array(
+            'access_token' => $fp['fs_access_token']
+        );
+
+        if($action=='GET'){
+            //Add $payload to GET variables:
+            if(count($payload)>0){
+                $access_token_payload = array_merge($access_token_payload,$payload);
+                $payload = array();
+            }
+        }
+
+        $url = 'https://graph.facebook.com/v2.6'.$url;
+        $counter = 0;
+
+        foreach($access_token_payload as $key=>$val){
+            $url = $url.($counter==0?'?':'&').$key.'='.$val;
+            $counter++;
+        }
+
         //Make the graph call:
-        $ch = curl_init('https://graph.facebook.com/v2.6/'.$url.( substr_count($url,'?')>0 ? '&' : '?' ).'access_token='.$fp['fs_access_token']);
+        $ch = curl_init($url);
 
         //Base setting:
         $ch_setting = array(
@@ -271,14 +293,14 @@ class Comm_model extends CI_Model {
                     'client_secret' => $fb_settings['client_secret'],
                     'fb_exchange_token' => $access_token, //User's Access Token fetched via Javascript
                 );
-                $long_lived_user_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', 'oauth/access_token', $long_lived_user_token_payload, $fp);
+                $long_lived_user_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/oauth/access_token', $long_lived_user_token_payload, $fp);
 
                 //Chill for FB to catchup
                 sleep(2);
 
                 //Now re-fetch Page Token:
                 //Read "Extending Page Access Tokens" @ https://developers.facebook.com/docs/facebook-login/access-tokens/expiration-and-extension
-                $long_lived_page_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', 'me/accounts', array(), $fp);
+                $long_lived_page_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/accounts', array(), $fp);
 
 
                 //Log to analyze:
@@ -409,7 +431,7 @@ class Comm_model extends CI_Model {
             $e_json = array();
 
             //Subscribe to App so we get the messages funneled form them:
-            $e_json['subscribed_apps'] = $this->Comm_model->fb_graph($fp['fp_id'], 'POST', $fp['fp_fb_id'].'/subscribed_apps', array(), $fp);
+            $e_json['subscribed_apps'] = $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/'.$fp['fp_fb_id'].'/subscribed_apps', array(), $fp);
 
             //APP SETTING
             //First white-label our domain so we can later set the persistent menu:
@@ -435,13 +457,13 @@ class Comm_model extends CI_Model {
             }
 
             //Update:
-            $e_json['messenger_profile_base'] = $this->Comm_model->fb_graph($fp['fp_id'], 'POST', 'me/messenger_profile', $payload, $fp);
+            $e_json['messenger_profile_base'] = $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', $payload, $fp);
 
             //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
             sleep(2);
 
             //Now with the right permission, update persistent_menu:
-            $e_json['messenger_profile_persistent_menu'] = $this->Comm_model->fb_graph($fp['fp_id'], 'POST', 'me/messenger_profile', array(
+            $e_json['messenger_profile_persistent_menu'] = $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', array(
                 'persistent_menu' => array(
                     array(
                         'locale' => 'default',
@@ -487,7 +509,7 @@ class Comm_model extends CI_Model {
         } else {
 
             $e_json = array();
-            $e_json['messenger_profile'] = $this->Comm_model->fb_graph($fp['fp_id'], 'DELETE', 'me/messenger_profile' , array(
+            $e_json['messenger_profile'] = $this->Comm_model->fb_graph($fp['fp_id'], 'DELETE', '/me/messenger_profile' , array(
                 //Define the settings to delete:
                 'fields' => array(
                     'whitelisted_domains',
@@ -498,7 +520,7 @@ class Comm_model extends CI_Model {
             ));
 
             //Remove app subscription:
-            $e_json['subscribed_apps'] = $this->Comm_model->fb_graph($fp['fp_id'], 'DELETE', $fp['fp_fb_id'].'/subscribed_apps');
+            $e_json['subscribed_apps'] = $this->Comm_model->fb_graph($fp['fp_id'], 'DELETE', '/'.$fp['fp_fb_id'].'/subscribed_apps');
 
             //Log engagement:
             $this->Db_model->e_create(array(
@@ -878,7 +900,7 @@ class Comm_model extends CI_Model {
                  */
 
                 //Fetch their profile from Facebook to update
-                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
+                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/'.$fp_psid, array(), $fp);
                 if(!$graph_fetch['status']){
                     //This error has already been logged inside $this->Comm_model->fb_graph()
                     //We cannot create this user:
@@ -954,7 +976,7 @@ class Comm_model extends CI_Model {
 
                 //This is a new user that needs to be registered!
                 //Call facebook messenger API and get user profile
-                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
+                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/'.$fp_psid, array(), $fp);
 
                 if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
 
@@ -1146,7 +1168,7 @@ class Comm_model extends CI_Model {
                 );
 
                 //Messenger:
-                $process = $this->Comm_model->fb_graph($dispatch_fp_id ,'POST','me/messages', $payload);
+                $process = $this->Comm_model->fb_graph($dispatch_fp_id ,'POST','/me/messages', $payload);
 
                 //Log Outbound Message Engagement:
                 $this->Db_model->e_create(array(

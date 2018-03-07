@@ -817,7 +817,7 @@ class Cron extends CI_Controller {
                         );
 
                         //Attempt to save this:
-                        $result = $this->Comm_model->fb_graph($ep['fp_id'], 'POST', 'me/message_attachments', $payload);
+                        $result = $this->Comm_model->fb_graph($ep['fp_id'], 'POST', '/me/message_attachments', $payload);
                         $db_result = false;
 
                         if($result['status'] && isset($result['e_json']['result']['attachment_id'])){
