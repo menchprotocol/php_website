@@ -699,29 +699,48 @@ class Comm_model extends CI_Model {
 
 
 
-        //Is this fp_id/fp_psid already registered?
-        $u = array(); //Should be replaced with the user object
+        //Try finding User/Bootcamp/Class ID:
+        $b_id=0;
+        $r_id=0;
+        $u = array();
 
-        //First see if we have this user in the users table:
+        //Is this fp_id/fp_psid already registered?
         $fetch_users = $this->Db_model->u_fetch(array(
             'u_cache__fp_id' => $fp['fp_id'],
             'u_cache__fp_psid' => $fp_psid,
         ));
 
         if(count($fetch_users)>0){
+
             $u = $fetch_users[0];
+
+            //Try finding their admissions now:
+            $admissions = $this->Db_model->ru_fetch(array(
+                'ru.ru_u_id' => $u['u_id'],
+            ));
+            $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+            if($active_admission){
+                $b_id = $active_admission['r_b_id'];
+                $r_id = $active_admission['r_id'];
+            }
+
         } else {
 
             //See if we can find it in the admission table:
-            $fetch_users = $this->Db_model->ru_fetch(array(
+            $admissions = $this->Db_model->ru_fetch(array(
                 'ru_fp_id' => $fp['fp_id'],
                 'ru_fp_psid' => $fp_psid,
             ));
-
-            if(count($fetch_users)>0){
-                $u = $fetch_users[0];
+            $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+            if($active_admission){
+                $u = $active_admission;
+                $b_id = $u['r_b_id'];
+                $r_id = $u['r_id'];
             }
+
         }
+
+
 
 
         if(count($u)>0 && $u['u_id']>0){
@@ -745,19 +764,29 @@ class Comm_model extends CI_Model {
 
                 } else {
                     //Ooops, this is a legitimate user which we cannot override
+
+                    //Send notification Messages:
+                    $notify_user = $this->Comm_model->foundation_message(array(
+                        'e_recipient_u_id' => $u['u_id'],
+                        'e_fp_id' => $fp['fp_id'],
+                        'e_c_id' => 923,
+                        'depth' => 0,
+                        'e_b_id' => $b_id,
+                        'e_r_id' => $r_id,
+                    ));
+
                     //Log engagement:
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => $u['u_id'],
                         'e_recipient_u_id' => $ref_u_id,
-                        'e_json' => $this->Comm_model->foundation_message(array(
-                            'e_recipient_u_id' => $u['u_id'],
-                            'e_fp_id' => $fp['fp_id'],
-                            'e_c_id' => 923,
-                            'depth' => 0,
-                        )),
+                        'e_json' => $notify_user,
                         'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
                         'e_type_id' => 8, //Platform error
+                        'e_b_id' => $b_id,
+                        'e_r_id' => $r_id,
                     ));
+
+                    //Return user ID:
                     return intval($u['u_id']);
                 }
 
@@ -812,6 +841,8 @@ class Comm_model extends CI_Model {
                 'e_fp_id' => $fp['fp_id'],
                 'e_c_id' => 921,
                 'depth' => 0,
+                'e_b_id' => $b_id,
+                'e_r_id' => $r_id,
             ));
 
             //Return the newly created user ID:
@@ -823,24 +854,42 @@ class Comm_model extends CI_Model {
 
         
         
-        
-
+        //So now we should have $ref_u_id set
         //Fetch this account and see whatssup:
         $matching_users = $this->Db_model->u_fetch(array(
             'u_id' => $ref_u_id,
         ));
         if(count($matching_users)<1){
+
             //Invalid user ID, should not happen...
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $ref_u_id,
                 'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
                 'e_type_id' => 8, //Platform Error
                 'e_fp_id' => $fp['fp_id'],
+                'e_b_id' => $b_id,
+                'e_r_id' => $r_id,
             ));
             
             return 0;
+
         } else {
+
+            //Set user object:
             $u = $matching_users[0];
+
+            //Try to fetch their active admission:
+            if(!$b_id || !$r_id){
+                //We can try to find their admissions now:
+                $admissions = $this->Db_model->ru_fetch(array(
+                    'ru.ru_u_id' => $ref_u_id,
+                ));
+                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+                if($active_admission){
+                    $b_id = $active_admission['r_b_id'];
+                    $r_id = $active_admission['r_id'];
+                }
+            }
         }
         
 
@@ -880,7 +929,7 @@ class Comm_model extends CI_Model {
             'u_cache__fp_psid' => $fp_psid,
         ));
 
-        //Go through all their admissions and set this:
+        //Go through all their admissions and update their Messenger PSID:
         $admissions = $this->Db_model->ru_fetch(array(
             'ru_u_id' => $u['u_id'],
             'ru_fp_id' => $fp['fp_id'], //Already set to this
@@ -893,20 +942,27 @@ class Comm_model extends CI_Model {
         }
 
 
-        //Log Activation Engagement & send message:
+        //Send activation Message:
+        $activation_msg = $this->Comm_model->foundation_message(array(
+            'e_recipient_u_id' => $u['u_id'],
+            'e_fp_id' => $fp['fp_id'],
+            'e_c_id' => ($u['u_status']==2 ? 918 : 926),
+            'depth' => 0,
+            'e_b_id' => $b_id,
+            'e_r_id' => $r_id,
+        ));
+
+        //Log Activation Engagement
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $u['u_id'],
             'e_json' => array(
                 'fb_profile' => $fb_profile,
-                'activation_msg' => $this->Comm_model->foundation_message(array(
-                    'e_recipient_u_id' => $u['u_id'],
-                    'e_fp_id' => $fp['fp_id'],
-                    'e_c_id' => ($u['u_status']==2 ? 918 : 926),
-                    'depth' => 0,
-                )),
+                'activation_msg' => $activation_msg,
             ),
             'e_type_id' => 31, //Messenger Activated
             'e_fp_id' => $fp['fp_id'],
+            'e_b_id' => $b_id,
+            'e_r_id' => $r_id,
         ));
 
         //Return User ID:
@@ -1200,7 +1256,6 @@ class Comm_model extends CI_Model {
 
 
             //Fetch intent and its messages with an appropriate depth
-            $intent_title_subject = (!$message['e_b_id'] || !$bootcamp_data);
             $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $bootcamp_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_c_id'],
@@ -1409,7 +1464,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,$force_email,$intent_title_subject);
+        return $this->Comm_model->send_message($instant_messages,$force_email,(!$message['e_b_id'] || !$bootcamp_data));
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){

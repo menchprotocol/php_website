@@ -120,6 +120,13 @@ function filter_active_admission($admissions){
          *
          */
 
+
+        //TODO Ooptimize the loop below because I cannot fully wrap my head around it for now!
+        //Should think further about priorities and various use cases of this function
+        //So i'm leaving it as is to be tested further @ later date (Mar 6th 2018)
+
+        $active_admission = null;
+
         foreach($admissions as $admission){
             //Now see whatssup:
             if($admission['ru_status']>4 || $admission['r_status']>2){
@@ -128,10 +135,13 @@ function filter_active_admission($admissions){
             } elseif($admission['ru_status']==4 && $admission['r_status']<2){
                 //Class is not started yet:
                 $active_admission = $admission;
-            } else {
-                //This must be an active class:
+            } elseif($admission['ru_status']==4 && $admission['r_status']==2){
+                //Active class has highest priority, break after:
                 $active_admission = $admission;
                 break; //This is what we care about the most, so make it have the last say
+            } elseif(!$active_admission){
+                //Not sure what this could be:
+                $active_admission = $admission;
             }
         }
 

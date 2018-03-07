@@ -62,12 +62,6 @@ class Bot extends CI_Controller {
         )));
     }
 
-    function id($psid,$ref=null){
-        $fp_pages = $this->Db_model->fp_fetch(array(
-            'fp_id' => 4,
-        ));
-        echo_json($this->Comm_model->fb_identify_activate($fp_pages[0],$psid,$ref));
-    }
 
     function deauthorize(){
 	    //Called when someone de-authorizes our page
@@ -171,7 +165,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
+				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']),
 				        'e_json' => $json_data,
 				        'e_type_id' => 1, //Message Read
                         'e_fp_id' => $fp_pages[0]['fp_id'],
@@ -184,7 +178,7 @@ class Bot extends CI_Controller {
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
+				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']),
 				        'e_json' => $json_data,
 				        'e_type_id' => 2, //Message Delivered
                         'e_fp_id' => $fp_pages[0]['fp_id'],
@@ -277,7 +271,7 @@ class Bot extends CI_Controller {
 					//Note: Never seen this happen yet!
 					//Log engagement:
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],null),
+				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']),
 				        'e_json' => $json_data,
 				        'e_type_id' => 5, //Messenger Optin
                         'e_fp_id' => $fp_pages[0]['fp_id'],
@@ -298,7 +292,7 @@ class Bot extends CI_Controller {
 					//Set variables:
 					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
 					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-					$u_id = $this->Comm_model->fb_identify_activate($fp_pages[0],$user_id,null);
+					$u_id = $this->Comm_model->fb_identify_activate($fp_pages[0],$user_id);
 					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
 					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 
