@@ -162,26 +162,34 @@ class Bot extends CI_Controller {
 
 				    //Add delay to prevent concurrent request issues
 				    sleep(2);
+
+				    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']);
 					
 					//This callback will occur when a message a page has sent has been read by the user.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']),
 				        'e_json' => $json_data,
 				        'e_type_id' => 1, //Message Read
                         'e_fp_id' => $fp_pages[0]['fp_id'],
+                        'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
 				    ));
 					
 				} elseif(isset($im['delivery'])) {
 
                     //Add delay to prevent concurrent request issues
                     sleep(2);
+
+                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']);
 					
 					//This callback will occur when a message a page has sent has been delivered.
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']),
 				        'e_json' => $json_data,
 				        'e_type_id' => 2, //Message Delivered
                         'e_fp_id' => $fp_pages[0]['fp_id'],
+                        'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
 				    ));
 					
 				} elseif(isset($im['referral']) || isset($im['postback'])) {
@@ -216,12 +224,15 @@ class Bot extends CI_Controller {
 					
 					//Did we have a ref from Messenger?
 					$ref = ( $referral_array && isset($referral_array['ref']) && strlen($referral_array['ref'])>0 ? $referral_array['ref'] : null );
-					
-					$eng_data = array(
+                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref);
+
+                    $eng_data = array(
 						'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
 						'e_json' => $json_data,
-					    'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref),
                         'e_fp_id' => $fp_pages[0]['fp_id'],
+                        'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
 					);
 					
 					/*
@@ -267,14 +278,18 @@ class Bot extends CI_Controller {
 
                     //Add delay to prevent concurrent request issues
                     sleep(2);
-					
-					//Note: Never seen this happen yet!
+
+                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']);
+
+                    //Note: Never seen this happen yet!
 					//Log engagement:
 				    $this->Db_model->e_create(array(
-				        'e_initiator_u_id' => $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id']),
 				        'e_json' => $json_data,
 				        'e_type_id' => 5, //Messenger Optin
                         'e_fp_id' => $fp_pages[0]['fp_id'],
+                        'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
 				    ));
 					
 				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
@@ -288,81 +303,33 @@ class Bot extends CI_Controller {
 					 * Triggered for both incoming and outgoing messages on behalf of our team
 					 * 
 					 * */
-					
-					//Set variables:
-					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
-					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
-					$u_id = $this->Comm_model->fb_identify_activate($fp_pages[0],$user_id);
-					$metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
-					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 
 
-					//Is this a non loggable inbound message?
+                    //Is this a non loggable inbound message? If so, this has already been logged by Mench:
+                    $metadata = ( isset($im['message']['metadata']) ? $im['message']['metadata'] : null ); //Send API custom string [metadata field]
                     if($metadata=='system_logged'){
                         //This is already logged! No need to take further action!
                         echo_json(array('complete'=>'yes'));
                         return false;
-                        exit; //This should not trigger?! Not sure...
+                        exit;
                     }
-					
-					//Start data preparation for logging message inbound OR outbound engagement:
+
+
+                    //Set variables:
+					$sent_from_us = ( isset($im['message']['is_echo']) ); //Indicates the message sent from the page itself
+					$user_id = ( $sent_from_us ? $im['recipient']['id'] : $im['sender']['id'] );
+                    $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$user_id);
+					$quick_reply_payload = ( isset($im['message']['quick_reply']['payload']) && strlen($im['message']['quick_reply']['payload'])>0 ? $im['message']['quick_reply']['payload'] : null );
 					$eng_data = array(
-					    'e_initiator_u_id' => ( $sent_from_us ? 0 : $u_id ),
+					    'e_initiator_u_id' => ( $sent_from_us || !isset($id_user['u_id']) ? 0 : $id_user['u_id'] ),
 						'e_json' => $json_data,
 					    'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
 					    'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
-					    'e_recipient_u_id' => ( $sent_from_us ? $u_id : 0 ),
-					    'e_b_id' => 0, //Default, may be updated later...
-					    'e_r_id' => 0, //Default, may be updated later...
+					    'e_recipient_u_id' => ( $sent_from_us && isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
+                        'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
                         'e_fp_id' => $fp_pages[0]['fp_id'],
 					);
-					
-					
-					if($u_id){
-
-					    //Fetch user profile:
-                        $users = $this->Db_model->u_fetch(array(
-                            'u_id' => $u_id,
-                        ));
-
-                        //Fetch for admission to append to this message:
-					    $admissions = $this->Db_model->ru_fetch(array(
-					        'r.r_status >='	   => 1, //Open for admission
-					        'r.r_status <='	   => 2, //Running
-					        'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
-					        'ru.ru_u_id'	   => $u_id,
-					    ));
-					    
-					    if(isset($admissions[0])){
-					        
-					        //Append to engagement data:
-					        $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
-					        $eng_data['e_r_id'] = $admissions[0]['r_id'];
-					        
-					    } else {
-					        
-					        //Fetch user details to see if they are admin:
-					        $matching_users = $this->Db_model->u_fetch(array(
-					            'u_id' => $u_id,
-					        ));
-					        
-					        if($matching_users[0]['u_status']>=0){
-					            
-					            //Is admin, do nothing for now...
-					            
-					        } else {
-					            //Non Verified Guest
-					            //Log engagement to give extra care:
-					            $this->Db_model->e_create(array(
-					                'e_initiator_u_id' => $u_id,
-					                'e_message' => 'Received inbound message from a student that is not enrolled in a bootcamp. You can reply to them on MenchBot Facebook Inbox: https://www.facebook.com/menchbot/inbox',
-					                'e_json' => $json_data,
-					                'e_type_id' => 9, //Support Needing Graceful Errors
-                                    'e_fp_id' => $fp_pages[0]['fp_id'],
-					            ));
-					        }   
-					    }
-					}
 					
 					//It may also have an attachment
 					if(isset($im['message']['attachments'])){
@@ -400,6 +367,9 @@ class Bot extends CI_Controller {
 							        'e_json' => $json_data,
 							        'e_type_id' => 8, //Platform Error
                                     'e_fp_id' => $fp_pages[0]['fp_id'],
+                                    'e_recipient_u_id' => $eng_data['e_recipient_u_id'],
+                                    'e_b_id' => $eng_data['e_b_id'],
+                                    'e_r_id' => $eng_data['e_r_id'],
 							    ));
 							}
 						}

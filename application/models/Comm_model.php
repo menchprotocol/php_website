@@ -670,7 +670,7 @@ class Comm_model extends CI_Model {
                 'e_message' => 'fb_identify_activate() got called with invalid $fp variable with $fp_psid=['.$fp_psid.']',
                 'e_type_id' => 8, //Platform Error
             ));
-            return 0;
+            return false;
         } elseif($fp_psid<1){
             //Ooops, this is not good:
             $this->Db_model->e_create(array(
@@ -678,7 +678,7 @@ class Comm_model extends CI_Model {
                 'e_type_id' => 8, //Platform Error
                 'e_fp_id' => $fp['fp_id'],
             ));
-            return 0;
+            return false;
         }
 
 
@@ -700,8 +700,6 @@ class Comm_model extends CI_Model {
 
 
         //Try finding User/Bootcamp/Class ID:
-        $b_id=0;
-        $r_id=0;
         $u = array();
 
         //Is this fp_id/fp_psid already registered?
@@ -712,35 +710,31 @@ class Comm_model extends CI_Model {
 
         if(count($fetch_users)>0){
 
+            //Assign user:
             $u = $fetch_users[0];
 
-            //Try finding their admissions now:
-            $admissions = $this->Db_model->ru_fetch(array(
+            //Attempt to search based on u_id:
+            $ru_filter = array(
                 'ru.ru_u_id' => $u['u_id'],
-            ));
-            $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
-            if($active_admission){
-                $b_id = $active_admission['r_b_id'];
-                $r_id = $active_admission['r_id'];
-            }
+            );
 
         } else {
 
-            //See if we can find it in the admission table:
-            $admissions = $this->Db_model->ru_fetch(array(
+            //Attempt to search based on ru_fp_id/psid:
+            $ru_filter = array(
                 'ru_fp_id' => $fp['fp_id'],
                 'ru_fp_psid' => $fp_psid,
-            ));
-            $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
-            if($active_admission){
-                $u = $active_admission;
-                $b_id = $u['r_b_id'];
-                $r_id = $u['r_id'];
-            }
+            );
 
         }
 
-
+        //See if we can find it in the admission table:
+        $admissions = $this->Db_model->ru_fetch($ru_filter);
+        $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+        if($active_admission){
+            //Override with more complete $u object:
+            $u = $active_admission;
+        }
 
 
         if(count($u)>0 && $u['u_id']>0){
@@ -763,6 +757,7 @@ class Comm_model extends CI_Model {
                     //Would continue...
 
                 } else {
+
                     //Ooops, this is a legitimate user which we cannot override
 
                     //Send notification Messages:
@@ -771,8 +766,8 @@ class Comm_model extends CI_Model {
                         'e_fp_id' => $fp['fp_id'],
                         'e_c_id' => 923,
                         'depth' => 0,
-                        'e_b_id' => $b_id,
-                        'e_r_id' => $r_id,
+                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
                     //Log engagement:
@@ -782,16 +777,18 @@ class Comm_model extends CI_Model {
                         'e_json' => $notify_user,
                         'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
                         'e_type_id' => 8, //Platform error
-                        'e_b_id' => $b_id,
-                        'e_r_id' => $r_id,
+                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
-                    //Return user ID:
-                    return intval($u['u_id']);
+                    //Return user Object:
+                    return $u;
+
                 }
 
             } else {
-                return intval($u['u_id']);
+                //Return user Object:
+                return $u;
             }
 
         }
@@ -811,7 +808,7 @@ class Comm_model extends CI_Model {
             if(!$graph_fetch['status']){
                 //This error has already been logged
                 //We cannot create this user:
-                return 0;
+                return false;
             }
 
             //We're cool!
@@ -841,12 +838,10 @@ class Comm_model extends CI_Model {
                 'e_fp_id' => $fp['fp_id'],
                 'e_c_id' => 921,
                 'depth' => 0,
-                'e_b_id' => $b_id,
-                'e_r_id' => $r_id,
             ));
 
-            //Return the newly created user ID:
-            return intval($u['u_id']);
+            //Return the newly created user Object:
+            return $u;
         }
 
 
@@ -867,31 +862,27 @@ class Comm_model extends CI_Model {
                 'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
                 'e_type_id' => 8, //Platform Error
                 'e_fp_id' => $fp['fp_id'],
-                'e_b_id' => $b_id,
-                'e_r_id' => $r_id,
+                'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
             ));
             
-            return 0;
-
-        } else {
-
-            //Set user object:
-            $u = $matching_users[0];
-
-            //Try to fetch their active admission:
-            if(!$b_id || !$r_id){
-                //We can try to find their admissions now:
-                $admissions = $this->Db_model->ru_fetch(array(
-                    'ru.ru_u_id' => $ref_u_id,
-                ));
-                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
-                if($active_admission){
-                    $b_id = $active_admission['r_b_id'];
-                    $r_id = $active_admission['r_id'];
-                }
-            }
+            return false;
         }
-        
+
+
+
+        //Set user object:
+        $u = $matching_users[0];
+
+        //See if we can find it in the admission table:
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru.ru_u_id' => $u['u_id'],
+        ));
+        $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+        if($active_admission){
+            //Override with more complete $u object:
+            $u = $active_admission;
+        }
 
 
         //We are ready to activate!
@@ -905,7 +896,7 @@ class Comm_model extends CI_Model {
         if(!$graph_fetch['status']){
             //This error has already been logged inside $this->Comm_model->fb_graph()
             //We cannot create this user:
-            return 0;
+            return false;
         }
 
         //We're cool!
@@ -929,6 +920,7 @@ class Comm_model extends CI_Model {
             'u_cache__fp_psid' => $fp_psid,
         ));
 
+
         //Go through all their admissions and update their Messenger PSID:
         $admissions = $this->Db_model->ru_fetch(array(
             'ru_u_id' => $u['u_id'],
@@ -936,7 +928,7 @@ class Comm_model extends CI_Model {
             'ru_fp_psid' => null, //Not activated yet...
         ));
         foreach($admissions as $admission){
-            $this->Db_model->ru_update( $admission['ru_id'], array(
+            $this->Db_model->ru_update($admission['ru_id'], array(
                 'ru_fp_psid' => $fp_psid,
             ));
         }
@@ -948,8 +940,8 @@ class Comm_model extends CI_Model {
             'e_fp_id' => $fp['fp_id'],
             'e_c_id' => ($u['u_status']==2 ? 918 : 926),
             'depth' => 0,
-            'e_b_id' => $b_id,
-            'e_r_id' => $r_id,
+            'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+            'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
         ));
 
         //Log Activation Engagement
@@ -961,12 +953,12 @@ class Comm_model extends CI_Model {
             ),
             'e_type_id' => 31, //Messenger Activated
             'e_fp_id' => $fp['fp_id'],
-            'e_b_id' => $b_id,
-            'e_r_id' => $r_id,
+            'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+            'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
         ));
 
-        //Return User ID:
-        return intval($u['u_id']);
+        //Return User Object:
+        return $u;
 
     }
 
