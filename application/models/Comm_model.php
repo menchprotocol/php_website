@@ -8,8 +8,26 @@ class Comm_model extends CI_Model {
 	
     function fb_graph($fp_id,$action,$url,$payload=array(),$fp=null){
 
-        if(!$fp){
-            //Fetch from DB:
+	    //Do some initial checks
+	    if(!$fp_id && !array_key_exists('access_token',$payload)){
+
+	        //Sometimes the request is not page related, in which case we need an access_token passed via $payload
+            return array(
+                'status' => 0,
+                'message' => 'Missing both fp_id and $payload->access_token',
+            );
+
+        } elseif(!in_array($action, array('GET','POST','DELETE'))){
+
+	        //Only 4 valid types of $action
+            return array(
+                'status' => 0,
+                'message' => '$action ['.$action.'] is invalid',
+            );
+
+        } elseif($fp_id && !$fp){
+
+            //Fetch $fp from DB:
             $pages = $this->Db_model->fp_fetch(array(
                 'fp_id' => $fp_id,
                 'fp_status >=' => 0, //Available or Connected
@@ -23,13 +41,7 @@ class Comm_model extends CI_Model {
             } else {
                 $fp = $pages[0];
             }
-        }
 
-        if(!in_array($action,array('GET','POST','DELETE'))){
-            return array(
-                'status' => 0,
-                'message' => '$action ['.$action.'] is invalid',
-            );
         }
 
 
@@ -58,7 +70,6 @@ class Comm_model extends CI_Model {
 
         $url = 'https://graph.facebook.com/v2.6'.$url;
         $counter = 0;
-
         foreach($access_token_payload as $key=>$val){
             $url = $url.($counter==0?'?':'&').$key.'='.$val;
             $counter++;
@@ -84,7 +95,7 @@ class Comm_model extends CI_Model {
         //Process results and produce e_json
         $result = objectToArray(json_decode(curl_exec($ch)));
         $e_json = array(
-            'fp' => $fp,
+            'fp' => ( is_array($fp) && count($fp)>0 ? $fp : null ),
             'action' => $action,
             'payload' => $payload,
             'url' => $url,
@@ -130,6 +141,51 @@ class Comm_model extends CI_Model {
 
         //Fetch app secret:
         $fb_settings = $this->config->item('fb_settings');
+
+
+        //Fetech Long Lived Token:
+        $long_lived_user_token_payload = array(
+            'access_token' => $access_token, //Regular, Short lived, need to make this long lived
+            'grant_type' => 'fb_exchange_token',
+            'client_id' => $fb_settings['app_id'],
+            'client_secret' => $fb_settings['client_secret'],
+            'fb_exchange_token' => $access_token, //User's Access Token fetched via Javascript
+        );
+        $long_lived_user_token = $this->Comm_model->fb_graph(0, 'GET', '/oauth/access_token', $long_lived_user_token_payload);
+
+        //We got it?
+        if(isset($long_lived_user_token['e_json']['result']['access_token']) && strlen($long_lived_user_token['e_json']['result']['access_token'])>10){
+
+            //Now use this instead which would make our Facebook Page Access Token produced below long lived too:
+            $access_token = $long_lived_user_token['e_json']['result']['access_token'];
+
+            //Log error:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $u_id,
+                'e_type_id' => 9, //Support needs attention
+                'e_b_id' => $b_id,
+                'e_json' => array(
+                    'payload' => $long_lived_user_token_payload,
+                    'result' => $long_lived_user_token,
+                ),
+                'e_message' => 'fb_index_pages() SUCCESS fetched long-lived access token',
+            ));
+
+        } else {
+            //Log error:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $u_id,
+                'e_type_id' => 9, //Support needs attention
+                'e_b_id' => $b_id,
+                'e_json' => array(
+                    'payload' => $long_lived_user_token_payload,
+                    'result' => $long_lived_user_token,
+                ),
+                'e_message' => 'fb_index_pages() Failed to fetch long-term access tokens for this user.',
+            ));
+        }
+
+
 
         //Load Facebook PHP SDK:
         require_once( 'application/libraries/Facebook/autoload.php' );
@@ -295,43 +351,6 @@ class Comm_model extends CI_Model {
                         }
                     }
                 }
-
-                //Fetech Long Lived Token:
-                $long_lived_user_token_payload = array(
-                    'grant_type' => 'fb_exchange_token',
-                    'client_id' => $fb_settings['app_id'],
-                    'client_secret' => $fb_settings['client_secret'],
-                    'fb_exchange_token' => $access_token, //User's Access Token fetched via Javascript
-                );
-                $long_lived_user_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/oauth/access_token', $long_lived_user_token_payload, $fp);
-
-                if(isset($long_lived_user_token['e_json']['result']['access_token']) && strlen($long_lived_user_token['e_json']['result']['access_token'])>10){
-
-                    //Now re-fetch Page Token:
-                    //Read "Extending Page Access Tokens" @ https://developers.facebook.com/docs/facebook-login/access-tokens/expiration-and-extension
-                    $long_lived_page_token_payload = array(
-                        'access_token' => $long_lived_user_token['e_json']['result']['access_token'],
-                    );
-
-                    $long_lived_page_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/accounts', $long_lived_page_token_payload, $fp);
-
-                    //Log to analyze:
-                    $this->Db_model->e_create(array(
-                        'e_message' => 'Long Live Token is here...',
-                        'e_json' => array(
-                            'fp' => $fp,
-                            'long_lived_user_token_payload' => $long_lived_user_token_payload,
-                            'long_lived_user_token' => $long_lived_user_token,
-                            'long_lived_page_token_payload' => $long_lived_page_token_payload,
-                            'long_lived_page_token' => $long_lived_page_token,
-                        ),
-                        'e_type_id' => 9,
-                    ));
-
-                    //Update fs_long_lived_access_token
-                }
-
-
 
                 //Now add this page to $authorized_fp_ids
                 array_push($authorized_fp_ids,$fp['fp_id']);
