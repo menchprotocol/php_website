@@ -142,10 +142,9 @@ class Comm_model extends CI_Model {
         //Fetch app secret:
         $fb_settings = $this->config->item('fb_settings');
 
-
         //Fetech Long Lived Token:
         $long_lived_user_token_payload = array(
-            'access_token' => $access_token, //Regular, Short lived, need to make this long lived
+            'access_token' => $access_token, //Regular, Short lived, need to generate long-lived
             'grant_type' => 'fb_exchange_token',
             'client_id' => $fb_settings['app_id'],
             'client_secret' => $fb_settings['client_secret'],
@@ -158,18 +157,7 @@ class Comm_model extends CI_Model {
 
             //Now use this instead which would make our Facebook Page Access Token produced below long lived too:
             $access_token = $long_lived_user_token['e_json']['result']['access_token'];
-
-            //Log error:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $u_id,
-                'e_type_id' => 9, //Support needs attention
-                'e_b_id' => $b_id,
-                'e_json' => array(
-                    'payload' => $long_lived_user_token_payload,
-                    'result' => $long_lived_user_token,
-                ),
-                'e_message' => 'fb_index_pages() SUCCESS fetched long-lived access token',
-            ));
+            //We're all set now...
 
         } else {
             //Log error:
@@ -181,7 +169,7 @@ class Comm_model extends CI_Model {
                     'payload' => $long_lived_user_token_payload,
                     'result' => $long_lived_user_token,
                 ),
-                'e_message' => 'fb_index_pages() Failed to fetch long-term access tokens for this user.',
+                'e_message' => 'fb_index_pages() failed to fetch long-term access tokens for this user.',
             ));
         }
 
@@ -194,7 +182,7 @@ class Comm_model extends CI_Model {
             'app_id' => $fb_settings['app_id'],
             'app_secret' => $fb_settings['client_secret'],
             'default_graph_version' => $fb_settings['default_graph_version'],
-            'default_access_token' => $access_token,
+            'default_access_token' => $access_token, //Hopfully it's long lived...
         ]);
 
         try {
