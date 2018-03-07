@@ -33,7 +33,6 @@ $config['fb_settings'] = array(
     'app_id'        => '1782431902047009', //Also repeated in global.js
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
     'default_graph_version' => 'v2.10', //Also repeated in global.js
-    'redirect_uri' => 'https://mench.co/bot/redirect',
 );
 
 $config['required_fb_permissions'] = array(

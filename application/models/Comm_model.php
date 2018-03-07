@@ -34,16 +34,26 @@ class Comm_model extends CI_Model {
 
 
         //Start building GET URL:
-        $access_token_payload = array(
-            'access_token' => $fp['fs_access_token']
-        );
+        if(array_key_exists('access_token',$payload)){
 
-        if($action=='GET'){
+            //This this access token:
+            $access_token_payload = array(
+                'access_token' => $payload['access_token'],
+            );
+            //Remove it just in case:
+            unset($payload['access_token']);
+
+        } else {
+            //Apply the Page Access Token:
+            $access_token_payload = array(
+                'access_token' => $fp['fs_access_token']
+            );
+        }
+
+        if($action=='GET' && count($payload)>0){
             //Add $payload to GET variables:
-            if(count($payload)>0){
-                $access_token_payload = array_merge($access_token_payload,$payload);
-                $payload = array();
-            }
+            $access_token_payload = array_merge($access_token_payload,$payload);
+            $payload = array();
         }
 
         $url = 'https://graph.facebook.com/v2.6'.$url;
@@ -295,27 +305,33 @@ class Comm_model extends CI_Model {
                 );
                 $long_lived_user_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/oauth/access_token', $long_lived_user_token_payload, $fp);
 
-                //Chill for FB to catchup
-                sleep(2);
+                if(isset($long_lived_user_token['e_json']['result']['access_token']) && strlen($long_lived_user_token['e_json']['result']['access_token'])>10){
 
-                //Now re-fetch Page Token:
-                //Read "Extending Page Access Tokens" @ https://developers.facebook.com/docs/facebook-login/access-tokens/expiration-and-extension
-                $long_lived_page_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/accounts', array(), $fp);
+                    //Now re-fetch Page Token:
+                    //Read "Extending Page Access Tokens" @ https://developers.facebook.com/docs/facebook-login/access-tokens/expiration-and-extension
+                    $long_lived_page_token_payload = array(
+                        'access_token' => $long_lived_user_token['e_json']['result']['access_token'],
+                    );
+
+                    $long_lived_page_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/accounts', $long_lived_page_token_payload, $fp);
+
+                    //Log to analyze:
+                    $this->Db_model->e_create(array(
+                        'e_message' => 'Long Live Token is here...',
+                        'e_json' => array(
+                            'fp' => $fp,
+                            'long_lived_user_token_payload' => $long_lived_user_token_payload,
+                            'long_lived_user_token' => $long_lived_user_token,
+                            'long_lived_page_token_payload' => $long_lived_page_token_payload,
+                            'long_lived_page_token' => $long_lived_page_token,
+                        ),
+                        'e_type_id' => 9,
+                    ));
+
+                    //Update fs_long_lived_access_token
+                }
 
 
-                //Log to analyze:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'Long Live Token is here...',
-                    'e_json' => array(
-                        'fp' => $fp,
-                        'long_lived_user_token_payload' => $long_lived_user_token_payload,
-                        'long_lived_user_token' => $long_lived_user_token,
-                        'long_lived_page_token' => $long_lived_page_token,
-                    ),
-                    'e_type_id' => 9,
-                ));
-
-                //Update fs_long_lived_access_token
 
                 //Now add this page to $authorized_fp_ids
                 array_push($authorized_fp_ids,$fp['fp_id']);
