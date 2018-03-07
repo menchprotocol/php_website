@@ -29,6 +29,12 @@ $config['show_in_api'] = array(
     'countries_all',
 );
 
+$config['fb_settings'] = array(
+    'app_id'        => '1782431902047009', //Also repeated in global.js
+    'client_secret' => '05aea76d11b062951b40a5bee4251620',
+    'default_graph_version' => 'v2.10', //Also repeated in global.js
+);
+
 $config['required_fb_permissions'] = array(
     'public_profile' => 'Basic permission granted by Facebook so we can access your profile\'s publicly available information.', //Basic permission
     'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Bootcamp.',

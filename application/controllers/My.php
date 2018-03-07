@@ -177,6 +177,7 @@ class My extends CI_Controller {
 
         if(!$active_admission){
 
+            /*
             $this->Db_model->e_create(array(
                 'e_json' => array(
                     'ru_fp_psid' => $ru_fp_psid,
@@ -191,6 +192,7 @@ class My extends CI_Controller {
                 'e_b_id' => $b_id,
                 'e_c_id' => $c_id,
             ));
+            */
 
             //Show Error:
             die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');

@@ -2,6 +2,8 @@
 <?php
 //What are the total permissions we need?
 $required_fb_permissions = $this->config->item('required_fb_permissions');
+$fb_settings = $this->config->item('fb_settings');
+
 $permission_string = join_keys($required_fb_permissions);
 echo 'var required_fb_permissions = '.json_encode($required_fb_permissions).';';
 echo 'var total_permission_count = '.count($required_fb_permissions).';';
@@ -137,10 +139,10 @@ $(document).ready(function() {
 
     window.fbAsyncInit = function() {
         FB.init({
-            appId            : '1782431902047009',
             autoLogAppEvents : true,
             xfbml            : true,
-            version          : 'v2.10'
+            appId            : '<?= $fb_settings['app_id'] ?>',
+            version          : '<?= $fb_settings['default_graph_version'] ?>'
         });
         loadFacebookPages(1);
     };

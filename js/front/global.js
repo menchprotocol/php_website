@@ -24,7 +24,7 @@ window.fbAsyncInit = function() {
         appId            : '1782431902047009', //Mench
         autoLogAppEvents : true,
         xfbml            : true,
-        version          : 'v2.11'
+        version          : 'v2.10'
     });
 };
 (function(d, s, id){

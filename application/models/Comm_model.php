@@ -96,13 +96,16 @@ class Comm_model extends CI_Model {
             return false;
         }
 
+        //Fetch app secret:
+        $fb_settings = $this->config->item('fb_settings');
+
         //Load Facebook PHP SDK:
         require_once( 'application/libraries/Facebook/autoload.php' );
 
         $fb = new \Facebook\Facebook([
-            'app_id' => '1782431902047009',
-            'app_secret' => '05aea76d11b062951b40a5bee4251620',
-            'default_graph_version' => 'v2.10',
+            'app_id' => $fb_settings['app_id'],
+            'app_secret' => $fb_settings['client_secret'],
+            'default_graph_version' => $fb_settings['default_graph_version'],
             'default_access_token' => $access_token,
         ]);
 
@@ -165,6 +168,7 @@ class Comm_model extends CI_Model {
                         'e_initiator_u_id' => $u_id,
                         'e_fp_id' => $fp['fp_id'],
                         'e_b_id' => $b_id,
+                        'e_json' => $fb_page,
                         'e_type_id' => 76, //Facebook Page Added
                     ));
 
@@ -257,9 +261,39 @@ class Comm_model extends CI_Model {
                             ));
 
                         }
-
                     }
                 }
+
+                //Fetech Long Lived Token:
+                $long_lived_user_token_payload = array(
+                    'grant_type' => 'fb_exchange_token',
+                    'client_id' => $fb_settings['app_id'],
+                    'client_secret' => $fb_settings['client_secret'],
+                    'fb_exchange_token' => $access_token, //User's Access Token fetched via Javascript
+                );
+                $long_lived_user_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', 'oauth/access_token', $long_lived_user_token_payload, $fp);
+
+                //Chill for FB to catchup
+                sleep(2);
+
+                //Now re-fetch Page Token:
+                //Read "Extending Page Access Tokens" @ https://developers.facebook.com/docs/facebook-login/access-tokens/expiration-and-extension
+                $long_lived_page_token = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', 'me/accounts', array(), $fp);
+
+
+                //Log to analyze:
+                $this->Db_model->e_create(array(
+                    'e_message' => 'Long Live Token is here...',
+                    'e_json' => array(
+                        'fp' => $fp,
+                        'long_lived_user_token_payload' => $long_lived_user_token_payload,
+                        'long_lived_user_token' => $long_lived_user_token,
+                        'long_lived_page_token' => $long_lived_page_token,
+                    ),
+                    'e_type_id' => 9,
+                ));
+
+                //Update fs_long_lived_access_token
 
                 //Now add this page to $authorized_fp_ids
                 array_push($authorized_fp_ids,$fp['fp_id']);
@@ -739,6 +773,8 @@ class Comm_model extends CI_Model {
 
         if(count($u)>0 && $u['u_id']>0){
 
+            //Returning student located
+
             //Yes, make sure that there is no referral variable or if there is, its the same as this one:
             if($ref_u_id && !($u['u_id']==$ref_u_id)){
 
@@ -791,174 +827,190 @@ class Comm_model extends CI_Model {
                 return $u;
             }
 
-        }
+        } else {
+
+            //User not found in the database
+
+            //lets see if we have a ref key?
+
+            if($ref_u_id){
+
+                //So now we should have $ref_u_id set
+                //Fetch this account and see whatssup:
+                $matching_users = $this->Db_model->u_fetch(array(
+                    'u_id' => $ref_u_id,
+                ));
+                if(count($matching_users)<1){
+
+                    //Invalid user ID, should not happen...
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $ref_u_id,
+                        'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
+                        'e_type_id' => 8, //Platform Error
+                        'e_fp_id' => $fp['fp_id'],
+                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
+                    ));
+
+                    return false;
+                }
 
 
-        //User not yet activated, lets see if we have a ref key?
-        if(!$ref_u_id){
 
-            //We do not have a referral code, so its harder to authenticate and map the user.
-            //It's also likely that they are new via Messenger, never visited the Mench website
-            //This is validating to see if a sender is registered or not:
+                //Set user object:
+                $u = $matching_users[0];
 
-            //This is a new user that needs to be registered!
-            //Call facebook messenger API and get user profile
-            $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
+                //See if we can find it in the admission table:
+                $admissions = $this->Db_model->ru_fetch(array(
+                    'ru.ru_u_id' => $u['u_id'],
+                ));
+                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+                if($active_admission){
+                    //Override with more complete $u object:
+                    $u = $active_admission;
+                }
 
-            if(!$graph_fetch['status']){
-                //This error has already been logged
-                //We cannot create this user:
-                return false;
+
+                //We are ready to activate!
+                /* *************************************
+                 * Messenger Activation
+                 * *************************************
+                 */
+
+                //Fetch their profile from Facebook to update
+                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
+                if(!$graph_fetch['status']){
+                    //This error has already been logged inside $this->Comm_model->fb_graph()
+                    //We cannot create this user:
+                    return false;
+                }
+
+                //We're cool!
+                $fb_profile = $graph_fetch['e_json']['result'];
+
+                //Split locale into language and country
+                $locale = explode('_',$fb_profile['locale'],2);
+
+                //Do an Update for selected fields as linking:
+                $this->Db_model->u_update( $u['u_id'] , array(
+                    'u_image_url'      => ( strlen($u['u_image_url'])<5 ? $fb_profile['profile_pic'] : $u['u_image_url'] ),
+                    'u_status'         => ( $u['u_status']==0 ? 1 : $u['u_status'] ), //Activate their profile as well
+                    'u_timezone'       => $fb_profile['timezone'],
+                    'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
+                    'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
+                    'u_country_code'   => $locale[1],
+                    'u_fname'          => $fb_profile['first_name'], //Update their original names with FB
+                    'u_lname'          => $fb_profile['last_name'], //Update their original names with FB
+                    'u_url_key'        => generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
+                    'u_cache__fp_id'   => $fp['fp_id'],
+                    'u_cache__fp_psid' => $fp_psid,
+                ));
+
+
+                //Go through all their admissions and update their Messenger PSID:
+                $admissions = $this->Db_model->ru_fetch(array(
+                    'ru_u_id' => $u['u_id'],
+                    'ru_fp_id' => $fp['fp_id'], //Already set to this
+                    'ru_fp_psid' => null, //Not activated yet...
+                ));
+                foreach($admissions as $admission){
+                    $this->Db_model->ru_update($admission['ru_id'], array(
+                        'ru_fp_psid' => $fp_psid,
+                    ));
+                }
+
+
+                //Send activation Message:
+                $activation_msg = $this->Comm_model->foundation_message(array(
+                    'e_recipient_u_id' => $u['u_id'],
+                    'e_fp_id' => $fp['fp_id'],
+                    'e_c_id' => ($u['u_status']==2 ? 918 : 926),
+                    'depth' => 0,
+                    'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                    'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
+                ));
+
+                //Log Activation Engagement
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $u['u_id'],
+                    'e_json' => array(
+                        'fb_profile' => $fb_profile,
+                        'activation_msg' => $activation_msg,
+                    ),
+                    'e_type_id' => 31, //Messenger Activated
+                    'e_fp_id' => $fp['fp_id'],
+                    'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                    'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
+                ));
+
+                //Return User Object:
+                return $u;
+
+            } else {
+
+                //We do not have a referral code, so its harder to authenticate and map the user.
+                //It's also likely that they are new via Messenger, never visited the Mench website
+                //This is validating to see if a sender is registered or not:
+
+                //This is a new user that needs to be registered!
+                //Call facebook messenger API and get user profile
+                $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
+
+                if(!$graph_fetch['status'] || !isset($graph_fetch['e_json']['result']['first_name']) || strlen($graph_fetch['e_json']['result']['first_name'])<1){
+
+                    $this->Db_model->e_create(array(
+                        'e_message' => 'fb_identify_activate() failed to fetch user profile from Facebook Graph',
+                        'e_json' => array(
+                            'fp' => $fp,
+                            'fp_psid' => $fp_psid,
+                            'fb_ref' => $fb_ref,
+                            'graph_fetch' => $graph_fetch,
+                        ),
+                        'e_type_id' => 8, //Platform Error
+                        'e_fp_id' => $fp['fp_id'],
+                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
+                    ));
+
+                    //We cannot create this user:
+                    return false;
+                }
+
+                //We're cool!
+                $fb_profile = $graph_fetch['e_json']['result'];
+
+                //Split locale into language and country
+                $locale = explode('_',$fb_profile['locale'],2);
+
+                //Create user
+                $u = $this->Db_model->u_create(array(
+                    'u_fname' 			=> $fb_profile['first_name'],
+                    'u_lname' 			=> $fb_profile['last_name'],
+                    'u_url_key' 		=> generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
+                    'u_timezone' 		=> $fb_profile['timezone'],
+                    'u_image_url' 		=> $fb_profile['profile_pic'],
+                    'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+                    'u_language' 		=> $locale[0],
+                    'u_country_code' 	=> $locale[1],
+                    'u_cache__fp_id'    => $fp['fp_id'],
+                    'u_cache__fp_psid'  => $fp_psid,
+                    'u_status'          => 0, //For new users via Messenger
+                ));
+
+                //New Student Without Admission:
+                $this->Comm_model->foundation_message(array(
+                    'e_recipient_u_id' => $u['u_id'],
+                    'e_fp_id' => $fp['fp_id'],
+                    'e_c_id' => 921,
+                    'depth' => 0,
+                ));
+
+                //Return the newly created user Object:
+                return $u;
+
             }
 
-            //We're cool!
-            $fb_profile = $graph_fetch['e_json']['result'];
-
-            //Split locale into language and country
-            $locale = explode('_',$fb_profile['locale'],2);
-
-            //Create user
-            $u = $this->Db_model->u_create(array(
-                'u_fname' 			=> $fb_profile['first_name'],
-                'u_lname' 			=> $fb_profile['last_name'],
-                'u_url_key' 		=> generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
-                'u_timezone' 		=> $fb_profile['timezone'],
-                'u_image_url' 		=> $fb_profile['profile_pic'],
-                'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-                'u_language' 		=> $locale[0],
-                'u_country_code' 	=> $locale[1],
-                'u_cache__fp_id'    => $fp['fp_id'],
-                'u_cache__fp_psid'  => $fp_psid,
-                'u_status'          => 0, //For new users via Messenger
-            ));
-
-            //New Student Without Admission:
-            $this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => $u['u_id'],
-                'e_fp_id' => $fp['fp_id'],
-                'e_c_id' => 921,
-                'depth' => 0,
-            ));
-
-            //Return the newly created user Object:
-            return $u;
         }
-
-
-
-
-        
-        
-        //So now we should have $ref_u_id set
-        //Fetch this account and see whatssup:
-        $matching_users = $this->Db_model->u_fetch(array(
-            'u_id' => $ref_u_id,
-        ));
-        if(count($matching_users)<1){
-
-            //Invalid user ID, should not happen...
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $ref_u_id,
-                'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
-                'e_type_id' => 8, //Platform Error
-                'e_fp_id' => $fp['fp_id'],
-                'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
-                'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
-            ));
-            
-            return false;
-        }
-
-
-
-        //Set user object:
-        $u = $matching_users[0];
-
-        //See if we can find it in the admission table:
-        $admissions = $this->Db_model->ru_fetch(array(
-            'ru.ru_u_id' => $u['u_id'],
-        ));
-        $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
-        if($active_admission){
-            //Override with more complete $u object:
-            $u = $active_admission;
-        }
-
-
-        //We are ready to activate!
-        /* *************************************
-         * Messenger Activation
-         * *************************************
-         */
-
-        //Fetch their profile from Facebook to update
-        $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', $fp_psid, array(), $fp);
-        if(!$graph_fetch['status']){
-            //This error has already been logged inside $this->Comm_model->fb_graph()
-            //We cannot create this user:
-            return false;
-        }
-
-        //We're cool!
-        $fb_profile = $graph_fetch['e_json']['result'];
-
-        //Split locale into language and country
-        $locale = explode('_',$fb_profile['locale'],2);
-
-        //Do an Update for selected fields as linking:
-        $this->Db_model->u_update( $u['u_id'] , array(
-            'u_image_url'      => ( strlen($u['u_image_url'])<5 ? $fb_profile['profile_pic'] : $u['u_image_url'] ),
-            'u_status'         => ( $u['u_status']==0 ? 1 : $u['u_status'] ), //Activate their profile as well
-            'u_timezone'       => $fb_profile['timezone'],
-            'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
-            'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
-            'u_country_code'   => $locale[1],
-            'u_fname'          => $fb_profile['first_name'], //Update their original names with FB
-            'u_lname'          => $fb_profile['last_name'], //Update their original names with FB
-            'u_url_key'        => generate_url_key($fb_profile['first_name'].$fb_profile['last_name']),
-            'u_cache__fp_id'   => $fp['fp_id'],
-            'u_cache__fp_psid' => $fp_psid,
-        ));
-
-
-        //Go through all their admissions and update their Messenger PSID:
-        $admissions = $this->Db_model->ru_fetch(array(
-            'ru_u_id' => $u['u_id'],
-            'ru_fp_id' => $fp['fp_id'], //Already set to this
-            'ru_fp_psid' => null, //Not activated yet...
-        ));
-        foreach($admissions as $admission){
-            $this->Db_model->ru_update($admission['ru_id'], array(
-                'ru_fp_psid' => $fp_psid,
-            ));
-        }
-
-
-        //Send activation Message:
-        $activation_msg = $this->Comm_model->foundation_message(array(
-            'e_recipient_u_id' => $u['u_id'],
-            'e_fp_id' => $fp['fp_id'],
-            'e_c_id' => ($u['u_status']==2 ? 918 : 926),
-            'depth' => 0,
-            'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
-            'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
-        ));
-
-        //Log Activation Engagement
-        $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $u['u_id'],
-            'e_json' => array(
-                'fb_profile' => $fb_profile,
-                'activation_msg' => $activation_msg,
-            ),
-            'e_type_id' => 31, //Messenger Activated
-            'e_fp_id' => $fp['fp_id'],
-            'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
-            'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
-        ));
-
-        //Return User Object:
-        return $u;
 
     }
 

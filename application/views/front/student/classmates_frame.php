@@ -1,5 +1,7 @@
 <?php
 $uadmission = $this->session->userdata('uadmission');
+$fb_settings = $this->config->item('fb_settings');
+
 
 if(isset($uadmission) && count($uadmission)>0) {
 
@@ -33,7 +35,7 @@ if(isset($uadmission) && count($uadmission)>0) {
     window.extAsyncInit = function() {
 
         //Get context:
-        MessengerExtensions.getContext('1782431902047009',
+        MessengerExtensions.getContext('<?= $fb_settings['app_id'] ?>',
             function success(thread_context){
                 // success
                 //User ID was successfully obtained.

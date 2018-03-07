@@ -181,16 +181,19 @@ function calculate_refund($duration_days,$refund_type,$cancellation_policy){
 
 
 function parse_signed_request($signed_request) {
+
+    //Fetch app settings:
+    $CI =& get_instance();
+    $fb_settings = $CI->config->item('fb_settings');
+
     list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-    
-    $secret = "05aea76d11b062951b40a5bee4251620"; // Use your app secret here
-    
+
     // Decode the data
     $sig = base64_url_decode($encoded_sig);
     $data = json_decode(base64_url_decode($payload), true);
     
     // Confirm the signature
-    $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
+    $expected_sig = hash_hmac('sha256', $payload, $fb_settings['client_secret'], $raw = true);
     if ($sig !== $expected_sig) {
         //error_log('Bad Signed JSON signature!');
         return null;
