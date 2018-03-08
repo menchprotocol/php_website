@@ -69,7 +69,7 @@ WHERE ru.ru_status >= 4
     function remix_bootcamps($match_columns){
         //Missing anything?
         $this->db->select('*');
-        $this->db->from('v5_bootcamps b');
+        $this->db->from('v5_projects b');
         $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
         $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
 
@@ -402,10 +402,10 @@ WHERE ru.ru_status >= 4
 	    //Fetch the admins of the bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
-        $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_u_id = u.u_id');
+        $this->db->join('v5_project_instructors ba', 'ba.ba_u_id = u.u_id');
         if($fetch_extra){
             //This is a HACK!
-            $this->db->join('v5_bootcamps b', 'ba.ba_b_id = b.b_id');
+            $this->db->join('v5_projects b', 'ba.ba_b_id = b.b_id');
             $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
         }
 	    foreach($match_columns as $key=>$value){
@@ -421,8 +421,8 @@ WHERE ru.ru_status >= 4
 	function u_bootcamps($match_columns){
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
-	    $this->db->join('v5_bootcamps b', 'b.b_c_id = c.c_id');
-	    $this->db->join('v5_bootcamp_instructors ba', 'ba.ba_b_id = b.b_id');
+	    $this->db->join('v5_projects b', 'b.b_c_id = c.c_id');
+	    $this->db->join('v5_project_instructors ba', 'ba.ba_b_id = b.b_id');
         $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
 	    $this->db->order_by('b.b_status', 'DESC');
 	    $this->db->order_by('c.c_objective', 'ASC');
@@ -893,7 +893,7 @@ WHERE ru.ru_status >= 4
 	function b_fetch($match_columns,$join_objects=array(),$order_by='b_id'){
 	    //Missing anything?
 	    $this->db->select('*');
-        $this->db->from('v5_bootcamps b');
+        $this->db->from('v5_projects b');
         if(in_array('c',$join_objects)){
             $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
         }
@@ -1042,7 +1042,7 @@ WHERE ru.ru_status >= 4
 	
 	function b_update($b_id,$update_columns){
 	    $this->db->where('b_id', $b_id);
-	    $this->db->update('v5_bootcamps', $update_columns);
+	    $this->db->update('v5_projects', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	
@@ -1102,7 +1102,7 @@ WHERE ru.ru_status >= 4
 	    }
 	    
 	    //Lets now add:
-	    $this->db->insert('v5_bootcamps', $insert_columns);
+	    $this->db->insert('v5_projects', $insert_columns);
 	    
 	    //Fetch inserted id:
 	    $insert_columns['b_id'] = $this->db->insert_id();
@@ -1182,7 +1182,7 @@ WHERE ru.ru_status >= 4
 	    }
 	    
 	    //Lets now add:
-	    $this->db->insert('v5_bootcamp_instructors', $insert_columns);
+	    $this->db->insert('v5_project_instructors', $insert_columns);
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ba_id'] = $this->db->insert_id();
