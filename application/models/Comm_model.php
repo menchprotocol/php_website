@@ -225,9 +225,10 @@ class Comm_model extends CI_Model {
 
             foreach ($facebookPages as $fb_page) {
 
-                //Check if we have this page in the database:
+                //Check if we have this page in the database for this user:
                 $pages = $this->Db_model->fp_fetch(array(
                     'fp_fb_id' => $fb_page['id'],
+                    'fs_u_id' => $u_id,
                 ));
 
                 if(count($pages)==0){
@@ -326,7 +327,7 @@ class Comm_model extends CI_Model {
                         //yes, instructor is assigned as its admin
                         $fs = $admin_pages[0];
 
-                        //Does it need updating?
+                        //Does the user permissions associated to the Page need updating?
                         if(!($fs['fs_access_token']==$fb_page['access_token']) || !($fs['fs_status']==1)){
 
                             //Update instructor admin status, as this happens frequently...
