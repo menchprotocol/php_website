@@ -1247,6 +1247,7 @@ class Comm_model extends CI_Model {
                             'e_initiator_u_id' => ( isset($message['e_initiator_u_id']) ? $message['e_initiator_u_id']  :0), //If set...
                             'e_recipient_u_id' => $u['u_id'],
                             'e_message' => $email_variables['subject_line'],
+                            'e_json' => $email_variables,
                             'e_type_id' => 28, //Email message sent
                             'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
                             'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
@@ -1271,7 +1272,7 @@ class Comm_model extends CI_Model {
             foreach($email_to_send as $email){
                 $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], $email['r_reply_to_email']);
 
-                array_push( $e_json['email'] , $process );
+                array_push( $e_json['email'] , unserialize($process) );
             }
         }
 

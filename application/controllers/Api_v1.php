@@ -721,7 +721,7 @@ class Api_v1 extends CI_Controller {
         ),1,array('ej'));
         if(count($blobs)==1){
             echo_json(array(
-                'blob' => unserialize($blobs[0]['ej_e_blob']),
+                'blob' => $blobs[0]['ej_e_blob'],
                 'e' => $blobs[0],
             ));
         } else {
