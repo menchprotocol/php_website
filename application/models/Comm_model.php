@@ -1282,7 +1282,7 @@ class Comm_model extends CI_Model {
 
             return array(
                 'status' => 0,
-                'message' => 'Failed to send '.$failed_count.'/'.count($messages).' message'.show_s(count($messages)).'.',
+                'message' => 'Sent '.(count($messages)-$failed_count).'/'.count($messages).' Message'.show_s(count($messages)).'.',
                 'e_json' => $e_json,
             );
 
@@ -1290,7 +1290,7 @@ class Comm_model extends CI_Model {
 
             return array(
                 'status' => 1,
-                'message' => 'Successfully sent '.count($messages).' message'.show_s(count($messages)),
+                'message' => 'Successfully sent all '.count($messages).' Message'.show_s(count($messages)),
                 'e_json' => $e_json,
             );
 

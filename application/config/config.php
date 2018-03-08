@@ -574,11 +574,11 @@ $config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,69,70,72);
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
+        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75,85),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75,84),
+        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75,84,85),
     ),
 );
 

@@ -428,8 +428,80 @@ if($object_name=='engagements'){
     if(isset($_GET['r_id']) && intval($_GET['r_id'])>0){
         $users = $this->Db_model->ru_fetch(array(
             'ru_r_id' => $_GET['r_id'],
-            'ru_status' => 4,
+            'ru_status >=' => 4,
         ));
+
+        //Create summary list of this:
+        $broadcast_list = array();
+        foreach($users as $user){
+            array_push($broadcast_list,intval($user['u_id']));
+        }
+
+
+
+        if(count($broadcast_list)>0){
+
+            //Show option to Message this class:
+            $message_max = $this->config->item('message_max');
+
+            ?>
+            <script>
+                $(document).ready(function() {
+                    //Counter:
+                    changeMessage();
+                });
+                //Count text area characters:
+                function changeMessage() {
+                    var len = $('#broadcast_message').val().length;
+                    if (len > <?= $message_max ?>) {
+                        $('#charNum').addClass('overload').text(len);
+                    } else {
+                        $('#charNum').removeClass('overload').text(len);
+                    }
+                }
+                function broadcast_message(){
+
+                    //Show spinner:
+                    $('#broadcast_result').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+
+                    $.post("/api_v1/send_broadcast", {
+
+                        user_list:<?= json_encode($broadcast_list) ?>,
+                        e_message:$('#broadcast_message').val(),
+                        r_id:<?= $_GET['r_id'] ?>,
+                        b_id:<?= $users[0]['r_b_id'] ?>,
+
+                    } , function(data) {
+
+                        if(data.status){
+
+                            $('#broadcast_result').html(data.message);
+
+                            //Disapper in a while:
+                            setTimeout(function() {
+                                $('#broadcast_result').fadeOut();
+                            }, 5000);
+
+                        } else {
+                            $('#broadcast_result').html('<span style="color:#FF0000;">'+data.message+'</span>');
+                        }
+
+                    });
+                }
+            </script>
+
+            <div style="background-color: #EFEFEF; border-radius: 3px; border:1px solid #999; padding:0 10px; margin:-20px 0 20px 0;" class="maxout">
+                <div class="title"><h4><i class="fa fa-bullhorn" aria-hidden="true"></i> Broadcast Message to <?= count($users) ?> Class Student<?= show_s(count($users)) ?> (List Below)</h4></div>
+                <textarea class="form-control text-edit border msg" id="broadcast_message" style="height:100px; background-color:#FFF;" onkeyup="changeMessage()" placeholder="Message for all Class students listed below..."></textarea>
+                <div style="margin:0; font-size:0.8em;"><a href="javascript:broadcast_message();" class="btn btn-primary">Broadcast</a> <span id="charNum">0</span>/<?= $message_max ?> <span id="broadcast_result" style="padding-left:10px;"></span></div>
+            </div>
+
+            <?php
+
+        } else {
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Students found in this Class</div>';
+        }
+
     } else {
         $users = $this->Db_model->u_fetch(array(
             'u_status >=' => 2,

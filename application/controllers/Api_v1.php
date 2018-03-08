@@ -21,6 +21,91 @@ class Api_v1 extends CI_Controller {
 	function index(){
 		die('nothing here...');
 	}
+
+	function send_broadcast(){
+
+        if(!isset($_POST['user_list']) || count($_POST['user_list'])<1){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Students List',
+            ));
+            exit;
+        } elseif(!isset($_POST['e_message']) || strlen($_POST['e_message'])<2 || strlen($_POST['e_message'])>420){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Message must be between 2 - 420 Characters',
+            ));
+            exit;
+        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<1){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Class ID',
+            ));
+            exit;
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<1){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Project ID',
+            ));
+            exit;
+        }
+
+        //Only Admins can send these braodcasts for now:
+        $udata = auth(3,0);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to try again.',
+            ));
+            exit;
+        }
+
+        //Go through the list and Broadcast:
+        $failed_count = 0;
+        $e_json = array();
+        foreach($_POST['user_list'] as $u_id){
+
+            $im_result = $this->Comm_model->send_message(array(
+                array(
+                    'i_media_type' => 'text',
+                    'i_message' => trim($_POST['e_message']),
+                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_recipient_u_id' => $u_id,
+                    'e_b_id' => $_POST['b_id'],
+                    'e_r_id' => $_POST['r_id'],
+                ),
+            ));
+
+            if(!$im_result['status']){
+                $failed_count++;
+            }
+
+            array_push($e_json,$im_result);
+
+        }
+
+        $result_message = 'Broadcast message sent to '.(count($_POST['user_list'])-$failed_count).'/'.count($_POST['user_list']).' Class Students';
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_type_id' => 85, //Message Broadcast
+            'e_b_id' => $_POST['b_id'],
+            'e_r_id' => $_POST['r_id'],
+            'e_message' => $result_message.":\n\n".trim($_POST['e_message']),
+            'e_json' => array(
+                'input' => $_POST,
+                'results' => $e_json,
+            ),
+        ));
+
+        //Show final result:
+        echo_json(array(
+            'status' => ( $failed_count==0 ? 1 : 0 ),
+            'message' => ( $failed_count==0 ? '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span> ' : '' ).$result_message,
+        ));
+
+    }
 	
 	/* ******************************
 	 * Miscs

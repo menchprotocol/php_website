@@ -18,11 +18,11 @@ $(document).ready(function() {
     }
 
 	//Counter:
-	changeBio();
+	changeMessage();
 });
 
 //Count text area characters:
-function changeBio() {
+function changeMessage() {
     var len = $('#u_bio').val().length;
     if (len > <?= $message_max ?>) {
     	$('#charNum').addClass('overload').text(len);
@@ -192,7 +192,7 @@ function insert_gravatar(){
 			<li>Make sure to include your strong suits and tangible accomplishments.</li>
 			<li>Your Introductory Message will be displayed on your Bootcamp landing page.</li>
 		</ul>
-		<textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($udata['u_bio'])),0,$message_max); ?></textarea>
+		<textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeMessage()"><?= substr(trim(strip_tags($udata['u_bio'])),0,$message_max); ?></textarea>
         <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
         
         
