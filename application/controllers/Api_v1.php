@@ -84,7 +84,7 @@ class Api_v1 extends CI_Controller {
 
         }
 
-        $result_message = 'Broadcast message sent to '.(count($_POST['user_list'])-$failed_count).'/'.count($_POST['user_list']).' Class Students';
+        $result_message = 'Message sent to '.(count($_POST['user_list'])-$failed_count).'/'.count($_POST['user_list']).' Students';
 
         //Log Engagement:
         $this->Db_model->e_create(array(
@@ -102,7 +102,7 @@ class Api_v1 extends CI_Controller {
         //Show final result:
         echo_json(array(
             'status' => ( $failed_count==0 ? 1 : 0 ),
-            'message' => $result_message,
+            'message' => '<b><i class="fa fa-check-circle" aria-hidden="true"></i> '.$result_message.'</b>',
         ));
 
     }
@@ -718,7 +718,7 @@ class Api_v1 extends CI_Controller {
         if(count($blobs)==1){
             echo_json(array(
                 'blob' => unserialize($blobs[0]['ej_e_blob']),
-                'e' => $blobs[0]
+                'e' => $blobs[0],
             ));
         } else {
             echo_json(array('error'=>'Not Found'));
