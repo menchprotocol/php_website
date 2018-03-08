@@ -1879,10 +1879,13 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__current_task' => 1, //They would be at the First task of the next Milestone
             ));
 
+            //Is this student up to date with all their Tasks?
+            $is_uptodate = ($intent_data['next_intent']['cr_outbound_rank']<=$focus_class['r__current_milestone']);
+
             //Send appropriate Message:
             $this->Comm_model->foundation_message(array(
                 'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => ( $intent_data['next_intent']['cr_outbound_rank']<=$focus_class['r__current_milestone'] ? $intent_data['next_intent']['c_id'] : 4631 /* Next milestone not started */ ),
+                'e_c_id' => ( $is_uptodate ? $intent_data['next_intent']['c_id'] : 4631 /* Next milestone not started */ ),
                 'depth' => 0,
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
