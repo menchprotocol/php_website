@@ -103,6 +103,10 @@ class Api_v1 extends CI_Controller {
         echo_json(array(
             'status' => ( $failed_count==0 ? 1 : 0 ),
             'message' => '<b><i class="fa fa-check-circle" aria-hidden="true"></i> '.$result_message.'</b>',
+            'e_json' => array(
+                'input' => $_POST,
+                'results' => $e_json,
+            ),
         ));
 
     }

@@ -478,6 +478,7 @@ if($object_name=='engagements'){
 
                         $('#broadcast_message').prop('disabled', false);
                         $('#send_btn').show();
+                        console.log(data);
 
                         if(data.status){
 
