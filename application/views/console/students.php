@@ -72,10 +72,6 @@
 
 <div class="tab-content tab-space full-width">
 
-    <div class="tab-pane active full-width" id="tabchat">
-        <?= '<iframe src="https://chat.mench.co/?bootcampId='.$project['b_id'].'&instructorId='.$udata['u_id'].'&token='.md5($project['b_id'].'ChatiFrameS@lt'.$udata['u_id']).'" width="100%" id="chatwidget" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>'; ?>
-    </div>
-
     <div class="tab-pane" id="tableaderboard">
 
         <?php

@@ -1311,7 +1311,7 @@ class Comm_model extends CI_Model {
 
         if(!$error_message){
 
-            $message['depth'] = 0; //Override this for now and only focus on dispatching tasks at 1 level
+            $message['depth'] = 0; //Override this for now and only focus on dispatching Steps at 1 level
             $message['e_initiator_u_id'] = 0; //System, prevents any signatures from being appended...
 
             //Tweak optional variables:
@@ -1396,13 +1396,13 @@ class Comm_model extends CI_Model {
         $instant_messages = array();
 
 
-        //This is the very first message for this milestone!
+        //This is the very first message for this Task!
         if($project_data && $message['e_b_id'] && $project_data['level']==2){
 
             //Add message to instant stream:
             array_push($instant_messages , array_merge($message, array(
                 'i_media_type' => 'text',
-                'i_message' => '🚩 ​{first_name} welcome to your '.$projects[0]['b_sprint_unit'].' '.$project_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($project_data['intent']['c_objective']).'.',
+                'i_message' => '🚩 ​{first_name} welcome to your '.$projects[0]['b_sprint_unit'].' '.$project_data['sprint_index'].' Task! The target outcome for this Task is to '.strtolower($project_data['intent']['c_objective']).'.',
             )));
 
         }
@@ -1422,48 +1422,48 @@ class Comm_model extends CI_Model {
 
         if($project_data && $message['e_b_id'] && $project_data['level']==2){
 
-            //How many tasks?
-            $active_tasks = 0;
-            foreach($tree[0]['c__child_intents'] as $task){
-                if($task['c_status']>=1){
-                    $active_tasks++;
+            //How many Steps?
+            $active_steps = 0;
+            foreach($tree[0]['c__child_intents'] as $step){
+                if($step['c_status']>=1){
+                    $active_steps++;
                 }
             }
 
-            if($active_tasks==0){
+            if($active_steps==0){
 
-                //Let students know there are no tasks for this milestone:
+                //Let students know there are no Steps for this Task:
                 array_push($instant_messages , array_merge($message, array(
                     'i_media_type' => 'text',
-                    'i_message' => 'This Milestone has no Tasks!',
+                    'i_message' => 'This Task has no Steps!',
                 )));
 
             } else {
 
-                //Let them know how many tasks:
+                //Let them know how many Steps:
                 array_push($instant_messages , array_merge($message, array(
                     'i_media_type' => 'text',
-                    'i_message' => 'To complete this Milestone you need to complete its '.$active_tasks.' task'.show_s($active_tasks).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($project_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Milestone
+                    'i_message' => 'To complete this Task you need to complete its '.$active_steps.' Step'.show_s($active_steps).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($project_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Task
                 )));
 
             }
         }
 
 
-        //This is only for milestones (Not tasks) as its level=1 (level=0 is for tasks...)
+        //This is only for Tasks (Not Steps) as its level=1 (level=0 is for Steps...)
         if(0 && $message['depth']==1 && isset($tree[0]['c__child_intents']) && count($tree[0]['c__child_intents'])>0){
 
             //TODO Optimize before launching...
             /*
-            $active_tasks = 0;
-            foreach($tree[0]['c__child_intents'] as $task){
-                if($task['c_status']>=1){
-                    $active_tasks++;
+            $active_steps = 0;
+            foreach($tree[0]['c__child_intents'] as $step){
+                if($step['c_status']>=1){
+                    $active_steps++;
                 }
             }
 
-            //Count how many tasks and let them know:
-            if($active_tasks>0){
+            //Count how many Steps and let them know:
+            if($active_steps>0){
 
                 foreach($tree[0]['c__child_intents'] as $level1_key=>$level1){
 
@@ -1484,28 +1484,28 @@ class Comm_model extends CI_Model {
 
                                 if($starting_message_count==count($instant_messages)){
 
-                                    //This is the very first message for this Task being added:
+                                    //This is the very first message for this Step being added:
                                     array_push( $instant_messages , echo_i( array_merge( array(
                                         'i_media_type' => 'text',
-                                        'i_message' => ($active_tasks>1 ? 'Your first' : 'Your').' task is to '.strtolower($level1['c_objective']).'. Your instructor has estimated this task to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
+                                        'i_message' => ($active_steps>1 ? 'Your first' : 'Your').' Step is to '.strtolower($level1['c_objective']).'. Your instructor has estimated this Step to take about '.strtolower(trim(strip_tags(echo_time($level1['c_time_estimate'],0)))).' to complete.',
                                     ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
-                                    if($active_tasks>1){
+                                    if($active_steps>1){
                                         array_push( $instant_messages , echo_i( array_merge( array(
                                             'i_media_type' => 'text',
-                                            'i_message' => 'Once completed I will instantly unlock your next task.',
+                                            'i_message' => 'Once completed I will instantly unlock your next Step.',
                                         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
                                     } else {
-                                        //The only task of this milestone:
+                                        //The only Step of this Task:
                                         array_push( $instant_messages , echo_i( array_merge( array(
                                             'i_media_type' => 'text',
-                                            'i_message' => 'Once completed you will complete this milestone as this is its only task.',
+                                            'i_message' => 'Once completed you will complete this Task as this is its only Step.',
                                         ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
                                     }
 
                                     array_push( $instant_messages , echo_i( array_merge( array(
                                         'i_media_type' => 'text',
-                                        'i_message' => 'Here is how you can go about completing this task:',
+                                        'i_message' => 'Here is how you can go about completing this Step:',
                                     ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
                                 }
@@ -1528,11 +1528,11 @@ class Comm_model extends CI_Model {
                         }
                     }
 
-                    //Create custom message based on Task Completion Settings:
+                    //Create custom message based on Step Completion Settings:
                     array_push( $instant_messages , echo_i( array_merge( array(
                         'i_media_type' => 'text',
                         //TODO mention the class average response time here:
-                        'i_message' => 'Completing this Task is estimated to take '.strip_tags(echo_time($level1['c_time_estimate'],0)).'. If you needed more assistance simply send me a message and I will forward it to your instructor for a timely response. Let\'s do it 🙌​',
+                        'i_message' => 'Completing this Step is estimated to take '.strip_tags(echo_time($level1['c_time_estimate'],0)).'. If you needed more assistance simply send me a message and I will forward it to your instructor for a timely response. Let\'s do it 🙌​',
                     ), $custom_message_e_data ), $recipients[0]['u_fname'], true ));
 
                     //Level 1 depth only deals with a single intent, so we'll always end here:

@@ -59,7 +59,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
 
         //Fetch Project Data:
-        $live_bootcamps = $this->Db_model->b_fetch(array(
+        $live_projects = $this->Db_model->b_fetch(array(
             'b_id' => $admission['r_b_id'],
         ));
 
@@ -97,7 +97,7 @@ if(count($admissions)>0 && is_array($admissions)){
             $paid = ( $remaining_payment<=0 );
 
             //Payment
-            echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Pay $'.$remaining_payment.($total_paid>0 ? ' (Already Paid $'.$total_paid.') remaining' :'').' Project Tuition using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Pay $'.$remaining_payment.($total_paid>0 ? ' (Already Paid $'.$total_paid.') remaining' :'').' Project Price using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
             if($remaining_payment>0){
                 ?>
@@ -143,14 +143,14 @@ if(count($admissions)>0 && is_array($admissions)){
         if($admission['u_cache__fp_psid']>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
         } else {
-            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bootcamps[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_projects[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         }
 
         //Let them know the status of their application:
         echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';
 
         echo '<div style="font-size: 0.7em; margin-top:5px; padding-top:5px; border-top:2px solid #333;">';
-        echo '<a href="/'.$live_bootcamps[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Project Page</a>';
+        echo '<a href="/'.$live_projects[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Project Page</a>';
         if($admission['ru_status']==0){
             //They can still withdraw their application:
             echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="withdraw_application('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw My Application</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';

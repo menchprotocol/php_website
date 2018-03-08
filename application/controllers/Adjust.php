@@ -46,36 +46,34 @@ class Adjust extends CI_Controller {
 
 
                 //Go through and see where it breaks down:
-                $found_incomplete_task = false;
+                $found_incomplete_step = false;
                 $total_hours_done = 0;
-                $ru_cache__current_milestone = 1;
                 $ru_cache__current_task = 1;
-                $total_tasks = 0;
-                $done_tasks = 0;
+                $total_steps = 0;
+                $done_steps = 0;
 
-                //The goal is to find the task that is after the very last task done
-                //Note that some Tasks could be done, but then rejected by the instructor...
-                foreach($projects[0]['c__child_intents'] as $milestone){
-                    if($milestone['c_status']==1){
-                        foreach($milestone['c__child_intents'] as $task){
-                            if($task['c_status']==1){
-                                $total_tasks++;
+                //The goal is to find the Step that is after the very last Step done
+                //Note that some Steps could be done, but then rejected by the instructor...
+                foreach($projects[0]['c__child_intents'] as $task){
+                    if($task['c_status']==1){
+                        foreach($task['c__child_intents'] as $step){
+                            if($step['c_status']==1){
+                                $total_steps++;
                                 //Has the student done this?
-                                if(!array_key_exists($task['c_id'],$us_data) || !($us_data[$task['c_id']]['us_status']==1)){
+                                if(!array_key_exists($step['c_id'],$us_data) || !($us_data[$step['c_id']]['us_status']==1)){
 
-                                    if(!$found_incomplete_task){
-                                        //The student is not done with this task, so here is were they're at:
-                                        $ru_cache__current_milestone = $milestone['cr_outbound_rank'];
+                                    if(!$found_incomplete_step){
+                                        //The student is not done with this Step, so here is were they're at:
                                         $ru_cache__current_task = $task['cr_outbound_rank'];
-                                        $found_incomplete_task = true;
+                                        $found_incomplete_step = true;
                                     }
 
                                 } else {
 
                                     //Addup the total hours based on the Action Plan
-                                    $total_hours_done += $us_data[$task['c_id']]['us_time_estimate'];
-                                    $found_incomplete_task = false; //Reset this
-                                    $done_tasks++;
+                                    $total_hours_done += $us_data[$step['c_id']]['us_time_estimate'];
+                                    $found_incomplete_step = false; //Reset this
+                                    $done_steps++;
 
                                 }
                             }
@@ -86,20 +84,18 @@ class Adjust extends CI_Controller {
                 //Calculate the total progress:
                 $ru_cache__completion_rate = number_format(($total_hours_done/$projects[0]['c__estimated_hours']),3);
 
-                if($done_tasks==$total_tasks){
-                    //They have done all Tasks
-                    $ru_cache__current_milestone = ($class['r__total_milestones']+1);
-                    $ru_cache__current_task = 1;
+                if($done_steps==$total_steps){
+                    //They have done all Steps
+                    $ru_cache__current_task = ($class['r__total_tasks']+1);
                 }
 
                 //Do we need to update?
-                if(!($admission['ru_cache__current_milestone']==$ru_cache__current_milestone) || !($admission['ru_cache__current_task']==$ru_cache__current_task) || !($admission['ru_cache__completion_rate']==$ru_cache__completion_rate)){
+                if(!($admission['ru_cache__current_task']==$ru_cache__current_task) || !($admission['ru_cache__completion_rate']==$ru_cache__completion_rate)){
 
                     //Update DB:
                     $this->Db_model->ru_update( $admission['ru_id'] , array(
                         'ru_cache__completion_rate' => $ru_cache__completion_rate,
                         'ru_cache__current_task' => $ru_cache__current_task,
-                        'ru_cache__current_milestone' => $ru_cache__current_milestone,
                     ));
 
                     //Increase counter:

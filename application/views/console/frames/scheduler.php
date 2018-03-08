@@ -2,6 +2,16 @@
 //Determine lock down status:
 $disabled = ( isset($_GET['disabled']) && $_GET['disabled']=='disabled' ? 'disabled' : null );
 $website = $this->config->item('website');
+
+if(!isset($_GET['r_start_date'])){
+    die('Error: Missing Class Start Date');
+}
+
+//Buildup the dates:
+$weekdays = array();
+for($w=0; $w<=6; $w++) {
+    array_push($weekdays,date("D M j", (strtotime($_GET['r_start_date'])+($w*24*3600))));
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -69,7 +79,7 @@ $website = $this->config->item('website');
             mode: "<?= ( $disabled ? 'read' : 'edit' ) ?>",
             confirm: false,
             hour: 12,
-            days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            days: <?= json_encode($weekdays) ?>,
             data: <?= json_encode(unserialize($class['r_live_office_hours'])) ?>
         });        
     });

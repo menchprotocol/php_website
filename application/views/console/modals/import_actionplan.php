@@ -22,7 +22,7 @@ $projects = $this->Db_model->user_projects(array(
         //Let's check the value of the current posstible ID for input validation checking:
         if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
             var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
-            if(the_id=='choose_bootcamp'){
+            if(the_id=='choose_project'){
                 //This is a critical step as it would define which Project to load into the Import wizard...
                 var import_from_b_id = $('#import_b_id').val();
                 if(import_from_b_id<1){
@@ -63,21 +63,20 @@ $projects = $this->Db_model->user_projects(array(
                        !($('input[name=b_level_messages]:checked').val()=='on')
                     && !($('input[name=b_target_audience]:checked').val()=='on')
                     && !($('input[name=b_prerequisites]:checked').val()=='on')
-                    && !($('input[name=b_application_questions]:checked').val()=='on')
-                    && !($('input[name=b_published_milestones]:checked').val()=='on')
-                    && !($('input[name=b_drafting_milestones]:checked').val()=='on')
+                    && !($('input[name=b_published_tasks]:checked').val()=='on')
+                    && !($('input[name=b_drafting_tasks]:checked').val()=='on')
                     && !($('input[name=b_transformations]:checked').val()=='on')
                     && !($('input[name=b_completion_prizes]:checked').val()=='on')
                 ){
                     //Nothing was checked!
                     alert('ERROR: Choose at-least 1 item to import');
                     return false;
-                } else if(($('input[name=b_published_milestones]:checked').val()=='on') || ($('input[name=b_drafting_milestones]:checked').val()=='on')){
-                    //Show the Milestone modality selector:
-                    $('#milestone_mode').removeClass('hidden');
+                } else if(($('input[name=b_published_tasks]:checked').val()=='on') || ($('input[name=b_drafting_tasks]:checked').val()=='on')){
+                    //Show the Task modality selector:
+                    $('#task_mode').removeClass('hidden');
                 } else {
-                    //hide milestone modality selector:
-                    $('#milestone_mode').addClass('hidden');
+                    //hide Task modality selector:
+                    $('#task_mode').addClass('hidden');
                 }
             }
         }
@@ -129,14 +128,13 @@ $projects = $this->Db_model->user_projects(array(
 
                 import_from_b_id:parseInt($('#import_b_id').val()),
                 import_to_b_id:<?= $project['b_id'] ?>,
-                milestone_import_mode:parseInt($('input[name=milestone_import_mode]:checked').val()),
+                task_import_mode:parseInt($('input[name=task_import_mode]:checked').val()),
 
                 b_level_messages:($('input[name=b_level_messages]:checked').val()=='on'?1:0),
                 b_target_audience:($('input[name=b_target_audience]:checked').val()=='on'?1:0),
                 b_prerequisites:($('input[name=b_prerequisites]:checked').val()=='on'?1:0),
-                b_application_questions:($('input[name=b_application_questions]:checked').val()=='on'?1:0),
-                b_published_milestones:($('input[name=b_published_milestones]:checked').val()=='on'?1:0),
-                b_drafting_milestones:($('input[name=b_drafting_milestones]:checked').val()=='on'?1:0),
+                b_published_tasks:($('input[name=b_published_tasks]:checked').val()=='on'?1:0),
+                b_drafting_tasks:($('input[name=b_drafting_tasks]:checked').val()=='on'?1:0),
                 b_transformations:($('input[name=b_transformations]:checked').val()=='on'?1:0),
                 b_completion_prizes:($('input[name=b_completion_prizes]:checked').val()=='on'?1:0),
 
@@ -200,7 +198,7 @@ $projects = $this->Db_model->user_projects(array(
             </div>
             <div class="modal-body" style="min-height:300px;">
 
-                <div class="wizard-box" id="choose_bootcamp">
+                <div class="wizard-box" id="choose_project">
                     <p>Import from:</p>
                     <div class="form-group label-floating is-empty">
                         <select class="form-control input-mini border" id="import_b_id">
@@ -221,29 +219,29 @@ $projects = $this->Db_model->user_projects(array(
                 <div class="wizard-box" id="choose_content"></div>
 
                 <div class="wizard-box" id="import_mode">
-                    <div id="milestone_mode" class="hidden">
-                        <h4 style="margin-bottom:20px;"><i class="fa fa-flag" aria-hidden="true"></i> Milestone Import Mode</h4>
+                    <div id="task_mode" class="hidden">
+                        <h4 style="margin-bottom:20px;"><i class="fa fa-check-square-o" aria-hidden="true"></i> Task Import Mode</h4>
                         <p><i class="fa fa-link" aria-hidden="true"></i> <b>Link:</b> New copy is linked to original item. Settings & Messages are mirrored and would remain in-sync if edited from either Action Plan.</p>
                         <p><i class="fa fa-clone" aria-hidden="true"></i> <b>Copy:</b> A copy is made. Changes to Settings & Messages of either copy would not affect the other copy as they are independent from one another.</p>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="milestone_import_mode" value="1" disabled />
-                                <i class="fa fa-link" aria-hidden="true"></i> Link Milestones <i class="fa fa-link" aria-hidden="true"></i> Link Tasks <b class="badge">UPCOMING</b>
-                                <p>Keeps all Milestones in-sync. Changes made to the Settings/Messages of Milestones and Tasks would be synced.</p>
+                                <input type="radio" name="task_import_mode" value="1" disabled />
+                                <i class="fa fa-link" aria-hidden="true"></i> Link Tasks <i class="fa fa-link" aria-hidden="true"></i> Link Steps <b class="badge">UPCOMING</b>
+                                <p>Keeps all Tasks in-sync. Changes made to the Settings/Messages of Tasks and Steps would be synced.</p>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="milestone_import_mode" value="2" disabled />
-                                <i class="fa fa-clone" aria-hidden="true"></i> Copy Milestones <i class="fa fa-link" aria-hidden="true"></i> Link Tasks <b class="badge">UPCOMING</b>
-                                <p>Ideal for re-structuring Milestones by making your Action Plan longer or shorter. Settings/Messages for Milestones would be independent while Settings/Messages for Tasks would be synced.</p>
+                                <input type="radio" name="task_import_mode" value="2" disabled />
+                                <i class="fa fa-clone" aria-hidden="true"></i> Copy Tasks <i class="fa fa-link" aria-hidden="true"></i> Link Steps <b class="badge">UPCOMING</b>
+                                <p>Ideal for re-structuring Tasks by making your Action Plan longer or shorter. Settings/Messages for Tasks would be independent while Settings/Messages for Steps would be synced.</p>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="milestone_import_mode" value="3" checked="true" />
-                                <i class="fa fa-clone" aria-hidden="true"></i> Copy Milestones <i class="fa fa-clone" aria-hidden="true"></i> Copy Tasks
-                                <p>A fresh copy is made for both Milestones and Tasks, and their Settings/Messages would be independent.</p>
+                                <input type="radio" name="task_import_mode" value="3" checked="true" />
+                                <i class="fa fa-clone" aria-hidden="true"></i> Copy Tasks <i class="fa fa-clone" aria-hidden="true"></i> Copy Steps
+                                <p>A fresh copy is made for both Tasks and Steps, and their Settings/Messages would be independent.</p>
                             </label>
                         </div>
                         <br />

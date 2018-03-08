@@ -124,7 +124,7 @@ function insert_gravatar(){
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
   <li id="nav_communication"><a href="#communication"><i class="fa fa-share-alt" aria-hidden="true"></i> Communication</a></li>
-  <li id="nav_finance"><a href="#finance"><i class="fa fa-bar-chart" aria-hidden="true"></i> Finance</a></li>
+  <li id="nav_finance"><a href="#finance"><i class="fa fa-bar-chart" aria-hidden="true"></i> Payout History</a></li>
   <li id="nav_password"><a href="#password"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
 </ul>
 
@@ -304,8 +304,23 @@ function insert_gravatar(){
     
     <div class="tab-pane" id="tabfinance" style="max-width:none !important;">
 
+       <?php
+       echo '<div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History</h4></div>';
+       //Attempt to fetch all payouts:
+       $class_transactions = $this->Db_model->t_fetch(array(
+           't.t_u_id' => $udata['u_id'],
+       ));
+       if(count($class_transactions)<1){
+           //Class is not yet started:
+           echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No transactions yet.</div>';
+       } else {
+           //List all transactions:
 
-        <div class="title"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+       }
+       ?>
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_paypal_email'] ?>" class="form-control border">
             <span class="material-input"></span>
@@ -316,7 +331,7 @@ function insert_gravatar(){
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
         <ul>
         	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
-        	<li>I have read and understood my Project's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Tuition Guarantee <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        	<li>I have read and understood my Project's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Mench Guarantee <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>

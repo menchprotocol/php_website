@@ -63,8 +63,8 @@ a.badge-primary:hover {
     font-size:1.3em;
 }
 .main-panel .content { min-height:auto !important; }
-#milestone_view { text-align:left; }
-#milestone_view .fa { font-size:18px; cursor: pointer;}
+#task_view { text-align:left; }
+#task_view .fa { font-size:18px; cursor: pointer;}
 #b_objective {font-family: "Roboto Slab", "Times New Roman", serif;}
 #b_objective .fa {padding-right:3px;}
 
@@ -182,10 +182,10 @@ a.badge-primary:hover {
     background-color: #E5E5E5;
     border: 0;
 }
-.task-group{
+.step-group{
     margin:10px 0 0 21px;
 }
-.task-group>.list-group-item{
+.step-group>.list-group-item{
     padding:7px;
     border:1px solid #E5E5E5;
 }
@@ -406,7 +406,7 @@ h5, .h5 {
 	color:#666;
 }
 
-#bootcamp_start{
+#project_start{
     display: inline !important;
 }
 .btn-mls{margin-right:6px; background-color:#E5E5E5;}
@@ -636,7 +636,7 @@ h5, .h5 {
     font-weight:300;
 }
 
-.new-task-input input[type=text]::placeholder{
+.new-step-input input[type=text]::placeholder{
     font-size: 16px !important;
     font-family: Lato;
     line-height: 27px !important;
@@ -645,7 +645,7 @@ h5, .h5 {
     font-weight:300;
 }
 
-.new-task-input input[type=text]{
+.new-step-input input[type=text]{
     font-weight:300;
 }
 .list-messages>div>div>textarea {
@@ -930,7 +930,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
     padding: 12px 10px;
     margin: -10px -7px -10px -10px;
 }
-.is_task_sortable .fa-bars{
+.is_step_sortable .fa-bars{
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
 .btn-adj {color:#bbb; margin:0 7px 0 0; z-index:9999999;}

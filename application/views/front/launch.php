@@ -37,7 +37,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">filter_3</i></div>
 					<h3 class="info-title">Lead To Success</h3>
-					<p>Ready, set, go! Set weekly milestones, completion awards, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and identify who needs help the most.</p>
+					<p>Ready, set, go! Set weekly Tasks, completion awards, and automated reminders to motivate participants to cross the finish line. Use our analytics to monitor their progress and identify who needs help the most.</p>
 				</div>
 			</div>
 		</div>
@@ -94,14 +94,6 @@ $udata = $this->session->userdata('user');
                 </div>
                 <div class="col-md-4">
 
-                    <?php /*
-				<div class="info">
-					<h2 class="title" style="margin-top:30px;">For Students</h2>
-					<p style="min-height:200px;">Accomplish your Project outcome <u>faster</u> by working with expert instructors that hold you accountable in completing step-by-step milestones on-time. Have you read tons of books or taken a bunch of courses only to be overwhelmed and confused as to how to implement what you've learned? Join one of our Projects to take action once and for all!</p>
-					<a href="/bootcamps" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;"><i class="fa fa-search" aria-hidden="true"></i> Join a Projects</a>
-				</div>
-				*/ ?>
-
                     <div class="info">
                         <h2 class="title" style="margin-top:30px; line-height: 110%;">Coding Projects</h2>
                         <p style="min-height:200px;">Expand your top funnel and find qualified students by running affordable online Projects. Increase conversion rates by giving students a taste of your service for a fraction of the cost while enabling students to join from anywhere in the world.
@@ -145,7 +137,7 @@ $udata = $this->session->userdata('user');
 			</div>
 			<div class="col-md-4">
 				<div class="info">
-					<p>It seems silly but I've bought $2000+ courses on the same topic and I haven't done anything useful with them yet. Those online courses that I'm in are FILLED with modules and videos and it seems like such a daunting task to start. I think the simple style of your Project is what's bringing me into action.</p>
+					<p>It seems silly but I've bought $2000+ courses on the same topic and I haven't done anything useful with them yet. Those online courses that I'm in are FILLED with modules and videos and it seems like such a daunting Step to start. I think the simple style of your Project is what's bringing me into action.</p>
 					<h4>Tina Huynh</h4>
 				</div>
 			</div>

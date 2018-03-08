@@ -21,7 +21,7 @@ class Cron extends CI_Controller {
     function class_kickstart(){
 
         //Cron Settings: 0,30 * * * *
-        //This function is solely responsible to get the class started and dispatch its very first milestone messages IF it does start
+        //This function is solely responsible to get the class started and dispatch its very first Task messages IF it does start
         //Searches for any class that might be starting and kick starts its messages:
         $classes = $this->Db_model->r_fetch(array(
             'r_status' => 1,
@@ -150,11 +150,11 @@ class Cron extends CI_Controller {
             ));
 
 
-            //Find first due milestone to dispatch its messages to all students:
-            $first_milestone_c_id = 0;
-            foreach($projects[0]['c__child_intents'] as $milestone){
-                if($milestone['c_status']>=1){
-                    $first_milestone_c_id = $milestone['c_id'];
+            //Find first due Task to dispatch its messages to all students:
+            $first_task_c_id = 0;
+            foreach($projects[0]['c__child_intents'] as $task){
+                if($task['c_status']>=1){
+                    $first_task_c_id = $task['c_id'];
                     break;
                 }
             }
@@ -164,8 +164,8 @@ class Cron extends CI_Controller {
             $cancellation_reason = null; //If remains Null we're good to get started
             if($projects[0]['b_status']<2){
                 $cancellation_reason = 'Project was not published';
-            } elseif($first_milestone_c_id==0) {
-                $cancellation_reason = 'Project did not have any published Milestones';
+            } elseif($first_task_c_id==0) {
+                $cancellation_reason = 'Project did not have any published Tasks';
             } elseif(count($accepted_admissions)==0) {
                 $cancellation_reason = 'no students applied/got-admitted into this Class';
             } elseif(count($accepted_admissions)<$class['r_min_students']) {
@@ -235,7 +235,7 @@ class Cron extends CI_Controller {
                 $stats[$class['r_id']]['new_status'] = 2; //Class Running
                 $this->Db_model->r_update( $class['r_id'] , array(
                     'r_status' => $stats[$class['r_id']]['new_status'],
-                    'r_cache__current_milestone' => 1, //First Milestone is getting started, note it here
+                    'r_cache__current_milestone' => 1, //First Task is getting started, note it here
                 ));
 
 
@@ -272,7 +272,7 @@ class Cron extends CI_Controller {
                     //Send message for their first Class:
                     $this->Comm_model->foundation_message(array(
                         'e_recipient_u_id' => $admission['u_id'],
-                        'e_c_id' => $first_milestone_c_id, //First Milestone of this Class
+                        'e_c_id' => $first_task_c_id, //First Task of this Class
                         'depth' => 0,
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
@@ -299,12 +299,12 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function next_milestone(){
+    function next_task(){
 
         //Cron Settings: 0,30 * * * *
-        //Moves the class from one milestone to another, Only applicable for the 2nd milesone or higher
-        //Also closes a Class if all Milestones are done...
-        //The first milestone is triggered with the class_kickstart() cron function above
+        //Moves the class from one Task to another, Only applicable for the 2nd milesone or higher
+        //Also closes a Class if all Tasks are done...
+        //The first Task is triggered with the class_kickstart() cron function above
 
         $running_classes = $this->Db_model->r_fetch(array(
             'r_status' => 2, //Only running classes
@@ -323,7 +323,7 @@ class Cron extends CI_Controller {
             if($class['r__current_milestone']<0){
 
                 //Class ended
-                //Fetch all the class students, and see which ones advance to this new milestone:
+                //Fetch all the class students, and see which ones advance to this new Task:
                 $accepted_admissions = $this->Db_model->ru_fetch(array(
                     'ru.ru_r_id'	    => $class['r_id'],
                     'ru.ru_status >='	=> 4, //Admitted students
@@ -367,19 +367,19 @@ class Cron extends CI_Controller {
                     //Loop through students and make adjustments:
                     foreach($accepted_admissions as $admission){
 
-                        //See where the student is at, did they finish the previous milestone?
-                        if($admission['ru_cache__current_milestone']>$class['r__total_milestones']){
-                            //Completed all milestones:
+                        //See where the student is at, did they finish the previous Task?
+                        if($admission['ru_cache__current_task']>$class['r__total_tasks']){
+                            //Completed all Tasks:
                             $completion_stats['completed']++;
                             $ru_status = 7; //Graduate
                             $e_type_id = 64; //Student Graduated
-                            $i_message​​ = '{first_name} your class just ended. Congratulations for completing all Milestones on-time 🎉​';
+                            $i_message​​ = '{first_name} your class just ended. Congratulations for completing all Tasks on-time 🎉​';
                         } else {
                             //Did not complete:
                             $completion_stats['incomplete']++;
                             $ru_status = 6; //Incomplete
                             $e_type_id = 71; //Student Incomplete Class
-                            $i_message​​ = '{first_name} your class just ended. You can no longer submit Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​';
+                            $i_message​​ = '{first_name} your class just ended. You can no longer submit Steps but you will have life-time access to all Tasks and Steps which are now unlocked.​';
                         }
 
                         //Adjust status in admissions table:
@@ -438,7 +438,7 @@ class Cron extends CI_Controller {
 
                     //Log Engagement:
                     $industry_completion = 0.10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$projects[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Milestones on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
+                    $completion_message = 'Your ['.$projects[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
 
                     //Log Engagement for Class Completion:
                     $this->Db_model->e_create(array(
@@ -461,14 +461,14 @@ class Cron extends CI_Controller {
             } elseif($class['r__current_milestone']<=1){
 
                 //Should never be 0 (meaning not started) as r_status=2 (means it must have started)
-                //ALso if its 1, it means its still at the first milestone, nothing we need to do here...
+                //ALso if its 1, it means its still at the first Task, nothing we need to do here...
                 $stats[$class['r_id']] = 'Skipped. Class has not passed its first week yet.';
 
             } elseif($class['r__current_milestone']<$class['r_cache__current_milestone']){
 
                 //This should not happen as it means the Class has somehow gone backwards, log error:
                 $this->Db_model->e_create(array(
-                    'e_message' => 'Class seems to be moving backwards as current Milestone is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']',
+                    'e_message' => 'Class seems to be moving backwards as current Task is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']',
                     'e_json' => $projects[0],
                     'e_type_id' => 8, //Platform Error
                     'e_b_id' => $class['r_b_id'],
@@ -477,26 +477,26 @@ class Cron extends CI_Controller {
 
             } elseif($class['r__current_milestone']==$class['r_cache__current_milestone']){
 
-                //Still during the current milestone
-                $stats[$class['r_id']] = 'Already up-to-date. Current Milestone is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']';
+                //Still during the current Task
+                $stats[$class['r_id']] = 'Already up-to-date. Current Task is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']';
 
             } elseif($class['r__current_milestone']>$class['r_cache__current_milestone']){
 
                 //We have advanced since the DB:
-                //r__current_milestone (real) milestone is 2 or higher
-                //First the c_id of the milestone to dispatch its messages:
-                $new_milestone_c_id = 0;
-                foreach($projects[0]['c__child_intents'] as $milestone){
-                    if($milestone['c_status']>=1 && $milestone['cr_outbound_rank']==$class['r__current_milestone']){
+                //r__current_milestone (real) Task is 2 or higher
+                //First the c_id of the Task to dispatch its messages:
+                $new_task_c_id = 0;
+                foreach($projects[0]['c__child_intents'] as $task){
+                    if($task['c_status']>=1 && $task['cr_outbound_rank']==$class['r__current_milestone']){
                         //Gotcha, this is it!
-                        $new_milestone_c_id = $milestone['c_id'];
+                        $new_task_c_id = $task['c_id'];
                         break;
                     }
                 }
 
-                if(!$new_milestone_c_id){
+                if(!$new_task_c_id){
                     //OOps, this should not happen, notify admin:
-                    $stats[$class['r_id']] = 'ERROR: Could not find new Milestone c_id with r__current_milestone = cr_outbound_rank = ['.$class['r__current_milestone'].']';
+                    $stats[$class['r_id']] = 'ERROR: Could not find new Task c_id with r__current_milestone = cr_outbound_rank = ['.$class['r__current_milestone'].']';
                     //Log Error engagement:
                     $this->Db_model->e_create(array(
                         'e_message' => $stats[$class['r_id']],
@@ -511,7 +511,7 @@ class Cron extends CI_Controller {
 
 
                 //All good, ove on to dispatch phase...
-                //Fetch all the class students, and see which ones advance to this new milestone:
+                //Fetch all the class students, and see which ones advance to this new Task:
                 $accepted_admissions = $this->Db_model->ru_fetch(array(
                     'ru.ru_r_id'	    => $class['r_id'],
                     'ru.ru_status'	    => 4, //Admitted students
@@ -538,16 +538,16 @@ class Cron extends CI_Controller {
 
                 //Loop through students:
                 foreach($accepted_admissions as $admission){
-                    //See where the student is at, did they finish the previous milestone?
-                    if($admission['ru_cache__current_milestone']>=$class['r__current_milestone']){
+                    //See where the student is at, did they finish the previous Task?
+                    if($admission['ru_cache__current_task']>=$class['r__current_milestone']){
 
                         $ontime++;
 
-                        //Yes, they are up to date, send next milestone messages:
+                        //Yes, they are up to date, send next Task messages:
                         $this->Comm_model->foundation_message(array(
                             'e_recipient_u_id' => $admission['u_id'],
                             'e_fp_id' => $admission['ru_fp_id'],
-                            'e_c_id' => $new_milestone_c_id,
+                            'e_c_id' => $new_task_c_id,
                             'depth' => 0,
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -565,7 +565,7 @@ class Cron extends CI_Controller {
                         $this->Comm_model->send_message(array(
                             array(
                                 'i_media_type' => 'text',
-                                'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Milestone!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$projects[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$projects[0]['b_sprint_unit'].' '.$admission['ru_cache__current_milestone'].' tasks and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
+                                'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Task!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$projects[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$projects[0]['b_sprint_unit'].' '.$admission['ru_cache__current_task'].' Steps and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
                                 'e_initiator_u_id' => 0,
                                 'e_recipient_u_id' => $admission['u_id'],
                                 'e_b_id' => $class['r_b_id'],
@@ -591,10 +591,10 @@ class Cron extends CI_Controller {
                         'project' => $projects[0],
                         'accepted_admissions' => $accepted_admissions,
                     ),
-                    'e_type_id' => 61, //Class Milestone Advanced, sends message to instructor team...
+                    'e_type_id' => 61, //Class Task Advanced, sends message to instructor team...
                     'e_b_id' => $class['r_b_id'],
                     'e_r_id' => $class['r_id'],
-                    'e_c_id' => $new_milestone_c_id,
+                    'e_c_id' => $new_task_c_id,
                 ));
 
                 //Append message to stats:
@@ -954,24 +954,6 @@ class Cron extends CI_Controller {
             }
         }
 
-        //Fetch student assignment submissions:
-        //TODO later, we have an open issue for this
-        /*
-        $task_submissions = $this->Db_model->us_fetch(array(
-            'us_timestamp >=' => $after_time,
-            'us_status' => 1, //This is the default when submitted by the student
-        ));
-
-        $q = $this->db->query('SELECT u_fname, u_lname, u_id, COUNT(us_id) as tasks_submitted FROM v5_user_submissions us JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY u_id, u_status, u_fname, u_lname');
-        $new_messages = $q->result_array();
-
-
-        if(count($task_submissions)>0){
-            foreach($task_submissions){
-
-            }
-        }
-        */
 
         //Now see if we need to notify any admin:
         if(count($notify_messages)>0){
@@ -1260,14 +1242,14 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function student_reminder_complete_milestone(){
+    function student_reminder_complete_task(){
         //Cron Settings: 45 * * * *
-        //Send reminders to students to complete their tasks:
+        //Send reminders to students to complete their Steps:
 
         $admissions = $this->Db_model->ru_fetch(array(
             'r.r_status'	    => 2, //Running Class
             'ru.ru_status'      => 4, //Admitted Students
-            '(ru.ru_cache__current_milestone <= r.r_cache__current_milestone)' => null, //Students that are behind
+            '(ru.ru_cache__current_task <= r.r_cache__current_milestone)' => null, //Students that are behind
         ));
 
         //Define the logic of these reminders

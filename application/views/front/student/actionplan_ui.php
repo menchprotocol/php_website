@@ -79,12 +79,14 @@ echo '</ol>';
 /* ****************************************
  * Class Not Started / Ended Notification
  *************************************** */
-if($class['r__class_start_time']>time()){
+$class_has_started = ($class['r__class_start_time']<=time());
+$class_has_ended = ($class['r__class_end_time']<=time());
+if(!$class_has_started){
     //Class has not yet started:
     ?>
     <script>
         $( document ).ready(function() {
-            $("#bootcamp_start").countdowntimer({
+            $("#project_start").countdowntimer({
                 startDate : "<?= date('Y/m/d H:i:s'); ?>",
                 dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__class_start_time']); ?>",
                 size : "lg",
@@ -93,9 +95,9 @@ if($class['r__class_start_time']>time()){
             });
         });
     </script>
-    <div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="bootcamp_start"></span></div>
+    <div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="project_start"></span></div>
     <?php
-} elseif($class['r__class_end_time']<time()){
+} elseif($class_has_ended){
     //Class has ended
     echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
 }
@@ -121,7 +123,7 @@ if(count($intent['c__messages'])>0){
 if($displayed_messages>0){
     $uadmission = $this->session->userdata('uadmission');
 
-    //Only load the 3rd Level Task messages that are not yet complete by default, because everything else has already been communicated to the student
+    //Only load the 3rd Level Step messages that are not yet complete by default, because everything else has already been communicated to the student
     $load_open = ( $level>=3 ); //&& !isset($us_data[$intent['c_id']])
 
     //Messages:
@@ -150,13 +152,13 @@ if($level>=3){
 
 
     /* ******************************
-     * Task Completion
+     * Step Completion
      ****************************** */
     echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
-    if($class['r__current_milestone']<0 && 0){
+    if($class_has_ended){
         //Class if finished, no more submissions allowed!
-        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You cannot submit Tasks because Class has ended.</div>';
+        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You cannot submit Steps because Class has ended.</div>';
     } else {
         echo '<div id="save_report" class="quill_content">';
         if(isset($us_data[$intent['c_id']])){
@@ -181,7 +183,7 @@ if($level>=3){
 
             //What instructions do we need to give?
             if($red_note) {
-                echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Task requires ' . $red_note . '</div>';
+                echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Step requires ' . $red_note . '</div>';
             }
             echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
             echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
@@ -194,14 +196,15 @@ if($level>=3){
             echo '</div>';
 
 
-            //Show when this Milestone is due if not already passed:
-            if($sprint_index==$class['r__current_milestone'] && $class['r__current_milestone']>0 && isset($class['r__milestones_due'][$class['r__current_milestone']]) && $class['r__milestones_due'][$class['r__current_milestone']]>time()){
+            //Show when this Task is due if not already passed:
+            $due_timestamp = time_format($class['r_start_date'],3,7);
+            if($due_timestamp>time()){
                 ?>
                 <script>
                     $( document ).ready(function() {
                         $("#ontime_dueby").countdowntimer({
                             startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                            dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__milestones_due'][$class['r__current_milestone']]); ?>",
+                            dateAndTime : "<?= date('Y/m/d H:i:s' , $due_timestamp); ?>",
                             size : "lg",
                             regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
                             regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -220,10 +223,10 @@ if($level>=3){
 
 
     /* ******************************
-     * Task Next/Previous Buttons
+     * Step Next/Previous Buttons
      ****************************** */
     $previous_on = (isset($previous_intent['c_id']));
-    $next_on = (($class['r__current_milestone']<0 || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]) && ($next_level==3 || $next_intent['cr_outbound_rank']<=$class['r__current_milestone']))) && $next_level>1);
+    $next_on = ( $next_level>=2 && ($class_has_ended || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]))));
     if($previous_on || $next_on){
         echo '<h4><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
@@ -245,16 +248,16 @@ if($level>=3){
 
 
 /* ******************************
- * Milestone/Task List
+ * Task/Step List
  ****************************** */
 
 if($level<3){
 
     echo '<h4>';
         if($level==1){
-            echo '<i class="fa fa-flag" aria-hidden="true"></i> Milestones';
+            echo '<i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks';
         } elseif($level==2){
-            echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Tasks';
+            echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Steps';
         }
         //Show aggregate hours:
         echo ' <span class="sub-title">'.echo_time($intent['c__estimated_hours'],1).'</span>';
@@ -262,8 +265,8 @@ if($level<3){
 
     echo '<div id="list-outbound" class="list-group">';
 
-    //This could be either a list of Milestones or Tasks, we'll know using $level
-    $previous_item_complete = true; //We start this as its true for the very first Task
+    //This could be either a list of Tasks or Steps, we'll know using $level
+    $previous_item_complete = true; //We start this as its true for the very first Step
     foreach($intent['c__child_intents'] as $this_intent){
 
         if($this_intent['c_status']<1){
@@ -273,34 +276,32 @@ if($level<3){
 
         if($level==1){
 
-            //Milestone List
-            $item_time_arrived = ( $this_intent['cr_outbound_rank']<=$class['r__current_milestone'] ); //Yes it has arrived
-            $child_task_count = 0;
+            //Task List
+            $child_step_count = 0;
             $this_item_us_status = 1;
-            foreach($this_intent['c__child_intents'] as $task){
-                if($task['c_complete_is_bonus_task']=='t' || $task['c_status']<1){
+            foreach($this_intent['c__child_intents'] as $step){
+                if($step['c_status']<1){
                     //Does not count:
                     continue;
                 }
 
-                //Count this as a task:
-                $child_task_count++;
+                //Count this as a Step:
+                $child_step_count++;
 
                 //See the status:
-                if(!isset($us_data[$task['c_id']])) {
+                if(!isset($us_data[$step['c_id']])) {
                     $this_item_us_status = -2; //Incomplete
                     //We know we can't go lowe than this:
                     break;
-                } elseif($us_data[$task['c_id']]['us_status']<$this_item_us_status){
+                } elseif($us_data[$step['c_id']]['us_status']<$this_item_us_status){
                     //Go to the lower denominator
-                    $this_item_us_status = $us_data[$task['c_id']]['us_status'];
+                    $this_item_us_status = $us_data[$step['c_id']]['us_status'];
                 }
             }
 
         } elseif($level==2){
 
-            //Task List
-            $item_time_arrived = true; //If they can see the Task list, then all the times for all Tasks has arrived
+            //Step List
             $this_item_us_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['us_status'] : -2 );
 
         }
@@ -308,13 +309,10 @@ if($level<3){
         //Now determine the lock status of this item...
 
         //Used in $unlocked_item logic in case instructor modifies Action Plan and Adds items before previously completed items:
-        $class_ended = ($class['r__current_milestone']<0);
         $this_item_complete = ( $this_item_us_status>=1 );
 
-        //TODO later Consider Bonus tasks later...
-
         //See Status:
-        $unlocked_item = ($class_ended) || ($item_time_arrived && ( $previous_item_complete || $this_item_complete ));
+        $unlocked_item = ($class_has_ended || $previous_item_complete || $this_item_complete);
 
         //Left content
         if($unlocked_item){
@@ -326,7 +324,7 @@ if($level<3){
 
         } else {
 
-            //Task/Milestone is locked, do not show link:
+            //Step/Task is locked, do not show link:
             $ui = '<li class="list-group-item">';
             $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
 
@@ -334,11 +332,9 @@ if($level<3){
 
         //Title on the left:
         if($level==1){
-            //Show counter:
-            $ui .= '<span title="Due '.date("Y-m-d H:i:s PST",$class['r__milestones_due'][$this_intent['cr_outbound_rank']]).'">'.ucwords($admission['b_sprint_unit']).' '.$this_intent['cr_outbound_rank'].($this_intent['c_duration_multiplier']>1 ? '-'.($this_intent['cr_outbound_rank']+$this_intent['c_duration_multiplier']-1) :'').':</span> ';
-        } elseif($level==2){
-            //Show counter:
             $ui .= '<span>Task '.$this_intent['cr_outbound_rank'].':</span> ';
+        } elseif($level==2){
+            $ui .= '<span>Step '.$this_intent['cr_outbound_rank'].':</span> ';
         }
 
         //Intent title:
@@ -347,28 +343,20 @@ if($level<3){
 
         $ui .= '<span class="sub-stats">';
 
-        //Enable total hours/milestone reporting...
+        //Enable total hours/Task reporting...
         if($level==1 && isset($this_intent['c__estimated_hours'])){
             $ui .= echo_time($this_intent['c__estimated_hours'],1);
         } elseif($level==2 && isset($this_intent['c_time_estimate'])){
             $ui .= echo_time($this_intent['c_time_estimate'],1);
         }
 
-        if($level==1 && $unlocked_item && $child_task_count){
-            //Show the number of sub-Tasks:
-            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_task_count.'</span>';
+        if($level==1 && $unlocked_item && $child_step_count){
+            //Show the number of sub-Steps:
+            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_step_count.'</span>';
         }
 
         $ui .= '</span>';
 
-
-        //The Current focus sign for the focused Task/Milestone:
-        if($level==1 && ($class['r__current_milestone']==$this_intent['cr_outbound_rank'])){
-            $ui .= ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
-        } elseif($level==2 && $this_intent['c_complete_is_bonus_task']=='t'){
-            //TODO Enable with Bonus Tasks:
-            //$ui .= ' <span class="badge badge-current"><i class="fa fa-gift" aria-hidden="true"></i> BONUS TASK</span>';
-        }
 
         $ui .= ( $unlocked_item ? '</a>' : '</li>');
 

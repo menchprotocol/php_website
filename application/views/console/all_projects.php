@@ -31,20 +31,6 @@ if(count($projects)>0){
             //Show the connected Facebook Page
             echo ' &nbsp;<span style="font-size:0.8em;" title="Project Connected to this Facebook Page" data-toggle="tooltip"><i class="fa fa-plug" aria-hidden="true"></i> '.$project['fp_name'].'</span>';
         }
-
-        /*
-
-        //Calculate their progress:
-        $launch_status = calculate_project_status($project);
-
-        echo '<ul class="below_list">';
-        
-        echo '<li style="min-width:100px;"><i class="fa fa-flag" aria-hidden="true"></i> '.$project['c__milestone_units'].' '.ucwords($project['b_sprint_unit']).( $project['c__milestone_units']==1 ? '' : 's' ).'</li>';
-        echo '<li style="min-width:115px;"><i class="fa fa-tasks" aria-hidden="true"></i> '.$launch_status['progress'].'% Ready</li>';
-        echo '<li>'.status_bible('b',$project['b_status'],0,'right').'</li>';
-        
-        echo '</ul>';
-        */
         echo '</a>';
     }
     echo '</div>';
@@ -55,7 +41,7 @@ if(count($projects)>0){
 //New Project Button:
 echo '<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newProjectModal">New</a>';
 if($udata['u_status']>=3){
-    echo '<span> &nbsp; or <a href="/cockpit/browse/bootcamps"><u>Browse All</u></a></span>';
+    echo '<span> &nbsp; or <a href="/cockpit/browse/projects"><u>Browse All</u></a></span>';
 }
 
 ?>

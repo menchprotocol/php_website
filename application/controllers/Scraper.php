@@ -74,7 +74,7 @@ class Scraper extends CI_Controller {
 	}
 	
 	function coursereport_sync(){
-	    //This function goes through the indexed bootcamps in v5_leads and fetches more data for them.
+	    //This function goes through the indexed Projects in v5_leads and fetches more data for them.
 	    $max_update_per_batch = 50;
 	    $to_update = $this->Db_model->il_fetch(array(
 	        'il_timestamp' => null, //Fetch courses that have never been updated before

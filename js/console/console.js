@@ -116,13 +116,13 @@ function ms_toggle(c_id,new_state=null){
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
 
-    //Watch the expand/close all buttons for Milestones:
-    $('#milestone_view .expand_all').click(function (e) {
+    //Watch the expand/close all buttons for Tasks:
+    $('#task_view .expand_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
             ms_toggle($( this ).attr('node-id'),1);
         });
     });
-    $('#milestone_view .close_all').click(function (e) {
+    $('#task_view .close_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
             ms_toggle($( this ).attr('node-id'),0);
         });

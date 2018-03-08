@@ -11,6 +11,6 @@ $tip_index = array(
 <div class="form-group label-floating is-empty">
     <div class="input-group border">
         <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">To</span>
-        <input type="text" id="c_objective" maxlength="<?= $core_objects['c']['maxlength'] ?>" placeholder="<?= ( $level==1 ? 'Get hired as an entry-level web developer' : '') ?>" value="<?= (isset($c_objective) ? htmlentities($c_objective) : '') ?>" class="form-control c_objective_input">
+        <input type="text" id="c_objective" maxlength="70" placeholder="<?= ( $level==1 ? 'Get hired as an entry-level web developer' : '') ?>" value="<?= (isset($c_objective) ? htmlentities($c_objective) : '') ?>" class="form-control c_objective_input">
     </div>
 </div>

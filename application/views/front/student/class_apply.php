@@ -12,30 +12,15 @@ function move_ui(adjustment){
 	if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
 		var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
 		
-		if(the_id=='overview_agree' && !document.getElementById('bootcamp_overview_agreement').checked){
+		if(the_id=='overview_agree' && !document.getElementById('project_overview_agreement').checked){
 			alert('You must agree to continue...');
 			$('#'+the_id+' input').focus();
 			return false;
-		} else if(the_id=='refund_agreement' && !document.getElementById('bootcamp_refund_agreement').checked){
+		} else if(the_id=='refund_agreement' && !document.getElementById('project_refund_agreement').checked){
 			alert('You must agree to continue...');
 			$('#'+the_id+' input').focus();
 			return false;
-		}		
-
-		<?php
-		if(strlen($admission['b_application_questions'])>0){
-    	    foreach(json_decode($admission['b_application_questions']) as $index=>$question){
-    	        //Now show the JS check for these fields:
-    	        ?>
-    	        if(the_id=='check_question_<?= ($index+1) ?>' && $('#question_<?= ($index+1) ?>').val().length<1 ){
-    				alert('Answer is required...');
-    				$('#question_<?= ($index+1) ?>').focus();
-    				return false;
-    			}
-    	        <?php
-    	    }
-    	 }
-    	 ?>
+		}
 	}
     
     
@@ -100,21 +85,6 @@ function move_ui(adjustment){
 	            	 }
 	            	 ?>
 			    },
-			    'questions' : {
-	    		    <?php
-	        		if(strlen($admission['b_application_questions'])>0){
-	            	    foreach(json_decode($admission['b_application_questions']) as $index=>$question){
-	            	        //Now show the JS check for these fields:
-	            	        ?>
-	            	        '<?= ($index+1) ?>' : {
-	        		        	'item' : '<?= str_replace('\'','',$question) ?>',
-	        			        'answer' : $('#question_<?= ($index+1) ?>').val(),
-	        			    },
-	            	        <?php
-	            	    }
-	            	 }
-	            	 ?>
-			     },
 			},
     		
 		}, function(data) {
@@ -192,17 +162,13 @@ $start_times = $this->config->item('start_times');
         	?>
     	</li>
     	<li>Start Time: <b><?= time_format($admission['r_start_date'],2).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
-    	<li>Duration: <b><?= $admission['c__milestone_units'] ?> <?= ucwords($admission['b_sprint_unit']).( $admission['c__milestone_units']==1 ? '' : 's') ?></b></li>
-    	<li>End Time: <b><?= time_format($admission['r_start_date'],2,(calculate_duration($admission))).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
-    	<li>Your Commitment: <b><?= echo_hours(round($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?>/<?= ucwords($admission['b_sprint_unit']) ?></b></li>
-    	<?php if(strlen($admission['r_meeting_frequency'])>0 && !($admission['r_meeting_frequency']=="0")){ ?>
-    	<li>Mentorship: <b><?= echo_mentorship($admission['r_meeting_frequency'],$admission['r_meeting_duration']) ?></b></li>
-    	<?php } ?>
+    	<li>End Time: <b><?= time_format($admission['r_start_date'],2,7).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
+    	<li>Your Commitment: <b><?= echo_hours(round($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?></b></li>
 	</ul>
 	<div class="form-group label-floating is-empty">
     	<div class="checkbox">
         	<label>
-        		<input type="checkbox" id="bootcamp_overview_agreement" /> <b style="font-size:1.3em;">Yes I Agree</b>
+        		<input type="checkbox" id="project_overview_agreement" /> <b style="font-size:1.3em;">Yes I Agree</b>
         	</label>
         </div>
     </div>
@@ -227,54 +193,6 @@ $start_times = $this->config->item('start_times');
 	}
 	?>
 	<br />
-</div>
-<?php } ?>
-
-
-<?php if(strlen($admission['b_application_questions'])>0){ ?>
-
-    <div class="wizard-box">
-    	<p>Thanks! That was pretty easy right?</p>
-    	<p>The next <?= count(json_decode($admission['b_application_questions'])) ?> questions would help the instructor to learn more about yourself and your current skills.</p>
-    </div>
-    
-    <?php
-    foreach(json_decode($admission['b_application_questions']) as $index=>$question){
-        ?>
-        <div class="wizard-box" id="check_question_<?= ($index+1) ?>">
-        	<p><?= $question ?></p>
-        	<div class="form-group">
-                <textarea id="question_<?= ($index+1) ?>" placeholder="Your Answer"></textarea>
-            </div>
-        </div>
-        <?php
-    }
-    ?>
-
-<?php } ?>
-
-
-<?php if($admission['r_usd_price']>0){ ?>
-<div class="wizard-box" id="refund_agreement">
-	<p>This Project offers a <b><?= ucwords($admission['r_cancellation_policy']); ?></b> refund policy:</p>
-	<?php 
-	$full_days = calculate_refund(calculate_duration($admission),'full',$admission['r_cancellation_policy']);
-	$prorated_days = calculate_refund(calculate_duration($admission),'prorated',$admission['r_cancellation_policy']);
-	//Display cancellation terms:
-	echo '<ul>';
-	echo '<li>You will always receive a full refund if your admission application was not approved.</li>';
-	echo '<li>Full Refund: <b>'.( $full_days>0 ? 'Before '.time_format($admission['r_start_date'],1,($full_days-1)).' '.$start_times[$admission['r_start_time_mins']].' PST' : 'None After Class Starts' ).'</b></li>';
-	echo '<li>Pro-Rated Refund: <b>'.( $prorated_days>0 ? 'Before '.time_format($admission['r_start_date'],1,($prorated_days-1)).' '.$start_times[$admission['r_start_time_mins']].' PST' : 'None After Class Starts' ).'</b></li>';
-	echo '</ul>';
-	?>
-		
-	<div class="form-group label-floating is-empty">
-    	<div class="checkbox">
-        	<label>
-        		<input type="checkbox" id="bootcamp_refund_agreement" /> <b style="font-size:1.3em;">I Understand My Refund Rights</b>
-        	</label>
-        </div>
-    </div>
 </div>
 <?php } ?>
 

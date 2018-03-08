@@ -1,7 +1,7 @@
 
 <ul class="nav nav-pills nav-pills-primary">
     <li class="<?= ( $object_name=='engagements' ? 'active' : '') ?>"><a href="/cockpit/browse/engagements"><i class="fa fa-eye" aria-hidden="true"></i> Engagements</a></li>
-    <li class="<?= ( $object_name=='projects' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Projects</a></li>
+    <li class="<?= ( $object_name=='projects' ? 'active' : '') ?>"><a href="/cockpit/browse/projects"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Projects</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
 </ul>
@@ -164,7 +164,7 @@ if($object_name=='engagements'){
     ),array('c','fp'),'b_status');
 
     //Did we find any?
-    $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
+    $meaningful_project_engagements = $this->config->item('meaningful_project_engagements');
 
 
     foreach($projects as $key=>$mb){
@@ -177,7 +177,7 @@ if($object_name=='engagements'){
         //Fetch last activity:
         $projects[$key]['engagements'] = $this->Db_model->e_fetch(array(
             'e_b_id' => $mb['b_id'],
-            '(e_type_id IN ('.join(',',$meaningful_bootcamp_engagements).'))' => null,
+            '(e_type_id IN ('.join(',',$meaningful_project_engagements).'))' => null,
         ),1000);
 
         $projects[$key]['student_funnel'] = array(
@@ -287,7 +287,7 @@ if($object_name=='engagements'){
         <th>Class End Time</th>
         <th>Elapsed</th>
         <th>Progress</th>
-        <th>Tuition</th>
+        <th>Price</th>
         <th colspan="4">Performance Stats</th>
     </tr>
     </thead>
@@ -363,7 +363,7 @@ if($object_name=='engagements'){
             )));
             $completed = count($this->Db_model->ru_fetch(array(
                 'r.r_id'	                        => $class['r_id'],
-                'ru.ru_cache__current_milestone >'  => $class['r__total_milestones'],
+                'ru.ru_cache__current_task >'  => $class['r__total_tasks'],
                 'ru.ru_fp_psid >'                   => 0, //Activated is what really counts...
             )));
             echo '<span data-toggle="tooltip" title="Completion Rate (Total Admitted Students who Activated Messenger)">';
@@ -493,7 +493,7 @@ if($object_name=='engagements'){
 
 
         //Fetch Projects:
-        $instructor_bootcamps = $this->Db_model->ba_fetch(array(
+        $instructor_projects = $this->Db_model->ba_fetch(array(
             'ba.ba_u_id' => $user['u_id'],
             'ba.ba_status >=' => 0,
             'b.b_status >=' => 0,
@@ -508,15 +508,15 @@ if($object_name=='engagements'){
 
         echo '<td>';
             //Display Projects:
-            if(count($instructor_bootcamps)>0){
-                $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
+            if(count($instructor_projects)>0){
+                $meaningful_project_engagements = $this->config->item('meaningful_project_engagements');
 
-                foreach ($instructor_bootcamps as $counter=>$ib){
+                foreach ($instructor_projects as $counter=>$ib){
                     //Fetch last activity:
                     $project_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],
                         'e_b_id' => $ib['b_id'],
-                        '(e_type_id IN ('.join(',',$meaningful_bootcamp_engagements).'))' => null,
+                        '(e_type_id IN ('.join(',',$meaningful_project_engagements).'))' => null,
                     ));
 
                     echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($project_building_engagements[0]) ? time_format($project_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($project_building_engagements)>=100 ? '100+' : count($project_building_engagements) ).'</div>';

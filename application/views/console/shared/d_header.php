@@ -87,8 +87,6 @@ $website = $this->config->item('website');
                     
             	<?php
             	if(isset($project)){
-            	    
-            	    $sprint_units = $this->config->item('sprint_units'); 
 
             	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$project['b_id'],'/console/'.$project['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$project['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    

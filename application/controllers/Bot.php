@@ -35,7 +35,7 @@ class Bot extends CI_Controller {
         $this->Comm_model->send_message(array(
             array(
                 'i_media_type' => 'text',
-                'i_message' => '{first_name} your class just endedt Tasks but you will have life-time access to all Milestones and Tasks which are now unlocked.​',
+                'i_message' => '{first_name} your class just endedt Steps but you will have life-time access to all Tasks and Steps which are now unlocked.​',
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => 1,
             ),

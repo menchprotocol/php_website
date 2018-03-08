@@ -179,13 +179,13 @@ class Console extends CI_Controller {
 		//Fetch intent relative to the Project by doing an array search:
 		$view_data = extract_level( $projects[0] , ( intval($pid)>0 ? $pid : $projects[0]['c_id'] ) );
 		if(!$view_data){
-		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
+		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid Step ID. Select another Step to continue.</div>');
 		} else {
 		    //Append universal (Flat design) breadcrumb:
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>',
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span> <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of Screening, Tasks or Outcomes from another Project you manage" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-download" aria-hidden="true"></i></span></a>',
                 ),
             );
         }
@@ -277,7 +277,7 @@ class Console extends CI_Controller {
 		//See how many applied?
         $current_applicants = count($this->Db_model->ru_fetch(array(
             'ru.ru_r_id'	    => $class['r_id'],
-            'ru.ru_status >='	=> 2, //Anyone who has completed their application
+            'ru.ru_status >='	=> 4, //Anyone who has completed their application
         )));
 		
 		$view_data = array(
@@ -292,7 +292,7 @@ class Console extends CI_Controller {
 		        ),
 		        array(
 		            'link' => null,
-		            'anchor' => time_format($class['r_start_date'],1).( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' completed their application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Application'.show_s($current_applicants).'</span>' : '' ),
+		            'anchor' => time_format($class['r_start_date'],2).' - '.time_format((strtotime($class['r_start_date'])+(6*24*3600)),2).( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' completed their application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Admission'.show_s($current_applicants).'</span>' : '' ),
 		        ),
 		    ),
 		);

@@ -1,5 +1,4 @@
 <?php
-$sprint_units = $this->config->item('sprint_units');
 $mench_advisers = $this->config->item('mench_advisers');
 ?>
 
@@ -19,27 +18,21 @@ $(document).ready(function() {
 
 <?php
 $website = $this->config->item('website');
-if(isset($project['c__milestone_units']) && $project['c__milestone_units'] > 0){
-	$rounded_hours = round($project['c__estimated_hours']/$project['c__milestone_units'] , 1);
-} else {
-	$rounded_hours = 0;
-}
+$rounded_hours = round($project['c__estimated_hours']/7 , ( $project['c__estimated_hours']<=18 ? 1 : 0 ));
+
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$project['b_url_key'].'</div>';
 ?>
 <div class="title"><h4><a href="/console/<?= $project['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
 <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $project['c_objective'] ?></b></div>
-<div><?= count($project['c__active_intents']) .' Milestone'.( count($project['c__active_intents'])==1 ? '' : 's' ).' in '.$project['c__milestone_units'].' '.ucwords($project['b_sprint_unit']).($project['c__milestone_units']==1?'':'s') ?></div>
-<div>
-    <?php
-    echo $project['c__task_count'] .' Task'.($project['c__task_count']==1?'':'s');
-    echo ' = '. round($project['c__estimated_hours'],1) .' Hours';
-    echo ( $project['c__milestone_units']>0 ? '<div>'.$rounded_hours.' Hour'.($rounded_hours==1?'':'s').'/'.ucwords($project['b_sprint_unit']).'</div>' : '' );
-    ?>
-</div>
-<div><?= $project['c__message_tree_count'] ?> Message<?= ($project['c__message_tree_count']==1?'':'s') ?></div>
+<div><?= count($project['c__active_intents']) .' Task'.show_s(count($project['c__active_intents'])) ?></div>
 
+<?php if($project['c__step_count']>0){ ?>
+    <div><?= $project['c__step_count'] .' Step'.show_s($project['c__step_count']) ?></div>
+<?php } ?>
 
+<div><?= $project['c__message_tree_count'] .' Message'. show_s($project['c__message_tree_count']) ?></div>
+<div><?= round($project['c__estimated_hours'],1) .' Hours in 7 Days ('.$rounded_hours.' Hour'.show_s($rounded_hours).'/Day)' ?></div>
 
 
 
@@ -47,39 +40,12 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$proje
 
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $project['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
 <div class="help_body maxout" id="content_2274"></div>
-<div><?= count($project['c__classes']) ?> Class<?= (count($project['c__classes'])==1?'':'es') ?></div>
-<?php 
-//Fetch class:
-$focus_class = filter_class($project['c__classes'],null);
-if($focus_class){
-    echo '<div>Next Starting Date: '.time_format($focus_class['r_start_date'],2).'</div>';
-} elseif(count($project['c__classes'])>0){
-    echo '<div>None Open for Admission Yet</div>';
-}
-?>
-
-
-
-
-
-
-
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $project['b_id'] ?>/students" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Students <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2275" class="help_button" intent-id="2275"></span></h4></div>
-    <div class="help_body maxout" id="content_2275"></div>
-<?php 
+<?php
 //Fetch admission stats:
 $student_funnel = array(
     0 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $project['b_id'],
         'ru.ru_status'     => 0,
-    ))),
-    2 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $project['b_id'],
-        'ru.ru_status'     => 2,
-    ))),
-    -1 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $project['b_id'],
-        'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
     ))),
     4 => count($this->Db_model->ru_fetch(array(
         'r.r_b_id'	       => $project['b_id'],
@@ -98,6 +64,13 @@ $student_funnel = array(
 foreach($student_funnel as $ru_status=>$count){
     echo '<div><span style="width:40px; display:inline-block">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
 }
+
+//Fetch class:
+$focus_class = filter_class($project['c__classes'],null);
+if($focus_class){
+    echo '<div>Next Class: '.time_format($focus_class['r_start_date'],2).'</div>';
+}
+
 ?>
 
 
@@ -165,7 +138,7 @@ echo '<div id="list-checklist" class="list-group maxout">';
 echo $check_list;
 echo '</div>';
 if($count_done>0){
-    echo '<div class="toggle-done"><a href="javascript:void(0)" onclick="$(\'.checklist-done\').toggleClass(\'checklist-done-see\')"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Tasks</a></div>';
+    echo '<div class="toggle-done"><a href="javascript:void(0)" onclick="$(\'.checklist-done\').toggleClass(\'checklist-done-see\')"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Steps</a></div>';
 }
 if($launch_status['progress']==100){
     echo '<p>'.$launch_status['completion_message'].'</p>';

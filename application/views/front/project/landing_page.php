@@ -1,5 +1,4 @@
 <?php 
-$sprint_units = $this->config->item('sprint_units');
 $start_times = $this->config->item('start_times');
 //Calculate office hours:
 $office_hours = unserialize($focus_class['r_live_office_hours']);
@@ -125,8 +124,6 @@ $( document ).ready(function() {
 </script>
 
 
-<?php if($focus_class){ ?>
-
 <h1 style="margin-bottom:30px;"><?= $project['c_objective'] ?></h1>
 
 <div class="row" id="landing_page">
@@ -138,18 +135,14 @@ $( document ).ready(function() {
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
             	<li>Duration: <b><?= $project['c__milestone_units'] ?> <?= ucwords($project['b_sprint_unit']).( $project['c__milestone_units']==1 ? '' : 's') ?></b></li>
-            	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(calculate_duration($project))) ?></b></li>
+            	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,7) ?></b></li>
             	<li>Commitment: <b><?= echo_hours(round($project['c__estimated_hours']/$project['c__milestone_units'], 1)) ?> Per <?= ucwords($project['b_sprint_unit']) ?></b></li>
-            	
-            	<?php if(strlen($focus_class['r_meeting_frequency'])>0 && !($focus_class['r_meeting_frequency']=="0")){ ?>
-            	<li>Mentorship: <b><?= echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']) ?></b></li>
-            	<?php } ?>
             	
             	<?php if($total_office_hours>0){ ?>
             	<li>Group Calls: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
             	<?php } ?>
 
-                <li>Tuition: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? ' <span style="font-weight:300; font-size: 0.9em;">(<a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>)</span>' : '' ); ?></b></li>
+                <li>Price: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? ' <span style="font-weight:300; font-size: 0.9em;">(<a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>)</span>' : '' ); ?></b></li>
             	
             	<?php if($focus_class['r_max_students']>0){ ?>
             		<li>Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
@@ -211,14 +204,14 @@ $( document ).ready(function() {
             echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($project['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].($sprint['c_duration_multiplier']>1 ? '-'.$ending_unit : '' ).': '.$sprint['c_objective'].'</a></h4>';
                 echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
 
-                    //Display all Active Tasks:
+                    //Display all Active Steps:
                     if(count($sprint['c__child_intents'])>0){
                         echo '<ul>';
-                        foreach($sprint['c__child_intents'] as $task){
-                            if($task['c_status']<1){
+                        foreach($sprint['c__child_intents'] as $step){
+                            if($step['c_status']<1){
                                 continue; //Not published yet
                             }
-                            echo '<li>'.$task['c_objective'].'</li>';
+                            echo '<li>'.$step['c_objective'].'</li>';
                         }
                         echo '</ul>';
                     }
@@ -227,7 +220,7 @@ $( document ).ready(function() {
                     if($sprint['c__estimated_hours']>0){
                         echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp; ';
                     }
-                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Complete By '.time_format($focus_class['r_start_date'],2,calculate_duration($project,$ending_unit)).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
+                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Complete By '.time_format($focus_class['r_start_date'],2,7).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
                     echo '</div>';
                 echo '</div>';
             echo '</div>';
@@ -239,37 +232,26 @@ $( document ).ready(function() {
     		
     		
     		<h3>1-on-1 Support</h3>
-    		<?php
-    		if(strlen($focus_class['r_meeting_frequency'])>0 && !($focus_class['r_meeting_frequency']=="0")){
-    		    echo '<h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship</h4>';
-    		    echo '<p>You will receive a total of <b>'.gross_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration'],$project['b_sprint_unit'],$project['c__milestone_units']).'</b> of 1-on-1 mentorship ('.echo_mentorship($focus_class['r_meeting_frequency'],$focus_class['r_meeting_duration']).') during the '.$project['c__milestone_units'].' '.$project['b_sprint_unit'].($project['c__milestone_units']==1?'':'s').' of this project.</p>';
-    		    echo '<hr />';
-    		}
 
-    		
+            <h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
+            <p>This Project offers live chat and email support during the 1-Week period. You can ask <b>unlimited questions</b> from your instructor.</p>
+            <hr />
+
+
+            <?php
     		if(count($office_hours_ui)>0 || $total_office_hours>0){
-    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Weekly Group Calls</h4>';
-    		    echo '<p>You can access <b>'.echo_hours($total_office_hours).' Per Week</b> of live group support during these time-slots:</p>';
+    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Group Calls</h4>';
+    		    echo '<p>You can access <b>'.echo_hours($total_office_hours).'</b> of live group support during these time-slots:</p>';
     		    echo '<ul style="list-style:none; margin-left:-20px;">';
     		    foreach($office_hours_ui as $oa_ui){
     		        echo '<li>'.$oa_ui.'</li>';
     		    }
     		    echo '</ul>';
-    		    if(strlen($focus_class['r_closed_dates'])>0){
-    		        echo '<p>Close Dates: '.$focus_class['r_closed_dates'].'</p>';
-    		    }
     		    echo '<hr />';
     		}
     		?>
 
 
-    		
-    		
-    		<?php if(strlen($focus_class['r_response_time_hours'])>0){ ?>
-    		<h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
-    		<p>This bootcamp offers live chat with response times of <b>Under <?= echo_hours($focus_class['r_response_time_hours']) ?></b> to all your inquiries. You can ask <b>unlimited questions</b> from the instructor team.</p>
-    		<hr />
-    		<?php } ?>
 
     		
     		
@@ -340,7 +322,7 @@ $( document ).ready(function() {
     			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (Ends in <span id="reg2"></span>)</li>
     			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     			<li>Class Duration is <b><?= $project['c__milestone_units'] ?> <?= ucwords($project['b_sprint_unit']).(($project['c__milestone_units']==1?'':'s')) ?></b></li>
-    			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,(calculate_duration($project))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
+    			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,7).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     		</ul>
     		<hr />
     		
@@ -349,37 +331,19 @@ $( document ).ready(function() {
     		<?php if(strlen($project['b_completion_prizes'])>0){ ?>
                 <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($project['b_completion_prizes']))) ?></h4>
                 <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($project['b_completion_prizes'])).'</li></ol>' ?></div>
-                <p>Awarded for completing all milestones by the end time of <?= time_format($focus_class['r_start_date'],2,(calculate_duration($project))).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST.</p>
+                <p>Awarded for completing all Tasks by the end of the 7-Day project.</p>
                 <hr />
     		<?php } ?>
     		
-    		
-    		
-    		<?php if($focus_class['r_usd_price']>0){ ?>
-    		<h4><i class="fa fa-shield" aria-hidden="true"></i> Refund Policy</h4>
-    		<p>This bootcamp offers a <b><?= ucwords($focus_class['r_cancellation_policy']); ?></b> refund policy:</p>
-    		<?php 
-    		$full_days = calculate_refund(calculate_duration($project),'full',$focus_class['r_cancellation_policy']);
-    		$prorated_days = calculate_refund(calculate_duration($project),'prorated',$focus_class['r_cancellation_policy']);
-    		//Display cancellation terms:
-    		echo '<ul style="list-style:none; margin-left:-30px;">';
-    		echo '<li>Full Refund: '.( $full_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($full_days-1)).' '.$start_times[$focus_class['r_start_time_mins']].' PST</b>' : '<b>None</b> After Admission' ).'</li>';
-    		echo '<li>Pro-Rated Refund: '.( $prorated_days>0 ? 'Before <b>'.time_format($focus_class['r_start_date'],1,($prorated_days-1)).' '.$start_times[$focus_class['r_start_time_mins']].' PST</b>' : '<b>None</b> After Admission' ).'</li>';
-    		echo '</ul>';
-    		?>
-    		<p>You will always receive a full refund if your admission application was not approved by the instructor. Learn more about our <a href="https://support.mench.co/hc/en-us/articles/115002095952">Refund Policies</a>.</p>
-    		<hr />
-    		<?php } ?>
+
     		
     		
     		
-    		
-    		
-    		<h4><i class="fa fa-usd" aria-hidden="true"></i> Tuition</h4>
+    		<h4><i class="fa fa-usd" aria-hidden="true"></i> Price</h4>
     		<?php if($focus_class['r_usd_price']>0){ ?>
     		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> (Includes <a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>) so <?= $leader_fname ?> can provide you with everything you need to <b><?= $project['c_objective'] ?></b> in <?= $project['c__milestone_units'] ?> <?= $project['b_sprint_unit'].($project['c__milestone_units']==1?'':'s') ?>.</p>
     		<?php } else { ?>
-    		<p>This bootcamp is <b>FREE</b>.</p>
+    		<p>This Project is <b>FREE</b>.</p>
     		<?php } ?>
             <hr />
             <p>Ready to unleash your full potential?</p>
@@ -397,10 +361,6 @@ $( document ).ready(function() {
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
 
-
-<?php } else { ?>
-	<div class="alert alert-danger" role="alert"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Live Class</span>We cannot render this landing page because its missing a live class.</div>
-<?php } ?>
 
 </div>
 </div>

@@ -48,9 +48,9 @@ $route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$
 
 
 //Three steps of the signup process:
-$route['projects'] 				        = "front/bootcamps_browse"; //Browse page
-$route['(:any)/apply/(:num)'] 	            = "front/bootcamp_apply/$1/$2"; //Start of application funnel for Email, first & last name
-$route['(:any)/apply'] 	                    = "front/bootcamp_apply/$1"; //Start of application funnel for Email, first & last name
-$route['(:any)/(:num)']	                    = "front/bootcamp_load/$1/$2"; //Load specific class in the Project
-$route['(:any)']	                        = "front/bootcamp_load/$1"; //Load specific Project
+$route['projects'] 				        = "front/projects_browse"; //Browse page
+$route['(:any)/apply/(:num)'] 	            = "front/project_apply/$1/$2"; //Start of application funnel for Email, first & last name
+$route['(:any)/apply'] 	                    = "front/project_apply/$1"; //Start of application funnel for Email, first & last name
+$route['(:any)/(:num)']	                    = "front/project_load/$1/$2"; //Load specific class in the Project
+$route['(:any)']	                        = "front/project_load/$1"; //Load specific Project
 

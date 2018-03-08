@@ -37,22 +37,6 @@ class Front extends CI_Controller {
 		$this->load->view('front/shared/f_footer');
 	}
 	
-	function features(){
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Features',
-		));
-		$this->load->view('front/features');
-		$this->load->view('front/shared/f_footer');
-	}
-	
-	function aboutus(){
-		$this->load->view('front/shared/f_header' , array(
-				'title' => 'About Us',
-		));
-		$this->load->view('front/aboutus');
-		$this->load->view('front/shared/f_footer');
-	}
-	
 	function terms(){
 		$this->load->view('front/shared/f_header' , array(
 				'title' => 'Terms & Privacy Policy',
@@ -74,7 +58,6 @@ class Front extends CI_Controller {
 		echo exec('whoami');
 		print_r($this->session->all_userdata());
 		echo phpinfo();
-		
 	}
 	
 	
@@ -146,7 +129,7 @@ class Front extends CI_Controller {
 	 * Project PUBLIC
 	 ****************************** */
 	
-	function bootcamps_browse(){
+	function projects_browse(){
 	    
 	    //Require login for now:
 	    if(!auth(1)){
@@ -173,7 +156,7 @@ class Front extends CI_Controller {
 	
 	
 	
-	function bootcamp_load($b_url_key,$r_id=null){
+	function project_load($b_url_key,$r_id=null){
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
@@ -206,8 +189,8 @@ class Front extends CI_Controller {
 	    }
 
 	    if($project['c__milestone_units']<=0){
-	        //No active milestones:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Error: You must <a href="/console/'.$project['b_id'].'/actionplan"><b><u>Create Some Milestones</u></b></a> before loading the landing page.</div>');
+	        //No active Tasks:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Error: You must <a href="/console/'.$project['b_id'].'/actionplan"><b><u>Create Some Tasks</u></b></a> before loading the landing page.</div>');
         }
 
 	    //Load home page:
@@ -224,7 +207,7 @@ class Front extends CI_Controller {
 	}
 	
 	
-	function bootcamp_apply($b_url_key,$r_id=null){
+	function project_apply($b_url_key,$r_id=null){
 	    //The start of the funnel for email, first name & last name
 
         //Fetch data:

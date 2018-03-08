@@ -98,8 +98,8 @@ WHERE ru.ru_status >= 4
             //Fetch Sub-intents:
             $projects[$key]['c__milestone_secs'] = ( $c['b_sprint_unit']=='week' ? 7 : 1 )*24*3600;
             $projects[$key]['c__active_intents'] = array();
-            $projects[$key]['c__task_count'] = 0;
-            $projects[$key]['c__milestone_units'] = 0; //Keep track of total milestone units:
+            $projects[$key]['c__step_count'] = 0;
+            $projects[$key]['c__milestone_units'] = 0; //Keep track of total Task units:
             $projects[$key]['c__estimated_hours'] = $projects[$key]['c_time_estimate'];
             $projects[$key]['c__message_tree_count'] = count($projects[$key]['c__messages']);
             $projects[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
@@ -110,72 +110,69 @@ WHERE ru.ru_status >= 4
             foreach($projects[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
 
                 //Count Messages:
-                $milestone_messages = $this->Db_model->i_fetch(array(
+                $task_messages = $this->Db_model->i_fetch(array(
                     'i_status >' => 0,
                     'i_c_id' => $sprint_value['c_id'],
                 ));
 
                 //Assign messages:
-                $projects[$key]['c__child_intents'][$sprint_key]['c__messages'] = $milestone_messages;
+                $projects[$key]['c__child_intents'][$sprint_key]['c__messages'] = $task_messages;
 
                 //Addup message count:
-                $projects[$key]['c__message_tree_count'] += ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
-                $projects[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = ( $sprint_value['c_status']==1 ? count($milestone_messages) : 0);
+                $projects[$key]['c__message_tree_count'] += ( $sprint_value['c_status']==1 ? count($task_messages) : 0);
+                $projects[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = ( $sprint_value['c_status']==1 ? count($task_messages) : 0);
 
-                //NOTE: Milestones do *not* have a time estimate, so no point in trying to addem up here...
+                //NOTE: Tasks do *not* have a time estimate, so no point in trying to addem up here...
 
                 //Introduce sprint total time:
                 $projects[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = 0; //Because its always zero!
 
-                //Fetch sprint tasks at level 3:
+                //Fetch sprint Steps at level 3:
                 $projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_id' => $sprint_value['c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >=' => 0,
                 ));
 
-                //Is this an active Milestone?
+                //Is this an active Task?
                 if($sprint_value['c_status']==1){
-                    //Create task array:
+                    //Create Step array:
                     $projects[$key]['c__active_intents'][$sprint_value['c_id']] = array();
-
-                    //Addup the timeline:
-                    $projects[$key]['c__milestone_units'] += $sprint_value['c_duration_multiplier'];
                 }
 
-                //Addup task values:
-                foreach($projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $task_key=>$task_value){
+                //Addup Step values:
+                foreach($projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $step_key=>$step_value){
 
                     //Count Messages:
-                    $task_messages = $this->Db_model->i_fetch(array(
+                    $step_messages = $this->Db_model->i_fetch(array(
                         'i_status >' => 0,
-                        'i_c_id' => $task_value['c_id'],
+                        'i_c_id' => $step_value['c_id'],
                     ));
 
                     //Add messages:
-                    $projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
+                    $projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
 
-                    //Addup task estimated time for active tasks in active Milestones:
-                    if($task_value['c_status']==1){
+                    //Addup Step estimated time for active Steps in active Tasks:
+                    if($step_value['c_status']==1){
 
                         if($sprint_value['c_status']==1){
-                            $projects[$key]['c__estimated_hours'] += $task_value['c_time_estimate'];
-                            $projects[$key]['c__task_count']++;
-                            //add to active tasks per milestone:
-                            array_push($projects[$key]['c__active_intents'][$sprint_value['c_id']],$task_value['c_id']);
+                            $projects[$key]['c__estimated_hours'] += $step_value['c_time_estimate'];
+                            $projects[$key]['c__step_count']++;
+                            //add to active Steps per Task:
+                            array_push($projects[$key]['c__active_intents'][$sprint_value['c_id']],$step_value['c_id']);
                         }
 
-                        //Addup Milestone Hours for its Active Tasks Regardless of Milestone status:
-                        $projects[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $task_value['c_time_estimate'];
+                        //Addup Task Hours for its Active Steps Regardless of Task status:
+                        $projects[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $step_value['c_time_estimate'];
 
                         //Increase message counts:
-                        $projects[$key]['c__message_tree_count'] += count($task_messages);
-                        $projects[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($task_messages);
+                        $projects[$key]['c__message_tree_count'] += count($step_messages);
+                        $projects[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($step_messages);
 
                     }
 
-                    //Always show task message count regardless of status:
-                    $projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$task_key]['c__message_tree_count'] = count($task_messages);
+                    //Always show Step message count regardless of status:
+                    $projects[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
                 }
             }
 
@@ -712,73 +709,19 @@ WHERE ru.ru_status >= 4
 
             if($project){
 
-                //Fetch financial data:
-                $mench_pricing = $this->config->item('mench_pricing');
-
-                //Figure out total instructor earnings:
-                $this->db->select('SUM(t_total) as usd_transactions');
-                $this->db->from('v5_transactions t');
-                $this->db->join('v5_class_students ru' , 'ru.ru_id = t.t_ru_id');
-                $this->db->where('ru_r_id',$class['r_id']);
-                $this->db->where('t_status IN (-1,0,1)');
-                $q = $this->db->get();
-                $earnings = $q->row_array();
-                //For now calculate operator and distributor for the instructor as they would be doing both:
-                $runs[$key]['r__usd_earnings'] = ($earnings['usd_transactions'] * ($mench_pricing['share_distributor']+$mench_pricing['share_operator'])); //Calculates the total earnings for this class so far
-
-
                 //Now calculate start time and end time for this class:
                 $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']) + ( $class['r_start_time_mins'] * 60 );
-                $runs[$key]['r__class_end_time'] = mktime(floor($class['r_start_time_mins']/60),intval(fmod($class['r_start_time_mins'],60)),0,date("n",strtotime($class['r_start_date'])),(date("j",strtotime($class['r_start_date']))+($project['c__milestone_units'] * $project['c__milestone_secs'] / 24 / 3600)),date("Y",strtotime($class['r_start_date'])));
+                $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + (7 * 24 * 3600);
 
                 //We're in the middle of this class, let's find out where:
-                $runs[$key]['r__milestones_due'] = array(); //Will hold all the dates for the milestone...
                 //Figure out the totals:
-                $runs[$key]['r__last_milestone_starts'] = 0;
-                $runs[$key]['r__total_milestones'] = 0;
+                $runs[$key]['r__last_task_starts'] = 0;
+                $runs[$key]['r__total_tasks'] = 0;
                 foreach($project['c__child_intents'] as $intent) {
                     if($intent['c_status']>=1){
-                        $runs[$key]['r__milestones_due'][$intent['cr_outbound_rank']] = $runs[$key]['r__class_start_time'] + ( ($intent['cr_outbound_rank'] + $intent['c_duration_multiplier'] - 1 ) * $project['c__milestone_secs']);
                         //Addup the totals:
-                        $runs[$key]['r__last_milestone_starts'] = intval($intent['cr_outbound_rank']);
-                        $runs[$key]['r__total_milestones'] += $intent['c_duration_multiplier'];
-                    }
-                }
-
-                //We'd now need to calculate Due Date to determine where the class currently is!
-                //There are 3 situations for $class_position: Class not started yet (0), On a particular Milestone (), or Class has ended (-1)
-                if($runs[$key]['r__class_start_time']>=time()){
-                    //Not yet started, so no leaderboard:
-                    $runs[$key]['r__current_milestone'] = 0;
-                } elseif($runs[$key]['r__class_end_time']<=time()){
-                    //Class has ended
-                    $runs[$key]['r__current_milestone'] = -1;
-                } else {
-                    //See which one of the milestones is being workined on now...
-                    if(count($runs[$key]['r__milestones_due'])>0){
-                        foreach($runs[$key]['r__milestones_due'] as $cr_outbound_rank=>$due_timestamp){
-                            $past_due = ( $due_timestamp < time() );
-                            if(!$past_due){
-                                $runs[$key]['r__current_milestone'] = $cr_outbound_rank;
-                                break;
-                            }
-                        }
-
-                        if(!isset($runs[$key]['r__current_milestone'])){
-                            //Did we find it? If not, report this:
-                            $this->Db_model->e_create(array(
-                                'e_message' => 'r_fetch() failed to set r__current_milestone variable ',
-                                'e_json' => $class,
-                                'e_type_id' => 8, //Platform Error
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ));
-                        }
-
-
-                    } else {
-                        //This will happen when there are no active milestones:
-                        $runs[$key]['r__current_milestone'] = 0; //We count this as not started for now...
+                        $runs[$key]['r__last_task_starts'] = intval($intent['cr_outbound_rank']);
+                        $runs[$key]['r__total_tasks'] += $intent['c_duration_multiplier'];
                     }
                 }
             }
@@ -1357,7 +1300,7 @@ WHERE ru.ru_status >= 4
             $instructor_subscriptions = $this->config->item('instructor_subscriptions');
             $engagement_references = $this->config->item('engagement_references');
 
-            //Email: The [33] Engagement ID corresponding to task completion is a email system for instructors to give them more context on certain activities
+            //Email: The [33] Engagement ID corresponding to Step completion is a email system for instructors to give them more context on certain activities
 
             //Do we have any instructor subscription:
             if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_type_id'],$instructor_subscriptions)){

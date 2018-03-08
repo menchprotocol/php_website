@@ -13,22 +13,6 @@ $config['website'] = array(
     'email' => 'shervin@mench.com',
 );
 
-//This would hide sensitive config variables from the /api_v1/config end point used to sync data among other servers
-$config['show_in_api'] = array(
-    'language',
-    'charset',
-    'file_limit_mb',
-    'message_max',
-    'website',
-    'mench_advisers',
-    'mench_pricing',
-    'core_objects',
-    'object_statuses',
-    'timezones',
-    'languages',
-    'countries_all',
-);
-
 $config['fb_settings'] = array(
     'app_id'        => '1782431902047009', //Also repeated in global.js
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
@@ -40,16 +24,24 @@ $config['required_fb_permissions'] = array(
     'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Project.',
     'manage_pages' => 'Enables us to connect Mench Personal Assistant to the Facebook Page you choose. You can disconnect at any time.',
     'pages_messaging' => 'Enables us to send and receive messages through your Facebook Page. Cannot be used to send promotional/advertising content.',
-    'pages_messaging_subscriptions' => 'Enables us to send messages to your Students at any time after the first interaction for Milestone notification/reminders.',
+    'pages_messaging_subscriptions' => 'Enables us to send messages to your Students at any time after the first interaction for Task notification/reminders.',
 );
 
-$config['mench_pricing'] = array(
-    'share_operator' => 0.7, //This goes to Project Lead Instructor, and he decides how to gets divided among his team
-    'share_distributor' => 0.2, //What goes to the distributor who got the student to purchase the seat, paid along side the performance payout
-    'share_platform' => 0.1, //Includes CC processing fee's via Paypal to get money to instructor
-    //Top three should total 1
-    'instant_payout' => 0.4, //What percentage of money paid to instructor on Day 1 of the Project, Remainder is paid via Performance Payout
-);
+//Used to generate application status links:
+$config['application_status_salt'] = 'SALTs3cr3t777';
+$config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
+$config['file_limit_mb'] = 30; //The max file size to be uploaded
+
+//That is auto added to all Project teams as Adviser role:
+$config['message_max'] = 420; //Max number of characters allowed in messages
+
+//Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
+$config['aws_credentials'] = [
+    'key'    => 'AKIAJOLBLKFSYCCYYDRA',
+    'secret' => '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',
+];
+
+
 
 $config['core_objects'] = array(
     'u' => array(
@@ -57,21 +49,20 @@ $config['core_objects'] = array(
         'o_names' => 'Users',
     ),
     'us' => array(
-        'o_name' => 'Task Completion Report',
-        'o_names' => 'Task Completion Reports',
+        'o_name' => 'Completion Report',
+        'o_names' => 'Completion Reports',
     ),
     'b' => array(
-        'o_name' => 'project',
+        'o_name' => 'Project',
         'o_names' => 'Projects',
     ),
     'ba' => array(
-        'o_name' => 'Project Instructor',
-        'o_names' => 'Project Instructors',
+        'o_name' => 'Instructor',
+        'o_names' => 'Instructors',
     ),
     'c' => array(
         'o_name' => 'Intent',
-        'o_names' => 'Intent',
-        'maxlength' => 70,//Applies to all intents inputs
+        'o_names' => 'Intents',
     ),
     'cr' => array(
         'o_name' => 'Intent Link',
@@ -102,18 +93,18 @@ $config['core_objects'] = array(
         'o_names' => 'Facebook Pages Access',
     ),
     'level_0' => array(
-        'o_name' => 'project',
+        'o_name' => 'Project',
         'o_names' => 'Projects',
         'o_icon' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i>',
     ),
     'level_1' => array(
-        'o_name' => 'Milestone',
-        'o_names' => 'Milestones',
-        'o_icon' => '<i class="fa fa-flag" aria-hidden="true"></i>',
-    ),
-    'level_2' => array(
         'o_name' => 'Task',
         'o_names' => 'Tasks',
+        'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',
+    ),
+    'level_2' => array(
+        'o_name' => 'Step',
+        'o_names' => 'Steps',
         'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',
     ),
 );
@@ -160,13 +151,13 @@ $config['object_statuses'] = array(
         ),
         0 => array(
             's_name'  => 'Drafting',
-            's_desc'  => 'Task being drafted and not accessible by students until published live',
+            's_desc'  => 'Step being drafted and not accessible by students until published live',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-pencil-square',
         ),
         1 => array(
             's_name'  => 'Published',
-            's_desc'  => 'Task is active and accessible by students',
+            's_desc'  => 'Step is active and accessible by students',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -184,21 +175,15 @@ $config['object_statuses'] = array(
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
-        -1 => array(
-            's_name'  => 'Archived',
-            's_desc'  => 'Class archived by instructor before any students getting admitted',
-            'u_min_status'  => 2,
-            's_mini_icon' => 'fa-trash',
-        ),
         0 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Class under development and not listed on landing page',
+            's_name'  => 'Unavailable',
+            's_desc'  => 'Will not admit any Students for this Class',
             'u_min_status'  => 2,
-            's_mini_icon' => 'fa-pencil-square',
+            's_mini_icon' => 'fa-calendar-times-o',
         ),
         1 => array(
-            's_name'  => 'Admission Open',
-            's_desc'  => 'Class published live and is open for student admission',
+            's_name'  => 'Open Admission',
+            's_desc'  => 'Class is open for admission',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -246,13 +231,13 @@ $config['object_statuses'] = array(
     'cr' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Task link removed',
+            's_desc'  => 'Step link removed',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-trash',
         ),
         1 => array(
             's_name'  => 'Publish',
-            's_desc'  => 'Task link is active',
+            's_desc'  => 'Step link is active',
             'u_min_status'  => 1,
         ),
     ),
@@ -342,7 +327,7 @@ $config['object_statuses'] = array(
         ),
         0 => array(
             's_name'  => 'Pending Completion',
-            's_desc'  => 'Task is pending completion',
+            's_desc'  => 'Step is pending completion',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-square-o',
         ),
@@ -437,13 +422,13 @@ $config['object_statuses'] = array(
         //Upon Class End Time:
         6 => array(
             's_name'  => 'Project Incomplete',
-            's_desc'  => 'Student unable to complete all Milestones by the Class end time',
+            's_desc'  => 'Student unable to complete all Tasks by the Class end time',
             's_mini_icon' => 'fa-minus-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
         7 => array(
             's_name'  => 'Project Graduate',
-            's_desc'  => 'Student successfully completed all Milestones by the Class end time and graduated',
+            's_desc'  => 'Student successfully completed all Tasks by the Class end time and graduated',
             's_mini_icon' => 'fa-graduation-cap',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
@@ -487,10 +472,6 @@ $config['object_statuses'] = array(
 );
 
 
-//Used to generate application status links:
-$config['application_status_salt'] = 'SALTs3cr3t777';
-$config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
-$config['file_limit_mb'] = 30; //The max file size to be uploaded
 
 
 //No Projects can be created using these hashtags
@@ -528,7 +509,6 @@ $config['reserved_hashtags'] = array(
 );
 
 //The core objects of the platform:
-
 $config['engagement_references'] = array(
     'e_initiator_u_id' => array(
         'name' => 'Initiator',
@@ -583,53 +563,12 @@ $config['engagement_subscriptions'] = array(
 );
 
 //Define what counts as a meaningful Project engagement by the instructor team:
-$config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
+$config['meaningful_project_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','0.75','1','2','3','5','8','13');
 
-//That is auto added to all Project teams as Adviser role:
-$config['message_max'] = 420; //Max number of characters allowed in messages
 
-
-$config['refund_policies'] = array(
-    'flexible' => array(
-        'full' => 0.10,
-        'prorated' => 0.60,
-    ),
-    'moderate' => array(
-        'full' => 0,
-        'prorated' => 0.30,
-    ),
-    'strict' => array(
-        'full' => 0,
-        'prorated' => 0,
-    ),
-);
-
-
-$config['sprint_units'] = array(
-    'day' => array(
-        'name' => 'Daily',
-        'desc' => 'Usually 3-30 days',
-    ),
-    'week' => array(
-        'name' => 'Weekly',
-        'desc' => 'Usually 2-14 weeks',
-    ),
-);
-
-//Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
-$config['aws_credentials'] = [
-    'key'    => 'AKIAJOLBLKFSYCCYYDRA',
-    'secret' => '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',
-];
-
-
-$config['default_class_questions'] = array(
-    'Why did you choose to join this Project?',
-    'etc... (Delete this)',
-);
 $config['default_class_prizes'] = array(
     'A branded T-Shirt',
     '1 Year unlimited access to my online courses',
@@ -1183,29 +1122,6 @@ $config['countries_all'] = array(
     "ZM" => "Zambia",
     "ZW" => "Zimbabwe"
 );
-
-$config['r_response_options'] = array('6','12','24','48');
-
-//IF Changed, Also adjust echo_mentorship() & gross_mentorship() functions in general_helper()
-$config['r_meeting_frequency'] = array(
-    "0" => "None",
-    "d1" => "1 Per Day",
-    "w1" => "1 Per Week",
-    "w2" => "2 Per Week",
-    "w3" => "3 Per Week",
-    "w5" => "5 Per Week",
-    "1" => "1 Session Total",
-    "2" => "2 Sessions Total",
-    "3" => "3 Sessions Total",
-    "4" => "4 Sessions Total",
-    "6" => "6 Sessions Total",
-    "12" => "12 Sessions Total",
-    "18" => "18 Sessions Total",
-    "24" => "24 Sessions Total",
-);
-$config['r_meeting_duration'] = array('0.25','0.5','1','2','3','5');
-
-
 
 /*
  |--------------------------------------------------------------------------

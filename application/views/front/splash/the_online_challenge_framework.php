@@ -14,7 +14,7 @@ $udata = $this->session->userdata('user');
 				<div class="col-sm-9">
 					<!--
 					<h1 class="home-p">Online Projects for the Ambitious.</h1>
-                    <h4 class="home-p">Accomplish an outcome <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
+                    <h4 class="home-p">Accomplish an outcome <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily Tasks on-time.</h4>
                      -->
                     <h1 class="home-p">Empower Your Students to Succeed</h1>
                     <h4 class="home-p">Infrastructure for experts to build & operate online Projects designed to maximize student engagements.</h4>
