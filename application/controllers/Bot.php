@@ -27,6 +27,10 @@ class Bot extends CI_Controller {
         echo 'eee';
     }
 
+    function eeee(){
+        echo 'eeee';
+    }
+
     function im(){
         $this->Comm_model->send_message(array(
             array(
