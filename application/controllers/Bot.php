@@ -19,6 +19,10 @@ class Bot extends CI_Controller {
         echo $_GET['none'];
     }
 
+    function ee(){
+	    echo 'ee';
+    }
+
     function im(){
         $this->Comm_model->send_message(array(
             array(

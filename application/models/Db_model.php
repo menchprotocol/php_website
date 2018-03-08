@@ -582,6 +582,7 @@ WHERE ru.ru_status >= 4
                 $this->db->where($key);
             }
         }
+        $this->db->order_by('fs_timestamp','DESC');
         $q = $this->db->get();
         return $q->result_array();
     }
