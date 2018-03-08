@@ -289,7 +289,7 @@ function new_intent(pid,next_level){
 
         //Update Miletsone:
         $('#t_estimate_'+pid).attr('current-hours',(current_hours_milestone + task_deficit)).text(format_hours((current_hours_milestone + task_deficit)));
-        //Only update Bootcamp if Milestone is active:
+        //Only update Project if Milestone is active:
         if(current_milestone_status>0){
             $('.hours_level_1').attr('current-hours',(current_hours_bootcamp + task_deficit)).text(format_hours((current_hours_bootcamp + task_deficit)));
         }
@@ -502,7 +502,7 @@ function load_intent_sort(pid,level){
                         var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('current-hours'))+task_hours;
                         $('#t_estimate_'+inputs.to_c_id).attr('current-hours',to_hours_new).text(format_hours(to_hours_new));
 
-                        //Adjust Bootcamp hours if necessary:
+                        //Adjust Project hours if necessary:
                         if(!(from_milestone_status==to_milestone_status)){
                             //Yes we need to adjust as the statuses of these milestones are different:
                             var current_hours_bootcamp = parseFloat($('.hours_level_1').attr('current-hours'));
@@ -841,7 +841,7 @@ function save_modify(){
                         if(( modify_data['c_status']>0 || !(current_status==modify_data['c_status']) )){
                             //Update Miletsone:
                             $('#t_estimate_'+parent_c_id).attr('current-hours',(current_hours_milestone + task_deficit)).text(format_hours((current_hours_milestone + task_deficit)));
-                            //Only update Bootcamp if Milestone+Task are Active:
+                            //Only update Project if Milestone+Task are Active:
                             if(current_milestone_status>0){
                                 $('.hours_level_1').attr('current-hours',(current_hours_bootcamp + task_deficit)).text(format_hours((current_hours_bootcamp + task_deficit)));
                             }
@@ -1051,9 +1051,9 @@ function add_item(group_id,prefix,current_value){
 
 
 
-<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $project['b_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
-<div id="current_units" class="b_sprint_unit2 hidden"><?= ucwords($bootcamp['b_sprint_unit']) ?></div>
+<div id="current_units" class="b_sprint_unit2 hidden"><?= ucwords($project['b_sprint_unit']) ?></div>
 
 
 <div class="row">
@@ -1071,8 +1071,8 @@ function add_item(group_id,prefix,current_value){
             itip(602);
         }
         */
-        echo '<div id="bootcamp-objective" class="list-group maxout">';
-            echo echo_cr($bootcamp['b_id'],$bootcamp,'outbound',$level,$bootcamp['b_sprint_unit']);
+        echo '<div id="project-objective" class="list-group maxout">';
+            echo echo_cr($project['b_id'],$project,'outbound',$level,$project['b_sprint_unit']);
         echo '</div>';
 
         ?>
@@ -1092,7 +1092,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_426"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_target_audience','+ New Target Audience','<i class="fa fa-address-book" aria-hidden="true"></i>',<?= ( strlen($bootcamp['b_target_audience'])>0 ? $bootcamp['b_target_audience'] : '[]' ) ?>);
+                        initiate_list('b_target_audience','+ New Target Audience','<i class="fa fa-address-book" aria-hidden="true"></i>',<?= ( strlen($project['b_target_audience'])>0 ? $project['b_target_audience'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_target_audience" class="list-group"></div>
@@ -1103,7 +1103,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_610"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($bootcamp['b_prerequisites'])>0 ? $bootcamp['b_prerequisites'] : '[]' ) ?>);
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($project['b_prerequisites'])>0 ? $project['b_prerequisites'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_prerequisites" class="list-group"></div>
@@ -1114,7 +1114,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_611"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($bootcamp['b_application_questions'])>0 ? $bootcamp['b_application_questions'] : '[]' ) ?>);
+                        initiate_list('b_application_questions','+ New Question','<i class="fa fa-question-circle"></i>',<?= ( strlen($project['b_application_questions'])>0 ? $project['b_application_questions'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_application_questions" class="list-group"></div>
@@ -1135,7 +1135,7 @@ function add_item(group_id,prefix,current_value){
                 echo '<div id="list-outbound" class="list-group">';
 
                 foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_cr($bootcamp['b_id'],$sub_intent,'outbound',($level+1),$bootcamp['b_sprint_unit'],$bootcamp['b_id']);
+                    echo echo_cr($project['b_id'],$sub_intent,'outbound',($level+1),$project['b_sprint_unit'],$project['b_id']);
                 }
                 ?>
                 <div class="list-group-item list_input">
@@ -1159,7 +1159,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_2271"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($bootcamp['b_transformations'])>0 ? $bootcamp['b_transformations'] : '[]' ) ?>);
+                        initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($project['b_transformations'])>0 ? $project['b_transformations'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_transformations" class="list-group"></div>
@@ -1171,7 +1171,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_623"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_completion_prizes','+ New Prize','<i class="fa fa-trophy"></i>',<?= ( strlen($bootcamp['b_completion_prizes'])>0 ? $bootcamp['b_completion_prizes'] : '[]' ) ?>);
+                        initiate_list('b_completion_prizes','+ New Prize','<i class="fa fa-trophy"></i>',<?= ( strlen($project['b_completion_prizes'])>0 ? $project['b_completion_prizes'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_completion_prizes" class="list-group"></div>
@@ -1190,7 +1190,7 @@ function add_item(group_id,prefix,current_value){
 
             <div id="c_objective1" class="levelz level1 hidden">
                 <?php $this->load->view('console/inputs/c_objective' , array(
-                    'c_objective' => $bootcamp['c_objective'],
+                    'c_objective' => $project['c_objective'],
                     'level' => 1,
                 )); ?>
             </div>
@@ -1209,7 +1209,7 @@ function add_item(group_id,prefix,current_value){
 
 
             <div class="levelz level1 hidden" style="margin-top:15px;">
-                <?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$bootcamp['b_sprint_unit']) ); ?>
+                <?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$project['b_sprint_unit']) ); ?>
             </div>
 
 
@@ -1224,7 +1224,7 @@ function add_item(group_id,prefix,current_value){
                             echo '<option value="'.$eo.'" '.( $intent['c_time_estimate']==$eo ? 'selected="selected"' : '' ).'>'.$eo.'</option>';
                         }
                         ?>
-                    </select> <span><span class="b_sprint_unit"><?= ucwords($bootcamp['b_sprint_unit']) ?></span><span class="pr_s"></span></span>
+                    </select> <span><span class="b_sprint_unit"><?= ucwords($project['b_sprint_unit']) ?></span><span class="pr_s"></span></span>
                 </div>
             </div>
 

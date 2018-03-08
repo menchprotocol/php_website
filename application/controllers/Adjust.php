@@ -23,14 +23,14 @@ class Adjust extends CI_Controller {
         foreach($classes as $class){
 
 
-            //Fetch full Bootcamp/Class data for this:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $bootcamps[0]['this_class'];
+            //Fetch full Project/Class data for this:
+            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $projects[0]['this_class'];
 
 
             //Fetch all the students of these classes, and see where they are at:
             $class['students'] = $this->Db_model->ru_fetch(array(
-                'ru.ru_status >='   => 4, //Initiated or higher as long as bootcamp is running!
+                'ru.ru_status >='   => 4, //Initiated or higher as long as project is running!
                 'ru.ru_r_id'	 => $class['r_id'],
             ));
 
@@ -55,7 +55,7 @@ class Adjust extends CI_Controller {
 
                 //The goal is to find the task that is after the very last task done
                 //Note that some Tasks could be done, but then rejected by the instructor...
-                foreach($bootcamps[0]['c__child_intents'] as $milestone){
+                foreach($projects[0]['c__child_intents'] as $milestone){
                     if($milestone['c_status']==1){
                         foreach($milestone['c__child_intents'] as $task){
                             if($task['c_status']==1){
@@ -84,7 +84,7 @@ class Adjust extends CI_Controller {
                 }
 
                 //Calculate the total progress:
-                $ru_cache__completion_rate = number_format(($total_hours_done/$bootcamps[0]['c__estimated_hours']),3);
+                $ru_cache__completion_rate = number_format(($total_hours_done/$projects[0]['c__estimated_hours']),3);
 
                 if($done_tasks==$total_tasks){
                     //They have done all Tasks
@@ -137,31 +137,6 @@ class Adjust extends CI_Controller {
 
         echo count($running_classes).' adjusted';
     }
-
-    function bootcamp_editing(){
-        $bootcamps = $this->Db_model->remix_bootcamps(array(
-            'b_status >' => 0,
-        ));
-
-        //Now lets see which ones have descriptions:
-        foreach($bootcamps as $bootcamp){
-            $found = 0;
-            foreach($bootcamp['c__child_intents'] as $milestone) {
-                if($milestone['c_status']>=0){
-                    foreach($milestone['c__child_intents'] as $task) {
-                        if($task['c_status']>=0){
-                            //Do something here...
-                        }
-                    }
-                }
-            }
-            if($found>0){
-                echo '<hr />';
-            }
-        }
-    }
-
-
 
 
 }

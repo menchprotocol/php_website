@@ -272,11 +272,11 @@ class Bot extends CI_Controller {
 					    $admissions = $this->Db_model->ru_fetch(array(
 					        'r.r_status >='	   => 1, //Open for admission
 					        'r.r_status <='	   => 2, //Running
-					        'ru.ru_status >='  => 0, //Initiated or higher as long as bootcamp is running!
+					        'ru.ru_status >='  => 0, //Initiated or higher as long as Project is running!
 					        'ru.ru_u_id'	   => $eng_data['e_initiator_u_id'],
 					    ));
 					    if(count($admissions)>0){
-					        //Append Bootcamp & Class ID to engagement:
+					        //Append Project & Class ID to engagement:
 					        $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
 					        $eng_data['e_r_id'] = $admissions[0]['r_id'];
 					    }
@@ -420,7 +420,7 @@ class Bot extends CI_Controller {
 	        
 	        if(count($admissions)==1){
 
-	            //Fetch class data to grab bootcamp ID:
+	            //Fetch class data to grab Project ID:
 	            $classes = $this->Db_model->r_fetch(array(
 	                'r.r_id' => $admissions[0]['ru_r_id'],
 	            ));

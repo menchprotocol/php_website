@@ -5,7 +5,7 @@ $udata = $this->session->userdata('user');
 
 <div class="row text-center">
     <div class="col-md-12">
-        <h2 class="title" style="margin:60px 0 40px 0;">Everything You Need to Run a Bootcamp:</h2>
+        <h2 class="title" style="margin:60px 0 40px 0;">Everything You Need to Run a Project:</h2>
     </div>
 </div>
 
@@ -29,7 +29,7 @@ $udata = $this->session->userdata('user');
         <div class="info">
             <div class="icon icon-default mtweak"><i class="fa fa-handshake-o" aria-hidden="true"></i></div>
             <h3 class="info-title">Support</h3>
-            <p>Personal relationships play a key role in human transformation, which is why we not only provide you with support, but effectively become your teammates in building and running your Bootcamp.</p>
+            <p>Personal relationships play a key role in human transformation, which is why we not only provide you with support, but effectively become your teammates in building and running your Project.</p>
         </div>
     </div>
 </div>
@@ -39,6 +39,6 @@ $udata = $this->session->userdata('user');
 <div class="row text-center">
     <div class="col-md-12">
         <br />
-        <a href="/launch" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;">Launch a Bootcamp <i class="fa fa-rocket" style="font-size:1.2em;"aria-hidden="true"></i></a>
+        <a href="/launch" class="btn btn-danger btn-raised btn-lg" style="margin-bottom:50px; background-color:#FFF;">Launch a Project <i class="fa fa-rocket" style="font-size:1.2em;"aria-hidden="true"></i></a>
     </div>
 </div>

@@ -17,7 +17,7 @@ function show_fb_auth(error_message=null){
         $('#login_message').html('<span style="color:#FF0000"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ERROR: '+error_message+'</span>');
         $('#why_permissions').addClass('hidden');
     } else {
-        $('#login_message').html('<span style="color:#000">to connect this Bootcamp to your Facebook Page</span>');
+        $('#login_message').html('<span style="color:#000">to connect this Project to your Facebook Page</span>');
         $('#why_permissions').removeClass('hidden');
     }
 }
@@ -234,7 +234,7 @@ function save_settings(){
 </script>
 
 
-<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $project['b_id'] ?>" />
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
@@ -250,9 +250,9 @@ function save_settings(){
     <div class="tab-pane active" id="tabgeneral">
 
         <div>
-            <div class="title" style="margin-top:15px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+            <div class="title" style="margin-top:15px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Project Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
             <div class="help_body maxout" id="content_627"></div>
-            <?= echo_status_dropdown('b','b_status',$bootcamp['b_status']); ?>
+            <?= echo_status_dropdown('b','b_status',$project['b_status']); ?>
             <div style="clear:both; margin:0; padding:0;"></div>
         </div>
 
@@ -263,7 +263,7 @@ function save_settings(){
             <div class="form-group label-floating is-empty">
                 <div class="input-group border">
                     <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.co/</span>
-                    <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $bootcamp['b_url_key'] ?>" maxlength="30" class="form-control" />
+                    <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $project['b_url_key'] ?>" maxlength="30" class="form-control" />
                 </div>
             </div>
         </div>
@@ -300,7 +300,7 @@ function save_settings(){
         <div class="list-group maxout">
             <?php
             $admin_ids = array();
-            foreach($bootcamp['b__admins'] as $admin){
+            foreach($project['b__admins'] as $admin){
                 echo echo_br($admin);
                 array_push($admin_ids,$admin['u_id']);
             }
@@ -319,7 +319,7 @@ function save_settings(){
                     'ba_id' => 0,
                     'ba_u_id' => $adviser['u_id'],
                     'ba_status' => 1, //Advisery status
-                    'ba_b_id' => $bootcamp['b_id'],
+                    'ba_b_id' => $project['b_id'],
                     'ba_team_display' => 'f', //Advisers are not shown on the landing page
                 )));
             }

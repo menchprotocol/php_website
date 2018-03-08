@@ -37,18 +37,18 @@ $config['fb_settings'] = array(
 
 $config['required_fb_permissions'] = array(
     'public_profile' => 'Basic permission granted by Facebook so we can access your profile\'s publicly available information.', //Basic permission
-    'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Bootcamp.',
+    'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Project.',
     'manage_pages' => 'Enables us to connect Mench Personal Assistant to the Facebook Page you choose. You can disconnect at any time.',
     'pages_messaging' => 'Enables us to send and receive messages through your Facebook Page. Cannot be used to send promotional/advertising content.',
     'pages_messaging_subscriptions' => 'Enables us to send messages to your Students at any time after the first interaction for Milestone notification/reminders.',
 );
 
 $config['mench_pricing'] = array(
-    'share_operator' => 0.7, //This goes to Bootcamp Lead Instructor, and he decides how to gets divided among his team
+    'share_operator' => 0.7, //This goes to Project Lead Instructor, and he decides how to gets divided among his team
     'share_distributor' => 0.2, //What goes to the distributor who got the student to purchase the seat, paid along side the performance payout
     'share_platform' => 0.1, //Includes CC processing fee's via Paypal to get money to instructor
     //Top three should total 1
-    'instant_payout' => 0.4, //What percentage of money paid to instructor on Day 1 of the Bootcamp, Remainder is paid via Performance Payout
+    'instant_payout' => 0.4, //What percentage of money paid to instructor on Day 1 of the Project, Remainder is paid via Performance Payout
 );
 
 $config['core_objects'] = array(
@@ -61,12 +61,12 @@ $config['core_objects'] = array(
         'o_names' => 'Task Completion Reports',
     ),
     'b' => array(
-        'o_name' => 'Bootcamp',
-        'o_names' => 'Bootcamps',
+        'o_name' => 'project',
+        'o_names' => 'Projects',
     ),
     'ba' => array(
-        'o_name' => 'Bootcamp Instructor',
-        'o_names' => 'Bootcamp Instructors',
+        'o_name' => 'Project Instructor',
+        'o_names' => 'Project Instructors',
     ),
     'c' => array(
         'o_name' => 'Intent',
@@ -102,8 +102,8 @@ $config['core_objects'] = array(
         'o_names' => 'Facebook Pages Access',
     ),
     'level_0' => array(
-        'o_name' => 'Bootcamp',
-        'o_names' => 'Bootcamps',
+        'o_name' => 'project',
+        'o_names' => 'Projects',
         'o_icon' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i>',
     ),
     'level_1' => array(
@@ -122,19 +122,19 @@ $config['object_statuses'] = array(
     'b' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Bootcamp archived by lead instructor',
+            's_desc'  => 'Project archived by lead instructor',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-trash',
         ),
         0 => array(
             's_name'  => 'Drafting',
-            's_desc'  => 'Bootcamp under development. Admissions starts when published live',
+            's_desc'  => 'Project under development. Admissions starts when published live',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-pencil-square',
         ),
         1 => array(
             's_name'  => 'Request To Publish',
-            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live',
+            's_desc'  => 'Project submitted for review by Mench team to be published live',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-eye',
         ),
@@ -146,7 +146,7 @@ $config['object_statuses'] = array(
         ),
         3 => array(
             's_name'  => 'Published to Mench',
-            's_desc'  => 'A Bootcamp published on the Mench marketplace',
+            's_desc'  => 'A Project published on the Mench marketplace',
             'u_min_status'  => 3, //Can only be done by admin
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -262,25 +262,25 @@ $config['object_statuses'] = array(
     'ba' => array(
         -1 => array(
             's_name'  => 'Revoked',
-            's_desc'  => 'Bootcamp access revoked',
+            's_desc'  => 'Project access revoked',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-minus-circle',
         ),
         1 => array(
             's_name'  => 'Adviser',
-            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the bootcamp configurations',
+            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the Project configurations',
             's_mini_icon' => 'fa-comments-o',
             'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team section of settings.php page view file
         ),
         2 => array(
             's_name'  => 'Co-Instructor',
-            's_desc'  => 'Supports the lead instructor in bootcamp operations based on specific privileges assigned to them',
+            's_desc'  => 'Supports the lead instructor in Project operations based on specific privileges assigned to them',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-user-plus',
         ),
         3 => array(
             's_name'  => 'Lead Instructor',
-            's_desc'  => 'The bootcamp CEO who is responsible for the bootcamp performance measured by its completion rate',
+            's_desc'  => 'The Project CEO who is responsible for the Project performance measured by its completion rate',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-star',
         ),
@@ -313,13 +313,13 @@ $config['object_statuses'] = array(
         ),
         2 => array(
             's_name'  => 'Lead Instructor',
-            's_desc'  => 'User onboarded as bootcamp leader and can create/manage their own bootcamps',
+            's_desc'  => 'User onboarded as Project leader and can create/manage their own Projects',
             's_mini_icon' => 'fa-star',
             'u_min_status'  => 3, //Only admins can approve leaders
         ),
         3 => array(
             's_name'  => 'Mench Admin',
-            's_desc'  => 'User part of Mench team who facilitates bootcamp operations',
+            's_desc'  => 'User part of Mench team who facilitates Project operations',
             's_mini_icon' => 'fa-shield',
             'u_min_status'  => 3, //Only admins can create other admins
         ),
@@ -408,7 +408,7 @@ $config['object_statuses'] = array(
         /*
         1 => array(
             's_name'  => 'Applied - Pending Full Payment',
-            's_desc'  => 'Student has applied but has not paid in full yet, pending bootcamp leader approval before paying in full',
+            's_desc'  => 'Student has applied but has not paid in full yet, pending Project leader approval before paying in full',
             'u_min_status'  => 999, //System insertion only
         ),
         */
@@ -422,27 +422,27 @@ $config['object_statuses'] = array(
         /*
         3 => array(
             's_name'  => 'Invitation Sent',
-            's_desc'  => 'Admins have full access to all bootcamp features',
+            's_desc'  => 'Admins have full access to all Project features',
             'u_min_status'  => 1,
         ),
         */
 
         4 => array(
-            's_name'  => 'Bootcamp Student',
-            's_desc'  => 'Admission accepted and student is ready to participate in Bootcamp',
+            's_name'  => 'Project Student',
+            's_desc'  => 'Admission accepted and student is ready to participate in Project',
             's_mini_icon' => 'fa-user',
             'u_min_status'  => 1,
         ),
 
         //Upon Class End Time:
         6 => array(
-            's_name'  => 'Bootcamp Incomplete',
+            's_name'  => 'Project Incomplete',
             's_desc'  => 'Student unable to complete all Milestones by the Class end time',
             's_mini_icon' => 'fa-minus-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
         7 => array(
-            's_name'  => 'Bootcamp Graduate',
+            's_name'  => 'Project Graduate',
             's_desc'  => 'Student successfully completed all Milestones by the Class end time and graduated',
             's_mini_icon' => 'fa-graduation-cap',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
@@ -458,13 +458,13 @@ $config['object_statuses'] = array(
         ),
         0 => array(
             's_name'  => 'Available',
-            's_desc'  => 'Facebook Page available but not connected to a Mench Bootcamp yet',
+            's_desc'  => 'Facebook Page available but not connected to a Mench Project yet',
             'u_min_status'  => 999,
             's_mini_icon' => 'fa-facebook-official',
         ),
         1 => array(
             's_name'  => 'Connected',
-            's_desc'  => 'Facebook Page connected to a Mench Bootcamp',
+            's_desc'  => 'Facebook Page connected to a Mench Project',
             'u_min_status'  => 999,
             's_mini_icon' => 'fa-plug',
         ),
@@ -493,11 +493,11 @@ $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 30; //The max file size to be uploaded
 
 
-//No bootcamps can be created using these hashtags
+//No Projects can be created using these hashtags
 //URL structure is: https://mench.co/URLKEY
 $config['reserved_hashtags'] = array(
-    'bootcamps',
-    'bootcamp',
+    'projects',
+    'project',
     'mench',
     'login',
     'logout',
@@ -539,7 +539,7 @@ $config['engagement_references'] = array(
         'object_code' => 'u',
     ),
     'e_b_id' => array(
-        'name' => 'Bootcamp',
+        'name' => 'project',
         'object_code' => 'b',
     ),
     'e_r_id' => array(
@@ -582,13 +582,13 @@ $config['engagement_subscriptions'] = array(
     ),
 );
 
-//Define what counts as a meaningful Bootcamp engagement by the instructor team:
+//Define what counts as a meaningful Project engagement by the instructor team:
 $config['meaningful_bootcamp_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','0.75','1','2','3','5','8','13');
 
-//That is auto added to all bootcamp teams as Adviser role:
+//That is auto added to all Project teams as Adviser role:
 $config['message_max'] = 420; //Max number of characters allowed in messages
 
 
@@ -627,7 +627,7 @@ $config['aws_credentials'] = [
 
 
 $config['default_class_questions'] = array(
-    'Why did you choose to join this bootcamp?',
+    'Why did you choose to join this Project?',
     'etc... (Delete this)',
 );
 $config['default_class_prizes'] = array(

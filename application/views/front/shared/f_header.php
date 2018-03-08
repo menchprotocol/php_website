@@ -63,7 +63,7 @@ $url_part_1 = $this->uri->segment(1);
     				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
     				} else {
                         //This is the login page, show the Launch Button:
-                        //echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch a Bootcamp</a></li>';
+                        //echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch a Project</a></li>';
                     }
     				?>
         		</ul>

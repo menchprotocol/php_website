@@ -43,7 +43,7 @@
 
 <?php
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
-echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamp Applications</h3>';
+echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Project Applications</h3>';
 
 if(count($admissions)>0 && is_array($admissions)){
 
@@ -54,11 +54,11 @@ if(count($admissions)>0 && is_array($admissions)){
     foreach($admissions as $admission){
 
         //Fetch Admission Data:
-        $bootcamps = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
-        $class = $bootcamps[0]['this_class'];
+        $projects = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
+        $class = $projects[0]['this_class'];
 
 
-        //Fetch Bootcamp Data:
+        //Fetch Project Data:
         $live_bootcamps = $this->Db_model->b_fetch(array(
             'b_id' => $admission['r_b_id'],
         ));
@@ -70,7 +70,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
         echo '<div style="border:2px solid #000; padding:7px; margin-top:25px; border-radius:5px; background-color:#EFEFEF;">';
 
-        echo '<p><b>'.$bootcamps[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4).') Application:</p>';
+        echo '<p><b>'.$projects[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4).') Application:</p>';
 
 
         //Account, always created at this point:
@@ -97,7 +97,7 @@ if(count($admissions)>0 && is_array($admissions)){
             $paid = ( $remaining_payment<=0 );
 
             //Payment
-            echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Pay $'.$remaining_payment.($total_paid>0 ? ' (Already Paid $'.$total_paid.') remaining' :'').' Bootcamp Tuition using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="checkbox"><label '.( $paid ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $paid ? 'checked' : '' ).'> <a href="javascript:void(0)" '.($paid ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 3: Pay $'.$remaining_payment.($total_paid>0 ? ' (Already Paid $'.$total_paid.') remaining' :'').' Project Tuition using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
             if($remaining_payment>0){
                 ?>
@@ -117,7 +117,7 @@ if(count($admissions)>0 && is_array($admissions)){
                     <input type="hidden" name="cmd" value="_xclick">
                     <input type="hidden" name="business" value="EYKXCMCJHEBA8">
                     <input type="hidden" name="lc" value="US">
-                    <input type="hidden" name="item_name" value="<?= $bootcamps[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
+                    <input type="hidden" name="item_name" value="<?= $projects[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
                     <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
                     <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
                     <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
@@ -150,7 +150,7 @@ if(count($admissions)>0 && is_array($admissions)){
         echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';
 
         echo '<div style="font-size: 0.7em; margin-top:5px; padding-top:5px; border-top:2px solid #333;">';
-        echo '<a href="/'.$live_bootcamps[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
+        echo '<a href="/'.$live_bootcamps[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Project Page</a>';
         if($admission['ru_status']==0){
             //They can still withdraw their application:
             echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="withdraw_application('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw My Application</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';

@@ -52,6 +52,6 @@
 	
 	<div class="extra-info">
         <p>Are you a Student? <a href="https://support.mench.co/hc/en-us/articles/360000304852">Activate MenchBot</a></p>
-        <p>Want to Run a Bootcamp? <a href="/launch">Signup As Instructor</a></p>
+        <p>Want to Run a Project? <a href="/launch">Signup As Instructor</a></p>
 	</div>
 </div>

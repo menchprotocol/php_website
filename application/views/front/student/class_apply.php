@@ -167,9 +167,9 @@ $(document).ready(function() {
 
 <div class="wizard-box">
 	<p>Hi <?= $admission['u_fname'] ?>,</p>
-	<p>Welcome to the bootcamp application.</p>
+	<p>Welcome to the Project application.</p>
 	<p>We just sent an email to <b><?= $admission['u_email'] ?></b> with a link to this application so you can easily access it at anytime.</p>
-	<p>We're so excited to have you here! We're about to ask you a few questions to find out if you're a good fit for this Bootcamp.</p>
+	<p>We're so excited to have you here! We're about to ask you a few questions to find out if you're a good fit for this Project.</p>
 	<p>This application should take about 5 minutes to complete.</p>
 </div>
 
@@ -178,9 +178,9 @@ $start_times = $this->config->item('start_times');
 ?>
 
 <div class="wizard-box" id="overview_agree">
-	<p>Confirm that you commit to participating and doing the required work for this Bootcamp:</p>
+	<p>Confirm that you commit to participating and doing the required work for this Project:</p>
 	<ul>
-		<li>Bootcamp Outcome: <b><?= $admission['c_objective'] ?></b></li>
+		<li>Project Outcome: <b><?= $admission['c_objective'] ?></b></li>
     	<li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>: 
         	<?php 
         	foreach($admission['b__admins'] as $key=>$instructor){
@@ -211,7 +211,7 @@ $start_times = $this->config->item('start_times');
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="confirm_pre_requisites">
-	<p>Below it's the list with all the prerequisites needed to apply for this Bootcamp.</p>
+	<p>Below it's the list with all the prerequisites needed to apply for this Project.</p>
 	<p>Select all the ones you currently meet:</p>
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
@@ -256,7 +256,7 @@ $start_times = $this->config->item('start_times');
 
 <?php if($admission['r_usd_price']>0){ ?>
 <div class="wizard-box" id="refund_agreement">
-	<p>This Bootcamp offers a <b><?= ucwords($admission['r_cancellation_policy']); ?></b> refund policy:</p>
+	<p>This Project offers a <b><?= ucwords($admission['r_cancellation_policy']); ?></b> refund policy:</p>
 	<?php 
 	$full_days = calculate_refund(calculate_duration($admission),'full',$admission['r_cancellation_policy']);
 	$prorated_days = calculate_refund(calculate_duration($admission),'prorated',$admission['r_cancellation_policy']);
@@ -283,7 +283,7 @@ $start_times = $this->config->item('start_times');
 <?php if($admission['b_fp_id']>0 && (!($admission['u_cache__fp_id']==$admission['b_fp_id']) || $admission['u_cache__fp_psid']<1)){ ?>
 <div class="wizard-box">
 	<p><b style="font-size:1.2em;">Activate Messenger</b></p>
-	<p>This Bootcamp offers a direct chat line with the instructor team using Facebook Messenger. Activate your Messenger by clicking on this link:</p>
+	<p>This Project offers a direct chat line with the instructor team using Facebook Messenger. Activate your Messenger by clicking on this link:</p>
 	<p style="margin:40px 0; font-weight:bold;"><a href="<?= $this->Comm_model->fb_activation_url($admission['u_id'],$admission['b_fp_id']) ?>" target="_blank">Activate Messenger</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
 </div>
 <?php } ?>

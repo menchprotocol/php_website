@@ -1,7 +1,7 @@
 
 <ul class="nav nav-pills nav-pills-primary">
     <li class="<?= ( $object_name=='engagements' ? 'active' : '') ?>"><a href="/cockpit/browse/engagements"><i class="fa fa-eye" aria-hidden="true"></i> Engagements</a></li>
-    <li class="<?= ( $object_name=='bootcamps' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
+    <li class="<?= ( $object_name=='projects' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Projects</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
 </ul>
@@ -18,7 +18,7 @@ if($object_name=='engagements'){
         'e_type_id' => 'All Engagements',
         'e_id' => 'Engagement ID',
         'e_u_id' => 'User ID',
-        'e_b_id' => 'Bootcamp ID',
+        'e_b_id' => 'Project ID',
         'e_r_id' => 'Class ID',
         'e_c_id' => 'Intent ID',
         'e_fp_id' => 'FB Page ID',
@@ -134,32 +134,32 @@ if($object_name=='engagements'){
     </table>
     <?php
 
-} elseif($object_name=='bootcamps'){
+} elseif($object_name=='projects'){
 
-    //A function to echo the Bootcamp rows:
-    function echo_row($bootcamp,$counter){
+    //A function to echo the Project rows:
+    function echo_row($project,$counter){
         echo '<tr>';
         echo '<td>'.$counter.'</td>';
-        echo '<td>'.$bootcamp['b_id'].'</td>';
-        echo '<td>'.status_bible('b',$bootcamp['b_status'],1,'right').'</td>';
-        echo '<td><a href="/console/'.$bootcamp['b_id'].'">'.$bootcamp['c_objective'].'</a></td>';
-        echo '<td><a href="https://www.facebook.com/'.$bootcamp['fp_fb_id'].'">'.$bootcamp['fp_name'].'</a></td>';
-        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$bootcamp['leaders'][0]['u_id'].'" title="User ID '.$bootcamp['leaders'][0]['u_id'].'">'.$bootcamp['leaders'][0]['u_fname'].' '.$bootcamp['leaders'][0]['u_lname'].'</a></td>';
+        echo '<td>'.$project['b_id'].'</td>';
+        echo '<td>'.status_bible('b',$project['b_status'],1,'right').'</td>';
+        echo '<td><a href="/console/'.$project['b_id'].'">'.$project['c_objective'].'</a></td>';
+        echo '<td><a href="https://www.facebook.com/'.$project['fp_fb_id'].'">'.$project['fp_name'].'</a></td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$project['leaders'][0]['u_id'].'" title="User ID '.$project['leaders'][0]['u_id'].'">'.$project['leaders'][0]['u_fname'].' '.$project['leaders'][0]['u_lname'].'</a></td>';
 
         echo '<td>';
-        if($bootcamp['student_funnel'][0]>0 || $bootcamp['student_funnel'][2]>0 || $bootcamp['student_funnel'][4]>0 || $bootcamp['student_funnel'][-1]>0){
+        if($project['student_funnel'][0]>0 || $project['student_funnel'][2]>0 || $project['student_funnel'][4]>0 || $project['student_funnel'][-1]>0){
             echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
-            echo $bootcamp['student_funnel'][0].' &raquo; '.$bootcamp['student_funnel'][2].' &raquo; <b>'.$bootcamp['student_funnel'][4].'</b> ('.$bootcamp['student_funnel'][-1].')';
+            echo $project['student_funnel'][0].' &raquo; '.$project['student_funnel'][2].' &raquo; <b>'.$project['student_funnel'][4].'</b> ('.$project['student_funnel'][-1].')';
             echo '</span>';
         }
         echo '</td>';
 
-        echo '<td>'. ( count($bootcamp['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$bootcamp['b_id'].'">'.( count($bootcamp['engagements'])>=1000 ? '1000+' : count($bootcamp['engagements']) ).'</a> ('.time_format($bootcamp['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
+        echo '<td>'. ( count($project['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$project['b_id'].'">'.( count($project['engagements'])>=1000 ? '1000+' : count($project['engagements']) ).'</a> ('.time_format($project['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
         echo '</tr>';
     }
     
-    //User Bootcamps:
-    $bootcamps = $this->Db_model->b_fetch(array(
+    //User Projects:
+    $projects = $this->Db_model->b_fetch(array(
         'b.b_status >=' => 0,
     ),array('c','fp'),'b_status');
 
@@ -167,20 +167,20 @@ if($object_name=='engagements'){
     $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
 
 
-    foreach($bootcamps as $key=>$mb){
+    foreach($projects as $key=>$mb){
         //Fetch Leader:
-        $bootcamps[$key]['leaders'] = $this->Db_model->ba_fetch(array(
+        $projects[$key]['leaders'] = $this->Db_model->ba_fetch(array(
             'ba.ba_b_id' => $mb['b_id'],
             'ba.ba_status' => 3,
         ));
 
         //Fetch last activity:
-        $bootcamps[$key]['engagements'] = $this->Db_model->e_fetch(array(
+        $projects[$key]['engagements'] = $this->Db_model->e_fetch(array(
             'e_b_id' => $mb['b_id'],
             '(e_type_id IN ('.join(',',$meaningful_bootcamp_engagements).'))' => null,
         ),1000);
 
-        $bootcamps[$key]['student_funnel'] = array(
+        $projects[$key]['student_funnel'] = array(
             0 => count($this->Db_model->ru_fetch(array(
                 'r.r_b_id'	       => $mb['b_id'],
                 'ru.ru_status'     => 0,
@@ -208,7 +208,7 @@ if($object_name=='engagements'){
      		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
             <th>&nbsp;</th>
-    		<th>Bootcamp</th>
+    		<th>Project</th>
             <th><i class="fa fa-plug"></i> Facebook Page</th>
     		<th>Lead Instructor</th>
             <th>Admission Funnel</th>
@@ -218,27 +218,27 @@ if($object_name=='engagements'){
     <tbody>
     <?php
     
-    $bootcamp_groups = array(
+    $project_groups = array(
         'mench_team' => array(),
         'instructor' => array(),
     );
     $counter = 0;
     
-    foreach($bootcamps as $bootcamp){
+    foreach($projects as $project){
         $is_mench_team = false;
-        foreach($bootcamp['leaders'] as $key=>$instructor){
+        foreach($project['leaders'] as $key=>$instructor){
             if($instructor['u_status']>=3){
                 $is_mench_team = true;
                 break;
             }
         }
         //Group based on who is the admin:
-        array_push($bootcamp_groups[( $is_mench_team ? 'mench_team' : 'instructor' )],$bootcamp);
+        array_push($project_groups[( $is_mench_team ? 'mench_team' : 'instructor' )],$project);
     }
     
-    foreach($bootcamp_groups['instructor'] as $bootcamp){
+    foreach($project_groups['instructor'] as $project){
         $counter++;
-        echo_row($bootcamp,$counter);
+        echo_row($project,$counter);
     }
     ?>
     </tbody>
@@ -248,7 +248,7 @@ if($object_name=='engagements'){
             <th style="width:40px;">#</th>
             <th style="width:40px;">ID</th>
             <th>&nbsp;</th>
-            <th>Bootcamp</th>
+            <th>Project</th>
             <th><i class="fa fa-plug"></i> Facebook Page</th>
             <th>Lead Instructor</th>
             <th>Admission Funnel</th>
@@ -258,9 +258,9 @@ if($object_name=='engagements'){
     
     <tbody>
     <?php
-    foreach($bootcamp_groups['mench_team'] as $bootcamp){
+    foreach($project_groups['mench_team'] as $project){
         $counter++;
-        echo_row($bootcamp,$counter);
+        echo_row($project,$counter);
     }
     ?>
     </tbody>
@@ -281,7 +281,7 @@ if($object_name=='engagements'){
     <thead>
     <tr>
         <th style="width:40px;">#</th>
-        <th>Bootcamp</th>
+        <th>Project</th>
         <th>Lead Instructor</th>
         <th>Class Start Time</th>
         <th>Class End Time</th>
@@ -295,15 +295,15 @@ if($object_name=='engagements'){
     <?php
     foreach($classes as $key=>$class) {
 
-        //Fetch Full Bootcamp:
-        $bootcamps = $this->Db_model->b_fetch(array(
+        //Fetch Full Project:
+        $projects = $this->Db_model->b_fetch(array(
             'b.b_id' => $class['r_b_id'],
         ), array('c','fp'));
 
         if($class['r_status']>=2){
-            //Fetch Bootcamp from Action Plan Copy:
-            $bootcamps = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bootcamps,array('b_fp_id'));
-            $class = $bootcamps[0]['this_class'];
+            //Fetch Project from Action Plan Copy:
+            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$projects,array('b_fp_id'));
+            $class = $projects[0]['this_class'];
         }
 
         //Fetch Leader:
@@ -315,7 +315,7 @@ if($object_name=='engagements'){
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
 
-        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bootcamps[0]['c_objective'].'</a></td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$projects[0]['c_objective'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
         echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
         echo '<td>';
@@ -340,13 +340,13 @@ if($object_name=='engagements'){
         echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
 
 
-        echo '<td>'.( $bootcamps[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bootcamps[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bootcamps[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
+        echo '<td>'.( $projects[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$projects[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Project Facebook Page is '.$projects[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Project not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
 
 
 
-        echo '<td class="'.( $bootcamps[0]['b_status']<2 ? 'redalert' : '' ).'">';
+        echo '<td class="'.( $projects[0]['b_status']<2 ? 'redalert' : '' ).'">';
         if($class['r_status']<2){
-            echo status_bible('b',$bootcamps[0]['b_status'],1,'right');
+            echo status_bible('b',$projects[0]['b_status'],1,'right');
         }
         echo '</td>';
 
@@ -466,7 +466,7 @@ if($object_name=='engagements'){
             <th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
             <th>User</th>
-            <th>Bootcamps</th>
+            <th>Projects</th>
             <th>Joined</th>
             <th colspan="4"><i class="fa fa-commenting" aria-hidden="true"></i> Latest Message / <i class="fa fa-eye" aria-hidden="true"></i> Read (Total)</th>
             <th>Timezone</th>
@@ -492,7 +492,7 @@ if($object_name=='engagements'){
         }
 
 
-        //Fetch Bootcamps:
+        //Fetch Projects:
         $instructor_bootcamps = $this->Db_model->ba_fetch(array(
             'ba.ba_u_id' => $user['u_id'],
             'ba.ba_status >=' => 0,
@@ -507,19 +507,19 @@ if($object_name=='engagements'){
 
 
         echo '<td>';
-            //Display Bootcamps:
+            //Display Projects:
             if(count($instructor_bootcamps)>0){
                 $meaningful_bootcamp_engagements = $this->config->item('meaningful_bootcamp_engagements');
 
                 foreach ($instructor_bootcamps as $counter=>$ib){
                     //Fetch last activity:
-                    $bootcamp_building_engagements = $this->Db_model->e_fetch(array(
+                    $project_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],
                         'e_b_id' => $ib['b_id'],
                         '(e_type_id IN ('.join(',',$meaningful_bootcamp_engagements).'))' => null,
                     ));
 
-                    echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($bootcamp_building_engagements[0]) ? time_format($bootcamp_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($bootcamp_building_engagements)>=100 ? '100+' : count($bootcamp_building_engagements) ).'</div>';
+                    echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($project_building_engagements[0]) ? time_format($project_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($project_building_engagements)>=100 ? '100+' : count($project_building_engagements) ).'</div>';
                 }
             } else {
                 echo '---';

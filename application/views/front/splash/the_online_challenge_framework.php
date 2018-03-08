@@ -13,13 +13,13 @@ $udata = $this->session->userdata('user');
             <div class="row">
 				<div class="col-sm-9">
 					<!--
-					<h1 class="home-p">Online Bootcamps for the Ambitious.</h1>
+					<h1 class="home-p">Online Projects for the Ambitious.</h1>
                     <h4 class="home-p">Accomplish an outcome <u>faster</u> by working with expert instructors that hold you accountable in completing weekly or daily milestones on-time.</h4>
                      -->
                     <h1 class="home-p">Empower Your Students to Succeed</h1>
-                    <h4 class="home-p">Infrastructure for experts to build & operate online Bootcamps designed to maximize student engagements.</h4>
+                    <h4 class="home-p">Infrastructure for experts to build & operate online Projects designed to maximize student engagements.</h4>
 
-                    <a href="/launch" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Launch a Bootcamp <i class="fa fa-rocket" style="font-size:1.2em;" aria-hidden="true"></i></a>
+                    <a href="/launch" class="btn btn-danger btn-raised btn-lg bg-glow" style="margin-bottom:50px;">Launch a Project <i class="fa fa-rocket" style="font-size:1.2em;" aria-hidden="true"></i></a>
 				</div>
 				<div class="col-sm-3">&nbsp;</div>
             </div>

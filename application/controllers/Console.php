@@ -49,15 +49,15 @@ class Console extends CI_Controller {
 	
 	
 	/* ******************************
-	 * Bootcamps
+	 * Projects
 	 ****************************** */
 	
-	function all_bootcamps(){
+	function all_projects(){
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
-		//User Bootcamps:
-		$my_bootcamps = $this->Db_model->u_bootcamps(array(
+		//User Projects:
+		$projects = $this->Db_model->user_projects(array(
 		    'ba.ba_u_id' => $udata['u_id'],
 		    'ba.ba_status >=' => 0,
 		    'b.b_status >=' => 0,
@@ -65,16 +65,16 @@ class Console extends CI_Controller {
 		
 		//Did we find any?
         /*
-		foreach($my_bootcamps as $key=>$mb){
-		    //Fetch full bootcamp:
-		    $this_full = $this->Db_model->remix_bootcamps(array(
+		foreach($projects as $key=>$mb){
+		    //Fetch full Project:
+		    $this_full = $this->Db_model->remix_projects(array(
 		        'b.b_id' => $mb['b_id'],
 		    ));
-		    $my_bootcamps[$key] = $this_full[0];
+		    $projects[$key] = $this_full[0];
 		}
         */
 
-		$title = ( $udata['u_cache__fp_psid']>0 ? 'My Bootcamps' : 'Activate Messenger') ;
+		$title = ( $udata['u_cache__fp_psid']>0 ? 'My Projects' : 'Activate Messenger') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
@@ -90,9 +90,9 @@ class Console extends CI_Controller {
 		//Have they activated their Bot yet?
 		if($udata['u_cache__fp_psid']>0){
 
-		    //Yes, show them their bootcamps:
-		    $this->load->view('console/all_bootcamps' , array(
-		        'bootcamps' => $my_bootcamps,
+		    //Yes, show them their Projects:
+		    $this->load->view('console/all_projects' , array(
+		        'projects' => $projects,
 		        'udata' => $udata,
 		    ));
 
@@ -105,35 +105,34 @@ class Console extends CI_Controller {
 		    
 		    //Show activation:
 		    $this->load->view('console/activate_bot' , array(
-		        'bootcamps' => $my_bootcamps,
+		        'projects' => $projects,
 		        'users' => $users,
 		        'udata' => $udata,
 		    ));
 		}
     	
 		//Footer:
-		$this->load->view('console/shared/d_footer' , array(
-		    'load_view' => 'console/modals/wizard_bootcamp',
-		));
+		$this->load->view('console/shared/d_footer');
+
 	}
 	
 	
 	function dashboard($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->remix_bootcamps(array(
+	    $projects = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($bootcamps[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+	    if(!isset($projects[0])){
+	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    if(isset($_GET['raw'])){
-	        echo_json($bootcamps[0]);
+	        echo_json($projects[0]);
 	        exit;
 	    }
 	    
-	    $title = 'Dashboard | '.$bootcamps[0]['c_objective'];
+	    $title = 'Dashboard | '.$projects[0]['c_objective'];
 	    
 	    //Log view:
 	    $this->Db_model->e_create(array(
@@ -143,7 +142,7 @@ class Console extends CI_Controller {
 	        ),
 	        'e_type_id' => 48, //View
 	        'e_message' => $title,
-	        'e_b_id' => $bootcamps[0]['b_id'],
+	        'e_b_id' => $projects[0]['b_id'],
 	        'e_r_id' => 0,
 	        'e_c_id' => 0,
 	        'e_recipient_u_id' => 0,
@@ -152,7 +151,7 @@ class Console extends CI_Controller {
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
 	        'title' => $title,
-	        'bootcamp' => $bootcamps[0],
+	        'project' => $projects[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -161,7 +160,7 @@ class Console extends CI_Controller {
 	        ),
 	    ));
 	    $this->load->view('console/dashboard' , array(
-	        'bootcamp' => $bootcamps[0],
+	        'project' => $projects[0],
 	    ));
 	    $this->load->view('console/shared/d_footer');
 	}
@@ -170,15 +169,15 @@ class Console extends CI_Controller {
 	function actionplan($b_id,$pid=null){
 		
 	    $udata = auth(1,1,$b_id);
-		$bootcamps = $this->Db_model->remix_bootcamps(array(
+		$projects = $this->Db_model->remix_projects(array(
 		    'b.b_id' => $b_id,
 		));
-		if(!isset($bootcamps[0])){
-		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+		if(!isset($projects[0])){
+		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 		}
 
-		//Fetch intent relative to the bootcamp by doing an array search:
-		$view_data = extract_level( $bootcamps[0] , ( intval($pid)>0 ? $pid : $bootcamps[0]['c_id'] ) );
+		//Fetch intent relative to the Project by doing an array search:
+		$view_data = extract_level( $projects[0] , ( intval($pid)>0 ? $pid : $projects[0]['c_id'] ) );
 		if(!$view_data){
 		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid task ID. Select another task to continue.</div>');
 		} else {
@@ -193,7 +192,7 @@ class Console extends CI_Controller {
 		
 		if(isset($_GET['raw'])){
 		    //For testing purposes:
-		    echo_json($view_data['bootcamp']);
+		    echo_json($view_data['project']);
 		    exit;
 		}
 		
@@ -210,16 +209,16 @@ class Console extends CI_Controller {
 	function all_classes($b_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->remix_bootcamps(array(
+	    $projects = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($bootcamps[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+	    if(!isset($projects[0])){
+	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    $view_data = array(
-	        'title' => 'Classes | '.$bootcamps[0]['c_objective'],
-	        'bootcamp' => $bootcamps[0],
+	        'title' => 'Classes | '.$projects[0]['c_objective'],
+	        'project' => $projects[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -231,33 +230,30 @@ class Console extends CI_Controller {
 	    //Load view
 	    $this->load->view('console/shared/d_header' , $view_data);
 	    $this->load->view('console/all_classes' , $view_data);
-	    $this->load->view('console/shared/d_footer' , array(
-	        'load_view' => 'console/modals/new_class',
-	        'bootcamp' => $bootcamps[0],
-	    ));
+	    $this->load->view('console/shared/d_footer');
 	}
 	
 	
 	function scheduler($b_id,$r_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->remix_bootcamps(array(
+	    $projects = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($bootcamps[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+	    if(!isset($projects[0])){
+	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    //This could be a new run, or editing an existing run:
-	    $class = filter($bootcamps[0]['c__classes'],'r_id',$r_id);
+	    $class = filter($projects[0]['c__classes'],'r_id',$r_id);
 	    if(!$class){
 	        die('<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 	    }
 	    
 	    //Load in iFrame
 	    $this->load->view('console/frames/scheduler' , array( 
-	        'title' => 'Edit Schedule | '.time_format($class['r_start_date'],1).' Class | '.$bootcamps[0]['c_objective'],
-	        'bootcamp' => $bootcamps[0],
+	        'title' => 'Edit Schedule | '.time_format($class['r_start_date'],1).' Class | '.$projects[0]['c_objective'],
+	        'project' => $projects[0],
 	        'class' => $class
 	    ));
 	}
@@ -265,15 +261,15 @@ class Console extends CI_Controller {
 	function load_class($b_id,$r_id){
 		//Authenticate:
 	    $udata = auth(1,1,$b_id);
-		$bootcamps = $this->Db_model->remix_bootcamps(array(
+		$projects = $this->Db_model->remix_projects(array(
 		    'b.b_id' => $b_id,
 		));
-		if(!isset($bootcamps[0])){
-		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+		if(!isset($projects[0])){
+		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 		}
 		
 		//This could be a new run, or editing an existing run:
-		$class = filter($bootcamps[0]['c__classes'],'r_id',$r_id);
+		$class = filter($projects[0]['c__classes'],'r_id',$r_id);
 		if(!$class){
 		    redirect_message('/console/'.$b_id.'/classes' , '<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 		}
@@ -285,8 +281,8 @@ class Console extends CI_Controller {
         )));
 		
 		$view_data = array(
-		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$bootcamps[0]['c_objective'],
-            'bootcamp' => $bootcamps[0],
+		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$projects[0]['c_objective'],
+            'project' => $projects[0],
             'current_applicants' => $current_applicants,
 		    'class' => $class,
 		    'breadcrumb' => array(
@@ -312,17 +308,17 @@ class Console extends CI_Controller {
 	function students($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->remix_bootcamps(array(
+	    $projects = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($bootcamps[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+	    if(!isset($projects[0])){
+	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Students | '.$bootcamps[0]['c_objective'],
-	        'bootcamp' => $bootcamps[0],
+	        'title' => 'Students | '.$projects[0]['c_objective'],
+	        'project' => $projects[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -331,7 +327,7 @@ class Console extends CI_Controller {
 	        ),
 	    ));
 	    $this->load->view('console/students' , array(
-	        'bootcamp' => $bootcamps[0],
+	        'project' => $projects[0],
 	        'udata' => $udata,
 	    ));
 	    $this->load->view('console/shared/d_footer');
@@ -342,17 +338,17 @@ class Console extends CI_Controller {
 	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $bootcamps = $this->Db_model->remix_bootcamps(array(
+	    $projects = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($bootcamps[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid bootcamp ID.</div>');
+	    if(!isset($projects[0])){
+	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Settings | '.$bootcamps[0]['c_objective'],
-	        'bootcamp' => $bootcamps[0],
+	        'title' => 'Settings | '.$projects[0]['c_objective'],
+	        'project' => $projects[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -361,7 +357,7 @@ class Console extends CI_Controller {
 	        ),
 	    ));
 	    $this->load->view('console/settings' , array(
-	        'bootcamp' => $bootcamps[0],
+	        'project' => $projects[0],
 	        'udata' => $udata,
 	    ));
 	    $this->load->view('console/shared/d_footer');

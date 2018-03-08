@@ -237,7 +237,7 @@ class Comm_model extends CI_Model {
                     $fp = $this->Db_model->fp_create(array(
                         'fp_fb_id' => $fb_page['id'],
                         'fp_name' => $fb_page['name'],
-                        'fp_status' => 0, //Available... fb_page_connect() would change this to 1 later on when connected to a Bootcamp
+                        'fp_status' => 0, //Available... fb_page_connect() would change this to 1 later on when connected to a Project
                     ));
 
                     //Log Engagement:
@@ -270,7 +270,7 @@ class Comm_model extends CI_Model {
                     //Page exists:
                     $fp = $pages[0];
 
-                    //How many Bootcamps are using this page now?
+                    //How many Projects are using this page now?
                     $b_connected_count = count($this->Db_model->b_fetch(array(
                         'b_fp_id' => $fp['fp_id'],
                     )));
@@ -413,13 +413,13 @@ class Comm_model extends CI_Model {
                         'e_b_id' => $b_id,
                     ));
 
-                    //Is this page connected to any Bootcamps? If so, this is an issue!
+                    //Is this page connected to any Projects? If so, this is an issue!
                     $b_connected = $this->Db_model->b_fetch(array(
                         'b_fp_id' => $fp['fp_id'],
                     ));
 
                     if(count($b_connected)>0){
-                        //Remove the access to these pages from all Bootcamps and notify admin to look into this:
+                        //Remove the access to these pages from all Projects and notify admin to look into this:
                         foreach($b_connected as $b){
 
                             //Disconnect Page:
@@ -433,7 +433,7 @@ class Comm_model extends CI_Model {
                                 'e_fp_id' => $fp['fp_id'],
                                 'e_type_id' => 9, //Support team look into this
                                 'e_b_id' => $b['b_id'],
-                                'e_message' => 'Bootcamp was connected to this Facebook Page, but lost its connection as Instructor permissions were revoked in the most recent graph call. Review this case to ensure this disconnection would not impact the current students of any possible Action Classes for this Bootcamp.',
+                                'e_message' => 'Project was connected to this Facebook Page, but lost its connection as Instructor permissions were revoked in the most recent graph call. Review this case to ensure this disconnection would not impact the current students of any possible Action Classes for this Project.',
                             ));
 
                         }
@@ -451,7 +451,7 @@ class Comm_model extends CI_Model {
 	    //We're either integrating or removing an integration:
 	    if($do_integrate){
 
-            //This page is not integrated, let's do the integration before connecting to a Bootcamp:
+            //This page is not integrated, let's do the integration before connecting to a Project:
             $e_json = array();
 
             //Subscribe to App so we get the messages funneled form them:
@@ -568,23 +568,23 @@ class Comm_model extends CI_Model {
             'fp_id' => $fp_id,
         ));
 
-        //Does this bootcamp have any current pages connected to it? If so, we'd need to disconnect them first:
-        $bootcamps = $this->Db_model->b_fetch(array(
+        //Does this Project have any current pages connected to it? If so, we'd need to disconnect them first:
+        $projects = $this->Db_model->b_fetch(array(
             'b_id' => $b_id,
         ));
 
         if(count($fp_pages)<1){
             //This should not happen!
             return false;
-        } elseif(count($bootcamps)<1){
+        } elseif(count($projects)<1){
             //This should not happen!
             return false;
-        } elseif($bootcamps[0]['b_fp_id']>0){
-            //This Bootcamp is already connected to another page, disconnect it so it can be connected to this new page:
-            $this->Comm_model->fb_page_disconnect($u_id,$bootcamps[0]['b_fp_id'],$b_id);
+        } elseif($projects[0]['b_fp_id']>0){
+            //This Project is already connected to another page, disconnect it so it can be connected to this new page:
+            $this->Comm_model->fb_page_disconnect($u_id,$projects[0]['b_fp_id'],$b_id);
         }
 
-        //Ok, now we're ready to connect this new page to the Bootcamp
+        //Ok, now we're ready to connect this new page to the Project
         //Is this page already integrated?
         if($fp_pages[0]['fp_status']==0){
             //Nope, its not yet integrated with Mench, let's do that:
@@ -592,16 +592,16 @@ class Comm_model extends CI_Model {
         }
 
         //Page should be integrated by now
-        //Let's connect it to this Bootcamp:
+        //Let's connect it to this Project:
         $this->Db_model->b_update( $b_id , array(
             'b_fp_id' => $fp_id,
         ));
 
-        //Fetch all attachment messages of this Bootcamp and Sync to its Facebook Page:
+        //Fetch all attachment messages of this Project and Sync to its Facebook Page:
         $media_messages = $this->Db_model->i_fetch(array(
             'i_status >' => 0, //Published in any form
             'i_media_type IN (\'video\',\'audio\',\'image\',\'file\')' => null, //Attachments only
-            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bootcamps[0]['b_c_id'])).')' => null, //Entire Bootcamp Action Plan
+            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($projects[0]['b_c_id'])).')' => null, //Entire Project Action Plan
         ));
         foreach($media_messages as $i){
             //Craete a request to sync attachment:
@@ -620,7 +620,7 @@ class Comm_model extends CI_Model {
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $u_id,
             'e_fp_id' => $fp_id,
-            'e_type_id' => 73, //Page Connected to Bootcamp
+            'e_type_id' => 73, //Page Connected to Project
             'e_json' => array(
                 'fb_sync_messages' => count($media_messages),
             ),
@@ -633,26 +633,26 @@ class Comm_model extends CI_Model {
 
     function fb_page_disconnect($u_id,$fp_id,$b_id){
 
-        //Disconnects $fp_id from $b_id as requested by $u_id, and removes page integration if no longer connected to any Mench Bootcamp...
+        //Disconnects $fp_id from $b_id as requested by $u_id, and removes page integration if no longer connected to any Mench Project...
 
         //Validate both $fp_id & $b_id
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
         ));
 
-        //Does this bootcamp have any current pages connected to it? If so, we'd need to disconnect them first:
-        $bootcamps = $this->Db_model->b_fetch(array(
+        //Does this Project have any current pages connected to it? If so, we'd need to disconnect them first:
+        $projects = $this->Db_model->b_fetch(array(
             'b_id' => $b_id,
         ));
 
         if(count($fp_pages)<1){
             //This should not happen!
             return false;
-        } elseif(count($bootcamps)<1){
+        } elseif(count($projects)<1){
             //This should not happen!
             return false;
-        } elseif(!($bootcamps[0]['b_fp_id']==$fp_id)){
-            //This Bootcamp is not connected to this page at this moment, so it cannot be removed:
+        } elseif(!($projects[0]['b_fp_id']==$fp_id)){
+            //This Project is not connected to this page at this moment, so it cannot be removed:
             return false;
         }
 
@@ -663,7 +663,7 @@ class Comm_model extends CI_Model {
             'b_fp_id' => 0,
         ));
 
-        //Now is this page connected to any other Mench Bootcamp?
+        //Now is this page connected to any other Mench Project?
         $b_connected_count = count($this->Db_model->b_fetch(array(
             'b_fp_id' => $fp_id,
             'b_id !=' => $b_id, //Not needed, just to be safe...
@@ -690,7 +690,7 @@ class Comm_model extends CI_Model {
 
         //Remove Page integration?
         if($b_connected_count==0){
-            //Yup, not connected to any more Mench Bootcamps, remove the Integration:
+            //Yup, not connected to any more Mench Projects, remove the Integration:
             $this->Comm_model->fb_page_integration($u_id,$fp_pages[0],$b_id,0);
         }
 
@@ -779,7 +779,7 @@ class Comm_model extends CI_Model {
 
 
 
-        //Try finding User/Bootcamp/Class ID:
+        //Try finding User/Project/Class ID:
         $u = array();
 
         //Is this fp_id/fp_psid already registered?
@@ -1325,28 +1325,28 @@ class Comm_model extends CI_Model {
                 $message['e_fp_id'] = 0;
             }
 
-            //Fetch Bootcamp/Class if needed:
-            $bootcamps = array();
-            $bootcamp_data = null;
+            //Fetch Project/Class if needed:
+            $projects = array();
+            $project_data = null;
             $class = null;
 
             if($message['e_b_id']){
                 //Fetch the copy of the Action Plan for the Class:
-                $bootcamps = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
+                $projects = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
 
-                //Fetch intent relative to the bootcamp by doing an array search:
-                $bootcamp_data = extract_level($bootcamps[0], $message['e_c_id']);
-                //IF !$bootcamp_data it likely means that intent is a generic system notification not part of $message['e_b_id']
+                //Fetch intent relative to the Project by doing an array search:
+                $project_data = extract_level($projects[0], $message['e_c_id']);
+                //IF !$project_data it likely means that intent is a generic system notification not part of $message['e_b_id']
 
                 //Do we have a Class?
-                if($message['e_r_id'] && $bootcamps[0]['this_class']){
-                    $class = $bootcamps[0]['this_class'];
+                if($message['e_r_id'] && $projects[0]['this_class']){
+                    $class = $projects[0]['this_class'];
                 }
             }
 
 
             //Fetch intent and its messages with an appropriate depth
-            $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $bootcamp_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
+            $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $project_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_c_id'],
             ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
@@ -1358,10 +1358,10 @@ class Comm_model extends CI_Model {
                 $error_message = 'Had e_r_id=['.$message['e_r_id'].'] but missing e_b_id';
             } elseif(!isset($tree[0])){
                 $error_message = 'Invalid Intent ID ['.$message['e_c_id'].']';
-            } elseif($message['e_b_id'] && count($bootcamps)<1){
-                $error_message = 'Failed to find Bootcamp ['.$message['e_b_id'].']';
+            } elseif($message['e_b_id'] && count($projects)<1){
+                $error_message = 'Failed to find Project ['.$message['e_b_id'].']';
             } elseif($message['e_r_id'] && !$message['e_b_id']){
-                $error_message = 'Cannot reference a Class without a Bootcamp';
+                $error_message = 'Cannot reference a Class without a Project';
             } elseif($message['e_r_id'] && !$class){
                 $error_message = 'Failed to locate Class ['.$message['e_r_id'].']';
             } elseif($message['depth']<0 || $message['depth']>1){
@@ -1397,12 +1397,12 @@ class Comm_model extends CI_Model {
 
 
         //This is the very first message for this milestone!
-        if($bootcamp_data && $message['e_b_id'] && $bootcamp_data['level']==2){
+        if($project_data && $message['e_b_id'] && $project_data['level']==2){
 
             //Add message to instant stream:
             array_push($instant_messages , array_merge($message, array(
                 'i_media_type' => 'text',
-                'i_message' => '🚩 ​{first_name} welcome to your '.$bootcamps[0]['b_sprint_unit'].' '.$bootcamp_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($bootcamp_data['intent']['c_objective']).'.',
+                'i_message' => '🚩 ​{first_name} welcome to your '.$projects[0]['b_sprint_unit'].' '.$project_data['sprint_index'].' milestone! The target outcome for this milestone is to '.strtolower($project_data['intent']['c_objective']).'.',
             )));
 
         }
@@ -1420,7 +1420,7 @@ class Comm_model extends CI_Model {
         }
 
 
-        if($bootcamp_data && $message['e_b_id'] && $bootcamp_data['level']==2){
+        if($project_data && $message['e_b_id'] && $project_data['level']==2){
 
             //How many tasks?
             $active_tasks = 0;
@@ -1443,7 +1443,7 @@ class Comm_model extends CI_Model {
                 //Let them know how many tasks:
                 array_push($instant_messages , array_merge($message, array(
                     'i_media_type' => 'text',
-                    'i_message' => 'To complete this Milestone you need to complete its '.$active_tasks.' task'.show_s($active_tasks).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($bootcamp_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Milestone
+                    'i_message' => 'To complete this Milestone you need to complete its '.$active_tasks.' task'.show_s($active_tasks).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($project_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Milestone
                 )));
 
             }
@@ -1554,7 +1554,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,$force_email,(!$message['e_b_id'] || !$bootcamp_data));
+        return $this->Comm_model->send_message($instant_messages,$force_email,(!$message['e_b_id'] || !$project_data));
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){

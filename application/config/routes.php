@@ -14,7 +14,7 @@ $route['launch'] 					= "front/launch";
 $route['contact'] 					= "front/contact";
 $route['faq'] 					    = "front/faq"; //TODO Not in use?
 $route['ses'] 						= "front/ses"; //Raw session logs
-$route['login']						= "front/login"; //Bootcamp Operator login
+$route['login']						= "front/login"; //Project Operator login
 
 /* ******************************
  * Student Semi-Private URLs
@@ -40,7 +40,7 @@ $route['console/(:num)/classes/(:num)'] 		       = "console/load_class/$1/$2";
 $route['console/(:num)/classes'] 				       = "console/all_classes/$1";
 $route['console/(:num)/raw'] 				           = "console/raw/$1"; //For dev purposes
 $route['console/(:num)'] 			                   = "console/dashboard/$1";
-$route['console'] 								       = "console/all_bootcamps";
+$route['console'] 								       = "console/all_projects";
 
 //Affiliate Links:
 $route['a/(:num)/(:num)/apply'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name
@@ -48,9 +48,9 @@ $route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$
 
 
 //Three steps of the signup process:
-$route['bootcamps'] 				        = "front/bootcamps_browse"; //Browse page
+$route['projects'] 				        = "front/bootcamps_browse"; //Browse page
 $route['(:any)/apply/(:num)'] 	            = "front/bootcamp_apply/$1/$2"; //Start of application funnel for Email, first & last name
 $route['(:any)/apply'] 	                    = "front/bootcamp_apply/$1"; //Start of application funnel for Email, first & last name
-$route['(:any)/(:num)']	                    = "front/bootcamp_load/$1/$2"; //Load specific class in the bootcamp
-$route['(:any)']	                        = "front/bootcamp_load/$1"; //Load specific bootcamp
+$route['(:any)/(:num)']	                    = "front/bootcamp_load/$1/$2"; //Load specific class in the Project
+$route['(:any)']	                        = "front/bootcamp_load/$1"; //Load specific Project
 

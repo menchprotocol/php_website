@@ -16,17 +16,17 @@ $intents = $this->Db_model->c_fetch(array(
     'c.c_id' => $c_id,
 ));
 
-//Fetch Bootcamp:
-$bootcamps = $this->Db_model->b_fetch(array(
+//Fetch Project:
+$projects = $this->Db_model->b_fetch(array(
     'b.b_id' => $b_id,
 ));
 
 if(!isset($intents[0])){
     //This should never happen:
     die('Invalid input id.');
-} elseif(count($bootcamps)<1){
+} elseif(count($projects)<1){
     //This should never happen:
-    die('Invalid Bootcamp id.');
+    die('Invalid Project id.');
 }
 ?>
 

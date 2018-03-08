@@ -1,12 +1,12 @@
 <div class="help_body maxout below_h" id="content_2274"></div>
 
 <?php
-if(count($bootcamp['c__classes'])>0){
+if(count($project['c__classes'])>0){
     echo '<div class="list-group maxout">';
-    foreach($bootcamp['c__classes'] as $class){
+    foreach($project['c__classes'] as $class){
 
 
-        echo '<a href="/console/'.$bootcamp['b_id'].'/classes/'.$class['r_id'].'" class="list-group-item">';
+        echo '<a href="/console/'.$project['b_id'].'/classes/'.$class['r_id'].'" class="list-group-item">';
             echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
             echo '<span style="min-width:125px; display:inline-block;"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($class['r_start_date'],2).'</span>';
             if(strlen($class['r_usd_price'])>0){

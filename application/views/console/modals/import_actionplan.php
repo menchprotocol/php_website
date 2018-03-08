@@ -1,12 +1,12 @@
 <?php
 $udata = $this->session->userdata('user');
 
-//Fetch this user's Bootcamps:
-$my_bootcamps = $this->Db_model->u_bootcamps(array(
+//Fetch this user's Projects:
+$projects = $this->Db_model->user_projects(array(
     'ba.ba_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 0,
-    'b.b_id !=' => $bootcamp['b_id'], //Can't import from current Bootcamp
+    'b.b_id !=' => $project['b_id'], //Can't import from current Project
 ));
 ?>
 
@@ -23,15 +23,15 @@ $my_bootcamps = $this->Db_model->u_bootcamps(array(
         if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
             var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
             if(the_id=='choose_bootcamp'){
-                //This is a critical step as it would define which Bootcamp to load into the Import wizard...
+                //This is a critical step as it would define which Project to load into the Import wizard...
                 var import_from_b_id = $('#import_b_id').val();
                 if(import_from_b_id<1){
-                    alert('ERROR: Choose a Bootcamp to import from');
+                    alert('ERROR: Choose a Project to import from');
                     $('#import_b_id').focus();
                     return false;
                 } else {
 
-                    //Load this Bootcamp into the Import Wizard
+                    //Load this Project into the Import Wizard
 
                     //Show loader:
                     $('#choose_content').html('<img src="/img/round_load.gif" class="loader" /> Loading Action Plan...');
@@ -128,7 +128,7 @@ $my_bootcamps = $this->Db_model->u_bootcamps(array(
             $.post("/api_v1/import_process", {
 
                 import_from_b_id:parseInt($('#import_b_id').val()),
-                import_to_b_id:<?= $bootcamp['b_id'] ?>,
+                import_to_b_id:<?= $project['b_id'] ?>,
                 milestone_import_mode:parseInt($('input[name=milestone_import_mode]:checked').val()),
 
                 b_level_messages:($('input[name=b_level_messages]:checked').val()=='on'?1:0),
@@ -149,7 +149,7 @@ $my_bootcamps = $this->Db_model->u_bootcamps(array(
 
                     //Refresh after success:
                     setTimeout(function() {
-                        window.location = "/console/<?= $bootcamp['b_id'] ?>/actionplan"
+                        window.location = "/console/<?= $project['b_id'] ?>/actionplan"
                     }, 1500);
 
                 } else {
@@ -204,20 +204,20 @@ $my_bootcamps = $this->Db_model->u_bootcamps(array(
                     <p>Import from:</p>
                     <div class="form-group label-floating is-empty">
                         <select class="form-control input-mini border" id="import_b_id">
-                            <option value="0">Choose Bootcamp...</option>
+                            <option value="0">Choose Project...</option>
                             <?php
-                            foreach($my_bootcamps as $b){
+                            foreach($projects as $b){
                                 echo '<option value="'.$b['b_id'].'">'.$b['c_objective'].'</option>';
                             }
                             ?>
                         </select>
                     </div>
                     <br />
-                    <p>Import to this Bootcamp:</p>
-                    <div class="form-group"><b><?= $bootcamp['c_objective'] ?></b></div>
+                    <p>Import to this Project:</p>
+                    <div class="form-group"><b><?= $project['c_objective'] ?></b></div>
                 </div>
 
-                <!-- Content to be dynamically loaded based on Bootcamp -->
+                <!-- Content to be dynamically loaded based on Project -->
                 <div class="wizard-box" id="choose_content"></div>
 
                 <div class="wizard-box" id="import_mode">

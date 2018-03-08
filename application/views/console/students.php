@@ -61,7 +61,7 @@
 </script>
 
 
-<input type="hidden" id="b_id" value="<?= $bootcamp['b_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $project['b_id'] ?>" />
 
 <div class="help_body maxout below_h" id="content_2275"></div>
 
@@ -73,7 +73,7 @@
 <div class="tab-content tab-space full-width">
 
     <div class="tab-pane active full-width" id="tabchat">
-        <?= '<iframe src="https://chat.mench.co/?bootcampId='.$bootcamp['b_id'].'&instructorId='.$udata['u_id'].'&token='.md5($bootcamp['b_id'].'ChatiFrameS@lt'.$udata['u_id']).'" width="100%" id="chatwidget" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>'; ?>
+        <?= '<iframe src="https://chat.mench.co/?bootcampId='.$project['b_id'].'&instructorId='.$udata['u_id'].'&token='.md5($project['b_id'].'ChatiFrameS@lt'.$udata['u_id']).'" width="100%" id="chatwidget" frameborder="0" style="overflow:hidden; border:0; padding:0; margin:0;" scrolling="no"></iframe>'; ?>
     </div>
 
     <div class="tab-pane" id="tableaderboard">
@@ -83,7 +83,7 @@
         $classes_array = array();
         $focus_class_id = 0;
 
-        foreach($bootcamp['c__classes'] as $class){
+        foreach($project['c__classes'] as $class){
             if($class['r_status']>=1){
                 if(!$focus_class_id && date_is_past($class['r_start_date'])){
                     $focus_class_id = $class['r_id'];
@@ -94,7 +94,7 @@
 
         //Did we find any? If not, lets grab the very first class this time:
         if(!$focus_class_id){
-            foreach($bootcamp['c__classes'] as $class){
+            foreach($project['c__classes'] as $class){
                 if($class['r_status']>=1){
                     if(!$focus_class_id){
                         $focus_class_id = $class['r_id'];
@@ -127,7 +127,7 @@
 
         } else {
 
-            echo '<div class="alert alert-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No active classes found! <a href="/console/'.$bootcamp['b_id'].'/classes"><b>Manage Classes &raquo;</b></a></div>';
+            echo '<div class="alert alert-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No active classes found! <a href="/console/'.$project['b_id'].'/classes"><b>Manage Classes &raquo;</b></a></div>';
 
         }
         ?>

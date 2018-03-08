@@ -31,14 +31,14 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
 
     if(count($cache_action_plans)>0){
 
-        //Assign this cache to the Bootcamp:
-        $bootcamps = array();
+        //Assign this cache to the Project:
+        $projects = array();
 
-        array_push($bootcamps,unserialize($cache_action_plans[0]['ej_e_blob']));
+        array_push($projects,unserialize($cache_action_plans[0]['ej_e_blob']));
 
         //Indicate this is a copy:
-        $bootcamps[0]['is_copy'] = 1;
-        $bootcamps[0]['copy_timestamp'] = $cache_action_plans[0]['e_timestamp'];
+        $projects[0]['is_copy'] = 1;
+        $projects[0]['copy_timestamp'] = $cache_action_plans[0]['e_timestamp'];
 
         //If we have this, we should replace it to have certain fields updated:
         if($current_b){
@@ -46,42 +46,42 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
             //Any items that we'd like to release its cache?
             foreach($release_cache as $key){
                 //This replaces older values with new ones to ensures we get the most up to date view
-                $bootcamps[0][$key] = $current_b[0][$key];
+                $projects[0][$key] = $current_b[0][$key];
             }
 
             //Replace:
-            $bootcamps = array_replace_recursive($current_b,$bootcamps);
+            $projects = array_replace_recursive($current_b,$projects);
         }
 
     } else {
 
         //Fetch from live:
-        $bootcamps = $CI->Db_model->remix_bootcamps(array(
+        $projects = $CI->Db_model->remix_projects(array(
             'b.b_id' => $b_id,
         ));
 
         if($r_id){
-            // *Attempt* to fetch Class from current class object in Bootcamp:
-            $bootcamps[0]['this_class'] = filter($bootcamps[0]['c__classes'],'r_id', $r_id);
+            // *Attempt* to fetch Class from current class object in Project:
+            $projects[0]['this_class'] = filter($projects[0]['c__classes'],'r_id', $r_id);
         }
 
 
         //Indicate this is NOT a copy:
-        $bootcamps[0]['is_copy'] = 0;
-        $bootcamps[0]['copy_timestamp'] = null;
+        $projects[0]['is_copy'] = 0;
+        $projects[0]['copy_timestamp'] = null;
 
     }
 
-    if($r_id && (!isset($bootcamps[0]['this_class']) || !$bootcamps[0]['this_class'])){
+    if($r_id && (!isset($projects[0]['this_class']) || !$projects[0]['this_class'])){
         //Now Fetch Class:
         $classes = $CI->Db_model->r_fetch(array(
             'r_id' => $r_id,
-        ), $bootcamps[0] );
+        ), $projects[0] );
 
-        $bootcamps[0]['this_class'] = $classes[0];
+        $projects[0]['this_class'] = $classes[0];
     }
 
-    return $bootcamps;
+    return $projects;
 }
 
 
@@ -112,8 +112,8 @@ function filter_active_admission($admissions){
          * Ohh, let's try to figure this out. There are a few scenarios:
          *
          * 1. Multiple up-coming Bootcaps that do not overlap
-         * 2. A mix of past Bootcamps already completed, and some upcoming ones
-         * 3. A bunch of past Bootcamps that are all completed and none active
+         * 2. A mix of past Projects already completed, and some upcoming ones
+         * 3. A bunch of past Projects that are all completed and none active
          * 4. A mix and match of above?!
          *
          * ru_status & r_status and are guiding lights here to crack this puzzle
@@ -163,8 +163,8 @@ function fetch_file_ext($url){
 	return end($file_parts);
 }
 
-function calculate_duration($bootcamp,$action_plan_item=null){
-    return ( ( !is_null($action_plan_item) ? $action_plan_item : $bootcamp['c__milestone_units'] ) * ( $bootcamp['b_sprint_unit']=='week' ? 7 : 1 ) );
+function calculate_duration($project,$action_plan_item=null){
+    return ( ( !is_null($action_plan_item) ? $action_plan_item : $project['c__milestone_units'] ) * ( $project['b_sprint_unit']=='week' ? 7 : 1 ) );
 }
 
 function calculate_refund($duration_days,$refund_type,$cancellation_policy){
@@ -224,12 +224,12 @@ function extract_level($b,$c_id){
     $view_data = array(
         'pid' => $c_id, //To be deprecated at some point...
         'c_id' => $c_id,
-        'bootcamp' => $b,
+        'project' => $b,
     );
 
     if($b['c_id']==$c_id){
         
-        //Level 1 (The bootcamp itself)
+        //Level 1 (The Project itself)
         $view_data['level'] = 1;
         $view_data['sprint_index'] = 0;
         $view_data['sprint_duration_multiplier'] = 0;
@@ -241,7 +241,7 @@ function extract_level($b,$c_id){
                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
             ),
         );
-        //Not applicable at Bootcamp Level:
+        //Not applicable at Project Level:
         $view_data['next_intent'] = null; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
         $view_data['next_level'] = 0; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand next move
         $view_data['previous_intent'] = null; //Used in actionplan_ui view for Task Sequence Submission positioning to better understand previous move
@@ -315,7 +315,7 @@ function extract_level($b,$c_id){
 
                                     if(!isset($b['c__child_intents'][$next_milestone_key]['c_id'])){
 
-                                        //Next milestone does not exist, return Bootcamp:
+                                        //Next milestone does not exist, return Project:
                                         $next_intent = $b;
                                         $next_level = 1;
                                         break;
@@ -499,7 +499,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             //Fetch salt:
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
-            $button_title = '🎟️ My Bootcamp Application';
+            $button_title = '🎟️ My Project Application';
             $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
             $command = '{admissions}';
 
@@ -513,13 +513,13 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
         } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_recipient_u_id']) && isset($i['e_b_id'])) {
 
-            //Fetch Facebook Page from Bootcamp:
-            $bootcamps = $CI->Db_model->b_fetch(array(
+            //Fetch Facebook Page from Project:
+            $projects = $CI->Db_model->b_fetch(array(
                 'b.b_id' => $i['e_b_id'],
             ));
 
-            if(isset($bootcamps[0]['b_fp_id']) && $bootcamps[0]['b_fp_id']>0 && isset($i['e_recipient_u_id']) && $i['e_recipient_u_id']>0){
-                $button_url = $CI->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bootcamps[0]['b_fp_id']);
+            if(isset($projects[0]['b_fp_id']) && $projects[0]['b_fp_id']>0 && isset($i['e_recipient_u_id']) && $i['e_recipient_u_id']>0){
+                $button_url = $CI->Comm_model->fb_activation_url($i['e_recipient_u_id'],$projects[0]['b_fp_id']);
                 if($button_url) {
                     //append their My Account Button/URL:
                     $button_title = '🤖 Activate Messenger (Chat with Instructor)';
@@ -998,7 +998,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
 	    if($level==1){
 
-            //Bootcamp Outcome:
+            //Project Outcome:
             $ui = '<div id="obj-title" class="list-group-item">';
 
         } else {
@@ -1048,8 +1048,8 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
         if($level==1){
 
-            //Bootcamp Outcome:
-            $ui .= '<span data-toggle="tooltip" title="Bootcamp Outcome which is used to determine student completion rate" data-placement="top"><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
+            //Project Outcome:
+            $ui .= '<span data-toggle="tooltip" title="Project Outcome which is used to determine student completion rate" data-placement="top"><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
 
             $ui .= '<div class="inline-level" style="margin:9px 0 0 1px; width:100%; clear:both;">';
 
@@ -1057,7 +1057,7 @@ function echo_cr($b_id,$intent,$direction,$level=0,$b_sprint_unit,$parent_c_id=0
 
             if($editing_enabled){
                 //Show import button:
-                $ui .= '<span style="margin-left:0px; margin-right:6px; font-weight:500;" class="pull-right"><a href="#" data-toggle="modal" data-target="#importActionPlan" title="Import parts of all of Screening, Milestones or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="left"><i class="fa fa-download" aria-hidden="true"></i> Import</a></span>';
+                $ui .= '<span style="margin-left:0px; margin-right:6px; font-weight:500;" class="pull-right"><a href="#" data-toggle="modal" data-target="#importActionPlan" title="Import parts of all of Screening, Milestones or Outcomes from another Project you manage" data-toggle="tooltip" data-placement="left"><i class="fa fa-download" aria-hidden="true"></i> Import</a></span>';
             }
 
             $ui .= '</div>';
@@ -1149,15 +1149,15 @@ function echo_mentorship($r_meeting_frequency,$r_meeting_duration){
 
 
 function gross_mentorship($r_meeting_frequency,$r_meeting_duration,$b_sprint_unit,$c__milestone_units,$is_fancy=true){
-    $bootcamp_days = ( $b_sprint_unit=='week' ? 7 : 1 ) * $c__milestone_units;
+    $project_days = ( $b_sprint_unit=='week' ? 7 : 1 ) * $c__milestone_units;
     
     if($r_meeting_frequency=="0"){
         $total_hours = 0;
     } elseif($r_meeting_frequency=="d1"){
         //Calculate total length:
-        $total_hours = ($bootcamp_days*$r_meeting_duration);
+        $total_hours = ($project_days*$r_meeting_duration);
     } elseif(substr($r_meeting_frequency, 0, 1)=="w"){
-        $total_hours = ( $bootcamp_days * $r_meeting_duration / 7 * intval(substr($r_meeting_frequency, 1, 1)) );
+        $total_hours = ( $project_days * $r_meeting_duration / 7 * intval(substr($r_meeting_frequency, 1, 1)) );
     } else {
         //1 Time frequencies like "1" or "3"
         $total_hours = ( $r_meeting_frequency * $r_meeting_duration );
@@ -1205,7 +1205,7 @@ function date_is_past($date){
 
 
 function prep_prerequisites($b){
-    //Appends system-enforced prerequisites based on Bootcamp settings:
+    //Appends system-enforced prerequisites based on Project settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
         array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($b['c__estimated_hours']).' in '.$b['c__milestone_units'].' '.$b['b_sprint_unit'].show_s($b['c__milestone_units']).' (Average '.echo_hours(round($b['c__estimated_hours']/$b['c__milestone_units'])) .' per '. $b['b_sprint_unit'].')');
@@ -1214,12 +1214,12 @@ function prep_prerequisites($b){
 }
 
 
-function calculate_bootcamp_status($b){
+function calculate_project_status($b){
     
     $CI =& get_instance();
     $sprint_units = $CI->config->item('sprint_units');
     $udata = $CI->session->userdata('user');
-    //A function used on the dashboard to indicate what is left before launching the bootcamp
+    //A function used on the dashboard to indicate what is left before launching the Project
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
     $checklist = array();
@@ -1392,7 +1392,7 @@ function calculate_bootcamp_status($b){
     }
     
 
-    //Bootcamp Messages:
+    //Project Messages:
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
     $qualified_messages = 0;
@@ -1692,7 +1692,7 @@ function calculate_bootcamp_status($b){
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#pages',
-        'anchor' => '<b>Connect a Facebook Page</b> to this Bootcamp in settings',
+        'anchor' => '<b>Connect a Facebook Page</b> to this Project in settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1705,7 +1705,7 @@ function calculate_bootcamp_status($b){
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings',
-        'anchor' => '<b>Set Bootcamp Status to '.status_bible('b',1).'</b> in Settings',
+        'anchor' => '<b>Set Project Status to '.status_bible('b',1).'</b> in Settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1715,7 +1715,7 @@ function calculate_bootcamp_status($b){
     return array(
         'stage' => '<i class="fa fa-tasks" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
-        'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your bootcamp status to '.status_bible('b',2).'. At this time you can launch your bootcamp by inviting your students to join.',
+        'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your Project status to '.status_bible('b',2).'. At this time you can launch your Project by inviting your students to join.',
         'check_list' => $checklist,
     );
 }
@@ -1914,18 +1914,18 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    
 	} elseif(isset($udata['u_id']) && $b_id){
 	    
-	    //Fetch bootcamp admins and see if they have access to this:
-	    $bootcamp_instructors = $CI->Db_model->ba_fetch(array(
+	    //Fetch Project admins and see if they have access to this:
+	    $project_instructors = $CI->Db_model->ba_fetch(array(
 	        'ba.ba_b_id' => $b_id,
 	        'ba.ba_status >=' => 1, //Must be an actively assigned instructor
 	        'u.u_status >=' => 1, //Must be a user level 1 or higher
 	        'u.u_id' => $udata['u_id'],
 	    ));
 	    
-	    if(count($bootcamp_instructors)>0){
+	    if(count($project_instructors)>0){
 	        //Append permissions here:
-	        $udata['bootcamp_permissions'] = $bootcamp_instructors[0];
-	        //Instructor is part of the bootcamp:
+	        $udata['bootcamp_permissions'] = $project_instructors[0];
+	        //Instructor is part of the Project:
 	        return $udata;
 	    }
 	    
@@ -2389,14 +2389,14 @@ function object_link($object,$id,$b_id=0){
             }
         } elseif($object=='b'){
             
-            $bootcamps = $CI->Db_model->b_fetch(array(
+            $projects = $CI->Db_model->b_fetch(array(
                 'b.b_id' => $id,
             ), array('c'));
-            if(isset($bootcamps[0])){
+            if(isset($projects[0])){
                 if($b_id){
-                    return '<a href="'.$website['url'].'console/'.$bootcamps[0]['b_id'].'">'.$bootcamps[0]['c_objective'].'</a>';
+                    return '<a href="'.$website['url'].'console/'.$projects[0]['b_id'].'">'.$projects[0]['c_objective'].'</a>';
                 } else {
-                    return $bootcamps[0]['c_objective'];
+                    return $projects[0]['c_objective'];
                 }
             }
             

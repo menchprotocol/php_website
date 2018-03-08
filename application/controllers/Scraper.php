@@ -20,7 +20,7 @@ class Scraper extends CI_Controller {
 	        'new' => array(),
 	    );
 	    
-	    //This function goes through the paginated structure of Course Report to fetch all bootcamp	    
+	    //This function goes through the paginated structure of Course Report to fetch all project
 	    for ($i = 1; $i<=$total_pages; $i++) {
 	        $page_html = file_get_contents('https://www.coursereport.com/schools?page='.$i);
 	        $links = explode('"school-info"><a href="/schools/',$page_html);
