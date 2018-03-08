@@ -20,7 +20,11 @@ class Bot extends CI_Controller {
     }
 
     function ee(){
-	    echo 'ee';
+        echo 'ee';
+    }
+
+    function eee(){
+        echo 'eee';
     }
 
     function im(){
