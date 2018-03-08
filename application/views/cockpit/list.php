@@ -476,21 +476,15 @@ if($object_name=='engagements'){
 
                     } , function(data) {
 
-                        $('#broadcast_message').prop('disabled', false);
-                        $('#send_btn').show();
-                        console.log(data);
-
                         if(data.status){
 
+                            //Only show results:
                             $('#broadcast_result').html(data.message);
-
-                            //Disapper in a while:
-                            setTimeout(function() {
-                                $('#broadcast_result').fadeOut();
-                            }, 5000);
 
                         } else {
 
+                            $('#broadcast_message').prop('disabled', false);
+                            $('#send_btn').show();
                             $('#broadcast_result').html('<span style="color:#FF0000;">'+data.message+'</span>');
 
                         }
