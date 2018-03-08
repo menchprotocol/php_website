@@ -1272,7 +1272,7 @@ class Comm_model extends CI_Model {
             foreach($email_to_send as $email){
                 $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], $email['r_reply_to_email']);
 
-                array_push( $e_json['email'] , unserialize($process) );
+                array_push( $e_json['email'] , json_decode($process) );
             }
         }
 
