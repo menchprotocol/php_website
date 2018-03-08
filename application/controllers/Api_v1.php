@@ -102,7 +102,7 @@ class Api_v1 extends CI_Controller {
         //Show final result:
         echo_json(array(
             'status' => ( $failed_count==0 ? 1 : 0 ),
-            'message' => ( $failed_count==0 ? '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span> ' : '' ).$result_message,
+            'message' => ( $failed_count==0 ? $result_message,
         ));
 
     }

@@ -463,6 +463,9 @@ if($object_name=='engagements'){
 
                     //Show spinner:
                     $('#broadcast_result').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+                    $('#broadcast_message').prop('disabled', true);
+                    $('#send_btn').hide();
+
 
                     $.post("/api_v1/send_broadcast", {
 
@@ -472,6 +475,9 @@ if($object_name=='engagements'){
                         b_id:<?= $users[0]['r_b_id'] ?>,
 
                     } , function(data) {
+
+                        $('#broadcast_message').prop('disabled', false);
+                        $('#send_btn').show();
 
                         if(data.status){
 
@@ -483,7 +489,9 @@ if($object_name=='engagements'){
                             }, 5000);
 
                         } else {
+
                             $('#broadcast_result').html('<span style="color:#FF0000;">'+data.message+'</span>');
+
                         }
 
                     });
@@ -493,7 +501,7 @@ if($object_name=='engagements'){
             <div style="background-color: #EFEFEF; border-radius: 3px; border:1px solid #999; padding:0 10px; margin:-20px 0 20px 0;" class="maxout">
                 <div class="title"><h4><i class="fa fa-bullhorn" aria-hidden="true"></i> Broadcast Message to <?= count($users) ?> Class Student<?= show_s(count($users)) ?> (List Below)</h4></div>
                 <textarea class="form-control text-edit border msg" id="broadcast_message" style="height:100px; background-color:#FFF;" onkeyup="changeMessage()" placeholder="Message for all Class students listed below..."></textarea>
-                <div style="margin:0; font-size:0.8em;"><a href="javascript:broadcast_message();" class="btn btn-primary">Broadcast</a> <span id="charNum">0</span>/<?= $message_max ?> <span id="broadcast_result" style="padding-left:10px;"></span></div>
+                <div style="margin:0; font-size:0.8em;"><span id="send_btn"><a href="javascript:broadcast_message();" class="btn btn-primary">Broadcast</a> <span id="charNum">0</span>/<?= $message_max ?></span> <span id="broadcast_result" style="padding-left:10px;"></span></div>
             </div>
 
             <?php
