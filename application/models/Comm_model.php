@@ -1244,10 +1244,9 @@ class Comm_model extends CI_Model {
                     );
                     $e_var_create = array(
                         'e_var_create' => array(
-                            'e_initiator_u_id' => ( isset($message['e_initiator_u_id'])    ? $message['e_initiator_u_id']  :0), //If set...
+                            'e_initiator_u_id' => ( isset($message['e_initiator_u_id']) ? $message['e_initiator_u_id']  :0), //If set...
                             'e_recipient_u_id' => $u['u_id'],
                             'e_message' => $email_variables['subject_line'],
-                            'e_json' => $email_variables,
                             'e_type_id' => 28, //Email message sent
                             'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
                             'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
@@ -1576,6 +1575,11 @@ class Comm_model extends CI_Model {
             $reply_to = 'support@mench.com';
         }
 
+        //Log engagement once:
+        if(count($e_var_create)>0){
+            $this->Db_model->e_create($e_var_create);
+        }
+
         return $this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => 'support@mench.com',
@@ -1610,11 +1614,6 @@ class Comm_model extends CI_Model {
             'ReplyToAddresses' => array($reply_to),
             'ReturnPath' => 'support@mench.com',
         ));
-
-        //Log engagement once:
-        if(count($e_var_create)>0){
-            $this->Db_model->e_create($e_var_create);
-        }
 
     }
 
