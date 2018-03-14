@@ -1254,7 +1254,7 @@ class Api_v1 extends CI_Controller {
 	    if(count($users)==1){
 
             //TODO remove login block for launch of v2.6
-            if(!($users[0]['u_status']<3)){
+            if($users[0]['u_status']<3){
                 redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Mench beta console is not live yet.</div>');
                 return false;
             }
