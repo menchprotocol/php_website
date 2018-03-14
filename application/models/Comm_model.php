@@ -1588,6 +1588,11 @@ class Comm_model extends CI_Model {
             $reply_to = 'support@mench.com';
         }
 
+        //Log engagement once:
+        if(count($e_var_create)>0){
+            $this->Db_model->e_create($e_var_create);
+        }
+
         return $this->CLIENT->sendEmail(array(
             // Source is required
             'Source' => 'support@mench.com',
@@ -1622,11 +1627,6 @@ class Comm_model extends CI_Model {
             'ReplyToAddresses' => array($reply_to),
             'ReturnPath' => 'support@mench.com',
         ));
-
-        //Log engagement once:
-        if(count($e_var_create)>0){
-            $this->Db_model->e_create($e_var_create);
-        }
 
     }
 
