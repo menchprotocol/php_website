@@ -15,10 +15,13 @@ class Front extends CI_Controller {
 	function index(){		
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
-				'landing_page' => 'front/splash/the_online_challenge_framework',
-				'title' => 'Online Projects for the Ambitious.',
+		    'title' => 'Opportunities are endless',
 		));
-		$this->load->view('front/index');
+		$this->load->view('front/project/marketplace' , array(
+		    'bs' => $this->Db_model->remix_projects(array(
+                'b.b_status' => 2,
+            )),
+        ));
 		$this->load->view('front/shared/f_footer');
 	}
 	
@@ -31,7 +34,7 @@ class Front extends CI_Controller {
 	    }
 	    
 		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Login',
+		    'title' => 'Login',
 		));
 		$this->load->view('front/login');
 		$this->load->view('front/shared/f_footer');
@@ -39,7 +42,7 @@ class Front extends CI_Controller {
 	
 	function terms(){
 		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Terms & Privacy Policy',
+		    'title' => 'Terms & Privacy Policy',
 		));
 		$this->load->view('front/terms');
 		$this->load->view('front/shared/f_footer');
@@ -47,7 +50,7 @@ class Front extends CI_Controller {
 	
 	function contact(){
 		$this->load->view('front/shared/f_header' , array(
-				'title' => 'Contact Us',
+		    'title' => 'Contact Us',
 		));
 		$this->load->view('front/contact');
 		$this->load->view('front/shared/f_footer');
@@ -64,63 +67,14 @@ class Front extends CI_Controller {
 	/* ******************************
 	 * Pitch Pages
 	 ****************************** */
-	
-	function affiliate_click($b_id,$u_id,$goto_apply){
-	    //Log this click under this user:
-	    $bs = $this->Db_model->b_fetch(array(
-	        'b.b_id' => $b_id,
-	    ));
-	    if(count($bs)<=0){
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
-	    }
-	    
-	    //Validate the user:
-	    $users = $this->Db_model->u_fetch(array(
-	        'u_id' => $u_id,
-	        'u_status >' => 0, //All active users
-	    ));
-	    if(count($users)<=0){
-	        
-	        //Invalid user, just redirect:
-	        header( 'Location: /'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
-	        
-	    } else {
-	        
-	        //Everything matches, lets log engagement:	        
-	        $e_new = $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => 0, //At this point the user does not have an account as they just clicked on the link
-	            'e_message' => 'New visitor arrived from '.( isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : 'an unknown referrer' ).' with IP address of '.( $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : 'unknown'),
-	            'e_json' => array(
-	                'ip' => $_SERVER['REMOTE_ADDR'],
-	                'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-	                'referer_url' => (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : null ),
-	            ),
-	            'e_type_id' => 45, //Affiliate Link Clicked
-	            'e_b_id' => $b_id, //The Project ID they referred to
-	            'e_recipient_u_id' => $u_id, //The affiliate ID
-	        ));
-	        
-	        //Lets create Cookie:
-	        $created_time = time();
-	        $this->load->helper('cookie');
-	        set_cookie(
-	            'menchref',
-	            $u_id.'-'.md5($u_id.'c00ki3'.$created_time.$e_new['e_id']).'-'.$created_time.'-'.$e_new['e_id'], //The referrer ID
-	            (60*24*3600), //60 Days
-	            '.mench.co'
-	        );
-	        
-	        //Lets redirect to Page:
-	        header( 'Location: /'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
-	    }
-	}
 
 
-	function launch(){
+	function instructors(){
 	    $this->load->view('front/shared/f_header' , array(
-	        'title' => 'Launch A Project',
+            'title' => 'Guide Students to Success',
+            'landing_page' => 'front/splash/instructors_why',
 	    ));
-	    $this->load->view('front/launch');
+	    $this->load->view('front/instructors');
 	    $this->load->view('front/shared/f_footer');
 	}
 	
@@ -131,24 +85,12 @@ class Front extends CI_Controller {
 	
 	function projects_browse(){
 	    
-	    //Require login for now:
-	    if(!auth(1)){
-	        $hm = $this->session->flashdata('hm');
-	        if($hm){
-	            //Set again and redirect:
-	            $this->session->set_flashdata('hm', $hm);
-	        }
-	        header( 'Location: /' );
-	    }
-	    
 	    //The public list of Projects:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => 'Browse Projects',
 	    ));
 	    $this->load->view('front/project/browse' , array(
-	        'bs' => $this->Db_model->remix_projects(array(
-	            'b.b_status >=' => 2,
-	        )),
+
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
@@ -172,6 +114,9 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Project is not published yet.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Project not connected to a Facebook Page yet.</div>');
+        } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
+            //URL Case sensitivity redirect:
+            redirect_message('/'.$bs[0]['b_url_key']);
         }
 
 
@@ -194,6 +139,7 @@ class Front extends CI_Controller {
 	        'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
 	        'message' => ( $b['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Project only because you are logged-in as a Mench instructor.<br />This Project is hidden from the public until published live.</div>' : null ),
 	        'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
+            'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
 	    ));
 	    $this->load->view('front/project/landing_page' , array(
 	        'b' => $b,
@@ -246,6 +192,7 @@ class Front extends CI_Controller {
 	            'b' => $b,
 	            'active_classes' => $active_classes,
 	            'title' => 'Join '.$b['c_objective'],
+                'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
 	        );
 
 	        //Load apply page:

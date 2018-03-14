@@ -2060,13 +2060,22 @@ function typeform_url($typeform_id){
     return 'https://mench.typeform.com/to/'.$typeform_id;
 }
 
-function redirect_message($url,$message=null){
+function redirect_message($url,$message=null, $response_code=null){
+
+    //Do we have a Message?
     if($message){
         $CI =& get_instance();
         $CI->session->set_flashdata('hm', $message);
     }
-	header("Location: ".$url);
-	exit;
+
+    //What's the default response code?
+    $response_code = ( !$response_code && !$message ? 301 : ( $response_code ? $response_code : null ) );
+    if($response_code) {
+        header("Location: ".$url, true, $response_code);
+    } else {
+        header("Location: ".$url, true);
+    }
+	die();
 }
 
 function remote_mime($file_url){

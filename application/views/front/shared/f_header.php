@@ -23,8 +23,11 @@ $url_part_1 = $this->uri->segment(1);
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?= $website['name'].( isset($title) ? ' | '.$title : '' ) ?></title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-	
+    <?= ( isset($canonical) ? '<link rel="canonical" href="'.$canonical.'">' : '' ) ?>
+
 	<?php $this->load->view('front/shared/header_resources' ); ?>
+
+
 
 	<script src="/js/front/global.js?v=v<?= $website['version'] ?>" type="text/javascript"></script>
 	
@@ -63,7 +66,7 @@ $url_part_1 = $this->uri->segment(1);
     				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
     				} else {
                         //This is the login page, show the Launch Button:
-                        //echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch a Project</a></li>';
+                        echo '<li><a href="/instructors"><i class="fa fa-rocket" aria-hidden="true"></i> Run a 7-Day Project</a></li>';
                     }
     				?>
         		</ul>

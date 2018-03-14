@@ -875,6 +875,7 @@ class Api_v1 extends CI_Controller {
                     'e_b_id' => $b['b_id'],
                     'e_r_id' => $focus_class['r_id'],
                 ));
+
             }
 
         } else {
@@ -886,6 +887,7 @@ class Api_v1 extends CI_Controller {
             $duplicate_registries = $this->Db_model->ru_fetch(array(
                 'ru.ru_u_id'	   => $udata['u_id'],
                 'ru.ru_r_id'	   => $focus_class['r_id'],
+                'ru.ru_status >='  => 0,
             ));
             if(count($duplicate_registries)>0){
 
@@ -946,8 +948,7 @@ class Api_v1 extends CI_Controller {
                 'ru.ru_r_id !='	   => $focus_class['r_id'],
                 'r.r_status >='	   => 1, //Open for admission
                 'r.r_status <='	   => 2, //Running
-                'ru.ru_status >='  => 0, //Initiated or higher
-                'ru.ru_status <='  => 4, //Active Student
+                'ru.ru_status'     => 4, //Admitted Student
             ));
 
             if(count($admissions)>0){
@@ -992,46 +993,12 @@ class Api_v1 extends CI_Controller {
             }
         }
 
-
-        //At this point we have a user, and they are clear to be admitted into this Class
-        $admission_application = array(
+        //Lets start their admission application:
+        $admissions[0] = $this->Db_model->ru_create(array(
             'ru_r_id' 	        => $focus_class['r_id'],
             'ru_u_id' 	        => $udata['u_id'],
-            'ru_affiliate_u_id' => 0, //TBD below
             'ru_fp_id'          => $b['b_fp_id'], //Current Page that the student should connect to
-        );
-
-        //Lets see if they have an affiliate Cookie:
-        $aff_cookie = get_cookie('menchref');
-        if(isset($aff_cookie) && $aff_cookie && strlen($aff_cookie)>10){
-            //Seems to be something here, lets see:
-            $cookie_parts = explode('-',$aff_cookie);
-            if(intval($cookie_parts[0]) && $cookie_parts[1]==md5( intval($cookie_parts[0]) . 'c00ki3' . $cookie_parts[2] . intval($cookie_parts[3]) )){
-
-                //Yes, this is a match!
-                $admission_application['ru_affiliate_u_id'] = intval($cookie_parts[0]);
-
-                //Log Affiliate Engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'], //The User ID
-                    'e_message' => 'User initiated admission. Pending payment and lead instructor approval.',
-                    'e_json' => array(
-                        'input' => $_POST,
-                        'udata' => $udata,
-                        'rudata' => $admissions[0],
-                        'cookie' => $aff_cookie,
-                        'initial_e_id' => intval($cookie_parts[3]),
-                    ),
-                    'e_type_id' => 46, //Affiliate User Initiated Admission
-                    'e_b_id' => $b['b_id'],
-                    'e_r_id' => $focus_class['r_id'],
-                    'e_recipient_u_id' => $admission_application['ru_affiliate_u_id'], //The affiliate ID
-                ));
-            }
-        }
-
-        //Lets start their admission application:
-        $admissions[0] = $this->Db_model->ru_create($admission_application);
+        ));
 
         //Log engagement for Application Started:
         $this->Db_model->e_create(array(

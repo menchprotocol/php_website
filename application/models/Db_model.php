@@ -732,7 +732,13 @@ WHERE ru.ru_status >= 4
             //Now calculate start time and end time for this class:
             $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']); //Starts at Midnight same date
             $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + (7 * 24 * 3600) - (60); //Ends Sunday 11:59PM
+            $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
+                'ru_r_id' => $class['r_id'],
+                'ru_status' => 4,
+            )));
             $runs[$key]['r__total_tasks'] = 0;
+
+
 
             if(isset($b['c__child_intents']) && count($b['c__child_intents'])>0){
                 foreach($b['c__child_intents'] as $intent) {

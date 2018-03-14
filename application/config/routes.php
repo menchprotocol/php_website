@@ -10,7 +10,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['default_controller'] 		= "front"; // index() Landing page
 $route['terms'] 					= "front/terms";
-$route['launch'] 					= "front/launch";
+$route['instructors'] 				= "front/instructors";
 $route['contact'] 					= "front/contact";
 $route['faq'] 					    = "front/faq"; //TODO Not in use?
 $route['ses'] 						= "front/ses"; //Raw session logs
@@ -41,13 +41,7 @@ $route['console/(:num)/raw'] 				           = "console/raw/$1"; //For dev purpos
 $route['console/(:num)'] 			                   = "console/dashboard/$1";
 $route['console'] 								       = "console/all_projects";
 
-//Affiliate Links:
-$route['a/(:num)/(:num)/apply'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name
-$route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$1/$2/0"; //Start of application funnel for Email, first & last name
-
-
 //Three steps of the signup process:
-$route['projects'] 				        = "front/projects_browse"; //Browse page
 $route['(:any)/apply/(:num)'] 	            = "front/project_apply/$1/$2"; //Start of application funnel for Email, first & last name
 $route['(:any)/apply'] 	                    = "front/project_apply/$1"; //Start of application funnel for Email, first & last name
 $route['(:any)/(:num)']	                    = "front/project_load/$1/$2"; //Load specific class in the Project

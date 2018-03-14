@@ -47,11 +47,10 @@
 	    </form>
 
         <div id="pass_reset"></div>
-
 	<br />
 	
 	<div class="extra-info">
-        <p>Are you a Student? <a href="https://support.mench.co/hc/en-us/articles/360000304852">Activate MenchBot</a></p>
-        <p>Are you a Field Expert? <a href="/launch">Run a Project with Mench</a></p>
+        <p>Expert/Instructor? <a href="/instructors">Run a 7-Day Project</a></p>
+        <p>Student? <a href="/">Browse Projects</a></p>
 	</div>
 </div>

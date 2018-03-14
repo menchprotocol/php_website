@@ -1,11 +1,23 @@
+<?php
+$udata = $this->session->userdata('user');
+?>
+
+
+
 <h1>Opportunities are endless</h1>
 <p>If you believe in that, you're at the right place.</p>
 <p>35 Projects lead by Industry Experts.</p>
 <p>7-Days each. Starting at $0.</p>
 <br />
 
+
+
+
+
+
 <div class="row">
-<?php 
+<?php
+
 foreach($bs as $count=>$b){
     
     //Fetch class:
