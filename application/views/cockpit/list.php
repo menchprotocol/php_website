@@ -137,29 +137,29 @@ if($object_name=='engagements'){
 } elseif($object_name=='projects'){
 
     //A function to echo the Project rows:
-    function echo_row($project,$counter){
+    function echo_row($b,$counter){
         echo '<tr>';
         echo '<td>'.$counter.'</td>';
-        echo '<td>'.$project['b_id'].'</td>';
-        echo '<td>'.status_bible('b',$project['b_status'],1,'right').'</td>';
-        echo '<td><a href="/console/'.$project['b_id'].'">'.$project['c_objective'].'</a></td>';
-        echo '<td><a href="https://www.facebook.com/'.$project['fp_fb_id'].'">'.$project['fp_name'].'</a></td>';
-        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$project['leaders'][0]['u_id'].'" title="User ID '.$project['leaders'][0]['u_id'].'">'.$project['leaders'][0]['u_fname'].' '.$project['leaders'][0]['u_lname'].'</a></td>';
+        echo '<td>'.$b['b_id'].'</td>';
+        echo '<td>'.status_bible('b',$b['b_status'],1,'right').'</td>';
+        echo '<td><a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></td>';
+        echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
+        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_fname'].' '.$b['leaders'][0]['u_lname'].'</a></td>';
 
         echo '<td>';
-        if($project['student_funnel'][0]>0 || $project['student_funnel'][2]>0 || $project['student_funnel'][4]>0 || $project['student_funnel'][-1]>0){
+        if($b['student_funnel'][0]>0 || $b['student_funnel'][2]>0 || $b['student_funnel'][4]>0 || $b['student_funnel'][-1]>0){
             echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
-            echo $project['student_funnel'][0].' &raquo; '.$project['student_funnel'][2].' &raquo; <b>'.$project['student_funnel'][4].'</b> ('.$project['student_funnel'][-1].')';
+            echo $b['student_funnel'][0].' &raquo; '.$b['student_funnel'][2].' &raquo; <b>'.$b['student_funnel'][4].'</b> ('.$b['student_funnel'][-1].')';
             echo '</span>';
         }
         echo '</td>';
 
-        echo '<td>'. ( count($project['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$project['b_id'].'">'.( count($project['engagements'])>=1000 ? '1000+' : count($project['engagements']) ).'</a> ('.time_format($project['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
+        echo '<td>'. ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.time_format($b['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
         echo '</tr>';
     }
     
     //User Projects:
-    $projects = $this->Db_model->b_fetch(array(
+    $bs = $this->Db_model->b_fetch(array(
         'b.b_status >=' => 0,
     ),array('c','fp'),'b_status');
 
@@ -167,20 +167,20 @@ if($object_name=='engagements'){
     $meaningful_project_engagements = $this->config->item('meaningful_project_engagements');
 
 
-    foreach($projects as $key=>$mb){
+    foreach($bs as $key=>$mb){
         //Fetch Leader:
-        $projects[$key]['leaders'] = $this->Db_model->ba_fetch(array(
+        $bs[$key]['leaders'] = $this->Db_model->ba_fetch(array(
             'ba.ba_b_id' => $mb['b_id'],
             'ba.ba_status' => 3,
         ));
 
         //Fetch last activity:
-        $projects[$key]['engagements'] = $this->Db_model->e_fetch(array(
+        $bs[$key]['engagements'] = $this->Db_model->e_fetch(array(
             'e_b_id' => $mb['b_id'],
             '(e_type_id IN ('.join(',',$meaningful_project_engagements).'))' => null,
         ),1000);
 
-        $projects[$key]['student_funnel'] = array(
+        $bs[$key]['student_funnel'] = array(
             0 => count($this->Db_model->ru_fetch(array(
                 'r.r_b_id'	       => $mb['b_id'],
                 'ru.ru_status'     => 0,
@@ -218,27 +218,27 @@ if($object_name=='engagements'){
     <tbody>
     <?php
     
-    $project_groups = array(
+    $b_groups = array(
         'mench_team' => array(),
         'instructor' => array(),
     );
     $counter = 0;
     
-    foreach($projects as $project){
+    foreach($bs as $b){
         $is_mench_team = false;
-        foreach($project['leaders'] as $key=>$instructor){
+        foreach($b['leaders'] as $key=>$instructor){
             if($instructor['u_status']>=3){
                 $is_mench_team = true;
                 break;
             }
         }
         //Group based on who is the admin:
-        array_push($project_groups[( $is_mench_team ? 'mench_team' : 'instructor' )],$project);
+        array_push($b_groups[( $is_mench_team ? 'mench_team' : 'instructor' )],$b);
     }
     
-    foreach($project_groups['instructor'] as $project){
+    foreach($b_groups['instructor'] as $b){
         $counter++;
-        echo_row($project,$counter);
+        echo_row($b,$counter);
     }
     ?>
     </tbody>
@@ -258,9 +258,9 @@ if($object_name=='engagements'){
     
     <tbody>
     <?php
-    foreach($project_groups['mench_team'] as $project){
+    foreach($b_groups['mench_team'] as $b){
         $counter++;
-        echo_row($project,$counter);
+        echo_row($b,$counter);
     }
     ?>
     </tbody>
@@ -296,14 +296,14 @@ if($object_name=='engagements'){
     foreach($classes as $key=>$class) {
 
         //Fetch Full Project:
-        $projects = $this->Db_model->b_fetch(array(
+        $bs = $this->Db_model->b_fetch(array(
             'b.b_id' => $class['r_b_id'],
         ), array('c','fp'));
 
         if($class['r_status']>=2){
             //Fetch Project from Action Plan Copy:
-            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$projects,array('b_fp_id'));
-            $class = $projects[0]['this_class'];
+            $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bs,array('b_fp_id'));
+            $class = $bs[0]['this_class'];
         }
 
         //Fetch Leader:
@@ -315,9 +315,9 @@ if($object_name=='engagements'){
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
 
-        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$projects[0]['c_objective'].'</a></td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bs[0]['c_objective'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date'])+($class['r_start_time_mins']*60),0).'</a></td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),0).'</a></td>';
         echo '<td>';
         if($class['r_cache__end_time']){
             echo time_format($class['r_cache__end_time'],0);
@@ -340,13 +340,13 @@ if($object_name=='engagements'){
         echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
 
 
-        echo '<td>'.( $projects[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$projects[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Project Facebook Page is '.$projects[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Project not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
+        echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Project Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Project not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
 
 
 
-        echo '<td class="'.( $projects[0]['b_status']<2 ? 'redalert' : '' ).'">';
+        echo '<td class="'.( $bs[0]['b_status']<2 ? 'redalert' : '' ).'">';
         if($class['r_status']<2){
-            echo status_bible('b',$projects[0]['b_status'],1,'right');
+            echo status_bible('b',$bs[0]['b_status'],1,'right');
         }
         echo '</td>';
 
@@ -513,13 +513,13 @@ if($object_name=='engagements'){
 
                 foreach ($instructor_projects as $counter=>$ib){
                     //Fetch last activity:
-                    $project_building_engagements = $this->Db_model->e_fetch(array(
+                    $b_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],
                         'e_b_id' => $ib['b_id'],
                         '(e_type_id IN ('.join(',',$meaningful_project_engagements).'))' => null,
                     ));
 
-                    echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($project_building_engagements[0]) ? time_format($project_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($project_building_engagements)>=100 ? '100+' : count($project_building_engagements) ).'</div>';
+                    echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($b_building_engagements[0]) ? time_format($b_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($b_building_engagements)>=100 ? '100+' : count($b_building_engagements) ).'</div>';
                 }
             } else {
                 echo '---';

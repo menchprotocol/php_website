@@ -220,11 +220,11 @@ class My extends CI_Controller {
 
 
         //Fetch full Project/Class data for this:
-        $projects = fetch_action_plan_copy($b_id,$active_admission['r_id']);
-        $class = $projects[0]['this_class'];
+        $bs = fetch_action_plan_copy($b_id,$active_admission['r_id']);
+        $class = $bs[0]['this_class'];
 
         //Fetch intent relative to the Project by doing an array search:
-        $view_data = extract_level( $projects[0] , $c_id );
+        $view_data = extract_level( $bs[0] , $c_id );
 
         if($view_data){
 
@@ -344,7 +344,7 @@ class My extends CI_Controller {
 	        'u_id' => $_GET['u_id'],
 	        'u_key' => $_GET['u_key'],
 	        'admission' => $admissions[0],
-	        'r_fb_pixel_id' => $admissions[0]['r_fb_pixel_id'], //Will insert pixel code in header
+	        'b_fb_pixel_id' => $admissions[0]['b_fb_pixel_id'], //Will insert pixel code in header
 	    );
 	    
 	    //Load apply page:

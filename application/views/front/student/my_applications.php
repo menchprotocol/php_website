@@ -54,8 +54,8 @@ if(count($admissions)>0 && is_array($admissions)){
     foreach($admissions as $admission){
 
         //Fetch Admission Data:
-        $projects = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
-        $class = $projects[0]['this_class'];
+        $bs = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
+        $class = $bs[0]['this_class'];
 
 
         //Fetch Project Data:
@@ -70,7 +70,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
         echo '<div style="border:2px solid #000; padding:7px; margin-top:25px; border-radius:5px; background-color:#EFEFEF;">';
 
-        echo '<p><b>'.$projects[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4).') Application:</p>';
+        echo '<p><b>'.$bs[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4, 7).') Application:</p>';
 
 
         //Account, always created at this point:
@@ -117,7 +117,7 @@ if(count($admissions)>0 && is_array($admissions)){
                     <input type="hidden" name="cmd" value="_xclick">
                     <input type="hidden" name="business" value="EYKXCMCJHEBA8">
                     <input type="hidden" name="lc" value="US">
-                    <input type="hidden" name="item_name" value="<?= $projects[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
+                    <input type="hidden" name="item_name" value="<?= $bs[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
                     <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
                     <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
                     <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">

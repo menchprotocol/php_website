@@ -569,19 +569,19 @@ class Comm_model extends CI_Model {
         ));
 
         //Does this Project have any current pages connected to it? If so, we'd need to disconnect them first:
-        $projects = $this->Db_model->b_fetch(array(
+        $bs = $this->Db_model->b_fetch(array(
             'b_id' => $b_id,
         ));
 
         if(count($fp_pages)<1){
             //This should not happen!
             return false;
-        } elseif(count($projects)<1){
+        } elseif(count($bs)<1){
             //This should not happen!
             return false;
-        } elseif($projects[0]['b_fp_id']>0){
+        } elseif($bs[0]['b_fp_id']>0){
             //This Project is already connected to another page, disconnect it so it can be connected to this new page:
-            $this->Comm_model->fb_page_disconnect($u_id,$projects[0]['b_fp_id'],$b_id);
+            $this->Comm_model->fb_page_disconnect($u_id,$bs[0]['b_fp_id'],$b_id);
         }
 
         //Ok, now we're ready to connect this new page to the Project
@@ -601,7 +601,7 @@ class Comm_model extends CI_Model {
         $media_messages = $this->Db_model->i_fetch(array(
             'i_status >' => 0, //Published in any form
             'i_media_type IN (\'video\',\'audio\',\'image\',\'file\')' => null, //Attachments only
-            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($projects[0]['b_c_id'])).')' => null, //Entire Project Action Plan
+            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bs[0]['b_c_id'])).')' => null, //Entire Project Action Plan
         ));
         foreach($media_messages as $i){
             //Craete a request to sync attachment:
@@ -641,17 +641,17 @@ class Comm_model extends CI_Model {
         ));
 
         //Does this Project have any current pages connected to it? If so, we'd need to disconnect them first:
-        $projects = $this->Db_model->b_fetch(array(
+        $bs = $this->Db_model->b_fetch(array(
             'b_id' => $b_id,
         ));
 
         if(count($fp_pages)<1){
             //This should not happen!
             return false;
-        } elseif(count($projects)<1){
+        } elseif(count($bs)<1){
             //This should not happen!
             return false;
-        } elseif(!($projects[0]['b_fp_id']==$fp_id)){
+        } elseif(!($bs[0]['b_fp_id']==$fp_id)){
             //This Project is not connected to this page at this moment, so it cannot be removed:
             return false;
         }
@@ -1240,8 +1240,20 @@ class Comm_model extends CI_Model {
                         'u_email' => $u['u_email'],
                         'subject_line' => $subject_line,
                         'html_message' => echo_i($message, $u['u_fname'],false),
-                        'r_reply_to_email' => ( isset($u['r_reply_to_email']) && filter_var($u['r_reply_to_email'],FILTER_VALIDATE_EMAIL) ? $u['r_reply_to_email'] : null ),
+                        'b_support_email' => null, //Might get updated soon...
                     );
+
+                    //Should we update email?
+                    if(isset($message['e_b_id']) && $message['e_b_id']>0){
+                        //Fetch Bootcamp Details:
+                        $bs = $this->Db_model->b_fetch(array(
+                            'b.b_id' => $message['e_b_id'],
+                        ));
+                        if(count($bs)>0 && strlen($bs[0]['b_support_email'])>0){
+                            $email_variables['b_support_email'] = $bs[0]['b_support_email'];
+                        }
+                    }
+
                     $e_var_create = array(
                         'e_var_create' => array(
                             'e_initiator_u_id' => ( isset($message['e_initiator_u_id'])    ? $message['e_initiator_u_id']  :0), //If set...
@@ -1270,7 +1282,7 @@ class Comm_model extends CI_Model {
         if(count($email_to_send)>0){
             //Yes, go through these emails and send them:
             foreach($email_to_send as $email){
-                $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], $email['r_reply_to_email']);
+                $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], $email['b_support_email']);
 
                 array_push( $e_json['email'] , $process );
             }
@@ -1326,27 +1338,27 @@ class Comm_model extends CI_Model {
             }
 
             //Fetch Project/Class if needed:
-            $projects = array();
-            $project_data = null;
+            $bs = array();
+            $b_data = null;
             $class = null;
 
             if($message['e_b_id']){
                 //Fetch the copy of the Action Plan for the Class:
-                $projects = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
+                $bs = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
 
                 //Fetch intent relative to the Project by doing an array search:
-                $project_data = extract_level($projects[0], $message['e_c_id']);
-                //IF !$project_data it likely means that intent is a generic system notification not part of $message['e_b_id']
+                $b_data = extract_level($bs[0], $message['e_c_id']);
+                //IF !$b_data it likely means that intent is a generic system notification not part of $message['e_b_id']
 
                 //Do we have a Class?
-                if($message['e_r_id'] && $projects[0]['this_class']){
-                    $class = $projects[0]['this_class'];
+                if($message['e_r_id'] && $bs[0]['this_class']){
+                    $class = $bs[0]['this_class'];
                 }
             }
 
 
             //Fetch intent and its messages with an appropriate depth
-            $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $project_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
+            $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $b_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
             $tree = $this->Db_model->c_fetch(array(
                 'c.c_id' => $message['e_c_id'],
             ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
@@ -1358,7 +1370,7 @@ class Comm_model extends CI_Model {
                 $error_message = 'Had e_r_id=['.$message['e_r_id'].'] but missing e_b_id';
             } elseif(!isset($tree[0])){
                 $error_message = 'Invalid Intent ID ['.$message['e_c_id'].']';
-            } elseif($message['e_b_id'] && count($projects)<1){
+            } elseif($message['e_b_id'] && count($bs)<1){
                 $error_message = 'Failed to find Project ['.$message['e_b_id'].']';
             } elseif($message['e_r_id'] && !$message['e_b_id']){
                 $error_message = 'Cannot reference a Class without a Project';
@@ -1397,12 +1409,12 @@ class Comm_model extends CI_Model {
 
 
         //This is the very first message for this Task!
-        if($project_data && $message['e_b_id'] && $project_data['level']==2){
+        if($b_data && $message['e_b_id'] && $b_data['level']==2){
 
             //Add message to instant stream:
             array_push($instant_messages , array_merge($message, array(
                 'i_media_type' => 'text',
-                'i_message' => '🚩 ​{first_name} welcome to your '.$projects[0]['b_sprint_unit'].' '.$project_data['sprint_index'].' Task! The target outcome for this Task is to '.strtolower($project_data['intent']['c_objective']).'.',
+                'i_message' => '​{first_name} welcome to your '.echo_ordinal($b_data['task_index']).' Task. Its target outcome is to '.strtolower($b_data['intent']['c_objective']),
             )));
 
         }
@@ -1420,7 +1432,7 @@ class Comm_model extends CI_Model {
         }
 
 
-        if($project_data && $message['e_b_id'] && $project_data['level']==2){
+        if($b_data && $message['e_b_id'] && $b_data['level']==2){
 
             //How many Steps?
             $active_steps = 0;
@@ -1443,7 +1455,7 @@ class Comm_model extends CI_Model {
                 //Let them know how many Steps:
                 array_push($instant_messages , array_merge($message, array(
                     'i_media_type' => 'text',
-                    'i_message' => 'To complete this Task you need to complete its '.$active_steps.' Step'.show_s($active_steps).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($project_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Task
+                    'i_message' => 'To complete this Task you need to complete its '.$active_steps.' Step'.show_s($active_steps).' which is estimated to take ' . strtolower(trim(strip_tags(echo_time($b_data['intent']['c__estimated_hours'], 0)))) . ' in total. {button}', //{button} links to Task
                 )));
 
             }
@@ -1554,7 +1566,7 @@ class Comm_model extends CI_Model {
         }
 
         //All good, attempt to Dispatch all messages, their engagements have already been logged:
-        return $this->Comm_model->send_message($instant_messages,$force_email,(!$message['e_b_id'] || !$project_data));
+        return $this->Comm_model->send_message($instant_messages,$force_email,(!$message['e_b_id'] || !$b_data));
     }
 
     function send_email($to_array,$subject,$html_message,$e_var_create=array(),$reply_to=null){

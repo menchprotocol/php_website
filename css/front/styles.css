@@ -1550,6 +1550,13 @@ margin:5px 0;
     color: #888;
 }
 
+#b_c_objective, #b_c_objective::placeholder {
+    font-size: 18px !important;
+}
+#b_c_objective::placeholder {
+    color:#999;
+}
+
 .is-msg .on-hover{
     display:none !important;
 }

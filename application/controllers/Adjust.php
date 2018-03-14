@@ -24,8 +24,8 @@ class Adjust extends CI_Controller {
 
 
             //Fetch full Project/Class data for this:
-            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $projects[0]['this_class'];
+            $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bs[0]['this_class'];
 
 
             //Fetch all the students of these classes, and see where they are at:
@@ -54,7 +54,7 @@ class Adjust extends CI_Controller {
 
                 //The goal is to find the Step that is after the very last Step done
                 //Note that some Steps could be done, but then rejected by the instructor...
-                foreach($projects[0]['c__child_intents'] as $task){
+                foreach($bs[0]['c__child_intents'] as $task){
                     if($task['c_status']==1){
                         foreach($task['c__child_intents'] as $step){
                             if($step['c_status']==1){
@@ -82,7 +82,7 @@ class Adjust extends CI_Controller {
                 }
 
                 //Calculate the total progress:
-                $ru_cache__completion_rate = number_format(($total_hours_done/$projects[0]['c__estimated_hours']),3);
+                $ru_cache__completion_rate = number_format(($total_hours_done/$bs[0]['c__estimated_hours']),3);
 
                 if($done_steps==$total_steps){
                     //They have done all Steps

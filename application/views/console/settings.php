@@ -203,6 +203,7 @@ function save_settings(){
         b_id:$('#b_id').val(),
         b_url_key:$('#b_url_key').val(),
         b_status:$('#b_status').val(),
+        b_fb_pixel_id:$('#b_fb_pixel_id').val(),
     };
 
     //Save the rest of the content:
@@ -234,7 +235,7 @@ function save_settings(){
 </script>
 
 
-<input type="hidden" id="b_id" value="<?= $project['b_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
@@ -249,24 +250,36 @@ function save_settings(){
 
     <div class="tab-pane active" id="tabgeneral">
 
-        <div>
-            <div class="title" style="margin-top:15px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Project Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
-            <div class="help_body maxout" id="content_627"></div>
-            <?= echo_status_dropdown('b','b_status',$project['b_status']); ?>
-            <div style="clear:both; margin:0; padding:0;"></div>
-        </div>
 
+        <div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Project Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="help_body maxout" id="content_627"></div>
+        <?= echo_status_dropdown('b','b_status',$b['b_status']); ?>
+        <div style="clear:both; margin:0; padding:0;"></div>
 
-        <div style="margin-top:15px;">
-            <div class="title"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
-            <div class="help_body maxout" id="content_725"></div>
-            <div class="form-group label-floating is-empty">
-                <div class="input-group border">
-                    <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.co/</span>
-                    <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $project['b_url_key'] ?>" maxlength="30" class="form-control" />
-                </div>
+        <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+        <div class="help_body maxout" id="content_725"></div>
+        <div class="form-group label-floating is-empty">
+            <div class="input-group border">
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.co/</span>
+                <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
             </div>
         </div>
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Support Email <span id="hb_699" class="help_button" intent-id="699"></span></h4></div>
+        <!-- <div class="help_body maxout" id="content_699"></div> -->
+        <div class="form-group label-floating is-empty">
+            <input type="email" id="b_support_email" data-lpignore="true" style="width:220px;" value="<?= $b['b_support_email'] ?>" class="form-control border">
+            <span class="material-input"></span>
+        </div>
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+        <div class="help_body maxout" id="content_718"></div>
+        <div class="input-group">
+            <input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
+        </div>
+        <br />
 
         <table width="100%" style="margin-top:20px;"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
 
@@ -300,7 +313,7 @@ function save_settings(){
         <div class="list-group maxout">
             <?php
             $admin_ids = array();
-            foreach($project['b__admins'] as $admin){
+            foreach($b['b__admins'] as $admin){
                 echo echo_br($admin);
                 array_push($admin_ids,$admin['u_id']);
             }
@@ -319,7 +332,7 @@ function save_settings(){
                     'ba_id' => 0,
                     'ba_u_id' => $adviser['u_id'],
                     'ba_status' => 1, //Advisery status
-                    'ba_b_id' => $project['b_id'],
+                    'ba_b_id' => $b['b_id'],
                     'ba_team_display' => 'f', //Advisers are not shown on the landing page
                 )));
             }

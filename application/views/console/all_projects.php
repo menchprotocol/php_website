@@ -1,5 +1,3 @@
-
-
 <script>
     $(document).ready(function() {
         var isMobile = false; //initiate as false
@@ -10,6 +8,51 @@
             $('#mobile-no').show();
         }
     });
+
+
+    var processing_project = 0;
+    function project_create(){
+
+        if(processing_project){
+            //Do nothing while processing a current project:
+            return false;
+        }
+
+        if($('#b_c_objective').val().length<2){
+            alert('ERROR: Project Outcome Required');
+            $('#b_c_objective').focus();
+            return false;
+        }
+
+        //Show loader:
+        processing_project = 1;
+        $('.no-b-div').remove(); //It may exist...
+        $('#b_c_objective').prop('disabled',true);
+        $('.new-b').hide();
+
+        $( ".list_input" ).before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Project...</div>' );
+
+        $.post("/api_v1/project_create", {
+            c_objective:$('#b_c_objective').val(),
+        }, function(data) {
+
+            //Processing is done:
+            processing_project = 0;
+            $( ".loader-div" ).remove(); //Remove loader...
+            $('#b_c_objective').prop('disabled',false);
+            $('.new-b').fadeIn();
+
+            if(data.status){
+                //All good, show it:
+                $('#b_c_objective').val('').focus();
+                $( ".list_input" ).before( data.message );
+            } else {
+                //Show error:
+                alert('ERROR: '+data.message);
+            }
+
+        });
+    }
 </script>
 <?php $website = $this->config->item('website'); ?>
 <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
@@ -18,30 +61,29 @@
 
 <?php
 
-//Instructor has already activated their Instructor Bot
-if(count($projects)>0){
-    echo '<div class="list-group maxout">';
-    foreach($projects as $project){
-        
-        echo '<a href="/console/'.$project['b_id'].'" class="list-group-item">';
-        echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-        echo '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>'.$project['c_objective'].'</b>';
+echo '<div class="list-group maxout">';
 
-        if($project['b_fp_id']>0){
-            //Show the connected Facebook Page
-            echo ' &nbsp;<span style="font-size:0.8em;" title="Project Connected to this Facebook Page" data-toggle="tooltip"><i class="fa fa-plug" aria-hidden="true"></i> '.$project['fp_name'].'</span>';
-        }
-        echo '</a>';
+if(count($bs)>0){
+    foreach($bs as $b){
+        echo echo_b($b);
     }
-    echo '</div>';
 } else {
-    echo '<div class="alert alert-info" role="alert">No Projects created yet.</div>';
+    echo '<div class="list-group-item alert alert-info no-b-div" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Projects found. Create a new Project below:</div>';
 }
 
-//New Project Button:
-echo '<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newProjectModal">New</a>';
-if($udata['u_status']>=3){
-    echo '<span> &nbsp; or <a href="/cockpit/browse/projects"><u>Browse All</u></a></span>';
-}
+//Input to create new Project:
+echo '<div class="list-group-item list_input new-step-input" style="padding: 5px 7px;">
+        <div class="input-group">
+            <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span>
+            <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="project_create();"><input type="text" class="form-control"  maxlength="70" id="b_c_objective" placeholder="Build a Todo list web app using AngularJS" /></form></div>
+            <span class="input-group-addon" style="padding-right:8px;">
+                <span data-toggle="tooltip" data-placement="top" onclick="project_create();" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                    <div><i class="fa fa-plus"></i></div>
+                </span>
+            </span>
+        </div>
+    </div>';
+
+echo '</div>';
 
 ?>

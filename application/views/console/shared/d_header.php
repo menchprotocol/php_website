@@ -79,31 +79,27 @@ $website = $this->config->item('website');
 	    <div class="sidebar" id="mainsidebar" data-color="purple">
 	    	<div class="sidebar-wrapper">
 	    		<?php 
-	    		if(isset($project)){
-	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i><a href="/'.$project['b_url_key'].'" class="landing_page_url" id="top-left-title" data-toggle="tooltip" data-placement="bottom" title="Visit Landing Page">'.$project['c_objective'].'</a></div>';
+	    		if(isset($b)){
+	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i><a href="/'.$b['b_url_key'].'" class="landing_page_url" id="top-left-title" data-toggle="tooltip" data-placement="bottom" title="Visit Landing Page">'.$b['c_objective'].'</a></div>';
 	    		}
 	    		?>
 	    		<ul class="nav" style="margin-top: 0;">
                     
             	<?php
-            	if(isset($project)){
+            	if(isset($b)){
 
-            	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$project['b_id'],'/console/'.$project['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$project['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
+            	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$project['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$project['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i><p>Action Plan</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i><p>Action Plan</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$project['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$project['b_id'].'/classes"><i class="fa fa-calendar" aria-hidden="true"></i><p>Classes</p></a></li>';
-                	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$project['b_id'].'/students')>0 ? ' class="active"' : '' ).'><a href="/console/'.$project['b_id'].'/students"><i class="fa fa-users" aria-hidden="true"></i><p>Students</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fa fa-calendar" aria-hidden="true"></i><p>Classes</p></a></li>';
 
-            	    //echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$project['b_id'].'/stream')>0 ? ' class="active"' : '' ).'><a href="/console/'.$project['b_id'].'/stream"><i class="material-icons">forum</i><p>Activity Stream</p></a></li>';
-
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$project['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$project['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
 
             	    //Is it connected to a Facebook Page?
-                    if($project['b_fp_id']>0 && ( !($project['b_fp_id']==4) || $udata['u_status']==3 )){
+                    if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
                         //Fetch page details:
-                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Access your student chat using your Facebook Page Inbox" href="/api_v1/page_redirect/'.$project['b_fp_id'].'/'.md5($project['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Access your student chat using your Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
                     }
 
         		}
@@ -114,7 +110,7 @@ $website = $this->config->item('website');
 
 
 	    <div class="main-panel">
-	        <div class="content dash" style="<?= ( isset($project) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$project['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
+	        <div class="content dash" style="<?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
 	        
     	        <?php 
     	        if(isset($breadcrumb)){

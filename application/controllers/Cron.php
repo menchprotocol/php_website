@@ -54,8 +54,8 @@ class Cron extends CI_Controller {
             //See if we have a copy of this Action Plan:
             //This ensures we do not make another Copy if the instructor has already cached a copy before Class start time
             //It's a feature that is not publicly available, and would likely not happen
-            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $projects[0]['this_class'];
+            $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bs[0]['this_class'];
 
 
             //Append stats array for cron reporting:
@@ -152,7 +152,7 @@ class Cron extends CI_Controller {
 
             //Find first due Task to dispatch its messages to all students:
             $first_task_c_id = 0;
-            foreach($projects[0]['c__child_intents'] as $task){
+            foreach($bs[0]['c__child_intents'] as $task){
                 if($task['c_status']>=1){
                     $first_task_c_id = $task['c_id'];
                     break;
@@ -162,7 +162,7 @@ class Cron extends CI_Controller {
 
             //Now make sure class meets are requirements to get started with the following conditions:
             $cancellation_reason = null; //If remains Null we're good to get started
-            if($projects[0]['b_status']<2){
+            if($bs[0]['b_status']<2){
                 $cancellation_reason = 'Project was not published';
             } elseif($first_task_c_id==0) {
                 $cancellation_reason = 'Project did not have any published Tasks';
@@ -240,9 +240,9 @@ class Cron extends CI_Controller {
 
 
                 //Take snapshot of Action Plan ONLY IF not already taken for this class:
-                if(!$projects[0]['is_copy']){
+                if(!$bs[0]['is_copy']){
                     //Save Action Plan only if not already done so:
-                    $this->Db_model->snapshot_action_plan($projects[0]['b_id'],$class['r_id']);
+                    $this->Db_model->snapshot_action_plan($bs[0]['b_id'],$class['r_id']);
                 }
 
                 $stats[$class['r_id']]['students']['accepted_started'] = count($accepted_admissions);
@@ -299,7 +299,7 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function next_task(){
+    function end_project(){
 
         //Cron Settings: 0,30 * * * *
         //Moves the class from one Task to another, Only applicable for the 2nd milesone or higher
@@ -316,11 +316,13 @@ class Cron extends CI_Controller {
         foreach($running_classes as $class){
 
             //Fetch full Project/Class data for this:
-            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $projects[0]['this_class'];
+            $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bs[0]['this_class'];
+
+            $has_ended = 0; //TODO Determine
 
             //Where is the class at now?
-            if($class['r__current_milestone']<0){
+            if($has_ended){
 
                 //Class ended
                 //Fetch all the class students, and see which ones advance to this new Task:
@@ -334,7 +336,7 @@ class Cron extends CI_Controller {
                     //Ooops, this is an error that should not happen, log engagemeng:
                     $this->Db_model->e_create(array(
                         'e_message' => 'ERROR: Class ended with 0 admitted students',
-                        'e_json' => $projects[0],
+                        'e_json' => $bs[0],
                         'e_type_id' => 8, //Platform Error
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
@@ -438,7 +440,7 @@ class Cron extends CI_Controller {
 
                     //Log Engagement:
                     $industry_completion = 0.10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$projects[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
+                    $completion_message = 'Your ['.$bs[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
 
                     //Log Engagement for Class Completion:
                     $this->Db_model->e_create(array(
@@ -457,149 +459,6 @@ class Cron extends CI_Controller {
                     $stats[$class['r_id']] = $completion_message;
 
                 }
-
-            } elseif($class['r__current_milestone']<=1){
-
-                //Should never be 0 (meaning not started) as r_status=2 (means it must have started)
-                //ALso if its 1, it means its still at the first Task, nothing we need to do here...
-                $stats[$class['r_id']] = 'Skipped. Class has not passed its first week yet.';
-
-            } elseif($class['r__current_milestone']<$class['r_cache__current_milestone']){
-
-                //This should not happen as it means the Class has somehow gone backwards, log error:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'Class seems to be moving backwards as current Task is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']',
-                    'e_json' => $projects[0],
-                    'e_type_id' => 8, //Platform Error
-                    'e_b_id' => $class['r_b_id'],
-                    'e_r_id' => $class['r_id'],
-                ));
-
-            } elseif($class['r__current_milestone']==$class['r_cache__current_milestone']){
-
-                //Still during the current Task
-                $stats[$class['r_id']] = 'Already up-to-date. Current Task is ['.$class['r__current_milestone'].'] and DB cache is ['.$class['r_cache__current_milestone'].']';
-
-            } elseif($class['r__current_milestone']>$class['r_cache__current_milestone']){
-
-                //We have advanced since the DB:
-                //r__current_milestone (real) Task is 2 or higher
-                //First the c_id of the Task to dispatch its messages:
-                $new_task_c_id = 0;
-                foreach($projects[0]['c__child_intents'] as $task){
-                    if($task['c_status']>=1 && $task['cr_outbound_rank']==$class['r__current_milestone']){
-                        //Gotcha, this is it!
-                        $new_task_c_id = $task['c_id'];
-                        break;
-                    }
-                }
-
-                if(!$new_task_c_id){
-                    //OOps, this should not happen, notify admin:
-                    $stats[$class['r_id']] = 'ERROR: Could not find new Task c_id with r__current_milestone = cr_outbound_rank = ['.$class['r__current_milestone'].']';
-                    //Log Error engagement:
-                    $this->Db_model->e_create(array(
-                        'e_message' => $stats[$class['r_id']],
-                        'e_json' => $projects[0],
-                        'e_type_id' => 8, //Platform Error
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
-                    continue; //Go to next class...
-                }
-
-
-
-                //All good, ove on to dispatch phase...
-                //Fetch all the class students, and see which ones advance to this new Task:
-                $accepted_admissions = $this->Db_model->ru_fetch(array(
-                    'ru.ru_r_id'	    => $class['r_id'],
-                    'ru.ru_status'	    => 4, //Admitted students
-                ));
-
-                if(count($accepted_admissions)<1){
-                    //OOps, this should not happen, notify admin:
-                    $stats[$class['r_id']] = 'ERROR: Class has no admissions';
-                    //Log Error engagement:
-                    $this->Db_model->e_create(array(
-                        'e_message' => $stats[$class['r_id']],
-                        'e_json' => $projects[0],
-                        'e_type_id' => 8, //Platform Error
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
-                    continue; //Go to next class...
-                }
-
-
-                //Do a count for stat reporting:
-                $ontime = 0;
-                $behind = array();
-
-                //Loop through students:
-                foreach($accepted_admissions as $admission){
-                    //See where the student is at, did they finish the previous Task?
-                    if($admission['ru_cache__current_task']>=$class['r__current_milestone']){
-
-                        $ontime++;
-
-                        //Yes, they are up to date, send next Task messages:
-                        $this->Comm_model->foundation_message(array(
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_fp_id' => $admission['ru_fp_id'],
-                            'e_c_id' => $new_task_c_id,
-                            'depth' => 0,
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
-                    } else {
-                        //We do the message later to include the total number of students who advanced using $ontime value
-                        array_push($behind,$admission);
-                    }
-                }
-
-                if(count($behind)>0){
-                    foreach($behind as $admission){
-                        //Ask behind students how we can help and give them stats on how the rest of the class is doing...
-                        $this->Comm_model->send_message(array(
-                            array(
-                                'i_media_type' => 'text',
-                                'i_message' => 'Hi {first_name} 👋​ We just moved to our next 🚩 ​Task!'.( $ontime>0 ? ' '.$ontime.' of your classmate'.show_s($ontime).' progressed to '.$projects[0]['b_sprint_unit'].' '.$class['r__current_milestone'].'.' : '').' I would love to know what is preventing you from finishing your remaining '.$projects[0]['b_sprint_unit'].' '.$admission['ru_cache__current_task'].' Steps and would be happy to assist you in marching forward 🙌 Let\'s do it!​',
-                                'e_initiator_u_id' => 0,
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ),
-                        ));
-                    }
-                }
-
-                //Update new status to classes:
-                $this->Db_model->r_update( $class['r_id'] , array(
-                    'r_cache__current_milestone' => $class['r__current_milestone']
-                ));
-
-                //Message for admin:
-                $completion_message = 'Moved from ['.ucwords($projects[0]['b_sprint_unit']).' '.$class['r_cache__current_milestone'].'] to ['.ucwords($projects[0]['b_sprint_unit']).' '.$class['r__current_milestone'].'] with ['.$ontime.' ON-TIME] and ['.count($behind).' BEHIND] students';
-
-                //Log Engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => 0, //System
-                    'e_message' => $completion_message,
-                    'e_json' => array(
-                        'project' => $projects[0],
-                        'accepted_admissions' => $accepted_admissions,
-                    ),
-                    'e_type_id' => 61, //Class Task Advanced, sends message to instructor team...
-                    'e_b_id' => $class['r_b_id'],
-                    'e_r_id' => $class['r_id'],
-                    'e_c_id' => $new_task_c_id,
-                ));
-
-                //Append message to stats:
-                $stats[$class['r_id']] = $completion_message;
-
             }
         }
 
@@ -685,7 +544,6 @@ class Cron extends CI_Controller {
 
     }
 
-
     function bot_save_files(){
 
         //Cron Settings: * * * * *
@@ -763,6 +621,21 @@ class Cron extends CI_Controller {
         }
         //Echo message for cron job:
         echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
+    }
+
+    function create_classes(){
+
+        //Creates Classes for the entire year for all Active Bootcamps
+        $bs = $this->Db_model->b_fetch(array(
+            'b_status >=' => 0, //Drafting or higher
+        ));
+
+        foreach($bs as $b){
+            $bs = $this->Db_model->r_sync($b['b_id']);
+
+
+        }
+
     }
 
 
@@ -921,7 +794,7 @@ class Cron extends CI_Controller {
 
                     unset($notify_fb_ids);
                     $notify_fb_ids = array();
-                    $project_data = array(
+                    $b_data = array(
                         'b_id' => $active_admission['b_id'],
                         'c_objective' => $active_admission['c_objective'],
                     );
@@ -938,11 +811,11 @@ class Cron extends CI_Controller {
                     if(count($notify_fb_ids)>0){
 
                         //Group these messages based on their receivers:
-                        $md5_key = substr(md5(print_r($project_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
+                        $md5_key = substr(md5(print_r($b_data,true)),0,8).substr(md5(print_r($notify_fb_ids,true)),0,8);
                         if(!isset($notify_messages[$md5_key])){
                             $notify_messages[$md5_key] = array(
                                 'notify_admins' => $notify_fb_ids,
-                                'project_data' => $project_data,
+                                'project_data' => $b_data,
                                 'message_threads' => array(),
                             );
                         }
@@ -969,7 +842,7 @@ class Cron extends CI_Controller {
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
                 if(count($msg['project_data'])>0 && strlen($message)<580){
-                    $message .= "\n\n".'https://mench.co/console/'.$msg['project_data']['b_id'].'/students';
+                    $message .= "\n\n".'https://mench.co/console/'.$msg['project_data']['b_id'];
                 }
 
                 $notify_messages[$key]['admin_message'] = $message;
@@ -1132,8 +1005,8 @@ class Cron extends CI_Controller {
             }
 
             //Fetch full Project/Class data for this:
-            $projects = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $projects[0]['this_class'];
+            $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
+            $class = $bs[0]['this_class'];
 
 
             //Make sure Class is still running
@@ -1158,7 +1031,7 @@ class Cron extends CI_Controller {
                 if($twohour_start && $twohour_start==$start_hour){
 
                     //Trigger 2 hours notice:
-                    $instructor_message = '📅 Reminder: your ['.$projects[0]['c_objective'].'] Project group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
+                    $instructor_message = '📅 Reminder: your ['.$bs[0]['c_objective'].'] Project group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
 
                 } elseif($onehour_start && $onehour_start==$start_hour){
 
@@ -1202,14 +1075,14 @@ class Cron extends CI_Controller {
 
                     if($instructor_message){
                         //Fetch co-instructors:
-                        $project_instructors = $this->Db_model->ba_fetch(array(
+                        $b_instructors = $this->Db_model->ba_fetch(array(
                             'ba.ba_b_id'        => $class['r_b_id'],
                             'ba.ba_status >='   => 1, //Must be an actively assigned instructor
                             'u.u_status >='     => 1, //Must be a user level 1 or higher
                         ));
 
                         //Send drip message to all students:
-                        foreach($project_instructors as $u){
+                        foreach($b_instructors as $u){
                             //Send this message & log sent engagement using the echo_i() function:
                             $this->Comm_model->send_message(array(
                                 array(
@@ -1285,8 +1158,8 @@ class Cron extends CI_Controller {
         foreach($admissions as $admission){
 
             //Fetch full Project/Class data for this:
-            $projects = fetch_action_plan_copy($admission['r_b_id'], $admission['r_id']);
-            $class = $projects[0]['this_class'];
+            $bs = fetch_action_plan_copy($admission['r_b_id'], $admission['r_id']);
+            $class = $bs[0]['this_class'];
 
             //See what % of the class time has elapsed?
             $elapsed_class_percentage = round((time()-$class['r__class_start_time'])/($class['r__class_end_time']-$class['r__class_start_time']),5);

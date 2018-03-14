@@ -9,9 +9,9 @@ $udata = $this->session->userdata('user');
 
 if(isset($load_view)){
     $data = array();
-    if(isset($project)){
+    if(isset($b)){
         $data = array(
-            'project' => $project,
+            'b' => $b,
         );
     }
     $this->load->view($load_view , $data);

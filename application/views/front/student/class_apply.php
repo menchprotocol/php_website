@@ -162,8 +162,8 @@ $start_times = $this->config->item('start_times');
         	?>
     	</li>
     	<li>Start Time: <b><?= time_format($admission['r_start_date'],2).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
-    	<li>End Time: <b><?= time_format($admission['r_start_date'],2,7).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
-    	<li>Your Commitment: <b><?= echo_hours(round($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?></b></li>
+    	<li>End Time: <b><?= time_format($admission['r_start_date'],2,(7*24*3600-60)).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
+    	<li>Your Commitment: <b><?= echo_hours(($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?></b></li>
 	</ul>
 	<div class="form-group label-floating is-empty">
     	<div class="checkbox">

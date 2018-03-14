@@ -67,10 +67,10 @@ class Front extends CI_Controller {
 	
 	function affiliate_click($b_id,$u_id,$goto_apply){
 	    //Log this click under this user:
-	    $projects = $this->Db_model->b_fetch(array(
+	    $bs = $this->Db_model->b_fetch(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(count($projects)<=0){
+	    if(count($bs)<=0){
 	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
@@ -82,7 +82,7 @@ class Front extends CI_Controller {
 	    if(count($users)<=0){
 	        
 	        //Invalid user, just redirect:
-	        header( 'Location: /'.$projects[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
+	        header( 'Location: /'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
 	        
 	    } else {
 	        
@@ -111,7 +111,7 @@ class Front extends CI_Controller {
 	        );
 	        
 	        //Lets redirect to Page:
-	        header( 'Location: /'.$projects[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
+	        header( 'Location: /'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
 	    }
 	}
 
@@ -146,7 +146,7 @@ class Front extends CI_Controller {
 	        'title' => 'Browse Projects',
 	    ));
 	    $this->load->view('front/project/browse' , array(
-	        'projects' => $this->Db_model->remix_projects(array(
+	        'bs' => $this->Db_model->remix_projects(array(
 	            'b.b_status >=' => 2,
 	        )),
 	    ));
@@ -160,47 +160,43 @@ class Front extends CI_Controller {
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
-	    $projects = $this->Db_model->remix_projects(array(
+	    $bs = $this->Db_model->remix_projects(array(
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
 
         //Validate Project:
-        if(!isset($projects[0])){
+        if(!isset($bs[0])){
             //Invalid key, redirect back:
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project URL.</div>');
-        } elseif($projects[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
+        } elseif($bs[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
             redirect_message('/','<div class="alert alert-danger" role="alert">Project is not published yet.</div>');
-        } elseif($projects[0]['b_fp_id']<=0){
+        } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Project not connected to a Facebook Page yet.</div>');
         }
 
 
 	    //Validate Class:
-	    $project = $projects[0];
-	    $focus_class = filter_class($project['c__classes'],$r_id);
+	    $b = $bs[0];
+	    $focus_class = filter_class($b['c__classes'],$r_id);
 	    if(!$focus_class){
 	        if(isset($udata['u_status']) && $udata['u_status']>=2){
 	            //This is an admin, get them to the editing page:
-                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'You must <a href="/console/'.$project['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
+                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'You must <a href="/console/'.$b['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
             } else {
 	            //This is a user, give them a standard error:
                 redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Project.' ).'</div>');
             }
 	    }
 
-	    if($project['c__milestone_units']<=0){
-	        //No active Tasks:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Error: You must <a href="/console/'.$project['b_id'].'/actionplan"><b><u>Create Some Tasks</u></b></a> before loading the landing page.</div>');
-        }
 
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
-	        'title' => $project['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'message' => ( $project['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Project only because you are logged-in as a Mench instructor.<br />This Project is hidden from the public until published live.</div>' : null ),
-	        'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
+	        'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
+	        'message' => ( $b['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Project only because you are logged-in as a Mench instructor.<br />This Project is hidden from the public until published live.</div>' : null ),
+	        'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
 	    ));
 	    $this->load->view('front/project/landing_page' , array(
-	        'project' => $project,
+	        'b' => $b,
 	        'focus_class' => $focus_class,
 	    ));
 	    $this->load->view('front/shared/f_footer');
@@ -212,27 +208,27 @@ class Front extends CI_Controller {
 
         //Fetch data:
         $udata = $this->session->userdata('user');
-        $projects = $this->Db_model->remix_projects(array(
+        $bs = $this->Db_model->remix_projects(array(
             'LOWER(b.b_url_key)' => strtolower($b_url_key),
         ));
 
         //Validate Project:
-        if(!isset($projects[0])){
+        if(!isset($bs[0])){
             //Invalid key, redirect back:
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project URL.</div>');
-        } elseif($projects[0]['b_status']<2){
+        } elseif($bs[0]['b_status']<2){
             //Here we don't even let instructors move forward to apply!
             redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Project is published live.</div>');
-        } elseif($projects[0]['b_fp_id']<=0){
+        } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Project not connected to a Facebook Page yet.</div>');
         }
 	    
 	    //Validate Class ID that it's still the latest:
-	    $project = $projects[0];
+	    $b = $bs[0];
 	    
 	    //Lets figure out how many active classes there are!
 	    $active_classes = array();
-	    foreach($project['c__classes'] as $class){
+	    foreach($b['c__classes'] as $class){
 	        if(filter_class(array($class),$class['r_id'])){
 	            array_push($active_classes,$class);
 	        }
@@ -247,9 +243,9 @@ class Front extends CI_Controller {
 	        
 	        //Let the students choose which class they like to join:
 	        $data = array(
-	            'project' => $project,
+	            'b' => $b,
 	            'active_classes' => $active_classes,
-	            'title' => 'Join '.$project['c_objective'],
+	            'title' => 'Join '.$b['c_objective'],
 	        );
 
 	        //Load apply page:
@@ -260,16 +256,16 @@ class Front extends CI_Controller {
 	    } else {
 	        
 	        //Match the class and move on:
-	        $focus_class = filter_class($project['c__classes'],$r_id);
+	        $focus_class = filter_class($b['c__classes'],$r_id);
 	        if(!$focus_class){
 	            //Invalid class ID, redirect back:
 	            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer active.</div>');
 	        }
 
 	        $data = array(
-	            'title' => 'Join '.$project['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
+	            'title' => 'Join '.$b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
 	            'focus_class' => $focus_class,
-	            'r_fb_pixel_id' => $focus_class['r_fb_pixel_id'], //Will insert pixel code in header
+	            'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
 	        );
 	        
 	        //Load apply page:

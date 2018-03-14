@@ -357,7 +357,7 @@ function intents_sort(c_id,level){
             var pid = parseInt($(this).attr('node-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? '<i class="fa fa-check-square-o" aria-hidden="true"></i> <span class="b_sprint_unit">'+$('#current_units').text()+'</span>' : '<i class="fa fa-check-square-o" aria-hidden="true"></i>' ); //The default for all nodes
+            var prefix = ( level==2 ? 'Task' : 'Step' ); //The default for all nodes
 
             if(status>=1){
 
@@ -654,7 +654,6 @@ function save_modify(){
         if(modify_data['level']==1){
 
             modify_data['c_objective'] = $('#c_objective1 .c_objective_input').val();
-            modify_data['b_sprint_unit'] = $('input[name=b_sprint_unit]:checked').val();
 
         } else if(modify_data['level']==2){
 
@@ -1006,9 +1005,8 @@ function add_item(group_id,prefix,current_value){
 
 
 
-<input type="hidden" id="b_id" value="<?= $project['b_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
-<div id="current_units" class="b_sprint_unit2 hidden"><?= ucwords($project['b_sprint_unit']) ?></div>
 
 
 <div class="row">
@@ -1027,7 +1025,7 @@ function add_item(group_id,prefix,current_value){
         }
         */
         echo '<div id="project-objective" class="list-group maxout">';
-            echo echo_cr($project['b_id'],$project,$level);
+            echo echo_cr($b['b_id'],$b,$level);
         echo '</div>';
 
         ?>
@@ -1047,7 +1045,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_426"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_target_audience','+ New Target Audience','<i class="fa fa-address-book" aria-hidden="true"></i>',<?= ( strlen($project['b_target_audience'])>0 ? $project['b_target_audience'] : '[]' ) ?>);
+                        initiate_list('b_target_audience','+ New Target Audience','<i class="fa fa-address-book" aria-hidden="true"></i>',<?= ( strlen($b['b_target_audience'])>0 ? $b['b_target_audience'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_target_audience" class="list-group"></div>
@@ -1058,7 +1056,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_610"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($project['b_prerequisites'])>0 ? $project['b_prerequisites'] : '[]' ) ?>);
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_prerequisites" class="list-group"></div>
@@ -1079,7 +1077,7 @@ function add_item(group_id,prefix,current_value){
                 echo '<div id="list-outbound" class="list-group">';
 
                 foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_cr($project['b_id'],$sub_intent, ($level+1),$project['b_id']);
+                    echo echo_cr($b['b_id'],$sub_intent, ($level+1),$b['b_id']);
                 }
                 ?>
                 <div class="list-group-item list_input">
@@ -1103,7 +1101,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_2271"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($project['b_transformations'])>0 ? $project['b_transformations'] : '[]' ) ?>);
+                        initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_transformations" class="list-group"></div>
@@ -1115,7 +1113,7 @@ function add_item(group_id,prefix,current_value){
                 <div class="help_body maxout" id="content_623"></div>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_completion_prizes','+ New Prize','<i class="fa fa-trophy"></i>',<?= ( strlen($project['b_completion_prizes'])>0 ? $project['b_completion_prizes'] : '[]' ) ?>);
+                        initiate_list('b_completion_prizes','+ New Prize','<i class="fa fa-trophy"></i>',<?= ( strlen($b['b_completion_prizes'])>0 ? $b['b_completion_prizes'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_completion_prizes" class="list-group"></div>
@@ -1134,7 +1132,7 @@ function add_item(group_id,prefix,current_value){
 
             <div id="c_objective1" class="levelz level1 hidden">
                 <?php $this->load->view('console/inputs/c_objective' , array(
-                    'c_objective' => $project['c_objective'],
+                    'c_objective' => $b['c_objective'],
                     'level' => 1,
                 )); ?>
             </div>
@@ -1151,10 +1149,6 @@ function add_item(group_id,prefix,current_value){
                 )); ?>
             </div>
 
-
-            <div class="levelz level1 hidden" style="margin-top:15px;">
-                <?php $this->load->view('console/inputs/b_sprint_unit' , array('b_sprint_unit'=>$project['b_sprint_unit']) ); ?>
-            </div>
 
 
             <div class="levelz level3 hidden" style="margin-top:15px;">

@@ -57,7 +57,7 @@ class Console extends CI_Controller {
 		$udata = auth(2,1);
 		
 		//User Projects:
-		$projects = $this->Db_model->user_projects(array(
+		$bs = $this->Db_model->user_projects(array(
 		    'ba.ba_u_id' => $udata['u_id'],
 		    'ba.ba_status >=' => 0,
 		    'b.b_status >=' => 0,
@@ -65,16 +65,16 @@ class Console extends CI_Controller {
 		
 		//Did we find any?
         /*
-		foreach($projects as $key=>$mb){
+		foreach($bs as $key=>$mb){
 		    //Fetch full Project:
 		    $this_full = $this->Db_model->remix_projects(array(
 		        'b.b_id' => $mb['b_id'],
 		    ));
-		    $projects[$key] = $this_full[0];
+		    $bs[$key] = $this_full[0];
 		}
         */
 
-		$title = ( $udata['u_cache__fp_psid']>0 ? 'My Projects' : 'Activate Messenger') ;
+		$title = ( $udata['u_cache__fp_psid']>0 ? 'My 7-Day Projects' : 'Activate Messenger') ;
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
@@ -92,7 +92,7 @@ class Console extends CI_Controller {
 
 		    //Yes, show them their Projects:
 		    $this->load->view('console/all_projects' , array(
-		        'projects' => $projects,
+		        'bs' => $bs,
 		        'udata' => $udata,
 		    ));
 
@@ -105,9 +105,7 @@ class Console extends CI_Controller {
 		    
 		    //Show activation:
 		    $this->load->view('console/activate_bot' , array(
-		        'projects' => $projects,
 		        'users' => $users,
-		        'udata' => $udata,
 		    ));
 		}
     	
@@ -120,19 +118,19 @@ class Console extends CI_Controller {
 	function dashboard($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $projects = $this->Db_model->remix_projects(array(
+	    $bs = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($projects[0])){
+	    if(!isset($bs[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    if(isset($_GET['raw'])){
-	        echo_json($projects[0]);
+	        echo_json($bs[0]);
 	        exit;
 	    }
 	    
-	    $title = 'Dashboard | '.$projects[0]['c_objective'];
+	    $title = 'Dashboard | '.$bs[0]['c_objective'];
 	    
 	    //Log view:
 	    $this->Db_model->e_create(array(
@@ -142,7 +140,7 @@ class Console extends CI_Controller {
 	        ),
 	        'e_type_id' => 48, //View
 	        'e_message' => $title,
-	        'e_b_id' => $projects[0]['b_id'],
+	        'e_b_id' => $bs[0]['b_id'],
 	        'e_r_id' => 0,
 	        'e_c_id' => 0,
 	        'e_recipient_u_id' => 0,
@@ -151,7 +149,7 @@ class Console extends CI_Controller {
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
 	        'title' => $title,
-	        'project' => $projects[0],
+	        'b' => $bs[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -160,7 +158,7 @@ class Console extends CI_Controller {
 	        ),
 	    ));
 	    $this->load->view('console/dashboard' , array(
-	        'project' => $projects[0],
+	        'b' => $bs[0],
 	    ));
 	    $this->load->view('console/shared/d_footer');
 	}
@@ -169,15 +167,15 @@ class Console extends CI_Controller {
 	function actionplan($b_id,$pid=null){
 		
 	    $udata = auth(1,1,$b_id);
-		$projects = $this->Db_model->remix_projects(array(
+		$bs = $this->Db_model->remix_projects(array(
 		    'b.b_id' => $b_id,
 		));
-		if(!isset($projects[0])){
+		if(!isset($bs[0])){
 		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 		}
 
 		//Fetch intent relative to the Project by doing an array search:
-		$view_data = extract_level( $projects[0] , ( intval($pid)>0 ? $pid : $projects[0]['c_id'] ) );
+		$view_data = extract_level( $bs[0] , ( intval($pid)>0 ? $pid : $bs[0]['c_id'] ) );
 		if(!$view_data){
 		    redirect_message('/console/'.$b_id.'/actionplan','<div class="alert alert-danger" role="alert">Invalid Step ID. Select another Step to continue.</div>');
 		} else {
@@ -192,7 +190,7 @@ class Console extends CI_Controller {
 		
 		if(isset($_GET['raw'])){
 		    //For testing purposes:
-		    echo_json($view_data['project']);
+		    echo_json($view_data['b']);
 		    exit;
 		}
 		
@@ -209,16 +207,16 @@ class Console extends CI_Controller {
 	function all_classes($b_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
-	    $projects = $this->Db_model->remix_projects(array(
+	    $bs = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($projects[0])){
+	    if(!isset($bs[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    $view_data = array(
-	        'title' => 'Classes | '.$projects[0]['c_objective'],
-	        'project' => $projects[0],
+	        'title' => 'Classes | '.$bs[0]['c_objective'],
+	        'b' => $bs[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -237,23 +235,23 @@ class Console extends CI_Controller {
 	function scheduler($b_id,$r_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
-	    $projects = $this->Db_model->remix_projects(array(
+	    $bs = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($projects[0])){
+	    if(!isset($bs[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    //This could be a new run, or editing an existing run:
-	    $class = filter($projects[0]['c__classes'],'r_id',$r_id);
+	    $class = filter($bs[0]['c__classes'],'r_id',$r_id);
 	    if(!$class){
 	        die('<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 	    }
 	    
 	    //Load in iFrame
 	    $this->load->view('console/frames/scheduler' , array( 
-	        'title' => 'Edit Schedule | '.time_format($class['r_start_date'],1).' Class | '.$projects[0]['c_objective'],
-	        'project' => $projects[0],
+	        'title' => 'Edit Schedule | '.time_format($class['r_start_date'],1).' Class | '.$bs[0]['c_objective'],
+	        'b' => $bs[0],
 	        'class' => $class
 	    ));
 	}
@@ -261,15 +259,15 @@ class Console extends CI_Controller {
 	function load_class($b_id,$r_id){
 		//Authenticate:
 	    $udata = auth(1,1,$b_id);
-		$projects = $this->Db_model->remix_projects(array(
+		$bs = $this->Db_model->remix_projects(array(
 		    'b.b_id' => $b_id,
 		));
-		if(!isset($projects[0])){
+		if(!isset($bs[0])){
 		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 		}
 		
 		//This could be a new run, or editing an existing run:
-		$class = filter($projects[0]['c__classes'],'r_id',$r_id);
+		$class = filter($bs[0]['c__classes'],'r_id',$r_id);
 		if(!$class){
 		    redirect_message('/console/'.$b_id.'/classes' , '<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
 		}
@@ -281,8 +279,8 @@ class Console extends CI_Controller {
         )));
 		
 		$view_data = array(
-		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$projects[0]['c_objective'],
-            'project' => $projects[0],
+		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$bs[0]['c_objective'],
+            'b' => $bs[0],
             'current_applicants' => $current_applicants,
 		    'class' => $class,
 		    'breadcrumb' => array(
@@ -292,7 +290,7 @@ class Console extends CI_Controller {
 		        ),
 		        array(
 		            'link' => null,
-		            'anchor' => time_format($class['r_start_date'],2).' - '.time_format((strtotime($class['r_start_date'])+(6*24*3600)),2).( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' completed their application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Admission'.show_s($current_applicants).'</span>' : '' ),
+		            'anchor' => time_format($class['r_start_date'],2).' '.( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' completed their application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Admission'.show_s($current_applicants).'</span>' : '' ),
 		        ),
 		    ),
 		);
@@ -302,53 +300,22 @@ class Console extends CI_Controller {
 		$this->load->view('console/class' , $view_data);
 		$this->load->view('console/shared/d_footer');
 	}
-	
-	
-	
-	function students($b_id){
-	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(1,1,$b_id);
-	    $projects = $this->Db_model->remix_projects(array(
-	        'b.b_id' => $b_id,
-	    ));
-	    if(!isset($projects[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
-	    }
-	    
-	    //Load view
-	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Students | '.$projects[0]['c_objective'],
-	        'project' => $projects[0],
-	        'breadcrumb' => array(
-	            array(
-	                'link' => null,
-	                'anchor' => 'Students <span id="hb_2275" class="help_button" intent-id="2275"></span>',
-	            ),
-	        ),
-	    ));
-	    $this->load->view('console/students' , array(
-	        'project' => $projects[0],
-	        'udata' => $udata,
-	    ));
-	    $this->load->view('console/shared/d_footer');
-	}
-
 
 	
 	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
-	    $projects = $this->Db_model->remix_projects(array(
+	    $bs = $this->Db_model->remix_projects(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($projects[0])){
+	    if(!isset($bs[0])){
 	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
 	    }
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Settings | '.$projects[0]['c_objective'],
-	        'project' => $projects[0],
+	        'title' => 'Settings | '.$bs[0]['c_objective'],
+	        'b' => $bs[0],
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
@@ -357,7 +324,7 @@ class Console extends CI_Controller {
 	        ),
 	    ));
 	    $this->load->view('console/settings' , array(
-	        'project' => $projects[0],
+	        'b' => $bs[0],
 	        'udata' => $udata,
 	    ));
 	    $this->load->view('console/shared/d_footer');

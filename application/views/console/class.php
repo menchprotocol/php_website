@@ -40,6 +40,11 @@ function changeContactMethod(){
 
 $(document).ready(function() {
 
+    //Class Toggle:
+    $("#class_focus").on("change", function(){
+        load_classmates($(this).val());
+    });
+
     if(window.location.hash) {
         focus_hash(window.location.hash);
     }
@@ -67,7 +72,6 @@ function save_r(){
         //Communication:
         r_live_office_hours_check:$('#r_live_office_hours_val').val(),
         r_office_hour_instructions:$('#r_office_hour_instructions').val(),
-        r_fb_pixel_id:$('#r_fb_pixel_id').val(),
         r_start_time_mins:$('#r_start_time_mins').val(),
 
         //Class:
@@ -93,6 +97,29 @@ function save_r(){
     });
 }
 
+function load_classmates(){
+
+    //Show spinner:
+    $('#classmates_html').hide().fadeIn().html('<img src="/img/round_load.gif" style="margin:0 0 80px 0;" class="loader" />');
+
+    //Save the rest of the content:
+    $.post("/api_v1/load_classmates", {
+
+        //Object IDs:
+        b_id:$('#b_id').val(),
+        r_id:$('#r_id').val(),
+        is_instructor:1, //To load more columns compared to what students see!
+
+    } , function(data) {
+
+        //Update UI to confirm with user:
+        $('#classmates_html').html(data).hide().fadeIn();
+
+        //Activate Tooltip:
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+}
 
 function sync_action_plan(){
     //Show spinner:
@@ -120,38 +147,48 @@ function sync_action_plan(){
 
 <input type="hidden" id="r_id" value="<?= $class['r_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $class['r_b_id'] ?>" />
-<input type="hidden" id="c__milestone_units" value="<?= $project['c__milestone_units'] ?>" />
-<input type="hidden" id="c__estimated_hours" value="<?= $project['c__estimated_hours'] ?>" />
-<input type="hidden" id="b_sprint_unit" value="<?= $project['b_sprint_unit'] ?>" />
+<input type="hidden" id="c__milestone_units" value="<?= $b['c__milestone_units'] ?>" />
+<input type="hidden" id="c__estimated_hours" value="<?= $b['c__estimated_hours'] ?>" />
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_support" class="active"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Students</a></li>
-    <li id="nav_admission"><a href="#admission"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+    <li id="nav_students" <?= ($current_applicants>0 ? 'class="active"' : '') ?>><a href="#students"><i class="fa fa-users" aria-hidden="true"></i> Students</a></li>
+    <li id="nav_settings" <?= ($current_applicants>0 ? '' : 'class="active"') ?>><a href="#settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+    <?php if(count($cache_action_plans)>0 || $udata['u_status']>=3){ ?>
+        <li id="nav_actionplan"><a href="#actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></li>
+    <?php } ?>
 </ul>
 
 
 <div class="tab-content tab-space">
 
 
-    <div class="tab-pane" id="tabadmission">
-
+    <div class="tab-pane <?= ($current_applicants>0 ? 'active' : '') ?>" id="tabstudents">
         <?php
-        $this->load->view('console/inputs/r_status' , array(
-            'r_status' => $class['r_status'],
-            'removal_status' => class_status_change($class['r_status'],$current_applicants),
-        ));
 
+        itip(2826);
 
+        if($current_applicants>0){
+
+            //Show Leaderboard:
+            echo_classmates($class['r_b_id'],$class['r_id'],1);
+
+            //TODO Show Broadcast Feature...
+
+        } else {
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No students yet.</div>';
+        }
 
         ?>
+    </div>
 
-        <div class="title"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Email Support <span id="hb_699" class="help_button" intent-id="699"></span></h4></div>
-        <div class="help_body maxout" id="content_699"></div>
-        <div class="form-group label-floating is-empty">
-            <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_email'] ?>" class="form-control border">
-            <span class="material-input"></span>
-        </div>
+
+    <div class="tab-pane <?= ($current_applicants>0 ? '' : 'active') ?>" id="tabsettings">
+
+
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Class Status <span id="hb_624" class="help_button" intent-id="624"></span></h4></div>
+        <div class="help_body maxout" id="content_624"></div>
+        <?= echo_status_dropdown('r','r_status', $class['r_status'], class_status_change($class['r_status'],$current_applicants)); ?>
 
 
 
@@ -174,7 +211,7 @@ function sync_action_plan(){
 
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Group Calls PST Schedule <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
         <div class="help_body maxout" id="content_618"></div>
-        <iframe id="weekschedule" src="/console/<?= $project['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler?r_start_date=<?= $class['r_start_date'] ?>&disabled=<?= $disabled ?>" scrolling="no" class="scheduler-iframe"></iframe>
+        <iframe id="weekschedule" src="/console/<?= $b['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler?r_start_date=<?= $class['r_start_date'] ?>&disabled=<?= $disabled ?>" scrolling="no" class="scheduler-iframe"></iframe>
 
 
 
@@ -183,17 +220,6 @@ function sync_action_plan(){
         <div class="form-group label-floating is-empty">
             <textarea class="form-control text-edit border msg msgin" style="min-height:50px; padding:3px;" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
             <div style="margin:0 0 0 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/<?= $message_max ?></div>
-        </div>
-
-
-
-        <div style="display:block; margin-top:30px;">
-            <div class="title"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Admission Pixel Code <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
-            <div class="help_body maxout" id="content_718"></div>
-            <div class="input-group">
-                <input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($class['r_fb_pixel_id'])>1?$class['r_fb_pixel_id']:null) ?>" class="form-control border <?= $soft_disabled ?>" />
-            </div>
-            <br />
         </div>
 
 
@@ -211,17 +237,17 @@ function sync_action_plan(){
         //Do we have a copy?
         if(count($cache_action_plans)>0){
 
-            $project = unserialize($cache_action_plans[0]['ej_e_blob']);
+            $b = unserialize($cache_action_plans[0]['ej_e_blob']);
 
             echo '<div class="title"><h4><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).'</h4></div>';
 
             //Show Action Plan:
             echo '<div id="project-objective" class="list-group maxout">';
-            echo echo_cr($project['b_id'],$project,1,0,false);
+            echo echo_cr($b['b_id'],$b,1,0,false);
             echo '</div>';
 
             //Task Expand/Contract all if more than 2
-            if(count($project['c__child_intents'])>0){
+            if(count($b['c__child_intents'])>0){
                 echo '<div id="task_view">';
                 echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
                 echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
@@ -230,8 +256,8 @@ function sync_action_plan(){
 
             //Tasks List:
             echo '<div id="list-outbound" class="list-group">';
-            foreach($project['c__child_intents'] as $key=>$sub_intent){
-                echo echo_cr($project['b_id'],$sub_intent,2,$project['b_id'],0,false);
+            foreach($b['c__child_intents'] as $key=>$sub_intent){
+                echo echo_cr($b['b_id'],$sub_intent,2,$b['b_id'],0,false);
             }
             echo '</div>';
 
@@ -239,26 +265,26 @@ function sync_action_plan(){
             //Target Audience:
             echo '<div class="title"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_426"></div>';
-            echo ( strlen($project['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($project['b_target_audience'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+            echo ( strlen($b['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_target_audience'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
             //Prerequisites, which get some system appended ones:
-            $project['b_prerequisites'] = prep_prerequisites($project);
+            $b['b_prerequisites'] = prep_prerequisites($b);
             echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_610"></div>';
-            echo ( count($project['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$project['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+            echo ( count($b['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
             //Skills You Will Gain
-            echo '<div class="title"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+            echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_2271"></div>';
-            echo ( strlen($project['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($project['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+            echo ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
             //Completion Awards
             echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Awards <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_623"></div>';
-            echo ( strlen($project['b_completion_prizes'])>0 ? '<ol><li>'.join('</li><li>',json_decode($project['b_completion_prizes'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+            echo ( strlen($b['b_completion_prizes'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
         } else {

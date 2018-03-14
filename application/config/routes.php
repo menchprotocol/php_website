@@ -33,7 +33,6 @@ $route['console/help/status_bible'] 			       = "console/status_bible";
 
 $route['console/account'] 						       = "console/account"; //Instructor account
 $route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
-$route['console/(:num)/students'] 				       = "console/students/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";
 $route['console/(:num)/classes/(:num)/scheduler']      = "console/scheduler/$1/$2"; //iFrame view
 $route['console/(:num)/classes/(:num)'] 		       = "console/load_class/$1/$2";

@@ -18,45 +18,45 @@ $(document).ready(function() {
 
 <?php
 $website = $this->config->item('website');
-$rounded_hours = round($project['c__estimated_hours']/7 , ( $project['c__estimated_hours']<=18 ? 1 : 0 ));
+$rounded_hours = round($b['c__estimated_hours']/7 , ( $b['c__estimated_hours']<=18 ? 1 : 0 ));
 
-echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$project['b_url_key'].'</div>';
+echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
-<div class="title"><h4><a href="/console/<?= $project['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
+<div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
-<div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $project['c_objective'] ?></b></div>
-<div><?= count($project['c__active_intents']) .' Task'.show_s(count($project['c__active_intents'])) ?></div>
+<div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $b['c_objective'] ?></b></div>
+<div><?= count($b['c__active_intents']) .' Task'.show_s(count($b['c__active_intents'])) ?></div>
 
-<?php if($project['c__step_count']>0){ ?>
-    <div><?= $project['c__step_count'] .' Step'.show_s($project['c__step_count']) ?></div>
+<?php if($b['c__step_count']>0){ ?>
+    <div><?= $b['c__step_count'] .' Step'.show_s($b['c__step_count']) ?></div>
 <?php } ?>
 
-<div><?= $project['c__message_tree_count'] .' Message'. show_s($project['c__message_tree_count']) ?></div>
-<div><?= round($project['c__estimated_hours'],1) .' Hours in 7 Days ('.$rounded_hours.' Hour'.show_s($rounded_hours).'/Day)' ?></div>
+<div><?= $b['c__message_tree_count'] .' Message'. show_s($b['c__message_tree_count']) ?></div>
+<div><?= round($b['c__estimated_hours'],1) .' Hours in 7 Days ('.$rounded_hours.' Hour'.show_s($rounded_hours).'/Day)' ?></div>
 
 
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $project['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
 <div class="help_body maxout" id="content_2274"></div>
 <?php
 //Fetch admission stats:
 $student_funnel = array(
     0 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $project['b_id'],
+        'r.r_b_id'	       => $b['b_id'],
         'ru.ru_status'     => 0,
     ))),
     4 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $project['b_id'],
+        'r.r_b_id'	       => $b['b_id'],
         'ru.ru_status'     => 4,
     ))),
     6 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $project['b_id'],
+        'r.r_b_id'	       => $b['b_id'],
         'ru.ru_status'     => 6,
     ))),
     7 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $project['b_id'],
+        'r.r_b_id'	       => $b['b_id'],
         'ru.ru_status'     => 7,
     ))),
 );
@@ -66,7 +66,7 @@ foreach($student_funnel as $ru_status=>$count){
 }
 
 //Fetch class:
-$focus_class = filter_class($project['c__classes'],null);
+$focus_class = filter_class($b['c__classes'],null);
 if($focus_class){
     echo '<div>Next Class: '.time_format($focus_class['r_start_date'],2).'</div>';
 }
@@ -75,21 +75,21 @@ if($focus_class){
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $project['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fa fa-cog" aria-hidden="true"></i> Settings <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a></h4></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fa fa-cog" aria-hidden="true"></i> Settings <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a></h4></div>
 
-<div>Facebook Page: <?= ( $project['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$project['fp_fb_id'].'"><u>'.$project['fp_name'].'</u></a>' : 'Not Connected Yet' ) ?></div>
+<div>Facebook Page: <?= ( $b['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$b['fp_fb_id'].'"><u>'.$b['fp_name'].'</u></a>' : 'Not Connected Yet' ) ?></div>
 
 <?php
 echo '<div>Team: ';
 $mench_advisers = $this->config->item('mench_advisers');
 $total_advisers = count($mench_advisers);
-foreach($project['b__admins'] as $admin){
+foreach($b['b__admins'] as $admin){
     if(in_array($admin['u_id'],$mench_advisers)){
         $total_advisers--;
     }
 }
 
-foreach($project['b__admins'] as $key=>$instructor){
+foreach($b['b__admins'] as $key=>$instructor){
     if($key>0){
         echo ', ';
     }
@@ -100,8 +100,8 @@ if($total_advisers>0){
 }
 echo '</div>';
 ?>
-<div>Project Status: <?= status_bible('b',$project['b_status'],0,'right') ?></div>
-<div style="margin-top:-5px;">Landing Page: <a href="/<?= $project['b_url_key'] ?>"><u><?= $website['url'] . $project['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
+<div>Project Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
+<div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
 
 
 
@@ -115,7 +115,7 @@ echo '</div>';
 
 
 
-<?php $launch_status = calculate_project_status($project); ?>
+<?php $launch_status = calculate_project_status($b); ?>
 <div class="title" style="margin-top:40px;"><h4><?= $launch_status['stage'] ?> <span id="hb_1511" class="help_button" intent-id="1511"></span></h4></div>
 <div class="help_body maxout" id="content_1511"></div>
 <div>Complete this checklist to prepare your Project for launch:</div>

@@ -36,15 +36,15 @@ if(isset($office_hours) && is_array($office_hours)){
 $available_classes = 0;
 $class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Available Classes</h4>';
 $class_selection .= '<div id="class_list" class="list-group" style="max-width:none !important;">';
-$project['c__classes'] = array_reverse($project['c__classes']);
+$b['c__classes'] = array_reverse($b['c__classes']);
 
-foreach($project['c__classes'] as $class){
+foreach($b['c__classes'] as $class){
     if($class['r_status']==1 && !date_is_past($class['r_start_date'])){
         $available_classes++;
         if($class['r_id']==$focus_class['r_id']){
             $class_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
         } else {
-            $class_selection .= '<a href="/'.$project['b_url_key'].'/'.$class['r_id'].'" class="list-group-item">';
+            $class_selection .= '<a href="/'.$b['b_url_key'].'/'.$class['r_id'].'" class="list-group-item">';
             $class_selection .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
         }
         
@@ -124,7 +124,7 @@ $( document ).ready(function() {
 </script>
 
 
-<h1 style="margin-bottom:30px;"><?= $project['c_objective'] ?></h1>
+<h1 style="margin-bottom:30px;"><?= $b['c_objective'] ?></h1>
 
 <div class="row" id="landing_page">
 
@@ -134,9 +134,9 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Project Snapshot</h3>
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
-            	<li>Duration: <b><?= $project['c__milestone_units'] ?> <?= ucwords($project['b_sprint_unit']).( $project['c__milestone_units']==1 ? '' : 's') ?></b></li>
-            	<li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,7) ?></b></li>
-            	<li>Commitment: <b><?= echo_hours(round($project['c__estimated_hours']/$project['c__milestone_units'], 1)) ?> Per <?= ucwords($project['b_sprint_unit']) ?></b></li>
+                <li>Duration: <b>7 Days</b></li>
+                <li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,7) ?></b></li>
+            	<li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
             	
             	<?php if($total_office_hours>0){ ?>
             	<li>Group Calls: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
@@ -162,7 +162,7 @@ $( document ).ready(function() {
             
             <div style="padding:10px 0 30px; text-align:center;">
                 <div class="btn btn-primary btn-round countdown"><span id="reg1"></span></div>
-            	<a href="/<?= $project['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            	<a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
@@ -172,7 +172,7 @@ $( document ).ready(function() {
     <div class="col-md-8">
     
         <?php
-        foreach($project['c__messages'] as $i){
+        foreach($b['c__messages'] as $i){
             if($i['i_status']==1){
                 //Publish to Landing Page!
                 echo echo_i($i);
@@ -182,26 +182,26 @@ $( document ).ready(function() {
 
 
         <h3>Skills You Will Gain</h3>
-        <div id="b_transformations"><?= ( strlen($project['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($project['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+        <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Target Audience</h3>
-        <div id="b_target_audience"><?= ( strlen($project['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($project['b_target_audience'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+        <div id="b_target_audience"><?= ( strlen($b['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_target_audience'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Prerequisites</h3>
-        <?php $pre_req_array = prep_prerequisites($project); ?>
+        <?php $pre_req_array = prep_prerequisites($b); ?>
         <div id="b_prerequisites"><?= ( count($pre_req_array)>0 /* Should always be true! */ ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
 
 
         <h3>Action Plan</h3>
         <div id="c_goals_list">
         <?php
-        foreach($project['c__child_intents'] as $sprint){
+        foreach($b['c__child_intents'] as $sprint){
             if($sprint['c_status']<1){
                 continue;
             }
             $ending_unit = $sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1;
             echo '<div id="c_'.$sprint['c_id'].'">';
-            echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> '.ucwords($project['b_sprint_unit']).' '.$sprint['cr_outbound_rank'].($sprint['c_duration_multiplier']>1 ? '-'.$ending_unit : '' ).': '.$sprint['c_objective'].'</a></h4>';
+            echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</a></h4>';
                 echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
 
                     //Display all Active Steps:
@@ -259,7 +259,7 @@ $( document ).ready(function() {
     		<?php
             $admin_count = 0;
             $leader_fname = '';
-            foreach($project['b__admins'] as $admin){
+            foreach($b['b__admins'] as $admin){
                 if($admin['ba_team_display']!=='t'){
                     continue;
                 }
@@ -321,34 +321,24 @@ $( document ).ready(function() {
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (Ends in <span id="reg2"></span>)</li>
     			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
-    			<li>Class Duration is <b><?= $project['c__milestone_units'] ?> <?= ucwords($project['b_sprint_unit']).(($project['c__milestone_units']==1?'':'s')) ?></b></li>
+    			<li>Class Duration is <b><?= $b['c__milestone_units'] .' Task'.show_s($b['c__milestone_units']) ?></b></li>
     			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,7).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
     		</ul>
     		<hr />
     		
     		
     		
-    		<?php if(strlen($project['b_completion_prizes'])>0){ ?>
-                <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($project['b_completion_prizes']))) ?></h4>
-                <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($project['b_completion_prizes'])).'</li></ol>' ?></div>
+    		<?php if(strlen($b['b_completion_prizes'])>0){ ?>
+                <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($b['b_completion_prizes']))) ?></h4>
+                <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' ?></div>
                 <p>Awarded for completing all Tasks by the end of the 7-Day project.</p>
                 <hr />
     		<?php } ?>
     		
 
-    		
-    		
-    		
-    		<h4><i class="fa fa-usd" aria-hidden="true"></i> Price</h4>
-    		<?php if($focus_class['r_usd_price']>0){ ?>
-    		<p>One-time payment of <b><?= echo_price($focus_class['r_usd_price']); ?></b> (Includes <a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>) so <?= $leader_fname ?> can provide you with everything you need to <b><?= $project['c_objective'] ?></b> in <?= $project['c__milestone_units'] ?> <?= $project['b_sprint_unit'].($project['c__milestone_units']==1?'':'s') ?>.</p>
-    		<?php } else { ?>
-    		<p>This Project is <b>FREE</b>.</p>
-    		<?php } ?>
-            <hr />
+
             <p>Ready to unleash your full potential?</p>
             <p>Class admission ends in:</p>
-
     		
     </div>
 </div>
@@ -357,7 +347,7 @@ $( document ).ready(function() {
 <div style="padding:20px 0 30px; text-align:center;">
 	<div class="btn btn-primary btn-round countdown"><span id="reg3"></span></div>
     <br />
-    <a href="/<?= $project['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    <a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
 

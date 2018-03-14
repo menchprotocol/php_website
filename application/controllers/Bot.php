@@ -19,8 +19,8 @@ class Bot extends CI_Controller {
         echo $_GET['none'];
     }
 
-    function ee(){
-        echo 'ee';
+    function json(){
+        echo_json(fetch_action_plan_copy(21,196));
     }
 
     function eee(){

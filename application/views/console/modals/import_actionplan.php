@@ -2,11 +2,11 @@
 $udata = $this->session->userdata('user');
 
 //Fetch this user's Projects:
-$projects = $this->Db_model->user_projects(array(
+$bs = $this->Db_model->user_projects(array(
     'ba.ba_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 0,
-    'b.b_id !=' => $project['b_id'], //Can't import from current Project
+    'b.b_id !=' => $b['b_id'], //Can't import from current Project
 ));
 ?>
 
@@ -127,7 +127,7 @@ $projects = $this->Db_model->user_projects(array(
             $.post("/api_v1/import_process", {
 
                 import_from_b_id:parseInt($('#import_b_id').val()),
-                import_to_b_id:<?= $project['b_id'] ?>,
+                import_to_b_id:<?= $b['b_id'] ?>,
                 task_import_mode:parseInt($('input[name=task_import_mode]:checked').val()),
 
                 b_level_messages:($('input[name=b_level_messages]:checked').val()=='on'?1:0),
@@ -147,7 +147,7 @@ $projects = $this->Db_model->user_projects(array(
 
                     //Refresh after success:
                     setTimeout(function() {
-                        window.location = "/console/<?= $project['b_id'] ?>/actionplan"
+                        window.location = "/console/<?= $b['b_id'] ?>/actionplan"
                     }, 1500);
 
                 } else {
@@ -204,7 +204,7 @@ $projects = $this->Db_model->user_projects(array(
                         <select class="form-control input-mini border" id="import_b_id">
                             <option value="0">Choose Project...</option>
                             <?php
-                            foreach($projects as $b){
+                            foreach($bs as $b){
                                 echo '<option value="'.$b['b_id'].'">'.$b['c_objective'].'</option>';
                             }
                             ?>
@@ -212,7 +212,7 @@ $projects = $this->Db_model->user_projects(array(
                     </div>
                     <br />
                     <p>Import to this Project:</p>
-                    <div class="form-group"><b><?= $project['c_objective'] ?></b></div>
+                    <div class="form-group"><b><?= $b['c_objective'] ?></b></div>
                 </div>
 
                 <!-- Content to be dynamically loaded based on Project -->

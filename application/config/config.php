@@ -6,8 +6,8 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.41,
-    'name' => 'Mench',
+    'version' => 2.5,
+    'name' => 'Mench Beta',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
