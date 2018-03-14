@@ -1285,6 +1285,14 @@ class Api_v1 extends CI_Controller {
         //See if they have any active admissions:
         $admissions = array();
 	    if(count($users)==1){
+
+            //TODO remove login block for launch of v2.6
+            if(!($users[0]['u_id']==1)){
+                //Not found!
+                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Mench beta console is not live yet.</div>');
+                return false;
+            }
+
             $admissions = $this->Db_model->remix_admissions(array(
                 'ru_u_id' => $users[0]['u_id'],
                 'ru_status >=' => 0, //We would drill into this further...
