@@ -58,8 +58,8 @@ class Front extends CI_Controller {
 	
 	function ses(){
 		//For admins
-		echo exec('whoami');
-		print_r($this->session->all_userdata());
+		//echo exec('whoami');
+		//print_r($this->session->all_userdata());
 		echo phpinfo();
 	}
 	
