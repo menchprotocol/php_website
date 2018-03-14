@@ -15,11 +15,11 @@ class Front extends CI_Controller {
 	function index(){		
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
-		    'title' => 'Opportunities are endless',
+		    'title' => '7-Day Projects Lead by Industry Experts',
 		));
 		$this->load->view('front/project/marketplace' , array(
 		    'bs' => $this->Db_model->remix_projects(array(
-                'b.b_status' => 2,
+                'b.b_status' => 3,
             )),
         ));
 		$this->load->view('front/shared/f_footer');
@@ -82,20 +82,21 @@ class Front extends CI_Controller {
 	/* ******************************
 	 * Project PUBLIC
 	 ****************************** */
-	
-	function projects_browse(){
-	    
-	    //The public list of Projects:
-	    $this->load->view('front/shared/f_header' , array(
-	        'title' => 'Browse Projects',
-	    ));
-	    $this->load->view('front/project/browse' , array(
 
-	    ));
-	    $this->load->view('front/shared/f_footer');
-	}
-	
-	
+
+    function affiliate_click($b_id,$u_id=0,$goto_apply=0){
+	    //DEPRECATED: Just keeping for Jason Cannon's Link to His Bootcamp
+        $bs = $this->Db_model->b_fetch(array(
+            'b.b_id' => $b_id,
+        ));
+        if(count($bs)>0){
+            //Lets redirect to Page:
+            redirect_message('/'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
+        } else {
+            //Invalid Bootcamp ID
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
+        }
+    }
 	
 	
 	function project_load($b_url_key,$r_id=null){

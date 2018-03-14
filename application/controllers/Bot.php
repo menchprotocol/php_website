@@ -19,6 +19,17 @@ class Bot extends CI_Controller {
         echo $_GET['none'];
     }
 
+    function aws_test(){
+        require_once( 'application/libraries/aws/aws-autoloader.php' );
+
+        $s3 = new Aws\S3\S3Client([
+            'version' 		=> 'latest',
+            'region'  		=> 'us-west-2',
+            'credentials' 	=> $this->config->item('aws_credentials'),
+        ]);
+
+    }
+
     function json(){
         echo_json(fetch_action_plan_copy(21,196));
     }
