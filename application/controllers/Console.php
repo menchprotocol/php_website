@@ -60,7 +60,7 @@ class Console extends CI_Controller {
 		$bs = $this->Db_model->user_projects(array(
 		    'ba.ba_u_id' => $udata['u_id'],
 		    'ba.ba_status >=' => 0,
-		    'b.b_status >=' => 0,
+		    'b.b_status >=' => 2,
 		));
 		
 		//Did we find any?
@@ -231,30 +231,7 @@ class Console extends CI_Controller {
 	    $this->load->view('console/shared/d_footer');
 	}
 	
-	
-	function scheduler($b_id,$r_id){
-	    //Authenticate:
-	    $udata = auth(1,1,$b_id);
-	    $bs = $this->Db_model->remix_projects(array(
-	        'b.b_id' => $b_id,
-	    ));
-	    if(!isset($bs[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
-	    }
-	    
-	    //This could be a new run, or editing an existing run:
-	    $class = filter($bs[0]['c__classes'],'r_id',$r_id);
-	    if(!$class){
-	        die('<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
-	    }
-	    
-	    //Load in iFrame
-	    $this->load->view('console/frames/scheduler' , array( 
-	        'title' => 'Edit Schedule | '.time_format($class['r_start_date'],1).' Class | '.$bs[0]['c_objective'],
-	        'b' => $bs[0],
-	        'class' => $class
-	    ));
-	}
+
 	
 	function load_class($b_id,$r_id){
 		//Authenticate:
@@ -290,7 +267,7 @@ class Console extends CI_Controller {
 		        ),
 		        array(
 		            'link' => null,
-		            'anchor' => time_format($class['r_start_date'],2).' '.( $current_applicants ? ' &nbsp;<span data-toggle="tooltip" class="frame" title="Most of your class settings are locked because '.$current_applicants.' student'.show_s($current_applicants).' completed their application with the current settings. Contact Mench Team if you like to make any adjustments." data-placement="bottom"><i class="fa fa-lock" aria-hidden="true"></i> '.$current_applicants.' Admission'.show_s($current_applicants).'</span>' : '' ),
+		            'anchor' => time_format($class['r_start_date'],2),
 		        ),
 		    ),
 		);

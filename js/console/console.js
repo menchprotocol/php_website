@@ -130,7 +130,6 @@ $(document).ready(function() {
 
 
 
-
     if($("span.help_button")[0]){
         var loaded_messages = [];
         var intent_id = 0;

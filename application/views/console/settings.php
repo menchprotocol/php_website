@@ -3,6 +3,7 @@
 //What are the total permissions we need?
 $required_fb_permissions = $this->config->item('required_fb_permissions');
 $fb_settings = $this->config->item('fb_settings');
+$pm = $this->config->item('pricing_model');
 
 $permission_string = join_keys($required_fb_permissions);
 echo 'var required_fb_permissions = '.json_encode($required_fb_permissions).';';
@@ -137,6 +138,25 @@ $(document).ready(function() {
         focus_hash(window.location.hash);
     }
 
+    //Watch for Group Support Change:
+    $('#b_p2_max_seats').on('change', function() {
+        if(this.value==0){
+            $('#support_settings').hide();
+        } else {
+            $('#support_settings').fadeIn();
+        }
+    });
+
+    $('#b_p3_rate').on('change', function() {
+        if(this.value==0){
+            $('#mentorship_settings').hide();
+        } else {
+            $('#mentorship_settings').fadeIn();
+        }
+    });
+
+
+
     window.fbAsyncInit = function() {
         FB.init({
             autoLogAppEvents : true,
@@ -239,7 +259,8 @@ function save_settings(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_general" class="active"><a href="#general"><i class="fa fa-cog" aria-hidden="true"></i> General</a></li>
+    <li id="nav_support" class="active"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
+    <li id="nav_landingpage"><a href="#landingpage"><i class="fa fa-link" aria-hidden="true"></i> Landing Page</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
     <li id="nav_team"><a href="#team"><i class="fa fa-user-plus" aria-hidden="true"></i> Team</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li> -->
@@ -248,40 +269,127 @@ function save_settings(){
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="tabgeneral">
+    <div class="tab-pane active" id="tabsupport">
 
 
-        <div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Project Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4>Package 1) <i class="fa fa-wrench" aria-hidden="true"></i> Do It Yourself <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+        <div class="help_body maxout" id="content_4789"></div>
+        <div class="form-group label-floating">
+            <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
+                <?php
+                foreach($pm['p1_rates'] as $option){
+                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Free' : '$'.$option.' per Student per Week' ).'</option>';
+                }
+                ?>
+            </select>
+        </div>
+
+
+
+        <div class="title" style="margin-top:25px;"><h4>Package 2) <i class="fa fa-life-ring" aria-hidden="true"></i> Guidance <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
+        <div class="help_body maxout" id="content_4791"></div>
+
+        <div class="form-group label-floating">
+            <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
+                <?php
+                foreach($pm['p2_max_seats'] as $option){
+                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer Guidance' : $option.' Students per Week Max' ).'</option>';
+                }
+                ?>
+            </select>
+        </div>
+
+
+        <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
+
+            <!-- Disabled for now as we only have a single pricing option for Guidance Package -->
+            <div class="form-group label-floating">
+                <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
+                    <?php
+                    foreach($pm['p2_rates'] as $option){
+                        echo '<option value="'.$option.'" '.($b['b_p2_rate']==$option?'selected="selected"':'').'>$'.$option.'/Week</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+
+
+
+
+
+            <div class="title" style="margin-top:20px;"><h4>Package 3) <i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="help_body maxout" id="content_615"></div>
+            <div class="form-group label-floating">
+                <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
+                    <?php
+                    foreach($pm['p3_rates'] as $option){
+                        echo '<option value="'.$option.'" '.($b['b_p3_rate']==$option?'selected="selected"':'').'>'.($option==0?'Do Not Offer Mentorship':'$'.number_format($option,2).'/Min ($'.number_format(($option*25),0).' for each 25-Min Session)').'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+
+
+            <div style="padding-left:30px;">
+                <div class="title" style="margin-top:20px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Support Email <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
+                <div class="help_body maxout" id="content_4790"></div>
+                <div class="form-group label-floating is-empty">
+                    <input type="email" id="b_support_email" data-lpignore="true" style="width:320px;" placeholder="yoursupportemail@gmail.com" value="<?= $b['b_support_email'] ?>" class="form-control border">
+                    <span class="material-input"></span>
+                </div>
+
+
+
+                <div id="mentorship_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
+                    <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Mentorship Calendly URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
+                    <div class="help_body maxout" id="content_4792"></div>
+                    <div class="form-group label-floating is-empty">
+                        <input type="url" id="b_calendly_url" style="width:320px;" placeholder="https://calendly.com/shervine/demo" value="<?= $b['b_calendly_url'] ?>" class="form-control border">
+                        <span class="material-input"></span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <br />
+        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+
+    </div>
+
+    <div class="tab-pane" id="tablandingpage">
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
         <?= echo_status_dropdown('b','b_status',$b['b_status']); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
 
-        <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+
+
+
+        <div class="title" style="margin-top:5px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
         <div class="help_body maxout" id="content_725"></div>
         <div class="form-group label-floating is-empty">
-            <div class="input-group border">
-                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.co/</span>
+            <div class="input-group border" style="width:100%; max-width:380px;">
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.com/</span>
                 <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
             </div>
-        </div>
-
-
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Support Email <span id="hb_699" class="help_button" intent-id="699"></span></h4></div>
-        <!-- <div class="help_body maxout" id="content_699"></div> -->
-        <div class="form-group label-floating is-empty">
-            <input type="email" id="b_support_email" data-lpignore="true" style="width:220px;" value="<?= $b['b_support_email'] ?>" class="form-control border">
-            <span class="material-input"></span>
         </div>
 
 
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
         <div class="help_body maxout" id="content_718"></div>
         <div class="input-group">
-            <input type="number" min="0" step="1" style="width:220px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
+            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
         </div>
-        <br />
 
-        <table width="100%" style="margin-top:20px;"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+
+
+        <br />
+        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
 
     </div>
 

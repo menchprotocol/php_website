@@ -49,8 +49,8 @@ if(isset($uadmission) && count($uadmission)>0) {
             },
             function error(err){
 
-                //Give them instructions on how to access via mench.co:
-                $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> To access your Action Plan you need to <a href="https://mench.co/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
+                //Give them instructions on how to access via mench.com:
+                $("#page_content").html('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> To access your Action Plan you need to <a href="https://mench.com/login?url=<?= urlencode($_SERVER['REQUEST_URI']) ?>" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
 
             }
         );

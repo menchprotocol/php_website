@@ -70,7 +70,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
         echo '<div style="border:2px solid #000; padding:7px; margin-top:25px; border-radius:5px; background-color:#EFEFEF;">';
 
-        echo '<p><b>'.$bs[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4, 7).') Application:</p>';
+        echo '<p><b>'.$bs[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4, (7*24*3600-60)).') Application:</p>';
 
 
         //Account, always created at this point:
@@ -128,8 +128,8 @@ if(count($admissions)>0 && is_array($admissions)){
                     <input type="hidden" name="no_note" value="1">
                     <input type="hidden" name="no_shipping" value="1">
                     <input type="hidden" name="rm" value="1">
-                    <input type="hidden" name="return" value="https://mench.co/my/applications?status=1&purchase_value=<?= $remaining_payment ?>&message=<?= urlencode('Payment received.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
-                    <input type="hidden" name="cancel_return" value="https://mench.co/my/applications?status=0&message=<?= urlencode('Payment cancelled. You can manage your admission below.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
+                    <input type="hidden" name="return" value="https://mench.com/my/applications?status=1&purchase_value=<?= $remaining_payment ?>&message=<?= urlencode('Payment received.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
+                    <input type="hidden" name="cancel_return" value="https://mench.com/my/applications?status=0&message=<?= urlencode('Payment cancelled. You can manage your admission below.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
                     <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal">
                     <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">

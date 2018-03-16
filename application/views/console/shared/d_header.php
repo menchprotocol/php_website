@@ -80,7 +80,7 @@ $website = $this->config->item('website');
 	    	<div class="sidebar-wrapper">
 	    		<?php 
 	    		if(isset($b)){
-	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i><a href="/'.$b['b_url_key'].'" class="landing_page_url" id="top-left-title" data-toggle="tooltip" data-placement="bottom" title="Visit Landing Page">'.$b['c_objective'].'</a></div>';
+	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i>'.$b['c_objective'].'</div>';
 	    		}
 	    		?>
 	    		<ul class="nav" style="margin-top: 0;">
@@ -92,14 +92,20 @@ $website = $this->config->item('website');
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i><p>Action Plan</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fa fa-calendar" aria-hidden="true"></i><p>Classes</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fa fa-users" aria-hidden="true"></i><p>Classes</p></a></li>';
 
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
+
+                    //Landing Page
+                    echo '<li><a class="landing_page_url" id="top-left-title" data-toggle="tooltip" data-placement="top" title="Visit Project Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-link" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
 
             	    //Is it connected to a Facebook Page?
                     if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
                         //Fetch page details:
-                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Access your student chat using your Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students using Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                    } else {
+                        //Show link to Activate:
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Project missing its Facebook Page connection" href="/console/'.$b['b_id'].'/settings#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i><p><b>Connect Page</b></p></a></li>';
                     }
 
         		}
@@ -110,7 +116,7 @@ $website = $this->config->item('website');
 
 
 	    <div class="main-panel">
-	        <div class="content dash" style="<?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
+	        <div class="content dash" style="padding-bottom: 50px !important; <?= ( isset($b) && substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? 'min-height: inherit !important;' : '' ) ?>">
 	        
     	        <?php 
     	        if(isset($breadcrumb)){

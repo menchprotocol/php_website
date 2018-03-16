@@ -61,12 +61,14 @@ $url_part_1 = $this->uri->segment(1);
                         echo '<li id="isloggedin"><a href="/console">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
                     } elseif(isset($uadmission['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
-                    } elseif(!($url_part_1=='login')) {
-                        //Logged Out!
-    				    echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
-    				} else {
-                        //This is the login page, show the Launch Button:
-                        echo '<li><a href="/instructors"><i class="fa fa-rocket" aria-hidden="true"></i> Run a 7-Day Project</a></li>';
+                    } else {
+                        if(!($url_part_1=='experts')) {
+                            echo '<li><a href="/experts"><i class="fa fa-rocket" aria-hidden="true"></i> For Experts</a></li>';
+                        }
+                        if(!($url_part_1=='login')) {
+                            //This is the login page, show the Launch Button:
+                            echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
+                        }
                     }
     				?>
         		</ul>

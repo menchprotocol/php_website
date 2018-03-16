@@ -160,11 +160,11 @@ if($object_name=='engagements'){
     
     //User Projects:
     $bs = $this->Db_model->b_fetch(array(
-        'b.b_status >=' => 0,
+        'b.b_status >=' => 2,
     ),array('c','fp'),'b_status');
 
     //Did we find any?
-    $meaningful_project_engagements = $this->config->item('meaningful_project_engagements');
+    $meaningful_b_engagements = $this->config->item('meaningful_b_engagements');
 
 
     foreach($bs as $key=>$mb){
@@ -177,7 +177,7 @@ if($object_name=='engagements'){
         //Fetch last activity:
         $bs[$key]['engagements'] = $this->Db_model->e_fetch(array(
             'e_b_id' => $mb['b_id'],
-            '(e_type_id IN ('.join(',',$meaningful_project_engagements).'))' => null,
+            '(e_type_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
         ),1000);
 
         $bs[$key]['student_funnel'] = array(
@@ -269,13 +269,12 @@ if($object_name=='engagements'){
 
 } elseif($object_name=='classes'){
 
-
     $classes = $this->Db_model->r_fetch(array(
-        'r_status IN (1,2,3)' => null, //Running Classes
+        'r_status >=' => 1, //Running Classes
     ),null,'ASC');
 
-    //Include email model for certain communications:
-    $start_times = $this->config->item('start_times');
+
+
     ?>
     <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:100%;">
     <thead>
@@ -304,7 +303,14 @@ if($object_name=='engagements'){
             //Fetch Project from Action Plan Copy:
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bs,array('b_fp_id'));
             $class = $bs[0]['this_class'];
+        } else {
+            if($class['r__current_admissions']==0){
+                //This class has no stats, skip it:
+                continue;
+            }
         }
+
+
 
         //Fetch Leader:
         $leaders = $this->Db_model->ba_fetch(array(
@@ -355,43 +361,29 @@ if($object_name=='engagements'){
         echo '<td>';
 
         if($class['r_status']>=2){
+
             //Show Graduation Funnel:
-            $admitted = count($this->Db_model->ru_fetch(array(
-                'r.r_id'	       => $class['r_id'],
-                'ru.ru_status >='  => 4,
-                'ru.ru_fp_psid >'  => 0, //Activated is what really counts...
-            )));
             $completed = count($this->Db_model->ru_fetch(array(
                 'r.r_id'	                        => $class['r_id'],
                 'ru.ru_cache__current_task >'  => $class['r__total_tasks'],
-                'ru.ru_fp_psid >'                   => 0, //Activated is what really counts...
             )));
+
             echo '<span data-toggle="tooltip" title="Completion Rate (Total Admitted Students who Activated Messenger)">';
-            echo '<b>'.($admitted>0 ? round($completed/$admitted*100) : '0').'%</b> Completed ('.$admitted.')';
+            echo '<b>'.($class['r__current_admissions']>0 ? round($completed/$class['r__current_admissions']*100) : '0').'%</b> Completed ('.$class['r__current_admissions'].')';
             echo '</span>';
+
         } else {
-            //Show Admission Funnel:
-            echo '<span data-toggle="tooltip" title="Started Application -> Completed Application -> Admitted/Max Seats (Rejected)">';
-            $student_funnel = array(
-                0 => count($this->Db_model->ru_fetch(array(
-                    'r.r_id'	       => $class['r_id'],
-                    'ru.ru_status'     => 0,
-                ))),
-                2 => count($this->Db_model->ru_fetch(array(
-                    'r.r_id'	       => $class['r_id'],
-                    'ru.ru_status'     => 2,
-                ))),
-                4 => count($this->Db_model->ru_fetch(array(
-                    'r.r_id'	       => $class['r_id'],
-                    'ru.ru_status'     => 4,
-                ))),
-                -1 => count($this->Db_model->ru_fetch(array(
-                    'r.r_id'	       => $class['r_id'],
-                    'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
-                ))),
-            );
-            echo $student_funnel[0].' &raquo; '.$student_funnel[2].' &raquo; <b style="color:'.( $student_funnel[4]>=$class['r_min_students'] ? '#00CC00' : '#FF0000' ).';" title="Minimum is '.$class['r_min_students'].'">'.$student_funnel[4].'</b>/'.$class['r_max_students'].' ('.$student_funnel[-1].')';
+
+            //Show Funnel:
+           $pending_completion = count($this->Db_model->ru_fetch(array(
+                'ru_r_id' => $class['r_id'],
+                'ru_status' => 0,
+            )));
+
+            echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats/Max-Guided">';
+            echo $pending_completion.' &raquo; '.$class['r__current_admissions'].'  &raquo; <b>'.$class['r__guided_admissions'].'</b>/'.$bs[0]['b_p2_max_seats'];
             echo '</span>';
+
         }
         echo '</td>';
 
@@ -477,7 +469,7 @@ if($object_name=='engagements'){
     <?php
     foreach($users as $key=>$user){
 
-        //Fetch messages if activated MenchBot:
+        //Fetch messages if activated Messenger:
         unset($messages);
         unset($read_message);
         if($user['u_cache__fp_psid']>0){
@@ -496,7 +488,7 @@ if($object_name=='engagements'){
         $instructor_projects = $this->Db_model->ba_fetch(array(
             'ba.ba_u_id' => $user['u_id'],
             'ba.ba_status >=' => 0,
-            'b.b_status >=' => 0,
+            'b.b_status >=' => 2,
         ) , true /*To Fetch more details*/ );
         
         echo '<tr>';
@@ -509,14 +501,14 @@ if($object_name=='engagements'){
         echo '<td>';
             //Display Projects:
             if(count($instructor_projects)>0){
-                $meaningful_project_engagements = $this->config->item('meaningful_project_engagements');
+                $meaningful_b_engagements = $this->config->item('meaningful_b_engagements');
 
                 foreach ($instructor_projects as $counter=>$ib){
                     //Fetch last activity:
                     $b_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],
                         'e_b_id' => $ib['b_id'],
-                        '(e_type_id IN ('.join(',',$meaningful_project_engagements).'))' => null,
+                        '(e_type_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
                     ));
 
                     echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($b_building_engagements[0]) ? time_format($b_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($b_building_engagements)>=100 ? '100+' : count($b_building_engagements) ).'</div>';

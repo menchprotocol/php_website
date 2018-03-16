@@ -4,10 +4,6 @@ $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
 $udata = $this->session->userdata('user');
 
-//Determine lock down status based on User & Class situation:
-$admin_can_edit = ( $udata['u_status']>=3 && !($class['r_status']==3) );
-$disabled = ( !$admin_can_edit && ($current_applicants>0 || $class['r_status']>=2) ? 'disabled' : null );
-$soft_disabled = ( !$admin_can_edit && $class['r_status']>=2 ? 'disabled' : null );
 
 //Fetch the most recent cached action plans:
 $cache_action_plans = $this->Db_model->e_fetch(array(
@@ -18,72 +14,38 @@ $cache_action_plans = $this->Db_model->e_fetch(array(
 ?>
 <script>
 
-function ucwords(str) {
-   return (str + '').replace(/^(.)|\s+(.)/g, function ($1) {
-      return $1.toUpperCase()
-   });
-}
-function js_mktime(hour,minute,month,day,year) {
-    return new Date(year, month-1, day, hour, minutes, 0).getTime() / 1000;
-}
 
-
-
-function changeContactMethod(){
-    var len = $('#r_office_hour_instructions').val().length;
+function changeBroadcastCount(){
+    var len = $('#r_broadcast').val().length;
     if (len > <?= $message_max ?>) {
-    	$('#ContactMethodChar').addClass('overload').text(len);
+    	$('#BroadcastChar').addClass('overload').text(len);
     } else {
-        $('#ContactMethodChar').removeClass('overload').text(len);
+        $('#BroadcastChar').removeClass('overload').text(len);
     }
 }
 
 $(document).ready(function() {
-
-    //Class Toggle:
-    $("#class_focus").on("change", function(){
-        load_classmates($(this).val());
-    });
 
     if(window.location.hash) {
         focus_hash(window.location.hash);
     }
 
     //Update counters:
-    changeContactMethod();
+    changeBroadcastCount();
 
 });
 
 
-function save_r(){
+function toggle_r_status(r_id){
+
     //Show spinner:
     $('.save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
-
-    //Save Scheduling iFrame content:
-    if(parseInt($('#r_live_office_hours_val').val())){
-        document.getElementById('weekschedule').contentWindow.save_hours();
-    }
 
     var save_data = {
         r_id:$('#r_id').val(),
         b_id:$('#b_id').val(),
-        r_start_date:$('#r_start_date').val(),
-
-        //Communication:
-        r_live_office_hours_check:$('#r_live_office_hours_val').val(),
-        r_office_hour_instructions:$('#r_office_hour_instructions').val(),
-        r_start_time_mins:$('#r_start_time_mins').val(),
-
-        //Class:
         r_status:$('#r_status').val(),
-        r_min_students:$('#r_min_students').val(),
-        r_max_students:$('#r_max_students').val(),
     };
-
-    //Now merge into timeline dates:
-    //for (var key in timeline){
-    //	save_data[key] = timeline[key];
-    //}
 
     //Save the rest of the content:
     $.post("/api_v1/class_edit", save_data , function(data) {
@@ -95,6 +57,7 @@ function save_r(){
             $('.save_r_results').fadeOut();
         }, 10000);
     });
+
 }
 
 function load_classmates(){
@@ -147,85 +110,48 @@ function sync_action_plan(){
 
 <input type="hidden" id="r_id" value="<?= $class['r_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $class['r_b_id'] ?>" />
-<input type="hidden" id="c__milestone_units" value="<?= $b['c__milestone_units'] ?>" />
-<input type="hidden" id="c__estimated_hours" value="<?= $b['c__estimated_hours'] ?>" />
+
+
+<?php
+if($current_applicants<=0){
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No students yet.</div>';
+} else { ?>
+
+
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_students" <?= ($current_applicants>0 ? 'class="active"' : '') ?>><a href="#students"><i class="fa fa-users" aria-hidden="true"></i> Students</a></li>
-    <li id="nav_settings" <?= ($current_applicants>0 ? '' : 'class="active"') ?>><a href="#settings"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
-    <?php if(count($cache_action_plans)>0 || $udata['u_status']>=3){ ?>
-        <li id="nav_actionplan"><a href="#actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></li>
+    <li id="nav_students" class="active"><a href="#students"><i class="fa fa-users" aria-hidden="true"></i> Students</a></li>
+    <li id="nav_broadcast"><a href="#broadcast"><i class="fa fa-commenting" aria-hidden="true"></i> Broadcast</a></li>
+    <?php if(count($cache_action_plans)>0){ ?>
+    <li id="nav_actionplan"><a href="#actionplan"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan</a></li>
     <?php } ?>
 </ul>
 
 
+
 <div class="tab-content tab-space">
 
-
-    <div class="tab-pane <?= ($current_applicants>0 ? 'active' : '') ?>" id="tabstudents">
+    <div class="tab-pane active" id="tabstudents">
         <?php
 
         itip(2826);
 
-        if($current_applicants>0){
-
-            //Show Leaderboard:
-            echo_classmates($class['r_b_id'],$class['r_id'],1);
-
-            //TODO Show Broadcast Feature...
-
-        } else {
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No students yet.</div>';
-        }
+        //Show Leaderboard:
+        echo_classmates($class['r_b_id'],$class['r_id'],1);
 
         ?>
     </div>
 
+    <div class="tab-pane" id="tabbroadcast">
 
-    <div class="tab-pane <?= ($current_applicants>0 ? '' : 'active') ?>" id="tabsettings">
+        <?php //itip(2826); ?>
 
-
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Class Status <span id="hb_624" class="help_button" intent-id="624"></span></h4></div>
-        <div class="help_body maxout" id="content_624"></div>
-        <?= echo_status_dropdown('r','r_status', $class['r_status'], class_status_change($class['r_status'],$current_applicants)); ?>
-
-
-
-        <div style="display:block; margin-top:20px;">
-            <div class="title"><h4><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Minimum Students <span id="hb_612" class="help_button" intent-id="612"></span></h4></div>
-            <div class="help_body maxout" id="content_612"></div>
-            <div class="input-group">
-                <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_min_students" value="<?= (isset($class['r_min_students'])?$class['r_min_students']:null) ?>" class="form-control border <?= $soft_disabled ?>" />
-            </div>
-            <br />
-        </div>
-
-
-        <div class="title"><h4><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maximum Students <span id="hb_613" class="help_button" intent-id="613"></span></h4></div>
-        <div class="help_body maxout" id="content_613"></div>
-        <div class="input-group">
-            <input type="number" min="0" step="1" style="width:100px; margin-bottom:-5px;" <?= $soft_disabled ?> id="r_max_students" value="<?= ( isset($class['r_max_students']) ? $class['r_max_students'] : null ) ?>" class="form-control border <?= $soft_disabled ?>" />
-        </div>
-
-
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-podcast" aria-hidden="true"></i> Group Calls PST Schedule <span id="hb_618" class="help_button" intent-id="618"></span></h4></div>
-        <div class="help_body maxout" id="content_618"></div>
-        <iframe id="weekschedule" src="/console/<?= $b['b_id'] ?>/classes/<?= $class['r_id'] ?>/scheduler?r_start_date=<?= $class['r_start_date'] ?>&disabled=<?= $disabled ?>" scrolling="no" class="scheduler-iframe"></iframe>
-
-
-
-        <div class="title"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Group Call Instructions <span id="hb_617" class="help_button" intent-id="617"></span></h4></div>
-        <div class="help_body maxout" id="content_617"></div>
         <div class="form-group label-floating is-empty">
-            <textarea class="form-control text-edit border msg msgin" style="min-height:50px; padding:3px;" onkeyup="changeContactMethod()" placeholder="Contact using our Skype username: grumomedia" id="r_office_hour_instructions"><?= $class['r_office_hour_instructions'] ?></textarea>
-            <div style="margin:0 0 0 0; font-size:0.8em;"><span id="ContactMethodChar">0</span>/<?= $message_max ?></div>
+            <textarea class="form-control text-edit border msg msgin" style="min-height:80px; max-width:420px; padding:3px;" onkeyup="changeBroadcastCount()" id="r_broadcast"></textarea>
+            <div style="margin:0 0 0 0; font-size:0.8em;"><span id="BroadcastChar">0</span>/<?= $message_max ?></div>
         </div>
-
-
-
-        <br />
-        <table width="100%"><tr><td class="save-td"><a href="javascript:save_r();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+        <table width="100%"><tr><td class="save-td"><a href="javascript:send_();" class="btn btn-primary">Send</a></td><td><span class="save_r_results"></span></td></tr></table>
 
     </div>
 
@@ -314,3 +240,5 @@ function sync_action_plan(){
     </div>
 
 </div>
+
+<?php } ?>

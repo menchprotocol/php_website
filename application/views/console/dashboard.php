@@ -27,8 +27,8 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 <div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $b['c_objective'] ?></b></div>
 <div><?= count($b['c__active_intents']) .' Task'.show_s(count($b['c__active_intents'])) ?></div>
 
-<?php if($b['c__step_count']>0){ ?>
-    <div><?= $b['c__step_count'] .' Step'.show_s($b['c__step_count']) ?></div>
+<?php if($b['c__steps_count']>0){ ?>
+    <div><?= $b['c__steps_count'] .' Step'.show_s($b['c__steps_count']) ?></div>
 <?php } ?>
 
 <div><?= $b['c__message_tree_count'] .' Message'. show_s($b['c__message_tree_count']) ?></div>
@@ -38,7 +38,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-calendar" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
 <div class="help_body maxout" id="content_2274"></div>
 <?php
 //Fetch admission stats:
@@ -77,8 +77,6 @@ if($focus_class){
 
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fa fa-cog" aria-hidden="true"></i> Settings <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a></h4></div>
 
-<div>Facebook Page: <?= ( $b['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$b['fp_fb_id'].'"><u>'.$b['fp_name'].'</u></a>' : 'Not Connected Yet' ) ?></div>
-
 <?php
 echo '<div>Team: ';
 $mench_advisers = $this->config->item('mench_advisers');
@@ -100,8 +98,9 @@ if($total_advisers>0){
 }
 echo '</div>';
 ?>
-<div>Project Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
-<div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
+<div style="margin-top:-5px;">Landing Page URL: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
+<div style="margin-top:-5px;">Landing Page Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
+<div style="margin-top:5px;">Facebook Page: <?= ( $b['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$b['fp_fb_id'].'"><u>'.$b['fp_name'].'</u></a>' : 'None! <a href="/console/'.$b['b_id'].'/settings#pages"><u>Connected Now</u></a>' ) ?></div>
 
 
 

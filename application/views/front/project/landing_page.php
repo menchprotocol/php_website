@@ -1,5 +1,4 @@
 <?php 
-$start_times = $this->config->item('start_times');
 //Calculate office hours:
 $office_hours = unserialize($focus_class['r_live_office_hours']);
 $days = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
@@ -135,7 +134,7 @@ $( document ).ready(function() {
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
                 <li>Duration: <b>7 Days</b></li>
-                <li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,7) ?></b></li>
+                <li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(7*24*3600-60)) ?></b></li>
             	<li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
             	
             	<?php if($total_office_hours>0){ ?>
@@ -162,7 +161,7 @@ $( document ).ready(function() {
             
             <div style="padding:10px 0 30px; text-align:center;">
                 <div class="btn btn-primary btn-round countdown"><span id="reg1"></span></div>
-            	<a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            	<a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Join Class of <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
             	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
             </div>
         </div>
@@ -199,7 +198,6 @@ $( document ).ready(function() {
             if($sprint['c_status']<1){
                 continue;
             }
-            $ending_unit = $sprint['cr_outbound_rank']+$sprint['c_duration_multiplier']-1;
             echo '<div id="c_'.$sprint['c_id'].'">';
             echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</a></h4>';
                 echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
@@ -220,7 +218,7 @@ $( document ).ready(function() {
                     if($sprint['c__estimated_hours']>0){
                         echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp; ';
                     }
-                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Complete By '.time_format($focus_class['r_start_date'],2,7).' '.$start_times[$focus_class['r_start_time_mins']].' PST';
+                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Complete By '.time_format($focus_class['r_start_date'],2,(7*24*3600-60));
                     echo '</div>';
                 echo '</div>';
             echo '</div>';
@@ -320,9 +318,9 @@ $( document ).ready(function() {
     		<h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timeline</h4>
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (Ends in <span id="reg2"></span>)</li>
-    			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
-    			<li>Class Duration is <b><?= $b['c__milestone_units'] .' Task'.show_s($b['c__milestone_units']) ?></b></li>
-    			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,7).' '.$start_times[$focus_class['r_start_time_mins']] ?> PST</b></li>
+    			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2) ?></b></li>
+    			<li>Class Duration is <b><?= $b['c__tasks_count'] .' Task'.show_s($b['c__tasks_count']) ?></b></li>
+    			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,(7*24*3600-60)) ?></b></li>
     		</ul>
     		<hr />
     		
@@ -334,11 +332,10 @@ $( document ).ready(function() {
                 <p>Awarded for completing all Tasks by the end of the 7-Day project.</p>
                 <hr />
     		<?php } ?>
-    		
 
 
             <p>Ready to unleash your full potential?</p>
-            <p>Class admission ends in:</p>
+            <p>Admission ends in:</p>
     		
     </div>
 </div>
@@ -347,7 +344,7 @@ $( document ).ready(function() {
 <div style="padding:20px 0 30px; text-align:center;">
 	<div class="btn btn-primary btn-round countdown"><span id="reg3"></span></div>
     <br />
-    <a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round"><?= ( $focus_class['r_max_students']>0 ? ($focus_class['r__current_admissions']>=$focus_class['r_max_students'] ? 'Join Waiting List for' : 'Reserve Seat for') : 'Apply to Join' ) ?> <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    <a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Join Class of <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
 	<?= ( $available_classes>1 ? '<div>or <a href="javascript:choose_r();"><u>Choose Another Class</u></a></div>' : '' ) ?>
 </div>
 

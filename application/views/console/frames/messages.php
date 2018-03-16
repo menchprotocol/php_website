@@ -583,10 +583,15 @@ if(!isset($intents[0])){
 <div class="ix-msg" style="height:380px; padding-top:7px;" id="intent_messages<?= $c_id ?>">
 
     <?php
-
     //Give more information on each message type:
     $i_desc = status_bible('i');
-    echo '<div class="ix-tip all_msg msg_1"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[1]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_1">';
+    echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
+    echo str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[1]['s_desc']).'.';
+    if($level==2){
+        echo ' <a id="simulate_'.$c_id.'" href="javascript:tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Give It a Try</a>';
+    }
+    echo '</div>';
     echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[2]['s_desc']).'.</div>';
     echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[3]['s_desc']).'.</div>';
 

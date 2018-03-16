@@ -496,7 +496,7 @@ class Comm_model extends CI_Model {
                             array(
                                 'title' => '🚩 Action Plan',
                                 'type' => 'web_url',
-                                'url' => 'https://mench.co/my/actionplan',
+                                'url' => 'https://mench.com/my/actionplan',
                                 'webview_height_ratio' => 'tall',
                                 'webview_share_button' => 'hide',
                                 'messenger_extensions' => true,
@@ -504,7 +504,7 @@ class Comm_model extends CI_Model {
                             array(
                                 'title' => '👥 Classmates',
                                 'type' => 'web_url',
-                                'url' => 'https://mench.co/my/classmates',
+                                'url' => 'https://mench.com/my/classmates',
                                 'webview_height_ratio' => 'tall',
                                 'webview_share_button' => 'hide',
                                 'messenger_extensions' => true,

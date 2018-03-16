@@ -11,7 +11,7 @@ $udata = $this->session->userdata('user');
 //This functions updates the input placeholders to refect the next item to be added:
 function update_tree_input(){
     //First update the number of Tasks in main input field:
-    $('#addnode').attr("placeholder", "Task #"+($("#list-outbound").children().length)+" Outcome (Specific & Measurable)");
+    $('#addnode').attr("placeholder", " #"+($("#list-outbound").children().length)+" Outcome (Specific & Measurable)");
 
     //Now go through each Step list and see whatsupp:
     if($('.step-group').length){
@@ -357,7 +357,7 @@ function intents_sort(c_id,level){
             var pid = parseInt($(this).attr('node-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? 'Task' : 'Step' ); //The default for all nodes
+            var prefix = ( level==2 ? '' : 'Step' ); //The default for all nodes
 
             if(status>=1){
 

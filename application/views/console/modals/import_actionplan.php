@@ -5,7 +5,7 @@ $udata = $this->session->userdata('user');
 $bs = $this->Db_model->user_projects(array(
     'ba.ba_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
-    'b.b_status >=' => 0,
+    'b.b_status >=' => 2,
     'b.b_id !=' => $b['b_id'], //Can't import from current Project
 ));
 ?>

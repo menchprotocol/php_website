@@ -50,7 +50,6 @@
 	<br />
 	
 	<div class="extra-info">
-        <p>Expert/Instructor? <a href="/instructors">Run a 7-Day Project</a></p>
-        <p>Student? <a href="/">Browse Projects</a></p>
+        <p>Are you an Expert with Industry Experience? <a href="/experts">Start Here</a></p>
 	</div>
 </div>

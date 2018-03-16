@@ -7,9 +7,9 @@ date_default_timezone_set('America/Los_Angeles');
 //Primary website variables:
 $config['website'] = array(
     'version' => 2.5,
-    'name' => 'Mench Beta',
+    'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
-    'url' => 'https://mench.co/', //Important to end with "/" as other links depend on this.
+    'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
 );
 
@@ -41,6 +41,23 @@ $config['aws_credentials'] = [
     'secret' => 'ZU1paNBAqps2A4XgLjNVAYbdmgcpT5BIwn6DJ/VU',
 ];
 
+
+$config['pricing_model'] = array(
+    'baseline_rate' => 0.10, //Applied to all transactions, covers Transaction Fee
+    'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Project    'p1_rates' => array(0.00,8.00,15.00), //Per Week
+
+    'p1_rates' => array(0,8,15), //Per Week
+    'p1_rate_default' => 0,
+
+    'p2_rates' => array(35,55,85), //Per Week
+    'p2_rate_default' => 55,
+    'p2_max_seats' => array(0,2,6,12,20,30,40,80,160), //Defines how many Guided students would an instructor accept into each Class
+    'p2_max_seat_default' => 20,
+
+    'p3_rates' => array(0,1.08,1.8,2.88), //Per Minute, Next level is 4.6
+    'p3_rate_default' => 0,
+    'p3_minute_bundles' => array(25,50,75), //Defines how Mentorship packages would be bundled and sold
+);
 
 
 $config['core_objects'] = array(
@@ -113,10 +130,11 @@ $config['object_statuses'] = array(
     'b' => array(
         -1 => array(
             's_name'  => 'Archived',
-            's_desc'  => 'Project archived by lead instructor',
+            's_desc'  => 'Project no longer active',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-trash',
         ),
+        /* Deorecated
         0 => array(
             's_name'  => 'Drafting',
             's_desc'  => 'Project under development. Admissions starts when published live',
@@ -129,15 +147,16 @@ $config['object_statuses'] = array(
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-eye',
         ),
+        */
         2 => array(
-            's_name'  => 'Published Privately',
-            's_desc'  => 'Students can join only if they know the Landing Page URL',
+            's_name'  => 'Private',
+            's_desc'  => 'Project open for admission for anyone who received the Private Landing Page URL',
             'u_min_status'  => 3, //Can only be done by admin
-            's_mini_icon' => 'fa-bullhorn',
+            's_mini_icon' => 'fa-link',
         ),
         3 => array(
-            's_name'  => 'Published to Mench',
-            's_desc'  => 'A Project published on the Mench marketplace',
+            's_name'  => 'Public',
+            's_desc'  => 'Project published on Mench.com Marketplace',
             'u_min_status'  => 3, //Can only be done by admin
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -175,15 +194,23 @@ $config['object_statuses'] = array(
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
+        /*
+        -1 => array(
+            's_name'  => 'Archived',
+            's_desc'  => 'Class has been Archived',
+            'u_min_status'  => 3,
+            's_mini_icon' => 'fa-times-circle',
+        ),
+        */
         0 => array(
-            's_name'  => 'Unavailable',
-            's_desc'  => 'Will not admit any Students for this Class',
+            's_name'  => 'Break Week',
+            's_desc'  => 'Will only admit DIY Students, and not sell any Guidance Packages',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-calendar-times-o',
         ),
         1 => array(
-            's_name'  => 'Open Admission',
-            's_desc'  => 'Class is open for admission',
+            's_name'  => 'Admitting',
+            's_desc'  => 'All Guidance Packages of the Class are open for admission',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-bullhorn',
         ),
@@ -378,15 +405,19 @@ $config['object_statuses'] = array(
             'u_min_status'  => 999, //Only done by Student themselves
             's_mini_icon' => 'fa-times-circle',
         ),
+
+        /*
         -1 => array(
             's_name'  => 'Application Rejected',
             's_desc'  => 'Application not approved by instructor OR application auto-rejected because it was incomplete by the time the Class started',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-times-circle',
         ),
+        */
+
         0 => array(
-            's_name'  => 'Application Started',
-            's_desc'  => 'Student initiated application but has not yet completed it',
+            's_name'  => 'Initiated',
+            's_desc'  => 'Student initiated application but had not completed the checkout process',
             'u_min_status'  => 999, //System insertion only
             's_mini_icon' => 'fa-pencil-square',
         ),
@@ -396,15 +427,14 @@ $config['object_statuses'] = array(
             's_desc'  => 'Student has applied but has not paid in full yet, pending Project leader approval before paying in full',
             'u_min_status'  => 999, //System insertion only
         ),
-        */
+
         2 => array(
-            's_name'  => 'Pending Admission',
+            's_name'  => 'Admitted',
             's_desc'  => 'Student completed application and payment (for paid classes) and is pending instructor review and approval',
             's_mini_icon' => 'fa-pause-circle',
             'u_min_status'  => 999, //System insertion only
         ),
 
-        /*
         3 => array(
             's_name'  => 'Invitation Sent',
             's_desc'  => 'Admins have full access to all Project features',
@@ -413,21 +443,21 @@ $config['object_statuses'] = array(
         */
 
         4 => array(
-            's_name'  => 'Project Student',
-            's_desc'  => 'Admission accepted and student is ready to participate in Project',
+            's_name'  => 'Student',
+            's_desc'  => 'Student joined Class',
             's_mini_icon' => 'fa-user',
             'u_min_status'  => 1,
         ),
 
         //Upon Class End Time:
         6 => array(
-            's_name'  => 'Project Incomplete',
+            's_name'  => 'Failed',
             's_desc'  => 'Student unable to complete all Tasks by the Class end time',
             's_mini_icon' => 'fa-minus-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
         7 => array(
-            's_name'  => 'Project Graduate',
+            's_name'  => 'Graduate',
             's_desc'  => 'Student successfully completed all Tasks by the Class end time and graduated',
             's_mini_icon' => 'fa-graduation-cap',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
@@ -475,7 +505,7 @@ $config['object_statuses'] = array(
 
 
 //No Projects can be created using these hashtags
-//URL structure is: https://mench.co/URLKEY
+//URL structure is: https://mench.com/URLKEY
 $config['reserved_hashtags'] = array(
     'projects',
     'project',
@@ -563,7 +593,7 @@ $config['engagement_subscriptions'] = array(
 );
 
 //Define what counts as a meaningful Project engagement by the instructor team:
-$config['meaningful_project_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
+$config['meaningful_b_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','0.75','1','2','3','5','8','13');
@@ -580,58 +610,6 @@ $config['default_class_prerequisites'] = array(
     'Fluent in English',
     'Facebook Messenger (Facebook Account Not Required)',
     'etc... (Delete this)',
-);
-
-
-$config['start_times'] = array(
-    0 => 'Midnight',
-    30 => '12:30am',
-    60 => '1am',
-    90 => '1:30am',
-    120 => '2am',
-    150 => '2:30am',
-    180 => '3am',
-    210 => '3:30am',
-    240 => '4am',
-    270 => '4:30am',
-    300 => '5am',
-    330 => '5:30am',
-    360 => '6am',
-    390 => '6:30am',
-    420 => '7am',
-    450 => '7:30am',
-    480 => '8am',
-    510 => '8:30am',
-    540 => '9am',
-    570 => '9:30am',
-    600 => '10am',
-    630 => '10:30am',
-    660 => '11am',
-    690 => '11:30am',
-    720 => 'Noon',
-    750 => '12:30pm',
-    780 => '1pm',
-    810 => '1:30pm',
-    840 => '2pm',
-    870 => '2:30pm',
-    900 => '3pm',
-    930 => '3:30pm',
-    960 => '4pm',
-    990 => '4:30pm',
-    1020 => '5pm',
-    1050 => '5:30pm',
-    1080 => '6pm',
-    1110 => '6:30pm',
-    1140 => '7pm',
-    1170 => '7:30pm',
-    1200 => '8pm',
-    1230 => '8:30pm',
-    1260 => '9pm',
-    1290 => '9:30pm',
-    1320 => '10pm',
-    1350 => '10:30pm',
-    1380 => '11pm',
-    1410 => '11:30pm',
 );
 
 

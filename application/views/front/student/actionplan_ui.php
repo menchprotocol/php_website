@@ -197,7 +197,7 @@ if($level>=3){
 
 
             //Show when this Task is due if not already passed:
-            $due_timestamp = time_format($class['r_start_date'],3,7);
+            $due_timestamp = time_format($class['r_start_date'],3,(7*24*3600-60));
             if($due_timestamp>time()){
                 ?>
                 <script>

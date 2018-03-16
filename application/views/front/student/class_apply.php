@@ -143,10 +143,6 @@ $(document).ready(function() {
 	<p>This application should take about 5 minutes to complete.</p>
 </div>
 
-<?php 
-$start_times = $this->config->item('start_times');
-?>
-
 <div class="wizard-box" id="overview_agree">
 	<p>Confirm that you commit to participating and doing the required work for this Project:</p>
 	<ul>
@@ -161,8 +157,8 @@ $start_times = $this->config->item('start_times');
         	}
         	?>
     	</li>
-    	<li>Start Time: <b><?= time_format($admission['r_start_date'],2).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
-    	<li>End Time: <b><?= time_format($admission['r_start_date'],2,(7*24*3600-60)).' '.$start_times[$admission['r_start_time_mins']] ?> PST</b></li>
+    	<li>Start Date: <b><?= time_format($admission['r_start_date'],2) ?></b></li>
+    	<li>End Date: <b><?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
     	<li>Your Commitment: <b><?= echo_hours(($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?></b></li>
 	</ul>
 	<div class="form-group label-floating is-empty">

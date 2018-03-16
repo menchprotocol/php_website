@@ -97,8 +97,8 @@ WHERE ru.ru_status >= 4
 
             //Fetch Sub-intents:
             $bs[$key]['c__active_intents'] = array();
-            $bs[$key]['c__step_count'] = 0;
-            $bs[$key]['c__milestone_units'] = 0; //Keep track of total Task units:
+            $bs[$key]['c__tasks_count'] = 0;
+            $bs[$key]['c__steps_count'] = 0;
             $bs[$key]['c__estimated_hours'] = $bs[$key]['c_time_estimate'];
             $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
             $bs[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
@@ -106,72 +106,73 @@ WHERE ru.ru_status >= 4
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
-            foreach($bs[$key]['c__child_intents'] as $sprint_key=>$sprint_value){
+            foreach($bs[$key]['c__child_intents'] as $task_key=>$task){
 
                 //Count Messages:
                 $task_messages = $this->Db_model->i_fetch(array(
                     'i_status >' => 0,
-                    'i_c_id' => $sprint_value['c_id'],
+                    'i_c_id' => $task['c_id'],
                 ));
 
                 //Assign messages:
-                $bs[$key]['c__child_intents'][$sprint_key]['c__messages'] = $task_messages;
+                $bs[$key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
 
-                //Addup message count:
-                $bs[$key]['c__message_tree_count'] += ( $sprint_value['c_status']==1 ? count($task_messages) : 0);
-                $bs[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] = ( $sprint_value['c_status']==1 ? count($task_messages) : 0);
-
-                //NOTE: Tasks do *not* have a time estimate, so no point in trying to addem up here...
-
-                //Introduce sprint total time:
-                $bs[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] = 0; //Because its always zero!
+                //Introduce total time:
+                $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = 0; //Because its always zero!
 
                 //Fetch sprint Steps at level 3:
-                $bs[$key]['c__child_intents'][$sprint_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_id' => $sprint_value['c_id'],
+                $bs[$key]['c__child_intents'][$task_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_id' => $task['c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >=' => 0,
                 ));
 
-                //Is this an active Task?
-                if($sprint_value['c_status']==1){
+                $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] = 0;
+
+                //Addup counts:
+                if($task['c_status']==1){
+                    $bs[$key]['c__tasks_count']++;
+                    $bs[$key]['c__message_tree_count'] += count($task_messages);
+                    $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($task_messages);
+
                     //Create Step array:
-                    $bs[$key]['c__active_intents'][$sprint_value['c_id']] = array();
+                    $bs[$key]['c__active_intents'][$task['c_id']] = array();
                 }
 
+
                 //Addup Step values:
-                foreach($bs[$key]['c__child_intents'][$sprint_key]['c__child_intents'] as $step_key=>$step_value){
+                foreach($bs[$key]['c__child_intents'][$task_key]['c__child_intents'] as $step_key=>$step){
 
                     //Count Messages:
                     $step_messages = $this->Db_model->i_fetch(array(
                         'i_status >' => 0,
-                        'i_c_id' => $step_value['c_id'],
+                        'i_c_id' => $step['c_id'],
                     ));
 
                     //Add messages:
-                    $bs[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
+                    $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
 
                     //Addup Step estimated time for active Steps in active Tasks:
-                    if($step_value['c_status']==1){
+                    if($step['c_status']==1){
 
-                        if($sprint_value['c_status']==1){
-                            $bs[$key]['c__estimated_hours'] += $step_value['c_time_estimate'];
-                            $bs[$key]['c__step_count']++;
+                        if($task['c_status']==1){
+                            $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
+                            $bs[$key]['c__steps_count']++;
                             //add to active Steps per Task:
-                            array_push($bs[$key]['c__active_intents'][$sprint_value['c_id']],$step_value['c_id']);
+                            array_push($bs[$key]['c__active_intents'][$task['c_id']],$step['c_id']);
                         }
 
                         //Addup Task Hours for its Active Steps Regardless of Task status:
-                        $bs[$key]['c__child_intents'][$sprint_key]['c__estimated_hours'] += $step_value['c_time_estimate'];
+                        $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] += $step['c_time_estimate'];
 
                         //Increase message counts:
                         $bs[$key]['c__message_tree_count'] += count($step_messages);
-                        $bs[$key]['c__child_intents'][$sprint_key]['c__message_tree_count'] += count($step_messages);
+                        $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($step_messages);
 
                     }
 
                     //Always show Step message count regardless of status:
-                    $bs[$key]['c__child_intents'][$sprint_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
+                    $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
                 }
             }
 
@@ -674,36 +675,49 @@ WHERE ru.ru_status >= 4
 
 	function r_sync($b_id){
 
-        //A function that would fetch the
-        $create_future_classes = time() + ( 55 * 7 * 24 * 3600 ); //55 Weeks ahead
-
-        //Let's see what Classes we have now?
-        $classes = $this->Db_model->r_fetch(array(
-            'r_b_id' => $b_id,
-        ), null, 'DESC', 1);
-
-        $new_classes = array();
-
-        if(count($classes)==0 || strtotime($classes[0]['r_start_date'])<=$create_future_classes){
-
-            //We need to create some Classes, let's figure out how many:
-            $class_start_time = date("Y-m-d", ( count($classes)==0 ? strtotime('next monday') : strtotime($classes[0]['r_start_date']) + (7*24*3600) )).' 00:00:00';
-
-            while($class_start_time<=$create_future_classes){
-
-                //Create this Class
-                array_push($new_classes,array(
-                    'r_id' => 123,
-                    'r_date' => $class_start_time,
+	    //First determine all dates we'd need:
+        $dates_needed = array();
+        $start = strtotime('next monday');
+        for($i=0;$i<55;$i++){
+            $new_timestamp = $start+($i*7*24*3607); //The extra 7 seconds makes sure we don't get into Sundays
+            if(date("D",$new_timestamp)=='Mon'){
+                $dates_needed[$i] = date("Y-m-d",$new_timestamp);
+            } else {
+                //Log error:
+                $this->Db_model->e_create(array(
+                    'e_message' => 'r_sync() generated Class date that was Not a Monday',
+                    'e_type_id' => 8, //System Error
                 ));
-
-                //Increment start date:
-                $class_start_time += ( 7 * 24* 3600 ); //Next Monday...
             }
-
         }
 
-        return $new_classes;
+        //Let's see which Classes we have already?
+        $classes = $this->Db_model->r_fetch(array(
+            'r_b_id' => $b_id,
+            'r_status >=' => 0,
+            'r_start_date IN (\''.join('\',\'',$dates_needed).'\')' => null,
+        ));
+
+        if(count($classes)>0){
+            //Remove these Classes from what we need:
+            foreach($classes as $class){
+                unset($dates_needed[array_search($class['r_start_date'], $dates_needed)]);
+            }
+        }
+
+        //Do we have any dates left to create?
+        if(count($dates_needed)>0){
+            //Yes, start creating these Classes:
+            foreach($dates_needed as $r_start_date){
+                $this->Db_model->r_create(array(
+                    'r_b_id' => $b_id,
+                    'r_start_date' => $r_start_date,
+                    'r_status' => 1, //Open for Admission
+                ));
+            }
+        }
+
+        return count($dates_needed);
     }
 	
 	function r_fetch($match_columns , $b=null /* Passing this would load extra variables for the class as well! */, $sorting='DESC', $limit=0 ){
@@ -718,7 +732,6 @@ WHERE ru.ru_status >= 4
                 $this->db->where($key);
             }
 		}
-        $this->db->order_by('r.r_status','DESC'); //Most recent class at top
         $this->db->order_by('r.r_start_date',$sorting); //Most recent class at top
         if($limit>0){
             $this->db->limit($limit);
@@ -734,7 +747,12 @@ WHERE ru.ru_status >= 4
             $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + (7 * 24 * 3600) - (60); //Ends Sunday 11:59PM
             $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
                 'ru_r_id' => $class['r_id'],
-                'ru_status' => 4,
+                'ru_status >=' => 4,
+            )));
+            $runs[$key]['r__guided_admissions'] = count($this->Db_model->ru_fetch(array(
+                'ru_r_id' => $class['r_id'],
+                'ru_status >=' => 4,
+                'ru_package_num >=' => 2, //2 or 3
             )));
             $runs[$key]['r__total_tasks'] = 0;
 
@@ -1063,7 +1081,7 @@ WHERE ru.ru_status >= 4
 	        $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
 	    }
 	    if(!isset($insert_columns['b_status'])){
-	        $insert_columns['b_status'] = 0; //On Hold by default
+	        $insert_columns['b_status'] = 2; //Private by Default
 	    }
 	    if(!isset($insert_columns['b_algolia_id'])){
 	        $insert_columns['b_algolia_id'] = 0;
@@ -1348,7 +1366,7 @@ WHERE ru.ru_status >= 4
                     ));
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
-                    $url = 'https://mench.co/console/'.$link_data['e_b_id'];
+                    $url = 'https://mench.com/console/'.$link_data['e_b_id'];
 
                     //Determine the body of this notification, as we prefer the custom notes on e_message, and if not, we'd go with a_desc
                     $body = ( strlen($link_data['e_message'])>0 ? trim(strip_tags($link_data['e_message'])) : trim(strip_tags($engagements[0]['a_desc'])) );
@@ -1363,7 +1381,7 @@ WHERE ru.ru_status >= 4
                                     'i_media_type' => 'text',
                                     'i_message' => $subject."\n\n".$body."\n\n".$url,
                                     'i_url' => $url,
-                                    'e_initiator_u_id' => 0, //System/MenchBot
+                                    'e_initiator_u_id' => 0, //System
                                     'e_recipient_u_id' => $bi['u_id'],
                                     'e_b_id' => $link_data['e_b_id'],
                                     'e_r_id' => ( isset($link_data['e_r_id']) ? $link_data['e_r_id'] : 0 ),
@@ -1413,7 +1431,7 @@ WHERE ru.ru_status >= 4
                         $html_message .= '<br />';
                         $html_message .= '<div>Cheers,</div>';
                         $html_message .= '<div>Mench Engagement Watcher</div>';
-                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.co/api_v1/blob/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
+                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.com/api_v1/blob/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
 
                         //Send email:
                         $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);

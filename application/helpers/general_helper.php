@@ -241,11 +241,10 @@ function echo_classmates($b_id,$r_id,$is_instructor){
                 foreach($bs[0]['c__child_intents'] as $task) {
                     if($task['c_status']>=1){
 
-                        $class_has_ended = ($class['r__current_milestone']<0);
-                        $task_started = ($task['cr_outbound_rank']<=$class['r__current_milestone'] || $class_has_ended);
+                        $class_has_ended = (time() > $class['r__class_end_time']);
+                        $task_started = ($class_has_ended);
                         $required_steps = 0;
                         $completed_steps = 0;
-                        $pending_revisions = 0; //TODO Implement later...
 
                         $step_details = null; //To show details when clicked
                         //Calculate the Step completion rate and points for this
@@ -303,10 +302,7 @@ function echo_classmates($b_id,$r_id,$is_instructor){
 
 
                         //What is the Task status based on its Steps?
-                        if($pending_revisions>0){
-                            //Some of its Steps are pending revision:
-                            $us_task_status = -1;
-                        } elseif($completed_steps>=$required_steps){
+                        if($completed_steps>=$required_steps){
                             //Completed all Steps:
                             $us_task_status = 1;
                         } elseif(!$task_started){
@@ -324,10 +320,6 @@ function echo_classmates($b_id,$r_id,$is_instructor){
                         echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$task['c_id'].'" aria-hidden="true"></i> ';
                         echo '<span data-toggle="tooltip" title="'.str_replace('"', "", str_replace("'", "", $task['c_objective'])).'">'.status_bible('us',$us_task_status,1,'right').' Task '.$task['cr_outbound_rank'].'</span>';
                         echo '</a>';
-
-                        if($task['cr_outbound_rank']==$class['r__current_milestone']){
-                            echo ' <span class="badge badge-current"><i class="fa fa-hand-o-left" aria-hidden="true"></i> CLASS IS HERE</span>';
-                        }
 
                         echo '</div>';
 
@@ -722,6 +714,9 @@ function detect_embed_video($url,$full_message){
     }
 }
 
+
+
+
 function echo_i($i,$first_name=null,$fb_format=false){
     
     //Must be one of these types:
@@ -771,7 +766,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
         if(substr_count($i['i_message'],'{button}')>0 && isset($i['i_c_id']) && isset($i['e_b_id'])){
 
             $button_title = 'Open in 🚩Action Plan';
-            $button_url = 'https://mench.co/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
+            $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
             $command = '{button}';
 
         } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
@@ -780,7 +775,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
             $button_title = '🎟️ My Project Application';
-            $button_url = 'https://mench.co/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
+            $button_url = 'https://mench.com/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
             $command = '{admissions}';
 
         } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_recipient_u_id'])) {
@@ -788,7 +783,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             //append their My Account Button/URL:
             $timestamp = time();
             $button_title = '👉 Reset Password Here';
-            $button_url = 'https://mench.co/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+            $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
             $command = '{passwordreset}';
 
         } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_recipient_u_id']) && isset($i['e_b_id'])) {
@@ -841,7 +836,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
                     //Facebook Messenger Webview adds an additional button to view full screen:
                     if(isset($i['show_new_window'])){
                         //HTML media format:
-                        $i['i_message'] .= '<div><a href="https://mench.co/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
+                        $i['i_message'] .= '<div><a href="https://mench.com/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
                     }
 
                 } else {
@@ -868,10 +863,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 //We found it, append the name:
                 //$i['i_message'] .= ' -'.$matching_users[0]['u_fname'].$matching_users[0]['u_lname'];
             } else {
-                //$i['i_message'] .= ' -MenchBot';
+                //$i['i_message'] .= ' -Mench';
             }
         } else {
-            //$i['i_message'] .= ' -MenchBot';
+            //$i['i_message'] .= ' -Mench';
         }
         */
 
@@ -979,7 +974,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             //Facebook Messenger Webview adds an additional button to view full screen:
             if(isset($i['show_new_window']) && $i['i_media_type']=='video'){
                 //HTML media format:
-                $echo_ui .= '<div><a href="https://mench.co/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
+                $echo_ui .= '<div><a href="https://mench.com/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
             }
 
         }
@@ -1122,7 +1117,7 @@ function echo_br($admin){
     //Is this a Mench Adviser?
     if($admin['ba_status']==1){
         //let them know how to get in touch:
-        $ui .= ' &nbsp; Get in touch using <img data-toggle="tooltip" data-placement="left" title="MenchBot on Facebook Messenger. Accessible via Console and other devices." src="/img/MessengerIcon.png" class="profile-icon" />';
+        $ui .= ' &nbsp; Get in touch using <img data-toggle="tooltip" data-placement="left" title="Facebook Messenger accessible via Console and other devices." src="/img/MessengerIcon.png" class="profile-icon" />';
     }
 
     //Are they shown on the profile?
@@ -1293,9 +1288,6 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     //Right content
     $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-        if($level==2 && $editing_enabled){
-            $ui .= '<a id="simulate_'.$intent['c_id'].'" class="badge badge-primary btn-mls" href="javascript:tree_message('.$intent['c_id'].','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when '.$core_objects['level_'.($level-1)]['o_name'].' starts" data-placement="top"><i class="fa fa-mobile" aria-hidden="true"></i></a>';
-        }
 
         //Enable total hours/Task reporting...
         if($level<=2){
@@ -1333,7 +1325,7 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
         //Task:
         //( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1))
-        $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-minus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'">'.$core_objects['level_'.($level-1)]['o_icon'].' Task #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
+        $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'"> #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
 
     } elseif ($level>=3){
 
@@ -1355,7 +1347,7 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     //Any Steps?
     if($level==2){
 
-        $ui .= '<div id="list-outbound-'.$intent['c_id'].'" class="list-group step-group" node-id="'.$intent['c_id'].'">';
+        $ui .= '<div id="list-outbound-'.$intent['c_id'].'" class="list-group step-group hidden" node-id="'.$intent['c_id'].'">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_step_sortable dropin-box" style="height:1px;">&nbsp;</div>';
         if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
@@ -1522,7 +1514,7 @@ function calculate_project_status($b){
         }
         
         //Prepare key variables:
-        $task_anchor = 'Task #'.$c['cr_outbound_rank'].' ';
+        $task_anchor = ' #'.$c['cr_outbound_rank'].' ';
 
 
         //Task On Start Messages
@@ -1762,18 +1754,6 @@ function calculate_project_status($b){
         'time_min' => $estimated_minutes,
     ));
 
-
-    //b_status
-    $estimated_minutes = 5;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( $b['b_status']>=1 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings',
-        'anchor' => '<b>Set Project Status to '.status_bible('b',1).'</b> in Settings',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
     
     
     //Return the final message:
@@ -1785,6 +1765,96 @@ function calculate_project_status($b){
     );
 }
 
+
+function echo_r($b_id,$class,$append_class=null){
+
+    echo '<li class="list-group-item '.$append_class.'">';
+    echo '<span class="pull-right">';
+
+    if($class['r__current_admissions']>0){
+        echo '<a href="/console/'.$b_id.'/classes/'.$class['r_id'].'" class="badge badge-primary" style="text-decoration: none;">';
+        echo $class['r__current_admissions'].' <i class="fa fa-users" aria-hidden="true"></i>';
+        echo '</a>';
+
+    } else {
+        echo '<span class="badge badge-primary" style="background-color: #CCC;" data-toggle="tooltip" data-placement="right" title="No students yet">0 <i class="fa fa-users" aria-hidden="true"></i></span>';
+    }
+    echo '</span>';
+
+    //Determine the state of the Checkbox:
+    if($class['r_status']<=1){
+        echo '<span class="form-group label-floating" style="display:inline; margin-left:-9px;">
+                    <span class="checkbox" style="display:inline;" data-toggle="tooltip" data-placement="right" title="Unckeck If Support Unavailable">
+                        <label><input type="checkbox" id="activate_'.$class['r_id'].'" checked /></label>
+                    </span>
+                </span>';
+    } else {
+        echo '<span style="margin:0 7px 2px 0; display:inline-block;">'.status_bible('r',$class['r_status'], 1,'right').'</span>';
+    }
+
+    echo time_format($class['r_start_date'],1);
+
+    if($class['r__guided_admissions']>0){
+        echo '<span style="margin-left:4px;" data-toggle="tooltip" data-placement="right" title="Class has sold '.$class['r__guided_admissions'].' Guided Packages"><i class="fa fa-life-ring" aria-hidden="true"></i></span>';
+    }
+
+    echo '</li>';
+}
+
+
+
+
+function two_level_menu($c,$level=1){
+
+    $CI =& get_instance();
+    $ui = null;
+
+    if(!is_array($c) && intval($c)>0){
+        $cs = $CI->Db_model->c_fetch(array(
+            'c_id' => $c,
+        ));
+        $c = $cs[0];
+    }
+
+    //Fetch children:
+    $c_child = $CI->Db_model->cr_outbound_fetch(array(
+        'cr.cr_inbound_id' => $c['c_id'],
+        'cr.cr_status >' => 0,
+        'c.c_status >' => 0,
+    ));
+
+    if($level==3 && count($c_child)==0){
+        //return false;
+    }
+
+    if($level==1){
+        $ui .= '<div class="list-group">';
+    }
+
+
+    //Show the item:
+    $ui .= '<a href="javascript:void(0);" onclick="load_menu('.$c['c_id'].',\''.md5($c['c_id'].'menu89Hash').'\')" class="list-group-item '.($level==1 ? 'active' :'').'" style="'.($level==3 ? 'padding-left:20px;' : '').'; text-decoration:none;">';
+    $ui .= '<span class="pull-right">';
+    $ui .= '<span class="badge badge-primary">'.count($c_child).' <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+    $ui .= '</span>';
+    $ui .= '<span style="font-weight:'.($level<=2 ? 'bold' :'normal').';">'.$c['c_objective'].'</span>';
+    $ui .= '</a>';
+
+
+    //Which level?
+    if($level<=2){
+        //Loop through and See How many children?
+        foreach($c_child as $child_intent){
+            $ui .= two_level_menu($child_intent,($level+1));
+        }
+    }
+
+    if($level==1){
+        $ui .= '</div>';
+    }
+
+    return $ui;
+}
 
 
 function echo_checklist($href,$anchor,$us_status,$time_min=0){

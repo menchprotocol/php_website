@@ -43,7 +43,7 @@ class Bot extends CI_Controller {
                 'i_media_type' => 'text',
                 'i_message' => 'Sample message',
                 'i_button' => 'Review button',
-                'i_url' => 'https://mench.co/my/review/',
+                'i_url' => 'https://mench.com/my/review/',
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => 1,
             ),
@@ -305,7 +305,7 @@ class Bot extends CI_Controller {
 					
 				} elseif(isset($im['message_request']) && $im['message_request']=='accept') {
 				    
-				    //This is when we message them and they accept to chat because they had deleted MenchBot or something...
+				    //This is when we message them and they accept to chat because they had deleted Messenger or something...
 				    //TODO maybe later log an engagement
 				    
 				} elseif(isset($im['message'])) {

@@ -17,11 +17,7 @@ class Front extends CI_Controller {
 		$this->load->view('front/shared/f_header' , array(
 		    'title' => '7-Day Projects Lead by Industry Experts',
 		));
-		$this->load->view('front/project/marketplace' , array(
-		    'bs' => $this->Db_model->remix_projects(array(
-                'b.b_status' => 3,
-            )),
-        ));
+		$this->load->view('front/project/marketplace');
 		$this->load->view('front/shared/f_footer');
 	}
 	
@@ -69,12 +65,12 @@ class Front extends CI_Controller {
 	 ****************************** */
 
 
-	function instructors(){
+	function experts(){
 	    $this->load->view('front/shared/f_header' , array(
             'title' => 'Guide Students to Success',
             'landing_page' => 'front/splash/instructors_why',
 	    ));
-	    $this->load->view('front/instructors');
+	    $this->load->view('front/experts');
 	    $this->load->view('front/shared/f_footer');
 	}
 	

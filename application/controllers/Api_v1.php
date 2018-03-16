@@ -26,6 +26,65 @@ class Api_v1 extends CI_Controller {
 	 * Miscs
 	 ****************************** */
 
+	function load_menu($c_id,$hash_key){
+
+        if(!isset($_POST['c_id']) || !isset($_POST['hash_key']) || !($_POST['hash_key']==md5($_POST['c_id'].'menu89Hash'))){
+            die('<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
+        }
+
+        //Fetch projects:
+        $bs = $this->Db_model->remix_projects(array(
+            'b.b_status >=' => 4,
+        ));
+
+	    echo '<div class="row">';
+        foreach($bs as $count=>$b){
+
+            //Fetch class:
+            $focus_class = filter_class($b['c__classes'],null);
+
+            if(!$focus_class){
+                continue;
+            }
+
+            echo '<div class="col-sm-6">
+    <div class="card card-product">
+        <!-- <div class="card-image"></div> -->
+
+        <div class="card-content">';
+
+            //echo '<h6 class="category text-muted">'.$b['ct_icon'].' '.$b['ct_name'].'</h6>';
+            echo '<h4 class="card-title" style="font-size: 1.4em; line-height: 110%; margin:15px 0 12px 0;"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
+            echo '<div class="card-description"><b>'.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).': '.echo_hours(($b['c__estimated_hours']/7)).' per Day</b></div>';
+
+
+            echo '<div class="card-description">By ';
+            //Print lead admin:
+            foreach($b['b__admins'] as $admin){
+                if($admin['ba_status']==3){
+                    echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
+                }
+            }
+            echo '</div>';
+
+            echo '<div class="footer">
+                <div class="price">
+                    <h4>'.echo_price($focus_class['r_usd_price']).'</h4>
+                </div>
+                <div class="stats"><span>Starts <b>'.time_format($focus_class['r_start_date'],1).'</b></span></div>
+            </div>';
+
+            echo '</div>
+</div>
+</div>';
+
+            if(fmod($count,3)==0){
+                echo '</div><div class="row">';
+            }
+        }
+        echo '</div>';
+    }
+
 	function import_content_loader(){
 
         if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0){
@@ -1297,7 +1356,7 @@ class Api_v1 extends CI_Controller {
             $co_instructors = $this->Db_model->user_projects(array(
                 'ba.ba_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
-                'b.b_status >=' => 0,
+                'b.b_status >=' => 2,
             ));
         }
 
@@ -1559,8 +1618,6 @@ class Api_v1 extends CI_Controller {
 
         if(!$focus_class){
             die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
-        } elseif(0 && ($focus_class['r__current_milestone']<0 || $focus_class['r_status']>2)){
-            die('<span style="color:#FF0000;">Error: Class has ended so you can no longer mark Steps as complete.</span>');
         } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
             die('<span style="color:#FF0000;">Error: Invalid Step ID</span>');
         //Submission settings:
@@ -1579,7 +1636,7 @@ class Api_v1 extends CI_Controller {
         ));
 
         if(count($us_data)>0 && $us_data[0]['us_status']==1){
-            die('<span style="color:#FF0000;">Error: You have already marked this Step as complete. You cannot re-submit it, but you can share updates with your instructor on MenchBot.</span>');
+            die('<span style="color:#FF0000;">Error: You have already marked this Step as complete,yYou cannot re-submit it.</span>');
         }
 
         //If we have a row that means us_status!=1, which means this is a resubmission
@@ -1811,13 +1868,10 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
             ));
 
-            //Is this student up to date with all their Steps?
-            $is_uptodate = ($intent_data['next_intent']['cr_outbound_rank']<=$focus_class['r__current_milestone']);
-
             //Send appropriate Message:
             $this->Comm_model->foundation_message(array(
                 'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => ( $is_uptodate ? $intent_data['next_intent']['c_id'] : 4631 /* Next Task not started */ ),
+                'e_c_id' => $intent_data['next_intent']['c_id'],
                 'depth' => 0,
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
@@ -1957,36 +2011,6 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-	function class_timeline(){
-
-	    //Displays the class timeline based on some inputs:
-	    if(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pick a start date to see class timeline.</span>');
-	    } elseif(!isset($_POST['r_start_time_mins'])){
-	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pick a start time to see class timeline.</span>');
-	    } elseif(!isset($_POST['c__milestone_units']) || intval($_POST['c__milestone_units'])<=0){
-	        die('<span style="color:#000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Add some Tasks to your Action Plan to see class timeline.</span>');
-	    } elseif(!isset($_POST['b_id'])){
-	        die('<span style="color:#FF0000;">Error: Missing Project ID.</span>');
-	    } elseif(!isset($_POST['b_status'])){
-	        die('<span style="color:#FF0000;">Error: Missing Project Status.</span>');
-	    }
-	    
-	    $_POST['c__milestone_units'] = intval($_POST['c__milestone_units']);
-	    //Incldue config variables:
-        $start_times = $this->config->item('start_times');
-	    
-	    //Start calculations:
-        echo '<div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Class Timeline</h4></div>';
-        echo '<ul style="list-style:decimal;">';
-            echo '<li>Admissions Starts: <b>'.(intval($_POST['b_status'])>=2?'ASAP':'When Project is '.status_bible('b',2)).'</b></li>';
-	        echo '<li>Admission Ends: <b>'.time_format($_POST['r_start_date'],2,-60).' PST</b></li>';
-	        echo '<li>Class Starts: <b>'.time_format($_POST['r_start_date'],2).' 00:00 PST</b></li>';
-	        echo '<li>Instant Payout by: <b>'.time_format($_POST['r_start_date'],2, (18*3600)).' PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-	        echo '<li>Class Ends: <b>'.time_format($_POST['r_start_date'],2,(7*24*3600-60)).' '.$start_times[$_POST['r_start_time_mins']].' PST</b></li>';
-    	    echo '<li>Performance Payout by: <b>'.time_format($_POST['r_start_date'],2,(14*24*3600+18*3600)).' PST</b> <a href="https://support.mench.co/hc/en-us/articles/115002473111" title="Learn more about Mench Payouts" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></li>';
-    	    echo '</ul>';
-	}
 
 	function r_create(){
 	    $udata = auth(2);
@@ -1995,10 +2019,8 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
         } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
             die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-        } elseif((strtotime($_POST['r_start_date'])+($_POST['r_start_time_mins']*60))<time()){
+        } elseif((strtotime($_POST['r_start_date']))<time()){
             die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
-	    } elseif(!isset($_POST['r_start_time_mins'])){
-	        die('<span style="color:#FF0000;">Error: Enter valid start time.</span>');
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
@@ -2040,7 +2062,6 @@ class Api_v1 extends CI_Controller {
 	                
 	                //Make some adjustments
 	                $class_data['r_start_date'] = $new_date;
-	                $class_data['r_start_time_mins'] = intval($_POST['r_start_time_mins']);
 	                $class_data['r_status'] = intval($_POST['r_status']); //Override with input status
 
 	                //Remove all additional appended data and certain non-replicatable data fields like r_id:
@@ -2061,7 +2082,6 @@ class Api_v1 extends CI_Controller {
 	            $class_data = array(
 	                'r_b_id' => intval($_POST['r_b_id']),
 	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	                'r_start_time_mins' => intval($_POST['r_start_time_mins']),
 	                'r_status' => intval($_POST['r_status']),
 	            );
 	            
@@ -2071,8 +2091,8 @@ class Api_v1 extends CI_Controller {
 	        
 	        
 	        //Create new class:
-	        $class = $this->Db_model->r_create($class_data);
-	        
+            $class = $this->Db_model->r_create($class_data);
+
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
@@ -2147,40 +2167,19 @@ class Api_v1 extends CI_Controller {
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 
-	function class_edit(){
+	function class_update_status(){
 
-        $message_max = $this->config->item('message_max');
 	    $udata = auth(2);
 	    if(!$udata){
 	        //Display error:
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-	        die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
 	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
-	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Missing Class Status.</span>');
-	    } elseif(strlen($_POST['r_office_hour_instructions'])>$message_max){
-	        die('<span style="color:#FF0000;">Error: Contact Instructions Message must be less than '.$message_max.' characters long.</span>');
 	    }
 	    
-	    //Check Duplicate Date:
-	    $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
-	    //Check for unique start date:
-	    $current_classes = $this->Db_model->r_fetch(array(
-	        'r.r_id !=' => intval($_POST['r_id']),
-	        'r.r_b_id' => intval($_POST['b_id']),
-	        'r.r_status >=' => 0,
-	        'r.r_start_date' => $new_date,
-	    ));
-	    if(count($current_classes)>0){
-	        //Ooops, we cannot have duplicate dates:
-	        die('<span style="color:#FF0000;">Error: Cannot have two classes starting on the same day.</span>');
-	    }
-	    
-	    
+
 	    //Fetch for the record:
 	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
@@ -2189,34 +2188,16 @@ class Api_v1 extends CI_Controller {
 	        //Ooops, not found!
 	        die('<span style="color:#FF0000;">Error: Class ID not found.</span>');
 	    }
-	    
-	    
-	    //Fetch config variables for checking:
-	    $start_times = $this->config->item('start_times');
-	    
-	    $r_update = array(
-	        'r_start_date' => $new_date,
-	        'r_start_time_mins' => ( array_key_exists(intval($_POST['r_start_time_mins']),$start_times) ? intval($_POST['r_start_time_mins']) : null ),
-	        'r_status' => intval($_POST['r_status']),
-	        'r_office_hour_instructions' => ( strlen($_POST['r_office_hour_instructions'])>0 ? trim($_POST['r_office_hour_instructions']) : null ),
-	        'r_min_students' => intval($_POST['r_min_students']),
-	        'r_max_students' => ( strlen($_POST['r_max_students'])>0 && intval($_POST['r_max_students'])>=0 ? intval($_POST['r_max_students']) : null ),
-	    );
-	    
-	    if(isset($_POST['r_live_office_hours_check']) && !intval($_POST['r_live_office_hours_check'])){
-	        //User the office schedule off, lets disable it:
-	        $r_update['r_live_office_hours'] = null;
-	    }	    
-	    
+
+
 	    //Save
-	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
+	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
+            'r_status' => intval($_POST['r_status']),
+        ));
 
 
 	    //Determine what type of engagement is this?
-        if($r_update['r_status']==-3 && $r_update['r_status']!=$classes[0]['r_status']){
-            //Abandoned:
-            $e_type_id = 57;
-        } elseif($r_update['r_status']==-1 && $r_update['r_status']!=$classes[0]['r_status']){
+        if($_POST['r_status']==-1 && $_POST['r_status']!=$classes[0]['r_status']){
             //Archived:
             $e_type_id = 16;
         } else {
@@ -2551,16 +2532,10 @@ class Api_v1 extends CI_Controller {
             //Did the status change? Log Engagement for this:
             if(!(intval($_POST['b_status'])==intval($bs[0]['b_status']))){
                 if(intval($_POST['b_status'])<0){
-                    //Archived:
+                    //Archived
                     $engagement_type_id = 17;
-                } elseif(intval($_POST['b_status'])==1) {
-                    //Request to publish
-                    $engagement_type_id = 37;
-                } elseif(intval($_POST['b_status'])==2) {
-                    //Published Privately
-                    $engagement_type_id = 67;
                 } elseif(intval($_POST['b_status'])==3) {
-                    //Published to Marketplace
+                    //Public in Marketplace
                     $engagement_type_id = 68;
                 }
             }

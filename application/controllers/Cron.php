@@ -28,27 +28,10 @@ class Cron extends CI_Controller {
             'r_start_date <=' => date("Y-m-d"),
         ));
 
-        //Include email model for certain communications:
-        $start_times = $this->config->item('start_times');
-
         //Generate stats for this cron run:
         $stats = array();
 
         foreach($classes as $key=>$class){
-
-            //Make sure the start time has already passed:
-            if( time() < ( strtotime($class['r_start_date']) + (($class['r_start_time_mins']-1)*60) )){
-
-                //Add to report:
-                $stats[$class['r_id']] = array(
-                    'b_id' => $class['r_b_id'],
-                    'initial_status' => $class['r_status'],
-                    'message' => 'Class starts at '.$start_times[$class['r_start_time_mins']].' PST (Not yet started).',
-                );
-
-                //Not started yet!
-                continue;
-            }
 
             //Fetch full Project/Class data for this
             //See if we have a copy of this Action Plan:
@@ -168,8 +151,6 @@ class Cron extends CI_Controller {
                 $cancellation_reason = 'Project did not have any published Tasks';
             } elseif(count($accepted_admissions)==0) {
                 $cancellation_reason = 'no students applied/got-admitted into this Class';
-            } elseif(count($accepted_admissions)<$class['r_min_students']) {
-                $cancellation_reason = 'only ['.count($accepted_admissions).'] students were admitted which was below the minimum requirement of ['.$class['r_min_students'].']';
             }
 
             if($cancellation_reason){
@@ -220,7 +201,6 @@ class Cron extends CI_Controller {
                     'e_initiator_u_id' => 0, //System
                     'e_message' => 'Class did not start because '.$cancellation_reason.'.',
                     'e_json' => array(
-                        'minimum' => $class['r_min_students'],
                         'admitted' => $accepted_admissions,
                     ),
                     'e_type_id' => 56, //Class Cancelled
@@ -409,7 +389,7 @@ class Cron extends CI_Controller {
                                         'i_media_type' => 'text',
                                         'i_message' => $review_message,
                                         'i_button' => $review_button,
-                                        'i_url' => 'https://mench.co/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
+                                        'i_url' => 'https://mench.com/my/review/'.$admission['ru_id'].'/'.substr(md5($admission['ru_id'].'r3vi3wS@lt'),0,6),
                                         'e_initiator_u_id' => 0,
                                         'e_recipient_u_id' => $admission['u_id'],
                                         'e_b_id' => $class['r_b_id'],
@@ -625,16 +605,35 @@ class Cron extends CI_Controller {
 
     function create_classes(){
 
-        //Creates Classes for the entire year for all Active Bootcamps
+        //First determine all dates we'd need:
+        $dates_needed = array();
+        $start = strtotime('next monday');
+        for($i=0;$i<55;$i++){
+            $new_timestamp = $start+($i*7*24*3607); //The extra 7 seconds makes sure we don't get into Sundays
+            if(date("D",$new_timestamp)=='Mon'){
+                array_push($dates_needed,date("Y-m-d",($start+($i*7*24*3607))));
+            } else {
+                //Log error:
+                $this->Db_model->e_create(array(
+                    'e_message' => 'r_sync() generated Class date that was Not a Monday',
+                    'e_type_id' => 8, //System Error
+                ));
+            }
+        }
+
+
+        //Now fetch all Active Bootcamps:
         $bs = $this->Db_model->b_fetch(array(
-            'b_status >=' => 0, //Drafting or higher
+            'b_status >=' => 2,
         ));
 
+        $stats = array();
+
         foreach($bs as $b){
-            $bs = $this->Db_model->r_sync($b['b_id']);
-
-
+            $stats[$b['b_id']] = $this->Db_model->r_sync($b['b_id']);
         }
+
+        echo_json($stats);
 
     }
 
@@ -842,7 +841,7 @@ class Cron extends CI_Controller {
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
                 if(count($msg['project_data'])>0 && strlen($message)<580){
-                    $message .= "\n\n".'https://mench.co/console/'.$msg['project_data']['b_id'];
+                    $message .= "\n\n".'https://mench.com/console/'.$msg['project_data']['b_id'];
                 }
 
                 $notify_messages[$key]['admin_message'] = $message;
@@ -890,7 +889,7 @@ class Cron extends CI_Controller {
                 'e_type_id' => 28, //Email sent
                 'e_recipient_u_id' => $admission['u_id'],
                 'e_r_id' => $admission['r_id'],
-                'e_c_id IN (3140,3127,3128,3129,3130)' => null, //The ID of the 5 email reminders https://mench.co/console/53/actionplan
+                'e_c_id IN (3140,3127,3128,3129,3130)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
             ));
 
             $admission_end_time = strtotime($admission['r_start_date']) - 60; //11:59PM the night before start date
@@ -1031,7 +1030,7 @@ class Cron extends CI_Controller {
                 if($twohour_start && $twohour_start==$start_hour){
 
                     //Trigger 2 hours notice:
-                    $instructor_message = '📅 Reminder: your ['.$bs[0]['c_objective'].'] Project group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.co/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
+                    $instructor_message = '📅 Reminder: your ['.$bs[0]['c_objective'].'] Project group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.com/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
 
                 } elseif($onehour_start && $onehour_start==$start_hour){
 

@@ -5,7 +5,7 @@
     <?php /*<p><b>Chat with us</b> using the chat/support button on the bottom-right of your screen, or:</p>*/ ?>
 	
 	<div class="row" style="margin-top:30px;">
-		<div class="col-md-3 col-sm-4">
+		<div class="col-sm-4">
 				<div class="info info-horizontal" style="margin:0;">
 					<div class="icon icon-primary">
 						<i class="material-icons">email</i>
@@ -17,7 +17,7 @@
 	        	</div>
 			
 		</div>
-		<div class="col-md-3 col-sm-4">
+		<div class="col-sm-4">
 				<div class="info info-horizontal" style="margin:0;">
 					<div class="icon icon-primary">
 						<i class="material-icons">phone</i>
@@ -31,7 +31,7 @@
 	        	</div>
 			
 		</div>
-		<div class="col-md-6 col-sm-4">
+		<div class="col-sm-4">
 				<div class="info info-horizontal" style="margin:0;">
 					<div class="icon icon-primary">
 						<i class="material-icons">pin_drop</i>
