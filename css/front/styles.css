@@ -124,6 +124,10 @@ a.badge-primary:hover {
     border-top: 0px solid #ddd;
 }
 
+.description, .card-description, .footer-big p, .card .footer .stats {
+    color: #333;
+}
+
 .panel-title{
 	font-size: 1.2em !important;
     font-weight: bold !important;
@@ -747,7 +751,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .card-product .footer .stats {
     margin-top: 17px;
 }
-.card-image .video-sorting { border-radius:6px; display: block; overflow: hidden; }
+.card-image .video-sorting, .card-image video { border-radius:6px; display: block; overflow: hidden; }
 
 @media (max-width: 767px){
 

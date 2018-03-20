@@ -915,13 +915,7 @@ class Api_v1 extends CI_Controller {
 
                     //They still need to complete their application for this Class, redirect them to the next step:
                     //Logic is inspired from my_applications.php file
-                    if(strlen($duplicate_registries[0]['ru_application_survey'])==0){
-                        //Need to complete the Application:
-                        die(echo_json(array(
-                            'status' => 1,
-                            'hard_redirect' => '/my/class_application/'.$duplicate_registries[0]['ru_id'].'?u_key='.$u_key.'&u_id='.$udata['u_id'],
-                        )));
-                    } elseif($duplicate_registries[0]['r_usd_price']>0){
+                    if($duplicate_registries[0]['r_usd_price']>0){
                         //This must be the case if they have already completed the Application:
                         die(echo_json(array(
                             'status' => 0,
@@ -1126,12 +1120,20 @@ class Api_v1 extends CI_Controller {
 	    //Save answers:
 	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
 
-	    
-	    //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
-	    //The "pay_r_id" variable makes the next page redirect to paypal automatically for PAID classes
-	    //Show message & redirect:
-	    echo '<script> setTimeout(function() { window.location = "/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'].'" }, 1000); </script>';
-	    echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted 🙌​</div>';
+        //Redirect needed?
+        if(doubleval($admissions[0]['r_usd_price'])==0 && strlen($admissions[0]['b_thankyou_url'])>0){
+            //Instructor has specific URL in mind:
+            $next_url = $admissions[0]['b_thankyou_url'];
+        } else {
+            //Default URL:
+            $next_url = '/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
+        }
+
+        //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
+        //The "pay_r_id" variable makes the next page redirect to paypal automatically for PAID classes
+        //Show message & redirect:
+        echo '<script> setTimeout(function() { window.location = "" }, 1000); </script>';
+        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted 🙌​</div>';
 	}
 
 	function withdraw_application(){
@@ -2416,10 +2418,16 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Select 2nd Level Category',
             ));
             return false;
-        } elseif(strlen($_POST['b_support_email'])>0 && !filter_var($_POST['b_support_email'], FILTER_VALIDATE_EMAIL)){
+        } elseif(strlen($_POST['b_support_email'])>0 && !filter_var($_POST['b_support_email'], FILTER_VALIDATE_EMAIL)) {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Enter Valid Forwarding Email Address',
+            ));
+            return false;
+        } elseif(strlen($_POST['b_thankyou_url'])>0 && !filter_var($_POST['b_thankyou_url'], FILTER_VALIDATE_URL)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Enter Valid Thank You URL',
             ));
             return false;
         } elseif(strlen($_POST['b_calendly_url'])>0 && substr_count($_POST['b_calendly_url'],'https://calendly.com/')==0){
@@ -2502,6 +2510,7 @@ class Api_v1 extends CI_Controller {
             'b_p3_rate' => doubleval($_POST['b_p3_rate']),
             'b_support_email' => $_POST['b_support_email'],
             'b_calendly_url' => $_POST['b_calendly_url'],
+            'b_thankyou_url' => $_POST['b_thankyou_url'],
             'b_difficulty_level' => ( intval($_POST['b_difficulty_level'])>0 ? intval($_POST['b_difficulty_level']) : null ),
         );
 

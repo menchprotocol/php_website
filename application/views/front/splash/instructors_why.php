@@ -12,8 +12,8 @@ $udata = $this->session->userdata('user');
         	?>
             <div class="row">
 				<div class="col-sm-9">
-                    <h1 class="home-p" style="margin-top:80px;">Let's Do It</h1>
-                    <p style="font-size: 1.6em; color:#000; font-weight: 300; line-height: 110%;">Empower your students to accomplish tangible results by taking action, 1 week at a time.</p>
+                    <h1 class="home-p" style="margin-top:80px;">Mine Your Intelligence</h1>
+                    <p style="font-size: 1.6em; color:#000; font-weight: 300; line-height: 110%;">Empower students to achieve tangible results by organizing and distributing your industry experience worldwide.</p>
 
 				</div>
 				<div class="col-sm-3">&nbsp;</div>

@@ -1,4 +1,5 @@
 <script>
+
     function withdraw_application(ru_id){
 
         //Confirm that they want to do this:
@@ -39,6 +40,18 @@
         });
 
     }
+
+    $(document).ready(function() {
+
+        var b_thankyou_url = '<?= $b_thankyou_url ?>';
+        if(b_thankyou_url.length>0){
+            //We have a URL to redirect to as requested by Instructor:
+            $('#application_status').html('<img src="/img/round_yellow_load.gif" class="loader" />');
+            window.location.href = b_thankyou_url;
+        }
+
+    });
+
 </script>
 
 <?php
@@ -77,13 +90,7 @@ if(count($admissions)>0 && is_array($admissions)){
         echo '<div class="checkbox"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Initiate Application</label></div>';
 
 
-        //Apply Form:
-        $qa_title = 'Step 2: Submit Application Questionnaire';
-        if(strlen($admission['ru_application_survey'])>0){
-            echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$qa_title.'</label></div>';
-        } else {
-            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="/my/class_application/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'"> '.$qa_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
-        }
+
 
 
         if($class['r_usd_price']>0){

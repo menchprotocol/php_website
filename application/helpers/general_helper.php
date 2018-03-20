@@ -731,6 +731,7 @@ function detect_embed_video($url,$full_message){
         //Not matched with an embed rule:
         return false;
     }
+
 }
 
 

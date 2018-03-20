@@ -14,6 +14,13 @@ $udata = $this->session->userdata('user');
 <div class="row text-center">
     <div class="col-md-4">
         <div class="info">
+            <div class="icon icon-default mtweak"><i class="fa fa-users" aria-hidden="true"></i></div>
+            <h3 class="info-title">Student Base</h3>
+            <p>Reach a growing community of Students who love learning with out weekly Bootcamps. Approved Bootcamps also benefit from personalized marketing campaigns designed to grow your Student base.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="info">
             <div class="icon icon-default mtweak"><i class="fa fa-microchip" aria-hidden="true"></i></div>
             <h3 class="info-title">Technology</h3>
             <p>Our technology is designed from the ground up to maximize student engagement. We automate notifications and reminders to help you take more of your students across the finish line.</p>
@@ -21,16 +28,9 @@ $udata = $this->session->userdata('user');
     </div>
     <div class="col-md-4">
         <div class="info">
-            <div class="icon icon-default mtweak"><i class="fa fa-bandcamp" aria-hidden="true"></i></div>
-            <h3 class="info-title">Knowledge</h3>
-            <p>Building an engaging curriculum that inspires students to take action is no piece of cake. We share best-practices that help package your expertise into an effective "Action Plan" that gets your students results.</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="info">
             <div class="icon icon-default mtweak"><i class="fa fa-handshake-o" aria-hidden="true"></i></div>
             <h3 class="info-title">Support</h3>
-            <p>Personal relationships play a key role in human transformation, which is why we not only provide you with support, but effectively become your teammates in building and running your Bootcamp.</p>
+            <p>We work closely with our instructors and share best-practices for organizing their expertise into an effective "Action Plan" that gets more of your students through the finishing line.</p>
         </div>
     </div>
 </div>
@@ -57,7 +57,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-primary mtweak"><i class="material-icons">filter_1</i></div>
 					<h3 class="info-title">Create Bootcamp</h3>
-					<p>What's something your students are struggling to achieve? Launch a website, podcast or Youtube channel? Create an app or write a book? With Mench you can help them make it happen once and for all.</p>
+					<p>What's something your students are struggling to achieve? Launch a website, podcast or Youtube channel? Create a 7-Day Bootcamp that would help your Students make it happen once and for all.</p>
 				</div>
 			</div>
 			<div class="col-md-4">

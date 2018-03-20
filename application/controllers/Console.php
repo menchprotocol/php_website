@@ -62,23 +62,12 @@ class Console extends CI_Controller {
 		    'ba.ba_status >=' => 0,
 		    'b.b_status >=' => 2,
 		));
-		
-		//Did we find any?
-        /*
-		foreach($bs as $key=>$mb){
-		    //Fetch full Bootcamp:
-		    $this_full = $this->Db_model->remix_bs(array(
-		        'b.b_id' => $mb['b_id'],
-		    ));
-		    $bs[$key] = $this_full[0];
-		}
-        */
 
-		$title = ( $udata['u_cache__fp_psid']>0 ? 'My Bootcamps' : 'Activate Messenger') ;
+		$title = 'My Bootcamps';
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(
-		    'title' => trim(strip_tags($title)),
+		    'title' => $title,
 		    'breadcrumb' => array(
 		        array(
 		            'link' => null,
@@ -88,26 +77,11 @@ class Console extends CI_Controller {
 		));
 		
 		//Have they activated their Bot yet?
-		if($udata['u_cache__fp_psid']>0){
-
-		    //Yes, show them their Bootcamps:
-		    $this->load->view('console/all_projects' , array(
-		        'bs' => $bs,
-		        'udata' => $udata,
-		    ));
-
-		} else {
-		    
-		    //Fetch the ID from the Database to be up to date:
-		    $users = $this->Db_model->u_fetch(array(
-		        'u_id' => $udata['u_id'],
-		    ));
-		    
-		    //Show activation:
-		    $this->load->view('console/activate_bot' , array(
-		        'users' => $users,
-		    ));
-		}
+        //Yes, show them their Bootcamps:
+        $this->load->view('console/all_projects' , array(
+            'bs' => $bs,
+            'udata' => $udata,
+        ));
     	
 		//Footer:
 		$this->load->view('console/shared/d_footer');

@@ -263,6 +263,7 @@ function save_settings(){
         b_difficulty_level:$('#b_difficulty_level').val(),
         level1_c_id:$('.level1').val(),
         level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
+        b_thankyou_url:$('#b_thankyou_url').val(),
     };
 
     //Save the rest of the content:
@@ -320,7 +321,7 @@ function save_settings(){
                 ?>
             </select>
         </div>
-        <?php if(count($pm['p1_rates'])<=1){ ?>
+        <?php if(count($pm['p1_rates'])==1){ ?>
             <div>Universal Price: $<?= $pm['p1_rates'][0] ?>/Week/Student</div>
         <?php } ?>
 
@@ -329,7 +330,7 @@ function save_settings(){
 
         <div class="title" style="margin-top:25px;"><h4><i class="fa fa-life-ring" aria-hidden="true"></i> Guidance Package <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
-        <?php if(count($pm['p1_rates'])<=1){ ?>
+        <?php if(count($pm['p2_rates'])==1){ ?>
             <div style="margin-bottom: 5px;">Universal Price: $<?= $pm['p2_rates'][0] ?>/Week/Student</div>
         <?php } ?>
         <div class="form-group label-floating">
@@ -407,8 +408,8 @@ function save_settings(){
         <div style="clear:both; margin:0; padding:0;"></div>
 
 
-        <div class="title" style="margin-top:0;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Category <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
-        <div class="help_body maxout" id="content_4789"></div>
+        <div class="title" style="margin-top:0;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
+        <div class="help_body maxout" id="content_4869"></div>
         <div class="form-group label-floating">
             <?php
             $current_c_ids = array();
@@ -424,7 +425,8 @@ function save_settings(){
             ?>
         </div>
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Experience Level</h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Experience Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
+        <div class="help_body maxout" id="content_4868"></div>
         <div class="form-group label-floating is-empty">
             <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
@@ -438,18 +440,25 @@ function save_settings(){
         </div>
 
 
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+        <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
         <div class="help_body maxout" id="content_725"></div>
         <div class="form-group label-floating is-empty">
             <div class="input-group border" style="width:100%; max-width:380px;">
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.com/</span>
-                <input type="text" id="b_url_key" style="margin:0 !important; font-size:18px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
+                <input type="text" id="b_url_key" style="margin:0 0 0 -3px !important; font-size:16px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
             </div>
         </div>
 
 
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
+        <div class="help_body maxout" id="content_4867"></div>
+        <div class="input-group">
+            <input type="URL" id="b_thankyou_url" style="width:380px;" value="<?= $b['b_thankyou_url'] ?>" class="form-control border" />
+        </div>
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
         <div class="help_body maxout" id="content_718"></div>
         <div class="input-group">
             <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />

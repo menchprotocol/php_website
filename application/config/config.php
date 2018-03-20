@@ -46,7 +46,7 @@ $config['pricing_model'] = array(
     'baseline_rate' => 0.10, //Applied to all transactions, covers Transaction Fee
     'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Bootcamp    'p1_rates' => array(0.00,8.00,15.00), //Per Week
 
-    'p1_rates' => array(0), //Per Week 8,15
+    'p1_rates' => array(0,8,18), //Per Week 8,15
     'p1_rate_default' => 0,
 
     'p2_rates' => array(55), //Per Week 85

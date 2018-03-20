@@ -292,9 +292,13 @@ class My extends CI_Controller {
         }
 	    
 	    //Fetch all their addmissions:
-	    $admissions = $this->Db_model->ru_fetch(array(
-	        'ru_u_id'	=> $udata['u_id'],
-	    ));
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_u_id'	=> $udata['u_id'],
+        ));
+
+        $bs = $this->Db_model->b_fetch(array(
+            'b_id'	=> $admissions[0]['r_b_id'],
+        ));
 	    
 	    //Validate Class ID that it's still the latest:
 	    $data = array(
@@ -302,6 +306,7 @@ class My extends CI_Controller {
 	        'udata' => $udata,
 	        'u_id' => $_GET['u_id'],
             'u_key' => $_GET['u_key'],
+            'b_thankyou_url' => $bs[0]['b_thankyou_url'],
             'purchase_value' => $purchase_value, //Capture via Facebook Pixel
 	        'admissions' => $admissions,
 	        'hm' => ( isset($_GET['status']) && isset($_GET['message']) ? '<div class="alert alert-'.( intval($_GET['status']) ? 'success' : 'danger').'" role="alert">'.( intval($_GET['status']) ? 'Success' : 'Error').': '.$_GET['message'].'</div>' : '' ),
@@ -311,6 +316,7 @@ class My extends CI_Controller {
 	    $this->load->view('front/shared/p_header' , $data);
 	    $this->load->view('front/student/my_applications' , $data);
 	    $this->load->view('front/shared/p_footer');
+
 	}
 
 
