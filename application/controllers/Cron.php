@@ -33,7 +33,7 @@ class Cron extends CI_Controller {
 
         foreach($classes as $key=>$class){
 
-            //Fetch full Project/Class data for this
+            //Fetch full Bootcamp/Class data for this
             //See if we have a copy of this Action Plan:
             //This ensures we do not make another Copy if the instructor has already cached a copy before Class start time
             //It's a feature that is not publicly available, and would likely not happen
@@ -82,49 +82,6 @@ class Cron extends CI_Controller {
             }
 
 
-            //Auto reject all applications that were not yet accepted:
-            //TODO Maybe turn this into Auto accept?
-            $pending_admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_r_id'	    => $class['r_id'],
-                'ru.ru_status'	    => 2,
-            ));
-
-            if(count($pending_admissions)>0){
-
-                //Update counter:
-                $stats[$class['r_id']]['students']['rejected_pending'] = count($pending_admissions);
-
-                foreach($pending_admissions as $admission){
-
-                    //Auto reject:
-                    $this->Db_model->ru_update($admission['ru_id'] , array('ru_status' => -1));
-
-                    //Inform the student of rejection:
-                    $this->Comm_model->foundation_message(array(
-                        'e_initiator_u_id' => 0,
-                        'e_recipient_u_id' => $admission['u_id'],
-                        'e_c_id' => 2799,
-                        'depth' => 0,
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
-
-                    //Was this a paid class? Let admin know to manually process refunds
-                    if($class['r_usd_price']>0){
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => 0, //System
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_message' => 'Investigation needed. May need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start because the instructor did not approve them on time.',
-                            'e_type_id' => 58, //Class Manual Refund
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-                    }
-                }
-            }
-
-
-
             //lets prep for checking the conditions to get started
             //Lets see how many admitted students we have?
             $accepted_admissions = $this->Db_model->ru_fetch(array(
@@ -146,9 +103,9 @@ class Cron extends CI_Controller {
             //Now make sure class meets are requirements to get started with the following conditions:
             $cancellation_reason = null; //If remains Null we're good to get started
             if($bs[0]['b_status']<2){
-                $cancellation_reason = 'Project was not published';
+                $cancellation_reason = 'Bootcamp was not published';
             } elseif($first_task_c_id==0) {
-                $cancellation_reason = 'Project did not have any published Tasks';
+                $cancellation_reason = 'Bootcamp did not have any published Tasks';
             } elseif(count($accepted_admissions)==0) {
                 $cancellation_reason = 'no students applied/got-admitted into this Class';
             }
@@ -295,7 +252,7 @@ class Cron extends CI_Controller {
 
         foreach($running_classes as $class){
 
-            //Fetch full Project/Class data for this:
+            //Fetch full Bootcamp/Class data for this:
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
             $class = $bs[0]['this_class'];
 
@@ -476,8 +433,6 @@ class Cron extends CI_Controller {
                 'ru_r_id' => $e_message['e_r_id'],
                 'ru_status >=' => 4, //Active student
                 'r_status' => 2, //Running Class
-                'ru_fp_psid >' => 0, //Messenger activated
-                'ru_fp_id >' => 0, //Messenger activated
             ));
 
             //Prepare variables:
@@ -1003,7 +958,7 @@ class Cron extends CI_Controller {
                 continue;
             }
 
-            //Fetch full Project/Class data for this:
+            //Fetch full Bootcamp/Class data for this:
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
             $class = $bs[0]['this_class'];
 
@@ -1030,7 +985,7 @@ class Cron extends CI_Controller {
                 if($twohour_start && $twohour_start==$start_hour){
 
                     //Trigger 2 hours notice:
-                    $instructor_message = '📅 Reminder: your ['.$bs[0]['c_objective'].'] Project group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.com/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
+                    $instructor_message = '📅 Reminder: your ['.$bs[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.com/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
 
                 } elseif($onehour_start && $onehour_start==$start_hour){
 
@@ -1053,7 +1008,7 @@ class Cron extends CI_Controller {
                         //Fetch all Students in This Class:
                         $class_students = $this->Db_model->ru_fetch(array(
                             'ru.ru_r_id'	    => $class['r_id'],
-                            'ru.ru_status'	    => 4, //Project students
+                            'ru.ru_status'	    => 4, //Bootcamp students
                         ));
 
                         //Inform all students:
@@ -1156,7 +1111,7 @@ class Cron extends CI_Controller {
         $stats = array();
         foreach($admissions as $admission){
 
-            //Fetch full Project/Class data for this:
+            //Fetch full Bootcamp/Class data for this:
             $bs = fetch_action_plan_copy($admission['r_b_id'], $admission['r_id']);
             $class = $bs[0]['this_class'];
 

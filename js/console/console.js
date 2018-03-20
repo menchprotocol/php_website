@@ -96,8 +96,9 @@ function view_el(u_id,c_id){
     }
 }
 
-function ms_toggle(c_id,new_state=null){
-    if(new_state === null){
+function ms_toggle(c_id,new_state=-1){
+
+    if(new_state<0){
         //Detect new state:
         new_state = ( $('#list-outbound-'+c_id).hasClass('hidden') ? 1 : 0 );
     }

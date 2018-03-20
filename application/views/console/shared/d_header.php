@@ -55,7 +55,7 @@ $website = $this->config->item('website');
 					<span class="navbar-brand dashboard-logo">
 						<a href="/console">
 						<img src="/img/bp_128.png" />
-						<span style="text-transform:none;" class="bg-glow">Projects</span>
+						<span style="text-transform:none;" class="bg-glow">Bootcamps</span>
 						</a>
 						<!-- <input type="text" placeholder="Search"> -->
 					</span>
@@ -64,10 +64,10 @@ $website = $this->config->item('website');
 				<?php if($udata['u_cache__fp_psid']>0){ ?>
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your Projects. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</span></a></li> */ ?>
+						<?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your Bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</span></a></li> */ ?>
                         <li><a href="/console/account"><?= (strlen($udata['u_image_url'])>4 ? '<img src="'.$udata['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i>') ?> My Account</a></li>
                         <?php if(isset($uadmission) && count($uadmission)>0){ ?>
-                            <li data-toggle="tooltip" data-placement="bottom" title="You are seeing this because you are a Project student. Use this to access your Action Plan on a web-based portal, which replicates the Mench Personal Assistant."><a href="/my/actionplan"><span> Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></span></a></li>
+                            <li data-toggle="tooltip" data-placement="bottom" title="You are seeing this because you are a Bootcamp student. Use this to access your Action Plan on a web-based portal, which replicates the Mench Personal Assistant."><a href="/my/actionplan"><span> Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></span></a></li>
                         <?php } ?>
 					</ul>
 				</div>
@@ -96,19 +96,20 @@ $website = $this->config->item('website');
 
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
 
-                    //Landing Page
-                    echo '<li><a class="landing_page_url" id="top-left-title" data-toggle="tooltip" data-placement="top" title="Visit Project Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-link" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
-
             	    //Is it connected to a Facebook Page?
                     if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
                         //Fetch page details:
                         echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students using Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
                     } else {
                         //Show link to Activate:
-                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Project missing its Facebook Page connection" href="/console/'.$b['b_id'].'/settings#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i><p><b>Connect Page</b></p></a></li>';
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Bootcamp missing its Facebook Page connection" href="/console/'.$b['b_id'].'/settings#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i><p><b>Connect Page</b></p></a></li>';
                     }
 
-        		}
+                    //Landing Page
+                    echo '<li><a class="landing_page_url" data-toggle="tooltip" data-placement="top" title="Visit Bootcamp Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-link" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+
+
+                }
             	?>
             	</ul>
 	    	</div>

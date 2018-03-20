@@ -1,7 +1,7 @@
 
 <ul class="nav nav-pills nav-pills-primary">
     <li class="<?= ( $object_name=='engagements' ? 'active' : '') ?>"><a href="/cockpit/browse/engagements"><i class="fa fa-eye" aria-hidden="true"></i> Engagements</a></li>
-    <li class="<?= ( $object_name=='projects' ? 'active' : '') ?>"><a href="/cockpit/browse/projects"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Projects</a></li>
+    <li class="<?= ( $object_name=='projects' ? 'active' : '') ?>"><a href="/cockpit/browse/projects"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
 </ul>
@@ -18,9 +18,9 @@ if($object_name=='engagements'){
         'e_type_id' => 'All Engagements',
         'e_id' => 'Engagement ID',
         'e_u_id' => 'User ID',
-        'e_b_id' => 'Project ID',
+        'e_b_id' => 'Bootcamp ID',
         'e_r_id' => 'Class ID',
-        'e_c_id' => 'Intent ID',
+        'e_c_id' => 'Node ID',
         'e_fp_id' => 'FB Page ID',
     );
 
@@ -136,7 +136,7 @@ if($object_name=='engagements'){
 
 } elseif($object_name=='projects'){
 
-    //A function to echo the Project rows:
+    //A function to echo the Bootcamp rows:
     function echo_row($b,$counter){
         echo '<tr>';
         echo '<td>'.$counter.'</td>';
@@ -147,9 +147,9 @@ if($object_name=='engagements'){
         echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_fname'].' '.$b['leaders'][0]['u_lname'].'</a></td>';
 
         echo '<td>';
-        if($b['student_funnel'][0]>0 || $b['student_funnel'][2]>0 || $b['student_funnel'][4]>0 || $b['student_funnel'][-1]>0){
+        if($b['student_funnel'][0]>0 || $b['student_funnel'][4]>0 || $b['student_funnel'][-1]>0){
             echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
-            echo $b['student_funnel'][0].' &raquo; '.$b['student_funnel'][2].' &raquo; <b>'.$b['student_funnel'][4].'</b> ('.$b['student_funnel'][-1].')';
+            echo $b['student_funnel'][0].' &raquo; <b>'.$b['student_funnel'][4].'</b> ('.$b['student_funnel'][-1].')';
             echo '</span>';
         }
         echo '</td>';
@@ -158,7 +158,7 @@ if($object_name=='engagements'){
         echo '</tr>';
     }
     
-    //User Projects:
+    //User Bootcamps:
     $bs = $this->Db_model->b_fetch(array(
         'b.b_status >=' => 2,
     ),array('c','fp'),'b_status');
@@ -185,10 +185,6 @@ if($object_name=='engagements'){
                 'r.r_b_id'	       => $mb['b_id'],
                 'ru.ru_status'     => 0,
             ))),
-            2 => count($this->Db_model->ru_fetch(array(
-                'r.r_b_id'	       => $mb['b_id'],
-                'ru.ru_status'     => 2,
-            ))),
             4 => count($this->Db_model->ru_fetch(array(
                 'r.r_b_id'	       => $mb['b_id'],
                 'ru.ru_status'     => 4,
@@ -208,7 +204,7 @@ if($object_name=='engagements'){
      		<th style="width:40px;">#</th>
     		<th style="width:40px;">ID</th>
             <th>&nbsp;</th>
-    		<th>Project</th>
+    		<th>Bootcamp</th>
             <th><i class="fa fa-plug"></i> Facebook Page</th>
     		<th>Lead Instructor</th>
             <th>Admission Funnel</th>
@@ -248,7 +244,7 @@ if($object_name=='engagements'){
             <th style="width:40px;">#</th>
             <th style="width:40px;">ID</th>
             <th>&nbsp;</th>
-            <th>Project</th>
+            <th>Bootcamp</th>
             <th><i class="fa fa-plug"></i> Facebook Page</th>
             <th>Lead Instructor</th>
             <th>Admission Funnel</th>
@@ -280,7 +276,7 @@ if($object_name=='engagements'){
     <thead>
     <tr>
         <th style="width:40px;">#</th>
-        <th>Project</th>
+        <th>Bootcamp</th>
         <th>Lead Instructor</th>
         <th>Class Start Time</th>
         <th>Class End Time</th>
@@ -294,13 +290,13 @@ if($object_name=='engagements'){
     <?php
     foreach($classes as $key=>$class) {
 
-        //Fetch Full Project:
+        //Fetch Full Bootcamp:
         $bs = $this->Db_model->b_fetch(array(
             'b.b_id' => $class['r_b_id'],
         ), array('c','fp'));
 
         if($class['r_status']>=2){
-            //Fetch Project from Action Plan Copy:
+            //Fetch Bootcamp from Action Plan Copy:
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bs,array('b_fp_id'));
             $class = $bs[0]['this_class'];
         } else {
@@ -343,10 +339,10 @@ if($object_name=='engagements'){
             echo '<span data-toggle="tooltip" title="Average completion rate of all class students combined">'.round($average_completion[0]['cr']*100).'%</span>';
         }
         echo '</td>';
-        echo '<td>'.echo_price($class['r_usd_price'],false).'</td>';
+        echo '<td>'.echo_price($class['r_usd_price']).'</td>';
 
 
-        echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Project Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Project not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
+        echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
 
 
 
@@ -458,7 +454,7 @@ if($object_name=='engagements'){
             <th style="width:40px;">ID</th>
     		<th style="width:30px;">&nbsp;</th>
             <th>User</th>
-            <th>Projects</th>
+            <th>Bootcamps</th>
             <th>Joined</th>
             <th colspan="4"><i class="fa fa-commenting" aria-hidden="true"></i> Latest Message / <i class="fa fa-eye" aria-hidden="true"></i> Read (Total)</th>
             <th>Timezone</th>
@@ -484,7 +480,7 @@ if($object_name=='engagements'){
         }
 
 
-        //Fetch Projects:
+        //Fetch Bootcamps:
         $instructor_projects = $this->Db_model->ba_fetch(array(
             'ba.ba_u_id' => $user['u_id'],
             'ba.ba_status >=' => 0,
@@ -499,7 +495,7 @@ if($object_name=='engagements'){
 
 
         echo '<td>';
-            //Display Projects:
+            //Display Bootcamps:
             if(count($instructor_projects)>0){
                 $meaningful_b_engagements = $this->config->item('meaningful_b_engagements');
 

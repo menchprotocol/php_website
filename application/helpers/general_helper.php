@@ -31,7 +31,7 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
 
     if(count($cache_action_plans)>0){
 
-        //Assign this cache to the Project:
+        //Assign this cache to the Bootcamp:
         $b = unserialize($cache_action_plans[0]['ej_e_blob']);
 
         if($b){
@@ -59,12 +59,12 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
 
     if(count($bs)==0){
         //Fetch from live:
-        $bs = $CI->Db_model->remix_projects(array(
+        $bs = $CI->Db_model->remix_bs(array(
             'b.b_id' => $b_id,
         ));
 
         if($r_id){
-            // *Attempt* to fetch Class from current class object in Project:
+            // *Attempt* to fetch Class from current class object in Bootcamp:
             $bs[0]['this_class'] = filter($bs[0]['c__classes'],'r_id', $r_id);
         }
 
@@ -103,7 +103,7 @@ function join_keys($input_array,$joiner=','){
 
 function echo_classmates($b_id,$r_id,$is_instructor){
 
-    //Fetch full Project/Class data for this:
+    //Fetch full Bootcamp/Class data for this:
     $CI =& get_instance();
     $bs = fetch_action_plan_copy($b_id,$r_id);
     $class = $bs[0]['this_class'];
@@ -390,8 +390,8 @@ function filter_active_admission($admissions){
          * Ohh, let's try to figure this out. There are a few scenarios:
          *
          * 1. Multiple up-coming Bootcaps that do not overlap
-         * 2. A mix of past Projects already completed, and some upcoming ones
-         * 3. A bunch of past Projects that are all completed and none active
+         * 2. A mix of past Bootcamps already completed, and some upcoming ones
+         * 3. A bunch of past Bootcamps that are all completed and none active
          * 4. A mix and match of above?!
          *
          * ru_status & r_status and are guiding lights here to crack this puzzle
@@ -492,7 +492,7 @@ function extract_level($b,$c_id){
 
     if($b['c_id']==$c_id){
         
-        //Level 1 (The Project itself)
+        //Level 1 (The Bootcamp itself)
         $view_data['level'] = 1;
         $view_data['task_index'] = 0;
         $view_data['intent'] = $b;
@@ -503,7 +503,7 @@ function extract_level($b,$c_id){
                 'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
             ),
         );
-        //Not applicable at Project Level:
+        //Not applicable at Bootcamp Level:
         $view_data['next_intent'] = null; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand next move
         $view_data['next_level'] = 0; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand next move
         $view_data['previous_intent'] = null; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand previous move
@@ -576,7 +576,7 @@ function extract_level($b,$c_id){
 
                                     if(!isset($b['c__child_intents'][$next_task_key]['c_id'])){
 
-                                        //Next Task does not exist, return Project:
+                                        //Next Task does not exist, return Bootcamp:
                                         $next_intent = $b;
                                         $next_level = 1;
                                         break;
@@ -648,23 +648,42 @@ function extract_level($b,$c_id){
 
 
 
-function echo_price($r_usd_price,$show_currency=true){
-    return ($r_usd_price>0?'$'.number_format($r_usd_price,0).($show_currency?' <span>USD</span>':''):'FREE');
+function echo_price($b){
+    if($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0){
+        //Offers Paid Packages, see pricing:
+        return '$'.number_format($b['b_p1_rate'],0).'<em style="padding:0 2px;">-</em>'.($b['b_p3_rate']>0 ? number_format(($b['b_p2_rate']+(75*$b['b_p3_rate'])),0) : number_format($b['b_p2_rate'],0) );
+    } else {
+        //Only DIY package:
+        if($b['b_p1_rate']>0){
+            return '$'.number_format($b['b_p1_rate'],0);
+        } else {
+            return 'FREE';
+        }
+    }
 }
 function echo_hours($decimal_hours,$micro=false){
+
+
     if($decimal_hours>0 && $decimal_hours<1){
-        $decimal_hours = round(($decimal_hours-fmod($decimal_hours,0.083))*60);
+
+        $decimal_hours = round($decimal_hours*60);
         return $decimal_hours.($micro?'m':' Minutes');
+
     } elseif($decimal_hours<=2.67) {
+
         //Over 1 hour buy Under 2 Hour 40 Minutes:
         $minutes_decimal = fmod($decimal_hours,1);
         $minutes = round(($minutes_decimal-fmod($minutes_decimal,0.083)) * 60);
         $hours = $decimal_hours - $minutes_decimal;
         return $hours.($micro?'h':' Hour'.show_s($hours).' ').($minutes>0 ? $minutes.($micro?'m':' Min'.show_s($minutes)) : '');
+
     } else {
+
         //Over 2:40 just round up
         return (round($decimal_hours)==$decimal_hours?'':'~').round($decimal_hours).($micro?'h':' Hour'.show_s($decimal_hours));
+
     }
+
 }
 
 function detect_embed_video($url,$full_message){
@@ -774,7 +793,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             //Fetch salt:
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
-            $button_title = '🎟️ My Project Application';
+            $button_title = '🎟️ My Bootcamp Application';
             $button_url = 'https://mench.com/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
             $command = '{admissions}';
 
@@ -788,7 +807,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
         } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_recipient_u_id']) && isset($i['e_b_id'])) {
 
-            //Fetch Facebook Page from Project:
+            //Fetch Facebook Page from Bootcamp:
             $bs = $CI->Db_model->b_fetch(array(
                 'b.b_id' => $i['e_b_id'],
             ));
@@ -1078,11 +1097,14 @@ function echo_message($i,$level=0,$editing_enabled=true){
 function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$c_status=1){
 
     if($c_time_estimate>0 || $c_id){
+
         $ui = '<span class="title-sub" style="text-transform:none !important;">';
 
         if($c_id){
+
             $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
             $ui .= ' <i class="fa fa-clock-o" aria-hidden="true"></i>';
+
         } else {
 
             if($show_icon){
@@ -1100,8 +1122,10 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
         $ui .= '</span>';
         return $ui;
     }
+
     //No time:
     return null;
+
 }
 
 function echo_br($admin){
@@ -1251,6 +1275,7 @@ function copy_intent($u_id,$intent,$c_id){
     ));
 
     return $new_intents[0];
+
 }
 
 
@@ -1261,8 +1286,8 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     $udata = $CI->session->userdata('user');
     $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_objective']);
     $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Item');
-    $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : 0 );
-    
+    $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
+    $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? 0.05 : $intent['c__estimated_hours'] );
 
     if(!$editing_enabled && $intent['c_status']<1){
         //Do not show drafting items in read-only mode:
@@ -1271,7 +1296,7 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     if($level==1){
 
-        //Project Outcome:
+        //Bootcamp Outcome:
         $ui = '<div id="obj-title" class="list-group-item">';
 
     } else {
@@ -1288,11 +1313,10 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     //Right content
     $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
-
         //Enable total hours/Task reporting...
         if($level<=2){
             $ui .= echo_time($intent['c__estimated_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
-        } elseif($level==3){
+        } else {
             $ui .= echo_time($intent['c_time_estimate'],1,1, $intent['c_id'], $level, $intent['c_status']);
         }
 
@@ -1318,19 +1342,25 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     if($level==1){
 
-        //Project Outcome:
-        $ui .= '<span data-toggle="tooltip" title="Project Outcome which is used to determine student completion rate" data-placement="top"><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
+        //Bootcamp Outcome:
+        $ui .= '<span data-toggle="tooltip" title="Bootcamp Outcome which is used to determine student completion rate" data-placement="top"><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
 
     } elseif($level==2){
 
         //Task:
         //( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1))
-        $ui .= '<span class="inline-level"><a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;<span class="inline-level-'.$level.'"> #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'">'.$intent['c_objective'].'</b> ';
+        $ui .= '<span class="inline-level">';
+
+        if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
+            $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;';
+        }
+
+        $ui .= '<span class="inline-level-'.$level.'"> #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" extension-rule="'.$intent['c_extension_rule'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
 
     } elseif ($level>=3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? 'Step #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i> DRAFT</b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? 'Step #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</span> ';
 
     }
 
@@ -1412,7 +1442,7 @@ function date_is_past($date){
 
 
 function prep_prerequisites($b){
-    //Appends system-enforced prerequisites based on Project settings:
+    //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
         array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($b['c__estimated_hours']).' in 7 Days (Average '.echo_hours(round($b['c__estimated_hours']/7)) .' per day)');
@@ -1425,7 +1455,7 @@ function calculate_project_status($b){
     
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
-    //A function used on the dashboard to indicate what is left before launching the Project
+    //A function used on the dashboard to indicate what is left before launching the Bootcamp
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
     $checklist = array();
@@ -1510,7 +1540,7 @@ function calculate_project_status($b){
     foreach($b['c__child_intents'] as $task_num=>$c){
 
         if($c['c_status']<0){
-            continue; //Don't check unpublished Tasks, which is not even possible for now...
+            continue; //Don't check Archived Tasks
         }
         
         //Prepare key variables:
@@ -1536,49 +1566,52 @@ function calculate_project_status($b){
         ));
         
         
-        //Sub Step List
-        $estimated_minutes = 30;
-        $progress_possible += $estimated_minutes;
-        $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/actionplan',
-            'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$task_anchor.$c['c_objective'],
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
+        //We only need Steps if:
+        /*
+        if($c['c_extension_rule']>=1){
+            $estimated_minutes = 30;
+            $progress_possible += $estimated_minutes;
+            $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );
+            $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
+            array_push( $checklist , array(
+                'href' => '/console/'.$b['b_id'].'/actionplan',
+                'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$task_anchor.$c['c_objective'],
+                'us_status' => $us_status,
+                'time_min' => $estimated_minutes,
+            ));
 
-        //Check Steps:
-        if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-            foreach($c['c__child_intents'] as $c2){
+            //Check Steps:
+            if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+                foreach($c['c__child_intents'] as $c2){
 
-                //Create Step object:
-                $step_anchor = $task_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
+                    //Create Step object:
+                    $step_anchor = $task_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
 
-
-                //Messages for Steps:
-                $estimated_minutes = 15;
-                $progress_possible += $estimated_minutes;
-                $qualified_messages = 0;
-                if(count($c2['c__messages'])>0){
-                    foreach($c2['c__messages'] as $i){
-                        $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
+                    //Messages for Steps:
+                    $estimated_minutes = 15;
+                    $progress_possible += $estimated_minutes;
+                    $qualified_messages = 0;
+                    if(count($c2['c__messages'])>0){
+                        foreach($c2['c__messages'] as $i){
+                            $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
+                        }
                     }
+                    $us_status = ( $qualified_messages>0 ? 1 : 0 );
+                    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+                    array_push( $checklist , array(
+                        'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c2['c_id'],
+                        'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$step_anchor,
+                        'us_status' => $us_status,
+                        'time_min' => $estimated_minutes,
+                    ));
                 }
-                $us_status = ( $qualified_messages>0 ? 1 : 0 );
-                $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-                array_push( $checklist , array(
-                    'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c2['c_id'],
-                    'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$step_anchor,
-                    'us_status' => $us_status,
-                    'time_min' => $estimated_minutes,
-                ));
             }
         }
+        */
     }
     
 
-    //Project Messages:
+    //Bootcamp Messages:
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
     $qualified_messages = 0;
@@ -1606,8 +1639,6 @@ function calculate_project_status($b){
         $is_my_account = ( $bl['u_id']==$udata['u_id'] );
         $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account' );
         $account_href = ( $is_my_account ? '/console/account' : null );
-
-
 
 
         //u_phone
@@ -1738,21 +1769,81 @@ function calculate_project_status($b){
      *******************************/
 
 
-    //Facebook Page
+
+    //Offer Guidance Package?
+    if($b['b_p2_max_seats']>0){
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($b['b_support_email'])>=1 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/settings#support',
+            'anchor' => '<b>Enter Forwarding Email Address</b> in Settings',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+
+
+    //Offer mentorship?
+    if($b['b_p3_rate']>0){
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($b['b_calendly_url'])>=1 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/settings#support',
+            'anchor' => '<b>Enter Calendly URL</b> for 1-on-1 Mentorship Bookings in Settings',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
+
+
+    //Landing Page Category
+    $current_inbounds = $CI->Db_model->cr_inbound_fetch(array(
+        'cr.cr_outbound_id' => $b['b_c_id'],
+        'cr.cr_status' => 1,
+    ));
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
-
-
-
-    //Transition logic for instructors to remove Mench and add their own pages
-    $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $udata['u_status']==3) ? 1 : 0 );
+    $us_status = ( count($current_inbounds)>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings#pages',
-        'anchor' => '<b>Connect a Facebook Page</b> to this Project in settings',
+        'href' => '/console/'.$b['b_id'].'/settings#landingpage',
+        'anchor' => '<b>Choose Category</b> in Settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
+
+
+    // Student Experience Level
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( $b['b_difficulty_level']>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/settings#landingpage',
+        'anchor' => '<b>Choose Student Experience Level</b> in Settings',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+
+    //Facebook Page
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']>=3) ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/settings#pages',
+        'anchor' => '<b>Connect a Facebook Page</b> in Settings',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
 
     
     
@@ -1760,7 +1851,7 @@ function calculate_project_status($b){
     return array(
         'stage' => '<i class="fa fa-steps" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
-        'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your Project status to '.status_bible('b',2).'. At this time you can launch your Project by inviting your students to join.',
+        'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your Bootcamp status to '.status_bible('b',2).'. At this time you can launch your Bootcamp by inviting your students to join.',
         'check_list' => $checklist,
     );
 }
@@ -1772,13 +1863,29 @@ function echo_r($b_id,$class,$append_class=null){
     echo '<span class="pull-right">';
 
     if($class['r__current_admissions']>0){
+
+        //How many students, if any, are enrolled in support packages?
+
+
         echo '<a href="/console/'.$b_id.'/classes/'.$class['r_id'].'" class="badge badge-primary" style="text-decoration: none;">';
-        echo $class['r__current_admissions'].' <i class="fa fa-users" aria-hidden="true"></i>';
+        echo '<span id="class_'.$class['r_id'].'" data-admissions="'.$class['r__current_admissions'].'">'.$class['r__current_admissions'].'</span> <i class="fa fa-users" aria-hidden="true"></i>';
         echo '</a>';
 
+
     } else {
+
         echo '<span class="badge badge-primary" style="background-color: #CCC;" data-toggle="tooltip" data-placement="right" title="No students yet">0 <i class="fa fa-users" aria-hidden="true"></i></span>';
+
     }
+
+
+    //Show Support Button:
+    echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">';
+    echo $class['r__current_admissions'].' <i class="fa fa-users" aria-hidden="true"></i>';
+    echo '</a>';
+
+
+
     echo '</span>';
 
     //Determine the state of the Checkbox:
@@ -1804,7 +1911,7 @@ function echo_r($b_id,$class,$append_class=null){
 
 
 
-function two_level_menu($c,$level=1){
+function tree_menu($c,$current_c_ids,$format='list',$level=1){
 
     $CI =& get_instance();
     $ui = null;
@@ -1820,37 +1927,52 @@ function two_level_menu($c,$level=1){
     $c_child = $CI->Db_model->cr_outbound_fetch(array(
         'cr.cr_inbound_id' => $c['c_id'],
         'cr.cr_status >' => 0,
-        'c.c_status >' => 0,
+        'c.c_status >' => 0, //Use status to control menu item visibility
     ));
 
-    if($level==3 && count($c_child)==0){
-        //return false;
-    }
 
     if($level==1){
-        $ui .= '<div class="list-group">';
-    }
-
-
-    //Show the item:
-    $ui .= '<a href="javascript:void(0);" onclick="load_menu('.$c['c_id'].',\''.md5($c['c_id'].'menu89Hash').'\')" class="list-group-item '.($level==1 ? 'active' :'').'" style="'.($level==3 ? 'padding-left:20px;' : '').'; text-decoration:none;">';
-    $ui .= '<span class="pull-right">';
-    $ui .= '<span class="badge badge-primary">'.count($c_child).' <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
-    $ui .= '</span>';
-    $ui .= '<span style="font-weight:'.($level<=2 ? 'bold' :'normal').';">'.$c['c_objective'].'</span>';
-    $ui .= '</a>';
-
-
-    //Which level?
-    if($level<=2){
-        //Loop through and See How many children?
-        foreach($c_child as $child_intent){
-            $ui .= two_level_menu($child_intent,($level+1));
+        if($format=='list'){
+            $ui .= '<div class="list-group">';
         }
     }
 
+
+
+    if($format=='list'){
+
+        //Show the item:
+        $ui .= '<a href="/'.$c['c_id'].'" class="list-group-item '.( in_array($c['c_id'],$current_c_ids) ? 'active' :'').'" style="'.($level==3 ? 'padding-left:20px;' : '').'; text-decoration:none;">';
+        $ui .= '<span class="pull-right">';
+        $ui .= '<span class="badge badge-primary">'.count($c_child).' <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+        $ui .= '</span>';
+        $ui .= '<span style="font-weight:'.($level<=2 ? 'bold' :'normal').';">'.$c['c_objective'].'</span>';
+        $ui .= '</a>';
+
+    } elseif($format=='select' && $level<=2){
+
+        $ui .= '<select data-c-id="'.$c['c_id'].'" id="c_s_'.$c['c_id'].'" class="border c_select level'.$level.' '.( isset($c['cr_outbound_id']) ? 'outbound_c_'.$c['cr_outbound_id'] : '' ).' '.( $level==2 ? 'hidden' : '' ).'" style="width:100%; margin-bottom:10px; max-width:380px;">';
+        $ui .= '<option value="0">Choose...</option>';
+        foreach($c_child as $child_intent){
+            $ui .= '<option value="'.$child_intent['c_id'].'" '.( in_array($child_intent['c_id'],$current_c_ids) ?'selected="selected"':'').'>'.$child_intent['c_objective'].'</option>';
+        }
+        $ui .= '</select>';
+
+    }
+
+    //Which level?
+    if($level<=2){
+        //Loop through children
+        foreach($c_child as $child_intent){
+            $ui .= tree_menu($child_intent,$current_c_ids,$format,($level+1));
+        }
+    }
+
+
     if($level==1){
-        $ui .= '</div>';
+        if($format=='list'){
+            $ui .= '</div>';
+        }
     }
 
     return $ui;
@@ -2049,7 +2171,7 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    
 	} elseif(isset($udata['u_id']) && $b_id){
 	    
-	    //Fetch Project admins and see if they have access to this:
+	    //Fetch Bootcamp admins and see if they have access to this:
 	    $b_instructors = $CI->Db_model->ba_fetch(array(
 	        'ba.ba_b_id' => $b_id,
 	        'ba.ba_status >=' => 1, //Must be an actively assigned instructor
@@ -2060,7 +2182,7 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    if(count($b_instructors)>0){
 	        //Append permissions here:
 	        $udata['project_permissions'] = $b_instructors[0];
-	        //Instructor is part of the Project:
+	        //Instructor is part of the Bootcamp:
 	        return $udata;
 	    }
 	    

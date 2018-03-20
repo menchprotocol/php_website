@@ -1,12 +1,12 @@
 <?php
 $udata = $this->session->userdata('user');
 
-//Fetch this user's Projects:
+//Fetch this user's Bootcamps:
 $bs = $this->Db_model->user_projects(array(
     'ba.ba_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 2,
-    'b.b_id !=' => $b['b_id'], //Can't import from current Project
+    'b.b_id !=' => $b['b_id'], //Can't import from current Bootcamp
 ));
 ?>
 
@@ -23,15 +23,15 @@ $bs = $this->Db_model->user_projects(array(
         if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
             var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
             if(the_id=='choose_project'){
-                //This is a critical step as it would define which Project to load into the Import wizard...
+                //This is a critical step as it would define which Bootcamp to load into the Import wizard...
                 var import_from_b_id = $('#import_b_id').val();
                 if(import_from_b_id<1){
-                    alert('ERROR: Choose a Project to import from');
+                    alert('ERROR: Choose a Bootcamp to import from');
                     $('#import_b_id').focus();
                     return false;
                 } else {
 
-                    //Load this Project into the Import Wizard
+                    //Load this Bootcamp into the Import Wizard
 
                     //Show loader:
                     $('#choose_content').html('<img src="/img/round_load.gif" class="loader" /> Loading Action Plan...');
@@ -202,7 +202,7 @@ $bs = $this->Db_model->user_projects(array(
                     <p>Import from:</p>
                     <div class="form-group label-floating is-empty">
                         <select class="form-control input-mini border" id="import_b_id">
-                            <option value="0">Choose Project...</option>
+                            <option value="0">Choose Bootcamp...</option>
                             <?php
                             foreach($bs as $b){
                                 echo '<option value="'.$b['b_id'].'">'.$b['c_objective'].'</option>';
@@ -211,11 +211,11 @@ $bs = $this->Db_model->user_projects(array(
                         </select>
                     </div>
                     <br />
-                    <p>Import to this Project:</p>
+                    <p>Import to this Bootcamp:</p>
                     <div class="form-group"><b><?= $b['c_objective'] ?></b></div>
                 </div>
 
-                <!-- Content to be dynamically loaded based on Project -->
+                <!-- Content to be dynamically loaded based on Bootcamp -->
                 <div class="wizard-box" id="choose_content"></div>
 
                 <div class="wizard-box" id="import_mode">

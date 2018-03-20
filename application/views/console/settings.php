@@ -18,7 +18,7 @@ function show_fb_auth(error_message=null){
         $('#login_message').html('<span style="color:#FF0000"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ERROR: '+error_message+'</span>');
         $('#why_permissions').addClass('hidden');
     } else {
-        $('#login_message').html('<span style="color:#000">to connect this Project to your Facebook Page</span>');
+        $('#login_message').html('<span style="color:#000">to connect this Bootcamp to your Facebook Page</span>');
         $('#why_permissions').removeClass('hidden');
     }
 }
@@ -91,7 +91,7 @@ function loadFacebookPages(is_onstart){
                                 e_hash_time:"<?= time() ?>",
                                 e_hash_code:"<?= md5(time().'hashcod3') ?>",
                             }, function(data) {
-                                console.log(data);
+
                             });
 
                         } else {
@@ -134,9 +134,39 @@ function loadFacebookPages(is_onstart){
 
 $(document).ready(function() {
 
+    //Go through Level 2 menus to see if any are selected, if so, select the Level 1 too:
+    $( ".level2" ).each(function() {
+        //Make sure this is NOT the dummy drag in box
+        if ($(this).val()>0) {
+            //Show the parent of this:
+            $( ".level1" ).val($(this).attr('data-c-id'));
+            $( "#c_s_"+$(this).attr('data-c-id') ).removeClass('hidden');
+            return false;
+        }
+    });
+
+
+    $('.c_select.level1').on('change', function() {
+
+        //Hide all children:
+        $('.c_select.level2').addClass('hidden');
+        //This id?
+        var this_id = $(this).attr('data-c-id');
+        var level_1_c_id = this.value;
+
+        //Show if selected:
+        if(level_1_c_id>0){
+            $('#c_s_'+level_1_c_id).removeClass('hidden');
+        }
+
+    });
+
+
+
     if(window.location.hash) {
         focus_hash(window.location.hash);
     }
+
 
     //Watch for Group Support Change:
     $('#b_p2_max_seats').on('change', function() {
@@ -224,12 +254,19 @@ function save_settings(){
         b_url_key:$('#b_url_key').val(),
         b_status:$('#b_status').val(),
         b_fb_pixel_id:$('#b_fb_pixel_id').val(),
+        b_p1_rate:$('#b_p1_rate').val(),
+        b_p2_max_seats:$('#b_p2_max_seats').val(),
+        b_p2_rate:$('#b_p2_rate').val(),
+        b_p3_rate:$('#b_p3_rate').val(),
+        b_support_email:$('#b_support_email').val(),
+        b_calendly_url:$('#b_calendly_url').val(),
+        b_difficulty_level:$('#b_difficulty_level').val(),
+        level1_c_id:$('.level1').val(),
+        level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
     };
 
     //Save the rest of the content:
     $.post("/api_v1/save_settings", modify_data, function(data) {
-
-        console.log(data);
 
         if(data.status){
 
@@ -272,9 +309,9 @@ function save_settings(){
     <div class="tab-pane active" id="tabsupport">
 
 
-        <div class="title" style="margin-top:20px;"><h4>Package 1) <i class="fa fa-wrench" aria-hidden="true"></i> Do It Yourself <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-wrench" aria-hidden="true"></i> Do It Yourself Package <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
         <div class="help_body maxout" id="content_4789"></div>
-        <div class="form-group label-floating">
+        <div class="form-group label-floating <?= (count($pm['p1_rates'])<=1 ? 'hidden' : '') ?>">
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p1_rates'] as $option){
@@ -283,12 +320,18 @@ function save_settings(){
                 ?>
             </select>
         </div>
+        <?php if(count($pm['p1_rates'])<=1){ ?>
+            <div>Universal Price: $<?= $pm['p1_rates'][0] ?>/Week/Student</div>
+        <?php } ?>
 
 
 
-        <div class="title" style="margin-top:25px;"><h4>Package 2) <i class="fa fa-life-ring" aria-hidden="true"></i> Guidance <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
+
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-life-ring" aria-hidden="true"></i> Guidance Package <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
-
+        <?php if(count($pm['p1_rates'])<=1){ ?>
+            <div style="margin-bottom: 5px;">Universal Price: $<?= $pm['p2_rates'][0] ?>/Week/Student</div>
+        <?php } ?>
         <div class="form-group label-floating">
             <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
@@ -303,8 +346,8 @@ function save_settings(){
         <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
 
             <!-- Disabled for now as we only have a single pricing option for Guidance Package -->
-            <div class="form-group label-floating">
-                <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
+            <div class="form-group label-floating <?= (count($pm['p2_rates'])<=1 ? 'hidden' : '') ?>">
+                <select id="b_p2_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                     <?php
                     foreach($pm['p2_rates'] as $option){
                         echo '<option value="'.$option.'" '.($b['b_p2_rate']==$option?'selected="selected"':'').'>$'.$option.'/Week</option>';
@@ -314,10 +357,7 @@ function save_settings(){
             </div>
 
 
-
-
-
-            <div class="title" style="margin-top:20px;"><h4>Package 3) <i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship Package <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
             <div class="help_body maxout" id="content_615"></div>
             <div class="form-group label-floating">
                 <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -331,7 +371,7 @@ function save_settings(){
 
 
             <div style="padding-left:30px;">
-                <div class="title" style="margin-top:20px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Support Email <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
+                <div class="title" style="margin-top:20px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Forwarding Email Address <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
                 <div class="help_body maxout" id="content_4790"></div>
                 <div class="form-group label-floating is-empty">
                     <input type="email" id="b_support_email" data-lpignore="true" style="width:320px;" placeholder="yoursupportemail@gmail.com" value="<?= $b['b_support_email'] ?>" class="form-control border">
@@ -341,7 +381,7 @@ function save_settings(){
 
 
                 <div id="mentorship_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
-                    <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Mentorship Calendly URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
+                    <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
                     <div class="help_body maxout" id="content_4792"></div>
                     <div class="form-group label-floating is-empty">
                         <input type="url" id="b_calendly_url" style="width:320px;" placeholder="https://calendly.com/shervine/demo" value="<?= $b['b_calendly_url'] ?>" class="form-control border">
@@ -349,7 +389,6 @@ function save_settings(){
                     </div>
                 </div>
             </div>
-
 
         </div>
 
@@ -364,13 +403,43 @@ function save_settings(){
 
         <div class="title" style="margin-top:20px;"><h4><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
-        <?= echo_status_dropdown('b','b_status',$b['b_status']); ?>
+        <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_status']>=3 ? array() : array(3) )); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
 
 
+        <div class="title" style="margin-top:0;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Category <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+        <div class="help_body maxout" id="content_4789"></div>
+        <div class="form-group label-floating">
+            <?php
+            $current_c_ids = array();
+            $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
+                'cr.cr_outbound_id' => $b['b_c_id'],
+                'cr.cr_status' => 1,
+            ));
+            foreach($current_inbounds as $c){
+                array_push($current_c_ids,$c['cr_inbound_id']);
+            }
+            //Show Menu
+            echo tree_menu(4793,$current_c_ids,'select');
+            ?>
+        </div>
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Experience Level</h4></div>
+        <div class="form-group label-floating is-empty">
+            <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
+                <?php
+                echo '<option value="">Choose...</option>';
+                $df_statuses = status_bible('df');
+                foreach($df_statuses as $status_id=>$status){
+                    echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].'</option>';
+                }
+                ?>
+            </select>
+        </div>
 
 
-        <div class="title" style="margin-top:5px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
         <div class="help_body maxout" id="content_725"></div>
         <div class="form-group label-floating is-empty">
             <div class="input-group border" style="width:100%; max-width:380px;">

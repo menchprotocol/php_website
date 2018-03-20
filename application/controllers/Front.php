@@ -12,12 +12,14 @@ class Front extends CI_Controller {
         echo_json(array('status'=>'success'));
     }
 	
-	function index(){		
+	function index($c_id=0){
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
-		    'title' => '7-Day Projects Lead by Industry Experts',
+		    'title' => 'Weekly Bootcamps from Industry Experts',
 		));
-		$this->load->view('front/project/marketplace');
+		$this->load->view('front/project/marketplace',array(
+		    'c_id' => $c_id,
+        ));
 		$this->load->view('front/shared/f_footer');
 	}
 	
@@ -65,18 +67,18 @@ class Front extends CI_Controller {
 	 ****************************** */
 
 
-	function experts(){
+	function launch(){
 	    $this->load->view('front/shared/f_header' , array(
             'title' => 'Guide Students to Success',
             'landing_page' => 'front/splash/instructors_why',
 	    ));
-	    $this->load->view('front/experts');
+	    $this->load->view('front/launch');
 	    $this->load->view('front/shared/f_footer');
 	}
 	
 	
 	/* ******************************
-	 * Project PUBLIC
+	 * Bootcamp PUBLIC
 	 ****************************** */
 
 
@@ -90,7 +92,7 @@ class Front extends CI_Controller {
             redirect_message('/'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
         } else {
             //Invalid Bootcamp ID
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
         }
     }
 	
@@ -99,18 +101,18 @@ class Front extends CI_Controller {
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
-	    $bs = $this->Db_model->remix_projects(array(
+	    $bs = $this->Db_model->remix_bs(array(
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
 
-        //Validate Project:
+        //Validate Bootcamp:
         if(!isset($bs[0])){
             //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project URL.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bs[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Project is not published yet.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Project not connected to a Facebook Page yet.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
             //URL Case sensitivity redirect:
             redirect_message('/'.$bs[0]['b_url_key']);
@@ -126,7 +128,7 @@ class Front extends CI_Controller {
                 redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'You must <a href="/console/'.$b['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
             } else {
 	            //This is a user, give them a standard error:
-                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Project.' ).'</div>');
+                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Bootcamp.' ).'</div>');
             }
 	    }
 
@@ -134,7 +136,7 @@ class Front extends CI_Controller {
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'message' => ( $b['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Project only because you are logged-in as a Mench instructor.<br />This Project is hidden from the public until published live.</div>' : null ),
+	        'message' => ( $b['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Bootcamp only because you are logged-in as a Mench instructor.<br />This Bootcamp is hidden from the public until published live.</div>' : null ),
 	        'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
             'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
 	    ));
@@ -151,19 +153,19 @@ class Front extends CI_Controller {
 
         //Fetch data:
         $udata = $this->session->userdata('user');
-        $bs = $this->Db_model->remix_projects(array(
+        $bs = $this->Db_model->remix_bs(array(
             'LOWER(b.b_url_key)' => strtolower($b_url_key),
         ));
 
-        //Validate Project:
+        //Validate Bootcamp:
         if(!isset($bs[0])){
             //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Project URL.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bs[0]['b_status']<2){
             //Here we don't even let instructors move forward to apply!
-            redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Project is published live.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Bootcamp is published live.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Project not connected to a Facebook Page yet.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 	    
 	    //Validate Class ID that it's still the latest:
@@ -180,7 +182,7 @@ class Front extends CI_Controller {
 	    if(count($active_classes)<1){
 	        
 	        //Ooops, no active classes!
-	        redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">No active classes found for this Project.</div>');
+	        redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">No active classes found for this Bootcamp.</div>');
 	        
 	    } elseif(!$r_id && count($active_classes)>1){
 	        

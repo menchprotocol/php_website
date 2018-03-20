@@ -130,7 +130,7 @@ $( document ).ready(function() {
 	<div class="col-md-4">
         <div id="sidebar">
         	
-        	<h3 style="margin-top:0;">Project Snapshot</h3>
+        	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
         	
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
                 <li>Duration: <b>7 Days</b></li>
@@ -141,7 +141,7 @@ $( document ).ready(function() {
             	<li>Group Calls: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
             	<?php } ?>
 
-                <li>Price: <b><?= echo_price($focus_class['r_usd_price']).( $focus_class['r_usd_price']>0 ? ' <span style="font-weight:300; font-size: 0.9em;">(<a href="https://support.mench.co/hc/en-us/articles/115002080031">Mench Guarantee</a>)</span>' : '' ); ?></b></li>
+                <li>Price: <b><?= echo_price($b) ?></b></li>
             	
             	<?php if($focus_class['r_max_students']>0){ ?>
             		<li>Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
@@ -232,7 +232,7 @@ $( document ).ready(function() {
     		<h3>1-on-1 Support</h3>
 
             <h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
-            <p>This Project offers live chat and email support during the 1-Week period. You can ask <b>unlimited questions</b> from your instructor.</p>
+            <p>This Bootcamp offers live chat and email support during the 1-Week period. You can ask <b>unlimited questions</b> from your instructor.</p>
             <hr />
 
 
@@ -329,7 +329,7 @@ $( document ).ready(function() {
     		<?php if(strlen($b['b_completion_prizes'])>0){ ?>
                 <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($b['b_completion_prizes']))) ?></h4>
                 <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' ?></div>
-                <p>Awarded for completing all Tasks by the end of the 7-Day project.</p>
+                <p>Awarded for completing all Tasks by the end of the Bootcamp.</p>
                 <hr />
     		<?php } ?>
 

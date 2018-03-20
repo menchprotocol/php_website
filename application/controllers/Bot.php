@@ -272,11 +272,11 @@ class Bot extends CI_Controller {
 					    $admissions = $this->Db_model->ru_fetch(array(
 					        'r.r_status >='	   => 1, //Open for admission
 					        'r.r_status <='	   => 2, //Running
-					        'ru.ru_status >='  => 0, //Initiated or higher as long as Project is running!
+					        'ru.ru_status >='  => 0, //Initiated or higher as long as Bootcamp is running!
 					        'ru.ru_u_id'	   => $eng_data['e_initiator_u_id'],
 					    ));
 					    if(count($admissions)>0){
-					        //Append Project & Class ID to engagement:
+					        //Append Bootcamp & Class ID to engagement:
 					        $eng_data['e_b_id'] = $admissions[0]['r_b_id'];
 					        $eng_data['e_r_id'] = $admissions[0]['r_id'];
 					    }
@@ -420,7 +420,7 @@ class Bot extends CI_Controller {
 	        
 	        if(count($admissions)==1){
 
-	            //Fetch class data to grab Project ID:
+	            //Fetch class data to grab Bootcamp ID:
 	            $classes = $this->Db_model->r_fetch(array(
 	                'r.r_id' => $admissions[0]['ru_r_id'],
 	            ));
@@ -435,7 +435,6 @@ class Bot extends CI_Controller {
 	                //Define numbers:
 	                $amount = floatval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
 	                $fee = floatval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] ));
-
 
 	                //Insert transaction:
 	                $transaction = $this->Db_model->t_create(array(
@@ -455,7 +454,7 @@ class Bot extends CI_Controller {
 	                
 	                //Update student's payment status:
 	                $this->Db_model->ru_update( $admissions[0]['ru_id'] , array(
-	                    'ru_status' => 2, //For now this is the default since we don't accept partial payments
+	                    'ru_status' => 4, //For now this is the default since we don't accept partial payments
 	                ));
 
 	                //Inform the Student:

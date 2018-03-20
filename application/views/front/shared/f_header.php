@@ -62,8 +62,8 @@ $url_part_1 = $this->uri->segment(1);
                     } elseif(isset($uadmission['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
                     } else {
-                        if(!($url_part_1=='experts')) {
-                            echo '<li><a href="/experts"><i class="fa fa-rocket" aria-hidden="true"></i> For Experts</a></li>';
+                        if(!($url_part_1=='launch')) {
+                            echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch</a></li>';
                         }
                         if(!($url_part_1=='login')) {
                             //This is the login page, show the Launch Button:

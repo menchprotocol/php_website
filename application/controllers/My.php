@@ -37,7 +37,7 @@ class My extends CI_Controller {
                 echo '<div>'.format_e_message('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
             } else {
                 //Show embed video:
-                echo detect_embed_video($messages[0]['i_url'],$messages[0]['i_url']);
+                echo detect_embed_video($messages[0]['i_url'],$messages[0]['i_message']);
             }
 
         } else {
@@ -144,7 +144,7 @@ class My extends CI_Controller {
             $uadmission = $this->session->userdata('uadmission');
         }
 
-        //Fetch Projects for this user:
+        //Fetch Bootcamps for this user:
         if(!$ru_fp_psid && count($uadmission)<1){
 	        //There is an issue here!
 	        die('<div class="alert alert-danger" role="alert">Invalid Credentials</div>');
@@ -154,7 +154,7 @@ class My extends CI_Controller {
 
         //Set admission filters:
         $admission_filters = array(
-            'ru.ru_status >=' => 2, //Completed Application
+            'ru.ru_status >=' => 4, //Admitted
             'r.r_status >=' => 1, //Open for Admission or Higher
         );
 
@@ -195,7 +195,7 @@ class My extends CI_Controller {
             */
 
             //Show Error:
-            die('<div class="alert alert-danger" role="alert">You have not joined any Projects yet</div>');
+            die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
         }
 
 	    
@@ -219,11 +219,11 @@ class My extends CI_Controller {
 	    }
 
 
-        //Fetch full Project/Class data for this:
+        //Fetch full Bootcamp/Class data for this:
         $bs = fetch_action_plan_copy($b_id,$active_admission['r_id']);
         $class = $bs[0]['this_class'];
 
-        //Fetch intent relative to the Project by doing an array search:
+        //Fetch intent relative to the Bootcamp by doing an array search:
         $view_data = extract_level( $bs[0] , $c_id );
 
         if($view_data){
@@ -241,7 +241,7 @@ class My extends CI_Controller {
             //This should not happen either:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $active_admission['u_id'],
-                'e_message' => 'extract_level() Failed to load Project data in the Student Action Plan',
+                'e_message' => 'extract_level() Failed to load Bootcamp data in the Student Action Plan',
                 'e_json' => $admissions,
                 'e_type_id' => 8, //Platform Error
                 'e_b_id' => $b_id,
@@ -265,7 +265,7 @@ class My extends CI_Controller {
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Project and re-apply to receive an email with your application status url.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
@@ -288,7 +288,7 @@ class My extends CI_Controller {
         if(count($users)==1){
             $udata = $users[0];
         } else {
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Project and re-apply to receive an email with your application status url.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 	    
 	    //Fetch all their addmissions:
@@ -321,7 +321,7 @@ class My extends CI_Controller {
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    if(intval($ru_id)<1 || !isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Project and re-apply to receive an email with your application status url.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
@@ -339,7 +339,7 @@ class My extends CI_Controller {
 	    
 	    //Assemble the data:
 	    $data = array(
-	        'title' => 'Application to Join '.$admissions[0]['c_objective'].' - Starting '.time_format($admissions[0]['r_start_date'],4),
+	        'title' => 'Join '.$admissions[0]['c_objective'].' - Starting '.time_format($admissions[0]['r_start_date'],4),
 	        'ru_id' => $ru_id,
 	        'u_id' => $_GET['u_id'],
 	        'u_key' => $_GET['u_key'],

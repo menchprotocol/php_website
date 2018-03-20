@@ -14,7 +14,7 @@
 	?>
 	</div>
 	
-	<p>Or go back to the <a href="/<?= $b['b_url_key'] ?>">Project Page</a>.</p>
+	<p>Or go back to the <a href="/<?= $b['b_url_key'] ?>">Bootcamp Page</a>.</p>
     
 </div>
 

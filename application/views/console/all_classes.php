@@ -40,7 +40,7 @@ $max_threashold = 10;
                         echo '<div class="alert alert-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> None</div>';
                         //Log Error, this should not happen!
                         $this->Db_model->e_create(array(
-                            'e_message' => 'Project Class was missing when Classes where loaded',
+                            'e_message' => 'Bootcamp Class was missing when Classes where loaded',
                             'e_b_id' => $b['b_id'],
                             'e_type_id' => 8, //Platform Error
                         ));

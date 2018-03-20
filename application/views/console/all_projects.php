@@ -19,7 +19,7 @@
         }
 
         if($('#b_c_objective').val().length<2){
-            alert('ERROR: Project Outcome Required');
+            alert('ERROR: Bootcamp Outcome Required');
             $('#b_c_objective').focus();
             return false;
         }
@@ -30,7 +30,7 @@
         $('#b_c_objective').prop('disabled',true);
         $('.new-b').hide();
 
-        $( ".list_input" ).before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Project...</div>' );
+        $( ".list_input" ).before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Bootcamp...</div>' );
 
         $.post("/api_v1/project_create", {
             c_objective:$('#b_c_objective').val(),
@@ -68,10 +68,10 @@ if(count($bs)>0){
         echo echo_b($b);
     }
 } else {
-    echo '<div class="list-group-item alert alert-info no-b-div" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Projects found. Create a new Project below:</div>';
+    echo '<div class="list-group-item alert alert-info no-b-div" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Bootcamps found. Create a new Bootcamp below:</div>';
 }
 
-//Input to create new Project:
+//Input to create new Bootcamp:
 echo '<div class="list-group-item list_input new-step-input" style="padding: 5px 7px;">
         <div class="input-group">
             <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span>

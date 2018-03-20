@@ -10,11 +10,11 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['default_controller'] 		= "front"; // index() Landing page
 $route['terms'] 					= "front/terms";
-$route['experts'] 				    = "front/experts";
+$route['launch'] 				    = "front/launch";
 $route['contact'] 					= "front/contact";
 $route['faq'] 					    = "front/faq"; //TODO Not in use?
 $route['ses'] 						= "front/ses"; //Raw session logs
-$route['login']						= "front/login"; //Project Operator login
+$route['login']						= "front/login"; //Bootcamp Operator login
 
 /* ******************************
  * Student Semi-Private URLs
@@ -49,6 +49,7 @@ $route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$
 //Three steps of the signup process:
 $route['(:any)/apply/(:num)'] 	            = "front/project_apply/$1/$2"; //Start of application funnel for Email, first & last name
 $route['(:any)/apply'] 	                    = "front/project_apply/$1"; //Start of application funnel for Email, first & last name
-$route['(:any)/(:num)']	                    = "front/project_load/$1/$2"; //Load specific class in the Project
-$route['(:any)']	                        = "front/project_load/$1"; //Load specific Project
+$route['(:any)/(:num)']	                    = "front/project_load/$1/$2"; //Load specific class in the Bootcamp
+$route['(:num)']	                        = "front/index/$1"; //Landing Page with specific c_id as Parent Focus
+$route['(:any)']	                        = "front/project_load/$1"; //Load specific Bootcamp
 

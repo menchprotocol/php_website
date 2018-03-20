@@ -81,7 +81,7 @@ if(count($admission['b__admins'])>1){
     }
     echo '</div>';
 }
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Project</b>: '.$admission['c_objective'].'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$admission['c_objective'].'</div>';
 echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.time_format($admission['r_start_date'],2).' - '.time_format($admission['r_cache__end_time'],2).'</div>';
 echo '<div style="border-bottom:2px solid #000; margin:0 0 25px;">&nbsp;</div>';
 
@@ -92,7 +92,7 @@ echo '<div style="border-bottom:2px solid #000; margin:0 0 25px;">&nbsp;</div>';
 echo '<div id="update_results"></div>'; //To be updated when submitted
 echo '<div id="save_review">';
 
-    echo '<div class="maxout"><b><i class="fa fa-star" aria-hidden="true"></i> Review Score</b><br />From a scale of 1-10, how likely are you to recommend your Project experience to friends/family?</div>';
+    echo '<div class="maxout"><b><i class="fa fa-star" aria-hidden="true"></i> Review Score</b><br />From a scale of 1-10, how likely are you to recommend your Bootcamp experience to friends/family?</div>';
     echo '<select class="input-mini border" id="ru_review_score" style="padding:4px !important;">';
     if(!$has_reviewed){
         echo '<option value="0">Choose Score...</option>';

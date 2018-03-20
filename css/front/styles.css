@@ -118,6 +118,7 @@ a.badge-primary:hover {
     color: #2f2639;
     text-transform: lowercase;
 }
+.nav { margin-bottom: 10px; }
 .nav li a { text-transform:uppercase; }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     border-top: 0px solid #ddd;
@@ -738,6 +739,15 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
     border-color: #999;
 }
 
+
+.price h4 {
+    font-size: 1.6em;
+    font-weight: 300;
+}
+.card-product .footer .stats {
+    margin-top: 17px;
+}
+.card-image .video-sorting { border-radius:6px; display: block; overflow: hidden; }
 
 @media (max-width: 767px){
 

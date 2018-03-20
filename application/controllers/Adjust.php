@@ -23,7 +23,7 @@ class Adjust extends CI_Controller {
         foreach($classes as $class){
 
 
-            //Fetch full Project/Class data for this:
+            //Fetch full Bootcamp/Class data for this:
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
             $class = $bs[0]['this_class'];
 
@@ -117,7 +117,7 @@ class Adjust extends CI_Controller {
 
             $qualified_students = $this->Db_model->ru_fetch(array(
                 'ru.ru_r_id' => $class['r_id'],
-                'ru.ru_status >' => 5,
+                'ru.ru_status >=' => 6,
             ));
 
             $completed_students = $this->Db_model->ru_fetch(array(

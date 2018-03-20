@@ -26,63 +26,12 @@ class Api_v1 extends CI_Controller {
 	 * Miscs
 	 ****************************** */
 
-	function load_menu($c_id,$hash_key){
+	function load_menu(){
 
         if(!isset($_POST['c_id']) || !isset($_POST['hash_key']) || !($_POST['hash_key']==md5($_POST['c_id'].'menu89Hash'))){
-            die('<div class="alert alert-danger" role="alert">Invalid Project ID.</div>');
+            die('<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
         }
 
-        //Fetch projects:
-        $bs = $this->Db_model->remix_projects(array(
-            'b.b_status >=' => 4,
-        ));
-
-	    echo '<div class="row">';
-        foreach($bs as $count=>$b){
-
-            //Fetch class:
-            $focus_class = filter_class($b['c__classes'],null);
-
-            if(!$focus_class){
-                continue;
-            }
-
-            echo '<div class="col-sm-6">
-    <div class="card card-product">
-        <!-- <div class="card-image"></div> -->
-
-        <div class="card-content">';
-
-            //echo '<h6 class="category text-muted">'.$b['ct_icon'].' '.$b['ct_name'].'</h6>';
-            echo '<h4 class="card-title" style="font-size: 1.4em; line-height: 110%; margin:15px 0 12px 0;"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
-            echo '<div class="card-description"><b>'.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).': '.echo_hours(($b['c__estimated_hours']/7)).' per Day</b></div>';
-
-
-            echo '<div class="card-description">By ';
-            //Print lead admin:
-            foreach($b['b__admins'] as $admin){
-                if($admin['ba_status']==3){
-                    echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
-                }
-            }
-            echo '</div>';
-
-            echo '<div class="footer">
-                <div class="price">
-                    <h4>'.echo_price($focus_class['r_usd_price']).'</h4>
-                </div>
-                <div class="stats"><span>Starts <b>'.time_format($focus_class['r_start_date'],1).'</b></span></div>
-            </div>';
-
-            echo '</div>
-</div>
-</div>';
-
-            if(fmod($count,3)==0){
-                echo '</div><div class="row">';
-            }
-        }
-        echo '</div>';
     }
 
 	function import_content_loader(){
@@ -90,7 +39,7 @@ class Api_v1 extends CI_Controller {
         if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project source.',
+                'message' => 'Missing Bootcamp source.',
             ));
             exit;
         }
@@ -104,13 +53,13 @@ class Api_v1 extends CI_Controller {
             exit;
         }
 
-        $bs = $this->Db_model->remix_projects(array(
+        $bs = $this->Db_model->remix_bs(array(
             'b_id' => $_POST['import_from_b_id'],
         ));
         if(!(count($bs)==1)){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Project source.',
+                'message' => 'Invalid Bootcamp source.',
             ));
             exit;
         }
@@ -123,7 +72,7 @@ class Api_v1 extends CI_Controller {
             ),
             array(
                 'is_header' => 0,
-                'name' => '<i class="fa fa-commenting" aria-hidden="true"></i> Import Project-Level Messages',
+                'name' => '<i class="fa fa-commenting" aria-hidden="true"></i> Import Bootcamp-Level Messages',
                 'id' => 'b_level_messages',
                 'count' => count($bs[0]['c__messages']),
             ),
@@ -207,7 +156,7 @@ class Api_v1 extends CI_Controller {
         if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0 || !isset($_POST['import_to_b_id']) || intval($_POST['import_to_b_id'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project source.',
+                'message' => 'Missing Bootcamp source.',
             ));
             exit;
         } elseif(!isset($_POST['task_import_mode']) || intval($_POST['task_import_mode'])<1 || intval($_POST['task_import_mode'])>3){
@@ -234,7 +183,7 @@ class Api_v1 extends CI_Controller {
             exit;
         }
 
-        $bs_from = $this->Db_model->remix_projects(array(
+        $bs_from = $this->Db_model->remix_bs(array(
             'b_id' => $_POST['import_from_b_id'],
         ));
         $bs_to = $this->Db_model->b_fetch(array(
@@ -243,13 +192,13 @@ class Api_v1 extends CI_Controller {
         if(!(count($bs_from)==1)){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Project from.',
+                'message' => 'Invalid Bootcamp from.',
             ));
             exit;
         } elseif(!(count($bs_to)==1)){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Project to.',
+                'message' => 'Invalid Bootcamp to.',
             ));
             exit;
         }
@@ -278,7 +227,7 @@ class Api_v1 extends CI_Controller {
 
 
 
-        //Do we need to copy the Project-level message?
+        //Do we need to copy the Bootcamp-level message?
         $b_level_messages_results = array();
         if(isset($_POST['b_level_messages']) && intval($_POST['b_level_messages']) && count($bs_from[0]['c__messages'])>0){
             //Yes, import messages:
@@ -424,7 +373,7 @@ class Api_v1 extends CI_Controller {
 
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project ID',
+                'message' => 'Missing Bootcamp ID',
             ));
             return false;
 
@@ -463,7 +412,7 @@ class Api_v1 extends CI_Controller {
 
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Project ID',
+                'message' => 'Invalid Bootcamp ID',
             ));
             return false;
 
@@ -533,17 +482,17 @@ class Api_v1 extends CI_Controller {
 
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Missing Project ID.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Missing Bootcamp ID.</div>';
             return false;
 
         }
 
-        //Validate Project and later check current b_fb_id
+        //Validate Bootcamp and later check current b_fb_id
         $bs = $this->Db_model->b_fetch(array(
             'b_id' => intval($_POST['b_id']),
         ));
         if(count($bs)<1){
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Invalid Project ID.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Invalid Bootcamp ID.</div>';
             return false;
         }
 
@@ -571,7 +520,7 @@ class Api_v1 extends CI_Controller {
         //Do we have a page connected, or not?
         if(intval($bs[0]['b_fp_id'])>0 && !in_array($bs[0]['b_fp_id'],$authorized_fp_ids)) {
 
-            //Project connected to a page they do not control, fetch details and let them know:
+            //Bootcamp connected to a page they do not control, fetch details and let them know:
             $no_control_pages = $this->Db_model->fp_fetch(array(
                 'fp_id' => $bs[0]['b_fp_id']
             ));
@@ -609,7 +558,7 @@ class Api_v1 extends CI_Controller {
         if(count($ready_pages)>0){
             foreach($ready_pages as $page){
 
-                //Fetch all other Projects this page is connected to:
+                //Fetch all other Bootcamps this page is connected to:
                 $other_projects = $this->Db_model->b_fetch(array(
                     'b.b_fp_id' => $page['fp_id'],
                     'b.b_id !=' => $_POST['b_id'],
@@ -643,7 +592,7 @@ class Api_v1 extends CI_Controller {
 
 
                 if(count($other_projects)>0){
-                    //Show other connected Projects:
+                    //Show other connected Bootcamps:
                     $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
                     foreach($other_projects as $count=>$b){
                         if($count>0){
@@ -876,7 +825,7 @@ class Api_v1 extends CI_Controller {
 	    ));
 
 	    if(count($classes)==1){
-            $bs = $this->Db_model->remix_projects(array(
+            $bs = $this->Db_model->remix_bs(array(
                 'b.b_id' => $classes[0]['r_b_id'],
             ));
             $b = $bs[0];
@@ -1029,7 +978,7 @@ class Api_v1 extends CI_Controller {
 
 
                         //Either start time or end time falls within this class!
-                        $message = 'Admission blocked because you can join a maximum of 1 concurrent Projects. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'].'."\n\n".'This overlaps with your request to join this Project ['.$b['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.'.( $admission['ru_status']==0 ? ' You can choose to withdraw your application from ['.$admission['c_objective'].'] because your current application status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].' : '' );
+                        $message = 'Admission blocked because you can join a maximum of 1 concurrent Bootcamps. You are already enrolled in ['.$admission['c_objective'].'] that runs between ['.time_format($admission['r__class_start_time'],1).' - '.time_format($admission['r__class_end_time'],1).'].'."\n\n".'This overlaps with your request to join this Bootcamp ['.$b['c_objective'].'] that runs between ['.time_format($focus_class['r__class_start_time'],1).' - '.time_format($focus_class['r__class_end_time'],1).'].'."\n\n".'We emailed you a link to manage your current admissions.'.( $admission['ru_status']==0 ? ' You can choose to withdraw your application from ['.$admission['c_objective'].'] because your current application status is ['.trim(strip_tags(status_bible('ru',$admission['ru_status']))).'].' : '' );
 
                         //Log engagement:
                         $this->Db_model->e_create(array(
@@ -1147,11 +1096,11 @@ class Api_v1 extends CI_Controller {
             'ru_application_survey' => json_encode($_POST['answers']),
         );
 
-        //Is this a free Project? If so, we can fast forward the payment step...
+        //Is this a free Bootcamp? If so, we can fast forward the payment step...
         if(doubleval($admissions[0]['r_usd_price'])==0){
 
-            //Yes, change the status to Pending Review:
-            $update_data['ru_status'] = 2;
+            //Yes, change the status to Admitted:
+            $update_data['ru_status'] = 4;
 
             //Log Engagement that this is now ready
             $this->Db_model->e_create(array(
@@ -1195,9 +1144,10 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Error: Invalid Inputs',
             ));
         } else {
+
             //Attempt to withdraw user:
             $admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_status'  => 0, //Initiated or higher as long as Project is running!
+                'ru.ru_status'  => 0, //Initiated or higher as long as Bootcamp is running!
                 'ru.ru_u_id'	=> $_POST['u_id'],
                 'ru.ru_id'	    => $_POST['ru_id'],
             ));
@@ -1206,7 +1156,7 @@ class Api_v1 extends CI_Controller {
 
                 //All good, withdraw:
                 $this->Db_model->ru_update( $_POST['ru_id'] , array(
-                    'ru_status' => -2, //For now this is the default since we don't accept partial payments
+                    'ru_status' => -2,
                 ));
 
                 //Log Engagement:
@@ -1246,7 +1196,7 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project ID',
+                'message' => 'Missing Bootcamp ID',
             ));
         } elseif(!isset($_POST['fp_id']) || strlen($_POST['fp_id'])<=0){
             echo_json(array(
@@ -1352,7 +1302,7 @@ class Api_v1 extends CI_Controller {
 
         $co_instructors = array();
         if($users[0]['u_status']==1){
-            //Regular user, see if they are assigned to any Project as co-instructor
+            //Regular user, see if they are assigned to any Bootcamp as co-instructor
             $co_instructors = $this->Db_model->user_projects(array(
                 'ba.ba_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
@@ -1382,7 +1332,7 @@ class Api_v1 extends CI_Controller {
             return false;
         } elseif(!$is_instructor && !$is_student){
             //We assume this is a student request:
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Projects yet. You can only login as a student after you have been approved by your instructor.</div>');
+            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Bootcamps yet. You can only login as a student after you have been approved by your instructor.</div>');
             return false;
         }
 
@@ -1610,7 +1560,7 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        //Fetch full Project/Class/Intent data from Action Plan copy:
+        //Fetch full Bootcamp/Class/Node data from Action Plan copy:
         $bs = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
         $focus_class = $bs[0]['this_class'];
         $intent_data = extract_level( $bs[0] , intval($_POST['c_id']) );
@@ -1662,7 +1612,7 @@ class Api_v1 extends CI_Controller {
         //Do we need to send any notifications?
         if(strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
 
-            //Send email to all instructors of this Project:
+            //Send email to all instructors of this Bootcamp:
             $b_instructors = $this->Db_model->ba_fetch(array(
                 'ba.ba_b_id' => intval($_POST['b_id']),
                 'ba.ba_status >=' => 2, //co-instructors & lead instructor
@@ -1683,7 +1633,7 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>A new Step Completion report is ready for your review:</div>';
                     $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Project: '.$bs[0]['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_objective'].'</div>';
                     $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
@@ -1759,11 +1709,11 @@ class Api_v1 extends CI_Controller {
                 }
             }
 
-            //Is the Project Complete?
+            //Is the Bootcamp Complete?
             if($intent_data['next_level']==1){
                 //Seems so!
                 foreach($bs[0]['c__messages'] as $i){
-                    //Projects only could have ON-COMPLETE messages:
+                    //Bootcamps only could have ON-COMPLETE messages:
                     if($i['i_status']==3){
                         array_push($on_complete_messages, array_merge($i , array(
                             'e_initiator_u_id' => 0,
@@ -1844,7 +1794,7 @@ class Api_v1 extends CI_Controller {
         //Take action based on what the next level is...
         if($intent_data['next_level']==1){
 
-            //The next level is the Project, which means this was the last Step:
+            //The next level is the Bootcamp, which means this was the last Step:
             $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
                 'ru_cache__completion_rate' => $ru_cache__completion_rate, //Should be 1 (100% complete)
                 'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
@@ -1912,7 +1862,7 @@ class Api_v1 extends CI_Controller {
         if(!$udata){
             echo '<span style="color:#FF0000;">Error: Session Expired.</span>';
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            echo '<span style="color:#FF0000;">Error: Missing Project ID.</span>';
+            echo '<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>';
         } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
             echo '<span style="color:#FF0000;">Error: Missing Class ID.</span>';
         } else {
@@ -1933,9 +1883,9 @@ class Api_v1 extends CI_Controller {
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Project ID</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Node id.</span>');
         } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
             die('<span style="color:#FF0000;">Error: invalid level ID.</span>');
         } else {
@@ -1953,7 +1903,7 @@ class Api_v1 extends CI_Controller {
         if(isset($_POST['psid'])){
 
             $ru_filter = array(
-                'ru.ru_status >=' => 2, //Completed Application
+                'ru.ru_status >=' => 4, //Admitted
                 'r.r_status >=' => 1, //Open for Admission or Higher
             );
 
@@ -1972,7 +1922,7 @@ class Api_v1 extends CI_Controller {
             if(!$active_admission){
 
                 //Ooops, they dont have anything!
-                die('<div class="alert alert-danger" role="alert">You have not joined any Projects yet</div>');
+                die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
 
             } else {
 
@@ -2022,7 +1972,7 @@ class Api_v1 extends CI_Controller {
         } elseif((strtotime($_POST['r_start_date']))<time()){
             die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
 	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['r_status'])){
 	        die('<span style="color:#FF0000;">Error: Invalid class status.</span>');
 	    } elseif(!isset($_POST['copy_r_id']) || intval($_POST['copy_r_id'])<0){
@@ -2104,7 +2054,7 @@ class Api_v1 extends CI_Controller {
 	                'after' => $class,
 	            ),
 	            'e_type_id' => 14, //New Class
-	            'e_b_id' => intval($_POST['r_b_id']), //Share with Project team
+	            'e_b_id' => intval($_POST['r_b_id']), //Share with Bootcamp team
 	            'e_r_id' => $class['r_id'],
 	        ));
 	        
@@ -2113,7 +2063,7 @@ class Api_v1 extends CI_Controller {
 	            //Redirect:
 	            echo '<script> window.location = "/console/'.intval($_POST['r_b_id']).'/classes/'.$class['r_id'].'" </script>';
 	        } else {
-	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this Project.</span>');
+	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this Bootcamp.</span>');
 	        }
 	    }
 	}
@@ -2158,7 +2108,7 @@ class Api_v1 extends CI_Controller {
 	                'after' => @unserialize($r_update['r_live_office_hours']),
 	            ),
 	            'e_type_id' => 13, //Class Updated
-	            'e_b_id' => $classes[0]['r_b_id'], //Share with Project team
+	            'e_b_id' => $classes[0]['r_b_id'], //Share with Bootcamp team
 	            'e_r_id' => intval($_POST['r_id']),
 	        ));
 	    }
@@ -2224,7 +2174,7 @@ class Api_v1 extends CI_Controller {
 	}
 	
 	/* ******************************
-	 * b Projects
+	 * b Bootcamps
 	 ****************************** */
 	
 	function project_create(){
@@ -2284,7 +2234,7 @@ class Api_v1 extends CI_Controller {
         $default_class_prerequisites = $this->config->item('default_class_prerequisites');
         $default_class_prizes = $this->config->item('default_class_prizes');
 
-        //Create new Project:
+        //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
@@ -2297,13 +2247,13 @@ class Api_v1 extends CI_Controller {
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'project_create() Function failed to create Project for intent #'.$intent['c_id'],
+                'e_message' => 'project_create() Function failed to create Bootcamp for intent #'.$intent['c_id'],
                 'e_json' => $_POST,
                 'e_type_id' => 8, //Platform Error
             ));
             echo_json(array(
                 'status' => 0,
-                'message' => 'Unknown error while trying to create Project.',
+                'message' => 'Unknown error while trying to create Bootcamp.',
             ));
             return false;
         }
@@ -2320,19 +2270,19 @@ class Api_v1 extends CI_Controller {
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'project_create() Function failed to grant permission for Project #'.$b['b_id'],
+                'e_message' => 'project_create() Function failed to grant permission for Bootcamp #'.$b['b_id'],
                 'e_json' => $_POST,
                 'e_type_id' => 8, //Platform Error
             ));
             echo_json(array(
                 'status' => 0,
-                'message' => 'Unknown error while trying to set Project leader.',
+                'message' => 'Unknown error while trying to set Bootcamp leader.',
             ));
             return false;
         }
 
         
-        //Log Engagement for Intent Created:
+        //Log Engagement for Node Created:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
             'e_message' => '['.$intent['c_objective'].'] created as a new intent',
@@ -2341,22 +2291,22 @@ class Api_v1 extends CI_Controller {
                 'before' => null,
                 'after' => $intent,
             ),
-            'e_type_id' => 20, //Intent Created
+            'e_type_id' => 20, //Node Created
             'e_b_id' => $b['b_id'],
             'e_c_id' => $intent['c_id'],
         ));
         
         
-        //Log Engagement for Project Created:
+        //Log Engagement for Bootcamp Created:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => 'Project #'.$b['b_id'].' created for ['.$intent['c_objective'].'] intent',
+            'e_message' => 'Bootcamp #'.$b['b_id'].' created for ['.$intent['c_objective'].'] intent',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
                 'after' => $b,
             ),
-            'e_type_id' => 15, //Project Created
+            'e_type_id' => 15, //Bootcamp Created
             'e_b_id' => $b['b_id'],
         ));
         
@@ -2364,7 +2314,7 @@ class Api_v1 extends CI_Controller {
         //Log Engagement for Permission Granted:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' assigned as Project Leader',
+            'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' assigned as Bootcamp Leader',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2399,11 +2349,11 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0) {
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project ID',
+                'message' => 'Missing Bootcamp ID',
             ));
         } else {
 
-            //Updatye Project:
+            //Updatye Bootcamp:
             $this->Db_model->b_update( intval($_POST['b_id']) , array(
                 $_POST['group_id'] => ( isset($_POST['new_sort']) && is_array($_POST['new_sort']) && count($_POST['new_sort'])>0 ? json_encode($_POST['new_sort']) : null ),
             ));
@@ -2412,7 +2362,7 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
                 'e_json' => $_POST,
-                'e_type_id' => 53, //Project List Modified
+                'e_type_id' => 53, //Bootcamp List Modified
                 'e_b_id' => intval($_POST['b_id']),
             ));
 
@@ -2429,7 +2379,7 @@ class Api_v1 extends CI_Controller {
         //Auth user and check required variables:
         $udata = auth(2);
 
-        //Validate Project ID:
+        //Validate Bootcamp ID:
         if(isset($_POST['b_id'])){
             $bs = $this->Db_model->b_fetch(array(
                 'b.b_id' => intval($_POST['b_id']),
@@ -2445,115 +2395,178 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0 || count($bs)<1){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Project ID',
+                'message' => 'Invalid Bootcamp ID',
             ));
             return false;
 	    } elseif(!isset($_POST['b_url_key'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project URL',
+                'message' => 'Missing Bootcamp URL',
             ));
             return false;
         } elseif(!isset($_POST['b_status'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project Status',
+                'message' => 'Missing Bootcamp Status',
+            ));
+            return false;
+        } elseif($_POST['level1_c_id']>0 && $_POST['level2_c_id']==0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Select 2nd Level Category',
+            ));
+            return false;
+        } elseif(strlen($_POST['b_support_email'])>0 && !filter_var($_POST['b_support_email'], FILTER_VALIDATE_EMAIL)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Enter Valid Forwarding Email Address',
+            ));
+            return false;
+        } elseif(strlen($_POST['b_calendly_url'])>0 && substr_count($_POST['b_calendly_url'],'https://calendly.com/')==0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Calendly URL must include https://calendly.com/',
             ));
             return false;
         }
 
 
 
-        //Did any of the Project fields change?
-        if(!($bs[0]['b_status']==$_POST['b_status']) || !($bs[0]['b_url_key']==$_POST['b_url_key']) || !($bs[0]['b_fb_pixel_id']==$_POST['b_fb_pixel_id'])){
+        //Fetch reserved terms:
+        $reserved_hashtags = $this->config->item('reserved_hashtags');
 
-            //Fetch reserved terms:
-            $reserved_hashtags = $this->config->item('reserved_hashtags');
+        //Validate URL Key to be unique:
+        $duplicate_projects = $this->Db_model->b_fetch(array(
+            'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
+            'b.b_id !=' => $_POST['b_id'],
+        ));
 
-            //Validate URL Key to be unique:
-            $duplicate_projects = $this->Db_model->b_fetch(array(
-                'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
-                'b.b_id !=' => $_POST['b_id'],
+        //Check URL Key:
+        if(in_array(strtolower($_POST['b_url_key']),$reserved_hashtags)){
+            echo_json(array(
+                'status' => 0,
+                'message' => '"'.$_POST['b_url_key'].'" is a reserved URL.',
             ));
-
-            //Check URL Key:
-            if(in_array(strtolower($_POST['b_url_key']),$reserved_hashtags)){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => '"'.$_POST['b_url_key'].'" is a reserved URL.',
-                ));
-                return false;
-            } elseif(strlen($_POST['b_url_key'])>30){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'URL Key should be less than 30 characters',
-                ));
-                return false;
-            } elseif(strlen($_POST['b_url_key'])<4){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'URL Key should be at least 4 characters long',
-                ));
-                return false;
-            } elseif(ctype_digit($_POST['b_url_key'])){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'URL Key should include at-least 1 letter.',
-                ));
-                return false;
-            } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'URL Key can only include letters a-z and numbers 0-9',
-                ));
-                return false;
-            } elseif(count($duplicate_projects)>0){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'URL Key <a href="/'.$_POST['b_url_key'].'" target="_blank">'.$_POST['b_url_key'].'</a> already taken.',
-                ));
-                return false;
-            }
-
-
-            //Update Project:
-            $b_update = array(
-                'b_status' => $_POST['b_status'],
-                'b_url_key' => $_POST['b_url_key'],
-                'b_fb_pixel_id' => ( strlen($_POST['b_fb_pixel_id'])>0 ? bigintval($_POST['b_fb_pixel_id']) : NULL ),
-            );
-
-            $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
-
-
-            //Project Edit is the default engagement:
-            $engagement_type_id = 18;
-
-            //Did the status change? Log Engagement for this:
-            if(!(intval($_POST['b_status'])==intval($bs[0]['b_status']))){
-                if(intval($_POST['b_status'])<0){
-                    //Archived
-                    $engagement_type_id = 17;
-                } elseif(intval($_POST['b_status'])==3) {
-                    //Public in Marketplace
-                    $engagement_type_id = 68;
-                }
-            }
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => ( $engagement_type_id==18 ? readable_updates($bs[0],$b_update,'b_') : null ),
-                'e_json' => array(
-                    'input' => $_POST,
-                    'before' => $bs[0],
-                    'after' => $b_update,
-                ),
-                'e_type_id' => $engagement_type_id,
-                'e_b_id' => intval($_POST['b_id']),
+            return false;
+        } elseif(strlen($_POST['b_url_key'])>30){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'URL Key should be less than 30 characters',
             ));
-
+            return false;
+        } elseif(strlen($_POST['b_url_key'])<4){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'URL Key should be at least 4 characters long',
+            ));
+            return false;
+        } elseif(ctype_digit($_POST['b_url_key'])){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'URL Key should include at-least 1 letter.',
+            ));
+            return false;
+        } elseif(!(strtolower(generate_hashtag($_POST['b_url_key']))==strtolower($_POST['b_url_key']))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'URL Key can only include letters a-z and numbers 0-9',
+            ));
+            return false;
+        } elseif(count($duplicate_projects)>0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'URL Key <a href="/'.$_POST['b_url_key'].'" target="_blank">'.$_POST['b_url_key'].'</a> already taken.',
+            ));
+            return false;
         }
+
+        /*
+        :$('#b_p2_max_seats').val(),
+        :$('#b_p2_rate').val(),
+        :$('#b_p3_rate').val(),
+        :$('#b_support_email').val(),
+        :$('#b_calendly_url').val(),
+        :$('#b_difficulty_level').val(),
+        level1_c_id:$('.level1').val(),
+        level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
+        */
+
+        //Update Bootcamp:
+        $b_update = array(
+            'b_status' => intval($_POST['b_status']),
+            'b_url_key' => $_POST['b_url_key'],
+            'b_fb_pixel_id' => ( strlen($_POST['b_fb_pixel_id'])>0 ? bigintval($_POST['b_fb_pixel_id']) : NULL ),
+            'b_p1_rate' => doubleval($_POST['b_p1_rate']),
+            'b_p2_max_seats' => intval($_POST['b_p2_max_seats']),
+            'b_p2_rate' => doubleval($_POST['b_p2_rate']),
+            'b_p3_rate' => doubleval($_POST['b_p3_rate']),
+            'b_support_email' => $_POST['b_support_email'],
+            'b_calendly_url' => $_POST['b_calendly_url'],
+            'b_difficulty_level' => ( intval($_POST['b_difficulty_level'])>0 ? intval($_POST['b_difficulty_level']) : null ),
+        );
+
+        $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
+
+
+        //Check to see what Category this Bootcamp Belongs to:
+        $current_c_ids = array();
+        $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
+            'cr.cr_outbound_id' => $bs[0]['b_c_id'],
+            'cr.cr_status' => 1,
+        ));
+        foreach($current_inbounds as $c){
+            array_push($current_c_ids,$c['cr_inbound_id']);
+        }
+
+        $has_new = (intval($_POST['level2_c_id'])>0 && !in_array($_POST['level2_c_id'],$current_c_ids));
+        if((count($current_c_ids)>0 && $_POST['level2_c_id']==0) || $has_new){
+            //We need to remove existing Links:
+            foreach($current_inbounds as $cr){
+                $this->Db_model->cr_update( $cr['cr_id'] , array(
+                    'cr_creator_id' => $udata['u_id'],
+                    'cr_timestamp' => date("Y-m-d H:i:s"),
+                    'cr_status' => -1, //Archived
+                ));
+            }
+        }
+
+        if($has_new){
+            //Create link:
+            $this->Db_model->cr_create(array(
+                'cr_creator_id' => $udata['u_id'],
+                'cr_inbound_id'  => $_POST['level2_c_id'],
+                'cr_outbound_id' => $bs[0]['b_c_id'],
+                'cr_status' => 1,
+            ));
+        }
+
+
+        //Bootcamp Edit is the default engagement:
+        $engagement_type_id = 18;
+
+        //Did the status change? Log Engagement for this:
+        if(!(intval($_POST['b_status'])==intval($bs[0]['b_status']))){
+            if(intval($_POST['b_status'])<0){
+                //Archived
+                $engagement_type_id = 17;
+            } elseif(intval($_POST['b_status'])==3) {
+                //Public in Marketplace
+                $engagement_type_id = 68;
+            }
+        }
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_message' => ( $engagement_type_id==18 ? readable_updates($bs[0],$b_update,'b_') : null ),
+            'e_json' => array(
+                'input' => $_POST,
+                'before' => $bs[0],
+                'after' => $b_update,
+            ),
+            'e_type_id' => $engagement_type_id,
+            'e_b_id' => intval($_POST['b_id']),
+        ));
 
         //Show success:
         echo_json(array(
@@ -2567,7 +2580,7 @@ class Api_v1 extends CI_Controller {
         //Auth user and check required variables:
         $udata = auth(2);
 
-        //Validate Project ID:
+        //Validate Bootcamp ID:
         $bs = $this->Db_model->b_fetch(array(
             'b.b_id' => intval($_POST['b_id']),
         ));
@@ -2586,7 +2599,7 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Node ID',
             ));
             return false;
         } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
@@ -2604,28 +2617,28 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project ID',
+                'message' => 'Missing Bootcamp ID',
             ));
             return false;
-        } elseif($_POST['level']==2 && !isset($_POST['c_status'])){
+        } elseif($_POST['level']>=2 && !isset($_POST['c_status'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Task Status',
+                'message' => 'Missing Status',
             ));
             return false;
-        } elseif($_POST['level']>=3 && !isset($_POST['c_status'])){
+        } elseif($_POST['level']==2 && !isset($_POST['c_extension_rule'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Step Status',
+                'message' => 'Missing Extension Rule',
             ));
             return false;
-        } elseif($_POST['level']>=3 && !isset($_POST['c_time_estimate'])){
+        } elseif($_POST['level']>=2 && !isset($_POST['c_time_estimate'])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Time Estimate',
             ));
             return false;
-        } elseif($_POST['level']>=3 && (!isset($_POST['c_complete_url_required']) || !isset($_POST['c_complete_notes_required']))){
+        } elseif($_POST['level']>=2 && (!isset($_POST['c_complete_url_required']) || !isset($_POST['c_complete_notes_required']))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Completion Settings',
@@ -2634,7 +2647,7 @@ class Api_v1 extends CI_Controller {
         } elseif(count($bs)<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Project ID',
+                'message' => 'Invalid Bootcamp ID',
             ));
             return false;
         } elseif(count($original_intents)<=0){
@@ -2649,7 +2662,7 @@ class Api_v1 extends CI_Controller {
         //Process data based on level:
         if($_POST['level']==1){
 
-            //Did the Project's Intent Outcome change?
+            //Did the Bootcamp's Node Outcome change?
             if(!(trim($_POST['c_objective'])==$original_intents[0]['c_objective'])){
                 //Generate Update Array
                 $c_update = array(
@@ -2657,15 +2670,9 @@ class Api_v1 extends CI_Controller {
                 );
             }
 
-        } elseif($_POST['level']==2){
+        } elseif($_POST['level']>=2){
 
-            $c_update = array(
-                'c_objective' => trim($_POST['c_objective']),
-                'c_status' => intval($_POST['c_status']),
-            );
-
-        } elseif($_POST['level']==3){
-
+            //For level 2 & 3
             $c_update = array(
                 'c_objective' => trim($_POST['c_objective']),
                 'c_status' => intval($_POST['c_status']),
@@ -2674,6 +2681,9 @@ class Api_v1 extends CI_Controller {
                 'c_complete_notes_required' => ( intval($_POST['c_complete_notes_required']) ? 't' : 'f' ),
             );
 
+            if($_POST['level']==2){
+                $c_update['c_extension_rule'] = intval($_POST['c_extension_rule']);
+            }
         }
 
 
@@ -2682,12 +2692,12 @@ class Api_v1 extends CI_Controller {
         if(isset($c_update) && count($c_update)>0){
 
             //Now update the DB:
-            $this->Db_model->c_update( intval($_POST['pid']) , $c_update);
+            $this->Db_model->c_update( intval($_POST['pid']) , $c_update );
 
             //Update Algolia:
             //$this->Db_model->sync_algolia(intval($_POST['pid']));
 
-            //Log Engagement for New Intent Link:
+            //Log Engagement for New Node Link:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
                 'e_message' => readable_updates($original_intents[0],$c_update,'c_'),
@@ -2696,7 +2706,7 @@ class Api_v1 extends CI_Controller {
                     'before' => $original_intents[0],
                     'after' => $c_update,
                 ),
-                'e_type_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
+                'e_type_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Node Deleted OR Updated
                 'e_b_id' => intval($_POST['b_id']),
                 'e_c_id' => intval($_POST['pid']),
             ));
@@ -2712,7 +2722,7 @@ class Api_v1 extends CI_Controller {
 	}
 
 	/* ******************************
-	 * c Intents
+	 * c Nodes
 	 ****************************** */
 	
 	function intent_create(){
@@ -2721,11 +2731,11 @@ class Api_v1 extends CI_Controller {
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
 	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Intent Outcome.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Node Outcome.</span>');
 	    }
 	    
 	    //Validate Original intent:
@@ -2736,31 +2746,31 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
 	    }
 	    
-	    //Validate Project ID:
+	    //Validate Bootcamp ID:
 	    $bs = $this->Db_model->b_fetch(array(
 	        'b.b_id' => intval($_POST['b_id']),
 	    ));
 	    if(count($bs)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    }
 	    
 	    //Create intent:
 	    $new_intent = $this->Db_model->c_create(array(
 	        'c_creator_id' => $udata['u_id'],
             'c_objective' => trim($_POST['c_objective']),
-            'c_time_estimate' => ( $_POST['next_level']>=3 ? '0.05' : '0' ), //3 min default Step
+            'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
 	    ));
 	    
-	    //Log Engagement for New Intent:
+	    //Log Engagement for New Node:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Intent ['.$new_intent['c_objective'].'] created',
+	        'e_message' => 'Node ['.$new_intent['c_objective'].'] created',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
 	            'after' => $new_intent,
 	        ),
-	        'e_type_id' => 20, //New Intent
+	        'e_type_id' => 20, //New Node
 	        'e_b_id' => intval($_POST['b_id']),
 	        'e_c_id' => $new_intent['c_id'],
 	    ));
@@ -2777,7 +2787,7 @@ class Api_v1 extends CI_Controller {
 	        )),
 	    ));
 	    
-	    //Log Engagement for New Intent Link:
+	    //Log Engagement for New Node Link:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
@@ -2786,7 +2796,7 @@ class Api_v1 extends CI_Controller {
 	            'before' => null,
 	            'after' => $relation,
 	        ),
-	        'e_type_id' => 23, //New Intent Link
+	        'e_type_id' => 23, //New Node Link
 	        'e_b_id' => intval($_POST['b_id']),
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
@@ -2814,19 +2824,19 @@ class Api_v1 extends CI_Controller {
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
 	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
 	    }
 	    
-	    //Validate Project ID:
+	    //Validate Bootcamp ID:
 	    $bs = $this->Db_model->b_fetch(array(
 	        'b.b_id' => intval($_POST['b_id']),
 	    ));
 	    if(count($bs)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Project ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    }
 	    
 	    //Validate outbound link:
@@ -2873,7 +2883,7 @@ class Api_v1 extends CI_Controller {
 	    ));
 	    
 	    
-	    //Log Engagement for New Intent Link:
+	    //Log Engagement for New Node Link:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Linked intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
@@ -2882,7 +2892,7 @@ class Api_v1 extends CI_Controller {
 	            'before' => null,
 	            'after' => $relation,
 	        ),
-	        'e_type_id' => 23, //New Intent Link
+	        'e_type_id' => 23, //New Node Link
 	        'e_b_id' => intval($_POST['b_id']),
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
@@ -3002,7 +3012,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0) {
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project ID',
+                'message' => 'Missing Bootcamp ID',
             ));
         } else {
 
@@ -3095,7 +3105,7 @@ class Api_v1 extends CI_Controller {
 
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Node ID',
             ));
             return false;
 
@@ -3163,14 +3173,14 @@ class Api_v1 extends CI_Controller {
 	        
 	    } else {
 
-	        //Fetch Project:
+	        //Fetch Bootcamp:
             $bs = $this->Db_model->b_fetch(array(
                 'b.b_id' => $_POST['b_id'],
             ));
             if(count($bs)<1){
                 echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Project ID.',
+                    'message' => 'Invalid Bootcamp ID.',
                 ));
                 return false;
             }
@@ -3283,7 +3293,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Project',
+	            'message' => 'Invalid Bootcamp',
 	        ));
 	    } else {
 
@@ -3293,7 +3303,7 @@ class Api_v1 extends CI_Controller {
             if(count($bs)<1){
                 echo_json(array(
                     'status' => 0,
-                    'message' => 'Invalid Project ID.',
+                    'message' => 'Invalid Bootcamp ID.',
                 ));
                 return false;
             }
@@ -3390,7 +3400,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Intent ID',
+	            'message' => 'Invalid Node ID',
 	        ));
 	    } else {
 
@@ -3488,7 +3498,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Node ID',
             ));
 	    } else {
 
@@ -3546,12 +3556,12 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Project ID',
+                'message' => 'Missing Bootcamp ID',
             ));
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Intent ID',
+                'message' => 'Invalid Node ID',
             ));
 	    } else {
 

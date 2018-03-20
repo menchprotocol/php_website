@@ -10,7 +10,7 @@ if($users[0]['u_cache__fp_psid']>0){
     //Inform user to continue:
     echo '<div class="maxout">';
         echo '<div class="alert alert-success" role="alert"><i class="fa fa-check-square" aria-hidden="true"></i> <b>Success!</b> We\'re now connected through Facebook Messenger.</div>';
-        echo '<a href="/console" class="btn btn-primary">My Projects &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
+        echo '<a href="/console" class="btn btn-primary">My Bootcamps &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
     echo '</div>';
     
 } else {

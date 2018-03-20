@@ -29,8 +29,8 @@ WHERE ru.ru_status >= 4
 
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
-            //Fetch Project:
-            $bs = $this->Db_model->remix_projects(array(
+            //Fetch Bootcamp:
+            $bs = $this->Db_model->remix_bs(array(
                 'b.b_id' => $enrollment['r_b_id'],
             ));
             if(count($bs)<=0){
@@ -66,12 +66,15 @@ WHERE ru.ru_status >= 4
 	    return $admissions;
 	}
 
-    function remix_projects($match_columns){
+    function remix_bs($match_columns, $join_objects=array()){
+
         //Missing anything?
         $this->db->select('*');
         $this->db->from('v5_projects b');
         $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
-        $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
+        if(count($join_objects)==0 || in_array('fp',$join_objects)){
+            $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
+        }
 
         foreach($match_columns as $key=>$value){
             $this->db->where($key,$value);
@@ -82,106 +85,136 @@ WHERE ru.ru_status >= 4
         //Now append more data:
         foreach($bs as $key=>$c){
 
-            //Project Messages:
-            $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                'i_status >' => 0,
-                'i_c_id' => $c['c_id'],
-            ));
+            //Bootcamp Messages:
+            if(count($join_objects)==0 || in_array('i',$join_objects)){
+                $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                    'i_status >' => 0,
+                    'i_c_id' => $c['c_id'],
+                ));
+                $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
+            }
+
+            // "ihm" is to find the header image of the Bootcamp
+            if(count($join_objects)>0 && in_array('ihm',$join_objects)){
+                $b_messages = $this->Db_model->i_fetch(array(
+                    'i_status >=' => 1,
+                    'i_c_id' => $c['c_id'],
+                ));
+                $bs[$key]['c__header_media'] = null;
+                foreach ($b_messages as $i){
+                    if(in_array($i['i_media_type'],array('image','video'))){
+                        $bs[$key]['c__header_media'] = echo_i($i);
+                        break;
+                    } elseif($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_video($i['i_url'],$i['i_message'])){
+                        $bs[$key]['c__header_media'] = detect_embed_video($i['i_url'],$i['i_message']);
+                        break;
+                    }
+                }
+                if(!$bs[$key]['c__header_media']){
+                    $bs[$key]['c__header_media'] = echo_i(array(
+                        'i_media_type' => 'image',
+                        'i_url' => '/img/bg.jpg',
+                    ));
+                }
+            }
 
             //Fetch team:
-            $bs[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
-                'ba.ba_b_id' => $c['b_id'],
-                'ba.ba_status >=' => 0,
-                'u.u_status >=' => 0,
-            ));
+            if(count($join_objects)==0 || in_array('ba',$join_objects)){
+                $bs[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
+                    'ba.ba_b_id' => $c['b_id'],
+                    'ba.ba_status >=' => 0,
+                    'u.u_status >=' => 0,
+                ));
+            }
 
             //Fetch Sub-intents:
             $bs[$key]['c__active_intents'] = array();
             $bs[$key]['c__tasks_count'] = 0;
             $bs[$key]['c__steps_count'] = 0;
             $bs[$key]['c__estimated_hours'] = $bs[$key]['c_time_estimate'];
-            $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
             $bs[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                 'cr.cr_inbound_id' => $c['c_id'],
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
+
             foreach($bs[$key]['c__child_intents'] as $task_key=>$task){
 
                 //Count Messages:
-                $task_messages = $this->Db_model->i_fetch(array(
-                    'i_status >' => 0,
-                    'i_c_id' => $task['c_id'],
-                ));
+                if(count($join_objects)==0 || in_array('i',$join_objects)){
+                    $task_messages = $this->Db_model->i_fetch(array(
+                        'i_status >' => 0,
+                        'i_c_id' => $task['c_id'],
+                    ));
+                    $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] = 0;
+                    $bs[$key]['c__message_tree_count'] += count($task_messages);
+                    $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($task_messages);
+                    $bs[$key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
+                }
 
-                //Assign messages:
-                $bs[$key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
-
-                //Introduce total time:
-                $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = 0; //Because its always zero!
+                if($task['c_status']>=1){
+                    //Start by adding up the Task level time:
+                    $bs[$key]['c__estimated_hours'] += $task['c_time_estimate'];
+                    $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = $task['c_time_estimate'];
+                    $bs[$key]['c__tasks_count']++;
+                } else {
+                    $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = 0;
+                }
 
                 //Fetch sprint Steps at level 3:
                 $bs[$key]['c__child_intents'][$task_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                     'cr.cr_inbound_id' => $task['c_id'],
                     'cr.cr_status >=' => 0,
-                    'c.c_status >=' => 0,
+                    'c.c_status >=' => 1,
                 ));
 
-                $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] = 0;
-
-                //Addup counts:
-                if($task['c_status']==1){
-                    $bs[$key]['c__tasks_count']++;
-                    $bs[$key]['c__message_tree_count'] += count($task_messages);
-                    $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($task_messages);
-
-                    //Create Step array:
-                    $bs[$key]['c__active_intents'][$task['c_id']] = array();
-                }
-
+                //Create Step array:
+                $bs[$key]['c__active_intents'][$task['c_id']] = array();
 
                 //Addup Step values:
                 foreach($bs[$key]['c__child_intents'][$task_key]['c__child_intents'] as $step_key=>$step){
 
-                    //Count Messages:
-                    $step_messages = $this->Db_model->i_fetch(array(
-                        'i_status >' => 0,
-                        'i_c_id' => $step['c_id'],
-                    ));
+                    if(count($join_objects)==0 || in_array('i',$join_objects)){
+                        //Count Messages:
+                        $step_messages = $this->Db_model->i_fetch(array(
+                            'i_status >' => 0,
+                            'i_c_id' => $step['c_id'],
+                        ));
 
-                    //Add messages:
-                    $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
-
-                    //Addup Step estimated time for active Steps in active Tasks:
-                    if($step['c_status']==1){
-
-                        if($task['c_status']==1){
-                            $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
-                            $bs[$key]['c__steps_count']++;
-                            //add to active Steps per Task:
-                            array_push($bs[$key]['c__active_intents'][$task['c_id']],$step['c_id']);
-                        }
-
-                        //Addup Task Hours for its Active Steps Regardless of Task status:
-                        $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] += $step['c_time_estimate'];
-
+                        //Add messages:
+                        $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
+                        //Always show Step message count regardless of status:
+                        $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
                         //Increase message counts:
                         $bs[$key]['c__message_tree_count'] += count($step_messages);
                         $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($step_messages);
-
                     }
 
-                    //Always show Step message count regardless of status:
-                    $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
+                    //Addup Task Hours for its Active Steps Regardless of Task status:
+                    $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] += $step['c_time_estimate'];
+
+
+                    if($task['c_status']>=1 && $step['c_status']>=1) {
+
+                        //Addup Step estimated time for active Steps in active Tasks:
+                        $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
+
+                        $bs[$key]['c__steps_count']++;
+
+                        //add to active Steps per Task:
+                        array_push($bs[$key]['c__active_intents'][$task['c_id']], $step['c_id']);
+
+                    }
                 }
             }
 
             //Fetch Classes last to leverage the currently gathered data for some other calculations inside the r_fetch() function:
-            $bs[$key]['c__classes'] = $this->r_fetch(array(
-                'r.r_b_id' => $c['b_id'],
-                'r.r_status >=' => 0,
-            ) , $bs[$key] /* Passing this would load extra variables for the class */ );
-
+            if(count($join_objects)==0 || in_array('r',$join_objects)){
+                $bs[$key]['c__classes'] = $this->r_fetch(array(
+                    'r.r_b_id' => $c['b_id'],
+                    'r.r_status >=' => 0,
+                ) , $bs[$key] /* Passing this would load extra variables for the class */ );
+            }
         }
 
         return $bs;
@@ -396,7 +429,7 @@ WHERE ru.ru_status >= 4
 	
 	
 	function ba_fetch($match_columns,$fetch_extra=false){
-	    //Fetch the admins of the Projects
+	    //Fetch the admins of the Bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_users u');
         $this->db->join('v5_project_instructors ba', 'ba.ba_u_id = u.u_id');
@@ -776,7 +809,7 @@ WHERE ru.ru_status >= 4
 	
 	
 	/* ******************************
-	 * Projects
+	 * Bootcamps
 	 ****************************** */
 
     function ru_fetch($match_columns){
@@ -991,7 +1024,7 @@ WHERE ru.ru_status >= 4
 	function cr_create($insert_columns){
 		
 		//Missing anything?
-		if(!isset($insert_columns['cr_outbound_id']) || !isset($insert_columns['cr_outbound_rank'])){
+		if(!isset($insert_columns['cr_outbound_id'])){
 			return false;
 		} elseif(!isset($insert_columns['cr_creator_id'])){
 			return false;
@@ -1001,9 +1034,12 @@ WHERE ru.ru_status >= 4
 		if(!isset($insert_columns['cr_timestamp'])){
 			$insert_columns['cr_timestamp'] = date("Y-m-d H:i:s");
 		}
-		if(!isset($insert_columns['cr_status'])){
-			$insert_columns['cr_status'] = 1; //Live link
-		}
+        if(!isset($insert_columns['cr_status'])){
+            $insert_columns['cr_status'] = 1; //Live link
+        }
+        if(!isset($insert_columns['cr_outbound_rank'])){
+            $insert_columns['cr_outbound_rank'] = 1; //Live link
+        }
 		
 		//Lets now add:
 		$this->db->insert('v5_intent_links', $insert_columns);
@@ -1204,7 +1240,7 @@ WHERE ru.ru_status >= 4
     function snapshot_action_plan($b_id,$r_id){
 
 	    //Saves a copy of the Action Plan for the Class to use it:
-        $bs = $this->Db_model->remix_projects(array(
+        $bs = $this->Db_model->remix_bs(array(
             'b.b_id' => $b_id,
         ));
 
@@ -1358,7 +1394,7 @@ WHERE ru.ru_status >= 4
                 //Did we find it? We should have:
                 if(isset($engagements[0])){
 
-                    //Fetch all Project Instructors and Notify them:
+                    //Fetch all Bootcamp Instructors and Notify them:
                     $b_instructors = $this->Db_model->ba_fetch(array(
                         'ba.ba_b_id' => $link_data['e_b_id'],
                         'ba.ba_status >=' => 2, //co-instructors & lead instructor
