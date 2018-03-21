@@ -114,28 +114,10 @@ $udata = $this->session->userdata('user');
                 </div>
             </div>
 
+            <a name="testimonials" style="display: block;"></a>
+
         </div>
     </div>
-
-	
-	
-	
-	<!-- Get Started -->
-	<div class="section section-contacts" style="padding-top:80px;">
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2" style="text-align:center;">
-				<?php
-	    		if(isset($udata['u_id'])){
-	    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">Console <i class="fa fa-chevron-circle-right" style="font-size:1.2em;" aria-hidden="true"></i></a>';
-	    		} else {
-	    		    echo '<a href="'.typeform_url('nh4s2u').'" class="btn btn-danger btn-raised btn-lg bg-glow glow">Signup As Instructor <i class="fa fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';
-	    		    echo '<p class="sub-button"><a href="#testimonials" onclick="$(\'.testimonials\').toggle()">Read Student Testimonials</a> or <a href="/login">Login</a></p>';
-	    		}
-	    		?>
-                <a name="testimonials" style="display: block;"></a>
-			</div>
-		</div>
-	</div>
 
 
 
@@ -175,6 +157,24 @@ $udata = $this->session->userdata('user');
             </div>
         </div>
     </div>
+
+	
+	
+	<!-- Get Started -->
+	<div class="section section-contacts" style="padding-top:80px;">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2" style="text-align:center;">
+				<?php
+	    		if(isset($udata['u_id'])){
+	    			echo '<a href="/console" class="btn btn-danger btn-raised btn-lg bg-glow">Console <i class="fa fa-chevron-circle-right" style="font-size:1.2em;" aria-hidden="true"></i></a>';
+	    		} else {
+	    		    echo '<a href="'.typeform_url('nh4s2u').'" class="btn btn-danger btn-raised btn-lg bg-glow glow">Signup As Instructor <i class="fa fa-sign-in" style="font-size:1.2em;"></i><div class="ripple-container"></div></a>';
+	    		    echo '<p class="sub-button"><a href="#testimonials" class="testimonials" onclick="$(\'.testimonials\').toggle()">Read Student Testimonials</a> or <a href="/login">Login</a></p>';
+	    		}
+	    		?>
+			</div>
+		</div>
+	</div>
 
      
   </div>
