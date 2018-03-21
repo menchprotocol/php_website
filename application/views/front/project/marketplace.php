@@ -14,7 +14,7 @@
 
 <!-- <h1>Achieve Your Goals</h1> -->
 <h1>Bootcamps by Industry Experts</h1>
-<p style="font-size: 1.3em;">Learn in-demand skills by completing 7-Day Bootcamps lead by Industry Experts.</p>
+<p style="font-size: 1.3em;">Learn in-demand skills by completing 7-Day Bootcamps led by Industry Experts.</p>
 <p style="font-size: 1.3em;">New Classes start every Monday 12:00am PST which is <span id="classes_start"></span> away.</p>
 <br />
 

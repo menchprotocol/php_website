@@ -1,4 +1,29 @@
-<script>
+<?php
+$message_max = $this->config->item('message_max');
+?><script>
+
+$(document).ready(function() {
+    if(window.location.hash) {
+        focus_hash(window.location.hash);
+    }
+});
+
+function load_class(r_id){
+
+    //Show Loader:
+    $('#class_content').html('<img src="/img/round_load.gif" class="loader" />');
+
+    //Save the rest of the content:
+    $.post("/api_v1/load_classmates", { r_id:r_id } , function(data) {
+
+        //Update UI to confirm with user:
+        $('#class_content').html(data).hide().fadeIn();
+
+        //Activate Tooltip:
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+}
 
 function toggle_support(r_id){
 
@@ -40,11 +65,37 @@ function toggle_support(r_id){
     });
 }
 
-$(document).ready(function() {
-    if(window.location.hash) {
-        focus_hash(window.location.hash);
+
+function changeBroadcastCount(){
+    var len = $('#r_broadcast').val().length;
+    if (len > <?= $message_max ?>) {
+        $('#BroadcastChar').addClass('overload').text(len);
+    } else {
+        $('#BroadcastChar').removeClass('overload').text(len);
     }
-});
+}
+
+function sync_action_plan(){
+    //Show spinner:
+    $('#action_plan_status').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
+    var b_id = $('#b_id').val();
+    var r_id = $('#r_id').val();
+
+    //Save the rest of the content:
+    $.post("/api_v1/sync_action_plan", {
+        r_id:r_id,
+        b_id:b_id,
+    } , function(data) {
+        //Update UI to confirm with user:
+        $('#action_plan_status').html(data).hide().fadeIn();
+        //Assume all good, refresh:
+        setTimeout(function() {
+            $(location).attr('href', '/console/'+b_id+'/classes/'+r_id);
+            window.location.hash = "#actionplan";
+            location.reload();
+        }, 1000);
+    });
+}
 
 </script>
 
@@ -54,9 +105,9 @@ $(document).ready(function() {
 
 <input type="hidden" id="focus_r_id" value="0" />
 
-<table class="table">
+<table class="table" style="margin-top:-10px;">
     <tr>
-        <td class="class_nav">
+        <td class="class_nav" style="vertical-align:top;">
 
             <ul id="topnav" class="nav nav-pills nav-pills-primary" style="margin-bottom:12px;">
                 <li id="nav_active" class="active"><a href="#active"><i class="fa fa-play-circle initial"></i> Active</a></li>
@@ -116,10 +167,9 @@ $(document).ready(function() {
                 </div>
             </div>
 
-
         </td>
-        <td style="padding-top:0;">
-            <div id="load_leaderboard"></div>
+        <td style="padding-top:7px; vertical-align:top;">
+            <div id="class_content"><br /><br />Select a Class from the left menu to load Students...</div>
         </td>
     </tr>
 </table>

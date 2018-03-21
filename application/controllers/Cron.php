@@ -1058,6 +1058,7 @@ class Cron extends CI_Controller {
     }
 
     function student_reminder_complete_task(){
+
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their Steps:
 

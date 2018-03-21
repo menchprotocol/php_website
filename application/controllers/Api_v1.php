@@ -1881,6 +1881,10 @@ class Api_v1 extends CI_Controller {
 
     function load_classmates(){
 
+        $b_id = 0;
+        $r_id = 0;
+        $is_instructor = 0;
+
 	    //Function called form /MY/classmates (student Messenger)
         if(isset($_POST['psid'])){
 
@@ -1908,20 +1912,423 @@ class Api_v1 extends CI_Controller {
 
             } else {
 
+                //Show Classmates:
+                $b_id = $active_admission['b_id'];
+                $r_id = $active_admission['r_id'];
+
                 //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $active_admission['u_id'],
                     'e_type_id' => 54, //classmates Opened
-                    'e_b_id' => $active_admission['b_id'],
-                    'e_r_id' => $active_admission['r_id'],
+                    'e_b_id' => $b_id,
+                    'e_r_id' => $r_id,
                 ));
+            }
 
-                //Show Classmates:
-                echo_classmates($active_admission['b_id'],$active_admission['r_id'],0);
+        } elseif(isset($_POST['r_id'])){
+
+            //Validate the Class and Instructor status:
+            $classes = $this->Db_model->r_fetch(array(
+                'r.r_id' => $_POST['r_id'],
+            ));
+
+            if(count($classes)<1){
+                //Ooops, something wrong:
+                die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
+            }
+
+            $udata = auth(2, 0, $classes[0]['r_b_id']);
+            if(!$udata){
+                die('<span style="color:#FF0000;">Error: Session Expired.</span>');
+            }
+
+            //Show Leaderboard for Instructor:
+            $b_id = $classes[0]['r_b_id'];
+            $r_id = $classes[0]['r_id'];
+            $is_instructor = 1;
+
+        }
+
+
+        if(!$b_id || !$r_id){
+            //Ooops, something wrong:
+            die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
+        }
+
+        //Fetch full Bootcamp/Class data for this:
+        $bs = fetch_action_plan_copy($b_id,$r_id);
+        $class = $bs[0]['this_class'];
+
+
+        //Was it all good? Should be!
+        if($class['r__total_tasks']==0){
+            die('<span style="color:#FF0000;">Error: No Tasks Yet</span>');
+        } elseif(!$class){
+            die('<span style="color:#FF0000;">Error: Class Not Found</span>');
+        }
+
+        //Set some settings:
+        $loadboard_students = $this->Db_model->ru_fetch(array(
+            'ru_r_id' => $class['r_id'],
+            'ru_status >=' => 4,
+        ));
+        $countries_all = $this->config->item('countries_all');
+        $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
+        $show_ranking_top = ceil(count($loadboard_students) * $show_top );
+
+        if($is_instructor){
+            echo '<h3 style="margin:0;">'.time_format($class['r_start_date'],1).'</h3>';
+        }
+
+        echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
+
+
+        //First generate classmates's top message:
+        echo '<tr style="font-weight:bold; ">';
+        echo '<td colspan="7" style="border:1px solid #999; font-size:1em; padding:10px 0; border-bottom:none; text-align:center;">';
+        echo '<i class="fa fa-calendar" aria-hidden="true"></i> ';
+        //Do some time calculations for the point system:
+        if(time()<$class['r__class_start_time']){
+            //Not started yet!
+            //TODO maybe have a count down timer to make it nicer?
+            echo 'Class not yet started.';
+        } elseif(time()>$class['r__class_end_time']){
+            //Ended!
+            echo 'Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago';
+        } else {
+            //During the class:
+            echo 'Running Class';
+        }
+        echo '</td>';
+        echo '</tr>';
+
+
+
+        //Now its header:
+        echo '<tr style="font-weight:bold; font-size:0.8em;">';
+        if($is_instructor){
+            echo '<td style="border:1px solid #999; border-right:none; width:38px;">#</td>';
+            echo '<td style="border:1px solid #999; border-left:none; border-right:none; width:43px;">Rank</td>';
+        } else {
+            echo '<td style="border:1px solid #999; border-right:none; width:50px;">Rank</td>';
+        }
+        echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; padding-left:30px;">Student</td>';
+        echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:90px;">Progress</td>';
+
+        if($is_instructor){
+            echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">Task</td>';
+        }
+
+        echo '<td style="border:1px solid #999; border-left:none; border-right:1px solid #999; width:25px;">&nbsp;</td>';
+        echo '</tr>';
+
+
+        //Now list all students in order:
+        if(count($loadboard_students)>0){
+
+            //List students:
+            $rank = 1; //Keeps track of student rankings, which is equal if points are equal
+            $counter = 0; //Keeps track of student counts
+            $bborder = '';
+            $top_ranking_shown = false;
+
+            foreach($loadboard_students as $key=>$admission){
+
+                if($show_ranking_top<=$counter && !$top_ranking_shown && $admission['ru_cache__current_task']<=$class['r__total_tasks']){
+                    echo '<tr>';
+                    echo '<td colspan="6" style="background-color:#999; border-right:1px solid #999; color:#FFF; text-align:center;">';
+                    if($show_ranking_top==$counter){
+                        echo '<span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all Steps by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span>';
+                    } else {
+                        echo '<span>Above students have successfully <i class="fa fa-trophy" aria-hidden="true"></i> COMPLETED</span>';
+                    }
+                    echo '</td>';
+                    echo '</tr>';
+                    $top_ranking_shown = true;
+                }
+
+                $counter++;
+                if($key>0 && $admission['ru_cache__completion_rate']<$loadboard_students[($key-1)]['ru_cache__completion_rate']){
+                    $rank++;
+                }
+
+                //Should we show this ranking?
+                $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top || $admission['ru_cache__current_task']>$class['r__total_tasks']);
+
+                if(!isset($loadboard_students[($key+1)])){
+                    //This is the last item, add a botton border:
+                    $bborder = 'border-bottom:1px solid #999;';
+                }
+
+                echo '<tr>';
+                if($is_instructor){
+                    echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.$counter.'</td>';
+                    echo '<td valign="top" style="'.$bborder.'vertical-align:top; text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
+                } else {
+                    echo '<td valign="top" style="'.$bborder.'border-left:1px solid #999; text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
+                }
+
+                echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_fname'].' '.$admission['u_lname'];
+
+
+                if(!$is_instructor){
+
+                    //Show basic list for students:
+                    echo $student_name;
+
+                } else {
+
+                    echo '<a href="javascript:view_el('.$admission['u_id'].','.$bs[0]['c_id'].')" class="plain">';
+                    echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$bs[0]['c_id'].'" aria-hidden="true"></i> ';
+                    echo $student_name;
+                    echo '</a>';
+
+                    echo '<div style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" id="c_el_'.$admission['u_id'].'_'.$bs[0]['c_id'].'" class="hidden">';
+
+                    //Fetch student submissions so far:
+                    $us_data = $this->Db_model->us_fetch(array(
+                        'us_r_id' => $class['r_id'],
+                        'us_student_id' => $admission['u_id'],
+                    ));
+
+                    //Go through all the Tasks that are due up to now:
+                    $open_step_shown = false;
+
+                    foreach($bs[0]['c__child_intents'] as $task) {
+                        if($task['c_status']>=1){
+
+                            $class_has_ended = (time() > $class['r__class_end_time']);
+                            $task_started = ($class_has_ended);
+                            $required_steps = 0;
+                            $completed_steps = 0;
+
+                            $step_details = null; //To show details when clicked
+                            //Calculate the Step completion rate and points for this
+                            foreach($task['c__child_intents'] as $step) {
+                                if($step['c_status']>=1){
+
+                                    $required_steps++;
+
+                                    //What is the status of this Step?
+                                    if(isset($us_data[$step['c_id']])){
+
+                                        //This student has made a submission:
+                                        $us_step_status = $us_data[$step['c_id']]['us_status'];
+                                        $completed_steps += ( $us_step_status>=1 ? 1 : 0 );
+
+                                    } elseif(!$task_started || $open_step_shown) {
+
+                                        //Locked:
+                                        $us_step_status = -2;
+
+                                    } else {
+
+                                        //Not submitted yet:
+                                        $us_step_status = 0;
+                                        //Future Steps should be locked:
+                                        $open_step_shown = true;
+
+                                    }
+
+                                    $step_details .= '<div>';
+
+
+                                    $step_details .= '</div>';
+
+                                    //Now show the Step submission details:
+                                    $step_details .= '<a href="javascript:view_el('.$admission['u_id'].','.$step['c_id'].')" class="plain">';
+                                    $step_details .= '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$step['c_id'].'" aria-hidden="true"></i> ';
+                                    $step_details .= status_bible('us',$us_step_status,1,'right');
+                                    $step_details .= ' <span data-toggle="tooltip" title="'.str_replace('"', "", str_replace("'", "", $step['c_objective'])).'">Step '.$step['cr_outbound_rank'].'</span>';
+
+                                    $step_details .= ( isset($us_data[$step['c_id']]) ? ' ' . ( strlen($us_data[$step['c_id']]['us_student_notes'])>0 ? ' <i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" title="Submission has notes"></i>' : '' ) : '' );
+                                    $step_details .= '</a>';
+
+                                    $step_details .= '<div id="c_el_'.$admission['u_id'].'_'.$step['c_id'].'" class="hidden" style="margin-left:5px;">';
+
+                                    if(isset($us_data[$step['c_id']])){
+                                        $step_details .= '<div style="width:280px; overflow:hidden; font-size:0.9em; padding:5px; border:1px solid #999;">'.( strlen($us_data[$step['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$step['c_id']]['us_student_notes']) : 'Notes not added.' ).'</div>';
+                                    } else {
+                                        $step_details .= '<p>Nothing submitted yet.</p>';
+                                    }
+                                    $step_details .= '</div>';
+                                }
+                            }
+
+
+
+                            //What is the Task status based on its Steps?
+                            if($completed_steps>=$required_steps){
+                                //Completed all Steps:
+                                $us_task_status = 1;
+                            } elseif(!$task_started){
+                                //Not yet started, still locked:
+                                $us_task_status = -2;
+                            } else {
+                                //Pending completion:
+                                $us_task_status = 0;
+                            }
+
+
+                            //Now its content:
+                            echo '<div>';
+                            echo '<a href="javascript:view_el('.$admission['u_id'].','.$task['c_id'].')" class="plain">';
+                            echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$task['c_id'].'" aria-hidden="true"></i> ';
+                            echo '<span data-toggle="tooltip" title="'.str_replace('"', "", str_replace("'", "", $task['c_objective'])).'">'.status_bible('us',$us_task_status,1,'right').' Task '.$task['cr_outbound_rank'].'</span>';
+                            echo '</a>';
+
+                            echo '</div>';
+
+                            echo '<div id="c_el_'.$admission['u_id'].'_'.$task['c_id'].'" style="margin-left:5px; border-left:1px solid #999; padding-left:5px;" class="hidden">';
+                            echo $step_details;
+                            echo '</div>';
+
+                        }
+                    }
+
+                    echo '</div>';
+                }
+                echo '</td>';
+
+
+                //Progress, Task & Steps:
+                if($admission['ru_cache__current_task']>$class['r__total_tasks']){
+                    //They have completed it all, show them as winners!
+                    echo '<td valign="top" colspan="'.($is_instructor?'2':'1').'" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                    echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">COMPLETED</span>';
+                    echo '</td>';
+                } else {
+                    //Progress:
+                    echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                    if($ranking_visible){
+                        echo '<span>'.round( $admission['ru_cache__completion_rate']*100 ).'%</span>';
+                    }
+                    echo '</td>';
+
+                    if($is_instructor){
+                        //Task:
+                        echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top;">';
+                        if($ranking_visible){
+                            echo $admission['ru_cache__current_task'];
+                        }
+                        echo '</td>';
+                    }
+                }
+
+
+
+                echo '<td valign="top" style="'.$bborder.'text-align:left; vertical-align:top; border-right:1px solid #999;">'.( isset($countries_all[strtoupper($admission['u_country_code'])]) ? '<img data-toggle="tooltip" data-placement="left" title="'.$countries_all[strtoupper($admission['u_country_code'])].'" src="/img/flags/'.strtolower($admission['u_country_code']).'.png" class="flag" style="margin-top:-3px;" />' : '' ).'</td>';
+
+                echo '</tr>';
 
             }
+
         } else {
-            die('<span style="color:#FF0000;">Error: Missing PSID</span>');
+            //No students admitted yet:
+            echo '<tr style="font-weight:bold; ">';
+            echo '<td colspan="7" style="border:1px solid #999; font-size:1.2em; padding:15px 0; text-align:center;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No Students Admitted Yet</td>';
+            echo '</tr>';
+        }
+
+        echo '</table>';
+
+
+
+        //TODO Later add broadcasting and Action Plan UI
+        if($is_instructor && 0){
+
+            $message_max = $this->config->item('message_max');
+
+            //Add Broadcasting:
+            echo '<div class="title" style="margin-top:25px;"><h4><i class="fa fa-comments" aria-hidden="true"></i> Broadcast Message <span id="hb_4997" class="help_button" intent-id="4997"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>';
+            echo '<div class="help_body maxout" id="content_4997"></div>';
+            echo '<div class="form-group label-floating is-empty">
+            <textarea class="form-control text-edit border msg msgin" style="min-height:80px; max-width:420px; padding:3px;" onkeyup="changeBroadcastCount()" id="r_broadcast"></textarea>
+            <div style="margin:0 0 0 0; font-size:0.8em;"><span id="BroadcastChar">0</span>/'.$message_max.'</div>
+        </div>
+        <table width="100%"><tr><td class="save-td"><a href="javascript:send_();" class="btn btn-primary">Send</a></td><td><span class="save_r_results"></span></td></tr></table>';
+
+
+            //Fetch the most recent cached action plans:
+            $cache_action_plans = $this->Db_model->e_fetch(array(
+                'e_type_id' => 70,
+                'e_r_id' => $class['r_id'],
+            ),1,array('ej'));
+
+            if(count($cache_action_plans)>0){
+
+                $b = unserialize($cache_action_plans[0]['ej_e_blob']);
+
+                echo '<div class="title"><h4><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
+                echo '<div class="help_body maxout" id="content_3267"></div>';
+
+                //Show Action Plan:
+                echo '<div id="project-objective" class="list-group maxout">';
+                echo echo_cr($b,$b,1,0,false);
+                echo '</div>';
+
+                //Task Expand/Contract all if more than 2
+                if(count($b['c__child_intents'])>0){
+                    echo '<div id="task_view">';
+                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
+                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                    echo '</div>';
+                }
+
+                //Tasks List:
+                echo '<div id="list-outbound" class="list-group">';
+                foreach($b['c__child_intents'] as $key=>$sub_intent){
+                    echo echo_cr($b,$sub_intent,2,$b['b_id'],0,false);
+                }
+                echo '</div>';
+
+
+                //Target Audience:
+                echo '<div class="title"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
+            <div class="help_body maxout" id="content_426"></div>';
+                echo ( strlen($b['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_target_audience'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+
+
+                //Prerequisites, which get some system appended ones:
+                $b['b_prerequisites'] = prep_prerequisites($b);
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
+            <div class="help_body maxout" id="content_610"></div>';
+                echo ( count($b['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+
+
+                //Skills You Will Gain
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+            <div class="help_body maxout" id="content_2271"></div>';
+                echo ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+
+
+                //Completion Awards
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Awards <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
+            <div class="help_body maxout" id="content_623"></div>';
+                echo ( strlen($b['b_completion_prizes'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+
+
+                if($class['r_status']==2){
+                    //Show button to update ONLY if class is running
+                    if($udata['u_status']>=2){
+                        ?>
+                        <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
+                        <div class="copy_ap" style="display:none;">
+                            <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete. Update the Action Plan only if:</p>
+                            <ul>
+                                <li>You have made changes to Messages only (Not added new Steps or Tasks)</li>
+                                <li>You have made changes to Future Tasks that have not been unlocked yet</li>
+                            </ul>
+                            <p><a href="javascript:void(0);" onclick="sync_action_plan()">I Understand, Continue With Update &raquo;</a></p>
+                        </div>
+                        <div id="action_plan_status"></div>
+                        <?php
+                    } else {
+                        echo '<div>Contact us if you like to update a Copy of Your Action Plan.</div>';
+                    }
+                }
+            }
         }
     }
 
