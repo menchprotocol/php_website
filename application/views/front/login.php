@@ -50,6 +50,6 @@
 	<br />
 	
 	<div class="extra-info">
-        <p>Are you an Expert with Industry Experience? <a href="/launch">Start Here</a></p>
+        <p>Are you an Industry Expert? <a href="/launch">Start Here</a></p>
 	</div>
 </div>
