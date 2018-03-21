@@ -1862,9 +1862,7 @@ function echo_r($b_id,$class,$append_class=null){
 
     echo '<li class="list-group-item '.$append_class.'">';
 
-
     echo '<span class="pull-right">';
-
     if($class['r__current_admissions']>0){
 
         //How many students, if any, are enrolled in support packages?
@@ -1884,13 +1882,13 @@ function echo_r($b_id,$class,$append_class=null){
     //Determine the state of the Checkbox:
     if($guided_admissions>0 || $class['r_status']>=2){
 
-        //Students have already registered for this Support in this Class, show Lock:
+        //Locked:
         echo '<span class="badge badge-primary '.( $guided_admissions==0 ? 'grey' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$guided_admissions.' Student'.show_s($guided_admissions).' paid for Support"><i class="fa fa-life-ring" aria-hidden="true"></i>'.( $guided_admissions>0 ? ' '.$guided_admissions : '' ).'</span>';
 
     } else {
 
-        //Can still toggle support:
-        echo '<a href="javascript:void(0);" id="support_toggle_'.$class['r_id'].'" onclick="toggle_support('.$class['r_id'].')" style="text-decoration: none;" current-status="'.$class['r_status'].'"><span class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'"><i class="fa fa-life-ring" aria-hidden="true"></i></span></a>';
+        //Can still change:
+        echo '<a href="javascript:void(0);" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" onclick="toggle_support('.$class['r_id'].')" style="text-decoration: none;" current-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to Toggle Support: Yellow = Offer Support Grey = No Support"><i class="fa fa-life-ring" aria-hidden="true"></i></a>';
 
     }
     echo ' '.time_format($class['r_start_date'],1);

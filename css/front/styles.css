@@ -899,8 +899,18 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .bg-glow.glow {
     text-shadow: 0 0 1px #CCC;
 }
+a.badge:focus, a.badge:hover {
+    color:inherit !important;
+}
 .grey{
     background-color:#CCC !important;
+}
+
+.grey-list .list-group-item {
+    background-color: #E5E5E5;
+    border-bottom-color: #E5E5E5;
+    border-left-color: #E5E5E5;
+    border-right-color: #E5E5E5;
 }
 
 #msgnotif{

@@ -97,7 +97,7 @@ class Api_v1 extends CI_Controller {
 
             array(
                 'is_header' => 1,
-                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Import Tasks from '.( $bs[0]['b_old_format'] ? 'Milestone' : 'Bootcamp').'</h5>',
+                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Import Tasks with Messages</h5>',
             ),
         );
 
@@ -109,7 +109,7 @@ class Api_v1 extends CI_Controller {
                     //Give a single/total option:
                     array_push($import_items,array(
                         'is_header' => 0,
-                        'name' => $milestone['c_objective'],
+                        'name' => 'Tasks form ['.$milestone['c_objective'].']',
                         'id' => 'b_c_ids',
                         'value' => $milestone['c_id'],
                         'count' => count($milestone['c__child_intents']),
@@ -1224,7 +1224,7 @@ class Api_v1 extends CI_Controller {
 	function login(){
 	    
 	    //Setting for admin logins:
-	    $master_password = 'pi980ollmaster';
+	    $master_password = 'mench7788826962';
         $website = $this->config->item('website');
 	    
 	    if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
@@ -1245,7 +1245,7 @@ class Api_v1 extends CI_Controller {
 	    if(count($users)==1){
 
             //TODO remove login block for launch of v2.6
-            if($users[0]['u_status']<3){
+            if($users[0]['u_status']<3 && !($master_password==$_POST['u_password'])){
                 redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Mench beta console is not live yet.</div>');
                 return false;
             }
@@ -2099,60 +2099,64 @@ class Api_v1 extends CI_Controller {
 	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 
+
+
 	function class_update_status(){
 
-	    $udata = auth(2);
-	    if(!$udata){
-	        //Display error:
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
-	    } elseif(!isset($_POST['r_status'])){
-	        die('<span style="color:#FF0000;">Error: Missing Class Status.</span>');
+        if(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Class ID',
+            ));
+            exit;
+	    } elseif(!isset($_POST['r_new_status']) || !in_array(intval($_POST['r_new_status']),array(0,1))){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Class Status',
+            ));
+            exit;
 	    }
-	    
 
-	    //Fetch for the record:
+	    //Validate This Class:
 	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	    ));
 	    if(count($classes)<1){
-	        //Ooops, not found!
-	        die('<span style="color:#FF0000;">Error: Class ID not found.</span>');
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Class ID',
+            ));
+            exit;
 	    }
 
-
-	    //Save
-	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
-            'r_status' => intval($_POST['r_status']),
-        ));
-
-
-	    //Determine what type of engagement is this?
-        if($_POST['r_status']==-1 && $_POST['r_status']!=$classes[0]['r_status']){
-            //Archived:
-            $e_type_id = 16;
-        } else {
-            //Simply updated:
-            $e_type_id = 13;
+        $udata = auth(2, 0, $classes[0]['r_b_id']);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the Page to Continue.',
+            ));
+            exit;
         }
+
+
+	    //Save new Status:
+	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
+            'r_status' => intval($_POST['r_new_status']),
+        ));
 	    
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'], //The user
-	        'e_message' => ( $e_type_id==13 ? readable_updates($classes[0],$r_update,'r_') : null ),
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => $classes[0],
-	            'after' => $r_update,
-	        ),
-	        'e_type_id' => $e_type_id,
+	        'e_type_id' => ( intval($_POST['r_new_status']) ? 86 : 87 ), //Class Support Enabled/Disabled
 	        'e_b_id' => $classes[0]['r_b_id'],
-	        'e_r_id' => intval($_POST['r_id']),
+	        'e_r_id' => $classes[0]['r_id'],
 	    ));
 	    
 	    //Show result:
-	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
+        echo_json(array(
+            'status' => 1,
+            'message' => 'Success',
+        ));
 	}
 	
 	/* ******************************
