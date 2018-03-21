@@ -298,7 +298,7 @@ function save_settings(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
     <li id="nav_support" class="active"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-    <li id="nav_landingpage"><a href="#landingpage"><i class="fa fa-link" aria-hidden="true"></i> Landing Page</a></li>
+    <li id="nav_landingpage"><a href="#landingpage"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
     <li id="nav_team"><a href="#team"><i class="fa fa-user-plus" aria-hidden="true"></i> Team</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li> -->
@@ -328,7 +328,7 @@ function save_settings(){
 
 
 
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-life-ring" aria-hidden="true"></i> Guidance Package <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-life-ring" aria-hidden="true"></i> Classroom Package <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
         <?php if(count($pm['p2_rates'])==1){ ?>
             <div style="margin-bottom: 5px;">Universal Price: $<?= $pm['p2_rates'][0] ?>/Week/Student</div>
@@ -358,7 +358,7 @@ function save_settings(){
             </div>
 
 
-            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> 1-on-1 Mentorship Package <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Mentorship Package <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
             <div class="help_body maxout" id="content_615"></div>
             <div class="form-group label-floating">
                 <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -402,7 +402,7 @@ function save_settings(){
     <div class="tab-pane" id="tablandingpage">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-eye" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
         <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_status']>=3 ? array() : array(3) )); ?>
         <div style="clear:both; margin:0; padding:0;"></div>

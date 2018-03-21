@@ -558,38 +558,25 @@ class Cron extends CI_Controller {
         echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
     }
 
-    function create_classes(){
+    function create_classes($b_id=0){
 
-        //First determine all dates we'd need:
-        $dates_needed = array();
-        $start = strtotime('next monday');
-        for($i=0;$i<55;$i++){
-            $new_timestamp = $start+($i*7*24*3607); //The extra 7 seconds makes sure we don't get into Sundays
-            if(date("D",$new_timestamp)=='Mon'){
-                array_push($dates_needed,date("Y-m-d",($start+($i*7*24*3607))));
-            } else {
-                //Log error:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'r_sync() generated Class date that was Not a Monday',
-                    'e_type_id' => 8, //System Error
-                ));
-            }
+        if($b_id>0){
+            $filter = array(
+                'b_id' => $b_id,
+            );
+        } else {
+            $filter = array(
+                'b_status >=' => 2,
+            );
         }
-
-
-        //Now fetch all Active Bootcamps:
-        $bs = $this->Db_model->b_fetch(array(
-            'b_status >=' => 2,
-        ));
+        $bs = $this->Db_model->b_fetch($filter);
 
         $stats = array();
-
         foreach($bs as $b){
             $stats[$b['b_id']] = $this->Db_model->r_sync($b['b_id']);
         }
 
         echo_json($stats);
-
     }
 
 

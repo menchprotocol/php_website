@@ -23,39 +23,6 @@ class Bot extends CI_Controller {
         echo_json(fetch_action_plan_copy(21,196));
     }
 
-    function eee(){
-        echo 'eee';
-    }
-
-    function eeee(){
-        echo 'eeee';
-    }
-
-    function im(){
-        $this->Comm_model->send_message(array(
-            array(
-                'i_media_type' => 'text',
-                'i_message' => '{first_name} your class just endedt Steps but you will have life-time access to all Tasks and Steps which are now unlocked.​',
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => 1,
-            ),
-            array(
-                'i_media_type' => 'text',
-                'i_message' => 'Sample message',
-                'i_button' => 'Review button',
-                'i_url' => 'https://mench.com/my/review/',
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => 1,
-            ),
-            array(
-                'i_media_type' => 'image',
-                'i_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png',
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => 1,
-            ),
-        ));
-    }
-
     function m1(){
         echo_json($this->Comm_model->foundation_message(array(
             'e_recipient_u_id' => 1,
@@ -74,28 +41,10 @@ class Bot extends CI_Controller {
     }
 
 
-    function deauthorize(){
-	    //Called when someone de-authorizes our page
-        $this->Db_model->e_create(array(
-            'e_message' => 'deauthorize() was called because instructor revoked some/all permission. Look at e_json log file for more information.',
-            'e_json' => array(
-                'POST' => $_POST,
-                'parse_signed_request' => parse_signed_request($_POST['signed_request']),
-            ),
-            'e_type_id' => 84, //Facebook Permission Deauthorized
-        ));
-    }
 
-    function t(){
-	    echo_json($this->Comm_model->foundation_message(array(
-            'e_initiator_u_id' => 0,
-            'e_recipient_u_id' => 1,
-            'e_c_id' => 2698,
-            'depth' => 0,
-            'e_b_id' => 188,
-            'e_r_id' => 244,
-        )));
-    }
+
+
+
 
 	function facebook_webhook(){
 		
@@ -406,8 +355,6 @@ class Bot extends CI_Controller {
 		}
 	}
 	
-	
-	
 	function paypal_webhook(){
 
 	    //Called when the paypal payment is complete:
@@ -480,274 +427,18 @@ class Bot extends CI_Controller {
 	            }
 	        }
 	    }
-	}	
-
-	
-/*
- * Sample api.ai Webhook call:
-
-Array
-(
-    [originalRequest] => Array
-        (
-            [source] => facebook
-            [data] => Array
-                (
-                    [sender] => Array
-                        (
-                            [id] => 1344093838979504
-                        )
-
-                    [recipient] => Array
-                        (
-                            [id] => 1782774501750818
-                        )
-
-                    [message] => Array
-                        (
-                            [mid] => mid.$cAAZVbKt7ywpil2wGeFcZibAMlNcz
-                            [text] => hi
-                            [seq] => 14551
-                        )
-
-                    [timestamp] => 1496362434168
-                )
-
-        )
-
-    [id] => 7ac3054f-6fb0-4ca7-b6a8-ac7f44c7baf4
-    [timestamp] => 2017-06-02T00:13:54.51Z
-    [lang] => en
-    [result] => Array
-        (
-            [source] => agent
-            [resolvedQuery] => hi
-            [speech] => 
-            [action] => 
-            [actionIncomplete] => 
-            [parameters] => Array
-                (
-                )
-
-            [contexts] => Array
-                (
-                    [0] => Array
-                        (
-                            [name] => generic
-                            [parameters] => Array
-                                (
-                                    [facebook_sender_id] => 1344093838979504
-                                )
-
-                            [lifespan] => 4
-                        )
-
-                )
-
-            [metadata] => Array
-                (
-                    [intentId] => 087e291c-8476-4782-b9ee-bc02cddea54a
-                    [webhookUsed] => true
-                    [webhookForSlotFillingUsed] => false
-                    [intentName] => Introduce Us Bot
-                )
-
-            [fulfillment] => Array
-                (
-                    [speech] => 
-                    [messages] => Array
-                        (
-                            [0] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => hi 👋
-                                )
-
-                            [1] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => My name is Us.
-                                )
-
-                            [2] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => I'm called Us, well, because my intelligence is fueled by a group of people that collect idea nuggets from world class entrepreneurs.
-                                )
-
-                            [3] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => Here is how it works: You subscribe to a topic (only topic for now is growing tech startup), and we send you relevant idea nuggets in the form of video, audio, text and image. We curated these messages form credible sources so you can learn faster. Interested? Type "start"
-                                )
-                        )
-                )
-            [score] => 1
-        )
-
-    [status] => Array
-        (
-            [code] => 200
-            [errorType] => success
-        )
-    [sessionId] => be205d4d-852a-4dd5-9939-af0391c9ce93
-)
-
-
-
-Direct from api.ai:
-Array
-(
-    [id] => 9183cfa8-cc84-42cc-9f1f-b1ea9900204b
-    [timestamp] => 2017-06-02T00:13:03.213Z
-    [lang] => en
-    [result] => Array
-        (
-            [source] => agent
-            [resolvedQuery] => stat startup
-            [speech] => 
-            [action] => ||56
-            [actionIncomplete] => 
-            [parameters] => Array
-                (
-                )
-
-            [contexts] => Array
-                (
-                )
-
-            [metadata] => Array
-                (
-                    [intentId] => 231ec0aa-ddab-4820-9bc3-a6a597fd623c
-                    [webhookUsed] => true
-                    [webhookForSlotFillingUsed] => false
-                    [intentName] => Hypergrow a Startup
-                )
-
-            [fulfillment] => Array
-                (
-                    [speech] => 
-                    [messages] => Array
-                        (
-                            [0] => Array
-                                (
-                                    [type] => 3
-                                    [platform] => facebook
-                                    [imageUrl] => http://www.quicksprout.com/images/startup.jpg
-                                )
-
-                            [1] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => Welome onboard! How often would you like to receive updates from Us?
-                                )
-
-                            [2] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => You can always type in specific topics that interest you the most, and we will auto subscribe you once those topics become available.
-                                )
-
-                            [3] => Array
-                                (
-                                    [type] => 0
-                                    [platform] => facebook
-                                    [speech] => Before you go, what is currently your biggest challenge in building your technology startup?
-                                )
-                        )
-                )
-            [score] => 0.43
-        )
-
-    [status] => Array
-        (
-            [code] => 200
-            [errorType] => success
-        )
-    [sessionId] => c4e9fd9a-b1b9-4db4-bbd0-3e9b33c2697e
-)
-*/
-
-	
-	function apiai_webhook(){
-		
-		//This is being retired in favour of the new design to intake directly from Facebook 
-		exit;
-		//The main function to receive user message.
-		//Facebook Messenger send the data to api.ai, they attempt to detect #intents/@entities.
-		//And then they send the results to Us here.
-		//Data from api.ai
-		
-		$json_data = json_decode(file_get_contents('php://input'), true);
-		
-		//See what we should respond to the user:
-		$eng_data = array(
-				'gem_id' => 0,
-				'us_id' => 0, //Default api.ai API User, IF not with facebok
-				'intent_pid' => ( substr_count($json_data['result']['action'],'pid')==1 ? intval(str_replace('pid','',$json_data['result']['action'])) : 0 ),
-				'json_blob' => json_encode($json_data), //Dump all incoming variables
-				'message' => $json_data['result']['resolvedQuery'],
-				'seq' => 0, //No sequence if from api.ai
-				'correlation' => ( isset($json_data['result']['score']) ? $json_data['result']['score'] : 1 ),
-				'action_pid' => 928, //928 Read, 929 Write, 930 Subscribe, 931 Unsubscribe
-		);
-		
-		//Is this message coming from Facebook? (Instead of api.ai console)
-		if(isset($json_data['originalRequest']['source']) 
-		&& $json_data['originalRequest']['source']=='facebook'){
-			
-			//This is from Facebook Messenger
-			$fb_user_id = $json_data['originalRequest']['data']['sender']['id'];
-			
-			//Update engagement variables:
-			$eng_data['seq'] 			= $json_data['originalRequest']['data']['message']['seq']; //Facebook message sequence
-			$eng_data['message'] 		= $json_data['originalRequest']['data']['message']['text']; //Facebook message content
-			
-			
-			if(strlen($fb_user_id)>0){
-				
-				//Indicate to the user that we're typing...
-				//We have a sender ID, see if this is registered using Facebook PSID
-
-				
-				
-				//Log incoming engagement
-				
-				//Fancy:
-				//sleep(1);
-				
-				if(isset($unsubscribed_gem['id'])){
-					//Oho! This user is unsubscribed, Ask them if they would like to re-join us:
-					$response = array(
-							'text' => 'You had unsubscribed from Us. Would you like to re-join?',
-					);
-				} else {
-					//Now figure out the response:
-				}
-				
-				//TODO: Log response engagement
-				
-				//Send message back to user...
-			}
-			
-		} else {
-			//TODO Log engagement
-			
-			//most likely this is the api.ai console.
-			$chosen_reply = 'Testing intents on api.ai, huh? Currently we programmed to only respond in Facebook messanger directly!';
-			echo_json(array(
-					'speech' => $chosen_reply,
-					'displayText' => $chosen_reply,
-					'data' => array(), //Its only a text response
-					'contextOut' => array(),
-					'source' => "webhook",
-			));
-		}
 	}
+
+    function deauthorize(){
+        //Called when someone de-authorizes our page
+        $this->Db_model->e_create(array(
+            'e_message' => 'deauthorize() was called because instructor revoked some/all permission. Look at e_json log file for more information.',
+            'e_json' => array(
+                'POST' => $_POST,
+                'parse_signed_request' => parse_signed_request($_POST['signed_request']),
+            ),
+            'e_type_id' => 84, //Facebook Permission Deauthorized
+        ));
+    }
+
 }

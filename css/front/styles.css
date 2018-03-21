@@ -458,6 +458,7 @@ h5, .h5 {
 .tooltip, .tooltip * {font-size:12px; margin:0; }
 .container-fluid .alert { margin-top:10px; }
 .tab-space{padding-top:0;}
+.list-group-item>.badge {float:none;}
 
 .typicalform {max-width:50%;}
 .nav-pills:not(.nav-pills-icons) > li > a {
@@ -734,7 +735,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 
 .loader{height:40px;}
 .list-group .loader{height:24px;}
-.class_nav{width:247px; vertical-align: top; padding-top:0;}
+.class_nav{width:255px; vertical-align: top; padding-top:0;}
 
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
     z-index: 2;
@@ -755,7 +756,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 
 @media (max-width: 767px){
 
-    .class_nav{width:195px;}
+    .class_nav{width:220px;}
     #funnel .main{ margin-top:5px !important; }
 	#funnel .body-container{ font-size:20px; line-height: 30px; }
 	.nav-pills>li>a{ padding:0 8px; line-height:22px; }
@@ -897,6 +898,9 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .bg-glow:hover,
 .bg-glow.glow {
     text-shadow: 0 0 1px #CCC;
+}
+.grey{
+    background-color:#CCC !important;
 }
 
 #msgnotif{

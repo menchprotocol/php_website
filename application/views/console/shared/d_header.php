@@ -105,7 +105,7 @@ $website = $this->config->item('website');
                     }
 
                     //Landing Page
-                    echo '<li><a class="landing_page_url" data-toggle="tooltip" data-placement="top" title="Visit Bootcamp Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-link" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                    echo '<li><a class="landing_page_url" data-toggle="tooltip" data-placement="top" title="Visit Bootcamp Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
 
 
                 }

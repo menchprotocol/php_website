@@ -649,6 +649,7 @@ function extract_level($b,$c_id){
 
 
 function echo_price($b){
+
     if($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0){
         //Offers Paid Packages, see pricing:
         return '$'.number_format($b['b_p1_rate'],0).'<em style="padding:0 2px;">-</em>'.($b['b_p3_rate']>0 ? number_format(($b['b_p2_rate']+(75*$b['b_p3_rate'])),0) : number_format($b['b_p2_rate'],0) );
@@ -660,6 +661,7 @@ function echo_price($b){
             return 'FREE';
         }
     }
+
 }
 function echo_hours($decimal_hours,$micro=false){
 
@@ -1344,7 +1346,7 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span data-toggle="tooltip" title="Bootcamp Outcome which is used to determine student completion rate" data-placement="top"><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1415,7 +1417,9 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-    $b_ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true" style="margin: 0 8px 0 2px; color:#000;"></i> '.$b['c_objective'];
+    $b_ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true" style="margin: 0 8px 0 2px; color:#000;"></i> ';
+    $b_ui .= $b['c_objective'];
+    $b_ui .= ( $b['b_old_format'] ? ' <i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Bootcamp is locked because it was created using the older version of Mench. You can import its content into new Bootcamps as you wish."></i>' : '' );
     $b_ui .= '</a>';
     return $b_ui;
 }
@@ -1860,14 +1864,22 @@ function calculate_project_status($b){
 
 function echo_r($b_id,$class,$append_class=null){
 
+    $CI =& get_instance();
+    $guided_admissions = count($CI->Db_model->ru_fetch(array(
+        'ru_r_id' => $class['r_id'],
+        'ru_status >=' => 4,
+        'ru_package_num >=' => 2, //2 or 3
+    )));
+
+
     echo '<li class="list-group-item '.$append_class.'">';
+
+
     echo '<span class="pull-right">';
 
     if($class['r__current_admissions']>0){
 
         //How many students, if any, are enrolled in support packages?
-
-
         echo '<a href="/console/'.$b_id.'/classes/'.$class['r_id'].'" class="badge badge-primary" style="text-decoration: none;">';
         echo '<span id="class_'.$class['r_id'].'" data-admissions="'.$class['r__current_admissions'].'">'.$class['r__current_admissions'].'</span> <i class="fa fa-users" aria-hidden="true"></i>';
         echo '</a>';
@@ -1875,36 +1887,26 @@ function echo_r($b_id,$class,$append_class=null){
 
     } else {
 
-        echo '<span class="badge badge-primary" style="background-color: #CCC;" data-toggle="tooltip" data-placement="right" title="No students yet">0 <i class="fa fa-users" aria-hidden="true"></i></span>';
+        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="right" title="No students yet">0 <i class="fa fa-users" aria-hidden="true"></i></span>';
 
     }
-
-
-    //Show Support Button:
-    echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">';
-    echo $class['r__current_admissions'].' <i class="fa fa-users" aria-hidden="true"></i>';
-    echo '</a>';
-
-
-
     echo '</span>';
 
+
     //Determine the state of the Checkbox:
-    if($class['r_status']<=1){
-        echo '<span class="form-group label-floating" style="display:inline; margin-left:-9px;">
-                    <span class="checkbox" style="display:inline;" data-toggle="tooltip" data-placement="right" title="Unckeck If Support Unavailable">
-                        <label><input type="checkbox" id="activate_'.$class['r_id'].'" checked /></label>
-                    </span>
-                </span>';
+    if($guided_admissions>0 || $class['r_status']>=2){
+
+        //Students have already registered for this Support in this Class, show Lock:
+        echo '<span class="badge badge-primary '.( $guided_admissions==0 ? 'grey' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$guided_admissions.' Student'.show_s($guided_admissions).' paid for Support"><i class="fa fa-life-ring" aria-hidden="true"></i>'.( $guided_admissions>0 ? ' '.$guided_admissions : '' ).'</span>';
+
     } else {
-        echo '<span style="margin:0 7px 2px 0; display:inline-block;">'.status_bible('r',$class['r_status'], 1,'right').'</span>';
-    }
 
-    echo time_format($class['r_start_date'],1);
+        //Can still toggle support:
+        echo '<a href="javascript:void(0);" id="support_toggle_'.$class['r_id'].'" onclick="toggle_support('.$class['r_id'].')" style="text-decoration: none;" current-status="'.$class['r_status'].'"><span class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'"><i class="fa fa-life-ring" aria-hidden="true"></i></span></a>';
 
-    if($class['r__guided_admissions']>0){
-        echo '<span style="margin-left:4px;" data-toggle="tooltip" data-placement="right" title="Class has sold '.$class['r__guided_admissions'].' Guided Packages"><i class="fa fa-life-ring" aria-hidden="true"></i></span>';
     }
+    echo ' '.time_format($class['r_start_date'],1);
+
 
     echo '</li>';
 }

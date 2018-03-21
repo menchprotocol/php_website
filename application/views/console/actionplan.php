@@ -11,13 +11,13 @@ $udata = $this->session->userdata('user');
 //This functions updates the input placeholders to refect the next item to be added:
 function update_tree_input(){
     //First update the number of Tasks in main input field:
-    $('#addnode').attr("placeholder", " #"+($("#list-outbound").children().length)+" Outcome (Specific & Measurable)");
+    $('#addnode').attr("placeholder", "Task #"+($("#list-outbound").children().length)+" Primary Outcome");
 
     //Now go through each Step list and see whatsupp:
     if($('.step-group').length){
         $( ".step-group" ).each(function() {
             var node_id = $( this ).attr('node-id');
-            $('#addnode'+node_id).attr("placeholder", "Step #"+($("#list-outbound-"+node_id).children().length-1)+" Outcome (Specific & Measurable)");
+            $('#addnode'+node_id).attr("placeholder", "Step #"+($("#list-outbound-"+node_id).children().length-1)+" Primary Outcome");
         });
     }
 }
@@ -1072,7 +1072,7 @@ function add_item(group_id,prefix,current_value){
             <div class="tab-pane" id="tabscreening">
 
 
-                <div class="title"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="title" style="margin-top:25px;"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_426"></div>
                 <script>
                     $(document).ready(function() {
@@ -1129,7 +1129,7 @@ function add_item(group_id,prefix,current_value){
 
             <div class="tab-pane" id="taboutcomes">
 
-                <div class="title"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                <div class="title" style="margin-top:25px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_2271"></div>
                 <script>
                     $(document).ready(function() {

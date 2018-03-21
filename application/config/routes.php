@@ -36,10 +36,10 @@ $route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";
 $route['console/(:num)/classes/(:num)/scheduler']      = "console/scheduler/$1/$2"; //iFrame view
 $route['console/(:num)/classes/(:num)'] 		       = "console/load_class/$1/$2";
-$route['console/(:num)/classes'] 				       = "console/all_classes/$1";
+$route['console/(:num)/classes'] 				       = "console/classes/$1";
 $route['console/(:num)/raw'] 				           = "console/raw/$1"; //For dev purposes
 $route['console/(:num)'] 			                   = "console/dashboard/$1";
-$route['console'] 								       = "console/all_projects";
+$route['console'] 								       = "console/bootcamps";
 
 //Affiliate Links:
 $route['a/(:num)/(:num)/apply'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name

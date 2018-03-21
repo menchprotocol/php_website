@@ -52,7 +52,7 @@ class Console extends CI_Controller {
 	 * Bootcamps
 	 ****************************** */
 	
-	function all_projects(){
+	function bootcamps(){
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		
@@ -78,7 +78,7 @@ class Console extends CI_Controller {
 		
 		//Have they activated their Bot yet?
         //Yes, show them their Bootcamps:
-        $this->load->view('console/all_projects' , array(
+        $this->load->view('console/bootcamps' , array(
             'bs' => $bs,
             'udata' => $udata,
         ));
@@ -178,7 +178,7 @@ class Console extends CI_Controller {
 	}
 	
 	
-	function all_classes($b_id){
+	function classes($b_id){
 	    //Authenticate:
 	    $udata = auth(1,1,$b_id);
 	    $bs = $this->Db_model->remix_bs(array(
@@ -201,7 +201,7 @@ class Console extends CI_Controller {
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , $view_data);
-	    $this->load->view('console/all_classes' , $view_data);
+	    $this->load->view('console/classes' , $view_data);
 	    $this->load->view('console/shared/d_footer');
 	}
 	

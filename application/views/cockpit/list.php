@@ -136,13 +136,14 @@ if($object_name=='engagements'){
 
 } elseif($object_name=='projects'){
 
+
     //A function to echo the Bootcamp rows:
     function echo_row($b,$counter){
         echo '<tr>';
         echo '<td>'.$counter.'</td>';
         echo '<td>'.$b['b_id'].'</td>';
         echo '<td>'.status_bible('b',$b['b_status'],1,'right').'</td>';
-        echo '<td><a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></td>';
+        echo '<td>'.( $b['b_old_format'] ? '<i class="fa fa-exclamation-triangle" title="OLD FORMAT" aria-hidden="true"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></td>';
         echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_fname'].' '.$b['leaders'][0]['u_lname'].'</a></td>';
 
@@ -154,7 +155,14 @@ if($object_name=='engagements'){
         }
         echo '</td>';
 
-        echo '<td>'. ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.time_format($b['engagements'][0]['e_timestamp'],1).')' : 'Never' ) .'</td>';
+        echo '<td>';
+        echo ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.time_format($b['engagements'][0]['e_timestamp'],1).')' : 'Never' );
+        if(count($b['engagements'])<200){
+            //$CI =& get_instance();
+            //$CI->Db_model->b_update( $b['b_id'] , array('b_status' => -1);
+            //echo 'AAA';
+        }
+        echo '</td>';
         echo '</tr>';
     }
     
@@ -339,7 +347,7 @@ if($object_name=='engagements'){
             echo '<span data-toggle="tooltip" title="Average completion rate of all class students combined">'.round($average_completion[0]['cr']*100).'%</span>';
         }
         echo '</td>';
-        echo '<td>'.echo_price($class['r_usd_price']).'</td>';
+        echo '<td>'.echo_price($bs[0]).'</td>';
 
 
         echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
@@ -376,8 +384,14 @@ if($object_name=='engagements'){
                 'ru_status' => 0,
             )));
 
+            $guided_admissions = count($this->Db_model->ru_fetch(array(
+                'ru_r_id' => $class['r_id'],
+                'ru_status >=' => 4,
+                'ru_package_num >=' => 2, //2 or 3
+            )));
+
             echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats/Max-Guided">';
-            echo $pending_completion.' &raquo; '.$class['r__current_admissions'].'  &raquo; <b>'.$class['r__guided_admissions'].'</b>/'.$bs[0]['b_p2_max_seats'];
+            echo $pending_completion.' &raquo; '.$class['r__current_admissions'].'  &raquo; <b>'.$guided_admissions.'</b>/'.$bs[0]['b_p2_max_seats'];
             echo '</span>';
 
         }

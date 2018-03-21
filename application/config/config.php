@@ -19,6 +19,13 @@ $config['fb_settings'] = array(
     'default_graph_version' => 'v2.10', //Also repeated in global.js
 );
 
+$config['class_settings'] = array(
+    'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
+    'instructor_show_default'   => 10, //Visible by default in Console for Instructors
+    'students_show_default'     => 4, //Visible by default in Landing Page for Students
+    'students_show_max'         => 13, //Maximum available for students to see
+);
+
 $config['required_fb_permissions'] = array(
     'public_profile' => 'Basic permission granted by Facebook so we can access your profile\'s publicly available information.', //Basic permission
     'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Bootcamp.',
@@ -245,8 +252,8 @@ $config['object_statuses'] = array(
         ),
         */
         0 => array(
-            's_name'  => 'Break Week',
-            's_desc'  => 'Will only admit DIY Students, and not sell any Guidance Packages',
+            's_name'  => 'Support Unavailable',
+            's_desc'  => 'Will only admit Do It Yourself Students, and not sell any Support Packages',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-calendar-times-o',
         ),
@@ -620,17 +627,17 @@ $config['engagement_references'] = array(
 $config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time
 
 //The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,56,57,60,61,67,68,69,70,72);
+$config['instructor_subscriptions'] = array(30,57,60,61,67,68,69,70,72);
 
 //User specific engagement subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75),
+        'subscription' => array(9,15,37,57,58,60,61,63,65,67,68,69,72,73,75),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(8,9,15,37,56,57,58,60,61,63,65,67,68,69,72,73,75,84),
+        'subscription' => array(8,9,15,37,57,58,60,61,63,65,67,68,69,72,73,75,84),
     ),
 );
 

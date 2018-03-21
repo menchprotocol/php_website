@@ -709,19 +709,11 @@ WHERE ru.ru_status >= 4
 	function r_sync($b_id){
 
 	    //First determine all dates we'd need:
+        $class_settings = $this->config->item('class_settings');
+
         $dates_needed = array();
-        $start = strtotime('next monday');
-        for($i=0;$i<55;$i++){
-            $new_timestamp = $start+($i*7*24*3607); //The extra 7 seconds makes sure we don't get into Sundays
-            if(date("D",$new_timestamp)=='Mon'){
-                $dates_needed[$i] = date("Y-m-d",$new_timestamp);
-            } else {
-                //Log error:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'r_sync() generated Class date that was Not a Monday',
-                    'e_type_id' => 8, //System Error
-                ));
-            }
+        for($i=1;$i<=$class_settings['create_weeks_ahead'];$i++){
+            array_push($dates_needed , date("Y-m-d",(strtotime($i.' mondays from now')+(12*3600)  /* For GMT/timezone adjustments */ )) );
         }
 
         //Let's see which Classes we have already?
@@ -782,15 +774,8 @@ WHERE ru.ru_status >= 4
                 'ru_r_id' => $class['r_id'],
                 'ru_status >=' => 4,
             )));
-            $runs[$key]['r__guided_admissions'] = count($this->Db_model->ru_fetch(array(
-                'ru_r_id' => $class['r_id'],
-                'ru_status >=' => 4,
-                'ru_package_num >=' => 2, //2 or 3
-            )));
+
             $runs[$key]['r__total_tasks'] = 0;
-
-
-
             if(isset($b['c__child_intents']) && count($b['c__child_intents'])>0){
                 foreach($b['c__child_intents'] as $intent) {
                     if($intent['c_status']>=1){

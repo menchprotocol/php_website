@@ -2238,11 +2238,14 @@ class Api_v1 extends CI_Controller {
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
+            'b_old_format' => 0,
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
             'b_c_id' => $intent['c_id'],
             'b_prerequisites' => json_encode($default_class_prerequisites),
             'b_completion_prizes' => json_encode($default_class_prizes),
+            'b_support_email' => $udata['u_email'],
+            'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 ? 'https://calendly.com/'.$udata['u_calendly_username'] : '' ),
         ));
 
         if(intval($b['b_id'])<=0){
@@ -2259,6 +2262,10 @@ class Api_v1 extends CI_Controller {
             ));
             return false;
         }
+
+        //Create all Classes:
+        $new_class_count = $this->Db_model->r_sync($b['b_id']);
+
         
         //Assign permissions for this user:
         $admin_status = $this->Db_model->ba_create(array(
@@ -2287,7 +2294,6 @@ class Api_v1 extends CI_Controller {
         //Log Engagement for Node Created:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => '['.$intent['c_objective'].'] created as a new intent',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2302,7 +2308,6 @@ class Api_v1 extends CI_Controller {
         //Log Engagement for Bootcamp Created:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => 'Bootcamp #'.$b['b_id'].' created for ['.$intent['c_objective'].'] intent',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2316,7 +2321,7 @@ class Api_v1 extends CI_Controller {
         //Log Engagement for Permission Granted:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' assigned as Bootcamp Leader',
+            'e_message' => 'Assigned as Bootcamp Leader',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2333,6 +2338,7 @@ class Api_v1 extends CI_Controller {
             'status' => 1,
             'message' => echo_b(array_merge($b,$intent)),
         ));
+
 	}
 
     function save_b_list(){
