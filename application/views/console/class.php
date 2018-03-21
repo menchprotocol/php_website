@@ -169,7 +169,7 @@ if($current_applicants<=0){
 
             //Show Action Plan:
             echo '<div id="project-objective" class="list-group maxout">';
-            echo echo_cr($b['b_id'],$b,1,0,false);
+            echo echo_cr($b,$b,1,0,false);
             echo '</div>';
 
             //Task Expand/Contract all if more than 2
@@ -183,7 +183,7 @@ if($current_applicants<=0){
             //Tasks List:
             echo '<div id="list-outbound" class="list-group">';
             foreach($b['c__child_intents'] as $key=>$sub_intent){
-                echo echo_cr($b['b_id'],$sub_intent,2,$b['b_id'],0,false);
+                echo echo_cr($b,$sub_intent,2,$b['b_id'],0,false);
             }
             echo '</div>';
 

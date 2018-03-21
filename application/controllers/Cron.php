@@ -567,6 +567,7 @@ class Cron extends CI_Controller {
         } else {
             $filter = array(
                 'b_status >=' => 2,
+                'b_old_format' => 0,
             );
         }
         $bs = $this->Db_model->b_fetch($filter);

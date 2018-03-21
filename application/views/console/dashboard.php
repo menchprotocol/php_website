@@ -1,5 +1,5 @@
 <?php
-$mench_advisers = $this->config->item('mench_advisers');
+$mench_support_team = $this->config->item('mench_support_team');
 ?>
 
 <script>
@@ -79,10 +79,10 @@ if($focus_class){
 
 <?php
 echo '<div>Team: ';
-$mench_advisers = $this->config->item('mench_advisers');
-$total_advisers = count($mench_advisers);
+$mench_support_team = $this->config->item('mench_support_team');
+$total_advisers = count($mench_support_team);
 foreach($b['b__admins'] as $admin){
-    if(in_array($admin['u_id'],$mench_advisers)){
+    if(in_array($admin['u_id'],$mench_support_team)){
         $total_advisers--;
     }
 }
@@ -100,7 +100,7 @@ echo '</div>';
 ?>
 <div style="margin-top:-5px;">Landing Page URL: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
 <div style="margin-top:-5px;">Bootcamp Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
-<div style="margin-top:5px;">Facebook Page: <?= ( $b['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$b['fp_fb_id'].'"><u>'.$b['fp_name'].'</u></a>' : 'None! <a href="/console/'.$b['b_id'].'/settings#pages"><u>Connected Now</u></a>' ) ?></div>
+<div style="margin-top:5px;">Facebook Page: <?= ( $b['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$b['fp_fb_id'].'"><u>'.$b['fp_name'].'</u></a>' : 'None! <a href="/console/'.$b['b_id'].'/settings#pages"><u>Connected Now &raquo;</u></a>' ) ?></div>
 
 
 

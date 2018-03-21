@@ -42,7 +42,7 @@ $(document).ready(function() {
     $('#c_status_2').change(function() {
         if(parseInt($(this).val())<0){
             //Delete has been selected!
-            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fa fa-trash" aria-hidden="true"></i> You are about to permanently delete this Task, its Steps and all related messages. You may want to move Steps to other Tasks before deleting this Task.</span>');
+            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fa fa-trash" aria-hidden="true"></i> You are about to permanently delete this Task, its Steps and all related messages.</span>');
         } else {
             $('#delete_warning').html('');
         }
@@ -1055,7 +1055,7 @@ function add_item(group_id,prefix,current_value){
         }
         */
         echo '<div id="project-objective" class="list-group maxout">';
-            echo echo_cr($b['b_id'],$b,$level);
+            echo echo_cr($b,$b,$level);
         echo '</div>';
 
         ?>
@@ -1109,20 +1109,25 @@ function add_item(group_id,prefix,current_value){
                 echo '<div id="list-outbound" class="list-group">';
 
                 foreach($intent['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_cr($b['b_id'],$sub_intent, ($level+1),$b['b_id']);
+                    echo echo_cr($b,$sub_intent, ($level+1),$b['b_id']);
                 }
-                ?>
-                <div class="list-group-item list_input">
-                    <div class="input-group">
-                        <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="70" id="addnode" placeholder=""></div>
-                        <span class="input-group-addon" style="padding-right:8px;">
-        				<span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
-        					<div><i class="fa fa-plus"></i></div>
-        				</span>
-        			</span>
+
+
+                if(!$b['b_old_format']){
+                    ?>
+                    <div class="list-group-item list_input">
+                        <div class="input-group">
+                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="70" id="addnode" placeholder=""></div>
+                            <span class="input-group-addon" style="padding-right:8px;">
+                            <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
+                                <div><i class="fa fa-plus"></i></div>
+                            </span>
+                        </span>
+                        </div>
                     </div>
-                </div>
-                <?php
+                    <?php
+                }
+
                 echo '</div>';
                 ?>
             </div>

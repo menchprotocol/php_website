@@ -26,14 +26,15 @@
 
         //Show loader:
         processing_project = 1;
+        var c_objective = $('#b_c_objective').val();
         $('.no-b-div').remove(); //It may exist...
-        $('#b_c_objective').prop('disabled',true);
+        $('#b_c_objective').val('').prop('disabled',true);
         $('.new-b').hide();
 
         $( ".list_input" ).before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Bootcamp...</div>' );
 
         $.post("/api_v1/project_create", {
-            c_objective:$('#b_c_objective').val(),
+            c_objective:c_objective,
         }, function(data) {
 
             //Processing is done:
@@ -44,7 +45,7 @@
 
             if(data.status){
                 //All good, show it:
-                $('#b_c_objective').val('').focus();
+                $('#b_c_objective').focus();
                 $( ".list_input" ).before( data.message );
             } else {
                 //Show error:

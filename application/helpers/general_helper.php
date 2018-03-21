@@ -1282,7 +1282,7 @@ function copy_intent($u_id,$intent,$c_id){
 }
 
 
-function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
+function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     
     $CI =& get_instance();
     $core_objects = $CI->config->item('core_objects');
@@ -1324,7 +1324,9 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         }
 
         if($editing_enabled){
-            $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
+            if(!$b['b_old_format']){
+                $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
+            }
 
             $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="load_iphone('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
         } else {
@@ -1385,12 +1387,12 @@ function echo_cr($b_id,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         $ui .= '<div class="is_step_sortable dropin-box" style="height:1px;">&nbsp;</div>';
         if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
             foreach($intent['c__child_intents'] as $sub_intent){
-                $ui .= echo_cr($b_id,$sub_intent,($level+1),$intent['c_id'],$editing_enabled);
+                $ui .= echo_cr($b,$sub_intent,($level+1),$intent['c_id'],$editing_enabled);
             }
         }
 
         //Step Input field:
-        if($editing_enabled){
+        if($editing_enabled && !$b['b_old_format']){
             $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" node-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addnode'.$intent['c_id'].'" placeholder=""></form></div>
@@ -1482,14 +1484,13 @@ function calculate_project_status($b){
 
 
     //Prerequisites
-    $default_class_prerequisites = $CI->config->item('default_class_prerequisites');
     $estimated_minutes = 30;
     $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_prerequisites'])>0 && !($b['b_prerequisites']==json_encode($default_class_prerequisites)) ? 1 : 0 );
+    $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#screening',
-        'anchor' => '<b>'.( strlen($b['b_prerequisites'])>0 ? 'Edit' : 'Set' ).' Prerequisites</b> in Action Plan',
+        'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1507,19 +1508,6 @@ function calculate_project_status($b){
         'time_min' => $estimated_minutes,
     ));
 
-
-    //Completion Awards
-    $default_class_prizes = $CI->config->item('default_class_prizes');
-    $estimated_minutes = 15;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( !($b['b_completion_prizes']==json_encode($default_class_prizes)) ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Modify Completion Awards</b> in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
 
 
 

@@ -2,7 +2,7 @@
 $udata = $this->session->userdata('user');
 
 //Fetch this user's Bootcamps:
-$bs = $this->Db_model->user_projects(array(
+$bs = $this->Db_model->instructor_bs(array(
     'ba.ba_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 2,
@@ -59,19 +59,12 @@ $bs = $this->Db_model->user_projects(array(
                 }
             } else if(the_id=='choose_content'){
                 //Make sure at-least 1 item is selected to be imported:
-                if(
-                       !($('input[name=b_level_messages]:checked').val()=='on')
-                    && !($('input[name=b_target_audience]:checked').val()=='on')
-                    && !($('input[name=b_prerequisites]:checked').val()=='on')
-                    && !($('input[name=b_published_tasks]:checked').val()=='on')
-                    && !($('input[name=b_drafting_tasks]:checked').val()=='on')
-                    && !($('input[name=b_transformations]:checked').val()=='on')
-                    && !($('input[name=b_completion_prizes]:checked').val()=='on')
-                ){
+                if(!($('.import_checkbox:checked').length>0)){
                     //Nothing was checked!
                     alert('ERROR: Choose at-least 1 item to import');
                     return false;
-                } else if(($('input[name=b_published_tasks]:checked').val()=='on') || ($('input[name=b_drafting_tasks]:checked').val()=='on')){
+                } else if($("input:checkbox[name=b_c_ids]:checked").length>0 && 0){
+                    //TODO Enable later when we have it...
                     //Show the Task modality selector:
                     $('#task_mode').removeClass('hidden');
                 } else {
@@ -123,18 +116,22 @@ $bs = $this->Db_model->user_projects(array(
             //Hide both buttons:
             $('#btn_next, #btn_prev').hide();
 
+            //Organize Import Nodes:
+            var b_c_ids = [];
+            $("input:checkbox[name=b_c_ids]:checked").each(function(){
+                b_c_ids.push(parseInt($(this).val()));
+            });
+
             //Send for processing:
             $.post("/api_v1/import_process", {
 
                 import_from_b_id:parseInt($('#import_b_id').val()),
                 import_to_b_id:<?= $b['b_id'] ?>,
+                b_c_ids:b_c_ids,
                 task_import_mode:parseInt($('input[name=task_import_mode]:checked').val()),
-
                 b_level_messages:($('input[name=b_level_messages]:checked').val()=='on'?1:0),
                 b_target_audience:($('input[name=b_target_audience]:checked').val()=='on'?1:0),
                 b_prerequisites:($('input[name=b_prerequisites]:checked').val()=='on'?1:0),
-                b_published_tasks:($('input[name=b_published_tasks]:checked').val()=='on'?1:0),
-                b_drafting_tasks:($('input[name=b_drafting_tasks]:checked').val()=='on'?1:0),
                 b_transformations:($('input[name=b_transformations]:checked').val()=='on'?1:0),
                 b_completion_prizes:($('input[name=b_completion_prizes]:checked').val()=='on'?1:0),
 
@@ -204,8 +201,8 @@ $bs = $this->Db_model->user_projects(array(
                         <select class="form-control input-mini border" id="import_b_id">
                             <option value="0">Choose Bootcamp...</option>
                             <?php
-                            foreach($bs as $b){
-                                echo '<option value="'.$b['b_id'].'">'.$b['c_objective'].'</option>';
+                            foreach($bs as $this_b){
+                                echo '<option value="'.$this_b['b_id'].'">'.( $this_b['b_old_format'] ? '[OLD FORMAT] ' : '' ).$this_b['c_objective'].'</option>';
                             }
                             ?>
                         </select>
@@ -219,6 +216,8 @@ $bs = $this->Db_model->user_projects(array(
                 <div class="wizard-box" id="choose_content"></div>
 
                 <div class="wizard-box" id="import_mode">
+
+
                     <div id="task_mode" class="hidden">
                         <h4 style="margin-bottom:20px;"><i class="fa fa-check-square-o" aria-hidden="true"></i> Task Import Mode</h4>
                         <p><i class="fa fa-link" aria-hidden="true"></i> <b>Link:</b> New copy is linked to original item. Settings & Messages are mirrored and would remain in-sync if edited from either Action Plan.</p>
@@ -246,6 +245,8 @@ $bs = $this->Db_model->user_projects(array(
                         </div>
                         <br />
                     </div>
+
+
                     <div>
                         <p>Pressing "Next" would start importing your selection.</p>
                     </div>

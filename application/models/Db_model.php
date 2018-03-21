@@ -448,7 +448,7 @@ WHERE ru.ru_status >= 4
 	}
 	
 	
-	function user_projects($match_columns){
+	function instructor_bs($match_columns){
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_projects b', 'b.b_c_id = c.c_id');

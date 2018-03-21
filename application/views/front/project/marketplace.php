@@ -25,6 +25,7 @@
 //Fetch projects:
 $bs = $this->Db_model->remix_bs(array(
     'b.b_status' => 3,
+    'b.b_old_format' => 0,
 ),array('ba','ihm'));
 
 echo '<div class="row">';

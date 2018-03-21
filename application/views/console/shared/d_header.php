@@ -77,14 +77,18 @@ $website = $this->config->item('website');
 		
 	    <div class="sidebar" id="mainsidebar" data-color="purple">
 	    	<div class="sidebar-wrapper">
-	    		<?php 
+	    		<?php
+
 	    		if(isset($b)){
 	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i>'.$b['c_objective'].'</div>';
+                    if($b['b_old_format']){
+                        echo '<div class="alert alert-danger" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new 7-Day Bootcamp."><i class="fa fa-lock" aria-hidden="true"></i> Bootcamp is locked</div>';
+                    }
 	    		}
-	    		?>
-	    		<ul class="nav" style="margin-top: 0;">
-                    
-            	<?php
+
+
+
+                echo '<ul class="nav" style="margin-top: 0;">';
             	if(isset($b)){
 
             	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fa fa-tachometer" aria-hidden="true"></i><p>Dashboard</p></a></li>';
@@ -99,9 +103,6 @@ $website = $this->config->item('website');
                     if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
                         //Fetch page details:
                         echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students using Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
-                    } else {
-                        //Show link to Activate:
-                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Bootcamp missing its Facebook Page connection" href="/console/'.$b['b_id'].'/settings#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i><p><b>Connect Page</b></p></a></li>';
                     }
 
                     //Landing Page
@@ -109,8 +110,11 @@ $website = $this->config->item('website');
 
 
                 }
+                echo '</ul>';
+
             	?>
-            	</ul>
+
+
 	    	</div>
 		</div>
 

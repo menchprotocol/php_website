@@ -157,11 +157,13 @@ if($object_name=='engagements'){
 
         echo '<td>';
         echo ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.time_format($b['engagements'][0]['e_timestamp'],1).')' : 'Never' );
-        if(count($b['engagements'])<200){
-            //$CI =& get_instance();
-            //$CI->Db_model->b_update( $b['b_id'] , array('b_status' => -1);
-            //echo 'AAA';
+
+        if(!isset($b['leaders'][0]) || count($b['engagements'])<10){
+            $CI =& get_instance();
+            $CI->Db_model->b_update( $b['b_id'] , array('b_status' => -1));
+            echo 'DELETED';
         }
+
         echo '</td>';
         echo '</tr>';
     }

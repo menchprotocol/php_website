@@ -503,14 +503,14 @@ function save_settings(){
                 echo echo_br($admin);
                 array_push($admin_ids,$admin['u_id']);
             }
-            $mench_advisers = $this->config->item('mench_advisers');
+            $mench_support_team = $this->config->item('mench_support_team');
             //Fetch the profile of the hard-coded mench advisery team
             //Currently: Miguel & Shervin
-            $mench_advisers = $this->Db_model->u_fetch(array(
-                'u_id IN ('.join(',',$mench_advisers).')' => null,
+            $mench_support_team = $this->Db_model->u_fetch(array(
+                'u_id IN ('.join(',',$mench_support_team).')' => null,
             ));
 
-            foreach($mench_advisers as $adviser){
+            foreach($mench_support_team as $adviser){
                 if(in_array($adviser['u_id'],$admin_ids)){
                     continue;
                 }

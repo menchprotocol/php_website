@@ -48,7 +48,6 @@ $config['aws_credentials'] = [
     'secret' => 'ZU1paNBAqps2A4XgLjNVAYbdmgcpT5BIwn6DJ/VU',
 ];
 
-
 $config['pricing_model'] = array(
     'baseline_rate' => 0.10, //Applied to all transactions, covers Transaction Fee
     'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Bootcamp    'p1_rates' => array(0.00,8.00,15.00), //Per Week
@@ -66,6 +65,33 @@ $config['pricing_model'] = array(
     'p3_minute_bundles' => array(25,50,75), //Defines how Mentorship packages would be bundled and sold
 );
 
+$config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
+
+//The engagements that instructors are subscribed to:
+$config['instructor_subscriptions'] = array(30,57,60,61,67,68,69,70,72);
+
+//Email-based engagements subscriptions:
+$config['engagement_subscriptions'] = array(
+    array(
+        'admin_emails' => array('miguel@mench.com'),
+        'subscription' => array(9,15,37,57,58,60,61,63,65,67,68,69,72,73,75),
+    ),
+    array(
+        'admin_emails' => array('shervin@mench.com'),
+        'subscription' => array(8,9,15,37,57,58,60,61,63,65,67,68,69,72,73,75,84),
+    ),
+);
+
+//Define what counts as a meaningful Bootcamp engagement by the instructor team:
+$config['meaningful_b_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
+
+//based on the fibonacci sequence for more realistic estimates
+$config['c_time_options'] = array(0.05,0.1166667,0.25,0.5,0.75,1,2,3,5,8,13);
+
+$config['default_class_prerequisites'] = array(
+    'An internet-connected computer',
+    'Fluent in English',
+);
 
 $config['core_objects'] = array(
     'u' => array(
@@ -492,7 +518,7 @@ $config['object_statuses'] = array(
         */
 
         4 => array(
-            's_name'  => 'Student',
+            's_name'  => 'Admitted',
             's_desc'  => 'Student joined Class',
             's_mini_icon' => 'fa-user',
             'u_min_status'  => 1,
@@ -549,9 +575,6 @@ $config['object_statuses'] = array(
         ),
     ),
 );
-
-
-
 
 //No Bootcamps can be created using these hashtags
 //URL structure is: https://mench.com/URLKEY
@@ -621,44 +644,6 @@ $config['engagement_references'] = array(
         'name' => 'Facebook Page',
         'object_code' => 'fp',
     ),
-);
-
-
-$config['mench_advisers'] = array(1,2); //Miguel and Shervin @ This Time
-
-//The engagements that need to be communicated to instructors:
-$config['instructor_subscriptions'] = array(30,57,60,61,67,68,69,70,72);
-
-//User specific engagement subscriptions:
-$config['engagement_subscriptions'] = array(
-    array(
-        'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,37,57,58,60,61,63,65,67,68,69,72,73,75),
-    ),
-    array(
-        'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(8,9,15,37,57,58,60,61,63,65,67,68,69,72,73,75,84),
-    ),
-);
-
-//Define what counts as a meaningful Bootcamp engagement by the instructor team:
-$config['meaningful_b_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
-
-//based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array('0.05','0.1166667','0.25','0.5','0.75','1','2','3','5','8','13');
-
-
-$config['default_class_prizes'] = array(
-    'A branded T-Shirt',
-    '1 Year unlimited access to my online courses',
-    '30-Minutes consultation session to explore your next best move',
-    'etc... (Delete this)',
-);
-$config['default_class_prerequisites'] = array(
-    'An internet-connected computer',
-    'Fluent in English',
-    'Facebook Messenger (Facebook Account Not Required)',
-    'etc... (Delete this)',
 );
 
 

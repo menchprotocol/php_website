@@ -94,42 +94,59 @@ class Api_v1 extends CI_Controller {
                 'count' => ( strlen($bs[0]['b_prerequisites'])>0 ? count(json_decode($bs[0]['b_prerequisites'])) : 0 ),
             ),
 
-            array(
-                'is_header' => 1,
-                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks</h5>',
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Import Published Tasks with all Steps & Messages',
-                'id' => 'b_published_tasks',
-                'count' => count($bs[0]['c__active_intents']),
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Import Drafting Tasks with all Steps & Messages',
-                'id' => 'b_drafting_tasks',
-                'count' => (count($bs[0]['c__child_intents'])-count($bs[0]['c__active_intents'])),
-            ),
-
 
             array(
                 'is_header' => 1,
-                'name' => '<h5><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</h5>',
+                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Import Tasks from '.( $bs[0]['b_old_format'] ? 'Milestone' : 'Bootcamp').'</h5>',
             ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
-                'id' => 'b_transformations',
-                'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-trophy" aria-hidden="true"></i> Override Completion Awards',
-                'id' => 'b_completion_prizes',
-                'count' => ( strlen($bs[0]['b_completion_prizes'])>0 ? count(json_decode($bs[0]['b_completion_prizes'])) : 0 ),
-            ),
-
         );
+
+        if($bs[0]['b_old_format']){
+
+            //Give specific options on each Milestone:
+            foreach($bs[0]['c__child_intents'] as $milestone){
+                if(isset($milestone['c__child_intents'])){
+                    //Give a single/total option:
+                    array_push($import_items,array(
+                        'is_header' => 0,
+                        'name' => $milestone['c_objective'],
+                        'id' => 'b_c_ids',
+                        'value' => $milestone['c_id'],
+                        'count' => count($milestone['c__child_intents']),
+                    ));
+                }
+            }
+
+        } else {
+
+            array_push($import_items,array(
+                'is_header' => 0,
+                'name' => 'Tasks of Action Plan',
+                'id' => 'b_c_ids',
+                'value' => $bs[0]['b_c_id'],
+                'count' => count($bs[0]['c__child_intents']),
+            ));
+
+        }
+
+
+        //Add Outcome section:
+        array_push($import_items,array(
+            'is_header' => 1,
+            'name' => '<h5><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</h5>',
+        ));
+        array_push($import_items,array(
+            'is_header' => 0,
+            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
+            'id' => 'b_transformations',
+            'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
+        ));
+        array_push($import_items,array(
+            'is_header' => 0,
+            'name' => '<i class="fa fa-trophy" aria-hidden="true"></i> Override Completion Awards',
+            'id' => 'b_completion_prizes',
+            'count' => ( strlen($bs[0]['b_completion_prizes'])>0 ? count(json_decode($bs[0]['b_completion_prizes'])) : 0 ),
+        ));
 
 
 
@@ -139,10 +156,9 @@ class Api_v1 extends CI_Controller {
             if($item['is_header']){
                 $ui .= '<div class="title">'.$item['name'].'</div>';
             } else {
-                $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" name="'.$item['id'].'" '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
+                $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" class="import_checkbox" name="'.$item['id'].'" '.( isset($item['value']) ? 'value="'.$item['value'].'"' : '' ).' '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
             }
         }
-
 
         echo_json(array(
             'status' => 1,
@@ -163,12 +179,6 @@ class Api_v1 extends CI_Controller {
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Task Import Mode',
-            ));
-            exit;
-        } elseif(!isset($_POST['b_published_tasks']) || !isset($_POST['b_drafting_tasks'])){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Task Settings',
             ));
             exit;
         }
@@ -236,56 +246,28 @@ class Api_v1 extends CI_Controller {
 
 
         //Do we need to do any Tasks?
-        $new_intents = array();
-        if(intval($_POST['b_published_tasks']) || intval($_POST['b_drafting_tasks'])){
-            //Yes, we have either Published or Drafting Task copy request:
+        if(isset($_POST['b_c_ids']) && count($_POST['b_c_ids'])>0){
+            foreach($_POST['b_c_ids'] as $c_id){
 
-            foreach($bs_from[0]['c__child_intents'] as $task){
+                //Fetch all child Nodes for this Node:
+                $nodes = $this->Db_model->c_fetch(array(
+                    'c.c_id' => $c_id,
+                ), 1, array('i')); //Supports up to 2 levels deep for now...
 
-                if($task['c_status']<0 || ($task['c_status']==0 && !intval($_POST['b_drafting_tasks'])) || ($task['c_status']==1 && !intval($_POST['b_published_tasks']))){
-                    continue;
-                }
+                if(count($nodes)>0 && count($nodes[0]['c__child_intents'])>0){
+                    foreach($nodes[0]['c__child_intents'] as $c){
+                        if(intval($_POST['task_import_mode'])==3){
 
-                unset($new_miletone);
-                $new_miletone = array();
+                            //Copy intent:
+                            $new_task = copy_intent($udata['u_id'],$c,$bs_to[0]['b_c_id']);
 
-                //What modality is this?
-                if(intval($_POST['task_import_mode'])==3){
-
-                    //Copy intent:
-                    $new_miletone = copy_intent($udata['u_id'],$task,$bs_to[0]['b_c_id']);
-
-                    if(count($task['c__messages'])>0){
-                        //Copy messages:
-                        $new_miletone['c__messages'] = copy_messages($udata['u_id'],$task['c__messages'],$new_miletone['c_id']);
-                    }
-
-                }
-
-
-
-                //Go through the Steps:
-                $new_miletone['c__child_intents'] = array();
-                foreach($task['c__child_intents'] as $step){
-
-                    if(intval($_POST['task_import_mode'])==3){
-
-                        //Copy intent:
-                        $new_step = copy_intent($udata['u_id'],$step,$new_miletone['c_id']);
-
-                        if(count($step['c__messages'])>0) {
-                            //Copy messages:
-                            $new_step['c__messages'] = copy_messages($udata['u_id'], $step['c__messages'], $new_step['c_id']);
+                            if(count($c['c__messages'])>0){
+                                //Copy messages:
+                                $new_task['c__messages'] = copy_messages($udata['u_id'], $c['c__messages'], $new_task['c_id']);
+                            }
                         }
-
-                        array_push( $new_miletone['c__child_intents'] , $new_step );
-
                     }
-
                 }
-
-                array_push($new_intents,$new_miletone);
-
             }
         }
 
@@ -297,12 +279,10 @@ class Api_v1 extends CI_Controller {
                 'import_settings' => $_POST,
                 'b_lists' => $b_lists,
                 'b_level_messages_results' => $b_level_messages_results,
-                'new_intents' => $new_intents,
             ),
             'e_type_id' => 75, //Action Plan Imported
             'e_b_id' => $bs_to[0]['b_id'],
         ));
-
 
 
         //Show message & redirect:
@@ -1305,7 +1285,7 @@ class Api_v1 extends CI_Controller {
         $co_instructors = array();
         if($users[0]['u_status']==1){
             //Regular user, see if they are assigned to any Bootcamp as co-instructor
-            $co_instructors = $this->Db_model->user_projects(array(
+            $co_instructors = $this->Db_model->instructor_bs(array(
                 'ba.ba_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
                 'b.b_status >=' => 2,
@@ -2234,7 +2214,6 @@ class Api_v1 extends CI_Controller {
 
         //Fetch default list values:
         $default_class_prerequisites = $this->config->item('default_class_prerequisites');
-        $default_class_prizes = $this->config->item('default_class_prizes');
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
@@ -2243,7 +2222,6 @@ class Api_v1 extends CI_Controller {
             'b_url_key' => $generated_key,
             'b_c_id' => $intent['c_id'],
             'b_prerequisites' => json_encode($default_class_prerequisites),
-            'b_completion_prizes' => json_encode($default_class_prizes),
             'b_support_email' => $udata['u_email'],
             'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 ? 'https://calendly.com/'.$udata['u_calendly_username'] : '' ),
         ));
@@ -2828,7 +2806,7 @@ class Api_v1 extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'c_id' => $new_intent['c_id'],
-            'html' => echo_cr($_POST['b_id'],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
+            'html' => echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
         ));
 	}
 
@@ -2920,7 +2898,7 @@ class Api_v1 extends CI_Controller {
 	    
 	    
 	    //Return result:
-	    echo echo_cr($_POST['b_id'],$relations[0],$_POST['next_level'],intval($_POST['pid']));
+	    echo echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid']));
 	}
 
 	function migrate_step(){
