@@ -1113,7 +1113,7 @@ function add_item(group_id,prefix,current_value){
                 }
 
 
-                if(!$b['b_old_format']){
+                if(!$b['b_old_format'] || $udata['u_status']==3){
                     ?>
                     <div class="list-group-item list_input">
                         <div class="input-group">

@@ -13,7 +13,7 @@ function toggle_support(r_id){
     }
 
     //Show Loader:
-    $('#support_toggle_'+r_id).html('<img src="/img/round_load.gif" style="width:16px !important; height:16px !important;" class="loader" />');
+    $('#support_toggle_'+r_id).html('<img src="/img/round_load.gif" style="width:18px !important; height:16px !important;" class="loader" />');
 
     //Save the rest of the content:
     $.post("/api_v1/class_update_status", {

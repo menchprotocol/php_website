@@ -1324,7 +1324,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         }
 
         if($editing_enabled){
-            if(!$b['b_old_format']){
+            if(!$b['b_old_format'] || $udata['u_status']==3){
                 $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
             }
 
@@ -1392,7 +1392,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         }
 
         //Step Input field:
-        if($editing_enabled && !$b['b_old_format']){
+        if($editing_enabled && (!$b['b_old_format'] || $udata['u_status']==3)){
             $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" node-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addnode'.$intent['c_id'].'" placeholder=""></form></div>

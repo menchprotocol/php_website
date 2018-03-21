@@ -2138,6 +2138,18 @@ class Api_v1 extends CI_Controller {
             exit;
         }
 
+        $guided_admissions = count($this->Db_model->ru_fetch(array(
+            'ru_r_id' => intval($_POST['r_id']),
+            'ru_status >=' => 4,
+            'ru_package_num >=' => 2, //2 or 3
+        )));
+        if($guided_admissions>0){
+            echo_json(array(
+                'status' => 0,
+                'message' => $guided_admissions.' Student'.show_s($guided_admissions).' purchased a Support Package for this week. Cannot Change Support level.',
+            ));
+            exit;
+        }
 
 	    //Save new Status:
 	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
@@ -2221,7 +2233,7 @@ class Api_v1 extends CI_Controller {
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
-            'b_old_format' => 0,
+            'b_old_format' => 0, //All new Bootcamps
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
             'b_c_id' => $intent['c_id'],
