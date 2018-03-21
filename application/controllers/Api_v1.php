@@ -1980,7 +1980,7 @@ class Api_v1 extends CI_Controller {
             echo '<h3 style="margin:0;">'.time_format($class['r_start_date'],1).'</h3>';
         }
 
-        echo '<table class="table table-condensed table-striped" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
+        echo '<table class="table table-condensed table-striped maxout" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
 
         //First generate classmates's top message:

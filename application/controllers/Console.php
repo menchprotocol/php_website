@@ -205,54 +205,6 @@ class Console extends CI_Controller {
 	    $this->load->view('console/shared/d_footer');
 	}
 	
-
-	
-	function load_class($b_id,$r_id){
-		//Authenticate:
-	    $udata = auth(1,1,$b_id);
-		$bs = $this->Db_model->remix_bs(array(
-		    'b.b_id' => $b_id,
-		));
-		if(!isset($bs[0])){
-		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
-		}
-		
-		//This could be a new run, or editing an existing run:
-		$class = filter($bs[0]['c__classes'],'r_id',$r_id);
-		if(!$class){
-		    redirect_message('/console/'.$b_id.'/classes' , '<div class="alert alert-danger" role="alert">Invalid class ID.</div>');
-		}
-
-		//See how many applied?
-        $current_applicants = count($this->Db_model->ru_fetch(array(
-            'ru.ru_r_id'	    => $class['r_id'],
-            'ru.ru_status >='	=> 4, //Anyone who has completed their application
-        )));
-		
-		$view_data = array(
-		    'title' => time_format($class['r_start_date'],1).' Class Settings | '.$bs[0]['c_objective'],
-            'b' => $bs[0],
-            'current_applicants' => $current_applicants,
-		    'class' => $class,
-		    'breadcrumb' => array(
-		        array(
-		            'link' => '/console/'.$b_id.'/classes',
-		            'anchor' => 'Classes',
-		        ),
-		        array(
-		            'link' => null,
-		            'anchor' => time_format($class['r_start_date'],2),
-		        ),
-		    ),
-		);
-		
-		//Load view
-		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/class' , $view_data);
-		$this->load->view('console/shared/d_footer');
-	}
-
-	
 	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
