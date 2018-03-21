@@ -44,5 +44,5 @@ if(count($bootcamp['c__classes'])>0){
 }
 ?>
 
-<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newClassModal">New</a>
+<?php /* <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newClassModal">New</a> */ ?>
 <?php /* This is distraction for now... <span>or <a href="#" data-toggle="modal" data-target="#ScheduleClasses"><u>Schedule Classes</u></a></span> */ ?>

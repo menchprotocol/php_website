@@ -53,9 +53,6 @@ if(count($bootcamps)>0){
 }
 
 //New Bootcamp Button:
-echo '<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newBootcampModal">New</a>';
-if($udata['u_status']>=3){
-    echo '<span> &nbsp; or <a href="/cockpit/browse/bootcamps"><u>Browse All</u></a></span>';
-}
+//echo '<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#newBootcampModal">New</a>';
 
 ?>
