@@ -33,43 +33,32 @@ if(isset($office_hours) && is_array($office_hours)){
 
 //See if this project has multiple active Classes:
 $available_classes = 0;
-$class_selection = '<h4 id="available_classes"><i class="fa fa-calendar" aria-hidden="true"></i> Available Classes</h4>';
-$class_selection .= '<div id="class_list" class="list-group" style="max-width:none !important;">';
+$class_selection = '<div id="class_list" class="list-group" style="max-width:none !important;">';
+
+
 $b['c__classes'] = array_reverse($b['c__classes']);
+
+
+$classes = $this->Db_model->r_fetch(array(
+    'r.r_b_id' => $b['b_id'],
+    'r.r_status >=' => 0,
+));
 
 foreach($b['c__classes'] as $class){
     if($class['r_status']==1 && !date_is_past($class['r_start_date'])){
         $available_classes++;
         if($class['r_id']==$focus_class['r_id']){
             $class_selection .= '<li class="list-group-item" style="background-color:#f5f5f5;">';
+            $class_selection .= '<span class="pull-right"><span class="label label-default" style="background-color:#fedd16; color:#000;">CURRENTLY VIEWING</span></span>';
         } else {
             $class_selection .= '<a href="/'.$b['b_url_key'].'/'.$class['r_id'].'" class="list-group-item">';
             $class_selection .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
         }
         
-        
         $class_selection .= '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b> &nbsp; ';
         $class_selection .= '<i class="fa fa-usd" aria-hidden="true"></i> '.(strlen($class['r_usd_price'])>0 ? number_format($class['r_usd_price']) : 'FREE' ).' &nbsp; ';
-        if($class['r_max_students']>0){
-            $class_selection .= '<i class="fa fa-user" aria-hidden="true"></i> '.$class['r_max_students'].' Seats';
-            if($class['r__current_admissions']>=$class['r_max_students']){
-                //Class is full:
-                $class_selection .= ' <span style="color:#FF0000;">(FULL, '.($class['r__current_admissions']-$class['r_max_students']).' in Waiting List)</span>';
-            } elseif(($class['r__current_admissions']/$class['r_max_students'])>0.66){
-                //Running low on space:
-                $class_selection .= ' <span style="color:#FF0000;">('.($class['r_max_students']-$class['r__current_admissions']).' Remaining)</span>';
-            }
-            $class_selection .= ' &nbsp; ';
-        }
-        if($class['r_id']==$focus_class['r_id']){
-            $class_selection .= '<span class="label label-default" style="background-color:#fedd16; color:#000;">CURRENTLY VIEWING</span>';
-        }
         $class_selection .= ($class['r_id']==$focus_class['r_id'] ? '</li>' : '</a>' );
-        
-        //Do not show more than the next 7 Classes:
-        if($available_classes>=7){
-            break;
-        }
+
     }
 }
 $class_selection .= '</div>';
@@ -189,35 +178,25 @@ $( document ).ready(function() {
         <h3>Action Plan</h3>
         <div id="c_goals_list">
         <?php
-        foreach($b['c__child_intents'] as $sprint){
-            if($sprint['c_status']<1){
-                continue;
+
+        echo '<div class="list-group maxout">';
+        $counter = 0;
+        $default_visible = 6;
+        foreach($b['c__child_intents'] as $task){
+            if($task['c_status']==1){
+                if($counter==$default_visible){
+                    echo '<a href="javascript:void(0);" onclick="$(\'.show_all_tasks\').toggle();" class="show_all_tasks list-group-item"><i class="fa fa-plus-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#999;"></i> See All Tasks</a>';
+                }
+                echo '<li class="list-group-item '.( $counter>=$default_visible ? 'show_all_tasks" style="display:none;"' : '"' ).'>';
+                //echo '<span class="pull-right">'.($task['c__estimated_hours']>0 ? echo_time($task['c__estimated_hours'],1) : '').'</span>';
+                echo '<i class="fa fa-check-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#000;"></i> ';
+                echo 'Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
+                echo '</li>';
+                $counter++;
             }
-            echo '<div id="c_'.$sprint['c_id'].'">';
-            echo '<h4><a href="javascript:toggleview(\'c_'.$sprint['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'].'</a></h4>';
-                echo '<div class="toggleview c_'.$sprint['c_id'].'" style="display:none;">';
-
-                    //Display all Active Steps:
-                    if(count($sprint['c__child_intents'])>0){
-                        echo '<ul>';
-                        foreach($sprint['c__child_intents'] as $step){
-                            if($step['c_status']<1){
-                                continue; //Not published yet
-                            }
-                            echo '<li>'.$step['c_objective'].'</li>';
-                        }
-                        echo '</ul>';
-                    }
-
-                    echo '<div class="title-sub">';
-                    if($sprint['c__estimated_hours']>0){
-                        echo str_replace('title-sub','',echo_time($sprint['c__estimated_hours'],1)).' &nbsp; ';
-                    }
-                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> Complete By '.time_format($focus_class['r_start_date'],2,(7*24*3600-60));
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>';
         }
+        echo '</div>';
+        //echo '<p>To complete this Bootcamp, you should complete the above '.$counter.' Task'.show_s($counter).' anytime during the 7-Day Bootcamp window.</p>';
         ?>
         </div>
 
@@ -277,32 +256,18 @@ $( document ).ready(function() {
     
     
 
-    		<h3>Admission</h3>
-    		
-    		<?php 
+    		<h3>Classes</h3>
+    		<?php
     		if($available_classes>1){
     		    echo $class_selection;
     		}
-    		?>
-    		
-    		<h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timeline</h4>
-    		<ul style="list-style:none; margin-left:-30px;">
-    			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (Ends in <span id="reg2"></span>)</li>
-    			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2) ?></b></li>
-    			<li>Class Duration is <b>7 Days</b></li>
-    			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,(7*24*3600-60)) ?></b></li>
-    		</ul>
-    		<hr />
-    		
-    		
-    		
-    		<?php if(strlen($b['b_completion_prizes'])>0){ ?>
+
+    		if(strlen($b['b_completion_prizes'])>0){ ?>
                 <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($b['b_completion_prizes']))) ?></h4>
                 <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' ?></div>
                 <p>Awarded for completing all Tasks within 7 Days.</p>
                 <hr />
     		<?php } ?>
-
 
             <p>Ready to unleash your full potential?</p>
             <p>Admission ends in:</p>

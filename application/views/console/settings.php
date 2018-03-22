@@ -179,9 +179,9 @@ $(document).ready(function() {
 
     $('#b_p3_rate').on('change', function() {
         if(this.value==0){
-            $('#mentorship_settings').hide();
+            $('#tutoring_settings').hide();
         } else {
-            $('#mentorship_settings').fadeIn();
+            $('#tutoring_settings').fadeIn();
         }
     });
 
@@ -316,7 +316,7 @@ function save_settings(){
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p1_rates'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Free' : '$'.$option.' per Student per Week' ).'</option>';
+                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Free 7-Day Trial' : '$'.$option.' per Student per Week' ).'</option>';
                 }
                 ?>
             </select>
@@ -337,7 +337,7 @@ function save_settings(){
             <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p2_max_seats'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer Guidance' : $option.' Students per Week Max' ).'</option>';
+                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer Classroom' : $option.' Maximum Students per Week' ).'</option>';
                 }
                 ?>
             </select>
@@ -346,25 +346,25 @@ function save_settings(){
 
         <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
 
-            <!-- Disabled for now as we only have a single pricing option for Guidance Package -->
+            <!-- Disabled for now as we only have a single pricing option for Classroom Package -->
             <div class="form-group label-floating <?= (count($pm['p2_rates'])<=1 ? 'hidden' : '') ?>">
                 <select id="b_p2_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                     <?php
                     foreach($pm['p2_rates'] as $option){
-                        echo '<option value="'.$option.'" '.($b['b_p2_rate']==$option?'selected="selected"':'').'>$'.$option.'/Week</option>';
+                        echo '<option value="'.$option.'" '.($b['b_p2_rate']==$option?'selected="selected"':'').'>$'.$option.' per Week</option>';
                     }
                     ?>
                 </select>
             </div>
 
 
-            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Mentorship Package <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Tutoring Package <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
             <div class="help_body maxout" id="content_615"></div>
             <div class="form-group label-floating">
                 <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                     <?php
                     foreach($pm['p3_rates'] as $option){
-                        echo '<option value="'.$option.'" '.($b['b_p3_rate']==$option?'selected="selected"':'').'>'.($option==0?'Do Not Offer Mentorship':'$'.number_format($option,2).'/Min ($'.number_format(($option*25),0).' for each 25-Min Session)').'</option>';
+                        echo '<option value="'.$option.'" '.($b['b_p3_rate']==$option?'selected="selected"':'').'>'.($option==0?'Do Not Offer Tutoring':'$'.number_format($option,2).' per Minute ($'.number_format(($option*25),0).' for each 25-Min Session)').'</option>';
                     }
                     ?>
                 </select>
@@ -381,7 +381,7 @@ function save_settings(){
 
 
 
-                <div id="mentorship_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
+                <div id="tutoring_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
                     <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
                     <div class="help_body maxout" id="content_4792"></div>
                     <div class="form-group label-floating is-empty">
@@ -514,7 +514,7 @@ function save_settings(){
                 if(in_array($adviser['u_id'],$admin_ids)){
                     continue;
                 }
-                echo echo_br(array_merge($adviser,array(
+                echo echo_br(array_merge($adviser, array(
                     'ba_id' => 0,
                     'ba_u_id' => $adviser['u_id'],
                     'ba_status' => 1, //Advisery status
@@ -524,7 +524,7 @@ function save_settings(){
             }
             ?>
         </div>
-        <p>Contact us to add new team members.</p>
+        <p>Contact us to add new co-instructors.</p>
     </div>
 
     <div class="tab-pane" id="tabcoupons">

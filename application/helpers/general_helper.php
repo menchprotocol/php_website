@@ -376,13 +376,14 @@ function echo_price($b){
 
     if($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0){
         //Offers Paid Packages, see pricing:
-        return '$'.number_format($b['b_p1_rate'],0).'<em style="padding:0 2px;">-</em>'.($b['b_p3_rate']>0 ? number_format(($b['b_p2_rate']+(75*$b['b_p3_rate'])),0) : number_format($b['b_p2_rate'],0) );
+        return '$'.number_format($b['b_p1_rate'],0).'<span style="padding:0 0 0 1px; font-size:0.6em; font-weight:bold;"> & UP</span>';
     } else {
         //Only DIY package:
         if($b['b_p1_rate']>0){
             return '$'.number_format($b['b_p1_rate'],0);
         } else {
-            return 'FREE';
+            //return 'FREE';
+            return '$'.number_format($b['b_p1_rate'],0);
         }
     }
 
@@ -1186,6 +1187,10 @@ function calculate_project_status($b){
     
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
+
+    //This must exist:
+    $bl = ( isset($b['b__admins'][0]) ? $b['b__admins'][0] : null );
+
     //A function used on the dashboard to indicate what is left before launching the Bootcamp
     $progress_possible = 0; //Total points of progress
     $progress_gained = 0; //Points granted for completion
@@ -1193,49 +1198,17 @@ function calculate_project_status($b){
 
 
 
-
-    //Target Audience
-    $estimated_minutes = 30;
+    //Facebook Page
+    $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_target_audience'])>0 ? 1 : 0 );
+    $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']==3) ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
-        'anchor' => '<b>Set Target Audience</b> in Action Plan',
+        'href' => '/console/'.$b['b_id'].'/settings#pages',
+        'anchor' => '<b>Connect your <i class="fa fa-facebook-official" aria-hidden="true" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
-
-
-    //Prerequisites
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
-        'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-
-    //Skills You Will Gain
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-
-
-
-
 
 
     //Do we have enough Tasks?
@@ -1345,13 +1318,61 @@ function calculate_project_status($b){
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
+
+
+
+
+
+
+
+
+    //Prerequisites
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+    //Skills You Will Gain
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
+        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+    //Target Audience
+    $estimated_minutes = 30;
+    $progress_possible += $estimated_minutes;
+    $us_status = ( strlen($b['b_target_audience'])>0 ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'anchor' => '<b>Set Target Audience</b> in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+
+
+
+
     
     
     /* *******************************
      *  Leader profile (for them only)
      *********************************/
-    //This must exist:
-    $bl = ( isset($b['b__admins'][0]) ? $b['b__admins'][0] : null );
     if($bl){
         $is_my_account = ( $bl['u_id']==$udata['u_id'] );
         $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].' '.$bl['u_lname'].'\'s Account' );
@@ -1487,7 +1508,7 @@ function calculate_project_status($b){
 
 
 
-    //Offer Guidance Package?
+    //Offer Classroom Package?
     if($b['b_p2_max_seats']>0){
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
@@ -1502,7 +1523,7 @@ function calculate_project_status($b){
     }
 
 
-    //Offer mentorship?
+    //Offer Tutoring?
     if($b['b_p3_rate']>0){
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
@@ -1510,7 +1531,7 @@ function calculate_project_status($b){
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/settings#support',
-            'anchor' => '<b>Enter Calendly URL</b> for 1-on-1 Mentorship Bookings in Settings',
+            'anchor' => '<b>Enter Calendly URL</b> for Tutoring Bookings in Settings',
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
@@ -1548,19 +1569,6 @@ function calculate_project_status($b){
 
 
 
-    //Facebook Page
-    $estimated_minutes = 15;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']>=3) ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings#pages',
-        'anchor' => '<b>Connect a Facebook Page</b> in Settings',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-
 
     
     
@@ -1574,7 +1582,7 @@ function calculate_project_status($b){
 }
 
 
-function echo_r($b_id,$class,$append_class=null){
+function echo_r($b,$class,$append_class=null){
 
     $CI =& get_instance();
     $guided_admissions = count($CI->Db_model->ru_fetch(array(
@@ -1583,35 +1591,36 @@ function echo_r($b_id,$class,$append_class=null){
         'ru_package_num >=' => 2, //2 or 3
     )));
 
-
     echo '<li class="list-group-item '.$append_class.'">';
 
     echo '<span class="pull-right">';
     if($class['r__current_admissions']>0){
 
         //How many students, if any, are enrolled in support packages?
-        echo '<a href="javascript:void(0);" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">';
-        echo $class['r__current_admissions'].' <i class="fa fa-users" aria-hidden="true"></i>';
-        echo '</a>';
+        echo '<a href="javascript:void(0);" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_admissions'].' <i class="fa fa-chevron-right" aria-hidden="true"></i></a>';
 
     } else {
 
-        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="right" title="No students yet">0 <i class="fa fa-users" aria-hidden="true"></i></span>';
+        echo '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="right" title="No Students Yet">0</span>';
 
     }
     echo '</span>';
-
 
     //Determine the state of the Checkbox:
     if($guided_admissions>0 || $class['r_status']>=2){
 
         //Locked:
-        echo '<span class="badge badge-primary '.( $guided_admissions==0 ? 'grey' : '' ).'" data-toggle="tooltip" data-placement="right" title="'.$guided_admissions.' Student'.show_s($guided_admissions).' paid for Support"><i class="fa fa-life-ring" aria-hidden="true"></i>'.( $guided_admissions>0 ? ' '.$guided_admissions : '' ).'</span>';
+        echo '<span class="badge badge-primary '.( $guided_admissions==0 ? 'grey' : '' ).'">';
+        echo status_bible('r',$class['r_status'],true, 'right');
+        if($guided_admissions>0){
+            echo ' <span data-toggle="tooltip" data-placement="right" title="'.$guided_admissions.'/'.$b['b_p2_max_seats'].' Classroom Seats are Full">'.$guided_admissions.'</span>';
+        }
+        echo '</span>';
 
     } else {
 
         //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to Toggle Support: Yellow = Offer Support Grey = No Support"><i class="fa fa-life-ring" aria-hidden="true"></i></a>';
+        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to Toggle Support: Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('r',$class['r_status'],true, null).'</a>';
 
     }
 

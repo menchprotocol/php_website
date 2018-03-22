@@ -72,7 +72,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-default mtweak"><i class="fa fa-usd" aria-hidden="true"></i></div>
 					<h3 class="info-title">3. Earn</h3>
-					<p>Students join your Classes each week and choose between Solo, Classroom or Mentorship packages. They may also upgrade at any time. We transfer your earnings via Paypal on a 7-Day rolling basis.</p>
+					<p>Students join your Classes each week and choose between Solo, Classroom or Tutoring packages. They may also upgrade at any time. We transfer your earnings via Paypal on a 7-Day rolling basis.</p>
 				</div>
 			</div>
 		</div>

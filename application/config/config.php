@@ -19,6 +19,7 @@ $config['fb_settings'] = array(
     'default_graph_version' => 'v2.10', //Also repeated in global.js
 );
 
+
 $config['class_settings'] = array(
     'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
     'instructor_show_default'   => 10, //Visible by default in Console for Instructors
@@ -62,7 +63,7 @@ $config['pricing_model'] = array(
 
     'p3_rates' => array(0,1.08,1.8,2.88), //Per Minute, Next level is 4.6
     'p3_rate_default' => 0,
-    'p3_minute_bundles' => array(25,50,75), //Defines how Mentorship packages would be bundled and sold
+    'p3_minute_bundles' => array(25,50,75), //Defines how Tutoring packages would be bundled and sold
 );
 
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
@@ -269,25 +270,23 @@ $config['object_statuses'] = array(
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
-        /*
-        -1 => array(
+        -1 => array( //Not in use for now...
             's_name'  => 'Archived',
             's_desc'  => 'Class has been Archived',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
-        */
         0 => array(
-            's_name'  => 'Support Unavailable',
-            's_desc'  => 'Will only admit Do It Yourself Students, and not sell any Support Packages',
+            's_name'  => 'Do It Yourself',
+            's_desc'  => 'Students can only complete the Class on their own as Instructor support is not available',
             'u_min_status'  => 2,
-            's_mini_icon' => 'fa-calendar-times-o',
+            's_mini_icon' => 'fa-wrench',
         ),
         1 => array(
-            's_name'  => 'Admitting',
-            's_desc'  => 'All Guidance Packages of the Class are open for admission',
+            's_name'  => 'Classroom Open',
+            's_desc'  => 'Classroom Students get Chat Support, Group Calls, Peer Networking & More...',
             'u_min_status'  => 2,
-            's_mini_icon' => 'fa-bullhorn',
+            's_mini_icon' => 'fa-users',
         ),
         2 => array(
             's_name'  => 'Running',

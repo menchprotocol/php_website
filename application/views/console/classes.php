@@ -1,5 +1,6 @@
 <?php
 $message_max = $this->config->item('message_max');
+$class_settings = $this->config->item('class_settings');
 ?><script>
 
 $(document).ready(function() {
@@ -11,7 +12,7 @@ $(document).ready(function() {
 function load_class(r_id){
 
     //Show Loader:
-    $('#class_content').html('<img src="/img/round_load.gif" class="loader" />');
+    $('#class_content').html('<img src="/img/round_load.gif" style="margin-top:50px;" class="loader" />');
 
     //Save the rest of the content:
     $.post("/api_v1/load_classmates", { r_id:r_id } , function(data) {
@@ -47,7 +48,7 @@ function toggle_support(r_id){
     } , function(data) {
 
         //Restore Loader:
-        $('#support_toggle_'+r_id).html('<i class="fa fa-life-ring" aria-hidden="true"></i>');
+        $('#support_toggle_'+r_id).html(data.message);
 
         if(data.status){
             //Update UI to confirm with user:
@@ -118,9 +119,6 @@ function sync_action_plan(){
 
                 <div class="tab-pane active" id="tabactive">
                     <?php
-
-                    $class_settings = $this->config->item('class_settings');
-
                     $active_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id'	        => $b['b_id'],
                         'r.r_status >='	    => 0, //No Support
@@ -131,10 +129,10 @@ function sync_action_plan(){
 
                         echo '<div class="list-group maxout">';
                         foreach($active_classes as $key=>$class){
-                            echo_r($b['b_id'],$class,($key>=$class_settings['instructor_show_default']?'active_extra hidden':''));
+                            echo_r($b,$class,($key>=$class_settings['instructor_show_default']?'active_extra hidden':''));
                         }
                         if(count($active_classes)>$class_settings['instructor_show_default']){
-                            echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'active_extra\')" class="list-group-item active_extra" style="text-decoration:none;"><i class="fa fa-plus-square-o" style="margin: 0 6px 0 4px; font-size: 19px;" aria-hidden="true"></i> See all '.count($active_classes).'</a>';
+                            echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'active_extra\')" data-toggle="tooltip" data-placement="top" title="Classes are automatically created for the next '.$class_settings['create_weeks_ahead'].' Weeks" class="list-group-item active_extra" style="text-decoration:none;"><i class="fa fa-plus-square-o" style="margin: 0 6px 0 4px; font-size: 19px;" aria-hidden="true"></i> See All Classes</a>';
                         }
                         echo '</div>';
 
@@ -154,7 +152,7 @@ function sync_action_plan(){
                     if(count($complete_classes)>0){
                         echo '<div class="list-group maxout">';
                         foreach($complete_classes as $key=>$class){
-                            echo_r($b['b_id'],$class,($key>=$class_settings['instructor_show_default']?'past_extra hidden':''));
+                            echo_r($b,$class,($key>=$class_settings['instructor_show_default']?'past_extra hidden':''));
                         }
                         if(count($complete_classes)>$class_settings['instructor_show_default']){
                             echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'past_extra\')" class="list-group-item past_extra" style="text-decoration:none;"><i class="fa fa-plus-square-o" style="margin: 0 6px 0 4px; font-size: 19px;" aria-hidden="true"></i> See all '.count($complete_classes).'</a>';
@@ -169,7 +167,7 @@ function sync_action_plan(){
 
         </td>
         <td style="padding-top:7px; vertical-align:top;">
-            <div id="class_content"><br /><br />Select a Class from the left menu to load Students...</div>
+            <div id="class_content"></div>
         </td>
     </tr>
 </table>

@@ -101,14 +101,14 @@ $website = $this->config->item('website');
 
             	    //Is it connected to a Facebook Page?
                     if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
+
                         //Fetch page details:
                         echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students using Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+
+                        //Landing Page
+                        echo '<li><a class="landing_page_url" data-toggle="tooltip" data-placement="top" title="Visit Bootcamp Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+
                     }
-
-                    //Landing Page
-                    echo '<li><a class="landing_page_url" data-toggle="tooltip" data-placement="top" title="Visit Bootcamp Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
-
-
                 }
                 echo '</ul>';
 
