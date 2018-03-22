@@ -413,7 +413,7 @@ function echo_hours($decimal_hours,$micro=false){
 
 }
 
-function detect_embed_video($url,$full_message){
+function detect_embed_video($url,$full_message,$youtube_image=false){
 
     $embed_code = null;
 
@@ -421,16 +421,40 @@ function detect_embed_video($url,$full_message){
     if(substr_count($url,'youtube.com/watch?v=')==1 || substr_count($url,'youtu.be/')==1){
 
         //Seems to be youtube:
-        if(substr_count($url,'youtube.com/watch?v=')==1){
+        if(substr_count($url,'youtube.com/embed/')==1){
+
+            //We might have start and end here too!
+            $video_id = trim(one_two_explode('youtube.com/embed/','?',$url));
+
+        } elseif(substr_count($url,'youtube.com/watch?v=')==1){
+
             $video_id = trim(one_two_explode('youtube.com/watch?v=','&',$url));
+
         } elseif(substr_count($url,'youtu.be/')==1){
+
             $video_id = trim(one_two_explode('youtu.be/','?',$url));
+
         }
 
         //This should be 11 characters!
         if(strlen($video_id)==11){
-            //TODO later we can also define start and end time by adding this: &start=4&end=9
-            $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+
+            //We might also find these in the URL:
+            $start_sec = 0;
+            $end_sec = 0;
+            if(substr_count($url,'start=')>0){
+                $start_sec = int(trim(one_two_explode('start=','&',$url)));
+            }
+            if(substr_count($url,'end=')>0){
+                $end_sec = int(trim(one_two_explode('end=','&',$url)));
+            }
+
+
+            if($youtube_image){
+                $embed_code = '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container video-sorting" style="margin-top:5px; padding-bottom:0; margin:-30% 0px -10% 0px; margin:-10% 0px;" />';
+            } else {
+                $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            }
         }
 
     } elseif(substr_count($url,'vimeo.com/')==1){

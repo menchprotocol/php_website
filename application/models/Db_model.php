@@ -106,7 +106,7 @@ WHERE ru.ru_status >= 4
                         $bs[$key]['c__header_media'] = echo_i($i);
                         break;
                     } elseif($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_video($i['i_url'],$i['i_message'])){
-                        $bs[$key]['c__header_media'] = detect_embed_video($i['i_url'],$i['i_url']);
+                        $bs[$key]['c__header_media'] = detect_embed_video($i['i_url'],$i['i_url'],true);
                         break;
                     }
                 }
