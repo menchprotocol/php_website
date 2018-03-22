@@ -136,11 +136,6 @@ $( document ).ready(function() {
                 <li>Duration: <b>7 Days</b></li>
                 <li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(7*24*3600-60)) ?></b></li>
             	<li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
-            	
-            	<?php if($total_office_hours>0){ ?>
-            	<li>Group Calls: <b><?= echo_hours($total_office_hours) ?> Per Week</b></li>
-            	<?php } ?>
-
                 <li>Price: <b><?= echo_price($b) ?></b></li>
             	
             	<?php if($focus_class['r_max_students']>0){ ?>
@@ -225,31 +220,6 @@ $( document ).ready(function() {
         }
         ?>
         </div>
-    		
-    		
-    		
-    		
-    		<h3>1-on-1 Support</h3>
-
-            <h4><i class="fa fa-comments" aria-hidden="true"></i> Chat Response Time</h4>
-            <p>This Bootcamp offers live chat and email support during the 1-Week period. You can ask <b>unlimited questions</b> from your instructor.</p>
-            <hr />
-
-
-            <?php
-    		if(count($office_hours_ui)>0 || $total_office_hours>0){
-    		    echo '<h4><i class="fa fa-podcast" aria-hidden="true"></i> Group Calls</h4>';
-    		    echo '<p>You can access <b>'.echo_hours($total_office_hours).'</b> of live group support during these time-slots:</p>';
-    		    echo '<ul style="list-style:none; margin-left:-20px;">';
-    		    foreach($office_hours_ui as $oa_ui){
-    		        echo '<li>'.$oa_ui.'</li>';
-    		    }
-    		    echo '</ul>';
-    		    echo '<hr />';
-    		}
-    		?>
-
-
 
     		
     		
@@ -319,7 +289,7 @@ $( document ).ready(function() {
     		<ul style="list-style:none; margin-left:-30px;">
     			<li>Admission Ends <b><?= time_format($focus_class['r_start_date'],2,-1) ?> 11:59pm PST</b> (Ends in <span id="reg2"></span>)</li>
     			<li>Class Starts <b><?= time_format($focus_class['r_start_date'],2) ?></b></li>
-    			<li>Class Duration is <b><?= $b['c__tasks_count'] .' Task'.show_s($b['c__tasks_count']) ?></b></li>
+    			<li>Class Duration is <b>7 Days</b></li>
     			<li>Class Ends <b><?= time_format($focus_class['r_start_date'],2,(7*24*3600-60)) ?></b></li>
     		</ul>
     		<hr />
@@ -329,7 +299,7 @@ $( document ).ready(function() {
     		<?php if(strlen($b['b_completion_prizes'])>0){ ?>
                 <h4><i class="fa fa-gift" aria-hidden="true"></i> Completion Award<?= show_s(count(json_decode($b['b_completion_prizes']))) ?></h4>
                 <div id="r_completion_prizes"><?= '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' ?></div>
-                <p>Awarded for completing all Tasks by the end of the Bootcamp.</p>
+                <p>Awarded for completing all Tasks within 7 Days.</p>
                 <hr />
     		<?php } ?>
 

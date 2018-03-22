@@ -76,7 +76,7 @@ if(count($bs)>0){
 echo '<div class="list-group-item list_input new-step-input" style="padding: 5px 7px;">
         <div class="input-group">
             <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span>
-            <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="project_create();"><input type="text" class="form-control"  maxlength="70" id="b_c_objective" placeholder="Build a Todo list web app using AngularJS" /></form></div>
+            <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="project_create();"><input type="text" class="form-control"  maxlength="70" id="b_c_objective" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
             <span class="input-group-addon" style="padding-right:8px;">
                 <span data-toggle="tooltip" data-placement="top" onclick="project_create();" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                     <div><i class="fa fa-plus"></i></div>

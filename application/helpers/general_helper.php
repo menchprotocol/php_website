@@ -1176,7 +1176,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($b['c__estimated_hours']).' in 7 Days (Average '.echo_hours(round($b['c__estimated_hours']/7)) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($b['c__estimated_hours']).' in 7 Days (Average '.echo_hours($b['c__estimated_hours']/7) .' per day)');
     }
     return $pre_req_array;
 }
