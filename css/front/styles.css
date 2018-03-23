@@ -906,6 +906,11 @@ a.badge:focus, a.badge:hover {
     background-color:#CCC !important;
 }
 
+.video-prefix{
+    background-color: #efefef;
+    padding: 6px 8px;
+}
+
 .grey-list .list-group-item {
     background-color: #E5E5E5;
     border-bottom-color: #E5E5E5;

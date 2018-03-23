@@ -405,11 +405,21 @@ function echo_hours($decimal_hours,$micro=false){
 
 }
 
+function sec_to_min($sec_int){
+    $min = 0;
+    $sec = fmod($sec_int,60);
+    if($sec_int>=60){
+        $min = floor($sec_int/60);
+    }
+    return '<b>'.( $min ? $min.'m' : '' ).( $sec ? ( $min ? ' ' : '' ).$sec.'s' : '' ).'</b>';
+}
+
 function detect_embed_media($url,$full_message,$require_image=false){
 
     //$require_image is for Finding the cover photo in YouTube content
 
     $embed_code = null;
+    $prefix_message = null;
 
     //See if $url has a valid embed video in it, and transform it if it does:
     if(substr_count($url,'youtube.com/watch?v=')==1 || substr_count($url,'youtu.be/')==1 || substr_count($url,'youtube.com/embed/')==1){
@@ -447,7 +457,12 @@ function detect_embed_media($url,$full_message,$require_image=false){
                 $end_sec = intval(one_two_explode('end=','&',$url));
             }
 
-            $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            //Inform Student that this video has been sliced:
+            if($start_sec || $end_sec){
+                $embed_code .= '<div class="video-prefix"><i class="fa fa-youtube-play" style="color:#ff0202;" aria-hidden="true"></i> Instructor recommends watching this video '.($start_sec ? 'from '.sec_to_min($start_sec) : '').($end_sec ? ' to '.sec_to_min($end_sec) : '').':</div>';
+            }
+
+            $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
 
         }
 
