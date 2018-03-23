@@ -411,7 +411,7 @@ function sec_to_min($sec_int){
     if($sec_int>=60){
         $min = floor($sec_int/60);
     }
-    return '<b>'.( $min ? $min.'m' : '' ).( $sec ? ( $min ? ' ' : '' ).$sec.'s' : '' ).'</b>';
+    return ( $min ? $min.'m' : '' ).( $sec ? ( $min ? ' ' : '' ).$sec.'s' : '' );
 }
 
 function detect_embed_media($url,$full_message,$require_image=false){
@@ -459,7 +459,7 @@ function detect_embed_media($url,$full_message,$require_image=false){
 
             //Inform Student that this video has been sliced:
             if($start_sec || $end_sec){
-                $embed_code .= '<div class="video-prefix"><i class="fa fa-youtube-play" style="color:#ff0202;" aria-hidden="true"></i> Instructor recommends watching this video '.($start_sec ? 'from '.sec_to_min($start_sec) : '').($end_sec ? ' to '.sec_to_min($end_sec) : '').':</div>';
+                $embed_code .= '<div class="video-prefix"><i class="fa fa-youtube-play" style="color:#ff0202;" aria-hidden="true"></i> You are recommended to watch from <b>'.($start_sec ? sec_to_min($start_sec) : 'Start').'</b> to <b>'.($end_sec ? sec_to_min($end_sec) : 'End').'</b>:</div>';
             }
 
             $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';

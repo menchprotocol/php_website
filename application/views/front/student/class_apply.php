@@ -139,9 +139,10 @@ $(document).ready(function() {
 	<p>Hi <?= $admission['u_fname'] ?>,</p>
 	<p>Welcome to the Bootcamp application.</p>
 	<p>We just sent an email to <b><?= $admission['u_email'] ?></b> with a link to this application so you can easily access it at anytime.</p>
-	<p>We're so excited to have you here! We're about to ask you a few questions to find out if you're a good fit for this Bootcamp.</p>
+	<p>We're so excited to have you here!</p>
 	<p>This application should take about 5 minutes to complete.</p>
 </div>
+
 
 <div class="wizard-box" id="overview_agree">
 	<p>Confirm that you commit to participating and doing the required work for this Bootcamp:</p>
@@ -194,19 +195,25 @@ $(document).ready(function() {
 
 
 
-<?php if($admission['b_fp_id']>0 && (!($admission['u_cache__fp_id']==$admission['b_fp_id']) || $admission['u_cache__fp_psid']<1)){ ?>
-<div class="wizard-box">
-	<p><b style="font-size:1.2em;">Activate Messenger</b></p>
-	<p>This Bootcamp offers a direct chat line with the instructor team using Facebook Messenger. Activate your Messenger by clicking on this link:</p>
-	<p style="margin:40px 0; font-weight:bold;"><a href="<?= $this->Comm_model->fb_activation_url($admission['u_id'],$admission['b_fp_id']) ?>" target="_blank">Activate Messenger</a> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></p>
-</div>
-<?php } ?>
-
 
 
 
 <div class="wizard-box">
-	<p>That's all!</p>
+	<p>
+        <?php if($focus_class['r_max_students']>0){ ?>
+        <li>Classroom Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
+            <?php
+            if($focus_class['r__current_admissions']>=$focus_class['r_max_students']){
+                //Class is full:
+                echo ' <div style="color:#FF0000;">(FULL, '.($focus_class['r__current_admissions']-$focus_class['r_max_students']).' in Waiting List)</div>';
+            } elseif(($focus_class['r__current_admissions']/$focus_class['r_max_students'])>0.66){
+                //Running low on space:
+                echo ' <span style="color:#FF0000;">('.($focus_class['r_max_students']-$focus_class['r__current_admissions']).' Remaining)</span>';
+            }
+            ?>
+        </li>
+        <?php } ?>
+    </p>
 	<p>Click "Next" to submit your application!</p>
 </div>
 

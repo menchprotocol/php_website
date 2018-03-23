@@ -637,7 +637,7 @@ if(!isset($intents[0])){
     echo '<div class="add-msg add-msg'.$c_id.'" style="border-radius:0 !important; margin-top: 2px;">';
     echo '<form class="box box'.$c_id.'" method="post" enctype="multipart/form-data">'; //Used for dropping files
 
-    echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin" style="min-height:80px; box-shadow: none; resize: none;" id="i_message'.$c_id.'" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
+    echo '<textarea onkeyup="changeMessage()" class="form-control msg msgin" style="min-height:80px; box-shadow: none; resize: none; margin-bottom: 0px;" id="i_message'.$c_id.'" placeholder="Write Message, Drop a File or Paste URL"></textarea>';
 
     echo '<div id="i_message_counter" style="margin:0 0 1px 0; font-size:0.8em;">';
     //File counter:

@@ -907,8 +907,9 @@ a.badge:focus, a.badge:hover {
 }
 
 .video-prefix{
-    background-color: #efefef;
     padding: 6px 8px;
+    border:1px solid #999;
+    border-radius:2px;
 }
 
 .grey-list .list-group-item {

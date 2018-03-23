@@ -120,27 +120,13 @@ $( document ).ready(function() {
         <div id="sidebar">
         	
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
-        	
-            <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
-                <li>Duration: <b>7 Days</b></li>
-                <li>Dates: <b><?= time_format($focus_class['r_start_date'],1) ?> - <?= time_format($focus_class['r_start_date'],1,(7*24*3600-60)) ?></b></li>
-            	<li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
-                <li>Price: <b><?= echo_price($b) ?></b></li>
-            	
-            	<?php if($focus_class['r_max_students']>0){ ?>
-            		<li>Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
-                        <?php
-                        if($focus_class['r__current_admissions']>=$focus_class['r_max_students']){
-                            //Class is full:
-                            echo ' <div style="color:#FF0000;">(FULL, '.($focus_class['r__current_admissions']-$focus_class['r_max_students']).' in Waiting List)</div>';
-                        } elseif(($focus_class['r__current_admissions']/$focus_class['r_max_students'])>0.66){
-                            //Running low on space:
-                            echo ' <span style="color:#FF0000;">('.($focus_class['r_max_students']-$focus_class['r__current_admissions']).' Remaining)</span>';
-                        }
-                        ?>
-                    </li>
-            	<?php } ?>
 
+            <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
+                <li>Bootcamp Duration: <b>7 Days</b></li>
+                <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
+                <li>Class Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r_start_date'],2, (7*24*3600-60)) ?></b></li>
+                <li>New Classes Start: <b>Every Monday</b></li>
+                <li>Price: <b><?= echo_price($b) ?></b></li>
             </ul>
             
             <div style="padding:10px 0 30px; text-align:center;">
