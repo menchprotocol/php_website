@@ -67,25 +67,6 @@ function move_ui(adjustment){
 			ru_id:<?= $ru_id ?>,
 			u_id:<?= $u_id ?>,
 			u_key:'<?= $u_key ?>',
-			
-			//Get some PHP help to generate answers array for saving:
-			answers: {
-				'prerequisites' : {
-					<?php
-	        		if(count($pre_req_array)>0){
-	        		    foreach($pre_req_array as $index=>$prereq){
-	            	        //Now show the JS check for these fields:
-	            	        ?>
-	            	        '<?= ($index+1) ?>' : {
-	        		        	'item' : '<?= str_replace('\'','',$prereq) ?>',
-	        			        'answer' : ( document.getElementById('pre_requisite_<?= ($index+1) ?>').checked ? 'Yes' : 'No' ),
-	        			    },
-	            	        <?php
-	            	    }
-	            	 }
-	            	 ?>
-			    },
-			},
     		
 		}, function(data) {
 			//Append data to view:
@@ -132,22 +113,15 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?> - Starting <?= time_format($admission['r_start_date'],4) ?></p>
+<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?> - Starting <?= time_format($admission['r_start_date'],2) ?></p>
 
 
-<div class="wizard-box">
-	<p>Hi <?= $admission['u_fname'] ?>,</p>
-	<p>Welcome to the Bootcamp application.</p>
-	<p>We just sent an email to <b><?= $admission['u_email'] ?></b> with a link to this application so you can easily access it at anytime.</p>
-	<p>We're so excited to have you here!</p>
-	<p>This application should take about 5 minutes to complete.</p>
-</div>
 
 
 <div class="wizard-box" id="overview_agree">
-	<p>Confirm that you commit to participating and doing the required work for this Bootcamp:</p>
+	<p>Review Class Details:</p>
 	<ul>
-		<li>Bootcamp Outcome: <b><?= $admission['c_objective'] ?></b></li>
+		<li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
     	<li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>: 
         	<?php 
         	foreach($admission['b__admins'] as $key=>$instructor){
@@ -158,14 +132,15 @@ $(document).ready(function() {
         	}
         	?>
     	</li>
-    	<li>Start Date: <b><?= time_format($admission['r_start_date'],2) ?></b></li>
+        <li>Start Date: <b><?= time_format($admission['r_start_date'],2) ?></b></li>
+        <li>Duration: <b>7 Days</b></li>
     	<li>End Date: <b><?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
-    	<li>Your Commitment: <b><?= echo_hours(($admission['c__estimated_hours']/count($admission['c__child_intents']))) ?></b></li>
+    	<li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 7 Days</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
 	</ul>
 	<div class="form-group label-floating is-empty">
     	<div class="checkbox">
         	<label>
-        		<input type="checkbox" id="project_overview_agreement" /> <b style="font-size:1.3em;">Yes I Agree</b>
+        		<input type="checkbox" id="project_overview_agreement" /> <b style="font-size:1.3em;"> Confirm Commitment</b>
         	</label>
         </div>
     </div>
@@ -173,11 +148,12 @@ $(document).ready(function() {
 
 
 <?php if(count($pre_req_array)>0){ ?>
-<div class="wizard-box" id="confirm_pre_requisites">
-	<p>Below it's the list with all the prerequisites needed to apply for this Bootcamp.</p>
-	<p>Select all the ones you currently meet:</p>
+<div class="wizard-box" id="prerequisites_agree">
+    <p>Review Bootcamp Prerequisites:</p>
+    <ul style="list-style: decimal;">
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
+	    echo '<li>'.$prereq.'</li>';
 	    ?>
 	    <div class="form-group label-floating is-empty">
         	<div class="checkbox" style="margin:0; padding:0;">
@@ -189,6 +165,7 @@ $(document).ready(function() {
 	    <?php
 	}
 	?>
+    </ul>
 	<br />
 </div>
 <?php } ?>
@@ -219,7 +196,7 @@ $(document).ready(function() {
 
 
 <div class="wizard-box">
-	<p style="text-align:center;"><b>Submitting Your Application...</b></p>
+	<p style="text-align:center;"><b>Doing stuff...</b></p>
 	<div id="application_result"><img src="/img/round_load.gif" class="loader" /></div>
 </div>
 

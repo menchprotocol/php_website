@@ -15,6 +15,12 @@ function lock_cron_for_processing($e_items){
     }
 }
 
+
+function calculate_total($admission){
+    //TODO Implement Coupons here
+    return floatval( $admission['ru_p1_price'] + $admission['ru_p2_price'] + ($admission['ru_p3_price']*$admission['ru_p3_minutes']));
+}
+
 function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=array()){
 
     $CI =& get_instance();
@@ -58,22 +64,18 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
     }
 
     if(count($bs)==0){
+
         //Fetch from live:
         $bs = $CI->Db_model->remix_bs(array(
             'b.b_id' => $b_id,
         ));
-
-        if($r_id){
-            // *Attempt* to fetch Class from current class object in Bootcamp:
-            $bs[0]['this_class'] = filter($bs[0]['c__classes'],'r_id', $r_id);
-        }
 
         //Indicate this is NOT a copy:
         $bs[0]['is_copy'] = 0;
         $bs[0]['copy_timestamp'] = null;
     }
 
-    if($r_id && (!isset($bs[0]['this_class']) || !$bs[0]['this_class'])){
+    if($r_id){
         //Now Fetch Class:
         $classes = $CI->Db_model->r_fetch(array(
             'r_id' => $r_id,
@@ -554,7 +556,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             //Fetch salt:
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
-            $button_title = '🎟️ My Bootcamp Application';
+            $button_title = '🎟️ My Bootcamps';
             $button_url = 'https://mench.com/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
             $command = '{admissions}';
 
@@ -1621,7 +1623,7 @@ function echo_r($b,$class,$append_class=null){
     $guided_admissions = count($CI->Db_model->ru_fetch(array(
         'ru_r_id' => $class['r_id'],
         'ru_status >=' => 4,
-        'ru_package_num >=' => 2, //2 or 3
+        'ru_p2_price >' => 0,
     )));
 
     echo '<li class="list-group-item '.$append_class.'">';

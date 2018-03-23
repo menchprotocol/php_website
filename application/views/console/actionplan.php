@@ -1054,7 +1054,7 @@ function add_item(group_id,prefix,current_value){
             itip(602);
         }
         */
-        echo '<div id="project-objective" class="list-group maxout">';
+        echo '<div id="bootcamp-objective" class="list-group maxout">';
             echo echo_cr($b,$b,$level);
         echo '</div>';
 

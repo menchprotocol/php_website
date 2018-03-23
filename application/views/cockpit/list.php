@@ -158,6 +158,7 @@ if($object_name=='engagements'){
         echo '<td>';
         echo ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.time_format($b['engagements'][0]['e_timestamp'],1).')' : 'Never' );
 
+
         echo '</td>';
         echo '</tr>';
     }
@@ -383,7 +384,7 @@ if($object_name=='engagements'){
             $guided_admissions = count($this->Db_model->ru_fetch(array(
                 'ru_r_id' => $class['r_id'],
                 'ru_status >=' => 4,
-                'ru_package_num >=' => 2, //2 or 3
+                'ru_p2_price >' => 0,
             )));
 
             echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats/Max-Guided">';

@@ -17,7 +17,7 @@ class Front extends CI_Controller {
 		$this->load->view('front/shared/f_header' , array(
 		    'title' => 'Weekly Bootcamps from Industry Experts',
 		));
-		$this->load->view('front/project/marketplace',array(
+		$this->load->view('front/bootcamp/marketplace',array(
 		    'c_id' => $c_id,
         ));
 		$this->load->view('front/shared/f_footer');
@@ -97,11 +97,12 @@ class Front extends CI_Controller {
     }
 	
 	
-	function project_load($b_url_key,$r_id=null){
+	function landing_page($b_url_key,$r_id=null){
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
-	    $bs = $this->Db_model->remix_bs(array(
+        $class_settings = $this->config->item('class_settings');
+        $bs = $this->Db_model->remix_bs(array(
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
 
@@ -109,8 +110,8 @@ class Front extends CI_Controller {
         if(!isset($bs[0])){
             //Invalid key, redirect back:
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
-        } elseif($bs[0]['b_status']<2 && (!isset($udata['u_status']) || $udata['u_status']<2)){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is not published yet.</div>');
+        } elseif($bs[0]['b_status']<2){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
@@ -118,37 +119,41 @@ class Front extends CI_Controller {
             redirect_message('/'.$bs[0]['b_url_key']);
         }
 
+        $b = $bs[0];
+        $focus_class = null; //Let's find this...
+        $classes = $this->Db_model->r_fetch(array(
+            'r.r_b_id' => $b['b_id'],
+            'r.r_status >=' => 0,
+        ), null, 'ASC', $class_settings['students_show_max']);
 
 	    //Validate Class:
-	    $b = $bs[0];
-	    $focus_class = filter_class($b['c__classes'],$r_id);
+        if($r_id){
+            $focus_class = filter($classes,'r_id',$r_id);
+        } else {
+            $focus_class = $classes[0];
+        }
+
 	    if(!$focus_class){
-	        if(isset($udata['u_status']) && $udata['u_status']>=2){
-	            //This is an admin, get them to the editing page:
-                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'You must <a href="/console/'.$b['b_id'].'/classes"><b><u>Create A Published Class</u></b></a> before loading the landing page.' ).'</div>');
-            } else {
-	            //This is a user, give them a standard error:
-                redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Bootcamp.' ).'</div>');
-            }
+            redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Bootcamp.' ).'</div>');
 	    }
 
 
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
-	        'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	        'message' => ( $b['b_status']<2 ? '<div class="alert alert-danger" role="alert"><span><i class="fa fa-eye-slash" aria-hidden="true"></i> INSTRUCTOR VIEW ONLY:</span>You can view this Bootcamp only because you are logged-in as a Mench instructor.<br />This Bootcamp is hidden from the public until published live.</div>' : null ),
+	        'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],2),
 	        'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
             'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
 	    ));
-	    $this->load->view('front/project/landing_page' , array(
+	    $this->load->view('front/bootcamp/landing_page' , array(
 	        'b' => $b,
-	        'focus_class' => $focus_class,
+            'classes' => $classes,
+            'focus_class' => $focus_class,
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
 	
 	
-	function project_apply($b_url_key,$r_id=null){
+	function b_checkout($b_url_key,$r_id){
 	    //The start of the funnel for email, first name & last name
 
         //Fetch data:
@@ -163,62 +168,32 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
         } elseif($bs[0]['b_status']<2){
             //Here we don't even let instructors move forward to apply!
-            redirect_message('/','<div class="alert alert-danger" role="alert">Admission starts after Bootcamp is published live.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is Archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 	    
 	    //Validate Class ID that it's still the latest:
-	    $b = $bs[0];
-	    
-	    //Lets figure out how many active classes there are!
-	    $active_classes = array();
-	    foreach($b['c__classes'] as $class){
-	        if(filter_class(array($class),$class['r_id'])){
-	            array_push($active_classes,$class);
-	        }
-	    }
-	    
-	    if(count($active_classes)<1){
-	        
-	        //Ooops, no active classes!
-	        redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">No active classes found for this Bootcamp.</div>');
-	        
-	    } elseif(!$r_id && count($active_classes)>1){
-	        
-	        //Let the students choose which class they like to join:
-	        $data = array(
-	            'b' => $b,
-	            'active_classes' => $active_classes,
-	            'title' => 'Join '.$b['c_objective'],
-                'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
-	        );
+        $classes = $this->Db_model->r_fetch(array(
+            'r.r_b_id' => $bs[0]['b_id'],
+            'r.r_id' => $r_id,
+            'r.r_status >=' => 0,
+        ));
+        if(!(count($classes)==1)){
+            //Ooops, no active classes!
+            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer available.</div>');
+        }
 
-	        //Load apply page:
-	        $this->load->view('front/shared/p_header' , $data);
-	        $this->load->view('front/project/choose_class' , $data); //TODO Build this
-	        $this->load->view('front/shared/p_footer');
-	        
-	    } else {
-	        
-	        //Match the class and move on:
-	        $focus_class = filter_class($b['c__classes'],$r_id);
-	        if(!$focus_class){
-	            //Invalid class ID, redirect back:
-	            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer active.</div>');
-	        }
+        $data = array(
+            'title' => 'Join '.$bs[0]['c_objective'].' - Starting '.time_format($classes[0]['r_start_date'],4),
+            'focus_class' => $classes[0],
+            'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
+        );
 
-	        $data = array(
-	            'title' => 'Join '.$b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],4),
-	            'focus_class' => $focus_class,
-	            'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
-	        );
-	        
-	        //Load apply page:
-	        $this->load->view('front/shared/p_header' , $data);
-	        $this->load->view('front/project/apply' , $data);
-	        $this->load->view('front/shared/p_footer');
+        //Load apply page:
+        $this->load->view('front/shared/p_header' , $data);
+        $this->load->view('front/bootcamp/apply' , $data);
+        $this->load->view('front/shared/p_footer');
 
-	    }
 	}
 }

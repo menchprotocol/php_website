@@ -45,7 +45,7 @@ require_once __DIR__ . '/polyfills.php';
  * @return void
  */
 spl_autoload_register(function ($class) {
-    // project-specific namespace prefix
+    // bootcamp-specific namespace prefix
     $prefix = 'Facebook\\';
 
     // For backwards compatibility

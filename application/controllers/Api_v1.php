@@ -809,7 +809,7 @@ class Api_v1 extends CI_Controller {
                 'b.b_id' => $classes[0]['r_b_id'],
             ));
             $b = $bs[0];
-            $focus_class = filter_class($b['c__classes'],intval($_POST['r_id']));
+            $focus_class = filter($classes,'r_id',$_POST['r_id']);
         }
 	    
 	    //Display results:
@@ -892,26 +892,6 @@ class Api_v1 extends CI_Controller {
                 if($duplicate_registries[0]['ru_status']==0){
 
                     $u_key = md5($udata['u_id'] . $application_status_salt);
-
-                    //They still need to complete their application for this Class, redirect them to the next step:
-                    //Logic is inspired from my_applications.php file
-                    if($duplicate_registries[0]['r_usd_price']>0){
-                        //This must be the case if they have already completed the Application:
-                        die(echo_json(array(
-                            'status' => 0,
-                            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already submitted your Application Questionnaire for this class. To complete your application, we emailed you a link to pay your price online. Check your email to continue.</div>',
-                        )));
-                    } else {
-                        //This should not happen! Log Error:
-                        $this->Db_model->e_create(array(
-                            'e_initiator_u_id' => $udata['u_id'],
-                            'e_message' => 'Student admission was incomplete, but they had already submitted their Questionnaire and the Class is Free!',
-                            'e_json' => $duplicate_registries,
-                            'e_type_id' => 8, //System Error
-                            'e_b_id' => $b['b_id'],
-                            'e_r_id' => $focus_class['r_id'],
-                        ));
-                    }
 
                 } else {
                     //Show them an error:
@@ -1018,7 +998,7 @@ class Api_v1 extends CI_Controller {
 
         //When they submit the Application Questionnaire in step 2 of their admission:
         $application_status_salt = $this->config->item('application_status_salt');
-	    if(!isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['answers']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+	    if(!isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
@@ -1052,9 +1032,6 @@ class Api_v1 extends CI_Controller {
 	        //Error:
 	        die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
 	    }
-
-	    //Attach timestamp:
-	    $_POST['answers']['pst_timestamp'] = date("Y-m-d H:i:s");
 
         //Log Engagement:
         $this->Db_model->e_create(array(
@@ -2258,7 +2235,7 @@ class Api_v1 extends CI_Controller {
                 echo '<div class="help_body maxout" id="content_3267"></div>';
 
                 //Show Action Plan:
-                echo '<div id="project-objective" class="list-group maxout">';
+                echo '<div id="bootcamp-objective" class="list-group maxout">';
                 echo echo_cr($b,$b,1,0,false);
                 echo '</div>';
 
@@ -2542,7 +2519,7 @@ class Api_v1 extends CI_Controller {
         $guided_admissions = count($this->Db_model->ru_fetch(array(
             'ru_r_id' => intval($_POST['r_id']),
             'ru_status >=' => 4,
-            'ru_package_num >=' => 2, //2 or 3
+            'ru_p2_price >' => 0,
         )));
         if($guided_admissions>0){
             echo_json(array(

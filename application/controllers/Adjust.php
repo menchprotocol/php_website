@@ -30,7 +30,7 @@ class Adjust extends CI_Controller {
 
             //Fetch all the students of these classes, and see where they are at:
             $class['students'] = $this->Db_model->ru_fetch(array(
-                'ru.ru_status >='   => 4, //Initiated or higher as long as project is running!
+                'ru.ru_status >='   => 4, //Initiated or higher as long as bootcamp is running!
                 'ru.ru_r_id'	 => $class['r_id'],
             ));
 

@@ -64,13 +64,6 @@ $student_funnel = array(
 foreach($student_funnel as $ru_status=>$count){
     echo '<div><span style="width:40px; display:inline-block">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
 }
-
-//Fetch class:
-$focus_class = filter_class($b['c__classes'],null);
-if($focus_class){
-    echo '<div>Next Class: '.time_format($focus_class['r_start_date'],2).'</div>';
-}
-
 ?>
 
 

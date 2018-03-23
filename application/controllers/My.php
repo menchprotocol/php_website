@@ -265,7 +265,7 @@ class My extends CI_Controller {
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
@@ -288,7 +288,7 @@ class My extends CI_Controller {
         if(count($users)==1){
             $udata = $users[0];
         } else {
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
         }
 	    
 	    //Fetch all their addmissions:
@@ -302,7 +302,7 @@ class My extends CI_Controller {
 	    
 	    //Validate Class ID that it's still the latest:
 	    $data = array(
-	        'title' => 'My Application(s) Status',
+	        'title' => 'My Bootcamps',
 	        'udata' => $udata,
 	        'u_id' => $_GET['u_id'],
             'u_key' => $_GET['u_key'],
@@ -327,7 +327,7 @@ class My extends CI_Controller {
 	    $application_status_salt = $this->config->item('application_status_salt');
 	    if(intval($ru_id)<1 || !isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
 	        //Log this error:
-	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Application Key. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
+	        redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
 	        exit;
 	    }
 	    
@@ -339,7 +339,7 @@ class My extends CI_Controller {
 	    //Did we find at-least one?
 	    if(count($admissions)<=0){
 	        //Log this error:
-	        redirect_message('/my/applications?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'],'<div class="alert alert-danger" role="alert">No Active Applications.</div>');
+	        redirect_message('/my/applications?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'],'<div class="alert alert-danger" role="alert">No Active Bootcamps.</div>');
 	        exit;
 	    }
 	    

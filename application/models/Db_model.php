@@ -29,10 +29,12 @@ WHERE ru.ru_status >= 4
 
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
+
             //Fetch Bootcamp:
             $bs = $this->Db_model->remix_bs(array(
                 'b.b_id' => $enrollment['r_b_id'],
             ));
+
             if(count($bs)<=0){
                 $this->Db_model->e_create(array(
                     'e_message' => 'remix_admissions() had invalid [r_b_id]='.$enrollment['r_b_id'],
@@ -44,8 +46,11 @@ WHERE ru.ru_status >= 4
             }
 
             //Fetch Class:
-            $class = filter($bs[0]['c__classes'],'r_id',$enrollment['ru_r_id']);
-	        if(count($class)<=0){
+            $classes = $this->Db_model->r_fetch(array(
+                'r.r_id' => $enrollment['ru_r_id'],
+                'r.r_status >=' => 0,
+            ));
+	        if(count($classes)<1){
                 $this->Db_model->e_create(array(
                     'e_message' => 'remix_admissions() had invalid [r_id]='.$enrollment['ru_r_id'],
                     'e_json' => $matching_criteria,
@@ -56,7 +61,7 @@ WHERE ru.ru_status >= 4
 	        }
 
 	        //Merge in:
-            $admissions[$key] = array_merge($admissions[$key] , $class);
+            $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
 	        $admissions[$key] = array_merge($admissions[$key] , $bs[0]);
 	        $admissions[$key]['ru__transactions'] = $this->Db_model->t_fetch(array(
 	            't.t_ru_id' => $enrollment['ru_id'],
@@ -220,14 +225,6 @@ WHERE ru.ru_status >= 4
 
                     }
                 }
-            }
-
-            //Fetch Classes last to leverage the currently gathered data for some other calculations inside the r_fetch() function:
-            if(count($join_objects)==0 || in_array('r',$join_objects)){
-                $bs[$key]['c__classes'] = $this->r_fetch(array(
-                    'r.r_b_id' => $c['b_id'],
-                    'r.r_status >=' => 0,
-                ) , $bs[$key] /* Passing this would load extra variables for the class */ );
             }
         }
 
@@ -1249,7 +1246,6 @@ WHERE ru.ru_status >= 4
 
         //Remove unnecessary fields:
         unset($bs[0]['b__admins']);
-        unset($bs[0]['c__classes']); //Our Class may not be in here!
 
         //Also Update Class end Date:
         //Fetch Class Details:

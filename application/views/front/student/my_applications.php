@@ -56,7 +56,7 @@
 
 <?php
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
-echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamp Applications</h3>';
+echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamps</h3>';
 
 if(count($admissions)>0 && is_array($admissions)){
 
@@ -69,12 +69,14 @@ if(count($admissions)>0 && is_array($admissions)){
         //Fetch Admission Data:
         $bs = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
         $class = $bs[0]['this_class'];
+        $price_to_pay = calculate_total($bs[0],$admission);
 
 
         //Fetch Bootcamp Data:
-        $live_projects = $this->Db_model->b_fetch(array(
+        $live_bs = $this->Db_model->b_fetch(array(
             'b_id' => $admission['r_b_id'],
         ));
+
 
         //Fetch Payment:
         $ru__transactions = $this->Db_model->t_fetch(array(
@@ -83,11 +85,11 @@ if(count($admissions)>0 && is_array($admissions)){
 
         echo '<div style="border:2px solid #000; padding:7px; margin-top:25px; border-radius:5px; background-color:#EFEFEF;">';
 
-        echo '<p><b>'.$bs[0]['c_objective'].'</b> ('.time_format($class['r_start_date'],4).' - '.time_format($class['r__class_end_time'],4, (7*24*3600-60)).') Application:</p>';
+        echo '<p><b>'.$bs[0]['c_objective'].'</b></p>';
 
 
         //Account, always created at this point:
-        echo '<div class="checkbox"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Initiate Application</label></div>';
+        echo '<div class="checkbox"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Admission Initiated for Class of '.time_format($class['r_start_date'],2).' - '.trim(time_format($class['r__class_end_time'],2)).'</label></div>';
 
 
 
@@ -150,17 +152,17 @@ if(count($admissions)>0 && is_array($admissions)){
         if($admission['u_cache__fp_psid']>0){
             echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
         } else {
-            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_projects[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         }
 
         //Let them know the status of their application:
         echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';
 
         echo '<div style="font-size: 0.7em; margin-top:5px; padding-top:5px; border-top:2px solid #333;">';
-        echo '<a href="/'.$live_projects[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
+        echo '<a href="/'.$live_bs[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
         if($admission['ru_status']==0){
             //They can still withdraw their application:
-            echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="withdraw_application('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw My Application</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
+            echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="withdraw_application('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw from Bootcamp</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
         }
         echo '</div>';
 

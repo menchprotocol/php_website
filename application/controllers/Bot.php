@@ -420,7 +420,7 @@ class Bot extends CI_Controller {
 	                    'e_initiator_u_id' => $admissions[0]['ru_u_id'],
 	                    'e_message' => 'Received $'.$amount.' USD via PayPal.',
 	                    'e_json' => $_POST,
-	                    'e_type_id' => 30, //Application Completed with Potential Payment
+	                    'e_type_id' => 30, //Joined Bootcamp with Potential Payment
 	                    'e_b_id' => $classes[0]['r_b_id'],
 	                    'e_r_id' => $classes[0]['r_id'],
 	                ));

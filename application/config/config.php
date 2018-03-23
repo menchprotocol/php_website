@@ -23,7 +23,7 @@ $config['fb_settings'] = array(
 $config['class_settings'] = array(
     'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
     'instructor_show_default'   => 10, //Visible by default in Console for Instructors
-    'students_show_default'     => 4, //Visible by default in Landing Page for Students
+    'landing_page_visible'      => 5, //Classes & Tasks visible in the Landing Page by default
     'students_show_max'         => 13, //Maximum available for students to see
 );
 
@@ -61,7 +61,7 @@ $config['pricing_model'] = array(
     'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
     'p2_max_seat_default' => 20,
 
-    'p3_rates' => array(0,1.08,1.8,2.88), //Per Minute, Next level is 4.6
+    'p3_rates' => array(0,1.1,1.8,2.9), //Per Minute, Next level is 4.6
     'p3_rate_default' => 0,
     'p3_minute_bundles' => array(25,50,75), //Defines how Tutoring packages would be bundled and sold
 );
@@ -475,7 +475,7 @@ $config['object_statuses'] = array(
         //Withrew prior to course has started:
         -2 => array(
             's_name'  => 'Student Withdrew',
-            's_desc'  => 'Student withdrew Application before Class started',
+            's_desc'  => 'Student withdrew before Class started',
             'u_min_status'  => 999, //Only done by Student themselves
             's_mini_icon' => 'fa-times-circle',
         ),
@@ -579,7 +579,7 @@ $config['object_statuses'] = array(
 //URL structure is: https://mench.com/URLKEY
 $config['reserved_hashtags'] = array(
     'projects',
-    'project',
+    'bootcamp',
     'mench',
     'login',
     'logout',
@@ -620,7 +620,7 @@ $config['engagement_references'] = array(
         'object_code' => 'u',
     ),
     'e_b_id' => array(
-        'name' => 'project',
+        'name' => 'bootcamp',
         'object_code' => 'b',
     ),
     'e_r_id' => array(
