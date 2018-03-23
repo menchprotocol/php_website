@@ -63,11 +63,18 @@ $website = $this->config->item('website');
 
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <?php /* <li data-toggle="tooltip" data-placement="bottom" title="View FAQs & best-practices to better manage your Bootcamps. Link opens in a new window."><a href="https://support.mench.co/hc/en-us" target="_blank"><i class="fa fa-lightbulb-o" aria-hidden="true"></i><span> Instructors Hub</span></a></li> */ ?>
+
                         <li><a href="/console/account"><?= (strlen($udata['u_image_url'])>4 ? '<img src="'.$udata['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i>') ?> My Account</a></li>
-                        <?php if(isset($uadmission) && count($uadmission)>0){ ?>
+
+                        <?php
+                        //NOTE: For some reason we NEED the next <li> otherwise the page orientation breaks!
+                        if(isset($uadmission) && count($uadmission)>0){ ?>
                             <li data-toggle="tooltip" data-placement="bottom" title="You are seeing this because you are a Bootcamp student. Use this to access your Action Plan on a web-based portal, which replicates the Mench Personal Assistant."><a href="/my/actionplan"><span> Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></span></a></li>
+                        <?php } else { ?>
+                            <li><a href="/api_v1/logout"><span> Logout <i class="fa fa-power-off" aria-hidden="true"></i></span></a></li>
                         <?php } ?>
+
+
                     </ul>
                 </div>
 				

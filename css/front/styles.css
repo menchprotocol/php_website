@@ -912,6 +912,7 @@ a.badge:focus, a.badge:hover {
     border-left-color: #E5E5E5;
     border-right-color: #E5E5E5;
 }
+.card-image a {display:block;}
 
 #msgnotif{
 	position: absolute;

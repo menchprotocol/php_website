@@ -37,7 +37,7 @@ foreach($bs as $count=>$b){
 
     echo '<div class="col-md-4">
 <div class="card card-product">
-<div class="card-image">'.( substr_count( $b['c__header_media'],'<img src')>0 ? '<a href="/'.$b['b_url_key'].'">'.$b['c__header_media'].'</a>' : $b['c__header_media'] ).'</div>
+<div class="card-image"><a href="/'.$b['b_url_key'].'">'.$b['c__header_media'].'</a></div>
 <div class="card-content">';
 
     //echo '<h6 class="category text-muted">'.$b['ct_icon'].' '.$b['ct_name'].'</h6>';
