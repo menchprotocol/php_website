@@ -96,20 +96,34 @@ WHERE ru.ru_status >= 4
 
             // "ihm" is to find the header image of the Bootcamp
             if(count($join_objects)>0 && in_array('ihm',$join_objects)){
+
                 $b_messages = $this->Db_model->i_fetch(array(
                     'i_status >=' => 1,
                     'i_c_id' => $c['c_id'],
                 ));
                 $bs[$key]['c__header_media'] = null;
+
                 foreach ($b_messages as $i){
-                    if(in_array($i['i_media_type'],array('image','video'))){
+                    if(in_array($i['i_media_type'],array('image'))){
+
                         $bs[$key]['c__header_media'] = echo_i($i);
                         break;
-                    } elseif($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_video($i['i_url'],$i['i_message'])){
-                        $bs[$key]['c__header_media'] = detect_embed_video($i['i_url'],$i['i_url'],true);
-                        break;
+
+                    } elseif($i['i_media_type']=='text' && strlen($i['i_url'])>0){
+
+                        //Attempt to find the image for the cover photo:
+                        $content_image = detect_embed_media($i['i_url'],$i['i_url'],true);
+
+                        //Did we find a valid image?
+                        if($content_image){
+                            $bs[$key]['c__header_media'] = $content_image;
+                            break;
+                        }
+
                     }
                 }
+
+                //Did we find an image?
                 if(!$bs[$key]['c__header_media']){
                     $bs[$key]['c__header_media'] = echo_i(array(
                         'i_media_type' => 'image',

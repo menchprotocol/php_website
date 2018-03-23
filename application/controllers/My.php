@@ -37,7 +37,7 @@ class My extends CI_Controller {
                 echo '<div>'.format_e_message('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
             } else {
                 //Show embed video:
-                echo detect_embed_video($messages[0]['i_url'],$messages[0]['i_message']);
+                echo detect_embed_media($messages[0]['i_url'],$messages[0]['i_message']);
             }
 
         } else {
@@ -65,7 +65,7 @@ class My extends CI_Controller {
         if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){
 
             //Is this an embed video?
-            $embed_html = detect_embed_video($messages[0]['i_url'],$messages[0]['i_message']);
+            $embed_html = detect_embed_media($messages[0]['i_url'],$messages[0]['i_message']);
 
             if(!$embed_html){
                 //Now redirect:

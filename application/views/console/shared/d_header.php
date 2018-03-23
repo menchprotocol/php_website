@@ -39,7 +39,6 @@ $website = $this->config->item('website');
 
 <body id="console_body">
 
-    <!-- Messenger Chat Widget: -->
     <div class="fb-customerchat" minimized="true" page_id="381488558920384"></div>
 
 	<div class="wrapper" id="console">

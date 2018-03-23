@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.51,
+    'version' => 2.61,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
@@ -58,7 +58,7 @@ $config['pricing_model'] = array(
 
     'p2_rates' => array(55), //Per Week 85
     'p2_rate_default' => 55,
-    'p2_max_seats' => array(0,2,6,12,20,30,40,80,160), //Defines how many Guided students would an instructor accept into each Class
+    'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
     'p2_max_seat_default' => 20,
 
     'p3_rates' => array(0,1.08,1.8,2.88), //Per Minute, Next level is 4.6

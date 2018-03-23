@@ -373,20 +373,12 @@ function extract_level($b,$c_id){
 
 
 function echo_price($b){
-
-    if($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0){
-        //Offers Paid Packages, see pricing:
-        return '$'.number_format($b['b_p1_rate'],0).'<span style="padding:0 0 0 1px; font-size:0.6em; font-weight:bold;"> & UP</span>';
+    //Only DIY package:
+    if($b['b_p1_rate']>0){
+        return '$'.number_format($b['b_p1_rate'],0);
     } else {
-        //Only DIY package:
-        if($b['b_p1_rate']>0){
-            return '$'.number_format($b['b_p1_rate'],0);
-        } else {
-            //return 'FREE';
-            return '$'.number_format($b['b_p1_rate'],0);
-        }
+        return 'FREE';
     }
-
 }
 function echo_hours($decimal_hours,$micro=false){
 
@@ -413,12 +405,14 @@ function echo_hours($decimal_hours,$micro=false){
 
 }
 
-function detect_embed_video($url,$full_message,$youtube_image=false){
+function detect_embed_media($url,$full_message,$require_image=false){
+
+    //$require_image is for Finding the cover photo in YouTube content
 
     $embed_code = null;
 
-    //See if $url has a valid embed video in it, and tranform it if it does:
-    if(substr_count($url,'youtube.com/watch?v=')==1 || substr_count($url,'youtu.be/')==1){
+    //See if $url has a valid embed video in it, and transform it if it does:
+    if(substr_count($url,'youtube.com/watch?v=')==1 || substr_count($url,'youtu.be/')==1 || substr_count($url,'youtube.com/embed/')==1){
 
         //Seems to be youtube:
         if(substr_count($url,'youtube.com/embed/')==1){
@@ -439,25 +433,25 @@ function detect_embed_video($url,$full_message,$youtube_image=false){
         //This should be 11 characters!
         if(strlen($video_id)==11){
 
+            if($require_image){
+                return '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container" style="padding-bottom:0; margin:-10% 0px;" />';
+            }
+
             //We might also find these in the URL:
             $start_sec = 0;
             $end_sec = 0;
             if(substr_count($url,'start=')>0){
-                $start_sec = int(trim(one_two_explode('start=','&',$url)));
+                $start_sec = intval(one_two_explode('start=','&',$url));
             }
             if(substr_count($url,'end=')>0){
-                $end_sec = int(trim(one_two_explode('end=','&',$url)));
+                $end_sec = intval(one_two_explode('end=','&',$url));
             }
 
+            $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
 
-            if($youtube_image){
-                $embed_code = '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container video-sorting" style="margin-top:5px; padding-bottom:0; margin:-30% 0px -10% 0px; margin:-10% 0px;" />';
-            } else {
-                $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
-            }
         }
 
-    } elseif(substr_count($url,'vimeo.com/')==1){
+    } elseif(substr_count($url,'vimeo.com/')==1 && !$require_image){
 
         //Seems to be Vimeo:
         $video_id = trim(one_two_explode('vimeo.com/','?',$url));
@@ -467,7 +461,7 @@ function detect_embed_video($url,$full_message,$youtube_image=false){
             $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
         }
 
-    } elseif(substr_count($url,'wistia.com/medias/')==1){
+    } elseif(substr_count($url,'wistia.com/medias/')==1 && !$require_image){
 
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/','?',$url));
@@ -600,7 +594,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
             } else {
 
                 //Is this a supported embed video URL?
-                $embed_html = detect_embed_video($i['i_url'],$i['i_message']);
+                $embed_html = detect_embed_media($i['i_url'],$i['i_message']);
                 if($embed_html){
                     $i['i_message'] = $embed_html;
 
@@ -1331,14 +1325,14 @@ function calculate_project_status($b){
     $qualified_messages = 0;
     if(count($b['c__messages'])>0){
         foreach($b['c__messages'] as $i){
-            $qualified_messages += ( $i['i_status']==1 && ( $i['i_media_type']=='video' || ($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_video($i['i_url'],$i['i_message']))) ? 1 : 0 );
+            $qualified_messages += ( $i['i_status']==1 && ( $i['i_media_type']=='image' || ($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_media($i['i_url'],$i['i_message'],true))) ? 1 : 0 );
         }
     }
     $us_status = ( $qualified_messages ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_c_id'],
-        'anchor' => '<b>Add '.status_bible('i',1).' Video Message</b> to Action Plan',
+        'anchor' => '<b>Upload an Image or add YouTube Link</b> for your cover photo in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
