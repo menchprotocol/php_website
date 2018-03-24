@@ -58,7 +58,7 @@ foreach($bs as $count=>$b){
         <div class="price">
             <h4>'.echo_price($b).'</h4>
         </div>
-        <div class="stats"><span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" style="border-bottom: 1px dotted #777; padding-bottom:1px;"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></div>
+        <div class="stats"><span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the 7-Days" style="border-bottom: 1px dotted #777; padding-bottom:1px;"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></div>
     </div>';
 
     echo '</div>

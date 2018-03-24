@@ -1593,14 +1593,14 @@ function calculate_project_status($b){
     ));
 
 
-    // Student Experience Level
+    // Student Difficulty Level
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
     $us_status = ( $b['b_difficulty_level']>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#landingpage',
-        'anchor' => '<b>Choose Student Experience Level</b> in Settings',
+        'anchor' => '<b>Choose Student Difficulty Level</b> in Settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));

@@ -430,7 +430,7 @@ function save_settings(){
             ?>
         </div>
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Experience Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Difficulty Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
         <div class="help_body maxout" id="content_4868"></div>
         <div class="form-group label-floating is-empty">
             <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">

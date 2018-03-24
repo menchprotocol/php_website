@@ -60,7 +60,7 @@ $( document ).ready(function() {
                 <li>Price Range: <b><?= echo_price($b).( !$classroom_closed ? echo_price($b,true) : null ) ?></b></li>
                 <?php
                 if($b['b_difficulty_level']>0){
-                    echo '<li>Experience Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
+                    echo '<li>Difficulty Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
                 }
                 ?>
             </ul>
