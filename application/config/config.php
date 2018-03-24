@@ -239,19 +239,19 @@ $config['object_statuses'] = array(
     'df' => array(
         1 => array(
             's_name'  => 'Beginner',
-            's_desc'  => 'Bootcamps designed for Beginner Students',
+            's_desc'  => 'Student can complete even if no experience with subject matter',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-thermometer-empty',
         ),
         2 => array(
             's_name'  => 'Intermediate',
-            's_desc'  => 'Bootcamps designed for Intermediate Students',
+            's_desc'  => 'Student requires to have a basic understanding of subject matter',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-thermometer-half',
         ),
         3 => array(
             's_name'  => 'Advanced',
-            's_desc'  => 'Bootcamps designed for Advanced Students',
+            's_desc'  => 'Student must have practical experience with subject matter',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-thermometer-full',
         ),

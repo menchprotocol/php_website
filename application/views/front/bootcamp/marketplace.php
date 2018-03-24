@@ -41,7 +41,9 @@ foreach($bs as $count=>$b){
 <div class="card-image"><a href="/'.$b['b_url_key'].'">'.$b['c__header_media'].'</a></div>
 <div class="card-content">';
 
-    //echo '<h6 class="category text-muted">'.$b['ct_icon'].' '.$b['ct_name'].'</h6>';
+    if($b['b_difficulty_level']>0){
+        echo '<h6 class="category text-muted">'.status_bible('df',$b['b_difficulty_level'],0,'top').'</h6>';
+    }
     echo '<h4 class="card-title" style="font-size: 1.4em; line-height: 110%; margin:15px 0 12px 0;"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
     echo '<div class="card-description">By ';
     //Print lead admin:

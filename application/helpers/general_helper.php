@@ -1566,7 +1566,7 @@ function calculate_project_status($b){
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/settings#support',
-            'anchor' => '<b>Enter Forwarding Email Address</b> in Settings',
+            'anchor' => '<b>Enter Support Email Address</b> in Settings',
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));

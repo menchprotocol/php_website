@@ -2786,7 +2786,7 @@ class Api_v1 extends CI_Controller {
         } elseif(strlen($_POST['b_support_email'])>0 && !filter_var($_POST['b_support_email'], FILTER_VALIDATE_EMAIL)) {
             echo_json(array(
                 'status' => 0,
-                'message' => 'Enter Valid Forwarding Email Address',
+                'message' => 'Enter Valid Support Email Address',
             ));
             return false;
         } elseif(strlen($_POST['b_thankyou_url'])>0 && !filter_var($_POST['b_thankyou_url'], FILTER_VALIDATE_URL)){

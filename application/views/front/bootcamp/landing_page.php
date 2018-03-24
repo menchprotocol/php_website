@@ -58,6 +58,11 @@ $( document ).ready(function() {
                 <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r_start_date'],2, (7*24*3600-60)) ?></b></li>
                 <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
                 <li>Price Range: <b><?= echo_price($b).( !$classroom_closed ? echo_price($b,true) : null ) ?></b></li>
+                <?php
+                if($b['b_difficulty_level']>0){
+                    echo '<li>Experience Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
+                }
+                ?>
             </ul>
             
             <div style="padding:10px 0 0; text-align:center;">

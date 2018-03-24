@@ -331,9 +331,8 @@ function save_settings(){
 
         <div class="title" style="margin-top:25px;"><h4><i class="fa <?= $r_statuses[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[1]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
-        <?php if(count($pm['p2_rates'])==1){ ?>
-            <div style="margin-bottom: 5px;">Universal Price: $<?= $pm['p2_rates'][0] ?>/Week/Student</div>
-        <?php } ?>
+
+
         <div class="form-group label-floating">
             <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
@@ -347,6 +346,10 @@ function save_settings(){
 
         <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
 
+            <?php if(count($pm['p2_rates'])==1){ ?>
+                <div style="margin:0 0 5px 30px;"><?= $r_statuses[1]['s_name'] ?> Universal Price:<br /><b>$<?= $pm['p2_rates'][0] ?> per Week per Student</b></div>
+            <?php } ?>
+
             <!-- Disabled for now as we only have a single pricing option for Classroom Package -->
             <div class="form-group label-floating <?= (count($pm['p2_rates'])<=1 ? 'hidden' : '') ?>">
                 <select id="b_p2_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -357,6 +360,17 @@ function save_settings(){
                     ?>
                 </select>
             </div>
+
+            <div style="padding-left:30px;">
+                <div class="title" style="margin-top:20px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Support Email Address <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
+                <div class="help_body maxout" id="content_4790"></div>
+                <div class="form-group label-floating is-empty">
+                    <input type="email" id="b_support_email" data-lpignore="true" style="width:320px;" placeholder="yoursupportemail@gmail.com" value="<?= $b['b_support_email'] ?>" class="form-control border">
+                    <span class="material-input"></span>
+                </div>
+            </div>
+
+
 
 
             <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Tutoring Pricing <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
@@ -371,17 +385,7 @@ function save_settings(){
                 </select>
             </div>
 
-
             <div style="padding-left:30px;">
-                <div class="title" style="margin-top:20px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Forwarding Email Address <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
-                <div class="help_body maxout" id="content_4790"></div>
-                <div class="form-group label-floating is-empty">
-                    <input type="email" id="b_support_email" data-lpignore="true" style="width:320px;" placeholder="yoursupportemail@gmail.com" value="<?= $b['b_support_email'] ?>" class="form-control border">
-                    <span class="material-input"></span>
-                </div>
-
-
-
                 <div id="tutoring_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
                     <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
                     <div class="help_body maxout" id="content_4792"></div>
