@@ -906,6 +906,13 @@ a.badge:focus, a.badge:hover {
     background-color:#CCC !important;
 }
 
+.alert span {
+    display: inline-block;
+}
+.radio input[type=radio]:checked ~ .check {
+    background-color: #000 !important;
+}
+
 .video-prefix{
     padding: 6px 8px;
     border:1px solid #999;

@@ -141,12 +141,6 @@ class Api_v1 extends CI_Controller {
             'id' => 'b_transformations',
             'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
         ));
-        array_push($import_items,array(
-            'is_header' => 0,
-            'name' => '<i class="fa fa-trophy" aria-hidden="true"></i> Override Completion Awards',
-            'id' => 'b_completion_prizes',
-            'count' => ( strlen($bs[0]['b_completion_prizes'])>0 ? count(json_decode($bs[0]['b_completion_prizes'])) : 0 ),
-        ));
 
 
 
@@ -220,7 +214,6 @@ class Api_v1 extends CI_Controller {
             'b_target_audience',
             'b_prerequisites',
             'b_transformations',
-            'b_completion_prizes',
         );
         $b_lists = array();
         foreach($lists as $list){
@@ -2274,12 +2267,6 @@ class Api_v1 extends CI_Controller {
                 echo ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
-                //Completion Awards
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Awards <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
-            <div class="help_body maxout" id="content_623"></div>';
-                echo ( strlen($b['b_completion_prizes'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_completion_prizes'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
-
-
                 if($class['r_status']==2){
                     //Show button to update ONLY if class is running
                     if($udata['u_status']>=2){
@@ -2721,7 +2708,7 @@ class Api_v1 extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
-        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_target_audience','b_prerequisites','b_transformations','b_completion_prizes'))){
+        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_target_audience','b_prerequisites','b_transformations'))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Group ID',

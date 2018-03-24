@@ -1,6 +1,7 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
+$classroom_closed = ($b['b_p2_max_seats']>0 && $focus_class['r_status']==0);
 ?>
 
 <style>
@@ -53,16 +54,24 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
 
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
-                <li>Bootcamp Duration: <b>7 Days</b></li>
-                <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
+                <li>Duration: <b>7 Days</b></li>
                 <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r_start_date'],2, (7*24*3600-60)) ?></b></li>
-                <li>Price: <b><?= echo_price($b) ?></b></li>
+                <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
+                <li>Price Range: <b><?= echo_price($b).( !$classroom_closed ? echo_price($b,true) : null ) ?></b></li>
             </ul>
             
             <div style="padding:10px 0 0; text-align:center;">
                 <div class="btn btn-primary btn-round countdown"><span id="reg1"></span></div>
                 <div><a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Join Class of <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
             </div>
+
+
+            <?php
+            if($classroom_closed){
+                //Classroom is closed
+                echo '<div class="alert alert-info" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Note: Classroom is closed for this week. You can still join and '.status_bible('r',0).'</div>';
+            }
+            ?>
 
 
             <h3>Upcoming Classes</h3>
@@ -83,7 +92,11 @@ $( document ).ready(function() {
                         echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
                     }
 
-                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b> &nbsp; ';
+                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b>';
+                    if($b['b_p2_max_seats']>0 && $class['r_status']==0){
+                        //Classroom is closed
+                        echo '<span class="badge badge-primary grey">'.status_bible('r',0,1,'top').'</span>';
+                    }
 
                     echo ( $class['r_id']==$focus_class['r_id'] ? '</li>' : '</a>' );
                     $counter++;
@@ -196,7 +209,7 @@ $( document ).ready(function() {
 
             <hr />
             <p>Ready to unleash your full potential?</p>
-            <p>Admission ends in:</p>
+            <p>Class starts in:</p>
     		
     </div>
 </div>

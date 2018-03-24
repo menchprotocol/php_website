@@ -4,6 +4,7 @@
 $required_fb_permissions = $this->config->item('required_fb_permissions');
 $fb_settings = $this->config->item('fb_settings');
 $pm = $this->config->item('pricing_model');
+$r_statuses = status_bible('r');
 
 $permission_string = join_keys($required_fb_permissions);
 echo 'var required_fb_permissions = '.json_encode($required_fb_permissions).';';
@@ -310,7 +311,7 @@ function save_settings(){
     <div class="tab-pane active" id="tabsupport">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-wrench" aria-hidden="true"></i> Do It Yourself Package <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $r_statuses[0]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[0]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
         <div class="help_body maxout" id="content_4789"></div>
         <div class="form-group label-floating <?= (count($pm['p1_rates'])<=1 ? 'hidden' : '') ?>">
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -328,7 +329,7 @@ function save_settings(){
 
 
 
-        <div class="title" style="margin-top:25px;"><h4><i class="fa fa-life-ring" aria-hidden="true"></i> Classroom Package <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="fa <?= $r_statuses[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[1]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
         <?php if(count($pm['p2_rates'])==1){ ?>
             <div style="margin-bottom: 5px;">Universal Price: $<?= $pm['p2_rates'][0] ?>/Week/Student</div>
@@ -337,7 +338,7 @@ function save_settings(){
             <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p2_max_seats'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer Classroom' : $option.' Maximum Students per Week' ).'</option>';
+                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer '.$r_statuses[1]['s_name'] : $option.' Maximum Students per Week' ).'</option>';
                 }
                 ?>
             </select>
@@ -358,7 +359,7 @@ function save_settings(){
             </div>
 
 
-            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Tutoring Package <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Tutoring Pricing <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
             <div class="help_body maxout" id="content_615"></div>
             <div class="form-group label-floating">
                 <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">

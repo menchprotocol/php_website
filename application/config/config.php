@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.63,
+    'version' => 2.65,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
@@ -59,9 +59,9 @@ $config['pricing_model'] = array(
     'p2_rates' => array(55), //Per Week 85
     'p2_rate_default' => 55,
     'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
-    'p2_max_seat_default' => 20,
+    'p2_max_seat_default' => 6,
 
-    'p3_rates' => array(0,1.1,1.8,2.9), //Per Minute, Next level is 4.6
+    'p3_rates' => array(0,1.12,1.8,2.92), //Per Minute, Next level is 4.6
     'p3_rate_default' => 0,
     'p3_minute_bundles' => array(25,50,75), //Defines how Tutoring packages would be bundled and sold
 );
@@ -278,24 +278,24 @@ $config['object_statuses'] = array(
         ),
         0 => array(
             's_name'  => 'Do It Yourself',
-            's_desc'  => 'Students can only complete the Class on their own as Instructor support is not available',
+            's_desc'  => 'Students can only complete the Class on their own as Instructor support is not available for this week',
             'u_min_status'  => 2,
-            's_mini_icon' => 'fa-wrench',
+            's_mini_icon' => 'fa-user',
         ),
         1 => array(
-            's_name'  => 'Classroom Open',
+            's_name'  => 'Online Classroom',
             's_desc'  => 'Classroom Students get Chat Support, Group Calls, Peer Networking & More...',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-users',
         ),
         2 => array(
-            's_name'  => 'Running',
+            's_name'  => 'Class Running',
             's_desc'  => 'Class has admitted students and is currently running',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-play-circle',
         ),
         3 => array(
-            's_name'  => 'Completed',
+            's_name'  => 'Class Completed',
             's_desc'  => 'Class was operated completely until its last day',
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-graduation-cap',
@@ -531,7 +531,7 @@ $config['object_statuses'] = array(
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
         7 => array(
-            's_name'  => 'Graduate',
+            's_name'  => 'Completed',
             's_desc'  => 'Student successfully completed all Tasks by the Class end time and graduated',
             's_mini_icon' => 'fa-graduation-cap',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time

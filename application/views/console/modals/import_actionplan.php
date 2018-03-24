@@ -133,7 +133,6 @@ $bs = $this->Db_model->instructor_bs(array(
                 b_target_audience:($('input[name=b_target_audience]:checked').val()=='on'?1:0),
                 b_prerequisites:($('input[name=b_prerequisites]:checked').val()=='on'?1:0),
                 b_transformations:($('input[name=b_transformations]:checked').val()=='on'?1:0),
-                b_completion_prizes:($('input[name=b_completion_prizes]:checked').val()=='on'?1:0),
 
             }, function(data) {
                 //Append data to view:

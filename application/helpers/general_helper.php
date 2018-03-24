@@ -374,12 +374,27 @@ function extract_level($b,$c_id){
 
 
 
-function echo_price($b){
-    //Only DIY package:
-    if($b['b_p1_rate']>0){
-        return '$'.number_format($b['b_p1_rate'],0);
+function echo_price($b,$show_max=false){
+    if($show_max){
+
+        //Only DIY package:
+        $max_rate = doubleval($b['b_p1_rate'] + $b['b_p2_rate'] + ( $b['b_p3_rate'] * 50 ));
+
+        if($max_rate>$b['b_p1_rate']){
+            return ' - $'.number_format($max_rate,0).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>';
+        } else {
+            return null;
+        }
+
     } else {
-        return 'FREE';
+
+        //Only DIY package:
+        if($b['b_p1_rate']>0){
+            return '$'.number_format($b['b_p1_rate'],0);
+        } else {
+            return 'FREE';
+        }
+
     }
 }
 function echo_hours($decimal_hours,$micro=false){
@@ -1212,7 +1227,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest '.echo_hours($b['c__estimated_hours']).' in 7 Days (Average '.echo_hours($b['c__estimated_hours']/7) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest <b>'.echo_hours($b['c__estimated_hours']).' in 7 Days</b>, anytime that works best for you. (Average '.echo_hours($b['c__estimated_hours']/7) .' per day)');
     }
     return $pre_req_array;
 }
@@ -1891,7 +1906,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
             return false;
         } else {
             //We have two skins for displaying statuses:
-            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" aria-hidden="true"':'style="cursor:pointer;"').'><i class="fa '.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
+            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" aria-hidden="true" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'><i class="fa '.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
         }
 	}
 }

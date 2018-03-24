@@ -1142,18 +1142,6 @@ function add_item(group_id,prefix,current_value){
                     });
                 </script>
                 <div id="b_transformations" class="list-group grey-list"></div>
-
-
-
-
-                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-trophy" aria-hidden="true"></i> Completion Awards <span id="hb_623" class="help_button" intent-id="623"></span> <span id="b_completion_prizes_status" class="list_status">&nbsp;</span></h4></div>
-                <div class="help_body maxout" id="content_623"></div>
-                <script>
-                    $(document).ready(function() {
-                        initiate_list('b_completion_prizes','+ New Prize','<i class="fa fa-trophy"></i>',<?= ( strlen($b['b_completion_prizes'])>0 ? $b['b_completion_prizes'] : '[]' ) ?>);
-                    });
-                </script>
-                <div id="b_completion_prizes" class="list-group grey-list"></div>
             </div>
 
         </div>

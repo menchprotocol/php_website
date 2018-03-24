@@ -1,6 +1,7 @@
 <?php
 //Expand Prerequisites:
 $pre_req_array = prep_prerequisites($admission);
+$r_statuses = status_bible('r');
 ?>
 <script>
 var current_section = 1; //The index for the wizard
@@ -12,14 +13,8 @@ function move_ui(adjustment){
 	if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
 		var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
 		
-		if(the_id=='overview_agree' && !document.getElementById('project_overview_agreement').checked){
-			alert('You must agree to continue...');
-			$('#'+the_id+' input').focus();
-			return false;
-		} else if(the_id=='refund_agreement' && !document.getElementById('project_refund_agreement').checked){
-			alert('You must agree to continue...');
-			$('#'+the_id+' input').focus();
-			return false;
+		if(the_id=='review_prerequisites'){
+			//Return false & alert
 		}
 	}
     
@@ -118,54 +113,21 @@ $(document).ready(function() {
 
 
 
-<div class="wizard-box" id="overview_agree">
-	<p>Review Class Details:</p>
-	<ul>
-		<li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
-    	<li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>: 
-        	<?php 
-        	foreach($admission['b__admins'] as $key=>$instructor){
-        	    if($key>0){
-        	        echo ', ';
-        	    }
-        	    echo '<b>'.$instructor['u_fname'].' '.$instructor['u_lname'].'</b>';
-        	}
-        	?>
-    	</li>
-        <li>Start Date: <b><?= time_format($admission['r_start_date'],2) ?></b></li>
-        <li>Duration: <b>7 Days</b></li>
-    	<li>End Date: <b><?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
-    	<li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 7 Days</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
-	</ul>
-	<div class="form-group label-floating is-empty">
-    	<div class="checkbox">
-        	<label>
-        		<input type="checkbox" id="project_overview_agreement" /> <b style="font-size:1.3em;"> Confirm Commitment</b>
-        	</label>
-        </div>
-    </div>
-</div>
+
 
 
 <?php if(count($pre_req_array)>0){ ?>
-<div class="wizard-box" id="prerequisites_agree">
-    <p>Review Bootcamp Prerequisites:</p>
+<div class="wizard-box" id="review_prerequisites">
+    <p>Before we welcome you to this Class, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to successfully complete this Bootcamp:</p>
     <ul style="list-style: decimal;">
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
 	    echo '<li>'.$prereq.'</li>';
-	    ?>
-	    <div class="form-group label-floating is-empty">
-        	<div class="checkbox" style="margin:0; padding:0;">
-            	<label>
-            		<input type="checkbox" id="pre_requisite_<?= ($index+1) ?>" /> <b style="font-size:1.2em;"><?= $prereq ?></b>
-            	</label>
-            </div>
-        </div>
-	    <?php
 	}
 	?>
     </ul>
+    <p>Click "Next" if you meet all prerequisites OR if you believe you can meet them by <b><?= trim(time_format($admission['r_start_date'],2)) ?></b>.</p>
+    <p>If not, you can <a href="/"><b>choose another Bootcamp &raquo;</b></a></p>
 	<br />
 </div>
 <?php } ?>
@@ -176,27 +138,89 @@ $(document).ready(function() {
 
 
 <div class="wizard-box">
-	<p>
-        <?php if($focus_class['r_max_students']>0){ ?>
-        <li>Classroom Availability: <b><?= $focus_class['r_max_students'] ?> Seats</b>
+    <p>Choose a support level that is right for you:</p>
+
+    <div class="radio">
+        <label>
+            <input type="radio" name="p_selection" value="1" />
+            <i class="fa <?= $r_statuses[0]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[0]['s_name'] ?>
+            <p><?= $r_statuses[0]['s_desc'] ?></p>
+        </label>
+    </div>
+
+
+
+    <?php if($admission['b_p2_max_seats']>0){ ?>
+        <div class="radio">
+            <label>
+                <input type="radio" name="p_selection" value="1" />
+                <i class="fa <?= $r_statuses[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[1]['s_name'] ?> <b class="badge"><?= $admission['b_p2_max_seats'] ?> Seats Remaining</b>
+                <p><?= $r_statuses[1]['s_desc'] ?></p>
+            </label>
+        </div>
+
+        <?php if($admission['b_p3_rate']>0){ ?>
+
+            <div class="radio">
+                <label>
+                    <input type="radio" name="p_selection" value="1" />
+                    <i class="fa fa-handshake-o" aria-hidden="true"></i> <?= $r_statuses[1]['s_name'] ?> + 25 Minutes of 1-on-1 Mentorship
+                    <p><?= $r_statuses[1]['s_desc'] ?></p>
+                </label>
+            </div>
+
+        <?php } ?>
+
+    <?php } ?>
+
+
+
+    <p>
+        <?php if($admission['r_max_students']>0){ ?>
+        <li>Classroom Availability: <b><?= $admission['r_max_students'] ?> Seats</b>
             <?php
-            if($focus_class['r__current_admissions']>=$focus_class['r_max_students']){
+            if($admission['r__current_admissions']>=$admission['r_max_students']){
                 //Class is full:
-                echo ' <div style="color:#FF0000;">(FULL, '.($focus_class['r__current_admissions']-$focus_class['r_max_students']).' in Waiting List)</div>';
-            } elseif(($focus_class['r__current_admissions']/$focus_class['r_max_students'])>0.66){
+                echo ' <div style="color:#FF0000;">(FULL, '.($admission['r__current_admissions']-$admission['r_max_students']).' in Waiting List)</div>';
+            } elseif(($admission['r__current_admissions']/$admission['r_max_students'])>0.66){
                 //Running low on space:
-                echo ' <span style="color:#FF0000;">('.($focus_class['r_max_students']-$focus_class['r__current_admissions']).' Remaining)</span>';
+                echo ' <span style="color:#FF0000;">('.($admission['r_max_students']-$admission['r__current_admissions']).' Remaining)</span>';
             }
             ?>
         </li>
         <?php } ?>
     </p>
 	<p>Click "Next" to submit your application!</p>
+
 </div>
 
 
+
 <div class="wizard-box">
-	<p style="text-align:center;"><b>Doing stuff...</b></p>
+    <p>Confirm Class Details:</p>
+    <ul>
+        <li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
+        <li>Instructor<?= ( count($admission['b__admins'])==1 ? '' : 's' ) ?>:
+            <?php
+            foreach($admission['b__admins'] as $key=>$instructor){
+                if($key>0){
+                    echo ', ';
+                }
+                echo '<b>'.$instructor['u_fname'].' '.$instructor['u_lname'].'</b>';
+            }
+            ?>
+        </li>
+        <li>Start Date: <b><?= time_format($admission['r_start_date'],2) ?></b></li>
+        <li>Duration: <b>7 Days</b></li>
+        <li>End Date: <b><?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
+        <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 7 Days</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
+    </ul>
+</div>
+
+
+
+<div class="wizard-box">
+	<p style="text-align:center;"><b>Reserving Your Seat...</b></p>
 	<div id="application_result"><img src="/img/round_load.gif" class="loader" /></div>
 </div>
 
