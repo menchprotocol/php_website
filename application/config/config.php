@@ -245,7 +245,7 @@ $config['object_statuses'] = array(
         ),
         2 => array(
             's_name'  => 'Intermediate',
-            's_desc'  => 'Student requires to have a basic understanding of subject matter',
+            's_desc'  => 'Student needs to have some experience with subject matter',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-thermometer-half',
         ),
