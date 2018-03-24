@@ -124,7 +124,7 @@ $( document ).ready(function() {
         ?>
 
 
-        <h3>Skills You Will Gain</h3>
+        <h3>Practice Skills</h3>
         <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Prerequisites</h3>

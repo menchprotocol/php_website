@@ -126,7 +126,7 @@ class Api_v1 extends CI_Controller {
         ));
         array_push($import_items,array(
             'is_header' => 0,
-            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
+            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Practice Skills',
             'id' => 'b_transformations',
             'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
         ));
@@ -2244,8 +2244,8 @@ class Api_v1 extends CI_Controller {
                 echo ( count($b['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
-                //Skills You Will Gain
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                //Practice Skills
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Practice Skills <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
             <div class="help_body maxout" id="content_2271"></div>';
                 echo ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 

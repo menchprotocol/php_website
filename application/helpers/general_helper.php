@@ -1382,21 +1382,21 @@ function calculate_project_status($b){
     $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
+        'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
         'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
 
 
-    //Skills You Will Gain
+    //Practice Skills
     $estimated_minutes = 30;
     $progress_possible += $estimated_minutes;
     $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#outcomes',
-        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
+        'href' => '/console/'.$b['b_id'].'/actionplan#skills',
+        'anchor' => '<b>Define Practice Skills</b> in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));

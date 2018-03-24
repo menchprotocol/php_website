@@ -157,7 +157,7 @@ class Console extends CI_Controller {
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of Screening, Tasks or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-download" aria-hidden="true"></i></span></a>' : ''),
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of prerequisites, Tasks or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-download" aria-hidden="true"></i></span></a>' : ''),
                 ),
             );
         }

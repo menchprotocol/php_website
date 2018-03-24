@@ -407,7 +407,7 @@ function save_settings(){
     <div class="tab-pane" id="tablandingpage">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-eye" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
         <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_status']==3 && !$b['b_old_format'] ? array() : array(3) )); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
@@ -438,7 +438,7 @@ function save_settings(){
                 echo '<option value="">Choose...</option>';
                 $df_statuses = status_bible('df');
                 foreach($df_statuses as $status_id=>$status){
-                    echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].'</option>';
+                    echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
                 }
                 ?>
             </select>

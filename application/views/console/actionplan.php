@@ -1062,29 +1062,28 @@ function add_item(group_id,prefix,current_value){
 
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
-          <li id="nav_screening"><a href="#screening"><i class="fa fa-sign-in" aria-hidden="true"></i> Screening</a></li>
+          <li id="nav_prerequisites"><a href="#prerequisites"><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites</a></li>
           <li id="nav_tasks" class="active"><a href="#tasks"><i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks</a></li>
-          <li id="nav_outcomes"><a href="#outcomes"><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</a></li>
+          <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Practice Skills</a></li>
         </ul>
 
         <div class="tab-content tab-space">
 
-            <div class="tab-pane" id="tabscreening">
+            <div class="tab-pane" id="tabprerequisites">
 
-
-                <div class="title" style="margin-top:30px;"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
-                <div class="help_body maxout" id="content_610"></div>
+                <?php itip(610); ?>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-check-square-o" aria-hidden="true"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-eye" aria-hidden="true"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_prerequisites" class="list-group grey-list"></div>
 
-
             </div>
 
-            <div class="tab-pane active" id="tabtasks" style="padding-top:20px;">
+            <div class="tab-pane active" id="tabtasks">
+
+                <?php itip(602); ?>
                 <?php
                 //Task Expand/Contract all if more than 2
                 if(count($intent['c__child_intents'])>0){
@@ -1122,10 +1121,9 @@ function add_item(group_id,prefix,current_value){
                 ?>
             </div>
 
-            <div class="tab-pane" id="taboutcomes">
+            <div class="tab-pane" id="tabskills">
 
-                <div class="title" style="margin-top:25px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
-                <div class="help_body maxout" id="content_2271"></div>
+                <?php itip(2271); ?>
                 <script>
                     $(document).ready(function() {
                         initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
