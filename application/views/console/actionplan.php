@@ -1072,16 +1072,6 @@ function add_item(group_id,prefix,current_value){
             <div class="tab-pane" id="tabscreening">
 
 
-                <div class="title" style="margin-top:25px;"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
-                <div class="help_body maxout" id="content_426"></div>
-                <script>
-                    $(document).ready(function() {
-                        initiate_list('b_target_audience','+ New Target Audience','<i class="fa fa-address-book" aria-hidden="true"></i>',<?= ( strlen($b['b_target_audience'])>0 ? $b['b_target_audience'] : '[]' ) ?>);
-                    });
-                </script>
-                <div id="b_target_audience" class="list-group grey-list"></div>
-
-
                 <div class="title" style="margin-top:30px;"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
                 <div class="help_body maxout" id="content_610"></div>
                 <script>

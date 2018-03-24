@@ -1402,18 +1402,6 @@ function calculate_project_status($b){
     ));
 
 
-    //Target Audience
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_target_audience'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#screening',
-        'anchor' => '<b>Set Target Audience</b> in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
 
 
 

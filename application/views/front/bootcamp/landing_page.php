@@ -127,9 +127,6 @@ $( document ).ready(function() {
         <h3>Skills You Will Gain</h3>
         <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
-        <h3>Target Audience</h3>
-        <div id="b_target_audience"><?= ( strlen($b['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_target_audience'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
-
         <h3>Prerequisites</h3>
         <?php $pre_req_array = prep_prerequisites($b); ?>
         <div id="b_prerequisites"><?= ( count($pre_req_array)>0 /* Should always be true! */ ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>

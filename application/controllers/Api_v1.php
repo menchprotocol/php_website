@@ -76,17 +76,6 @@ class Api_v1 extends CI_Controller {
                 'id' => 'b_level_messages',
                 'count' => count($bs[0]['c__messages']),
             ),
-
-            array(
-                'is_header' => 1,
-                'name' => '<h5><i class="fa fa-sign-in" aria-hidden="true"></i> Screening</h5>',
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-address-book" aria-hidden="true"></i> Override Target Audience',
-                'id' => 'b_target_audience',
-                'count' => ( strlen($bs[0]['b_target_audience'])>0 ? count(json_decode($bs[0]['b_target_audience'])) : 0 ),
-            ),
             array(
                 'is_header' => 0,
                 'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Override Prerequisites',
@@ -211,7 +200,6 @@ class Api_v1 extends CI_Controller {
         //We're good at this point
         //Start copying potential lists first:
         $lists = array(
-            'b_target_audience',
             'b_prerequisites',
             'b_transformations',
         );
@@ -2248,11 +2236,6 @@ class Api_v1 extends CI_Controller {
                 echo '</div>';
 
 
-                //Target Audience:
-                echo '<div class="title"><h4><i class="fa fa-address-book" aria-hidden="true"></i> Target Audience <span id="hb_426" class="help_button" intent-id="426"></span> <span id="b_target_audience_status" class="list_status">&nbsp;</span></h4></div>
-            <div class="help_body maxout" id="content_426"></div>';
-                echo ( strlen($b['b_target_audience'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_target_audience'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
-
 
                 //Prerequisites, which get some system appended ones:
                 $b['b_prerequisites'] = prep_prerequisites($b);
@@ -2708,7 +2691,7 @@ class Api_v1 extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Session. Login again to Continue.',
             ));
-        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_target_audience','b_prerequisites','b_transformations'))){
+        } elseif(!isset($_POST['group_id']) || !in_array($_POST['group_id'],array('b_prerequisites','b_transformations'))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Group ID',
