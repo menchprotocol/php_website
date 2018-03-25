@@ -287,10 +287,10 @@ $config['object_statuses'] = array(
             's_desc'  => 'Students join an Online Classroom and receive:
             
 - Assignment review/feedback
-- Chat line and email communication
+- Chat line and email support
 - 1 Hour group coaching video call
 - Lifetime access to the Action Plan
-- LinkedIn Recommendation IF Completed',
+- LinkedIn Recommendation IF all tasks completed within 7 days',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-users',
         ),
