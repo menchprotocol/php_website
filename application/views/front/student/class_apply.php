@@ -248,7 +248,7 @@ $(document).ready(function() {
 <a id="btn_prev" href="javascript:move_ui(-1)" class="btn btn-primary" style="padding-left:10px;padding-right:12px; display:none;"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
 <span id="btn_next"><a href="javascript:move_ui(1)" class="btn btn-primary">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></span>
 
-<div style="text-align:right; margin:-20px 2px 0;"><b id="step_progress"></b></div>
+<div style="text-align:right; margin:0px 2px 0;"><b id="step_progress"></b></div>
 <div class="progress" style="margin:auto 2px;">
 	<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
 </div>
