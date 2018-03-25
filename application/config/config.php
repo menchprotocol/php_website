@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.65,
+    'version' => 2.66,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
@@ -278,13 +278,19 @@ $config['object_statuses'] = array(
         ),
         0 => array(
             's_name'  => 'Do It Yourself',
-            's_desc'  => 'Students can only complete the Class on their own as Instructor support is not available for this week',
+            's_desc'  => '7-Day Access to the Bootcamp\'s Action Plan for Students to follow and complete all Tasks on their own',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-user',
         ),
         1 => array(
             's_name'  => 'Online Classroom',
-            's_desc'  => 'Classroom Students get Chat Support, Group Calls, Peer Networking & More...',
+            's_desc'  => 'Students join an Online Classroom and receive:
+            
+- Assignment review/feedback
+- Chat line and email communication
+- 1 Hour group coaching video call
+- Lifetime access to the Action Plan
+- LinkedIn Recommendation IF Completed',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-users',
         ),

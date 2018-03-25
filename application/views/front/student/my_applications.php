@@ -69,7 +69,6 @@ if(count($admissions)>0 && is_array($admissions)){
         //Fetch Admission Data:
         $bs = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
         $class = $bs[0]['this_class'];
-        $price_to_pay = calculate_total($admission);
 
         //Fetch Live Bootcamp Data:
         $live_bs = $this->Db_model->b_fetch(array(
@@ -86,68 +85,48 @@ if(count($admissions)>0 && is_array($admissions)){
         //Free Class, Student just needs to submit their Application:
         echo '<div class="checkbox"><label '.( $admission['ru_status']>=4 ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $admission['ru_status']>=4 ? 'checked' : '' ).'> <a '.( $admission['ru_status']>=4 ? 'href="javascript:void(0)"' : 'href="/my/class_application/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'"' ).'>Step 2: Submit Your Application to Join Bootcamp <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
 
-        if($price_to_pay>0){
-
-            //Fetch Payment:
-            $total_paid = 0;
-            $ru__transactions = $this->Db_model->t_fetch(array(
-                't.t_ru_id' => $admission['ru_id'],
-            ));
-            foreach($ru__transactions as $t){
-                $total_paid += $t['t_total'];
-            }
-            $unpaid_amount = doubleval($price_to_pay - $total_paid);
-
-            //Payment
-            //echo '<div class="checkbox"><label '.( !$unpaid_amount ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( !$unpaid_amount ? 'checked' : '' ).'> <a href="javascript:void(0)" '.( !$unpaid_amount ? '' : 'onclick="$(\'#paypal_'.$admission['ru_id'].'\').submit()"').'>Step 2: Pay $'.$unpaid_amount.( $total_paid>0 ? ' (Already Paid $'.$total_paid.') remaining' :'').' using Debit Card, Credit Card or <i class="fa fa-paypal" aria-hidden="true"></i> Paypal <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
-
-            if($unpaid_amount>0){
-
-                if(isset($_GET['pay_r_id']) && intval($_GET['pay_r_id']) && intval($_GET['pay_r_id'])==intval($admission['r_id'])){ ?>
-                    <!-- Immediate redirect to paypal -->
-                    <script>
-                        $( document ).ready(function() {
-                            $('#paypal_<?= $admission['ru_id'] ?>').submit();
-                            //Hide content from within the page:
-                            $('#application_status').html('<div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div>');
-                        });
-                    </script>
-                <?php } ?>
-
-                <form action="https://www.paypal.com/cgi-bin/webscr" id="paypal_<?= $admission['ru_id'] ?>" method="post" target="_top" style="display:none;">
-                    <input type="hidden" name="cmd" value="_xclick">
-                    <input type="hidden" name="business" value="EYKXCMCJHEBA8">
-                    <input type="hidden" name="lc" value="US">
-                    <input type="hidden" name="item_name" value="<?= $bs[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
-                    <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
-                    <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
-                    <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
-                    <input type="hidden" name="custom_u_key" value="<?= $u_key ?>">
-                    <input type="hidden" name="amount" value="<?= $unpaid_amount ?>">
-                    <input type="hidden" name="currency_code" value="USD">
-                    <input type="hidden" name="button_subtype" value="services">
-                    <input type="hidden" name="no_note" value="1">
-                    <input type="hidden" name="no_shipping" value="1">
-                    <input type="hidden" name="rm" value="1">
-                    <input type="hidden" name="return" value="https://mench.com/my/applications?status=1&purchase_value=<?= $unpaid_amount ?>&message=<?= urlencode('Payment received.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
-                    <input type="hidden" name="cancel_return" value="https://mench.com/my/applications?status=0&message=<?= urlencode('Payment cancelled. You can manage your admission below.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
-                    <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
-                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal">
-                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                </form>
-                <?php
-            }
+        if($admission['ru_final_price']>0 && $admission['ru_status']<4 && isset($_GET['pay_r_id']) && intval($_GET['pay_r_id']) && intval($_GET['pay_r_id'])==intval($admission['r_id'])){
+            ?>
+            <script>
+                $( document ).ready(function() {
+                    $('#paypal_<?= $admission['ru_id'] ?>').submit();
+                    //Hide content from within the page:
+                    $('#application_status').html('<div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div>');
+                });
+            </script>
+            <form action="https://www.paypal.com/cgi-bin/webscr" id="paypal_<?= $admission['ru_id'] ?>" method="post" target="_top" style="display:none;">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="business" value="EYKXCMCJHEBA8">
+                <input type="hidden" name="lc" value="US">
+                <input type="hidden" name="item_name" value="<?= $bs[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
+                <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
+                <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
+                <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
+                <input type="hidden" name="custom_u_key" value="<?= $u_key ?>">
+                <input type="hidden" name="amount" value="<?= $admission['ru_final_price'] ?>">
+                <input type="hidden" name="currency_code" value="USD">
+                <input type="hidden" name="button_subtype" value="services">
+                <input type="hidden" name="no_note" value="1">
+                <input type="hidden" name="no_shipping" value="1">
+                <input type="hidden" name="rm" value="1">
+                <input type="hidden" name="return" value="https://mench.com/my/applications?status=1&purchase_value=<?= $admission['ru_final_price'] ?>&message=<?= urlencode('Payment received.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
+                <input type="hidden" name="cancel_return" value="https://mench.com/my/applications?status=0&message=<?= urlencode('Payment cancelled. You can manage your admission below.'); ?>&u_key=<?= $u_key ?>&u_id=<?= $u_id ?>">
+                <input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal">
+                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+            </form>
+            <?php
         }
 
-        //Are they in the Classroom? If so, show them chat activation:
-        if($admission['ru_p2_price']>0){
-            $bot_title = 'Step 3: Activate Messenger to Chat with your Instructor';
-            if($admission['u_cache__fp_psid']>0){
-                echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
-            } else {
-                echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
-            }
+
+        $bot_title = 'Step 3: Activate Facebook Messenger'.($admission['ru_p2_price']>0?' to Chat with your Instructor':'');
+        if($admission['u_cache__fp_psid']>0){
+            echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
+        } else {
+            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
         }
+
+
 
         //Let them know the status of their application:
         echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';

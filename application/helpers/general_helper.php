@@ -374,28 +374,47 @@ function extract_level($b,$c_id){
 
 
 
-function echo_price($b,$show_max=false){
-    if($show_max){
+function echo_price($b,$package_id=1,$return_double=false){
 
-        //Only DIY package:
-        $max_rate = doubleval($b['b_p1_rate'] + $b['b_p2_rate'] + ( $b['b_p3_rate'] * 50 ));
+    $price = -1; //Error
+    $classroom_offered = ($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0);
 
-        if($max_rate>$b['b_p1_rate']){
-            return ' - $'.number_format($max_rate,0).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>';
+
+    if($package_id==1){
+
+        $price = $b['b_p1_rate'];
+
+    } elseif($package_id==2 && $classroom_offered){
+
+        $price = doubleval($b['b_p1_rate'] + $b['b_p2_rate']);
+
+    } elseif($package_id==3 && $classroom_offered && $b['b_p3_rate']>0){
+
+        $price = doubleval($b['b_p1_rate'] + $b['b_p2_rate'] + ( $b['b_p3_rate'] * 50 ));
+
+    } elseif($package_id==99){
+
+        $price = doubleval($b['b_p1_rate'] + ( $classroom_offered ? $b['b_p2_rate'] + ( $b['b_p3_rate'] * 50 ) : 0 ));
+
+    }
+
+
+    //Only DIY package:
+    if($return_double){
+
+        return $price;
+
+    } else {
+        //Need a fancy return for UI:
+        if($price==0){
+            return 'FREE';
+        } elseif($price>0) {
+            return '$'.number_format($price,0).' USD';
         } else {
             return null;
         }
-
-    } else {
-
-        //Only DIY package:
-        if($b['b_p1_rate']>0){
-            return '$'.number_format($b['b_p1_rate'],0);
-        } else {
-            return 'FREE';
-        }
-
     }
+
 }
 function echo_hours($decimal_hours,$micro=false){
 
@@ -461,7 +480,7 @@ function detect_embed_media($url,$full_message,$require_image=false){
         if(strlen($video_id)==11){
 
             if($require_image){
-                return '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container" style="padding-bottom:0; margin:-10% 0px;" />';
+                return '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container" style="padding-bottom:0; margin:-28px 0px;" />';
             }
 
             //We might also find these in the URL:
@@ -534,7 +553,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
     
     if(!$fb_format){
         //HTML format:
-        $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"'; //We do this for email templates that do not support CSS and also for internal website...
+        $div_style = ' style="padding:0; margin:0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"'; //We do this for email templates that do not support CSS and also for internal website...
         $echo_ui = '';
         $echo_ui .= '<div class="i_content">';
     } else {
@@ -1389,14 +1408,14 @@ function calculate_project_status($b){
     ));
 
 
-    //Practice Skills
+    //Skills You Will Gain
     $estimated_minutes = 30;
     $progress_possible += $estimated_minutes;
     $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#skills',
-        'anchor' => '<b>Define Practice Skills</b> in Action Plan',
+        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));

@@ -1295,9 +1295,19 @@ a.badge:focus, a.badge:hover {
 }
 .dropdown-menu{ margin-top: -20px !important; }
 .dropdown-menu li > a { padding: 7px 10px; }
+
+.pricing_block { font-size:1.4em; line-height: 100%; margin:0; }
+.pricing_block p { font-weight:300; font-size:0.9em; line-height: 110%; }
+#white_paypal { padding:5px; border-radius:5px; border:1px solid #000; background-color: #FFF; margin: 10px 0 0 2px; display: inline-block; }
+#white_paypal img { width:300px; }
+
 .i_content{
     padding-bottom:10px;
 }
+.card-image .i_content{
+    padding-bottom:0px;
+}
+
 .frame{
     background-color:#CCC;
     color:#000;

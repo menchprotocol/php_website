@@ -2,6 +2,7 @@
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
 $classroom_closed = ($b['b_p2_max_seats']>0 && $focus_class['r_status']==0);
+$highest_price = echo_price($b,99);
 ?>
 
 <style>
@@ -57,7 +58,7 @@ $( document ).ready(function() {
                 <li>Duration: <b>7 Days</b></li>
                 <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r_start_date'],2, (7*24*3600-60)) ?></b></li>
                 <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
-                <li>Price Range: <b><?= echo_price($b).( !$classroom_closed ? echo_price($b,true) : null ) ?></b></li>
+                <li>Price Range: <b><?= echo_price($b).( $highest_price ? ' - '.$highest_price.' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>' : '' ) ?></b></li>
                 <?php
                 if($b['b_difficulty_level']>0){
                     echo '<li>Difficulty Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
@@ -124,7 +125,7 @@ $( document ).ready(function() {
         ?>
 
 
-        <h3>Practice Skills</h3>
+        <h3>Skills You Will Gain</h3>
         <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
         <h3>Prerequisites</h3>

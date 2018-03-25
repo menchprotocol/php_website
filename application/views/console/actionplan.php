@@ -1064,7 +1064,7 @@ function add_item(group_id,prefix,current_value){
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
           <li id="nav_prerequisites"><a href="#prerequisites"><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites</a></li>
           <li id="nav_tasks" class="active"><a href="#tasks"><i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks</a></li>
-          <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Practice Skills</a></li>
+          <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Skills</a></li>
         </ul>
 
         <div class="tab-content tab-space">

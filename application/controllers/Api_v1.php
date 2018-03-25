@@ -126,7 +126,7 @@ class Api_v1 extends CI_Controller {
         ));
         array_push($import_items,array(
             'is_header' => 0,
-            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Practice Skills',
+            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
             'id' => 'b_transformations',
             'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
         ));
@@ -979,7 +979,7 @@ class Api_v1 extends CI_Controller {
 
         //When they submit the Application Questionnaire in step 2 of their admission:
         $application_status_salt = $this->config->item('application_status_salt');
-	    if(!isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+	    if(!isset($_POST['support_level']) || !in_array(intval($_POST['support_level']),array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 	        
 	        //Log engagement:
 	        $this->Db_model->e_create(array(
@@ -992,7 +992,6 @@ class Api_v1 extends CI_Controller {
 	        //Display Error:
 	        die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
 	    }
-	    
 	    
 	    //Fetch all their admissions:
 	    $admissions = $this->Db_model->remix_admissions(array(
@@ -1023,13 +1022,25 @@ class Api_v1 extends CI_Controller {
             'e_r_id' => $admissions[0]['r_id'],
         ));
 
-	    //Set updating data:
+        //Default URL:
+        $_POST['support_level'] = intval($_POST['support_level']);
+        $next_url = '/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
+
+
+        //Set updating data:
+        $p3_minutes = 50;
         $update_data = array(
-            'ru_application_survey' => json_encode($_POST['answers']),
+            'ru_p1_price' => doubleval($admissions[0]['b_p1_rate']),
+            'ru_p2_price' => ( $_POST['support_level']>=2 ? doubleval($admissions[0]['b_p2_rate']) : 0 ),
+            'ru_p3_minutes' => ( $_POST['support_level']==3 ? $p3_minutes : 0 ), //Only option for now
+            'ru_p3_price' => ( $_POST['support_level']==3 ? doubleval($p3_minutes * doubleval($admissions[0]['b_p3_rate'])) : 0 ),
         );
 
+        //Determine final price:
+        $update_data['ru_final_price'] = $update_data['ru_p1_price'] + $update_data['ru_p2_price'] + $update_data['ru_p3_price'];
+
         //Is this a free Bootcamp? If so, we can fast forward the payment step...
-        if(doubleval($admissions[0]['r_usd_price'])==0){
+        if($update_data['ru_final_price']==0){
 
             //Yes, change the status to Admitted:
             $update_data['ru_status'] = 4;
@@ -1038,7 +1049,7 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $_POST['u_id'],
                 'e_json' => $_POST,
-                'e_type_id' => 30, //Free Application Completed
+                'e_type_id' => 30, //Application Completed
                 'e_b_id' => $admissions[0]['b_id'],
                 'e_r_id' => $admissions[0]['r_id'],
             ));
@@ -1053,25 +1064,21 @@ class Api_v1 extends CI_Controller {
                 'e_r_id' => $admissions[0]['r_id'],
             ), true);
 
+            if(strlen($admissions[0]['b_thankyou_url'])>0){
+                //Override with Instructor's Thank You URL
+                $next_url = $admissions[0]['b_thankyou_url'];
+            }
         }
 
 	    //Save answers:
 	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
 
-        //Redirect needed?
-        if(doubleval($admissions[0]['r_usd_price'])==0 && strlen($admissions[0]['b_thankyou_url'])>0){
-            //Instructor has specific URL in mind:
-            $next_url = $admissions[0]['b_thankyou_url'];
-        } else {
-            //Default URL:
-            $next_url = '/my/applications?pay_r_id='.$admissions[0]['r_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
-        }
-
         //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
         //The "pay_r_id" variable makes the next page redirect to paypal automatically for PAID classes
         //Show message & redirect:
-        echo '<script> setTimeout(function() { window.location = "" }, 1000); </script>';
-        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Successfully Submitted 🙌​</div>';
+        echo '<script> setTimeout(function() { window.location = "'.$next_url.'" }, 1000); </script>';
+        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $update_data['ru_final_price'] ? 'Redirecting to Paypal...​' : 'Successfully Joined 🙌​').'</div>';
+
 	}
 
 	function withdraw_application(){
@@ -2244,8 +2251,8 @@ class Api_v1 extends CI_Controller {
                 echo ( count($b['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
 
-                //Practice Skills
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Practice Skills <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                //Skills You Will Gain
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
             <div class="help_body maxout" id="content_2271"></div>';
                 echo ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
 
