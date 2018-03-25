@@ -157,7 +157,7 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> 7 Days from <?= time_format($admission['r_start_date'],2).' to '.time_format($admission['r__class_end_time'],2) ?></span></p>
+<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> 7 Days: <?= time_format($admission['r_start_date'],2).' - '.time_format($admission['r__class_end_time'],2) ?></span></p>
 
 
 
