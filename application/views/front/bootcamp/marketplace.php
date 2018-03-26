@@ -13,8 +13,8 @@
 
 
 <!-- <h1>Achieve Your Goals</h1> -->
-<h1>Bootcamps by Industry Experts</h1>
-<p style="font-size: 1.3em;">Gain coding skills by completing 7-Day Bootcamps designed by Industry Experts.</p>
+<h1>7-Day Coding Bootcamps</h1>
+<p style="font-size: 1.3em;">Gain coding skills by completing weekly Bootcamps designed by Industry Experts.</p>
 <p style="font-size: 1.3em;">New Classes start every Monday, in <span id="classes_start"></span></p>
 <br />
 
