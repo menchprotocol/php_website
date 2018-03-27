@@ -18,7 +18,7 @@ function mark_done(){
 	$('#save_report').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Save the rest of the content:
-	$.post("/api_v1/completion_report", {
+	$.post("/api_v1/us_save", {
 
         page_load_time:<?= $page_load_time ?>,
 		us_notes:us_notes,

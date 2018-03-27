@@ -13,11 +13,11 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
 
 <script>
     //Show loading:
-    function update_new_password(){
+    function u_password_reset_apply(){
         //Show loading:
         $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
         //Hide the editor & saving results:
-        $.post("/api_v1/update_new_password", {
+        $.post("/api_v1/u_password_reset_apply", {
             u_id:<?= $_GET['u_id'] ?>,
             timestamp:<?= $_GET['timestamp'] ?>,
             p_hash:"<?= $_GET['p_hash'] ?>",
@@ -54,7 +54,7 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
 */?>
 
 <div id="loginb" class="submit-btn pass_success">
-    <a class="btn btn-black btn-round btn-md" style="font-size: 0.9em; font-weight: 500;" href="javascript:update_new_password();">Update Password</a>
+    <a class="btn btn-black btn-round btn-md" style="font-size: 0.9em; font-weight: 500;" href="javascript:u_password_reset_apply();">Update Password</a>
 </div>
 <div id="pass_reset"></div>
 

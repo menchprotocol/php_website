@@ -9,11 +9,11 @@
 	    ?>
         <script>
             //Show loading:
-            function request_password_reset(){
+            function u_password_reset_initiate(){
                 //Show loading:
                 $('#pass_reset').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
                 //Hide the editor & saving results:
-                $.post("/api_v1/request_password_reset", {
+                $.post("/api_v1/u_password_reset_initiate", {
                     email:$('#u_email').val(),
                 }, function(data) {
                     //Show success:
@@ -40,7 +40,7 @@
 
 	    <div id="loginb" class="submit-btn pass_success">
             <input type="submit" class="btn btn-primary pass btn-raised btn-round" value="Login">
-            <a class="btn btn-primary pass btn-raised btn-round" style="display: none;" href="javascript:request_password_reset();">Request Password Reset</a>
+            <a class="btn btn-primary pass btn-raised btn-round" style="display: none;" href="javascript:u_password_reset_initiate();">Request Password Reset</a>
             <span class="pass" style="width:294px; display:inline-block; font-size:0.9em; text-align: right;"><a href="javascript:void(0)" onclick="$('.pass').toggle()">Forgot Password</a></span>
             <span class="pass" style="font-size:0.9em; display: none;">or <a href="javascript:void(0)" onclick="$('.pass').toggle()">Cancel</a></span>
         </div>

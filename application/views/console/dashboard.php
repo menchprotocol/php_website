@@ -32,7 +32,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 <?php } ?>
 
 <div><?= $b['c__message_tree_count'] .' Message'. show_s($b['c__message_tree_count']) ?></div>
-<div><?= round($b['c__estimated_hours'],1) .' Hours in 7 Days ('.$rounded_hours.' Hour'.show_s($rounded_hours).'/Day)' ?></div>
+<div><?= round($b['c__estimated_hours'],1) .' Hours in 1 Week ('.$rounded_hours.' Hour'.show_s($rounded_hours).'/Day)' ?></div>
 
 
 

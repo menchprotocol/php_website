@@ -13,7 +13,7 @@
 
 
 <!-- <h1>Achieve Your Goals</h1> -->
-<h1>7-Day Coding Bootcamps</h1>
+<h1>Weekly Coding Bootcamps</h1>
 <p style="font-size: 1.3em;">Gain coding skills by completing weekly Bootcamps designed by Industry Experts.</p>
 <p style="font-size: 1.3em;">New Classes start every Monday, in <span id="classes_start"></span></p>
 <br />
@@ -58,7 +58,7 @@ foreach($bs as $count=>$b){
         <div class="price">
             <h4>'.echo_price($b).'</h4>
         </div>
-        <div class="stats"><span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the 7-Days" style="border-bottom: 1px dotted #777; padding-bottom:1px;"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></div>
+        <div class="stats"><span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" style="border-bottom: 1px dotted #777; padding-bottom:1px;"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></div>
     </div>';
 
     echo '</div>

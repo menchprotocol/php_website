@@ -24,11 +24,11 @@ function show_fb_auth(error_message=null){
     }
 }
 
-function refresh_integration(fp_id){
+function fp_refresh(fp_id){
 
     $('#simulate_'+fp_id).html('<img src="/img/round_load.gif" class="loader" />');
 
-    $.post("/api_v1/refresh_integration", {
+    $.post("/api_v1/fp_refresh", {
 
         b_id:$('#b_id').val(),
         fp_id:fp_id,
@@ -83,7 +83,7 @@ function loadFacebookPages(is_onstart){
                             show_fb_auth('You have denied '+denied_permissions+' permission(s). Try again.');
 
                             //Let admin know that some permissions had been denied:
-                            $.post("/api_v1/log_engagement", {
+                            $.post("/api_v1/e_js_create", {
                                 e_initiator_u_id:<?= $udata['u_id'] ?>,
                                 e_b_id:$('#b_id').val(),
                                 e_type_id:9, //User needs attention
@@ -107,7 +107,7 @@ function loadFacebookPages(is_onstart){
                         $('#fb_login').addClass('hidden');
                         $('#page_list').html('<img src="/img/round_load.gif" class="loader" />').removeClass('hidden');
 
-                        $.post("/api_v1/list_facebook_pages", {
+                        $.post("/api_v1/fp_list", {
 
                             b_id:$('#b_id').val(),
                             login_response:login_response,
@@ -245,7 +245,7 @@ function fb_connect(current_b_fp_id,new_b_fp_id){
 }
 
 
-function save_settings(){
+function b_save_settings(){
 
     //Show spinner:
     $('.save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
@@ -268,7 +268,7 @@ function save_settings(){
     };
 
     //Save the rest of the content:
-    $.post("/api_v1/save_settings", modify_data, function(data) {
+    $.post("/api_v1/b_save_settings", modify_data, function(data) {
 
         if(data.status){
 
@@ -317,7 +317,7 @@ function save_settings(){
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p1_rates'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Free 7-Day Trial' : '$'.$option.' per Student per Week' ).'</option>';
+                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Free 1 Week Trial' : '$'.$option.' per Student per Week' ).'</option>';
                 }
                 ?>
             </select>
@@ -347,7 +347,7 @@ function save_settings(){
         <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
 
             <?php if(count($pm['p2_rates'])==1){ ?>
-                <div style="margin:0 0 5px 30px;"><?= $r_statuses[1]['s_name'] ?> Universal Price:<br /><b>$<?= $pm['p2_rates'][0] ?> per Week per Student</b></div>
+                <div style="margin:0 0 5px 30px;"><?= $r_statuses[1]['s_name'] ?> Universal Price:<br /><b>$<?= $pm['p2_rates'][0] ?> per Student per Week</b></div>
             <?php } ?>
 
             <!-- Disabled for now as we only have a single pricing option for Classroom Package -->
@@ -400,7 +400,7 @@ function save_settings(){
 
 
         <br />
-        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
 
     </div>
 
@@ -472,7 +472,7 @@ function save_settings(){
 
 
         <br />
-        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
 
     </div>
 

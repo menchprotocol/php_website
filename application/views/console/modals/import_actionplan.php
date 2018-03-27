@@ -39,7 +39,7 @@ $bs = $this->Db_model->instructor_bs(array(
                     $('#btn_next').hide();
 
                     //Import the content:
-                    $.post("/api_v1/import_content_loader", {import_from_b_id:import_from_b_id}, function(data) {
+                    $.post("/api_v1/c_import_ui", {import_from_b_id:import_from_b_id}, function(data) {
 
                         if(data.status){
                             //Reload this script so the checkbox UI works:
@@ -123,7 +123,7 @@ $bs = $this->Db_model->instructor_bs(array(
             });
 
             //Send for processing:
-            $.post("/api_v1/import_process", {
+            $.post("/api_v1/c_import_process", {
 
                 import_from_b_id:parseInt($('#import_b_id').val()),
                 import_to_b_id:<?= $b['b_id'] ?>,

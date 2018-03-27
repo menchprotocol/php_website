@@ -12,7 +12,7 @@
 
     });
 
-    function update_review(){
+    function ru_save_review(){
 
         if($( "#ru_review_score" ).val()<1){
             alert('Select a score from 1-10 to save your review');
@@ -25,7 +25,7 @@
 
 
         //Load the frame:
-        $.post("/api_v1/update_review", {
+        $.post("/api_v1/ru_save_review", {
 
             ru_id:<?= $ru_id ?>,
             ru_key:'<?= $ru_key ?>',
@@ -114,7 +114,7 @@ echo '<div id="save_review">';
 
     echo '</div>';
 
-    echo '<br /><a href="javascript:void(0);" onclick="update_review()" class="btn btn-black">'.( !$has_reviewed ? 'Submit' : 'Update' ).' Review</a>';
+    echo '<br /><a href="javascript:void(0);" onclick="ru_save_review()" class="btn btn-black">'.( !$has_reviewed ? 'Submit' : 'Update' ).' Review</a>';
 
 echo '</div>';
 echo '</div>';

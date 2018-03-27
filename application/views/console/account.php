@@ -54,7 +54,7 @@ function update_account(){
 	//Show spinner:
 	$('.update_u_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
 	
-	$.post("/api_v1/account_update", {
+	$.post("/api_v1/u_update", {
 		
 		u_id:$('#u_id').val(),
 		u_fname:$('#u_fname').val(),

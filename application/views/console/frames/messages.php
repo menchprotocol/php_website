@@ -199,7 +199,7 @@ if(!isset($intents[0])){
         });
 
         //Update backend:
-        $.post("/api_v1/messages_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:c_id}, function(data) {
+        $.post("/api_v1/i_sort", {new_sort:new_sort, b_id:$('#b_id').val(), pid:c_id}, function(data) {
             if(!data.status){
                 //Show error:
                 alert('ERROR: '+data.message);
@@ -242,7 +242,7 @@ if(!isset($intents[0])){
 
 
 
-    function message_delete(i_id){
+    function i_delete(i_id){
         //Double check:
         var r = confirm("Delete Message?");
         if (r == true) {
@@ -251,7 +251,7 @@ if(!isset($intents[0])){
             $("#ul-nav-"+i_id).html('<div><img src="/img/round_load.gif" class="loader" /> Deleting...</div>');
 
             //Delete and remove:
-            $.post("/api_v1/message_delete", {i_id:i_id, pid:c_id}, function(data) {
+            $.post("/api_v1/i_delete", {i_id:i_id, pid:c_id}, function(data) {
 
                 //Update UI to confirm with user:
                 if(!data.status){
@@ -332,7 +332,7 @@ if(!isset($intents[0])){
         var new_i_status = $("#i_status_"+i_id).val();
 
         //Update message:
-        $.post("/api_v1/message_update", {
+        $.post("/api_v1/i_modify", {
 
             i_id:i_id,
             i_message:$("#ul-nav-"+i_id+" textarea").val(),
@@ -497,7 +497,7 @@ if(!isset($intents[0])){
             ajaxData.append( 'b_id', $('#b_id').val() );
 
             $.ajax({
-                url: '/api_v1/message_attachment',
+                url: '/api_v1/i_attach',
                 type: $('.box'+c_id).attr('method'),
                 data: ajaxData,
                 dataType: 'json',
@@ -537,7 +537,7 @@ if(!isset($intents[0])){
         message_form_lock();
 
         //Update backend:
-        $.post("/api_v1/message_create", {
+        $.post("/api_v1/i_create", {
 
             b_id:$('#b_id').val(),
             pid:c_id, //Synonymous

@@ -103,7 +103,7 @@ function move_ui(adjustment){
         });
 
 		//Send for processing:
-		$.post("/api_v1/submit_application", {
+		$.post("/api_v1/ru_checkout", {
 
 			//Core variables:
 			ru_id:<?= $ru_id ?>,
@@ -157,7 +157,7 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> 7 Days: <?= time_format($admission['r_start_date'],2).' - '.time_format($admission['r__class_end_time'],2) ?></span></p>
+<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;">Join <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> Dates: <?= time_format($admission['r_start_date'],2).' - '.time_format($admission['r__class_end_time'],2) ?></span></p>
 
 
 
@@ -231,9 +231,9 @@ $(document).ready(function() {
     <ul>
         <li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
         <li>Designed By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
-        <li>7 Day Class: <b><?= time_format($admission['r_start_date'],2) ?> - <?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
+        <li>Class Dates: <b><?= time_format($admission['r_start_date'],2) ?> - <?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
         <li>Action Plan: <b><?= $admission['c__tasks_count'] ?> Tasks</b></li>
-        <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 7 Days</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
+        <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 1 Week</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
         <li>Your Support Level: <b id="confirm_support"></b></li>
     </ul>
     <br />

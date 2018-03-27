@@ -11,7 +11,7 @@
 
 
     var processing_project = 0;
-    function project_create(){
+    function b_create(){
 
         if(processing_project){
             //Do nothing while processing a current project:
@@ -33,7 +33,7 @@
 
         $( ".list_input" ).before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Bootcamp...</div>' );
 
-        $.post("/api_v1/project_create", {
+        $.post("/api_v1/b_create", {
             c_objective:c_objective,
         }, function(data) {
 
@@ -53,6 +53,8 @@
             }
 
         });
+
+        return false;
     }
 </script>
 <?php $website = $this->config->item('website'); ?>
@@ -76,9 +78,9 @@ if(count($bs)>0){
 echo '<div class="list-group-item list_input new-step-input" style="padding: 5px 7px;">
         <div class="input-group">
             <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span>
-            <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="project_create();"><input type="text" class="form-control"  maxlength="70" id="b_c_objective" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
+            <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="b_create();"><input type="text" class="form-control"  maxlength="70" id="b_c_objective" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
             <span class="input-group-addon" style="padding-right:8px;">
-                <span data-toggle="tooltip" data-placement="top" onclick="project_create();" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                <span data-toggle="tooltip" data-placement="top" onclick="b_create();" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                     <div><i class="fa fa-plus"></i></div>
                 </span>
             </span>

@@ -88,7 +88,7 @@ $website = $this->config->item('website');
 	    		if(isset($b)){
 	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i>'.$b['c_objective'].'</div>';
                     if($b['b_old_format']){
-                        echo '<div class="alert alert-danger" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new 7-Day Bootcamp."><i class="fa fa-lock" aria-hidden="true"></i> Bootcamp is locked</div>';
+                        echo '<div class="alert alert-danger" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp."><i class="fa fa-lock" aria-hidden="true"></i> Bootcamp is locked</div>';
                     }
 	    		}
 
@@ -109,7 +109,7 @@ $website = $this->config->item('website');
                     if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
 
                         //Fetch page details:
-                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students using Facebook Page Inbox" href="/api_v1/page_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                        echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
 
                         //Landing Page
                         echo '<li><a class="landing_page_url" data-toggle="tooltip" data-placement="top" title="Visit Bootcamp Landing Page" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';

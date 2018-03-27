@@ -849,7 +849,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
 
         if($editing_enabled){
             $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2639;"></i></span></li>';
-            $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:message_delete('.$i['i_id'].');"><i class="fa fa-trash" style="margin:0 7px 0 5px;"></i></a></span></li>';
+            $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fa fa-trash" style="margin:0 7px 0 5px;"></i></a></span></li>';
             if($i['i_media_type']=='text' || $level<=2){
                 $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fa fa-pencil-square-o"></i></a></span></li>';
             }
@@ -1008,6 +1008,16 @@ function copy_messages($u_id,$c__messages,$c_id){
 
 }
 
+function aggregate_field($input_array,$field){
+    $return_array = array();
+    foreach($input_array as $item){
+        if(isset($item[$field])){
+            array_push($return_array,$item[$field]);
+        }
+    }
+    return $return_array;
+}
+
 function copy_intent($u_id,$intent,$c_id){
 
     if($intent['c_status']<0){
@@ -1098,7 +1108,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
                 $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
             }
 
-            $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="load_iphone('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
+            $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
         } else {
             //Show link to current section:
             $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
@@ -1222,7 +1232,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <b>'.echo_hours($b['c__estimated_hours']).' in 7 Days</b>, anytime that works best for you. (Average '.echo_hours($b['c__estimated_hours']/7) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest <b>'.echo_hours($b['c__estimated_hours']).' in 1 Week</b>, anytime that works best for you. (Average '.echo_hours($b['c__estimated_hours']/7) .' per day)');
     }
     return $pre_req_array;
 }
@@ -1652,8 +1662,18 @@ function echo_r($b,$class,$append_class=null){
 
     } else {
 
+        //See what the Lead Instructor's calendar looks like:
+        if(strlen($b['b__admins'][0]['u_weeks_off'])>0){
+            //They have some days that are booked off:
+            $current_status = ( in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])) ? 0 : 1 );
+
+        } else {
+            //Available as they have no Weeks off:
+            $current_status = 1;
+        }
+
         //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to Toggle Support: Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('r',$class['r_status'],true, null).'</a>';
+        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( !$current_status ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$current_status.'" data-toggle="tooltip" data-placement="right" title="Toggle support across all your Bootcamps/Classes. Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('r',$current_status,true, null).'</a>';
 
     }
 

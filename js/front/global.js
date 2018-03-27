@@ -58,11 +58,11 @@ function processAjaxData(response, urlPath){
     window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
 }
 
-function load_menu(c_id,hash_key){
+function c_tree_menu(c_id,hash_key){
 
     //Show loading:
     $('#menu_content').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
-    $.post("/api_v1/load_menu", {
+    $.post("/api_v1/c_tree_menu", {
         c_id:c_id,
         hash_key:hash_key,
     }, function(data) {

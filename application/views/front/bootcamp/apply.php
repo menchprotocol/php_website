@@ -8,7 +8,7 @@ function start_application(){
     $(".form-el").prop('disabled', true).css('background-color','#EFEFEF');
 
     //Send data for processing:
-    $.post("/api_v1/funnel_progress", {
+    $.post("/api_v1/ru_start", {
         r_id:<?= $focus_class['r_id'] ?>,
         u_fname:$('#u_fname').val(),
         u_email:$('#u_email').val(),

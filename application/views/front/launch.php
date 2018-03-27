@@ -6,7 +6,7 @@ $udata = $this->session->userdata('user');
 
 <div class="row text-center">
     <div class="col-md-12">
-        <h2 class="title" style="margin:60px 0 40px 0;">Launch a 7-Day Bootcamp with our:</h2>
+        <h2 class="title" style="margin:60px 0 40px 0;">Launch Weekly Bootcamps with our:</h2>
     </div>
 </div>
 
@@ -16,7 +16,7 @@ $udata = $this->session->userdata('user');
         <div class="info">
             <div class="icon icon-default mtweak"><i class="fa fa-users" aria-hidden="true"></i></div>
             <h3 class="info-title">Student Base</h3>
-            <p>Reach a growing community of Students who love learning with our 7-Day Bootcamps. Approved Bootcamps also benefit from personalized marketing campaigns designed to grow your Student base.</p>
+            <p>Reach a growing community of Students who love learning with our weekly Bootcamps. Approved Bootcamps also benefit from personalized marketing campaigns designed to grow your Student base.</p>
         </div>
     </div>
     <div class="col-md-4">
@@ -58,7 +58,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-default mtweak"><i class="fa fa-wrench" aria-hidden="true"></i></div>
 					<h3 class="info-title">1. Build</h3>
-					<p>Do you have an in-demand skill that many are looking to learn? Like launching a website, podcast or Youtube channel? Build a 7-Day Bootcamp that would help Students make it happen once and for all.</p>
+					<p>Do you have an in-demand skill that many are looking to learn? Like launching a website, podcast or Youtube channel? Build a weekly Bootcamp that would help Students make it happen once and for all.</p>
 				</div>
 			</div>
 			<div class="col-md-4">
@@ -72,7 +72,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-default mtweak"><i class="fa fa-usd" aria-hidden="true"></i></div>
 					<h3 class="info-title">3. Earn</h3>
-					<p>Students join your Classes each week and choose between Solo, Classroom or Tutoring packages. They may also upgrade at any time. We transfer your earnings via Paypal on a 7-Day rolling basis.</p>
+					<p>Students join your Classes each week and choose between Solo, Classroom or Tutoring packages. They may also upgrade at any time. We transfer your earnings via Paypal on a weekly basis.</p>
 				</div>
 			</div>
 		</div>

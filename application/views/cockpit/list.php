@@ -126,7 +126,7 @@ if($object_name=='engagements'){
             }
 
             echo '</td>';
-            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/blob/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" aria-hidden="true" data-placement="left"><i class="fa fa-search-plus" id="icon_'.$e['e_id'].'" aria-hidden="true"></i></a>' : '' ).'</td>';
+            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/ej_list/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" aria-hidden="true" data-placement="left"><i class="fa fa-search-plus" id="icon_'.$e['e_id'].'" aria-hidden="true"></i></a>' : '' ).'</td>';
             echo '</tr>';
         }
         ?>
@@ -438,10 +438,10 @@ if($object_name=='engagements'){
     ?>
 
     <script>
-        function dispatch_message(u_id,pid,depth){
-            $('#dispatch_message_'+u_id).html('Sending...').hide().fadeIn();
+        function i_test(u_id,pid,depth){
+            $('#i_test_'+u_id).html('Sending...').hide().fadeIn();
             //Save the rest of the content:
-            $.post("/api_v1/dispatch_message", {
+            $.post("/api_v1/i_test", {
                 u_id:u_id,
                 depth:depth,
                 pid:pid,
@@ -449,10 +449,10 @@ if($object_name=='engagements'){
 
                 if(data.status){
                     //Update UI to confirm with user:
-                    $('#dispatch_message_'+u_id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>').hide().fadeIn();
+                    $('#i_test_'+u_id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>').hide().fadeIn();
                 } else {
                     alert('ERROR: '+data.message);
-                    $('#dispatch_message_'+u_id).html('ERROR').hide().fadeIn();
+                    $('#i_test_'+u_id).html('ERROR').hide().fadeIn();
                 }
 
             });
@@ -549,7 +549,7 @@ if($object_name=='engagements'){
                 }
 
                 //Show send button:
-                echo '&nbsp;<span id="dispatch_message_'.$user['u_id'].'"><a href="javascript:dispatch_message('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">'.(count($sent_messages)>0 ? 'Resend' : 'Send').'</a></span>';
+                echo '&nbsp;<span id="i_test_'.$user['u_id'].'"><a href="javascript:i_test('.$user['u_id'].','.$_GET['pid'].','.( isset($_GET['depth']) ? intval($_GET['depth']) : 0 ).')">'.(count($sent_messages)>0 ? 'Resend' : 'Send').'</a></span>';
             }
         echo '</td>';
         echo '</tr>';

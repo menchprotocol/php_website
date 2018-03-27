@@ -89,7 +89,7 @@ $(document).ready(function() {
             if(level_id>0){
                 //Fetch level if available:
                 if(hash_parts[0]=='messages'){
-                    load_iphone(hash_parts[1],level_id);
+                    i_load_frame(hash_parts[1],level_id);
                 } else if(hash_parts[0]=='modify'){
                     load_modify(hash_parts[1],level_id);
                 }
@@ -104,7 +104,7 @@ $(document).ready(function() {
     $('.hours_level_1').text(format_hours($('.hours_level_1').attr('current-hours')));
 
     //Loadup Task numbering based on duratioan extenstions:
-    intents_sort(0,2);
+    c_sort(0,2);
 
     //Activate sorting for Steps:
     if($('.step-group').length){
@@ -247,7 +247,7 @@ function new_intent(pid,next_level){
     input_field.val("").focus();
 
  	//Update backend:
- 	$.post("/api_v1/intent_create", {b_id:b_id, pid:pid, c_objective:intent_name, next_level:next_level}, function(data) {
+ 	$.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_objective:intent_name, next_level:next_level}, function(data) {
 
  	    //Update UI to confirm with user:
  		$( "#temp"+next_level ).remove();
@@ -261,14 +261,14 @@ function new_intent(pid,next_level){
  		if(next_level==2){
 
             //Adjust the Task count:
-            intents_sort(0,2);
+            c_sort(0,2);
 
             //Re-adjust sorting for inner Steps:
             load_intent_sort(data.c_id,3);
 
         } else {
             //Adjust Step sorting:
-            intents_sort(pid,next_level);
+            c_sort(pid,next_level);
         }
 
  		//Tooltips:
@@ -312,7 +312,7 @@ function link_lintent(target_id){
  	$( "#addnode" ).val("").focus();
 
  	//Update backend:
- 	$.post("/api_v1/intent_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
+ 	$.post("/api_v1/c_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
  		//Update UI to confirm with user:
  		$( "#temp" ).remove();
 
@@ -329,7 +329,7 @@ function link_lintent(target_id){
 
 
 
-function intents_sort(c_id,level){
+function c_sort(c_id,level){
 
     if(level==2){
         var s_element = "list-outbound";
@@ -412,7 +412,7 @@ function intents_sort(c_id,level){
     //It might be zero for lists that have jsut been emptied
  	if(sort_rank>0 && c_id){
         //Update backend:
-        $.post("/api_v1/intents_sort", { pid:c_id, b_id:$('#b_id').val(), new_sort:new_sort }, function(data) {
+        $.post("/api_v1/c_sort", { pid:c_id, b_id:$('#b_id').val(), new_sort:new_sort }, function(data) {
             //Update UI to confirm with user:
             if(!data.status){
                 //There was some sort of an error returned!
@@ -443,7 +443,7 @@ function load_intent_sort(pid,level){
         draggable: s_draggable, // Specifies which items inside the element should be sortable
         handle: ".fa-bars", // Restricts sort start click/touch to the specified element
         onUpdate: function (evt/**Event*/){
-            intents_sort(pid,level);
+            c_sort(pid,level);
         }
     };
 
@@ -462,7 +462,7 @@ function load_intent_sort(pid,level){
                 to_c_id:evt.to.attributes[2].value,
             };
             //Update:
-            $.post("/api_v1/migrate_step", inputs, function(data) {
+            $.post("/api_v1/c_move_c", inputs, function(data) {
                 //Update sorts in both lists:
                 if(!data.status){
 
@@ -502,8 +502,8 @@ function load_intent_sort(pid,level){
                     }
 
                     //Update sorting for both lists:
-                    intents_sort(inputs.from_c_id,"3");
-                    intents_sort(inputs.to_c_id,"3");
+                    c_sort(inputs.from_c_id,"3");
+                    c_sort(inputs.to_c_id,"3");
 
                 }
             });
@@ -516,7 +516,7 @@ function load_intent_sort(pid,level){
 
 
 
-function load_iphone(c_id, level){
+function i_load_frame(c_id, level){
 
     var messages_focus_pid = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('node-id')) );
 
@@ -551,7 +551,7 @@ function load_iphone(c_id, level){
         handler.html('<div style="text-align:center; padding-top:89px; padding-bottom:89px;"><img src="/img/round_load.gif" class="loader" /></div>');
 
         //Load the frame:
-        $.post("/api_v1/load_iphone", {
+        $.post("/api_v1/i_load_frame", {
 
             b_id:$('#b_id').val(),
             c_id:c_id,
@@ -629,7 +629,7 @@ function load_modify(c_id, level){
 
 
 
-function save_modify(){
+function c_save_settings(){
 
     //Define shared data for all 3 levels:
     var modify_data = {
@@ -670,7 +670,7 @@ function save_modify(){
 
 
         //Save the rest of the content:
-        $.post("/api_v1/save_modify", modify_data , function(data) {
+        $.post("/api_v1/c_save_settings", modify_data , function(data) {
 
             if(data.status){
 
@@ -724,14 +724,14 @@ function save_modify(){
                                     $('#modifybox').addClass('hidden');
 
                                     //Resort all Tasks to illustrate changes on UI:
-                                    intents_sort(0, 2);
+                                    c_sort(0, 2);
                                 }, 377);
                             }, 1597);
 
                         }
 
                         //Resort all Tasks to illustrate changes on UI:
-                        intents_sort(0, 2);
+                        c_sort(0, 2);
                     }
 
 
@@ -799,12 +799,12 @@ function save_modify(){
                                     $('#modifybox').addClass('hidden');
 
                                     //Resort all Tasks to illustrate changes on UI:
-                                    intents_sort(parent_c_id,3);
+                                    c_sort(parent_c_id,3);
                                 }, 377);
                             }, 1597);
                         } else {
                             //Resort all Tasks to illustrate changes on UI:
-                            intents_sort(parent_c_id,3);
+                            c_sort(parent_c_id,3);
                         }
                     }
 
@@ -862,7 +862,7 @@ function tree_message(c_id,u_id){
     //Disapper in a while:
     setTimeout(function() {
         //Hide the editor & saving results:
-        $.post("/api_v1/simulate_task", {
+        $.post("/api_v1/i_dispatch", {
             c_id:c_id,
             depth:1,
             b_id:$('#b_id').val(),
@@ -962,7 +962,7 @@ function save_items(group_id){
     //$('#'+group_id+'_status').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
 
     //Update backend:
-    $.post("/api_v1/save_b_list", {group_id:group_id, new_sort:new_sort, b_id:$('#b_id').val()}, function(data) {
+    $.post("/api_v1/b_save_list", {group_id:group_id, new_sort:new_sort, b_id:$('#b_id').val()}, function(data) {
 
         //Update UI to confirm with user? Keep it simple for now...
         if(!data.status){
@@ -1227,7 +1227,7 @@ function add_item(group_id,prefix,current_value){
 
 
 
-            <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:save_modify();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
+            <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:c_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_setting_results"></span></td></tr></table>
         </div>
 
 

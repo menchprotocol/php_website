@@ -63,7 +63,7 @@ class Console extends CI_Controller {
 		    'b.b_status >=' => 2,
 		));
 
-		$title = 'My 7-Day Bootcamps';
+		$title = 'My Bootcamps';
 		
 		//Load view
 		$this->load->view('console/shared/d_header' , array(

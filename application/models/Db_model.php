@@ -1457,7 +1457,7 @@ WHERE ru.ru_status >= 4
                         $html_message .= '<br />';
                         $html_message .= '<div>Cheers,</div>';
                         $html_message .= '<div>Mench Engagement Watcher</div>';
-                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.com/api_v1/blob/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
+                        $html_message .= '<div style="font-size:0.8em;">Engagement <a href="https://mench.com/api_v1/ej_list/'.$engagements[0]['e_id'].'">#'.$engagements[0]['e_id'].'</a></div>';
 
                         //Send email:
                         $this->Comm_model->send_email($subscription['admin_emails'], $subject, $html_message);

@@ -13,269 +13,20 @@ class Api_v1 extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 	}
-
-    function ping(){
-        echo_json(array('status'=>'success'));
-    }
-	
-	function index(){
-		die('nothing here...');
-	}
 	
 	/* ******************************
 	 * Miscs
 	 ****************************** */
 
-	function load_menu(){
-
-        if(!isset($_POST['c_id']) || !isset($_POST['hash_key']) || !($_POST['hash_key']==md5($_POST['c_id'].'menu89Hash'))){
-            die('<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
-        }
-
+    function ping(){
+        echo_json(array('status'=>'success'));
     }
 
-	function import_content_loader(){
-
-        if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp source.',
-            ));
-            exit;
-        }
-
-        $udata = auth(2,0,$_POST['import_from_b_id']);
-        if(!$udata){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired. Login to try again.',
-            ));
-            exit;
-        }
-
-        $bs = $this->Db_model->remix_bs(array(
-            'b_id' => $_POST['import_from_b_id'],
-        ));
-        if(!(count($bs)==1)){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Bootcamp source.',
-            ));
-            exit;
-        }
-
-        $import_items = array(
-            //Action Plan stuff:
-            array(
-                'is_header' => 1,
-                'name' => '<h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</h4>',
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-commenting" aria-hidden="true"></i> Import Bootcamp-Level Messages',
-                'id' => 'b_level_messages',
-                'count' => count($bs[0]['c__messages']),
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Override Prerequisites',
-                'id' => 'b_prerequisites',
-                'count' => ( strlen($bs[0]['b_prerequisites'])>0 ? count(json_decode($bs[0]['b_prerequisites'])) : 0 ),
-            ),
-
-
-            array(
-                'is_header' => 1,
-                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Import Tasks with Messages</h5>',
-            ),
-        );
-
-        if($bs[0]['b_old_format']){
-
-            //Give specific options on each Milestone:
-            foreach($bs[0]['c__child_intents'] as $milestone){
-                if(isset($milestone['c__child_intents'])){
-                    //Give a single/total option:
-                    array_push($import_items,array(
-                        'is_header' => 0,
-                        'name' => 'Tasks form ['.$milestone['c_objective'].']',
-                        'id' => 'b_c_ids',
-                        'value' => $milestone['c_id'],
-                        'count' => count($milestone['c__child_intents']),
-                    ));
-                }
-            }
-
-        } else {
-
-            array_push($import_items,array(
-                'is_header' => 0,
-                'name' => 'Tasks of Action Plan',
-                'id' => 'b_c_ids',
-                'value' => $bs[0]['b_c_id'],
-                'count' => count($bs[0]['c__child_intents']),
-            ));
-
-        }
-
-
-        //Add Outcome section:
-        array_push($import_items,array(
-            'is_header' => 1,
-            'name' => '<h5><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</h5>',
-        ));
-        array_push($import_items,array(
-            'is_header' => 0,
-            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
-            'id' => 'b_transformations',
-            'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
-        ));
-
-
-
-        //Generate UI:
-        $ui = '<p>Choose what to import:</p>'; //Start generating this...
-        foreach($import_items as $item){
-            if($item['is_header']){
-                $ui .= '<div class="title">'.$item['name'].'</div>';
-            } else {
-                $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" class="import_checkbox" name="'.$item['id'].'" '.( isset($item['value']) ? 'value="'.$item['value'].'"' : '' ).' '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
-            }
-        }
-
-        echo_json(array(
-            'status' => 1,
-            'message' => null, //Not used, would load ui instead
-            'ui' => $ui,
-        ));
+    function index(){
+        die('nothing here...');
     }
 
-    function import_process(){
-
-        if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0 || !isset($_POST['import_to_b_id']) || intval($_POST['import_to_b_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp source.',
-            ));
-            exit;
-        } elseif(!isset($_POST['task_import_mode']) || intval($_POST['task_import_mode'])<1 || intval($_POST['task_import_mode'])>3){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Task Import Mode',
-            ));
-            exit;
-        }
-
-        $udata = auth(2,0,$_POST['import_from_b_id']);
-        $udata2 = auth(2,0,$_POST['import_to_b_id']);
-        if(!$udata || !$udata2){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Session expired. Login to try again.',
-            ));
-            exit;
-        }
-
-        $bs_from = $this->Db_model->remix_bs(array(
-            'b_id' => $_POST['import_from_b_id'],
-        ));
-        $bs_to = $this->Db_model->b_fetch(array(
-            'b_id' => $_POST['import_to_b_id'],
-        ));
-        if(!(count($bs_from)==1)){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Bootcamp from.',
-            ));
-            exit;
-        } elseif(!(count($bs_to)==1)){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Bootcamp to.',
-            ));
-            exit;
-        }
-
-
-        //We're good at this point
-        //Start copying potential lists first:
-        $lists = array(
-            'b_prerequisites',
-            'b_transformations',
-        );
-        $b_lists = array();
-        foreach($lists as $list){
-            //Do we need this list?
-            if(isset($_POST[$list]) && intval($_POST[$list])){
-                //Yes, copy this guy:
-                $b_lists[$list] = $bs_from[0][$list];
-            }
-        }
-        if(count($b_lists)>0){
-            //Copy to new Action Plan:
-            $this->Db_model->b_update( $_POST['import_to_b_id'] , $b_lists);
-        }
-
-
-
-        //Do we need to copy the Bootcamp-level message?
-        $b_level_messages_results = array();
-        if(isset($_POST['b_level_messages']) && intval($_POST['b_level_messages']) && count($bs_from[0]['c__messages'])>0){
-            //Yes, import messages:
-            $b_level_messages_results = copy_messages($udata['u_id'],$bs_from[0]['c__messages'],$bs_to[0]['b_c_id']);
-        }
-
-
-        //Do we need to do any Tasks?
-        if(isset($_POST['b_c_ids']) && count($_POST['b_c_ids'])>0){
-            foreach($_POST['b_c_ids'] as $c_id){
-
-                //Fetch all child Nodes for this Node:
-                $nodes = $this->Db_model->c_fetch(array(
-                    'c.c_id' => $c_id,
-                ), 1, array('i')); //Supports up to 2 levels deep for now...
-
-                if(count($nodes)>0 && count($nodes[0]['c__child_intents'])>0){
-                    foreach($nodes[0]['c__child_intents'] as $c){
-                        if(intval($_POST['task_import_mode'])==3){
-
-                            //Copy intent:
-                            $new_task = copy_intent($udata['u_id'],$c,$bs_to[0]['b_c_id']);
-
-                            if(count($c['c__messages'])>0){
-                                //Copy messages:
-                                $new_task['c__messages'] = copy_messages($udata['u_id'], $c['c__messages'], $new_task['c_id']);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        //Log Engagement:
-        $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
-            'e_json' => array(
-                'import_settings' => $_POST,
-                'b_lists' => $b_lists,
-                'b_level_messages_results' => $b_level_messages_results,
-            ),
-            'e_type_id' => 75, //Action Plan Imported
-            'e_b_id' => $bs_to[0]['b_id'],
-        ));
-
-
-        //Show message & redirect:
-        echo_json(array(
-            'status' => 1, //Success
-            'message' => '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Reloading Action Plan...</div>',
-        ));
-    }
-
-
-
-    function log_engagement(){
+    function e_js_create(){
 	    //Validate hash code:
         if(!isset($_POST['e_hash_time']) || !isset($_POST['e_hash_code']) || strlen($_POST['e_hash_time'])<5 || strlen($_POST['e_hash_code'])<5 || !(md5($_POST['e_hash_time'].'hashcod3')==$_POST['e_hash_code'])){
 
@@ -309,8 +60,27 @@ class Api_v1 extends CI_Controller {
         }
     }
 
+    function ej_list($e_id){
+        $udata = auth(3,1);
+        //Fetch blob of engagement and display it on screen:
+        $blobs = $this->Db_model->e_fetch(array(
+            'ej_e_id' => $e_id,
+        ),1,array('ej'));
+        if(count($blobs)==1){
+            echo_json(array(
+                'blob' => unserialize($blobs[0]['ej_e_blob']),
+                'e' => $blobs[0]
+            ));
+        } else {
+            echo_json(array('error'=>'Not Found'));
+        }
+    }
 
-    function page_redirect($fp_id,$fp_hash){
+    /* ******************************
+	 * Facebook Pages
+	 ****************************** */
+
+    function fp_redirect($fp_id,$fp_hash){
 
 	    if(!(md5($fp_id.'pageLinkHash000')==$fp_hash)){
 	        die('invalid key');
@@ -433,7 +203,7 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-	function list_facebook_pages(){
+	function fp_list(){
 
         $udata = auth(2,0,$_POST['b_id']);
         if(!$udata){
@@ -532,7 +302,7 @@ class Api_v1 extends CI_Controller {
                     $pages_list_ui .= '<span class="pull-right">';
 
                     if($page['fp_status']==1 && $udata['u_status']>=3){
-                        $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:refresh_integration('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                        $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:fp_refresh('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                     }
 
                     if($bs[0]['b_fp_id']>0 && $page['fp_id']==$bs[0]['b_fp_id']){
@@ -585,216 +355,92 @@ class Api_v1 extends CI_Controller {
 
     }
 
-    function blob($e_id){
-        $udata = auth(3,1);
-        //Fetch blob of engagement and display it on screen:
-        $blobs = $this->Db_model->e_fetch(array(
-            'ej_e_id' => $e_id,
-        ),1,array('ej'));
-        if(count($blobs)==1){
+    function fp_refresh(){
+
+        $udata = auth(2,0,$_POST['b_id']);
+        if(!$udata){
             echo_json(array(
-                'blob' => unserialize($blobs[0]['ej_e_blob']),
-                'e' => $blobs[0]
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp ID',
+            ));
+        } elseif(!isset($_POST['fp_id']) || strlen($_POST['fp_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Page ID',
             ));
         } else {
-            echo_json(array('error'=>'Not Found'));
+
+            //Fetch Page:
+            $fp_pages = $this->Db_model->fp_fetch(array(
+                'fp_id' => $_POST['fp_id'],
+            ));
+
+            if(count($fp_pages)<1){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Could not find page',
+                ));
+            } elseif(!($fp_pages[0]['fp_status']==1)){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Page is not currently integrated',
+                ));
+            } else {
+
+                //First remove integration:
+                $this->Comm_model->fb_page_integration($udata['u_id'],$fp_pages[0],$_POST['b_id'],0);
+
+                //Then add integration:
+                sleep(2);
+
+                $this->Comm_model->fb_page_integration($udata['u_id'],$fp_pages[0],$_POST['b_id'],1);
+
+                //Let user know:
+                echo_json(array(
+                    'status' => 1,
+                    'message' => '<i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" title="Success"></i>',
+                ));
+            }
         }
     }
 
-	
-	function load_tip(){
-	    $udata = auth(2);
-	    //Used to load all the help messages within the Console:
-	    if(!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id'])<1){
-	        echo_json(array(
-	            'success' => 0,
-	        ));
-	    }
-	    
-	    //Fetch Messages and the User's Got It Engagement History:
-	    $messages = $this->Db_model->i_fetch(array(
-	        'i_c_id' => intval($_POST['intent_id']),
-	        'i_status >' => 0, //Published in any form
-	    ));
-	    
-	    //Log an engagement for all messages
-	    foreach($messages as $i){
-	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $udata['u_id'],
-	            'e_json' => $i,
-	            'e_type_id' => 40, //Got It
-	            'e_c_id' => intval($_POST['intent_id']),
-	            'e_i_id' => $i['i_id'],
-	        ));
-	    }
-	    
-	    //Build UI friendly Message:
-	    $help_content = null;
-	    foreach($messages as $i){
-	        $help_content .= echo_i(array_merge($i,array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']);
-	    }
-	    
-	    //Return results:
-	    echo_json(array(
-	        'success' => ( $help_content ?  1 : 0 ), //No Messages perhaps!
-	        'intent_id' => intval($_POST['intent_id']),
-	        'help_content' => $help_content,
-	    ));
-	}
-	
-	/* ******************************
-	 * Users
-	 ****************************** */
+    /* ******************************
+     * Admission
+     ****************************** */
 
-	function update_review(){
-        if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Admission Data.</div>');
-        } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Review Score must be between 1-10.</div>');
-        }
+    function ru_start(){
 
-        //Validate Admission:
-        $admissions = $this->Db_model->ru_fetch(array(
-            'ru_id' => intval($_POST['ru_id']),
-        ));
-        if(count($admissions)<1){
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => 0, //System
-                'e_message' => 'Validated review submission call failed to fetch admission data',
-                'e_type_id' => 8, //System Error
-            ));
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Unable to locate your Admission.</div>');
-        }
-
-        //Is this a new review, or updating an existing one?
-        $new_review = ( intval($admissions[0]['ru_review_score'])<0 );
-        $has_text = ( strlen($_POST['ru_review_public_note'])>0 || strlen($_POST['ru_review_private_note'])>0 );
-        $update_data = array(
-            'ru_review_time' => date("Y-m-d H:i:s"),
-            'ru_review_score' => $_POST['ru_review_score'],
-            'ru_review_public_note' => $_POST['ru_review_public_note'],
-            'ru_review_private_note' => $_POST['ru_review_private_note'],
-        );
-
-        //Save Engagement that is visible to instructor:
-        $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $admissions[0]['u_id'],
-            'e_message' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
-            'e_json' => $update_data,
-            'e_type_id' => 72, //Student Reviewed Class
-            'e_b_id' => $admissions[0]['r_b_id'],
-            'e_r_id' => $admissions[0]['r_id'],
-        ));
-
-        //Do they have a Private Feedback? Log a need attention Engagement to Mench team reads instantly:
-        if(strlen($_POST['ru_review_private_note'])>0){
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $admissions[0]['u_id'],
-                'e_message' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
-                'e_json' => $update_data,
-                'e_type_id' => 9, //Support Needing Graceful Errors
-                'e_b_id' => $admissions[0]['r_b_id'],
-                'e_r_id' => $admissions[0]['r_id'],
-            ));
-        }
-
-        //Update data:
-        $this->Db_model->ru_update($admissions[0]['ru_id'], $update_data);
-
-        //Show success and thank student:
-        echo '<div class="alert alert-success">Thanks for '.($new_review?'submitting':'updating').' your review 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
-
-        //TODO Encourage sharing IF reviewed highly...
-
-    }
-
-    function request_password_reset(){
-        //We need an email input:
-        if(!isset($_POST['email'])){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Email.</div>');
-        } elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Email.</div>');
-        }
-
-        //Attempt to fetch this user:
-        $matching_users = $this->Db_model->u_fetch(array(
-            'u_email' => strtolower($_POST['email']),
-        ));
-        if(count($matching_users)>0){
-            //Dispatch the password reset node:
-            $this->Comm_model->foundation_message(array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $matching_users[0]['u_id'],
-                'e_c_id' => 3030,
-                'depth' => 0,
-                'e_b_id' => 0,
-                'e_r_id' => 0,
-            ), true);
-        }
-
-        //Show message:
-        echo '<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>';
-        echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
-
-    }
-
-    function update_new_password(){
-        //This function updates the user's new password as requested via a password reset:
-        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0 || !isset($_POST['timestamp']) || intval($_POST['timestamp'])<=0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash'])<10){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Core Variables.</div>';
-        } elseif(!($_POST['p_hash']==md5($_POST['u_id'] . 'p@ssWordR3s3t' . $_POST['timestamp']))){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid hash key.</div>';
-        } elseif(!isset($_POST['new_pass']) || strlen($_POST['new_pass'])<6){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: New password must be longer than 6 characters. Try again.</div>';
-        } else {
-            //All seems good, lets update their account:
-            $this->Db_model->u_update( intval($_POST['u_id']) , array(
-                'u_password' => md5($_POST['new_pass']),
-            ));
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => intval($_POST['u_id']),
-                'e_type_id' => 59, //Password reset
-            ));
-
-            //Log all sessions out:
-            $this->session->sess_destroy();
-
-            //Show message:
-            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/login"><u>login here</u></a>.</div>';
-            echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
-        }
-    }
-	
-	function funnel_progress(){
-	    
-	    $this->load->helper('cookie');
+        $this->load->helper('cookie');
         $application_status_salt = $this->config->item('application_status_salt');
 
-	    if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['u_fname']) || !isset($_POST['u_email'])){
-	        die(echo_json(array(
-	            'status' => 0,
-	            'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Core Data</div>',
-	        )));
-	    }
-	    
-	    //Fetch inputs:
-	    $classes = $this->Db_model->r_fetch(array(
-	        'r.r_id' => intval($_POST['r_id']),
-	        'r.r_status' => 1,
-	    ));
+        if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['u_fname']) || !isset($_POST['u_email'])){
+            die(echo_json(array(
+                'status' => 0,
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Core Data</div>',
+            )));
+        }
 
-	    if(count($classes)==1){
+        //Fetch inputs:
+        $classes = $this->Db_model->r_fetch(array(
+            'r.r_id' => intval($_POST['r_id']),
+            'r.r_status' => 1,
+        ));
+
+        if(count($classes)==1){
             $bs = $this->Db_model->remix_bs(array(
                 'b.b_id' => $classes[0]['r_b_id'],
             ));
             $b = $bs[0];
             $focus_class = filter($classes,'r_id',$_POST['r_id']);
         }
-	    
-	    //Display results:
-	    if(!isset($b) || !isset($classes[0]) || $b['b_id']<1 || !($focus_class['r_id']==intval($_POST['r_id']))) {
+
+        //Display results:
+        if(!isset($b) || !isset($classes[0]) || $b['b_id']<1 || !($focus_class['r_id']==intval($_POST['r_id']))) {
 
             die(echo_json(array(
                 'status' => 0,
@@ -973,45 +619,45 @@ class Api_v1 extends CI_Controller {
             'hard_redirect' => '/my/class_application/'.$admissions[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
         )));
 
-	}
-	
-	function submit_application(){
+    }
+
+    function ru_checkout(){
 
         //When they submit the Application Questionnaire in step 2 of their admission:
         $application_status_salt = $this->config->item('application_status_salt');
-	    if(!isset($_POST['support_level']) || !in_array(intval($_POST['support_level']),array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
-	        
-	        //Log engagement:
-	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
-	            'e_message' => 'submit_application() Missing Core Inputs.',
-	            'e_json' => $_POST,
-	            'e_type_id' => 8, //Platform Error
-	        ));
-	        
-	        //Display Error:
-	        die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
-	    }
-	    
-	    //Fetch all their admissions:
-	    $admissions = $this->Db_model->remix_admissions(array(
-	        'ru.ru_id'	=> intval($_POST['ru_id']),
-	    ));
-	    
-	    //Make sure we got all this data:
-	    if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
+        if(!isset($_POST['support_level']) || !in_array(intval($_POST['support_level']),array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 
-	        //Log this error:
-	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $_POST['u_id'],
-	            'e_message' => 'submit_application() failed to fetch admission data.',
-	            'e_json' => $_POST,
-	            'e_type_id' => 8, //Platform Error
-	        ));
-	        
-	        //Error:
-	        die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
-	    }
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
+                'e_message' => 'ru_checkout() Missing Core Inputs.',
+                'e_json' => $_POST,
+                'e_type_id' => 8, //Platform Error
+            ));
+
+            //Display Error:
+            die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
+        }
+
+        //Fetch all their admissions:
+        $admissions = $this->Db_model->remix_admissions(array(
+            'ru.ru_id'	=> intval($_POST['ru_id']),
+        ));
+
+        //Make sure we got all this data:
+        if(!(count($admissions)==1) || !isset($admissions[0]['r_id']) || !isset($admissions[0]['b_id'])){
+
+            //Log this error:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $_POST['u_id'],
+                'e_message' => 'ru_checkout() failed to fetch admission data.',
+                'e_json' => $_POST,
+                'e_type_id' => 8, //Platform Error
+            ));
+
+            //Error:
+            die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
+        }
 
         //Log Engagement:
         $this->Db_model->e_create(array(
@@ -1070,8 +716,8 @@ class Api_v1 extends CI_Controller {
             }
         }
 
-	    //Save answers:
-	    $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
+        //Save answers:
+        $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
 
         //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
         //The "pay_r_id" variable makes the next page redirect to paypal automatically for PAID classes
@@ -1079,9 +725,9 @@ class Api_v1 extends CI_Controller {
         echo '<script> setTimeout(function() { window.location = "'.$next_url.'" }, 1000); </script>';
         echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $update_data['ru_final_price'] ? 'Redirecting to Paypal...​' : 'Successfully Joined 🙌​').'</div>';
 
-	}
+    }
 
-	function withdraw_application(){
+    function ru_withdraw(){
         //Validate inputs:
         $application_status_salt = $this->config->item('application_status_salt');
         if(!isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
@@ -1132,689 +778,13 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-    function refresh_integration(){
-
-        $udata = auth(2,0,$_POST['b_id']);
-        if(!$udata){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Refresh the page and try again.',
-            ));
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Bootcamp ID',
-            ));
-        } elseif(!isset($_POST['fp_id']) || strlen($_POST['fp_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing Page ID',
-            ));
-        } else {
-
-            //Fetch Page:
-            $fp_pages = $this->Db_model->fp_fetch(array(
-                'fp_id' => $_POST['fp_id'],
-            ));
-
-            if(count($fp_pages)<1){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Could not find page',
-                ));
-            } elseif(!($fp_pages[0]['fp_status']==1)){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Page is not currently integrated',
-                ));
-            } else {
-
-                //First remove integration:
-                $this->Comm_model->fb_page_integration($udata['u_id'],$fp_pages[0],$_POST['b_id'],0);
-
-                //Then add integration:
-                sleep(2);
-
-                $this->Comm_model->fb_page_integration($udata['u_id'],$fp_pages[0],$_POST['b_id'],1);
-
-                //Let user know:
-                echo_json(array(
-                    'status' => 1,
-                    'message' => '<i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" title="Success"></i>',
-                ));
-            }
-        }
-    }
-
-	function login(){
-	    
-	    //Setting for admin logins:
-	    $master_password = 'mench7788826962';
-        $website = $this->config->item('website');
-	    
-	    if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
-	        return false;
-	    } elseif(!isset($_POST['u_password'])){
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
-	        return false;
-	    }
-	    
-	    //Fetch user data:
-	    $users = $this->Db_model->u_fetch(array(
-	        'u_email' => strtolower($_POST['u_email']),
-	    ));
-
-        //See if they have any active admissions:
-        $active_admission = null;
-
-	    if(count($users)==1){
-
-            $admissions = $this->Db_model->remix_admissions(array(
-                'ru_u_id' => $users[0]['u_id'],
-                'ru_status >=' => 4,
-            ));
-            //We'd need to see which admission to load now:
-            $active_admission = filter_active_admission($admissions);
-
-        }
-	    
-	    if(count($users)==0){
-
-	        //Not found!
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not found.</div>');
-	        return false;
-
-	    } elseif($users[0]['u_status']<0){
-
-	        //Inactive account
-	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $users[0]['u_id'],
-	            'e_message' => 'login() denied because account is not active.',
-	            'e_json' => $_POST,
-	            'e_type_id' => 9, //Support Needing Graceful Errors
-	        ));
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
-	        return false;
-
-	    } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
-
-	        //Bad password
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
-	        return false;
-
-	    }
-
-        $co_instructors = array();
-        if($users[0]['u_status']==1){
-            //Regular user, see if they are assigned to any Bootcamp as co-instructor
-            $co_instructors = $this->Db_model->instructor_bs(array(
-                'ba.ba_u_id' => $users[0]['u_id'],
-                'ba.ba_status >=' => 1,
-                'b.b_status >=' => 2,
-            ));
-        }
-
-        $session_data = array();
-	    //Are they admin?
-	    if($users[0]['u_status']>=2 /* || count($co_instructors)>0 */){
-	        //They have admin rights:
-            $session_data['user'] = $users[0];
-        }
-        //Are they an active student?
-        if($active_admission){
-            //They have admin rights:
-            $session_data['uadmission'] = $active_admission;
-        }
-
-        //Applicable for instructors only:
-        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
-        $is_instructor = (isset($session_data['user']) && count($session_data['user'])>0);
-        $is_student = (isset($session_data['uadmission']) && count($session_data['uadmission'])>0);
-
-        if($is_instructor && !$is_chrome){
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
-            return false;
-        } elseif(!$is_instructor && !$is_student){
-            //We assume this is a student request:
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Bootcamps yet. You can only login as a student after you have been approved by your instructor.</div>');
-            return false;
-        }
-
-
-        //Log engagement
-        if(!($_POST['u_password']==$master_password)){
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $users[0]['u_id'],
-                'e_json' => $users[0],
-                'e_type_id' => 10, //login
-            ));
-        }
-
-        
-        //All good to go!
-        //Load session and redirect:
-        $this->session->set_userdata($session_data);
-        
-        //Append user IP and agent information
-        if(isset($_POST['u_password'])){
-            unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
-        }
-        $users[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
-        $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $users[0]['input_post_data'] = $_POST;
-
-            
-        
-        if(isset($_POST['url']) && strlen($_POST['url'])>0){
-            header( 'Location: '.$_POST['url'] );
-        } else {
-            //Default:
-            if($is_instructor){
-                //Instructor default:
-                header( 'Location: /console' );
-            } else {
-                //Student default:
-                header( 'Location: /my/actionplan' );
-            }
-        }
-	}
-	
-	function logout(){
-	    //Log engagement:
-	    $udata = $this->session->userdata('user');
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
-	        'e_json' => $udata,
-	        'e_type_id' => 11, //Admin Logout
-	    ));
-	    
-	    //Called via AJAX to destroy user session:
-	    $this->session->sess_destroy();
-	    header( 'Location: /' );
-	}
-	
-	function account_update(){
-	    
-	    //Auth user and check required variables:
-	    $udata = auth(2);
-	    $countries_all = $this->config->item('countries_all');
-	    $timezones = $this->config->item('timezones');
-        $message_max = $this->config->item('message_max');
-	    
-	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the page and try again.</span>');
-	    } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
-	    } elseif(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
-	    } elseif(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
-        } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-            die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
-        } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
-            die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
-	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://')){
-	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
-	    } elseif(strlen($_POST['u_bio'])>$message_max){
-	        die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
-	    }
-	    
-	    if(!isset($_POST['u_language'])){
-	        $_POST['u_language'] = array();
-	    }
-	    
-	    //Fetch current data:
-	    $u_current = $this->Db_model->u_fetch(array(
-	        'u_id' => intval($_POST['u_id']),
-	    ));
-	    
-	    $u_update = array(
-	        'u_fname' => trim($_POST['u_fname']),
-	        'u_lname' => trim($_POST['u_lname']),
-	        'u_email' => trim(strtolower($_POST['u_email'])),
-	        'u_phone' => $_POST['u_phone'],
-	        'u_image_url' => $_POST['u_image_url'],
-	        'u_gender' => $_POST['u_gender'],
-	        'u_country_code' => $_POST['u_country_code'],
-	        'u_current_city' => $_POST['u_current_city'],
-	        'u_timezone' => $_POST['u_timezone'],
-	        'u_language' => join(',',$_POST['u_language']),
-	        'u_bio' => trim($_POST['u_bio']),
-            'u_skype_username' => trim($_POST['u_skype_username']),
-            'u_paypal_email' => ( isset($_POST['u_paypal_email']) ? trim(strtolower($_POST['u_paypal_email'])) : null ),
-	    );
-	    
-	    //Some more checks:
-	    if(!(count($u_current)==1)){
-	        die('<span style="color:#FF0000;">Error: Invalid user ID.</span>');
-	    } elseif(strlen($_POST['u_password_new'])>0 || strlen($_POST['u_password_current'])>0){
-	        //Password update attempt, lets check:
-	        if(strlen($_POST['u_password_new'])<=0){
-	            die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
-	        } elseif(strlen($_POST['u_password_current'])<=0){
-	            die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
-	        } elseif(!(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
-	            die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
-	        } elseif($_POST['u_password_new']==$_POST['u_password_current']){
-	            die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
-	        } elseif(strlen($_POST['u_password_new'])<6){
-	            die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
-	        } else {
-	            //Set password for updating:
-	            $u_update['u_password'] = md5($_POST['u_password_new']);
-	            //Reset both fields:
-	            echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
-	        }
-	    }
-	    $warning = NULL;
-	    
-	    //Check social links:
-	    if($_POST['u_website_url']!==$u_current[0]['u_website_url']){
-	        if(strlen($_POST['u_website_url'])>0){
-	            //Validate it:
-	            if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
-	                $u_update['u_website_url'] = $_POST['u_website_url'];
-	                echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
-	            } else {
-	                $warning .= 'Invalid website URL. ';
-	            }
-	        } else {
-	            $u_update['u_website_url'] = '';
-	        }
-	    }
-	    
-	    
-	    //Did they just agree to the agreement?
-	    if(isset($_POST['u_newly_checked']) && intval($_POST['u_newly_checked']) && strlen($u_current[0]['u_terms_agreement_time'])<1){
-	        //Yes they did, save the timestamp:
-	        $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
-	    }
-	    
-	    
-	    $u_social_account = $this->config->item('u_social_account');
-	    foreach($u_social_account as $sa_key=>$sa_value){
-	        if($_POST[$sa_key]!==$u_current[0][$sa_key]){
-	            if(strlen($_POST[$sa_key])>0){
-	                //User has attempted to update it, lets validate it:
-	                //$full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
-	                $u_update[$sa_key] = trim($_POST[$sa_key]);
-	            } else {
-	                $u_update[$sa_key] = '';
-	            }
-	        }
-	    }
-	    
-	    //Now update the DB:
-	    $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
-
-
-	    //Refetch some DB (to keep consistency with login session format) & update the Session:
-        $users = $this->Db_model->u_fetch(array(
-            'u_id' => intval($_POST['u_id']),
-        ));
-        if(isset($users[0])){
-            $this->session->set_userdata(array('user' => $users[0]));
-        }
-
-
-	    //Remove sensitive data before logging:
-	    unset($_POST['u_password_new']);
-	    unset($_POST['u_password_current']);
-	    
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	        'e_message' => readable_updates($u_current[0],$u_update,'u_'),
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => $u_current[0],
-	            'after' => $u_update,
-	        ),
-	        'e_type_id' => 12, //Account Update
-	        'e_recipient_u_id' => intval($_POST['u_id']), //The user that their account was updated
-	    ));
-	    
-	    //TODO update algolia
-	    
-	    //Show result:
-	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
-	}
-
-    function completion_report(){
-
-	    //Validate integrity of request:
-        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
-            || !isset($_POST['page_load_time']) || !intval($_POST['page_load_time'])
-            || !isset($_POST['s_key']) || !($_POST['s_key']==md5($_POST['c_id'].$_POST['page_load_time'].'pag3l0aDSla7'.$_POST['u_id']))
-            || !isset($_POST['b_id']) || intval($_POST['b_id'])<=0
-            || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
-            || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
-        }
-
-        //Fetch student name and details:
-        $matching_admissions = $this->Db_model->ru_fetch(array(
-            'ru_u_id' => intval($_POST['u_id']),
-            'ru_r_id' => intval($_POST['r_id']),
-            'ru_status >=' => 4, //Only Active students can submit Steps
-        ));
-
-        if(!(count($matching_admissions)==1)){
-            die('<span style="color:#FF0000;">Error: You are no longer an active Student of this Bootcamp</span>');
-        }
-
-
-        //Fetch full Bootcamp/Class/Node data from Action Plan copy:
-        $bs = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
-        $focus_class = $bs[0]['this_class'];
-        $intent_data = extract_level( $bs[0] , intval($_POST['c_id']) );
-
-
-        if(!$focus_class){
-            die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
-        } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
-            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
-        //Submission settings:
-        } elseif($intent_data['intent']['c_complete_url_required']=='t' && count(extract_urls($_POST['us_notes']))<1){
-            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        } elseif($intent_data['intent']['c_complete_notes_required']=='t' && strlen($_POST['us_notes'])<1){
-            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
-        }
-
-
-        //Make sure student has not submitted this Node before:
-        $us_data = $this->Db_model->us_fetch(array(
-            'us_student_id' => intval($_POST['u_id']),
-            'us_r_id' => intval($_POST['r_id']),
-            'us_c_id' => intval($_POST['c_id']),
-        ));
-
-        if(count($us_data)>0 && $us_data[0]['us_status']==1){
-            die('<span style="color:#FF0000;">Error: You have already marked this item as complete, You cannot re-submit it.</span>');
-        }
-
-
-        //Calculate total new progress based on this new this submission:
-        $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),3);
-
-
-        //Now update the DB:
-        $us_data = $this->Db_model->us_create(array(
-            'us_student_id' => $matching_admissions[0]['u_id'],
-            'us_b_id' => intval($_POST['b_id']),
-            'us_r_id' => intval($_POST['r_id']),
-            'us_c_id' => intval($_POST['c_id']),
-            'us_time_estimate' => $intent_data['intent']['c_time_estimate'], //A snapshot of its time-estimate upon completion, the Action Plan Copy might be updated later on...
-            'us_student_notes' => trim($_POST['us_notes']),
-            'us_status' => 1, //Submitted
-        ));
-
-
-        //Do we need to send any notifications?
-        if(strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
-
-            //Send email to all instructors of this Bootcamp:
-            $b_instructors = $this->Db_model->ba_fetch(array(
-                'ba.ba_b_id' => intval($_POST['b_id']),
-                'ba.ba_status >=' => 2, //co-instructors & lead instructor
-                'u.u_status >=' => 1, //Must be a user level 1 or higher
-            ));
-
-            $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
-
-            $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
-            $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
-            //Send notifications to current instructor
-            foreach($b_instructors as $bi){
-                //Make sure this instructor has an email on file
-                if(strlen($bi['u_email'])>0){
-                    //Step Completion Email:
-                    //Draft HTML message for this:
-                    $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_objective'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
-                    $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_objective'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($intent_data['intent']['c_time_estimate'],0).'</div>';
-                    $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
-                    $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Cheers,</div>';
-                    $html_message .= '<div'.$div_style.'>Team Mench</div>';
-                    $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
-                    //Send Email:
-                    $this->Comm_model->send_email(array($bi['u_email']), $subject, $html_message, array(
-                        'e_initiator_u_id' => ( isset($matching_admissions[0]['u_id']) ? $matching_admissions[0]['u_id'] : 0 ), //Student who made submission
-                        'e_recipient_u_id' => $bi['u_id'], //The admin
-                        'e_message' => $subject,
-                        'e_json' => array(
-                            'html' => $html_message,
-                        ),
-                        'e_type_id' => 28, //Email message sent
-                        'e_c_id' => $intent_data['intent']['c_id'],
-                        'e_b_id' => intval($_POST['b_id']),
-                        'e_r_id' => $focus_class['r_id'],
-                    ));
-                }
-            }
-        }
-
-
-        //See if we need to dispatch any messages:
-        $on_complete_messages = array();
-        $drip_messages = array();
-
-        //Dispatch messages for this Step:
-        $step_messages = extract_level($bs[0],$_POST['c_id']);
-
-        foreach($step_messages['intent']['c__messages'] as $i){
-            if($i['i_status']==2){
-                //Add a reference button to Drip messages:
-                $i['i_message'] = $i['i_message'].' {button}';
-                array_push($drip_messages , $i);
-            } elseif($i['i_status']==3){
-                array_push($on_complete_messages, array_merge($i , array(
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                    'i_c_id' => $i['i_c_id'],
-                    'e_b_id' => intval($_POST['b_id']),
-                    'e_r_id' => intval($_POST['r_id']),
-                )));
-            }
-        }
-
-        //Is the Bootcamp Complete?
-        if($intent_data['next_level']==1){
-            //Seems so!
-            foreach($bs[0]['c__messages'] as $i){
-                //Bootcamps only could have ON-COMPLETE messages:
-                if($i['i_status']==3){
-                    array_push($on_complete_messages, array_merge($i , array(
-                        'e_initiator_u_id' => 0,
-                        'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                        'i_c_id' => $i['i_c_id'],
-                        'e_b_id' => intval($_POST['b_id']),
-                        'e_r_id' => intval($_POST['r_id']),
-                    )));
-                }
-            }
-        }
-
-        //Anything to be sent instantly?
-        if(count($on_complete_messages)>0){
-            //Dispatch all Instant Messages, their engagements have already been logged:
-            $this->Comm_model->send_message($on_complete_messages);
-        }
-
-        //Any Drip Messages? Schedule them if we have some:
-        if(count($drip_messages)>0){
-
-            $start_time = time();
-            $drip_intervals = ($focus_class['r__class_end_time']-$start_time) / (count($drip_messages)+1);
-            $drip_time = $start_time;
-
-            foreach($drip_messages as $i){
-
-                $drip_time += $drip_intervals;
-                $this->Db_model->e_create(array(
-
-                    'e_initiator_u_id' => 0, //System
-                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                    'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
-                    'e_json' => array(
-                        'created_time' => date("Y-m-d H:i:s" , $start_time ),
-                        'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
-                        'i_drip_count' => count($drip_messages),
-                        'i' => $i, //The actual message that would be sent
-                    ),
-                    'e_type_id' => 52, //Pending Drip e_type_id=52
-                    'e_cron_job' => 0, //Pending for the Drip Cron
-                    'e_i_id' => $i['i_id'],
-                    'e_c_id' => $i['i_c_id'],
-                    'e_b_id' => intval($_POST['b_id']),
-                    'e_r_id' => intval($_POST['r_id']),
-
-                ));
-            }
-        }
-
-
-        //Show result to student:
-        echo_us($us_data);
-
-
-        //Log Engagement for Step Completion:
-        $this->Db_model->e_create(array(
-            'e_initiator_u_id' => intval($_POST['u_id']),
-            'e_message' => $us_data['us_student_notes'],
-            'e_json' => array(
-                'input' => $_POST,
-                'scheduled_drip' => count($drip_messages),
-                'sent_oncomplete' => count($on_complete_messages),
-                'next_level' => $intent_data['next_level'],
-                'next_c' => ( isset($intent_data['next_intent']) ? $intent_data['next_intent'] : array() ),
-            ),
-            'e_type_id' => 33, //Marked as Done Report
-            'e_b_id' => intval($_POST['b_id']),
-            'e_r_id' => intval($_POST['r_id']),
-            'e_c_id' => intval($_POST['c_id']),
-        ));
-
-
-        //Take action based on what the next level is...
-        if($intent_data['next_level']==1){
-
-            //The next level is the Bootcamp, which means this was the last Step:
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => $ru_cache__completion_rate, //Should be 1 (100% complete)
-                'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
-            ));
-
-            //Send graduation message:
-            $this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => 4632, //As soon as Graduated message
-                'depth' => 0,
-                'e_b_id' => intval($_POST['b_id']),
-                'e_r_id' => intval($_POST['r_id']),
-            ));
-
-        } elseif($intent_data['next_level']==2){
-
-            //We have a next Task:
-            //We also need to change ru_cache__current_task to reflect this advancement:
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => $ru_cache__completion_rate,
-                'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
-            ));
-
-            //Send appropriate Message:
-            $this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => $intent_data['next_intent']['c_id'],
-                'depth' => 0,
-                'e_b_id' => intval($_POST['b_id']),
-                'e_r_id' => intval($_POST['r_id']),
-            ));
-
-            //Show button for next task:
-            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
-
-
-        } else {
-
-            //This should not happen!
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $_POST['u_id'],
-                'e_message' => 'completion_report() experienced fatal error where $intent_data/next_level was not 1,2 or 3',
-                'e_json' => array(
-                    'POST' => $_POST,
-                    'intent_data' => $intent_data,
-                ),
-                'e_type_id' => 8, //Platform Error
-                'e_b_id' => $_POST['b_id'],
-                'e_r_id' => $_POST['r_id'],
-                'e_c_id' => $_POST['c_id'],
-            ));
-
-        }
-    }
-
-    /* ******************************
-     * r Classes
-     ****************************** */
-
-    function sync_action_plan(){
-        $udata = auth(2,0,$_POST['b_id']);
-        if(!$udata){
-            echo '<span style="color:#FF0000;">Error: Session Expired.</span>';
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            echo '<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>';
-        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-            echo '<span style="color:#FF0000;">Error: Missing Class ID.</span>';
-        } else {
-            //All Good, start updating:
-            $saved = $this->Db_model->snapshot_action_plan($_POST['b_id'],$_POST['r_id']);
-            //Show Message:
-            if($saved){
-                echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
-            } else {
-                echo '<span style="color:#FF0000;">Unknown Error while trying to save the Action Plan</span>';
-            }
-        }
-    }
-
-	function load_iphone(){
-        $udata = auth(1);
-        if(!$udata){
-            //Display error:
-            die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
-        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Node id.</span>');
-        } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
-            die('<span style="color:#FF0000;">Error: invalid level ID.</span>');
-        } else {
-            //Load the phone:
-            $this->load->view('console/frames/messages' , $_POST);
-        }
-    }
-
-
-
-
-    function load_classmates(){
+    function ru_r_list(){
 
         $b_id = 0;
         $r_id = 0;
         $is_instructor = 0;
 
-	    //Function called form /MY/classmates (student Messenger)
+        //Function called form /MY/classmates (student Messenger)
         if(isset($_POST['psid'])){
 
             $ru_filter = array(
@@ -1973,7 +943,7 @@ class Api_v1 extends CI_Controller {
                     <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
                     <div id="action_plan_status" class="copy_ap maxout" style="display:none; border:1px solid #000; border-radius:5px; margin-top:20px; padding:10px;">
                         <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete.</p>
-                        <p><a href="javascript:void(0);" onclick="sync_action_plan(<?= $b['b_id'] ?>,<?= $class['r_id'] ?>)">I Understand, Continue With Update &raquo;</a></p>
+                        <p><a href="javascript:void(0);" onclick="r_sync_c(<?= $b['b_id'] ?>,<?= $class['r_id'] ?>)">I Understand, Continue With Update &raquo;</a></p>
                     </div>
                     <?php
                 }
@@ -2254,143 +1224,751 @@ class Api_v1 extends CI_Controller {
         }
     }
 
+    function ru_save_review(){
+        if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Admission Data.</div>');
+        } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Review Score must be between 1-10.</div>');
+        }
 
-	function simulate_task(){
-	    //Dispatch Messages:
-        $results = $this->Comm_model->foundation_message(array(
-            'e_recipient_u_id' => $_POST['u_id'],
-            'e_c_id' => $_POST['c_id'],
-            'depth' => $_POST['depth'],
-            'e_b_id' => $_POST['b_id'],
-            'e_r_id' => 0,
+        //Validate Admission:
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_id' => intval($_POST['ru_id']),
+        ));
+        if(count($admissions)<1){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => 0, //System
+                'e_message' => 'Validated review submission call failed to fetch admission data',
+                'e_type_id' => 8, //System Error
+            ));
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Unable to locate your Admission.</div>');
+        }
+
+        //Is this a new review, or updating an existing one?
+        $new_review = ( intval($admissions[0]['ru_review_score'])<0 );
+        $has_text = ( strlen($_POST['ru_review_public_note'])>0 || strlen($_POST['ru_review_private_note'])>0 );
+        $update_data = array(
+            'ru_review_time' => date("Y-m-d H:i:s"),
+            'ru_review_score' => $_POST['ru_review_score'],
+            'ru_review_public_note' => $_POST['ru_review_public_note'],
+            'ru_review_private_note' => $_POST['ru_review_private_note'],
+        );
+
+        //Save Engagement that is visible to instructor:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $admissions[0]['u_id'],
+            'e_message' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
+            'e_json' => $update_data,
+            'e_type_id' => 72, //Student Reviewed Class
+            'e_b_id' => $admissions[0]['r_b_id'],
+            'e_r_id' => $admissions[0]['r_id'],
         ));
 
-        if($results['status']){
-            echo '<i class="fa fa-check-circle" style="color:#3C4858;" title="SUCCESS: '.$results['message'].'" aria-hidden="true"></i>';
+        //Do they have a Private Feedback? Log a need attention Engagement to Mench team reads instantly:
+        if(strlen($_POST['ru_review_private_note'])>0){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $admissions[0]['u_id'],
+                'e_message' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
+                'e_json' => $update_data,
+                'e_type_id' => 9, //Support Needing Graceful Errors
+                'e_b_id' => $admissions[0]['r_b_id'],
+                'e_r_id' => $admissions[0]['r_id'],
+            ));
+        }
+
+        //Update data:
+        $this->Db_model->ru_update($admissions[0]['ru_id'], $update_data);
+
+        //Show success and thank student:
+        echo '<div class="alert alert-success">Thanks for '.($new_review?'submitting':'updating').' your review 👌'.( $has_text ? ' We read every single review and use your feedback to continuously improve 🙌​' : '' ).'</div>';
+
+        //TODO Encourage sharing IF reviewed highly...
+
+    }
+
+    function us_save(){
+
+        //Validate integrity of request:
+        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0
+            || !isset($_POST['page_load_time']) || !intval($_POST['page_load_time'])
+            || !isset($_POST['s_key']) || !($_POST['s_key']==md5($_POST['c_id'].$_POST['page_load_time'].'pag3l0aDSla7'.$_POST['u_id']))
+            || !isset($_POST['b_id']) || intval($_POST['b_id'])<=0
+            || !isset($_POST['r_id']) || intval($_POST['r_id'])<=0
+            || !isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
+        }
+
+        //Fetch student name and details:
+        $matching_admissions = $this->Db_model->ru_fetch(array(
+            'ru_u_id' => intval($_POST['u_id']),
+            'ru_r_id' => intval($_POST['r_id']),
+            'ru_status >=' => 4, //Only Active students can submit Steps
+        ));
+
+        if(!(count($matching_admissions)==1)){
+            die('<span style="color:#FF0000;">Error: You are no longer an active Student of this Bootcamp</span>');
+        }
+
+
+        //Fetch full Bootcamp/Class/Node data from Action Plan copy:
+        $bs = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
+        $focus_class = $bs[0]['this_class'];
+        $intent_data = extract_level( $bs[0] , intval($_POST['c_id']) );
+
+
+        if(!$focus_class){
+            die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
+        } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
+            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
+            //Submission settings:
+        } elseif($intent_data['intent']['c_complete_url_required']=='t' && count(extract_urls($_POST['us_notes']))<1){
+            die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        } elseif($intent_data['intent']['c_complete_notes_required']=='t' && strlen($_POST['us_notes'])<1){
+            die('<span style="color:#FF0000;">Error: Notes Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
+        }
+
+
+        //Make sure student has not submitted this Node before:
+        $us_data = $this->Db_model->us_fetch(array(
+            'us_student_id' => intval($_POST['u_id']),
+            'us_r_id' => intval($_POST['r_id']),
+            'us_c_id' => intval($_POST['c_id']),
+        ));
+
+        if(count($us_data)>0 && $us_data[0]['us_status']==1){
+            die('<span style="color:#FF0000;">Error: You have already marked this item as complete, You cannot re-submit it.</span>');
+        }
+
+
+        //Calculate total new progress based on this new this submission:
+        $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),3);
+
+
+        //Now update the DB:
+        $us_data = $this->Db_model->us_create(array(
+            'us_student_id' => $matching_admissions[0]['u_id'],
+            'us_b_id' => intval($_POST['b_id']),
+            'us_r_id' => intval($_POST['r_id']),
+            'us_c_id' => intval($_POST['c_id']),
+            'us_time_estimate' => $intent_data['intent']['c_time_estimate'], //A snapshot of its time-estimate upon completion, the Action Plan Copy might be updated later on...
+            'us_student_notes' => trim($_POST['us_notes']),
+            'us_status' => 1, //Submitted
+        ));
+
+
+        //Do we need to send any notifications?
+        if(strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
+
+            //Send email to all instructors of this Bootcamp:
+            $b_instructors = $this->Db_model->ba_fetch(array(
+                'ba.ba_b_id' => intval($_POST['b_id']),
+                'ba.ba_status >=' => 2, //co-instructors & lead instructor
+                'u.u_status >=' => 1, //Must be a user level 1 or higher
+            ));
+
+            $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
+
+            $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
+            $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
+            //Send notifications to current instructor
+            foreach($b_instructors as $bi){
+                //Make sure this instructor has an email on file
+                if(strlen($bi['u_email'])>0){
+                    //Step Completion Email:
+                    //Draft HTML message for this:
+                    $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
+                    $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($intent_data['intent']['c_time_estimate'],0).'</div>';
+                    $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
+                    $html_message .= '<br />';
+                    $html_message .= '<div'.$div_style.'>Cheers,</div>';
+                    $html_message .= '<div'.$div_style.'>Team Mench</div>';
+                    $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
+                    //Send Email:
+                    $this->Comm_model->send_email(array($bi['u_email']), $subject, $html_message, array(
+                        'e_initiator_u_id' => ( isset($matching_admissions[0]['u_id']) ? $matching_admissions[0]['u_id'] : 0 ), //Student who made submission
+                        'e_recipient_u_id' => $bi['u_id'], //The admin
+                        'e_message' => $subject,
+                        'e_json' => array(
+                            'html' => $html_message,
+                        ),
+                        'e_type_id' => 28, //Email message sent
+                        'e_c_id' => $intent_data['intent']['c_id'],
+                        'e_b_id' => intval($_POST['b_id']),
+                        'e_r_id' => $focus_class['r_id'],
+                    ));
+                }
+            }
+        }
+
+
+        //See if we need to dispatch any messages:
+        $on_complete_messages = array();
+        $drip_messages = array();
+
+        //Dispatch messages for this Step:
+        $step_messages = extract_level($bs[0],$_POST['c_id']);
+
+        foreach($step_messages['intent']['c__messages'] as $i){
+            if($i['i_status']==2){
+                //Add a reference button to Drip messages:
+                $i['i_message'] = $i['i_message'].' {button}';
+                array_push($drip_messages , $i);
+            } elseif($i['i_status']==3){
+                array_push($on_complete_messages, array_merge($i , array(
+                    'e_initiator_u_id' => 0,
+                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    'i_c_id' => $i['i_c_id'],
+                    'e_b_id' => intval($_POST['b_id']),
+                    'e_r_id' => intval($_POST['r_id']),
+                )));
+            }
+        }
+
+        //Is the Bootcamp Complete?
+        if($intent_data['next_level']==1){
+            //Seems so!
+            foreach($bs[0]['c__messages'] as $i){
+                //Bootcamps only could have ON-COMPLETE messages:
+                if($i['i_status']==3){
+                    array_push($on_complete_messages, array_merge($i , array(
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                        'i_c_id' => $i['i_c_id'],
+                        'e_b_id' => intval($_POST['b_id']),
+                        'e_r_id' => intval($_POST['r_id']),
+                    )));
+                }
+            }
+        }
+
+        //Anything to be sent instantly?
+        if(count($on_complete_messages)>0){
+            //Dispatch all Instant Messages, their engagements have already been logged:
+            $this->Comm_model->send_message($on_complete_messages);
+        }
+
+        //Any Drip Messages? Schedule them if we have some:
+        if(count($drip_messages)>0){
+
+            $start_time = time();
+            $drip_intervals = ($focus_class['r__class_end_time']-$start_time) / (count($drip_messages)+1);
+            $drip_time = $start_time;
+
+            foreach($drip_messages as $i){
+
+                $drip_time += $drip_intervals;
+                $this->Db_model->e_create(array(
+
+                    'e_initiator_u_id' => 0, //System
+                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
+                    'e_json' => array(
+                        'created_time' => date("Y-m-d H:i:s" , $start_time ),
+                        'drip_time' => date("Y-m-d H:i:s" , $drip_time ),
+                        'i_drip_count' => count($drip_messages),
+                        'i' => $i, //The actual message that would be sent
+                    ),
+                    'e_type_id' => 52, //Pending Drip e_type_id=52
+                    'e_cron_job' => 0, //Pending for the Drip Cron
+                    'e_i_id' => $i['i_id'],
+                    'e_c_id' => $i['i_c_id'],
+                    'e_b_id' => intval($_POST['b_id']),
+                    'e_r_id' => intval($_POST['r_id']),
+
+                ));
+            }
+        }
+
+
+        //Show result to student:
+        echo_us($us_data);
+
+
+        //Log Engagement for Step Completion:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => intval($_POST['u_id']),
+            'e_message' => $us_data['us_student_notes'],
+            'e_json' => array(
+                'input' => $_POST,
+                'scheduled_drip' => count($drip_messages),
+                'sent_oncomplete' => count($on_complete_messages),
+                'next_level' => $intent_data['next_level'],
+                'next_c' => ( isset($intent_data['next_intent']) ? $intent_data['next_intent'] : array() ),
+            ),
+            'e_type_id' => 33, //Marked as Done Report
+            'e_b_id' => intval($_POST['b_id']),
+            'e_r_id' => intval($_POST['r_id']),
+            'e_c_id' => intval($_POST['c_id']),
+        ));
+
+
+        //Take action based on what the next level is...
+        if($intent_data['next_level']==1){
+
+            //The next level is the Bootcamp, which means this was the last Step:
+            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                'ru_cache__completion_rate' => $ru_cache__completion_rate, //Should be 1 (100% complete)
+                'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
+            ));
+
+            //Send graduation message:
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => intval($_POST['u_id']),
+                'e_c_id' => 4632, //As soon as Graduated message
+                'depth' => 0,
+                'e_b_id' => intval($_POST['b_id']),
+                'e_r_id' => intval($_POST['r_id']),
+            ));
+
+        } elseif($intent_data['next_level']==2){
+
+            //We have a next Task:
+            //We also need to change ru_cache__current_task to reflect this advancement:
+            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
+                'ru_cache__completion_rate' => $ru_cache__completion_rate,
+                'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
+            ));
+
+            //Send appropriate Message:
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => intval($_POST['u_id']),
+                'e_c_id' => $intent_data['next_intent']['c_id'],
+                'depth' => 0,
+                'e_b_id' => intval($_POST['b_id']),
+                'e_r_id' => intval($_POST['r_id']),
+            ));
+
+            //Show button for next task:
+            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
+
+
         } else {
-            echo '<i class="fa fa-exclamation-triangle" style="color:#FF0000;" title="ERROR: '.$results['message'].'" aria-hidden="true"></i>';
+
+            //This should not happen!
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $_POST['u_id'],
+                'e_message' => 'us_save() experienced fatal error where $intent_data/next_level was not 1,2 or 3',
+                'e_json' => array(
+                    'POST' => $_POST,
+                    'intent_data' => $intent_data,
+                ),
+                'e_type_id' => 8, //Platform Error
+                'e_b_id' => $_POST['b_id'],
+                'e_r_id' => $_POST['r_id'],
+                'e_c_id' => $_POST['c_id'],
+            ));
+
         }
     }
 
+    /* ******************************
+	 * Users
+	 ****************************** */
 
-	function r_create(){
-	    $udata = auth(2);
-	    if(!$udata){
-	        //Display error:
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-        } elseif(!isset($_POST['r_start_date']) || !strtotime($_POST['r_start_date'])){
-            die('<span style="color:#FF0000;">Error: Enter valid start date.</span>');
-        } elseif((strtotime($_POST['r_start_date']))<time()){
-            die('<span style="color:#FF0000;">Error: Cannot have a start date in the past.</span>');
-	    } elseif(!isset($_POST['r_b_id']) || intval($_POST['r_b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['r_status'])){
-	        die('<span style="color:#FF0000;">Error: Invalid class status.</span>');
-	    } elseif(!isset($_POST['copy_r_id']) || intval($_POST['copy_r_id'])<0){
-	        die('<span style="color:#FF0000;">Error: Missing Class Import Settings.</span>');
-	    } else {
-	        
-	        //Start with the date:
-	        $new_date = date("Y-m-d",strtotime($_POST['r_start_date']));
-	        //Check for unique start date:
-	        $current_classes = $this->Db_model->r_fetch(array(
-	            'r.r_b_id' => intval($_POST['r_b_id']),
-	            'r.r_status >=' => 0,
-	            'r.r_start_date' => $new_date,
-	        ));
-	        if(count($current_classes)>0){
-	            //Ooops, we cannot have duplicate dates:
-	            die('<span style="color:#FF0000;">Error: Cannot have two classes starting on the same day.</span>');
-	        }
-	        
-	        
-	        //This is the variable we're building:
-	        $class_data = null;
-	        
-	        if(intval($_POST['copy_r_id'])>0){
-	            
-	            //Fetch default questions:
-	            $classes = $this->Db_model->r_fetch(array(
-	                'r.r_id' => intval($_POST['copy_r_id']),
-	                'r.r_b_id' => intval($_POST['r_b_id']),
-	            ));
-	            
-	            if(count($classes)==1){
+    function u_password_reset_initiate(){
+        //We need an email input:
+        if(!isset($_POST['email'])){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Email.</div>');
+        } elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Email.</div>');
+        }
 
-	                //Port the settings:
-	                $class_data = $classes[0];
-	                $eng_message = time_format($_POST['r_start_date'],1).' class created by copying '.time_format($class_data['r_start_date'],1).' class settings.';
-	                
-	                //Make some adjustments
-	                $class_data['r_start_date'] = $new_date;
-	                $class_data['r_status'] = intval($_POST['r_status']); //Override with input status
+        //Attempt to fetch this user:
+        $matching_users = $this->Db_model->u_fetch(array(
+            'u_email' => strtolower($_POST['email']),
+        ));
+        if(count($matching_users)>0){
+            //Dispatch the password reset node:
+            $this->Comm_model->foundation_message(array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $matching_users[0]['u_id'],
+                'e_c_id' => 3030,
+                'depth' => 0,
+                'e_b_id' => 0,
+                'e_r_id' => 0,
+            ), true);
+        }
 
-	                //Remove all additional appended data and certain non-replicatable data fields like r_id:
-                    foreach($class_data as $key=>$value){
-                        if(substr_count($key,'r__')>0 || in_array($key,array('r_id'))){
-                            //This is an appended data field:
-                            unset($class_data[$key]);
-                        }
-                    }
-	            }
-	        }
-	        
-	        
-	        //Did we build it?
-	        if(!$class_data){
-	            
-	            //Generate core data:
-	            $class_data = array(
-	                'r_b_id' => intval($_POST['r_b_id']),
-	                'r_start_date' => date("Y-m-d",strtotime($_POST['r_start_date'])),
-	                'r_status' => intval($_POST['r_status']),
-	            );
-	            
-	            //Default message:
-	            $eng_message = time_format($_POST['r_start_date'],1).' class created form scratch.';
-	        }
-	        
-	        
-	        //Create new class:
-            $class = $this->Db_model->r_create($class_data);
+        //Show message:
+        echo '<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>';
+        echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
 
-	        
-	        //Log engagement:
+    }
+
+    function u_password_reset_apply(){
+        //This function updates the user's new password as requested via a password reset:
+        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0 || !isset($_POST['timestamp']) || intval($_POST['timestamp'])<=0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash'])<10){
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Core Variables.</div>';
+        } elseif(!($_POST['p_hash']==md5($_POST['u_id'] . 'p@ssWordR3s3t' . $_POST['timestamp']))){
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid hash key.</div>';
+        } elseif(!isset($_POST['new_pass']) || strlen($_POST['new_pass'])<6){
+            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: New password must be longer than 6 characters. Try again.</div>';
+        } else {
+            //All seems good, lets update their account:
+            $this->Db_model->u_update( intval($_POST['u_id']) , array(
+                'u_password' => md5($_POST['new_pass']),
+            ));
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => intval($_POST['u_id']),
+                'e_type_id' => 59, //Password reset
+            ));
+
+            //Log all sessions out:
+            $this->session->sess_destroy();
+
+            //Show message:
+            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/login"><u>login here</u></a>.</div>';
+            echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
+        }
+    }
+
+	function login(){
+	    
+	    //Setting for admin logins:
+	    $master_password = 'mench7788826962';
+        $website = $this->config->item('website');
+	    
+	    if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
+	        return false;
+	    } elseif(!isset($_POST['u_password'])){
+	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
+	        return false;
+	    }
+	    
+	    //Fetch user data:
+	    $users = $this->Db_model->u_fetch(array(
+	        'u_email' => strtolower($_POST['u_email']),
+	    ));
+
+        //See if they have any active admissions:
+        $active_admission = null;
+
+	    if(count($users)==1){
+
+            $admissions = $this->Db_model->remix_admissions(array(
+                'ru_u_id' => $users[0]['u_id'],
+                'ru_status >=' => 4,
+            ));
+            //We'd need to see which admission to load now:
+            $active_admission = filter_active_admission($admissions);
+
+        }
+	    
+	    if(count($users)==0){
+
+	        //Not found!
+	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not found.</div>');
+	        return false;
+
+	    } elseif($users[0]['u_status']<0){
+
+	        //Inactive account
 	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	            'e_message' => $eng_message,
-	            'e_json' => array(
-	                'input' => $_POST,
-	                'before' => array(),
-	                'after' => $class,
-	            ),
-	            'e_type_id' => 14, //New Class
-	            'e_b_id' => intval($_POST['r_b_id']), //Share with Bootcamp team
-	            'e_r_id' => $class['r_id'],
+	            'e_initiator_u_id' => $users[0]['u_id'],
+	            'e_message' => 'login() denied because account is not active.',
+	            'e_json' => $_POST,
+	            'e_type_id' => 9, //Support Needing Graceful Errors
 	        ));
-	        
-	        
-	        if($class['r_id']>0){
-	            //Redirect:
-	            echo '<script> window.location = "/console/'.intval($_POST['r_b_id']).'/classes/'.$class['r_id'].'" </script>';
+	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
+	        return false;
+
+	    } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
+
+	        //Bad password
+	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
+	        return false;
+
+	    }
+
+        $co_instructors = array();
+        if($users[0]['u_status']==1){
+            //Regular user, see if they are assigned to any Bootcamp as co-instructor
+            $co_instructors = $this->Db_model->instructor_bs(array(
+                'ba.ba_u_id' => $users[0]['u_id'],
+                'ba.ba_status >=' => 1,
+                'b.b_status >=' => 2,
+            ));
+        }
+
+        $session_data = array();
+	    //Are they admin?
+	    if($users[0]['u_status']>=2 /* || count($co_instructors)>0 */){
+	        //They have admin rights:
+            $session_data['user'] = $users[0];
+        }
+        //Are they an active student?
+        if($active_admission){
+            //They have admin rights:
+            $session_data['uadmission'] = $active_admission;
+        }
+
+        //Applicable for instructors only:
+        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
+        $is_instructor = (isset($session_data['user']) && count($session_data['user'])>0);
+        $is_student = (isset($session_data['uadmission']) && count($session_data['uadmission'])>0);
+
+        if($is_instructor && !$is_chrome){
+            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
+            return false;
+        } elseif(!$is_instructor && !$is_student){
+            //We assume this is a student request:
+            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Bootcamps yet. You can only login as a student after you have been approved by your instructor.</div>');
+            return false;
+        }
+
+
+        //Log engagement
+        if(!($_POST['u_password']==$master_password)){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $users[0]['u_id'],
+                'e_json' => $users[0],
+                'e_type_id' => 10, //login
+            ));
+        }
+
+        
+        //All good to go!
+        //Load session and redirect:
+        $this->session->set_userdata($session_data);
+        
+        //Append user IP and agent information
+        if(isset($_POST['u_password'])){
+            unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
+        }
+        $users[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
+        $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+        $users[0]['input_post_data'] = $_POST;
+
+            
+        
+        if(isset($_POST['url']) && strlen($_POST['url'])>0){
+            header( 'Location: '.$_POST['url'] );
+        } else {
+            //Default:
+            if($is_instructor){
+                //Instructor default:
+                header( 'Location: /console' );
+            } else {
+                //Student default:
+                header( 'Location: /my/actionplan' );
+            }
+        }
+	}
+	
+	function logout(){
+	    //Log engagement:
+	    $udata = $this->session->userdata('user');
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
+	        'e_json' => $udata,
+	        'e_type_id' => 11, //Admin Logout
+	    ));
+	    
+	    //Called via AJAX to destroy user session:
+	    $this->session->sess_destroy();
+	    header( 'Location: /' );
+	}
+	
+	function u_update(){
+	    
+	    //Auth user and check required variables:
+	    $udata = auth(2);
+	    $countries_all = $this->config->item('countries_all');
+	    $timezones = $this->config->item('timezones');
+        $message_max = $this->config->item('message_max');
+	    
+	    if(!$udata){
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the page and try again.</span>');
+	    } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
+	    } elseif(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
+	    } elseif(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
+        } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+            die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
+        } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
+            die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
+	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://')){
+	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
+	    } elseif(strlen($_POST['u_bio'])>$message_max){
+	        die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
+	    }
+	    
+	    if(!isset($_POST['u_language'])){
+	        $_POST['u_language'] = array();
+	    }
+	    
+	    //Fetch current data:
+	    $u_current = $this->Db_model->u_fetch(array(
+	        'u_id' => intval($_POST['u_id']),
+	    ));
+	    
+	    $u_update = array(
+	        'u_fname' => trim($_POST['u_fname']),
+	        'u_lname' => trim($_POST['u_lname']),
+	        'u_email' => trim(strtolower($_POST['u_email'])),
+	        'u_phone' => $_POST['u_phone'],
+	        'u_image_url' => $_POST['u_image_url'],
+	        'u_gender' => $_POST['u_gender'],
+	        'u_country_code' => $_POST['u_country_code'],
+	        'u_current_city' => $_POST['u_current_city'],
+	        'u_timezone' => $_POST['u_timezone'],
+	        'u_language' => join(',',$_POST['u_language']),
+	        'u_bio' => trim($_POST['u_bio']),
+            'u_skype_username' => trim($_POST['u_skype_username']),
+            'u_paypal_email' => ( isset($_POST['u_paypal_email']) ? trim(strtolower($_POST['u_paypal_email'])) : null ),
+	    );
+	    
+	    //Some more checks:
+	    if(!(count($u_current)==1)){
+	        die('<span style="color:#FF0000;">Error: Invalid user ID.</span>');
+	    } elseif(strlen($_POST['u_password_new'])>0 || strlen($_POST['u_password_current'])>0){
+	        //Password update attempt, lets check:
+	        if(strlen($_POST['u_password_new'])<=0){
+	            die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
+	        } elseif(strlen($_POST['u_password_current'])<=0){
+	            die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
+	        } elseif(!(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
+	            die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
+	        } elseif($_POST['u_password_new']==$_POST['u_password_current']){
+	            die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
+	        } elseif(strlen($_POST['u_password_new'])<6){
+	            die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
 	        } else {
-	            die('<span style="color:#FF0000;">Error: Unkown error while trying to create this Bootcamp.</span>');
+	            //Set password for updating:
+	            $u_update['u_password'] = md5($_POST['u_password_new']);
+	            //Reset both fields:
+	            echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
 	        }
 	    }
+	    $warning = NULL;
+	    
+	    //Check social links:
+	    if($_POST['u_website_url']!==$u_current[0]['u_website_url']){
+	        if(strlen($_POST['u_website_url'])>0){
+	            //Validate it:
+	            if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
+	                $u_update['u_website_url'] = $_POST['u_website_url'];
+	                echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
+	            } else {
+	                $warning .= 'Invalid website URL. ';
+	            }
+	        } else {
+	            $u_update['u_website_url'] = '';
+	        }
+	    }
+	    
+	    
+	    //Did they just agree to the agreement?
+	    if(isset($_POST['u_newly_checked']) && intval($_POST['u_newly_checked']) && strlen($u_current[0]['u_terms_agreement_time'])<1){
+	        //Yes they did, save the timestamp:
+	        $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
+	    }
+	    
+	    
+	    $u_social_account = $this->config->item('u_social_account');
+	    foreach($u_social_account as $sa_key=>$sa_value){
+	        if($_POST[$sa_key]!==$u_current[0][$sa_key]){
+	            if(strlen($_POST[$sa_key])>0){
+	                //User has attempted to update it, lets validate it:
+	                //$full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
+	                $u_update[$sa_key] = trim($_POST[$sa_key]);
+	            } else {
+	                $u_update[$sa_key] = '';
+	            }
+	        }
+	    }
+	    
+	    //Now update the DB:
+	    $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
+
+
+	    //Refetch some DB (to keep consistency with login session format) & update the Session:
+        $users = $this->Db_model->u_fetch(array(
+            'u_id' => intval($_POST['u_id']),
+        ));
+        if(isset($users[0])){
+            $this->session->set_userdata(array('user' => $users[0]));
+        }
+
+
+	    //Remove sensitive data before logging:
+	    unset($_POST['u_password_new']);
+	    unset($_POST['u_password_current']);
+	    
+	    //Log engagement:
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
+	        'e_message' => readable_updates($u_current[0],$u_update,'u_'),
+	        'e_json' => array(
+	            'input' => $_POST,
+	            'before' => $u_current[0],
+	            'after' => $u_update,
+	        ),
+	        'e_type_id' => 12, //Account Update
+	        'e_recipient_u_id' => intval($_POST['u_id']), //The user that their account was updated
+	    ));
+	    
+	    //TODO update algolia
+	    
+	    //Show result:
+	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
 	}
 
+    /* ******************************
+     * r Classes
+     ****************************** */
 
+    function r_sync_c(){
+        $udata = auth(2,0,$_POST['b_id']);
+        if(!$udata){
+            echo '<span style="color:#FF0000;">Error: Session Expired.</span>';
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo '<span style="color:#FF0000;">Error: Missing Bootcamp ID.</span>';
+        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+            echo '<span style="color:#FF0000;">Error: Missing Class ID.</span>';
+        } else {
+            //All Good, start updating:
+            $saved = $this->Db_model->snapshot_action_plan($_POST['b_id'],$_POST['r_id']);
+            //Show Message:
+            if($saved){
+                echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
+            } else {
+                echo '<span style="color:#FF0000;">Unknown Error while trying to save the Action Plan</span>';
+            }
+        }
+    }
 
+	function r_update_status(){
 
-	function class_update_status(){
+        $udata = auth(2, 0);
+        $_POST['r_new_status'] = intval($_POST['r_new_status']);
 
-        if(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the Page to Continue.',
+            ));
+            exit;
+        } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Class ID',
             ));
             exit;
-	    } elseif(!isset($_POST['r_new_status']) || !in_array(intval($_POST['r_new_status']),array(0,1))){
+	    } elseif(!isset($_POST['r_new_status']) || !in_array($_POST['r_new_status'],array(0,1))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Class Status',
@@ -2398,65 +1976,124 @@ class Api_v1 extends CI_Controller {
             exit;
 	    }
 
-	    //Validate This Class:
+	    //Fetch Class:
 	    $classes = $this->Db_model->r_fetch(array(
 	        'r.r_id' => intval($_POST['r_id']),
 	    ));
+        //Fetch all Existing Bootcamps for this Instructor:
+        $bs = $this->Db_model->instructor_bs(array(
+            'ba.ba_u_id' => $udata['u_id'],
+            'ba.ba_status' => 3, //Bootcamp Leaders
+            'b.b_status >=' => 2, //Lead Instructor
+        ));
+        //Fetch the Lead Instructor's weeks off:
+        $users = $this->Db_model->u_fetch(array(
+            'u_id' => $udata['u_id'],
+        ));
+
 	    if(count($classes)<1){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid Class ID',
             ));
             exit;
-	    }
-
-        $udata = auth(2, 0, $classes[0]['r_b_id']);
-        if(!$udata){
+	    } elseif(!(date("N",strtotime($classes[0]['r_start_date']))==1)){
+            //Make sure the start Date is a Monday:
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Session. Refresh the Page to Continue.',
+                'message' => 'Class does not start on Monday, cannot Toggle Support',
+            ));
+            exit;
+        } elseif(count($bs)==0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'You are not assigned to Any Bootcamps as the Lead Instructor',
+            ));
+            exit;
+        } elseif(count($users)==0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Could not find your account.',
             ));
             exit;
         }
 
-        $guided_admissions = count($this->Db_model->ru_fetch(array(
-            'ru_r_id' => intval($_POST['r_id']),
-            'ru_status >=' => 4,
-            'ru_p2_price >' => 0,
-        )));
-        if($guided_admissions>0){
-            echo_json(array(
-                'status' => 0,
-                'message' => $guided_admissions.' Student'.show_s($guided_admissions).' purchased a Support Package for this week. Cannot Change Support level.',
-            ));
-            exit;
+        //Are they attempting to disable Support?
+        if(!$_POST['r_new_status']){
+            //Let's make sure this Instructor has NOT sold any seats across ALL Bootcamps they lead:
+            $guided_admissions = count($this->Db_model->ru_fetch(array(
+                'r_b_id IN ('.join(',',aggregate_field($bs,'b_id')).')' => null,
+                'ru_status >=' => 4,
+                'ru_p2_price >' => 0,
+            )));
+            if($guided_admissions>0){
+
+                //Inform Admin:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' (Lead Instructor) is trying to disable a support week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$guided_admissions.'] Classroom seats across all their Bootcamps. Reach out to see if they need any help with this.',
+                    'e_type_id' => 9, //Support Needed
+                    'e_b_id' => $classes[0]['r_b_id'],
+                    'e_r_id' => $classes[0]['r_id'],
+                ));
+
+                echo_json(array(
+                    'status' => 0,
+                    'message' => $guided_admissions.' Student'.show_s($guided_admissions).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
+                ));
+                exit;
+
+            }
         }
 
-	    //Save new Status:
-	    $this->Db_model->r_update( intval($_POST['r_id']) , array(
-            'r_status' => intval($_POST['r_new_status']),
-        ));
-	    
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'], //The user
-	        'e_type_id' => ( intval($_POST['r_new_status']) ? 86 : 87 ), //Class Support Enabled/Disabled
-	        'e_b_id' => $classes[0]['r_b_id'],
-	        'e_r_id' => $classes[0]['r_id'],
-	    ));
-	    
+        $current_weeks_off = ( strlen($users[0]['u_weeks_off'])>0 ? unserialize($users[0]['u_weeks_off']) : array() );
+        $make_changes = false;
+
+        if(!$_POST['r_new_status'] && !in_array($classes[0]['r_start_date'],$current_weeks_off)){
+
+            //We need to add this:
+            $make_changes = true;
+            array_push($current_weeks_off,$classes[0]['r_start_date']);
+
+        } elseif($_POST['r_new_status'] && in_array($classes[0]['r_start_date'],$current_weeks_off)){
+
+            //We need to remove this:
+            $make_changes = true;
+            unset($current_weeks_off[array_search($classes[0]['r_start_date'], $current_weeks_off)]);
+
+        }
+
+        if($make_changes){
+
+            //Change user profile:
+            $this->Db_model->u_update( $udata['u_id'] , array(
+                'u_weeks_off' => ( count($current_weeks_off)>0 ? serialize($current_weeks_off) : null ),
+            ));
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'], //The user
+                'e_type_id' => ( intval($_POST['r_new_status']) ? 86 : 87 ), //Class Support Enabled/Disabled
+                'e_message' => 'Bootcamp support was '.( $_POST['r_new_status'] ? 'Enabled' : 'Disabled' ).' for the week of ['.$classes[0]['r_start_date'].']', //Class Support Enabled/Disabled
+                'e_b_id' => $classes[0]['r_b_id'],
+                'e_r_id' => $classes[0]['r_id'],
+            ));
+        }
+
 	    //Show result:
         echo_json(array(
             'status' => 1,
+            'r_new_status' => intval($_POST['r_new_status']),
             'message' => status_bible('r',$_POST['r_new_status'],true, null),
         ));
+
 	}
 	
 	/* ******************************
 	 * b Bootcamps
 	 ****************************** */
 	
-	function project_create(){
+	function b_create(){
 
 	    $udata = auth(2);
 	    if(!$udata){
@@ -2482,7 +2119,7 @@ class Api_v1 extends CI_Controller {
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'project_create() Function failed to create intent ['.$_POST['c_objective'].'].',
+                'e_message' => 'b_create() Function failed to create intent ['.$_POST['c_objective'].'].',
                 'e_json' => $_POST,
                 'e_type_id' => 8, //Platform Error
             ));
@@ -2527,7 +2164,7 @@ class Api_v1 extends CI_Controller {
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'project_create() Function failed to create Bootcamp for intent #'.$intent['c_id'],
+                'e_message' => 'b_create() Function failed to create Bootcamp for intent #'.$intent['c_id'],
                 'e_json' => $_POST,
                 'e_type_id' => 8, //Platform Error
             ));
@@ -2554,7 +2191,7 @@ class Api_v1 extends CI_Controller {
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'project_create() Function failed to grant permission for Bootcamp #'.$b['b_id'],
+                'e_message' => 'b_create() Function failed to grant permission for Bootcamp #'.$b['b_id'],
                 'e_json' => $_POST,
                 'e_type_id' => 8, //Platform Error
             ));
@@ -2616,7 +2253,7 @@ class Api_v1 extends CI_Controller {
 
 	}
 
-    function save_b_list(){
+    function b_save_list(){
         //Auth user and Load object:
         $udata = auth(2);
         if(!$udata){
@@ -2657,7 +2294,7 @@ class Api_v1 extends CI_Controller {
         }
     }
 
-    function save_settings(){
+    function b_save_settings(){
 
         //Auth user and check required variables:
         $udata = auth(2);
@@ -2865,7 +2502,277 @@ class Api_v1 extends CI_Controller {
         ));
     }
 
-    function save_modify(){
+	/* ******************************
+	 * c Nodes
+	 ****************************** */
+
+	function c_new(){
+	    
+	    $udata = auth(2);
+	    if(!$udata){
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
+	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing Node Outcome.</span>');
+	    }
+	    
+	    //Validate Original intent:
+	    $inbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['pid']),
+	    ));
+	    if(count($inbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
+	    }
+	    
+	    //Validate Bootcamp ID:
+	    $bs = $this->Db_model->b_fetch(array(
+	        'b.b_id' => intval($_POST['b_id']),
+	    ));
+	    if(count($bs)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    }
+	    
+	    //Create intent:
+	    $new_intent = $this->Db_model->c_create(array(
+	        'c_creator_id' => $udata['u_id'],
+            'c_objective' => trim($_POST['c_objective']),
+            'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
+	    ));
+	    
+	    //Log Engagement for New Node:
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => $udata['u_id'],
+	        'e_message' => 'Node ['.$new_intent['c_objective'].'] created',
+	        'e_json' => array(
+	            'input' => $_POST,
+	            'before' => null,
+	            'after' => $new_intent,
+	        ),
+	        'e_type_id' => 20, //New Node
+	        'e_b_id' => intval($_POST['b_id']),
+	        'e_c_id' => $new_intent['c_id'],
+	    ));
+	    
+	    //Create Link:
+	    $relation = $this->Db_model->cr_create(array(
+	        'cr_creator_id' => $udata['u_id'],
+	        'cr_inbound_id'  => intval($_POST['pid']),
+	        'cr_outbound_id' => $new_intent['c_id'],
+	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+                'cr_status >=' => 1,
+                'c_status >=' => 1,
+	            'cr_inbound_id' => intval($_POST['pid']),
+	        )),
+	    ));
+	    
+	    //Log Engagement for New Node Link:
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => $udata['u_id'],
+	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
+	        'e_json' => array(
+	            'input' => $_POST,
+	            'before' => null,
+	            'after' => $relation,
+	        ),
+	        'e_type_id' => 23, //New Node Link
+	        'e_b_id' => intval($_POST['b_id']),
+	        'e_cr_id' => $relation['cr_id'],
+	    ));
+	    
+	    //Fetch full link package:
+	    $relations = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_id' => $relation['cr_id'],
+	    ));
+	    
+	    //Update Algolia:
+	    //$this->Db_model->sync_algolia($new_intent['c_id']);
+
+	    //Return result:
+        echo_json(array(
+            'status' => 1,
+            'c_id' => $new_intent['c_id'],
+            'html' => echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
+        ));
+	}
+
+	function c_link(){
+	    
+	    $udata = auth(2);
+	    
+	    if(!$udata){
+	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
+	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
+	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
+	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
+	    }
+	    
+	    //Validate Bootcamp ID:
+	    $bs = $this->Db_model->b_fetch(array(
+	        'b.b_id' => intval($_POST['b_id']),
+	    ));
+	    if(count($bs)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
+	    }
+	    
+	    //Validate outbound link:
+	    $outbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['target_id']),
+	    ));
+	    if(count($outbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid target_id.</span>');
+	    }
+	    
+	    
+	    //Validate inbound link:
+	    $inbound_intents = $this->Db_model->c_fetch(array(
+	        'c.c_id' => intval($_POST['pid']),
+	    ));
+	    if(count($inbound_intents)<=0){
+	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
+	    }
+	    
+	    
+	    //Check to make sure not a duplicate link:
+	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_inbound_id' => intval($_POST['pid']),
+	        'cr.cr_status >=' => 0,
+	    ));
+	    foreach($current_outbounds as $co){
+	        if($co['cr_outbound_id']==intval($_POST['target_id'])){
+	            //Oops, we already have this!
+	            die('<script> alert("ERROR: Cannot create this link because it already exists."); </script>');
+	        }
+	    }
+	    
+	    
+	    //Create Link:
+	    $relation = $this->Db_model->cr_create(array(
+	        'cr_creator_id' => $udata['u_id'],
+	        'cr_inbound_id'  => intval($_POST['pid']),
+	        'cr_outbound_id' => intval($_POST['target_id']),
+	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+	            'cr_status >=' => 1,
+                'c_status >=' => 1,
+	            'cr_inbound_id' => intval($_POST['pid']),
+	        )),
+	    ));
+	    
+	    
+	    //Log Engagement for New Node Link:
+	    $this->Db_model->e_create(array(
+	        'e_initiator_u_id' => $udata['u_id'],
+	        'e_message' => 'Linked intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
+	        'e_json' => array(
+	            'input' => $_POST,
+	            'before' => null,
+	            'after' => $relation,
+	        ),
+	        'e_type_id' => 23, //New Node Link
+	        'e_b_id' => intval($_POST['b_id']),
+	        'e_cr_id' => $relation['cr_id'],
+	    ));
+	    
+	    
+	    //Fetch full OUTBOUND link package:
+	    $relations = $this->Db_model->cr_outbound_fetch(array(
+	        'cr.cr_id' => $relation['cr_id'],
+	    ));
+	    
+	    
+	    //Return result:
+	    echo echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid']));
+	}
+
+	function c_move_c(){
+
+        //Auth user and Load object:
+        $udata = auth(2);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Login again to Continue.',
+            ));
+        } elseif(!isset($_POST['cr_id']) || intval($_POST['cr_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid cr_id',
+            ));
+        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid c_id',
+            ));
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid b_id',
+            ));
+        } elseif(!isset($_POST['from_c_id']) || intval($_POST['from_c_id'])<=0) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing from_c_id',
+            ));
+        } elseif(!isset($_POST['to_c_id']) || intval($_POST['to_c_id'])<=0) {
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing to_c_id',
+            ));
+        } else {
+
+            //Fetch all three intents to ensure they are all valid and use them for engagement logging:
+            $subject = $this->Db_model->c_fetch(array(
+                'c.c_id' => intval($_POST['c_id']),
+            ));
+            $from = $this->Db_model->c_fetch(array(
+                'c.c_id' => intval($_POST['from_c_id']),
+            ));
+            $to = $this->Db_model->c_fetch(array(
+                'c.c_id' => intval($_POST['to_c_id']),
+            ));
+
+            if(!isset($subject[0]) || !isset($from[0]) || !isset($to[0])){
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid intent IDs',
+                ));
+            } else {
+                //Make the move:
+                $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
+                    'cr_creator_id' => $udata['u_id'],
+                    'cr_timestamp' => date("Y-m-d H:i:s"),
+                    'cr_inbound_id' => intval($_POST['to_c_id']),
+                    //No need to update sorting here as a separate JS function would call that within half a second after the move...
+                ));
+
+                //Log engagement:
+                $this->Db_model->e_create(array(
+                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_json' => array(
+                        'post' => $_POST,
+                    ),
+                    'e_message' => '['.$subject[0]['c_objective'].'] was migrated from ['.$from[0]['c_objective'].'] to ['.$to[0]['c_objective'].']', //Message migrated
+                    'e_type_id' => 50, //Message migrated
+                    'e_c_id' => intval($_POST['c_id']),
+                    'e_cr_id' => intval($_POST['cr_id']),
+                    'e_b_id' => intval($_POST['b_id']),
+                ));
+
+                //Return success
+                echo_json(array(
+                    'status' => 1,
+                    'message' => 'Move completed',
+                ));
+            }
+        }
+    }
+
+    function c_save_settings(){
 
         //Auth user and check required variables:
         $udata = auth(2);
@@ -3009,279 +2916,9 @@ class Api_v1 extends CI_Controller {
             'message' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
         ));
 
-	}
-
-	/* ******************************
-	 * c Nodes
-	 ****************************** */
-	
-	function intent_create(){
-	    
-	    $udata = auth(2);
-	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
-	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Node Outcome.</span>');
-	    }
-	    
-	    //Validate Original intent:
-	    $inbound_intents = $this->Db_model->c_fetch(array(
-	        'c.c_id' => intval($_POST['pid']),
-	    ));
-	    if(count($inbound_intents)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
-	    }
-	    
-	    //Validate Bootcamp ID:
-	    $bs = $this->Db_model->b_fetch(array(
-	        'b.b_id' => intval($_POST['b_id']),
-	    ));
-	    if(count($bs)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    }
-	    
-	    //Create intent:
-	    $new_intent = $this->Db_model->c_create(array(
-	        'c_creator_id' => $udata['u_id'],
-            'c_objective' => trim($_POST['c_objective']),
-            'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
-	    ));
-	    
-	    //Log Engagement for New Node:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Node ['.$new_intent['c_objective'].'] created',
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => null,
-	            'after' => $new_intent,
-	        ),
-	        'e_type_id' => 20, //New Node
-	        'e_b_id' => intval($_POST['b_id']),
-	        'e_c_id' => $new_intent['c_id'],
-	    ));
-	    
-	    //Create Link:
-	    $relation = $this->Db_model->cr_create(array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_inbound_id'  => intval($_POST['pid']),
-	        'cr_outbound_id' => $new_intent['c_id'],
-	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
-                'cr_status >=' => 1,
-                'c_status >=' => 1,
-	            'cr_inbound_id' => intval($_POST['pid']),
-	        )),
-	    ));
-	    
-	    //Log Engagement for New Node Link:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => null,
-	            'after' => $relation,
-	        ),
-	        'e_type_id' => 23, //New Node Link
-	        'e_b_id' => intval($_POST['b_id']),
-	        'e_cr_id' => $relation['cr_id'],
-	    ));
-	    
-	    //Fetch full link package:
-	    $relations = $this->Db_model->cr_outbound_fetch(array(
-	        'cr.cr_id' => $relation['cr_id'],
-	    ));
-	    
-	    //Update Algolia:
-	    //$this->Db_model->sync_algolia($new_intent['c_id']);
-
-	    //Return result:
-        echo_json(array(
-            'status' => 1,
-            'c_id' => $new_intent['c_id'],
-            'html' => echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid'])),
-        ));
-	}
-
-	function intent_link(){
-	    
-	    $udata = auth(2);
-	    
-	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
-	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
-	    }
-	    
-	    //Validate Bootcamp ID:
-	    $bs = $this->Db_model->b_fetch(array(
-	        'b.b_id' => intval($_POST['b_id']),
-	    ));
-	    if(count($bs)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
-	    }
-	    
-	    //Validate outbound link:
-	    $outbound_intents = $this->Db_model->c_fetch(array(
-	        'c.c_id' => intval($_POST['target_id']),
-	    ));
-	    if(count($outbound_intents)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid target_id.</span>');
-	    }
-	    
-	    
-	    //Validate inbound link:
-	    $inbound_intents = $this->Db_model->c_fetch(array(
-	        'c.c_id' => intval($_POST['pid']),
-	    ));
-	    if(count($inbound_intents)<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid PID.</span>');
-	    }
-	    
-	    
-	    //Check to make sure not a duplicate link:
-	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
-	        'cr.cr_inbound_id' => intval($_POST['pid']),
-	        'cr.cr_status >=' => 0,
-	    ));
-	    foreach($current_outbounds as $co){
-	        if($co['cr_outbound_id']==intval($_POST['target_id'])){
-	            //Oops, we already have this!
-	            die('<script> alert("ERROR: Cannot create this link because it already exists."); </script>');
-	        }
-	    }
-	    
-	    
-	    //Create Link:
-	    $relation = $this->Db_model->cr_create(array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_inbound_id'  => intval($_POST['pid']),
-	        'cr_outbound_id' => intval($_POST['target_id']),
-	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
-	            'cr_status >=' => 1,
-                'c_status >=' => 1,
-	            'cr_inbound_id' => intval($_POST['pid']),
-	        )),
-	    ));
-	    
-	    
-	    //Log Engagement for New Node Link:
-	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Linked intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => null,
-	            'after' => $relation,
-	        ),
-	        'e_type_id' => 23, //New Node Link
-	        'e_b_id' => intval($_POST['b_id']),
-	        'e_cr_id' => $relation['cr_id'],
-	    ));
-	    
-	    
-	    //Fetch full OUTBOUND link package:
-	    $relations = $this->Db_model->cr_outbound_fetch(array(
-	        'cr.cr_id' => $relation['cr_id'],
-	    ));
-	    
-	    
-	    //Return result:
-	    echo echo_cr($bs[0],$relations[0],$_POST['next_level'],intval($_POST['pid']));
-	}
-
-	function migrate_step(){
-
-        //Auth user and Load object:
-        $udata = auth(2);
-        if(!$udata){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid Session. Login again to Continue.',
-            ));
-        } elseif(!isset($_POST['cr_id']) || intval($_POST['cr_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid cr_id',
-            ));
-        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid c_id',
-            ));
-        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Invalid b_id',
-            ));
-        } elseif(!isset($_POST['from_c_id']) || intval($_POST['from_c_id'])<=0) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing from_c_id',
-            ));
-        } elseif(!isset($_POST['to_c_id']) || intval($_POST['to_c_id'])<=0) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Missing to_c_id',
-            ));
-        } else {
-
-            //Fetch all three intents to ensure they are all valid and use them for engagement logging:
-            $subject = $this->Db_model->c_fetch(array(
-                'c.c_id' => intval($_POST['c_id']),
-            ));
-            $from = $this->Db_model->c_fetch(array(
-                'c.c_id' => intval($_POST['from_c_id']),
-            ));
-            $to = $this->Db_model->c_fetch(array(
-                'c.c_id' => intval($_POST['to_c_id']),
-            ));
-
-            if(!isset($subject[0]) || !isset($from[0]) || !isset($to[0])){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid intent IDs',
-                ));
-            } else {
-                //Make the move:
-                $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
-                    'cr_creator_id' => $udata['u_id'],
-                    'cr_timestamp' => date("Y-m-d H:i:s"),
-                    'cr_inbound_id' => intval($_POST['to_c_id']),
-                    //No need to update sorting here as a separate JS function would call that within half a second after the move...
-                ));
-
-                //Log engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
-                    'e_json' => array(
-                        'post' => $_POST,
-                    ),
-                    'e_message' => '['.$subject[0]['c_objective'].'] was migrated from ['.$from[0]['c_objective'].'] to ['.$to[0]['c_objective'].']', //Message migrated
-                    'e_type_id' => 50, //Message migrated
-                    'e_c_id' => intval($_POST['c_id']),
-                    'e_cr_id' => intval($_POST['cr_id']),
-                    'e_b_id' => intval($_POST['b_id']),
-                ));
-
-                //Return success
-                echo_json(array(
-                    'status' => 1,
-                    'message' => 'Move completed',
-                ));
-            }
-        }
     }
 
-	function intents_sort(){
+    function c_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    if(!$udata){
@@ -3360,25 +2997,316 @@ class Api_v1 extends CI_Controller {
             }
         }
 	}
+
+    function c_tree_menu(){
+
+        if(!isset($_POST['c_id']) || !isset($_POST['hash_key']) || !($_POST['hash_key']==md5($_POST['c_id'].'menu89Hash'))){
+            die('<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
+        }
+
+    }
+
+    function c_import_ui(){
+
+        if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp source.',
+            ));
+            exit;
+        }
+
+        $udata = auth(2,0,$_POST['import_from_b_id']);
+        if(!$udata){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to try again.',
+            ));
+            exit;
+        }
+
+        $bs = $this->Db_model->remix_bs(array(
+            'b_id' => $_POST['import_from_b_id'],
+        ));
+        if(!(count($bs)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp source.',
+            ));
+            exit;
+        }
+
+        $import_items = array(
+            //Action Plan stuff:
+            array(
+                'is_header' => 1,
+                'name' => '<h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</h4>',
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-commenting" aria-hidden="true"></i> Import Bootcamp-Level Messages',
+                'id' => 'b_level_messages',
+                'count' => count($bs[0]['c__messages']),
+            ),
+            array(
+                'is_header' => 0,
+                'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Override Prerequisites',
+                'id' => 'b_prerequisites',
+                'count' => ( strlen($bs[0]['b_prerequisites'])>0 ? count(json_decode($bs[0]['b_prerequisites'])) : 0 ),
+            ),
+
+
+            array(
+                'is_header' => 1,
+                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Import Tasks with Messages</h5>',
+            ),
+        );
+
+        if($bs[0]['b_old_format']){
+
+            //Give specific options on each Milestone:
+            foreach($bs[0]['c__child_intents'] as $milestone){
+                if(isset($milestone['c__child_intents'])){
+                    //Give a single/total option:
+                    array_push($import_items,array(
+                        'is_header' => 0,
+                        'name' => 'Tasks form ['.$milestone['c_objective'].']',
+                        'id' => 'b_c_ids',
+                        'value' => $milestone['c_id'],
+                        'count' => count($milestone['c__child_intents']),
+                    ));
+                }
+            }
+
+        } else {
+
+            array_push($import_items,array(
+                'is_header' => 0,
+                'name' => 'Tasks of Action Plan',
+                'id' => 'b_c_ids',
+                'value' => $bs[0]['b_c_id'],
+                'count' => count($bs[0]['c__child_intents']),
+            ));
+
+        }
+
+
+        //Add Outcome section:
+        array_push($import_items,array(
+            'is_header' => 1,
+            'name' => '<h5><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</h5>',
+        ));
+        array_push($import_items,array(
+            'is_header' => 0,
+            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
+            'id' => 'b_transformations',
+            'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
+        ));
+
+
+
+        //Generate UI:
+        $ui = '<p>Choose what to import:</p>'; //Start generating this...
+        foreach($import_items as $item){
+            if($item['is_header']){
+                $ui .= '<div class="title">'.$item['name'].'</div>';
+            } else {
+                $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" class="import_checkbox" name="'.$item['id'].'" '.( isset($item['value']) ? 'value="'.$item['value'].'"' : '' ).' '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
+            }
+        }
+
+        echo_json(array(
+            'status' => 1,
+            'message' => null, //Not used, would load ui instead
+            'ui' => $ui,
+        ));
+    }
+
+    function c_import_process(){
+
+        if(!isset($_POST['import_from_b_id']) || intval($_POST['import_from_b_id'])<=0 || !isset($_POST['import_to_b_id']) || intval($_POST['import_to_b_id'])<=0){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Missing Bootcamp source.',
+            ));
+            exit;
+        } elseif(!isset($_POST['task_import_mode']) || intval($_POST['task_import_mode'])<1 || intval($_POST['task_import_mode'])>3){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Task Import Mode',
+            ));
+            exit;
+        }
+
+        $udata = auth(2,0,$_POST['import_from_b_id']);
+        $udata2 = auth(2,0,$_POST['import_to_b_id']);
+        if(!$udata || !$udata2){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired. Login to try again.',
+            ));
+            exit;
+        }
+
+        $bs_from = $this->Db_model->remix_bs(array(
+            'b_id' => $_POST['import_from_b_id'],
+        ));
+        $bs_to = $this->Db_model->b_fetch(array(
+            'b_id' => $_POST['import_to_b_id'],
+        ));
+        if(!(count($bs_from)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp from.',
+            ));
+            exit;
+        } elseif(!(count($bs_to)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp to.',
+            ));
+            exit;
+        }
+
+
+        //We're good at this point
+        //Start copying potential lists first:
+        $lists = array(
+            'b_prerequisites',
+            'b_transformations',
+        );
+        $b_lists = array();
+        foreach($lists as $list){
+            //Do we need this list?
+            if(isset($_POST[$list]) && intval($_POST[$list])){
+                //Yes, copy this guy:
+                $b_lists[$list] = $bs_from[0][$list];
+            }
+        }
+        if(count($b_lists)>0){
+            //Copy to new Action Plan:
+            $this->Db_model->b_update( $_POST['import_to_b_id'] , $b_lists);
+        }
+
+
+
+        //Do we need to copy the Bootcamp-level message?
+        $b_level_messages_results = array();
+        if(isset($_POST['b_level_messages']) && intval($_POST['b_level_messages']) && count($bs_from[0]['c__messages'])>0){
+            //Yes, import messages:
+            $b_level_messages_results = copy_messages($udata['u_id'],$bs_from[0]['c__messages'],$bs_to[0]['b_c_id']);
+        }
+
+
+        //Do we need to do any Tasks?
+        if(isset($_POST['b_c_ids']) && count($_POST['b_c_ids'])>0){
+            foreach($_POST['b_c_ids'] as $c_id){
+
+                //Fetch all child Nodes for this Node:
+                $nodes = $this->Db_model->c_fetch(array(
+                    'c.c_id' => $c_id,
+                ), 1, array('i')); //Supports up to 2 levels deep for now...
+
+                if(count($nodes)>0 && count($nodes[0]['c__child_intents'])>0){
+                    foreach($nodes[0]['c__child_intents'] as $c){
+                        if(intval($_POST['task_import_mode'])==3){
+
+                            //Copy intent:
+                            $new_task = copy_intent($udata['u_id'],$c,$bs_to[0]['b_c_id']);
+
+                            if(count($c['c__messages'])>0){
+                                //Copy messages:
+                                $new_task['c__messages'] = copy_messages($udata['u_id'], $c['c__messages'], $new_task['c_id']);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_json' => array(
+                'import_settings' => $_POST,
+                'b_lists' => $b_lists,
+                'b_level_messages_results' => $b_level_messages_results,
+            ),
+            'e_type_id' => 75, //Action Plan Imported
+            'e_b_id' => $bs_to[0]['b_id'],
+        ));
+
+
+        //Show message & redirect:
+        echo_json(array(
+            'status' => 1, //Success
+            'message' => '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>Reloading Action Plan...</div>',
+        ));
+    }
+
+    function c_tip(){
+        $udata = auth(2);
+        //Used to load all the help messages within the Console:
+        if(!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id'])<1){
+            echo_json(array(
+                'success' => 0,
+            ));
+        }
+
+        //Fetch Messages and the User's Got It Engagement History:
+        $messages = $this->Db_model->i_fetch(array(
+            'i_c_id' => intval($_POST['intent_id']),
+            'i_status >' => 0, //Published in any form
+        ));
+
+        //Log an engagement for all messages
+        foreach($messages as $i){
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_json' => $i,
+                'e_type_id' => 40, //Got It
+                'e_c_id' => intval($_POST['intent_id']),
+                'e_i_id' => $i['i_id'],
+            ));
+        }
+
+        //Build UI friendly Message:
+        $help_content = null;
+        foreach($messages as $i){
+            $help_content .= echo_i(array_merge($i,array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']);
+        }
+
+        //Return results:
+        echo_json(array(
+            'success' => ( $help_content ?  1 : 0 ), //No Messages perhaps!
+            'intent_id' => intval($_POST['intent_id']),
+            'help_content' => $help_content,
+        ));
+    }
 	
 	/* ******************************
 	 * i Messages
 	 ****************************** */
-	
-	function detect_url(){
-	    $urls = extract_urls($_POST['text']);
-	    if(count($urls)>0){
-	        //Fetch more details for the FIRST URL only and append to page:
-	        $flash_url = $this->session->flashdata('first_url');
-	        if(!$flash_url || !($flash_url==$urls[0])){
-	            echo $urls[0].time();
-	        }
-	        //Set new flash data either way!
-	        $this->session->set_flashdata('first_url', $urls[0]);
-	    }
-	}
 
-    function dispatch_message(){
+    function i_load_frame(){
+        $udata = auth(1);
+        if(!$udata){
+            //Display error:
+            die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
+        } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
+        } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
+            die('<span style="color:#FF0000;">Error: Invalid Node id.</span>');
+        } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
+            die('<span style="color:#FF0000;">Error: invalid level ID.</span>');
+        } else {
+            //Load the phone:
+            $this->load->view('console/frames/messages' , $_POST);
+        }
+    }
+
+    function i_test(){
 
         //Auth user and check required variables:
         $udata = auth(2);
@@ -3430,7 +3358,7 @@ class Api_v1 extends CI_Controller {
 
     }
 
-    function message_attachment(){
+    function i_attach(){
 	    
 	    $udata = auth(2);
 	    $file_limit_mb = $this->config->item('file_limit_mb');
@@ -3567,7 +3495,7 @@ class Api_v1 extends CI_Controller {
 	    }
 	}
 
-	function message_create(){
+	function i_create(){
 
 	    $udata = auth(2);
 	    if(!$udata){
@@ -3668,7 +3596,7 @@ class Api_v1 extends CI_Controller {
 	    }   
 	}
 	
-	function message_update(){
+	function i_modify(){
 	    
 	    //Auth user and Load object:
 	    $udata = auth(2);
@@ -3771,7 +3699,7 @@ class Api_v1 extends CI_Controller {
 	    }
 	}
 	
-	function message_delete(){
+	function i_delete(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    
@@ -3830,7 +3758,7 @@ class Api_v1 extends CI_Controller {
         }
 	}
 
-	function messages_sort(){
+	function i_sort(){
 	    //Auth user and Load object:
 	    $udata = auth(2);
 	    if(!$udata){
@@ -3881,5 +3809,22 @@ class Api_v1 extends CI_Controller {
             ));
         }
 	}
-	
+
+    function i_dispatch(){
+        //Dispatch Messages:
+        $results = $this->Comm_model->foundation_message(array(
+            'e_recipient_u_id' => $_POST['u_id'],
+            'e_c_id' => $_POST['c_id'],
+            'depth' => $_POST['depth'],
+            'e_b_id' => $_POST['b_id'],
+            'e_r_id' => 0,
+        ));
+
+        if($results['status']){
+            echo '<i class="fa fa-check-circle" style="color:#3C4858;" title="SUCCESS: '.$results['message'].'" aria-hidden="true"></i>';
+        } else {
+            echo '<i class="fa fa-exclamation-triangle" style="color:#FF0000;" title="ERROR: '.$results['message'].'" aria-hidden="true"></i>';
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ function load_class(r_id){
     $('#class_content').html('<img src="/img/round_load.gif" style="margin-top:50px;" class="loader" />');
 
     //Save the rest of the content:
-    $.post("/api_v1/load_classmates", { r_id:r_id } , function(data) {
+    $.post("/api_v1/ru_r_list", { r_id:r_id } , function(data) {
 
         //Update UI to confirm with user:
         $('#class_content').html(data).hide().fadeIn();
@@ -42,23 +42,28 @@ function toggle_support(r_id){
     $('#support_toggle_'+r_id).html('<img src="/img/round_load.gif" style="width:18px !important; height:16px !important;" class="loader" />');
 
     //Save the rest of the content:
-    $.post("/api_v1/class_update_status", {
+    $.post("/api_v1/r_update_status", {
+
         r_id:r_id,
         r_new_status:r_new_status,
+
     } , function(data) {
 
-        //Restore Loader:
-        $('#support_toggle_'+r_id).html(data.message);
-
         if(data.status){
+            //Restore Loader:
+            $('#support_toggle_'+r_id).html(data.message);
+
             //Update UI to confirm with user:
-            $('#support_toggle_'+r_id).attr('current-status',r_new_status);
-            if(r_new_status){
+            $('#support_toggle_'+r_id).attr('current-status',data.r_new_status);
+            if(data.r_new_status){
                 $('#support_toggle_'+r_id).removeClass('grey');
             } else {
                 $('#support_toggle_'+r_id).addClass('grey');
             }
         } else {
+            //Restore Loader:
+            $('#support_toggle_'+r_id).html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>');
+
             //Show Error:
             alert('ERROR: ' + data.message);
         }
@@ -76,13 +81,13 @@ function changeBroadcastCount(){
     }
 }
 
-function sync_action_plan(b_id,r_id){
+function r_sync_c(b_id,r_id){
 
     //Show spinner:
     $('#action_plan_status').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 
     //Save the rest of the content:
-    $.post("/api_v1/sync_action_plan", {
+    $.post("/api_v1/r_sync_c", {
         r_id:r_id,
         b_id:b_id,
     } , function(data) {

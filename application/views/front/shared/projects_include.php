@@ -20,7 +20,7 @@
                     <i class="fa fa-calendar-check-o" style="color:#3C4858;" aria-hidden="true"></i>
                 </div>
                 <h3 class="info-title">Flexibility</h3>
-                <p>Learning a new skill does not have to interrupt your busy schedule. Mench Bootcamps usually require 5-15 hours of commitment during the 7-Day Bootcamp window. Do the necessary work based on your own schedule.</p>
+                <p>Learning a new skill does not have to interrupt your busy schedule. Mench Bootcamps usually require 5-15 hours of commitment during the weekly Bootcamp window. Do the necessary work based on your own schedule.</p>
             </div>
         </div>
 
