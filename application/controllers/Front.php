@@ -124,6 +124,7 @@ class Front extends CI_Controller {
         $classes = $this->Db_model->r_fetch(array(
             'r.r_b_id' => $b['b_id'],
             'r.r_status >=' => 0,
+            'r.r_status <=' => 1,
         ), null, 'ASC', $class_settings['students_show_max']);
 
 	    //Validate Class:
