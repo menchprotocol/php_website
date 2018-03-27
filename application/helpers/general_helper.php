@@ -1626,7 +1626,7 @@ function echo_r($b,$class,$append_class=null){
 
     echo '<li class="list-group-item '.$append_class.'">';
 
-    echo '<span class="pull-right">';
+    echo '<span class="pull-right" title="Class ID '.$class['r_id'].'">';
     if($class['r__current_admissions']>0){
 
         //How many students, if any, are enrolled in support packages?
