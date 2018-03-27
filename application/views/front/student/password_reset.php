@@ -15,7 +15,7 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
     //Show loading:
     function update_new_password(){
         //Show loading:
-        $('#pass_reset').html('<span><img src="/img/round_yellow_load.gif" class="loader" /></span>');
+        $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
         //Hide the editor & saving results:
         $.post("/api_v1/update_new_password", {
             u_id:<?= $_GET['u_id'] ?>,

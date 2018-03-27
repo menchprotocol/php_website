@@ -82,7 +82,7 @@ if(count($admission['b__admins'])>1){
     echo '</div>';
 }
 echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$admission['c_objective'].'</div>';
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.time_format($admission['r_start_date'],2).' - '.time_format($admission['r_cache__end_time'],2).'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.time_format($admission['r_start_date'],2).'</div>';
 echo '<div style="border-bottom:2px solid #000; margin:0 0 25px;">&nbsp;</div>';
 
 
@@ -106,11 +106,11 @@ echo '<div id="save_review">';
     echo '<div id="hide_before_score" style="display:'.( !$has_reviewed ? 'none' : 'block' ).';">';
 
         echo '<div style="margin-top:25px;" class="maxout"><b><i class="fa fa-eye-slash" aria-hidden="true"></i> Private & Anonymous Feedback (Optional)</b><br />Share your thoughts/suggestions on how '.$lead_instructor.' can improve future Classes:</div>';
-        echo '<textarea id="ru_review_private_note" class="form-textarea maxout">'.$admission['ru_review_private_note'].'</textarea>';
+        echo '<textarea id="ru_review_private_note" class="form-textarea maxout" style="border:1px solid #000;">'.$admission['ru_review_private_note'].'</textarea>';
 
 
         echo '<div style="margin-top:25px;" class="maxout"><b><i class="fa fa-eye" aria-hidden="true"></i> Public Review (Optional)</b><br />Write a review for '.$lead_instructor.' to let his future/potential students know about your experience and what to expect:</div>';
-        echo '<textarea id="ru_review_public_note" class="form-textarea maxout">'.$admission['ru_review_public_note'].'</textarea>';
+        echo '<textarea id="ru_review_public_note" class="form-textarea maxout" style="border:1px solid #000;">'.$admission['ru_review_public_note'].'</textarea>';
 
     echo '</div>';
 

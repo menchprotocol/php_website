@@ -29,4 +29,4 @@ window.extAsyncInit = function() {
 };
 </script>
 
-<div id="page_content"><div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div></div>
+<div id="page_content"><div style="text-align:center;"><img src="/img/round_load.gif" class="loader" /></div></div>

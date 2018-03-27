@@ -76,11 +76,10 @@ function changeBroadcastCount(){
     }
 }
 
-function sync_action_plan(){
+function sync_action_plan(b_id,r_id){
+
     //Show spinner:
     $('#action_plan_status').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
-    var b_id = $('#b_id').val();
-    var r_id = $('#r_id').val();
 
     //Save the rest of the content:
     $.post("/api_v1/sync_action_plan", {
@@ -89,11 +88,10 @@ function sync_action_plan(){
     } , function(data) {
         //Update UI to confirm with user:
         $('#action_plan_status').html(data).hide().fadeIn();
+
         //Assume all good, refresh:
         setTimeout(function() {
-            $(location).attr('href', '/console/'+b_id+'/classes/'+r_id);
-            window.location.hash = "#actionplan";
-            location.reload();
+            load_class(r_id);
         }, 1000);
     });
 }

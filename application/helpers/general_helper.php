@@ -239,8 +239,8 @@ function extract_level($b,$c_id){
         
     } else {
 
-        //Perhaps a level 3?
-        $previous_intent = null; //We'd be trying to find this...
+        //Keeps track of Tasks:
+        $previous_intent = null;
         
         foreach($b['c__child_intents'] as $sprint_key=>$sprint){
 
@@ -265,15 +265,43 @@ function extract_level($b,$c_id){
                         'anchor' => $core_objects['level_1']['o_icon'].' Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'],
                     ),
                 );
-                //Not applicable at Task Level:
-                $view_data['next_intent'] = null;
-                $view_data['next_level'] = 0;
-                $view_data['previous_intent'] = null;
-                $view_data['previous_level'] = 0;
+
+                //Find the next intent:
+                $next_intent = null;
+                $next_level = 0;
+                $next_key = $sprint_key;
+
+                while(!$next_intent){
+
+                    $next_key++;
+
+                    if(!isset($b['c__child_intents'][$next_key]['c_status'])){
+
+                        //Next Task does not exist, return Bootcamp:
+                        $next_intent = $b;
+                        $next_level = 1;
+                        break;
+
+                    } elseif($b['c__child_intents'][$next_key]['c_status']>=1){
+
+                        $next_intent = $b['c__child_intents'][$next_key];
+                        $next_level = 2;
+                        break;
+
+                    }
+                }
+
+                $view_data['next_intent'] = $next_intent;
+                $view_data['next_level'] = $next_level;
+                $view_data['previous_intent'] = $previous_intent;
+                $view_data['previous_level'] = ( $previous_intent ? 2 : 1 );
                 
                 return $view_data;
                 
             } else {
+
+                //Save this:
+                $previous_intent = $sprint;
 
                 foreach($sprint['c__child_intents'] as $step_key=>$step){
 
@@ -283,60 +311,10 @@ function extract_level($b,$c_id){
 
                     if($step['c_id']==$c_id){
 
-                        //Find the next intent:
-                        $next_intent = null;
-                        $next_level = 0;
-                        $next_step_key = $step_key;
-                        $next_task_key = $sprint_key;
-
-                        while(!$next_intent){
-
-                            $next_step_key += 1;
-
-                            if(!isset($sprint['c__child_intents'][$next_step_key]['c_id'])){
-
-                                //Find the next active Task since there are no more Steps:
-                                while(!$next_intent){
-
-                                    $next_task_key += 1;
-
-                                    if(!isset($b['c__child_intents'][$next_task_key]['c_id'])){
-
-                                        //Next Task does not exist, return Bootcamp:
-                                        $next_intent = $b;
-                                        $next_level = 1;
-                                        break;
-
-                                    } elseif($b['c__child_intents'][$next_task_key]['c_status']>=1){
-
-                                        $next_intent = $b['c__child_intents'][$next_task_key];
-                                        $next_level = 2;
-                                        break;
-
-                                    }
-                                }
-
-                                //Break either way:
-                                break;
-
-                            } elseif($sprint['c__child_intents'][$next_step_key]['c_status']>=1){
-
-                                $next_intent = $sprint['c__child_intents'][$next_step_key];
-                                $next_level = 3;
-                                break;
-
-                            }
-                        }
-
-
                         //This is level 3:
                         $view_data['level'] = 3;
                         $view_data['step_task'] = $sprint; //Only available for Steps
                         $view_data['task_index'] = $sprint['cr_outbound_rank'];
-                        $view_data['next_intent'] = $next_intent; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand next move
-                        $view_data['next_level'] = $next_level; //Used in actionplan_ui view for Step Sequence Submission positioning to better understand next move
-                        $view_data['previous_intent'] = $previous_intent;
-                        $view_data['previous_level'] = ( $previous_intent ? 3 : 1 ); //Previous is always a Step, never a Task (by design)
                         $view_data['intent'] = $step;
                         $view_data['title'] = 'Action Plan | Task '.$sprint['cr_outbound_rank'].' Step '.$step['cr_outbound_rank'].': '.$step['c_objective'];
                         $view_data['breadcrumb_p'] = array(
@@ -356,12 +334,10 @@ function extract_level($b,$c_id){
                         
                         return $view_data;
 
-                    } else {
-
-                        $previous_intent = $step;
-
                     }
+
                 }
+
             }
         }
         
@@ -409,7 +385,7 @@ function echo_price($b,$package_id=1,$return_double=false){
         if($price==0){
             return 'FREE';
         } elseif($price>0) {
-            return '$'.number_format($price,0).' USD';
+            return '$'.number_format($price,0).' <span style="font-size:0.6em;">USD</span>';
         } else {
             return null;
         }

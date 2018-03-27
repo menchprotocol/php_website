@@ -1257,11 +1257,6 @@ WHERE ru.ru_status >= 4
             return false;
         }
 
-        //Take snapshot of Class End Time:
-        $this->Db_model->r_update( $r_id , array(
-            'r_cache__end_time' => date("Y-m-d H:i:s",$classes[0]['r__class_end_time']),
-        ));
-
         //Save Action Plan Copy:
         $this->Db_model->e_create(array(
             'e_json' => $bs[0],

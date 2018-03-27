@@ -4,7 +4,7 @@ function start_application(){
 
     //Show loader:
     $('#submit_button').addClass('hidden');
-    $('#start_result').html('<span><img src="/img/round_yellow_load.gif" class="loader" /></span>').hide().fadeIn();
+    $('#start_result').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
     $(".form-el").prop('disabled', true).css('background-color','#EFEFEF');
 
     //Send data for processing:

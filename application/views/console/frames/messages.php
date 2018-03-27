@@ -419,7 +419,7 @@ if(!isset($intents[0])){
     function message_form_lock(){
         var i_status = $('#i_status_focus').val();
         button_value = $('#add_message_'+i_status+'_'+c_id).html();
-        $('#add_message_'+i_status+'_'+c_id).html('<span><img src="/img/round_yellow_load.gif" class="loader" /></span>');
+        $('#add_message_'+i_status+'_'+c_id).html('<span><img src="/img/round_load.gif" class="loader" /></span>');
         $('#add_message_'+i_status+'_'+c_id).attr('href','#');
 
         $('.add-msg'+c_id).addClass('is-working');

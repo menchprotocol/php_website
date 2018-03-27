@@ -102,9 +102,7 @@ class Cron extends CI_Controller {
 
             //Now make sure class meets are requirements to get started with the following conditions:
             $cancellation_reason = null; //If remains Null we're good to get started
-            if($bs[0]['b_status']<2){
-                $cancellation_reason = 'Bootcamp was not published';
-            } elseif($first_task_c_id==0) {
+            if($first_task_c_id==0) {
                 $cancellation_reason = 'Bootcamp did not have any published Tasks';
             } elseif(count($accepted_admissions)==0) {
                 $cancellation_reason = 'no students applied/got-admitted into this Class';
@@ -112,46 +110,9 @@ class Cron extends CI_Controller {
 
             if($cancellation_reason){
 
-                //Cancel this class as it does not have enough students admitted:
-                $stats[$class['r_id']]['new_status'] = -2; //Class was cancelled
+                //Expire this class as it does not have enough students admitted:
+                $stats[$class['r_id']]['new_status'] = -2; //Expired
                 $this->Db_model->r_update( $class['r_id'] , array('r_status' => $stats[$class['r_id']]['new_status']));
-
-
-                //Change the status of all students that had been accepted, if any, and notify admin for refunds:
-                //Note that this process is kind-of similar to Api_chat_v1/update_admission_status() but not fully as it also includes ru_status=0
-                if(count($accepted_admissions)>0){
-
-                    //Update counter:
-                    $stats[$class['r_id']]['students']['rejected_class_cancelled'] = count($accepted_admissions);
-
-                    foreach($accepted_admissions as $admission){
-                        //Auto reject:
-                        $this->Db_model->ru_update( $admission['ru_id'] , array('ru_status' => -1));
-
-                        //Inform the student of rejection:
-                        $this->Comm_model->foundation_message(array(
-                            'e_initiator_u_id' => 0,
-                            'e_recipient_u_id' => $admission['u_id'],
-                            'e_c_id' => 3017,
-                            'depth' => 0,
-                            'e_b_id' => $class['r_b_id'],
-                            'e_r_id' => $class['r_id'],
-                        ));
-
-                        //Was this a paid class? Let admin know to manually process refunds
-                        //TODO automate refunds through Paypal API later on...
-                        if($class['r_usd_price']>0){
-                            $this->Db_model->e_create(array(
-                                'e_initiator_u_id' => 0, //System
-                                'e_recipient_u_id' => $admission['u_id'],
-                                'e_message' => 'Investigation needed. May need to manually refund $['.$class['r_usd_price'].'] to ['.$admission['u_fname'].' '.$admission['u_lname'].'] as their pending application was auto-rejected upon class kick-start '.$cancellation_reason.'.',
-                                'e_type_id' => 58, //Class Manual Refund
-                                'e_b_id' => $class['r_b_id'],
-                                'e_r_id' => $class['r_id'],
-                            ));
-                        }
-                    }
-                }
 
                 //Log Class Cancellation engagement & Notify Admin/Instructor:
                 $this->Db_model->e_create(array(
@@ -172,9 +133,7 @@ class Cron extends CI_Controller {
                 $stats[$class['r_id']]['new_status'] = 2; //Class Running
                 $this->Db_model->r_update( $class['r_id'] , array(
                     'r_status' => $stats[$class['r_id']]['new_status'],
-                    'r_cache__current_milestone' => 1, //First Task is getting started, note it here
                 ));
-
 
                 //Take snapshot of Action Plan ONLY IF not already taken for this class:
                 if(!$bs[0]['is_copy']){
@@ -186,9 +145,24 @@ class Cron extends CI_Controller {
 
 
                 //Dispatch appropriate Message to Students
+                $classroom_students = 0;
                 foreach($accepted_admissions as $admission){
 
+                    if($admission['ru_p2_price']>0){
+                        $classroom_students++;
+                    }
+
+                    //Send message letting them know that their Bootcamp has started:
+                    $this->Comm_model->foundation_message(array(
+                        'e_recipient_u_id' => $admission['u_id'],
+                        'e_c_id' => 5441, //Bootcamp/Class Started
+                        'depth' => 0,
+                        'e_b_id' => $class['r_b_id'],
+                        'e_r_id' => $class['r_id'],
+                    ));
+
                     if(!($admission['ru_fp_psid']>0) || !($admission['ru_fp_id']>0)){
+
                         //No Messenger activated yet! Remind them again:
                         $this->Comm_model->foundation_message(array(
                             'e_initiator_u_id' => 0,
@@ -198,30 +172,24 @@ class Cron extends CI_Controller {
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
                         ));
+
                     } else {
-                        //Override this as the user's primary Chatline:
+
+                        //Override this as the user's primary Chatline as this Class is their default:
                         $this->Db_model->u_update( $admission['u_id'] , array(
                             'ru_fp_id' => $admission['ru_fp_id'],
                             'ru_fp_psid' => $admission['ru_fp_psid'],
                         ));
                     }
-
-                    //Send message for their first Class:
-                    $this->Comm_model->foundation_message(array(
-                        'e_recipient_u_id' => $admission['u_id'],
-                        'e_c_id' => $first_task_c_id, //First Task of this Class
-                        'depth' => 0,
-                        'e_b_id' => $class['r_b_id'],
-                        'e_r_id' => $class['r_id'],
-                    ));
                 }
 
 
                 //Log Class Kick-start engagement & Notify Admin/Instructor:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => 0, //System
-                    'e_message' => 'Class started successfully with ['.count($accepted_admissions).'] admitted students.',
+                    'e_message' => 'Class started successfully with ['.count($accepted_admissions).'] total students and ['.$classroom_students.'] Classroom students.'.( $classroom_students ? ' You should now schedule an hour long group call with your students and communicate the time to them so they can join on the group Call.' : ''),
                     'e_json' => array(
+                        'classroom_count' => $classroom_students,
                         'admitted' => $accepted_admissions,
                     ),
                     'e_type_id' => 60, //Class kick-started
@@ -370,7 +338,6 @@ class Cron extends CI_Controller {
                     //Update Class:
                     $this->Db_model->r_update( $class['r_id'] , array(
                         'r_status' => 3, //Completed
-                        'r_cache__current_milestone' => -1, //meaning Class is now complete
                         'r_cache__completion_rate' => $r_cache__completion_rate,
                     ));
 
@@ -728,7 +695,7 @@ class Cron extends CI_Controller {
                 //Checks to see who is responsible for this user, likely to receive update messages or something...
                 $admissions = $this->Db_model->remix_admissions(array(
                     'ru_u_id'	     => $nm['e_initiator_u_id'],
-                    'ru_status >='	 => 0, //Instructors can send messages to students with ru_status>=0
+                    'ru_status >='	 => 0,
                 ));
                 $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
@@ -882,180 +849,6 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function student_reminder_group_call_starting(){
-
-        //Cron Settings: 0,20,30,50 * * * * (ATTENTION: Logic dependant on these exact times!)
-
-        /*
-         * Cron timing designed with the assumption that Group Calls start at either 0 Minutes or 30 minutes (based on calendar restrictions)
-         * Sends out 2x reminders before the group call:
-         *
-         * - 2 hours before call to instructor
-         * - 1 Hour before call to students
-         * - 10 minutes before call to both student and instructor
-         *
-         */
-
-        //Cron stats file so we know what happened in each run...
-        $stats = array();
-        $today = date("N")-1;
-        $hour = date("G"); //Based on the cron settings
-        $minute = date("i"); //Based on the cron settings
-
-        if(!in_array($minute,array(0,20,30,50))){
-            //This should not happen, log an error:
-            $error = 'student_reminder_group_call_starting() can only run on minutes [0,20,30,50]. Its now minute ['.$minute.']';
-            $this->Db_model->e_create(array(
-                'e_message' => $error,
-                'e_type_id' => 8, //Platform Error
-            ));
-            die($error);
-        }
-
-        //For every cron we're looking for one of these two:
-        $tenmin_start = ( in_array($minute,array(20,50)) ? $hour + ( $minute==20 ? 0.5 : 1 ) : null );
-        $onehour_start = ( in_array($minute,array(0,30)) ? $hour + ( $minute==30 ? 1.5 : 1 ) : null );
-        $twohour_start = ( in_array($minute,array(0,30)) ? $hour + 1 + ( $minute==30 ? 1.5 : 1 ) : null );
-
-        $running_classes = $this->Db_model->r_fetch(array(
-            'r_status' => 2, //Only running classes
-            'r_live_office_hours IS NOT NULL' => null, //They have active Group Calls
-        ));
-
-        foreach($running_classes as $class) {
-
-            $group_call_schedule = unserialize($class['r_live_office_hours']);
-
-            if(!isset($group_call_schedule[$today]['periods']) || count($group_call_schedule[$today]['periods'])==0){
-                //Nothing found for today:
-                $stats[$class['r_id']] = 'No group calls scheduled for today.';
-                continue;
-            }
-
-            if(strlen($class['r_office_hour_instructions'])==0){
-                //Ooops, this should not happen:
-                $this->Db_model->e_create(array(
-                    'e_message' => 'Class with group call schedule is missing contact instructions. Inform instructor.',
-                    'e_type_id' => 8, //Platform Error
-                    'e_b_id' => $class['r_b_id'],
-                    'e_r_id' => $class['r_id'],
-                ));
-
-                //Skip this:
-                $stats[$class['r_id']] = 'Missing group call instructions. Error logged.';
-                continue;
-            }
-
-            //Fetch full Bootcamp/Class data for this:
-            $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
-            $class = $bs[0]['this_class'];
-
-
-            //Make sure Class is still running
-            if(time()>$class['r__class_end_time']){
-                //Class is finished, but still instructor has not submitted final report which is why r_status=2
-                $stats[$class['r_id']] = 'Class already finished.';
-                continue;
-            }
-
-            //We're trying to populate these if a match is found:
-            $student_message = null;
-            $instructor_message = null;
-
-            //Let's see:
-            foreach($group_call_schedule[$today]['periods'] as $key=>$period){
-
-                $start_hour = hourformat($period[0]);
-                //Not mentioning meeting duration for now:
-                //$end_hour = hourformat($period[1]);
-                //$meeting_duration = $end_hour - $start_hour;
-
-                if($twohour_start && $twohour_start==$start_hour){
-
-                    //Trigger 2 hours notice:
-                    $instructor_message = '📅 Reminder: your ['.$bs[0]['c_objective'].'] Bootcamp group call should start in 2 hours from now. Your students will receive 2 reminders before the call (1 hour before & 10 minutes before) and will receive the following contact method to join the call:'."\n\n=============\n".$class['r_office_hour_instructions']."\n=============\n\n".'If not correct, you have 1 hour and 50 minutes from now to update this contact method before we share it with you Class:'."\n\n".'https://mench.com/console/'.$class['r_b_id'].'/classes/'.$class['r_id'];
-
-                } elseif($onehour_start && $onehour_start==$start_hour){
-
-                    //Trigger 1 hour notice:
-                    $student_message = 'Hi {first_name}, just a reminder that our group call will start in 1 hour from now. I will share instructions on how to join the call 10 minutes prior to the call. Stay tuned 🙌​';
-
-                } elseif($tenmin_start && $tenmin_start==$start_hour){
-
-                    //Trigger 10 minute notice:
-                    //TODO we can query last messages and if nothing else was sent from the previous reminder, we can further simplify this:
-                    $student_message = 'Our group call is starting in 10 minutes. You can join by following these instructions:'."\n\n".$class['r_office_hour_instructions'];
-                    $instructor_message = '{first_name} your class group call should start in 10 minutes. All your students have already been notified 🙌';
-
-                }
-
-                if($student_message || $instructor_message){
-
-                    if($student_message){
-
-                        //Fetch all Students in This Class:
-                        $class_students = $this->Db_model->ru_fetch(array(
-                            'ru.ru_r_id'	    => $class['r_id'],
-                            'ru.ru_status'	    => 4, //Bootcamp students
-                        ));
-
-                        //Inform all students:
-                        foreach($class_students as $u){
-                            //Send this message & log sent engagement using the echo_i() function:
-                            $this->Comm_model->send_message(array(
-                                array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => $student_message,
-                                    'e_initiator_u_id' => 0, //System
-                                    'e_recipient_u_id' => $u['u_id'],
-                                    'e_b_id' => $class['r_b_id'],
-                                    'e_r_id' => $class['r_id'],
-                                ),
-                            ));
-                        }
-                    }
-
-                    if($instructor_message){
-                        //Fetch co-instructors:
-                        $b_instructors = $this->Db_model->ba_fetch(array(
-                            'ba.ba_b_id'        => $class['r_b_id'],
-                            'ba.ba_status >='   => 1, //Must be an actively assigned instructor
-                            'u.u_status >='     => 1, //Must be a user level 1 or higher
-                        ));
-
-                        //Send drip message to all students:
-                        foreach($b_instructors as $u){
-                            //Send this message & log sent engagement using the echo_i() function:
-                            $this->Comm_model->send_message(array(
-                                array(
-                                    'i_media_type' => 'text',
-                                    'i_message' => $instructor_message,
-                                    'e_initiator_u_id' => 0, //System
-                                    'e_recipient_u_id' => $u['u_id'],
-                                    'e_b_id' => $class['r_b_id'],
-                                    'e_r_id' => $class['r_id'],
-                                ),
-                            ));
-                        }
-                    }
-
-                    //Save for reporting:
-                    $stats[$class['r_id']] = $student_message.' '.$instructor_message;
-
-                    //Nothing more to do here:
-                    break;
-                }
-            }
-
-            if(!$student_message && !$instructor_message){
-                //Time not matched:
-                $stats[$class['r_id']] = 'Time not matched';
-            }
-        }
-
-        //Show stats:
-        echo_json($stats);
-    }
 
     function student_reminder_complete_task(){
 
@@ -1065,7 +858,6 @@ class Cron extends CI_Controller {
         $admissions = $this->Db_model->ru_fetch(array(
             'r.r_status'	    => 2, //Running Class
             'ru.ru_status'      => 4, //Admitted Students
-            '(ru.ru_cache__current_task <= r.r_cache__current_milestone)' => null, //Students that are behind
         ));
 
         //Define the logic of these reminders
@@ -1109,6 +901,7 @@ class Cron extends CI_Controller {
 
             foreach ($reminder_index as $logic){
                 if($elapsed_class_percentage>=$logic['time_elapsed']){
+
                     if($admission['ru_cache__completion_rate']<$logic['progress_below']){
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->e_fetch(array(

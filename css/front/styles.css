@@ -1068,12 +1068,13 @@ a.badge:focus, a.badge:hover {
 
 
 
-
+.pfooter { font-size:0.7em; display:block; text-align:center; margin-top:10px; color:#777; font-weight:300; }
+.pfooter img { width:20px; margin:-3px 1px 0 0;}
 
 
 
 #funnel{
-	background-color:#FEDD16 !important;
+	background-color:#FFF !important;
 	color:#000000 !important;
 }
 

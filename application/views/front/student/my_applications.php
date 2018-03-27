@@ -46,7 +46,7 @@
         var b_thankyou_url = '<?= $b_thankyou_url ?>';
         if(b_thankyou_url.length>0){
             //We have a URL to redirect to as requested by Instructor:
-            $('#application_status').html('<img src="/img/round_yellow_load.gif" class="loader" />');
+            $('#application_status').html('<img src="/img/round_load.gif" class="loader" />');
             window.location.href = b_thankyou_url;
         }
 
@@ -91,7 +91,7 @@ if(count($admissions)>0 && is_array($admissions)){
                 $( document ).ready(function() {
                     $('#paypal_<?= $admission['ru_id'] ?>').submit();
                     //Hide content from within the page:
-                    $('#application_status').html('<div style="text-align:center;"><img src="/img/round_yellow_load.gif" class="loader" /></div>');
+                    $('#application_status').html('<div style="text-align:center;"><img src="/img/round_load.gif" class="loader" /></div>');
                 });
             </script>
             <form action="https://www.paypal.com/cgi-bin/webscr" id="paypal_<?= $admission['ru_id'] ?>" method="post" target="_top" style="display:none;">

@@ -1188,6 +1188,7 @@ class Comm_model extends CI_Model {
                         'id' => $dispatch_fp_psid,
                     ),
                     'message' => echo_i($message, $u['u_fname'],true),
+                    'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
                     'notification_type' => $u['u_fb_notification'],
                 );
 

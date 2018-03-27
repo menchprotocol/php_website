@@ -486,14 +486,12 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fa-times-circle',
         ),
 
-        /*
-        -1 => array(
+        -1 => array( //Check DB before removing
             's_name'  => 'Application Rejected',
             's_desc'  => 'Application not approved by instructor OR application auto-rejected because it was incomplete by the time the Class started',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-times-circle',
         ),
-        */
 
         0 => array(
             's_name'  => 'Initiated',

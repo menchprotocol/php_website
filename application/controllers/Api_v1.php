@@ -1206,13 +1206,17 @@ class Api_v1 extends CI_Controller {
 	    ));
 
         //See if they have any active admissions:
-        $admissions = array();
+        $active_admission = null;
+
 	    if(count($users)==1){
 
             $admissions = $this->Db_model->remix_admissions(array(
                 'ru_u_id' => $users[0]['u_id'],
-                'ru_status >=' => 0, //We would drill into this further...
+                'ru_status >=' => 4,
             ));
+            //We'd need to see which admission to load now:
+            $active_admission = filter_active_admission($admissions);
+
         }
 	    
 	    if(count($users)==0){
@@ -1258,9 +1262,9 @@ class Api_v1 extends CI_Controller {
             $session_data['user'] = $users[0];
         }
         //Are they an active student?
-        if(count($admissions)>0){
+        if($active_admission){
             //They have admin rights:
-            $session_data['uadmission'] = $admissions[0];
+            $session_data['uadmission'] = $active_admission;
         }
 
         //Applicable for instructors only:
@@ -1497,7 +1501,7 @@ class Api_v1 extends CI_Controller {
         ));
 
         if(!(count($matching_admissions)==1)){
-            die('<span style="color:#FF0000;">Error: You can no longer submit Steps</span>');
+            die('<span style="color:#FF0000;">Error: You are no longer an active Student of this Bootcamp</span>');
         }
 
 
@@ -1510,7 +1514,7 @@ class Api_v1 extends CI_Controller {
         if(!$focus_class){
             die('<span style="color:#FF0000;">Error: Invalid Class ID!</span>');
         } elseif(!isset($intent_data['intent']) || !is_array($intent_data['intent'])){
-            die('<span style="color:#FF0000;">Error: Invalid Step ID</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Task ID</span>');
         //Submission settings:
         } elseif($intent_data['intent']['c_complete_url_required']=='t' && count(extract_urls($_POST['us_notes']))<1){
             die('<span style="color:#FF0000;">Error: URL Required. <a href=""><b><u>Refresh this page</u></b></a> and try again.</span>');
@@ -1519,7 +1523,7 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        //Make sure student has not submitted this Step before:
+        //Make sure student has not submitted this Node before:
         $us_data = $this->Db_model->us_fetch(array(
             'us_student_id' => intval($_POST['u_id']),
             'us_r_id' => intval($_POST['r_id']),
@@ -1527,12 +1531,9 @@ class Api_v1 extends CI_Controller {
         ));
 
         if(count($us_data)>0 && $us_data[0]['us_status']==1){
-            die('<span style="color:#FF0000;">Error: You have already marked this Step as complete,yYou cannot re-submit it.</span>');
+            die('<span style="color:#FF0000;">Error: You have already marked this item as complete, You cannot re-submit it.</span>');
         }
 
-        //If we have a row that means us_status!=1, which means this is a resubmission
-        //TODO implement this once we have instructor review workflow
-        $is_resubmission = (count($us_data)>0);
 
         //Calculate total new progress based on this new this submission:
         $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),3);
@@ -1562,7 +1563,7 @@ class Api_v1 extends CI_Controller {
 
             $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
 
-            $subject = '⚠️ Review Step Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
+            $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
             $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
             //Send notifications to current instructor
             foreach($b_instructors as $bi){
@@ -1572,13 +1573,13 @@ class Api_v1 extends CI_Controller {
                     //Draft HTML message for this:
                     $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
                     $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>A new Step Completion report is ready for your review:</div>';
+                    $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_objective'].'</div>';
                     $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
-                    $html_message .= '<div'.$div_style.'>Step: '.$intent_data['intent']['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_objective'].'</div>';
                     $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($intent_data['intent']['c_time_estimate'],0).'</div>';
                     $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
                     $html_message .= '<br />';
@@ -1626,19 +1627,12 @@ class Api_v1 extends CI_Controller {
             }
         }
 
-        //Is a Task Completed? Dispatch potential messages:
-        if($intent_data['next_level']<=2){
-
-            //The Task does seem complete:
-            foreach($step_messages['step_task']['c__messages'] as $i){
-                if($i['i_status']==2){
-
-                    //Add a reference button to Drip messages:
-                    $i['i_message'] = $i['i_message'].' {button}';
-                    array_push($drip_messages, $i);
-
-                } elseif($i['i_status']==3){
-
+        //Is the Bootcamp Complete?
+        if($intent_data['next_level']==1){
+            //Seems so!
+            foreach($bs[0]['c__messages'] as $i){
+                //Bootcamps only could have ON-COMPLETE messages:
+                if($i['i_status']==3){
                     array_push($on_complete_messages, array_merge($i , array(
                         'e_initiator_u_id' => 0,
                         'e_recipient_u_id' => $matching_admissions[0]['u_id'],
@@ -1646,24 +1640,6 @@ class Api_v1 extends CI_Controller {
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => intval($_POST['r_id']),
                     )));
-
-                }
-            }
-
-            //Is the Bootcamp Complete?
-            if($intent_data['next_level']==1){
-                //Seems so!
-                foreach($bs[0]['c__messages'] as $i){
-                    //Bootcamps only could have ON-COMPLETE messages:
-                    if($i['i_status']==3){
-                        array_push($on_complete_messages, array_merge($i , array(
-                            'e_initiator_u_id' => 0,
-                            'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                            'i_c_id' => $i['i_c_id'],
-                            'e_b_id' => intval($_POST['b_id']),
-                            'e_r_id' => intval($_POST['r_id']),
-                        )));
-                    }
                 }
             }
         }
@@ -1685,6 +1661,7 @@ class Api_v1 extends CI_Controller {
 
                 $drip_time += $drip_intervals;
                 $this->Db_model->e_create(array(
+
                     'e_initiator_u_id' => 0, //System
                     'e_recipient_u_id' => $matching_admissions[0]['u_id'],
                     'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
@@ -1700,18 +1677,14 @@ class Api_v1 extends CI_Controller {
                     'e_c_id' => $i['i_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
-                    'e_fp_id' => $matching_admissions[0]['ru_fp_id'],
 
                 ));
-
             }
         }
 
 
-
         //Show result to student:
         echo_us($us_data);
-
 
 
         //Log Engagement for Step Completion:
@@ -1768,15 +1741,9 @@ class Api_v1 extends CI_Controller {
                 'e_r_id' => intval($_POST['r_id']),
             ));
 
-        } elseif($intent_data['next_level']==3){
-
-            //This is the next Step, update the student positioning here...
-            $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => $ru_cache__completion_rate,
-            ));
-
-            //Show button for next Step:
+            //Show button for next task:
             echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
+
 
         } else {
 
@@ -1784,7 +1751,10 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $_POST['u_id'],
                 'e_message' => 'completion_report() experienced fatal error where $intent_data/next_level was not 1,2 or 3',
-                'e_json' => $_POST,
+                'e_json' => array(
+                    'POST' => $_POST,
+                    'intent_data' => $intent_data,
+                ),
                 'e_type_id' => 8, //Platform Error
                 'e_b_id' => $_POST['b_id'],
                 'e_r_id' => $_POST['r_id'],
@@ -1853,16 +1823,20 @@ class Api_v1 extends CI_Controller {
             );
 
             if($_POST['psid']==0){
+
                 //Data is supposed to be in the session:
                 $uadmission = $this->session->userdata('uadmission');
-                $ru_filter['ru.ru_u_id'] = $uadmission['u_id'];
+                //$ru_filter['ru.ru_u_id'] = $uadmission['u_id'];
+                $active_admission = $uadmission;
+
             } else {
                 $ru_filter['ru.ru_fp_psid'] = $_POST['psid'];
+
+                //Fetch all their admissions:
+                $admissions = $this->Db_model->remix_admissions($ru_filter);
+                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load
             }
 
-            //Fetch all their admissions:
-            $admissions = $this->Db_model->remix_admissions($ru_filter);
-            $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load
 
             if(!$active_admission){
 
@@ -1936,10 +1910,79 @@ class Api_v1 extends CI_Controller {
         $show_ranking_top = ceil(count($loadboard_students) * $show_top );
 
         if($is_instructor){
-            echo '<h3 style="margin:0;">'.time_format($class['r_start_date'],2).' - '.time_format($class['r_start_date'],2, (7*24*3600-60)).'</h3>';
+
+            //Fetch the most recent cached action plans:
+            $cache_action_plans = $this->Db_model->e_fetch(array(
+                'e_type_id' => 70,
+                'e_r_id' => $class['r_id'],
+            ),1 , array('ej'));
+
+
+            echo '<h3 style="margin:0;" class="maxout">'.time_format($class['r_start_date'],2).' - '.time_format($class['r__class_end_time'],2).( count($cache_action_plans)>0 ? ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fa fa-list-ol" aria-hidden="true"></i></span></a>' : '').'</h3>';
+
+
+            if(count($cache_action_plans)>0){
+
+                $b = unserialize($cache_action_plans[0]['ej_e_blob']);
+
+                echo '<div class="ap_toggle" style="display:none;">';
+
+                echo '<div class="title"><h4><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
+                echo '<div class="help_body maxout" id="content_3267"></div>';
+
+                //Show Action Plan:
+                echo '<div id="bootcamp-objective" class="list-group maxout">';
+                echo echo_cr($b,$b,1,0,false);
+                echo '</div>';
+
+                //Task Expand/Contract all if more than 2
+                if(count($b['c__child_intents'])>0){
+                    /*
+                    echo '<div id="task_view">';
+                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
+                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                    echo '</div>';
+                    */
+                }
+
+                //Tasks List:
+                echo '<div id="list-outbound" class="list-group maxout">';
+                foreach($b['c__child_intents'] as $key=>$sub_intent){
+                    echo echo_cr($b,$sub_intent,2,$b['b_id'],0,false);
+                }
+                echo '</div>';
+
+
+
+                //Prerequisites, which get some system appended ones:
+                $b['b_prerequisites'] = prep_prerequisites($b);
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
+            <div class="help_body maxout" id="content_610"></div>';
+                echo ( count($b['b_prerequisites'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+
+
+                //Skills You Will Gain
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+            <div class="help_body maxout" id="content_2271"></div>';
+                echo ( strlen($b['b_transformations'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+
+
+                if($class['r_status']==2 && $udata['u_status']>=2){
+                    //Show button to refresh:
+                    ?>
+                    <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
+                    <div id="action_plan_status" class="copy_ap maxout" style="display:none; border:1px solid #000; border-radius:5px; margin-top:20px; padding:10px;">
+                        <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete.</p>
+                        <p><a href="javascript:void(0);" onclick="sync_action_plan(<?= $b['b_id'] ?>,<?= $class['r_id'] ?>)">I Understand, Continue With Update &raquo;</a></p>
+                    </div>
+                    <?php
+                }
+
+                echo '</div>';
+            }
         }
 
-        echo '<table class="table table-condensed table-striped maxout" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
+        echo '<table class="table table-condensed table-striped maxout ap_toggle" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'max-width:100%; margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
 
 
         //First generate classmates's top message:
@@ -1972,7 +2015,7 @@ class Api_v1 extends CI_Controller {
             echo '<td style="border:1px solid #999; border-right:none; width:50px;">Rank</td>';
         }
         echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; padding-left:30px;">Student</td>';
-        echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:90px;">Progress</td>';
+        echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:120px;">Progress</td>';
 
         if($is_instructor){
             echo '<td style="border:1px solid #999; border-left:none; border-right:none; text-align:left; width:40px;">Task</td>';
@@ -1980,7 +2023,6 @@ class Api_v1 extends CI_Controller {
 
         echo '<td style="border:1px solid #999; border-left:none; border-right:1px solid #999; width:25px;">&nbsp;</td>';
         echo '</tr>';
-
 
         //Now list all students in order:
         if(count($loadboard_students)>0){
@@ -2209,74 +2251,6 @@ class Api_v1 extends CI_Controller {
         <table width="100%"><tr><td class="save-td"><a href="javascript:send_();" class="btn btn-primary">Send</a></td><td><span class="save_r_results"></span></td></tr></table>';
 
 
-            //Fetch the most recent cached action plans:
-            $cache_action_plans = $this->Db_model->e_fetch(array(
-                'e_type_id' => 70,
-                'e_r_id' => $class['r_id'],
-            ),1,array('ej'));
-
-            if(count($cache_action_plans)>0){
-
-                $b = unserialize($cache_action_plans[0]['ej_e_blob']);
-
-                echo '<div class="title"><h4><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
-                echo '<div class="help_body maxout" id="content_3267"></div>';
-
-                //Show Action Plan:
-                echo '<div id="bootcamp-objective" class="list-group maxout">';
-                echo echo_cr($b,$b,1,0,false);
-                echo '</div>';
-
-                //Task Expand/Contract all if more than 2
-                if(count($b['c__child_intents'])>0){
-                    echo '<div id="task_view">';
-                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
-                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
-                    echo '</div>';
-                }
-
-                //Tasks List:
-                echo '<div id="list-outbound" class="list-group">';
-                foreach($b['c__child_intents'] as $key=>$sub_intent){
-                    echo echo_cr($b,$sub_intent,2,$b['b_id'],0,false);
-                }
-                echo '</div>';
-
-
-
-                //Prerequisites, which get some system appended ones:
-                $b['b_prerequisites'] = prep_prerequisites($b);
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-check-square-o" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
-            <div class="help_body maxout" id="content_610"></div>';
-                echo ( count($b['b_prerequisites'])>0 ? '<ol><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
-
-
-                //Skills You Will Gain
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
-            <div class="help_body maxout" id="content_2271"></div>';
-                echo ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
-
-
-                if($class['r_status']==2){
-                    //Show button to update ONLY if class is running
-                    if($udata['u_status']>=2){
-                        ?>
-                        <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
-                        <div class="copy_ap" style="display:none;">
-                            <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete. Update the Action Plan only if:</p>
-                            <ul>
-                                <li>You have made changes to Messages only (Not added new Steps or Tasks)</li>
-                                <li>You have made changes to Future Tasks that have not been unlocked yet</li>
-                            </ul>
-                            <p><a href="javascript:void(0);" onclick="sync_action_plan()">I Understand, Continue With Update &raquo;</a></p>
-                        </div>
-                        <div id="action_plan_status"></div>
-                        <?php
-                    } else {
-                        echo '<div>Contact us if you like to update a Copy of Your Action Plan.</div>';
-                    }
-                }
-            }
         }
     }
 
@@ -2404,55 +2378,7 @@ class Api_v1 extends CI_Controller {
 	        }
 	    }
 	}
-	
-	function update_schedule(){
-	    $udata = auth(2);
-	    if(!$udata){
-	        //Display error:
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
-	    } elseif(!isset($_POST['hours']) || !is_array($_POST['hours'])){
-	        //TODO make sure its monday
-	        die('<span style="color:#FF0000;">Error: Missing hours.</span>');
-	    } elseif(!isset($_POST['r_id']) || intval($_POST['r_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
-	    }
-	    
-	    //Fetch for the record:
-	    $classes = $this->Db_model->r_fetch(array(
-	        'r.r_id' => intval($_POST['r_id']),
-	    ));
-	    if(count($classes)<1){
-	        //Ooops, not found!
-	        die('<span style="color:#FF0000;">Error: Class ID not found.</span>');
-	    }
-	    
-	    
-	    $blank_template = 'a:7:{i:0;a:1:{s:3:"day";s:1:"0";}i:1;a:1:{s:3:"day";s:1:"1";}i:2;a:1:{s:3:"day";s:1:"2";}i:3;a:1:{s:3:"day";s:1:"3";}i:4;a:1:{s:3:"day";s:1:"4";}i:5;a:1:{s:3:"day";s:1:"5";}i:6;a:1:{s:3:"day";s:1:"6";}}';
-	    $prepped_input = trim(serialize($_POST['hours']));
-	    $r_update = array(
-	        'r_live_office_hours' => ( strlen($prepped_input)>0 && !($prepped_input==$blank_template) ? $prepped_input : null ),
-	    );
-	    $this->Db_model->r_update( intval($_POST['r_id']) , $r_update);
-	    
-	    //Log engagement ONLY if different:
-	    if($r_update['r_live_office_hours']!==$classes[0]['r_live_office_hours']){
-	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $udata['u_id'], //The user
-	            'e_message' => readable_updates($classes[0],$r_update,'r_'),
-	            'e_json' => array(
-	                'input' => $_POST,
-	                'before' => @unserialize($classes[0]['r_live_office_hours']),
-	                'after' => @unserialize($r_update['r_live_office_hours']),
-	            ),
-	            'e_type_id' => 13, //Class Updated
-	            'e_b_id' => $classes[0]['r_b_id'], //Share with Bootcamp team
-	            'e_r_id' => intval($_POST['r_id']),
-	        ));
-	    }
-	    
-	    //Show result:
-	    die('<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
-	}
+
 
 
 

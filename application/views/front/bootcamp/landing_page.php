@@ -56,7 +56,7 @@ $( document ).ready(function() {
 
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
                 <li>Duration: <b>7 Days</b></li>
-                <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r_start_date'],2, (7*24*3600-60)) ?></b></li>
+                <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r__class_end_time'],2) ?></b></li>
                 <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
                 <li>Price Range: <b><?= echo_price($b).( $highest_price ? ' - '.$highest_price.' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>' : '' ) ?></b></li>
                 <?php

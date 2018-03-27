@@ -139,18 +139,28 @@ if($object_name=='engagements'){
 
     //A function to echo the Bootcamp rows:
     function echo_row($b,$counter){
+
         echo '<tr>';
         echo '<td>'.$counter.'</td>';
         echo '<td>'.$b['b_id'].'</td>';
         echo '<td>'.status_bible('b',$b['b_status'],1,'right').'</td>';
         echo '<td>'.( $b['b_old_format'] ? '<i class="fa fa-exclamation-triangle" title="OLD FORMAT" aria-hidden="true"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></td>';
+
         echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
-        echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_fname'].' '.$b['leaders'][0]['u_lname'].'</a></td>';
+        echo '<td>'.( $b['b_difficulty_level']>=1 ? status_bible('df',$b['b_difficulty_level'],1,'top') : '' ).'</td>';
+
+        echo '<td>'.( isset($b['leaders'][0]) ? '<a href="/cockpit/browse/engagements?e_u_id='.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_fname'].' '.$b['leaders'][0]['u_lname'].'</a>' : '' ).'</td>';
+
+        //Pricing:
+        echo '<td>'.echo_price($b,1).'</td>';
+        echo '<td>'.echo_price($b,2).'</td>';
+        echo '<td>'.echo_price($b,3).'</td>';
+
 
         echo '<td>';
-        if($b['student_funnel'][0]>0 || $b['student_funnel'][4]>0 || $b['student_funnel'][-1]>0){
+        if($b['student_funnel'][0]>0 || $b['student_funnel'][4]>0){
             echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
-            echo $b['student_funnel'][0].' &raquo; <b>'.$b['student_funnel'][4].'</b> ('.$b['student_funnel'][-1].')';
+            echo $b['student_funnel'][0].' &raquo; <b>'.$b['student_funnel'][4].'</b>';
             echo '</span>';
         }
         echo '</td>';
@@ -194,10 +204,6 @@ if($object_name=='engagements'){
                 'r.r_b_id'	       => $mb['b_id'],
                 'ru.ru_status'     => 4,
             ))),
-            -1 => count($this->Db_model->ru_fetch(array(
-                'r.r_b_id'	       => $mb['b_id'],
-                'ru.ru_status <'   => 0, //Anyone rejected/withdrew/dispelled
-            ))),
         );
     }
     
@@ -211,7 +217,9 @@ if($object_name=='engagements'){
             <th>&nbsp;</th>
     		<th>Bootcamp</th>
             <th><i class="fa fa-plug"></i> Facebook Page</th>
-    		<th>Lead Instructor</th>
+            <th>&nbsp;</th>
+            <th>Lead Instructor</th>
+            <th colspan="3" style="width: 300px;">Pricing</th>
             <th>Admission Funnel</th>
     		<th>Activity (Last)</th>
     	</tr>
@@ -251,7 +259,9 @@ if($object_name=='engagements'){
             <th>&nbsp;</th>
             <th>Bootcamp</th>
             <th><i class="fa fa-plug"></i> Facebook Page</th>
+            <th>&nbsp;</th>
             <th>Lead Instructor</th>
+            <th colspan="3" style="width:300px;">Pricing</th>
             <th>Admission Funnel</th>
             <th>Activity (Last)</th>
     	</tr>
@@ -284,10 +294,8 @@ if($object_name=='engagements'){
         <th>Bootcamp</th>
         <th>Lead Instructor</th>
         <th>Class Start Time</th>
-        <th>Class End Time</th>
         <th>Elapsed</th>
         <th>Progress</th>
-        <th>Price</th>
         <th colspan="4">Performance Stats</th>
     </tr>
     </thead>
@@ -311,8 +319,6 @@ if($object_name=='engagements'){
             }
         }
 
-
-
         //Fetch Leader:
         $leaders = $this->Db_model->ba_fetch(array(
             'ba.ba_b_id' => $class['r_b_id'],
@@ -324,12 +330,7 @@ if($object_name=='engagements'){
 
         echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bs[0]['c_objective'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),0).'</a></td>';
-        echo '<td>';
-        if($class['r_cache__end_time']){
-            echo time_format($class['r_cache__end_time'],0);
-        }
-        echo '</td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),2).'</a></td>';
         echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';
         if($class['r_status']==3){
             echo '100%';
@@ -344,7 +345,6 @@ if($object_name=='engagements'){
             echo '<span data-toggle="tooltip" title="Average completion rate of all class students combined">'.round($average_completion[0]['cr']*100).'%</span>';
         }
         echo '</td>';
-        echo '<td>'.echo_price($bs[0]).'</td>';
 
 
         echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';

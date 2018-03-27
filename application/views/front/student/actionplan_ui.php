@@ -15,7 +15,7 @@ function mark_done(){
 	
 	//Show spinner:
 	$('.mark_done').hide();
-	$('#save_report').html('<img src="/img/round_yellow_load.gif" class="loader" />').hide().fadeIn();
+	$('#save_report').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 	
 	//Save the rest of the content:
 	$.post("/api_v1/completion_report", {
@@ -124,7 +124,7 @@ if($displayed_messages>0){
     $uadmission = $this->session->userdata('uadmission');
 
     //Only load the 3rd Level Step messages that are not yet complete by default, because everything else has already been communicated to the student
-    $load_open = ( $level>=3 ); //&& !isset($us_data[$intent['c_id']])
+    $load_open = ( $level>=2 ); //&& !isset($us_data[$intent['c_id']])
 
     //Messages:
     echo '<h4 style="margin-top:20px;"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
@@ -147,8 +147,8 @@ if($displayed_messages>0){
 
 
 
-
-if($level>=3){
+//TODO Adjust based on c_extension_rule
+if($level==2){
 
 
     /* ******************************
@@ -157,9 +157,12 @@ if($level>=3){
     echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
     if($class_has_ended){
+
         //Class if finished, no more submissions allowed!
-        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You cannot submit Steps because Class has ended.</div>';
+        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Submissions are now closed because Bootcamp has ended.</div>';
+
     } else {
+
         echo '<div id="save_report" class="quill_content">';
         if(isset($us_data[$intent['c_id']])){
 
@@ -183,7 +186,7 @@ if($level>=3){
 
             //What instructions do we need to give?
             if($red_note) {
-                echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Step requires ' . $red_note . '</div>';
+                echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Marking as complete requires ' . $red_note . '</div>';
             }
             echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
             echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
@@ -191,20 +194,19 @@ if($level>=3){
 
             //Submission button visible after first button was clicked:
             echo '<div class="mark_done" style="display:none; margin-top:10px;">';
-            echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
+            echo '<textarea id="us_notes" class="form-control maxout" style="border:1px solid #000;" placeholder="'.$textarea_note.'"></textarea>';
             echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
             echo '</div>';
 
 
-            //Show when this Task is due if not already passed:
-            $due_timestamp = time_format($class['r_start_date'],3,(7*24*3600-60));
-            if($due_timestamp>time()){
+            //Show when Bootcamp ends:
+            if($class['r__class_end_time']>time()){
                 ?>
                 <script>
                     $( document ).ready(function() {
                         $("#ontime_dueby").countdowntimer({
                             startDate : "<?= date('Y/m/d H:i:s'); ?>",
-                            dateAndTime : "<?= date('Y/m/d H:i:s' , $due_timestamp); ?>",
+                            dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__class_end_time']); ?>",
                             size : "lg",
                             regexpMatchFormat: "([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
                             regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -251,7 +253,7 @@ if($level>=3){
  * Task/Step List
  ****************************** */
 
-if($level<3){
+if($level==1){
 
     echo '<h4>';
         if($level==1){
@@ -276,7 +278,12 @@ if($level<3){
 
         if($level==1){
 
-            //Task List
+            //Task completion status;
+            $this_item_us_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['us_status'] : -2 );
+
+
+            //TODO Optimize this based on c_extension_rule value:
+            /*
             $child_step_count = 0;
             $this_item_us_status = 1;
             foreach($this_intent['c__child_intents'] as $step){
@@ -298,6 +305,7 @@ if($level<3){
                     $this_item_us_status = $us_data[$step['c_id']]['us_status'];
                 }
             }
+            */
 
         } elseif($level==2){
 
@@ -340,23 +348,21 @@ if($level<3){
         //Node title:
         $ui .= $this_intent['c_objective'].' ';
 
-
         $ui .= '<span class="sub-stats">';
 
         //Enable total hours/Task reporting...
         if($level==1 && isset($this_intent['c__estimated_hours'])){
             $ui .= echo_time($this_intent['c__estimated_hours'],1);
-        } elseif($level==2 && isset($this_intent['c_time_estimate'])){
+        } elseif(isset($this_intent['c_time_estimate'])){
             $ui .= echo_time($this_intent['c_time_estimate'],1);
         }
 
-        if($level==1 && $unlocked_item && $child_step_count){
+        if($level==1 && $unlocked_item && isset($child_step_count) && $child_step_count){
             //Show the number of sub-Steps:
             $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_step_count.'</span>';
         }
 
         $ui .= '</span>';
-
 
         $ui .= ( $unlocked_item ? '</a>' : '</li>');
 
