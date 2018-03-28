@@ -1296,6 +1296,11 @@ a.badge:focus, a.badge:hover {
     line-height: 120%;
 }
 
+.home_line_2 {
+    font-size: 1.3em;
+    margin-top: 21px;
+}
+
 .admission_block{
     border:2px solid #000;
     padding:0;

@@ -14,11 +14,10 @@
 
 <!-- <h1>Achieve Your Goals</h1> -->
 <h1>Weekly Coding Bootcamps</h1>
-<p style="font-size: 1.3em;">Gain <b>Coding Skills</b> by completing <b>Weekly Bootcamps</b> designed <b>by Industry Experts</b>.</p>
-<p style="font-size: 1.3em;">Classes from <b>$0 - $219 per week</b> based on support level <b>you choose</b>.</p>
-<p style="font-size: 1.3em;">New Classes <b>start every Monday</b> in <span id="classes_start"></span></p>
+<p class="home_line_2">Gain <b>coding skills</b> by completing <b>weekly bootcamps</b> designed <b>by industry experts</b>.</p>
+<p class="home_line_2">Classes from <b>$0 - $219 per week</b> based on instructor and support level <b>you choose</b>.</p>
+<p class="home_line_2">New classes <b>start every Monday</b> in <span id="classes_start"></span></p>
 <br />
-
 
 <!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->
 <?php
@@ -46,11 +45,11 @@ foreach($bs as $count=>$b){
         echo '<h6 class="category text-muted">'.status_bible('df',$b['b_difficulty_level'],0,'top').' <span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" class="line_1"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></h6>';
     }
     echo '<h4 class="card-title" style="font-size: 1.4em; line-height: 110%; margin:15px 0 12px 0;"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
-    echo '<div class="card-description">By ';
+    echo '<div class="card-description">';
     //Print lead admin:
     foreach($b['b__admins'] as $admin){
         if($admin['ba_status']==3){
-            echo '<span style="display:inline-block;"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
+            echo '<span style="display:inline-block; width:100%;">By <img src="'.$admin['u_image_url'].'" style="display:inline-block;" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
         }
     }
     echo '</div>';
