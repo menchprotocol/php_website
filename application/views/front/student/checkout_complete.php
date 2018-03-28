@@ -8,6 +8,10 @@ $classroom_current_students = $this->Db_model->ru_fetch(array(
     'ru.ru_p2_price >' => 0, //They are in Classroom or Tutoring
 ));
 $classroom_available = ( $admission['b_p2_max_seats'] - count($classroom_current_students) );
+$instructor_support_off = ( strlen($admission['b__admins'][0]['u_weeks_off'])>0 && in_array($admission['r_start_date'],unserialize($admission['b__admins'][0]['u_weeks_off'])) );
+
+
+
 ?>
 <script>
 var current_section = 1; //The index for the wizard
@@ -167,6 +171,7 @@ $(document).ready(function() {
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="review_prerequisites">
+    <p>Welcome <?= $admission['u_fname'] ?> 👋​</p>
     <p>Before we welcome you to this Class, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to successfully complete this Bootcamp:</p>
     <ul style="list-style: decimal;">
 	<?php
@@ -192,8 +197,8 @@ $(document).ready(function() {
     <div class="radio pricing_block">
         <label>
             <input type="radio" id="p_selection_1" data-price="<?= echo_price($admission,1, true) ?>" name="p_selection" value="1" />
-            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> for <?= echo_price($admission,1) ?></b>
-            <p><?= $status_rs[1]['s_desc'] ?></p>
+            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> for <?= echo_price($admission,1) ?></b>
+            <p style="margin-left:30px;"><?= $status_rs[1]['s_desc'] ?></p>
         </label>
     </div>
 
@@ -201,19 +206,23 @@ $(document).ready(function() {
 
         <div class="radio pricing_block">
             <label>
-                <input type="radio" id="p_selection_2" data-price="<?= echo_price($admission,2, true) ?>" name="p_selection" <?= (!$classroom_available ? 'disabled' : '') ?> value="2" />
-                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[2]['s_name'] ?> for <?= echo_price($admission,2) ?></b> <b class="badge"><?= ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ?></b>
-                <p><?= nl2br($status_rs[2]['s_desc']) ?></p>
+                <input type="radio" id="p_selection_2" data-price="<?= echo_price($admission,2, true) ?>" name="p_selection" <?= (!$classroom_available || $instructor_support_off ? 'disabled' : '') ?> value="2" />
+                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true" style="margin:0 1px;"></i> <?= $status_rs[2]['s_name'] ?> for <?= echo_price($admission,2) ?></b> <b class="badge"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b>
+                <p style="margin-left:30px;"><?= nl2br($status_rs[2]['s_desc']) ?></p>
             </label>
         </div>
 
-        <?php if($admission['b_p3_rate']>0){ ?>
+        <?php if($instructor_support_off){
+
+            echo '<div class="alert alert-info maxout" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Classroom closed for this week. You can <b>'.$status_rs[1]['s_name'].'</b> or <a href="/'.$admission['b_url_key'].'" style="color:#000;">Choose Another Week &raquo;</a></div>';
+
+        } elseif($admission['b_p3_rate']>0){ ?>
 
             <div class="radio pricing_block">
                 <label>
                     <input type="radio" id="p_selection_3" data-price="<?= echo_price($admission,3, true) ?>" name="p_selection" value="3" />
                     <b id="p_name_3"><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[2]['s_name'] ?> + 50 Minutes of <?= $status_rs[3]['s_name'] ?> for <?= echo_price($admission,3) ?></b>
-                    <p><?= nl2br($status_rs[3]['s_desc']) ?></p>
+                    <p style="margin-left:30px;"><?= nl2br($status_rs[3]['s_desc']) ?></p>
                 </label>
             </div>
 
@@ -231,8 +240,8 @@ $(document).ready(function() {
     <p>Review and confirm Class details:</p>
     <ul>
         <li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
-        <li>Designed By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
         <li>Class Dates: <b><?= time_format($admission['r_start_date'],2) ?> - <?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
+        <li>Designed By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
         <li>Action Plan: <b><?= $admission['c__tasks_count'] ?> Tasks</b></li>
         <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 1 Week</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
         <li>Your Support Level: <b id="confirm_support"></b></li>

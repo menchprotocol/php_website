@@ -59,7 +59,7 @@ $( document ).ready(function() {
                 <li>Duration: <b>1 Week</b></li>
                 <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r__class_end_time'],2) ?></b></li>
                 <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
-                <li>Price Range: <b><?= echo_price($b).( $highest_price ? ' - '.$highest_price.' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>' : '' ) ?></b></li>
+                <li>Price: <b><?= echo_price($b).( $highest_price ? ' - '.$highest_price.' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>' : '' ) ?></b></li>
                 <?php
                 if($b['b_difficulty_level']>0){
                     echo '<li>Difficulty Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
@@ -76,7 +76,7 @@ $( document ).ready(function() {
             <?php
             if($classroom_closed){
                 //Classroom is closed
-                echo '<div class="alert alert-info" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Note: Classroom is closed for this week. You can still join and '.status_bible('r',0).'</div>';
+                echo '<div class="alert alert-info" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Note: Classroom is closed this week but you can still join and '.status_bible('rs',1).'</div>';
             }
             ?>
 
@@ -102,7 +102,7 @@ $( document ).ready(function() {
                     echo '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b>';
                     if($instructor_has_off && in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off']))){
                         //Classroom is closed
-                        echo '<span class="badge badge-primary grey">'.status_bible('r',0,1,'top').'</span>';
+                        echo '<span class="badge badge-primary grey">'.status_bible('rs',1,1,'top').'</span>';
                     }
 
                     echo ( $class['r_id']==$focus_class['r_id'] ? '</li>' : '</a>' );

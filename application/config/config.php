@@ -261,7 +261,7 @@ $config['object_statuses'] = array(
         ),
         2 => array(
             's_name'  => 'Online Classroom',
-            's_desc'  => 'Students join an Online Classroom and receive:
+            's_desc'  => 'Students join an online community and receive:
             
 - Assignment review/feedback
 - Chat line and email support

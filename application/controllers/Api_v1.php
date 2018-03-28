@@ -503,7 +503,8 @@ class Api_v1 extends CI_Controller {
                 'ru.ru_u_id'	   => $udata['u_id'],
                 'ru.ru_r_id'	   => $focus_class['r_id'],
                 'ru.ru_status >='  => 0,
-            ));
+            ), array('ru.ru_status' => 'DESC'));
+
             if(count($duplicate_registries)>0){
 
                 //Send the email to their admission page:
@@ -518,23 +519,29 @@ class Api_v1 extends CI_Controller {
 
                 if($duplicate_registries[0]['ru_status']==0){
 
-                    $u_key = md5($udata['u_id'] . $application_status_salt);
+                    //Redirect to application so they can continue:
+                    die(echo_json(array(
+                        'status' => 1,
+                        'hard_redirect' => '/my/checkout_complete/'.$duplicate_registries[0]['ru_id'].'?u_key='.md5($udata['u_id'] . $application_status_salt).'&u_id='.$udata['u_id'],
+                    )));
 
                 } else {
+
                     //Show them an error:
                     die(echo_json(array(
                         'status' => 0,
                         'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this class. Your current status is ['.trim(strip_tags(status_bible('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application for this class.' : 'We emailed you a link to manage your admissions. Check your email to continue.').'</div>',
                     )));
+
                 }
 
             }
 
 
-            //Check their current application status(es):
+            //Check their other application status(es):
             $admissions = $this->Db_model->remix_admissions(array(
                 'ru.ru_u_id'	   => $udata['u_id'],
-                'ru.ru_r_id !='	   => $focus_class['r_id'],
+                'ru.ru_r_id !='	   => $focus_class['r_id'], //Not this Class
                 'r.r_status >='	   => 1, //Open for admission
                 'r.r_status <='	   => 2, //Running
                 'ru.ru_status'     => 4, //Admitted Student

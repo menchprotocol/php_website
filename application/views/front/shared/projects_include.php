@@ -30,7 +30,7 @@
                     <i class="fa fa-smile-o" style="color:#3C4858;" aria-hidden="true"></i>
                 </div>
                 <h3 class="info-title">Smile Guarantee</h3>
-                <p>We promise that following the Action Plan will help you accomplish your Bootcamp goal. If by the end of the Bootcamp you were not happy with your results, we will give you a full account credit.</p>
+                <p>We promise that following the Action Plan will empower you to accomplish the Bootcamp's outcome. If you tried our Bootcamps and were not happy with your end results, we will give you a full refund.</p>
             </div>
         </div>
 
