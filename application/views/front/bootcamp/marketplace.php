@@ -14,8 +14,9 @@
 
 <!-- <h1>Achieve Your Goals</h1> -->
 <h1>Weekly Coding Bootcamps</h1>
-<p style="font-size: 1.3em;">Gain coding skills by completing weekly Bootcamps designed by Industry Experts.</p>
-<p style="font-size: 1.3em;">New Classes start every Monday, in <span id="classes_start"></span></p>
+<p style="font-size: 1.3em;">Gain <b>Coding Skills</b> by completing <b>Weekly Bootcamps</b> designed <b>by Industry Experts</b>.</p>
+<p style="font-size: 1.3em;">Classes from <b>$0 - $219 per week</b> based on support level you choose.</p>
+<p style="font-size: 1.3em;">New Classes <b>start every Monday</b> in <span id="classes_start"></span></p>
 <br />
 
 
@@ -42,7 +43,7 @@ foreach($bs as $count=>$b){
 <div class="card-content">';
 
     if($b['b_difficulty_level']>0){
-        echo '<h6 class="category text-muted">'.status_bible('df',$b['b_difficulty_level'],0,'top').'</h6>';
+        echo '<h6 class="category text-muted">'.status_bible('df',$b['b_difficulty_level'],0,'top').' <span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" style="border-bottom: 1px dotted #777; padding-bottom:1px;"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></h6>';
     }
     echo '<h4 class="card-title" style="font-size: 1.4em; line-height: 110%; margin:15px 0 12px 0;"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
     echo '<div class="card-description">By ';
@@ -53,14 +54,6 @@ foreach($bs as $count=>$b){
         }
     }
     echo '</div>';
-
-    echo '<div class="footer">
-        <div class="price">
-            <h4>'.echo_price($b).'</h4>
-        </div>
-        <div class="stats"><span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" style="border-bottom: 1px dotted #777; padding-bottom:1px;"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></div>
-    </div>';
-
     echo '</div>
 </div>
 </div>';
