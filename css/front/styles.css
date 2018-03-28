@@ -1320,6 +1320,17 @@ a.badge:focus, a.badge:hover {
     background-color:#FFF;
 }
 
+.line_1 {
+    border-bottom: 1px dotted #444;
+    padding-bottom: 1px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #2f2639 !important;
+    margin-bottom: 8px;
+    display: inline-block;
+    margin-left:30px;
+}
+
 #funnel h3{
     margin:0;
 }
