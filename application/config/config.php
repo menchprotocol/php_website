@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.71,
+    'version' => 2.73,
     'name' => 'Mench',
     'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
@@ -54,16 +54,11 @@ $config['pricing_model'] = array(
     'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Bootcamp    'p1_rates' => array(0.00,8.00,15.00), //Per Week
 
     'p1_rates' => array(0,8,18), //Per Week 8,15
-    'p1_rate_default' => 0,
 
     'p2_rates' => array(55), //Per Week 85
-    'p2_rate_default' => 55,
     'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
-    'p2_max_seat_default' => 6,
 
     'p3_rates' => array(0,1.12,1.8,2.92), //Per Minute, Next level is 4.6
-    'p3_rate_default' => 0,
-    'p3_minute_bundles' => array(25,50,75), //Defines how Tutoring packages would be bundled and sold
 );
 
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
@@ -257,6 +252,32 @@ $config['object_statuses'] = array(
         ),
     ),
 
+    //Manually injected Class support
+    'rs' => array(
+        1 => array(
+            's_name'  => 'Do It Yourself',
+            's_desc'  => '1 Week Access to the Bootcamp\'s Action Plan for Students to follow and complete all Tasks on their own',
+            's_mini_icon' => 'fa-user',
+        ),
+        2 => array(
+            's_name'  => 'Online Classroom',
+            's_desc'  => 'Students join an Online Classroom and receive:
+            
+- Assignment review/feedback
+- Chat line and email support
+- 1 Hour group coaching video call
+- Lifetime access to the Action Plan
+- LinkedIn Recommendation IF all Tasks completed on time',
+            's_mini_icon' => 'fa-users',
+        ),
+        3 => array(
+            's_name'  => '1-on-1 Tutoring',
+            's_desc'  => 'Ideal for students with less experience on this subject matter. Students will receive 50 Minutes of 1-on-1 Tutoring over a video call for progress review and personalized feedback',
+            's_mini_icon' => 'fa-handshake-o',
+        ),
+
+    ),
+
     'r' => array(
         -3 => array(
             's_name'  => 'Cancelled',
@@ -270,27 +291,9 @@ $config['object_statuses'] = array(
             'u_min_status'  => 3,
             's_mini_icon' => 'fa-times-circle',
         ),
-        -1 => array( //Not in use for now...
-            's_name'  => 'Archived',
-            's_desc'  => 'Class has been Archived',
-            'u_min_status'  => 3,
-            's_mini_icon' => 'fa-times-circle',
-        ),
-        0 => array(
-            's_name'  => 'Do It Yourself',
-            's_desc'  => '1 Week Access to the Bootcamp\'s Action Plan for Students to follow and complete all Tasks on their own',
-            'u_min_status'  => 2,
-            's_mini_icon' => 'fa-user',
-        ),
         1 => array(
-            's_name'  => 'Online Classroom',
-            's_desc'  => 'Students join an Online Classroom and receive:
-            
-- Assignment review/feedback
-- Chat line and email support
-- 1 Hour group coaching video call
-- Lifetime access to the Action Plan
-- LinkedIn Recommendation IF all tasks completed on time',
+            's_name'  => 'Open Admission',
+            's_desc'  => 'Class is open for admission',
             'u_min_status'  => 2,
             's_mini_icon' => 'fa-users',
         ),
@@ -440,7 +443,7 @@ $config['object_statuses'] = array(
         ),
         1 => array(
             's_name'  => 'Marked as Complete',
-            's_desc'  => 'Student marked as complete',
+            's_desc'  => null,
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-check-square',
         ),

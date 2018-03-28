@@ -385,7 +385,7 @@ function echo_price($b,$package_id=1,$return_double=false){
         if($price==0){
             return 'FREE';
         } elseif($price>0) {
-            return '$'.number_format($price,0).' <span style="font-size:0.6em;">USD</span>';
+            return '$'.number_format($price,0).'<b style="font-size:0.7em; font-weight:300; padding-left:2px;">USD</b>';
         } else {
             return null;
         }
@@ -1223,10 +1223,6 @@ function mime_type($mime){
     }
 }
 
-function date_is_past($date){
-    return ((strtotime($date)-(24*3600))<strtotime(date("F j, Y")));
-}
-
 
 function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
@@ -1628,6 +1624,7 @@ function calculate_project_status($b){
 function echo_r($b,$class,$append_class=null){
 
     $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
     $guided_admissions = count($CI->Db_model->ru_fetch(array(
         'ru_r_id' => $class['r_id'],
         'ru_status >=' => 4,
@@ -1650,7 +1647,7 @@ function echo_r($b,$class,$append_class=null){
     echo '</span>';
 
     //Determine the state of the Checkbox:
-    if($guided_admissions>0 || $class['r_status']>=2){
+    if($guided_admissions>0 || $class['r_status']>=2 || !($b['b__admins'][0]['u_id']==$udata['u_id'])){
 
         //Locked:
         echo '<span class="badge badge-primary '.( $guided_admissions==0 ? 'grey' : '' ).'">';
@@ -1664,16 +1661,17 @@ function echo_r($b,$class,$append_class=null){
 
         //See what the Lead Instructor's calendar looks like:
         if(strlen($b['b__admins'][0]['u_weeks_off'])>0){
+
             //They have some days that are booked off:
-            $current_status = ( in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])) ? 0 : 1 );
+            $current_status = ( in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])) ? 1 : 2 );
 
         } else {
-            //Available as they have no Weeks off:
-            $current_status = 1;
+            //Classroom package #2 is Available as they have no Weeks off:
+            $current_status = 2;
         }
 
         //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( !$current_status ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$current_status.'" data-toggle="tooltip" data-placement="right" title="Toggle support across all your Bootcamps/Classes. Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('r',$current_status,true, null).'</a>';
+        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $current_status==1 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$current_status.'" data-toggle="tooltip" data-placement="right" title="Toggle support across all your Bootcamps/Classes. Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('rs',$current_status,true, null).'</a>';
 
     }
 
@@ -1999,31 +1997,6 @@ function can_modify($object,$object_id){
 	
 	//No access:
 	return false;
-}
-
-function filter_class($classes,$r_id=null){
-    if(!$classes || count($classes)<=0){
-        return false;
-    }
-
-    if(count($classes)>1){
-        //Reverse it to find the closes one:
-        $classes = array_reverse($classes);
-    }
-    
-    foreach($classes as $class){
-        //date_is_past() is key as deadline is last midnight MAX
-        if($class['r_status']>=1 && !date_is_past($class['r_start_date']) && (!$r_id || ($r_id==$class['r_id']))){
-            return $class;
-            break;
-        }
-    }
-    
-    return false;
-}
-
-function typeform_url($typeform_id){
-    return 'https://mench.typeform.com/to/'.$typeform_id;
 }
 
 function redirect_message($url,$message=null, $response_code=null){

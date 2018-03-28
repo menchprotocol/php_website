@@ -281,7 +281,7 @@ if($object_name=='engagements'){
 } elseif($object_name=='classes'){
 
     $classes = $this->Db_model->r_fetch(array(
-        'r_status >=' => 1, //Running Classes
+        'r_status >=' => 1, //Admission Open
     ),null,'ASC');
 
 

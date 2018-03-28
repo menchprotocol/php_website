@@ -123,8 +123,7 @@ class Front extends CI_Controller {
         $focus_class = null; //Let's find this...
         $classes = $this->Db_model->r_fetch(array(
             'r.r_b_id' => $b['b_id'],
-            'r.r_status >=' => 0,
-            'r.r_status <=' => 1,
+            'r.r_status' => 1,
         ), null, 'ASC', $class_settings['students_show_max']);
 
 	    //Validate Class:
@@ -152,49 +151,5 @@ class Front extends CI_Controller {
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}
-	
-	
-	function b_checkout($b_url_key,$r_id){
-	    //The start of the funnel for email, first name & last name
 
-        //Fetch data:
-        $udata = $this->session->userdata('user');
-        $bs = $this->Db_model->remix_bs(array(
-            'LOWER(b.b_url_key)' => strtolower($b_url_key),
-        ));
-
-        //Validate Bootcamp:
-        if(!isset($bs[0])){
-            //Invalid key, redirect back:
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
-        } elseif($bs[0]['b_status']<2){
-            //Here we don't even let instructors move forward to apply!
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is Archived.</div>');
-        } elseif($bs[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
-        }
-	    
-	    //Validate Class ID that it's still the latest:
-        $classes = $this->Db_model->r_fetch(array(
-            'r.r_b_id' => $bs[0]['b_id'],
-            'r.r_id' => $r_id,
-            'r.r_status >=' => 0,
-        ));
-        if(!(count($classes)==1)){
-            //Ooops, no active classes!
-            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer available.</div>');
-        }
-
-        $data = array(
-            'title' => 'Join '.$bs[0]['c_objective'].' - Starting '.time_format($classes[0]['r_start_date'],4),
-            'focus_class' => $classes[0],
-            'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
-        );
-
-        //Load apply page:
-        $this->load->view('front/shared/p_header' , $data);
-        $this->load->view('front/bootcamp/apply' , $data);
-        $this->load->view('front/shared/p_footer');
-
-	}
 }

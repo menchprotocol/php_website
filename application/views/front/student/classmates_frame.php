@@ -13,7 +13,7 @@ if(isset($uadmission) && count($uadmission)>0) {
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/api_v1/ru_r_list", { psid:0 }, function(data) {
+        $.post("/my/display_classmates", { psid:0 }, function(data) {
             $( "#page_content").html(data);
         });
     </script>
@@ -42,7 +42,7 @@ if(isset($uadmission) && count($uadmission)>0) {
                 var psid = thread_context.psid;
                 var signed_request = thread_context.signed_request;
                 //Fetch Page:
-                $.post( "/api_v1/ru_r_list", { psid:psid }, function(data) {
+                $.post( "/my/display_classmates", { psid:psid }, function(data) {
                     //Update UI to confirm with user:
                     $( "#page_content").html(data);
                 });

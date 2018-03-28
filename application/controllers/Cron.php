@@ -786,7 +786,7 @@ class Cron extends CI_Controller {
 
         //Fetch current incomplete applications:
         $incomplete_applications = $this->Db_model->ru_fetch(array(
-            'r.r_status'	=> 1, //Class still Open For Admission
+            'r.r_status'	=> 1, //Open For Admission
             'ru.ru_status'  => 0,
         ));
 

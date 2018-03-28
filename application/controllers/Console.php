@@ -190,7 +190,8 @@ class Console extends CI_Controller {
 	    
 	    $view_data = array(
 	        'title' => 'Classes | '.$bs[0]['c_objective'],
-	        'b' => $bs[0],
+            'b' => $bs[0],
+            'udata' => $udata,
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,

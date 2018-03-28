@@ -22,10 +22,11 @@ WHERE ru.ru_status >= 4
 	 * Remix functions that fetch a bunch of existing data:
 	 ****************************** */
 	
-	function remix_admissions($matching_criteria){
+	function remix_admissions($matching_criteria,$order_columns=array(
+        'r.r_start_date' => 'DESC',
+    )){
 
-	    $admissions = $this->Db_model->ru_fetch($matching_criteria);
-
+	    $admissions = $this->Db_model->ru_fetch($matching_criteria,$order_columns);
 
 	    //Fetch more data for each enrollment:
 	    foreach($admissions as $key=>$enrollment){
@@ -48,7 +49,7 @@ WHERE ru.ru_status >= 4
             //Fetch Class:
             $classes = $this->Db_model->r_fetch(array(
                 'r.r_id' => $enrollment['ru_r_id'],
-                'r.r_status >=' => 0,
+                'r.r_status >=' => 1,
             ));
 	        if(count($classes)<1){
                 $this->Db_model->e_create(array(
@@ -63,9 +64,6 @@ WHERE ru.ru_status >= 4
 	        //Merge in:
             $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
 	        $admissions[$key] = array_merge($admissions[$key] , $bs[0]);
-	        $admissions[$key]['ru__transactions'] = $this->Db_model->t_fetch(array(
-	            't.t_ru_id' => $enrollment['ru_id'],
-	        ));
 	    }
 
 	    return $admissions;
@@ -730,7 +728,7 @@ WHERE ru.ru_status >= 4
         //Let's see which Classes we have already?
         $classes = $this->Db_model->r_fetch(array(
             'r_b_id' => $b_id,
-            'r_status >=' => 0,
+            'r_status >=' => 1,
             'r_start_date IN (\''.join('\',\'',$dates_needed).'\')' => null,
         ));
 
@@ -808,11 +806,16 @@ WHERE ru.ru_status >= 4
 	 * Bootcamps
 	 ****************************** */
 
-    function ru_fetch($match_columns){
+    function ru_fetch($match_columns,$order_columns=array(
+        'ru.ru_cache__completion_rate' => 'DESC',
+        'u.u_cache__fp_psid' => 'ASC',
+    )){
+
         $this->db->select('*');
         $this->db->from('v5_class_students ru');
         $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
         $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
+
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -822,8 +825,11 @@ WHERE ru.ru_status >= 4
         }
 
         //Order by completion rate:
-        $this->db->order_by('ru.ru_cache__completion_rate','DESC');
-        $this->db->order_by('u.u_cache__fp_psid','ASC');
+        if(count($order_columns)>0){
+            foreach($order_columns as $key=>$value){
+                $this->db->order_by($key,$value);
+            }
+        }
 
         $q = $this->db->get();
         return $q->result_array();

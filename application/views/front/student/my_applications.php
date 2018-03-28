@@ -58,10 +58,8 @@
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
 echo '<h3>'.$udata['u_fname'].' '.$udata['u_lname'].' Bootcamps</h3>';
 
-if(count($admissions)>0 && is_array($admissions)){
 
-    //Reverse order, newest Class at top:
-    $admissions = array_reverse($admissions);
+if(count($admissions)>0 && is_array($admissions)){
 
     //Show all Student admissions:
     foreach($admissions as $admission){
@@ -69,23 +67,62 @@ if(count($admissions)>0 && is_array($admissions)){
         //Fetch Admission Data:
         $bs = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
         $class = $bs[0]['this_class'];
+        $admission_active = ( $admission['ru_status']>=0 && $bs[0]['b_status']>=2 && $class['r_status']>=1 );
 
         //Fetch Live Bootcamp Data:
         $live_bs = $this->Db_model->b_fetch(array(
             'b_id' => $admission['r_b_id'],
         ));
 
-        echo '<div style="border:2px solid #000; padding:7px; margin-top:25px; border-radius:5px; background-color:#EFEFEF;">';
+        echo '<div class="admission_block">';
 
-        echo '<p><b>'.$bs[0]['c_objective'].'</b></p>';
 
-        //Account, always created at this point:
-        echo '<div class="checkbox"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Admission Initiated for Class of '.time_format($class['r_start_date'],2).' - '.trim(time_format($class['r__class_end_time'],2)).'</label></div>';
 
-        //Free Class, Student just needs to submit their Application:
-        echo '<div class="checkbox"><label '.( $admission['ru_status']>=4 ? 'style="text-decoration: line-through;"' : '' ).'><input type="checkbox" disabled '.( $admission['ru_status']>=4 ? 'checked' : '' ).'> <a '.( $admission['ru_status']>=4 ? 'href="javascript:void(0)"' : 'href="/my/class_application/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'"' ).'>Step 2: Submit Your Application to Join Bootcamp <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+            echo '<div class="admission_checklist">';
 
-        if($admission['ru_final_price']>0 && $admission['ru_status']<4 && isset($_GET['pay_r_id']) && intval($_GET['pay_r_id']) && intval($_GET['pay_r_id'])==intval($admission['r_id'])){
+                echo '<p><b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</b></p>';
+                echo '<p style="font-size: 0.9em;"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($class['r_start_date'],2).' - '.trim(time_format($class['r__class_end_time'],2)).'</p>';
+
+                //Account, always created at this point:
+                echo '<div class="checkbox" style="margin-top:20px;"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Admission Initiated</label></div>';
+
+
+                //Student need to complete the Checkout process:
+                echo '<div class="checkbox"><label><input type="checkbox" disabled '.( $admission['ru_status']>=4 ? 'checked' : '' ).'> '.( $admission['ru_status']>=4 || !$admission_active ? '<span style="text-decoration: line-through;">' : '<a href="/my/checkout_complete/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'">' ).'Step 2: Submit Your Application to Join Bootcamp'.( $admission['ru_status']>=4 || !$admission_active ? '</span>' : ' <i class="fa fa-chevron-right" aria-hidden="true"></i></a>' ).'</label></div>';
+
+
+                //Messenger activation for Active Bootcamps only
+                if($bs[0]['b_status']>=2){
+                    $bot_title = 'Step 3: Activate Your Facebook Messenger'.($admission['ru_p2_price']>0?' to Chat with your Instructor':'');
+                    if($admission['u_cache__fp_psid']>0){
+                        echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
+                    } else {
+                        echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+                    }
+                }
+
+            echo '</div>';
+
+
+
+            //More info like Bootcamp URL:
+            echo '<div class="admission_footer">';
+                echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span>';
+                echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Overview</a>';
+                if($admission['ru_status']==0){
+                    //They can still withdraw their application:
+                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw from Bootcamp</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
+                }
+            echo '</div>';
+
+
+
+        echo '</div>';
+
+
+
+
+        if($admission['ru_final_price']>0 && $admission['ru_status']<4 && $admission['ru_status']>=0 && isset($_GET['pay_r_id']) && intval($_GET['pay_r_id']) && intval($_GET['pay_r_id'])==intval($admission['r_id'])){
             ?>
             <script>
                 $( document ).ready(function() {
@@ -117,30 +154,6 @@ if(count($admissions)>0 && is_array($admissions)){
             </form>
             <?php
         }
-
-
-        $bot_title = 'Step 3: Activate Facebook Messenger'.($admission['ru_p2_price']>0?' to Chat with your Instructor':'');
-        if($admission['u_cache__fp_psid']>0){
-            echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
-        } else {
-            echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
-        }
-
-
-
-        //Let them know the status of their application:
-        echo '<div style="font-size: 0.7em;">Current Status: <span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span></div>';
-
-        //More info like Bootcamp URL:
-        echo '<div style="font-size: 0.7em; margin-top:5px; padding-top:5px; border-top:2px solid #333;">';
-        echo '<a href="/'.$live_bs[0]['b_url_key'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Visit Bootcamp Page</a>';
-        if($admission['ru_status']==0){
-            //They can still withdraw their application:
-            echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw from Bootcamp</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
-        }
-        echo '</div>';
-
-        echo '</div>';
     }
 
 } else {

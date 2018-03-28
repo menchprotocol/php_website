@@ -194,7 +194,7 @@ if($level==2){
 
             //Submission button visible after first button was clicked:
             echo '<div class="mark_done" style="display:none; margin-top:10px;">';
-            echo '<textarea id="us_notes" class="form-control maxout" style="border:1px solid #000;" placeholder="'.$textarea_note.'"></textarea>';
+            echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
             echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
             echo '</div>';
 

@@ -41,7 +41,9 @@ $( document ).ready(function() {
 </script>
 
 
-<p style="border-bottom:3px solid #000; font-weight:bold; padding-bottom:10px; padding-left:10px; display:block;"><?= $title ?></p>
+
+<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r__class_end_time'],2) ?></span></p>
+
 
 <div class="section">
     <div class="row" style="max-width:330px; padding-left:10px;">

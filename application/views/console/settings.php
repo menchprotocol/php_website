@@ -4,7 +4,7 @@
 $required_fb_permissions = $this->config->item('required_fb_permissions');
 $fb_settings = $this->config->item('fb_settings');
 $pm = $this->config->item('pricing_model');
-$r_statuses = status_bible('r');
+$status_rs = status_bible('rs');
 
 $permission_string = join_keys($required_fb_permissions);
 echo 'var required_fb_permissions = '.json_encode($required_fb_permissions).';';
@@ -133,6 +133,14 @@ function loadFacebookPages(is_onstart){
     });
 }
 
+function update_tutoring_price(){
+    var minutes = 50;
+    var price = parseFloat($('#b_p3_rate').val());
+    if(minutes>0 && price>0){
+        $('#tutoring_price').html(parseInt( price*minutes ));
+    }
+}
+
 $(document).ready(function() {
 
     //Go through Level 2 menus to see if any are selected, if so, select the Level 1 too:
@@ -168,7 +176,6 @@ $(document).ready(function() {
         focus_hash(window.location.hash);
     }
 
-
     //Watch for Group Support Change:
     $('#b_p2_max_seats').on('change', function() {
         if(this.value==0){
@@ -178,14 +185,16 @@ $(document).ready(function() {
         }
     });
 
+    update_tutoring_price();
+
     $('#b_p3_rate').on('change', function() {
+        update_tutoring_price();
         if(this.value==0){
-            $('#tutoring_settings').hide();
+            $('.tutoring_settings').hide();
         } else {
-            $('#tutoring_settings').fadeIn();
+            $('.tutoring_settings').fadeIn();
         }
     });
-
 
 
     window.fbAsyncInit = function() {
@@ -311,7 +320,7 @@ function b_save_settings(){
     <div class="tab-pane active" id="tabsupport">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $r_statuses[0]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[0]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
         <div class="help_body maxout" id="content_4789"></div>
         <div class="form-group label-floating <?= (count($pm['p1_rates'])<=1 ? 'hidden' : '') ?>">
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -329,7 +338,7 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:25px;"><h4><i class="fa <?= $r_statuses[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $r_statuses[1]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[2]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
 
 
@@ -337,7 +346,7 @@ function b_save_settings(){
             <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p2_max_seats'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer '.$r_statuses[1]['s_name'] : $option.' Maximum Students per Week' ).'</option>';
+                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer '.$status_rs[2]['s_name'] : $option.' Maximum Students per Week' ).'</option>';
                 }
                 ?>
             </select>
@@ -347,7 +356,7 @@ function b_save_settings(){
         <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
 
             <?php if(count($pm['p2_rates'])==1){ ?>
-                <div style="margin:0 0 5px 30px;"><?= $r_statuses[1]['s_name'] ?> Universal Price:<br /><b>$<?= $pm['p2_rates'][0] ?> per Student per Week</b></div>
+                <div style="margin:0 0 5px 30px;">Universal Price: <b>$<?= $pm['p2_rates'][0] ?></b> per Student per Week</div>
             <?php } ?>
 
             <!-- Disabled for now as we only have a single pricing option for Classroom Package -->
@@ -372,21 +381,25 @@ function b_save_settings(){
 
 
 
-
-            <div class="title" style="margin-top:20px;"><h4><i class="fa fa-handshake-o" aria-hidden="true"></i> Tutoring Pricing <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[3]['s_name'] ?> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
             <div class="help_body maxout" id="content_615"></div>
             <div class="form-group label-floating">
                 <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                     <?php
                     foreach($pm['p3_rates'] as $option){
-                        echo '<option value="'.$option.'" '.($b['b_p3_rate']==$option?'selected="selected"':'').'>'.($option==0?'Do Not Offer Tutoring':'$'.number_format($option,2).' per Minute ($'.number_format(($option*25),0).' for each 25-Min Session)').'</option>';
+                        echo '<option value="'.$option.'" '.($b['b_p3_rate']==$option?'selected="selected"':'').'>'.($option==0?'Do Not Offer '.$status_rs[3]['s_name']:'$'.number_format($option,2).' per Minute').'</option>';
                     }
                     ?>
                 </select>
             </div>
 
             <div style="padding-left:30px;">
-                <div id="tutoring_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
+
+                <div class="tutoring_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
+
+                    <div>Session Duration: <b>50</b> Minutes per Student per Week</div>
+                    <div>Your Tutoring Price: <b>$<span id="tutoring_price"></span></b> per Session</div>
+
                     <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
                     <div class="help_body maxout" id="content_4792"></div>
                     <div class="form-group label-floating is-empty">

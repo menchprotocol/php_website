@@ -15,7 +15,7 @@ function load_class(r_id){
     $('#class_content').html('<img src="/img/round_load.gif" style="margin-top:50px;" class="loader" />');
 
     //Save the rest of the content:
-    $.post("/api_v1/ru_r_list", { r_id:r_id } , function(data) {
+    $.post("/my/display_classmates", { r_id:r_id } , function(data) {
 
         //Update UI to confirm with user:
         $('#class_content').html(data).hide().fadeIn();
@@ -30,11 +30,12 @@ function toggle_support(r_id){
 
     //Show spinner:
     var r_status = parseInt($('#support_toggle_'+r_id).attr('current-status'));
-    if(r_status==0){
-        var r_new_status = 1;
-    } else if(r_status==1){
-        var r_new_status = 0;
+    if(r_status==1){
+        var rs_new_status = 2;
+    } else if(r_status==2){
+        var rs_new_status = 1;
     } else {
+        alert('ERROR: Unknown status');
         return false;
     }
 
@@ -45,7 +46,7 @@ function toggle_support(r_id){
     $.post("/api_v1/r_update_status", {
 
         r_id:r_id,
-        r_new_status:r_new_status,
+        rs_new_status:rs_new_status,
 
     } , function(data) {
 
@@ -54,12 +55,14 @@ function toggle_support(r_id){
             $('#support_toggle_'+r_id).html(data.message);
 
             //Update UI to confirm with user:
-            $('#support_toggle_'+r_id).attr('current-status',data.r_new_status);
-            if(data.r_new_status){
+            $('#support_toggle_'+r_id).attr('current-status',data.rs_new_status);
+
+            if(data.rs_new_status==2){
                 $('#support_toggle_'+r_id).removeClass('grey');
-            } else {
+            } else if(data.rs_new_status==1) {
                 $('#support_toggle_'+r_id).addClass('grey');
             }
+
         } else {
             //Restore Loader:
             $('#support_toggle_'+r_id).html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>');
@@ -106,8 +109,11 @@ function r_sync_c(b_id,r_id){
 
 <div class="help_body maxout below_h" id="content_2274"></div>
 
-
-<input type="hidden" id="focus_r_id" value="0" />
+<?php
+if(!($b['b__admins'][0]['u_id']==$udata['u_id'])){
+    echo '<div class="alert alert-info maxout" role="alert" style="margin:-15px 0 15px 10px;"><i class="fa fa-lock" aria-hidden="true"></i> Support settings locked because you are not the lead instructor of this Bootcamp.</div>';
+}
+?>
 
 <table class="table" style="margin-top:-10px;">
     <tr>
@@ -124,8 +130,7 @@ function r_sync_c(b_id,r_id){
                     <?php
                     $active_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id'	        => $b['b_id'],
-                        'r.r_status >='	    => 0, //No Support
-                        'r.r_status <='	    => 2, //Running
+                        'r.r_status'	    => 1, //Open Admission
                     ), $b, 'ASC');
 
                     if(count($active_classes)>0){

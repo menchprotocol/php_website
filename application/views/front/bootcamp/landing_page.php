@@ -1,7 +1,8 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-$classroom_closed = ($b['b_p2_max_seats']>0 && $focus_class['r_status']==0);
+$instructor_has_off = ($b['b_p2_max_seats']>0 && strlen($b['b__admins'][0]['u_weeks_off'])>0);
+$classroom_closed = ($instructor_has_off && in_array($focus_class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])));
 $highest_price = echo_price($b,99);
 ?>
 
@@ -99,7 +100,7 @@ $( document ).ready(function() {
                     }
 
                     echo '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b>';
-                    if($b['b_p2_max_seats']>0 && $class['r_status']==0){
+                    if($instructor_has_off && in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off']))){
                         //Classroom is closed
                         echo '<span class="badge badge-primary grey">'.status_bible('r',0,1,'top').'</span>';
                     }
@@ -111,7 +112,6 @@ $( document ).ready(function() {
             </div>
         </div>
     </div>
-    
     
     <div class="col-md-8">
     
@@ -156,6 +156,7 @@ $( document ).ready(function() {
         //echo '<p>To complete this Bootcamp, you should complete the above '.$counter.' Task'.show_s($counter).' anytime during the weekly Bootcamp window.</p>';
         ?>
         </div>
+        <div class="show_all_tasks" style="display: none;"><a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">GET STARTED ON <u><?= time_format($focus_class['r_start_date'],4) ?></u>&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
 
     		
     		
