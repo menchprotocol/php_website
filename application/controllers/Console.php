@@ -8,7 +8,10 @@ class Console extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 
-        redirect_message('https://mench.com/login');
+        $udata = auth(2,1);
+		if($udata['u_status']<3){
+            redirect_message('https://mench.com/login');
+        }
 	}
 
     function ping(){
