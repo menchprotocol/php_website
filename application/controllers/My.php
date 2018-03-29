@@ -214,7 +214,7 @@ class My extends CI_Controller {
             'r.r_status >=' => 1, //Open for Admission or Higher
         );
 
-        //Define user identifier:
+        //Define user identifier based on origin (Desktop login vs Messenger Webview):
         if(count($uadmission)>0 && $uadmission['u_id']>0){
             $admission_filters['u.u_id'] = $uadmission['u_id'];
         } else {
@@ -227,31 +227,23 @@ class My extends CI_Controller {
             $admission_filters['r.r_b_id'] = $b_id;
         }
 
-
         $admissions = $this->Db_model->remix_admissions($admission_filters);
-        $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
 
-        if(!$active_admission){
+        if(count($admissions)==1){
 
-            /*
-            $this->Db_model->e_create(array(
-                'e_json' => array(
-                    'ru_fp_psid' => $ru_fp_psid,
-                    'b_id' => $b_id,
-                    'c_id' => $c_id,
-                    'admission_filters' => $admission_filters,
-                    'admissions' => $admissions,
-                    'active_admission' => $active_admission,
-                ),
-                'e_type_id' => 9, //Support Needed
-                'e_message' => 'Student failed to access the Action Plan',
-                'e_b_id' => $b_id,
-                'e_c_id' => $c_id,
-            ));
-            */
+            //Only have a single option:
+            $focus_admission = $admissions[0];
 
-            //Show Error:
+        } elseif(count($admissions)>1){
+
+            //We'd need to see which admission to load now as the Student has not specified:
+            $focus_admission = detect_active_admission($admissions);
+
+        } else {
+
+            //No admissions found:
             die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
+
         }
 
 
@@ -259,16 +251,16 @@ class My extends CI_Controller {
 
             //Log Engagement for opening the Action Plan, which happens without $b_id & $c_id
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $active_admission['u_id'],
+                'e_initiator_u_id' => $focus_admission['u_id'],
                 'e_json' => $admissions,
                 'e_type_id' => 32, //actionplan Opened
-                'e_b_id' => $active_admission['b_id'],
-                'e_r_id' => $active_admission['r_id'],
-                'e_c_id' => $active_admission['c_id'],
+                'e_b_id' => $focus_admission['b_id'],
+                'e_r_id' => $focus_admission['r_id'],
+                'e_c_id' => $focus_admission['c_id'],
             ));
 
             //Reload with specific directions:
-            $this->display_actionplan($ru_fp_psid,$active_admission['b_id'],$active_admission['c_id']);
+            $this->display_actionplan($ru_fp_psid,$focus_admission['b_id'],$focus_admission['c_id']);
 
             //Reload this function, this time with specific instructions on what to load:
             return true;
@@ -276,8 +268,9 @@ class My extends CI_Controller {
 
 
         //Fetch full Bootcamp/Class data for this:
-        $bs = fetch_action_plan_copy($b_id,$active_admission['r_id']);
+        $bs = fetch_action_plan_copy($b_id,$focus_admission['r_id']);
         $class = $bs[0]['this_class'];
+
 
         //Fetch intent relative to the Bootcamp by doing an array search:
         $view_data = extract_level( $bs[0] , $c_id );
@@ -286,22 +279,23 @@ class My extends CI_Controller {
 
             //Append more data:
             $view_data['class'] = $class;
-            $view_data['admission'] = $active_admission;
+            $view_data['admissions'] = $admissions;
+            $view_data['admission'] = $focus_admission;
             $view_data['us_data'] = $this->Db_model->us_fetch(array(
-                'us_r_id' => $active_admission['r_id'],
-                'us_student_id' => $active_admission['u_id'],
+                'us_r_id' => $focus_admission['r_id'],
+                'us_student_id' => $focus_admission['u_id'],
             ));
 
         } else {
 
             //This should not happen either:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $active_admission['u_id'],
+                'e_initiator_u_id' => $focus_admission['u_id'],
                 'e_message' => 'extract_level() Failed to load Bootcamp data in the Student Action Plan',
                 'e_json' => $admissions,
                 'e_type_id' => 8, //Platform Error
                 'e_b_id' => $b_id,
-                'e_r_id' => $active_admission['r_id'],
+                'e_r_id' => $focus_admission['r_id'],
                 'e_c_id' => $c_id,
             ));
 
@@ -313,6 +307,64 @@ class My extends CI_Controller {
         //All good, Load UI:
         $this->load->view('front/student/actionplan_ui.php' , $view_data);
 
+    }
+    function all_admissions(){
+
+        //Validate their origin:
+        $application_status_salt = $this->config->item('application_status_salt');
+        if(!isset($_POST['current_r_id']) || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+            //Log this error:
+            die('<div class="alert alert-danger" role="alert">Invalid ID</div>');
+        }
+
+        //Fetch all their admissions:
+        $admissions = $this->Db_model->remix_admissions(array(
+            'ru.ru_u_id' => $_POST['u_id'],
+            'ru.ru_status >=' => 4, //Admitted
+            'r.r_status >=' => 1, //Open for Admission or Higher
+        ));
+
+
+        if(count($admissions)<=1){
+
+            //No other admissions found:
+            die('<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You can only switch between Bootcamps once you enroll in 2 or more Bootcamps. <a href="/">Browse Bootcamps &raquo;</a></div>');
+
+        } else {
+
+            //Student is in multiple Bootcamps, give them option to switch:
+            echo '<div class="list-group maxout">';
+
+            foreach($admissions as $other_admission){
+
+                $is_current = ($_POST['current_r_id']==$other_admission['r_id']);
+
+                if($is_current){
+
+                    //This is the one that is loaded:
+                    echo '<li class="list-group-item grey">';
+                    //echo '<span class="pull-right"><span class="label label-default grey" style="color:#000;">CURRENTLY VIEWING</span></span>';
+
+                } else {
+
+                    echo '<a href="/my/actionplan/'.$other_admission['b_id'].'/'.$other_admission['b_c_id'].'" class="list-group-item">';
+                    echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top: -7px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+
+                }
+
+                echo '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>'.$other_admission['c_objective'].'</b>';
+                echo ' <span style="display:inline-block;"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($other_admission['r_start_date'],2).'</span>';
+
+                if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){
+                    echo ' <span class="badge badge-primary grey" style="padding: 2px 9px;">RUNNING</span>';
+                }
+
+                echo ( $is_current ? '</li>' : '</a>' );
+            }
+
+            echo '</div>';
+
+        }
     }
 
     function classmates(){
@@ -343,18 +395,18 @@ class My extends CI_Controller {
                 //Data is supposed to be in the session:
                 $uadmission = $this->session->userdata('uadmission');
                 //$ru_filter['ru.ru_u_id'] = $uadmission['u_id'];
-                $active_admission = $uadmission;
+                $focus_admission = $uadmission;
 
             } else {
                 $ru_filter['ru.ru_fp_psid'] = $_POST['psid'];
 
                 //Fetch all their admissions:
                 $admissions = $this->Db_model->remix_admissions($ru_filter);
-                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load
+                $focus_admission = detect_active_admission($admissions); //We'd need to see which admission to load
             }
 
 
-            if(!$active_admission){
+            if(!$focus_admission){
 
                 //Ooops, they dont have anything!
                 die('<div class="alert alert-danger" role="alert">You have not joined any Bootcamps yet</div>');
@@ -362,12 +414,12 @@ class My extends CI_Controller {
             } else {
 
                 //Show Classmates:
-                $b_id = $active_admission['b_id'];
-                $r_id = $active_admission['r_id'];
+                $b_id = $focus_admission['b_id'];
+                $r_id = $focus_admission['r_id'];
 
                 //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $active_admission['u_id'],
+                    'e_initiator_u_id' => $focus_admission['u_id'],
                     'e_type_id' => 54, //classmates Opened
                     'e_b_id' => $b_id,
                     'e_r_id' => $r_id,
@@ -575,7 +627,7 @@ class My extends CI_Controller {
                 }
 
                 //Should we show this ranking?
-                $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($active_admission) && $active_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top || $admission['ru_cache__current_task']>$class['r__total_tasks']);
+                $ranking_visible = ($is_instructor || (isset($_POST['psid']) && isset($focus_admission) && $focus_admission['u_id']==$admission['u_id']) || $counter<=$show_ranking_top || $admission['ru_cache__current_task']>$class['r__total_tasks']);
 
 
                 echo '<tr class="bg-col-'.fmod($counter,2).'">';
@@ -909,6 +961,5 @@ class My extends CI_Controller {
             $this->load->view('front/shared/p_footer');
         }
     }
-
 	
 }

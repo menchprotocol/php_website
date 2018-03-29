@@ -1222,7 +1222,7 @@ class Api_v1 extends CI_Controller {
                 'ru_status >=' => 4,
             ));
             //We'd need to see which admission to load now:
-            $active_admission = filter_active_admission($admissions);
+            $active_admission = detect_active_admission($admissions);
 
         }
 	    
@@ -1263,29 +1263,47 @@ class Api_v1 extends CI_Controller {
         }
 
         $session_data = array();
-	    //Are they admin?
-	    if($users[0]['u_status']>=2 /* || count($co_instructors)>0 */){
-	        //They have admin rights:
-            $session_data['user'] = $users[0];
-        }
-        //Are they an active student?
+        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
+        $is_instructor = false;
+        $is_student = false;
+
+        //Are they a student?
         if($active_admission){
             //They have admin rights:
             $session_data['uadmission'] = $active_admission;
+            $is_student = true;
         }
 
-        //Applicable for instructors only:
-        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
-        $is_instructor = (isset($session_data['user']) && count($session_data['user'])>0);
-        $is_student = (isset($session_data['uadmission']) && count($session_data['uadmission'])>0);
+	    //Are they admin?
+	    if($users[0]['u_status']>=2){
+	        //They have admin rights:
+            $session_data['user'] = $users[0];
+            $is_instructor = true;
+        }
 
-        if($is_instructor && !$is_chrome){
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
-            return false;
+
+        //Applicable for instructors only:
+        if(!$is_chrome){
+
+            if($is_student){
+
+                //Remove instructor privileges as they cannot use the Console with non-chrome Browser:
+                $is_instructor = false;
+                unset($session_data['user']);
+
+            } else {
+
+                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.co/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
+                return false;
+
+            }
+
         } elseif(!$is_instructor && !$is_student){
+
             //We assume this is a student request:
             redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Bootcamps yet. You can only login as a student after you have been approved by your instructor.</div>');
             return false;
+
         }
 
 
@@ -1297,7 +1315,6 @@ class Api_v1 extends CI_Controller {
                 'e_type_id' => 10, //login
             ));
         }
-
         
         //All good to go!
         //Load session and redirect:
@@ -1311,7 +1328,6 @@ class Api_v1 extends CI_Controller {
         $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         $users[0]['input_post_data'] = $_POST;
 
-            
         
         if(isset($_POST['url']) && strlen($_POST['url'])>0){
             header( 'Location: '.$_POST['url'] );

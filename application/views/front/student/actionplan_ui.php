@@ -1,4 +1,10 @@
-<?php $page_load_time = time(); ?>
+<?php
+
+//Define some initial variables:
+$application_status_salt = $this->config->item('application_status_salt');
+$page_load_time = time();
+
+?>
 <script>
 
 function mark_done(){
@@ -49,27 +55,57 @@ function start_report(){
     $('#us_notes').focus();
 }
 
+function all_admissions(){
+
+    //Loads the list of all Student admissions so they can switch their Action Plan
+
+    //Show tem loader:
+    $('#all_admissions').show().html('<div style="font-size: 0.8em;"><img src="/img/round_load.gif" class="loader" /> Loading Bootcamps...</div>');
+    $('.ab_btn').hide();
+
+    //Load the frame:
+    $.post("/my/all_admissions", {
+
+        u_id:$('#u_id').val(),
+        u_key:$('#u_key').val(),
+        current_r_id:$('#r_id').val(),
+
+    }, function(data) {
+
+        //Empty Inputs Fields if success:
+        $('#all_admissions').html(data);
+
+        //SHow inner tooltips:
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+
+}
+
 </script>
 
 <input type="hidden" id="b_id" value="<?= $admission['b_id'] ?>" />
 <input type="hidden" id="r_id" value="<?= $admission['r_id'] ?>" />
 <input type="hidden" id="c_id" value="<?= $intent['c_id'] ?>" />
 <input type="hidden" id="u_id" value="<?= $admission['u_id'] ?>" />
+<input type="hidden" id="u_key" value="<?= md5($admission['u_id'].$application_status_salt) ?>" />
 <input type="hidden" id="s_key" value="<?= md5($intent['c_id'].$page_load_time.'pag3l0aDSla7'.$admission['u_id']) ?>" />
 
 <?php
 
-
 /* ******************************
  * Breadcrumb
  ****************************** */
+echo '<div id="all_admissions"></div>';
 echo '<ol class="breadcrumb">';
-foreach($breadcrumb_p as $link){
-    if($link['link']){
-        echo '<li><a href="'.$link['link'].'">'.$link['anchor'].'</a></li>';
-    } else {
-        echo '<li>'.$link['anchor'].'</li>';
+foreach($breadcrumb_p as $position=>$link){
+    echo '<li>';
+    echo ( $link['link'] ? '<a href="'.$link['link'].'">'.$link['anchor'].'</a>' : $link['anchor'] );
+    if($position==0){
+        //Show the Bootcamp switcher next to the Bootcamp title:
+        echo ' &nbsp;<a href="javascript:void(0);" onclick="all_admissions()" class="badge badge-primary ab_btn" title="Switch Between Bootcamps"><i class="fa fa-random" aria-hidden="true"></i></a>';
     }
+    echo '</li>';
 }
 echo '</ol>';
 
@@ -95,11 +131,11 @@ if(!$class_has_started){
             });
         });
     </script>
-    <div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="project_start"></span></div>
+    <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="project_start"></span></div>
     <?php
 } elseif($class_has_ended){
     //Class has ended
-    echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
 }
 
 
@@ -127,7 +163,7 @@ if($displayed_messages>0){
     $load_open = ( $level>=2 ); //&& !isset($us_data[$intent['c_id']])
 
     //Messages:
-    echo '<h4 style="margin-top:20px;"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
+    echo '<h4 style="margin-top:20px;" class="maxout"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
     echo '<div class="tips_content messages_ap" style="display:'.( $load_open ? 'block' : 'none' ).';">';
     foreach($intent['c__messages'] as $i){
         if($i['i_status']==1){
@@ -154,12 +190,12 @@ if($level==2){
     /* ******************************
      * Step Completion
      ****************************** */
-    echo '<h4><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
+    echo '<h4 class="maxout"><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
     if($class_has_ended){
 
         //Class if finished, no more submissions allowed!
-        echo '<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Submissions are now closed because Bootcamp has ended.</div>';
+        echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Submissions are now closed because Class has ended.</div>';
 
     } else {
 
@@ -230,7 +266,7 @@ if($level==2){
     $previous_on = (isset($previous_intent['c_id']));
     $next_on = ( $next_level>=2 && ($class_has_ended || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]))));
     if($previous_on || $next_on){
-        echo '<h4><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
+        echo '<h4 class="maxout"><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
         if($previous_on){
             echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-black" style="margin:0 5px;"><i class="fa fa-arrow-left"></i> Previous</a>';
@@ -255,7 +291,7 @@ if($level==2){
 
 if($level==1){
 
-    echo '<h4>';
+    echo '<h4 class="maxout">';
         if($level==1){
             echo '<i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks';
         } elseif($level==2){
@@ -265,7 +301,7 @@ if($level==1){
         echo ' <span class="sub-title">'.echo_time($intent['c__estimated_hours'],1).'</span>';
     echo '</h4>';
 
-    echo '<div id="list-outbound" class="list-group">';
+    echo '<div id="list-outbound" class="list-group maxout">';
 
     //This could be either a list of Tasks or Steps, we'll know using $level
     $previous_item_complete = true; //We start this as its true for the very first Step

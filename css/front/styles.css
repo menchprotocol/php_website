@@ -1336,6 +1336,11 @@ a.badge:focus, a.badge:hover {
     margin-left:30px;
 }
 
+#all_admissions{
+    margin:15px 0 30px;
+    display: none;
+}
+
 #funnel h3{
     margin:0;
 }

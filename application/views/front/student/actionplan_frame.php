@@ -25,6 +25,7 @@ if(isset($uadmission) && count($uadmission)>0){
     //Use Facebook to see if we can find this user's identity:
     ?>
     <script>
+
         (function(d, s, id){
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {return;}
@@ -57,6 +58,7 @@ if(isset($uadmission) && count($uadmission)>0){
                 }
             );
         };
+
     </script>
     <?php
 }

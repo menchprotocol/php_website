@@ -697,7 +697,7 @@ class Cron extends CI_Controller {
                     'ru_u_id'	     => $nm['e_initiator_u_id'],
                     'ru_status >='	 => 0,
                 ));
-                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+                $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
 
                 if($active_admission){
 

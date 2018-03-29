@@ -810,7 +810,7 @@ class Comm_model extends CI_Model {
 
         //See if we can find it in the admission table:
         $admissions = $this->Db_model->ru_fetch($ru_filter);
-        $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+        $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
         if($active_admission){
             //Override with more complete $u object:
             $u = $active_admission;
@@ -910,7 +910,7 @@ class Comm_model extends CI_Model {
                 $admissions = $this->Db_model->ru_fetch(array(
                     'ru.ru_u_id' => $u['u_id'],
                 ));
-                $active_admission = filter_active_admission($admissions); //We'd need to see which admission to load now
+                $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
                 if($active_admission){
                     //Override with more complete $u object:
                     $u = $active_admission;
