@@ -241,7 +241,7 @@ $(document).ready(function() {
     <ul>
         <li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
         <li>Class Dates: <b><?= time_format($admission['r_start_date'],2) ?> - <?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
-        <li>Designed By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
+        <li>Content By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
         <li>Action Plan: <b><?= $admission['c__tasks_count'] ?> Tasks</b></li>
         <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 1 Week</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
         <li>Your Support Level: <b id="confirm_support"></b></li>

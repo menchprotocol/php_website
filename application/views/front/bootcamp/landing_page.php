@@ -160,7 +160,7 @@ $( document ).ready(function() {
 
     		
     		
-    		<h3>Instructors</h3>
+    		<h3>Content By</h3>
     		<?php
             $admin_count = 0;
             $leader_fname = '';
