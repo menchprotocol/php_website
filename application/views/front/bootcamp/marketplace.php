@@ -13,8 +13,8 @@
 
 
 <!-- <h1>Achieve Your Goals</h1> -->
-<h1>Weekly Coding Bootcamps</h1>
-<p class="home_line_2">Gain <b>coding skills</b> by completing <b>weekly bootcamps</b> designed <b>by industry experts</b>.</p>
+<h1>7-Day Hands-On Bootcamps</h1>
+<p class="home_line_2">Build your <b>tech skills</b> by completing <b>weekly bootcamps</b> designed by <b>industry experts</b>.</p>
 <p class="home_line_2">Classes range from <b>$0 - $219 per week</b> based on instructor and support level <b>you choose</b>.</p>
 <p class="home_line_2">New classes <b>start every Monday</b> (in <span id="classes_start"></span> from now)</p>
 <br />
