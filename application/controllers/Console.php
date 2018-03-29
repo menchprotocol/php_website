@@ -7,6 +7,8 @@ class Console extends CI_Controller {
 		parent::__construct();
 		
 		$this->output->enable_profiler(FALSE);
+
+        redirect_message('https://mench.com/login');
 	}
 
     function ping(){
@@ -53,6 +55,7 @@ class Console extends CI_Controller {
 	 ****************************** */
 	
 	function all_bootcamps(){
+
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
 		

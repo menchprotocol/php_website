@@ -6,13 +6,15 @@ class Front extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->output->enable_profiler(FALSE);
+
+        redirect_message('https://mench.com');
 	}
 
     function ping(){
         echo_json(array('status'=>'success'));
     }
 	
-	function index(){		
+	function index(){
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
 				'landing_page' => 'front/splash/the_online_challenge_framework',
