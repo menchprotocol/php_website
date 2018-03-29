@@ -14,6 +14,45 @@ class Bot extends CI_Controller {
         echo_json(array('status'=>'success'));
     }
 
+    function update_all(){
+
+        $pages = $this->Db_model->fp_fetch(array(
+            'fp_status' => 1,
+        ));
+
+        $res = array();
+        foreach($pages as $fp){
+            array_push($res , $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', array(
+                'persistent_menu' => array(
+                    array(
+                        'locale' => 'default',
+                        'composer_input_disabled' => false,
+                        'call_to_actions' => array(
+                            array(
+                                'title' => '🚩 Action Plan',
+                                'type' => 'web_url',
+                                'url' => 'https://mench.com/my/actionplan',
+                                'webview_height_ratio' => 'tall',
+                                'webview_share_button' => 'hide',
+                                'messenger_extensions' => true,
+                            ),
+                            array(
+                                'title' => '👥 Classmates',
+                                'type' => 'web_url',
+                                'url' => 'https://mench.com/my/classmates',
+                                'webview_height_ratio' => 'tall',
+                                'webview_share_button' => 'hide',
+                                'messenger_extensions' => true,
+                            ),
+                        ),
+                    ),
+                ),
+            ), $fp));
+        }
+
+        echo_json($res);
+    }
+
     function error(){
         //This is meant to create an error to rest the log files:
         echo $_GET['none'];
