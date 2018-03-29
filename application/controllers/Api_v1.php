@@ -1099,6 +1099,7 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Send appropriate Message:
+            /*
             $this->Comm_model->foundation_message(array(
                 'e_recipient_u_id' => intval($_POST['u_id']),
                 'e_c_id' => $intent_data['next_intent']['c_id'],
@@ -1106,6 +1107,8 @@ class Api_v1 extends CI_Controller {
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
             ));
+            */
+
 
             //Show button for next task:
             echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
