@@ -17,11 +17,28 @@ class Bot extends CI_Controller {
     function update_all(){
 
         $pages = $this->Db_model->fp_fetch(array(
-            'fp_status' => 1,
+            'fp_id' => 49,
         ));
 
         $res = array();
         foreach($pages as $fp){
+
+            array_push($res , $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', array(
+                'get_started' => array(
+                    'payload' => 'GET_STARTED',
+                ),
+                'whitelisted_domains' => array(
+                    'http://local.mench.co',
+                    'https://mench.co',
+                    'https://mench.com',
+                ),
+            ), $fp));
+
+
+            //Wait until Facebook pro-pagates changes of our whitelisted_domains setting:
+            sleep(2);
+
+
             array_push($res , $this->Comm_model->fb_graph($fp['fp_id'], 'POST', '/me/messenger_profile', array(
                 'persistent_menu' => array(
                     array(
