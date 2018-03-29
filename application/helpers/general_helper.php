@@ -1204,12 +1204,25 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 }
 
 function echo_b($b){
+
+    //Fetch total students:
+    $CI =& get_instance();
+    $all_students = count($CI->Db_model->ru_fetch(array(
+        'r.r_b_id'	       => $b['b_id'],
+        'ru.ru_status >='  => 4,
+    )));
+
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
     $b_ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true" style="margin: 0 8px 0 2px; color:#000;"></i> ';
     $b_ui .= $b['c_objective'];
-    $b_ui .= ( $b['b_old_format'] ? ' <i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Bootcamp is locked because it was created using the older version of Mench. You can import its content into new Bootcamps as you wish."></i>' : '' );
+
+    if($all_students>0){
+        $b_ui .= ' &nbsp;<b style="color:#000;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
+    }
+
+    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp was created with older version of Mench. You can import them into new Bootcamps."></i></b>' : '' );
     $b_ui .= '</a>';
     return $b_ui;
 }
