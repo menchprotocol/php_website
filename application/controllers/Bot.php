@@ -16,6 +16,8 @@ class Bot extends CI_Controller {
 
     function update_all(){
 
+        exit;
+
         $pages = $this->Db_model->fp_fetch(array(
             'fp_id' => 49,
         ));

@@ -130,7 +130,7 @@ if(!($b['b__admins'][0]['u_id']==$udata['u_id'])){
                     <?php
                     $active_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id'	        => $b['b_id'],
-                        'r.r_status'	    => 1, //Open Admission
+                        'r.r_status >='	    => 1, //Open Admission or higher
                     ), $b, 'ASC');
 
                     if(count($active_classes)>0){
