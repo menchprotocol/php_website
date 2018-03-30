@@ -7,6 +7,8 @@ class Cron extends CI_Controller {
 		parent::__construct();
 		
 		$this->output->enable_profiler(FALSE);
+
+		//Example: /usr/bin/php /var/www/us/index.php cron student_reminder_complete_application
 	}
 
 	function ping(){
@@ -14,13 +16,12 @@ class Cron extends CI_Controller {
     }
 
     /* ******************************
-     * System
-     * /usr/bin/php /var/www/us/index.php cron student_reminder_complete_application
+     * Classes
      ****************************** */
 
     function class_kickstart(){
 
-        //Cron Settings: 0,30 * * * *
+        //Cron Settings: 0 * * * 0,1
         //This function is solely responsible to get the class started and dispatch its very first Task messages IF it does start
         //Searches for any class that might be starting and kick starts its messages:
         $classes = $this->Db_model->r_fetch(array(
@@ -204,9 +205,10 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function class_end(){
+    function class_complete(){
 
-        //Cron Settings: 0,30 * * * *
+        //Cron Settings: 0 * * * 0,1 (Sunday & Monday Every hour)
+
         //Completed a Class
 
         $running_classes = $this->Db_model->r_fetch(array(
@@ -222,13 +224,12 @@ class Cron extends CI_Controller {
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id']);
             $class = $bs[0]['this_class'];
 
-            $has_ended = 0; //TODO Determine
+            //Has the class ended yet?
+            if($class['r__class_end_time']<=time()){
 
-            //Where is the class at now?
-            if($has_ended){
+                //Yes, Class has ended
 
-                //Class ended
-                //Fetch all the class students, and see which ones advance to this new Task:
+                //Fetch all the class students
                 $accepted_admissions = $this->Db_model->ru_fetch(array(
                     'ru.ru_r_id'	    => $class['r_id'],
                     'ru.ru_status >='	=> 4, //Admitted students
@@ -260,7 +261,6 @@ class Cron extends CI_Controller {
                     //Construct the review message and button:
                     $review_message = 'Your final step is to rate & review your experience with ​​​​'.$lead_instructors[0]['u_fname'].' '.$lead_instructors[0]['u_lname'].' and help improve future Classes:';
                     $review_button = '📣 Review '.$lead_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
-
 
 
                     //Do a count for stat reporting:
@@ -368,7 +368,33 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function drip(){
+    function class_create($b_id=0){
+
+        if($b_id>0){
+            $filter = array(
+                'b_id' => $b_id,
+            );
+        } else {
+            $filter = array(
+                'b_status >=' => 2,
+                'b_old_format' => 0,
+            );
+        }
+        $bs = $this->Db_model->b_fetch($filter);
+
+        $stats = array();
+        foreach($bs as $b){
+            $stats[$b['b_id']] = $this->Db_model->r_sync($b['b_id']);
+        }
+
+        echo_json($stats);
+    }
+
+    /* ******************************
+     * Messaging
+     ****************************** */
+
+    function message_drip(){
 
         //Cron Settings: */5 * * * *
 
@@ -444,7 +470,7 @@ class Cron extends CI_Controller {
 
     }
 
-    function bot_save_files(){
+    function message_file_save(){
 
         //Cron Settings: * * * * *
 
@@ -523,30 +549,7 @@ class Cron extends CI_Controller {
         echo $counter.' Incoming Messenger file'.($counter==1?'':'s').' saved to Mench cloud.';
     }
 
-    function create_classes($b_id=0){
-
-        if($b_id>0){
-            $filter = array(
-                'b_id' => $b_id,
-            );
-        } else {
-            $filter = array(
-                'b_status >=' => 2,
-                'b_old_format' => 0,
-            );
-        }
-        $bs = $this->Db_model->b_fetch($filter);
-
-        $stats = array();
-        foreach($bs as $b){
-            $stats[$b['b_id']] = $this->Db_model->r_sync($b['b_id']);
-        }
-
-        echo_json($stats);
-    }
-
-
-    function fb_sync_attachments(){
+    function message_fb_sync_attachments(){
 
         //Cron Settings: * * * * *
 
@@ -847,7 +850,6 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-
     function student_reminder_complete_task(){
 
         //Cron Settings: 45 * * * *
@@ -934,6 +936,5 @@ class Cron extends CI_Controller {
 
         echo_json($stats);
     }
-
 
 }
