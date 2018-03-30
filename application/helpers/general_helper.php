@@ -1079,6 +1079,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Item');
     $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
     $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? 0.05 : $intent['c__estimated_hours'] );
+    $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || ($udata['u_status']==3 && $b['b_old_format']));
 
     if(!$editing_enabled && $intent['c_status']<1){
         //Do not show drafting items in read-only mode:
@@ -1144,7 +1145,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         //( !(level==2) || increments<=1 ? sort_rank : sort_rank+'-'+(sort_rank + increments - 1))
         $ui .= '<span class="inline-level">';
 
-        if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
+        if($child_enabled){
             $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;';
         }
 
@@ -1180,7 +1181,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         }
 
         //Step Input field:
-        if($editing_enabled && (!$b['b_old_format'] || $udata['u_status']==3)){
+        if($editing_enabled && $child_enabled){
             $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" node-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addnode'.$intent['c_id'].'" placeholder=""></form></div>
