@@ -7,7 +7,6 @@ class Front extends CI_Controller {
 		parent::__construct();
 		$this->output->enable_profiler(FALSE);
 
-        redirect_message('https://mench.com');
 	}
 
     function ping(){
@@ -15,6 +14,9 @@ class Front extends CI_Controller {
     }
 	
 	function index(){
+
+        redirect_message('https://mench.com');
+
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
 				'landing_page' => 'front/splash/the_online_challenge_framework',
@@ -25,6 +27,9 @@ class Front extends CI_Controller {
 	}
 	
 	function login(){
+
+        redirect_message('https://mench.com/login');
+
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
 	    if(isset($udata['u_id']) && $udata['u_status']>=2){
@@ -56,6 +61,7 @@ class Front extends CI_Controller {
 	}
 	
 	function terms(){
+        redirect_message('https://mench.com/');
 		$this->load->view('front/shared/f_header' , array(
 				'title' => 'Terms & Privacy Policy',
 		));
@@ -64,6 +70,7 @@ class Front extends CI_Controller {
 	}
 	
 	function contact(){
+        redirect_message('https://mench.com/');
 		$this->load->view('front/shared/f_header' , array(
 				'title' => 'Contact Us',
 		));
@@ -136,6 +143,7 @@ class Front extends CI_Controller {
 
 
 	function launch(){
+        redirect_message('https://mench.com/launch');
 	    $this->load->view('front/shared/f_header' , array(
 	        'title' => 'Launch A Bootcamp',
 	    ));
@@ -176,6 +184,8 @@ class Front extends CI_Controller {
 	
 	
 	function bootcamp_load($b_url_key,$r_id=null){
+
+        redirect_message('https://mench.com/'.$b_url_key);
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
@@ -228,6 +238,8 @@ class Front extends CI_Controller {
 	
 	function bootcamp_apply($b_url_key,$r_id=null){
 	    //The start of the funnel for email, first name & last name
+
+        redirect_message('https://mench.com/'.$b_url_key);
 
         //Fetch data:
         $udata = $this->session->userdata('user');
