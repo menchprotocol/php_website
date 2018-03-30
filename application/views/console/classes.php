@@ -5,7 +5,15 @@ $class_settings = $this->config->item('class_settings');
 
 $(document).ready(function() {
     if(window.location.hash) {
-        focus_hash(window.location.hash);
+        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+        var hash_parts = hash.split("-");
+        if(hash_parts.length==2 && hash_parts[0]=="class" && parseInt(hash_parts[1])>0){
+            //Load this specific Class:
+            load_class(parseInt(hash_parts[1]));
+        } else {
+            //Perhaps a menu change?
+            focus_hash(window.location.hash);
+        }
     }
 });
 

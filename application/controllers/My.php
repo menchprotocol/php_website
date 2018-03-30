@@ -474,6 +474,7 @@ class My extends CI_Controller {
             'ru_status >=' => 4,
         ));
         $countries_all = $this->config->item('countries_all');
+        $udata = $this->session->userdata('user');
         $show_top = 0.2; //The rest are not ranked based on points on the student side, instructors will still see entire ranking
         $show_ranking_top = ceil(count($loadboard_students) * $show_top );
 
@@ -486,7 +487,21 @@ class My extends CI_Controller {
             ),1 , array('ej'));
 
 
-            echo '<h3 style="margin:0;" class="maxout">'.time_format($class['r_start_date'],2).' - '.time_format($class['r__class_end_time'],2).( count($cache_action_plans)>0 ? ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fa fa-list-ol" aria-hidden="true"></i></span></a>' : '').'</h3>';
+            //Show Class Status
+            $class_running = (time()>=$class['r__class_start_time'] && time()<$class['r__class_end_time']);
+            echo '<h3 style="margin:0;" class="maxout">';
+                echo time_format($class['r_start_date'],2).' - '.time_format($class['r__class_end_time'],2);
+                echo ' ('.( $class_running ? 'Running' : ( time()<$class['r__class_start_time'] ? 'Upcoming' : 'Completed' ) ).')';
+
+                if(count($cache_action_plans)>0){
+                    echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fa fa-list-ol" aria-hidden="true"></i></span></a>';
+                }
+
+                if($udata['u_status']>=3){
+                    //Show action plan update button
+                    echo ' <a href="/adjust/copy_actionplan/'.$class['r_b_id'].'/'.$class['r_id'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Update Action Plan Copy (Opens in new window)"><span class="badge tip-badge"><i class="fa fa-clone" aria-hidden="true"></i></span></a>';
+                }
+            echo '</h3>';
 
 
             if(count($cache_action_plans)>0){
@@ -548,32 +563,12 @@ class My extends CI_Controller {
 
                 echo '</div>';
             }
+
         }
+
+
 
         echo '<table class="table table-condensed maxout ap_toggle" style="background-color:#E0E0E0; font-size:18px; '.( $is_instructor ? 'margin-bottom:12px;' : 'max-width:420px; margin:0 auto;' ).'">';
-
-
-        //First generate classmates's top message:
-        echo '<tr class="bg-col-h">';
-        echo '<td colspan="7" style="font-size:1em; padding:10px 0; text-align:center;">';
-        echo '<i class="fa fa-calendar" aria-hidden="true"></i> ';
-        //Do some time calculations for the point system:
-        if(time()<$class['r__class_start_time']){
-            //Not started yet!
-            //TODO maybe have a count down timer to make it nicer?
-            echo 'Class not yet started.';
-        } elseif(time()>$class['r__class_end_time']){
-            //Ended!
-            echo 'Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago';
-        } else {
-            //During the class:
-            echo 'Running Class';
-        }
-        echo '</td>';
-        echo '</tr>';
-
-
-
 
         //Now its header:
         echo '<tr class="bg-col-h">';

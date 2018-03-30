@@ -754,11 +754,22 @@ WHERE ru.ru_status >= 4
         return count($dates_needed);
     }
 	
-	function r_fetch($match_columns , $b=null /* Passing this would load extra variables for the class as well! */, $sorting='DESC', $limit=0 ){
+	function r_fetch($match_columns , $b=null /* Passing this would load extra variables for the class as well! */, $sorting='DESC', $limit=0, $join_objects=array() ){
 
-		//Missing anything?
-		$this->db->select('r.*');
+        if(in_array('ru',$join_objects)){
+            $this->db->select('r.*, COUNT(ru_id) as total_admissions');
+        } else {
+            $this->db->select('r.*');
+        }
+
+        $this->db->select('r.*');
         $this->db->from('v5_classes r');
+
+        if(in_array('ru',$join_objects)){
+            $this->db->join('v5_class_students ru', 'r.r_id = ru.ru_r_id');
+            $this->db->where('ru.ru_status >=',4);
+        }
+
 		foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -766,7 +777,15 @@ WHERE ru.ru_status >= 4
                 $this->db->where($key);
             }
 		}
+
         $this->db->order_by('r.r_start_date',$sorting); //Most recent class at top
+
+        if(in_array('ru',$join_objects)){
+            $this->db->order_by('total_admissions','DESC'); //Most recent class at top
+            $this->db->group_by('r.r_id');
+        }
+
+
         if($limit>0){
             $this->db->limit($limit);
         }
@@ -779,10 +798,15 @@ WHERE ru.ru_status >= 4
             //Now calculate start time and end time for this class:
             $runs[$key]['r__class_start_time'] = strtotime($class['r_start_date']); //Starts at Midnight same date
             $runs[$key]['r__class_end_time'] = $runs[$key]['r__class_start_time'] + (7 * 24 * 3600) - (60); //Ends Sunday 11:59PM
-            $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
-                'ru_r_id' => $class['r_id'],
-                'ru_status >=' => 4,
-            )));
+
+            if(in_array('ru',$join_objects)){
+                $runs[$key]['r__current_admissions'] = $class['total_admissions'];
+            } else {
+                $runs[$key]['r__current_admissions'] = count($this->Db_model->ru_fetch(array(
+                    'ru_r_id' => $class['r_id'],
+                    'ru_status >=' => 4,
+                )));
+            }
 
             $runs[$key]['r__total_tasks'] = 0;
             if(isset($b['c__child_intents']) && count($b['c__child_intents'])>0){

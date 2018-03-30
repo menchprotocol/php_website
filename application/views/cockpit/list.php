@@ -280,9 +280,11 @@ if($object_name=='engagements'){
 
 } elseif($object_name=='classes'){
 
+    //We only want classes with some sort of an acticity:
+
     $classes = $this->Db_model->r_fetch(array(
         'r_status >=' => 1, //Admission Open
-    ),null,'ASC');
+    ),null,'ASC',0,array('ru'));
 
 
 
@@ -312,11 +314,6 @@ if($object_name=='engagements'){
             //Fetch Bootcamp from Action Plan Copy:
             $bs = fetch_action_plan_copy($class['r_b_id'],$class['r_id'],$bs,array('b_fp_id'));
             $class = $bs[0]['this_class'];
-        } else {
-            if($class['r__current_admissions']==0){
-                //This class has no stats, skip it:
-                continue;
-            }
         }
 
         //Fetch Leader:
@@ -330,7 +327,7 @@ if($object_name=='engagements'){
 
         echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bs[0]['c_objective'].'</a></td>';
         echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
-        echo '<td><a href="/console/'.$class['r_b_id'].'/classes/'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),2).'</a></td>';
+        echo '<td><a href="/console/'.$class['r_b_id'].'/classes#class-'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),2).'</a></td>';
         echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';
         if($class['r_status']==3){
             echo '100%';
@@ -388,7 +385,7 @@ if($object_name=='engagements'){
             )));
 
             echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats/Max-Guided">';
-            echo $pending_completion.' &raquo; '.$class['r__current_admissions'].'  &raquo; <b>'.$guided_admissions.'</b>/'.$bs[0]['b_p2_max_seats'];
+            echo $pending_completion.' &raquo; <b>'.$class['r__current_admissions'].'</b>'.( $guided_admissions>0 ? ' (<b>'.$guided_admissions.'</b>/'.$bs[0]['b_p2_max_seats'].')' : '' );
             echo '</span>';
 
         }

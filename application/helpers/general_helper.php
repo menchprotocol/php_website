@@ -1659,7 +1659,7 @@ function echo_r($b,$class,$append_class=null){
     if($class['r__current_admissions']>0){
 
         //How many students, if any, are enrolled in support packages?
-        echo '<a href="javascript:void(0);" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_admissions'].' <i class="fa fa-chevron-right" aria-hidden="true"></i></a>';
+        echo '<a href="#class-'.$class['r_id'].'" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_admissions'].' <i class="fa fa-chevron-right" aria-hidden="true"></i></a>';
 
     } else {
 
