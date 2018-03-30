@@ -497,7 +497,7 @@ class My extends CI_Controller {
                     echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fa fa-list-ol" aria-hidden="true"></i></span></a>';
                 }
 
-                if($udata['u_status']>=3){
+                if($udata['u_id']==1){
                     //Show action plan update button
                     echo ' <a href="/adjust/copy_actionplan/'.$class['r_b_id'].'/'.$class['r_id'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Update Action Plan Copy (Opens in new window)"><span class="badge tip-badge"><i class="fa fa-clone" aria-hidden="true"></i></span></a>';
                 }
