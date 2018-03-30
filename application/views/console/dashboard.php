@@ -107,7 +107,7 @@ echo '</div>';
 
 
 
-<?php $launch_status = calculate_project_status($b); ?>
+<?php $launch_status = b_progress($b); ?>
 <div class="title" style="margin-top:40px;"><h4><?= $launch_status['stage'] ?> <span id="hb_1511" class="help_button" intent-id="1511"></span></h4></div>
 <div class="help_body maxout" id="content_1511"></div>
 <div>Complete this checklist to prepare your Bootcamp for launch:</div>

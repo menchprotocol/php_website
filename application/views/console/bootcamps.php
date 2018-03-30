@@ -10,10 +10,10 @@
     });
 
 
-    var processing_project = 0;
+    var processing_b = 0;
     function b_create(){
 
-        if(processing_project){
+        if(processing_b){
             //Do nothing while processing a current project:
             return false;
         }
@@ -25,7 +25,7 @@
         }
 
         //Show loader:
-        processing_project = 1;
+        processing_b = 1;
         var c_objective = $('#b_c_objective').val();
         $('.no-b-div').remove(); //It may exist...
         $('#b_c_objective').val('').prop('disabled',true);
@@ -38,7 +38,7 @@
         }, function(data) {
 
             //Processing is done:
-            processing_project = 0;
+            processing_b = 0;
             $( ".loader-div" ).remove(); //Remove loader...
             $('#b_c_objective').prop('disabled',false);
             $('.new-b').fadeIn();

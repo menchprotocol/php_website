@@ -93,7 +93,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
                 //Messenger activation for Active Bootcamps only
                 if($bs[0]['b_status']>=2){
-                    $bot_title = 'Step 3: Activate Your Facebook Messenger'.($admission['ru_p2_price']>0?' to Chat with your Instructor':'');
+                    $bot_title = 'Step 3: Activate Your Facebook Messenger'.($admission['ru_p2_price']>0?' to Chat with your Instructor':' (Chat Available for Classroom Students)');
                     if($admission['u_cache__fp_psid']>0){
                         echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
                     } else {

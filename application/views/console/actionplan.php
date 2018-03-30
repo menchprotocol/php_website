@@ -496,8 +496,8 @@ function load_intent_sort(pid,level){
                             //Yes we need to adjust as the statuses of these Tasks are different:
                             var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
                             //Determine what to do:
-                            var new_project_hours = current_b_hours + ( ( from_task_status>to_task_status ? -1 : 1 ) * step_hours );
-                            $('.hours_level_1').attr('current-hours',new_project_hours).text(format_hours(new_project_hours));
+                            var new_bootcamp_hours = current_b_hours + ( ( from_task_status>to_task_status ? -1 : 1 ) * step_hours );
+                            $('.hours_level_1').attr('current-hours',new_bootcamp_hours).text(format_hours(new_bootcamp_hours));
                         }
                     }
 

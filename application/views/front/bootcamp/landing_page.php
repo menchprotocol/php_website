@@ -233,7 +233,7 @@ $( document ).ready(function() {
 <div>
 <div class="container">
 	
-<?php $this->load->view('front/shared/projects_include'); ?>
+<?php $this->load->view('front/shared/bootcamps_include'); ?>
 <br /><br />
 
 

@@ -204,12 +204,10 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function end_project(){
+    function class_end(){
 
         //Cron Settings: 0,30 * * * *
-        //Moves the class from one Task to another, Only applicable for the 2nd milesone or higher
-        //Also closes a Class if all Tasks are done...
-        //The first Task is triggered with the class_kickstart() cron function above
+        //Completed a Class
 
         $running_classes = $this->Db_model->r_fetch(array(
             'r_status' => 2, //Only running classes
@@ -724,7 +722,7 @@ class Cron extends CI_Controller {
                         if(!isset($notify_messages[$md5_key])){
                             $notify_messages[$md5_key] = array(
                                 'notify_admins' => $notify_fb_ids,
-                                'project_data' => $b_data,
+                                'b_data' => $b_data,
                                 'message_threads' => array(),
                             );
                         }
@@ -743,15 +741,15 @@ class Cron extends CI_Controller {
 
                 //Prepare the message Body:
                 $message = null;
-                if(count($msg['project_data'])>0){
-                    $message .= '🎯 '.$msg['project_data']['c_objective']."\n";
+                if(count($msg['b_data'])>0){
+                    $message .= '🎯 '.$msg['b_data']['c_objective']."\n";
                 }
                 $message .= '💡 Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
-                if(count($msg['project_data'])>0 && strlen($message)<580){
-                    $message .= "\n\n".'https://mench.com/console/'.$msg['project_data']['b_id'];
+                if(count($msg['b_data'])>0 && strlen($message)<580){
+                    $message .= "\n\n".'https://mench.com/console/'.$msg['b_data']['b_id'];
                 }
 
                 $notify_messages[$key]['admin_message'] = $message;
@@ -765,7 +763,7 @@ class Cron extends CI_Controller {
                             'i_message' => substr($message,0,620), //Make sure this is not too long!
                             'e_initiator_u_id' => 0, //System
                             'e_recipient_u_id' => $admin['u_id'],
-                            'e_b_id' => ( isset($msg['project_data']['b_id']) ? $msg['project_data']['b_id'] : 0),
+                            'e_b_id' => ( isset($msg['b_data']['b_id']) ? $msg['b_data']['b_id'] : 0),
                         ),
                     ));
 

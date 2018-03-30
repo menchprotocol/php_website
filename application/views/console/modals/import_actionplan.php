@@ -22,7 +22,7 @@ $bs = $this->Db_model->instructor_bs(array(
         //Let's check the value of the current posstible ID for input validation checking:
         if(adjustment>0 && typeof $('.wizard-box').eq((current_section-1)).attr( "id" ) !== 'undefined' && $('.wizard-box').eq((current_section-1)).attr( "id" ).length){
             var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
-            if(the_id=='choose_project'){
+            if(the_id=='choose_b'){
                 //This is a critical step as it would define which Bootcamp to load into the Import wizard...
                 var import_from_b_id = $('#import_b_id').val();
                 if(import_from_b_id<1){
@@ -193,7 +193,7 @@ $bs = $this->Db_model->instructor_bs(array(
             </div>
             <div class="modal-body" style="min-height:300px;">
 
-                <div class="wizard-box" id="choose_project">
+                <div class="wizard-box" id="choose_b">
                     <p>Import from:</p>
                     <div class="form-group label-floating is-empty">
                         <select class="form-control input-mini border" id="import_b_id">

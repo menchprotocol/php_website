@@ -290,7 +290,7 @@ class Api_v1 extends CI_Controller {
             foreach($ready_pages as $page){
 
                 //Fetch all other Bootcamps this page is connected to:
-                $other_projects = $this->Db_model->b_fetch(array(
+                $other_bs = $this->Db_model->b_fetch(array(
                     'b.b_fp_id' => $page['fp_id'],
                     'b.b_id !=' => $_POST['b_id'],
                 ),array('c'));
@@ -322,10 +322,10 @@ class Api_v1 extends CI_Controller {
                 $pages_list_ui .= ' <a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank" style="font-size:0.9em;"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
 
 
-                if(count($other_projects)>0){
+                if(count($other_bs)>0){
                     //Show other connected Bootcamps:
                     $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
-                    foreach($other_projects as $count=>$b){
+                    foreach($other_bs as $count=>$b){
                         if($count>0){
                             $pages_list_ui .= ', ';
                         }
@@ -1943,7 +1943,7 @@ class Api_v1 extends CI_Controller {
         $reserved_hashtags = $this->config->item('reserved_hashtags');
 
         //Validate URL Key to be unique:
-        $duplicate_projects = $this->Db_model->b_fetch(array(
+        $duplicate_bs = $this->Db_model->b_fetch(array(
             'LOWER(b.b_url_key)' => strtolower($_POST['b_url_key']),
             'b.b_id !=' => $_POST['b_id'],
         ));
@@ -1979,7 +1979,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'URL Key can only include letters a-z and numbers 0-9',
             ));
             return false;
-        } elseif(count($duplicate_projects)>0){
+        } elseif(count($duplicate_bs)>0){
             echo_json(array(
                 'status' => 0,
                 'message' => 'URL Key <a href="/'.$_POST['b_url_key'].'" target="_blank">'.$_POST['b_url_key'].'</a> already taken.',

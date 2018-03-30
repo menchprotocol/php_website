@@ -1222,7 +1222,7 @@ function echo_b($b){
         $b_ui .= ' &nbsp;<b style="color:#000;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
     }
 
-    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp was created with older version of Mench. You can import them into new Bootcamps."></i></b>' : '' );
+    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
     $b_ui .= '</a>';
     return $b_ui;
 }
@@ -1255,7 +1255,7 @@ function prep_prerequisites($b){
 }
 
 
-function calculate_project_status($b){
+function b_progress($b){
     
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
@@ -1646,6 +1646,7 @@ function echo_r($b,$class,$append_class=null){
 
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
+    $class_settings = $CI->config->item('class_settings');
     $guided_admissions = count($CI->Db_model->ru_fetch(array(
         'ru_r_id' => $class['r_id'],
         'ru_status >=' => 4,
@@ -1697,6 +1698,7 @@ function echo_r($b,$class,$append_class=null){
     }
 
     echo ' <span title="Class ID '.$class['r_id'].'">'.time_format($class['r_start_date'],1).'</span>';
+    echo ' <i class="fa fa-eye-slash not_published" data-toggle="tooltip" data-placement="top" title="Class not published yet. Mench accepts admissions only for the upcoming '.$class_settings['students_show_max'].' Classes." aria-hidden="true"></i>';
 
     echo '</li>';
 }

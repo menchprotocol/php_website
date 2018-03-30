@@ -1,7 +1,7 @@
 
 <ul class="nav nav-pills nav-pills-primary">
     <li class="<?= ( $object_name=='engagements' ? 'active' : '') ?>"><a href="/cockpit/browse/engagements"><i class="fa fa-eye" aria-hidden="true"></i> Engagements</a></li>
-    <li class="<?= ( $object_name=='projects' ? 'active' : '') ?>"><a href="/cockpit/browse/projects"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
+    <li class="<?= ( $object_name=='bootcamps' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
 </ul>
@@ -134,7 +134,7 @@ if($object_name=='engagements'){
     </table>
     <?php
 
-} elseif($object_name=='projects'){
+} elseif($object_name=='bootcamps'){
 
 
     //A function to echo the Bootcamp rows:
@@ -492,7 +492,7 @@ if($object_name=='engagements'){
 
 
         //Fetch Bootcamps:
-        $instructor_projects = $this->Db_model->ba_fetch(array(
+        $instructor_bs = $this->Db_model->ba_fetch(array(
             'ba.ba_u_id' => $user['u_id'],
             'ba.ba_status >=' => 0,
             'b.b_status >=' => 2,
@@ -507,10 +507,10 @@ if($object_name=='engagements'){
 
         echo '<td>';
             //Display Bootcamps:
-            if(count($instructor_projects)>0){
+            if(count($instructor_bs)>0){
                 $meaningful_b_engagements = $this->config->item('meaningful_b_engagements');
 
-                foreach ($instructor_projects as $counter=>$ib){
+                foreach ($instructor_bs as $counter=>$ib){
                     //Fetch last activity:
                     $b_building_engagements = $this->Db_model->e_fetch(array(
                         'e_initiator_u_id' => $user['u_id'],

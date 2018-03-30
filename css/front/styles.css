@@ -411,7 +411,7 @@ h5, .h5 {
 	color:#666;
 }
 
-#project_start{
+#b_start{
     display: inline !important;
 }
 .btn-mls{margin-right:6px; background-color:#E5E5E5;}
@@ -1272,6 +1272,8 @@ a.badge:focus, a.badge:hover {
     padding-left:8px;
     text-align: left;
 }
+
+.is_public .not_published { display: none; }
 
 .us_c_title{
     text-align: left;

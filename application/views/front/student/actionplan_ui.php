@@ -122,7 +122,7 @@ if(!$class_has_started){
     ?>
     <script>
         $( document ).ready(function() {
-            $("#project_start").countdowntimer({
+            $("#b_start").countdowntimer({
                 startDate : "<?= date('Y/m/d H:i:s'); ?>",
                 dateAndTime : "<?= date('Y/m/d H:i:s' , $class['r__class_start_time']); ?>",
                 size : "lg",
@@ -131,7 +131,7 @@ if(!$class_has_started){
             });
         });
     </script>
-    <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="project_start"></span></div>
+    <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="b_start"></span></div>
     <?php
 } elseif($class_has_ended){
     //Class has ended
