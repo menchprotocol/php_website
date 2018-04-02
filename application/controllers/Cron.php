@@ -159,9 +159,10 @@ class Cron extends CI_Controller {
 
                         //Override this as the user's primary Chatline as this Class is their default:
                         $this->Db_model->u_update( $admission['u_id'] , array(
-                            'ru_fp_id' => $admission['ru_fp_id'],
-                            'ru_fp_psid' => $admission['ru_fp_psid'],
+                            'u_cache__fp_id' => $admission['ru_fp_id'],
+                            'u_cache__fp_psid' => $admission['ru_fp_psid'],
                         ));
+
                     }
                 }
 

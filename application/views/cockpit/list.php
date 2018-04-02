@@ -4,6 +4,7 @@
     <li class="<?= ( $object_name=='bootcamps' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
+
     <li class="<?= ( $object_name=='pages' ? 'active' : '') ?>"><a href="/cockpit/browse/pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
 </ul>
 <hr />
