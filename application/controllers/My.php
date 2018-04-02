@@ -218,7 +218,7 @@ class My extends CI_Controller {
         if(count($uadmission)>0 && $uadmission['u_id']>0){
             $admission_filters['u.u_id'] = $uadmission['u_id'];
         } else {
-            $admission_filters['ru.ru_fp_psid'] = $ru_fp_psid;
+            $admission_filters['(ru.ru_fp_psid = '.$ru_fp_psid.' OR u.u_cache__fp_psid = '.$ru_fp_psid.')'] = null;
         }
 
         //Fetch all their admissions:
