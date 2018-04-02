@@ -300,7 +300,7 @@ class My extends CI_Controller {
             ));
 
             //Ooops, they dont have anything!
-            die('<div class="alert alert-danger" role="alert">Invalid ID</div>');
+            die('<div class="alert alert-info" role="alert">Click on the Action Plan button on Messenger</div>');
 
         }
 
