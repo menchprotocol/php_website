@@ -433,9 +433,15 @@ if($object_name=='engagements'){
 
         //Test Connection:
         echo '<td>';
-        if($fp['fp_status']==1 && $key==0){
+        if($fp['fp_status']==1){
             $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/messenger_profile', array(), $fp);
-            print_r($graph_fetch);
+
+            if(isset($graph_fetch['e_json']['result']['error'])){
+                echo '<p style="color:#FF0000;">'.$graph_fetch['e_json']['result']['error']['message'].'</p>';
+            } else {
+                echo '<p style="color:#00CC00;">All Good</p>';
+            }
+            //print_r($graph_fetch);
         }
         echo '</td>';
 
