@@ -563,11 +563,24 @@ function echo_i($i,$first_name=null,$fb_format=false){
         $command = null;
 
         //Do we have any commands?
-        if(substr_count($i['i_message'],'{button}')>0 && isset($i['i_c_id']) && isset($i['e_b_id'])){
+        if(substr_count($i['i_message'],'{button}')>0){
 
             $button_title = 'Open in 🚩Action Plan';
-            $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
             $command = '{button}';
+            $button_url = 'https://mench.com/my/actionplan'; //We assume a basic link to Action Plan
+
+            if(isset($i['i_c_id']) && isset($i['e_b_id']) && isset($i['e_r_id'])){
+
+                //Validate this to make sure it's all Good:
+                $bs = fetch_action_plan_copy($i['e_b_id'],$i['e_r_id']);
+                $intent_data = extract_level( $bs[0], $i['i_c_id'] );
+
+                //Does this intent belong to this Bootcamp/Class?
+                if($intent_data){
+                    //Everything looks good:
+                    $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
+                }
+            }
 
         } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
 
