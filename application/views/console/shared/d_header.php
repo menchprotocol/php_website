@@ -86,10 +86,7 @@ $website = $this->config->item('website');
 	    		<?php
 
 	    		if(isset($b)){
-	    		    echo '<div class="left-li-title"><i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i>'.$b['c_objective'].'</div>';
-                    if($b['b_old_format']){
-                        echo '<div class="alert alert-danger" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp."><i class="fa fa-lock" aria-hidden="true"></i> Bootcamp is locked</div>';
-                    }
+	    		    echo '<div class="left-li-title">'.($b['b_old_format'] ? '<i class="fa fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp." aria-hidden="true"></i>' : '<i class="fa fa-dot-circle-o" style="margin-right:3px;" aria-hidden="true"></i>').$b['c_objective'].'</div>';
 	    		}
 
 

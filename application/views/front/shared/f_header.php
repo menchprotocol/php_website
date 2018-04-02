@@ -58,7 +58,13 @@ $url_part_1 = $this->uri->segment(1);
         		<ul class="nav navbar-nav navbar-right">
     				<?php
                     if(isset($udata['u_id'])){
+
+                        if(isset($b_id) && auth(2,0,$b_id)){
+                            echo '<li id="isloggedin"><a href="/console/'.$b_id.'/actionplan">Edit <i class="fa fa-pencil-square" aria-hidden="true"></i></a></li>';
+                        }
+
                         echo '<li id="isloggedin"><a href="/console">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+
                     } elseif(isset($uadmission['u_id'])){
                         echo '<li id="isloggedin"><a href="/my/actionplan">Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
                     } else {

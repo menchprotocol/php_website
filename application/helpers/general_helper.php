@@ -1699,6 +1699,7 @@ function echo_r($b,$class,$append_class=null){
     }
 
     echo ' <span title="Class ID '.$class['r_id'].'">'.time_format($class['r_start_date'],1).'</span>';
+
     echo ' <i class="fa fa-eye-slash not_published" data-toggle="tooltip" data-placement="top" title="Class not published yet. Mench accepts admissions only for the upcoming '.$class_settings['students_show_max'].' Classes." aria-hidden="true"></i>';
 
     echo '</li>';

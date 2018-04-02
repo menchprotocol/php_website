@@ -117,12 +117,6 @@ function r_sync_c(b_id,r_id){
 
 <div class="help_body maxout below_h" id="content_2274"></div>
 
-<?php
-if(!($b['b__admins'][0]['u_id']==$udata['u_id'])){
-    echo '<div class="alert alert-info maxout" role="alert" style="margin:-15px 0 15px 10px;"><i class="fa fa-lock" aria-hidden="true"></i> Support settings locked because you are not the lead instructor of this Bootcamp.</div>';
-}
-?>
-
 <table class="table" style="margin-top:-10px;">
     <tr>
         <td class="class_nav" style="vertical-align:top;">
@@ -144,8 +138,12 @@ if(!($b['b__admins'][0]['u_id']==$udata['u_id'])){
                     if(count($active_classes)>0){
 
                         echo '<div class="list-group maxout">';
+                        $upcoming_classes = 0;
                         foreach($active_classes as $key=>$class){
-                            echo_r($b,$class,($key>=$class_settings['instructor_show_default']?' active_extra hidden ':'').( $key<$class_settings['students_show_max'] ? ' is_public ' : ''));
+                            if($class['r_status']==1){
+                                $upcoming_classes++;
+                            }
+                            echo_r($b,$class,($key>=$class_settings['instructor_show_default']?' active_extra hidden ':'').( $upcoming_classes<=$class_settings['students_show_max'] ? ' is_public ' : ''));
                         }
                         if(count($active_classes)>$class_settings['instructor_show_default']){
                             echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'active_extra\')" data-toggle="tooltip" data-placement="top" title="Classes are automatically created for the next '.$class_settings['create_weeks_ahead'].' Weeks" class="list-group-item active_extra" style="text-decoration:none;"><i class="fa fa-plus-square-o" style="margin: 0 6px 0 4px; font-size: 19px;" aria-hidden="true"></i> See All Classes</a>';

@@ -195,7 +195,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Classes <span id="hb_2274" class="help_button" intent-id="2274"></span>',
+	                'anchor' => 'Classes <span id="hb_2274" class="help_button" intent-id="2274"></span>'.($bs[0]['b__admins'][0]['u_id']==$udata['u_id'] ? '' : '<i class="fa fa-lock" aria-hidden="true" style="color:#FF0000; margin:0 0 0 5px;" data-toggle="tooltip" data-placement="bottom" title="Support settings locked because you are not the lead instructor of this Bootcamp"></i>'),
 	            ),
 	        ),
 	    );

@@ -140,7 +140,8 @@ class Front extends CI_Controller {
 
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
-	        'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],2),
+            'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],2),
+            'b_id' => $b['b_id'],
 	        'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
             'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
 	    ));
