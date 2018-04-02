@@ -4,6 +4,7 @@
     <li class="<?= ( $object_name=='bootcamps' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
+    <li class="<?= ( $object_name=='pages' ? 'active' : '') ?>"><a href="/cockpit/browse/pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
 </ul>
 <hr />
 
@@ -396,6 +397,51 @@ if($object_name=='engagements'){
 
     echo '</tbody>';
     echo '</table>';
+
+} elseif($object_name=='pages'){
+
+    $pages = $this->Db_model->fp_fetch(array(
+        'fp_status' => 1, //Activated
+    ));
+
+    ?>
+    <table class="table table-condensed table-striped left-table" style="font-size:0.8em; width:100%;">
+    <thead>
+    <tr>
+        <th style="width:40px;">#</th>
+        <th> </th>
+        <th>Facebook Page</th>
+        <th>Instructor</th>
+        <th>Updated</th>
+        <th>Connection</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+
+    foreach($pages as $key=>$fp){
+
+        echo '<tr>';
+        echo '<td>'.($key+1).'</td>';
+        echo '<td>'.status_bible('fp',$fp['fp_status'],1,'right').'</td>';
+        echo '<td>'.$fp['fp_name'].'</td>';
+        echo '<td>'.$fp['fs_u_id'].'</td>';
+
+        echo '<td>'.time_format($fp['fs_timestamp'],0).'</td>';
+
+
+
+        //Test Connection:
+        echo '<td>';
+        if($fp['fp_status']==1 && $key==0){
+            $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/messenger_profile', array(), $fp);
+            print_r($graph_fetch);
+        }
+        echo '</td>';
+
+
+        echo '</tr>';
+    }
 
 } elseif($object_name=='users'){
 
