@@ -129,7 +129,7 @@ class Front extends CI_Controller {
 	    //Validate Class:
         if($r_id){
             $focus_class = filter($classes,'r_id',$r_id);
-        } else {
+        } elseif(isset($classes[0])) {
             $focus_class = $classes[0];
         }
 
