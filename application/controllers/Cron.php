@@ -49,8 +49,6 @@ class Cron extends CI_Controller {
                 'new_status' => 0, //To be updated
                 'students' => array(
                     'rejected_incomplete' => 0, //Rejected because their application was incomplete by the time the class started
-                    'rejected_pending' => 0, //Rejected because their application was not approved by instructor by the time the class started
-                    'rejected_class_cancelled' => 0, //Rejected because the class did not start (see reasons below)
                     'accepted_started' => 0, //The students who got started with this Class
                 ),
             );
@@ -91,25 +89,8 @@ class Cron extends CI_Controller {
             ));
 
 
-            //Find first due Task to dispatch its messages to all students:
-            $first_task_c_id = 0;
-            foreach($bs[0]['c__child_intents'] as $task){
-                if($task['c_status']>=1){
-                    $first_task_c_id = $task['c_id'];
-                    break;
-                }
-            }
-
-
-            //Now make sure class meets are requirements to get started with the following conditions:
-            $cancellation_reason = null; //If remains Null we're good to get started
-            if($first_task_c_id==0) {
-                $cancellation_reason = 'Bootcamp did not have any published Tasks';
-            } elseif(count($accepted_admissions)==0) {
-                $cancellation_reason = 'no students applied/got-admitted into this Class';
-            }
-
-            if($cancellation_reason){
+            //Did we get any students?
+            if(count($accepted_admissions)==0){
 
                 //Expire this class as it does not have enough students admitted:
                 $stats[$class['r_id']]['new_status'] = -2; //Expired
@@ -118,7 +99,7 @@ class Cron extends CI_Controller {
                 //Log Class Cancellation engagement & Notify Admin/Instructor:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => 0, //System
-                    'e_message' => 'Class did not start because '.$cancellation_reason.'.',
+                    'e_message' => 'Class did not start because no students applied/got-admitted into this Class.',
                     'e_json' => array(
                         'admitted' => $accepted_admissions,
                     ),
@@ -162,7 +143,7 @@ class Cron extends CI_Controller {
                         'e_r_id' => $class['r_id'],
                     ));
 
-                    if(!($admission['ru_fp_psid']>0) || !($admission['ru_fp_id']>0)){
+                    if(!intval($admission['ru_fp_psid']) || !intval($admission['ru_fp_id'])){
 
                         //No Messenger activated yet! Remind them again:
                         $this->Comm_model->foundation_message(array(

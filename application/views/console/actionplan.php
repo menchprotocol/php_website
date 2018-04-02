@@ -1086,13 +1086,11 @@ function add_item(group_id,prefix,current_value){
                 <?php itip(602); ?>
                 <?php
                 //Task Expand/Contract all if more than 2
-                if(count($intent['c__child_intents'])>0){
-                    /*
+                if(count($intent['c__child_intents'])>0 && $b['b_old_format']){
                     echo '<div id="task_view">';
                     echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
                     echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
                     echo '</div>';
-                    */
                 }
                 //Tasks List:
                 echo '<div id="list-outbound" class="list-group">';

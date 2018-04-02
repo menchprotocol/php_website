@@ -597,7 +597,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 $button_url = $CI->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bs[0]['b_fp_id']);
                 if($button_url) {
                     //append their My Account Button/URL:
-                    $button_title = '🤖 Activate Messenger (Chat with Instructor)';
+                    $button_title = '🤖 Activate Messenger';
                     $command = '{messenger}';
                 }
             }
