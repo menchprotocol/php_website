@@ -299,8 +299,14 @@ class My extends CI_Controller {
                 'e_c_id' => $c_id,
             ));
 
+            //Reload with specific directions:
+            $this->display_actionplan($ru_fp_psid);
+
+            //Reload this function, this time with specific instructions on what to load:
+            return true;
+
             //Ooops, they dont have anything!
-            die('<div class="alert alert-info" role="alert">Click on the Action Plan button on Messenger</div>');
+            //die('<div class="alert alert-info" role="alert">Click on the Action Plan button on Messenger</div>');
 
         }
 
