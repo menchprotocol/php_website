@@ -183,7 +183,6 @@ if($displayed_messages>0){
 
 
 
-//TODO Adjust based on c_extension_rule
 if($level==2){
 
 
@@ -192,10 +191,10 @@ if($level==2){
      ****************************** */
     echo '<h4 class="maxout"><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
 
-    if($class_has_ended){
+    if($class_has_ended || !$class_has_started){
 
         //Class if finished, no more submissions allowed!
-        echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Submissions are now closed because Class has ended.</div>';
+        echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Submissions are not allowed at this time.</div>';
 
     } else {
 
@@ -356,7 +355,7 @@ if($level==1){
         $this_item_complete = ( $this_item_us_status>=1 );
 
         //See Status:
-        $unlocked_item = ($class_has_ended || $previous_item_complete || $this_item_complete);
+        $unlocked_item = $class_has_started && ($class_has_ended || $previous_item_complete || $this_item_complete);
 
         //Left content
         if($unlocked_item){
@@ -395,7 +394,7 @@ if($level==1){
 
         if($level==1 && $unlocked_item && isset($child_step_count) && $child_step_count){
             //Show the number of sub-Steps:
-            $ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_step_count.'</span>';
+            //$ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_step_count.'</span>';
         }
 
         $ui .= '</span>';
