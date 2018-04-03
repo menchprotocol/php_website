@@ -600,7 +600,7 @@ class My extends CI_Controller {
             echo '<td style="text-align:left; padding-left:30px;">Student</td>';
             echo '<td style="text-align:left; width:120px;">Progress</td>';
 
-            if($is_instructor && !$bs[0]['b_old_format']){
+            if($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']){
                 echo '<td style="text-align:left; width:40px;">Task</td>';
             }
 
@@ -684,7 +684,7 @@ class My extends CI_Controller {
                     }
                     echo '</td>';
 
-                    if($is_instructor && !$bs[0]['b_old_format']){
+                    if($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']){
                         //Task:
                         echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                         if($ranking_visible){
