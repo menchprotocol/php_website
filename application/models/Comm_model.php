@@ -699,7 +699,7 @@ class Comm_model extends CI_Model {
         return true;
     }
 
-    function fb_activation_url($u_id,$fp_id){
+    function fb_activation_url($u_id,$fp_id,$ref_only=false){
 
         if($fp_id<1 || $u_id<1){
             //Log Error:
@@ -734,7 +734,13 @@ class Comm_model extends CI_Model {
 
         //All good, return the activation URL:
         $bot_activation_salt = $this->config->item('bot_activation_salt');
-        return 'https://m.me/'.$fp_pages[0]['fp_fb_id'].'?ref=msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8);
+        $ref_key = 'msgact_'.$u_id.'_'.substr(md5($u_id.$bot_activation_salt),0,8);
+
+        if($ref_only){
+            return $ref_key;
+        } else {
+            return 'https://m.me/'.$fp_pages[0]['fp_fb_id'].'?ref='.$ref_key;
+        }
     }
 
     function fb_identify_activate($fp, $fp_psid, $fb_ref=null){
