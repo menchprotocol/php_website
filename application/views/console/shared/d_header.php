@@ -39,8 +39,6 @@ $website = $this->config->item('website');
 
 <body id="console_body">
 
-    <div class="fb-customerchat" minimized="true" page_id="381488558920384"></div>
-
 	<div class="wrapper" id="console">
 		<div class="navbar navbar-transparent navbar-absolute">
 			<div class="container-fluid">
