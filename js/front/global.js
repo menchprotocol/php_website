@@ -15,7 +15,17 @@ function chat_zendesk(){
 }
 
 function chat_facebook(){
-    $('body').prepend('<div class="fb-customerchat" minimized="true" ref="website_chat" theme_color="#FEDD16" page_id="381488558920384"></div>');
+    $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#FEDD16" page_id="381488558920384"></div>');
+
+    //Re-initiate Facebook SDK
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId            : '1782431902047009', //Mench
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v2.10'
+        });
+    };
 }
 
 <!-- Hotjar Tracking Code for mench.com -->
@@ -31,6 +41,7 @@ function chat_facebook(){
 
 //Facebook SDK for JavaScript
 window.fbAsyncInit = function() {
+
     FB.init({
         appId            : '1782431902047009', //Mench
         autoLogAppEvents : true,
@@ -39,9 +50,6 @@ window.fbAsyncInit = function() {
     });
 
     FB.getLoginStatus(function(response) {
-
-        alert(response.status);
-
         if (response.status === 'connected' || response.status === 'not_authorized') {
             //User is logged into Facebook, show FB Chat:
             chat_facebook();
@@ -51,6 +59,8 @@ window.fbAsyncInit = function() {
         }
     });
 };
+
+
 (function(d, s, id){
    var js, fjs = d.getElementsByTagName(s)[0];
    if (d.getElementById(id)) {return;}
