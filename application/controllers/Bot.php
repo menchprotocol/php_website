@@ -70,6 +70,11 @@ class Bot extends CI_Controller {
         echo_json($res);
     }
 
+    function s(){
+        echo $_SERVER['SERVER_NAME'];
+        echo '<br />'.$_SERVER['REQUEST_URI'];
+    }
+
     function error(){
         //This is meant to create an error to rest the log files:
         echo $_GET['none'];

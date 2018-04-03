@@ -1,7 +1,11 @@
 <?php
 
 function is_dev(){
-	return ( isset($_SERVER['SERVER_NAME']) && in_array($_SERVER['SERVER_NAME'],array('local.mench.co')) );
+    return ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' );
+}
+
+function is_old(){
+    return ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' );
 }
 
 function lock_cron_for_processing($e_items){

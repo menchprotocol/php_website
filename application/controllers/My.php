@@ -10,6 +10,11 @@ class My extends CI_Controller {
 		
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
+
+		if(is_old() && !isset($_GET['skip'])){
+		    //Always redirect to newer version:
+            redirect_message('https://mench.com'.$_SERVER['REQUEST_URI']);
+        }
 	}
 
     function index(){
