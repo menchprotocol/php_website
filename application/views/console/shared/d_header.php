@@ -69,7 +69,7 @@ $website = $this->config->item('website');
                         <?php
                         //NOTE: For some reason we NEED the next <li> otherwise the page orientation breaks!
                         if(isset($uadmission) && count($uadmission)>0){ ?>
-                            <li data-toggle="tooltip" data-placement="bottom" title="You are seeing this because you are a Bootcamp student. Use this to access your Action Plan on a web-based portal, which replicates the Mench Personal Assistant."><a href="/my/actionplan"><span> Student Hub <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></span></a></li>
+                            <li data-toggle="tooltip" data-placement="bottom" title="You are seeing this because you are a Bootcamp student. Use this to access your Action Plan on a web-based portal, which replicates the Mench Personal Assistant."><a href="/my/actionplan"><span> Student Portal <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></span></a></li>
                         <?php } else { ?>
                             <li><a href="/api_v1/logout"><span> Logout <i class="fa fa-power-off" aria-hidden="true"></i></span></a></li>
                         <?php } ?>

@@ -770,12 +770,16 @@ WHERE ru.ru_status >= 4
             $this->db->select('r.*');
         }
 
-        $this->db->select('r.*');
+        $this->db->select('*');
         $this->db->from('v5_classes r');
 
         if(in_array('ru',$join_objects)){
             $this->db->join('v5_class_students ru', 'r.r_id = ru.ru_r_id');
-            $this->db->where('ru.ru_status >=',4);
+            $this->db->where('ru.ru_status >=',4); //Always assume active students (!)
+        }
+        if(in_array('b',$join_objects)){
+            $this->db->join('v5_projects b', 'r.r_b_id = b.b_id');
+            $this->db->join('v5_intents c', 'b.b_c_id = c.c_id');
         }
 
 		foreach($match_columns as $key=>$value){

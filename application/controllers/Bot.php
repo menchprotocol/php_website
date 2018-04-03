@@ -14,6 +14,7 @@ class Bot extends CI_Controller {
         echo_json(array('status'=>'success'));
     }
 
+
     function update_all($fp_id){
 
         $pages = $this->Db_model->fp_fetch(array(

@@ -26,6 +26,8 @@ class Api_v1 extends CI_Controller {
         die('nothing here...');
     }
 
+
+
     function e_js_create(){
 	    //Validate hash code:
         if(!isset($_POST['e_hash_time']) || !isset($_POST['e_hash_code']) || strlen($_POST['e_hash_time'])<5 || strlen($_POST['e_hash_code'])<5 || !(md5($_POST['e_hash_time'].'hashcod3')==$_POST['e_hash_code'])){
@@ -1510,6 +1512,113 @@ class Api_v1 extends CI_Controller {
     /* ******************************
      * r Classes
      ****************************** */
+
+    function r_export($r_id){
+
+        if(intval($r_id)<1){
+            die('<span style="color:#FF0000;">Error: Invalid ID.</span>');
+        }
+
+        //Validate Class:
+        $classes = $this->Db_model->r_fetch(array(
+            'r_id' => $r_id,
+        ) , null , 'DESC', 1, array('b') );
+
+        if(count($classes)!==1){
+            die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
+        }
+
+        $udata = auth(2,0,$classes[0]['r_b_id']);
+        if(!$udata){
+            die('<span style="color:#FF0000;">Error: Session Expired.</span>');
+        }
+
+
+
+        //Fetch all Studnets:
+        $admissions = $this->Db_model->ru_fetch(array(
+            'r.r_id'	   => $r_id, //Open for admission
+            'ru.ru_status >='  => 4, //Initiated or higher as long as Bootcamp is running!
+        ));
+
+        if(count($admissions)==0){
+            die('<span style="color:#FF0000;">Error: Class has no Students.</span>');
+        }
+
+        //Echo the export file:
+        header("Content-type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=".$classes[0]['c_objective']." - Class of ".time_format($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+
+        echo "#";
+        echo "\tFirst Name";
+        echo "\tLast Name";
+        echo "\tEmail";
+        echo "\tActive On";
+        echo "\tTimezone";
+        echo "\tGender";
+        echo "\tLanguage";
+        echo "\tStatus";
+        echo "\tNotes";
+        echo "\r\n";
+
+        $counter = 0;
+        foreach($admissions as $admission){
+
+            $counter++;
+            echo $counter;
+            echo "\t".$admission['u_fname'];
+            echo "\t".$admission['u_lname'];
+            echo "\t".$admission['u_email'];
+            echo "\t";
+                if($admission['u_cache__fp_psid']>0 || $admission['u_fb_id']>0){
+                    echo 'Messenger';
+                } else {
+                    echo 'Email';
+                }
+                if(strlen($admission['u_password'])>0){
+                    echo ', Student Portal';
+                }
+            echo "\t".$admission['u_timezone'];
+            echo "\t".$admission['u_gender'];
+            echo "\t".$admission['u_language'];
+            echo "\t".trim(strip_tags(status_bible('ru',$admission['ru_status'])));
+            echo "\t";
+
+            if(strlen($admission['ru_application_survey'])>0){
+
+                //echo $admission['ru_application_survey'];
+
+                $answers = objectToArray(json_decode($admission['ru_application_survey']));
+
+                //Prerequsites:
+                $missing_preq = array();
+                if(isset($answers['prerequisites'])){
+                    foreach ($answers['prerequisites'] as $item){
+                        if(!($item['answer']=='Yes')){
+                            array_push($missing_preq,$item['item']);
+                        }
+                    }
+                }
+                if(count($missing_preq)>0){
+                    echo "Student indicated they do not meed these ".count($missing_preq)." prerequisites: ".join(', ',$missing_preq).'. ';
+                }
+
+                //Application Questions:
+                if(isset($answers['questions']) && count($answers['questions'])>0){
+                    $question = 0;
+                    foreach ($answers['questions'] as $item){
+                        $question++;
+                        echo '[Question #'.$question.': '.strip_tags($item['item']).'](Answer: '.strip_tags(str_replace("\n",'',$item['answer'])).') ';
+                    }
+                }
+
+            }
+
+            echo "\r\n";
+        }
+    }
 
     function r_sync_c(){
         $udata = auth(2,0,$_POST['b_id']);

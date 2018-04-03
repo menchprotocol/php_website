@@ -1267,6 +1267,9 @@ a.badge:focus, a.badge:hover {
 .bg-col-1{
     background-color: #E6E6E6 !important
 }
+a .badge {
+    cursor: pointer;
+}
 .us_task_list{
     border-left:1px solid #000;
     padding-left:8px;

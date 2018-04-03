@@ -493,18 +493,31 @@ class My extends CI_Controller {
 
             //Show Class Status
             $class_running = (time()>=$class['r__class_start_time'] && time()<$class['r__class_end_time']);
+
             echo '<h3 style="margin:0;" class="maxout">';
+
+                //Title (Dates)
                 echo time_format($class['r_start_date'],2).' - '.time_format($class['r__class_end_time'],2);
+
+                //Status:
                 echo ' ('.( $class_running ? 'Running' : ( time()<$class['r__class_start_time'] ? 'Upcoming' : 'Completed' ) ).')';
 
+                //Export
+                echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all your Class students"><span class="badge tip-badge"><i class="fa fa-cloud-download" aria-hidden="true"></i></span></a>';
+
+                //Action Plan:
                 if(count($cache_action_plans)>0){
                     echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fa fa-list-ol" aria-hidden="true"></i></span></a>';
                 }
 
-                if($udata['u_id']==1){
+                //Update Action Plan
+                if(0){
                     //Show action plan update button
                     echo ' <a href="/adjust/copy_actionplan/'.$class['r_b_id'].'/'.$class['r_id'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Update Action Plan Copy (Opens in new window)"><span class="badge tip-badge"><i class="fa fa-clone" aria-hidden="true"></i></span></a>';
                 }
+
+
+
             echo '</h3>';
 
 
