@@ -622,7 +622,7 @@ class My extends CI_Controller {
 
                 if($show_ranking_top<=$counter && !$top_ranking_shown && $admission['ru_cache__current_task']<=$class['r__total_tasks']){
                     echo '<tr class="bg-col-h">';
-                    echo '<td colspan="6">';
+                    echo '<td colspan="7">';
                     if($show_ranking_top==$counter){
                         echo '<span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all Steps by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span>';
                     } else {
