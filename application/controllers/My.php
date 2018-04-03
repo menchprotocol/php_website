@@ -600,7 +600,8 @@ class My extends CI_Controller {
             echo '<td style="text-align:left; padding-left:30px;">Student</td>';
             echo '<td style="text-align:left; width:120px;">Progress</td>';
 
-            if($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']){
+            $task_count_enabled = ($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
+            if($task_count_enabled){
                 echo '<td style="text-align:left; width:40px;">Task</td>';
             }
 
@@ -622,7 +623,7 @@ class My extends CI_Controller {
 
                 if($show_ranking_top<=$counter && !$top_ranking_shown && $admission['ru_cache__current_task']<=$class['r__total_tasks']){
                     echo '<tr class="bg-col-h">';
-                    echo '<td colspan="7">';
+                    echo '<td colspan="6">';
                     if($show_ranking_top==$counter){
                         echo '<span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all Steps by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span>';
                     } else {
@@ -673,7 +674,7 @@ class My extends CI_Controller {
                 //Progress, Task & Steps:
                 if($admission['ru_cache__completion_rate']>=1){
                     //They have completed it all, show them as winners!
-                    echo '<td valign="top" colspan="'.($is_instructor?'2':'1').'" style="text-align:left; vertical-align:top;">';
+                    echo '<td valign="top" colspan="'.($task_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
                     echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">COMPLETED</span>';
                     echo '</td>';
                 } else {
@@ -684,7 +685,7 @@ class My extends CI_Controller {
                     }
                     echo '</td>';
 
-                    if($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']){
+                    if($task_count_enabled){
                         //Task:
                         echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                         if($ranking_visible){
