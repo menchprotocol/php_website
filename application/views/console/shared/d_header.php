@@ -39,6 +39,9 @@ $website = $this->config->item('website');
 
 <body id="console_body">
 
+    <!-- Require Facebook Chat for Logged-in Instructors -->
+    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" theme_color="#000000" page_id="381488558920384"></div>
+
 	<div class="wrapper" id="console">
 		<div class="navbar navbar-transparent navbar-absolute">
 			<div class="container-fluid">

@@ -29,30 +29,33 @@ window.fbAsyncInit = function(){
         version          : 'v2.10'
     });
 
-    FB.getLoginStatus(function(response) {
+    //This would only be included via d_header.php which is for the Console:
+    if(!$(".fb-customerchat").length) {
+        FB.getLoginStatus(function(response) {
 
-        if (response.status === 'connected' || response.status === 'not_authorized') {
+            if (response.status === 'connected' || response.status === 'not_authorized') {
 
-            //User is logged into Facebook, show FB Chat:
-            $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#000000" page_id="381488558920384"></div>');
+                //User is logged into Facebook, show FB Chat:
+                $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#000000" page_id="381488558920384"></div>');
 
-            //Re-initiate to show Chat:
-            FB.init({
-                appId            : '1782431902047009', //Mench
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v2.10'
-            });
+                //Re-initiate to show Chat:
+                FB.init({
+                    appId            : '1782431902047009', //Mench
+                    autoLogAppEvents : true,
+                    xfbml            : true,
+                    version          : 'v2.10'
+                });
 
-        } else {
+            } else {
 
-            <!-- Start of mench Zendesk Widget script -->
-            /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="mench.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
-            /*]]>*/
-            <!-- End of mench Zendesk Widget script -->
+                <!-- Start of mench Zendesk Widget script -->
+                /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="mench.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+                /*]]>*/
+                <!-- End of mench Zendesk Widget script -->
 
-        }
-    });
+            }
+        });
+    }
 };
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
