@@ -147,7 +147,7 @@ if($object_name=='engagements'){
         echo '<td>'.$counter.'</td>';
         echo '<td>'.$b['b_id'].'</td>';
         echo '<td>'.status_bible('b',$b['b_status'],1,'right').'</td>';
-        echo '<td>'.( $b['b_old_format'] ? '<i class="fa fa-exclamation-triangle" title="OLD FORMAT" aria-hidden="true"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></td>';
+        echo '<td>'.( $b['b_old_format'] ? '<i class="fa fa-lock" style="color:#FF0000;" title="OLD FORMAT" aria-hidden="true"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></td>';
 
         echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
         echo '<td>'.( $b['b_difficulty_level']>=1 ? status_bible('df',$b['b_difficulty_level'],1,'top') : '' ).'</td>';
@@ -162,7 +162,7 @@ if($object_name=='engagements'){
 
         echo '<td>';
         if($b['student_funnel'][0]>0 || $b['student_funnel'][4]>0){
-            echo '<span data-toggle="tooltip" title="Started -> Completed -> Admitted (Rejected)">';
+            echo '<span data-toggle="tooltip" title="Initiated Admission -> Completed Admission">';
             echo $b['student_funnel'][0].' &raquo; <b>'.$b['student_funnel'][4].'</b>';
             echo '</span>';
         }
@@ -426,7 +426,7 @@ if($object_name=='engagements'){
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
         echo '<td>'.status_bible('fp',$fp['fp_status'],1,'right').'</td>';
-        echo '<td>'.$fp['fp_name'].'</td>';
+        echo '<td>'.$fp['fp_name'].' <a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></td>';
         echo '<td>'.$fp['fs_u_id'].'</td>';
 
         echo '<td>'.time_format($fp['fs_timestamp'],0).'</td>';
@@ -436,12 +436,12 @@ if($object_name=='engagements'){
         //Test Connection:
         echo '<td>';
         if($fp['fp_status']==1){
-            $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/messenger_profile', array(), $fp);
+            $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/messenger_profile', array('fields'=>'persistent_menu,get_started,greeting,whitelisted_domains'), $fp);
 
             if(isset($graph_fetch['e_json']['result']['error'])){
                 echo '<p style="color:#FF0000;">'.$graph_fetch['e_json']['result']['error']['message'].'</p>';
             } else {
-                echo '<p style="color:#00CC00;">All Good</p>';
+                echo '<p style="color:#00CC00;">'.print_r($graph_fetch['e_json']['result'],true).'</p>';
             }
             //print_r($graph_fetch);
         }
