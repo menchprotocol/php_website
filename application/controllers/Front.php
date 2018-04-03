@@ -137,7 +137,6 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Bootcamp.' ).'</div>');
 	    }
 
-
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
             'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],2),

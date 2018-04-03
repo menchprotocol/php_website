@@ -288,17 +288,6 @@ class My extends CI_Controller {
 
         } else {
 
-            //This should not happen either:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $focus_admission['u_id'],
-                'e_message' => 'extract_level() Failed to load Bootcamp data in the Student Action Plan',
-                'e_json' => $admissions,
-                'e_type_id' => 8, //Platform Error
-                'e_b_id' => $b_id,
-                'e_r_id' => $focus_admission['r_id'],
-                'e_c_id' => $c_id,
-            ));
-
             //Reload with specific directions:
             $this->display_actionplan($ru_fp_psid);
 
