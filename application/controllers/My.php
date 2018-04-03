@@ -671,7 +671,7 @@ class My extends CI_Controller {
 
 
                 //Progress, Task & Steps:
-                if($admission['ru_cache__current_task']>$class['r__total_tasks']){
+                if($admission['ru_cache__completion_rate']>=1){
                     //They have completed it all, show them as winners!
                     echo '<td valign="top" colspan="'.($is_instructor?'2':'1').'" style="text-align:left; vertical-align:top;">';
                     echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">COMPLETED</span>';

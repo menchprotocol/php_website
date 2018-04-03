@@ -766,11 +766,12 @@ WHERE ru.ru_status >= 4
 
         if(in_array('ru',$join_objects)){
             $this->db->select('r.*, COUNT(ru_id) as total_admissions');
+        } elseif(in_array('b',$join_objects)){
+            $this->db->select('*');
         } else {
             $this->db->select('r.*');
         }
 
-        $this->db->select('*');
         $this->db->from('v5_classes r');
 
         if(in_array('ru',$join_objects)){
