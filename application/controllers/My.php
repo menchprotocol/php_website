@@ -17,6 +17,10 @@ class My extends CI_Controller {
         }
 	}
 
+	function test(){
+	    echo 'Hi';
+    }
+
     function index(){
         //Nothing here:
         header( 'Location: /');
