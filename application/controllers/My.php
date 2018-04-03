@@ -17,10 +17,6 @@ class My extends CI_Controller {
         }
 	}
 
-	function test(){
-	    echo 'Hi';
-    }
-
     function index(){
         //Nothing here:
         header( 'Location: /');
@@ -511,7 +507,7 @@ class My extends CI_Controller {
                 }
 
                 //Update Action Plan
-                if(0){
+                if($udata['u_status']==3){
                     //Show action plan update button
                     echo ' <a href="/adjust/copy_actionplan/'.$class['r_b_id'].'/'.$class['r_id'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Update Action Plan Copy (Opens in new window)"><span class="badge tip-badge"><i class="fa fa-clone" aria-hidden="true"></i></span></a>';
                 }
