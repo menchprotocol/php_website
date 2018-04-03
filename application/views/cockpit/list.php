@@ -4,8 +4,7 @@
     <li class="<?= ( $object_name=='bootcamps' ? 'active' : '') ?>"><a href="/cockpit/browse/bootcamps"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
     <li class="<?= ( $object_name=='classes' ? 'active' : '') ?>"><a href="/cockpit/browse/classes"><i class="fa fa-calendar" aria-hidden="true"></i> Classes</a></li>
     <li class="<?= ( $object_name=='users' ? 'active' : '') ?>"><a href="/cockpit/browse/users"><i class="fa fa-user" aria-hidden="true"></i> Users</a></li>
-
-    <!-- <li class="<?= ( $object_name=='pages' ? 'active' : '') ?>"><a href="/cockpit/browse/pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li> -->
+    <li class="<?= ( $object_name=='pages' ? 'active' : '') ?>"><a href="/cockpit/browse/pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
 
 </ul>
 <hr />
@@ -403,7 +402,10 @@ if($object_name=='engagements'){
 } elseif($object_name=='pages'){
 
     $pages = $this->Db_model->fp_fetch(array(
-        'fp_status' => 1, //Activated
+        'fp_status >=' => 0, //Activated
+    ),array('u'), array(
+        'fp_status'=>'DESC',
+        'fs_timestamp'=>'DESC'
     ));
 
     ?>
@@ -413,9 +415,10 @@ if($object_name=='engagements'){
         <th style="width:40px;">#</th>
         <th> </th>
         <th>Facebook Page</th>
+        <th> </th>
         <th>Instructor</th>
-        <th>Updated</th>
-        <th>Connection</th>
+        <th>Page Updated</th>
+        <th>Status</th>
     </tr>
     </thead>
     <tbody>
@@ -426,8 +429,9 @@ if($object_name=='engagements'){
         echo '<tr>';
         echo '<td>'.($key+1).'</td>';
         echo '<td>'.status_bible('fp',$fp['fp_status'],1,'right').'</td>';
-        echo '<td>'.$fp['fp_name'].' <a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></td>';
-        echo '<td>'.$fp['fs_u_id'].'</td>';
+        echo '<td>'.$fp['fp_name'].'</td>';
+        echo '<td><a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></td>';
+        echo '<td>'.$fp['u_fname'].' '.$fp['u_lname'].'</td>';
 
         echo '<td>'.time_format($fp['fs_timestamp'],0).'</td>';
 
@@ -436,14 +440,16 @@ if($object_name=='engagements'){
         //Test Connection:
         echo '<td>';
         if($fp['fp_status']==1){
+
+            //Test this connection to make sure we're all good:
             $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/me/messenger_profile', array('fields'=>'persistent_menu,get_started,greeting,whitelisted_domains'), $fp);
 
-            if(isset($graph_fetch['e_json']['result']['error'])){
-                echo '<p style="color:#FF0000;">'.$graph_fetch['e_json']['result']['error']['message'].'</p>';
-            } else {
-                echo '<p style="color:#00CC00;">'.print_r($graph_fetch['e_json']['result'],true).'</p>';
-            }
-            //print_r($graph_fetch);
+            //Passon results to a JS variable so admin can echo in console.log
+            echo '<script> e_json_'.$fp['fs_id'].' = '.json_encode($graph_fetch['e_json']['result']).'; </script>';
+
+            //Show results:
+            echo '<a href="javascript:console.log(e_json_'.$fp['fs_id'].');">'.( isset($graph_fetch['e_json']['result']['error']) ? '<i class="fa fa-exclamation-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Connection seems Broken. Click once to load error message in console."></i>' : '<i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Connection to Facebook Page is healthy. Click once to load Page Settings in console."></i>').'</a>';
+
         }
         echo '</td>';
 

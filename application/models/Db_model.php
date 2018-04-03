@@ -607,11 +607,15 @@ WHERE ru.ru_status >= 4
      * Facebook Pages/Admins
      ****************************** */
 
-    function fp_fetch($match_columns){
+    function fp_fetch($match_columns,$join_objects=array(),$order_columns=array('fs_timestamp'=>'DESC')){
 
         $this->db->select('*');
         $this->db->from('v5_facebook_pages fp');
         $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
+
+        if(in_array('u',$join_objects)){
+            $this->db->join('v5_users u', 'u.u_id = fs.fs_u_id');
+        }
 
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -620,7 +624,11 @@ WHERE ru.ru_status >= 4
                 $this->db->where($key);
             }
         }
-        $this->db->order_by('fs_timestamp','DESC');
+
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
+
         $q = $this->db->get();
         return $q->result_array();
     }
