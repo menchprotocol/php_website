@@ -1,5 +1,4 @@
 //Google Analytics:
-//NOTE: GA is also inlcuded in /application/views/front/shared/p_header.php in case any adjustments needed to be made!
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -8,18 +7,8 @@ ga('create', 'UA-92774608-1', 'auto');
 ga('send', 'pageview');
 
 
-function chat_zendesk(){
-    <!-- Start of mench Zendesk Widget script -->
-    /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="mench.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
-    /*]]>*/
-    <!-- End of mench Zendesk Widget script -->
-}
 
-function chat_facebook(){
-    $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#FEDD16" page_id="381488558920384"></div>');
-}
-
-<!-- Hotjar Tracking Code for mench.com -->
+//Hotjar:
 (function(h,o,t,j,a,r){
     h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
     h._hjSettings={hjid:751796,hjsv:6};
@@ -30,8 +19,8 @@ function chat_facebook(){
 })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 
 
-//Facebook SDK for JavaScript
-window.fbAsyncInit = function() {
+//Facebook SDK for JavaScript:
+window.fbAsyncInit = function(){
 
     FB.init({
         appId            : '1782431902047009', //Mench
@@ -41,10 +30,13 @@ window.fbAsyncInit = function() {
     });
 
     FB.getLoginStatus(function(response) {
-        if (response.status === 'connected' || response.status === 'not_authorized') {
-            //User is logged into Facebook, show FB Chat:
-            chat_facebook();
 
+        if (response.status === 'connected' || response.status === 'not_authorized') {
+
+            //User is logged into Facebook, show FB Chat:
+            $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#FEDD16" page_id="381488558920384"></div>');
+
+            //Re-initiate to show Chat:
             FB.init({
                 appId            : '1782431902047009', //Mench
                 autoLogAppEvents : true,
@@ -53,12 +45,15 @@ window.fbAsyncInit = function() {
             });
 
         } else {
-            //Show Zendesk Chat:
-            chat_zendesk();
+
+            <!-- Start of mench Zendesk Widget script -->
+            /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="mench.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+            /*]]>*/
+            <!-- End of mench Zendesk Widget script -->
+
         }
     });
 };
-
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return;}
@@ -66,6 +61,9 @@ window.fbAsyncInit = function() {
     js.src = "https://connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
+
+
+
 
 
 
@@ -112,11 +110,13 @@ function toggle_hidden_class(class_name){
 $(document).ready(function() {
 
     //This is necessary (!) for the Facebook Messenger Chat button to work:
+    /*
     if($('.bg-glow').length){
         setInterval(function(){
             $('.bg-glow').toggleClass('glow');
         }, 500);
     }
+    */
 
 	//Navbar landing page?
 	if(!$(".navbar").hasClass("no-adj")){
@@ -128,6 +128,7 @@ $(document).ready(function() {
 
 	//Load tooltips:
 	$(function () {
-		  $('[data-toggle="tooltip"]').addClass('').tooltip();
+		  $('[data-toggle="tooltip"]').tooltip();
 	});
+
 });

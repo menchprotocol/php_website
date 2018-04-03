@@ -45,6 +45,7 @@ class Bot extends CI_Controller {
                     array(
                         'locale' => 'default',
                         'composer_input_disabled' => false,
+                        'disabled_surfaces' => array('CUSTOMER_CHAT_PLUGIN'),
                         'call_to_actions' => array(
                             array(
                                 'title' => '🚩 Action Plan',
