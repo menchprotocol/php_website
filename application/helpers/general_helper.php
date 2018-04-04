@@ -518,7 +518,9 @@ function detect_embed_media($url,$full_message,$require_image=false){
 
 }
 
-
+function clean_url($url){
+    return rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$url))),'/');
+}
 
 
 function echo_i($i,$first_name=null,$fb_format=false){
@@ -636,13 +638,16 @@ function echo_i($i,$first_name=null,$fb_format=false){
         if(isset($i['i_url']) && isset($i['i_id']) && intval($i['i_id'])>0 && strlen($i['i_url'])>0){
 
             $website = $CI->config->item('website');
-            $url = $website['url'].'ref/'.$i['i_id'];
+            $masked_url = $website['url'].'ref/'.$i['i_id'];
 
             if($fb_format){
 
                 //Messenger format, simply replace the link with a trackable one UNLESS the link is to our own domain:
                 if(substr_count(strtolower($i['i_url']),'mench.com')==0){
-                    $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+                    $i['i_message'] = trim(str_replace($i['i_url'],$masked_url,$i['i_message']));
+                } else {
+                    //Clean the URL:
+                    $i['i_message'] = trim(str_replace($i['i_url'],clean_url($i['i_url']),$i['i_message']));
                 }
 
             } else {
@@ -660,7 +665,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
                 } else {
                     //HTML format:
-                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$url.'" target="_blank">'.rtrim(str_replace('http://','',str_replace('https://','',str_replace('www.','',$i['i_url']))),'/').'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$masked_url.'" target="_blank">'.clean_url($i['i_url']).'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
                 }
 
             }
