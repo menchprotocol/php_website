@@ -595,13 +595,17 @@ class Cron extends CI_Controller {
                         }
 
                         //Did it go well?
-                        if($db_result){
+                        if(is_array($db_result) && count($db_result)>0){
                             $success_count++;
                         } else {
                             //Log error:
                             $this->Db_model->e_create(array(
-                                'e_message' => 'fb_sync_attachments() failed to sync attachment with Facebook',
-                                'e_json' => $ep,
+                                'e_message' => 'COWMAN: Failed to sync attachment using Facebook API',
+                                'e_json' => array(
+                                    'payload' => $payload,
+                                    'result' => $result,
+                                    'ep' => $ep,
+                                ),
                                 'e_type_id' => 8, //Platform Error
                             ));
                         }

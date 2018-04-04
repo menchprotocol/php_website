@@ -864,7 +864,7 @@ class Comm_model extends CI_Model {
                         'e_initiator_u_id' => $u['u_id'],
                         'e_recipient_u_id' => $ref_u_id,
                         'e_json' => $notify_user,
-                        'e_message' => 'Failed to activate user because Messenger account is already associated with another user.',
+                        'e_message' => 'fb_identify_activate() Failed to activate user because Messenger account is already associated with another user.',
                         'e_type_id' => 8, //Platform error
                         'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -932,10 +932,33 @@ class Comm_model extends CI_Model {
 
                 //Fetch their profile from Facebook to update
                 $graph_fetch = $this->Comm_model->fb_graph($fp['fp_id'], 'GET', '/'.$fp_psid, array(), $fp);
+
+
                 if(!$graph_fetch['status']){
+
                     //This error has already been logged inside $this->Comm_model->fb_graph()
                     //We cannot create this user:
                     return false;
+
+                } elseif(!isset($graph_fetch['e_json']['result']['locale'])){
+
+                    //This error has not been logged, and needs more attention:
+                    $this->Db_model->e_create(array(
+                        'e_initiator_u_id' => $u['u_id'],
+                        'e_json' => array(
+                            'fp' => $fp,
+                            'fp_psid' => $fp_psid,
+                            'u' => $u,
+                            'graph_fetch' => $graph_fetch,
+                        ),
+                        'e_message' => 'fb_identify_activate() failed to fetch user profile data',
+                        'e_type_id' => 8, //Platform error
+                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
+                    ));
+
+                    return false;
+
                 }
 
                 //We're cool!

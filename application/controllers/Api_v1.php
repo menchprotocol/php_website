@@ -326,7 +326,7 @@ class Api_v1 extends CI_Controller {
 
                 if(count($other_bs)>0){
                     //Show other connected Bootcamps:
-                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
+                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;" class="hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
                     foreach($other_bs as $count=>$b){
                         if($count>0){
                             $pages_list_ui .= ', ';
@@ -1841,7 +1841,6 @@ class Api_v1 extends CI_Controller {
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
-            'b_old_format' => 0, //All new Bootcamps
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
             'b_c_id' => $intent['c_id'],
