@@ -22,7 +22,7 @@
 <!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->
 <?php
 
-//Fetch projects:
+//Fetch bs:
 $bs = $this->Db_model->remix_bs(array(
     'b.b_status' => 3,
     'b.b_fp_id >' => 0,

@@ -323,24 +323,37 @@ class Api_v1 extends CI_Controller {
                 $pages_list_ui .= ' '.$page['fp_name'];
                 $pages_list_ui .= ' <a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank" style="font-size:0.9em;"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
 
+                //Goes below the list:
+                $additional_ui_boxes = null;
+
 
                 if(count($other_bs)>0){
+                    //Show link:
+                    $pages_list_ui .= ' <a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' total Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="left" onclick="$(\'.fp_current\').toggle()" style="font-size:0.9em;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.count($other_bs).'</a>';
+
                     //Show other connected Bootcamps:
-                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;" class="hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
+                    $additional_ui_boxes .= '<div class="fp_box fp_current" style="display: none;"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; Other Connections: ';
                     foreach($other_bs as $count=>$b){
                         if($count>0){
-                            $pages_list_ui .= ', ';
+                            $additional_ui_boxes .= ', ';
                         }
-                        $pages_list_ui .= '<a href="/console/'.$b['b_id'].'/settings#pages">'.$b['c_objective'].'</a>';
+                        $additional_ui_boxes .= '<a href="/console/'.$b['b_id'].'/settings#pages">'.$b['c_objective'].'</a>';
                     }
-                    $pages_list_ui .= '</div>';
+                    $additional_ui_boxes .= '</div>';
                 }
 
                 //Do we have a Page greeting?
                 if(strlen($page['fp_greeting'])>0){
-                    $pages_list_ui .= '<div style="font-size:15px; padding:3px 0 0 4px;">'.nl2br($page['fp_greeting']).'</div>';
+                    //Show link:
+                    $pages_list_ui .= ' <a href="javascript:void(0)" data-toggle="tooltip" title="The Greeting of the Messenger Bot is set by Mench" data-placement="left" onclick="$(\'.fp_greeting\').toggle()" style="font-size:0.9em;"><i class="fa fa-align-left" aria-hidden="true"></i></a>';
+
+                    //Add Box:
+                    $additional_ui_boxes .= '<div class="fp_box fp_greeting" style="display: none;">'.nl2br($page['fp_greeting']).'</div>';
                 }
 
+                //Addup additional boxes:
+                $pages_list_ui .= $additional_ui_boxes;
+                //End item:
                 $pages_list_ui .= '</li>';
             }
         } else {

@@ -14,7 +14,7 @@
     function b_create(){
 
         if(processing_b){
-            //Do nothing while processing a current project:
+            //Do nothing while processing a current b:
             return false;
         }
 

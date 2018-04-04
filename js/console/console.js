@@ -1,6 +1,6 @@
 //Loadup Algolia:
 //client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-//algolia_index = client.initIndex('projects');
+//algolia_index = client.initIndex('bootcamps');
 
 //To update fancy dropdown which is usually used for STATUS updates:
 function update_dropdown(name,intvalue,count){

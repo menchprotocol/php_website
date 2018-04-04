@@ -1256,6 +1256,7 @@ a.badge:focus, a.badge:hover {
 .iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus, .iphone-nav-tabs > li.active > a > .status-label, .iphone-nav-tabs > li.active > a .fa {
     color:#FFFFFF !important;
 }
+.fp_box{font-size:15px; padding:3px 0 0 4px;}
 .bg-col-h, .bg-col-h td{
     background-color: #777;
     color:#FFF;

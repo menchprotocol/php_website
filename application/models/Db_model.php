@@ -1540,7 +1540,7 @@ WHERE ru.ru_status >= 4
 		//Include PHP library:
 		require_once('application/libraries/algoliasearch.php');
 		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-		$index = $client->initIndex('projects');
+		$index = $client->initIndex('bootcamps');
 		
 		//Fetch all nodes:
 		$limits = array(
