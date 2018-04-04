@@ -640,8 +640,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
             if($fb_format){
 
-                //Messenger format, simply replace the link with a trackable one:
-                $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+                //Messenger format, simply replace the link with a trackable one UNLESS the link is to our own domain:
+                if(substr_count(strtolower($i['i_url']),'mench.com')==0){
+                    $i['i_message'] = trim(str_replace($i['i_url'],$url,$i['i_message']));
+                }
 
             } else {
 
