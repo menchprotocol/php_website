@@ -333,7 +333,7 @@ class Api_v1 extends CI_Controller {
 
                     //Add Box:
                     $additional_ui_boxes .= '<div class="fp_box fp_greeting_'.$page['fp_id'].'" style="display:none;">';
-                    $additional_ui_boxes .= '<h4>Facebook Messenger Bot Greeting:<h4>';
+                    $additional_ui_boxes .= '<h4>Facebook Messenger Bot Greeting:</h4>';
                     $additional_ui_boxes .= nl2br($page['fp_greeting']);
                     $additional_ui_boxes .= '</div>';
                 }
@@ -345,7 +345,7 @@ class Api_v1 extends CI_Controller {
 
                     //Show other connected Bootcamps:
                     $additional_ui_boxes .= '<div class="fp_box fp_current_'.$page['fp_id'].'" style="display:none;">';
-                    $additional_ui_boxes .= '<h4>All Bootcamp Connections for This Facebook Page:<h4>';
+                    $additional_ui_boxes .= '<h4>All Bootcamp Connections for This Facebook Page:</h4>';
                     $additional_ui_boxes .= '<ul style="list-style: decimal;">';
                     foreach($other_bs as $count=>$b){
                         $additional_ui_boxes .= '<li><a href="/console/'.$b['b_id'].'/settings#pages">'.$b['c_objective'].'</a></li>';
