@@ -3,7 +3,6 @@
 $class_settings = $this->config->item('class_settings');
 $instructor_has_off = ($b['b_p2_max_seats']>0 && strlen($b['b__admins'][0]['u_weeks_off'])>0);
 $classroom_closed = ($instructor_has_off && in_array($focus_class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])));
-$highest_price = echo_price($b,99);
 ?>
 
 <style>
@@ -59,7 +58,9 @@ $( document ).ready(function() {
                 <li>Duration: <b>1 Week</b></li>
                 <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r__class_end_time'],2) ?></b></li>
                 <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
-                <li>Price Range: <b><?= echo_price($b).( $highest_price ? ' - '.$highest_price.' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i>' : '' ) ?></b></li>
+
+                <li><?= ( echo_price($b,99, true) ? 'Price Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i></b>' : 'Price: <b>'.echo_price($b).'</b>' ) ?></li>
+
                 <?php
                 if($b['b_difficulty_level']>0){
                     echo '<li>Difficulty Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
