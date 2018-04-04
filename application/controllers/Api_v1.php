@@ -303,7 +303,7 @@ class Api_v1 extends CI_Controller {
                 if($page['fp_status']>=0){
                     $pages_list_ui .= '<span class="pull-right">';
 
-                    if($page['fp_status']==1 && $udata['u_status']>=3){
+                    if($page['fp_status']==1 && $udata['u_status']==3){
                         $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:fp_refresh('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                     }
 
