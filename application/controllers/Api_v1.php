@@ -1565,6 +1565,14 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Class has no Students.</span>');
         }
 
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_type_id' => 88, //Exported
+            'e_b_id' => $classes[0]['r_b_id'],
+            'e_r_id' => $classes[0]['r_id'],
+        ));
+
         //Echo the export file:
         header("Content-type: application/octet-stream");
         header("Content-Disposition: attachment; filename=".$classes[0]['c_objective']." - Class of ".time_format($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
