@@ -341,14 +341,14 @@ class Api_v1 extends CI_Controller {
                 //How about other Connected Bootcamps?
                 if(count($other_bs)>0){
                     //Show link:
-                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' total Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.count($other_bs).'</a>';
+                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.count($other_bs).'</a>';
 
                     //Show other connected Bootcamps:
                     $additional_ui_boxes .= '<div class="fp_box fp_current_'.$page['fp_id'].'" style="display:none;">';
-                    $additional_ui_boxes .= '<h4>All Bootcamp Connections for This Facebook Page:</h4>';
+                    $additional_ui_boxes .= '<h4>Other Mench Bootcamps Connected to this Facebook Page:</h4>';
                     $additional_ui_boxes .= '<ul style="list-style: decimal;">';
                     foreach($other_bs as $count=>$b){
-                        $additional_ui_boxes .= '<li><a href="/console/'.$b['b_id'].'/settings#pages">'.$b['c_objective'].'</a></li>';
+                        $additional_ui_boxes .= '<li><a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></li>';
                     }
                     $additional_ui_boxes .= '</ul>';
                     $additional_ui_boxes .= '</div>';
