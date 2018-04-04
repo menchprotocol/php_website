@@ -838,8 +838,6 @@ class Cron extends CI_Controller {
 
     function student_reminder_complete_task(){
 
-        exit;
-
         //Cron Settings: 45 * * * *
         //Send reminders to students to complete their Steps:
 
@@ -891,9 +889,10 @@ class Cron extends CI_Controller {
                 if($elapsed_class_percentage>=$logic['time_elapsed']){
 
                     if($admission['ru_cache__completion_rate']<$logic['progress_below']){
+
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->e_fetch(array(
-                            'e_type_id' => 7, //Message sent
+                            'e_type_id IN (7,28)' => null, //Email or Message sent
                             'e_recipient_u_id' => $admission['u_id'],
                             'e_r_id' => $admission['r_id'],
                             'e_c_id' => $logic['reminder_c_id'],
