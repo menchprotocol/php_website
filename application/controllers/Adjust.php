@@ -11,10 +11,6 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-    function copy_actionplan($b_id,$r_id){
-        echo_json($this->Db_model->snapshot_action_plan($b_id,$r_id));
-    }
-
     function sync_student_progress(){
 
         //Go through all admissions for running classes and updates the student positions in those classes:

@@ -6,9 +6,8 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.86,
+    'version' => 2.87,
     'name' => 'Mench',
-    'legaL_name' => 'Mench Media Inc.',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
 );
@@ -18,7 +17,6 @@ $config['fb_settings'] = array(
     'client_secret' => '05aea76d11b062951b40a5bee4251620',
     'default_graph_version' => 'v2.10', //Also repeated in global.js
 );
-
 
 $config['class_settings'] = array(
     'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
@@ -64,17 +62,17 @@ $config['pricing_model'] = array(
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
 
 //The engagements that instructors are subscribed to:
-$config['instructor_subscriptions'] = array(30,57,60,61,67,68,69,70,72);
+$config['instructor_subscriptions'] = array(57,60,68,69,70,72);
 
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,37,57,58,60,61,63,65,67,68,69,72,73,75),
+        'subscription' => array(9,15,58,60,65,68,72,73,75,88 ),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(8,9,15,37,57,58,60,61,63,65,67,68,69,72,73,75,84),
+        'subscription' => array(9,15,58,60,65,68,72,73,75,88,    8,84),
     ),
 );
 
@@ -82,7 +80,7 @@ $config['engagement_subscriptions'] = array(
 $config['meaningful_b_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
-$config['c_time_options'] = array(0.05,0.1166667,0.25,0.5,0.75,1,2,3,5,8,13);
+$config['c_time_options'] = array(0.05,0.1166667,0.25,0.5,0.75,1,2,3,5); //,8,13
 
 $config['default_class_prerequisites'] = array(
     'An internet-connected computer',
