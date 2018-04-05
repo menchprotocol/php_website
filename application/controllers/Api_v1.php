@@ -1600,7 +1600,7 @@ class Api_v1 extends CI_Controller {
             echo "\t".$admission['u_lname'];
             echo "\t".$admission['u_email'];
             echo "\t";
-                if($admission['u_cache__fp_psid']>0 || $admission['u_fb_id']>0){
+                if($admission['u_cache__fp_psid']>0){
                     echo 'Messenger';
                 } else {
                     echo 'Email';
