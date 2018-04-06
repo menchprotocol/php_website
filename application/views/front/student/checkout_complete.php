@@ -182,7 +182,7 @@ $(document).ready(function() {
     </ul>
     <br />
     <p>Click "Next" if you meet all prerequisites OR if you believe you can meet them before the Class starts on <b><?= trim(time_format($admission['r_start_date'],2)) ?></b>.</p>
-    <p>Or you can <a href="/"><b>choose another Bootcamp &raquo;</b></a></p>
+    <p>If not, you can <a href="/"><b>choose another Bootcamp &raquo;</b></a></p>
 	<br />
 </div>
 <?php } ?>

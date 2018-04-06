@@ -1001,8 +1001,6 @@ class Api_v1 extends CI_Controller {
 
         foreach($step_messages['intent']['c__messages'] as $i){
             if($i['i_status']==2){
-                //Add a reference button to Drip messages:
-                $i['i_message'] = $i['i_message'].' {button}';
                 array_push($drip_messages , $i);
             } elseif($i['i_status']==3){
                 array_push($on_complete_messages, array_merge($i , array(

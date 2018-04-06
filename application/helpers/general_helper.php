@@ -1247,7 +1247,7 @@ function echo_b($b){
         $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
     }
 
-    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
+    $b_ui .= ( !isset($b['b_old_format']) || $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
     $b_ui .= '</a>';
     return $b_ui;
 }

@@ -214,25 +214,25 @@ class My extends CI_Controller {
         }
 
         //Set admission filters:
-        $admission_filters = array(
+        $ru_filter = array(
             'ru.ru_status >=' => 4, //Admitted
             'r.r_status >=' => 1, //Open for Admission or Higher
         );
 
         //Define user identifier based on origin (Desktop login vs Messenger Webview):
         if(count($uadmission)>0 && $uadmission['u_id']>0){
-            $admission_filters['u.u_id'] = $uadmission['u_id'];
+            $ru_filter['u.u_id'] = $uadmission['u_id'];
         } else {
-            $admission_filters['(ru.ru_fp_psid = '.$ru_fp_psid.' OR u.u_cache__fp_psid = '.$ru_fp_psid.')'] = null;
+            $ru_filter['(ru.ru_fp_psid = '.$ru_fp_psid.' OR u.u_cache__fp_psid = '.$ru_fp_psid.')'] = null;
         }
 
         //Fetch all their admissions:
         if($b_id>0){
             //Enhance our search and make it specific to this $b_id:
-            $admission_filters['r.r_b_id'] = $b_id;
+            $ru_filter['r.r_b_id'] = $b_id;
         }
 
-        $admissions = $this->Db_model->remix_admissions($admission_filters);
+        $admissions = $this->Db_model->remix_admissions($ru_filter);
 
         if(count($admissions)==1){
 
@@ -328,7 +328,7 @@ class My extends CI_Controller {
         if(count($admissions)<=1){
 
             //No other admissions found:
-            die('<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them. <a href="/">Browse Bootcamps &raquo;</a></div>');
+            die('<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them.<div style="margin-top: 15px;"><a href="/">Browse Bootcamps &raquo;</a></div></div>');
 
         } else {
 
@@ -394,15 +394,21 @@ class My extends CI_Controller {
 
                 //Data is supposed to be in the session:
                 $uadmission = $this->session->userdata('uadmission');
-                //$ru_filter['ru.ru_u_id'] = $uadmission['u_id'];
-                $focus_admission = $uadmission;
+
+                if($uadmission){
+                    $focus_admission = $uadmission;
+                } else {
+                    die('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> To access your Classmates you need to <a href="https://mench.com/login?url='.urlencode($_SERVER['REQUEST_URI']).'" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
+                }
 
             } else {
-                $ru_filter['ru.ru_fp_psid'] = $_POST['psid'];
+
+                $ru_filter['(ru.ru_fp_psid = '.$_POST['psid'].' OR u.u_cache__fp_psid = '.$_POST['psid'].')'] = null;
 
                 //Fetch all their admissions:
                 $admissions = $this->Db_model->remix_admissions($ru_filter);
                 $focus_admission = detect_active_admission($admissions); //We'd need to see which admission to load
+
             }
 
 
