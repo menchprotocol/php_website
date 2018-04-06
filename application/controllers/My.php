@@ -328,7 +328,7 @@ class My extends CI_Controller {
         if(count($admissions)<=1){
 
             //No other admissions found:
-            die('<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You can only switch between Bootcamps once you enroll in 2 or more Bootcamps. <a href="/">Browse Bootcamps &raquo;</a></div>');
+            die('<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them. <a href="/">Browse Bootcamps &raquo;</a></div>');
 
         } else {
 

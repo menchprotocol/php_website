@@ -426,8 +426,11 @@ h5, .h5 {
 }
 #console h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height:100%; }
 .main-raised{
-	max-width: 1150px;
-	margin: -60px auto 0 !important;
+    max-width: 1150px;
+    margin: -60px auto 0 !important;
+}
+.student-hub{
+    max-width: 665px;
 }
 .product-splash{margin-top:-450px !important;}
 .main-plain{
@@ -1068,8 +1071,8 @@ a.badge:focus, a.badge:hover {
 
 
 
-.pfooter { font-size:0.7em; display:block; text-align:center; margin-top:10px; color:#777; font-weight:300; }
-.pfooter img { width:20px; margin:-3px 1px 0 0;}
+.pfooter { font-size:0.6em; display:block; text-align:center; margin-top:10px; color:#3C4858; font-weight:400; text-transform: lowercase; padding-bottom: 25px; }
+.pfooter img { width:20px; margin:-2px 1px 0 1px;}
 
 
 

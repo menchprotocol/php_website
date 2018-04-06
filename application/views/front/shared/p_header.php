@@ -20,7 +20,7 @@ $website = $this->config->item('website');
 
 <body id="funnel">
 
-<div class="main main-raised">
+<div class="main main-raised student-hub">
 <div class="container body-container">
 
 <?php

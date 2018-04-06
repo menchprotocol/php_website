@@ -1718,7 +1718,7 @@ function echo_r($b,$class,$append_class=null){
         }
 
         //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $current_status==1 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$current_status.'" data-toggle="tooltip" data-placement="right" title="Toggle support across all your Bootcamps/Classes. Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('rs',$current_status,true, null).'</a>';
+        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $current_status==1 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$current_status.'" data-toggle="tooltip" data-placement="right" title="Toggle support across all your Bootcamps/Classes for the week of '.time_format($class['r_start_date'],4).'. Yellow = Support Available Grey = Do It Yourself Only">'.status_bible('rs',$current_status,true, null).'</a>';
 
     }
 
