@@ -331,7 +331,6 @@ function insert_gravatar(){
         <div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
         <ul>
         	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
-        	<li>I have read and understood my Bootcamp's <a href="https://support.mench.co/hc/en-us/articles/115002080031" target="_blank"><u>Mench Guarantee <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
         	<li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
