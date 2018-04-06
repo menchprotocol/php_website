@@ -645,7 +645,10 @@ class My extends CI_Controller {
                     echo '<td valign="top" style="text-align:center; vertical-align:top;">'.( $ranking_visible ? echo_rank($rank) : '' ).'</td>';
                 }
 
-                echo '<td valign="top" style="text-align:left; vertical-align:top;">';
+
+
+
+                echo '<td colspan="'.( $admission['ru_cache__completion_rate']<1 && !$ranking_visible ? 2 : 1 ).'" valign="top" style="text-align:left; vertical-align:top;">';
                 $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_fname'].' '.$admission['u_lname'];
 
 
@@ -667,17 +670,20 @@ class My extends CI_Controller {
 
                 //Progress, Task & Steps:
                 if($admission['ru_cache__completion_rate']>=1){
+
                     //They have completed it all, show them as winners!
                     echo '<td valign="top" colspan="'.($task_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
                     echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">COMPLETED</span>';
                     echo '</td>';
+
                 } else {
+
                     //Progress:
-                    echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                     if($ranking_visible){
+                        echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                         echo '<span>'.round( $admission['ru_cache__completion_rate']*100 ).'%</span>';
+                        echo '</td>';
                     }
-                    echo '</td>';
 
                     if($task_count_enabled){
                         //Task:
