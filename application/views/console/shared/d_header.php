@@ -40,7 +40,7 @@ $website = $this->config->item('website');
 <body id="console_body">
 
     <!-- Require Facebook Chat for Logged-in Instructors -->
-    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#000000" page_id="381488558920384"></div>
+    <div class="fb-customerchat" minimized="true" greeting_dialog_display="hide" <?= ( $udata['u_cache__fp_psid']>0 ? '' : ' ref="'.$this->Comm_model->fb_activation_url($udata['u_id'],4,true).'" ' ) ?> theme_color="#3C4858" page_id="381488558920384"></div>
 
 	<div class="wrapper" id="console">
 		<div class="navbar navbar-transparent navbar-absolute">

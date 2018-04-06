@@ -880,14 +880,14 @@ function echo_message($i,$level=0,$editing_enabled=true){
         $echo_ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_uploader($i).'</span></li>';
 
         if($editing_enabled){
-            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#2f2639;"></i></span></li>';
+            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
             $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fa fa-trash" style="margin:0 7px 0 5px;"></i></a></span></li>';
             if($i['i_media_type']=='text' || $level<=2){
                 $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fa fa-pencil-square-o"></i></a></span></li>';
             }
             //Right side reverse:
             $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#000"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#3C4858"></i></a></li>';
             $echo_ui .= '<li class="pull-right edit-on hidden">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level>1?array(-1):array(-1,2)),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
         }
@@ -1240,11 +1240,11 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-    $b_ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true" style="margin: 0 8px 0 2px; color:#000;"></i> ';
+    $b_ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
     $b_ui .= $b['c_objective'];
 
     if($all_students>0){
-        $b_ui .= ' &nbsp;<b style="color:#000;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
+        $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
     }
 
     $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
@@ -2617,9 +2617,9 @@ function html_run($run){
 
 function echo_us($us_data){
     echo status_bible('us',$us_data['us_status']);
-    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#2f2639;"><i class="fa fa-clock-o initial"></i>Completion Time:</span> '.time_format($us_data['us_timestamp']).' PST</div>';
+    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-clock-o initial"></i>Completion Time:</span> '.time_format($us_data['us_timestamp']).' PST</div>';
     //echo '<div style="margin:15px 0 10px;">Congratulations for completing this '.echo_time($us_data['us_time_estimate'],1).'Step on '.time_format($us_data['us_timestamp']).'</div>';
-    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#2f2639;"><i class="fa fa-file-text initial"></i>Your Comments:</span> '.( strlen($us_data['us_student_notes'])>0 ? make_links_clickable(nl2br(htmlentities($us_data['us_student_notes']))) : 'None' ).'</div>';
+    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-file-text initial"></i>Your Comments:</span> '.( strlen($us_data['us_student_notes'])>0 ? make_links_clickable(nl2br(htmlentities($us_data['us_student_notes']))) : 'None' ).'</div>';
 }
 
 

@@ -148,9 +148,9 @@ $(document).ready(function() {
 .large-fa {font-size: 60px; margin-top:15px;}
 .xlarge-fa {font-size: 68px; margin-top:15px;}
 .progress{background-color:#FFF !important;}
-.progress-bar{background-color:#000 !important;}
+.progress-bar{background-color:#3C4858 !important;}
 .enter{width:170px;}
-.btn-primary{background-color: #000 !important;color:#FFF !important;}
+.btn-primary{background-color: #3C4858 !important;color:#FFF !important;}
 .checkbox-material>.check{margin-top:-6px; margin-left:14px;}
 .checkbox{ margin:30px 0; }
 .form-group{text-align:left;}
@@ -161,7 +161,7 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #000; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= time_format($admission['r_start_date'],2).' - '.time_format($admission['r__class_end_time'],2) ?></span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= time_format($admission['r_start_date'],2).' - '.time_format($admission['r__class_end_time'],2) ?></span></p>
 
 
 
@@ -214,7 +214,7 @@ $(document).ready(function() {
 
         <?php if($instructor_support_off){
 
-            echo '<div class="alert alert-info maxout" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Classroom closed for this week. You can <b>'.$status_rs[1]['s_name'].'</b> or <a href="/'.$admission['b_url_key'].'" style="color:#000;">Choose Another Week &raquo;</a></div>';
+            echo '<div class="alert alert-info maxout" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Classroom closed for this week. You can <b>'.$status_rs[1]['s_name'].'</b> or <a href="/'.$admission['b_url_key'].'" style="color:#3C4858;">Choose Another Week &raquo;</a></div>';
 
         } elseif($admission['b_p3_rate']>0){ ?>
 

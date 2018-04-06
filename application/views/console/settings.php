@@ -19,7 +19,7 @@ function show_fb_auth(error_message=null){
         $('#login_message').html('<span style="color:#FF0000"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ERROR: '+error_message+'</span>');
         $('#why_permissions').addClass('hidden');
     } else {
-        $('#login_message').html('<span style="color:#000">to connect this Bootcamp to your Facebook Page</span>');
+        $('#login_message').html('<span style="color:#3C4858">to connect this Bootcamp to your Facebook Page</span>');
         $('#why_permissions').removeClass('hidden');
     }
 }

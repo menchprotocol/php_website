@@ -36,7 +36,7 @@ window.fbAsyncInit = function(){
             if (response.status === 'connected' || response.status === 'not_authorized') {
 
                 //User is logged into Facebook, show FB Chat:
-                $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#000000" page_id="381488558920384"></div>');
+                $('body').prepend('<div class="fb-customerchat" minimized="true" greeting_dialog_display="fade" theme_color="#3C4858" page_id="381488558920384"></div>');
 
                 //Re-initiate to show Chat:
                 FB.init({

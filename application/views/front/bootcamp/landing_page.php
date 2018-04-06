@@ -94,7 +94,7 @@ $( document ).ready(function() {
 
                     if($class['r_id']==$focus_class['r_id']){
                         echo '<li class="list-group-item grey">';
-                        echo '<span class="pull-right"><span class="label label-default grey" style="color:#000;">CURRENTLY VIEWING</span></span>';
+                        echo '<span class="pull-right"><span class="label label-default grey" style="color:#3C4858;">CURRENTLY VIEWING</span></span>';
                     } else {
                         echo '<a href="/'.$b['b_url_key'].'/'.$class['r_id'].'" class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_all_classes" style="display:none;"' : '"' ).' >';
                         echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
@@ -147,7 +147,7 @@ $( document ).ready(function() {
                 }
                 echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_all_tasks" style="display:none;"' : '"' ).'>';
                 //echo '<span class="pull-right">'.($task['c__estimated_hours']>0 ? echo_time($task['c__estimated_hours'],1) : '').'</span>';
-                echo '<i class="fa fa-check-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#000;"></i> ';
+                echo '<i class="fa fa-check-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#3C4858;"></i> ';
                 echo 'Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
                 echo '</li>';
                 $counter++;

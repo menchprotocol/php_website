@@ -343,7 +343,7 @@ class My extends CI_Controller {
 
                     //This is the one that is loaded:
                     echo '<li class="list-group-item grey">';
-                    //echo '<span class="pull-right"><span class="label label-default grey" style="color:#000;">CURRENTLY VIEWING</span></span>';
+                    //echo '<span class="pull-right"><span class="label label-default grey" style="color:#3C4858;">CURRENTLY VIEWING</span></span>';
 
                 } else {
 
@@ -559,7 +559,7 @@ class My extends CI_Controller {
                     //Show button to refresh:
                     ?>
                     <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
-                    <div id="action_plan_status" class="copy_ap maxout" style="display:none; border:1px solid #000; border-radius:5px; margin-top:20px; padding:10px;">
+                    <div id="action_plan_status" class="copy_ap maxout" style="display:none; border:1px solid #3C4858; border-radius:5px; margin-top:20px; padding:10px;">
                         <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete.</p>
                         <p><a href="javascript:void(0);" onclick="r_sync_c(<?= $b['b_id'] ?>,<?= $class['r_id'] ?>)">I Understand, Continue With Update &raquo;</a></p>
                     </div>
