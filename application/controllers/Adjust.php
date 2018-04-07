@@ -11,6 +11,40 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
+    function mass_enroll($from_r_id,$to_b_id,$to_r_id){
+
+        //Admits all Free students from $from_r_id to $to_r_id
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_r_id' 	        => $from_r_id,
+            'ru.ru_status >='   => 4, //Initiated or higher as long as bootcamp is running!
+            'ru.ru_p1_price'	=> 0, //Free DIY
+        ));
+
+        foreach($admissions as $admission){
+
+            //Admit them to the second Class:
+            $this->Db_model->ru_create(array(
+                'ru_r_id' 	        => $to_r_id,
+                'ru_u_id' 	        => $admission['u_id'],
+                'ru_status'         => 4,
+                'ru_fp_id'          => $admission['ru_fp_id'],
+                'ru_fp_psid'        => $admission['ru_fp_psid'],
+            ));
+
+            //Let them know about this Admission:
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => $admission['u_id'],
+                'e_c_id' => 5995,
+                'depth' => 0,
+                'e_b_id' => $to_b_id,
+                'e_r_id' => $to_r_id,
+            ));
+        }
+
+        echo count($admissions).' Students moved from Class ['.$from_r_id.'] to Class ['.$to_r_id.']';
+
+    }
+
     function sync_student_progress(){
 
         //Go through all admissions for running classes and updates the student positions in those classes:

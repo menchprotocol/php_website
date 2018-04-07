@@ -105,6 +105,7 @@ class Bot extends CI_Controller {
 
 
     function scott(){
+        exit;
         $results = array(
 
             $this->Comm_model->foundation_message(array(

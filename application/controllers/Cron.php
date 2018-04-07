@@ -600,7 +600,7 @@ class Cron extends CI_Controller {
                         } else {
                             //Log error:
                             $this->Db_model->e_create(array(
-                                'e_message' => 'COWMAN: Failed to sync attachment using Facebook API',
+                                'e_message' => 'message_fb_sync_attachments() Failed to sync attachment using Facebook API',
                                 'e_json' => array(
                                     'payload' => $payload,
                                     'result' => $result,
