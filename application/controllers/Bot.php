@@ -104,6 +104,59 @@ class Bot extends CI_Controller {
     }
 
 
+    function scott(){
+        $results = array(
+            /*
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => 624,
+                'e_c_id' => 5988,
+                'depth' => 0,
+                'e_b_id' => 292,
+                'e_r_id' => 12124,
+            )),
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => 601,
+                'e_c_id' => 5988,
+                'depth' => 0,
+                'e_b_id' => 292,
+                'e_r_id' => 12124,
+            )),
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => 602,
+                'e_c_id' => 5988,
+                'depth' => 0,
+                'e_b_id' => 292,
+                'e_r_id' => 12124,
+            )),
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => 625,
+                'e_c_id' => 5988,
+                'depth' => 0,
+                'e_b_id' => 292,
+                'e_r_id' => 12124,
+            )),
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => 612,
+                'e_c_id' => 5988,
+                'depth' => 0,
+                'e_b_id' => 292,
+                'e_r_id' => 12124,
+            )),
+            */
+            /////// Different Class:
+            $this->Comm_model->foundation_message(array(
+                'e_recipient_u_id' => 600,
+                'e_c_id' => 5988,
+                'depth' => 0,
+                'e_b_id' => 292,
+                'e_r_id' => 12128,
+            )),
+        );
+
+        echo_json($results);
+    }
+
+
 
 
 
