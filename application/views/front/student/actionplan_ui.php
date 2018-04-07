@@ -103,7 +103,7 @@ foreach($breadcrumb_p as $position=>$link){
     echo ( $link['link'] ? '<a href="'.$link['link'].'">'.$link['anchor'].'</a>' : $link['anchor'] );
     if($position==0){
         //Show the Bootcamp switcher next to the Bootcamp title:
-        echo ' &nbsp;<a href="javascript:void(0);" onclick="all_admissions()" class="badge badge-primary ab_btn" title="Switch Between Bootcamps"><i class="fa fa-random" aria-hidden="true"></i></a>';
+        echo ' <a href="javascript:void(0);" onclick="all_admissions()" class="ab_btn" title="Switch Between Bootcamps">(switch)</a>';
     }
     echo '</li>';
 }

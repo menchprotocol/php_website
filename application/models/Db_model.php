@@ -415,14 +415,26 @@ WHERE ru.ru_status >= 4
                 'e_json' => $insert_columns,
                 'e_type_id' => 8, //Platform Error
             ));
-        }
 
-		//Fetch to return:
-        $users = $this->Db_model->u_fetch(array(
-            'u_id' => $insert_columns['u_id'],
-        ));
-		
-		return $users[0];
+            return false;
+
+        } else {
+
+            //All good, send Welcome to Mench Message:
+            $this->Comm_model->foundation_message(array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $insert_columns['u_id'],
+                'e_c_id' => 5980, //Welcome to Mench 😍​
+                'depth' => 0,
+            ));
+
+            //Fetch to return:
+            $users = $this->Db_model->u_fetch(array(
+                'u_id' => $insert_columns['u_id'],
+            ));
+
+            return $users[0];
+        }
 	}
 	
 	function u_update($user_id,$update_columns){

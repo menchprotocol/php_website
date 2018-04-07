@@ -786,27 +786,21 @@ class Cron extends CI_Controller {
                 'e_type_id' => 28, //Email sent
                 'e_recipient_u_id' => $admission['u_id'],
                 'e_r_id' => $admission['r_id'],
-                'e_c_id IN (3140,3127,3128,3129,3130)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
+                'e_c_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
             ));
 
             $admission_end_time = strtotime($admission['r_start_date']) - 60; //11:59PM the night before start date
             $admission_time = strtotime($admission['ru_timestamp']);
 
 
-
-
             //Send them a reminder to complete 24 hours after they start, only IF they started their application more than 6 days before the Class start:
             $reminder_c_id = 0;
-            if(($admission_time+(6*24*3600))<$admission_end_time && ($admission_time+(24*3600))<time() && !filter($reminders_sent,'e_c_id',3140)){
-                $reminder_c_id = 3140;
-            } elseif((time()+(72*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3127)){
+            if(($admission_time+(3*24*3600))<$admission_end_time && ($admission_time+(24*3600))<time() && !filter($reminders_sent,'e_c_id',3127)){
+                //Sent 24 hours after initiating admission IF registered more than 3 days before Class starts
                 $reminder_c_id = 3127;
-            } elseif((time()+(48*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3128)){
-                $reminder_c_id = 3128;
-            } elseif((time()+(24*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3129)){
-                $reminder_c_id = 3129;
-            } elseif((time()+(2*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3130)){
-                $reminder_c_id = 3130;
+            } elseif(($admission_time+(26*3600))<$admission_end_time && (time()+(24*3600))>$admission_end_time && !filter($reminders_sent,'e_c_id',3140)){
+                //Sent 24 hours before class starts IF registered more than 26 hours before Class starts
+                $reminder_c_id = 3140;
             }
 
             if($reminder_c_id){

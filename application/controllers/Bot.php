@@ -469,7 +469,7 @@ class Bot extends CI_Controller {
                     $this->Comm_model->foundation_message(array(
                         'e_initiator_u_id' => 0,
                         'e_recipient_u_id' => $users[0]['u_id'],
-                        'e_c_id' => ( $admissions[0]['u_cache__fp_psid'] ? 2807 : 2805 ),
+                        'e_c_id' => 2698,
                         'depth' => 0,
                         'e_b_id' => $classes[0]['r_b_id'],
                         'e_r_id' => $classes[0]['r_id'],
