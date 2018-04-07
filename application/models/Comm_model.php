@@ -1302,7 +1302,7 @@ class Comm_model extends CI_Model {
 
                 } else {
                     //Append message to this user:
-                    $email_to_send[$u['u_id']]['html_message'] .= echo_i($message, $u['u_fname'],false);
+                    $email_to_send[$u['u_id']]['html_message'] .= '<div style="padding-top:12px;">'.echo_i($message, $u['u_fname'],false).'</div>';
                 }
 
             }
