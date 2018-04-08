@@ -783,7 +783,7 @@ class Cron extends CI_Controller {
 
             //Fetch existing reminders sent to this student:
             $reminders_sent = $this->Db_model->e_fetch(array(
-                'e_type_id' => 28, //Email sent
+                'e_type_id IN (7,28)' => null, //Email/Message sent
                 'e_recipient_u_id' => $admission['u_id'],
                 'e_r_id' => $admission['r_id'],
                 'e_c_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
