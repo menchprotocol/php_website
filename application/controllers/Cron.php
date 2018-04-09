@@ -406,43 +406,30 @@ class Cron extends CI_Controller {
                 'r_status' => 2, //Running Class
             ));
 
-            //Prepare variables:
-            $json_data = unserialize($e_message['ej_e_blob']);
+            if(count($matching_admissions)>0){
 
-            if(count($matching_admissions)<1){
-                //Something has changed since this Drip has been scheduled...
-                //Log Engagement:
-                $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $e_message['e_recipient_u_id'], //System
-                    'e_message' => 'Failed to send scheduled Drip message because could not find student admission',
-                    'e_json' => $json_data,
-                    'e_type_id' => 8, //System Error
-                    'e_b_id' => $e_message['e_b_id'],
-                    'e_r_id' => $e_message['e_r_id'],
-                    'e_c_id' => $json_data['i']['i_c_id'],
+                //Prepare variables:
+                $json_data = unserialize($e_message['ej_e_blob']);
+
+                //Send this message:
+                $this->Comm_model->send_message(array(
+                    array_merge($json_data['i'], array(
+                        'e_initiator_u_id' => 0,
+                        'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                        'i_c_id' => $json_data['i']['i_c_id'],
+                        'e_b_id' => $e_message['e_b_id'],
+                        'e_r_id' => $e_message['e_r_id'],
+                    )),
                 ));
-                continue;
+
+                //Update Engagement:
+                $this->Db_model->e_update( $e_message['e_id'] , array(
+                    'e_cron_job' => 1, //Mark as done
+                ));
+
+                //Increase counter:
+                $drip_sent++;
             }
-
-            //Send this message:
-            $this->Comm_model->send_message(array(
-                array_merge($json_data['i'], array(
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
-                    'i_c_id' => $json_data['i']['i_c_id'],
-                    'e_b_id' => $e_message['e_b_id'],
-                    'e_r_id' => $e_message['e_r_id'],
-                )),
-            ));
-
-            //Update Engagement:
-            $this->Db_model->e_update( $e_message['e_id'] , array(
-                'e_cron_job' => 1, //Mark as done
-            ));
-
-            //Increase counter:
-            $drip_sent++;
         }
 
         //Echo message for cron job:
@@ -580,7 +567,7 @@ class Cron extends CI_Controller {
                         );
 
                         //Attempt to save this:
-                        $result = $this->Comm_model->fb_graph($ep['fp_id'], 'POST', '/me/i_attachs', $payload);
+                        $result = $this->Comm_model->fb_graph($ep['fp_id'], 'POST', '/me/message_attachments', $payload);
                         $db_result = false;
 
                         if($result['status'] && isset($result['e_json']['result']['attachment_id'])){
