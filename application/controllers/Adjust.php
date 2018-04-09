@@ -89,27 +89,23 @@ class Adjust extends CI_Controller {
                 //Note that some Steps could be done, but then rejected by the instructor...
                 foreach($bs[0]['c__child_intents'] as $task){
                     if($task['c_status']==1){
-                        foreach($task['c__child_intents'] as $step){
-                            if($step['c_status']==1){
-                                $total_steps++;
-                                //Has the student done this?
-                                if(!array_key_exists($step['c_id'],$us_data) || !($us_data[$step['c_id']]['us_status']==1)){
+                        $total_steps++;
+                        //Has the student done this?
+                        if(!array_key_exists($task['c_id'],$us_data) || !($us_data[$task['c_id']]['us_status']==1)){
 
-                                    if(!$found_incomplete_step){
-                                        //The student is not done with this Step, so here is were they're at:
-                                        $ru_cache__current_task = $task['cr_outbound_rank'];
-                                        $found_incomplete_step = true;
-                                    }
-
-                                } else {
-
-                                    //Addup the total hours based on the Action Plan
-                                    $total_hours_done += $us_data[$step['c_id']]['us_time_estimate'];
-                                    $found_incomplete_step = false; //Reset this
-                                    $done_steps++;
-
-                                }
+                            if(!$found_incomplete_step){
+                                //The student is not done with this Task, so here is were they're at:
+                                $ru_cache__current_task = $task['cr_outbound_rank'];
+                                $found_incomplete_step = true;
                             }
+
+                        } else {
+
+                            //Addup the total hours based on the Action Plan
+                            $total_hours_done += $us_data[$task['c_id']]['us_time_estimate'];
+                            $found_incomplete_step = false; //Reset this
+                            $done_steps++;
+
                         }
                     }
                 }

@@ -230,6 +230,7 @@ class Cron extends CI_Controller {
 
                     //Show in Cron stats:
                     $stats[$class['r_id']] = 'Class ended without any admitted students';
+                    $r_cache__completion_rate = 0;
 
                 } else {
 
@@ -309,17 +310,7 @@ class Cron extends CI_Controller {
                     }
 
                     //How did the class do overall?
-                    if(count($accepted_admissions)<1){
-                        $r_cache__completion_rate = 0;
-                    } else {
-                        $r_cache__completion_rate = number_format(($completion_stats['completed'] / count($accepted_admissions)),3);
-                    }
-
-                    //Update Class:
-                    $this->Db_model->r_update( $class['r_id'] , array(
-                        'r_status' => 3, //Completed
-                        'r_cache__completion_rate' => $r_cache__completion_rate,
-                    ));
+                    $r_cache__completion_rate = number_format(($completion_stats['completed'] / count($accepted_admissions)),3);
 
 
                     //Log Engagement:
@@ -343,6 +334,13 @@ class Cron extends CI_Controller {
                     $stats[$class['r_id']] = $completion_message;
 
                 }
+
+                //Update Class:
+                $this->Db_model->r_update( $class['r_id'] , array(
+                    'r_status' => 3, //Completed
+                    'r_cache__completion_rate' => $r_cache__completion_rate,
+                ));
+
             }
         }
 
