@@ -15,8 +15,8 @@
 <!-- <h1>Achieve Your Goals</h1> -->
 <h1>Get a Tech Job You Love 😍</h1>
 <p class="home_line_2">Learn in-demand skills from industry experts by completing weekly Bootcamps.</p>
-<p class="home_line_2">7-Day Bootcamps range from $0-163/week based on support level you choose.</p>
-<p class="home_line_2">New classes start every Monday. (in <span id="classes_start"></span> from now)</p>
+<p class="home_line_2">7-Day Bootcamps rangingfrom <span style="display:inline-block;">$0-163/week</span> based on the support level you choose.</p>
+<p class="home_line_2">New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span> from now)</span></p>
 <br />
 
 <!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->
