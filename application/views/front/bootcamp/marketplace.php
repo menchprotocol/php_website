@@ -16,7 +16,7 @@
 <h1>Get a Tech Job You Love 😍</h1>
 <p class="home_line_2">Learn in-demand skills from industry experts by completing weekly Bootcamps.</p>
 <p class="home_line_2">Tuition ranges from <span style="display:inline-block;">$0-163/week</span> based on support level you choose.</p>
-<p class="home_line_2">New classes start every Monday at 00:00 PST. <span style="display:inline-block;">(in <span id="classes_start"></span> from now)</span></p>
+<p class="home_line_2">New classes start every Monday at 00:00 PST. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span></p>
 <br />
 
 <!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->
