@@ -114,6 +114,13 @@ function ms_toggle(c_id,new_state=-1){
     }
 }
 
+function load_help(intent_id){
+    //Loads the help button:
+    $('#hb_'+intent_id).html('<a class="tipbtn" href="javascript:open_tip('+intent_id+')">'+tips_button+'</a>');
+}
+
+
+
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
 
@@ -140,7 +147,7 @@ $(document).ready(function() {
                 //Its valid as all elements match! Let's continue:
                 loaded_messages.push(intent_id);
                 //Load the Tip icon so they can access the tip if they like:
-                $('#hb_'+intent_id).html('<a class="tipbtn" href="javascript:open_tip('+intent_id+')">'+tips_button+'</a>'); //Load the button
+                load_help(intent_id);
             }
         });
     }
@@ -152,6 +159,7 @@ $(document).ready(function() {
         window.location.hash = hash;
         adjust_hash(hash);
     });
+
 });
 
 

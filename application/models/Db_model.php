@@ -1540,15 +1540,14 @@ WHERE ru.ru_status >= 4
 	
 
 	
-	function sync_algolia($c_id=null){
-	    /*
+	function algolia_b_sync($c_id=null){
 		
 		boost_power();
 		
 		$website = $this->config->item('website');
 		
 		if(is_dev()){
-		    return curl_html($website['url']."api_v1/algolia/".$c_id);
+		    return curl_html($website['url']."api_v1/algolia_b_sync/".$c_id);
 		}
 		
 		//Include PHP library:
@@ -1575,6 +1574,7 @@ WHERE ru.ru_status >= 4
 		//Buildup this array to save to search index
 		$return = array();
 		foreach($intents as $intent){
+
 			//Adjust Algolia ID:
 			if(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0){
 				$intent['objectID'] = intval($intent['c_algolia_id']);
@@ -1583,6 +1583,7 @@ WHERE ru.ru_status >= 4
 			
 			//Add to main array
 			array_push( $return , $intent);
+
 		}
 		
 		//$obj = json_decode(json_encode($return), FALSE);
@@ -1635,6 +1636,6 @@ WHERE ru.ru_status >= 4
 				'output' => $obj_add_message['objectIDs'],
 		);
 
-	    */
+
 	}
 }

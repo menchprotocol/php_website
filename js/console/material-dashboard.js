@@ -88,7 +88,6 @@ md = {
         if($(window).width() <= 991){
             if($sidebar.length != 0){
                 md.initRightMenu();
-
             } else {
                 md.initBootstrapNavbarMenu();
             }
@@ -126,7 +125,7 @@ md = {
                 nav_content = nav_content + content_buff;
             });
 
-            nav_content = '<ul class="nav nav-mobile-menu">' + nav_content + '</ul>';
+            nav_content = '<ul class="nav navbar-main nav-mobile-menu">' + nav_content + '</ul>';
 
             $navbar_form = $('nav').find('.navbar-form').clone(true);
 
@@ -134,7 +133,7 @@ md = {
 
             // insert the navbar form before the sidebar list
             $nav_content = $(nav_content);
-            $nav_content.insertAfter($sidebar_nav);
+            $nav_content.insertBefore($('.left-li-title'));
             $navbar_form.insertAfter($nav_content);
 
             $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
@@ -220,7 +219,7 @@ md = {
                 nav_content = nav_content + content_buff;
             });
 
-            nav_content = '<ul class="nav nav-mobile-menu">' + nav_content + '</ul>';
+            nav_content = '<ul class="nav nav-mobile-menu navbar-main">' + nav_content + '</ul>';
 
             $navbar.html(nav_content);
             $navbar.addClass('off-canvas-sidebar');

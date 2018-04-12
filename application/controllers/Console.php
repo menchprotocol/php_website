@@ -59,15 +59,9 @@ class Console extends CI_Controller {
 	 ****************************** */
 	
 	function bootcamps(){
+
 		//Authenticate level 2 or higher, redirect if not:
 		$udata = auth(2,1);
-		
-		//User Bootcamps:
-		$bs = $this->Db_model->instructor_bs(array(
-		    'ba.ba_u_id' => $udata['u_id'],
-		    'ba.ba_status >=' => 0,
-		    'b.b_status >=' => 2,
-		));
 
 		$title = 'My Bootcamps';
 		
@@ -77,15 +71,26 @@ class Console extends CI_Controller {
 		    'breadcrumb' => array(
 		        array(
 		            'link' => null,
-		            'anchor' => $title,
+		            'anchor' => $title.' <span id="hb_6024" class="help_button" intent-id="6024"></span>',
 		        ),
 		    ),
 		));
-		
-		//Have they activated their Bot yet?
+
+        //Have they activated their Bot yet?
         //Yes, show them their Bootcamps:
         $this->load->view('console/bootcamps' , array(
-            'bs' => $bs,
+            'bs' => $this->Db_model->instructor_bs(array(
+                'ba.ba_u_id' => $udata['u_id'],
+                'ba.ba_status >=' => 0,
+                'b.b_status >=' => 2,
+                'b.b_is_parent' => 0,
+            )),
+            'bsp' => $this->Db_model->instructor_bs(array(
+                'ba.ba_u_id' => $udata['u_id'],
+                'ba.ba_status >=' => 0,
+                'b.b_status >=' => 2,
+                'b.b_is_parent' => 1,
+            )),
             'udata' => $udata,
         ));
     	
@@ -96,6 +101,7 @@ class Console extends CI_Controller {
 	
 	
 	function dashboard($b_id){
+
 	    //Authenticate level 2 or higher, redirect if not:
 	    $udata = auth(1,1,$b_id);
 	    $bs = $this->Db_model->remix_bs(array(
@@ -163,11 +169,11 @@ class Console extends CI_Controller {
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of prerequisites, Tasks or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-download" aria-hidden="true"></i></span></a>' : ''),
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['b_is_parent'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of prerequisites, Tasks or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-download" aria-hidden="true"></i></span></a>' : ''),
                 ),
             );
         }
-		
+
 		if(isset($_GET['raw'])){
 		    //For testing purposes:
 		    echo_json($view_data['b']);

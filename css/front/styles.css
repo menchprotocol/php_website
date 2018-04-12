@@ -1,6 +1,5 @@
 @CHARSET "ISO-8859-1";
 
-
 #mainsidebar { margin-top:60px; padding-top:0; z-index:1 !important; }
 .main-panel { background-color:transparent; }
 .dash { background-color:#FFF; border-radius:5px !important; margin-right:15px; margin-bottom:80px; padding-bottom: 5px !important; }
@@ -136,6 +135,7 @@ a.badge-primary:hover {
 .landing-page .navbar-brand img {
 	display:inline-block;
 	margin-top:-12px;
+    width: 48px;
 }
 .landing-page .dashboard-logo>span {
 	padding-top:10px;
@@ -160,8 +160,7 @@ a.badge-primary:hover {
     margin:-2px 0 0 0 !important;
 }
 #console .dashboard-logo img{
-	margin-top: -13px !important;
-	margin-right: 1px !important;
+	margin: -5px 3px 0 -4px !important;
     width:38px;
 }
 .checklist-done{
@@ -284,6 +283,8 @@ a.badge-primary:hover {
 .header-search::placeholder {
   color:#CCC !important;
 }
+
+
 
 .tab-pane, .maxout {max-width:665px !important;}
 .list-group-item { padding: 10px 10px; }
@@ -777,7 +778,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	.contactleft{padding-top:70px;}
 	.home-p{ max-width:320px; }
 	
-	.navbar-brand img { width:38px; }
+	.navbar-brand img { width:38px !important; margin-top: -9px !important; }
 	.navbar-brand span { font-size: 28px; }
 	.navbar .navbar-brand { padding:15px 10px 7px 12px; }
 	
@@ -949,7 +950,7 @@ a.badge:focus, a.badge:hover {
 }
 
 .navbar-nav>li{
-	margin-left:20px;
+	margin-left:5px;
 }
 
 
@@ -1742,3 +1743,10 @@ margin:5px 0;
     display:inline-block !important;
 }
 .hidden {display:none !important;}
+
+.navbar-main > .active > a, .navbar-main > .active > a:hover, .navbar-main > .active > a:focus {
+    color: #3C4858 !important;
+    background-color: #fedd16 !important;
+    border-radius: 4px !important;
+    cursor:pointer !important;
+}

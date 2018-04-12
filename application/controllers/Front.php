@@ -21,7 +21,7 @@ class Front extends CI_Controller {
 	function index($c_id=0){
 		//Load home page:
 		$this->load->view('front/shared/f_header' , array(
-		    'title' => 'Get a Tech Job You Love 😍',
+		    'title' => 'Get a Tech Job You Love',
 		));
 		$this->load->view('front/bootcamp/marketplace',array(
 		    'c_id' => $c_id,

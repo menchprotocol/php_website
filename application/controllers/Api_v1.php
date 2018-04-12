@@ -26,7 +26,11 @@ class Api_v1 extends CI_Controller {
         die('nothing here...');
     }
 
-
+    function algolia_b_sync($b_id){
+        if($b_id>0){
+            echo_json($this->Db_model->algolia_b_sync($b_id));
+        }
+    }
 
     function e_js_create(){
 	    //Validate hash code:
@@ -892,7 +896,6 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: You are no longer an active Student of this Bootcamp</span>');
         }
 
-
         //Fetch full Bootcamp/Class/Node data from Action Plan copy:
         $bs = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
         $focus_class = $bs[0]['this_class'];
@@ -923,10 +926,6 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        //Calculate total new progress based on this new this submission:
-        $ru_cache__completion_rate = number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),3);
-
-
         //Now update the DB:
         $us_data = $this->Db_model->us_create(array(
             'us_student_id' => $matching_admissions[0]['u_id'],
@@ -939,8 +938,8 @@ class Api_v1 extends CI_Controller {
         ));
 
 
-        //Do we need to send any notifications?
-        if(strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
+        //Do we need to send any notifications to Instuctor for Premium Students?
+        if($matching_admissions[0]['ru_p2_price']>0 && strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
 
             //Send email to all instructors of this Bootcamp:
             $b_instructors = $this->Db_model->ba_fetch(array(
@@ -953,6 +952,7 @@ class Api_v1 extends CI_Controller {
 
             $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
             $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
+
             //Send notifications to current instructor
             foreach($b_instructors as $bi){
                 //Make sure this instructor has an email on file
@@ -1096,7 +1096,7 @@ class Api_v1 extends CI_Controller {
 
             //The next level is the Bootcamp, which means this was the last Step:
             $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => $ru_cache__completion_rate, //Should be 1 (100% complete)
+                'ru_cache__completion_rate' => 1, //Student is 100% complete
                 'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
             ));
 
@@ -1114,7 +1114,7 @@ class Api_v1 extends CI_Controller {
             //We have a next Task:
             //We also need to change ru_cache__current_task to reflect this advancement:
             $this->Db_model->ru_update( $matching_admissions[0]['ru_id'] , array(
-                'ru_cache__completion_rate' => $ru_cache__completion_rate,
+                'ru_cache__completion_rate' => number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),8),
                 'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
             ));
 
@@ -1128,7 +1128,6 @@ class Api_v1 extends CI_Controller {
                 'e_r_id' => intval($_POST['r_id']),
             ));
             */
-
 
             //Show button for next task:
             echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
@@ -1818,13 +1817,21 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Session expired. Login to try again.',
             ));
             return false;
-	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<2){
+        } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<2){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Outcome must be 2 characters or longer.',
+            ));
+            return false;
+        } elseif(!isset($_POST['b_is_parent']) || !in_array(intval($_POST['b_is_parent']),array(0,1))){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Outcome must be 2 characters or longer.',
             ));
             return false;
 	    }
+
+
 	        
         //Create new intent:
         $intent = $this->Db_model->c_create(array(
@@ -1873,6 +1880,8 @@ class Api_v1 extends CI_Controller {
             'b_prerequisites' => json_encode($default_class_prerequisites),
             'b_support_email' => $udata['u_email'],
             'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 ? 'https://calendly.com/'.$udata['u_calendly_username'] : '' ),
+            'b_is_parent' => intval($_POST['b_is_parent']),
+            'b_old_format' => 0,
         ));
 
         if(intval($b['b_id'])<=0){
@@ -1916,6 +1925,10 @@ class Api_v1 extends CI_Controller {
             ));
             return false;
         }
+
+
+        //Update Algolia:
+        $this->Db_model->algolia_b_sync($b['b_id']);
 
         
         //Log Engagement for Node Created:
@@ -2301,9 +2314,6 @@ class Api_v1 extends CI_Controller {
 	    $relations = $this->Db_model->cr_outbound_fetch(array(
 	        'cr.cr_id' => $relation['cr_id'],
 	    ));
-	    
-	    //Update Algolia:
-	    //$this->Db_model->sync_algolia($new_intent['c_id']);
 
 	    //Return result:
         echo_json(array(
@@ -2607,7 +2617,7 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->c_update( intval($_POST['pid']) , $c_update );
 
             //Update Algolia:
-            //$this->Db_model->sync_algolia(intval($_POST['pid']));
+            //$this->Db_model->algolia_b_sync(intval($_POST['pid']));
 
             //Log Engagement for New Node Link:
             $this->Db_model->e_create(array(

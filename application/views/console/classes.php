@@ -28,6 +28,9 @@ function load_class(r_id){
         //Update UI to confirm with user:
         $('#class_content').html(data).hide().fadeIn();
 
+        //Show Class Helper:
+        load_help(2826);
+
         //Activate Tooltip:
         $('[data-toggle="tooltip"]').tooltip();
 

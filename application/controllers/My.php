@@ -504,8 +504,11 @@ class My extends CI_Controller {
                 //Status:
                 echo ' ('.( $class_running ? 'Running' : ( time()<$class['r__class_start_time'] ? 'Upcoming' : 'Completed' ) ).')';
 
+                //Help Bubble:
+                echo ' <span id="hb_2826" class="help_button" intent-id="2826"></span>';
+
                 //Export
-                echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all your Class students"><span class="badge tip-badge"><i class="fa fa-cloud-download" aria-hidden="true"></i></span></a>';
+                echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all Class students and their contact details"><span class="badge tip-badge"><i class="fa fa-cloud-download" aria-hidden="true"></i></span></a>';
 
                 //Action Plan:
                 if(count($cache_action_plans)>0){
@@ -513,6 +516,8 @@ class My extends CI_Controller {
                 }
 
             echo '</h3>';
+
+            echo '<div class="help_body maxout" id="content_2826"></div>';
 
 
             if(count($cache_action_plans)>0){

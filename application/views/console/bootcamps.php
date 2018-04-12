@@ -1,5 +1,18 @@
+<?php
+
+$website = $this->config->item('website');
+
+?>
 <script>
+
     $(document).ready(function() {
+
+        //Detect any possible hashes that controll the menu?
+        if(window.location.hash) {
+            focus_hash(window.location.hash);
+        }
+
+
         var isMobile = false; //initiate as false
 // device detection
         if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -11,42 +24,46 @@
 
 
     var processing_b = 0;
-    function b_create(){
+    function b_create(b_is_parent){
 
         if(processing_b){
             //Do nothing while processing a current b:
             return false;
         }
 
-        if($('#b_c_objective').val().length<2){
+        var obj = $('#b_c_objective_'+b_is_parent);
+        var plc = $('.li'+b_is_parent);
+
+        if(obj.val().length<2){
             alert('ERROR: Bootcamp Outcome Required');
-            $('#b_c_objective').focus();
+            obj.focus();
             return false;
         }
 
         //Show loader:
         processing_b = 1;
-        var c_objective = $('#b_c_objective').val();
-        $('.no-b-div').remove(); //It may exist...
-        $('#b_c_objective').val('').prop('disabled',true);
+        var c_objective = obj.val();
+        $('.no-b-div-'+b_is_parent).remove(); //It may exist...
+        obj.val('').prop('disabled',true);
         $('.new-b').hide();
 
-        $( ".list_input" ).before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Bootcamp...</div>' );
+        plc.before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Bootcamp...</div>' );
 
         $.post("/api_v1/b_create", {
             c_objective:c_objective,
+            b_is_parent:b_is_parent,
         }, function(data) {
 
             //Processing is done:
             processing_b = 0;
             $( ".loader-div" ).remove(); //Remove loader...
-            $('#b_c_objective').prop('disabled',false);
+            obj.prop('disabled',false);
             $('.new-b').fadeIn();
 
             if(data.status){
                 //All good, show it:
-                $('#b_c_objective').focus();
-                $( ".list_input" ).before( data.message );
+                obj.focus();
+                plc.before( data.message );
             } else {
                 //Show error:
                 alert('ERROR: '+data.message);
@@ -57,36 +74,83 @@
         return false;
     }
 </script>
-<?php $website = $this->config->item('website'); ?>
+
+<div class="help_body below_h maxout" id="content_6024"></div>
+
 <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 
 
+<?php if($udata['u_id']==1){ ?>
+<ul id="topnav" class="nav nav-pills nav-pills-primary">
+    <li id="nav_sevenday" class="active"><a href="#sevenday"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> 7-Days</a></li>
+    <li id="nav_multiweek"><a href="#multiweek"><i class="fa fa-folder-open" aria-hidden="true"></i> Multi-Week</a></li>
+</ul>
+<?php } ?>
 
-<?php
 
-echo '<div class="list-group maxout">';
+<div class="tab-content tab-space">
 
-if(count($bs)>0){
-    foreach($bs as $b){
-        echo echo_b($b);
-    }
-} else {
-    echo '<div class="list-group-item alert alert-info no-b-div" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Bootcamps found. Create a new Bootcamp below:</div>';
-}
+    <div class="tab-pane active" id="tabsevenday">
 
-//Input to create new Bootcamp:
-echo '<div class="list-group-item list_input new-step-input" style="padding: 5px 7px;">
-        <div class="input-group">
-            <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span>
-            <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="b_create();"><input type="text" class="form-control"  maxlength="70" id="b_c_objective" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
-            <span class="input-group-addon" style="padding-right:8px;">
-                <span data-toggle="tooltip" data-placement="top" onclick="b_create();" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
-                    <div><i class="fa fa-plus"></i></div>
+        <?php
+        echo '<div class="list-group maxout">';
+
+        if(count($bs)>0){
+            foreach($bs as $b){
+                echo echo_b($b);
+            }
+        } else {
+            echo '<div class="list-group-item alert alert-info no-b-div-0" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No 7-Day Bootcamps Found. Create a new Bootcamp below:</div>';
+        }
+
+        //Input to create new Bootcamp:
+        echo '<div class="list-group-item list_input li0 new-step-input" style="padding: 5px 7px;">
+            <div class="input-group">
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="b_create(0);"><input type="text" class="form-control"  maxlength="70" id="b_c_objective_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
+                <span class="input-group-addon" style="padding-right:8px;">
+                    <span data-toggle="tooltip" data-placement="top" onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                        <div><i class="fa fa-plus"></i></div>
+                    </span>
                 </span>
-            </span>
-        </div>
-    </div>';
+            </div>
+        </div>';
 
-echo '</div>';
+        echo '</div>';
+        ?>
 
-?>
+    </div>
+
+    <div class="tab-pane" id="tabmultiweek">
+
+        <p>Multi-Week Bootcamps are simply a combination of existing 7-Day Bootcamps:</p>
+
+        <?php
+        echo '<div class="list-group maxout">';
+
+        if(count($bsp)>0){
+            foreach($bsp as $b){
+                echo echo_b($b);
+            }
+        } else {
+            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Multi-Week Bootcamps Found. Create a new Bootcamp below:</div>';
+        }
+
+        //Input to create new Bootcamp:
+        echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
+            <div class="input-group">
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="b_create(1);"><input type="text" class="form-control"  maxlength="70" id="b_c_objective_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
+                <span class="input-group-addon" style="padding-right:8px;">
+                    <span data-toggle="tooltip" data-placement="top" onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                        <div><i class="fa fa-plus"></i></div>
+                    </span>
+                </span>
+            </div>
+        </div>';
+
+        echo '</div>';
+        ?>
+
+    </div>
+</div>

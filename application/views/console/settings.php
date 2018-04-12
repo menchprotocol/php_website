@@ -307,17 +307,95 @@ function b_save_settings(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_support" class="active"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-    <li id="nav_landingpage"><a href="#landingpage"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
+    <li id="nav_landingpage" class="active"><a href="#landingpage"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
+
+    <?php if(!$b['b_is_parent']){ ?>
+    <li id="nav_support"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
+    <?php } ?>
+
     <li id="nav_team"><a href="#team"><i class="fa fa-user-plus" aria-hidden="true"></i> Team</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li> -->
 </ul>
 
 
+
+
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="tabsupport">
+    <div class="tab-pane active" id="tablandingpage">
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="help_body maxout" id="content_627"></div>
+        <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_status']==3 && !$b['b_old_format'] ? array() : array(3) )); ?>
+        <div style="clear:both; margin:0; padding:0;"></div>
+
+
+        <div class="title" style="margin-top:0;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
+        <div class="help_body maxout" id="content_4869"></div>
+        <div class="form-group label-floating">
+            <?php
+            $current_c_ids = array();
+            $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
+                'cr.cr_outbound_id' => $b['b_c_id'],
+                'cr.cr_status' => 1,
+            ));
+            foreach($current_inbounds as $c){
+                array_push($current_c_ids,$c['cr_inbound_id']);
+            }
+            //Show Menu
+            echo tree_menu(4793,$current_c_ids,'select');
+            ?>
+        </div>
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Difficulty Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
+        <div class="help_body maxout" id="content_4868"></div>
+        <div class="form-group label-floating is-empty">
+            <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
+                <?php
+                echo '<option value="">Choose...</option>';
+                $df_statuses = status_bible('df');
+                foreach($df_statuses as $status_id=>$status){
+                    echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
+                }
+                ?>
+            </select>
+        </div>
+
+
+        <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+        <div class="help_body maxout" id="content_725"></div>
+        <div class="form-group label-floating is-empty">
+            <div class="input-group border" style="width:100%; max-width:380px;">
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.com/</span>
+                <input type="text" id="b_url_key" style="margin:0 0 0 -3px !important; font-size:16px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
+            </div>
+        </div>
+
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
+        <div class="help_body maxout" id="content_4867"></div>
+        <div class="input-group">
+            <input type="URL" id="b_thankyou_url" style="width:380px;" value="<?= $b['b_thankyou_url'] ?>" class="form-control border" />
+        </div>
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+        <div class="help_body maxout" id="content_718"></div>
+        <div class="input-group">
+            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
+        </div>
+
+
+
+        <br />
+        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+
+    </div>
+
+    <div class="tab-pane" id="tabsupport">
 
 
         <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
@@ -410,78 +488,6 @@ function b_save_settings(){
             </div>
 
         </div>
-
-
-        <br />
-        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
-
-    </div>
-
-    <div class="tab-pane" id="tablandingpage">
-
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
-        <div class="help_body maxout" id="content_627"></div>
-        <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_status']==3 && !$b['b_old_format'] ? array() : array(3) )); ?>
-        <div style="clear:both; margin:0; padding:0;"></div>
-
-
-        <div class="title" style="margin-top:0;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
-        <div class="help_body maxout" id="content_4869"></div>
-        <div class="form-group label-floating">
-            <?php
-            $current_c_ids = array();
-            $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_id' => $b['b_c_id'],
-                'cr.cr_status' => 1,
-            ));
-            foreach($current_inbounds as $c){
-                array_push($current_c_ids,$c['cr_inbound_id']);
-            }
-            //Show Menu
-            echo tree_menu(4793,$current_c_ids,'select');
-            ?>
-        </div>
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Difficulty Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
-        <div class="help_body maxout" id="content_4868"></div>
-        <div class="form-group label-floating is-empty">
-            <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
-                <?php
-                echo '<option value="">Choose...</option>';
-                $df_statuses = status_bible('df');
-                foreach($df_statuses as $status_id=>$status){
-                    echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
-                }
-                ?>
-            </select>
-        </div>
-
-
-        <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
-        <div class="help_body maxout" id="content_725"></div>
-        <div class="form-group label-floating is-empty">
-            <div class="input-group border" style="width:100%; max-width:380px;">
-                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.com/</span>
-                <input type="text" id="b_url_key" style="margin:0 0 0 -3px !important; font-size:16px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
-            </div>
-        </div>
-
-
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
-        <div class="help_body maxout" id="content_4867"></div>
-        <div class="input-group">
-            <input type="URL" id="b_thankyou_url" style="width:380px;" value="<?= $b['b_thankyou_url'] ?>" class="form-control border" />
-        </div>
-
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
-        <div class="help_body maxout" id="content_718"></div>
-        <div class="input-group">
-            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
-        </div>
-
 
 
         <br />

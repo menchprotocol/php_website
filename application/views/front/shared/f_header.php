@@ -51,7 +51,7 @@ $url_part_1 = $this->uri->segment(1);
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
         		</button>
-        		<a class="navbar-brand" href="/"><img src="/img/bp_48.png" /><span><?= $website['name'] ?></span></a>
+        		<a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span><?= $website['name'] ?></span></a>
         	</div>
 
         	<div class="collapse navbar-collapse">
@@ -60,7 +60,7 @@ $url_part_1 = $this->uri->segment(1);
                     if(isset($udata['u_id'])){
 
                         if(isset($b_id) && auth(2,0,$b_id)){
-                            echo '<li id="isloggedin"><a href="/console/'.$b_id.'/actionplan">Edit <i class="fa fa-pencil-square" aria-hidden="true"></i></a></li>';
+                            echo '<li id="isloggedin"><a href="/console/'.$b_id.'">Manage <i class="fa fa-cog" aria-hidden="true"></i></a></li>';
                         }
 
                         echo '<li id="isloggedin"><a href="/console">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';

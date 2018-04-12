@@ -601,7 +601,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
             //append their My Account Button/URL:
             $timestamp = time();
-            $button_title = '👉 Reset Password Here';
+            $button_title = '👉 Set New Password';
             $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
             $command = '{passwordreset}';
 
@@ -616,7 +616,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 $button_url = $CI->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bs[0]['b_fp_id']);
                 if($button_url) {
                     //append their My Account Button/URL:
-                    $button_title = '🤖 Activate Messenger';
+                    $button_title = '🤖 Activate Chatline';
                     $command = '{messenger}';
                 }
             }
@@ -1161,7 +1161,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;">'.$core_objects['level_'.($level-1)]['o_icon'].'<span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1240,14 +1240,14 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-    $b_ui .= '<i class="fa fa-dot-circle-o" aria-hidden="true" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
+    $b_ui .= '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" aria-hidden="true" style="margin: 0 8px 0 2px; color:#222;"></i> ';
     $b_ui .= $b['c_objective'];
 
     if($all_students>0){
         $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
     }
 
-    $b_ui .= ( !isset($b['b_old_format']) || $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
+    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
     $b_ui .= '</a>';
     return $b_ui;
 }

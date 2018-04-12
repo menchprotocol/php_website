@@ -24,7 +24,6 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 ?>
 <div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
-<div><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b id="b_objective"><?= $b['c_objective'] ?></b></div>
 <div><?= count($b['c__active_intents']) .' Task'.show_s(count($b['c__active_intents'])) ?></div>
 
 <?php if($b['c__steps_count']>0){ ?>
@@ -91,9 +90,8 @@ if($total_advisers>0){
 }
 echo '</div>';
 ?>
-<div style="margin-top:-5px;">Landing Page URL: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
+<div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
 <div style="margin-top:-5px;">Bootcamp Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
-<div style="margin-top:5px;">Facebook Page: <?= ( $b['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$b['fp_fb_id'].'"><u>'.$b['fp_name'].'</u></a>' : 'None! <a href="/console/'.$b['b_id'].'/settings#pages"><u>Connected Now &raquo;</u></a>' ) ?></div>
 
 
 

@@ -115,8 +115,7 @@ function insert_gravatar(){
 
 
 <p style="float:right; margin-top:-75px;">
-	<a href="/console" class="btn btn-sm btn-primary"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> &nbsp;My Bootcamps</span></a>
-	<a href="/api_v1/logout" class="btn btn-sm btn-primary"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a>
+	<a href="/api_v1/logout" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="We'll miss you ​😍​"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a>
 </p>
 
 
@@ -198,7 +197,7 @@ function insert_gravatar(){
         
         
         
-          <div class="title" style="margin-top:30px;"><h4><i class="fa fa-map-marker" aria-hidden="true"></i> Location</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-map-marker" aria-hidden="true"></i> Location</h4></div>
         <div class="form-group label-floating is-empty">
         	<select id="u_country_code" class="border" style="width:100%; margin-bottom:10px; max-width:260px;">
         		<option value="">Choose...</option>

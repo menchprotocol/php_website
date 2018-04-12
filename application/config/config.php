@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.89,
+    'version' => 2.91,
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -56,7 +56,7 @@ $config['pricing_model'] = array(
     'p2_rates' => array(55), //Per Week 85
     'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
 
-    'p3_rates' => array(0,1.12,1.8,2.92), //Per Minute, Next level is 4.6
+    'p3_rates' => array(0,1.12,1.8), //Per Minute, Next level is 4.6
 );
 
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
@@ -95,10 +95,6 @@ $config['core_objects'] = array(
     'us' => array(
         'o_name' => 'Completion Report',
         'o_names' => 'Completion Reports',
-    ),
-    'b' => array(
-        'o_name' => 'Bootcamp',
-        'o_names' => 'Bootcamps',
     ),
     'ba' => array(
         'o_name' => 'Instructor',
@@ -147,6 +143,20 @@ $config['core_objects'] = array(
         'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',
     ),
     'level_2' => array(
+        'o_name' => 'Step',
+        'o_names' => 'Steps',
+        'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',
+    ),
+    'b' => array(
+        'o_name' => 'Bootcamp',
+        'o_names' => 'Bootcamps',
+    ),
+    'b0' => array(
+        'o_name' => 'Step',
+        'o_names' => 'Steps',
+        'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',
+    ),
+    'b1' => array(
         'o_name' => 'Step',
         'o_names' => 'Steps',
         'o_icon' => '<i class="fa fa-check-square-o" aria-hidden="true"></i>',

@@ -674,17 +674,11 @@ function c_save_settings(){
 
             if(data.status){
 
-                //Always update title:
+                //Always update title for all 3 levels:
                 $(".c_objective_"+modify_data['pid']).html(modify_data['c_objective']);
 
                 //Update page variables:
-                if(modify_data['level']==1){
-
-                    //Also adjust top left title:
-                    $("#top-left-title").html(modify_data['c_objective']);
-
-                } else if(modify_data['level']==2){
-
+                if(modify_data['level']==2){
 
                     //Update status?
                     var current_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
@@ -1061,11 +1055,15 @@ function add_item(group_id,prefix,current_value){
         ?>
 
 
+
+        <?php if(!$b['b_is_parent']){ ?>
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
           <li id="nav_prerequisites"><a href="#prerequisites"><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites</a></li>
-          <li id="nav_tasks" class="active"><a href="#tasks"><i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks</a></li>
+          <li id="nav_list" class="active"><a href="#list"><i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks</a></li>
           <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Skills</a></li>
         </ul>
+        <?php } ?>
+
 
         <div class="tab-content tab-space">
 
@@ -1081,24 +1079,32 @@ function add_item(group_id,prefix,current_value){
 
             </div>
 
-            <div class="tab-pane active" id="tabtasks">
+            <div class="tab-pane active" id="tablist">
 
-                <?php itip(602); ?>
                 <?php
-                //Task Expand/Contract all if more than 2
-                if(count($intent['c__child_intents'])>0 && $b['b_old_format']){
-                    echo '<div id="task_view">';
-                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
-                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
-                    echo '</div>';
+
+                if(!$b['b_is_parent']){
+
+                    //Show tip for Tasks:
+                    itip(602);
+
+                    //Task Expand/Contract all if more than 2
+                    if(count($intent['c__child_intents'])>0 && $b['b_old_format']){
+                        echo '<div id="task_view">';
+                        echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
+                        echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                        echo '</div>';
+                    }
                 }
-                //Tasks List:
+
+
+
+                //Task/Bootcamp List:
                 echo '<div id="list-outbound" class="list-group">';
 
                 foreach($intent['c__child_intents'] as $key=>$sub_intent){
                     echo echo_cr($b,$sub_intent, ($level+1),$b['b_id']);
                 }
-
 
                 if(!$b['b_old_format'] || $udata['u_status']==3){
                     ?>
@@ -1142,19 +1148,22 @@ function add_item(group_id,prefix,current_value){
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
 
             <div id="c_objective1" class="levelz level1 hidden">
-                <?php $this->load->view('console/inputs/c_objective' , array(
+                <?php $this->load->view('console/shared/c_objective' , array(
+                    'b' => $b,
                     'c_objective' => $b['c_objective'],
                     'level' => 1,
                 )); ?>
             </div>
             <div id="c_objective2" class="levelz level2 hidden">
-                <?php $this->load->view('console/inputs/c_objective' , array(
+                <?php $this->load->view('console/shared/c_objective' , array(
+                    'b' => $b,
                     'c_objective' => null,
                     'level' => 2,
                 )); ?>
             </div>
             <div id="c_objective3" class="levelz level3 hidden">
-                <?php $this->load->view('console/inputs/c_objective' , array(
+                <?php $this->load->view('console/shared/c_objective' , array(
+                    'b' => $b,
                     'c_objective' => null,
                     'level' => 3,
                 )); ?>
