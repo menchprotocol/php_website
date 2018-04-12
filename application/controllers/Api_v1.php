@@ -1928,7 +1928,7 @@ class Api_v1 extends CI_Controller {
 
 
         //Update Algolia:
-        $this->Db_model->algolia_b_sync($b['b_id']);
+        //$this->Db_model->algolia_b_sync($b['b_id']);
 
         
         //Log Engagement for Node Created:
