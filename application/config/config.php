@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.94,
+    'version' => 2.95,
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -217,19 +217,19 @@ $config['object_statuses'] = array(
         //No drafting for messages as it over-complicates things
         1 => array(
             's_name'  => 'On-Start',
-            's_desc'  => 'Listed in Action Plan as instructions on how to approach this item & successfully complete it. Also use to explaining WHY item is important',
+            's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this item',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-bolt',
         ),
         3 => array(
             's_name'  => 'On-Complete',
-            's_desc'  => 'Sent on Messenger as soon as item is complete. Use to review takeaways and repeat key insights from item',
+            's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
             's_mini_icon' => 'fa-check-square',
             'u_min_status'  => 1,
         ),
         2 => array(
             's_name'  => 'Drip',
-            's_desc'  => 'Sent on Messenger in intervals after item is complete & before Class ends. Drip messages help students retain learnings with repetition',
+            's_desc'  => 'Messages sent in intervals after students complete this item but before their Class ends. Re-iterate key insights to help students retain learnings',
             's_mini_icon' => 'fa-tint',
             'u_min_status'  => 1,
         ),

@@ -261,7 +261,7 @@ class Scraper extends CI_Controller {
         ));
 
         header("Content-type: application/octet-stream");
-        header("Content-Disposition: attachment; filename=".urldecode($_GET['cat'])." Udemy Instructors.xls");
+        header("Content-Disposition: attachment; filename=".urldecode($_GET['cat'])." Udemy Community.xls");
         header("Pragma: no-cache");
         header("Expires: 0");
 

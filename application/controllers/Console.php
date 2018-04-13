@@ -40,18 +40,7 @@ class Console extends CI_Controller {
 		$this->load->view('console/account');
 		$this->load->view('console/shared/d_footer');
 	}
-	
-	function status_bible(){
-	    $udata = auth(3,1);
-	    
-	    //Load views
-	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Guides | Status Bible',
-	    ));
-	    $this->load->view('console/guides/status_bible');
-	    $this->load->view('console/shared/d_footer');
-	}
-	
+
 	
 	
 	/* ******************************
@@ -78,7 +67,7 @@ class Console extends CI_Controller {
 
         //Have they activated their Bot yet?
         //Yes, show them their Bootcamps:
-        $this->load->view('console/bootcamps' , array(
+        $this->load->view('console/bootcamps_my' , array(
             'bs' => $this->Db_model->instructor_bs(array(
                 'ba.ba_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,

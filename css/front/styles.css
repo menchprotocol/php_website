@@ -1214,11 +1214,10 @@ a.badge:focus, a.badge:hover {
     text-overflow: ellipsis;
     overflow: hidden;
     width: 340px;
-    height: 1.2em;
     white-space: nowrap;
     font-weight: bold;
     padding-left: 8px;
-    margin: 1px 0 4px;
+    margin: 1px 0 1px;
     color: #3C4858;
 }
 

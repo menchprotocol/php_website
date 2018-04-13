@@ -1899,8 +1899,11 @@ class Api_v1 extends CI_Controller {
             return false;
         }
 
-        //Create all Classes:
-        $new_class_count = $this->Db_model->r_sync($b['b_id']);
+
+        if(!intval($_POST['b_is_parent'])){
+            //Create all Classes:
+            $new_class_count = $this->Db_model->r_sync($b['b_id']);
+        }
 
         
         //Assign permissions for this user:
@@ -1911,6 +1914,8 @@ class Api_v1 extends CI_Controller {
             'ba_b_id' => $b['b_id'],
             'ba_team_display' => 't', //Show on landing page
         ));
+
+        //Did it go well?
         if(intval($admin_status['ba_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(

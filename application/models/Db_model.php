@@ -243,7 +243,7 @@ WHERE ru.ru_status >= 4
 	function il_fetch($match_columns){
 	    //Fetch the target gems:
 	    $this->db->select('*');
-	    $this->db->from('v5_scraped_leads il');
+	    $this->db->from('v5_leads il');
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -253,9 +253,9 @@ WHERE ru.ru_status >= 4
 	}
 	
 	function il_overview_fetch(){
-	    //Fetches an overview of Udemy Instructors
+	    //Fetches an overview of Udemy Community
 	    $this->db->select('COUNT(il_id) as total_instructors, SUM(il_course_count) as total_courses, SUM(il_student_count) as total_students, SUM(il_review_count) as total_reviews, il_udemy_category');
-	    $this->db->from('v5_scraped_leads il');
+	    $this->db->from('v5_leads il');
 	    $this->db->where('il_udemy_user_id>0');
 	    $this->db->where('il_student_count>0'); //Need for Engagement Rate
 	    $this->db->group_by('il_udemy_category');
@@ -1130,11 +1130,11 @@ WHERE ru.ru_status >= 4
 	//Leads:
 	function il_update($il_id,$update_columns){
 	    $this->db->where('il_id', $il_id);
-	    $this->db->update('v5_scraped_leads', $update_columns);
+	    $this->db->update('v5_leads', $update_columns);
 	    return $this->db->affected_rows();
 	}
 	function il_create($insert_columns){
-	    $this->db->insert('v5_scraped_leads', $insert_columns);
+	    $this->db->insert('v5_leads', $insert_columns);
 	    $insert_columns['il_id'] = $this->db->insert_id();    
 	    return $insert_columns;
 	}	

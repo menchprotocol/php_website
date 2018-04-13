@@ -112,7 +112,6 @@ echo '</div>';
 <?php $launch_status = b_progress($b); ?>
 <div class="title" style="margin-top:40px;"><h4><?= $launch_status['stage'] ?> <span id="hb_1511" class="help_button" intent-id="1511"></span></h4></div>
 <div class="help_body maxout" id="content_1511"></div>
-<div>Complete this checklist to prepare this Bootcamp for launch:</div>
 <div class="progress maxout">
     <div class="progress-bar" role="progressbar" aria-valuenow="<?= $launch_status['progress'] ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $launch_status['progress'] ?>%;">
         <span class="progress-value"><?= $launch_status['progress'] ?>% Complete</span>

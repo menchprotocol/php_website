@@ -1931,7 +1931,7 @@ function class_status_change($current_status,$has_applicants){
 
 function status_bible($object=null,$status=null,$micro_status=false,$data_placement='bottom'){
 	
-    //IF you make any changes, make sure to also reflect in the view/console/guides/status_bible.php as well
+    //IF you make any changes, make sure to also reflect in the status_bible.php as well
     $CI =& get_instance();
 	$status_index = $CI->config->item('object_statuses');
 	

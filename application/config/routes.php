@@ -28,9 +28,6 @@ $route['webview_video/(:num)'] 	            = "my/webview_video/$1";
  * Console for Operators
  ****************************** */
 
-//Admin Guides:
-$route['console/help/status_bible'] 			       = "console/status_bible";
-
 $route['console/account'] 						       = "console/account"; //Instructor account
 $route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";

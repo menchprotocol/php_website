@@ -69,12 +69,16 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         <li <?= ( $uri_segment_1=='console' && $uri_segment_2=='account' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage profile, set your Paypal email for weekly payouts and see payment history"><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> Account</a></li>
 
+                        <?php if($udata['u_status']==3){ ?>
+
+                            <li <?= ( $uri_segment_1=='cockpit' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Tools to overview and manage the Mench platform"><a href="/cockpit/browse/engagements"><i class="fa fa-bandcamp" aria-hidden="true"></i> Cockpit</a></li>
+
+                        <?php } ?>
+
                         <?php
                         //NOTE: For some reason we NEED the next <li> otherwise the page orientation breaks!
                         if(isset($uadmission) && count($uadmission)>0){ ?>
                             <li data-toggle="tooltip" data-placement="bottom" title="Access your Action Plan as a student (not instructor!) and complete your tasks"><a href="/my/actionplan"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Student Portal</a></li>
-                        <?php } else { ?>
-                            <li><a href="/api_v1/logout"><span> Logout <i class="fa fa-power-off" aria-hidden="true"></i></span></a></li>
                         <?php } ?>
 
                     </ul>
@@ -91,7 +95,9 @@ $uri_segment_2 = $this->uri->segment(2);
                 echo '<div class="left-li-title">';
 	    		if(isset($b)){
 	    		    echo ($b['b_old_format'] ? '<i class="fa fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp." aria-hidden="true"></i>' : '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i>').'<span class="c_objective_'.$b['b_c_id'].'">'.$b['c_objective'].'</span>';
-	    		}
+	    		} elseif($uri_segment_1=='cockpit'){
+                    echo '<i class="fa fa-bandcamp" style="margin-right:3px;" aria-hidden="true"></i> Cockpit';
+                }
 	    		echo '</div>';
 
 
@@ -122,6 +128,16 @@ $uri_segment_2 = $this->uri->segment(2);
                         echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
 
                     }
+                } elseif($uri_segment_1=='cockpit'){
+
+            	    //The the Cockpit Menu for the Mench team:
+                    echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fa fa-sitemap" aria-hidden="true"></i><p>Browse</p></a></li>';
+
+                    echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fa fa-address-book" aria-hidden="true"></i><p>Udemy Community</p></a></li>';
+
+                    echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fa fa-book" aria-hidden="true"></i><p>Status Bible</p></a></li>';
+
+
                 }
                 echo '</ul>';
 

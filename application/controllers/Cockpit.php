@@ -2,34 +2,51 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cockpit extends CI_Controller {
-	
+
+    //To carry the user object after validation
+    var $udata;
+
 	function __construct() {
 		parent::__construct();
 		
 		//Load our buddies:
 		$this->output->enable_profiler(FALSE);
 
-        $udata = $this->session->userdata('user');
-        if(is_old() && !isset($_GET['skip']) && !isset($udata['u_id'])){
-            //Always redirect to newer version:
-            redirect_message('https://mench.com'.$_SERVER['REQUEST_URI']);
-        }
+        //Authenticate level 3 or higher, redirect if not:
+        $this->udata = auth(3,1);
+
 	}
-	
+
+    function browse($object_name='none'){
+
+        boost_power();
+
+        $this->load->view('console/shared/d_header', array(
+            'title' => 'Browse '.ucwords($object_name),
+            'breadcrumb' => array(
+                array(
+                    'link' => null,
+                    'anchor' => 'Browse <span id="hb_6086" class="help_button" intent-id="6086"></span>',
+                ),
+            ),
+        ));
+        $this->load->view('cockpit/browse/browse_index' , array(
+            'object_name' => $object_name,
+        ));
+        $this->load->view('console/shared/d_footer');
+    }
 	
 	function udemy(){
-	    //Authenticate level 3 or higher, redirect if not:
-	    $udata = auth(3,1);
-	    
+
 	    if(isset($_GET['cat'])){
 	        
 	        //Load instructor list:
 	        $this->load->view('console/shared/d_header', array(
-	            'title' => urldecode($_GET['cat']).' Udemy Instructors',
+	            'title' => urldecode($_GET['cat']).' Udemy Community',
 	            'breadcrumb' => array(
 	                array(
 	                    'link' => '/cockpit/udemy',
-	                    'anchor' => 'Udemy Instructors',
+	                    'anchor' => 'Udemy Community',
 	                ),
 	                array(
 	                    'link' => null,
@@ -50,11 +67,11 @@ class Cockpit extends CI_Controller {
 	        
 	        //Load category list:
 	        $this->load->view('console/shared/d_header', array(
-	            'title' => 'Udemy Instructors',
+	            'title' => 'Udemy Community',
 	            'breadcrumb' => array(
 	                array(
 	                    'link' => null,
-	                    'anchor' => 'Udemy Instructors',
+	                    'anchor' => 'Udemy Community <span id="hb_6085" class="help_button" intent-id="6085"></span>',
 	                ),
 	            ),
 	        ));
@@ -65,28 +82,22 @@ class Cockpit extends CI_Controller {
 	        
 	    }
 	}
-	
-	
-	function browse($object_name){
 
-        boost_power();
 
-	    //Authenticate level 3 or higher, redirect if not:
-	    $udata = auth(3,1);
-	    
-	    $this->load->view('console/shared/d_header', array(
-	        'title' => 'Browse '.ucwords($object_name),
-	        'breadcrumb' => array(
-	            array(
-	                'link' => null,
-	                'anchor' => 'Browse '.ucwords($object_name),
-	            ),
-	        ),
-	    ));
-	    $this->load->view('cockpit/list' , array(
-	        'object_name' => $object_name,
-	    ));
-	    $this->load->view('console/shared/d_footer');
-	}
-	
+    function statusbible(){
+        //Load views
+        $this->load->view('console/shared/d_header' , array(
+            'title' => 'Status Bible',
+            'breadcrumb' => array(
+                array(
+                    'link' => null,
+                    'anchor' => 'Status Bible <span id="hb_6084" class="help_button" intent-id="6084"></span>',
+                ),
+            ),
+        ));
+        $this->load->view('cockpit/status_bible');
+        $this->load->view('console/shared/d_footer');
+    }
+
+
 }

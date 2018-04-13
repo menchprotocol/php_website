@@ -1,3 +1,5 @@
+<div class="help_body maxout below_h" id="content_6085"></div>
+
 <table class="table table-condensed table-striped">
 <tr style="font-weight: bold;">
 	<td>#</td>
