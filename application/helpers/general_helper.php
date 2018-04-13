@@ -269,7 +269,7 @@ function extract_level($b,$c_id){
                 $view_data['breadcrumb_p'] = array(
                     array(
                         'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
-                        'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_objective'],
+                        'anchor' => $CI->lang->line('level_'.( isset($b['b_is_parent']) ? $b['b_is_parent'] : 0 ).'_icon').' '.$b['c_objective'],
                     ),
                     array(
                         'link' => null,
