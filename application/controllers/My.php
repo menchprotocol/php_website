@@ -598,7 +598,7 @@ class My extends CI_Controller {
             //Fixed columns for both Instructors/Students:
             $task_count_enabled = ($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
             echo '<td style="text-align:left; padding-left:30px;">Student</td>';
-            echo '<td style="text-align:left; width:'.($task_count_enabled?100:75).'px;" colspan="'.($task_count_enabled?3:2).'">Progress</td>';
+            echo '<td style="text-align:left; width:'.($task_count_enabled?120:90).'px;" colspan="'.($task_count_enabled?3:2).'">Progress</td>';
 
         echo '</tr>';
 
