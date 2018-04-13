@@ -421,10 +421,10 @@ $config['object_statuses'] = array(
     'us' => array(
         //-2 is a status that is NOT in the DB, but rather calculated manually via actionplan_ui.php file
         -2 => array(
-            's_name'  => 'Locked',
-            's_desc'  => 'Student cannot access the Task yet',
+            's_name'  => 'Pending Completion',
+            's_desc'  => 'Item not yet completed by Student',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-lock',
+            's_mini_icon' => 'fa-square-o',
         ),
         //These are DB item submission statuses:
         -1 => array(
