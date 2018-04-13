@@ -27,7 +27,7 @@ foreach($il_overview as $ilo){
         echo '</tr>';
 }
 
-echo '<tr style="font-weight: bold;">';
+echo '<tr style="font-weight: bold; font-size:1.2em;">';
     echo '<td>Totals</td>';
     echo '<td>'.number_format($totals[0],0).'</td>';
     echo '<td>'.number_format($totals[1],0).'</td>';
