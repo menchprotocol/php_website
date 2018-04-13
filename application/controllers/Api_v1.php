@@ -2113,10 +2113,10 @@ class Api_v1 extends CI_Controller {
                 'message' => 'URL Key should be less than 30 characters',
             ));
             return false;
-        } elseif(strlen($_POST['b_url_key'])<4){
+        } elseif(strlen($_POST['b_url_key'])<2){
             echo_json(array(
                 'status' => 0,
-                'message' => 'URL Key should be at least 4 characters long',
+                'message' => 'URL Key should be at least 2 characters long',
             ));
             return false;
         } elseif(ctype_digit($_POST['b_url_key'])){

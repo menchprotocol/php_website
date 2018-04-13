@@ -121,11 +121,11 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         if(!$b['b_is_parent']){
                             //Facebook Chat Inbox:
-                            echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Premium support using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                            echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Premium support using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
                         }
 
                         //Landing Page
-                        echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link" aria-hidden="true"></i></p></a></li>';
+                        echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
 
                     }
                 } elseif($uri_segment_1=='cockpit'){
@@ -137,6 +137,26 @@ $uri_segment_2 = $this->uri->segment(2);
 
                     echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fa fa-book" aria-hidden="true"></i><p>Status Bible</p></a></li>';
 
+
+                    //External Tools:
+                    echo '<li><a href="https://github.com/menchco/mench-web-app/milestones?direction=asc&sort=due_date&state=open" target="_blank"><i class="fa fa-github" aria-hidden="true"></i><p>Team Milestones &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://www.facebook.com/menchbot/inbox" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Facebook Chat &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://support.mench.com/chat/agent" target="_blank"><i class="fa fa-commenting" aria-hidden="true"></i><p>Zendesk Chat &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://mench.zendesk.com/agent/dashboard" target="_blank"><i class="fa fa-ticket" aria-hidden="true"></i><p>Zendesk Tickets &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://mench.zendesk.com/knowledge/lists" target="_blank"><i class="fa fa-book" aria-hidden="true"></i><p>Zendesk Guides &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+
+                    echo '<li><a href="https://app.hubspot.com/sales" target="_blank"><i class="fa fa-handshake-o" aria-hidden="true"></i><p>HubSpot CRM &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fa fa-bar-chart" aria-hidden="true"></i><p>SQL DB Stats &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fa fa-wordpress" aria-hidden="true"></i><p>Mench Blog &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+
+                    echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i><p>YouTube Channel &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
 
                 }
                 echo '</ul>';

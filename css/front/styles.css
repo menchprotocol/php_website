@@ -1272,6 +1272,10 @@ footer ul li a, footer ul li i {
     border-radius: 5px;
 }
 
+.sidebar .nav li > a, .off-canvas-sidebar .nav li > a {
+    margin: 0 10px 5px;
+}
+
 .bg-col-h, .bg-col-h td{
     background-color: #777;
     color:#FFF;
