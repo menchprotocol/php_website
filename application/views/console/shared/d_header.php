@@ -135,7 +135,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                     echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fa fa-address-book" aria-hidden="true"></i><p>Udemy Community</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fa fa-book" aria-hidden="true"></i><p>Status Bible</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_2=='statusbible' ? 'active' : '' ).'"><a href="/cockpit/statusbible"><i class="fa fa-certificate" aria-hidden="true"></i><p>Status Bible</p></a></li>';
 
 
                     //External Tools:
@@ -154,9 +154,9 @@ $uri_segment_2 = $this->uri->segment(2);
 
                     echo '<li><a href="https://app.redash.io/mench/" target="_blank"><i class="fa fa-bar-chart" aria-hidden="true"></i><p>SQL DB Stats &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
 
-                    echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fa fa-wordpress" aria-hidden="true"></i><p>Mench Blog &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+                    //echo '<li><a href="https://mench.foundation/wp-login.php" target="_blank"><i class="fa fa-wordpress" aria-hidden="true"></i><p>Mench Blog &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
 
-                    echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i><p>YouTube Channel &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
+                    //echo '<li><a href="https://www.youtube.com/channel/UCOH64HiAIfJlz73tTSI8n-g" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i><p>YouTube Channel &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
 
                 }
                 echo '</ul>';
