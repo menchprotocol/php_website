@@ -596,16 +596,10 @@ class My extends CI_Controller {
             }
 
             //Fixed columns for both Instructors/Students:
-            echo '<td style="text-align:left; padding-left:30px;">Student</td>';
-            echo '<td style="text-align:left; width:120px;">Progress</td>';
-
             $task_count_enabled = ($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
-            if($task_count_enabled){
-                echo '<td style="text-align:left; width:40px;">Task</td>';
-            }
+            echo '<td style="text-align:left; padding-left:30px;">Student</td>';
+            echo '<td style="text-align:left; width:'.($task_count_enabled?100:75).'px;" colspan="'.($task_count_enabled?3:2).'">Progress</td>';
 
-            //Country Flag for all:
-            echo '<td style="width:25px;">&nbsp;</td>';
         echo '</tr>';
 
 
@@ -678,7 +672,7 @@ class My extends CI_Controller {
 
                     //They have completed it all, show them as winners!
                     echo '<td valign="top" colspan="'.($task_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
-                    echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;">COMPLETED</span>';
+                    echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;"></span>';
                     echo '</td>';
 
                 } else {
