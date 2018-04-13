@@ -268,10 +268,10 @@ if($level==2){
         echo '<h4 class="maxout"><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
         if($previous_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-black" style="margin:0; padding-left:8px; padding-right:8px;"><i class="fa fa-arrow-left"></i> Previous</a>';
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-black" style="margin:0;"><i class="fa fa-arrow-left"></i> Previous</a>';
         }
         if($next_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-black" style="margin:0 0 0 8px; padding-left:8px; padding-right:8px;">Next <i class="fa fa-arrow-right"></i></a>';
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-black" style="margin:0 0 0 8px;">Next <i class="fa fa-arrow-right"></i></a>';
         }
         echo '</div>';
     }
