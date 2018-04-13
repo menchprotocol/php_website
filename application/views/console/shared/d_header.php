@@ -58,7 +58,7 @@ $uri_segment_2 = $this->uri->segment(2);
 					</button>
 					<span class="navbar-brand dashboard-logo">
 						<a href="/console"><img src="/img/bp_128.png" /></a>
-						<input type="text" placeholder="Search Bootcamps...">
+						<?php if($udata['u_id']==1){ ?> <input type="text" placeholder="Search Bootcamps..."> <?php } ?>
 					</span>
 				</div>
 
