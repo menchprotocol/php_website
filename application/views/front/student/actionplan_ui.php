@@ -224,13 +224,13 @@ if($level==2){
                 echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Marking as complete requires ' . $red_note . '</div>';
             }
             echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
-            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black" style="padding-left:8px; padding-right:8px;"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
+            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-tight btn-black" style="padding-left:8px; padding-right:8px;"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
             //Submission button visible after first button was clicked:
             echo '<div class="mark_done" style="display:none; margin-top:10px;">';
             echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
-            echo '<a href="javascript:mark_done();" class="btn btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
+            echo '<a href="javascript:mark_done();" class="btn btn-tight btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
             echo '</div>';
 
 
@@ -268,10 +268,10 @@ if($level==2){
         echo '<h4 class="maxout"><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
         if($previous_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-black" style="margin:0;"><i class="fa fa-arrow-left"></i> Previous</a>';
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fa fa-arrow-left"></i> Previous</a>';
         }
         if($next_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-black" style="margin:0 0 0 8px;">Next <i class="fa fa-arrow-right"></i></a>';
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fa fa-arrow-right"></i></a>';
         }
         echo '</div>';
     }

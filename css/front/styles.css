@@ -990,7 +990,7 @@ a.badge:focus, a.badge:hover {
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
 .btn-adj {color:#bbb; margin:0 7px 0 0; z-index:9999999;}
-.btn {padding-left:8px; padding-right:8px;}
+.btn-tight {padding-left:8px; padding-right:8px;}
 .action-right{text-align:right;}
 .action-right a{color:#f57171;    margin-top: 15px;    display: inline-block;}
 .action-right span{color:#bbb;    margin-top: 15px;    display: inline-block;}
