@@ -224,7 +224,7 @@ if($level==2){
                 echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Marking as complete requires ' . $red_note . '</div>';
             }
             echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
-            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
+            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-black" style="padding-left:8px; padding-right:8px;"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
             //Submission button visible after first button was clicked:
