@@ -146,8 +146,8 @@ WHERE ru.ru_status >= 4
 
             //Fetch Sub-intents:
             $bs[$key]['c__active_intents'] = array();
-            $bs[$key]['c__tasks_count'] = 0;
-            $bs[$key]['c__steps_count'] = 0;
+            $bs[$key]['c__child_count'] = 0;
+            $bs[$key]['c__child_child_count'] = 0;
             $bs[$key]['c__estimated_hours'] = $bs[$key]['c_time_estimate'];
             $bs[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
                 'cr.cr_inbound_id' => $c['c_id'],
@@ -173,7 +173,7 @@ WHERE ru.ru_status >= 4
                     //Start by adding up the Task level time:
                     $bs[$key]['c__estimated_hours'] += $task['c_time_estimate'];
                     $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = $task['c_time_estimate'];
-                    $bs[$key]['c__tasks_count']++;
+                    $bs[$key]['c__child_count']++;
                 } else {
                     $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = 0;
                 }
@@ -216,7 +216,7 @@ WHERE ru.ru_status >= 4
                         //Addup Step estimated time for active Steps in active Tasks:
                         $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
 
-                        $bs[$key]['c__steps_count']++;
+                        $bs[$key]['c__child_child_count']++;
 
                         //add to active Steps per Task:
                         array_push($bs[$key]['c__active_intents'][$task['c_id']], $step['c_id']);

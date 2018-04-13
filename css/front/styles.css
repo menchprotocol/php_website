@@ -1727,12 +1727,23 @@ margin:5px 0;
     font-weight:500 !important;
     color: #888;
 }
-
+.dash-label{
+    text-transform: uppercase;
+    font-weight: bold;
+}
 #b_c_objective, #b_c_objective::placeholder {
     font-size: 18px !important;
 }
 #b_c_objective::placeholder {
     color:#999;
+}
+.badge-grey{
+    background-color: #3C4858;
+}
+.stat-num{
+    width:48px;
+    display:inline-block;
+    font-weight: normal;
 }
 
 .is-msg .on-hover{

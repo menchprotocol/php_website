@@ -4,8 +4,21 @@ $website = $this->config->item('website');
 
 ?>
 <script>
-
     $(document).ready(function() {
+
+        //Prevents Bootcamp creation forms to submit on enter
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+
+                if(window.location.hash && window.location.hash.substring(1)=='multiweek') {
+                    b_create(1);
+                } else {
+                    b_create(0);
+                }
+                event.preventDefault();
+                return false;
+            }
+        });
 
         //Detect any possible hashes that controll the menu?
         if(window.location.hash) {
@@ -82,7 +95,7 @@ $website = $this->config->item('website');
 
 <?php if($udata['u_id']==1){ ?>
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_sevenday" class="active"><a href="#sevenday"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> 7-Days</a></li>
+    <li id="nav_sevenday" class="active"><a href="#sevenday"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> 7-Day</a></li>
     <li id="nav_multiweek"><a href="#multiweek"><i class="fa fa-folder-open" aria-hidden="true"></i> Multi-Week</a></li>
 </ul>
 <?php } ?>
@@ -107,7 +120,7 @@ $website = $this->config->item('website');
         echo '<div class="list-group-item list_input li0 new-step-input" style="padding: 5px 7px;">
             <div class="input-group">
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="b_create(0);"><input type="text" class="form-control"  maxlength="70" id="b_c_objective_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_objective_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" data-placement="top" onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div><i class="fa fa-plus"></i></div>
@@ -140,7 +153,7 @@ $website = $this->config->item('website');
         echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
             <div class="input-group">
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="b_create(1);"><input type="text" class="form-control"  maxlength="70" id="b_c_objective_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_objective_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" data-placement="top" onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div><i class="fa fa-plus"></i></div>

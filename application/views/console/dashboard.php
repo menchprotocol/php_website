@@ -18,20 +18,24 @@ $(document).ready(function() {
 
 <?php
 $website = $this->config->item('website');
-$rounded_hours = round($b['c__estimated_hours']/7 , ( $b['c__estimated_hours']<=18 ? 1 : 0 ));
+$daily_hours = round($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__active_intents'])>0 ? count($b['c__active_intents']) : 1 )*7) , 1);
 
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
 <div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
-<div><?= count($b['c__active_intents']) .' Task'.show_s(count($b['c__active_intents'])) ?></div>
 
-<?php if($b['c__steps_count']>0){ ?>
-    <div><?= $b['c__steps_count'] .' Step'.show_s($b['c__steps_count']) ?></div>
+
+<div class="dash-label"><span class="stat-num"><?= count($b['c__active_intents']) .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_name').show_s(count($b['c__active_intents'])) ?></div>
+
+<?php if($b['c__child_child_count']>0){ ?>
+    <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').show_s($b['c__child_child_count']) ?></div>
 <?php } ?>
 
-<div><?= $b['c__message_tree_count'] .' Message'. show_s($b['c__message_tree_count']) ?></div>
-<div><?= round($b['c__estimated_hours'],1) .' Hours in 1 Week ('.$rounded_hours.' Hour'.show_s($rounded_hours).'/Day)' ?></div>
+
+<div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fa fa-comments" aria-hidden="true"></i> '.$this->lang->line('obj_i_name'). show_s($b['c__message_tree_count']) ?></div>
+
+<div class="dash-label"><span class="stat-num"><?= $daily_hours .'</span> <i class="fa fa-clock-o" aria-hidden="true"></i> Hours per Day' ?></div>
 
 
 
@@ -61,7 +65,7 @@ $student_funnel = array(
 );
 
 foreach($student_funnel as $ru_status=>$count){
-    echo '<div><span style="width:40px; display:inline-block">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
+    echo '<div><span class="stat-num">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
 }
 ?>
 
@@ -108,7 +112,7 @@ echo '</div>';
 <?php $launch_status = b_progress($b); ?>
 <div class="title" style="margin-top:40px;"><h4><?= $launch_status['stage'] ?> <span id="hb_1511" class="help_button" intent-id="1511"></span></h4></div>
 <div class="help_body maxout" id="content_1511"></div>
-<div>Complete this checklist to prepare your Bootcamp for launch:</div>
+<div>Complete this checklist to prepare this Bootcamp for launch:</div>
 <div class="progress maxout">
     <div class="progress-bar" role="progressbar" aria-valuenow="<?= $launch_status['progress'] ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?= $launch_status['progress'] ?>%;">
         <span class="progress-value"><?= $launch_status['progress'] ?>% Complete</span>

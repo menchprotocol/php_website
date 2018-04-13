@@ -1,6 +1,5 @@
 <?php
 //Fetch the sprint units from config:
-$core_objects = $this->config->item('core_objects');
 $message_max = $this->config->item('message_max');
 $intent_statuses = status_bible('c');
 $udata = $this->session->userdata('user');
@@ -1149,21 +1148,18 @@ function add_item(group_id,prefix,current_value){
 
             <div id="c_objective1" class="levelz level1 hidden">
                 <?php $this->load->view('console/shared/c_objective' , array(
-                    'b' => $b,
                     'c_objective' => $b['c_objective'],
-                    'level' => 1,
+                    'level' => $b['b_is_parent'], //Either 0 or 1 depending which type of Bootcamp
                 )); ?>
             </div>
             <div id="c_objective2" class="levelz level2 hidden">
                 <?php $this->load->view('console/shared/c_objective' , array(
-                    'b' => $b,
                     'c_objective' => null,
                     'level' => 2,
                 )); ?>
             </div>
             <div id="c_objective3" class="levelz level3 hidden">
                 <?php $this->load->view('console/shared/c_objective' , array(
-                    'b' => $b,
                     'c_objective' => null,
                     'level' => 3,
                 )); ?>

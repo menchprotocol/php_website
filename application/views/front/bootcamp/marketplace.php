@@ -15,7 +15,7 @@
 <!-- <h1>Achieve Your Goals</h1> -->
 <h1>Get a Tech Job You Love</h1>
 <p class="home_line_2">Learn in-demand skills from industry experts by completing weekly Bootcamps.</p>
-<p class="home_line_2">Tuition ranges from <span style="display:inline-block;">$0-163/week</span> based on the Bootcamp and support level you choose.</p>
+<p class="home_line_2">Tuition ranges from <span style="display:inline-block;">$0-163/week</span> based on the Bootcamp and <?= $this->lang->line('obj_rs_name') ?> you choose.</p>
 <p class="home_line_2">New classes start every Monday at 00:00 PST. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span></p>
 <br />
 
@@ -42,7 +42,7 @@ foreach($bs as $count=>$b){
 <div class="card-content">';
 
     if($b['b_difficulty_level']>0){
-        echo '<h6 class="category text-muted">'.status_bible('df',$b['b_difficulty_level'],0,'top').' <span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__tasks_count'].' Task'.show_s($b['c__tasks_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" class="line_1"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></h6>';
+        echo '<h6 class="category text-muted">'.status_bible('df',$b['b_difficulty_level'],0,'top').' <span data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__child_count'].' Task'.show_s($b['c__child_count']).' totalling '.echo_hours($b['c__estimated_hours'],true).' anytime during the week" class="line_1"><i class="fa fa-clock-o" aria-hidden="true"></i> '.echo_hours($b['c__estimated_hours'],true).'</span></h6>';
     }
     echo '<h4 class="card-title" style="font-size: 1.4em; line-height: 110%; margin:15px 0 12px 0;"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
     echo '<div class="card-description">';

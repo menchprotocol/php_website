@@ -196,9 +196,11 @@ class Console extends CI_Controller {
 	    $bs = $this->Db_model->remix_bs(array(
 	        'b.b_id' => $b_id,
 	    ));
-	    if(!isset($bs[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
-	    }
+        if(!isset($bs[0])){
+            redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
+        } elseif($bs[0]['b_is_parent']){
+            redirect_message('/console/'.$b_id,'<div class="alert alert-danger" role="alert">Multi-Week Bootcamp do not have Classes of their own, they operate under the Classes of their 7-Day Bootcamps.</div>');
+        }
 	    
 	    $view_data = array(
 	        'title' => 'Classes | '.$bs[0]['c_objective'],

@@ -45,13 +45,13 @@ function move_ui(adjustment){
                 support_price = parseFloat( $('#p_selection_3').attr('data-price'));
                 $('#confirm_support').html($('#p_name_3').html()); //Update Support Level
             } else {
-                alert('ERROR: Select support level to continue.');
+                alert('ERROR: Select <?= $this->lang->line('obj_rs_name') ?> to continue.');
                 return false;
             }
 
             if(support_price>0){
                 //Payment is required:
-                $('#btn_next a').html('CONFIRM & PAY $'+support_price+' <i class="fa fa-chevron-right" aria-hidden="true"></i>');
+                $('#btn_next a').html('CONFIRM & PAY &nbsp;[$'+support_price+'] &nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i>');
                 $('#payment_method').html('<span id="white_paypal"><img src="/img/paypal.png" /></span>');
             } else {
                 //This is a FREE Class:
@@ -192,13 +192,13 @@ $(document).ready(function() {
 
 <div class="wizard-box" id="price_selection">
 
-    <p>Choose a support level that's right for you:</p>
+    <p>Choose a <?= $this->lang->line('obj_rs_name') ?> that's right for you:</p>
 
     <div class="radio pricing_block">
         <label>
             <input type="radio" id="p_selection_1" data-price="<?= echo_price($admission,1, true) ?>" name="p_selection" value="1" />
-            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> for <?= echo_price($admission,1) ?></b>
-            <p style="margin-left:30px;"><?= $status_rs[1]['s_desc'] ?></p>
+            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> &nbsp;[<?= echo_price($admission,1) ?>]</b>
+            <p style="margin-left:30px;"><?= nl2br($status_rs[1]['s_desc']) ?></p>
         </label>
     </div>
 
@@ -207,7 +207,7 @@ $(document).ready(function() {
         <div class="radio pricing_block">
             <label>
                 <input type="radio" id="p_selection_2" data-price="<?= echo_price($admission,2, true) ?>" name="p_selection" <?= (!$classroom_available || $instructor_support_off ? 'disabled' : '') ?> value="2" />
-                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true" style="margin:0 1px;"></i> <?= $status_rs[2]['s_name'] ?> for <?= echo_price($admission,2) ?></b> <b class="badge"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b>
+                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true" style="margin:0 1px;"></i> <?= $status_rs[2]['s_name'] ?> &nbsp;[<?= echo_price($admission,2) ?>]</b> <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b>
                 <p style="margin-left:30px;"><?= nl2br($status_rs[2]['s_desc']) ?></p>
             </label>
         </div>
@@ -221,7 +221,7 @@ $(document).ready(function() {
             <div class="radio pricing_block">
                 <label>
                     <input type="radio" id="p_selection_3" data-price="<?= echo_price($admission,3, true) ?>" name="p_selection" value="3" />
-                    <b id="p_name_3"><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[2]['s_name'] ?> + 50 Minutes of <?= $status_rs[3]['s_name'] ?> for <?= echo_price($admission,3) ?></b>
+                    <b id="p_name_3"><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[3]['s_name'] ?> &nbsp;[<?= echo_price($admission,3) ?>]</b>
                     <p style="margin-left:30px;"><?= nl2br($status_rs[3]['s_desc']) ?></p>
                 </label>
             </div>
@@ -242,9 +242,9 @@ $(document).ready(function() {
         <li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
         <li>Class Dates: <b><?= time_format($admission['r_start_date'],2) ?> - <?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
         <li>Content By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
-        <li>Action Plan: <b><?= $admission['c__tasks_count'] ?> Tasks</b></li>
+        <li>Action Plan: <b><?= $admission['c__child_count'] ?> Tasks</b></li>
         <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 1 Week</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
-        <li>Your Support Level: <b id="confirm_support"></b></li>
+        <li>Your <?= $this->lang->line('obj_rs_name') ?>: <b id="confirm_support"></b></li>
     </ul>
     <br />
 </div>

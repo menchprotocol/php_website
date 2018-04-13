@@ -2,7 +2,6 @@
 
 //Fetch Messages based on c_id:
 $message_max = $this->config->item('message_max');
-$core_objects = $this->config->item('core_objects');
 $i_statuses = status_bible('i', null);
 $udata = $this->session->userdata('user');
 $drip_enabled = ($level>1);
@@ -568,7 +567,7 @@ if(!isset($intents[0])){
 
 
 
-<div class="iphone-title"><?= $core_objects['level_'.($level-1)]['o_icon'].' '.$core_objects['level_'.($level-1)]['o_name'].': '.$intents[0]['c_objective'] ?></div>
+<div class="iphone-title"><?= $this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_icon').' '.$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name').': '.$intents[0]['c_objective'] ?></div>
 
 <ul class="nav nav-tabs iphone-nav-tabs">
     <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= status_bible('i',1, false, null) ?></a></li>
@@ -587,13 +586,13 @@ if(!isset($intents[0])){
     $i_desc = status_bible('i');
     echo '<div class="ix-tip all_msg msg_1">';
     echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
-    echo str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[1]['s_desc']).'.';
+    echo str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[1]['s_desc']).'.';
     if($level==2){
         echo ' <a id="simulate_'.$c_id.'" href="javascript:tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Give It a Try</a>';
     }
     echo '</div>';
-    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[2]['s_desc']).'.</div>';
-    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$core_objects['level_'.($level-1)]['o_name'],$i_desc[3]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$this->lang->line('level_2_name'),$i_desc[2]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$this->lang->line('level_3_name'),$i_desc[3]['s_desc']).'.</div>';
 
     $message_count_1 = 0;
     $message_count_2 = 0;

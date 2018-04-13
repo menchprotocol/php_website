@@ -123,7 +123,7 @@ function insert_gravatar(){
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
   <li id="nav_communication"><a href="#communication"><i class="fa fa-share-alt" aria-hidden="true"></i> Communication</a></li>
-  <li id="nav_finance"><a href="#finance"><i class="fa fa-bar-chart" aria-hidden="true"></i> Payout History</a></li>
+  <li id="nav_finance"><a href="#finance"><i class="fa fa-bar-chart" aria-hidden="true"></i> Payouts</a></li>
   <li id="nav_password"><a href="#password"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
 </ul>
 

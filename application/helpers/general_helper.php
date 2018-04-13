@@ -220,7 +220,6 @@ function extract_level($b,$c_id){
     //This function uses
     
     $CI =& get_instance();
-    $core_objects = $CI->config->item('core_objects');
     //This is what we shall return:
     $view_data = array(
         'pid' => $c_id, //To be deprecated at some point...
@@ -254,34 +253,36 @@ function extract_level($b,$c_id){
         //Keeps track of Tasks:
         $previous_intent = null;
         
-        foreach($b['c__child_intents'] as $sprint_key=>$sprint){
+        foreach($b['c__child_intents'] as $task_key=>$task){
 
-            if($sprint['c_status']<1){
+            if($task['c_status']<1){
                 continue;
             }
             
-            if($sprint['c_id']==$c_id){
+            if($task['c_id']==$c_id){
 
                 //Found this as level 2:
                 $view_data['level'] = 2;
-                $view_data['task_index'] = $sprint['cr_outbound_rank'];
-                $view_data['intent'] = $sprint;
-                $view_data['title'] = 'Action Plan | Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'];
+                $view_data['task_index'] = $task['cr_outbound_rank'];
+                $view_data['intent'] = $task;
+                $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$task['cr_outbound_rank'].': '.$task['c_objective'];
                 $view_data['breadcrumb_p'] = array(
                     array(
                         'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
-                        'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                        'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_objective'],
                     ),
                     array(
                         'link' => null,
-                        'anchor' => $core_objects['level_1']['o_icon'].' Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'],
+                        'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$task['cr_outbound_rank'].': '.$task['c_objective'],
                     ),
                 );
+
+
 
                 //Find the next intent:
                 $next_intent = null;
                 $next_level = 0;
-                $next_key = $sprint_key;
+                $next_key = $task_key;
 
                 while(!$next_intent){
 
@@ -313,9 +314,9 @@ function extract_level($b,$c_id){
             } else {
 
                 //Save this:
-                $previous_intent = $sprint;
+                $previous_intent = $task;
 
-                foreach($sprint['c__child_intents'] as $step_key=>$step){
+                foreach($task['c__child_intents'] as $step_key=>$step){
 
                     if($step['c_status']<1){
                         continue;
@@ -325,22 +326,23 @@ function extract_level($b,$c_id){
 
                         //This is level 3:
                         $view_data['level'] = 3;
-                        $view_data['step_task'] = $sprint; //Only available for Steps
-                        $view_data['task_index'] = $sprint['cr_outbound_rank'];
+                        $view_data['step_task'] = $task; //Only available for Steps
+                        $view_data['task_index'] = $task['cr_outbound_rank'];
                         $view_data['intent'] = $step;
-                        $view_data['title'] = 'Action Plan | Task '.$sprint['cr_outbound_rank'].' Step '.$step['cr_outbound_rank'].': '.$step['c_objective'];
+                        $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$task['cr_outbound_rank'].' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_objective'];
+
                         $view_data['breadcrumb_p'] = array(
                             array(
                                 'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
-                                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                                'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_objective'],
                             ),
                             array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$sprint['c_id'],
-                                'anchor' => $core_objects['level_1']['o_icon'].' Task '.$sprint['cr_outbound_rank'].': '.$sprint['c_objective'],
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$task['c_id'],
+                                'anchor' => $CI->lang->line('level_'.($view_data['level']-1).'_icon').' '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$task['cr_outbound_rank'].': '.$task['c_objective'],
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => '<i class="fa fa-list-ul" aria-hidden="true"></i> Step '.$step['cr_outbound_rank'].': '.$step['c_objective'],
+                                'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_objective'],
                             ),
                         );
                         
@@ -1097,13 +1099,12 @@ function copy_intent($u_id,$intent,$c_id){
 function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     
     $CI =& get_instance();
-    $core_objects = $CI->config->item('core_objects');
     $udata = $CI->session->userdata('user');
     $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_objective']);
     $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Item');
     $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
     $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? 0.05 : $intent['c__estimated_hours'] );
-    $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || ($udata['u_status']==3 && $b['b_old_format']));
+    $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || !isset($b['b_old_format']) || ($udata['u_status']==3 && $b['b_old_format']));
 
     if(!$editing_enabled && $intent['c_status']<1){
         //Do not show drafting items in read-only mode:
@@ -1161,7 +1162,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1295,108 +1296,114 @@ function b_progress($b){
 
 
 
-    //Facebook Page
-    $estimated_minutes = 15;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']==3) ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings#pages',
-        'anchor' => '<b>Connect your <i class="fa fa-facebook-official" aria-hidden="true" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-
-    //Do we have enough Tasks?
-    $estimated_minutes = 60;
-    $required_tasks = 3;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( count($b['c__child_intents'])>=$required_tasks ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : (count($b['c__child_intents'])/$required_tasks)*$estimated_minutes );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan',
-        'anchor' => '<b>Add '.$required_tasks.' or more Tasks</b>'.( count($b['c__child_intents'])>0 && !$us_status ?' ('.($required_tasks-count($b['c__child_intents'])).' more)':'').' in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
-    
-    
-    //Now check each Task and its Step List:
-    foreach($b['c__child_intents'] as $task_num=>$c){
-
-        if($c['c_status']<0){
-            continue; //Don't check Archived Tasks
-        }
-        
-        //Prepare key variables:
-        $task_anchor = ' #'.$c['cr_outbound_rank'].' ';
-
-
-        //Task On Start Messages
+    if(!$b['b_is_parent']){
+        //Facebook Page
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
-        $qualified_messages = 0;
-        if(count($c['c__messages'])>0){
-            foreach($c['c__messages'] as $i){
-                $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
-            }
-        }
-        $us_status = ( $qualified_messages>0 ? 1 : 0 );
+        $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']==3) ? 1 : 0 );
         $progress_gained += ( $us_status ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
-            'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$task_anchor.$c['c_objective'],
+            'href' => '/console/'.$b['b_id'].'/settings#pages',
+            'anchor' => '<b>Connect your <i class="fa fa-facebook-official" aria-hidden="true" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
             'us_status' => $us_status,
             'time_min' => $estimated_minutes,
         ));
-        
-        
-        //We only need Steps if:
-        /*
-        if($c['c_extension_rule']>=1){
-            $estimated_minutes = 30;
+    }
+
+
+
+    //Do we have enough Children?
+    $estimated_minutes = 60;
+    $required_children = ( $b['b_is_parent'] ? 2 : 3 );
+    $child_name = ( $b['b_is_parent'] ? 'Bootcamp' : 'Task' );
+    $progress_possible += $estimated_minutes;
+    $us_status = ( count($b['c__child_intents'])>=$required_children ? 1 : 0 );
+    $progress_gained += ( $us_status ? $estimated_minutes : (count($b['c__child_intents'])/$required_children)*$estimated_minutes );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/actionplan',
+        'anchor' => '<b>Add '.$required_children.' or more '.$child_name.'s</b>'.( count($b['c__child_intents'])>0 && !$us_status ?' ('.($required_children-count($b['c__child_intents'])).' more)':'').' in Action Plan',
+        'us_status' => $us_status,
+        'time_min' => $estimated_minutes,
+    ));
+
+    
+    
+    if(count($b['c__child_intents'])>0 && !$b['b_is_parent']){
+        //Now check each Task and its Step List:
+        foreach($b['c__child_intents'] as $task_num=>$c){
+
+            if($c['c_status']<0){
+                continue; //Don't check Archived Tasks
+            }
+
+            //Prepare key variables:
+            $task_anchor = ' #'.$c['cr_outbound_rank'].' ';
+
+
+            //Task On Start Messages
+            $estimated_minutes = 15;
             $progress_possible += $estimated_minutes;
-            $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );
-            $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
+            $qualified_messages = 0;
+            if(count($c['c__messages'])>0){
+                foreach($c['c__messages'] as $i){
+                    $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
+                }
+            }
+            $us_status = ( $qualified_messages>0 ? 1 : 0 );
+            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
             array_push( $checklist , array(
-                'href' => '/console/'.$b['b_id'].'/actionplan',
-                'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$task_anchor.$c['c_objective'],
+                'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
+                'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$task_anchor.$c['c_objective'],
                 'us_status' => $us_status,
                 'time_min' => $estimated_minutes,
             ));
 
-            //Check Steps:
-            if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-                foreach($c['c__child_intents'] as $c2){
 
-                    //Create Step object:
-                    $step_anchor = $task_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
+            //We only need Steps if:
+            /*
+            if($c['c_extension_rule']>=1){
+                $estimated_minutes = 30;
+                $progress_possible += $estimated_minutes;
+                $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );
+                $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
+                array_push( $checklist , array(
+                    'href' => '/console/'.$b['b_id'].'/actionplan',
+                    'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$task_anchor.$c['c_objective'],
+                    'us_status' => $us_status,
+                    'time_min' => $estimated_minutes,
+                ));
 
-                    //Messages for Steps:
-                    $estimated_minutes = 15;
-                    $progress_possible += $estimated_minutes;
-                    $qualified_messages = 0;
-                    if(count($c2['c__messages'])>0){
-                        foreach($c2['c__messages'] as $i){
-                            $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
+                //Check Steps:
+                if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
+                    foreach($c['c__child_intents'] as $c2){
+
+                        //Create Step object:
+                        $step_anchor = $task_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
+
+                        //Messages for Steps:
+                        $estimated_minutes = 15;
+                        $progress_possible += $estimated_minutes;
+                        $qualified_messages = 0;
+                        if(count($c2['c__messages'])>0){
+                            foreach($c2['c__messages'] as $i){
+                                $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
+                            }
                         }
+                        $us_status = ( $qualified_messages>0 ? 1 : 0 );
+                        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+                        array_push( $checklist , array(
+                            'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c2['c_id'],
+                            'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$step_anchor,
+                            'us_status' => $us_status,
+                            'time_min' => $estimated_minutes,
+                        ));
                     }
-                    $us_status = ( $qualified_messages>0 ? 1 : 0 );
-                    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-                    array_push( $checklist , array(
-                        'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c2['c_id'],
-                        'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$step_anchor,
-                        'us_status' => $us_status,
-                        'time_min' => $estimated_minutes,
-                    ));
                 }
             }
+            */
         }
-        */
     }
-    
+
 
     //Bootcamp Messages:
     $estimated_minutes = 15;
@@ -1422,32 +1429,32 @@ function b_progress($b){
 
 
 
+    if(!$b['b_is_parent']){
+        //Prerequisites
+        $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
+            'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
 
-    //Prerequisites
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
-        'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
 
-
-    //Skills You Will Gain
-    $estimated_minutes = 30;
-    $progress_possible += $estimated_minutes;
-    $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#skills',
-        'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
-        'us_status' => $us_status,
-        'time_min' => $estimated_minutes,
-    ));
-
+        //Skills You Will Gain
+        $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
+        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/actionplan#skills',
+            'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
+            'us_status' => $us_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
 
 
 
@@ -1591,36 +1598,37 @@ function b_progress($b){
      *  Settings
      *******************************/
 
+    if(!$b['b_is_parent']){
+        //Offer Classroom Package?
+        if($b['b_p2_max_seats']>0){
+            $estimated_minutes = 15;
+            $progress_possible += $estimated_minutes;
+            $us_status = ( strlen($b['b_support_email'])>=1 ? 1 : 0 );
+            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+            array_push( $checklist , array(
+                'href' => '/console/'.$b['b_id'].'/settings#support',
+                'anchor' => '<b>Enter Support Email Address</b> in Settings',
+                'us_status' => $us_status,
+                'time_min' => $estimated_minutes,
+            ));
+        }
 
 
-    //Offer Classroom Package?
-    if($b['b_p2_max_seats']>0){
-        $estimated_minutes = 15;
-        $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($b['b_support_email'])>=1 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/settings#support',
-            'anchor' => '<b>Enter Support Email Address</b> in Settings',
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
+        //Offer Tutoring?
+        if($b['b_p3_rate']>0){
+            $estimated_minutes = 15;
+            $progress_possible += $estimated_minutes;
+            $us_status = ( strlen($b['b_calendly_url'])>=1 ? 1 : 0 );
+            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+            array_push( $checklist , array(
+                'href' => '/console/'.$b['b_id'].'/settings#support',
+                'anchor' => '<b>Enter Calendly URL</b> for Tutoring Bookings in Settings',
+                'us_status' => $us_status,
+                'time_min' => $estimated_minutes,
+            ));
+        }
     }
 
-
-    //Offer Tutoring?
-    if($b['b_p3_rate']>0){
-        $estimated_minutes = 15;
-        $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($b['b_calendly_url'])>=1 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/settings#support',
-            'anchor' => '<b>Enter Calendly URL</b> for Tutoring Bookings in Settings',
-            'us_status' => $us_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
 
 
     //Landing Page Category
@@ -1659,7 +1667,7 @@ function b_progress($b){
     
     //Return the final message:
     return array(
-        'stage' => '<i class="fa fa-steps" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> Launch Checklist',
+        'stage' => '<i class="fa fa-steps" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> <i class="fa fa-rocket" aria-hidden="true"></i> Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
         'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your Bootcamp status to '.status_bible('b',2).'. At this time you can launch your Bootcamp by inviting your students to join.',
         'check_list' => $checklist,
@@ -2429,7 +2437,6 @@ function minutes_to_hours($mins){
 function object_link($object,$id,$b_id=0){
     //Loads the name (and possibly URL) for $object with id=$id
     $CI =& get_instance();
-    $core_objects = $CI->config->item('core_objects');
     $id = intval($id);
     
     if($id>0){

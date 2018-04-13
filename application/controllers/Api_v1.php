@@ -1877,9 +1877,9 @@ class Api_v1 extends CI_Controller {
             'b_creator_id' => $udata['u_id'],
             'b_url_key' => $generated_key,
             'b_c_id' => $intent['c_id'],
-            'b_prerequisites' => json_encode($default_class_prerequisites),
-            'b_support_email' => $udata['u_email'],
-            'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 ? 'https://calendly.com/'.$udata['u_calendly_username'] : '' ),
+            'b_prerequisites' => ( intval($_POST['b_is_parent']) ? null : json_encode($default_class_prerequisites) ),
+            'b_support_email' => ( intval($_POST['b_is_parent']) ? null : $udata['u_email'] ),
+            'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 && !intval($_POST['b_is_parent']) ? 'https://calendly.com/'.$udata['u_calendly_username'] : null ),
             'b_is_parent' => intval($_POST['b_is_parent']),
             'b_old_format' => 0,
         ));
@@ -2790,15 +2790,15 @@ class Api_v1 extends CI_Controller {
         if($bs[0]['b_old_format']){
 
             //Give specific options on each Milestone:
-            foreach($bs[0]['c__child_intents'] as $milestone){
-                if(isset($milestone['c__child_intents'])){
+            foreach($bs[0]['c__child_intents'] as $task){
+                if(isset($task['c__child_intents'])){
                     //Give a single/total option:
                     array_push($import_items,array(
                         'is_header' => 0,
-                        'name' => 'Tasks form ['.$milestone['c_objective'].']',
+                        'name' => 'Tasks form ['.$task['c_objective'].']',
                         'id' => 'b_c_ids',
-                        'value' => $milestone['c_id'],
-                        'count' => count($milestone['c__child_intents']),
+                        'value' => $task['c_id'],
+                        'count' => count($task['c__child_intents']),
                     ));
                 }
             }
