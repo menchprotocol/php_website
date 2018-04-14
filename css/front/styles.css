@@ -1034,14 +1034,14 @@ a.badge:focus, a.badge:hover {
   padding: 3px 4px;
     color: #3C4858;
   border-top: 1px solid #efefef;
-    font-size:15px;
-    font-weight: 300 !important;
+    font-size:16px;
+    font-weight: 500 !important;
     line-height: 110%;
     font-family:"Lato", "Helvetica", "Arial", sans-serif;
 
     text-overflow: ellipsis;
     overflow: hidden;
-    width:200px;
+    width:100%;
     white-space: nowrap;
 
 }
