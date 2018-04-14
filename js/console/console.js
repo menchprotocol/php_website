@@ -1,6 +1,49 @@
-//Loadup Algolia:
-//client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-//algolia_index = client.initIndex('bootcamps');
+
+
+function load_console_search(){
+
+    //Loadup Algolia:
+    client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+    algolia_index = client.initIndex('alg_bootcamps');
+
+    $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+
+        //link_lintent(suggestion.c_id);
+        alert('selected');
+
+    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+
+        source: function(q, cb) {
+            algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function(suggestion) { return "" },
+        templates: {
+            suggestion: function(suggestion) {
+                return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.alg_name.value;
+            },
+            header: function(data) {
+                if(!data.isEmpty){
+                    return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+                }
+            },
+        }
+
+    }]).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            //new_intent($( "#addintent" ).val());
+            return true;
+        }
+    });
+}
+
 
 //To update fancy dropdown which is usually used for STATUS updates:
 function update_dropdown(name,intvalue,count){
@@ -123,6 +166,8 @@ function load_help(intent_id){
 
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
+
+    load_console_search();
 
     //Watch the expand/close all buttons for Tasks:
     $('#task_view .expand_all').click(function (e) {
