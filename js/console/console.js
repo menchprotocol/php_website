@@ -24,7 +24,7 @@ function load_console_search(){
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<i class="fa '+( parseInt(suggestion._highlightResult.b_is_parent.value)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value;
+                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value;
             },
         }
 
