@@ -1032,17 +1032,17 @@ a.badge:focus, a.badge:hover {
 .add_intent, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
   cursor: pointer;
   padding: 3px 4px;
+    color: #3C4858;
   border-top: 1px solid #efefef;
-    font-size:0.7em;
-    font-weight: normal;
+    font-size:16px;
+    font-weight: normal !important;
 
 }
 .add_intent:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-  background-color: #eccd15;
-  color: #FFF;
+  background-color: #fedd16;
   text-decoration:none;
-    font-size:0.7em;
-    font-weight: normal;
+    font-size:16px;
+    font-weight: normal !important;
 }
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
   font-weight: bold;
