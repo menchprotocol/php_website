@@ -1034,15 +1034,20 @@ a.badge:focus, a.badge:hover {
   padding: 3px 4px;
     color: #3C4858;
   border-top: 1px solid #efefef;
-    font-size:16px;
-    font-weight: normal !important;
+    font-size:15px;
+    font-weight: 300 !important;
+    line-height: 110%;
+    font-family:"Lato", "Helvetica", "Arial", sans-serif;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width:200px;
+    white-space: nowrap;
 
 }
 .add_intent:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
   background-color: #fedd16;
   text-decoration:none;
-    font-size:16px;
-    font-weight: normal !important;
 }
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
   font-weight: bold;
