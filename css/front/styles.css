@@ -1031,10 +1031,10 @@ a.badge:focus, a.badge:hover {
 }
 .add_intent, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
   cursor: pointer;
-  padding: 3px 4px;
+  padding: 5px 4px;
     color: #3C4858;
   border-top: 1px solid #efefef;
-    font-size:16px;
+    font-size:18px;
     font-weight: 500 !important;
     line-height: 110%;
     font-family:"Lato", "Helvetica", "Arial", sans-serif;
