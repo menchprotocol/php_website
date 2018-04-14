@@ -8,11 +8,15 @@ class Cron extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 
-		//Example: /usr/bin/php /var/www/us/index.php cron student_reminder_complete_application
+        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron student_reminder_complete_application
 	}
 
 	function ping(){
 	    echo_json(array('status'=>'success'));
+    }
+
+    function algolia_sync($obj,$obj_id){
+        echo_json($this->Db_model->algolia_sync($obj,$obj_id));
     }
 
     /* ******************************

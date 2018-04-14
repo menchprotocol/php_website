@@ -26,10 +26,6 @@ class Api_v1 extends CI_Controller {
         die('nothing here...');
     }
 
-    function algolia_sync($obj,$obj_id){
-        echo_json($this->Db_model->algolia_sync($obj,$obj_id));
-    }
-
     function e_js_create(){
 	    //Validate hash code:
         if(!isset($_POST['e_hash_time']) || !isset($_POST['e_hash_code']) || strlen($_POST['e_hash_time'])<5 || strlen($_POST['e_hash_code'])<5 || !(md5($_POST['e_hash_time'].'hashcod3')==$_POST['e_hash_code'])){

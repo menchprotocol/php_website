@@ -1573,7 +1573,7 @@ WHERE ru.ru_status >= 4
 
         if(is_dev()){
             //Do a call on live:
-            return json_decode(curl_html($website['url']."api_v1/algolia_sync/".$obj."/".$obj_id));
+            return json_decode(curl_html($website['url']."cron/algolia_sync/".$obj."/".$obj_id));
         }
 
         //Include PHP library:
