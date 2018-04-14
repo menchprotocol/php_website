@@ -8,10 +8,9 @@ function load_console_search(){
 
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
-        //link_lintent(suggestion.c_id);
-        alert('selected');
+        window.location = "/console/"+suggestion.b_id;
 
-    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+    }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
 
         source: function(q, cb) {
             algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
@@ -19,29 +18,17 @@ function load_console_search(){
                     cb([]);
                     return;
                 }
-
                 cb(content.hits, content);
             });
         },
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.alg_name.value;
-            },
-            header: function(data) {
-                if(!data.isEmpty){
-                    return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
-                }
+                return '<i class="fa '+( parseInt(suggestion._highlightResult.b_is_parent.value)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value;
             },
         }
 
-    }]).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            //new_intent($( "#addintent" ).val());
-            return true;
-        }
-    });
+    }]);
 }
 
 
