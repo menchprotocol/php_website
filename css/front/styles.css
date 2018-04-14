@@ -1041,7 +1041,7 @@ a.badge:focus, a.badge:hover {
 
     text-overflow: ellipsis;
     overflow: hidden;
-    width:100%;
+    width:95%;
     white-space: nowrap;
 
 }
