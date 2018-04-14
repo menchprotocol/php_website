@@ -1726,6 +1726,11 @@ WHERE ru.ru_status >= 4
                 //also set its algolia_id to 0 locally:
                 $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=0 WHERE ".$obj."_id=".$obj_id);
 
+                return array(
+                    'status' => 1,
+                    'message' => 'item deleted',
+                );
+
             }
 
         } else {
