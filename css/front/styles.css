@@ -1038,12 +1038,6 @@ a.badge:focus, a.badge:hover {
     font-weight: 500 !important;
     line-height: 110%;
     font-family:"Lato", "Helvetica", "Arial", sans-serif;
-
-    text-overflow: ellipsis;
-    overflow: hidden;
-    width:95%;
-    white-space: nowrap;
-
 }
 .add_intent:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
   background-color: #fedd16;
