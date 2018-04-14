@@ -1024,9 +1024,10 @@ a.badge:focus, a.badge:hover {
 .algolia-autocomplete .aa-dropdown-menu {
   width: 100%;
   background-color: #fff;
-  border: 1px solid #EFEFEF;
+  border: 1px solid #E5E5E5;
   border-top: none;
-  font-size:0.9em;
+  font-size:0.7em;
+    font-weight: normal;
 }
 .add_intent, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
   cursor: pointer;
