@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.96,
+    'version' => 2.98,
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -562,11 +562,11 @@ $config['engagement_references'] = array(
         'object_code' => 'r',
     ),
     'e_c_id' => array(
-        'name' => 'Node',
+        'name' => 'Intent',
         'object_code' => 'c',
     ),
     'e_cr_id' => array(
-        'name' => 'Node Link',
+        'name' => 'Intent Link',
         'object_code' => 'cr',
     ),
     'e_i_id' => array(

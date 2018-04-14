@@ -116,7 +116,7 @@ $bs = $this->Db_model->instructor_bs(array(
             //Hide both buttons:
             $('#btn_next, #btn_prev').hide();
 
-            //Organize Import Nodes:
+            //Organize Import Intents:
             var b_c_ids = [];
             $("input:checkbox[name=b_c_ids]:checked").each(function(){
                 b_c_ids.push(parseInt($(this).val()));

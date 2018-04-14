@@ -972,7 +972,12 @@ WHERE ru.ru_status >= 4
         if(in_array('fp',$join_objects)){
             $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
         }
-	    foreach($match_columns as $key=>$value){
+        if(in_array('ba',$join_objects)){
+            $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id','left');
+            $this->db->join('v5_users u', 'u.u_id = ba.ba_u_id','left');
+            $this->db->where('ba_status',3); //Lead instructor
+        }
+        foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
 	    $this->db->order_by($order_by,'DESC');
@@ -1168,12 +1173,6 @@ WHERE ru.ru_status >= 4
 	    //Missing anything?
 	    if(!isset($insert_columns['b_timestamp'])){
 	        $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
-	    }
-	    if(!isset($insert_columns['b_status'])){
-	        $insert_columns['b_status'] = 2; //Private by Default
-	    }
-	    if(!isset($insert_columns['b_algolia_id'])){
-	        $insert_columns['b_algolia_id'] = 0;
 	    }
 	    
 	    //Lets now add:
@@ -1537,105 +1536,222 @@ WHERE ru.ru_status >= 4
 		//Return:
 		return $link_data;
 	}
-	
-
-	
-	function algolia_b_sync($c_id=null){
-		
-		boost_power();
-		
-		$website = $this->config->item('website');
-		
-		if(is_dev()){
-		    return curl_html($website['url']."api_v1/algolia_b_sync/".$c_id);
-		}
-		
-		//Include PHP library:
-		require_once('application/libraries/algoliasearch.php');
-		$client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-		$index = $client->initIndex('bootcamps');
-		
-		//Fetch all nodes:
-		$limits = array(
-				'c.c_status >=' => 0,
-		);
-		if($c_id){
-			$limits['c_id'] = $c_id;
-		} else {
-			$index->clearIndex();
-		}
-		$intents = $this->c_fetch($limits);
-		
-		if(count($intents)<=0){
-			//Nothing found here!
-			return false;
-		}
-		
-		//Buildup this array to save to search index
-		$return = array();
-		foreach($intents as $intent){
-
-			//Adjust Algolia ID:
-			if(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0){
-				$intent['objectID'] = intval($intent['c_algolia_id']);
-			}
-			unset($intent['c_algolia_id']);
-			
-			//Add to main array
-			array_push( $return , $intent);
-
-		}
-		
-		//$obj = json_decode(json_encode($return), FALSE);
-		//print_r($return);
-		
-		if($c_id){
-			
-			if($intent['c_status']>=0){
-				
-				if(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0){
-					//Update existing
-					$obj_add_message = $index->saveObjects($return);
-				} else {
-					//Create new ones
-					$obj_add_message = $index->addObjects($return);
-					
-					//Now update database with the objectIDs:
-					if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
-						foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
-							$this->Db_model->c_update( $return[$key]['c_id'] , array(
-									'c_algolia_id' => $algolia_id,
-							));
-						}
-					}
-				}
-				
-			} elseif(isset($intent['c_algolia_id']) && intval($intent['c_algolia_id'])>0) {
-				//Delete object:
-				$index->deleteObject($intent['c_algolia_id']);
-			}
-			
-		} else {
-			//Create new ones
-			$obj_add_message = $index->addObjects($return);
-			
-			//Now update database with the objectIDs:
-			if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
-				foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
-					$this->Db_model->c_update( $return[$key]['c_id'] , array(
-							'c_algolia_id' => $algolia_id,
-					));
-				}
-			}
-		}			
-		
-		
-		return array(
-				'c_id' => $c_id,
-				'intents' => $intents,
-				'output' => $obj_add_message['objectIDs'],
-		);
 
 
-	}
+
+    function algolia_sync($obj,$obj_id=0){
+
+	    //Define the support objects indexed on algolia:
+        $website = $this->config->item('website');
+        $obj_id = intval($obj_id);
+
+        $algolia_indexes = array(
+            'c' => 'alg_intents',
+            'b' => 'alg_bootcamps',
+            'u' => 'alg_users',
+        );
+        $algolia_local_tables = array(
+            'c' => 'v5_intents',
+            'b' => 'v5_bootcamps',
+            'u' => 'v5_users',
+        );
+
+	    if(!array_key_exists($obj,$algolia_indexes)){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid object ['.$obj.']',
+            );
+        }
+
+        boost_power();
+
+
+
+
+
+
+
+        if(is_dev()){
+            //Do a call on live:
+            return json_decode(curl_html($website['url']."api_v1/algolia_sync/".$obj."/".$obj_id));
+        }
+
+        //Include PHP library:
+        require_once('application/libraries/algoliasearch.php');
+        $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
+        $index = $client->initIndex($algolia_indexes[$obj]);
+
+
+        if(!$obj_id){
+            //Clear this index before re-creating it from scratch:
+            $index->clearIndex();
+
+            //Reset the local algolia IDs for this:
+            $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=0 WHERE ".$obj."_algolia_id>0");
+        }
+
+        //Prepare universal query limits:
+        if($obj_id){
+            $limits[$obj.'_id'] = $obj_id;
+        } else {
+            $limits[$obj.'_status >='] = 0; //None deleted items (we assume this means the same thing for all objects)
+        }
+
+        //Fetch item(s) for updates:
+        if($obj=='b'){
+            $items = $this->Db_model->b_fetch($limits,array('c','ba'));
+        } elseif($obj=='c'){
+            $items = $this->Db_model->c_fetch($limits);
+        } elseif($obj=='u'){
+            $items = $this->Db_model->u_fetch($limits);
+        }
+
+        //Go through selection and update:
+        if(count($items)==0) {
+            return array(
+                'status' => 0,
+                'message' => 'No items found for [' . $obj . '] with id [' . $obj_id . ']',
+            );
+        }
+
+        $return_items = array();
+        foreach($items as $item){
+
+            unset($new_item);
+            $new_item = array();
+
+            //Is this already indexed?
+            if($item[$obj.'_algolia_id']>0){
+                $new_item['objectID'] = $item[$obj.'_algolia_id'];
+            }
+
+            if($obj=='b'){
+
+                //Object specific:
+                $new_item['b_id'] = intval($item['b_id']); //rquired for all objects
+                $new_item['b_status'] = intval($item['b_status']);
+                $new_item['b_is_parent'] = intval($item['b_is_parent']);
+
+                //Standard algolia terms:
+                $new_item['alg_name'] = $item['c_objective'];
+                $new_item['alg_url'] = '/'.$item['b_url_key'];
+                $new_item['alg_u_ids'] = array(intval($item['u_id'])); //TODO Include co-instructors
+                $new_item['alg_keywords'] = '';
+
+                if(strlen($item['b_prerequisites'])>0){
+                    $new_item['alg_keywords'] .= join(' ',json_decode($item['b_prerequisites'])).' ';
+                }
+
+                if(strlen($item['b_transformations'])>0){
+                    $new_item['alg_keywords'] .= join(' ',json_decode($item['b_transformations'])).' ';
+                }
+
+                //Fetch all text messages for description:
+                $i_messages = $this->Db_model->i_fetch(array(
+                    'i_c_id' => $item['b_c_id'],
+                    'i_media_type' => 'text', //Only type that we can index in search
+                    'i_status >' => 0, //Published in any form
+                ));
+                if(count($i_messages)>0){
+                    foreach($i_messages as $i){
+                        $new_item['alg_keywords'] .= $i['i_message'].' ';
+                    }
+                }
+
+                //Fetch all child intent titles:
+                $c_intents = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_id' => $item['b_c_id'],
+                    'cr.cr_status >=' => 0,
+                    'c.c_status >=' => 0,
+                ));
+                if(count($c_intents)>0){
+                    foreach($c_intents as $c){
+                        $new_item['alg_keywords'] .= $c['c_objective'].' ';
+                    }
+                }
+
+            } elseif($obj=='c'){
+
+
+
+            } elseif($obj=='u') {
+
+
+
+            }
+
+            //Clean the keywords:
+            $new_item['alg_keywords'] = trim(strip_tags($new_item['alg_keywords']));
+
+            //Add to main array
+            array_push( $return_items , $new_item);
+
+        }
+
+
+
+        //Now let's see what to do:
+        if($obj_id){
+
+            //We should have fetched a single item only, meaning $items[0] is what we care about...
+
+            if($items[0][$obj.'_status']>=0){
+
+                if(intval($items[0][$obj.'_algolia_id'])>0){
+
+                    //Update existing index:
+                    $obj_add_message = $index->saveObjects($return_items);
+
+                } else {
+
+                    //Create new index:
+                    $obj_add_message = $index->addObjects($return_items);
+
+                    //Now update local database with the objectIDs:
+                    if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+                        foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+                            $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=".$algolia_id." WHERE ".$obj."_id=".$return_items[$key][$obj.'_id']);
+                        }
+                    }
+
+                }
+
+            } elseif(intval($items[0][$obj.'_algolia_id'])>0) {
+
+                //item has been deleted locally but its still indexed on Algolia
+
+                //Delete from algolia:
+                $index->deleteObject($items[0][$obj.'_algolia_id']);
+
+                //also set its algolia_id to 0 locally:
+                $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=0 WHERE ".$obj."_id=".$obj_id);
+
+            }
+
+        } else {
+
+            //Mass update request
+            //All remote items have been deleted from algolia index and local algolia_ids have been set to zero
+            //we're ready to create new items and update local:
+            $obj_add_message = $index->addObjects($return_items);
+
+            //Now update database with the objectIDs:
+            if(isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0){
+                foreach($obj_add_message['objectIDs'] as $key=>$algolia_id){
+
+                    $this->db->query("UPDATE ".$algolia_local_tables[$obj]." SET ".$obj."_algolia_id=".$algolia_id." WHERE ".$obj."_id=".$return_items[$key][$obj.'_id']);
+
+                }
+            }
+
+        }
+
+        //Return results:
+        return array(
+            'status' => ( count($obj_add_message)>0 ? 1 : 0 ),
+            'message' => count($obj_add_message).' items updated',
+        );
+
+    }
+
 }

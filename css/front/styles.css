@@ -632,12 +632,12 @@ h5, .h5 {
     background-color:#E5E5E5;
 }
 
-#addnode{
+#addintent{
 	padding-top: 20px !important;
     height: 49px !important;
     font-weight:bold;
 }
-#addnode::placeholder {
+#addintent::placeholder {
     font-size: 16px !important;
     font-family: Lato;
     line-height: 27px !important;
@@ -1001,7 +1001,7 @@ a.badge:focus, a.badge:hover {
 }
 
 /* Search CSS */
-.add_node{
+.add_intent{
 	display:block;
 	color:#3C4858;
 }
@@ -1028,12 +1028,12 @@ a.badge:focus, a.badge:hover {
   border-top: none;
   font-size:0.9em;
 }
-.add_node, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+.add_intent, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
   cursor: pointer;
   padding: 3px 4px;
   border-top: 1px solid #efefef;
 }
-.add_node:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+.add_intent:hover, .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
   background-color: #eccd15;
   color: #FFF;
   text-decoration:none;

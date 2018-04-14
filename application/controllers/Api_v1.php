@@ -26,10 +26,8 @@ class Api_v1 extends CI_Controller {
         die('nothing here...');
     }
 
-    function algolia_b_sync($b_id){
-        if($b_id>0){
-            echo_json($this->Db_model->algolia_b_sync($b_id));
-        }
+    function algolia_sync($obj,$obj_id){
+        echo_json($this->Db_model->algolia_sync($obj,$obj_id));
     }
 
     function e_js_create(){
@@ -896,7 +894,7 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: You are no longer an active Student of this Bootcamp</span>');
         }
 
-        //Fetch full Bootcamp/Class/Node data from Action Plan copy:
+        //Fetch full Bootcamp/Class/Intent data from Action Plan copy:
         $bs = fetch_action_plan_copy(intval($_POST['b_id']),intval($_POST['r_id']));
         $focus_class = $bs[0]['this_class'];
         $intent_data = extract_level( $bs[0] , intval($_POST['c_id']) );
@@ -914,7 +912,7 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        //Make sure student has not submitted this Node before:
+        //Make sure student has not submitted this Intent before:
         $us_data = $this->Db_model->us_fetch(array(
             'us_student_id' => intval($_POST['u_id']),
             'us_r_id' => intval($_POST['r_id']),
@@ -1169,7 +1167,7 @@ class Api_v1 extends CI_Controller {
             'u_email' => strtolower($_POST['email']),
         ));
         if(count($matching_users)>0){
-            //Dispatch the password reset node:
+            //Dispatch the password reset Intent:
             $this->Comm_model->foundation_message(array(
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => $matching_users[0]['u_id'],
@@ -1931,12 +1929,11 @@ class Api_v1 extends CI_Controller {
             return false;
         }
 
-
-        //Update Algolia:
-        //$this->Db_model->algolia_b_sync($b['b_id']);
+        //Update algolia:
+        $this->Db_model->algolia_sync('b',$b['b_id']);
 
         
-        //Log Engagement for Node Created:
+        //Log Engagement for Intent Created:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
             'e_json' => array(
@@ -1944,7 +1941,7 @@ class Api_v1 extends CI_Controller {
                 'before' => null,
                 'after' => $intent,
             ),
-            'e_type_id' => 20, //Node Created
+            'e_type_id' => 20, //Intent Created
             'e_b_id' => $b['b_id'],
             'e_c_id' => $intent['c_id'],
         ));
@@ -2010,6 +2007,9 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->b_update( intval($_POST['b_id']) , array(
                 $_POST['group_id'] => ( isset($_POST['new_sort']) && is_array($_POST['new_sort']) && count($_POST['new_sort'])>0 ? json_encode($_POST['new_sort']) : null ),
             ));
+
+            //Update algolia:
+            $this->Db_model->algolia_sync('b',$_POST['b_id']);
 
             //Log Engagement:
             $this->Db_model->e_create(array(
@@ -2215,6 +2215,9 @@ class Api_v1 extends CI_Controller {
             }
         }
 
+        //Update algolia:
+        $this->Db_model->algolia_sync('b',$_POST['b_id']);
+
         //Log engagement:
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $udata['u_id'],
@@ -2236,7 +2239,7 @@ class Api_v1 extends CI_Controller {
     }
 
 	/* ******************************
-	 * c Nodes
+	 * c Intents
 	 ****************************** */
 
 	function c_new(){
@@ -2247,9 +2250,9 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing Node Outcome.</span>');
+	        die('<span style="color:#FF0000;">Error: Missing Intent Outcome.</span>');
 	    }
 	    
 	    //Validate Original intent:
@@ -2275,16 +2278,16 @@ class Api_v1 extends CI_Controller {
             'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
 	    ));
 	    
-	    //Log Engagement for New Node:
+	    //Log Engagement for New Intent:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Node ['.$new_intent['c_objective'].'] created',
+	        'e_message' => 'Intent ['.$new_intent['c_objective'].'] created',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
 	            'after' => $new_intent,
 	        ),
-	        'e_type_id' => 20, //New Node
+	        'e_type_id' => 20, //New Intent
 	        'e_b_id' => intval($_POST['b_id']),
 	        'e_c_id' => $new_intent['c_id'],
 	    ));
@@ -2301,7 +2304,7 @@ class Api_v1 extends CI_Controller {
 	        )),
 	    ));
 	    
-	    //Log Engagement for New Node Link:
+	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
@@ -2310,7 +2313,7 @@ class Api_v1 extends CI_Controller {
 	            'before' => null,
 	            'after' => $relation,
 	        ),
-	        'e_type_id' => 23, //New Node Link
+	        'e_type_id' => 23, //New Intent Link
 	        'e_b_id' => intval($_POST['b_id']),
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
@@ -2337,7 +2340,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid Node ID.</span>');
+	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
 	    } elseif(!isset($_POST['target_id']) || intval($_POST['target_id'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing target_id.</span>');
 	    }
@@ -2394,7 +2397,7 @@ class Api_v1 extends CI_Controller {
 	    ));
 	    
 	    
-	    //Log Engagement for New Node Link:
+	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_initiator_u_id' => $udata['u_id'],
 	        'e_message' => 'Linked intent ['.$outbound_intents[0]['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
@@ -2403,7 +2406,7 @@ class Api_v1 extends CI_Controller {
 	            'before' => null,
 	            'after' => $relation,
 	        ),
-	        'e_type_id' => 23, //New Node Link
+	        'e_type_id' => 23, //New Intent Link
 	        'e_b_id' => intval($_POST['b_id']),
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
@@ -2517,6 +2520,7 @@ class Api_v1 extends CI_Controller {
             'c.c_id' => intval($_POST['pid']),
         ) , 0 );
 
+
         if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -2526,7 +2530,7 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Node ID',
+                'message' => 'Invalid Intent ID',
             ));
             return false;
         } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
@@ -2589,7 +2593,7 @@ class Api_v1 extends CI_Controller {
         //Process data based on level:
         if($_POST['level']==1){
 
-            //Did the Bootcamp's Node Outcome change?
+            //Did the Bootcamp's Intent Outcome change?
             if(!(trim($_POST['c_objective'])==$original_intents[0]['c_objective'])){
                 //Generate Update Array
                 $c_update = array(
@@ -2621,10 +2625,15 @@ class Api_v1 extends CI_Controller {
             //Now update the DB:
             $this->Db_model->c_update( intval($_POST['pid']) , $c_update );
 
-            //Update Algolia:
-            //$this->Db_model->algolia_b_sync(intval($_POST['pid']));
+            if($_POST['pid']==$bs[0]['b_c_id']){
+                //This is a Bootcamp intent, also update algolia:
+                $this->Db_model->algolia_sync('b',$_POST['b_id']);
+            } else {
+                //Update intent algolia object:
 
-            //Log Engagement for New Node Link:
+            }
+
+            //Log Engagement for New Intent Link:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $udata['u_id'],
                 'e_message' => readable_updates($original_intents[0],$c_update,'c_'),
@@ -2633,7 +2642,7 @@ class Api_v1 extends CI_Controller {
                     'before' => $original_intents[0],
                     'after' => $c_update,
                 ),
-                'e_type_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Node Deleted OR Updated
+                'e_type_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
                 'e_b_id' => intval($_POST['b_id']),
                 'e_c_id' => intval($_POST['pid']),
             ));
@@ -2932,13 +2941,13 @@ class Api_v1 extends CI_Controller {
         if(isset($_POST['b_c_ids']) && count($_POST['b_c_ids'])>0){
             foreach($_POST['b_c_ids'] as $c_id){
 
-                //Fetch all child Nodes for this Node:
-                $nodes = $this->Db_model->c_fetch(array(
+                //Fetch all child Intents for this Intent:
+                $intents = $this->Db_model->c_fetch(array(
                     'c.c_id' => $c_id,
                 ), 1, array('i')); //Supports up to 2 levels deep for now...
 
-                if(count($nodes)>0 && count($nodes[0]['c__child_intents'])>0){
-                    foreach($nodes[0]['c__child_intents'] as $c){
+                if(count($intents)>0 && count($intents[0]['c__child_intents'])>0){
+                    foreach($intents[0]['c__child_intents'] as $c){
                         if(intval($_POST['task_import_mode'])==3){
 
                             //Copy intent:
@@ -3027,7 +3036,7 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
             die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID</span>');
         } elseif(!isset($_POST['c_id']) || intval($_POST['c_id'])<=0){
-            die('<span style="color:#FF0000;">Error: Invalid Node id.</span>');
+            die('<span style="color:#FF0000;">Error: Invalid Intent id.</span>');
         } elseif(!isset($_POST['level']) || intval($_POST['level'])<=0){
             die('<span style="color:#FF0000;">Error: invalid level ID.</span>');
         } else {
@@ -3053,7 +3062,7 @@ class Api_v1 extends CI_Controller {
 
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Node ID',
+                'message' => 'Invalid Intent ID',
             ));
             return false;
 
@@ -3348,7 +3357,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Invalid Node ID',
+	            'message' => 'Invalid Intent ID',
 	        ));
 	    } else {
 
@@ -3446,7 +3455,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Node ID',
+                'message' => 'Invalid Intent ID',
             ));
 	    } else {
 
@@ -3509,7 +3518,7 @@ class Api_v1 extends CI_Controller {
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0 || !is_valid_intent($_POST['pid'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Node ID',
+                'message' => 'Invalid Intent ID',
             ));
 	    } else {
 

@@ -16,7 +16,7 @@ $engagement_filters = array(
     'e_u_id' => 'User ID',
     'e_b_id' => 'Bootcamp ID',
     'e_r_id' => 'Class ID',
-    'e_c_id' => 'Node ID',
+    'e_c_id' => 'Intent ID',
     'e_fp_id' => 'FB Page ID',
 );
 

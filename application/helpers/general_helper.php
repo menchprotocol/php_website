@@ -1118,17 +1118,17 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     } else {
 
-        //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & node-id AS the sorting logic depends on their exact position to sort!
+        //ATTENTION: DO NOT CHANGE THE ORDER OF data-link-id & intent-id AS the sorting logic depends on their exact position to sort!
 
         //CHANGE WITH CAUTION!
 
-        $ui = '<div id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" node-id="'.$intent['c_id'].'" class="list-group-item '.( $level>2 ? 'is_step_sortable' : 'is_sortable' ).' node_line_'.$intent['c_id'].'">';
+        $ui = '<div id="cr_'.$intent['cr_id'].'" data-link-id="'.$intent['cr_id'].'" intent-id="'.$intent['c_id'].'" class="list-group-item '.( $level>2 ? 'is_step_sortable' : 'is_sortable' ).' intent_line_'.$intent['c_id'].'">';
 
     }
 
 
     //Right content
-    $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-node-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
+    $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
         //Enable total hours/Task reporting...
         if($level<=2){
@@ -1174,7 +1174,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
             $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;';
         }
 
-        $ui .= '<span class="inline-level-'.$level.'"> #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" extension-rule="'.@$intent['c_extension_rule'].'" parent-node-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
+        $ui .= '<span class="inline-level-'.$level.'"> #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" extension-rule="'.@$intent['c_extension_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
 
     } elseif ($level>=3){
 
@@ -1196,7 +1196,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     //Any Steps?
     if($level==2){
 
-        $ui .= '<div id="list-outbound-'.$intent['c_id'].'" class="list-group step-group hidden" node-id="'.$intent['c_id'].'">';
+        $ui .= '<div id="list-outbound-'.$intent['c_id'].'" class="list-group step-group hidden" intent-id="'.$intent['c_id'].'">';
         //This line enables the in-between list moves to happen for empty lists:
         $ui .= '<div class="is_step_sortable dropin-box" style="height:1px;">&nbsp;</div>';
         if(isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0){
@@ -1209,9 +1209,9 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         if($editing_enabled && $child_enabled){
             $ui .= '<div class="list-group-item list_input new-step-input">
             <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" node-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addnode'.$intent['c_id'].'" placeholder=""></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addintent'.$intent['c_id'].'" placeholder=""></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" node-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
                         <div><i class="fa fa-plus"></i></div>
                     </span>
                 </span>
@@ -2566,7 +2566,7 @@ function html_run($run){
 	
 	$return_string .= '<div class="link-details">';
 	$return_string .= '<p class="list-group-item-text">'.'VALUE'.'</p>';
-	$return_string .= '<div class="list-group-item-text hover node_stats"><div>';
+	$return_string .= '<div class="list-group-item-text hover intent_stats"><div>';
 	
 	//Collector:
 	$return_string .= '<span><a href="/"><img src="https://www.gravatar.com/avatar/'.md5('ssasif').'?d=identicon" class="mini-image" /></a></span>';
@@ -2579,30 +2579,30 @@ function html_run($run){
 	
 	/*
 	//Update ID
-	$return_string .= '<span title="Unique Update ID assigned per each edit." data-toggle="tooltip" class="hastt">#'.$node[$key]['id'].'</span>';
+	$return_string .= '<span title="Unique Update ID assigned per each edit." data-toggle="tooltip" class="hastt">#'.$intent[$key]['id'].'</span>';
 	
 	if(auth_admin(1)){
 		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>';
 		$return_string .= '<ul class="dropdown-menu">';
-		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$node[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></li>';
+		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$intent[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></li>';
 		
 		//Make sure this is not a grandpa before showing the delete button:
 		$grandparents = $CI->config->item('grand_parents');
-		if(!($key==0 && array_key_exists($node[$key]['node_id'],$grandparents))){
-			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$node[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>'
+		if(!($key==0 && array_key_exists($intent[$key]['intent_id'],$grandparents))){
+			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$intent[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>'
 		}
 		
 		//Add search shortcuts:
-		$return_string .= '<li><a href="https://www.google.com/search?q='.urlencode($node[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Google</a></li>';
-		$return_string .= '<li><a href="https://www.youtube.com/results?search_query='.urlencode($node[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> YouTube</a></li>';
+		$return_string .= '<li><a href="https://www.google.com/search?q='.urlencode($intent[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Google</a></li>';
+		$return_string .= '<li><a href="https://www.youtube.com/results?search_query='.urlencode($intent[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> YouTube</a></li>';
 		
 		//Display inversing if NOT direct
 		if(!$is_direct){
-			//TODO $return_string .= '<li><a href="javascript:inverse_link('.$key.','.$node[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Flip Direction</a></li>';
+			//TODO $return_string .= '<li><a href="javascript:inverse_link('.$key.','.$intent[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Flip Direction</a></li>';
 		}
-		if($node[$key]['update_id']>0){
+		if($intent[$key]['update_id']>0){
 			//This gem has previous revisions:
-			//TODO $return_string .= '<li><a href="javascript:browse_revisions('.$key.','.$node[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Revisions</a></li>';
+			//TODO $return_string .= '<li><a href="javascript:browse_revisions('.$key.','.$intent[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Revisions</a></li>';
 		}
 		
 		$return_string .= '</ul></div>';

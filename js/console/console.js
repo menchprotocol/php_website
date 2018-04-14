@@ -127,12 +127,12 @@ $(document).ready(function() {
     //Watch the expand/close all buttons for Tasks:
     $('#task_view .expand_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('node-id'),1);
+            ms_toggle($( this ).attr('intent-id'),1);
         });
     });
     $('#task_view .close_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
-            ms_toggle($( this ).attr('node-id'),0);
+            ms_toggle($( this ).attr('intent-id'),0);
         });
     });
 

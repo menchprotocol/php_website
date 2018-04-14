@@ -10,13 +10,13 @@ $udata = $this->session->userdata('user');
 //This functions updates the input placeholders to refect the next item to be added:
 function update_tree_input(){
     //First update the number of Tasks in main input field:
-    $('#addnode').attr("placeholder", "Task #"+($("#list-outbound").children().length)+" Primary Outcome");
+    $('#addintent').attr("placeholder", "Task #"+($("#list-outbound").children().length)+" Primary Outcome");
 
     //Now go through each Step list and see whatsupp:
     if($('.step-group').length){
         $( ".step-group" ).each(function() {
-            var node_id = $( this ).attr('node-id');
-            $('#addnode'+node_id).attr("placeholder", "Step #"+($("#list-outbound-"+node_id).children().length-1)+" Primary Outcome");
+            var intent_id = $( this ).attr('intent-id');
+            $('#addintent'+intent_id).attr("placeholder", "Step #"+($("#list-outbound-"+intent_id).children().length-1)+" Primary Outcome");
         });
     }
 }
@@ -79,7 +79,7 @@ $(document).ready(function() {
     });
 
 
-    //addnode
+    //addintent
     if(window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
         var hash_parts = hash.split("-");
@@ -110,23 +110,23 @@ $(document).ready(function() {
 
         $( ".step-group" ).each(function() {
 
-            var node_id = $( this ).attr('node-id');
+            var intent_id = $( this ).attr('intent-id');
 
             //Load sorting:
-            load_intent_sort(node_id,"3");
+            load_intent_sort(intent_id,"3");
 
             //Load time:
-            $('#t_estimate_'+node_id).text(format_hours($('#t_estimate_'+node_id).attr('current-hours')));
+            $('#t_estimate_'+intent_id).text(format_hours($('#t_estimate_'+intent_id).attr('current-hours')));
 
         });
 
         if($('.is_step_sortable').length){
             //Goo through all Steps:
             $( ".is_step_sortable" ).each(function() {
-                var node_id = $(this).attr('node-id');
-                if(node_id){
+                var intent_id = $(this).attr('intent-id');
+                if(intent_id){
                     //Load time:
-                    $('#t_estimate_'+node_id).text(format_hours($('#t_estimate_'+node_id).attr('current-hours')));
+                    $('#t_estimate_'+intent_id).text(format_hours($('#t_estimate_'+intent_id).attr('current-hours')));
                 }
             });
         }
@@ -151,7 +151,7 @@ $(document).ready(function() {
     $('#dir_handle').click(function (e) {
         new_intent($('#pid').val(),2);
     });
-    $( "#addnode" ).keypress(function (e) {
+    $( "#addintent" ).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
             return new_intent($('#pid').val(),2);
@@ -161,7 +161,7 @@ $(document).ready(function() {
 
 	//Load Algolia:
 	/*
-	$( "#addnode" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+	$( "#addintent" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
 		link_lintent(suggestion.c_id);
 
@@ -183,17 +183,17 @@ $(document).ready(function() {
 		      },
 		      header: function(data) {
 		    	  if(!data.isEmpty){
-		    		  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+		    		  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
 		    	  }
 		      },
 		      empty: function(data) {
-	    		  	  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_node"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+	    		  	  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
 		      },
 		    }
 	}]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-        	new_intent($( "#addnode" ).val());
+        	new_intent($( "#addintent" ).val());
             return true;
         }
     });
@@ -221,11 +221,11 @@ function new_intent(pid,next_level){
 
     //Set variables mostly based on level:
     if(next_level==2){
-        var input_field = $('#addnode');
+        var input_field = $('#addintent');
         var sort_list_id = "list-outbound";
         var sort_handler = ".is_sortable";
     } else if(next_level==3){
-        var input_field = $('#addnode'+pid);
+        var input_field = $('#addintent'+pid);
         var sort_list_id = "list-outbound-"+pid;
         var sort_handler = ".is_step_sortable";
     }
@@ -308,7 +308,7 @@ function link_lintent(target_id){
      $( "#list-outbound>div" ).before('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
 
      //Empty Input:
- 	$( "#addnode" ).val("").focus();
+ 	$( "#addintent" ).val("").focus();
 
  	//Update backend:
  	$.post("/api_v1/c_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
@@ -352,10 +352,10 @@ function c_sort(c_id,level){
  	    if(!$(this).hasClass('dropin-box')){
 
             //Fetch variables for this intent:
-            var pid = parseInt($(this).attr('node-id'));
+            var pid = parseInt($(this).attr('intent-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? '' : 'Step' ); //The default for all nodes
+            var prefix = ( level==2 ? '' : 'Step' ); //The default for all intents
 
             if(status>=1){
 
@@ -372,7 +372,7 @@ function c_sort(c_id,level){
 
                 if(level==2 && !(db_rank==sort_rank) && !c_id){
                     is_properly_sorted = false;
-                    console.log('Node #'+pid+' detected out of sync.');
+                    console.log('Intent #'+pid+' detected out of sync.');
                 }
 
                 //Update sort handler:
@@ -472,7 +472,7 @@ function load_intent_sort(pid,level){
 
                     //All good as expected!
                     //Moved the parent pointer:
-                    $('.maplevel'+inputs.c_id).attr('parent-node-id',inputs.to_c_id);
+                    $('.maplevel'+inputs.c_id).attr('parent-intent-id',inputs.to_c_id);
 
                     //Determine core variables for hour move calculations:
                     var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('current-hours'));
@@ -517,7 +517,7 @@ function load_intent_sort(pid,level){
 
 function i_load_frame(c_id, level){
 
-    var messages_focus_pid = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('node-id')) );
+    var messages_focus_pid = ( $('#iphonex').hasClass('hidden') ? 0 : parseInt($('#iphonex').attr('intent-id')) );
 
     //Check to see if its open or close:
     if(messages_focus_pid==c_id){
@@ -535,7 +535,7 @@ function i_load_frame(c_id, level){
         var handler = $( "#iphone-screen" );
 
         //Define the top menu that would not change:
-        $('#iphonex').attr('node-id',c_id);
+        $('#iphonex').attr('intent-id',c_id);
 
         //Define standard phone header:
         var top_menu = '<div class="ix-top">\n' +
@@ -573,7 +573,7 @@ function i_load_frame(c_id, level){
 function load_modify(c_id, level){
 
     //$('.levelz, #modifybox').removeClass('hidden');
-    var modify_focus_pid = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('node-id')) );
+    var modify_focus_pid = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) );
     var modify_focus_level = ( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('level')) );
 
     //Do we already have this loaded? Then we should close it:
@@ -614,7 +614,7 @@ function load_modify(c_id, level){
         $('.level'+level).removeClass('hidden');
 
         //Update variables:
-        $('#modifybox').attr('node-id',c_id);
+        $('#modifybox').attr('intent-id',c_id);
         $('#modifybox').attr('level',level);
 
     }
@@ -633,7 +633,7 @@ function c_save_settings(){
     //Define shared data for all 3 levels:
     var modify_data = {
         b_id:$('#b_id').val(),
-        pid:( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('node-id')) ),
+        pid:( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('intent-id')) ),
         level:( $('#modifybox').hasClass('hidden') ? 0 : parseInt($('#modifybox').attr('level')) ),
     };
 
@@ -703,15 +703,15 @@ function c_save_settings(){
                         if (modify_data['c_status'] < 0) {
 
                             //Yes! Remove from UI:
-                            $('.node_line_' + modify_data['pid']).html('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
+                            $('.intent_line_' + modify_data['pid']).html('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
 
                             //Disapper in a while:
                             setTimeout(function () {
                                 //Hide the editor & saving results:
-                                $('.node_line_' + modify_data['pid']).fadeOut();
+                                $('.intent_line_' + modify_data['pid']).fadeOut();
                                 setTimeout(function () {
                                     //Hide the editor & saving results:
-                                    $('.node_line_' + modify_data['pid']).remove();
+                                    $('.intent_line_' + modify_data['pid']).remove();
 
                                     //Hide editing box:
                                     $('#modifybox').addClass('hidden');
@@ -756,7 +756,7 @@ function c_save_settings(){
                     //Update time?
                     var current_hours_step = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
                     var step_deficit = modify_data['c_time_estimate'] - current_hours_step;
-                    var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-node-id'));
+                    var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-intent-id'));
 
                     //Update Completion Settings (All the time):
                     $('.c_objective_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
@@ -779,14 +779,14 @@ function c_save_settings(){
                         //Has this been deleted?
                         if(modify_data['c_status']<0){
                             //Yes! Remove from UI:
-                            $('.node_line_'+modify_data['pid']).html('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
+                            $('.intent_line_'+modify_data['pid']).html('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
                             //Disapper in a while:
                             setTimeout(function() {
                                 //Hide the editor & saving results:
-                                $('.node_line_'+modify_data['pid']).fadeOut();
+                                $('.intent_line_'+modify_data['pid']).fadeOut();
                                 setTimeout(function() {
                                     //Hide the editor & saving results:
-                                    $('.node_line_'+modify_data['pid']).remove();
+                                    $('.intent_line_'+modify_data['pid']).remove();
 
                                     //Hide editing box:
                                     $('#modifybox').addClass('hidden');
@@ -1109,7 +1109,7 @@ function add_item(group_id,prefix,current_value){
                     ?>
                     <div class="list-group-item list_input">
                         <div class="input-group">
-                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="70" id="addnode" placeholder=""></div>
+                            <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="70" id="addintent" placeholder=""></div>
                             <span class="input-group-addon" style="padding-right:8px;">
                             <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                 <div><i class="fa fa-plus"></i></div>
@@ -1142,7 +1142,7 @@ function add_item(group_id,prefix,current_value){
 
 	<div class="col-xs-6" id="iphonecol">
 
-        <div id="modifybox" class="hidden" node-id="0" level="0">
+        <div id="modifybox" class="hidden" intent-id="0" level="0">
 
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
 
@@ -1234,7 +1234,7 @@ function add_item(group_id,prefix,current_value){
         </div>
 
 
-        <div class="marvel-device iphone-x hidden" id="iphonex" node-id="">
+        <div class="marvel-device iphone-x hidden" id="iphonex" intent-id="">
             <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
             <div class="notch">
                 <div class="camera"></div>

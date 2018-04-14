@@ -1400,7 +1400,7 @@ class Comm_model extends CI_Model {
             if($message['e_r_id'] && !$message['e_b_id']){
                 $error_message = 'Had e_r_id=['.$message['e_r_id'].'] but missing e_b_id';
             } elseif(!isset($tree[0])){
-                $error_message = 'Invalid Node ID ['.$message['e_c_id'].']';
+                $error_message = 'Invalid Intent ID ['.$message['e_c_id'].']';
             } elseif($message['e_b_id'] && count($bs)<1){
                 $error_message = 'Failed to find Bootcamp ['.$message['e_b_id'].']';
             } elseif($message['e_r_id'] && !$message['e_b_id']){

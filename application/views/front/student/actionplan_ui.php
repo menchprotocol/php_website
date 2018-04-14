@@ -146,7 +146,7 @@ if(!$class_has_started){
 
 
 /* ******************************
- * Node ONSTART Messages
+ * Intent ONSTART Messages
  ****************************** */
 $displayed_messages = 0;
 if(count($intent['c__messages'])>0){
@@ -380,7 +380,7 @@ if($level==1){
             $ui .= '<span>Step '.$this_intent['cr_outbound_rank'].':</span> ';
         }
 
-        //Node title:
+        //Intent title:
         $ui .= $this_intent['c_objective'].' ';
 
         $ui .= '<span class="sub-stats">';
