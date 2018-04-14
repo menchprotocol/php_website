@@ -1748,8 +1748,8 @@ WHERE ru.ru_status >= 4
 
         //Return results:
         return array(
-            'status' => ( count($obj_add_message)>0 ? 1 : 0 ),
-            'message' => count($obj_add_message).' items updated',
+            'status' => ( count($obj_add_message['objectIDs'])>0 ? 1 : 0 ),
+            'message' => count($obj_add_message['objectIDs']).' items updated',
         );
 
     }
