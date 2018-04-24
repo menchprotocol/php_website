@@ -80,7 +80,7 @@ if(count($admissions)>0 && is_array($admissions)){
                 echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</b></p>';
                 //Show date:
                 echo '<p style="font-size: 0.9em;"><i class="fa fa-calendar" aria-hidden="true"></i> ';
-                if($bs[0]['b_is_parent']){
+                if(isset($bs[0]['b_is_parent']) && $bs[0]['b_is_parent']){
 
                     //Should have some child Bootcamps:
                     $child_intents = $this->Db_model->cr_outbound_fetch(array(
@@ -101,7 +101,6 @@ if(count($admissions)>0 && is_array($admissions)){
                     } else {
                         echo 'Dates not yet selected';
                     }
-
 
                 } else {
                     echo time_format($bs[0]['this_class']['r_start_date'],2).' - '.trim(time_format($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
