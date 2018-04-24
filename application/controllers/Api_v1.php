@@ -3438,7 +3438,7 @@ class Api_v1 extends CI_Controller {
                     'post' => $_POST,
                     'file' => $_FILES,
                 ),
-                'e_messages' => 'i_attach() failed to save file locally',
+                'e_message' => 'i_attach() failed to save file locally',
                 'e_type_id' => 8,
             ));
 
