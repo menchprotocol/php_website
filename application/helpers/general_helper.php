@@ -1318,7 +1318,7 @@ function b_aggregate($b,$skip_parent=false){
     $b['b_p2_weeks'] = 0; //Defines how many weeks this is offered
     $b['b_p3_weeks'] = 0; //Defines how many weeks this is offered
     $b['b_p2_max_seats'] = 0; //Would be offered if any of sub-Bootcamps offer
-    $b['b_difficulty_level'] = 1; //Beginner
+    $b['b_difficulty_level'] = 0; //Not set
 
     $CI =& get_instance();
 
@@ -1367,9 +1367,9 @@ function b_aggregate($b,$skip_parent=false){
         }
 
         //Max Difficulty level:
-        if($bs[0]['b_difficulty_level']>$b['b_difficulty_level']){
+        if(intval($bs[0]['b_difficulty_level'])>$b['b_difficulty_level']){
             //This is the most difficult child Bootcamp, set this as the overall difficulty:
-            $b['b_difficulty_level'] = $bs[0]['b_difficulty_level'];
+            $b['b_difficulty_level'] = intval($bs[0]['b_difficulty_level']);
         }
     }
 

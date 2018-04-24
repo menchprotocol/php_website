@@ -3429,10 +3429,22 @@ class Api_v1 extends CI_Controller {
 	            'message' => 'Unknown upload type.',
 	        ));
             exit;
-	    } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || !isset($_FILES[$_POST['upload_type']]['type']) || !isset($_FILES[$_POST['upload_type']]['size'])){
+	    } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0){
+
+	        //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_json' => array(
+                    'post' => $_POST,
+                    'file' => $_FILES,
+                ),
+                'e_messages' => 'i_attach() failed to save file locally',
+                'e_type_id' => 8,
+            ));
+
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Missing file.',
+	            'message' => 'Unable to save file.',
 	        ));
             exit;
 	    } elseif($_FILES[$_POST['upload_type']]['size']>($file_limit_mb*1024*1024)){
@@ -3460,32 +3472,14 @@ class Api_v1 extends CI_Controller {
         //Attempt to save file locally:
         $file_parts = explode('.',$_FILES[$_POST['upload_type']]["name"]);
         $temp_local = "application/cache/temp_files/".md5($file_parts[0]).'.'.$file_parts[(count($file_parts)-1)];
-        $local_save_result = move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+        move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
 
-        //Save for admins:
-        $this->Db_model->e_create(array(
-            'e_json' => array(
-                'post' => $_POST,
-                'file' => $_FILES,
-                'temp_local' => $temp_local,
-                'local_save_result' => $local_save_result,
-            ),
-            'e_type_id' => 8,
-        ));
-
-        if(!(intval($local_save_result)==1)){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Could not save this file.',
-            ));
-            exit;
-        }
 
         //Attempt to store in Cloud:
         if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
             $mime = $_FILES[$_POST['upload_type']]['type'];
         } else {
-            $mime = @mime_content_type($temp_local);
+            $mime = mime_content_type($temp_local);
         }
 
         //Upload to S3:
