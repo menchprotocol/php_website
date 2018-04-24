@@ -151,7 +151,7 @@ $(document).ready(function() {
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-dot-circle-o' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fa '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'" aria-hidden="true"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fa fa-lock" aria-hidden="true"></i>' : '' );
+                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fa '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'" aria-hidden="true"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fa fa-lock" aria-hidden="true"></i>' : '' );
             },
         }
 
