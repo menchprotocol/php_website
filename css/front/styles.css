@@ -1396,12 +1396,12 @@ a .badge {
 }
 
 .card-content .card-title {
-    line-height: 110%;
     margin:7px 0 12px 0 !important;
 }
 
 .card-content .card-title a {
     font-size: 1.4em;
+    line-height: 110% !important;
 }
 
 .line_1 {

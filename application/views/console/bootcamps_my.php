@@ -93,14 +93,11 @@ $website = $this->config->item('website');
 <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 
 
-<?php if($udata['u_status']==3){ ?>
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
     <li id="nav_sevenday" class="active"><a href="#sevenday"><?= $this->lang->line('level_0_icon') .' '. str_replace('Bootcamp','',$this->lang->line('level_0_name')) ?></a></li>
     <li id="nav_multiweek"><a href="#multiweek"><?= $this->lang->line('level_1_icon') .' '. str_replace('Bootcamp','',$this->lang->line('level_1_name')) ?></a></li>
     <!-- <li id="nav_goals"><a href="#goals"><?= $this->lang->line('level_2_icon') .' '. $this->lang->line('level_2_name').'s' ?></a></li> -->
 </ul>
-<?php } ?>
-
 
 <div class="tab-content tab-space">
 

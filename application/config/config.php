@@ -36,7 +36,7 @@ $config['required_fb_permissions'] = array(
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
-$config['file_limit_mb'] = 30; //The max file size to be uploaded
+$config['file_limit_mb'] = 30; //Server setting is 32MB. see here: mench.com/ses
 
 //That is auto added to all Bootcamp teams as Adviser role:
 $config['message_max'] = 420; //Max number of characters allowed in messages
