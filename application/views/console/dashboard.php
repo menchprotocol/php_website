@@ -187,7 +187,4 @@ echo '</div>';
 if($count_done>0){
     echo '<div class="toggle-done"><a href="javascript:void(0)" onclick="$(\'.checklist-done\').toggleClass(\'checklist-done-see\')"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Steps</a></div>';
 }
-if($launch_status['progress']==100){
-    echo '<p>'.$launch_status['completion_message'].'</p>';
-}
 ?>

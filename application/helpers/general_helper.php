@@ -1780,7 +1780,6 @@ function b_progress($b){
     return array(
         'stage' => '<i class="fa fa-steps" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> <i class="fa fa-rocket" aria-hidden="true"></i> Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
-        'completion_message' => 'Now that your checklist is complete you can review your <a href="/'.$b['b_url_key'].'" target="_blank"><u>Landing Page</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a> to ensure it looks good. Wait until Mench team updates your Bootcamp status to '.status_bible('b',2).'. At this time you can launch your Bootcamp by inviting your students to join.',
         'check_list' => $checklist,
     );
 }
