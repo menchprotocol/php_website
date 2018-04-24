@@ -3416,133 +3416,143 @@ class Api_v1 extends CI_Controller {
 	            'status' => 0,
 	            'message' => 'Invalid Session. Refresh to Continue',
 	        ));
+            exit;
 	    } elseif(!isset($_POST['pid']) || !isset($_POST['b_id']) || !isset($_POST['i_status'])){
 	        echo_json(array(
 	            'status' => 0,
 	            'message' => 'Missing intent data.',
 	        ));
+            exit;
 	    } elseif(!isset($_POST['upload_type']) || !in_array($_POST['upload_type'],array('file','drop'))){
 	        echo_json(array(
 	            'status' => 0,
 	            'message' => 'Unknown upload type.',
 	        ));
+            exit;
 	    } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || !isset($_FILES[$_POST['upload_type']]['type']) || !isset($_FILES[$_POST['upload_type']]['size'])){
 	        echo_json(array(
 	            'status' => 0,
 	            'message' => 'Missing file.',
 	        ));
+            exit;
 	    } elseif($_FILES[$_POST['upload_type']]['size']>($file_limit_mb*1024*1024)){
 
 	        echo_json(array(
 	            'status' => 0,
 	            'message' => 'File is larger than '.$file_limit_mb.' MB.',
 	        ));
+            exit;
 
-	    } else {
-
-	        //Fetch Bootcamp:
-            $bs = $this->Db_model->b_fetch(array(
-                'b.b_id' => $_POST['b_id'],
-            ));
-            if(count($bs)<1){
-                echo_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid Bootcamp ID.',
-                ));
-                return false;
-            }
-
-	        //First save file locally:
-            $file_parts = explode('.',$_FILES[$_POST['upload_type']]["name"]);
-	        $temp_local = "application/cache/temp_files/".md5($file_parts[0]).'.'.$file_parts[(count($file_parts)-1)];
-	        $res = move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
-
-	        //Attempt to store in Cloud:
-	        if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
-	            $mime = $_FILES[$_POST['upload_type']]['type'];
-	        } else {
-	            $mime = @mime_content_type($temp_local);
-	        }
-
-	        //Upload to S3:
-	        $new_file_url = trim(save_file( $temp_local , $_FILES[$_POST['upload_type']] , true ));
-
-	        //What happened?
-	        if(!$new_file_url){
-
-	            //Oops something went wrong:
-	            echo_json(array(
-	                'status' => 0,
-	                'message' => 'Could not save to cloud!',
-	            ));
-
-	        } else {
-
-	            //Detect file type:
-	            $i_media_type = mime_type($mime);
-
-	            //Create Message:
-	            $message = '/attach '.$i_media_type.':'.$new_file_url;
-
-	            //Create message:
-	            $i = $this->Db_model->i_create(array(
-	                'i_creator_id' => $udata['u_id'],
-	                'i_c_id' => intval($_POST['pid']),
-	                'i_media_type' => $i_media_type,
-	                'i_message' => $message,
-	                'i_url' => $new_file_url,
-                    'i_status' => $_POST['i_status'],
-	                'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-	                    'i_status' => $_POST['i_status'],
-	                    'i_c_id' => $_POST['pid'],
-	                )),
-	            ));
-
-	            //Fetch full message:
-	            $new_messages = $this->Db_model->i_fetch(array(
-	                'i_id' => $i['i_id'],
-	            ));
-
-	            //Log engagement:
-	            $this->Db_model->e_create(array(
-	                'e_initiator_u_id' => $udata['u_id'],
-	                'e_json' => array(
-	                    'post' => $_POST,
-	                    'file' => $_FILES,
-	                    'after' => $new_messages[0],
-	                ),
-	                'e_type_id' => 34, //Message added e_type_id=34
-	                'e_i_id' => intval($new_messages[0]['i_id']),
-	                'e_c_id' => intval($new_messages[0]['i_c_id']),
-	                'e_b_id' => $bs[0]['b_id'],
-	            ));
-
-
-                //Does it have an attachment and a connected Facebook Page? If so, save the attachment:
-                if($bs[0]['b_fp_id']>0 && in_array($i_media_type,array('image','audio','video','file'))){
-                    //Log engagement for this to be done via a Cron Job:
-                    $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $udata['u_id'],
-                        'e_type_id' => 83, //Message Facebook Sync e_type_id=83
-                        'e_i_id' => intval($new_messages[0]['i_id']),
-                        'e_c_id' => intval($new_messages[0]['i_c_id']),
-                        'e_b_id' => $bs[0]['b_id'],
-                        'e_fp_id' => $bs[0]['b_fp_id'],
-                        'e_cron_job' => 0, //Job pending
-                    ));
-                }
-
-
-	            //Echo message:
-	            echo_json(array(
-	                'status' => 1,
-	                'message' => echo_message( array_merge($new_messages[0], array(
-	                    'e_b_id'=>$bs[0]['b_id'],
-                        'e_recipient_u_id'=>$udata['u_id'],
-                    )), $_POST['level']),
-	            ));
-	        }
 	    }
+
+        //Fetch Bootcamp:
+        $bs = $this->Db_model->b_fetch(array(
+            'b.b_id' => $_POST['b_id'],
+        ));
+        if(count($bs)<1){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Bootcamp ID.',
+            ));
+            return false;
+        }
+
+        //Attempt to save file locally:
+        $file_parts = explode('.',$_FILES[$_POST['upload_type']]["name"]);
+        $temp_local = "application/cache/temp_files/".md5($file_parts[0]).'.'.$file_parts[(count($file_parts)-1)];
+        $res = move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+
+        if(!(intval($res)==1)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Could not save this file.',
+            ));
+            exit;
+        }
+
+        //Attempt to store in Cloud:
+        if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
+            $mime = $_FILES[$_POST['upload_type']]['type'];
+        } else {
+            $mime = @mime_content_type($temp_local);
+        }
+
+        //Upload to S3:
+        $new_file_url = trim(save_file( $temp_local , $_FILES[$_POST['upload_type']] , true ));
+
+        //What happened?
+        if(!$new_file_url){
+            //Oops something went wrong:
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Could not save to cloud!',
+            ));
+            exit;
+        }
+
+        //Detect file type:
+        $i_media_type = mime_type($mime);
+
+        //Create Message:
+        $message = '/attach '.$i_media_type.':'.$new_file_url;
+
+        //Create message:
+        $i = $this->Db_model->i_create(array(
+            'i_creator_id' => $udata['u_id'],
+            'i_c_id' => intval($_POST['pid']),
+            'i_media_type' => $i_media_type,
+            'i_message' => $message,
+            'i_url' => $new_file_url,
+            'i_status' => $_POST['i_status'],
+            'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                    'i_status' => $_POST['i_status'],
+                    'i_c_id' => $_POST['pid'],
+                )),
+        ));
+
+        //Fetch full message:
+        $new_messages = $this->Db_model->i_fetch(array(
+            'i_id' => $i['i_id'],
+        ));
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $udata['u_id'],
+            'e_json' => array(
+                'post' => $_POST,
+                'file' => $_FILES,
+                'after' => $new_messages[0],
+            ),
+            'e_type_id' => 34, //Message added e_type_id=34
+            'e_i_id' => intval($new_messages[0]['i_id']),
+            'e_c_id' => intval($new_messages[0]['i_c_id']),
+            'e_b_id' => $bs[0]['b_id'],
+        ));
+
+
+        //Does it have an attachment and a connected Facebook Page? If so, save the attachment:
+        if($bs[0]['b_fp_id']>0 && in_array($i_media_type,array('image','audio','video','file'))){
+            //Log engagement for this to be done via a Cron Job:
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $udata['u_id'],
+                'e_type_id' => 83, //Message Facebook Sync e_type_id=83
+                'e_i_id' => intval($new_messages[0]['i_id']),
+                'e_c_id' => intval($new_messages[0]['i_c_id']),
+                'e_b_id' => $bs[0]['b_id'],
+                'e_fp_id' => $bs[0]['b_fp_id'],
+                'e_cron_job' => 0, //Job pending
+            ));
+        }
+
+
+        //Echo message:
+        echo_json(array(
+            'status' => 1,
+            'message' => echo_message( array_merge($new_messages[0], array(
+                'e_b_id'=>$bs[0]['b_id'],
+                'e_recipient_u_id'=>$udata['u_id'],
+            )), $_POST['level']),
+        ));
 	}
 
 	function i_create(){
