@@ -131,7 +131,6 @@ a.badge-primary:hover {
     font-family: 'Titillium Web',sans-serif;
     font-size: 36px;
     color: #3C4858;
-    text-transform: lowercase;
 }
 .nav { margin-bottom: 10px; }
 .nav li a { text-transform:uppercase; }

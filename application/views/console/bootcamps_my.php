@@ -8,8 +8,7 @@ $website = $this->config->item('website');
 
         //Prevents creation forms to submit on enter
         $(window).keydown(function(event){
-            if(event.keyCode == 13) {
-
+            if((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
                 if(window.location.hash && window.location.hash.substring(1)=='multiweek') {
                     b_create(1);
                 } else {
