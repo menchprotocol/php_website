@@ -129,7 +129,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
 
 
-            if($bs[0]['b_is_parent']){
+            if(isset($bs[0]['b_is_parent']) &&$bs[0]['b_is_parent']){
 
                 //Fetch the Child Bootcamp ID:
                 echo '<ul class="child_admissions">';
