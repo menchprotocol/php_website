@@ -3484,9 +3484,6 @@ class Api_v1 extends CI_Controller {
 	            //Create Message:
 	            $message = '/attach '.$i_media_type.':'.$new_file_url;
 
-	            //Delete locally saved file:
-                unlink($temp_local);
-
 	            //Create message:
 	            $i = $this->Db_model->i_create(array(
 	                'i_creator_id' => $udata['u_id'],
