@@ -147,6 +147,8 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fa-eye',
         ),
         */
+
+        //The following two status ICONS are hard-coded in console.js for Algolia search
         2 => array(
             's_name'  => 'Private URL',
             's_desc'  => 'Bootcamp open for admission for anyone who received the Private Landing Page URL',
