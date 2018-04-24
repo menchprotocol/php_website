@@ -2033,7 +2033,7 @@ class Api_v1 extends CI_Controller {
         ));
         if(count($bs)>0){
             //Ooops, we have a duplicate:
-            $generated_key = $generated_key.'-'.rand(0,99999);
+            $generated_key = $generated_key.rand(0,99999);
         }
 
         //Fetch default list values:

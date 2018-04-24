@@ -105,7 +105,6 @@ $website = $this->config->item('website');
 
     <div class="tab-pane" id="tabmultiweek">
 
-        <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Only Mench Admins can create Multi-week Bootcamps.</p>
         <p>Multi-Week Bootcamps are a combination of existing 7-Day Bootcamps:</p>
 
         <?php

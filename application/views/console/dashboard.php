@@ -47,7 +47,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 if($b['b_is_parent']){
 
-    echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fa fa-users" aria-hidden="true"></i> Class Admissions</b></a></h4></div>';
+    echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fa fa-users" aria-hidden="true"></i> Admissions</b></a></h4></div>';
 
     //Fetch admission stats:
     $student_funnel = array(
