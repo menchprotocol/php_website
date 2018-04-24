@@ -11,7 +11,7 @@ $(document).ready(function() {
         source: function(q, cb) {
             algolia_index.search(q, {
                 hitsPerPage: 7,
-                filters: '(b_is_parent=0) AND (b_old_format=0) AND (b_status>=2)' + ( parseInt($('#u_status').val())<3 ? ' AND (b_status==3 OR alg_owner_id=' + $('#u_id').val() + ')' : '' ),
+                filters: '(b_is_parent=0) AND (b_old_format=0) AND (b_status>=2)' + ( parseInt($('#u_status').val())<3 ? ' AND (b_status=3 OR alg_owner_id=' + $('#u_id').val() + ')' : '' ),
             }, function(error, content) {
                 if (error) {
                     cb([]);
