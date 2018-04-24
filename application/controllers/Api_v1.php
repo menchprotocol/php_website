@@ -3455,7 +3455,16 @@ class Api_v1 extends CI_Controller {
 	        //First save file locally:
             $file_parts = explode('.',$_FILES[$_POST['upload_type']]["name"]);
 	        $temp_local = "application/cache/temp_files/".md5($file_parts[0]).'.'.$file_parts[(count($file_parts)-1)];
-	        move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+
+	        $res = move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+
+            //Oops something went wrong:
+            echo_json(array(
+                'status' => 0,
+                'message' => $_FILES[$_POST['upload_type']]['tmp_name'].' >> '.$_FILES[$_POST['upload_type']]["name"].' >> '.$res,
+            ));
+
+	        exit;
 
 	        //Attempt to store in Cloud:
 	        if(isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type'])>0){
