@@ -3430,21 +3430,9 @@ class Api_v1 extends CI_Controller {
 	        ));
             exit;
 	    } elseif(!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0){
-
-	        //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_json' => array(
-                    'post' => $_POST,
-                    'file' => $_FILES,
-                ),
-                'e_message' => 'i_attach() failed to save file locally',
-                'e_type_id' => 8,
-            ));
-
 	        echo_json(array(
 	            'status' => 0,
-	            'message' => 'Unable to save file.',
+	            'message' => 'Unable to save file. Max file size allowed is '.$file_limit_mb.' MB.',
 	        ));
             exit;
 	    } elseif($_FILES[$_POST['upload_type']]['size']>($file_limit_mb*1024*1024)){

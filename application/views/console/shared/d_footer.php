@@ -6,6 +6,10 @@
 <?php 
 $udata = $this->session->userdata('user');
 
+//For JS functions such as search and in account page
+echo '<input type="hidden" id="u_id" value="'.$udata['u_id'].'" />';
+echo '<input type="hidden" id="u_status" value="'.$udata['u_status'].'" />';
+
 
 if(isset($load_view)){
     $data = array();

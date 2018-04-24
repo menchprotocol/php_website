@@ -13,7 +13,7 @@
 
 
 <h1><?= $title ?></h1>
-<p class="home_line_2">Learn in-demand skills from industry experts by completing weekly Bootcamps. Tuition ranges from <span style="display:inline-block;">$0-163 per week</span> based on <?= strtolower($this->lang->line('obj_rs_name')) ?> you choose. We <a href="https://support.mench.com/hc/en-us/articles/115002080031"><b>guarantee results</b></a> by refunding students who do the work but don't accomplish the Bootcamp outcome by the end of each week. New classes start every Monday at 00:00 PST. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span></p>
+<p class="home_line_2">Land a tech job by completing weekly Bootcamps from industry experts. Tuition ranges from <span style="display:inline-block;">$0-163 per week</span> based on the <?= strtolower($this->lang->line('obj_rs_name')) ?> you choose. We offer a <a href="https://support.mench.com/hc/en-us/articles/115002080031"><b>tuition reimbursement guarantee</b></a> for students who do the work but don't get a job offer by the last day of their Bootcamp. New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span></p>
 <br />
 
 <!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->

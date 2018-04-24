@@ -74,7 +74,7 @@ function move_ui(adjustment){
                 //Payment is required:
                 $('#btn_next a').html('CONFIRM & PAY &nbsp;[$'+support_price+'] &nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i>');
                 $('#payment_method').html('<span id="white_paypal"><img src="/img/paypal.png" /></span>');
-                $('#outcome_guarantee').html(' (<a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Outcome Guaranteed <i class="fa fa-external-link-square" aria-hidden="true"></i></a>)');
+                $('#outcome_guarantee').html(' (<a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Tuition Reimbursement Guarantee <i class="fa fa-external-link-square" aria-hidden="true"></i></a>)');
 
             } else {
                 //This is a FREE Class:

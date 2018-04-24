@@ -11,11 +11,9 @@ if($b['b_is_parent']){
 <style> .breadcrumb li { display:block; } </style>
 <script src="/js/console/<?= ( $b['b_is_parent'] ? 'actionplan_multiweek.js' : 'actionplan_7day.js' ) ?>" type="text/javascript"></script>
 
-<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
 <input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
 <input type="hidden" id="obj_name" value="" />
-
 
 <script>
 

@@ -21,7 +21,7 @@ class Front extends CI_Controller {
 	function index($c_id=0){
 		//Load home page:
         $data = array(
-            'title' => 'Advance Your Tech Career',
+            'title' => 'Land Your Dream Tech Job',
             'c_id' => $c_id,
         );
 		$this->load->view('front/shared/f_header' , $data);

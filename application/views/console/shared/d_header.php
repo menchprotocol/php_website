@@ -37,8 +37,6 @@ $uri_segment_2 = $this->uri->segment(2);
 </head>
 
 
-
-
 <body id="console_body">
 
     <!-- Require Facebook Chat for Logged-in Instructors -->
@@ -60,7 +58,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
                                 <td style="width:40px;"><a href="/console"><img src="/img/bp_128.png" /></a></td>
-                                <td><?php if($udata['u_status']==3){ ?> <input type="text" id="console_search" placeholder="Search Bootcamps..."> <?php } ?></td>
+                                <td><input type="text" id="console_search" placeholder="Search Bootcamps..."></td>
                             </tr>
                         </table>
 					</span>

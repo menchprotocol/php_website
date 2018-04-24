@@ -1722,6 +1722,7 @@ WHERE ru.ru_status >= 4
                 $new_item['b_id'] = intval($item['b_id']); //rquired for all objects
                 $new_item['b_status'] = intval($item['b_status']);
                 $new_item['b_is_parent'] = intval($item['b_is_parent']);
+                $new_item['b_old_format'] = intval($item['b_old_format']);
 
                 //Standard algolia terms:
                 $new_item['alg_name'] = $item['c_objective'];

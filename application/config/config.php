@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.11',
+    'version' => '3.12',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -36,7 +36,7 @@ $config['required_fb_permissions'] = array(
 //Used to generate application status links:
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
-$config['file_limit_mb'] = 30; //Server setting is 32MB. see here: mench.com/ses
+$config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
 
 //That is auto added to all Bootcamp teams as Adviser role:
 $config['message_max'] = 420; //Max number of characters allowed in messages
@@ -374,7 +374,7 @@ $config['object_statuses'] = array(
             's_name'  => 'Admission Initiated',
             's_desc'  => 'Student initiated application but had not completed the checkout process',
             'u_min_status'  => 999, //System insertion only
-            's_mini_icon' => 'fa-pencil-square',
+            's_mini_icon' => 'fa-question-circle',
         ),
         /*
         1 => array(
@@ -400,21 +400,21 @@ $config['object_statuses'] = array(
         4 => array(
             's_name'  => 'Admitted',
             's_desc'  => 'Student joined Class',
-            's_mini_icon' => 'fa-user',
+            's_mini_icon' => 'fa-user-circle',
             'u_min_status'  => 1,
         ),
 
         //Upon Class End Time:
         6 => array(
             's_name'  => 'Failed',
-            's_desc'  => 'Student unable to complete all Tasks by the Class end time',
+            's_desc'  => 'Student did not complete all Tasks by the last day of the Bootcamp',
             's_mini_icon' => 'fa-minus-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
         7 => array(
             's_name'  => 'Completed',
             's_desc'  => 'Student successfully completed all Tasks by the Class end time and became a Bootcamp graduate',
-            's_mini_icon' => 'fa-graduation-cap',
+            's_mini_icon' => 'fa-check-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
     ),

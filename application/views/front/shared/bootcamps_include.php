@@ -29,8 +29,8 @@
                 <div class="icon">
                     <i class="fa fa-smile-o" style="color:#3C4858;" aria-hidden="true"></i>
                 </div>
-                <h3 class="info-title">Outcome Guarantee</h3>
-                <p>We promise that following the Action Plan will empower you to accomplish the Bootcamp's outcome, which is why we offer a refund to students who do the work but do not accomplish the outcome. <a href="https://support.mench.com/hc/en-us/articles/115002080031">Learn more &raquo;</a></p>
+                <h3 class="info-title">Tuition Guarantee</h3>
+                <p>We believe hard work should always pay off, which is why we offer a <a href="https://support.mench.com/hc/en-us/articles/115002080031">Tuition Reimbursement Guarantee</a> for students who do the work but fail to accomplish the target outcome by the end of their Bootcamp.</p>
             </div>
         </div>
 

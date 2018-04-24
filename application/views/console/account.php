@@ -132,9 +132,7 @@ function insert_gravatar(){
 <div class="tab-content tab-space">
 
     <div class="tab-pane active" id="tabprofile">
-    	
-    	<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
-    	
+
         <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fa fa-id-card" aria-hidden="true"></i> Name</h4></div>
         
         <div class="row" style="margin:0 0 0 0;">

@@ -135,7 +135,12 @@ $(document).ready(function() {
     }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
 
         source: function(q, cb) {
-            algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+            algolia_index.search(q, {
+
+                hitsPerPage: 7,
+                filters: ( parseInt($('#u_status').val())==3 ? 'b_status>=2' : 'b_status>=2 AND alg_owner_id=' + $('#u_id').val() ),
+
+            }, function(error, content) {
                 if (error) {
                     cb([]);
                     return;
