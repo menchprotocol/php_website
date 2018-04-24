@@ -16,6 +16,9 @@ $website = $this->config->item('website');
                 }
                 event.preventDefault();
                 return false;
+            } else if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
             }
         });
 
