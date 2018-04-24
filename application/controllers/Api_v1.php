@@ -3460,9 +3460,20 @@ class Api_v1 extends CI_Controller {
         //Attempt to save file locally:
         $file_parts = explode('.',$_FILES[$_POST['upload_type']]["name"]);
         $temp_local = "application/cache/temp_files/".md5($file_parts[0]).'.'.$file_parts[(count($file_parts)-1)];
-        $res = move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
+        $local_save_result = move_uploaded_file( $_FILES[$_POST['upload_type']]['tmp_name'] , $temp_local );
 
-        if(!(intval($res)==1)){
+        //Save for admins:
+        $this->Db_model->e_create(array(
+            'e_json' => array(
+                'post' => $_POST,
+                'file' => $_FILES,
+                'temp_local' => $temp_local,
+                'local_save_result' => $local_save_result,
+            ),
+            'e_type_id' => 8,
+        ));
+
+        if(!(intval($local_save_result)==1)){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Could not save this file.',
