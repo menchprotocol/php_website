@@ -675,7 +675,7 @@ class Cron extends CI_Controller {
                 ));
                 $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
 
-                if($active_admission){
+                if($active_admission && $active_admission['ru_p2_price']>0 /* Premium Students Only */){
 
                     unset($notify_fb_ids);
                     $notify_fb_ids = array();
@@ -722,7 +722,7 @@ class Cron extends CI_Controller {
                 if(count($msg['b_data'])>0){
                     $message .= '🎯 '.$msg['b_data']['c_objective']."\n";
                 }
-                $message .= '💡 Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
+                $message .= '💡 Premium Support Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
                 }
@@ -799,7 +799,7 @@ class Cron extends CI_Controller {
                     'e_recipient_u_id' => $admission['u_id'],
                     'e_c_id' => $reminder_c_id,
                     'depth' => 0,
-                    'e_b_id' => $admission['r_b_id'],
+                    'e_b_id' => $admission['ru_b_id'],
                     'e_r_id' => $admission['r_id'],
                 ));
 
@@ -862,7 +862,7 @@ class Cron extends CI_Controller {
         foreach($admissions as $admission){
 
             //Fetch full Bootcamp/Class data for this:
-            $bs = fetch_action_plan_copy($admission['r_b_id'], $admission['r_id']);
+            $bs = fetch_action_plan_copy($admission['ru_b_id'], $admission['r_id']);
             $class = $bs[0]['this_class'];
 
             //See what % of the class time has elapsed?
@@ -889,7 +889,7 @@ class Cron extends CI_Controller {
                                 'e_recipient_u_id' => $admission['u_id'],
                                 'e_c_id' => $logic['reminder_c_id'],
                                 'depth' => 0,
-                                'e_b_id' => $admission['r_b_id'],
+                                'e_b_id' => $admission['ru_b_id'],
                                 'e_r_id' => $admission['r_id'],
                             ));
 

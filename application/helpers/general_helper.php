@@ -22,7 +22,7 @@ function lock_cron_for_processing($e_items){
 
 function calculate_total($admission){
     //TODO Implement Coupons here
-    return floatval( $admission['ru_p1_price'] + $admission['ru_p2_price'] + ($admission['ru_p3_price']*$admission['ru_p3_minutes']));
+    return doubleval( $admission['ru_p1_price'] + $admission['ru_p2_price'] + ($admission['ru_p3_price']*50));
 }
 
 function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=array()){
@@ -253,19 +253,19 @@ function extract_level($b,$c_id){
         //Keeps track of Tasks:
         $previous_intent = null;
         
-        foreach($b['c__child_intents'] as $task_key=>$task){
+        foreach($b['c__child_intents'] as $intent_key=>$intent){
 
-            if($task['c_status']<1){
+            if($intent['c_status']<1){
                 continue;
             }
             
-            if($task['c_id']==$c_id){
+            if($intent['c_id']==$c_id){
 
                 //Found this as level 2:
                 $view_data['level'] = 2;
-                $view_data['task_index'] = $task['cr_outbound_rank'];
-                $view_data['intent'] = $task;
-                $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$task['cr_outbound_rank'].': '.$task['c_objective'];
+                $view_data['task_index'] = $intent['cr_outbound_rank'];
+                $view_data['intent'] = $intent;
+                $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'];
                 $view_data['breadcrumb_p'] = array(
                     array(
                         'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
@@ -273,7 +273,7 @@ function extract_level($b,$c_id){
                     ),
                     array(
                         'link' => null,
-                        'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$task['cr_outbound_rank'].': '.$task['c_objective'],
+                        'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'],
                     ),
                 );
 
@@ -282,7 +282,7 @@ function extract_level($b,$c_id){
                 //Find the next intent:
                 $next_intent = null;
                 $next_level = 0;
-                $next_key = $task_key;
+                $next_key = $intent_key;
 
                 while(!$next_intent){
 
@@ -314,9 +314,9 @@ function extract_level($b,$c_id){
             } else {
 
                 //Save this:
-                $previous_intent = $task;
+                $previous_intent = $intent;
 
-                foreach($task['c__child_intents'] as $step_key=>$step){
+                foreach($intent['c__child_intents'] as $step_key=>$step){
 
                     if($step['c_status']<1){
                         continue;
@@ -326,10 +326,10 @@ function extract_level($b,$c_id){
 
                         //This is level 3:
                         $view_data['level'] = 3;
-                        $view_data['step_task'] = $task; //Only available for Steps
-                        $view_data['task_index'] = $task['cr_outbound_rank'];
+                        $view_data['step_goal'] = $intent; //Only available for Steps
+                        $view_data['task_index'] = $intent['cr_outbound_rank'];
                         $view_data['intent'] = $step;
-                        $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$task['cr_outbound_rank'].' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_objective'];
+                        $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_objective'];
 
                         $view_data['breadcrumb_p'] = array(
                             array(
@@ -337,8 +337,8 @@ function extract_level($b,$c_id){
                                 'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_objective'],
                             ),
                             array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$task['c_id'],
-                                'anchor' => $CI->lang->line('level_'.($view_data['level']-1).'_icon').' '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$task['cr_outbound_rank'].': '.$task['c_objective'],
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$intent['c_id'],
+                                'anchor' => $CI->lang->line('level_'.($view_data['level']-1).'_icon').' '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'],
                             ),
                             array(
                                 'link' => null,
@@ -364,25 +364,25 @@ function extract_level($b,$c_id){
 
 
 
-function echo_price($b,$package_id=1,$return_double=false){
+function echo_price($b,$support_level=1,$return_double=false,$aggregate_prices=true){
 
-    $price = -1; //Error
+    $price = ( $aggregate_prices ? -1 : 0 ); //Error
     $classroom_offered = ($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0);
 
 
-    if($package_id==1){
+    if($support_level==1){
 
         $price = $b['b_p1_rate'];
 
-    } elseif($package_id==2 && $classroom_offered){
+    } elseif($support_level==2 && $classroom_offered){
 
-        $price = doubleval($b['b_p1_rate'] + $b['b_p2_rate']);
+        $price = doubleval(($aggregate_prices ? $b['b_p1_rate'] : 0 ) + $b['b_p2_rate']);
 
-    } elseif($package_id==3 && $classroom_offered && $b['b_p3_rate']>0){
+    } elseif($support_level==3 && $classroom_offered && $b['b_p3_rate']>0){
 
-        $price = doubleval($b['b_p1_rate'] + $b['b_p2_rate'] + ( $b['b_p3_rate'] * 50 ));
+        $price = doubleval(($aggregate_prices ? $b['b_p1_rate'] + $b['b_p2_rate'] : 0 ) + ( $b['b_p3_rate'] * 50 ));
 
-    } elseif($package_id==99){
+    } elseif($support_level==99){ //Special Support ID to aggregate them all and find the total price
 
         $price = doubleval($b['b_p1_rate'] + ( $classroom_offered ? $b['b_p2_rate'] + ( $b['b_p3_rate'] * 50 ) : 0 ));
 
@@ -406,30 +406,7 @@ function echo_price($b,$package_id=1,$return_double=false){
     }
 
 }
-function echo_hours($decimal_hours,$micro=false){
 
-
-    if($decimal_hours>0 && $decimal_hours<1){
-
-        $decimal_hours = round($decimal_hours*60);
-        return $decimal_hours.($micro?'m':' Minutes');
-
-    } elseif($decimal_hours<=2.67) {
-
-        //Over 1 hour buy Under 2 Hour 40 Minutes:
-        $minutes_decimal = fmod($decimal_hours,1);
-        $minutes = round(($minutes_decimal-fmod($minutes_decimal,0.083)) * 60);
-        $hours = $decimal_hours - $minutes_decimal;
-        return $hours.($micro?'h':' Hour'.show_s($hours).' ').($minutes>0 ? $minutes.($micro?'m':' Min'.show_s($minutes)) : '');
-
-    } else {
-
-        //Over 2:40 just round up
-        return (round($decimal_hours)==$decimal_hours?'':'~').round($decimal_hours).($micro?'h':' Hour'.show_s($decimal_hours));
-
-    }
-
-}
 
 function sec_to_min($sec_int){
     $min = 0;
@@ -901,6 +878,38 @@ function echo_message($i,$level=0,$editing_enabled=true){
     return $echo_ui;
 }
 
+
+
+
+function format_hours($decimal_hours,$micro=false){
+
+    if($decimal_hours<=0){
+
+        return '0'.($micro?'h':' Hours ');
+
+    } elseif($decimal_hours<=1.50){
+
+        $decimal_hours = round($decimal_hours*60);
+        return $decimal_hours.($micro?'m':' Minutes');
+
+    } elseif($decimal_hours<2 && 0) {
+
+        /*
+        $minutes_decimal = fmod($decimal_hours,1);
+        $minutes = round(($minutes_decimal-fmod($minutes_decimal,0.083)) * 60);
+        $hours = $decimal_hours - $minutes_decimal;
+        return $hours.($micro?'h':' Hour'.show_s($hours).' ').($minutes>0 ? $minutes.($micro?'m':' Min'.show_s($minutes)) : '');
+        */
+
+    } else {
+
+        //Just round-up:
+        return round($decimal_hours).($micro?'h':' Hour'.show_s($decimal_hours));
+
+    }
+
+}
+
 function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$c_status=1){
 
     if($c_time_estimate>0 || $c_id){
@@ -909,7 +918,7 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
 
         if($c_id){
 
-            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
+            $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.format_hours( $c_time_estimate,true).'</span>';
             $ui .= ' <i class="fa fa-clock-o" aria-hidden="true"></i>';
 
         } else {
@@ -1101,9 +1110,10 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_objective']);
-    $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Item');
+    $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Intent');
+    $default_time = ( $b['b_is_parent'] ? 0 : 0.05 );
     $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
-    $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? 0.05 : $intent['c__estimated_hours'] );
+    $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? $default_time : $intent['c__estimated_hours'] );
     $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || !isset($b['b_old_format']) || ($udata['u_status']==3 && $b['b_old_format']));
 
     if(!$editing_enabled && $intent['c_status']<1){
@@ -1130,6 +1140,8 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     //Right content
     $ui .= '<span class="pull-right maplevel'.$intent['c_id'].'" level-id="'.$level.'" parent-intent-id="'.$parent_c_id.'" style="'.( $level<3 ? 'margin-right: 8px;' : '' ).'">';
 
+
+
         //Enable total hours/Task reporting...
         if($level<=2){
             $ui .= echo_time($intent['c__estimated_hours'],1,1, $intent['c_id'], $level, $intent['c_status']);
@@ -1137,16 +1149,29 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
             $ui .= echo_time($intent['c_time_estimate'],1,1, $intent['c_id'], $level, $intent['c_status']);
         }
 
-        if($editing_enabled){
-            if(!$b['b_old_format'] || $udata['u_status']==3){
-                $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
+
+        if($b['b_is_parent'] && $level==2){
+
+            //The Bootcamp of multi-week Bootcamps
+            $ui .= '<a class="badge badge-primary" style="margin-right:-1px; width:34px;" href="javascript:delete_b('.$intent['cr_outbound_b_id'].','.$intent['cr_id'].');"><i class="fa fa-trash"></i></a> &nbsp;';
+
+            $ui .= '<a class="badge badge-primary" style="margin-right:1px; width:60px;" href="/console/'.$intent['cr_outbound_b_id'].'"><i class="fa fa-chevron-right"></i></a>';
+
+        } elseif(!$b['b_is_parent'] || $level==1) {
+
+            if($editing_enabled){
+                if(!$b['b_old_format'] || $udata['u_status']==3){
+                    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-pencil-square-o"></i></a> &nbsp;';
+                }
+
+                $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
+            } else {
+                //Show link to current section:
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
             }
 
-            $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
-        } else {
-            //Show link to current section:
-            $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
         }
+
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1154,7 +1179,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
 
     //Sorting & Then Left Content:
-    if($level>1 && $editing_enabled) {
+    if($level>1 && $editing_enabled && (!$b['b_is_parent'] || $level==2)) {
         $ui .= '<i class="fa fa-bars" aria-hidden="true"></i> &nbsp;';
     }
 
@@ -1174,12 +1199,15 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
             $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;';
         }
 
-        $ui .= '<span class="inline-level-'.$level.'"> #'.$intent['cr_outbound_rank'].'</span></span><b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" extension-rule="'.@$intent['c_extension_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
+        $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent'] ? 'Week' : $CI->lang->line('level_2_name')).' #'.$intent['cr_outbound_rank'].'</span>';
+        $ui .= '</span>';
+
+        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" extension-rule="'.@$intent['c_extension_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
 
     } elseif ($level>=3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? 'Step #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_name').' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</span> ';
 
     }
 
@@ -1206,17 +1234,17 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         }
 
         //Step Input field:
-        if($editing_enabled && $child_enabled){
+        if($editing_enabled && $child_enabled && !$b['b_is_parent']){
             $ui .= '<div class="list-group-item list_input new-step-input">
-            <div class="input-group">
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addintent'.$intent['c_id'].'" placeholder=""></form></div>
-                <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
-                        <div><i class="fa fa-plus"></i></div>
+                <div class="input-group">
+                    <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addintent'.$intent['c_id'].'" placeholder=""></form></div>
+                    <span class="input-group-addon" style="padding-right:8px;">
+                        <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
+                            <div><i class="fa fa-plus"></i></div>
+                        </span>
                     </span>
-                </span>
-            </div>
-        </div>';
+                </div>
+            </div>';
         }
 
 
@@ -1234,7 +1262,7 @@ function echo_b($b){
     //Fetch total students:
     $CI =& get_instance();
     $all_students = count($CI->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $b['b_id'],
+        'ru.ru_b_id'	   => $b['b_id'],
         'ru.ru_status >='  => 4,
     )));
 
@@ -1270,12 +1298,95 @@ function mime_type($mime){
     }
 }
 
+function b_aggregate($b,$skip_parent=false){
+
+    //Aggregate this from child-Bootcamps:
+    $b_aggregate = array(
+        'b_prerequisites'   => ( strlen($b['b_prerequisites'])>0 && !$skip_parent ? json_decode($b['b_prerequisites']) : array() ),
+        'b_transformations' => ( strlen($b['b_transformations'])>0 && !$skip_parent ? json_decode($b['b_transformations']) : array() ),
+    );
+
+    //Unset some unnecessary fields that do not make sense for a parent Bootcamp:
+    unset($b['b_support_email']);
+    unset($b['b_calendly_url']);
+
+    //Set price to zero:
+    $b['child_bs'] = array();
+    $b['b_p1_rate'] = 0;
+    $b['b_p2_rate'] = 0;
+    $b['b_p3_rate'] = 0;
+    $b['b_p2_weeks'] = 0; //Defines how many weeks this is offered
+    $b['b_p3_weeks'] = 0; //Defines how many weeks this is offered
+    $b['b_p2_max_seats'] = 0; //Would be offered if any of sub-Bootcamps offer
+    $b['b_difficulty_level'] = 1; //Beginner
+
+    $CI =& get_instance();
+
+    //Fetch all child Bootcamp details:
+    foreach($b['c__child_intents'] as $b7d){
+
+        //Fetch Bootcamp URL key:
+        $bs = $CI->Db_model->b_fetch(array(
+            'b.b_id' => $b7d['cr_outbound_b_id'],
+        ));
+
+        //This this as child bootcamp
+        $b['child_bs'][$b7d['cr_outbound_b_id']] = $bs[0];
+
+        if(strlen($bs[0]['b_transformations'])>0){
+            foreach (json_decode($bs[0]['b_transformations']) as $item){
+                if(!in_array($item,$b_aggregate['b_transformations'])){
+                    array_push($b_aggregate['b_transformations'],$item);
+                }
+            }
+        }
+        if(strlen($bs[0]['b_prerequisites'])>0){
+            foreach (json_decode($bs[0]['b_prerequisites']) as $item){
+                if(!in_array($item,$b_aggregate['b_prerequisites'])){
+                    array_push($b_aggregate['b_prerequisites'],$item);
+                }
+            }
+        }
+
+        //Addup the rates:
+        $b['b_p1_rate'] += doubleval($bs[0]['b_p1_rate']);
+        if(intval($bs[0]['b_p2_max_seats'])>0){
+
+            $b['b_p2_weeks']++;
+            $b['b_p2_rate'] += doubleval($bs[0]['b_p2_rate']);
+            $b['b_p3_rate'] += doubleval($bs[0]['b_p3_rate']);
+
+            if($bs[0]['b_p2_max_seats']>$b['b_p2_max_seats']){
+                //This is the most difficult child Bootcamp, set this as the overall difficulty:
+                $b['b_p2_max_seats'] = $bs[0]['b_p2_max_seats'];
+            }
+
+            if($bs[0]['b_p3_rate']>0){
+                $b['b_p3_weeks']++;
+            }
+        }
+
+        //Max Difficulty level:
+        if($bs[0]['b_difficulty_level']>$b['b_difficulty_level']){
+            //This is the most difficult child Bootcamp, set this as the overall difficulty:
+            $b['b_difficulty_level'] = $bs[0]['b_difficulty_level'];
+        }
+    }
+
+    //Encode like original data:
+    $b['b_transformations'] = ( count($b_aggregate['b_transformations'])>0 ? json_encode($b_aggregate['b_transformations']) : null);
+    $b['b_prerequisites'] = ( count($b_aggregate['b_prerequisites'])>0 ? json_encode($b_aggregate['b_prerequisites']) : null);
+
+    return $b;
+}
+
 
 function prep_prerequisites($b){
+    $week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <b>'.echo_hours($b['c__estimated_hours']).' in 1 Week</b>, anytime that works best for you. (Average '.echo_hours($b['c__estimated_hours']/7) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest <i class="fa fa-clock-o" aria-hidden="true"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. (Average '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day)');
     }
     return $pre_req_array;
 }
@@ -1330,14 +1441,14 @@ function b_progress($b){
     
     if(count($b['c__child_intents'])>0 && !$b['b_is_parent']){
         //Now check each Task and its Step List:
-        foreach($b['c__child_intents'] as $task_num=>$c){
+        foreach($b['c__child_intents'] as $intent_num=>$c){
 
             if($c['c_status']<0){
                 continue; //Don't check Archived Tasks
             }
 
             //Prepare key variables:
-            $task_anchor = ' #'.$c['cr_outbound_rank'].' ';
+            $intent_anchor = ' #'.$c['cr_outbound_rank'].' ';
 
 
             //Task On Start Messages
@@ -1353,7 +1464,7 @@ function b_progress($b){
             $progress_gained += ( $us_status ? $estimated_minutes : 0 );
             array_push( $checklist , array(
                 'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
-                'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$task_anchor.$c['c_objective'],
+                'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$intent_anchor.$c['c_objective'],
                 'us_status' => $us_status,
                 'time_min' => $estimated_minutes,
             ));
@@ -1368,7 +1479,7 @@ function b_progress($b){
                 $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
                 array_push( $checklist , array(
                     'href' => '/console/'.$b['b_id'].'/actionplan',
-                    'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$task_anchor.$c['c_objective'],
+                    'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$intent_anchor.$c['c_objective'],
                     'us_status' => $us_status,
                     'time_min' => $estimated_minutes,
                 ));
@@ -1378,7 +1489,7 @@ function b_progress($b){
                     foreach($c['c__child_intents'] as $c2){
 
                         //Create Step object:
-                        $step_anchor = $task_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
+                        $step_anchor = $intent_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
 
                         //Messages for Steps:
                         $estimated_minutes = 15;
@@ -1648,14 +1759,14 @@ function b_progress($b){
     ));
 
 
-    // Student Difficulty Level
+    // Required Experience Level
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
     $us_status = ( $b['b_difficulty_level']>0 ? 1 : 0 );
     $progress_gained += ( $us_status ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#landingpage',
-        'anchor' => '<b>Choose Student Difficulty Level</b> in Settings',
+        'anchor' => '<b>Choose Required Experience Level</b> in Settings',
         'us_status' => $us_status,
         'time_min' => $estimated_minutes,
     ));
@@ -1781,7 +1892,7 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
     } elseif($format=='select' && $level<=2){
 
         $ui .= '<select data-c-id="'.$c['c_id'].'" id="c_s_'.$c['c_id'].'" class="border c_select level'.$level.' '.( isset($c['cr_outbound_id']) ? 'outbound_c_'.$c['cr_outbound_id'] : '' ).' '.( $level==2 ? 'hidden' : '' ).'" style="width:100%; margin-bottom:10px; max-width:380px;">';
-        $ui .= '<option value="0">Choose...</option>';
+        //$ui .= '<option value="0">Choose...</option>'; //Not needed for now as we transition to single level categories
         foreach($c_child as $child_intent){
             $ui .= '<option value="'.$child_intent['c_id'].'" '.( in_array($child_intent['c_id'],$current_c_ids) ?'selected="selected"':'').'>'.$child_intent['c_objective'].'</option>';
         }
@@ -2250,7 +2361,7 @@ function time_format($t,$format=0,$adjust_seconds=0){
     } elseif($format==4){
         return date(( $year ? "M j" : "M j Y" ),$timestamp);
     } elseif($format==5){
-        return date(( $year ? "D j M" : "j M Y" ),$timestamp);
+        return date(( $year ? "D M j" : "D M j Y" ),$timestamp);
     } elseif($format==6){
         return date("Y/m/d",$timestamp);
     } elseif($format==7){

@@ -1,8 +1,13 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-$instructor_has_off = ($b['b_p2_max_seats']>0 && strlen($b['b__admins'][0]['u_weeks_off'])>0);
-$classroom_closed = ($instructor_has_off && in_array($focus_class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])));
+$week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
+$child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
+
+if($b['b_is_parent'] && count($b['c__child_intents'])>0){
+    //Replace $b with the new aggregated $b
+    $b = b_aggregate($b);
+}
 ?>
 
 <style>
@@ -33,9 +38,9 @@ function toggleview(object_key){
 }
 
 $( document ).ready(function() {
-	$("#reg1, #reg2, #reg3").countdowntimer({
+	$(".next_start_date").countdowntimer({
 		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , time_format($focus_class['r_start_date'],3,-1)); ?> 23:59:59",
+        dateAndTime : "<?php echo date('Y/m/d' , time_format(strtotime('next monday'),3,-1)); ?> 23:59:59",
 		size : "lg",
 		regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -55,62 +60,24 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
 
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
-                <li>Duration: <b>1 Week</b></li>
-                <li>Dates: <b><?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r__class_end_time'],2) ?></b></li>
-                <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']/7) ?> Per Day</b></li>
+                <li>Duration: <b><?= $week_count.' Week'.show_s($week_count) ?></b></li>
+                <li>Starts: <b>Every Monday</b></li>
+                <li>Commitment: <b><?= format_hours($b['c__estimated_hours']/($week_count*7)) ?> Per Day</b></li>
 
-                <li><?= ( echo_price($b,99, true) ? 'Price Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Price depends on the support level you choose when joining this Class"></i></b>' : 'Price: <b>'.echo_price($b).'</b>' ) ?></li>
+                <li><?= ( echo_price($b,99, true) ? 'Tuition Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.echo_price($b).'</b>' ) ?></li>
 
                 <?php
                 if($b['b_difficulty_level']>0){
-                    echo '<li>Difficulty Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
+                    echo '<li>Experience Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
                 }
                 ?>
             </ul>
             
             <div style="padding:10px 0 0; text-align:center;">
-                <div class="btn btn-primary btn-round countdown"><span id="reg1"></span></div>
-                <div><a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Join Class of <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+                <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
+         `       <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
             </div>
 
-
-            <?php
-            if($classroom_closed){
-                //Classroom is closed
-                echo '<div class="alert alert-info" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Note: Classroom is closed this week but you can still join and '.status_bible('rs',1).'</div>';
-            }
-            ?>
-
-
-            <h3>Upcoming Classes</h3>
-            <div id="class_list" class="list-group" style="max-width:none !important;">
-                <?php
-                $counter = 0;
-                foreach($classes as $class){
-
-                    if($counter==$class_settings['landing_page_visible']){
-                        echo '<a href="javascript:void(0);" onclick="$(\'.show_all_classes\').toggle();" class="show_all_classes list-group-item"><i class="fa fa-plus-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#999;"></i> See More Classes</a>';
-                    }
-
-                    if($class['r_id']==$focus_class['r_id']){
-                        echo '<li class="list-group-item grey">';
-                        echo '<span class="pull-right"><span class="label label-default grey" style="color:#3C4858;">CURRENTLY VIEWING</span></span>';
-                    } else {
-                        echo '<a href="/'.$b['b_url_key'].'/'.$class['r_id'].'" class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_all_classes" style="display:none;"' : '"' ).' >';
-                        echo '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-                    }
-
-                    echo '<i class="fa fa-calendar" aria-hidden="true"></i> <b>'.time_format($class['r_start_date'],2).'</b>';
-                    if($instructor_has_off && in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off']))){
-                        //Classroom is closed
-                        echo '<span class="badge badge-primary grey">'.status_bible('rs',1,1,'top').'</span>';
-                    }
-
-                    echo ( $class['r_id']==$focus_class['r_id'] ? '</li>' : '</a>' );
-                    $counter++;
-                }
-                ?>
-            </div>
         </div>
     </div>
     
@@ -134,30 +101,72 @@ $( document ).ready(function() {
         <div id="b_prerequisites"><?= ( count($pre_req_array)>0 /* Should always be true! */ ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
 
 
-        <h3>Action Plan</h3>
-        <div id="c_goals_list">
-        <?php
 
-        echo '<div class="list-group maxout">';
-        $counter = 0;
-        foreach($b['c__child_intents'] as $task){
-            if($task['c_status']>=1){
-                if($counter==$class_settings['landing_page_visible']){
-                    echo '<a href="javascript:void(0);" onclick="$(\'.show_all_tasks\').toggle();" class="show_all_tasks list-group-item"><i class="fa fa-plus-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#999;"></i> See All Tasks</a>';
+        <h3>Action Plan</h3>
+        <div id="c_tasks_list">
+            <?php
+            if($b['b_is_parent']){
+
+                foreach($b['c__child_intents'] as $b7d){
+
+                    echo '<div id="c_'.$b7d['c_id'].'">';
+                    echo '<h4><a href="javascript:toggleview(\'c_'.$b7d['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_objective'];
+                    if($b7d['c__estimated_hours']>0){
+                        echo ' &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.format_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.format_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                    }
+                    echo '</a></h4>';
+                    echo '<div class="toggleview c_'.$b7d['c_id'].'" style="display:none;">';
+                    //Display all Active Tasks:
+                    $intent_count = 0;
+                    if(count($b7d['c__child_intents'])>0){
+                        echo '<ul style="list-style:none; margin-left:-40px;">';
+                        foreach($b7d['c__child_intents'] as $intent){
+                            if($intent['c_status']<1){
+                                continue; //Not published yet
+                            }
+                            $intent_count++;
+                            echo '<li>Task '.$intent['cr_outbound_rank'].': '.$intent['c_objective'].'</li>';
+                        }
+                        echo '</ul>';
+                    }
+
+                    if($b['child_bs'][$b7d['cr_outbound_b_id']]['b_status']==3){
+                        //This is a Public Bootcamp, show link to Landing Page:
+                        echo '<div class="title-sub">';
+                        echo $this->lang->line('level_0_icon').' <a href="/'.$b['child_bs'][$b7d['cr_outbound_b_id']]['b_url_key'].'" style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="['.$b7d['c_objective'].'] is also offered as a '.$this->lang->line('level_0_name').'">'.$this->lang->line('level_0_name').' &raquo;</a>';
+                        echo '</div>';
+                    }
+
+
+                    echo '</div>';
+                    echo '</div>';
                 }
-                echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_all_tasks" style="display:none;"' : '"' ).'>';
-                //echo '<span class="pull-right">'.($task['c__estimated_hours']>0 ? echo_time($task['c__estimated_hours'],1) : '').'</span>';
-                echo '<i class="fa fa-check-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#3C4858;"></i> ';
-                echo 'Task '.$task['cr_outbound_rank'].': '.$task['c_objective'];
-                echo '</li>';
-                $counter++;
+
+            } else {
+
+                //Regular 7-day Bootcamp:
+                echo '<div class="list-group maxout actionplan_list">';
+                $counter = 0;
+                foreach($b['c__child_intents'] as $child_intent){
+                    if($child_intent['c_status']>=1){
+                        if($counter==$class_settings['landing_page_visible']){
+                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fa fa-plus-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
+                        }
+                        echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
+                        //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_time($child_intent['c__estimated_hours'],1) : '').'</span>';
+                        echo ( $b['b_is_parent'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon') ).' ';
+                        echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_objective'];
+                        echo '</li>';
+                        $counter++;
+                    }
+                }
+                echo '</div>';
+
             }
-        }
-        echo '</div>';
-        //echo '<p>To complete this Bootcamp, you should complete the above '.$counter.' Task'.show_s($counter).' anytime during the weekly Bootcamp window.</p>';
-        ?>
+
+            ?>
         </div>
-        <div class="show_all_tasks" style="display: none;"><a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">GET STARTED ON <u><?= time_format($focus_class['r_start_date'],4) ?></u>&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a></div>
+        <div class="show_full_list" style="display: none;"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">ENROLL &nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
 
     		
     		
@@ -220,10 +229,10 @@ $( document ).ready(function() {
 </div>
 
 
+
 <div style="padding:20px 0 30px; text-align:center;">
-	<div class="btn btn-primary btn-round countdown"><span id="reg3"></span></div>
-    <br />
-    <a href="/<?= $b['b_url_key'] ?>/apply/<?= $focus_class['r_id'] ?>" class="btn btn-primary btn-round">Join Class of <u><?= time_format($focus_class['r_start_date'],4) ?></u> &nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+    <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
+    <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
 </div>
 
 

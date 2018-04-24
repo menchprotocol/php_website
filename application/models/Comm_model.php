@@ -855,7 +855,7 @@ class Comm_model extends CI_Model {
                         'e_fp_id' => $fp['fp_id'],
                         'e_c_id' => 923,
                         'depth' => 0,
-                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
@@ -866,7 +866,7 @@ class Comm_model extends CI_Model {
                         'e_json' => $notify_user,
                         'e_message' => 'fb_identify_activate() Failed to activate user because Messenger account is already associated with another user.',
                         'e_type_id' => 8, //Platform error
-                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
@@ -901,7 +901,7 @@ class Comm_model extends CI_Model {
                         'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
                         'e_type_id' => 8, //Platform Error
                         'e_fp_id' => $fp['fp_id'],
-                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
@@ -953,7 +953,7 @@ class Comm_model extends CI_Model {
                         ),
                         'e_message' => 'fb_identify_activate() failed to fetch user profile data',
                         'e_type_id' => 8, //Platform error
-                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 
@@ -1002,7 +1002,7 @@ class Comm_model extends CI_Model {
                     'e_fp_id' => $fp['fp_id'],
                     'e_c_id' => ($u['u_status']==2 ? 918 : 926),
                     'depth' => 0,
-                    'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                    'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                 ));
 
@@ -1015,7 +1015,7 @@ class Comm_model extends CI_Model {
                     ),
                     'e_type_id' => 31, //Messenger Activated
                     'e_fp_id' => $fp['fp_id'],
-                    'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                    'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                 ));
 
@@ -1044,7 +1044,7 @@ class Comm_model extends CI_Model {
                         ),
                         'e_type_id' => 8, //Platform Error
                         'e_fp_id' => $fp['fp_id'],
-                        'e_b_id' => ( isset($u['r_b_id']) ? $u['r_b_id'] : 0 ),
+                        'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
 

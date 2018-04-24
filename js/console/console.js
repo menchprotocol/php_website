@@ -1,35 +1,8 @@
 
 
-function load_console_search(){
-
-    //Loadup Algolia:
-    client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-    algolia_index = client.initIndex('alg_bootcamps');
-
-    $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-
-        window.location = "/console/"+suggestion.b_id;
-
-    }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
-
-        source: function(q, cb) {
-            algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function(suggestion) { return "" },
-        templates: {
-            suggestion: function(suggestion) {
-                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value;
-            },
-        }
-
-    }]);
-}
+//Loadup Algolia:
+client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
+algolia_index = client.initIndex('alg_bootcamps');
 
 
 //To update fancy dropdown which is usually used for STATUS updates:
@@ -154,9 +127,32 @@ function load_help(intent_id){
 //Function to load all help messages throughout the console:
 $(document).ready(function() {
 
-    load_console_search();
 
-    //Watch the expand/close all buttons for Tasks:
+    $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+
+        window.location = "/console/"+suggestion.b_id;
+
+    }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
+
+        source: function(q, cb) {
+            algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function(suggestion) { return "" },
+        templates: {
+            suggestion: function(suggestion) {
+                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-dot-circle-o' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value;
+            },
+        }
+
+    }]);
+
+    //Watch the expand/close all buttons:
     $('#task_view .expand_all').click(function (e) {
         $( "#list-outbound>.is_sortable" ).each(function() {
             ms_toggle($( this ).attr('intent-id'),1);

@@ -25,7 +25,7 @@ if(!isset($intents[0])){
     die('Invalid input id.');
 } elseif(count($bs)<1){
     //This should never happen:
-    die('Invalid Bootcamp id.');
+    die('Invalid Bootcamp ID.');
 }
 ?>
 

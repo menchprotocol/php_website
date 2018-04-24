@@ -33,7 +33,7 @@ class My extends CI_Controller {
      * Signup
      ****************************** */
 
-    function checkout_start($b_url_key,$r_id){
+    function checkout_start($b_url_key){
         //The start of the funnel for email, first name & last name
 
         //Fetch data:
@@ -53,20 +53,9 @@ class My extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
         }
 
-        //Validate Class ID that it's still the latest:
-        $classes = $this->Db_model->r_fetch(array(
-            'r.r_b_id' => $bs[0]['b_id'],
-            'r.r_id' => $r_id,
-            'r.r_status' => 1,
-        ));
-        if(!(count($classes)==1)){
-            //Ooops, no active classes!
-            redirect_message('/'.$b_url_key ,'<div class="alert alert-danger" role="alert">Class is no longer available.</div>');
-        }
-
         $data = array(
-            'title' => 'Join '.$bs[0]['c_objective'].' - Starting '.time_format($classes[0]['r_start_date'],4),
-            'focus_class' => $classes[0],
+            'title' => 'Enroll in '.$bs[0]['c_objective'],
+            'udata' => $udata,
             'b' => $bs[0],
             'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
         );
@@ -94,9 +83,8 @@ class My extends CI_Controller {
             'ru.ru_u_id'   => intval($_GET['u_id']),
         ));
 
-
         //Did we find at-least one?
-        if(count($admissions)<=0){
+        if(count($admissions)<1){
             //Log this error:
             redirect_message('/my/applications?u_key='.$_GET['u_key'].'&u_id='.$_GET['u_id'],'<div class="alert alert-danger" role="alert">No Active Bootcamps.</div>');
             exit;
@@ -126,7 +114,6 @@ class My extends CI_Controller {
         if(!isset($_GET['u_key']) || !isset($_GET['u_id']) || intval($_GET['u_id'])<1 || !(md5($_GET['u_id'].$application_status_salt)==$_GET['u_key'])){
             //Log this error:
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
-            exit;
         }
 
         //Is this a paypal success?
@@ -154,12 +141,14 @@ class My extends CI_Controller {
         //Fetch all their addmissions:
         $admissions = $this->Db_model->ru_fetch(array(
             'ru_u_id'	=> $udata['u_id'],
+            'ru_parent_ru_id'	=> 0, //Child admissions are fetched within the child row
         ),array(
-            'r.r_start_date' => 'DESC',
+            'ru.ru_timestamp' => 'DESC',
         ));
 
+
         $bs = $this->Db_model->b_fetch(array(
-            'b_id'	=> $admissions[0]['r_b_id'],
+            'b_id'	=> ( $admissions[0]['ru_b_id'] ),
         ));
 
         //Validate Class ID that it's still the latest:
@@ -229,7 +218,7 @@ class My extends CI_Controller {
         //Fetch all their admissions:
         if($b_id>0){
             //Enhance our search and make it specific to this $b_id:
-            $ru_filter['r.r_b_id'] = $b_id;
+            $ru_filter['ru.ru_b_id'] = $b_id;
         }
 
         $admissions = $this->Db_model->remix_admissions($ru_filter);
@@ -469,7 +458,7 @@ class My extends CI_Controller {
 
         //Was it all good? Should be!
         if($class['r__total_tasks']==0){
-            die('<span style="color:#FF0000;">Error: No Tasks Yet</span>');
+            die('<span style="color:#FF0000;">Error: No Bootcamps Yet</span>');
         } elseif(!$class){
             die('<span style="color:#FF0000;">Error: Class Not Found</span>');
         }
@@ -486,7 +475,7 @@ class My extends CI_Controller {
 
         if($is_instructor){
 
-            //Fetch the most recent cached action plans:
+            //Fetch the most recent cached Action Plans:
             $cache_action_plans = $this->Db_model->e_fetch(array(
                 'e_type_id' => 70,
                 'e_r_id' => $class['r_id'],
@@ -596,9 +585,9 @@ class My extends CI_Controller {
             }
 
             //Fixed columns for both Instructors/Students:
-            $task_count_enabled = ($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
+            $intent_count_enabled = ($is_instructor && isset($bs[0]['b_old_format']) && !$bs[0]['b_old_format']);
             echo '<td style="text-align:left; padding-left:30px;">Student</td>';
-            echo '<td style="text-align:left; width:'.($task_count_enabled?120:90).'px;" colspan="'.($task_count_enabled?3:2).'">Progress</td>';
+            echo '<td style="text-align:left; width:'.($intent_count_enabled?120:90).'px;" colspan="'.($intent_count_enabled?3:2).'">Progress</td>';
 
         echo '</tr>';
 
@@ -671,7 +660,7 @@ class My extends CI_Controller {
                 if($admission['ru_cache__completion_rate']>=1){
 
                     //They have completed it all, show them as winners!
-                    echo '<td valign="top" colspan="'.($task_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
+                    echo '<td valign="top" colspan="'.($intent_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
                     echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;"></span>';
                     echo '</td>';
 
@@ -684,7 +673,7 @@ class My extends CI_Controller {
                         echo '</td>';
                     }
 
-                    if($task_count_enabled){
+                    if($intent_count_enabled){
                         //Task:
                         echo '<td valign="top" style="text-align:left; vertical-align:top;">';
                         if($ranking_visible){
@@ -706,7 +695,7 @@ class My extends CI_Controller {
                     echo '<tr id="c_el_'.$admission['u_id'].'_'.$bs[0]['c_id'].'" class="hidden bg-col-'.fmod($counter,2).'">';
                     echo '<td>&nbsp;</td>';
                     echo '<td>&nbsp;</td>';
-                    echo '<td colspan="4" class="us_task_list">';
+                    echo '<td colspan="4" class="us_c_list">';
 
                         //Fetch student submissions so far:
                         $us_data = $this->Db_model->us_fetch(array(
@@ -715,32 +704,32 @@ class My extends CI_Controller {
                         ));
 
                         //Go through all the Tasks and see which ones are submitted:
-                        foreach($bs[0]['c__child_intents'] as $task) {
+                        foreach($bs[0]['c__child_intents'] as $intent) {
 
-                            if($task['c_status']>=1){
+                            if($intent['c_status']>=1){
 
-                                $task_submitted = (isset($us_data[$task['c_id']]));
+                                $intent_submitted = (isset($us_data[$intent['c_id']]));
 
-                                //Task Title:
+                                //Title:
                                 echo '<div class="us_c_title">';
-                                echo '<a href="javascript:view_el('.$admission['u_id'].','.$task['c_id'].')" class="plain">';
-                                echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$task['c_id'].'" aria-hidden="true"></i> ';
-                                echo status_bible('us',( $task_submitted ? $us_data[$task['c_id']]['us_status'] : -2 /* Locked */ ),1,'right').'#'.$task['cr_outbound_rank'].' '.$task['c_objective'];
+                                echo '<a href="javascript:view_el('.$admission['u_id'].','.$intent['c_id'].')" class="plain">';
+                                echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'" aria-hidden="true"></i> ';
+                                echo status_bible('us',( $intent_submitted ? $us_data[$intent['c_id']]['us_status'] : -2 /* Locked */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_objective'];
                                 echo '</a>';
                                 echo '</div>';
 
 
-                                //Task Submission Details:
-                                echo '<div id="c_el_'.$admission['u_id'].'_'.$task['c_id'].'" class="homework hidden">';
-                                if($task_submitted){
-                                    echo '<p>'.( strlen($us_data[$task['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$task['c_id']]['us_student_notes']) : '<i class="fa fa-sticky-note-o" aria-hidden="true"></i> No completion notes by Student' ).'</p>';
+                                //Submission Details:
+                                echo '<div id="c_el_'.$admission['u_id'].'_'.$intent['c_id'].'" class="homework hidden">';
+                                if($intent_submitted){
+                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$intent['c_id']]['us_student_notes']) : '<i class="fa fa-sticky-note-o" aria-hidden="true"></i> No completion notes by Student' ).'</p>';
                                 } else {
                                     echo '<p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Nothing submitted Yet</p>';
                                 }
                                 
                                 //TODO Show Steps in the future
                                 /*
-                                foreach($task['c__child_intents'] as $step) {
+                                foreach($intent['c__child_intents'] as $step) {
                                     if($step['c_status']>=1){
 
                                         //What is the status of this Step?

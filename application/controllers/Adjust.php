@@ -11,6 +11,32 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
+    function ru_b_id(){
+
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru_r_id > 0' 	    => null,
+            'ru_b_id' 	        => 0,
+        ));
+
+        $counter = 0;
+        foreach($admissions as $admission){
+
+            //Fetch Bootcamp ID:
+            $classes = $this->Db_model->r_fetch(array(
+                'r_id' => $admission['ru_r_id'],
+            ));
+
+            if(count($classes)==1){
+                $this->Db_model->ru_update( $admission['ru_id'] , array(
+                    'ru_b_id' => $classes[0]['r_b_id'],
+                ));
+                $counter++;
+            }
+        }
+
+        echo $counter;
+    }
+
     function mass_enroll($from_r_id,$to_b_id,$to_r_id){
 
         //Admits all Free students from $from_r_id to $to_r_id
@@ -85,7 +111,7 @@ class Adjust extends CI_Controller {
                 $total_steps = 0;
                 $done_steps = 0;
 
-                //The goal is to find the Step that is after the very last Step done
+                //Find the Step that is after the very last Step done
                 //Note that some Steps could be done, but then rejected by the instructor...
                 foreach($bs[0]['c__child_intents'] as $task){
                     if($task['c_status']==1){

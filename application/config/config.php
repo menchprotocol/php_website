@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => 2.99,
+    'version' => '3.1',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -337,7 +337,7 @@ $config['object_statuses'] = array(
             
 - Mench Outcome Guarantee
 - Expert Chat-Line or Email Support
-- Task Submission Review & Feedback
+- Assignment Review & Feedback
 - Weekly Group Coaching Calls
 - Lifetime Action Plan Access
 - Certificate of Completion
@@ -345,10 +345,10 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fa-users',
         ),
         3 => array(
-            's_name'  => 'Premium Support + Tutoring',
+            's_name'  => '1-on-1 Tutoring',
             's_desc'  => 'Everything in Premium Support plus:
             
-- 50 Minutes of 1-on-1 Tutoring',
+- 50 Minutes of 1-on-1 Tutoring per Week',
             's_mini_icon' => 'fa-handshake-o',
         ),
 

@@ -26,7 +26,7 @@ function show_fb_auth(error_message=null){
 
 function fp_refresh(fp_id){
 
-    $('#simulate_'+fp_id).html('<img src="/img/round_load.gif" class="loader" />');
+    $('#simulate_'+fp_id).html('select_dates');
 
     $.post("/api_v1/fp_refresh", {
 
@@ -134,10 +134,9 @@ function loadFacebookPages(is_onstart){
 }
 
 function update_tutoring_price(){
-    var minutes = 50;
     var price = parseFloat($('#b_p3_rate').val());
-    if(minutes>0 && price>0){
-        $('#tutoring_price').html(parseInt( price*minutes ));
+    if(price>0){
+        $('#tutoring_price').html(parseInt( price*50 ));
     }
 }
 
@@ -349,19 +348,25 @@ function b_save_settings(){
             ?>
         </div>
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Student Difficulty Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Required Experience Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
         <div class="help_body maxout" id="content_4868"></div>
-        <div class="form-group label-floating is-empty">
-            <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
-                <?php
-                echo '<option value="">Choose...</option>';
-                $df_statuses = status_bible('df');
-                foreach($df_statuses as $status_id=>$status){
-                    echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
-                }
-                ?>
-            </select>
-        </div>
+
+        <?php if($b['b_is_parent']){ ?>
+            <p><i class="fa fa-check-circle" aria-hidden="true"></i> Auto set to highest experience level required by 7-Day Bootcamps.</p>
+        <?php } else { ?>
+            <div class="form-group label-floating is-empty">
+                <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
+                    <?php
+                    echo '<option value="">Choose...</option>';
+                    $df_statuses = status_bible('df');
+                    foreach($df_statuses as $status_id=>$status){
+                        echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        <?php } ?>
+
 
 
         <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
@@ -476,7 +481,7 @@ function b_save_settings(){
                 <div class="tutoring_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
 
                     <div>Session Duration: <b>50</b> Minutes per Student per Week</div>
-                    <div>Your Tutoring Price: <b>$<span id="tutoring_price"></span></b> per Session</div>
+                    <div>Tutoring Price: <b>$<span id="tutoring_price"></span></b> per Session</div>
 
                     <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
                     <div class="help_body maxout" id="content_4792"></div>

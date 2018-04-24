@@ -1,16 +1,10 @@
 <?php
 //Expand Prerequisites:
-$pre_req_array = prep_prerequisites($admission);
+$admission['b_p2_weeks'] = 1;
+$admission['b_p3_weeks'] = 1;
+$b = ( $admission['b_is_parent'] ? b_aggregate($admission) : $admission );
+$pre_req_array = prep_prerequisites($b);
 $status_rs = status_bible('rs');
-$classroom_current_students = $this->Db_model->ru_fetch(array(
-    'r.r_id'	       => $admission['r_id'],
-    'ru.ru_status >='  => 4, //Joined Students
-    'ru.ru_p2_price >' => 0, //They are in Classroom or Tutoring
-));
-$classroom_available = ( $admission['b_p2_max_seats'] - count($classroom_current_students) );
-$instructor_support_off = ( strlen($admission['b__admins'][0]['u_weeks_off'])>0 && in_array($admission['r_start_date'],unserialize($admission['b__admins'][0]['u_weeks_off'])) );
-
-
 
 ?>
 <script>
@@ -22,7 +16,7 @@ function move_ui(adjustment){
 
     //Set Defaults:
     $('#btn_next a').html('Next <i class="fa fa-chevron-right" aria-hidden="true"></i>');
-    $('#payment_method').html(' ');
+    $('#payment_method').html('');
 
 	//Any pre-check with submitted data?
 	//Let's check the value of the current posstible ID for input validation checking:
@@ -31,33 +25,64 @@ function move_ui(adjustment){
         var the_id = $('.wizard-box').eq((current_section-1)).attr( "id" );
 
 		if(the_id=='price_selection'){
-		    //Which support level did they choose?
+
+            //Which support level did they choose?
             if($('#p_selection_1').is(":checked")){
                 support_level = 1;
                 support_price = parseFloat( $('#p_selection_1').attr('data-price'));
-                $('#confirm_support').html($('#p_name_1').html()); //Update Support Level
             } else if($('#p_selection_2').is(":checked")){
                 support_level = 2;
                 support_price = parseFloat( $('#p_selection_2').attr('data-price'));
-                $('#confirm_support').html($('#p_name_2').html()); //Update Support Level
             } else if($('#p_selection_3').is(":checked")){
                 support_level = 3;
                 support_price = parseFloat( $('#p_selection_3').attr('data-price'));
-                $('#confirm_support').html($('#p_name_3').html()); //Update Support Level
             } else {
-                alert('ERROR: Select <?= $this->lang->line('obj_rs_name') ?> to continue.');
+                alert('ERROR: Select <?= $this->lang->line('obj_rs_name') ?> to continue');
                 return false;
             }
 
+
+            //Load possible dates based on their support package:
+            $( "#select_dates" ).html('<img src="/img/round_load.gif" class="loader" /> Checking Available Dates...');
+
+            $.post("/api_v1/ru_date_selector", {
+                ru_id:<?= $ru_id ?>,
+                u_id:<?= $u_id ?>,
+                u_key:'<?= $u_key ?>',
+                support_level:support_level,
+            }, function(data) {
+                //Append data to view:
+                $( "#select_dates" ).html('<select id="start_dates">'+data+'</select>');
+            });
+
+
+        } else if(the_id=='date_selection'){
+
+		    //Did they select a Date?
+            if(!$('#start_dates').val().length){
+                alert('ERROR: Select a start date to continue');
+                return false;
+            }
+
+		    //Update details:
+            $('#confirm_support').html($('#p_name_'+support_level).html()); //Update Support Level
+            $('#confirm_price').html($('#p_price_'+support_level).html());
+            $('#class_dates').html($('#start_dates').find(":selected").text());
+
             if(support_price>0){
+
                 //Payment is required:
                 $('#btn_next a').html('CONFIRM & PAY &nbsp;[$'+support_price+'] &nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i>');
                 $('#payment_method').html('<span id="white_paypal"><img src="/img/paypal.png" /></span>');
+                $('#outcome_guarantee').html(' (<a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Outcome Guaranteed <i class="fa fa-external-link-square" aria-hidden="true"></i></a>)');
+
             } else {
                 //This is a FREE Class:
                 $('#btn_next a').html('CONFIRM & JOIN <i class="fa fa-chevron-right" aria-hidden="true"></i>');
+                $('#outcome_guarantee').html('');
             }
-		}
+
+        }
 	}
     
 	//Variables:
@@ -96,18 +121,8 @@ function move_ui(adjustment){
 		//Hide both buttons:
 		$('#btn_next, #btn_prev').hide();
 
-		console.log({
-
-            //Core variables:
-            ru_id:<?= $ru_id ?>,
-            u_id:<?= $u_id ?>,
-            u_key:'<?= $u_key ?>',
-            support_level:support_level,
-
-        });
-
 		//Send for processing:
-		$.post("/api_v1/ru_checkout", {
+		$.post("/api_v1/ru_checkout_complete", {
 
 			//Core variables:
 			ru_id:<?= $ru_id ?>,
@@ -115,6 +130,7 @@ function move_ui(adjustment){
             u_key:'<?= $u_key ?>',
             support_level:support_level,
             support_price:support_price,
+            r_ids:$('#start_dates').val(),
 
 		}, function(data) {
 			//Append data to view:
@@ -161,18 +177,14 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $admission['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= time_format($admission['r_start_date'],2).' - '.time_format($admission['r__class_end_time'],2) ?></span></p>
-
-
-
-
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
 
 
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="review_prerequisites">
-    <p>Welcome <?= $admission['u_fname'] ?> 👋​</p>
-    <p>Before we welcome you to this Class, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to successfully complete this Bootcamp:</p>
+    <p>Welcome <?= $b['u_fname'] ?> 👋​</p>
+    <p>Before we welcome you to this Bootcamp, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to [<?= $b['c_objective'] ?>]:</p>
     <ul style="list-style: decimal;">
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
@@ -181,11 +193,12 @@ $(document).ready(function() {
 	?>
     </ul>
     <br />
-    <p>Click "Next" if you meet all prerequisites OR if you believe you can meet them before the Class starts on <b><?= trim(time_format($admission['r_start_date'],2)) ?></b>.</p>
+    <p>Click "Next" if you meet all prerequisites OR if you believe you can meet them before you start this Bootcamp.</p>
     <p>If not, you can <a href="/"><b>choose another Bootcamp &raquo;</b></a></p>
 	<br />
 </div>
 <?php } ?>
+
 
 
 
@@ -196,32 +209,29 @@ $(document).ready(function() {
 
     <div class="radio pricing_block">
         <label>
-            <input type="radio" id="p_selection_1" data-price="<?= echo_price($admission,1, true) ?>" name="p_selection" value="1" />
-            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> &nbsp;[<?= echo_price($admission,1) ?>]</b>
+            <input type="radio" id="p_selection_1" data-price="<?= echo_price($b,1, true) ?>" name="p_selection" value="1" />
+            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?></b> &nbsp;[<b id="p_price_1"><?= echo_price($b,1) ?></b>]
             <p style="margin-left:30px;"><?= nl2br($status_rs[1]['s_desc']) ?></p>
         </label>
     </div>
 
-    <?php if($admission['b_p2_max_seats']>0){ ?>
+
+    <?php if($b['b_p2_max_seats']>0){ ?>
 
         <div class="radio pricing_block">
             <label>
-                <input type="radio" id="p_selection_2" data-price="<?= echo_price($admission,2, true) ?>" name="p_selection" <?= (!$classroom_available || $instructor_support_off ? 'disabled' : '') ?> value="2" />
-                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true" style="margin:0 1px;"></i> <?= $status_rs[2]['s_name'] ?> &nbsp;[<?= echo_price($admission,2) ?>]</b> <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b>
+                <input type="radio" id="p_selection_2" data-price="<?= echo_price($b,2, true) ?>" name="p_selection" value="2" />
+                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true" style="margin:0 1px;"></i> <?= $b['b_p2_weeks'] .' Week'.show_s($b['b_p2_weeks']).' of '.$status_rs[2]['s_name'] ?></b> &nbsp;[<b id="p_price_2"><?= echo_price($b,2) ?></b>]<?php /* <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b> */ ?>
                 <p style="margin-left:30px;"><?= nl2br($status_rs[2]['s_desc']) ?></p>
             </label>
         </div>
 
-        <?php if($instructor_support_off){
-
-            echo '<div class="alert alert-info maxout" role="alert" style="margin-top:20px; border-radius:5px;"><i class="fa fa-info-circle" aria-hidden="true"></i> Classroom closed for this week. You can <b>'.$status_rs[1]['s_name'].'</b> or <a href="/'.$admission['b_url_key'].'" style="color:#3C4858;">Choose Another Week &raquo;</a></div>';
-
-        } elseif($admission['b_p3_rate']>0){ ?>
+        <?php if($b['b_p3_rate']>0){ ?>
 
             <div class="radio pricing_block">
                 <label>
-                    <input type="radio" id="p_selection_3" data-price="<?= echo_price($admission,3, true) ?>" name="p_selection" value="3" />
-                    <b id="p_name_3"><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[3]['s_name'] ?> &nbsp;[<?= echo_price($admission,3) ?>]</b>
+                    <input type="radio" id="p_selection_3" data-price="<?= echo_price($b,3, true) ?>" name="p_selection" value="3" />
+                    <b id="p_name_3"><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $b['b_p3_weeks'] .' Week'.show_s($b['b_p3_weeks']).' of '.$status_rs[3]['s_name'] ?></b> &nbsp;[<b id="p_price_3"><?= echo_price($b,3) ?></b>]
                     <p style="margin-left:30px;"><?= nl2br($status_rs[3]['s_desc']) ?></p>
                 </label>
             </div>
@@ -236,15 +246,29 @@ $(document).ready(function() {
 
 
 
+
+
+
+<div class="wizard-box" id="date_selection">
+
+    <p>Choose your start date for this <?= $b['b__week_count'] ?> week Bootcamp:</p>
+    <div id="select_dates"></div>
+    <br /><br /><br />
+
+</div>
+
+
+
 <div class="wizard-box">
-    <p>Review and confirm Class details:</p>
+    <p>Review and confirm admission details:</p>
     <ul>
-        <li>Bootcamp: <b><?= $admission['c_objective'] ?></b></li>
-        <li>Class Dates: <b><?= time_format($admission['r_start_date'],2) ?> - <?= time_format($admission['r_start_date'],2,(7*24*3600-60)) ?></b></li>
-        <li>Content By: <?='<b>'.$admission['b__admins'][0]['u_fname'].' '.$admission['b__admins'][0]['u_lname'].'</b>' ?></li>
-        <li>Action Plan: <b><?= $admission['c__child_count'] ?> Tasks</b></li>
-        <li>Your Commitment: <b><?= echo_hours($admission['c__estimated_hours']) ?> in 1 Week</b> (Average <?= echo_hours($admission['c__estimated_hours']/7) ?> per Day)</li>
-        <li>Your <?= $this->lang->line('obj_rs_name') ?>: <b id="confirm_support"></b></li>
+        <li>Target Outcome: <b><?= $b['c_objective'] ?></b></li>
+        <li>Duration: <b><?= $b['b__week_count'].' Week'.show_s($b['b__week_count']) ?></b></li>
+        <li>Dates: <b id="class_dates"></b></li>
+        <?php /* <li>Content By: <?= '<b>'.$b['b__admins'][0]['u_fname'].' '.$b['b__admins'][0]['u_lname'].'</b>' ?></li> */ ?>
+        <li>Commitment: <b><?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' week'.show_s($b['b__week_count']) ?></b> (<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day)</li>
+        <li><?= $this->lang->line('obj_rs_name') ?>: <b id="confirm_support"></b></li>
+        <li>Tuition: <b id="confirm_price"></b><span id="outcome_guarantee"></span></li>
     </ul>
     <br />
 </div>
@@ -266,4 +290,4 @@ $(document).ready(function() {
 
 <div id="payment_method"></div>
 
-<div style="text-align:center; margin-top:20px; font-size:0.8em; font-weight:300;"><a href="/<?= $admission['b_url_key'] ?>">&laquo; Back to Bootcamp Overview</a></div>
+<div style="text-align:center; margin-top:20px; font-size:0.8em; font-weight:300;"><a href="/<?= $b['b_url_key'] ?>">&laquo; Back to Bootcamp Overview</a></div>

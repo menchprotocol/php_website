@@ -14,6 +14,21 @@ class Bot extends CI_Controller {
         echo_json(array('status'=>'success'));
     }
 
+    function ad($ru_id=1539){
+
+        $admissions = $this->Db_model->remix_admissions(array(
+            'ru.ru_id'	=> $ru_id,
+        ));
+
+        if($admissions[0]['b_is_parent'] && count($admissions[0]['c__child_intents'])>0){
+
+            //We need to aggregate this Bootcamp
+            $admissions[0] = b_aggregate($admissions[0]);
+
+        }
+
+        echo_json($admissions[0]);
+    }
 
     function update_all($fp_id){
 
@@ -476,6 +491,7 @@ class Bot extends CI_Controller {
 
         //Called when the paypal payment is complete:
         if(isset($_POST) && isset($_POST['payment_status']) && $_POST['payment_status']=='Completed' && isset($_POST['item_number']) && intval($_POST['item_number'])>0){
+
             //Seems like a valid Paypal IPN Call:
             //Fetch Enrollment row:
             $admissions = $this->Db_model->ru_fetch(array(
@@ -484,64 +500,41 @@ class Bot extends CI_Controller {
 
             if(count($admissions)==1){
 
-                //Fetch class data to grab Bootcamp ID:
-                $classes = $this->Db_model->r_fetch(array(
-                    'r.r_id' => $admissions[0]['ru_r_id'],
+                $payment_received = doubleval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
+
+                //Save this new transaction:
+                $transaction = $this->Db_model->t_create(array(
+                    't_ru_id' => $admissions[0]['ru_id'],
+                    't_r_id' => $admissions[0]['ru_r_id'],
+                    't_b_id' => $admissions[0]['ru_b_id'],
+                    't_u_id' => $admissions[0]['ru_u_id'],
+                    't_status' => 1, //Payment received from Student
+                    't_timestamp' => date("Y-m-d H:i:s"),
+                    't_creator_id' => $admissions[0]['ru_u_id'],
+                    't_paypal_id' => $_POST['txn_id'],
+                    't_paypal_ipn' => json_encode($_POST),
+                    't_currency' => $_POST['mc_currency'],
+                    't_payment_type' => $_POST['payment_type'],
+                    't_total' => $payment_received,
+                    't_fees' => doubleval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] )),
                 ));
 
-                if(count($classes)==1){
+                if($payment_received>=$admissions[0]['ru_final_price']){
 
-                    //Fetch Student:
-                    $users = $this->Db_model->u_fetch(array(
-                        'u_id' => $admissions[0]['ru_u_id'],
-                    ));
+                    //Finalize their Admission:
+                    $this->Db_model->ru_finalize($admissions[0]['ru_id']);
 
-                    //Define numbers:
-                    $amount = floatval(( $_POST['payment_gross']>$_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross'] ));
-                    $fee = floatval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] ));
+                } else {
 
-                    //Insert transaction:
-                    $transaction = $this->Db_model->t_create(array(
-                        't_ru_id' => $admissions[0]['ru_id'],
-                        't_r_id' => $admissions[0]['ru_r_id'],
-                        't_u_id' => $admissions[0]['ru_u_id'],
-                        't_status' => 1, //Payment received from Student
-                        't_timestamp' => date("Y-m-d H:i:s"),
-                        't_creator_id' => $admissions[0]['ru_u_id'],
-                        't_paypal_id' => $_POST['txn_id'],
-                        't_paypal_ipn' => json_encode($_POST),
-                        't_currency' => $_POST['mc_currency'],
-                        't_payment_type' => $_POST['payment_type'],
-                        't_total' => $amount,
-                        't_fees' => $fee,
-                    ));
-
-                    //Update student's payment status:
-                    $this->Db_model->ru_update( $admissions[0]['ru_id'] , array(
-                        'ru_status' => 4, //For now this is the default since we don't accept partial payments
-                    ));
-
-                    //Inform the Student:
-                    $this->Comm_model->foundation_message(array(
-                        'e_initiator_u_id' => 0,
-                        'e_recipient_u_id' => $users[0]['u_id'],
-                        'e_c_id' => 2698,
-                        'depth' => 0,
-                        'e_b_id' => $classes[0]['r_b_id'],
-                        'e_r_id' => $classes[0]['r_id'],
-                    ), true);
-
-
-                    //Log Engagement
+                    //Should not happen, log error:
                     $this->Db_model->e_create(array(
-                        'e_initiator_u_id' => $admissions[0]['ru_u_id'],
-                        'e_message' => 'Received $'.$amount.' USD via PayPal.',
+                        'e_message' => 'paypal_webhook() received a partial payment form the student which is not allowed.',
                         'e_json' => $_POST,
-                        'e_type_id' => 30, //Joined Bootcamp with Potential Payment
-                        'e_b_id' => $classes[0]['r_b_id'],
-                        'e_r_id' => $classes[0]['r_id'],
+                        'e_type_id' => 8,
                     ));
+
                 }
+
             }
         }
     }

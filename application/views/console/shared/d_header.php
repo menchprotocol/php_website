@@ -69,7 +69,7 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage and create Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
+                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
 
                         <li <?= ( $uri_segment_1=='console' && $uri_segment_2=='account' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage profile, set your Paypal email for weekly payouts and see payment history"><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> Account</a></li>
 
@@ -82,7 +82,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <?php
                         //NOTE: For some reason we NEED the next <li> otherwise the page orientation breaks!
                         if(isset($uadmission) && count($uadmission)>0){ ?>
-                            <li data-toggle="tooltip" data-placement="bottom" title="Access your Action Plan as a student (not instructor!) and complete your tasks"><a href="/my/actionplan"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Student Portal</a></li>
+                            <li data-toggle="tooltip" data-placement="bottom" title="Access your Action Plan as a student (not instructor!) and complete your Tasks"><a href="/my/actionplan"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Student Portal</a></li>
                         <?php } ?>
 
                     </ul>
@@ -98,10 +98,14 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<div class="left-li-title">';
 	    		if(isset($b)){
-	    		    echo ($b['b_old_format'] ? '<i class="fa fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp." aria-hidden="true"></i>' : '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i>').'<span class="c_objective_'.$b['b_c_id'].'">'.$b['c_objective'].'</span>';
+	    		    echo '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_objective_'.$b['b_c_id'].'">'.$b['c_objective'].'</span>';
+                    if($b['b_old_format']){
+                        echo ' <i class="fa fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp." aria-hidden="true"></i>';
+                    }
 	    		} elseif($uri_segment_1=='cockpit'){
                     echo '<i class="fa fa-bandcamp" style="margin-right:3px;" aria-hidden="true"></i> Cockpit';
                 }
+
 	    		echo '</div>';
 
 
@@ -135,7 +139,7 @@ $uri_segment_2 = $this->uri->segment(2);
                 } elseif($uri_segment_1=='cockpit'){
 
             	    //The the Cockpit Menu for the Mench team:
-                    echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fa fa-sitemap" aria-hidden="true"></i><p>Browse</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_2=='browse' ? 'active' : '' ).'"><a href="/cockpit/browse/engagements"><i class="fa fa-search" aria-hidden="true"></i><p>Browse</p></a></li>';
 
                     echo '<li class="li-sep '.( $uri_segment_2=='udemy' ? 'active' : '' ).'"><a href="/cockpit/udemy"><i class="fa fa-address-book" aria-hidden="true"></i><p>Udemy Community</p></a></li>';
 

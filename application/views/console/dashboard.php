@@ -20,6 +20,8 @@ $(document).ready(function() {
 $website = $this->config->item('website');
 $daily_hours = round($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__active_intents'])>0 ? count($b['c__active_intents']) : 1 )*7) , 1);
 
+$total_goals = count($b['c__active_intents']) + show_s($b['c__child_child_count']) + $b['c__child_child_count'];
+
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
 <div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
@@ -28,10 +30,9 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 <div class="dash-label"><span class="stat-num"><?= count($b['c__active_intents']) .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_name').show_s(count($b['c__active_intents'])) ?></div>
 
-<?php if($b['c__child_child_count']>0){ ?>
-    <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').show_s($b['c__child_child_count']) ?></div>
-<?php } ?>
-
+    <?php if($b['c__child_child_count']>0){ ?>
+        <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').show_s($b['c__child_child_count']) ?></div>
+    <?php } ?>
 
 <div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fa fa-comments" aria-hidden="true"></i> '.$this->lang->line('obj_i_name'). show_s($b['c__message_tree_count']) ?></div>
 
@@ -41,29 +42,82 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div>
-<div class="help_body maxout" id="content_2274"></div>
-<?php
-//Fetch admission stats:
-$student_funnel = array(
-    0 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $b['b_id'],
-        'ru.ru_status'     => 0,
-    ))),
-    4 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $b['b_id'],
-        'ru.ru_status'     => 4,
-    ))),
-    6 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $b['b_id'],
-        'ru.ru_status'     => 6,
-    ))),
-    7 => count($this->Db_model->ru_fetch(array(
-        'r.r_b_id'	       => $b['b_id'],
-        'ru.ru_status'     => 7,
-    ))),
-);
 
+<?php
+
+if($b['b_is_parent']){
+
+    echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fa fa-users" aria-hidden="true"></i> Class Admissions</b></a></h4></div>';
+
+    //Fetch admission stats:
+    $student_funnel = array(
+        0 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'	        => $b['b_id'],
+            'ru.ru_parent_ru_id'	=> 0,
+            'ru.ru_status'          => 0,
+        ))),
+        4 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'	        => $b['b_id'],
+            'ru.ru_parent_ru_id'	=> 0,
+            'ru.ru_status'          => 4,
+        ))),
+        6 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'            => $b['b_id'],
+            'ru.ru_parent_ru_id'	=> 0,
+            'ru.ru_status'          => 6,
+        ))),
+        7 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'	        => $b['b_id'],
+            'ru.ru_parent_ru_id'	=> 0,
+            'ru.ru_status'          => 7,
+        ))),
+    );
+
+} else {
+
+    //Show Potential parent Bootcamps:
+    $parent_bs = $this->Db_model->cr_inbound_fetch(array(
+        'cr.cr_outbound_b_id' => $b['b_id'],
+        'cr.cr_status >=' => 1,
+    ),array('b'));
+
+    if(count($parent_bs)>0){
+        echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fa fa-folder-open" aria-hidden="true"></i> Parent Bootcamps</b></a></h4></div>';
+        echo '<div class="list-group maxout">';
+        foreach ($parent_bs as $parent_b){
+            echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
+            echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+            echo '<i class="fa fa-folder-open" aria-hidden="true"></i> ';
+            echo $parent_b['c_objective'];
+            echo '</a>';
+        }
+        echo '</div>';
+    }
+
+    echo '<div class="title" style="margin-top:40px;"><h4><a href="/console/'.$b['b_id'].'/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div><div class="help_body maxout" id="content_2274"></div>';
+
+    //Fetch admission stats:
+    $student_funnel = array(
+        0 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'	   => $b['b_id'],
+            'ru.ru_status'     => 0,
+        ))),
+        4 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'	   => $b['b_id'],
+            'ru.ru_status'     => 4,
+        ))),
+        6 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'       => $b['b_id'],
+            'ru.ru_status'     => 6,
+        ))),
+        7 => count($this->Db_model->ru_fetch(array(
+            'ru.ru_b_id'	   => $b['b_id'],
+            'ru.ru_status'     => 7,
+        ))),
+    );
+}
+
+//Show current funnel
 foreach($student_funnel as $ru_status=>$count){
     echo '<div><span class="stat-num">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
 }

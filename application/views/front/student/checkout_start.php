@@ -8,8 +8,8 @@ function start_application(){
     $(".form-el").prop('disabled', true).css('background-color','#EFEFEF');
 
     //Send data for processing:
-    $.post("/api_v1/ru_start", {
-        r_id:<?= $focus_class['r_id'] ?>,
+    $.post("/api_v1/ru_checkout_initiate", {
+        b_id:<?= $b['b_id'] ?>,
         u_fname:$('#u_fname').val(),
         u_email:$('#u_email').val(),
     } , function(data) {
@@ -40,20 +40,18 @@ $( document ).ready(function() {
 
 </script>
 
-
-
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= time_format($focus_class['r_start_date'],2).' - '.time_format($focus_class['r__class_end_time'],2) ?></span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
 
 
 <div class="section">
     <div class="row" style="max-width:330px; padding-left:10px;">
         <div class="col-xs-12">
             <p>First Name:</p>
-            <p><input type="text" id="u_fname" class="form-el" /></p>
+            <p><input type="text" id="u_fname" value="<?= ( isset($udata['u_fname']) ? $udata['u_fname'] : '' ) ?>" class="form-el" /></p>
         </div>
         <div class="col-xs-12">
             <p>Email:</p>
-            <p><input type="email" id="u_email" style="text-transform: lowercase;" class="form-el" /></p>
+            <p><input type="email" id="u_email" value="<?= ( isset($udata['u_email']) ? $udata['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
         </div>
     </div>
     <div class="row maxout" style="padding-left:10px;">

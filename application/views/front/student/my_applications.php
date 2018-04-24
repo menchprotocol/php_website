@@ -65,23 +65,48 @@ if(count($admissions)>0 && is_array($admissions)){
     foreach($admissions as $admission){
 
         //Fetch Admission Data:
-        $bs = fetch_action_plan_copy($admission['r_b_id'],$admission['r_id']);
-        $class = $bs[0]['this_class'];
-        $admission_active = ( $admission['ru_status']>=0 && $bs[0]['b_status']>=2 && $class['r_status']>=1 );
+        $bs = fetch_action_plan_copy($admission['ru_b_id'],$admission['r_id']);
+        $admission_active = ( $admission['ru_status']>=0 && $bs[0]['b_status']>=2 );
 
         //Fetch Live Bootcamp Data:
         $live_bs = $this->Db_model->b_fetch(array(
-            'b_id' => $admission['r_b_id'],
+            'b_id' => $admission['ru_b_id'],
         ));
 
         echo '<div class="admission_block">';
 
-
-
             echo '<div class="admission_checklist">';
 
-                echo '<p><b><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</b></p>';
-                echo '<p style="font-size: 0.9em;"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($class['r_start_date'],2).' - '.trim(time_format($class['r__class_end_time'],2)).'</p>';
+                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</b></p>';
+                //Show date:
+                echo '<p style="font-size: 0.9em;"><i class="fa fa-calendar" aria-hidden="true"></i> ';
+                if($bs[0]['b_is_parent']){
+
+                    //Should have some child Bootcamps:
+                    $child_intents = $this->Db_model->cr_outbound_fetch(array(
+                        'cr.cr_inbound_id' => $bs[0]['b_c_id'],
+                        'cr.cr_status >=' => 0,
+                        'c.c_status >=' => 0,
+                        'ru.ru_u_id' => $admission['ru_u_id'],
+                    ), array('ru'));
+
+                    if(count($child_intents)>0){
+
+                        //Fetch start date for first Class:
+                        $classes = $this->Db_model->r_fetch(array(
+                            'r.r_id' => $child_intents[0]['ru_r_id'],
+                        ));
+
+                        echo time_format($classes[0]['r_start_date'],2).' - '.trim(time_format($classes[0]['r_start_date'],2, ((count($child_intents)*7*24*3600)-(12*3600)))).' ('.count($child_intents).' Weeks)';
+                    } else {
+                        echo 'Dates not yet selected';
+                    }
+
+
+                } else {
+                    echo time_format($bs[0]['this_class']['r_start_date'],2).' - '.trim(time_format($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
+                }
+                echo '</p>';
 
                 //Account, always created at this point:
                 echo '<div class="checkbox" style="margin-top:20px;"><label style="text-decoration:line-through;"><input type="checkbox" disabled checked> Step 1: Admission Initiated</label></div>';
@@ -93,7 +118,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
                 //Messenger activation for Active Bootcamps only
                 if($bs[0]['b_status']>=2){
-                    $bot_title = 'Step 3: Activate Your Facebook Messenger'.($admission['ru_p2_price']>0?' to Chat with your Instructor':' (Chat Available for Classroom Students)');
+                    $bot_title = 'Step 3: Activate Your Facebook Messenger';
                     if($admission['u_cache__fp_psid']>0){
                         echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
                     } else {
@@ -105,13 +130,29 @@ if(count($admissions)>0 && is_array($admissions)){
 
 
 
+            if($bs[0]['b_is_parent']){
+
+                //Fetch the Child Bootcamp ID:
+                echo '<ul class="child_admissions">';
+                foreach($child_intents as $child_admission){
+                    echo '<li>';
+                    echo status_bible('ru',$child_admission['ru_status'],1,'right');
+                    echo ' Week '.$child_admission['cr_outbound_rank'].': '.$child_admission['c_objective'];
+                    echo '</li>';
+                }
+                echo '</ul>';
+
+            }
+
+
+
             //More info like Bootcamp URL:
             echo '<div class="admission_footer">';
                 echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span>';
                 echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Overview</a>';
                 if($admission['ru_status']==0){
                     //They can still withdraw their application:
-                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw from Bootcamp</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
+                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
                 }
             echo '</div>';
 
@@ -122,7 +163,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
 
 
-        if($admission['ru_final_price']>0 && $admission['ru_status']<4 && $admission['ru_status']>=0 && isset($_GET['pay_r_id']) && intval($_GET['pay_r_id']) && intval($_GET['pay_r_id'])==intval($admission['r_id'])){
+        if($admission['ru_final_price']>0 && $admission['ru_status']<4 && $admission['ru_status']>=0 && isset($_GET['pay_ru_id']) && intval($_GET['pay_ru_id'])==intval($admission['ru_id'])){
             ?>
             <script>
                 $( document ).ready(function() {
@@ -135,9 +176,9 @@ if(count($admissions)>0 && is_array($admissions)){
                 <input type="hidden" name="cmd" value="_xclick">
                 <input type="hidden" name="business" value="EYKXCMCJHEBA8">
                 <input type="hidden" name="lc" value="US">
-                <input type="hidden" name="item_name" value="<?= $bs[0]['c_objective'] . ' - Class of ' . time_format($class['r_start_date'],2) ?>">
+                <input type="hidden" name="item_name" value="<?= $bs[0]['c_objective'] ?>">
                 <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
-                <input type="hidden" name="custom_r_id" value="<?= $admission['r_id'] ?>">
+                <input type="hidden" name="custom_b_id" value="<?= $admission['ru_b_id'] ?>">
                 <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">
                 <input type="hidden" name="custom_u_key" value="<?= $u_key ?>">
                 <input type="hidden" name="amount" value="<?= $admission['ru_final_price'] ?>">

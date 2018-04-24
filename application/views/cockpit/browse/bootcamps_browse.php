@@ -66,11 +66,11 @@ foreach($bs as $key=>$mb){
 
     $bs[$key]['student_funnel'] = array(
         0 => count($this->Db_model->ru_fetch(array(
-            'r.r_b_id'	       => $mb['b_id'],
+            'ru.ru_b_id'	   => $mb['b_id'],
             'ru.ru_status'     => 0,
         ))),
         4 => count($this->Db_model->ru_fetch(array(
-            'r.r_b_id'	       => $mb['b_id'],
+            'ru.ru_b_id'	   => $mb['b_id'],
             'ru.ru_status'     => 4,
         ))),
     );

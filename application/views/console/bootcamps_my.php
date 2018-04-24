@@ -6,7 +6,7 @@ $website = $this->config->item('website');
 <script>
     $(document).ready(function() {
 
-        //Prevents Bootcamp creation forms to submit on enter
+        //Prevents creation forms to submit on enter
         $(window).keydown(function(event){
             if(event.keyCode == 13) {
 
@@ -93,15 +93,50 @@ $website = $this->config->item('website');
 <div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 
 
-<?php if($udata['u_id']==1 || $udata['u_id']==1034){ ?>
+<?php if($udata['u_status']==3){ ?>
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_sevenday" class="active"><a href="#sevenday"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> 7-Day</a></li>
-    <li id="nav_multiweek"><a href="#multiweek"><i class="fa fa-folder-open" aria-hidden="true"></i> Multi-Week</a></li>
+    <li id="nav_sevenday" class="active"><a href="#sevenday"><?= $this->lang->line('level_0_icon') .' '. str_replace('Bootcamp','',$this->lang->line('level_0_name')) ?></a></li>
+    <li id="nav_multiweek"><a href="#multiweek"><?= $this->lang->line('level_1_icon') .' '. str_replace('Bootcamp','',$this->lang->line('level_1_name')) ?></a></li>
+    <!-- <li id="nav_goals"><a href="#goals"><?= $this->lang->line('level_2_icon') .' '. $this->lang->line('level_2_name').'s' ?></a></li> -->
 </ul>
 <?php } ?>
 
 
 <div class="tab-content tab-space">
+
+    <div class="tab-pane" id="tabmultiweek">
+
+        <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Only Mench Admins can create Multi-week Bootcamps.</p>
+        <p>Multi-Week Bootcamps are a combination of existing 7-Day Bootcamps:</p>
+
+        <?php
+        echo '<div class="list-group maxout">';
+
+        if(count($bsp)>0){
+            foreach($bsp as $b){
+                echo echo_b($b);
+            }
+        } else {
+            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Multi-Week Bootcamps Found. Create a new Bootcamp below:</div>';
+        }
+
+        //Input to create new Bootcamp:
+        echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
+            <div class="input-group">
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_objective_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
+                <span class="input-group-addon" style="padding-right:8px;">
+                    <span data-toggle="tooltip" data-placement="top" onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                        <div>ADD</div>
+                    </span>
+                </span>
+            </div>
+        </div>';
+
+        echo '</div>';
+        ?>
+
+    </div>
 
     <div class="tab-pane active" id="tabsevenday">
 
@@ -134,36 +169,10 @@ $website = $this->config->item('website');
 
     </div>
 
-    <div class="tab-pane" id="tabmultiweek">
+    <div class="tab-pane" id="tabgoals">
 
-        <p>Multi-Week Bootcamps are simply a combination of existing 7-Day Bootcamps:</p>
-
-        <?php
-        echo '<div class="list-group maxout">';
-
-        if(count($bsp)>0){
-            foreach($bsp as $b){
-                echo echo_b($b);
-            }
-        } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Multi-Week Bootcamps Found. Create a new Bootcamp below:</div>';
-        }
-
-        //Input to create new Bootcamp:
-        echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
-            <div class="input-group">
-                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_objective_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
-                <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" data-placement="top" onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
-                        <div>ADD</div>
-                    </span>
-                </span>
-            </div>
-        </div>';
-
-        echo '</div>';
-        ?>
+        <p>Soon will list all Tasks from all Bootcamps so you can manage them centrally and easily re-use Tasks across multiple 7-day Bootcamps.</p>
 
     </div>
+
 </div>

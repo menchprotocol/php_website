@@ -20,12 +20,12 @@ class Front extends CI_Controller {
 	
 	function index($c_id=0){
 		//Load home page:
-		$this->load->view('front/shared/f_header' , array(
-		    'title' => 'Get a Tech Job You Love',
-		));
-		$this->load->view('front/bootcamp/marketplace',array(
-		    'c_id' => $c_id,
-        ));
+        $data = array(
+            'title' => 'Advance Your Tech Career',
+            'c_id' => $c_id,
+        );
+		$this->load->view('front/shared/f_header' , $data);
+		$this->load->view('front/bootcamp/marketplace', $data);
 		$this->load->view('front/shared/f_footer');
 	}
 	
@@ -103,11 +103,10 @@ class Front extends CI_Controller {
     }
 	
 	
-	function landing_page($b_url_key,$r_id=null){
+	function landing_page($b_url_key){
 	    
 	    //Fetch data:
 	    $udata = $this->session->userdata('user');
-        $class_settings = $this->config->item('class_settings');
         $bs = $this->Db_model->remix_bs(array(
 	        'LOWER(b.b_url_key)' => strtolower($b_url_key),
 	    ));
@@ -119,41 +118,21 @@ class Front extends CI_Controller {
         } elseif($bs[0]['b_status']<2){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page.</div>');
         } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
             //URL Case sensitivity redirect:
             redirect_message('/'.$bs[0]['b_url_key']);
         }
 
-        $b = $bs[0];
-        $focus_class = null; //Let's find this...
-        $classes = $this->Db_model->r_fetch(array(
-            'r.r_b_id' => $b['b_id'],
-            'r.r_status' => 1,
-        ), null, 'ASC', $class_settings['students_show_max']);
-
-	    //Validate Class:
-        if($r_id){
-            $focus_class = filter($classes,'r_id',$r_id);
-        } elseif(isset($classes[0])) {
-            $focus_class = $classes[0];
-        }
-
-	    if(!$focus_class){
-            redirect_message('/','<div class="alert alert-danger" role="alert">Error: '.( $r_id ? 'Class is expired.' : 'Did not find an active class for this Bootcamp.' ).'</div>');
-	    }
-
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
-            'title' => $b['c_objective'].' - Starting '.time_format($focus_class['r_start_date'],2),
-            'b_id' => $b['b_id'],
-	        'b_fb_pixel_id' => $b['b_fb_pixel_id'], //Will insert pixel code in header
-            'canonical' => 'https://mench.com/'.$b['b_url_key'].( $r_id ? '/'.$r_id : '' ), //Would set this in the <head> for SEO purposes
+            'title' => $bs[0]['c_objective'],
+            'b_id' => $bs[0]['b_id'],
+	        'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
+            'canonical' => 'https://mench.com/'.$bs[0]['b_url_key'], //Would set this in the <head> for SEO purposes
 	    ));
 	    $this->load->view('front/bootcamp/landing_page' , array(
-	        'b' => $b,
-            'classes' => $classes,
-            'focus_class' => $focus_class,
+	        'b' => $bs[0],
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}

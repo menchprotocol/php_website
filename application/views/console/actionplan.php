@@ -3,14 +3,26 @@
 $message_max = $this->config->item('message_max');
 $intent_statuses = status_bible('c');
 $udata = $this->session->userdata('user');
+if($b['b_is_parent']){
+    //For the list of prerequisites and skills:
+    $agg_b = b_aggregate($b,true);
+}
 ?>
 <style> .breadcrumb li { display:block; } </style>
+<script src="/js/console/<?= ( $b['b_is_parent'] ? 'actionplan_multiweek.js' : 'actionplan_7day.js' ) ?>" type="text/javascript"></script>
+
+<input type="hidden" id="u_id" value="<?= $udata['u_id'] ?>" />
+<input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
+<input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
+<input type="hidden" id="obj_name" value="" />
+
+
 <script>
 
 //This functions updates the input placeholders to refect the next item to be added:
 function update_tree_input(){
     //First update the number of Tasks in main input field:
-    $('#addintent').attr("placeholder", "Task #"+($("#list-outbound").children().length)+" Primary Outcome");
+    $('#addintent').attr("placeholder", "<?= ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name')) ?> #"+($("#list-outbound").children().length)+"<?= ( $b['b_is_parent'] ? ' Bootcamp Search' : '') ?>");
 
     //Now go through each Step list and see whatsupp:
     if($('.step-group').length){
@@ -36,24 +48,6 @@ function format_hours(dbl_hour){
 
 
 $(document).ready(function() {
-
-    //Deletion warning to Steps & Task drop down:
-    $('#c_status_2').change(function() {
-        if(parseInt($(this).val())<0){
-            //Delete has been selected!
-            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fa fa-trash" aria-hidden="true"></i> You are about to permanently delete this Task, its Steps and all related messages.</span>');
-        } else {
-            $('#delete_warning').html('');
-        }
-    });
-    $('#c_status_3').change(function() {
-        if(parseInt($(this).val())<0){
-            //Delete has been selected!
-            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fa fa-trash" aria-hidden="true"></i> You are about to permanently delete this Step and all its messages.</span>');
-        } else {
-            $('#delete_warning').html('');
-        }
-    });
 
 
     //Enforce Alphanumeric for URL Key:
@@ -102,36 +96,6 @@ $(document).ready(function() {
     //Update Bootcamp hours:
     $('.hours_level_1').text(format_hours($('.hours_level_1').attr('current-hours')));
 
-    //Loadup Task numbering based on duratioan extenstions:
-    c_sort(0,2);
-
-    //Activate sorting for Steps:
-    if($('.step-group').length){
-
-        $( ".step-group" ).each(function() {
-
-            var intent_id = $( this ).attr('intent-id');
-
-            //Load sorting:
-            load_intent_sort(intent_id,"3");
-
-            //Load time:
-            $('#t_estimate_'+intent_id).text(format_hours($('#t_estimate_'+intent_id).attr('current-hours')));
-
-        });
-
-        if($('.is_step_sortable').length){
-            //Goo through all Steps:
-            $( ".is_step_sortable" ).each(function() {
-                var intent_id = $(this).attr('intent-id');
-                if(intent_id){
-                    //Load time:
-                    $('#t_estimate_'+intent_id).text(format_hours($('#t_estimate_'+intent_id).attr('current-hours')));
-                }
-            });
-        }
-
-    }
 
     //Update counters on load:
     update_tree_input();
@@ -146,185 +110,46 @@ $(document).ready(function() {
 	load_intent_sort($("#pid").val(),"2");
 
 
+    /*
+    $( "#addintent" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
-	//Add new Task:
-    $('#dir_handle').click(function (e) {
-        new_intent($('#pid').val(),2);
-    });
-    $( "#addintent" ).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            return new_intent($('#pid').val(),2);
+        link_lintent(suggestion.c_id);
+
+    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+        source: function(q, cb) {
+            algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function(suggestion) { return "" },
+        templates: {
+            suggestion: function(suggestion) {
+                return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
+            },
+            header: function(data) {
+                if(!data.isEmpty){
+                    return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+                }
+            },
+            empty: function(data) {
+                return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+            },
         }
-    });
-
-
-	//Load Algolia:
-	/*
-	$( "#addintent" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-
-		link_lintent(suggestion.c_id);
-
-	}).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
-	    source: function(q, cb) {
-		      algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
-		        if (error) {
-		          cb([]);
-		          return;
-		        }
-
-		        cb(content.hits, content);
-		      });
-		    },
-		    displayKey: function(suggestion) { return "" },
-		    templates: {
-		      suggestion: function(suggestion) {
-		         return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
-		      },
-		      header: function(data) {
-		    	  if(!data.isEmpty){
-		    		  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
-		    	  }
-		      },
-		      empty: function(data) {
-	    		  	  return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
-		      },
-		    }
-	}]).keypress(function (e) {
+    }]).keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code == 13) || (e.ctrlKey && code == 13)) {
-        	new_intent($( "#addintent" ).val());
+            new_intent($( "#addintent" ).val());
             return true;
         }
     });
     */
 });
 
-
-
-
-
-
-
-function add_to_list(sort_list_id,sort_handler,html_content){
-    //See if we already have a list in place?
-    if($( "#"+sort_list_id+" "+sort_handler).length>0){
-        //yes we do! add this:
-        $( "#"+sort_list_id+" "+sort_handler+":last").after(html_content);
-    } else {
-        //Empty list, add before input filed:
-        $( "#"+sort_list_id).prepend(html_content);
-    }
-}
-
-function new_intent(pid,next_level){
-
-    //Set variables mostly based on level:
-    if(next_level==2){
-        var input_field = $('#addintent');
-        var sort_list_id = "list-outbound";
-        var sort_handler = ".is_sortable";
-    } else if(next_level==3){
-        var input_field = $('#addintent'+pid);
-        var sort_list_id = "list-outbound-"+pid;
-        var sort_handler = ".is_step_sortable";
-    }
-
-    var b_id = $('#b_id').val();
-    var intent_name = input_field.val();
-
- 	if(intent_name.length<1){
- 		alert('Error: Missing Outcome. Try Again...');
-        input_field.focus();
- 		return false;
- 	}
-
- 	//Set processing status:
-    add_to_list(sort_list_id,sort_handler,'<div id="temp'+next_level+'" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </div>');
-
-     //Empty Input:
-    input_field.val("").focus();
-
- 	//Update backend:
- 	$.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_objective:intent_name, next_level:next_level}, function(data) {
-
- 	    //Update UI to confirm with user:
- 		$( "#temp"+next_level ).remove();
-
- 		//Add new
-        add_to_list(sort_list_id,sort_handler,data.html);
-
- 		//Re-adjust sorting:
- 		load_intent_sort(pid,next_level);
-
- 		if(next_level==2){
-
-            //Adjust the Task count:
-            c_sort(0,2);
-
-            //Re-adjust sorting for inner Steps:
-            load_intent_sort(data.c_id,3);
-
-        } else {
-            //Adjust Step sorting:
-            c_sort(pid,next_level);
-        }
-
- 		//Tooltips:
- 		$('[data-toggle="tooltip"]').tooltip();
-
- 		//Add the new time:
-        var step_deficit = 0.05; //3 minutes is the default for new Tasks/Steps
-        var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
-        var current_task_hours = parseFloat($('#t_estimate_'+pid).attr('current-hours'));
-        var current_task_status = parseInt($('.c_objective_'+pid).attr('current-status'));
-
-        //Update Miletsone:
-        $('#t_estimate_'+pid).attr('current-hours',(current_task_hours + step_deficit)).text(format_hours((current_task_hours + step_deficit)));
-
-        //Only update Bootcamp if Task is active:
-        if(current_task_status>0){
-            $('.hours_level_1').attr('current-hours',(current_b_hours + step_deficit)).text(format_hours((current_b_hours + step_deficit)));
-        }
-
- 	});
-
- 	//Prevent form submission:
-    event.preventDefault();
- 	return false;
-}
-
-
-
-/*
-function link_lintent(target_id){
-    //TODO Update based on new_intent() changes when implementing search
- 	//Fetch needed vars:
- 	var pid = $('#pid').val();
- 	var b_id = $('#b_id').val();
- 	var next_level = $( "#next_level" ).val();
-
- 	//Set processing status:
-     $( "#list-outbound>div" ).before('<a href="#" id="temp" class="list-group-item"><img src="/img/round_load.gif" class="loader" /> Adding... </a>');
-
-     //Empty Input:
- 	$( "#addintent" ).val("").focus();
-
- 	//Update backend:
- 	$.post("/api_v1/c_link", {b_id:b_id, pid:pid, target_id:target_id, next_level:next_level}, function(data) {
- 		//Update UI to confirm with user:
- 		$( "#temp" ).remove();
-
- 		//Add new
- 		$('#list-outbound>div').before(data);
-
-        //TODO Resort
-
- 		//Tooltips:
- 		$('[data-toggle="tooltip"]').tooltip();
- 	});
-}
-*/
 
 
 
@@ -355,7 +180,7 @@ function c_sort(c_id,level){
             var pid = parseInt($(this).attr('intent-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_objective_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? '' : 'Step' ); //The default for all intents
+            var prefix = ( level==2 ? '<?= ( $b['b_is_parent'] ? 'Week' : 'Task') ?>' : 'Step' ); //The default for all intents
 
             if(status>=1){
 
@@ -377,7 +202,6 @@ function c_sort(c_id,level){
 
                 //Update sort handler:
                 $( "#cr_"+cr_id+" .inline-level-"+level ).html( prefix + ' #' + sort_rank );
-
 
             } else {
 
@@ -477,8 +301,8 @@ function load_intent_sort(pid,level){
                     //Determine core variables for hour move calculations:
                     var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('current-hours'));
                     var step_status = parseInt($('.c_objective_'+inputs.c_id).attr('current-status'));
-                    var from_task_status = parseInt($('.c_objective_'+inputs.from_c_id).attr('current-status'));
-                    var to_task_status = parseInt($('.c_objective_'+inputs.to_c_id).attr('current-status'));
+                    var from_c_status = parseInt($('.c_objective_'+inputs.from_c_id).attr('current-status'));
+                    var to_c_status = parseInt($('.c_objective_'+inputs.to_c_id).attr('current-status'));
 
                     if(!(step_hours==0) && step_status>0){
 
@@ -491,11 +315,11 @@ function load_intent_sort(pid,level){
                         $('#t_estimate_'+inputs.to_c_id).attr('current-hours',to_hours_new).text(format_hours(to_hours_new));
 
                         //Adjust Bootcamp hours if necessary:
-                        if(!(from_task_status==to_task_status)){
+                        if(!(from_c_status==to_c_status)){
                             //Yes we need to adjust as the statuses of these Tasks are different:
                             var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
                             //Determine what to do:
-                            var new_bootcamp_hours = current_b_hours + ( ( from_task_status>to_task_status ? -1 : 1 ) * step_hours );
+                            var new_bootcamp_hours = current_b_hours + ( ( from_c_status>to_c_status ? -1 : 1 ) * step_hours );
                             $('.hours_level_1').attr('current-hours',new_bootcamp_hours).text(format_hours(new_bootcamp_hours));
                         }
                     }
@@ -510,7 +334,6 @@ function load_intent_sort(pid,level){
     }
  	var sort = Sortable.create( theobject , settings );
 }
-
 
 
 
@@ -623,9 +446,16 @@ function load_modify(c_id, level){
 
 
 
-
-
-
+function add_to_list(sort_list_id,sort_handler,html_content){
+    //See if we already have a list in place?
+    if($( "#"+sort_list_id+" "+sort_handler).length>0){
+        //yes we do! add this:
+        $( "#"+sort_list_id+" "+sort_handler+":last").after(html_content);
+    } else {
+        //Empty list, add before input filed:
+        $( "#"+sort_list_id).prepend(html_content);
+    }
+}
 
 
 function c_save_settings(){
@@ -687,16 +517,16 @@ function c_save_settings(){
                         //Needs to update:
                         $('.c_objective_' + modify_data['pid']).attr('current-status', modify_data['c_status']);
 
-                        var current_task_hours = parseFloat($('#t_estimate_' + modify_data['pid']).attr('current-hours'));
+                        var current_c_hours = parseFloat($('#t_estimate_' + modify_data['pid']).attr('current-hours'));
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
 
                         //Does this need to be removed from the totals?
-                        if (current_status == 1 && modify_data['c_status'] <= 0 && current_task_hours > 0) {
+                        if (current_status == 1 && modify_data['c_status'] <= 0 && current_c_hours > 0) {
                             //We need to remove initial hours from the totals:
-                            $('.hours_level_1').attr('current-hours', (current_b_hours - current_task_hours)).text(format_hours(current_b_hours - current_task_hours));
-                        } else if (current_status <= 0 && modify_data['c_status'] > 0 && current_task_hours > 0) {
+                            $('.hours_level_1').attr('current-hours', (current_b_hours - current_c_hours)).text(format_hours(current_b_hours - current_c_hours));
+                        } else if (current_status <= 0 && modify_data['c_status'] > 0 && current_c_hours > 0) {
                             //We need to add the hours to the total:
-                            $('.hours_level_1').attr('current-hours', (current_b_hours + current_task_hours)).text(format_hours(current_b_hours + current_task_hours));
+                            $('.hours_level_1').attr('current-hours', (current_b_hours + current_c_hours)).text(format_hours(current_b_hours + current_c_hours));
                         }
 
                         //Has this been deleted?
@@ -729,19 +559,19 @@ function c_save_settings(){
 
 
                     //What to do with the hours:
-                    var current_task_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
-                    var task_deficit = modify_data['c_time_estimate'] - current_task_hours;
+                    var current_c_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
+                    var hours_deficit = modify_data['c_time_estimate'] - current_c_hours;
 
-                    if(!(task_deficit==0)){
+                    if(!(hours_deficit==0)){
 
                         //Adjust 3 levels of hours:
-                        var current_task_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
-                        var current_task_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
+                        var current_c_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
+                        var current_c_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
 
                         //Only update Bootcamp if Task+Step are Active:
-                        if(current_task_status>0){
-                            var new_b_hours = current_b_hours + task_deficit;
+                        if(current_c_status>0){
+                            var new_b_hours = current_b_hours + hours_deficit;
                             $('.hours_level_1').attr('current-hours',new_b_hours).text(format_hours(new_b_hours));
                         }
 
@@ -794,7 +624,7 @@ function c_save_settings(){
                                     //Resort all Tasks to illustrate changes on UI:
                                     c_sort(parent_c_id,3);
                                 }, 377);
-                            }, 1597);
+                            }, 377);
                         } else {
                             //Resort all Tasks to illustrate changes on UI:
                             c_sort(parent_c_id,3);
@@ -805,19 +635,19 @@ function c_save_settings(){
 
                         //Adjust 3 levels of hours:
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
-                        var current_task_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('current-hours'));
-                        var current_task_status = parseInt($('.c_objective_'+parent_c_id).attr('current-status'));
+                        var current_c_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('current-hours'));
+                        var current_c_status = parseInt($('.c_objective_'+parent_c_id).attr('current-status'));
 
 
                         //Update Task if Step is active:
                         if(( modify_data['c_status']>0 || !(current_status==modify_data['c_status']) )){
 
                             //Update Miletsone:
-                            var new_task_hours = current_task_hours + step_deficit;
-                            $('#t_estimate_'+parent_c_id).attr('current-hours',new_task_hours).text(format_hours(new_task_hours));
+                            var new_c_hours = current_c_hours + step_deficit;
+                            $('#t_estimate_'+parent_c_id).attr('current-hours',new_c_hours).text(format_hours(new_c_hours));
 
                             //Only update Bootcamp if Task+Step are Active:
-                            if(current_task_status>0){
+                            if(current_c_status>0){
                                 var new_b_hours = current_b_hours + step_deficit;
                                 $('.hours_level_1').attr('current-hours',new_b_hours).text(format_hours(new_b_hours));
                             }
@@ -847,35 +677,12 @@ function c_save_settings(){
 }
 
 
-function tree_message(c_id,u_id){
-
-    //Show loading:
-    $('#simulate_'+c_id).attr('href','#').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
-
-    //Disapper in a while:
-    setTimeout(function() {
-        //Hide the editor & saving results:
-        $.post("/api_v1/i_dispatch", {
-            c_id:c_id,
-            depth:1,
-            b_id:$('#b_id').val(),
-            u_id:u_id,
-        }, function(data) {
-            //Show success:
-            $('#simulate_'+c_id).html(data);
-        });
-    }, 334);
-
-}
 
 
 
 
-
-/* ******************************** */
 /* ******************************** */
 /* Simple List Management Functions */
-/* ******************************** */
 /* ******************************** */
 
 function initiate_list(group_id,placeholder,prefix,current_items){
@@ -1008,8 +815,8 @@ function add_item(group_id,prefix,current_value){
         }
         $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
             '<span class="pull-right">'+
-                '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fa fa-trash"></i></a> '+
-                '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fa fa-pencil-square-o"></i></a>'+
+            '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fa fa-trash"></i></a> '+
+            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fa fa-pencil-square-o"></i></a>'+
             '</span>'+
             '<i class="fa fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
             '</li>');
@@ -1026,10 +833,6 @@ function add_item(group_id,prefix,current_value){
 
 </script>
 
-
-
-<input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
-<input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
 
 
 <div class="row">
@@ -1055,45 +858,30 @@ function add_item(group_id,prefix,current_value){
 
 
 
-        <?php if(!$b['b_is_parent']){ ?>
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
-          <li id="nav_prerequisites"><a href="#prerequisites"><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites</a></li>
-          <li id="nav_list" class="active"><a href="#list"><i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks</a></li>
-          <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Skills</a></li>
+            <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' '.$this->lang->line('level_0_name').'s' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
+            <li id="nav_prerequisites"><a href="#prerequisites"><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites</a></li>
+            <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Skills</a></li>
         </ul>
-        <?php } ?>
 
 
         <div class="tab-content tab-space">
-
-            <div class="tab-pane" id="tabprerequisites">
-
-                <?php itip(610); ?>
-                <script>
-                    $(document).ready(function() {
-                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-eye" aria-hidden="true"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
-                    });
-                </script>
-                <div id="b_prerequisites" class="list-group grey-list"></div>
-
-            </div>
 
             <div class="tab-pane active" id="tablist">
 
                 <?php
 
                 if(!$b['b_is_parent']){
-
                     //Show tip for Tasks:
                     itip(602);
+                }
 
-                    //Task Expand/Contract all if more than 2
-                    if(count($intent['c__child_intents'])>0 && $b['b_old_format']){
-                        echo '<div id="task_view">';
-                        echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
-                        echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
-                        echo '</div>';
-                    }
+                //Task Expand/Contract all if more than 2
+                if(count($intent['c__child_intents'])>0 && ($b['b_old_format'] || $b['b_is_parent'])){
+                    echo '<div id="task_view">';
+                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
+                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                    echo '</div>';
                 }
 
 
@@ -1111,9 +899,13 @@ function add_item(group_id,prefix,current_value){
                         <div class="input-group">
                             <div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control autosearch" maxlength="70" id="addintent" placeholder=""></div>
                             <span class="input-group-addon" style="padding-right:8px;">
+
+                            <?php if(!$b['b_is_parent']){ ?>
                             <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
                                 <div><i class="fa fa-plus"></i></div>
                             </span>
+                            <?php } ?>
+
                         </span>
                         </div>
                     </div>
@@ -1124,16 +916,60 @@ function add_item(group_id,prefix,current_value){
                 ?>
             </div>
 
+
+            <div class="tab-pane" id="tabprerequisites">
+
+                <?php itip(610); ?>
+                <script>
+                    $(document).ready(function() {
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-eye" aria-hidden="true"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
+                    });
+                </script>
+                <div id="b_prerequisites" class="list-group grey-list"></div>
+
+                <?php
+                if($b['b_is_parent'] && strlen($agg_b['b_prerequisites'])>0){
+                    $all_items = json_decode($agg_b['b_prerequisites']);
+                    if(count($all_items)>0){
+                        echo '<p>All '.$this->lang->line('level_0_name').' prerequisites are also linked to this '.$this->lang->line('level_1_name').':</p>';
+                        echo '<ul style="list-style:none; margin-left:-20px;">';
+                        foreach($all_items as $key=>$item){
+                            echo '<li><i class="fa fa-link" aria-hidden="true"></i> #'.($key+1).': '.$item.'</li>';
+                        }
+                        echo '</ul>';
+                    }
+                 }
+                 ?>
+
+            </div>
+
+
             <div class="tab-pane" id="tabskills">
 
                 <?php itip(2271); ?>
+
                 <script>
                     $(document).ready(function() {
                         initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_transformations" class="list-group grey-list"></div>
+
+                <?php
+                if($b['b_is_parent'] && strlen($agg_b['b_transformations'])>0){
+                    $all_items = json_decode($agg_b['b_transformations']);
+                    if(count($all_items)>0){
+                        echo '<p>All '.$this->lang->line('level_0_name').' skills are also linked to this '.$this->lang->line('level_1_name').':</p>';
+                        echo '<ul style="list-style:none; margin-left:-20px;">';
+                        foreach($all_items as $key=>$item){
+                            echo '<li><i class="fa fa-link" aria-hidden="true"></i> #'.($key+1).': '.$item.'</li>';
+                        }
+                        echo '</ul>';
+                    }
+                }
+                ?>
             </div>
+
 
         </div>
 
@@ -1174,7 +1010,7 @@ function add_item(group_id,prefix,current_value){
                 <select class="form-control input-mini border timer_2 timer_3" id="c_time_estimate">
                     <?php
                     foreach($times as $time){
-                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).'</option>';
+                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.format_hours($time).'</option>';
                     }
                     ?>
                 </select>

@@ -23,47 +23,51 @@ WHERE ru.ru_status >= 4
 	 ****************************** */
 	
 	function remix_admissions($matching_criteria,$order_columns=array(
-        'r.r_start_date' => 'DESC',
+        'ru.ru_id' => 'DESC',
     )){
 
 	    $admissions = $this->Db_model->ru_fetch($matching_criteria,$order_columns);
 
-	    //Fetch more data for each enrollment:
-	    foreach($admissions as $key=>$enrollment){
+	    //Fetch more data for each admission:
+	    foreach($admissions as $key=>$admission){
 
             //Fetch Bootcamp:
             $bs = $this->Db_model->remix_bs(array(
-                'b.b_id' => $enrollment['r_b_id'],
+                'b.b_id' => $admission['ru_b_id'],
             ));
 
             if(count($bs)<=0){
                 $this->Db_model->e_create(array(
-                    'e_message' => 'remix_admissions() had invalid [r_b_id]='.$enrollment['r_b_id'],
+                    'e_message' => 'remix_admissions() had invalid [ru_b_id]='.$admission['ru_b_id'],
                     'e_json' => $matching_criteria,
                     'e_type_id' => 8, //Platform Error
                 ));
                 unset($admissions[$key]);
                 continue;
+            } else {
+                //Merge in:
+                $admissions[$key] = array_merge($admissions[$key] , $bs[0]);
             }
 
             //Fetch Class:
-            $classes = $this->Db_model->r_fetch(array(
-                'r.r_id' => $enrollment['ru_r_id'],
-                'r.r_status >=' => 1,
-            ));
-	        if(count($classes)<1){
-                $this->Db_model->e_create(array(
-                    'e_message' => 'remix_admissions() had invalid [r_id]='.$enrollment['ru_r_id'],
-                    'e_json' => $matching_criteria,
-                    'e_type_id' => 8, //Platform Error
+            if($admission['ru_r_id']>0){
+                $classes = $this->Db_model->r_fetch(array(
+                    'r.r_id' => $admission['ru_r_id'],
+                    'r.r_status >=' => 1,
                 ));
-                unset($admissions[$key]);
-                continue;
-	        }
+                if(count($classes)<1){
+                    $this->Db_model->e_create(array(
+                        'e_message' => 'remix_admissions() had invalid [r_id]='.$admission['ru_r_id'],
+                        'e_json' => $matching_criteria,
+                        'e_type_id' => 8, //Platform Error
+                    ));
+                    unset($admissions[$key]);
+                    continue;
+                }
 
-	        //Merge in:
-            $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
-	        $admissions[$key] = array_merge($admissions[$key] , $bs[0]);
+                //Merge in:
+                $admissions[$key] = array_merge($admissions[$key] , $classes[0]);
+            }
 	    }
 
 	    return $admissions;
@@ -154,42 +158,44 @@ WHERE ru.ru_status >= 4
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
+            $bs[$key]['b__week_count'] = ( $c['b_is_parent'] ? count($bs[$key]['c__child_intents']) : 1 );
 
-            foreach($bs[$key]['c__child_intents'] as $task_key=>$task){
+
+            foreach($bs[$key]['c__child_intents'] as $intent_key=>$intent){
 
                 //Count Messages:
                 if(count($join_objects)==0 || in_array('i',$join_objects)){
-                    $task_messages = $this->Db_model->i_fetch(array(
+                    $intent_messages = $this->Db_model->i_fetch(array(
                         'i_status >' => 0,
-                        'i_c_id' => $task['c_id'],
+                        'i_c_id' => $intent['c_id'],
                     ));
-                    $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] = 0;
-                    $bs[$key]['c__message_tree_count'] += count($task_messages);
-                    $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($task_messages);
-                    $bs[$key]['c__child_intents'][$task_key]['c__messages'] = $task_messages;
+                    $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] = 0;
+                    $bs[$key]['c__message_tree_count'] += count($intent_messages);
+                    $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] += count($intent_messages);
+                    $bs[$key]['c__child_intents'][$intent_key]['c__messages'] = $intent_messages;
                 }
 
-                if($task['c_status']>=1){
-                    //Start by adding up the Task level time:
-                    $bs[$key]['c__estimated_hours'] += $task['c_time_estimate'];
-                    $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = $task['c_time_estimate'];
+                if($intent['c_status']>=1){
+                    //Start by adding up the time:
+                    $bs[$key]['c__estimated_hours'] += $intent['c_time_estimate'];
+                    $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] = $intent['c_time_estimate'];
                     $bs[$key]['c__child_count']++;
                 } else {
-                    $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] = 0;
+                    $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] = 0;
                 }
 
                 //Fetch sprint Steps at level 3:
-                $bs[$key]['c__child_intents'][$task_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_id' => $task['c_id'],
+                $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
+                    'cr.cr_inbound_id' => $intent['c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >=' => 1,
                 ));
 
                 //Create Step array:
-                $bs[$key]['c__active_intents'][$task['c_id']] = array();
+                $bs[$key]['c__active_intents'][$intent['c_id']] = array();
 
                 //Addup Step values:
-                foreach($bs[$key]['c__child_intents'][$task_key]['c__child_intents'] as $step_key=>$step){
+                foreach($bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] as $step_key=>$step){
 
                     if(count($join_objects)==0 || in_array('i',$join_objects)){
                         //Count Messages:
@@ -199,19 +205,19 @@ WHERE ru.ru_status >= 4
                         ));
 
                         //Add messages:
-                        $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
+                        $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'][$step_key]['c__messages'] = $step_messages;
                         //Always show Step message count regardless of status:
-                        $bs[$key]['c__child_intents'][$task_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
+                        $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'][$step_key]['c__message_tree_count'] = count($step_messages);
                         //Increase message counts:
                         $bs[$key]['c__message_tree_count'] += count($step_messages);
-                        $bs[$key]['c__child_intents'][$task_key]['c__message_tree_count'] += count($step_messages);
+                        $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] += count($step_messages);
                     }
 
-                    //Addup Task Hours for its Active Steps Regardless of Task status:
-                    $bs[$key]['c__child_intents'][$task_key]['c__estimated_hours'] += $step['c_time_estimate'];
+                    //Addup Task Hours for its Active Steps Regardless status:
+                    $bs[$key]['c__child_intents'][$intent_key]['c__estimated_hours'] += $step['c_time_estimate'];
 
 
-                    if($task['c_status']>=1 && $step['c_status']>=1) {
+                    if($intent['c_status']>=1 && $step['c_status']>=1) {
 
                         //Addup Step estimated time for active Steps in active Tasks:
                         $bs[$key]['c__estimated_hours'] += $step['c_time_estimate'];
@@ -219,7 +225,7 @@ WHERE ru.ru_status >= 4
                         $bs[$key]['c__child_child_count']++;
 
                         //add to active Steps per Task:
-                        array_push($bs[$key]['c__active_intents'][$task['c_id']], $step['c_id']);
+                        array_push($bs[$key]['c__active_intents'][$intent['c_id']], $step['c_id']);
 
                     }
                 }
@@ -295,9 +301,9 @@ WHERE ru.ru_status >= 4
 	
 	function ru_create($insert_columns){
 	    //Make sure required fields are here:
-	    if(!isset($insert_columns['ru_r_id'])){
+	    if(!isset($insert_columns['ru_b_id'])){
 	        $this->Db_model->e_create(array(
-	            'e_message' => 'ru_create() missing ru_r_id.',
+	            'e_message' => 'ru_create() missing ru_b_id.',
 	            'e_json' => $insert_columns,
 	            'e_type_id' => 8, //Platform Error
 	        ));
@@ -425,7 +431,7 @@ WHERE ru.ru_status >= 4
             $this->Comm_model->foundation_message(array(
                 'e_initiator_u_id' => 0,
                 'e_recipient_u_id' => $insert_columns['u_id'],
-                'e_c_id' => 5980, //Welcome to Mench 😍​
+                'e_c_id' => 5980, //Welcome to Mench
                 'depth' => 0,
             ));
             */
@@ -737,13 +743,81 @@ WHERE ru.ru_status >= 4
 	 * Classes
 	 ****************************** */
 
+	function ru_finalize($ru_id){
+
+	    //This function finalizes the admission for FREE Bootcamps or when the user pays:
+        $admissions = $this->Db_model->remix_admissions(array(
+            'ru.ru_id'	=> $ru_id,
+        ));
+
+        if(count($admissions)==1){
+
+            $admissions_updated = 1;
+
+            //Update student's payment status:
+            $this->Db_model->ru_update( $ru_id , array(
+                'ru_status' => 4,
+            ));
+
+            //Inform the Student:
+            $this->Comm_model->foundation_message(array(
+                'e_initiator_u_id' => 0,
+                'e_recipient_u_id' => $admissions[0]['u_id'],
+                'e_c_id' => 2698,
+                'depth' => 0,
+                'e_b_id' => $admissions[0]['ru_b_id'],
+                'e_r_id' => $admissions[0]['ru_r_id'],
+            ), true);
+
+
+            //Log Engagement
+            $this->Db_model->e_create(array(
+                'e_initiator_u_id' => $admissions[0]['u_id'],
+                'e_message' => ($admissions[0]['ru_final_price']>0 ? 'Received $'.$admissions[0]['ru_final_price'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
+                'e_json' => $_POST,
+                'e_type_id' => 30,
+                'e_b_id' => $admissions[0]['ru_b_id'],
+                'e_r_id' => $admissions[0]['ru_r_id'],
+            ));
+
+            if($admissions[0]['b_is_parent']){
+                //This is a Parent Bootcamp, so we also need to update the Child admissions:
+                $child_admissions = $this->Db_model->ru_fetch(array(
+                    'ru_parent_ru_id' => $ru_id,
+                ));
+
+                foreach($child_admissions as $ru){
+                    $admissions_updated++;
+                    $this->Db_model->ru_update( $ru['ru_id'] , array(
+                        'ru_status' => 4,
+                    ));
+                }
+            }
+
+            return $admissions_updated;
+        }
+
+        //Log Error:
+        $this->Db_model->e_create(array(
+            'e_initiator_u_id' => $admissions[0]['u_id'],
+            'e_message' => 'ru_finalize() failed to update admission for ru_id=['.$ru_id.']',
+            'e_type_id' => 8,
+            'e_b_id' => $admissions[0]['ru_b_id'],
+            'e_r_id' => $admissions[0]['ru_r_id'],
+        ));
+
+        return 0;
+
+    }
+
 	function r_sync($b_id){
 
 	    //First determine all dates we'd need:
         $class_settings = $this->config->item('class_settings');
 
         $dates_needed = array();
-        for($i=1;$i<=$class_settings['create_weeks_ahead'];$i++){
+        $monday_start = ( date("w")==1 ? 2 : 1 );
+        for($i=$monday_start;$i<=($class_settings['create_weeks_ahead']-1+$monday_start);$i++){
             array_push($dates_needed , date("Y-m-d",(strtotime($i.' mondays from now')+(12*3600)  /* For GMT/timezone adjustments */ )) );
         }
 
@@ -864,7 +938,7 @@ WHERE ru.ru_status >= 4
 
         $this->db->select('*');
         $this->db->from('v5_class_students ru');
-        $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id');
+        $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id','left');
         $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
 
         foreach($match_columns as $key=>$value){
@@ -924,7 +998,7 @@ WHERE ru.ru_status >= 4
 	    
 	    //We had anything?
 	    if(count($intents)>0 && in_array('i',$join_objects)){
-	        $intents[0]['c__messages'] = array('ss');
+	        $intents[0]['c__messages'] = array();
 	        //Fetch Messages:
 	        foreach($intents as $key=>$value){
 	            $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
@@ -982,7 +1056,7 @@ WHERE ru.ru_status >= 4
 	    }
 	    $this->db->order_by($order_by,'DESC');
 	    $q = $this->db->get();
-	    return $q->result_array();
+        return $q->result_array();
 	}
 	
 	
@@ -1017,6 +1091,10 @@ WHERE ru.ru_status >= 4
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
 		$this->db->join('v5_intent_links cr', 'cr.cr_outbound_id = c.c_id');
+        if(in_array('ru',$join_objects)){
+            $this->db->join('v5_class_students ru', 'ru.ru_b_id = cr.cr_outbound_b_id');
+            $this->db->where('cr_outbound_b_id >',0);
+        }
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -1026,26 +1104,39 @@ WHERE ru.ru_status >= 4
 		
 		//We had anything?
 		if(count($return)>0){
-		    if(in_array('i',$join_objects)){
-		        //Fetch Messages:
-		        foreach($return as $key=>$value){
-		            $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-		                'i_c_id' => $value['c_id'],
-		                'i_status >' => 0, //Published in any form
-		            ));
-		        }
-		    }
+
+            foreach($return as $key=>$value){
+
+                if(in_array('i',$join_objects)){
+                    //Fetch Messages:
+                    $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
+                        'i_c_id' => $value['c_id'],
+                        'i_status >' => 0, //Published in any form
+                    ));
+                }
+
+                //Is this a Bootcamp link?
+                if($value['cr_outbound_b_id']>0){
+                    $bs = $this->Db_model->b_fetch(array(
+                        'b_id' => $value['cr_outbound_b_id'],
+                    ));
+                    $return[$key] = array_merge($return[$key] , $bs[0]);
+                }
+            }
 		}
 		
 		//Return the package:
 		return $return;
 	}
 	
-	function cr_inbound_fetch($match_columns){
+	function cr_inbound_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
 		$this->db->join('v5_intent_links cr', 'cr.cr_inbound_id = c.c_id');
+        if(in_array('b',$join_objects)){
+            $this->db->join('v5_bootcamps b', 'b.b_c_id = cr.cr_inbound_id');
+        }
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
 		}
@@ -1440,7 +1531,7 @@ WHERE ru.ru_status >= 4
                 //Did we find it? We should have:
                 if(isset($engagements[0])){
 
-                    //Fetch all Bootcamp Instructors and Notify them:
+                    //Fetch all Goal Instructors and Notify them:
                     $b_instructors = $this->Db_model->ba_fetch(array(
                         'ba.ba_b_id' => $link_data['e_b_id'],
                         'ba.ba_status >=' => 2, //co-instructors & lead instructor
@@ -1635,7 +1726,7 @@ WHERE ru.ru_status >= 4
                 //Standard algolia terms:
                 $new_item['alg_name'] = $item['c_objective'];
                 $new_item['alg_url'] = '/'.$item['b_url_key'];
-                $new_item['alg_u_ids'] = array(intval($item['u_id'])); //TODO Include co-instructors
+                $new_item['alg_owner_id'] = intval($item['u_id']);
                 $new_item['alg_keywords'] = '';
 
                 if(strlen($item['b_prerequisites'])>0){
