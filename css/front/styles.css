@@ -30,7 +30,7 @@ a.badge-primary {
 
 }
 a.badge-msg{
-    min-width:60px;
+    min-width:50px;
     text-align: right;
 }
 .list-group-item a{
