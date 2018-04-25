@@ -81,7 +81,7 @@ if(count($bs)>0){
     echo '</div>';
 } else {
     //No Bootcamps, show message:
-    echo '<div class="alert alert-info" style="margin:30px 0 100px; font-size:1.3em;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <b>Announcement:</b> Our first Bootcamp is scheduled to launch by May 14th.</div>';
+    echo '<div class="alert alert-info" style="margin:30px 0 100px; font-size:1.3em;"><i class="fa fa-bullhorn" aria-hidden="true"></i> <b>Announcement:</b> Our first job placement Bootcamp is scheduled to launch by May 14th.</div>';
 }
 ?>
 </div>

@@ -15,7 +15,7 @@ class Cron extends CI_Controller {
 	    echo_json(array('status'=>'success'));
     }
 
-    function algolia_sync($obj,$obj_id){
+    function algolia_sync($obj='b',$obj_id=0){
         echo_json($this->Db_model->algolia_sync($obj,$obj_id));
     }
 
