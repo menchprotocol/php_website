@@ -51,7 +51,7 @@ $url_part_1 = $this->uri->segment(1);
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
         		</button>
-        		<a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span style="text-transform: lowercase; color: #000;"><?= $website['name'] ?></span></a>
+        		<a class="navbar-brand" href="/"><img src="/img/bp_128.png" /><span style="text-transform: lowercase; color: #2f2739;"><?= $website['name'] ?></span></a>
         	</div>
 
         	<div class="collapse navbar-collapse">
