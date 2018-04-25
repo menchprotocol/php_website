@@ -40,7 +40,7 @@ if(!isset($intents[0])){
     window.parent.document.getElementById("messages-counter-"+c_id).innerHTML = message_count;
 
     function add_first_name(){
-        $('#i_message'+c_id).insertAtCaret(' {first_name}');
+        $('#i_message'+c_id).insertAtCaret('{first_name}');
         changeMessage();
     }
 
@@ -645,7 +645,7 @@ if(!isset($intents[0])){
 
     if($level>1){
         //{first_name}
-        echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-id-card-o" aria-hidden="true"></i> {first_name}</a>';
+        echo ' <a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-id-card-o" aria-hidden="true"></i>{first_name}</a>';
     }
 
     //Choose a file:
