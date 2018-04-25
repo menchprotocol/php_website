@@ -123,9 +123,9 @@ $uri_segment_2 = $this->uri->segment(2);
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fa fa-cog" aria-hidden="true"></i><p>Settings</p></a></li>';
 
             	    //Is it connected to a Facebook Page?
-                    if($b['b_fp_id']>0 && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
+                    if($b['b_fp_id']>0){
 
-                        if(!$b['b_is_parent']){
+                        if(!$b['b_is_parent'] && ( !($b['b_fp_id']==4) || $udata['u_status']==3 )){
                             //Facebook Chat Inbox:
                             echo '<li><a data-toggle="tooltip" data-placement="top" title="Chat with Students who Purchased Premium support using Facebook Page Inbox" href="/api_v1/fp_redirect/'.$b['b_fp_id'].'/'.md5($b['b_fp_id'].'pageLinkHash000').'" target="_blank"><i class="fa fa-facebook-official" aria-hidden="true"></i><p>Chat Inbox &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
                         }
