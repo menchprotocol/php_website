@@ -2043,8 +2043,8 @@ class Api_v1 extends CI_Controller {
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
             'b_creator_id' => $udata['u_id'],
-            'b_fp_id' => $generated_key,
-            'b_url_key' => ( !intval($_POST['b_is_parent']) && in_array($udata['u_id'],$mench_support_team) ? 4 : 0), //Assign Mench Facebook Page for our team
+            'b_fp_id' => ( !intval($_POST['b_is_parent']) && in_array($udata['u_id'],$mench_support_team) ? 4 : 0), //Assign Mench Facebook Page for our team
+            'b_url_key' => $generated_key,
             'b_c_id' => $intent['c_id'],
             'b_prerequisites' => ( intval($_POST['b_is_parent']) ? null : json_encode($default_class_prerequisites) ),
             'b_support_email' => ( intval($_POST['b_is_parent']) ? null : $udata['u_email'] ),
