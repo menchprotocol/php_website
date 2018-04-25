@@ -404,9 +404,6 @@ WHERE ru.ru_status >= 4
 		if(!isset($insert_columns['u_timestamp'])){
 			$insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
 		}
-		if(!isset($insert_columns['u_url_key'])){
-			$insert_columns['u_url_key'] = generate_url_key($insert_columns['u_fname']);
-		}
 		
 		//Lets now add:
 		$this->db->insert('v5_users', $insert_columns);

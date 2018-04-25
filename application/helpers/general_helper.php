@@ -984,34 +984,6 @@ function echo_br($admin){
 
 
 
-function generate_url_key($string){
-    $CI =& get_instance();
-
-    //Strip clean:
-    $string = preg_replace("/[^A-Za-z0-9]/", '', $string);
-
-    //Check u_url_key to be unique, and if not, add a number and increment:
-    $original_string = $string;
-    $is_duplicate = true;
-    $increment = 0;
-    while($is_duplicate){
-        $matching_users = $CI->Db_model->u_fetch(array(
-            'u_url_key' => $string,
-        ));
-        if(count($matching_users)==0){
-            //Yes!
-            $is_duplicate = false;
-            break;
-        } else {
-            //This is a duplicate:
-            $increment++;
-            $string = $original_string.$increment;
-        }
-    }
-
-    return $string;
-}
-
 function copy_messages($u_id,$c__messages,$c_id){
     //This function strips and copies all $c__messages to $c_id recorded as $u_id
     $CI =& get_instance();
