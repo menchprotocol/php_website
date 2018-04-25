@@ -60,10 +60,8 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
 
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
-                <li>Duration: <b><?= $week_count.' Week'.show_s($week_count) ?></b></li>
+                <li>Commitment: <b><?= format_hours($b['c__estimated_hours']) ?> in <?= $week_count.' Week'.show_s($week_count) ?></b></li>
                 <li>Starts: <b>Every Monday</b></li>
-                <li>Commitment: <b><?= format_hours($b['c__estimated_hours']/($week_count*7)) ?> Per Day</b></li>
-
                 <li><?= ( echo_price($b,99, true) ? 'Tuition Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.echo_price($b).'</b>' ) ?></li>
 
                 <?php
@@ -223,8 +221,7 @@ $( document ).ready(function() {
 
             <hr />
             <p>Ready to unleash your full potential?</p>
-            <p>Class starts in:</p>
-    		
+
     </div>
 </div>
 
