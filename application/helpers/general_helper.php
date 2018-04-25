@@ -1302,6 +1302,10 @@ function b_aggregate($b,$skip_parent=false){
             'b.b_id' => $b7d['cr_outbound_b_id'],
         ));
 
+        if(count($bs)<1){
+            continue;
+        }
+
         //This this as child bootcamp
         $b['child_bs'][$b7d['cr_outbound_b_id']] = $bs[0];
 
