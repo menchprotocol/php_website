@@ -24,7 +24,7 @@ echo '<p class="home_line_2">';
     echo 'Land a tech job by completing weekly Bootcamps from industry experts.';
     echo ' Tuition ranges from <span style="display:inline-block;">$0-163 per week</span> based on the '.strtolower($this->lang->line('obj_rs_name')).' you choose.';
     echo ' We offer a <a href="https://support.mench.com/hc/en-us/articles/115002080031"><b>tuition reimbursement guarantee</b></a> for students who do the work but don\'t get a job offer by the last day of their Bootcamp.';
-    //echo ' New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
+    echo ' New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
 echo '</p>';
 echo '<br />';
 
@@ -57,7 +57,8 @@ if(count($bs)>0){
         echo '<h6 class="category text-muted">';
 
         if($b['b_difficulty_level']>0){
-            echo status_bible('df',$b['b_difficulty_level'],0,'top').' ';
+            //Do not show for now as its not needed
+            //echo status_bible('df',$b['b_difficulty_level'],0,'top').' ';
         }
 
         echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__child_count'].' Task'.show_s($b['c__child_count']).' totalling '.format_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.show_s($b['b__week_count']).' Bootcamp"><i class="fa fa-clock-o" aria-hidden="true"></i> '.format_hours($b['c__estimated_hours'],true).' IN '.$b['b__week_count'].' Week'.show_s($b['b__week_count']).'</span>';

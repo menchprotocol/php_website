@@ -83,7 +83,7 @@ $config['meaningful_b_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34
 $config['c_time_options'] = array(0.05,0.1166667,0.25,0.5,0.75,1,2,3,5); //,8,13
 
 $config['default_class_prerequisites'] = array(
-    'An internet-connected computer',
+    'An internet-connected computer or smart-phone',
     'Fluent in English',
 );
 
