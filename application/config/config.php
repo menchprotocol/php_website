@@ -272,7 +272,7 @@ $config['object_statuses'] = array(
     'ex' => array(
         0 => array(
             's_name'  => 'None',
-            's_desc'  => 'Task does not have any Steps. Students complete the task by marking its self as done',
+            's_desc'  => 'Task does not have any Steps. Students complete the Task by marking its self as Done',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-minus-circle',
         ),
