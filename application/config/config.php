@@ -272,19 +272,19 @@ $config['object_statuses'] = array(
     'ex' => array(
         0 => array(
             's_name'  => 'None',
-            's_desc'  => 'Task does not have any Steps. Students complete it by completing the Task.',
+            's_desc'  => 'Task does not have any Steps. Students complete the task by marking its self as done',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-minus-circle',
         ),
         1 => array(
-            's_name'  => 'AND',
-            's_desc'  => 'Task is complete when ALL child Steps are completed.',
+            's_name'  => 'All',
+            's_desc'  => 'Task is complete when all child Steps are completed',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-sitemap',
         ),
         2 => array(
-            's_name'  => 'OR',
-            's_desc'  => 'Task is complete when ANY child Step is completed.',
+            's_name'  => 'Any',
+            's_desc'  => 'Task is complete when any child Step is completed',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-code-fork',
         ),
