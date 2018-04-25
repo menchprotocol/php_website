@@ -2878,7 +2878,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Missing Status',
             ));
             return false;
-        } elseif($_POST['level']==2 && !isset($_POST['c_extension_rule'])){
+        } elseif($_POST['level']==2 && !isset($_POST['c_completion_rule'])){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Extension Rule',
@@ -2934,7 +2934,7 @@ class Api_v1 extends CI_Controller {
             );
 
             if($_POST['level']==2){
-                $c_update['c_extension_rule'] = intval($_POST['c_extension_rule']);
+                $c_update['c_completion_rule'] = intval($_POST['c_completion_rule']);
             }
         }
 

@@ -1202,7 +1202,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent'] ? 'Week' : $CI->lang->line('level_2_name')).' #'.$intent['cr_outbound_rank'].'</span>';
         $ui .= '</span>';
 
-        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" extension-rule="'.@$intent['c_extension_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
+        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
 
     } elseif ($level>=3){
 
@@ -1472,7 +1472,7 @@ function b_progress($b){
 
             //We only need Steps if:
             /*
-            if($c['c_extension_rule']>=1){
+            if($c['c_completion_rule']>=1){
                 $estimated_minutes = 30;
                 $progress_possible += $estimated_minutes;
                 $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );

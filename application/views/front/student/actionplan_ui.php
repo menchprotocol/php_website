@@ -317,7 +317,7 @@ if($level==1){
             $this_item_us_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['us_status'] : -2 );
 
 
-            //TODO Optimize this based on c_extension_rule value:
+            //TODO Optimize this based on c_completion_rule value:
             /*
             $child_step_count = 0;
             $this_item_us_status = 1;

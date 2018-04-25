@@ -481,7 +481,7 @@ function c_save_settings(){
 
             if(modify_data['level']==2){
                 //TODO TO be implemented
-                modify_data['c_extension_rule'] = parseInt($('.c_objective_'+modify_data['pid']).attr('extension-rule'));
+                modify_data['c_completion_rule'] = parseInt($('.c_objective_'+modify_data['pid']).attr('completion-rule'));
             }
 
             modify_data['c_objective'] = $('#c_objective'+modify_data['level']+' .c_objective_input').val();
