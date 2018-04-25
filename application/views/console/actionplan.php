@@ -814,7 +814,7 @@ function add_item(group_id,prefix,current_value){
         $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
             '<span class="pull-right">'+
             '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fa fa-trash"></i></a> '+
-            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fa fa-pencil-square-o"></i></a>'+
+            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fa fa-pencil-square"></i></a>'+
             '</span>'+
             '<i class="fa fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
             '</li>');

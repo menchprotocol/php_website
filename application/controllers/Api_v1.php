@@ -2092,6 +2092,17 @@ class Api_v1 extends CI_Controller {
             'ba_team_display' => 't', //Show on landing page
         ));
 
+        if($udata['u_id']==2){
+            //This is Miguel, also assign Shervin to help-out:
+            $admin_status = $this->Db_model->ba_create(array(
+                'ba_creator_id' => 1,
+                'ba_u_id' => 1, //Shervin
+                'ba_status' => 2, //co-instructor
+                'ba_b_id' => $b['b_id'],
+                'ba_team_display' => 'f', //Show on landing page
+            ));
+        }
+
         //Did it go well?
         if(intval($admin_status['ba_id'])<=0){
             //Log this error:
