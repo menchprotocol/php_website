@@ -2631,6 +2631,7 @@ class Api_v1 extends CI_Controller {
 
 
 	    //Check to make sure not a duplicate link:
+        /*
 	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
             'cr.cr_outbound_c_id' => $outbound_bs[0]['b_outbound_c_id'],
@@ -2643,7 +2644,7 @@ class Api_v1 extends CI_Controller {
             ));
             return false;
         }
-
+        */
 
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
