@@ -116,9 +116,6 @@ class Console extends CI_Controller {
 	        'e_inbound_c_id' => 48, //View
 	        'e_text_value' => $title,
 	        'e_b_id' => $bs[0]['b_id'],
-	        'e_r_id' => 0,
-	        'e_outbound_u_id' => 0,
-	        'e_outbound_c_id' => 0,
 	    ));
 	    
 	    //Load view

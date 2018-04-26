@@ -1240,7 +1240,7 @@ class Comm_model extends CI_Model {
                     'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
                     'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
                     'e_i_id'  => ( isset($message['i_id'])      ? $message['i_id']    :0), //The message that is being dripped
-                    'e_outbound_c_id'  => ( isset($message['i_inbound_c_id'])    ? $message['i_inbound_c_id']  :0),
+                    'e_outbound_c_id'  => ( isset($message['i_inbound_c_id']) ? $message['i_inbound_c_id'] : 0),
                 ));
 
                 if(!$process['status']){
