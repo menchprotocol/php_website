@@ -11,6 +11,7 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
+
     function ru_b_id(){
 
         $admissions = $this->Db_model->ru_fetch(array(
@@ -97,11 +98,13 @@ class Adjust extends CI_Controller {
             foreach($class['students'] as $admission){
 
                 //Fetch all their submissions so far:
-                $us_data = $this->Db_model->us_fetch(array(
-                    'us_student_id' => $admission['u_id'],
-                    'us_r_id' => $class['r_id'],
-                    'us_status' => 1,
-                ));
+                $us_data = $this->Db_model->e_fetch(array(
+                    'e_inbound_c_id' => 33, //Completion Report
+                    'e_inbound_u_id' => $admission['u_id'], //by this Student
+                    'e_r_id' => $class['r_id'], //For this Class
+                    'e_replaced_e_id' => 0, //Data has not been replaced
+                    'e_status !=' => -3, //Should not be rejected
+                ), 1000, array(), 'e_outbound_c_id');
 
 
                 //Go through and see where it breaks down:
@@ -117,7 +120,7 @@ class Adjust extends CI_Controller {
                     if($task['c_status']==1){
                         $total_steps++;
                         //Has the student done this?
-                        if(!array_key_exists($task['c_id'],$us_data) || !($us_data[$task['c_id']]['us_status']==1)){
+                        if(!array_key_exists($task['c_id'],$us_data)){
 
                             if(!$found_incomplete_step){
                                 //The student is not done with this Task, so here is were they're at:
@@ -128,7 +131,7 @@ class Adjust extends CI_Controller {
                         } else {
 
                             //Addup the total hours based on the Action Plan
-                            $total_hours_done += $us_data[$task['c_id']]['us_time_estimate'];
+                            $total_hours_done += $us_data[$task['c_id']]['e_float_value'];
                             $found_incomplete_step = false; //Reset this
                             $done_steps++;
 

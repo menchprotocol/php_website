@@ -275,10 +275,12 @@ class My extends CI_Controller {
             $view_data['class'] = $class;
             $view_data['admissions'] = $admissions;
             $view_data['admission'] = $focus_admission;
-            $view_data['us_data'] = $this->Db_model->us_fetch(array(
-                'us_r_id' => $focus_admission['r_id'],
-                'us_student_id' => $focus_admission['u_id'],
-            ));
+            $view_data['us_data'] = $this->Db_model->e_fetch(array(
+                'e_inbound_c_id' => 33, //Completion Report
+                'e_inbound_u_id' => $focus_admission['u_id'], //by this Student
+                'e_r_id' => $focus_admission['r_id'], //For this Class
+                'e_replaced_e_id' => 0, //Data has not been replaced
+            ), 1000, array(), 'e_outbound_c_id');
 
         } else {
 
@@ -699,10 +701,13 @@ class My extends CI_Controller {
                     echo '<td colspan="4" class="us_c_list">';
 
                         //Fetch student submissions so far:
-                        $us_data = $this->Db_model->us_fetch(array(
-                            'us_r_id' => $class['r_id'],
-                            'us_student_id' => $admission['u_id'],
-                        ));
+                        $us_data = $this->Db_model->e_fetch(array(
+                            'e_inbound_c_id' => 33, //Completion Report
+                            'e_inbound_u_id' => $admission['u_id'], //by this Student
+                            'e_r_id' => $class['r_id'], //For this Class
+                            'e_replaced_e_id' => 0, //Data has not been replaced
+                            'e_status !=' => -3, //Should not be rejected
+                        ), 1000, array(), 'e_outbound_c_id');
 
                         //Go through all the Tasks and see which ones are submitted:
                         foreach($bs[0]['c__child_intents'] as $intent) {
@@ -715,7 +720,7 @@ class My extends CI_Controller {
                                 echo '<div class="us_c_title">';
                                 echo '<a href="javascript:view_el('.$admission['u_id'].','.$intent['c_id'].')" class="plain">';
                                 echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'" aria-hidden="true"></i> ';
-                                echo status_bible('us',( $intent_submitted ? $us_data[$intent['c_id']]['us_status'] : -2 /* Locked */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_objective'];
+                                echo status_bible('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_objective'];
                                 echo '</a>';
                                 echo '</div>';
 
@@ -723,56 +728,13 @@ class My extends CI_Controller {
                                 //Submission Details:
                                 echo '<div id="c_el_'.$admission['u_id'].'_'.$intent['c_id'].'" class="homework hidden">';
                                 if($intent_submitted){
-                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$intent['c_id']]['us_student_notes']) : '<i class="fa fa-sticky-note-o" aria-hidden="true"></i> No completion notes by Student' ).'</p>';
+                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['e_text_value'])>0 ? make_links_clickable($us_data[$intent['c_id']]['e_text_value']) : '<i class="fa fa-sticky-note-o" aria-hidden="true"></i> No completion notes by Student' ).'</p>';
                                 } else {
                                     echo '<p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Nothing submitted Yet</p>';
                                 }
                                 
-                                //TODO Show Steps in the future
-                                /*
-                                foreach($intent['c__child_intents'] as $step) {
-                                    if($step['c_status']>=1){
+                                //TODO Show Steps here in the future
 
-                                        //What is the status of this Step?
-                                        if(isset($us_data[$step['c_id']])){
-
-                                            //This student has made a submission:
-                                            $us_step_status = $us_data[$step['c_id']]['us_status'];
-
-
-                                        } else {
-
-                                            //Locked:
-                                            $us_step_status = -2;
-
-                                        }
-
-                                        $step_details .= '<div>';
-
-
-                                        $step_details .= '</div>';
-
-                                        //Now show the Step submission details:
-                                        $step_details .= '<a href="javascript:view_el('.$admission['u_id'].','.$step['c_id'].')" class="plain">';
-                                        $step_details .= '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$step['c_id'].'" aria-hidden="true"></i> ';
-                                        $step_details .= status_bible('us',$us_step_status,1,'right');
-                                        $step_details .= ' <span data-toggle="tooltip" title="'.str_replace('"', "", str_replace("'", "", $step['c_objective'])).'">Step '.$step['cr_outbound_rank'].'</span>';
-
-                                        $step_details .= ( isset($us_data[$step['c_id']]) ? ' ' . ( strlen($us_data[$step['c_id']]['us_student_notes'])>0 ? ' <i class="fa fa-file-text" aria-hidden="true" data-toggle="tooltip" title="Submission has notes"></i>' : '' ) : '' );
-                                        $step_details .= '</a>';
-
-                                        $step_details .= '<div id="c_el_'.$admission['u_id'].'_'.$step['c_id'].'" class="hidden" style="margin-left:5px;">';
-
-                                        if(isset($us_data[$step['c_id']])){
-                                            $step_details .= '<div style="width:280px; overflow:hidden; font-size:0.9em; padding:5px;">'.( strlen($us_data[$step['c_id']]['us_student_notes'])>0 ? make_links_clickable($us_data[$step['c_id']]['us_student_notes']) : 'Notes not added.' ).'</div>';
-                                        } else {
-                                            $step_details .= '<p>Nothing submitted yet.</p>';
-                                        }
-                                        $step_details .= '</div>';
-                                    }
-                                }
-                                */
-                                
                                 echo '</div>';
 
                             }

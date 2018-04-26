@@ -1083,28 +1083,18 @@ class Api_v1 extends CI_Controller {
 
 
         //Make sure student has not submitted this Intent before:
-        $us_data = $this->Db_model->us_fetch(array(
-            'us_student_id' => intval($_POST['u_id']),
-            'us_r_id' => intval($_POST['r_id']),
-            'us_c_id' => intval($_POST['c_id']),
+        $already_submitted = $this->Db_model->e_fetch(array(
+            'e_inbound_c_id' => 33, //Completion Report
+            'e_outbound_c_id' => intval($_POST['c_id']), //For this item
+            'e_inbound_u_id' => $matching_admissions[0]['u_id'], //by this Student
+            'e_r_id' => intval($_POST['r_id']), //For this Class
+            'e_replaced_e_id' => 0, //Data has not been replaced
+            'e_status !=' => -3, //Should not be rejected
         ));
 
-        if(count($us_data)>0 && $us_data[0]['us_status']==1){
+        if(count($already_submitted)>0){
             die('<span style="color:#FF0000;">Error: You have already marked this item as complete, You cannot re-submit it.</span>');
         }
-
-
-        //Now update the DB:
-        $us_data = $this->Db_model->us_create(array(
-            'us_student_id' => $matching_admissions[0]['u_id'],
-            'us_b_id' => intval($_POST['b_id']),
-            'us_r_id' => intval($_POST['r_id']),
-            'us_c_id' => intval($_POST['c_id']),
-            'us_time_estimate' => $intent_data['intent']['c_time_estimate'], //A snapshot of its time-estimate upon completion, the Action Plan Copy might be updated later on...
-            'us_student_notes' => trim($_POST['us_notes']),
-            'us_status' => 1, //Submitted
-        ));
-
 
         //Do we need to send any notifications to Instuctor for Premium Students?
         if($matching_admissions[0]['ru_p2_price']>0 && strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
@@ -1237,14 +1227,18 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        //Show result to student:
-        echo_us($us_data);
-
-
-        //Log Engagement for Step Completion:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => intval($_POST['u_id']),
-            'e_text_value' => $us_data['us_student_notes'],
+        //Save student completion report:
+        $us_eng = $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $matching_admissions[0]['u_id'],
+            //'e_outbound_u_id' => $matching_admissions[0]['u_id'], //The Bootcamp leader who has to review this
+            'e_status' => -1, //Auto approved
+            'e_timestamp' => date("Y-m-d H:i:s"),
+            'e_text_value' => trim($_POST['us_notes']),
+            'e_float_value' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
+            'e_inbound_c_id' => 33, //Completion Report
+            'e_outbound_c_id' => intval($_POST['c_id']),
+            'e_b_id' => intval($_POST['b_id']),
+            'e_r_id' => intval($_POST['r_id']),
             'e_json' => array(
                 'input' => $_POST,
                 'scheduled_drip' => count($drip_messages),
@@ -1252,11 +1246,11 @@ class Api_v1 extends CI_Controller {
                 'next_level' => $intent_data['next_level'],
                 'next_c' => ( isset($intent_data['next_intent']) ? $intent_data['next_intent'] : array() ),
             ),
-            'e_inbound_c_id' => 33, //Marked as Done Report
-            'e_b_id' => intval($_POST['b_id']),
-            'e_r_id' => intval($_POST['r_id']),
-            'e_outbound_u_id' => intval($_POST['c_id']),
         ));
+
+
+        //Show result to student:
+        echo_completion_report($us_eng);
 
 
         //Take action based on what the next level is...

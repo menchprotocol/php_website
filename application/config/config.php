@@ -291,35 +291,41 @@ $config['object_statuses'] = array(
     ),
 
     'e_status' => array(
-        -3 => array(
-            's_name'  => 'Revision Required',
-            's_desc'  => 'Item was reviewed and requires revisions to be complete',
+        -4 => array( //This does not exist in the DB and is manually invoked if item is not found in DB
+            's_name'  => 'Pending Completion',
+            's_desc'  => 'Item not yet completed',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-info-circle',
+            's_mini_icon' => 'fa-square-o',
+        ),
+        -3 => array(
+            's_name'  => 'Rejected',
+            's_desc'  => 'Item was reviewed and rejected as it did not meet Mench guidelines',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-exclamation-triangle',
         ),
         -2 => array(
             's_name'  => 'Processing',
-            's_desc'  => 'Temporary processing status to prevent duplicate processing',
+            's_desc'  => 'Temporary status to prevent duplicate processing',
             'u_min_status'  => 1,
             's_mini_icon' => 'fa-spinner fa-spin',
         ),
         -1 => array(
-            's_name'  => 'Auto Complete',
-            's_desc'  => 'Item does not need any additional work and its complete as is',
+            's_name'  => 'Auto Verified',
+            's_desc'  => 'Item has been auto approved',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-check-circle-o',
+            's_mini_icon' => 'fa-check-square-o',
         ),
         0 => array(
-            's_name'  => 'Pending Completion',
+            's_name'  => 'Pending',
             's_desc'  => 'Item needs additional processing to be complete',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-pause-circle',
+            's_mini_icon' => 'fa-eye',
         ),
         1 => array(
-            's_name'  => 'Completed',
-            's_desc'  => 'Item has been processed and is now marked as complete',
+            's_name'  => 'Verified',
+            's_desc'  => 'Item has been processed and is now complete',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-check-circle',
+            's_mini_icon' => 'fa-check-square',
         ),
     ),
 
@@ -451,34 +457,6 @@ $config['object_statuses'] = array(
             's_desc'  => 'Student successfully completed all Tasks by the Class end time and became a Bootcamp graduate',
             's_mini_icon' => 'fa-check-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
-        ),
-    ),
-    'us' => array(
-        //-2 is a status that is NOT in the DB, but rather calculated manually via actionplan_ui.php file
-        -2 => array(
-            's_name'  => 'Pending Completion',
-            's_desc'  => 'Item not yet completed by Student',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-square-o',
-        ),
-        //These are DB item submission statuses:
-        -1 => array(
-            's_name'  => 'Requires Revision',
-            's_desc'  => 'Instructors reviewed Student submission and requested revisions to be made',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-exclamation-triangle',
-        ),
-        0 => array(
-            's_name'  => 'Pending Completion',
-            's_desc'  => 'Student has not yet completed this Task',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-square-o',
-        ),
-        1 => array(
-            's_name'  => 'Marked as Complete',
-            's_desc'  => 'Student has marked the Task as complete',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-check-square',
         ),
     ),
 

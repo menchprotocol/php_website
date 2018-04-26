@@ -176,8 +176,8 @@ echo '</div>';
 $count_done = 0;
 $check_list = '';
 foreach($launch_status['check_list'] as $item){
-    $check_list .= echo_checklist($item['href'],$item['anchor'],$item['us_status'],$item['time_min']);
-    if($item['us_status']){
+    $check_list .= echo_checklist($item['href'],$item['anchor'],$item['e_status'],$item['time_min']);
+    if($item['e_status'] /*Auto Verified*/){
         $count_done++;
     }
 }

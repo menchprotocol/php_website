@@ -335,28 +335,7 @@ WHERE ru.ru_status >= 4
 	    return $insert_columns;
 	}
 	
-	function us_create($insert_columns){
-	    
-	    //TODO Do some checks here
-	    
-	    //Lets now add:
-	    $this->db->insert('v5_user_submissions', $insert_columns);
-	    
-	    //Fetch inserted id:
-	    $insert_columns['us_id'] = $this->db->insert_id();
 
-        if(!$insert_columns['us_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error us_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
-	    
-	    return $insert_columns;
-	}
-	
 	function t_create($insert_columns){
 	    //TODO Add checks and protection
 	    
@@ -472,30 +451,6 @@ WHERE ru.ru_status >= 4
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
-
-	
-	
-	/* ******************************
-	 * us User Submissions
-	 ****************************** */
-
-    function us_fetch($match_columns){
-        $this->db->select('*');
-        $this->db->from('v5_user_submissions');
-        foreach($match_columns as $key=>$value){
-            $this->db->where($key,$value);
-        }
-        $q = $this->db->get();
-        $res = $q->result_array();
-
-        //Put intent ID as key for easy accessing:
-        foreach($res as $key=>$val){
-            unset($res[$key]);
-            $res[$val['us_c_id']] = $val;
-        }
-
-        return $res;
-    }
 
 
 
@@ -1318,7 +1273,7 @@ WHERE ru.ru_status >= 4
 
     }
 	
-	function e_fetch($match_columns=array(),$limit=100,$join_objects=array()){
+	function e_fetch($match_columns=array(),$limit=100,$join_objects=array(),$replace_key=null){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
         $this->db->join('v5_intents c', 'c.c_id=e.e_inbound_c_id');
@@ -1344,7 +1299,28 @@ WHERE ru.ru_status >= 4
 	        $this->db->limit($limit);
 	    }
 	    $q = $this->db->get();
-	    return $q->result_array();
+	    $res = $q->result_array();
+
+	    //Do we need to replace the array key?
+	    if($replace_key && count($res)>0 && isset($res[0][$replace_key])){
+	        //We need to replace the array key with a specific field for faster data accessing later on using array_key_exists()
+            foreach($res as $key=>$val){
+                unset($res[$key]);
+                if(!isset($res[$val[$replace_key]])){
+                    $res[$val[$replace_key]] = $val;
+                } else {
+                    //This should not happen, log this error:
+                    $this->Db_model->e_create(array(
+                        'e_text_value' => 'e_fetch() was asked to replace array key with ['.$replace_key.'] and found a duplicate key value ['.$val[$replace_key].']',
+                        'e_json' => $val,
+                        'e_inbound_c_id' => 8, //Platform Error
+                    ));
+                }
+            }
+        }
+
+        //Return results:
+        return $res;
 	}
 	
 	

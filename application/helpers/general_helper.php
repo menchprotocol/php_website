@@ -1387,12 +1387,12 @@ function b_progress($b){
         //Facebook Page
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
-        $us_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']==3) ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']==3) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/settings#pages',
             'anchor' => '<b>Connect your <i class="fa fa-facebook-official" aria-hidden="true" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
     }
@@ -1404,12 +1404,12 @@ function b_progress($b){
     $required_children = ( $b['b_is_parent'] ? 2 : 3 );
     $child_name = ( $b['b_is_parent'] ? 'Bootcamp' : 'Task' );
     $progress_possible += $estimated_minutes;
-    $us_status = ( count($b['c__child_intents'])>=$required_children ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : (count($b['c__child_intents'])/$required_children)*$estimated_minutes );
+    $e_status = ( count($b['c__child_intents'])>=$required_children ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : (count($b['c__child_intents'])/$required_children)*$estimated_minutes );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan',
-        'anchor' => '<b>Add '.$required_children.' or more '.$child_name.'s</b>'.( count($b['c__child_intents'])>0 && !$us_status ?' ('.($required_children-count($b['c__child_intents'])).' more)':'').' in Action Plan',
-        'us_status' => $us_status,
+        'anchor' => '<b>Add '.$required_children.' or more '.$child_name.'s</b>'.( count($b['c__child_intents'])>0 && $e_status==-4 ?' ('.($required_children-count($b['c__child_intents'])).' more)':'').' in Action Plan',
+        'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
 
@@ -1436,58 +1436,16 @@ function b_progress($b){
                     $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
                 }
             }
-            $us_status = ( $qualified_messages>0 ? 1 : 0 );
-            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+            $e_status = ( $qualified_messages ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+            $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
             array_push( $checklist , array(
                 'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
                 'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$intent_anchor.$c['c_objective'],
-                'us_status' => $us_status,
+                'e_status' => $e_status,
                 'time_min' => $estimated_minutes,
             ));
-
-
-            //We only need Steps if:
-            /*
-            if($c['c_completion_rule']>=1){
-                $estimated_minutes = 30;
-                $progress_possible += $estimated_minutes;
-                $us_status = ( isset($c['c__child_intents']) && count($c['c__child_intents'])>=1 ? 1 : 0 );
-                $progress_gained += ( $us_status ? $estimated_minutes : (count($c['c__child_intents']))*$estimated_minutes );
-                array_push( $checklist , array(
-                    'href' => '/console/'.$b['b_id'].'/actionplan',
-                    'anchor' => '<b>Add a Step</b>'.(count($c['c__child_intents'])>0 && !$us_status?' ('.(1-count($c['c__child_intents'])).' more)':'').' to '.$intent_anchor.$c['c_objective'],
-                    'us_status' => $us_status,
-                    'time_min' => $estimated_minutes,
-                ));
-
-                //Check Steps:
-                if(isset($c['c__child_intents']) && count($c['c__child_intents'])>0){
-                    foreach($c['c__child_intents'] as $c2){
-
-                        //Create Step object:
-                        $step_anchor = $intent_anchor.'Step #'.$c2['cr_outbound_rank'].' '.$c2['c_objective'];
-
-                        //Messages for Steps:
-                        $estimated_minutes = 15;
-                        $progress_possible += $estimated_minutes;
-                        $qualified_messages = 0;
-                        if(count($c2['c__messages'])>0){
-                            foreach($c2['c__messages'] as $i){
-                                $qualified_messages += ( $i['i_status']==1 ? 1 : 0 );
-                            }
-                        }
-                        $us_status = ( $qualified_messages>0 ? 1 : 0 );
-                        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
-                        array_push( $checklist , array(
-                            'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c2['c_id'],
-                            'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$step_anchor,
-                            'us_status' => $us_status,
-                            'time_min' => $estimated_minutes,
-                        ));
-                    }
-                }
-            }
-            */
+            
+            //TODO check steps if needed here...
         }
     }
 
@@ -1501,12 +1459,12 @@ function b_progress($b){
             $qualified_messages += ( $i['i_status']==1 && ( $i['i_media_type']=='image' || ($i['i_media_type']=='text' && strlen($i['i_url'])>0 && detect_embed_media($i['i_url'],$i['i_message'],true))) ? 1 : 0 );
         }
     }
-    $us_status = ( $qualified_messages ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    $e_status = ( $qualified_messages ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_c_id'],
         'anchor' => '<b>Upload an Image or add YouTube Link</b> for your cover photo in Action Plan',
-        'us_status' => $us_status,
+        'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
 
@@ -1520,12 +1478,12 @@ function b_progress($b){
         //Prerequisites
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($b['b_prerequisites'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($b['b_prerequisites'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/actionplan#prerequisites',
             'anchor' => '<b>Set 1 or more Prerequisites</b> for your Bootcamp in Action Plan',
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
@@ -1533,12 +1491,12 @@ function b_progress($b){
         //Skills You Will Gain
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($b['b_transformations'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($b['b_transformations'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/actionplan#skills',
             'anchor' => '<b>Define Skills You Will Gain</b> in Action Plan',
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
     }
@@ -1561,36 +1519,36 @@ function b_progress($b){
         //u_phone
         $estimated_minutes = 5;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_phone'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_phone'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#communication' : null ),
             'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
         //u_image_url
         $estimated_minutes = 10;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_image_url'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_image_url'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => $account_href,
             'anchor' => '<b>Set Picture</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
         //u_country_code && u_current_city
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => $account_href,
             'anchor' => '<b>Set Location</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
@@ -1598,36 +1556,36 @@ function b_progress($b){
         //u_timezone
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#communication' : null ),
             'anchor' => '<b>Set Timezone</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
         //u_language
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_language'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_language'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#communication' : null ),
             'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
         //u_bio
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_bio'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_bio'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => $account_href,
             'anchor' => '<b>Set Introductory Message</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
@@ -1642,12 +1600,12 @@ function b_progress($b){
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
         $required_social_profiles = 3;
-        $us_status = ( $profile_counter>=$required_social_profiles ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
+        $e_status = ( $profile_counter>=$required_social_profiles ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#communication' : null ),
             'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
@@ -1655,12 +1613,12 @@ function b_progress($b){
         //u_paypal_email
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_paypal_email'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_paypal_email'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#finance' : null ),
             'anchor' => '<b>Set Paypal Email for Payouts</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
@@ -1668,12 +1626,12 @@ function b_progress($b){
         //u_terms_agreement_time
         $estimated_minutes = 45;
         $progress_possible += $estimated_minutes;
-        $us_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 : 0 );
-        $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+        $e_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#finance' : null ),
             'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
-            'us_status' => $us_status,
+            'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
     }
@@ -1690,12 +1648,12 @@ function b_progress($b){
         if($b['b_p2_max_seats']>0){
             $estimated_minutes = 15;
             $progress_possible += $estimated_minutes;
-            $us_status = ( strlen($b['b_support_email'])>=1 ? 1 : 0 );
-            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+            $e_status = ( strlen($b['b_support_email'])>=1 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+            $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
             array_push( $checklist , array(
                 'href' => '/console/'.$b['b_id'].'/settings#support',
                 'anchor' => '<b>Enter Support Email Address</b> in Settings',
-                'us_status' => $us_status,
+                'e_status' => $e_status,
                 'time_min' => $estimated_minutes,
             ));
         }
@@ -1705,12 +1663,12 @@ function b_progress($b){
         if($b['b_p3_rate']>0){
             $estimated_minutes = 15;
             $progress_possible += $estimated_minutes;
-            $us_status = ( strlen($b['b_calendly_url'])>=1 ? 1 : 0 );
-            $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+            $e_status = ( strlen($b['b_calendly_url'])>=1 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+            $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
             array_push( $checklist , array(
                 'href' => '/console/'.$b['b_id'].'/settings#support',
                 'anchor' => '<b>Enter Calendly URL</b> for Tutoring Bookings in Settings',
-                'us_status' => $us_status,
+                'e_status' => $e_status,
                 'time_min' => $estimated_minutes,
             ));
         }
@@ -1725,12 +1683,12 @@ function b_progress($b){
     ));
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
-    $us_status = ( count($current_inbounds)>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    $e_status = ( count($current_inbounds)>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#landingpage',
         'anchor' => '<b>Choose Category</b> in Settings',
-        'us_status' => $us_status,
+        'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
 
@@ -1738,12 +1696,12 @@ function b_progress($b){
     // Required Experience Level
     $estimated_minutes = 15;
     $progress_possible += $estimated_minutes;
-    $us_status = ( $b['b_difficulty_level']>0 ? 1 : 0 );
-    $progress_gained += ( $us_status ? $estimated_minutes : 0 );
+    $e_status = ( $b['b_difficulty_level']>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
         'href' => '/console/'.$b['b_id'].'/settings#landingpage',
         'anchor' => '<b>Choose Required Experience Level</b> in Settings',
-        'us_status' => $us_status,
+        'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
 
@@ -1894,19 +1852,17 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
 }
 
 
-function echo_checklist($href,$anchor,$us_status,$time_min=0){
+function echo_checklist($href,$anchor,$e_status,$time_min=0){
     
     $ui = '';
     if($href){
-        $ui .= '<a href="'.$href.'" class="list-group-item '.($us_status?'checklist-done':'').'">';
+        $ui .= '<a href="'.$href.'" class="list-group-item '.(($e_status>=-2)?'checklist-done':'').'">';
         $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
     } else {
-        $ui .= '<li class="list-group-item '.($us_status?'checklist-done':'').'">';
+        $ui .= '<li class="list-group-item '.(($e_status>=-2)?'checklist-done':'').'">';
     }
     
-    $ui .= status_bible('us',$us_status,1,'right').' ';
-    //Never got around estimating the time of each Step, as it seemed a bit arbitrary to do so...
-    //$ui .= ( $time_min ? '<span class="est-time" data-toggle="tooltip" data-placement="right" title="Takes about '.$time_min.' minutes to complete"><b>~'.$time_min.'"</b></span>' : '' );
+    $ui .= status_bible('e_status',$e_status,1,'right').' ';
     $ui .= $anchor.' ';
     
     if($href){
@@ -2708,11 +2664,10 @@ function html_run($run){
 
 
 
-function echo_us($us_data){
-    echo status_bible('us',$us_data['us_status']);
-    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-clock-o initial"></i>Completion Time:</span> '.time_format($us_data['us_timestamp']).' PST</div>';
-    //echo '<div style="margin:15px 0 10px;">Congratulations for completing this '.echo_time($us_data['us_time_estimate'],1).'Step on '.time_format($us_data['us_timestamp']).'</div>';
-    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-file-text initial"></i>Your Comments:</span> '.( strlen($us_data['us_student_notes'])>0 ? make_links_clickable(nl2br(htmlentities($us_data['us_student_notes']))) : 'None' ).'</div>';
+function echo_completion_report($us_eng){
+    echo status_bible('e_status',$us_eng['e_status']);
+    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-clock-o initial"></i>Completion Time:</span> '.time_format($us_eng['e_timestamp']).' PST</div>';
+    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-file-text initial"></i>Your Comments:</span> '.( strlen($us_eng['e_text_value'])>0 ? make_links_clickable(nl2br(htmlentities($us_eng['e_text_value']))) : 'None' ).'</div>';
 }
 
 

@@ -201,7 +201,7 @@ if($level==2){
         echo '<div id="save_report" class="quill_content">';
         if(isset($us_data[$intent['c_id']])){
 
-            echo_us($us_data[$intent['c_id']]);
+            echo_completion_report($us_data[$intent['c_id']]);
 
         } else {
 
@@ -314,45 +314,21 @@ if($level==1){
         if($level==1){
 
             //Task completion status;
-            $this_item_us_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['us_status'] : -2 );
+            $this_item_e_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['e_status'] : -4 );
 
-
-            //TODO Optimize this based on c_completion_rule value:
-            /*
-            $child_step_count = 0;
-            $this_item_us_status = 1;
-            foreach($this_intent['c__child_intents'] as $step){
-                if($step['c_status']<1){
-                    //Does not count:
-                    continue;
-                }
-
-                //Count this as a Step:
-                $child_step_count++;
-
-                //See the status:
-                if(!isset($us_data[$step['c_id']])) {
-                    $this_item_us_status = -2; //Incomplete
-                    //We know we can't go lowe than this:
-                    break;
-                } elseif($us_data[$step['c_id']]['us_status']<$this_item_us_status){
-                    //Go to the lower denominator
-                    $this_item_us_status = $us_data[$step['c_id']]['us_status'];
-                }
-            }
-            */
+            //TODO Optimize this based on c_completion_rule value
 
         } elseif($level==2){
 
             //Step List
-            $this_item_us_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['us_status'] : -2 );
+            $this_item_e_status = ( isset($us_data[$this_intent['c_id']]) ? $us_data[$this_intent['c_id']]['e_status'] : -4 );
 
         }
 
         //Now determine the lock status of this item...
 
         //Used in $unlocked_item logic in case instructor modifies Action Plan and Adds items before previously completed items:
-        $this_item_complete = ( $this_item_us_status>=1 );
+        $this_item_complete = ( $this_item_e_status>=-2 );
 
         //See Status:
         $unlocked_item = $class_has_started && ($class_has_ended || $previous_item_complete || $this_item_complete);
@@ -363,7 +339,7 @@ if($level==1){
             //Show link to enter this item:
             $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$this_intent['c_id'].'" class="list-group-item">';
             $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-            $ui .= status_bible('us',$this_item_us_status,1).' ';
+            $ui .= status_bible('e_status',$this_item_e_status,1).' ';
 
         } else {
 
