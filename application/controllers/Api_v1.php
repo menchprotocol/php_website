@@ -1232,7 +1232,6 @@ class Api_v1 extends CI_Controller {
             'e_inbound_u_id' => $matching_admissions[0]['u_id'],
             //'e_outbound_u_id' => $matching_admissions[0]['u_id'], //The Bootcamp leader who has to review this
             'e_status' => -1, //Auto approved
-            'e_timestamp' => date("Y-m-d H:i:s"),
             'e_text_value' => trim($_POST['us_notes']),
             'e_float_value' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
             'e_inbound_c_id' => 33, //Completion Report

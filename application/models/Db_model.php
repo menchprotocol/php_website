@@ -316,6 +316,10 @@ WHERE ru.ru_status >= 4
 	        ));
 	        return false;
 	    }
+
+        if(!isset($insert_columns['ru_timestamp'])){
+            $insert_columns['ru_timestamp'] = date("Y-m-d H:i:s");
+        }
 	    
 	    //Lets now add:
 	    $this->db->insert('v5_class_students', $insert_columns);
@@ -337,7 +341,11 @@ WHERE ru.ru_status >= 4
 	
 
 	function t_create($insert_columns){
+
 	    //TODO Add checks and protection
+        if(!isset($insert_columns['t_timestamp'])){
+            $insert_columns['t_timestamp'] = date("Y-m-d H:i:s");
+        }
 	    
 	    //Lets now add:
 	    $this->db->insert('v5_transactions', $insert_columns);
@@ -368,6 +376,10 @@ WHERE ru.ru_status >= 4
 			));
 			return false;
 		}
+
+        if(!isset($insert_columns['u_timestamp'])){
+            $insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
+        }
 		
 		//Lets now add:
 		$this->db->insert('v5_entities', $insert_columns);
@@ -499,6 +511,10 @@ WHERE ru.ru_status >= 4
             return false;
         }
 
+        if(!isset($insert_columns['sy_timestamp'])){
+            $insert_columns['sy_timestamp'] = date("Y-m-d H:i:s");
+        }
+
         //Lets now add:
         $this->db->insert('v5_message_fb_sync', $insert_columns);
 
@@ -524,6 +540,10 @@ WHERE ru.ru_status >= 4
 		} elseif(!isset($insert_columns['i_message'])){
 			return false;
 		}
+
+        if(!isset($insert_columns['i_timestamp'])){
+            $insert_columns['i_timestamp'] = date("Y-m-d H:i:s");
+        }
 		
 		//Lets now add:
 		$this->db->insert('v5_messages', $insert_columns);
@@ -603,6 +623,10 @@ WHERE ru.ru_status >= 4
             return false;
         }
 
+        if(!isset($insert_columns['fp_timestamp'])){
+            $insert_columns['fp_timestamp'] = date("Y-m-d H:i:s");
+        }
+
         //Lets now add:
         $this->db->insert('v5_facebook_pages', $insert_columns);
 
@@ -631,6 +655,10 @@ WHERE ru.ru_status >= 4
             return false;
         } elseif(!isset($insert_columns['fs_fp_id'])){
             return false;
+        }
+
+        if(!isset($insert_columns['fs_timestamp'])){
+            $insert_columns['fs_timestamp'] = date("Y-m-d H:i:s");
         }
 
         //Lets now add:
@@ -1066,6 +1094,10 @@ WHERE ru.ru_status >= 4
 		} elseif(!isset($insert_columns['cr_inbound_u_id'])){
 			return false;
 		}
+
+        if(!isset($insert_columns['cr_timestamp'])){
+            $insert_columns['cr_timestamp'] = date("Y-m-d H:i:s");
+        }
 		
 		//Lets now add:
 		$this->db->insert('v5_intent_links', $insert_columns);
@@ -1107,6 +1139,9 @@ WHERE ru.ru_status >= 4
 	    return $this->db->affected_rows();
 	}
 	function il_create($insert_columns){
+        if(!isset($insert_columns['il_timestamp'])){
+            $insert_columns['il_timestamp'] = date("Y-m-d H:i:s");
+        }
 	    $this->db->insert('v5_leads', $insert_columns);
 	    $insert_columns['il_id'] = $this->db->insert_id();    
 	    return $insert_columns;
@@ -1137,6 +1172,10 @@ WHERE ru.ru_status >= 4
 	    } elseif(!isset($insert_columns['b_url_key'])){
 	        return false;
 	    }
+
+        if(!isset($insert_columns['b_timestamp'])){
+            $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
+        }
 	    
 	    //Lets now add:
 	    $this->db->insert('v5_bootcamps', $insert_columns);
@@ -1163,6 +1202,10 @@ WHERE ru.ru_status >= 4
 	    } elseif(!isset($insert_columns['c_creator_id'])){
 	        return false;
 	    }
+
+        if(!isset($insert_columns['c_timestamp'])){
+            $insert_columns['c_timestamp'] = date("Y-m-d H:i:s");
+        }
 		
 		//Lets now add:
 		$this->db->insert('v5_intents', $insert_columns);
@@ -1201,6 +1244,10 @@ WHERE ru.ru_status >= 4
 	    } elseif(!isset($insert_columns['ba_team_display'])){
 	        return false;
 	    }
+
+        if(!isset($insert_columns['ba_timestamp'])){
+            $insert_columns['ba_timestamp'] = date("Y-m-d H:i:s");
+        }
 	    
 	    //Lets now add:
 	    $this->db->insert('v5_bootcamp_team', $insert_columns);
@@ -1359,6 +1406,10 @@ WHERE ru.ru_status >= 4
                 $save_blob = $link_data['e_json'];
                 $link_data['e_has_blob'] = 't';
             }
+        }
+
+        if(!isset($insert_columns['e_timestamp'])){
+            $insert_columns['e_timestamp'] = date("Y-m-d H:i:s");
         }
 
         //Remove e_json from here to keep v5_engagements small and lean
