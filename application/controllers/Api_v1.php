@@ -1439,7 +1439,7 @@ class Api_v1 extends CI_Controller {
         if($users[0]['u_status']==1){
             //Regular user, see if they are assigned to any Bootcamp as co-instructor
             $co_instructors = $this->Db_model->instructor_bs(array(
-                'ba.ba_u_id' => $users[0]['u_id'],
+                'ba.ba_outbound_u_id' => $users[0]['u_id'],
                 'ba.ba_status >=' => 1,
                 'b.b_status >=' => 2,
             ));
@@ -1772,36 +1772,6 @@ class Api_v1 extends CI_Controller {
             echo "\t".trim(strip_tags(status_bible('ru',$admission['ru_status'])));
             echo "\t";
 
-            if(strlen($admission['ru_application_survey'])>0){
-
-                //echo $admission['ru_application_survey'];
-
-                $answers = objectToArray(json_decode($admission['ru_application_survey']));
-
-                //Prerequsites:
-                $missing_preq = array();
-                if(isset($answers['prerequisites'])){
-                    foreach ($answers['prerequisites'] as $item){
-                        if(!($item['answer']=='Yes')){
-                            array_push($missing_preq,$item['item']);
-                        }
-                    }
-                }
-                if(count($missing_preq)>0){
-                    echo "Student indicated they do not meed these ".count($missing_preq)." prerequisites: ".join(', ',$missing_preq).'. ';
-                }
-
-                //Application Questions:
-                if(isset($answers['questions']) && count($answers['questions'])>0){
-                    $question = 0;
-                    foreach ($answers['questions'] as $item){
-                        $question++;
-                        echo '[Question #'.$question.': '.strip_tags($item['item']).'](Answer: '.strip_tags(str_replace("\n",'',$item['answer'])).') ';
-                    }
-                }
-
-            }
-
             echo "\r\n";
         }
     }
@@ -1857,7 +1827,7 @@ class Api_v1 extends CI_Controller {
 	    ));
         //Fetch all Existing Bootcamps for this Instructor:
         $bs = $this->Db_model->instructor_bs(array(
-            'ba.ba_u_id' => $udata['u_id'],
+            'ba.ba_outbound_u_id' => $udata['u_id'],
             'ba.ba_status' => 3, //Bootcamp Leaders
             'b.b_status >=' => 2, //Lead Instructor
         ));
@@ -2035,10 +2005,9 @@ class Api_v1 extends CI_Controller {
 
         //Create new Bootcamp:
         $b = $this->Db_model->b_create(array(
-            'b_creator_id' => $udata['u_id'],
             'b_fp_id' => ( !intval($_POST['b_is_parent']) && in_array($udata['u_id'],$mench_support_team) ? 4 : 0), //Assign Mench Facebook Page for our team
             'b_url_key' => $generated_key,
-            'b_c_id' => $intent['c_id'],
+            'b_outbound_c_id' => $intent['c_id'],
             'b_prerequisites' => ( intval($_POST['b_is_parent']) ? null : json_encode($default_class_prerequisites) ),
             'b_support_email' => ( intval($_POST['b_is_parent']) ? null : $udata['u_email'] ),
             'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 && !intval($_POST['b_is_parent']) ? 'https://calendly.com/'.$udata['u_calendly_username'] : null ),
@@ -2046,7 +2015,7 @@ class Api_v1 extends CI_Controller {
             'b_old_format' => 0,
         ));
 
-        if(intval($b['b_id'])<=0 || intval($b['b_c_id'])<=0){
+        if(intval($b['b_id'])<=0 || intval($b['b_outbound_c_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $udata['u_id'],
@@ -2073,15 +2042,14 @@ class Api_v1 extends CI_Controller {
         $this->Db_model->cr_create(array(
             'cr_inbound_u_id' => $udata['u_id'],
             'cr_inbound_c_id'  => 6180, //General category for Job Placement
-            'cr_outbound_c_id' => $b['b_c_id'],
+            'cr_outbound_c_id' => $b['b_outbound_c_id'],
             'cr_status' => 1,
         ));
         */
 
         //Assign permissions for this user:
         $admin_status = $this->Db_model->ba_create(array(
-            'ba_creator_id' => $udata['u_id'],
-            'ba_u_id' => $udata['u_id'],
+            'ba_outbound_u_id' => $udata['u_id'],
             'ba_status' => 3, //Leader - As this is the first person to create
             'ba_b_id' => $b['b_id'],
             'ba_team_display' => 't', //Show on landing page
@@ -2090,8 +2058,7 @@ class Api_v1 extends CI_Controller {
         if($udata['u_id']==2){
             //This is Miguel, also assign Shervin to help-out:
             $admin_status = $this->Db_model->ba_create(array(
-                'ba_creator_id' => 1,
-                'ba_u_id' => 1, //Shervin
+                'ba_outbound_u_id' => 1, //Shervin
                 'ba_status' => 2, //co-instructor
                 'ba_b_id' => $b['b_id'],
                 'ba_team_display' => 'f', //Show on landing page
@@ -2357,7 +2324,7 @@ class Api_v1 extends CI_Controller {
         $current_c_ids = array();
         //TODO Imorove further by only getching links associated to categorization
         $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-            'cr.cr_outbound_c_id' => $bs[0]['b_c_id'],
+            'cr.cr_outbound_c_id' => $bs[0]['b_outbound_c_id'],
             'cr.cr_outbound_b_id' => 0, //Not linked as part of a Multi-week Bootcamp
             'cr.cr_status' => 1,
         ));
@@ -2382,7 +2349,7 @@ class Api_v1 extends CI_Controller {
             $this->Db_model->cr_create(array(
                 'cr_inbound_u_id' => $udata['u_id'],
                 'cr_inbound_c_id'  => $_POST['level2_c_id'],
-                'cr_outbound_c_id' => $bs[0]['b_c_id'],
+                'cr_outbound_c_id' => $bs[0]['b_outbound_c_id'],
                 'cr_status' => 1,
             ));
         }
@@ -2562,8 +2529,8 @@ class Api_v1 extends CI_Controller {
         $cr_validation = $this->Db_model->cr_outbound_fetch(array(
             'cr_id' => $_POST['delete_cr_id'],
             'cr_status >' => 0,
-            'cr_inbound_c_id' => $inbound_bs[0]['b_c_id'],
-            'cr_outbound_c_id' => $bs[0]['b_c_id'],
+            'cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
+            'cr_outbound_c_id' => $bs[0]['b_outbound_c_id'],
             'cr_outbound_b_id' => $_POST['delete_b_id'],
         ));
 
@@ -2599,7 +2566,7 @@ class Api_v1 extends CI_Controller {
             'e_inbound_u_id' => $udata['u_id'],
             'e_inbound_c_id' => 89, //Intent link archived
             'e_b_id' => $_POST['current_b_id'],
-            'e_outbound_u_id' => $bs[0]['b_c_id'],
+            'e_outbound_u_id' => $bs[0]['b_outbound_c_id'],
             'e_cr_id' => $_POST['delete_cr_id'],
         ));
 
@@ -2677,8 +2644,8 @@ class Api_v1 extends CI_Controller {
 
 	    //Check to make sure not a duplicate link:
 	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_c_id' => $inbound_bs[0]['b_c_id'],
-            'cr.cr_outbound_c_id' => $outbound_bs[0]['b_c_id'],
+            'cr.cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
+            'cr.cr_outbound_c_id' => $outbound_bs[0]['b_outbound_c_id'],
 	        'cr.cr_status >=' => 1,
 	    ));
         if(count($current_outbounds)>0){
@@ -2693,13 +2660,13 @@ class Api_v1 extends CI_Controller {
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
 	        'cr_inbound_u_id' => $udata['u_id'],
-	        'cr_inbound_c_id'  => $inbound_bs[0]['b_c_id'],
-            'cr_outbound_c_id' => $outbound_bs[0]['b_c_id'],
+	        'cr_inbound_c_id'  => $inbound_bs[0]['b_outbound_c_id'],
+            'cr_outbound_c_id' => $outbound_bs[0]['b_outbound_c_id'],
             'cr_outbound_b_id' => $outbound_bs[0]['b_id'],
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
 	            'cr_status >=' => 1,
                 'c_status >=' => 1,
-	            'cr_inbound_c_id' => $inbound_bs[0]['b_c_id'],
+	            'cr_inbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
 	        )),
 	    ));
 
@@ -2714,7 +2681,7 @@ class Api_v1 extends CI_Controller {
 	        ),
 	        'e_inbound_c_id' => 23, //New Intent Link
             'e_b_id' => $inbound_bs[0]['b_id'],
-            'e_outbound_u_id' => $inbound_bs[0]['b_c_id'],
+            'e_outbound_u_id' => $inbound_bs[0]['b_outbound_c_id'],
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
 
@@ -2733,7 +2700,7 @@ class Api_v1 extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'new_hours' => $bs[0]['c__estimated_hours'],
-            'html' => echo_cr($inbound_bs[0],array_merge($bs[0],$relations[0]),2, $inbound_bs[0]['b_c_id']),
+            'html' => echo_cr($inbound_bs[0],array_merge($bs[0],$relations[0]),2, $inbound_bs[0]['b_outbound_c_id']),
         ));
 
 	}
@@ -2941,7 +2908,7 @@ class Api_v1 extends CI_Controller {
             //Now update the DB:
             $this->Db_model->c_update( intval($_POST['pid']) , $c_update );
 
-            if($_POST['pid']==$bs[0]['b_c_id']){
+            if($_POST['pid']==$bs[0]['b_outbound_c_id']){
                 //This is a Bootcamp intent, also update algolia:
                 $this->Db_model->algolia_sync('b',$_POST['b_id']);
             } else {
@@ -3126,7 +3093,7 @@ class Api_v1 extends CI_Controller {
                     array_push($import_items,array(
                         'is_header' => 0,
                         'name' => 'Tasks form ['.$task['c_objective'].']',
-                        'id' => 'b_c_ids',
+                        'id' => 'b_outbound_c_ids',
                         'value' => $task['c_id'],
                         'count' => count($task['c__child_intents']),
                     ));
@@ -3138,8 +3105,8 @@ class Api_v1 extends CI_Controller {
             array_push($import_items,array(
                 'is_header' => 0,
                 'name' => 'Tasks of Action Plan',
-                'id' => 'b_c_ids',
-                'value' => $bs[0]['b_c_id'],
+                'id' => 'b_outbound_c_ids',
+                'value' => $bs[0]['b_outbound_c_id'],
                 'count' => count($bs[0]['c__child_intents']),
             ));
 
@@ -3249,13 +3216,13 @@ class Api_v1 extends CI_Controller {
         $b_level_messages_results = array();
         if(isset($_POST['b_level_messages']) && intval($_POST['b_level_messages']) && count($bs_from[0]['c__messages'])>0){
             //Yes, import messages:
-            $b_level_messages_results = copy_messages($udata['u_id'],$bs_from[0]['c__messages'],$bs_to[0]['b_c_id']);
+            $b_level_messages_results = copy_messages($udata['u_id'],$bs_from[0]['c__messages'],$bs_to[0]['b_outbound_c_id']);
         }
 
 
         //Do we need to do any Tasks?
-        if(isset($_POST['b_c_ids']) && count($_POST['b_c_ids'])>0){
-            foreach($_POST['b_c_ids'] as $c_id){
+        if(isset($_POST['b_outbound_c_ids']) && count($_POST['b_outbound_c_ids'])>0){
+            foreach($_POST['b_outbound_c_ids'] as $c_id){
 
                 //Fetch all child Intents for this Intent:
                 $intents = $this->Db_model->c_fetch(array(
@@ -3267,7 +3234,7 @@ class Api_v1 extends CI_Controller {
                         if(intval($_POST['task_import_mode'])==3){
 
                             //Copy intent:
-                            $new_task = copy_intent($udata['u_id'],$c,$bs_to[0]['b_c_id']);
+                            $new_task = copy_intent($udata['u_id'],$c,$bs_to[0]['b_outbound_c_id']);
 
                             if(count($c['c__messages'])>0){
                                 //Copy messages:

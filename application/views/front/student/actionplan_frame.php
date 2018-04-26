@@ -14,7 +14,7 @@ if(isset($uadmission) && count($uadmission)>0){
     //Fetch page instantly as we know who this is:
     ?>
     <script>
-        $.post("/my/display_actionplan/0/<?= (isset($b_id) ? intval($b_id) : $uadmission['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uadmission['b_c_id']) ?>", {}, function(data) {
+        $.post("/my/display_actionplan/0/<?= (isset($b_id) ? intval($b_id) : $uadmission['b_id']) ?>/<?= ( isset($c_id) ? intval($c_id) : $uadmission['b_outbound_c_id']) ?>", {}, function(data) {
             $( "#page_content").html(data);
         });
     </script>

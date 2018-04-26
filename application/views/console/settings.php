@@ -337,7 +337,7 @@ function b_save_settings(){
             <?php
             $current_c_ids = array();
             $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_c_id' => $b['b_c_id'],
+                'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
                 'cr.cr_status' => 1,
             ));
             foreach($current_inbounds as $c){
@@ -545,7 +545,7 @@ function b_save_settings(){
                 }
                 echo echo_br(array_merge($adviser, array(
                     'ba_id' => 0,
-                    'ba_u_id' => $adviser['u_id'],
+                    'ba_outbound_u_id' => $adviser['u_id'],
                     'ba_status' => 1, //Advisery status
                     'ba_b_id' => $b['b_id'],
                     'ba_team_display' => 'f', //Advisers are not shown on the landing page

@@ -268,7 +268,7 @@ function extract_level($b,$c_id){
                 $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'];
                 $view_data['breadcrumb_p'] = array(
                     array(
-                        'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
+                        'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
                         'anchor' => $CI->lang->line('level_'.( isset($b['b_is_parent']) ? $b['b_is_parent'] : 0 ).'_icon').' '.$b['c_objective'],
                     ),
                     array(
@@ -333,7 +333,7 @@ function extract_level($b,$c_id){
 
                         $view_data['breadcrumb_p'] = array(
                             array(
-                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_c_id'],
+                                'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
                                 'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_objective'],
                             ),
                             array(
@@ -1462,7 +1462,7 @@ function b_progress($b){
     $e_status = ( $qualified_messages ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
     $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_c_id'],
+        'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$b['b_outbound_c_id'],
         'anchor' => '<b>Upload an Image or add YouTube Link</b> for your cover photo in Action Plan',
         'e_status' => $e_status,
         'time_min' => $estimated_minutes,
@@ -1678,7 +1678,7 @@ function b_progress($b){
 
     //Landing Page Category
     $current_inbounds = $CI->Db_model->cr_inbound_fetch(array(
-        'cr.cr_outbound_c_id' => $b['b_c_id'],
+        'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
         'cr.cr_status' => 1,
     ));
     $estimated_minutes = 15;

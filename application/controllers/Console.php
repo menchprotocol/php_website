@@ -69,13 +69,13 @@ class Console extends CI_Controller {
         //Yes, show them their Bootcamps:
         $this->load->view('console/bootcamps_my' , array(
             'bs' => $this->Db_model->instructor_bs(array(
-                'ba.ba_u_id' => $udata['u_id'],
+                'ba.ba_outbound_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,
                 'b.b_status >=' => 2,
                 'b.b_is_parent' => 0,
             )),
             'bsp' => $this->Db_model->instructor_bs(array(
-                'ba.ba_u_id' => $udata['u_id'],
+                'ba.ba_outbound_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,
                 'b.b_status >=' => 2,
                 'b.b_is_parent' => 1,

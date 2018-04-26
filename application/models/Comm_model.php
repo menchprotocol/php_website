@@ -602,7 +602,7 @@ class Comm_model extends CI_Model {
         $media_messages = $this->Db_model->i_fetch(array(
             'i_status >' => 0, //Published in any form
             'i_media_type IN (\'video\',\'audio\',\'image\',\'file\')' => null, //Attachments only
-            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bs[0]['b_c_id'])).')' => null, //Entire Bootcamp Action Plan
+            'i_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bs[0]['b_outbound_c_id'])).')' => null, //Entire Bootcamp Action Plan
         ));
         foreach($media_messages as $i){
             //Craete a request to sync attachment:

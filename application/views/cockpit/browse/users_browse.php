@@ -96,7 +96,7 @@ foreach($users as $key=>$user){
 
     //Fetch Bootcamps:
     $instructor_bs = $this->Db_model->ba_fetch(array(
-        'ba.ba_u_id' => $user['u_id'],
+        'ba.ba_outbound_u_id' => $user['u_id'],
         'ba.ba_status >=' => 0,
         'b.b_status >=' => 2,
     ) , true /*To Fetch more details*/ );

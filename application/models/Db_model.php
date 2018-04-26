@@ -78,7 +78,7 @@ WHERE ru.ru_status >= 4
         //Missing anything?
         $this->db->select('*');
         $this->db->from('v5_bootcamps b');
-        $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+        $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
         if(count($join_objects)==0 || in_array('fp',$join_objects)){
             $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
         }
@@ -434,11 +434,11 @@ WHERE ru.ru_status >= 4
 	    //Fetch the admins of the Bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
-        $this->db->join('v5_bootcamp_team ba', 'ba.ba_u_id = u.u_id');
+        $this->db->join('v5_bootcamp_team ba', 'ba.ba_outbound_u_id = u.u_id');
         if($fetch_extra){
             //This is a HACK!
             $this->db->join('v5_bootcamps b', 'ba.ba_b_id = b.b_id');
-            $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+            $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
         }
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
@@ -453,7 +453,7 @@ WHERE ru.ru_status >= 4
 	function instructor_bs($match_columns){
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
-	    $this->db->join('v5_bootcamps b', 'b.b_c_id = c.c_id');
+	    $this->db->join('v5_bootcamps b', 'b.b_outbound_c_id = c.c_id');
 	    $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id');
         $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
 	    $this->db->order_by('b.b_id', 'ASC');
@@ -810,7 +810,7 @@ WHERE ru.ru_status >= 4
         }
         if(in_array('b',$join_objects)){
             $this->db->join('v5_bootcamps b', 'r.r_b_id = b.b_id');
-            $this->db->join('v5_intents c', 'b.b_c_id = c.c_id');
+            $this->db->join('v5_intents c', 'b.b_outbound_c_id = c.c_id');
         }
 
 		foreach($match_columns as $key=>$value){
@@ -983,14 +983,14 @@ WHERE ru.ru_status >= 4
 	    $this->db->select('*');
         $this->db->from('v5_bootcamps b');
         if(in_array('c',$join_objects)){
-            $this->db->join('v5_intents c', 'c.c_id = b.b_c_id');
+            $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
         }
         if(in_array('fp',$join_objects)){
             $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
         }
         if(in_array('ba',$join_objects)){
             $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id','left');
-            $this->db->join('v5_entities u', 'u.u_id = ba.ba_u_id','left');
+            $this->db->join('v5_entities u', 'u.u_id = ba.ba_outbound_u_id','left');
             $this->db->where('ba_status',3); //Lead instructor
         }
         foreach($match_columns as $key=>$value){
@@ -1051,7 +1051,7 @@ WHERE ru.ru_status >= 4
 		$this->db->from('v5_intents c');
 		$this->db->join('v5_intent_links cr', 'cr.cr_inbound_c_id = c.c_id');
         if(in_array('b',$join_objects)){
-            $this->db->join('v5_bootcamps b', 'b.b_c_id = cr.cr_inbound_c_id');
+            $this->db->join('v5_bootcamps b', 'b.b_outbound_c_id = cr.cr_inbound_c_id');
         }
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
@@ -1165,9 +1165,7 @@ WHERE ru.ru_status >= 4
 	
 	function b_create($insert_columns){
 	    
-	    if(!isset($insert_columns['b_c_id'])){
-	        return false;
-	    } elseif(!isset($insert_columns['b_creator_id'])){
+	    if(!isset($insert_columns['b_outbound_c_id'])){
 	        return false;
 	    } elseif(!isset($insert_columns['b_url_key'])){
 	        return false;
@@ -1233,11 +1231,9 @@ WHERE ru.ru_status >= 4
 	function ba_create($insert_columns){
 	    
 	    //TODO Do better check on required fields:
-	    if(!isset($insert_columns['ba_u_id'])){
+	    if(!isset($insert_columns['ba_outbound_u_id'])){
 	        return false;
 	    } elseif(!isset($insert_columns['ba_b_id'])){
-	        return false;
-	    } elseif(!isset($insert_columns['ba_creator_id'])){
 	        return false;
 	    } elseif(!isset($insert_columns['ba_status'])){
 	        return false;
@@ -1312,7 +1308,7 @@ WHERE ru.ru_status >= 4
             'e_json' => $bs[0],
             'e_inbound_c_id' => 70, //Action Plan Snapshot
             'e_b_id' => $bs[0]['b_id'],
-            'e_outbound_u_id' => $bs[0]['b_c_id'],
+            'e_outbound_u_id' => $bs[0]['b_outbound_c_id'],
             'e_r_id' => $r_id,
         ));
 
@@ -1660,7 +1656,7 @@ WHERE ru.ru_status >= 4
 
                 //Fetch all text messages for description:
                 $i_messages = $this->Db_model->i_fetch(array(
-                    'i_c_id' => $item['b_c_id'],
+                    'i_c_id' => $item['b_outbound_c_id'],
                     'i_media_type' => 'text', //Only type that we can index in search
                     'i_status >' => 0, //Published in any form
                 ));
@@ -1672,7 +1668,7 @@ WHERE ru.ru_status >= 4
 
                 //Fetch all child intent titles:
                 $c_intents = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_c_id' => $item['b_c_id'],
+                    'cr.cr_inbound_c_id' => $item['b_outbound_c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >=' => 0,
                 ));

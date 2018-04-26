@@ -3,7 +3,7 @@ $udata = $this->session->userdata('user');
 
 //Fetch this user's Bootcamps:
 $bs = $this->Db_model->instructor_bs(array(
-    'ba.ba_u_id' => $udata['u_id'],
+    'ba.ba_outbound_u_id' => $udata['u_id'],
     'ba.ba_status >=' => 0,
     'b.b_status >=' => 2,
     'b.b_id !=' => $b['b_id'], //Can't import from current Bootcamp
@@ -63,7 +63,7 @@ $bs = $this->Db_model->instructor_bs(array(
                     //Nothing was checked!
                     alert('ERROR: Choose at-least 1 item to import');
                     return false;
-                } else if($("input:checkbox[name=b_c_ids]:checked").length>0 && 0){
+                } else if($("input:checkbox[name=b_outbound_c_ids]:checked").length>0 && 0){
                     //TODO Enable later when we have it...
                     //Show the Task modality selector:
                     $('#task_mode').removeClass('hidden');
@@ -117,9 +117,9 @@ $bs = $this->Db_model->instructor_bs(array(
             $('#btn_next, #btn_prev').hide();
 
             //Organize Import Intents:
-            var b_c_ids = [];
-            $("input:checkbox[name=b_c_ids]:checked").each(function(){
-                b_c_ids.push(parseInt($(this).val()));
+            var b_outbound_c_ids = [];
+            $("input:checkbox[name=b_outbound_c_ids]:checked").each(function(){
+                b_outbound_c_ids.push(parseInt($(this).val()));
             });
 
             //Send for processing:
@@ -127,7 +127,7 @@ $bs = $this->Db_model->instructor_bs(array(
 
                 import_from_b_id:parseInt($('#import_b_id').val()),
                 import_to_b_id:<?= $b['b_id'] ?>,
-                b_c_ids:b_c_ids,
+                b_outbound_c_ids:b_outbound_c_ids,
                 task_import_mode:parseInt($('input[name=task_import_mode]:checked').val()),
                 b_level_messages:($('input[name=b_level_messages]:checked').val()=='on'?1:0),
                 b_prerequisites:($('input[name=b_prerequisites]:checked').val()=='on'?1:0),

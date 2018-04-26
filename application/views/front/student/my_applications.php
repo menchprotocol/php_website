@@ -84,7 +84,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
                     //Should have some child Bootcamps:
                     $child_intents = $this->Db_model->cr_outbound_fetch(array(
-                        'cr.cr_inbound_c_id' => $bs[0]['b_c_id'],
+                        'cr.cr_inbound_c_id' => $bs[0]['b_outbound_c_id'],
                         'cr.cr_status >=' => 0,
                         'c.c_status >=' => 0,
                         'ru.ru_u_id' => $admission['ru_u_id'],

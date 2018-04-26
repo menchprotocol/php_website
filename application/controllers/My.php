@@ -338,7 +338,7 @@ class My extends CI_Controller {
 
                 } else {
 
-                    echo '<a href="/my/actionplan/'.$other_admission['b_id'].'/'.$other_admission['b_c_id'].'" class="list-group-item">';
+                    echo '<a href="/my/actionplan/'.$other_admission['b_id'].'/'.$other_admission['b_outbound_c_id'].'" class="list-group-item">';
                     echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top: -7px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
 
                 }
