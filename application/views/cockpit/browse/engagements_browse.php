@@ -8,10 +8,10 @@
 
 //Define engagement filters:
 $engagement_references = $this->config->item('engagement_references');
-$e_type_id = $this->Db_model->a_fetch();
+$e_inbound_c_id = $this->Db_model->a_fetch();
 
 $engagement_filters = array(
-    'e_type_id' => 'All Engagements',
+    'e_inbound_c_id' => 'All Engagements',
     'e_id' => 'Engagement ID',
     'e_u_id' => 'User ID',
     'e_b_id' => 'Bootcamp ID',

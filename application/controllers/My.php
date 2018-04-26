@@ -247,7 +247,7 @@ class My extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $focus_admission['u_id'],
                 'e_json' => $admissions,
-                'e_type_id' => 32, //actionplan Opened
+                'e_inbound_c_id' => 32, //actionplan Opened
                 'e_b_id' => $focus_admission['b_id'],
                 'e_r_id' => $focus_admission['r_id'],
                 'e_c_id' => $focus_admission['c_id'],
@@ -415,7 +415,7 @@ class My extends CI_Controller {
                 //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $focus_admission['u_id'],
-                    'e_type_id' => 54, //classmates Opened
+                    'e_inbound_c_id' => 54, //classmates Opened
                     'e_b_id' => $b_id,
                     'e_r_id' => $r_id,
                 ));
@@ -477,7 +477,7 @@ class My extends CI_Controller {
 
             //Fetch the most recent cached Action Plans:
             $cache_action_plans = $this->Db_model->e_fetch(array(
-                'e_type_id' => 70,
+                'e_inbound_c_id' => 70,
                 'e_r_id' => $class['r_id'],
             ),1 , array('ej'));
 
@@ -862,7 +862,7 @@ class My extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => 0, //System
                 'e_message' => 'Validated review URL failed to fetch admission data',
-                'e_type_id' => 8, //System Error
+                'e_inbound_c_id' => 8, //System Error
             ));
 
             //There is an issue with the key, show error to user:

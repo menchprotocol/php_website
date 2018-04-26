@@ -61,7 +61,7 @@ foreach($bs as $key=>$mb){
     //Fetch last activity:
     $bs[$key]['engagements'] = $this->Db_model->e_fetch(array(
         'e_b_id' => $mb['b_id'],
-        '(e_type_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
+        '(e_inbound_c_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
     ),1000);
 
     $bs[$key]['student_funnel'] = array(

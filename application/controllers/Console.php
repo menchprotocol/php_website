@@ -113,7 +113,7 @@ class Console extends CI_Controller {
 	        'e_json' => array(
 	            'url' => $_SERVER['REQUEST_URI'],
 	        ),
-	        'e_type_id' => 48, //View
+	        'e_inbound_c_id' => 48, //View
 	        'e_message' => $title,
 	        'e_b_id' => $bs[0]['b_id'],
 	        'e_r_id' => 0,

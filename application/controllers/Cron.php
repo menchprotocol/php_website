@@ -107,7 +107,7 @@ class Cron extends CI_Controller {
                     'e_json' => array(
                         'admitted' => $accepted_admissions,
                     ),
-                    'e_type_id' => 56, //Class Cancelled
+                    'e_inbound_c_id' => 56, //Class Cancelled
                     'e_b_id' => $class['r_b_id'],
                     'e_r_id' => $class['r_id'],
                 ));
@@ -179,7 +179,7 @@ class Cron extends CI_Controller {
                         'classroom_count' => $classroom_students,
                         'admitted' => $accepted_admissions,
                     ),
-                    'e_type_id' => 60, //Class kick-started
+                    'e_inbound_c_id' => 60, //Class kick-started
                     'e_b_id' => $class['r_b_id'],
                     'e_r_id' => $class['r_id'],
                 ));
@@ -227,7 +227,7 @@ class Cron extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_message' => 'ERROR: Class ended with 0 admitted students',
                         'e_json' => $bs[0],
-                        'e_type_id' => 8, //Platform Error
+                        'e_inbound_c_id' => 8, //Platform Error
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
                     ));
@@ -264,13 +264,13 @@ class Cron extends CI_Controller {
                             //Completed all Tasks:
                             $completion_stats['completed']++;
                             $ru_status = 7; //Graduate
-                            $e_type_id = 64; //Student Graduated
+                            $e_inbound_c_id = 64; //Student Graduated
                             $i_message​​ = '{first_name} your class just ended. Congratulations for completing all Tasks on-time 🎉​';
                         } else {
                             //Did not complete:
                             $completion_stats['incomplete']++;
                             $ru_status = 6; //Incomplete
-                            $e_type_id = 71; //Student Incomplete Class
+                            $e_inbound_c_id = 71; //Student Incomplete Class
                             $i_message​​ = '{first_name} your class just ended. You can no longer submit Steps but you will have life-time access to all Tasks and Steps which are now unlocked.​';
                         }
 
@@ -307,7 +307,7 @@ class Cron extends CI_Controller {
                                     ),
                                 )),
                             ),
-                            'e_type_id' => $e_type_id,
+                            'e_inbound_c_id' => $e_inbound_c_id,
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
                         ));
@@ -325,7 +325,7 @@ class Cron extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => 0, //System
                         'e_message' => $completion_message,
-                        'e_type_id' => 69, //Class Completed, sends message to instructor team...
+                        'e_inbound_c_id' => 69, //Class Completed, sends message to instructor team...
                         'e_json' => array(
                             'stats' => $completion_stats,
                             'admissions' => $accepted_admissions,
@@ -385,7 +385,7 @@ class Cron extends CI_Controller {
         //Fetch pending drips
         $e_pending = $this->Db_model->e_fetch(array(
             'e_cron_job' => 0, //Pending
-            'e_type_id' => 52, //Scheduled Drip e_type_id=52
+            'e_inbound_c_id' => 52, //Scheduled Drip e_inbound_c_id=52
             'e_timestamp <=' => date("Y-m-d H:i:s" ), //Message is due
             //Some standard checks to make sure, these should all be true:
             'e_r_id >' => 0,
@@ -456,8 +456,8 @@ class Cron extends CI_Controller {
 
         $e_pending = $this->Db_model->e_fetch(array(
             'e_cron_job' => 0, //Pending file upload to S3
-            'e_type_id >=' => 6, //Messages only
-            'e_type_id <=' => 7, //Messages only
+            'e_inbound_c_id >=' => 6, //Messages only
+            'e_inbound_c_id <=' => 7, //Messages only
         ), $max_per_batch, array('ej'));
 
 
@@ -508,7 +508,7 @@ class Cron extends CI_Controller {
                     'e_initiator_u_id' => 0, //System
                     'e_message' => 'cron/bot_save_files() fetched ej_e_blob() that was missing its [entry] value',
                     'e_json' => $json_data,
-                    'e_type_id' => 8, //System Error
+                    'e_inbound_c_id' => 8, //System Error
                 ));
             }
 
@@ -536,7 +536,7 @@ class Cron extends CI_Controller {
 
         $e_pending = $this->Db_model->e_fetch(array(
             'e_cron_job' => 0, //Pending Sync
-            'e_type_id' => 83, //Message Facebook Sync e_type_id=83
+            'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
         ), $max_per_batch, array('i','fp'));
 
 
@@ -595,7 +595,7 @@ class Cron extends CI_Controller {
                                     'result' => $result,
                                     'ep' => $ep,
                                 ),
-                                'e_type_id' => 8, //Platform Error
+                                'e_inbound_c_id' => 8, //Platform Error
                             ));
                         }
 
@@ -643,14 +643,14 @@ class Cron extends CI_Controller {
 
 
         //Fetch student inbound messages that have not yet been replied to:
-        $q = $this->db->query('SELECT u_fname, u_lname, e_initiator_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_type_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY e_initiator_u_id, u_status, u_fname, u_lname');
+        $q = $this->db->query('SELECT u_fname, u_lname, e_initiator_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_users u ON (e.e_initiator_u_id = u.u_id) WHERE e_inbound_c_id=6 AND e_timestamp > \''.$after_time.'\' AND e_initiator_u_id>0 AND u_status<=1 GROUP BY e_initiator_u_id, u_status, u_fname, u_lname');
         $new_messages = $q->result_array();
         $notify_messages = array();
         foreach($new_messages as $key=>$nm){
 
             //Lets see if their inbound messages has been responded by the instructor:
             $messages = $this->Db_model->e_fetch(array(
-                'e_type_id IN (6,7)' => null,
+                'e_inbound_c_id IN (6,7)' => null,
                 'e_timestamp >' => $after_time,
                 '(e_initiator_u_id='.$nm['e_initiator_u_id'].' OR e_recipient_u_id='.$nm['e_initiator_u_id'].')' => null,
             ));
@@ -658,7 +658,7 @@ class Cron extends CI_Controller {
             if(count($messages)>$nm['received_messages']){
                 //We also sent some messages, see who sent them, and if we need to notify the admin:
                 $last_message = $messages[0]; //This is the latest message
-                $new_messages[$key]['notify'] = ( $last_message['e_type_id']==7 && $last_message['e_initiator_u_id']>0 ? 0 : 1 );
+                $new_messages[$key]['notify'] = ( $last_message['e_inbound_c_id']==7 && $last_message['e_initiator_u_id']>0 ? 0 : 1 );
             } else {
                 //No responses, we must notify:
                 $new_messages[$key]['notify'] = 1;
@@ -772,7 +772,7 @@ class Cron extends CI_Controller {
 
             //Fetch existing reminders sent to this student:
             $reminders_sent = $this->Db_model->e_fetch(array(
-                'e_type_id IN (7,28)' => null, //Email/Message sent
+                'e_inbound_c_id IN (7,28)' => null, //Email/Message sent
                 'e_recipient_u_id' => $admission['u_id'],
                 'e_r_id' => $admission['r_id'],
                 'e_c_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
@@ -875,7 +875,7 @@ class Cron extends CI_Controller {
 
                         //See if we have reminded them already about this:
                         $reminders_sent = $this->Db_model->e_fetch(array(
-                            'e_type_id IN (7,28)' => null, //Email or Message sent
+                            'e_inbound_c_id IN (7,28)' => null, //Email or Message sent
                             'e_recipient_u_id' => $admission['u_id'],
                             'e_r_id' => $admission['r_id'],
                             'e_c_id' => $logic['reminder_c_id'],

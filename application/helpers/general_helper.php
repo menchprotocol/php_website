@@ -34,7 +34,7 @@ function fetch_action_plan_copy($b_id,$r_id=0,$current_b=null,$release_cache=arr
     if($r_id){
         //See if we have a copy:
         $cache_action_plans = $CI->Db_model->e_fetch(array(
-            'e_type_id' => 70,
+            'e_inbound_c_id' => 70,
             'e_r_id' => $r_id,
         ), 1, array('ej'));
     }
@@ -2221,7 +2221,7 @@ function save_file($file_url,$json_data,$is_local=false){
             $CI->Db_model->e_create(array(
                 'e_message' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
                 'e_json' => $json_data,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
         }

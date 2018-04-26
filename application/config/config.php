@@ -68,16 +68,16 @@ $config['instructor_subscriptions'] = array(57,60,68,69,70,72);
 $config['engagement_subscriptions'] = array(
     array(
         'admin_emails' => array('miguel@mench.com'),
-        'subscription' => array(9,15,58,60,65,68,72,73,75,88 ),
+        'subscription' => array(9,15,60,65,68,72,73,75,88 ),
     ),
     array(
         'admin_emails' => array('shervin@mench.com'),
-        'subscription' => array(9,15,58,60,65,68,72,73,75,88,    8,84),
+        'subscription' => array(9,15,60,65,68,72,73,75,88,    8,84),
     ),
 );
 
 //Define what counts as a meaningful Bootcamp engagement by the instructor team:
-$config['meaningful_b_engagements']  = array(13,14,15,16,17,18,19,20,21,22,23,34,35,36,37,38,39,43,44,73,74,75);
+$config['meaningful_b_engagements']  = array(14,15,16,17,18,19,20,21,22,23,34,35,36,38,39,43,44,73,74,75);
 
 //based on the fibonacci sequence for more realistic estimates
 $config['c_time_options'] = array(0.05,0.1166667,0.25,0.5,0.75,1,2,3,5); //,8,13

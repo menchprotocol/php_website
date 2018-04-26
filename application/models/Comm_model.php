@@ -109,7 +109,7 @@ class Comm_model extends CI_Model {
             $error_message = 'Comm_model->fb_graph() failed to '.$action.' '.$url;
             $this->Db_model->e_create(array(
                 'e_message' => $error_message,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
                 'e_json' => $e_json,
                 'e_fp_id' => $fp_id,
             ));
@@ -163,7 +163,7 @@ class Comm_model extends CI_Model {
             //Log error:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $u_id,
-                'e_type_id' => 9, //Support needs attention
+                'e_inbound_c_id' => 9, //Support needs attention
                 'e_b_id' => $b_id,
                 'e_json' => array(
                     'payload' => $long_lived_user_token_payload,
@@ -195,7 +195,7 @@ class Comm_model extends CI_Model {
             //Log engagement:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $u_id,
-                'e_type_id' => 9, //Support needs attention
+                'e_inbound_c_id' => 9, //Support needs attention
                 'e_b_id' => $b_id,
                 'e_message' => 'fb_index_pages() Graph call returned error: ' . $e->getMessage(),
             ));
@@ -207,7 +207,7 @@ class Comm_model extends CI_Model {
             //Log engagement:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $u_id,
-                'e_type_id' => 9, //Support needs attention
+                'e_inbound_c_id' => 9, //Support needs attention
                 'e_b_id' => $b_id,
                 'e_message' => 'fb_index_pages() Facebook SDK call returned error: ' . $e->getMessage(),
             ));
@@ -246,7 +246,7 @@ class Comm_model extends CI_Model {
                         'e_fp_id' => $fp['fp_id'],
                         'e_b_id' => $b_id,
                         'e_json' => $fb_page,
-                        'e_type_id' => 76, //Facebook Page Added
+                        'e_inbound_c_id' => 76, //Facebook Page Added
                     ));
 
                     //Give admin the authorization to access it:
@@ -262,7 +262,7 @@ class Comm_model extends CI_Model {
                         'e_initiator_u_id' => $u_id,
                         'e_fp_id' => $fp['fp_id'],
                         'e_b_id' => $b_id,
-                        'e_type_id' => 82, //Facebook Page Access Authorized
+                        'e_inbound_c_id' => 82, //Facebook Page Access Authorized
                     ));
 
                 } else {
@@ -293,7 +293,7 @@ class Comm_model extends CI_Model {
                             'e_json' => $update_data,
                             'e_fp_id' => $fp['fp_id'],
                             'e_b_id' => $b_id,
-                            'e_type_id' => 77, //Facebook Page Update
+                            'e_inbound_c_id' => 77, //Facebook Page Update
                         ));
 
                     }
@@ -319,7 +319,7 @@ class Comm_model extends CI_Model {
                             'e_initiator_u_id' => $u_id,
                             'e_fp_id' => $fp['fp_id'],
                             'e_b_id' => $b_id,
-                            'e_type_id' => 82, //Facebook Page Access Authorized
+                            'e_inbound_c_id' => 82, //Facebook Page Access Authorized
                         ));
 
                     } else {
@@ -386,7 +386,7 @@ class Comm_model extends CI_Model {
                 $this->Db_model->e_create(array(
                     'e_initiator_u_id' => $u_id,
                     'e_fp_id' => $fp['fp_id'],
-                    'e_type_id' => 78, //Facebook Page Access Revoked
+                    'e_inbound_c_id' => 78, //Facebook Page Access Revoked
                     'e_b_id' => $b_id,
                 ));
 
@@ -409,7 +409,7 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => $u_id,
                         'e_fp_id' => $fp['fp_id'],
-                        'e_type_id' => 81, //Page Removed
+                        'e_inbound_c_id' => 81, //Page Removed
                         'e_b_id' => $b_id,
                     ));
 
@@ -431,7 +431,7 @@ class Comm_model extends CI_Model {
                             $this->Db_model->e_create(array(
                                 'e_initiator_u_id' => $u_id,
                                 'e_fp_id' => $fp['fp_id'],
-                                'e_type_id' => 9, //Support team look into this
+                                'e_inbound_c_id' => 9, //Support team look into this
                                 'e_b_id' => $b['b_id'],
                                 'e_message' => 'Bootcamp was connected to this Facebook Page, but lost its connection as Instructor permissions were revoked in the most recent graph call. Review this case to ensure this disconnection would not impact the current students of any possible Action Classes for this Bootcamp.',
                             ));
@@ -525,7 +525,7 @@ class Comm_model extends CI_Model {
             //Log engagement:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $u_id,
-                'e_type_id' => 79, //Page Integrated with Mench
+                'e_inbound_c_id' => 79, //Page Integrated with Mench
                 'e_b_id' => $b_id,
                 'e_json' => $e_json,
                 'e_fp_id' => $fp['fp_id'],
@@ -550,7 +550,7 @@ class Comm_model extends CI_Model {
             //Log engagement:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $u_id,
-                'e_type_id' => 80, //Page Integration Removed
+                'e_inbound_c_id' => 80, //Page Integration Removed
                 'e_b_id' => $b_id,
                 'e_json' => $e_json,
                 'e_fp_id' => $fp['fp_id'],
@@ -608,7 +608,7 @@ class Comm_model extends CI_Model {
             //Craete a request to sync attachment:
             $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $u_id,
-                'e_type_id' => 83, //Message Facebook Sync e_type_id=83
+                'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => $i['i_id'],
                 'e_c_id' => $i['i_c_id'],
                 'e_b_id' => $b_id,
@@ -621,7 +621,7 @@ class Comm_model extends CI_Model {
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $u_id,
             'e_fp_id' => $fp_id,
-            'e_type_id' => 73, //Page Connected to Bootcamp
+            'e_inbound_c_id' => 73, //Page Connected to Bootcamp
             'e_json' => array(
                 'fb_sync_messages' => count($media_messages),
             ),
@@ -684,7 +684,7 @@ class Comm_model extends CI_Model {
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $u_id,
             'e_fp_id' => $fp_id,
-            'e_type_id' => 74, //Page Disconnected
+            'e_inbound_c_id' => 74, //Page Disconnected
             'e_b_id' => $b_id,
         ));
 
@@ -706,7 +706,7 @@ class Comm_model extends CI_Model {
             $this->Db_model->e_create(array(
                 'e_recipient_u_id' => $u_id,
                 'e_fp_id' => $fp_id,
-                'e_type_id' => 8, //Platform error
+                'e_inbound_c_id' => 8, //Platform error
                 'e_message' => 'fb_activation_url() failed to generate activation URL as $fp_id=['.$fp_id.'] OR $u_id=['.$u_id.']',
             ));
             //Could not find this page!
@@ -724,7 +724,7 @@ class Comm_model extends CI_Model {
             $this->Db_model->e_create(array(
                 'e_recipient_u_id' => $u_id,
                 'e_fp_id' => $fp_id,
-                'e_type_id' => 8, //Platform error
+                'e_inbound_c_id' => 8, //Platform error
                 'e_message' => 'fb_activation_url() failed to generate activation URL as $fp_id=['.$fp_id.'] did not have fp_status=[1]',
             ));
 
@@ -755,14 +755,14 @@ class Comm_model extends CI_Model {
             //Ooops, this is not good:
             $this->Db_model->e_create(array(
                 'e_message' => 'fb_identify_activate() got called with invalid $fp variable with $fp_psid=['.$fp_psid.']',
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
         } elseif($fp_psid<1){
             //Ooops, this is not good:
             $this->Db_model->e_create(array(
                 'e_message' => 'fb_identify_activate() got called without $fp_psid variable',
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
                 'e_fp_id' => $fp['fp_id'],
             ));
             return false;
@@ -865,7 +865,7 @@ class Comm_model extends CI_Model {
                         'e_recipient_u_id' => $ref_u_id,
                         'e_json' => $notify_user,
                         'e_message' => 'fb_identify_activate() Failed to activate user because Messenger account is already associated with another user.',
-                        'e_type_id' => 8, //Platform error
+                        'e_inbound_c_id' => 8, //Platform error
                         'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
@@ -899,7 +899,7 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_initiator_u_id' => $ref_u_id,
                         'e_message' => 'fb_identify_activate() had valid referral key that did not exist in the datavase',
-                        'e_type_id' => 8, //Platform Error
+                        'e_inbound_c_id' => 8, //Platform Error
                         'e_fp_id' => $fp['fp_id'],
                         'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -952,7 +952,7 @@ class Comm_model extends CI_Model {
                             'graph_fetch' => $graph_fetch,
                         ),
                         'e_message' => 'fb_identify_activate() failed to fetch user profile data',
-                        'e_type_id' => 8, //Platform error
+                        'e_inbound_c_id' => 8, //Platform error
                         'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                     ));
@@ -1012,7 +1012,7 @@ class Comm_model extends CI_Model {
                         'fb_profile' => $fb_profile,
                         'activation_msg' => $activation_msg,
                     ),
-                    'e_type_id' => 31, //Messenger Activated
+                    'e_inbound_c_id' => 31, //Messenger Activated
                     'e_fp_id' => $fp['fp_id'],
                     'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -1041,7 +1041,7 @@ class Comm_model extends CI_Model {
                             'fb_ref' => $fb_ref,
                             'graph_fetch' => $graph_fetch,
                         ),
-                        'e_type_id' => 8, //Platform Error
+                        'e_inbound_c_id' => 8, //Platform Error
                         'e_fp_id' => $fp['fp_id'],
                         'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -1111,7 +1111,7 @@ class Comm_model extends CI_Model {
                 //Log error:
                 $this->Db_model->e_create(array(
                     'e_json' => $message,
-                    'e_type_id' => 8, //Platform error
+                    'e_inbound_c_id' => 8, //Platform error
                     'e_message' => 'send_message() failed to send message as it was missing e_recipient_u_id',
                 ));
                 continue;
@@ -1145,7 +1145,7 @@ class Comm_model extends CI_Model {
                     $this->Db_model->e_create(array(
                         'e_recipient_u_id' => $message['e_recipient_u_id'],
                         'e_json' => $message,
-                        'e_type_id' => 8, //Platform error
+                        'e_inbound_c_id' => 8, //Platform error
                         'e_message' => 'send_message() failed to fetch user details message as it was missing core variables',
                     ));
                     continue;
@@ -1179,7 +1179,7 @@ class Comm_model extends CI_Model {
                             'e_recipient_u_id' => $message['e_recipient_u_id'],
                             'e_fp_id' => $message['e_fp_id'],
                             'e_json' => $message,
-                            'e_type_id' => 8, //Platform error
+                            'e_inbound_c_id' => 8, //Platform error
                             'e_message' => 'send_message() detected user without an active email/Messenger with $force_email=['.($force_email?'1':'0').']',
                         ));
                         continue;
@@ -1201,7 +1201,7 @@ class Comm_model extends CI_Model {
                         'e_recipient_u_id' => $message['e_recipient_u_id'],
                         'e_fp_id' => $message['e_fp_id'],
                         'e_json' => $message,
-                        'e_type_id' => 8, //Platform error
+                        'e_inbound_c_id' => 8, //Platform error
                         'e_message' => 'send_message() failed to send message because user FP ID ['.$dispatch_fp_id.'] was different that e_fp_id ['.$message['e_fp_id'].']',
                     ));
                     continue;
@@ -1235,7 +1235,7 @@ class Comm_model extends CI_Model {
                         'payload' => $payload,
                         'results' => $process,
                     ),
-                    'e_type_id' => 7, //Outbound message
+                    'e_inbound_c_id' => 7, //Outbound message
                     'e_fp_id' => ( isset($message['e_fp_id'])   ? $message['e_fp_id'] :0), //If set...
                     'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
                     'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
@@ -1289,7 +1289,7 @@ class Comm_model extends CI_Model {
                             'e_recipient_u_id' => $u['u_id'],
                             'e_message' => $email_variables['subject_line'],
                             'e_json' => $email_variables,
-                            'e_type_id' => 28, //Email message sent
+                            'e_inbound_c_id' => 28, //Email message sent
                             'e_r_id'  => ( isset($message['e_r_id']) ? $message['e_r_id'] : 0 ),
                             'e_b_id'  => ( isset($message['e_b_id']) ? $message['e_b_id'] : 0 ),
                             'e_c_id'  => ( isset($message['i_c_id']) ? $message['i_c_id'] : 0 ),
@@ -1415,7 +1415,7 @@ class Comm_model extends CI_Model {
             //Log error:
             $this->Db_model->e_create(array(
                 'e_message' => 'foundation_message() error: '.$error_message,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
                 'e_json' => $message,
                 'e_c_id' => $message['e_c_id'],
                 'e_fp_id' => $message['e_fp_id'],

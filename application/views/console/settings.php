@@ -86,7 +86,7 @@ function loadFacebookPages(is_onstart){
                             $.post("/api_v1/e_js_create", {
                                 e_initiator_u_id:<?= $udata['u_id'] ?>,
                                 e_b_id:$('#b_id').val(),
-                                e_type_id:9, //User needs attention
+                                e_inbound_c_id:9, //User needs attention
                                 e_message:"Instructor has denied "+denied_permissions+" permission(s) and cannot load their Facebook Pages in Settings.",
                                 e_json:response,
                                 e_hash_time:"<?= time() ?>",

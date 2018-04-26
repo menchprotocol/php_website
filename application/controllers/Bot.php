@@ -205,14 +205,14 @@ class Bot extends CI_Controller {
             $this->Db_model->e_create(array(
                 'e_message' => 'facebook_webhook() Function missing either [object] or [entry] variable.',
                 'e_json' => $json_data,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
         } elseif(!$json_data['object']=='page'){
             $this->Db_model->e_create(array(
                 'e_message' => 'facebook_webhook() Function call object value is not equal to [page], which is what was expected.',
                 'e_json' => $json_data,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
         }
@@ -234,14 +234,14 @@ class Bot extends CI_Controller {
                 $this->Db_model->e_create(array(
                     'e_message' => 'facebook_webhook() received message from unknown Page ID ['.$entry['id'].']',
                     'e_json' => $json_data,
-                    'e_type_id' => 8, //Platform Error
+                    'e_inbound_c_id' => 8, //Platform Error
                 ));
                 continue;
             } elseif(!isset($entry['messaging'])){
                 $this->Db_model->e_create(array(
                     'e_message' => 'facebook_webhook() call missing messaging Array().',
                     'e_json' => $json_data,
-                    'e_type_id' => 8, //Platform Error
+                    'e_inbound_c_id' => 8, //Platform Error
                     'e_fp_id' => $fp_pages[0]['fp_id'],
                 ));
                 continue;
@@ -260,7 +260,7 @@ class Bot extends CI_Controller {
                     //This callback will occur when a message a page has sent has been read by the user.
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
-                        'e_type_id' => 1, //Message Read
+                        'e_inbound_c_id' => 1, //Message Read
                         'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
                         'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
@@ -277,7 +277,7 @@ class Bot extends CI_Controller {
                     //This callback will occur when a message a page has sent has been delivered.
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
-                        'e_type_id' => 2, //Message Delivered
+                        'e_inbound_c_id' => 2, //Message Delivered
                         'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
                         'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
@@ -319,7 +319,7 @@ class Bot extends CI_Controller {
                     $id_user = $this->Comm_model->fb_identify_activate($fp_pages[0],$im['sender']['id'],$ref);
 
                     $eng_data = array(
-                        'e_type_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
+                        'e_inbound_c_id' => (isset($im['referral']) ? 4 : 3), //Messenger Referral/Postback
                         'e_json' => $json_data,
                         'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
@@ -377,7 +377,7 @@ class Bot extends CI_Controller {
                     //Log engagement:
                     $this->Db_model->e_create(array(
                         'e_json' => $json_data,
-                        'e_type_id' => 5, //Messenger Optin
+                        'e_inbound_c_id' => 5, //Messenger Optin
                         'e_fp_id' => $fp_pages[0]['fp_id'],
                         'e_initiator_u_id' => ( isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
                         'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
@@ -418,7 +418,7 @@ class Bot extends CI_Controller {
                         'e_initiator_u_id' => ( $sent_from_us || !isset($id_user['u_id']) ? 0 : $id_user['u_id'] ),
                         'e_json' => $json_data,
                         'e_message' => ( isset($im['message']['text']) ? $im['message']['text'] : null ),
-                        'e_type_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
+                        'e_inbound_c_id' => ( $sent_from_us ? 7 : 6 ), //Message Sent/Received
                         'e_recipient_u_id' => ( $sent_from_us && isset($id_user['u_id']) ? $id_user['u_id'] : 0 ),
                         'e_b_id' => ( isset($id_user['r_b_id']) ? $id_user['r_b_id'] : 0 ),
                         'e_r_id' => ( isset($id_user['r_id']) ? $id_user['r_id'] : 0 ),
@@ -459,7 +459,7 @@ class Bot extends CI_Controller {
                                 $this->Db_model->e_create(array(
                                     'e_message' => 'facebook_webhook() Received message with unknown attachment type ['.$att['type'].'].',
                                     'e_json' => $json_data,
-                                    'e_type_id' => 8, //Platform Error
+                                    'e_inbound_c_id' => 8, //Platform Error
                                     'e_fp_id' => $fp_pages[0]['fp_id'],
                                     'e_recipient_u_id' => $eng_data['e_recipient_u_id'],
                                     'e_b_id' => $eng_data['e_b_id'],
@@ -478,7 +478,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_message' => 'facebook_webhook() received unrecognized webhook call.',
                         'e_json' => $json_data,
-                        'e_type_id' => 8, //Platform Error
+                        'e_inbound_c_id' => 8, //Platform Error
                         'e_fp_id' => $fp_pages[0]['fp_id'],
                     ));
 
@@ -530,7 +530,7 @@ class Bot extends CI_Controller {
                     $this->Db_model->e_create(array(
                         'e_message' => 'paypal_webhook() received a partial payment form the student which is not allowed.',
                         'e_json' => $_POST,
-                        'e_type_id' => 8,
+                        'e_inbound_c_id' => 8,
                     ));
 
                 }
@@ -547,7 +547,7 @@ class Bot extends CI_Controller {
                 'POST' => $_POST,
                 'parse_signed_request' => parse_signed_request($_POST['signed_request']),
             ),
-            'e_type_id' => 84, //Facebook Permission Deauthorized
+            'e_inbound_c_id' => 84, //Facebook Permission Deauthorized
         ));
     }
 

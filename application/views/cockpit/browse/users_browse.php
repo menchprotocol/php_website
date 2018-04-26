@@ -85,11 +85,11 @@ foreach($users as $key=>$user){
     if($user['u_cache__fp_psid']>0){
         $messages = $this->Db_model->e_fetch(array(
             '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
-            '(e_type_id IN (6,7))' => null,
+            '(e_inbound_c_id IN (6,7))' => null,
         ));
         $read_message = $this->Db_model->e_fetch(array(
             '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
-            'e_type_id' => 1,
+            'e_inbound_c_id' => 1,
         ),1);
     }
 
@@ -118,7 +118,7 @@ foreach($users as $key=>$user){
             $b_building_engagements = $this->Db_model->e_fetch(array(
                 'e_initiator_u_id' => $user['u_id'],
                 'e_b_id' => $ib['b_id'],
-                '(e_type_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
+                '(e_inbound_c_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
             ));
 
             echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($b_building_engagements[0]) ? time_format($b_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($b_building_engagements)>=100 ? '100+' : count($b_building_engagements) ).'</div>';
@@ -128,7 +128,7 @@ foreach($users as $key=>$user){
     }
     echo '</td>';
     echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
-    echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? ( $messages[0]['e_type_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).' on' : 'Not Activated' ).'</td>';
+    echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? ( $messages[0]['e_inbound_c_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).' on' : 'Not Activated' ).'</td>';
     echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
     echo '<td>'.( isset($read_message[0]) ? '<i class="fa fa-eye" aria-hidden="true"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
     echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
@@ -142,7 +142,7 @@ foreach($users as $key=>$user){
     if(isset($_GET['pid']) && $user['u_cache__fp_psid']>0){
         //Lets check their history:
         $sent_messages = $this->Db_model->e_fetch(array(
-            'e_type_id' => 7,
+            'e_inbound_c_id' => 7,
             'e_recipient_u_id' => $user['u_id'],
             'e_c_id' => intval($_GET['pid']),
         ),1);

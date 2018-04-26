@@ -40,7 +40,7 @@ WHERE ru.ru_status >= 4
                 $this->Db_model->e_create(array(
                     'e_message' => 'remix_admissions() had invalid [ru_b_id]='.$admission['ru_b_id'],
                     'e_json' => $matching_criteria,
-                    'e_type_id' => 8, //Platform Error
+                    'e_inbound_c_id' => 8, //Platform Error
                 ));
                 unset($admissions[$key]);
                 continue;
@@ -59,7 +59,7 @@ WHERE ru.ru_status >= 4
                     $this->Db_model->e_create(array(
                         'e_message' => 'remix_admissions() had invalid [r_id]='.$admission['ru_r_id'],
                         'e_json' => $matching_criteria,
-                        'e_type_id' => 8, //Platform Error
+                        'e_inbound_c_id' => 8, //Platform Error
                     ));
                     unset($admissions[$key]);
                     continue;
@@ -305,21 +305,16 @@ WHERE ru.ru_status >= 4
 	        $this->Db_model->e_create(array(
 	            'e_message' => 'ru_create() missing ru_b_id.',
 	            'e_json' => $insert_columns,
-	            'e_type_id' => 8, //Platform Error
+	            'e_inbound_c_id' => 8, //Platform Error
 	        ));
 	        return false;
 	    } elseif(!isset($insert_columns['ru_u_id'])){
 	        $this->Db_model->e_create(array(
 	            'e_message' => 'ru_create() missing ru_u_id.',
 	            'e_json' => $insert_columns,
-	            'e_type_id' => 8, //Platform Error
+	            'e_inbound_c_id' => 8, //Platform Error
 	        ));
 	        return false;
-	    }
-	    
-	    //Missing anything?
-	    if(!isset($insert_columns['ru_timestamp'])){
-	        $insert_columns['ru_timestamp'] = date("Y-m-d H:i:s");
 	    }
 	    
 	    //Lets now add:
@@ -333,7 +328,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error ru_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 	    
@@ -343,11 +338,6 @@ WHERE ru.ru_status >= 4
 	function us_create($insert_columns){
 	    
 	    //TODO Do some checks here
-	    
-	    //Missing anything?
-	    if(!isset($insert_columns['us_timestamp'])){
-	        $insert_columns['us_timestamp'] = date("Y-m-d H:i:s");
-	    }
 	    
 	    //Lets now add:
 	    $this->db->insert('v5_user_submissions', $insert_columns);
@@ -360,7 +350,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error us_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 	    
@@ -381,7 +371,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error t_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 	    
@@ -395,14 +385,9 @@ WHERE ru.ru_status >= 4
 			$this->Db_model->e_create(array(
 			    'e_message' => 'u_create() missing u_fname.',
 			    'e_json' => $insert_columns,
-			    'e_type_id' => 8, //Platform Error
+			    'e_inbound_c_id' => 8, //Platform Error
 			));
 			return false;
-		}
-		
-		//Missing anything?
-		if(!isset($insert_columns['u_timestamp'])){
-			$insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
 		}
 		
 		//Lets now add:
@@ -416,7 +401,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error u_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
 
             return false;
@@ -559,11 +544,6 @@ WHERE ru.ru_status >= 4
             return false;
         }
 
-        //Autocomplete required
-        if(!isset($insert_columns['sy_timestamp'])){
-            $insert_columns['sy_timestamp'] = date("Y-m-d H:i:s");
-        }
-
         //Lets now add:
         $this->db->insert('v5_message_fb_sync', $insert_columns);
 
@@ -575,7 +555,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error sy_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 
@@ -590,11 +570,6 @@ WHERE ru.ru_status >= 4
 			return false;
 		}
 		
-		//Autocomplete required
-		if(!isset($insert_columns['i_timestamp'])){
-			$insert_columns['i_timestamp'] = date("Y-m-d H:i:s");
-		}
-		
 		//Lets now add:
 		$this->db->insert('v5_messages', $insert_columns);
 		
@@ -606,7 +581,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error i_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 		
@@ -673,11 +648,6 @@ WHERE ru.ru_status >= 4
             return false;
         }
 
-        //Autocomplete required
-        if(!isset($insert_columns['fp_timestamp'])){
-            $insert_columns['fp_timestamp'] = date("Y-m-d H:i:s");
-        }
-
         //Lets now add:
         $this->db->insert('v5_facebook_pages', $insert_columns);
 
@@ -689,7 +659,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error fp_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
         } else {
@@ -708,14 +678,6 @@ WHERE ru.ru_status >= 4
             return false;
         }
 
-        //Autocomplete required
-        if(!isset($insert_columns['fs_timestamp'])){
-            $insert_columns['fs_timestamp'] = date("Y-m-d H:i:s");
-        }
-        if(!isset($insert_columns['fs_status'])){
-            $insert_columns['fs_status'] = 1; //Authorized
-        }
-
         //Lets now add:
         $this->db->insert('v5_facebook_page_admins', $insert_columns);
 
@@ -727,7 +689,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error fs_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
             return false;
         } else {
@@ -772,7 +734,7 @@ WHERE ru.ru_status >= 4
                 'e_initiator_u_id' => $admissions[0]['u_id'],
                 'e_message' => ($admissions[0]['ru_final_price']>0 ? 'Received $'.$admissions[0]['ru_final_price'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
                 'e_json' => $_POST,
-                'e_type_id' => 30,
+                'e_inbound_c_id' => 30,
                 'e_b_id' => $admissions[0]['ru_b_id'],
                 'e_r_id' => $admissions[0]['ru_r_id'],
             ));
@@ -798,7 +760,7 @@ WHERE ru.ru_status >= 4
         $this->Db_model->e_create(array(
             'e_initiator_u_id' => $admissions[0]['u_id'],
             'e_message' => 'ru_finalize() failed to update admission for ru_id=['.$ru_id.']',
-            'e_type_id' => 8,
+            'e_inbound_c_id' => 8,
             'e_b_id' => $admissions[0]['ru_b_id'],
             'e_r_id' => $admissions[0]['ru_r_id'],
         ));
@@ -1057,29 +1019,22 @@ WHERE ru.ru_status >= 4
 	}
 	
 	
-	function a_fetch(){
+	function a_fetch($return_all=false){
 	    //Format in special way, used in engagements page:
 	    $this->db->select('*');
 	    $this->db->from('v5_engagement_types a');
-	    $this->db->order_by('a_name');
+	    $this->db->order_by('a_name','ASC');
 	    $q = $this->db->get();
 	    $types = $q->result_array();
+
+	    if($return_all){
+	        return $types;
+        }
 	    $return_array = array();
 	    foreach($types as $a){
 	        $return_array[$a['a_id']] = $a['a_name'];
 	    }
 	    return $return_array;
-	}
-	
-	function c_plain_fetch($match_columns){
-		//Missing anything?
-		$this->db->select('c.*');
-		$this->db->from('v5_intents c');
-		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
-		}
-		$q = $this->db->get();
-		return $q->row_array();
 	}
 	
 	
@@ -1176,17 +1131,6 @@ WHERE ru.ru_status >= 4
 			return false;
 		}
 		
-		//Autocomplete required
-		if(!isset($insert_columns['cr_timestamp'])){
-			$insert_columns['cr_timestamp'] = date("Y-m-d H:i:s");
-		}
-        if(!isset($insert_columns['cr_status'])){
-            $insert_columns['cr_status'] = 1; //Live link
-        }
-        if(!isset($insert_columns['cr_outbound_rank'])){
-            $insert_columns['cr_outbound_rank'] = 1; //Live link
-        }
-		
 		//Lets now add:
 		$this->db->insert('v5_intent_links', $insert_columns);
 		
@@ -1241,7 +1185,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error r_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 
@@ -1258,11 +1202,6 @@ WHERE ru.ru_status >= 4
 	        return false;
 	    }
 	    
-	    //Missing anything?
-	    if(!isset($insert_columns['b_timestamp'])){
-	        $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
-	    }
-	    
 	    //Lets now add:
 	    $this->db->insert('v5_bootcamps', $insert_columns);
 	    
@@ -1274,7 +1213,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error b_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 	    
@@ -1289,29 +1228,18 @@ WHERE ru.ru_status >= 4
 	        return false;
 	    }
 		
-		//Missing anything?
-		if(!isset($insert_columns['c_timestamp'])){
-			$insert_columns['c_timestamp'] = date("Y-m-d H:i:s");
-		}
-		if(!isset($insert_columns['c_status'])){
-			$insert_columns['c_status'] = 1; //Live by default
-		}
-		if(!isset($insert_columns['c_algolia_id'])){
-		    $insert_columns['c_algolia_id'] = 0;
-		}
-		
 		//Lets now add:
 		$this->db->insert('v5_intents', $insert_columns);
 		
 		//Fetch inserted id:
-		$insert_columns['c_id'] = $this->db->insert_id();
+		$insert_columns['c_id'] = ( isset($insert_columns['c_id']) ? $insert_columns['c_id'] : $this->db->insert_id() );
 
         if(!$insert_columns['c_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error c_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 		
@@ -1338,11 +1266,6 @@ WHERE ru.ru_status >= 4
 	        return false;
 	    }
 	    
-	    //Missing anything?
-	    if(!isset($insert_columns['ba_timestamp'])){
-	        $insert_columns['ba_timestamp'] = date("Y-m-d H:i:s");
-	    }
-	    
 	    //Lets now add:
 	    $this->db->insert('v5_bootcamp_team', $insert_columns);
 	    
@@ -1354,7 +1277,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error ba_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
         }
 	    
@@ -1404,7 +1327,7 @@ WHERE ru.ru_status >= 4
         //Save Action Plan Copy:
         $this->Db_model->e_create(array(
             'e_json' => $bs[0],
-            'e_type_id' => 70, //Action Plan Snapshot
+            'e_inbound_c_id' => 70, //Action Plan Snapshot
             'e_b_id' => $bs[0]['b_id'],
             'e_c_id' => $bs[0]['b_c_id'],
             'e_r_id' => $r_id,
@@ -1417,7 +1340,7 @@ WHERE ru.ru_status >= 4
 	function e_fetch($match_columns=array(),$limit=100,$join_objects=array()){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
-	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_type_id');
+	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_inbound_c_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
         if(in_array('ej',$join_objects)){
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
@@ -1458,22 +1381,16 @@ WHERE ru.ru_status >= 4
 	            $link_data['e_initiator_u_id'] = 0;
 	        }
 	    }
-	    if(!isset($link_data['e_timestamp'])){
-	        $link_data['e_timestamp'] = date("Y-m-d H:i:s");
-	    }
-	    if(!isset($link_data['e_message'])){
-	        $link_data['e_message'] = null;
-	    }
 		
 	    
 		//Now check required fields:
-		if(!isset($link_data['e_type_id']) || intval($link_data['e_type_id'])<=0){
+		if(!isset($link_data['e_inbound_c_id']) || intval($link_data['e_inbound_c_id'])<=0){
 		    //Log this error:
 		    $this->Db_model->e_create(array(
                 'e_initiator_u_id' => $link_data['e_initiator_u_id'],
-                'e_message' => 'e_create() Function missing [e_type_id] variable.',
+                'e_message' => 'e_create() Function missing [e_inbound_c_id] variable.',
                 'e_json' => $link_data,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
 			return false;
 		}
@@ -1490,6 +1407,7 @@ WHERE ru.ru_status >= 4
         //Remove e_json from here to keep v5_engagements small and lean
         unset($link_data['e_json']);
 		
+
 		//Lets log:
 		$this->db->insert('v5_engagements', $link_data);
 
@@ -1515,7 +1433,7 @@ WHERE ru.ru_status >= 4
             //Email: The [33] Engagement ID corresponding to Step completion is a email system for instructors to give them more context on certain activities
 
             //Do we have any instructor subscription:
-            if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_type_id'],$instructor_subscriptions)){
+            if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_inbound_c_id'],$instructor_subscriptions)){
 
                 //Just do this one:
                 if(!isset($engagements[0])){
@@ -1543,7 +1461,7 @@ WHERE ru.ru_status >= 4
 
                     //Send notifications to current instructor
                     foreach($b_instructors as $bi){
-                        if(in_array($link_data['e_type_id'],$instructor_subscriptions)){
+                        if(in_array($link_data['e_inbound_c_id'],$instructor_subscriptions)){
 
                             //Mench notifications:
                             $this->Comm_model->send_message(array(
@@ -1566,7 +1484,7 @@ WHERE ru.ru_status >= 4
             //Individual subscriptions:
             foreach($engagement_subscriptions as $subscription){
 
-                if(in_array($link_data['e_type_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
+                if(in_array($link_data['e_inbound_c_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
 
                     //Just do this one:
                     if(!isset($engagements[0])){
@@ -1615,7 +1533,7 @@ WHERE ru.ru_status >= 4
             $this->Db_model->e_create(array(
                 'e_message' => 'Query Error e_create() : '.$this->db->_error_message(),
                 'e_json' => $link_data,
-                'e_type_id' => 8, //Platform Error
+                'e_inbound_c_id' => 8, //Platform Error
             ));
 
             return false;
