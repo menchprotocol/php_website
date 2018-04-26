@@ -8,7 +8,6 @@
 
 //Define engagement filters:
 $engagement_references = $this->config->item('engagement_references');
-$e_inbound_c_id = $this->Db_model->a_fetch();
 
 $engagement_filters = array(
     'e_inbound_c_id' => 'All Engagements',
@@ -59,13 +58,23 @@ echo '<form action="" method="GET">';
 echo '<table class="table table-condensed"><tr>';
 foreach($engagement_filters as $key=>$value){
     echo '<td><div style="padding-right:5px;">';
-    if(isset(${$key})){ //We have a list to show:
+    if($key=='e_inbound_c_id'){ //We have a list to show:
+
+        //Fetch all community engagements from intent #6653
+        $all_engs = $this->Db_model->cr_outbound_fetch(array(
+            'cr.cr_inbound_id' => 6653,
+            'cr.cr_status >' => 0,
+            'c.c_status >' => 0, //Use status to control menu item visibility
+        ));
+
         echo '<select name="'.$key.'" class="border" style="width:160px;">';
         echo '<option value="0">'.$value.'</option>';
-        foreach(${$key} as $key2=>$value2){
-            echo '<option value="'.$key2.'" '.((isset($_GET[$key]) && intval($_GET[$key])==$key2)?'selected="selected"':'').'>'.$value2.'</option>';
+        foreach($all_engs as $c_eng){
+            echo '<option value="'.$c_eng['c_id'].'" '.((isset($_GET[$key]) && $_GET[$key]==$c_eng['c_id'])?'selected="selected"':'').'>'.$c_eng['c_objective'].'</option>';
         }
         echo '</select>';
+        echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fa fa-external-link-square" aria-hidden="true"></i></a></div>';
+
     } else {
         //show text input
         echo '<input type="text" name="'.$key.'" placeholder="'.$value.'" value="'.((isset($_GET[$key]))?$_GET[$key]:'').'" class="form-control border">';
@@ -93,7 +102,7 @@ echo '</form>';
         foreach($engagements as $e){
             echo '<tr>';
             echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
-            echo '<td><span data-toggle="tooltip" title="'.$e['a_desc'].' (Type #'.$e['a_id'].')" aria-hidden="true" data-placement="right" class="underdot">'.$e['a_name'].'</span></td>';
+            echo '<td><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['c_objective'].'</span></td>';
 
             //Do we have a message?
             if(strlen($e['e_message'])>0){

@@ -1017,26 +1017,7 @@ WHERE ru.ru_status >= 4
 	    $q = $this->db->get();
         return $q->result_array();
 	}
-	
-	
-	function a_fetch($return_all=false){
-	    //Format in special way, used in engagements page:
-	    $this->db->select('*');
-	    $this->db->from('v5_engagement_types a');
-	    $this->db->order_by('a_name','ASC');
-	    $q = $this->db->get();
-	    $types = $q->result_array();
 
-	    if($return_all){
-	        return $types;
-        }
-	    $return_array = array();
-	    foreach($types as $a){
-	        $return_array[$a['a_id']] = $a['a_name'];
-	    }
-	    return $return_array;
-	}
-	
 	
 	function cr_outbound_fetch($match_columns,$join_objects=array()){
 		//Missing anything?
@@ -1340,7 +1321,7 @@ WHERE ru.ru_status >= 4
 	function e_fetch($match_columns=array(),$limit=100,$join_objects=array()){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
-	    $this->db->join('v5_engagement_types a', 'a.a_id=e.e_inbound_c_id');
+        $this->db->join('v5_intents c', 'c.c_id=e.e_inbound_c_id');
 	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
         if(in_array('ej',$join_objects)){
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
@@ -1453,11 +1434,10 @@ WHERE ru.ru_status >= 4
                         'u.u_status >=' => 1, //Must be a user level 1 or higher
                     ));
 
-                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['a_name'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_objective'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
                     $url = 'https://mench.com/console/'.$link_data['e_b_id'];
 
-                    //Determine the body of this notification, as we prefer the custom notes on e_message, and if not, we'd go with a_desc
-                    $body = ( strlen($link_data['e_message'])>0 ? trim(strip_tags($link_data['e_message'])) : trim(strip_tags($engagements[0]['a_desc'])) );
+                    $body = trim(strip_tags($link_data['e_message']));
 
                     //Send notifications to current instructor
                     foreach($b_instructors as $bi){
@@ -1497,13 +1477,11 @@ WHERE ru.ru_status >= 4
                     //Did we find it? We should have:
                     if(isset($engagements[0])){
 
-                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['a_name'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_objective'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
 
                         //Compose email:
                         $html_message = null; //Start
                         $html_message .= '<div>Hi Mench Admin,</div><br />';
-                        $html_message .= '<div>'.$engagements[0]['a_desc'].':</div><br />';
-
 
                         //Lets go through all references to see what is there:
                         foreach($engagement_references as $engagement_field=>$er){
