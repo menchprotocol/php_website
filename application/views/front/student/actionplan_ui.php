@@ -171,7 +171,7 @@ if($displayed_messages>0){
             echo echo_i( array_merge( $i , array(
                 ( isset($uadmission) && count($uadmission)>0 ? 'noshow' : 'show_new_window' ) => 1, //TO embed the video
                 'e_b_id'=>$admission['b_id'],
-                'e_recipient_u_id'=>$admission['u_id'],
+                'e_outbound_u_id'=>$admission['u_id'],
             )) , $admission['u_fname'] );
             echo '</div>';
         }

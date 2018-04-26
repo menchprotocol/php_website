@@ -84,10 +84,10 @@ function loadFacebookPages(is_onstart){
 
                             //Let admin know that some permissions had been denied:
                             $.post("/api_v1/e_js_create", {
-                                e_initiator_u_id:<?= $udata['u_id'] ?>,
+                                e_inbound_u_id:<?= $udata['u_id'] ?>,
                                 e_b_id:$('#b_id').val(),
                                 e_inbound_c_id:9, //User needs attention
-                                e_message:"Instructor has denied "+denied_permissions+" permission(s) and cannot load their Facebook Pages in Settings.",
+                                e_text_value:"Instructor has denied "+denied_permissions+" permission(s) and cannot load their Facebook Pages in Settings.",
                                 e_json:response,
                                 e_hash_time:"<?= time() ?>",
                                 e_hash_code:"<?= md5(time().'hashcod3') ?>",
@@ -337,11 +337,11 @@ function b_save_settings(){
             <?php
             $current_c_ids = array();
             $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_id' => $b['b_c_id'],
+                'cr.cr_outbound_c_id' => $b['b_c_id'],
                 'cr.cr_status' => 1,
             ));
             foreach($current_inbounds as $c){
-                array_push($current_c_ids,$c['cr_inbound_id']);
+                array_push($current_c_ids,$c['cr_inbound_c_id']);
             }
             //Show Menu
             echo tree_menu(4793,$current_c_ids,'select');

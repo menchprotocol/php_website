@@ -245,12 +245,12 @@ class My extends CI_Controller {
 
             //Log Engagement for opening the Action Plan, which happens without $b_id & $c_id
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $focus_admission['u_id'],
+                'e_inbound_u_id' => $focus_admission['u_id'],
                 'e_json' => $admissions,
                 'e_inbound_c_id' => 32, //actionplan Opened
                 'e_b_id' => $focus_admission['b_id'],
                 'e_r_id' => $focus_admission['r_id'],
-                'e_c_id' => $focus_admission['c_id'],
+                'e_outbound_u_id' => $focus_admission['c_id'],
             ));
 
             //Reload with specific directions:
@@ -414,7 +414,7 @@ class My extends CI_Controller {
 
                 //Log Engagement for opening the classmates:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $focus_admission['u_id'],
+                    'e_inbound_u_id' => $focus_admission['u_id'],
                     'e_inbound_c_id' => 54, //classmates Opened
                     'e_b_id' => $b_id,
                     'e_r_id' => $r_id,
@@ -860,8 +860,8 @@ class My extends CI_Controller {
         if(count($admissions)<1){
 
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => 0, //System
-                'e_message' => 'Validated review URL failed to fetch admission data',
+                'e_inbound_u_id' => 0, //System
+                'e_text_value' => 'Validated review URL failed to fetch admission data',
                 'e_inbound_c_id' => 8, //System Error
             ));
 
@@ -906,7 +906,7 @@ class My extends CI_Controller {
 
             if($messages[0]['i_media_type']=='video'){
                 //Show video
-                echo '<div>'.format_e_message('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
+                echo '<div>'.format_e_text_value('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
             } else {
                 //Show embed video:
                 echo detect_embed_media($messages[0]['i_url'],$messages[0]['i_message']);

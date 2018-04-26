@@ -59,8 +59,8 @@ class Adjust extends CI_Controller {
 
             //Let them know about this Admission:
             $this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => $admission['u_id'],
-                'e_c_id' => 5995,
+                'e_outbound_u_id' => $admission['u_id'],
+                'e_outbound_u_id' => 5995,
                 'depth' => 0,
                 'e_b_id' => $to_b_id,
                 'e_r_id' => $to_r_id,

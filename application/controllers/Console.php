@@ -109,16 +109,16 @@ class Console extends CI_Controller {
 	    
 	    //Log view:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
+	        'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
 	        'e_json' => array(
 	            'url' => $_SERVER['REQUEST_URI'],
 	        ),
 	        'e_inbound_c_id' => 48, //View
-	        'e_message' => $title,
+	        'e_text_value' => $title,
 	        'e_b_id' => $bs[0]['b_id'],
 	        'e_r_id' => 0,
-	        'e_c_id' => 0,
-	        'e_recipient_u_id' => 0,
+	        'e_outbound_u_id' => 0,
+	        'e_outbound_u_id' => 0,
 	    ));
 	    
 	    //Load view

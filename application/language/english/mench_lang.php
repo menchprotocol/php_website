@@ -16,6 +16,7 @@ $lang['obj_u_name'] = 'User';
 $lang['obj_r_name'] = 'Class';
 $lang['obj_t_name'] = 'Transaction';
 $lang['obj_i_name'] = 'Message';
+$lang['obj_e_status_name'] = 'Engagement Status';
 $lang['obj_c_name'] = 'Intent';
 $lang['obj_cr_name'] = 'Intent Link';
 $lang['obj_ru_name'] = 'Admission';

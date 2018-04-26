@@ -11,9 +11,9 @@ function is_old(){
 function lock_cron_for_processing($e_items){
     $CI =& get_instance();
     foreach($e_items as $e){
-        if($e['e_id']>0 && $e['e_cron_job']==0){
+        if($e['e_id']>0 && $e['e_status']==0){
             $CI->Db_model->e_update( $e['e_id'] , array(
-                'e_cron_job' => -2, //Processing so other Cron jobs do not touch this...
+                'e_status' => -2, //Processing so other Cron jobs do not touch this...
             ));
         }
     }
@@ -511,10 +511,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
     //Do a quick hack to make these two variables inter-changable:
-    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['e_c_id'])){
-        $i['e_c_id'] = $i['i_c_id'];
-    } elseif(isset($i['e_c_id']) && $i['e_c_id']>0 && !isset($i['i_c_id'])){
-        $i['i_c_id'] = $i['e_c_id'];
+    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['e_outbound_u_id'])){
+        $i['e_outbound_u_id'] = $i['i_c_id'];
+    } elseif(isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0 && !isset($i['i_c_id'])){
+        $i['i_c_id'] = $i['e_outbound_u_id'];
     }
 
 
@@ -567,32 +567,32 @@ function echo_i($i,$first_name=null,$fb_format=false){
                 }
             }
 
-        } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_recipient_u_id'])) {
+        } elseif(substr_count($i['i_message'],'{admissions}')>0 && isset($i['e_outbound_u_id'])) {
 
             //Fetch salt:
             $application_status_salt = $CI->config->item('application_status_salt');
             //append their My Account Button/URL:
             $button_title = '🎟️ My Bootcamps';
-            $button_url = 'https://mench.com/my/applications?u_key=' . md5($i['e_recipient_u_id'] . $application_status_salt) . '&u_id=' . $i['e_recipient_u_id'];
+            $button_url = 'https://mench.com/my/applications?u_key=' . md5($i['e_outbound_u_id'] . $application_status_salt) . '&u_id=' . $i['e_outbound_u_id'];
             $command = '{admissions}';
 
-        } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_recipient_u_id'])) {
+        } elseif(substr_count($i['i_message'],'{passwordreset}')>0 && isset($i['e_outbound_u_id'])) {
 
             //append their My Account Button/URL:
             $timestamp = time();
             $button_title = '👉 Set New Password';
-            $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_recipient_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_recipient_u_id'] . 'p@ssWordR3s3t' . $timestamp);
+            $button_url = 'https://mench.com/my/reset_pass?u_id='.$i['e_outbound_u_id'].'&timestamp='.$timestamp.'&p_hash=' . md5($i['e_outbound_u_id'] . 'p@ssWordR3s3t' . $timestamp);
             $command = '{passwordreset}';
 
-        } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_recipient_u_id']) && isset($i['e_b_id'])) {
+        } elseif(substr_count($i['i_message'],'{messenger}')>0 && isset($i['e_outbound_u_id']) && isset($i['e_b_id'])) {
 
             //Fetch Facebook Page from Bootcamp:
             $bs = $CI->Db_model->b_fetch(array(
                 'b.b_id' => $i['e_b_id'],
             ));
 
-            if(isset($bs[0]['b_fp_id']) && $bs[0]['b_fp_id']>0 && isset($i['e_recipient_u_id']) && $i['e_recipient_u_id']>0){
-                $button_url = $CI->Comm_model->fb_activation_url($i['e_recipient_u_id'],$bs[0]['b_fp_id']);
+            if(isset($bs[0]['b_fp_id']) && $bs[0]['b_fp_id']>0 && isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0){
+                $button_url = $CI->Comm_model->fb_activation_url($i['e_outbound_u_id'],$bs[0]['b_fp_id']);
                 if($button_url) {
                     //append their My Account Button/URL:
                     $button_title = '🤖 Activate Chatline';
@@ -657,10 +657,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
         //Detect the initiator of this message and append their signature to make it clear who is talking
         //RETIRED FOR NOW: As we're moving towards white label...
         /*
-        if(isset($i['e_initiator_u_id']) && intval($i['e_initiator_u_id'])>0){
+        if(isset($i['e_inbound_u_id']) && intval($i['e_inbound_u_id'])>0){
             //We have one, see who it is:
             $matching_users = $CI->Db_model->u_fetch(array(
-                'u_id' => $i['e_initiator_u_id'],
+                'u_id' => $i['e_inbound_u_id'],
             ));
             if(count($matching_users)==1){
                 //We found it, append the name:
@@ -772,7 +772,7 @@ function echo_i($i,$first_name=null,$fb_format=false){
         } else {
 
             //HTML media format:
-            $echo_ui .= '<div '.$div_style.'>'.format_e_message('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+            $echo_ui .= '<div '.$div_style.'>'.format_e_text_value('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
 
             //Facebook Messenger Webview adds an additional button to view full screen:
             if(isset($i['show_new_window']) && $i['i_media_type']=='video'){
@@ -1057,13 +1057,13 @@ function copy_intent($u_id,$intent,$c_id){
 
     //Create Link:
     $intent_relation = $CI->Db_model->cr_create(array(
-        'cr_creator_id' => $u_id,
-        'cr_inbound_id'  => $c_id,
-        'cr_outbound_id' => $new_intent['c_id'],
+        'cr_inbound_u_id' => $u_id,
+        'cr_inbound_c_id'  => $c_id,
+        'cr_outbound_c_id' => $new_intent['c_id'],
         'cr_outbound_rank' => 1 + $CI->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
             'cr_status >=' => 1,
             'c_status >=' => 1,
-            'cr_inbound_id' => $c_id,
+            'cr_inbound_c_id' => $c_id,
         )),
     ));
 
@@ -1720,7 +1720,7 @@ function b_progress($b){
 
     //Landing Page Category
     $current_inbounds = $CI->Db_model->cr_inbound_fetch(array(
-        'cr.cr_outbound_id' => $b['b_c_id'],
+        'cr.cr_outbound_c_id' => $b['b_c_id'],
         'cr.cr_status' => 1,
     ));
     $estimated_minutes = 15;
@@ -1840,7 +1840,7 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
 
     //Fetch children:
     $c_child = $CI->Db_model->cr_outbound_fetch(array(
-        'cr.cr_inbound_id' => $c['c_id'],
+        'cr.cr_inbound_c_id' => $c['c_id'],
         'cr.cr_status >' => 0,
         'c.c_status >' => 0, //Use status to control menu item visibility
     ));
@@ -1866,7 +1866,7 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
 
     } elseif($format=='select' && $level<=2){
 
-        $ui .= '<select data-c-id="'.$c['c_id'].'" id="c_s_'.$c['c_id'].'" class="border c_select level'.$level.' '.( isset($c['cr_outbound_id']) ? 'outbound_c_'.$c['cr_outbound_id'] : '' ).' '.( $level==2 ? 'hidden' : '' ).'" style="width:100%; margin-bottom:10px; max-width:380px;">';
+        $ui .= '<select data-c-id="'.$c['c_id'].'" id="c_s_'.$c['c_id'].'" class="border c_select level'.$level.' '.( isset($c['cr_outbound_c_id']) ? 'outbound_c_'.$c['cr_outbound_c_id'] : '' ).' '.( $level==2 ? 'hidden' : '' ).'" style="width:100%; margin-bottom:10px; max-width:380px;">';
         //$ui .= '<option value="0">Choose...</option>'; //Not needed for now as we transition to single level categories
         foreach($c_child as $child_intent){
             $ui .= '<option value="'.$child_intent['c_id'].'" '.( in_array($child_intent['c_id'],$current_c_ids) ?'selected="selected"':'').'>'.$child_intent['c_objective'].'</option>';
@@ -2219,7 +2219,7 @@ function save_file($file_url,$json_data,$is_local=false){
             return $result['ObjectURL'];
         } else {
             $CI->Db_model->e_create(array(
-                'e_message' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
+                'e_text_value' => 'save_file() Unable to upload file ['.$file_url.'] to Mench cloud.',
                 'e_json' => $json_data,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -2478,40 +2478,40 @@ function make_links_clickable($text){
     return preg_replace('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', '<a href="$1" target="_blank"><u>$1</u></a>', $text);
 }
 
-function format_e_message($e_message){
+function format_e_text_value($e_text_value){
     
     //Do replacements:
-    if(substr_count($e_message,'/attach ')>0){
-        $attachments = explode('/attach ',$e_message);
+    if(substr_count($e_text_value,'/attach ')>0){
+        $attachments = explode('/attach ',$e_text_value);
         foreach($attachments as $key=>$attachment){
             if($key==0){
                 //We're gonna start buiolding this message from scrach:
-                $e_message = $attachment;
+                $e_text_value = $attachment;
                 continue;
             }
             $segments = explode(':',$attachment,2);
             $sub_segments = preg_split('/[\s]+/', $segments[1] );
 
             if($segments[0]=='image'){
-                $e_message .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
+                $e_text_value .= '<img src="'.$sub_segments[0].'" style="max-width:100%" />';
             } elseif($segments[0]=='audio'){
-                $e_message .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
+                $e_text_value .= '<audio controls><source src="'.$sub_segments[0].'" type="audio/mpeg"></audio>';
             } elseif($segments[0]=='video'){
-                $e_message .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
+                $e_text_value .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
-                $e_message .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
+                $e_text_value .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
             }
             
             //Do we have any leftovers after the URL? If so, append:
             if(isset($sub_segments[1])){
-                $e_message = ' '.$sub_segments[1];
+                $e_text_value = ' '.$sub_segments[1];
             }
         }
     } else {
-        $e_message = make_links_clickable($e_message);
+        $e_text_value = make_links_clickable($e_text_value);
     }
-    $e_message = nl2br($e_message);
-    return $e_message;
+    $e_text_value = nl2br($e_text_value);
+    return $e_text_value;
 }
 
 

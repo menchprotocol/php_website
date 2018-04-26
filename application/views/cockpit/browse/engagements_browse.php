@@ -15,7 +15,7 @@ $engagement_filters = array(
     'e_u_id' => 'User ID',
     'e_b_id' => 'Bootcamp ID',
     'e_r_id' => 'Class ID',
-    'e_c_id' => 'Intent ID',
+    'e_outbound_u_id' => 'Intent ID',
     'e_fp_id' => 'FB Page ID',
 );
 
@@ -26,9 +26,9 @@ foreach($engagement_filters as $key=>$value){
             //We need to look for both inititors and recipients:
             if(substr_count($_GET[$key],',')>0){
                 //This is multiple IDs:
-                $match_columns['(e_recipient_u_id IN ('.$_GET[$key].') OR e_initiator_u_id IN ('.$_GET[$key].'))'] = null;
+                $match_columns['(e_outbound_u_id IN ('.$_GET[$key].') OR e_inbound_u_id IN ('.$_GET[$key].'))'] = null;
             } elseif(intval($_GET[$key])>0) {
-                $match_columns['(e_recipient_u_id = '.$_GET[$key].' OR e_initiator_u_id = '.$_GET[$key].')'] = null;
+                $match_columns['(e_outbound_u_id = '.$_GET[$key].' OR e_inbound_u_id = '.$_GET[$key].')'] = null;
             }
         } else {
             if(substr_count($_GET[$key],',')>0){
@@ -62,7 +62,7 @@ foreach($engagement_filters as $key=>$value){
 
         //Fetch all community engagements from intent #6653
         $all_engs = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_id' => 6653,
+            'cr.cr_inbound_c_id' => 6653,
             'cr.cr_status >' => 0,
             'c.c_status >' => 0, //Use status to control menu item visibility
         ));
@@ -105,19 +105,19 @@ echo '</form>';
             echo '<td><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['c_objective'].'</span></td>';
 
             //Do we have a message?
-            if(strlen($e['e_message'])>0){
-                $e['e_message'] = format_e_message($e['e_message']);
+            if(strlen($e['e_text_value'])>0){
+                $e['e_text_value'] = format_e_text_value($e['e_text_value']);
             } elseif($e['e_i_id']>0){
                 //Fetch message conent:
                 $matching_messages = $this->Db_model->i_fetch(array(
                     'i_id' => $e['e_i_id'],
                 ));
                 if(count($matching_messages)>0){
-                    $e['e_message'] = echo_i($matching_messages[0]);
+                    $e['e_text_value'] = echo_i($matching_messages[0]);
                 }
             }
 
-            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_message'].( in_array($e['e_cron_job'],array(0,-2)) ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
+            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_text_value'].( in_array($e['e_status'],array(0,-2)) ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
             echo '<td>';
 
             //Lets go through all references to see what is there:

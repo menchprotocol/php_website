@@ -84,11 +84,11 @@ foreach($users as $key=>$user){
     unset($read_message);
     if($user['u_cache__fp_psid']>0){
         $messages = $this->Db_model->e_fetch(array(
-            '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
+            '(e_inbound_u_id='.$user['u_id'].' OR e_outbound_u_id='.$user['u_id'].')' => null,
             '(e_inbound_c_id IN (6,7))' => null,
         ));
         $read_message = $this->Db_model->e_fetch(array(
-            '(e_initiator_u_id='.$user['u_id'].' OR e_recipient_u_id='.$user['u_id'].')' => null,
+            '(e_inbound_u_id='.$user['u_id'].' OR e_outbound_u_id='.$user['u_id'].')' => null,
             'e_inbound_c_id' => 1,
         ),1);
     }
@@ -116,7 +116,7 @@ foreach($users as $key=>$user){
         foreach ($instructor_bs as $counter=>$ib){
             //Fetch last activity:
             $b_building_engagements = $this->Db_model->e_fetch(array(
-                'e_initiator_u_id' => $user['u_id'],
+                'e_inbound_u_id' => $user['u_id'],
                 'e_b_id' => $ib['b_id'],
                 '(e_inbound_c_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
             ));
@@ -143,8 +143,8 @@ foreach($users as $key=>$user){
         //Lets check their history:
         $sent_messages = $this->Db_model->e_fetch(array(
             'e_inbound_c_id' => 7,
-            'e_recipient_u_id' => $user['u_id'],
-            'e_c_id' => intval($_GET['pid']),
+            'e_outbound_u_id' => $user['u_id'],
+            'e_outbound_u_id' => intval($_GET['pid']),
         ),1);
         if(count($sent_messages)>0){
             //Already sent!

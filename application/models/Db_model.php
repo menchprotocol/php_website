@@ -13,7 +13,7 @@ class Db_model extends CI_Model {
         return objectToArray($this->db->query("
 SELECT AVG(ru.ru_cache__completion_rate) AS cr
 FROM v5_class_students ru
-JOIN v5_users u ON u.u_id = ru.ru_u_id
+JOIN v5_entities u ON u.u_id = ru.ru_u_id
 WHERE ru.ru_status >= 4
   AND ru_r_id = ".$r_id)->result());
     }
@@ -38,7 +38,7 @@ WHERE ru.ru_status >= 4
 
             if(count($bs)<=0){
                 $this->Db_model->e_create(array(
-                    'e_message' => 'remix_admissions() had invalid [ru_b_id]='.$admission['ru_b_id'],
+                    'e_text_value' => 'remix_admissions() had invalid [ru_b_id]='.$admission['ru_b_id'],
                     'e_json' => $matching_criteria,
                     'e_inbound_c_id' => 8, //Platform Error
                 ));
@@ -57,7 +57,7 @@ WHERE ru.ru_status >= 4
                 ));
                 if(count($classes)<1){
                     $this->Db_model->e_create(array(
-                        'e_message' => 'remix_admissions() had invalid [r_id]='.$admission['ru_r_id'],
+                        'e_text_value' => 'remix_admissions() had invalid [r_id]='.$admission['ru_r_id'],
                         'e_json' => $matching_criteria,
                         'e_inbound_c_id' => 8, //Platform Error
                     ));
@@ -154,7 +154,7 @@ WHERE ru.ru_status >= 4
             $bs[$key]['c__child_child_count'] = 0;
             $bs[$key]['c__estimated_hours'] = $bs[$key]['c_time_estimate'];
             $bs[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                'cr.cr_inbound_id' => $c['c_id'],
+                'cr.cr_inbound_c_id' => $c['c_id'],
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
@@ -186,7 +186,7 @@ WHERE ru.ru_status >= 4
 
                 //Fetch sprint Steps at level 3:
                 $bs[$key]['c__child_intents'][$intent_key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_id' => $intent['c_id'],
+                    'cr.cr_inbound_c_id' => $intent['c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >=' => 1,
                 ));
@@ -278,7 +278,7 @@ WHERE ru.ru_status >= 4
 	function u_fetch($match_columns){
 	    //Fetch the target gems:
 	    $this->db->select('*');
-	    $this->db->from('v5_users u');
+	    $this->db->from('v5_entities u');
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -303,14 +303,14 @@ WHERE ru.ru_status >= 4
 	    //Make sure required fields are here:
 	    if(!isset($insert_columns['ru_b_id'])){
 	        $this->Db_model->e_create(array(
-	            'e_message' => 'ru_create() missing ru_b_id.',
+	            'e_text_value' => 'ru_create() missing ru_b_id.',
 	            'e_json' => $insert_columns,
 	            'e_inbound_c_id' => 8, //Platform Error
 	        ));
 	        return false;
 	    } elseif(!isset($insert_columns['ru_u_id'])){
 	        $this->Db_model->e_create(array(
-	            'e_message' => 'ru_create() missing ru_u_id.',
+	            'e_text_value' => 'ru_create() missing ru_u_id.',
 	            'e_json' => $insert_columns,
 	            'e_inbound_c_id' => 8, //Platform Error
 	        ));
@@ -326,7 +326,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['ru_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error ru_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error ru_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -348,7 +348,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['us_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error us_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error us_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -369,7 +369,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['t_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error t_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error t_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -383,7 +383,7 @@ WHERE ru.ru_status >= 4
 		//Make sure required fields are here:
 		if(!isset($insert_columns['u_fname'])){
 			$this->Db_model->e_create(array(
-			    'e_message' => 'u_create() missing u_fname.',
+			    'e_text_value' => 'u_create() missing u_fname.',
 			    'e_json' => $insert_columns,
 			    'e_inbound_c_id' => 8, //Platform Error
 			));
@@ -391,7 +391,7 @@ WHERE ru.ru_status >= 4
 		}
 		
 		//Lets now add:
-		$this->db->insert('v5_users', $insert_columns);
+		$this->db->insert('v5_entities', $insert_columns);
 
         //Fetch inserted id:
         $insert_columns['u_id'] = $this->db->insert_id();
@@ -399,7 +399,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['u_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error u_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error u_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -411,9 +411,9 @@ WHERE ru.ru_status >= 4
             //All good, send Welcome to Mench Message:
             /*
             $this->Comm_model->foundation_message(array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $insert_columns['u_id'],
-                'e_c_id' => 5980, //Welcome to Mench
+                'e_inbound_u_id' => 0,
+                'e_outbound_u_id' => $insert_columns['u_id'],
+                'e_outbound_u_id' => 5980, //Welcome to Mench
                 'depth' => 0,
             ));
             */
@@ -430,7 +430,7 @@ WHERE ru.ru_status >= 4
 	function u_update($user_id,$update_columns){
 	    //Update first
 	    $this->db->where('u_id', $user_id);
-	    $this->db->update('v5_users', $update_columns);
+	    $this->db->update('v5_entities', $update_columns);
 	    //Return new row:
 	    $users = $this->u_fetch(array(
 	        'u_id' => $user_id
@@ -442,7 +442,7 @@ WHERE ru.ru_status >= 4
 	function ba_fetch($match_columns,$fetch_extra=false){
 	    //Fetch the admins of the Bootcamps
 	    $this->db->select('*');
-	    $this->db->from('v5_users u');
+	    $this->db->from('v5_entities u');
         $this->db->join('v5_bootcamp_team ba', 'ba.ba_u_id = u.u_id');
         if($fetch_extra){
             //This is a HACK!
@@ -508,7 +508,7 @@ WHERE ru.ru_status >= 4
         $this->db->select('*');
         $this->db->from('v5_messages i');
         $this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
-        $this->db->join('v5_users u', 'u.u_id = i.i_creator_id');
+        $this->db->join('v5_entities u', 'u.u_id = i.i_creator_id');
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -553,7 +553,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['sy_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error sy_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error sy_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -579,7 +579,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['i_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error i_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error i_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -606,7 +606,7 @@ WHERE ru.ru_status >= 4
         $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
 
         if(in_array('u',$join_objects)){
-            $this->db->join('v5_users u', 'u.u_id = fs.fs_u_id');
+            $this->db->join('v5_entities u', 'u.u_id = fs.fs_u_id');
         }
 
         foreach($match_columns as $key=>$value){
@@ -657,7 +657,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['fp_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error fp_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error fp_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -687,7 +687,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['fs_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error fs_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error fs_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -720,9 +720,9 @@ WHERE ru.ru_status >= 4
 
             //Inform the Student:
             $this->Comm_model->foundation_message(array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $admissions[0]['u_id'],
-                'e_c_id' => 2698,
+                'e_inbound_u_id' => 0,
+                'e_outbound_u_id' => $admissions[0]['u_id'],
+                'e_outbound_u_id' => 2698,
                 'depth' => 0,
                 'e_b_id' => $admissions[0]['ru_b_id'],
                 'e_r_id' => $admissions[0]['ru_r_id'],
@@ -731,8 +731,8 @@ WHERE ru.ru_status >= 4
 
             //Log Engagement
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $admissions[0]['u_id'],
-                'e_message' => ($admissions[0]['ru_final_price']>0 ? 'Received $'.$admissions[0]['ru_final_price'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
+                'e_inbound_u_id' => $admissions[0]['u_id'],
+                'e_text_value' => ($admissions[0]['ru_final_price']>0 ? 'Received $'.$admissions[0]['ru_final_price'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 30,
                 'e_b_id' => $admissions[0]['ru_b_id'],
@@ -758,8 +758,8 @@ WHERE ru.ru_status >= 4
 
         //Log Error:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $admissions[0]['u_id'],
-            'e_message' => 'ru_finalize() failed to update admission for ru_id=['.$ru_id.']',
+            'e_inbound_u_id' => $admissions[0]['u_id'],
+            'e_text_value' => 'ru_finalize() failed to update admission for ru_id=['.$ru_id.']',
             'e_inbound_c_id' => 8,
             'e_b_id' => $admissions[0]['ru_b_id'],
             'e_r_id' => $admissions[0]['ru_r_id'],
@@ -898,7 +898,7 @@ WHERE ru.ru_status >= 4
         $this->db->select('*');
         $this->db->from('v5_class_students ru');
         $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id','left');
-        $this->db->join('v5_users u', 'u.u_id = ru.ru_u_id');
+        $this->db->join('v5_entities u', 'u.u_id = ru.ru_u_id');
 
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -924,7 +924,7 @@ WHERE ru.ru_status >= 4
         //This function would fetch all the child c_id's for the input c_id
         $c_tree = array(intval($c_id));
         $child_intents = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_id' => $c_id,
+            'cr.cr_inbound_c_id' => $c_id,
             'cr.cr_status >=' => 0,
             'c.c_status >=' => 0,
         ));
@@ -974,7 +974,7 @@ WHERE ru.ru_status >= 4
 	            
 	            //Do the first level:
 	            $intents[$key]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	                'cr.cr_inbound_id' => $value['c_id'],
+	                'cr.cr_inbound_c_id' => $value['c_id'],
 	                'cr.cr_status >' => 0,
 	            ) , $join_objects );
 	            
@@ -983,7 +983,7 @@ WHERE ru.ru_status >= 4
 	                //Start the second level:
 	                foreach($intents[$key]['c__child_intents'] as $key2=>$value2){
 	                    $intents[$key]['c__child_intents'][$key2]['c__child_intents'] = $this->Db_model->cr_outbound_fetch(array(
-	                        'cr.cr_inbound_id' => $value2['c_id'],
+	                        'cr.cr_inbound_c_id' => $value2['c_id'],
 	                        'cr.cr_status >' => 0,
 	                    ) , $join_objects );
 	                }
@@ -1007,7 +1007,7 @@ WHERE ru.ru_status >= 4
         }
         if(in_array('ba',$join_objects)){
             $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id','left');
-            $this->db->join('v5_users u', 'u.u_id = ba.ba_u_id','left');
+            $this->db->join('v5_entities u', 'u.u_id = ba.ba_u_id','left');
             $this->db->where('ba_status',3); //Lead instructor
         }
         foreach($match_columns as $key=>$value){
@@ -1023,7 +1023,7 @@ WHERE ru.ru_status >= 4
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
-		$this->db->join('v5_intent_links cr', 'cr.cr_outbound_id = c.c_id');
+		$this->db->join('v5_intent_links cr', 'cr.cr_outbound_c_id = c.c_id');
         if(in_array('ru',$join_objects)){
             $this->db->join('v5_class_students ru', 'ru.ru_b_id = cr.cr_outbound_b_id');
             $this->db->where('cr_outbound_b_id >',0);
@@ -1066,9 +1066,9 @@ WHERE ru.ru_status >= 4
 		//Missing anything?
 		$this->db->select('*');
 		$this->db->from('v5_intents c');
-		$this->db->join('v5_intent_links cr', 'cr.cr_inbound_id = c.c_id');
+		$this->db->join('v5_intent_links cr', 'cr.cr_inbound_c_id = c.c_id');
         if(in_array('b',$join_objects)){
-            $this->db->join('v5_bootcamps b', 'b.b_c_id = cr.cr_inbound_id');
+            $this->db->join('v5_bootcamps b', 'b.b_c_id = cr.cr_inbound_c_id');
         }
 		foreach($match_columns as $key=>$value){
 			$this->db->where($key,$value);
@@ -1091,7 +1091,7 @@ WHERE ru.ru_status >= 4
 		if($table=='v5_intent_links'){
 		    //This is a HACK :D
             $this->db->from('v5_intent_links cr');
-            $this->db->join('v5_intents c', 'cr.cr_outbound_id = c.c_id');
+            $this->db->join('v5_intents c', 'cr.cr_outbound_c_id = c.c_id');
         } else {
             $this->db->from($table);
         }
@@ -1106,9 +1106,9 @@ WHERE ru.ru_status >= 4
 	function cr_create($insert_columns){
 		
 		//Missing anything?
-		if(!isset($insert_columns['cr_outbound_id'])){
+		if(!isset($insert_columns['cr_outbound_c_id'])){
 			return false;
-		} elseif(!isset($insert_columns['cr_creator_id'])){
+		} elseif(!isset($insert_columns['cr_inbound_u_id'])){
 			return false;
 		}
 		
@@ -1164,7 +1164,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['r_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error r_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error r_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1192,7 +1192,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['b_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error b_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error b_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1218,7 +1218,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['c_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error c_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error c_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1256,7 +1256,7 @@ WHERE ru.ru_status >= 4
         if(!$insert_columns['ba_id']){
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error ba_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error ba_create() : '.$this->db->_error_message(),
                 'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1310,7 +1310,7 @@ WHERE ru.ru_status >= 4
             'e_json' => $bs[0],
             'e_inbound_c_id' => 70, //Action Plan Snapshot
             'e_b_id' => $bs[0]['b_id'],
-            'e_c_id' => $bs[0]['b_c_id'],
+            'e_outbound_u_id' => $bs[0]['b_c_id'],
             'e_r_id' => $r_id,
         ));
 
@@ -1322,7 +1322,7 @@ WHERE ru.ru_status >= 4
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
         $this->db->join('v5_intents c', 'c.c_id=e.e_inbound_c_id');
-	    $this->db->join('v5_users u', 'u.u_id=e.e_initiator_u_id','left');
+	    $this->db->join('v5_entities u', 'u.u_id=e.e_inbound_u_id','left');
         if(in_array('ej',$join_objects)){
             $this->db->join('v5_engagement_blob ej', 'ej.ej_e_id=e.e_id','left');
         }
@@ -1352,14 +1352,14 @@ WHERE ru.ru_status >= 4
 	function e_create($link_data){
 	    
 	    //Sort out the optional fields first:
-	    if(!isset($link_data['e_initiator_u_id'])){
+	    if(!isset($link_data['e_inbound_u_id'])){
 	        //Try to fetch user ID from session:
 	        $user_data = $this->session->userdata('user');
 	        if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
-	            $link_data['e_initiator_u_id'] = $user_data['u_id'];
+	            $link_data['e_inbound_u_id'] = $user_data['u_id'];
 	        } else {
 	            //Have no user:
-	            $link_data['e_initiator_u_id'] = 0;
+	            $link_data['e_inbound_u_id'] = 0;
 	        }
 	    }
 		
@@ -1368,8 +1368,8 @@ WHERE ru.ru_status >= 4
 		if(!isset($link_data['e_inbound_c_id']) || intval($link_data['e_inbound_c_id'])<=0){
 		    //Log this error:
 		    $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $link_data['e_initiator_u_id'],
-                'e_message' => 'e_create() Function missing [e_inbound_c_id] variable.',
+                'e_inbound_u_id' => $link_data['e_inbound_u_id'],
+                'e_text_value' => 'e_create() Function missing [e_inbound_c_id] variable.',
                 'e_json' => $link_data,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1437,7 +1437,7 @@ WHERE ru.ru_status >= 4
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_objective'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
                     $url = 'https://mench.com/console/'.$link_data['e_b_id'];
 
-                    $body = trim(strip_tags($link_data['e_message']));
+                    $body = trim(strip_tags($link_data['e_text_value']));
 
                     //Send notifications to current instructor
                     foreach($b_instructors as $bi){
@@ -1449,8 +1449,8 @@ WHERE ru.ru_status >= 4
                                     'i_media_type' => 'text',
                                     'i_message' => $subject."\n\n".$body."\n\n".$url,
                                     'i_url' => $url,
-                                    'e_initiator_u_id' => 0, //System
-                                    'e_recipient_u_id' => $bi['u_id'],
+                                    'e_inbound_u_id' => 0, //System
+                                    'e_outbound_u_id' => $bi['u_id'],
                                     'e_b_id' => $link_data['e_b_id'],
                                     'e_r_id' => ( isset($link_data['e_r_id']) ? $link_data['e_r_id'] : 0 ),
                                 ),
@@ -1491,8 +1491,8 @@ WHERE ru.ru_status >= 4
                             }
                         }
 
-                        if(strlen($engagements[0]['e_message'])>0){
-                            $html_message .= '<div>Message:<br />'.format_e_message($engagements[0]['e_message']).'</div>';
+                        if(strlen($engagements[0]['e_text_value'])>0){
+                            $html_message .= '<div>Message:<br />'.format_e_text_value($engagements[0]['e_text_value']).'</div>';
                         }
                         $html_message .= '<br />';
                         $html_message .= '<div>Cheers,</div>';
@@ -1509,7 +1509,7 @@ WHERE ru.ru_status >= 4
 
             //Log this query Error
             $this->Db_model->e_create(array(
-                'e_message' => 'Query Error e_create() : '.$this->db->_error_message(),
+                'e_text_value' => 'Query Error e_create() : '.$this->db->_error_message(),
                 'e_json' => $link_data,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1537,7 +1537,7 @@ WHERE ru.ru_status >= 4
         $algolia_local_tables = array(
             'c' => 'v5_intents',
             'b' => 'v5_bootcamps',
-            'u' => 'v5_users',
+            'u' => 'v5_entities',
         );
 
 	    if(!array_key_exists($obj,$algolia_indexes)){
@@ -1645,7 +1645,7 @@ WHERE ru.ru_status >= 4
 
                 //Fetch all child intent titles:
                 $c_intents = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_id' => $item['b_c_id'],
+                    'cr.cr_inbound_c_id' => $item['b_c_id'],
                     'cr.cr_status >=' => 0,
                     'c.c_status >=' => 0,
                 ));

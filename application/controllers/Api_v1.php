@@ -444,8 +444,8 @@ class Api_v1 extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
-                'e_message' => 'ru_date_selector() Missing Core Inputs.',
+                'e_inbound_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
+                'e_text_value' => 'ru_date_selector() Missing Core Inputs.',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -465,8 +465,8 @@ class Api_v1 extends CI_Controller {
 
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $_POST['u_id'],
-                'e_message' => 'ru_date_selector() failed to fetch admission data for ru_id=['.$_POST['ru_id'].'].',
+                'e_inbound_u_id' => $_POST['u_id'],
+                'e_text_value' => 'ru_date_selector() failed to fetch admission data for ru_id=['.$_POST['ru_id'].'].',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -663,7 +663,7 @@ class Api_v1 extends CI_Controller {
 
                 //Log Engagement for registration:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
+                    'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
                     'e_json' => array(
                         'input' => $_POST,
                         'udata' => $udata,
@@ -691,9 +691,9 @@ class Api_v1 extends CI_Controller {
 
                 //Send the email to their admission page:
                 $this->Comm_model->foundation_message(array(
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $udata['u_id'],
-                    'e_c_id' => 2697,
+                    'e_inbound_u_id' => 0,
+                    'e_outbound_u_id' => $udata['u_id'],
+                    'e_outbound_u_id' => 2697,
                     'depth' => 0,
                     'e_b_id' => $duplicate_registries[0]['ru_b_id'],
                     'e_r_id' => $duplicate_registries[0]['r_id'],
@@ -731,7 +731,7 @@ class Api_v1 extends CI_Controller {
 
             //Log engagement for Application Started:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
+                'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => array(
                     'input' => $_POST,
                     'udata' => $udata,
@@ -743,9 +743,9 @@ class Api_v1 extends CI_Controller {
 
             //Send the email to their admission page:
             $this->Comm_model->foundation_message(array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $udata['u_id'],
-                'e_c_id' => 2697,
+                'e_inbound_u_id' => 0,
+                'e_outbound_u_id' => $udata['u_id'],
+                'e_outbound_u_id' => 2697,
                 'depth' => 0,
                 'e_b_id' => $b['b_id'],
             ), true);
@@ -762,8 +762,8 @@ class Api_v1 extends CI_Controller {
             //Should never happen, Log error:
             $message = 'Unknown admission error has been reported to Mench admin';
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => $message,
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_text_value' => $message,
                 'e_json' => array(
                     'input' => $_POST,
                     'udata' => $udata,
@@ -791,8 +791,8 @@ class Api_v1 extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
-                'e_message' => 'ru_checkout_complete() Missing Core Inputs.',
+                'e_inbound_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
+                'e_text_value' => 'ru_checkout_complete() Missing Core Inputs.',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -814,8 +814,8 @@ class Api_v1 extends CI_Controller {
 
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $_POST['u_id'],
-                'e_message' => 'ru_checkout_complete() failed to fetch admission data.',
+                'e_inbound_u_id' => $_POST['u_id'],
+                'e_text_value' => 'ru_checkout_complete() failed to fetch admission data.',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -827,8 +827,8 @@ class Api_v1 extends CI_Controller {
 
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $_POST['u_id'],
-                'e_message' => 'ru_checkout_complete() found Multi-week Bootcamp without proper child data',
+                'e_inbound_u_id' => $_POST['u_id'],
+                'e_text_value' => 'ru_checkout_complete() found Multi-week Bootcamp without proper child data',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -880,7 +880,7 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $_POST['u_id'],
+            'e_inbound_u_id' => $_POST['u_id'],
             'e_json' => $_POST,
             'e_inbound_c_id' => 26, //Checkout Submitted (Pending Payment)
             'e_b_id' => $admissions[0]['b_id'],
@@ -955,7 +955,7 @@ class Api_v1 extends CI_Controller {
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $admissions[0]['u_id'], //System
+                    'e_inbound_u_id' => $admissions[0]['u_id'], //System
                     'e_inbound_c_id' => 66, //Application Withdraw
                     'e_b_id' => $admissions[0]['ru_b_id'],
                     'e_r_id' => $admissions[0]['r_id'],
@@ -992,8 +992,8 @@ class Api_v1 extends CI_Controller {
         ));
         if(count($admissions)<1){
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => 0, //System
-                'e_message' => 'Validated review submission call failed to fetch admission data',
+                'e_inbound_u_id' => 0, //System
+                'e_text_value' => 'Validated review submission call failed to fetch admission data',
                 'e_inbound_c_id' => 8, //System Error
             ));
             die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Unable to locate your Admission.</div>');
@@ -1011,8 +1011,8 @@ class Api_v1 extends CI_Controller {
 
         //Save Engagement that is visible to instructor:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $admissions[0]['u_id'],
-            'e_message' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
+            'e_inbound_u_id' => $admissions[0]['u_id'],
+            'e_text_value' => ( $new_review ? 'Student rated your Class ' : 'Student updated their rating for your Class to ' ).intval($_POST['ru_review_score']).'/10 with the following review: '.( strlen($_POST['ru_review_public_note'])>0 ? $_POST['ru_review_public_note'] : 'No Review' ),
             'e_json' => $update_data,
             'e_inbound_c_id' => 72, //Student Reviewed Class
             'e_b_id' => $admissions[0]['ru_b_id'],
@@ -1022,8 +1022,8 @@ class Api_v1 extends CI_Controller {
         //Do they have a Private Feedback? Log a need attention Engagement to Mench team reads instantly:
         if(strlen($_POST['ru_review_private_note'])>0){
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $admissions[0]['u_id'],
-                'e_message' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
+                'e_inbound_u_id' => $admissions[0]['u_id'],
+                'e_text_value' => 'Received the following private/anonymous feedback: '.$_POST['ru_review_private_note'],
                 'e_json' => $update_data,
                 'e_inbound_c_id' => 9, //Support Needing Graceful Errors
                 'e_b_id' => $admissions[0]['ru_b_id'],
@@ -1144,14 +1144,14 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<div><img src="https://s3foundation.s3-us-west-2.amazonaws.com/c65a5ea7c0dd911074518921e3320439.png" /></div>';
                     //Send Email:
                     $this->Comm_model->send_email(array($bi['u_email']), $subject, $html_message, array(
-                        'e_initiator_u_id' => ( isset($matching_admissions[0]['u_id']) ? $matching_admissions[0]['u_id'] : 0 ), //Student who made submission
-                        'e_recipient_u_id' => $bi['u_id'], //The admin
-                        'e_message' => $subject,
+                        'e_inbound_u_id' => ( isset($matching_admissions[0]['u_id']) ? $matching_admissions[0]['u_id'] : 0 ), //Student who made submission
+                        'e_outbound_u_id' => $bi['u_id'], //The admin
+                        'e_text_value' => $subject,
                         'e_json' => array(
                             'html' => $html_message,
                         ),
                         'e_inbound_c_id' => 28, //Email message sent
-                        'e_c_id' => $intent_data['intent']['c_id'],
+                        'e_outbound_u_id' => $intent_data['intent']['c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => $focus_class['r_id'],
                     ));
@@ -1161,7 +1161,7 @@ class Api_v1 extends CI_Controller {
 
 
         //See if we need to dispatch any messages:
-        $on_complete_messages = array();
+        $on_complete_text_values = array();
         $drip_messages = array();
 
         //Dispatch messages for this Step:
@@ -1171,9 +1171,9 @@ class Api_v1 extends CI_Controller {
             if($i['i_status']==2){
                 array_push($drip_messages , $i);
             } elseif($i['i_status']==3){
-                array_push($on_complete_messages, array_merge($i , array(
-                    'e_initiator_u_id' => 0,
-                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                array_push($on_complete_text_values, array_merge($i , array(
+                    'e_inbound_u_id' => 0,
+                    'e_outbound_u_id' => $matching_admissions[0]['u_id'],
                     'i_c_id' => $i['i_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
@@ -1187,9 +1187,9 @@ class Api_v1 extends CI_Controller {
             foreach($bs[0]['c__messages'] as $i){
                 //Bootcamps only could have ON-COMPLETE messages:
                 if($i['i_status']==3){
-                    array_push($on_complete_messages, array_merge($i , array(
-                        'e_initiator_u_id' => 0,
-                        'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    array_push($on_complete_text_values, array_merge($i , array(
+                        'e_inbound_u_id' => 0,
+                        'e_outbound_u_id' => $matching_admissions[0]['u_id'],
                         'i_c_id' => $i['i_c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => intval($_POST['r_id']),
@@ -1199,9 +1199,9 @@ class Api_v1 extends CI_Controller {
         }
 
         //Anything to be sent instantly?
-        if(count($on_complete_messages)>0){
+        if(count($on_complete_text_values)>0){
             //Dispatch all Instant Messages, their engagements have already been logged:
-            $this->Comm_model->send_message($on_complete_messages);
+            $this->Comm_model->send_message($on_complete_text_values);
         }
 
         //Any Drip Messages? Schedule them if we have some:
@@ -1216,8 +1216,8 @@ class Api_v1 extends CI_Controller {
                 $drip_time += $drip_intervals;
                 $this->Db_model->e_create(array(
 
-                    'e_initiator_u_id' => 0, //System
-                    'e_recipient_u_id' => $matching_admissions[0]['u_id'],
+                    'e_inbound_u_id' => 0, //System
+                    'e_outbound_u_id' => $matching_admissions[0]['u_id'],
                     'e_timestamp' => date("Y-m-d H:i:s" , $drip_time ), //Used by Cron Job to fetch this Drip when due
                     'e_json' => array(
                         'created_time' => date("Y-m-d H:i:s" , $start_time ),
@@ -1226,9 +1226,9 @@ class Api_v1 extends CI_Controller {
                         'i' => $i, //The actual message that would be sent
                     ),
                     'e_inbound_c_id' => 52, //Pending Drip e_inbound_c_id=52
-                    'e_cron_job' => 0, //Pending for the Drip Cron
+                    'e_status' => 0, //Pending for the Drip Cron
                     'e_i_id' => $i['i_id'],
-                    'e_c_id' => $i['i_c_id'],
+                    'e_outbound_u_id' => $i['i_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
 
@@ -1243,19 +1243,19 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement for Step Completion:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => intval($_POST['u_id']),
-            'e_message' => $us_data['us_student_notes'],
+            'e_inbound_u_id' => intval($_POST['u_id']),
+            'e_text_value' => $us_data['us_student_notes'],
             'e_json' => array(
                 'input' => $_POST,
                 'scheduled_drip' => count($drip_messages),
-                'sent_oncomplete' => count($on_complete_messages),
+                'sent_oncomplete' => count($on_complete_text_values),
                 'next_level' => $intent_data['next_level'],
                 'next_c' => ( isset($intent_data['next_intent']) ? $intent_data['next_intent'] : array() ),
             ),
             'e_inbound_c_id' => 33, //Marked as Done Report
             'e_b_id' => intval($_POST['b_id']),
             'e_r_id' => intval($_POST['r_id']),
-            'e_c_id' => intval($_POST['c_id']),
+            'e_outbound_u_id' => intval($_POST['c_id']),
         ));
 
 
@@ -1270,8 +1270,8 @@ class Api_v1 extends CI_Controller {
 
             //Send graduation message:
             $this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => 4632, //As soon as Graduated message
+                'e_outbound_u_id' => intval($_POST['u_id']),
+                'e_outbound_u_id' => 4632, //As soon as Graduated message
                 'depth' => 0,
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
@@ -1289,8 +1289,8 @@ class Api_v1 extends CI_Controller {
             //Send appropriate Message:
             /*
             $this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => $intent_data['next_intent']['c_id'],
+                'e_outbound_u_id' => intval($_POST['u_id']),
+                'e_outbound_u_id' => $intent_data['next_intent']['c_id'],
                 'depth' => 0,
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
@@ -1305,8 +1305,8 @@ class Api_v1 extends CI_Controller {
 
             //This should not happen!
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $_POST['u_id'],
-                'e_message' => 'us_save() experienced fatal error where $intent_data/next_level was not 1,2 or 3',
+                'e_inbound_u_id' => $_POST['u_id'],
+                'e_text_value' => 'us_save() experienced fatal error where $intent_data/next_level was not 1,2 or 3',
                 'e_json' => array(
                     'POST' => $_POST,
                     'intent_data' => $intent_data,
@@ -1314,7 +1314,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_c_id' => 8, //Platform Error
                 'e_b_id' => $_POST['b_id'],
                 'e_r_id' => $_POST['r_id'],
-                'e_c_id' => $_POST['c_id'],
+                'e_outbound_u_id' => $_POST['c_id'],
             ));
 
         }
@@ -1339,9 +1339,9 @@ class Api_v1 extends CI_Controller {
         if(count($matching_users)>0){
             //Dispatch the password reset Intent:
             $this->Comm_model->foundation_message(array(
-                'e_initiator_u_id' => 0,
-                'e_recipient_u_id' => $matching_users[0]['u_id'],
-                'e_c_id' => 3030,
+                'e_inbound_u_id' => 0,
+                'e_outbound_u_id' => $matching_users[0]['u_id'],
+                'e_outbound_u_id' => 3030,
                 'depth' => 0,
                 'e_b_id' => 0,
                 'e_r_id' => 0,
@@ -1370,7 +1370,7 @@ class Api_v1 extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => intval($_POST['u_id']),
+                'e_inbound_u_id' => intval($_POST['u_id']),
                 'e_inbound_c_id' => 59, //Password reset
             ));
 
@@ -1426,8 +1426,8 @@ class Api_v1 extends CI_Controller {
 
 	        //Inactive account
 	        $this->Db_model->e_create(array(
-	            'e_initiator_u_id' => $users[0]['u_id'],
-	            'e_message' => 'login() denied because account is not active.',
+	            'e_inbound_u_id' => $users[0]['u_id'],
+	            'e_text_value' => 'login() denied because account is not active.',
 	            'e_json' => $_POST,
 	            'e_inbound_c_id' => 9, //Support Needing Graceful Errors
 	        ));
@@ -1500,7 +1500,7 @@ class Api_v1 extends CI_Controller {
         //Log engagement
         if(!($_POST['u_password']==$master_password)){
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $users[0]['u_id'],
+                'e_inbound_u_id' => $users[0]['u_id'],
                 'e_json' => $users[0],
                 'e_inbound_c_id' => 10, //login
             ));
@@ -1537,7 +1537,7 @@ class Api_v1 extends CI_Controller {
 	    //Log engagement:
 	    $udata = $this->session->userdata('user');
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
+	        'e_inbound_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
 	        'e_json' => $udata,
 	        'e_inbound_c_id' => 11, //Admin Logout
 	    ));
@@ -1677,15 +1677,15 @@ class Api_v1 extends CI_Controller {
 
 	    //Log engagement:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'], //The user that updated the account
-	        'e_message' => readable_updates($u_current[0],$u_update,'u_'),
+	        'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
+	        'e_text_value' => readable_updates($u_current[0],$u_update,'u_'),
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => $u_current[0],
 	            'after' => $u_update,
 	        ),
 	        'e_inbound_c_id' => 12, //Account Update
-	        'e_recipient_u_id' => intval($_POST['u_id']), //The user that their account was updated
+	        'e_outbound_u_id' => intval($_POST['u_id']), //The user that their account was updated
 	    ));
 
 	    //TODO update algolia
@@ -1732,7 +1732,7 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
+            'e_inbound_u_id' => $udata['u_id'],
             'e_inbound_c_id' => 88, //Exported
             'e_b_id' => $classes[0]['r_b_id'],
             'e_r_id' => $classes[0]['r_id'],
@@ -1913,8 +1913,8 @@ class Api_v1 extends CI_Controller {
 
                 //Inform Admin:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
-                    'e_message' => $udata['u_fname'].' '.$udata['u_lname'].' (Lead Instructor) is trying to disable a support week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$guided_admissions.'] Classroom seats across all their Bootcamps. Reach out to see if they need any help with this.',
+                    'e_inbound_u_id' => $udata['u_id'],
+                    'e_text_value' => $udata['u_fname'].' '.$udata['u_lname'].' (Lead Instructor) is trying to disable a support week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$guided_admissions.'] Classroom seats across all their Bootcamps. Reach out to see if they need any help with this.',
                     'e_inbound_c_id' => 9, //Support Needed
                     'e_b_id' => $classes[0]['r_b_id'],
                     'e_r_id' => $classes[0]['r_id'],
@@ -1955,9 +1955,9 @@ class Api_v1 extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'], //The user
+                'e_inbound_u_id' => $udata['u_id'], //The user
                 'e_inbound_c_id' => ( $_POST['rs_new_status']==2 ? 86 : 87 ), //Class Support Enabled/Disabled
-                'e_message' => 'Bootcamp support was '.( $_POST['rs_new_status']==2 ? 'Enabled' : 'Disabled' ).' for the week of ['.$classes[0]['r_start_date'].']', //Class Support Enabled/Disabled
+                'e_text_value' => 'Bootcamp support was '.( $_POST['rs_new_status']==2 ? 'Enabled' : 'Disabled' ).' for the week of ['.$classes[0]['r_start_date'].']', //Class Support Enabled/Disabled
                 'e_b_id' => $classes[0]['r_b_id'],
                 'e_r_id' => $classes[0]['r_id'],
             ));
@@ -2008,8 +2008,8 @@ class Api_v1 extends CI_Controller {
         if(intval($intent['c_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'b_create() Function failed to create intent ['.$_POST['c_objective'].'].',
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_text_value' => 'b_create() Function failed to create intent ['.$_POST['c_objective'].'].',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -2056,8 +2056,8 @@ class Api_v1 extends CI_Controller {
         if(intval($b['b_id'])<=0 || intval($b['b_c_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'b_create() Function failed to create Bootcamp for intent #'.$intent['c_id'],
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_text_value' => 'b_create() Function failed to create Bootcamp for intent #'.$intent['c_id'],
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -2078,9 +2078,9 @@ class Api_v1 extends CI_Controller {
         //Add this Bootcamp to the General category:
         /*
         $this->Db_model->cr_create(array(
-            'cr_creator_id' => $udata['u_id'],
-            'cr_inbound_id'  => 6180, //General category for Job Placement
-            'cr_outbound_id' => $b['b_c_id'],
+            'cr_inbound_u_id' => $udata['u_id'],
+            'cr_inbound_c_id'  => 6180, //General category for Job Placement
+            'cr_outbound_c_id' => $b['b_c_id'],
             'cr_status' => 1,
         ));
         */
@@ -2109,8 +2109,8 @@ class Api_v1 extends CI_Controller {
         if(intval($admin_status['ba_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => 'b_create() Function failed to grant permission for Bootcamp #'.$b['b_id'],
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_text_value' => 'b_create() Function failed to grant permission for Bootcamp #'.$b['b_id'],
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -2127,7 +2127,7 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement for Intent Created:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
+            'e_inbound_u_id' => $udata['u_id'],
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2135,13 +2135,13 @@ class Api_v1 extends CI_Controller {
             ),
             'e_inbound_c_id' => 20, //Intent Created
             'e_b_id' => $b['b_id'],
-            'e_c_id' => $intent['c_id'],
+            'e_outbound_u_id' => $intent['c_id'],
         ));
 
 
         //Log Engagement for Bootcamp Created:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
+            'e_inbound_u_id' => $udata['u_id'],
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2154,8 +2154,8 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement for Permission Granted:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => 'Assigned as Bootcamp Leader',
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_text_value' => 'Assigned as Bootcamp Leader',
             'e_json' => array(
                 'input' => $_POST,
                 'before' => null,
@@ -2205,7 +2205,7 @@ class Api_v1 extends CI_Controller {
 
             //Log Engagement:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
+                'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 53, //Bootcamp List Modified
                 'e_b_id' => intval($_POST['b_id']),
@@ -2364,12 +2364,12 @@ class Api_v1 extends CI_Controller {
         $current_c_ids = array();
         //TODO Imorove further by only getching links associated to categorization
         $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-            'cr.cr_outbound_id' => $bs[0]['b_c_id'],
+            'cr.cr_outbound_c_id' => $bs[0]['b_c_id'],
             'cr.cr_outbound_b_id' => 0, //Not linked as part of a Multi-week Bootcamp
             'cr.cr_status' => 1,
         ));
         foreach($current_inbounds as $c){
-            array_push($current_c_ids,$c['cr_inbound_id']);
+            array_push($current_c_ids,$c['cr_inbound_c_id']);
         }
 
         $has_new = (intval($_POST['level2_c_id'])>0 && !in_array($_POST['level2_c_id'],$current_c_ids));
@@ -2377,7 +2377,7 @@ class Api_v1 extends CI_Controller {
             //We need to remove existing Links:
             foreach($current_inbounds as $cr){
                 $this->Db_model->cr_update( $cr['cr_id'] , array(
-                    'cr_creator_id' => $udata['u_id'],
+                    'cr_inbound_u_id' => $udata['u_id'],
                     'cr_timestamp' => date("Y-m-d H:i:s"),
                     'cr_status' => -1, //Archived
                 ));
@@ -2387,9 +2387,9 @@ class Api_v1 extends CI_Controller {
         if($has_new){
             //Create link:
             $this->Db_model->cr_create(array(
-                'cr_creator_id' => $udata['u_id'],
-                'cr_inbound_id'  => $_POST['level2_c_id'],
-                'cr_outbound_id' => $bs[0]['b_c_id'],
+                'cr_inbound_u_id' => $udata['u_id'],
+                'cr_inbound_c_id'  => $_POST['level2_c_id'],
+                'cr_outbound_c_id' => $bs[0]['b_c_id'],
                 'cr_status' => 1,
             ));
         }
@@ -2414,8 +2414,8 @@ class Api_v1 extends CI_Controller {
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
-            'e_message' => ( $engagement_type_id==18 ? readable_updates($bs[0],$b_update,'b_') : null ),
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_text_value' => ( $engagement_type_id==18 ? readable_updates($bs[0],$b_update,'b_') : null ),
             'e_json' => array(
                 'input' => $_POST,
                 'before' => $bs[0],
@@ -2474,8 +2474,8 @@ class Api_v1 extends CI_Controller {
 
 	    //Log Engagement for New Intent:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Intent ['.$new_intent['c_objective'].'] created',
+	        'e_inbound_u_id' => $udata['u_id'],
+	        'e_text_value' => 'Intent ['.$new_intent['c_objective'].'] created',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
@@ -2483,25 +2483,25 @@ class Api_v1 extends CI_Controller {
 	        ),
 	        'e_inbound_c_id' => 20, //New Intent
 	        'e_b_id' => intval($_POST['b_id']),
-	        'e_c_id' => $new_intent['c_id'],
+	        'e_outbound_u_id' => $new_intent['c_id'],
 	    ));
 
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_inbound_id'  => intval($_POST['pid']),
-	        'cr_outbound_id' => $new_intent['c_id'],
+	        'cr_inbound_u_id' => $udata['u_id'],
+	        'cr_inbound_c_id'  => intval($_POST['pid']),
+	        'cr_outbound_c_id' => $new_intent['c_id'],
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
                 'cr_status >=' => 1,
                 'c_status >=' => 1,
-	            'cr_inbound_id' => intval($_POST['pid']),
+	            'cr_inbound_c_id' => intval($_POST['pid']),
 	        )),
 	    ));
 
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
+	        'e_inbound_u_id' => $udata['u_id'],
+	        'e_text_value' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
@@ -2569,8 +2569,8 @@ class Api_v1 extends CI_Controller {
         $cr_validation = $this->Db_model->cr_outbound_fetch(array(
             'cr_id' => $_POST['delete_cr_id'],
             'cr_status >' => 0,
-            'cr_inbound_id' => $inbound_bs[0]['b_c_id'],
-            'cr_outbound_id' => $bs[0]['b_c_id'],
+            'cr_inbound_c_id' => $inbound_bs[0]['b_c_id'],
+            'cr_outbound_c_id' => $bs[0]['b_c_id'],
             'cr_outbound_b_id' => $_POST['delete_b_id'],
         ));
 
@@ -2596,17 +2596,17 @@ class Api_v1 extends CI_Controller {
 
         //All good, delete this link:
         $this->Db_model->cr_update( $_POST['delete_cr_id'] , array(
-            'cr_creator_id' => $udata['u_id'],
+            'cr_inbound_u_id' => $udata['u_id'],
             'cr_timestamp' => date("Y-m-d H:i:s"),
             'cr_status' => -1, //Archived
         ));
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
+            'e_inbound_u_id' => $udata['u_id'],
             'e_inbound_c_id' => 89, //Intent link archived
             'e_b_id' => $_POST['current_b_id'],
-            'e_c_id' => $bs[0]['b_c_id'],
+            'e_outbound_u_id' => $bs[0]['b_c_id'],
             'e_cr_id' => $_POST['delete_cr_id'],
         ));
 
@@ -2684,8 +2684,8 @@ class Api_v1 extends CI_Controller {
 
 	    //Check to make sure not a duplicate link:
 	    $current_outbounds = $this->Db_model->cr_outbound_fetch(array(
-            'cr.cr_inbound_id' => $inbound_bs[0]['b_c_id'],
-            'cr.cr_outbound_id' => $outbound_bs[0]['b_c_id'],
+            'cr.cr_inbound_c_id' => $inbound_bs[0]['b_c_id'],
+            'cr.cr_outbound_c_id' => $outbound_bs[0]['b_c_id'],
 	        'cr.cr_status >=' => 1,
 	    ));
         if(count($current_outbounds)>0){
@@ -2699,29 +2699,29 @@ class Api_v1 extends CI_Controller {
 
 	    //Create Link:
 	    $relation = $this->Db_model->cr_create(array(
-	        'cr_creator_id' => $udata['u_id'],
-	        'cr_inbound_id'  => $inbound_bs[0]['b_c_id'],
-            'cr_outbound_id' => $outbound_bs[0]['b_c_id'],
+	        'cr_inbound_u_id' => $udata['u_id'],
+	        'cr_inbound_c_id'  => $inbound_bs[0]['b_c_id'],
+            'cr_outbound_c_id' => $outbound_bs[0]['b_c_id'],
             'cr_outbound_b_id' => $outbound_bs[0]['b_id'],
 	        'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
 	            'cr_status >=' => 1,
                 'c_status >=' => 1,
-	            'cr_inbound_id' => $inbound_bs[0]['b_c_id'],
+	            'cr_inbound_c_id' => $inbound_bs[0]['b_c_id'],
 	        )),
 	    ));
 
 
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
-	        'e_initiator_u_id' => $udata['u_id'],
-	        'e_message' => 'Linked intent ['.$outbound_bs[0]['c_objective'].'] as a child intent of ['.$inbound_bs[0]['c_objective'].']',
+	        'e_inbound_u_id' => $udata['u_id'],
+	        'e_text_value' => 'Linked intent ['.$outbound_bs[0]['c_objective'].'] as a child intent of ['.$inbound_bs[0]['c_objective'].']',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'after' => $relation,
 	        ),
 	        'e_inbound_c_id' => 23, //New Intent Link
             'e_b_id' => $inbound_bs[0]['b_id'],
-            'e_c_id' => $inbound_bs[0]['b_c_id'],
+            'e_outbound_u_id' => $inbound_bs[0]['b_c_id'],
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
 
@@ -2800,21 +2800,21 @@ class Api_v1 extends CI_Controller {
             } else {
                 //Make the move:
                 $this->Db_model->cr_update( intval($_POST['cr_id']) , array(
-                    'cr_creator_id' => $udata['u_id'],
+                    'cr_inbound_u_id' => $udata['u_id'],
                     'cr_timestamp' => date("Y-m-d H:i:s"),
-                    'cr_inbound_id' => intval($_POST['to_c_id']),
+                    'cr_inbound_c_id' => intval($_POST['to_c_id']),
                     //No need to update sorting here as a separate JS function would call that within half a second after the move...
                 ));
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_inbound_u_id' => $udata['u_id'],
                     'e_json' => array(
                         'post' => $_POST,
                     ),
-                    'e_message' => '['.$subject[0]['c_objective'].'] was migrated from ['.$from[0]['c_objective'].'] to ['.$to[0]['c_objective'].']', //Message migrated
+                    'e_text_value' => '['.$subject[0]['c_objective'].'] was migrated from ['.$from[0]['c_objective'].'] to ['.$to[0]['c_objective'].']', //Message migrated
                     'e_inbound_c_id' => 50, //Intent migrated
-                    'e_c_id' => intval($_POST['c_id']),
+                    'e_outbound_u_id' => intval($_POST['c_id']),
                     'e_cr_id' => intval($_POST['cr_id']),
                     'e_b_id' => intval($_POST['b_id']),
                 ));
@@ -2958,8 +2958,8 @@ class Api_v1 extends CI_Controller {
 
             //Log Engagement for New Intent Link:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
-                'e_message' => readable_updates($original_intents[0],$c_update,'c_'),
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_text_value' => readable_updates($original_intents[0],$c_update,'c_'),
                 'e_json' => array(
                     'input' => $_POST,
                     'before' => $original_intents[0],
@@ -2967,7 +2967,7 @@ class Api_v1 extends CI_Controller {
                 ),
                 'e_inbound_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
                 'e_b_id' => intval($_POST['b_id']),
-                'e_c_id' => intval($_POST['pid']),
+                'e_outbound_u_id' => intval($_POST['pid']),
             ));
 
         }
@@ -3018,14 +3018,14 @@ class Api_v1 extends CI_Controller {
 
                 //Fetch for the record:
                 $outbounds_before = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_id' => intval($_POST['pid']),
+                    'cr.cr_inbound_c_id' => intval($_POST['pid']),
                     'cr.cr_status >=' => 0,
                 ));
 
                 //Update them all:
                 foreach($_POST['new_sort'] as $rank=>$cr_id){
                     $this->Db_model->cr_update( intval($cr_id) , array(
-                        'cr_creator_id' => $udata['u_id'],
+                        'cr_inbound_u_id' => $udata['u_id'],
                         'cr_timestamp' => date("Y-m-d H:i:s"),
                         'cr_outbound_rank' => intval($rank), //Might have decimal for DRAFTING Tasks/Steps
                     ));
@@ -3033,14 +3033,14 @@ class Api_v1 extends CI_Controller {
 
                 //Fetch for the record:
                 $outbounds_after = $this->Db_model->cr_outbound_fetch(array(
-                    'cr.cr_inbound_id' => intval($_POST['pid']),
+                    'cr.cr_inbound_c_id' => intval($_POST['pid']),
                     'cr.cr_status >=' => 0,
                 ));
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
-                    'e_message' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_objective'].']',
+                    'e_inbound_u_id' => $udata['u_id'],
+                    'e_text_value' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_objective'].']',
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $outbounds_before,
@@ -3048,7 +3048,7 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_inbound_c_id' => 22, //Links Sorted
                     'e_b_id' => intval($_POST['b_id']),
-                    'e_c_id' => intval($_POST['pid']),
+                    'e_outbound_u_id' => intval($_POST['pid']),
                 ));
 
                 //Display message:
@@ -3289,7 +3289,7 @@ class Api_v1 extends CI_Controller {
 
         //Log Engagement:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
+            'e_inbound_u_id' => $udata['u_id'],
             'e_json' => array(
                 'import_settings' => $_POST,
                 'b_lists' => $b_lists,
@@ -3325,10 +3325,10 @@ class Api_v1 extends CI_Controller {
         //Log an engagement for all messages
         foreach($messages as $i){
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
+                'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => $i,
                 'e_inbound_c_id' => 40, //Got It
-                'e_c_id' => intval($_POST['intent_id']),
+                'e_outbound_u_id' => intval($_POST['intent_id']),
                 'e_i_id' => $i['i_id'],
             ));
         }
@@ -3336,7 +3336,7 @@ class Api_v1 extends CI_Controller {
         //Build UI friendly Message:
         $help_content = null;
         foreach($messages as $i){
-            $help_content .= echo_i(array_merge($i,array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']);
+            $help_content .= echo_i(array_merge($i,array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_fname']);
         }
 
         //Return results:
@@ -3409,8 +3409,8 @@ class Api_v1 extends CI_Controller {
 
             //All seems good, attempt dispatch:
             echo_json($this->Comm_model->foundation_message(array(
-                'e_recipient_u_id' => intval($_POST['u_id']),
-                'e_c_id' => intval($_POST['pid']),
+                'e_outbound_u_id' => intval($_POST['u_id']),
+                'e_outbound_u_id' => intval($_POST['pid']),
                 'depth' => intval($_POST['depth']),
                 'e_b_id' => 0,
                 'e_r_id' => 0,
@@ -3523,7 +3523,7 @@ class Api_v1 extends CI_Controller {
 
         //Log engagement:
         $this->Db_model->e_create(array(
-            'e_initiator_u_id' => $udata['u_id'],
+            'e_inbound_u_id' => $udata['u_id'],
             'e_json' => array(
                 'post' => $_POST,
                 'file' => $_FILES,
@@ -3531,7 +3531,7 @@ class Api_v1 extends CI_Controller {
             ),
             'e_inbound_c_id' => 34, //Message added e_inbound_c_id=34
             'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_c_id' => intval($new_messages[0]['i_c_id']),
+            'e_outbound_u_id' => intval($new_messages[0]['i_c_id']),
             'e_b_id' => $bs[0]['b_id'],
         ));
 
@@ -3540,13 +3540,13 @@ class Api_v1 extends CI_Controller {
         if($bs[0]['b_fp_id']>0 && in_array($i_media_type,array('image','audio','video','file'))){
             //Log engagement for this to be done via a Cron Job:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
+                'e_inbound_u_id' => $udata['u_id'],
                 'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => intval($new_messages[0]['i_id']),
-                'e_c_id' => intval($new_messages[0]['i_c_id']),
+                'e_outbound_u_id' => intval($new_messages[0]['i_c_id']),
                 'e_b_id' => $bs[0]['b_id'],
                 'e_fp_id' => $bs[0]['b_fp_id'],
-                'e_cron_job' => 0, //Job pending
+                'e_status' => 0, //Job pending
             ));
         }
 
@@ -3556,7 +3556,7 @@ class Api_v1 extends CI_Controller {
             'status' => 1,
             'message' => echo_message( array_merge($new_messages[0], array(
                 'e_b_id'=>$bs[0]['b_id'],
-                'e_recipient_u_id'=>$udata['u_id'],
+                'e_outbound_u_id'=>$udata['u_id'],
             )), $_POST['level']),
         ));
 	}
@@ -3639,14 +3639,14 @@ class Api_v1 extends CI_Controller {
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_inbound_u_id' => $udata['u_id'],
                     'e_json' => array(
                         'input' => $_POST,
                         'after' => $new_messages[0],
                     ),
                     'e_inbound_c_id' => 34, //Message added
                     'e_i_id' => intval($new_messages[0]['i_id']),
-                    'e_c_id' => intval($_POST['pid']),
+                    'e_outbound_u_id' => intval($_POST['pid']),
                     'e_b_id' => $bs[0]['b_id'],
                 ));
 
@@ -3655,7 +3655,7 @@ class Api_v1 extends CI_Controller {
                     'status' => 1,
                     'message' => echo_message(array_merge($new_messages[0],array(
                         'e_b_id'=>intval($_POST['b_id']),
-                        'e_recipient_u_id'=>$udata['u_id'],
+                        'e_outbound_u_id'=>$udata['u_id'],
                     )), $_POST['level']),
                 ));
             }
@@ -3742,7 +3742,7 @@ class Api_v1 extends CI_Controller {
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_inbound_u_id' => $udata['u_id'],
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $messages[0],
@@ -3750,13 +3750,13 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_inbound_c_id' => 36, //Message edited
                     'e_i_id' => $messages[0]['i_id'],
-                    'e_c_id' => intval($_POST['pid']),
+                    'e_outbound_u_id' => intval($_POST['pid']),
                 ));
 
                 //Print the challenge:
                 echo_json(array(
                     'status' => 1,
-                    'message' => echo_i(array_merge($new_messages[0],array('e_recipient_u_id'=>$udata['u_id'])),$udata['u_fname']),
+                    'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_fname']),
                     'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
                     'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
                     'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
@@ -3806,14 +3806,14 @@ class Api_v1 extends CI_Controller {
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
-                    'e_initiator_u_id' => $udata['u_id'],
+                    'e_inbound_u_id' => $udata['u_id'],
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $messages[0],
                     ),
                     'e_inbound_c_id' => 35, //Message deleted
                     'e_i_id' => intval($messages[0]['i_id']),
-                    'e_c_id' => intval($_POST['pid']),
+                    'e_outbound_u_id' => intval($_POST['pid']),
                 ));
 
                 echo_json(array(
@@ -3862,10 +3862,10 @@ class Api_v1 extends CI_Controller {
 
             //Log engagement:
             $this->Db_model->e_create(array(
-                'e_initiator_u_id' => $udata['u_id'],
+                'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 39, //Messages sorted
-                'e_c_id' => intval($_POST['pid']),
+                'e_outbound_u_id' => intval($_POST['pid']),
                 'e_b_id' => intval($_POST['b_id']),
             ));
 
@@ -3879,8 +3879,8 @@ class Api_v1 extends CI_Controller {
     function i_dispatch(){
         //Dispatch Messages:
         $results = $this->Comm_model->foundation_message(array(
-            'e_recipient_u_id' => $_POST['u_id'],
-            'e_c_id' => $_POST['c_id'],
+            'e_outbound_u_id' => $_POST['u_id'],
+            'e_outbound_u_id' => $_POST['c_id'],
             'depth' => $_POST['depth'],
             'e_b_id' => $_POST['b_id'],
             'e_r_id' => 0,

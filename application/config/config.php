@@ -290,6 +290,39 @@ $config['object_statuses'] = array(
         ),
     ),
 
+    'e_status' => array(
+        -3 => array(
+            's_name'  => 'Revision Required',
+            's_desc'  => 'Item was reviewed and requires revisions to be complete',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-info-circle',
+        ),
+        -2 => array(
+            's_name'  => 'Processing',
+            's_desc'  => 'Temporary processing status to prevent duplicate processing',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-spinner fa-spin',
+        ),
+        -1 => array(
+            's_name'  => 'Auto Complete',
+            's_desc'  => 'Item does not need any additional work and its complete as is',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-check-circle-o',
+        ),
+        0 => array(
+            's_name'  => 'Pending Completion',
+            's_desc'  => 'Item needs additional processing to be complete',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-pause-circle',
+        ),
+        1 => array(
+            's_name'  => 'Completed',
+            's_desc'  => 'Item has been processed and is now marked as complete',
+            'u_min_status'  => 1,
+            's_mini_icon' => 'fa-check-circle',
+        ),
+    ),
+
     'r' => array(
         -3 => array(
             's_name'  => 'Cancelled',
@@ -547,11 +580,11 @@ $config['reserved_hashtags'] = array(
 
 //The core objects of the platform:
 $config['engagement_references'] = array(
-    'e_initiator_u_id' => array(
+    'e_inbound_u_id' => array(
         'name' => 'Initiator',
         'object_code' => 'u',
     ),
-    'e_recipient_u_id' => array(
+    'e_outbound_u_id' => array(
         'name' => 'Recipient',
         'object_code' => 'u',
     ),
@@ -563,7 +596,7 @@ $config['engagement_references'] = array(
         'name' => 'Class',
         'object_code' => 'r',
     ),
-    'e_c_id' => array(
+    'e_outbound_u_id' => array(
         'name' => 'Intent',
         'object_code' => 'c',
     ),
