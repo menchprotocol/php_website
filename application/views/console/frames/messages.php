@@ -588,7 +588,7 @@ if(!isset($intents[0])){
     echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
     echo str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[1]['s_desc']).'.';
     if($level==2){
-        echo ' <a id="simulate_'.$c_id.'" href="javascript:tree_text_value('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fa fa-mobile" aria-hidden="true"></i></a>';
+        echo ' <a id="simulate_'.$c_id.'" href="javascript:void(0)" onclick="tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fa fa-mobile" aria-hidden="true"></i></a>';
     }
     echo '</div>';
     echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[2]['s_desc']).'.</div>';
