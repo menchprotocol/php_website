@@ -775,7 +775,7 @@ class Cron extends CI_Controller {
                 'e_inbound_c_id IN (7,28)' => null, //Email/Message sent
                 'e_outbound_u_id' => $admission['u_id'],
                 'e_r_id' => $admission['r_id'],
-                'e_outbound_u_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
+                'e_outbound_c_id IN (3140,3127)' => null, //The ID of the 5 email reminders https://mench.com/console/53/actionplan
             ));
 
             $admission_end_time = strtotime($admission['r_start_date']) - 60; //11:59PM the night before start date
@@ -797,7 +797,7 @@ class Cron extends CI_Controller {
                 $this->Comm_model->foundation_message(array(
                     'e_inbound_u_id' => 0,
                     'e_outbound_u_id' => $admission['u_id'],
-                    'e_outbound_u_id' => $reminder_c_id,
+                    'e_outbound_c_id' => $reminder_c_id,
                     'depth' => 0,
                     'e_b_id' => $admission['ru_b_id'],
                     'e_r_id' => $admission['r_id'],
