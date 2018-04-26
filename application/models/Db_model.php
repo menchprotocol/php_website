@@ -1372,28 +1372,28 @@ WHERE ru.ru_status >= 4
 	
 	
 	
-	function e_create($link_data){
+	function e_create($insert_columns){
 	    
 	    //Sort out the optional fields first:
-	    if(!isset($link_data['e_inbound_u_id'])){
+	    if(!isset($insert_columns['e_inbound_u_id'])){
 	        //Try to fetch user ID from session:
 	        $user_data = $this->session->userdata('user');
 	        if(isset($user_data['u_id']) && intval($user_data['u_id'])>0){
-	            $link_data['e_inbound_u_id'] = $user_data['u_id'];
+	            $insert_columns['e_inbound_u_id'] = $user_data['u_id'];
 	        } else {
 	            //Have no user:
-	            $link_data['e_inbound_u_id'] = 0;
+	            $insert_columns['e_inbound_u_id'] = 0;
 	        }
 	    }
 		
 	    
 		//Now check required fields:
-		if(!isset($link_data['e_inbound_c_id']) || intval($link_data['e_inbound_c_id'])<=0){
+		if(!isset($insert_columns['e_inbound_c_id']) || intval($insert_columns['e_inbound_c_id'])<=0){
 		    //Log this error:
 		    $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $link_data['e_inbound_u_id'],
+                'e_inbound_u_id' => $insert_columns['e_inbound_u_id'],
                 'e_text_value' => 'e_create() Function missing [e_inbound_c_id] variable.',
-                'e_json' => $link_data,
+                'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
 			return false;
@@ -1401,34 +1401,34 @@ WHERE ru.ru_status >= 4
 
 		//Do we have a json attachment for this engagement?
 		$save_blob = null;
-        if(isset($link_data['e_json']) && strlen(print_r($link_data['e_json'],true))>0){
-            if(is_array($link_data['e_json']) && count($link_data['e_json'])>0){
-                $save_blob = $link_data['e_json'];
-                $link_data['e_has_blob'] = 't';
+        if(isset($insert_columns['e_json']) && strlen(print_r($insert_columns['e_json'],true))>0){
+            if(is_array($insert_columns['e_json']) && count($insert_columns['e_json'])>0){
+                $save_blob = $insert_columns['e_json'];
+                $insert_columns['e_has_blob'] = 't';
             }
         }
 
-        if(!isset($link_data['e_timestamp'])){
-            $link_data['e_timestamp'] = date("Y-m-d H:i:s");
+        if(!isset($insert_columns['e_timestamp'])){
+            $insert_columns['e_timestamp'] = date("Y-m-d H:i:s");
         }
 
         //Remove e_json from here to keep v5_engagements small and lean
-        unset($link_data['e_json']);
+        unset($insert_columns['e_json']);
 		
 
 		//Lets log:
-		$this->db->insert('v5_engagements', $link_data);
+		$this->db->insert('v5_engagements', $insert_columns);
 
 		//Fetch inserted id:
-		$link_data['e_id'] = $this->db->insert_id();
+		$insert_columns['e_id'] = $this->db->insert_id();
 
-		if($link_data['e_id']>0){
+		if($insert_columns['e_id']>0){
 
 		    //Did we have a blob to save?
             if($save_blob){
                 //Save this in a separate field:
                 $this->db->insert('v5_engagement_blob', array(
-                    'ej_e_id' => $link_data['e_id'],
+                    'ej_e_id' => $insert_columns['e_id'],
                     'ej_e_blob' => serialize($save_blob),
                 ));
             }
@@ -1441,13 +1441,13 @@ WHERE ru.ru_status >= 4
             //Email: The [33] Engagement ID corresponding to Step completion is a email system for instructors to give them more context on certain activities
 
             //Do we have any instructor subscription:
-            if(isset($link_data['e_b_id']) && $link_data['e_b_id']>0 && in_array($link_data['e_inbound_c_id'],$instructor_subscriptions)){
+            if(isset($insert_columns['e_b_id']) && $insert_columns['e_b_id']>0 && in_array($insert_columns['e_inbound_c_id'],$instructor_subscriptions)){
 
                 //Just do this one:
                 if(!isset($engagements[0])){
                     //Fetch Engagement Data:
                     $engagements = $this->Db_model->e_fetch(array(
-                        'e_id' => $link_data['e_id']
+                        'e_id' => $insert_columns['e_id']
                     ));
                 }
 
@@ -1456,19 +1456,19 @@ WHERE ru.ru_status >= 4
 
                     //Fetch all Goal Instructors and Notify them:
                     $b_instructors = $this->Db_model->ba_fetch(array(
-                        'ba.ba_b_id' => $link_data['e_b_id'],
+                        'ba.ba_b_id' => $insert_columns['e_b_id'],
                         'ba.ba_status >=' => 2, //co-instructors & lead instructor
                         'u.u_status >=' => 1, //Must be a user level 1 or higher
                     ));
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_objective'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
-                    $url = 'https://mench.com/console/'.$link_data['e_b_id'];
+                    $url = 'https://mench.com/console/'.$insert_columns['e_b_id'];
 
-                    $body = trim(strip_tags($link_data['e_text_value']));
+                    $body = trim(strip_tags($insert_columns['e_text_value']));
 
                     //Send notifications to current instructor
                     foreach($b_instructors as $bi){
-                        if(in_array($link_data['e_inbound_c_id'],$instructor_subscriptions)){
+                        if(in_array($insert_columns['e_inbound_c_id'],$instructor_subscriptions)){
 
                             //Mench notifications:
                             $this->Comm_model->send_message(array(
@@ -1478,8 +1478,8 @@ WHERE ru.ru_status >= 4
                                     'i_url' => $url,
                                     'e_inbound_u_id' => 0, //System
                                     'e_outbound_u_id' => $bi['u_id'],
-                                    'e_b_id' => $link_data['e_b_id'],
-                                    'e_r_id' => ( isset($link_data['e_r_id']) ? $link_data['e_r_id'] : 0 ),
+                                    'e_b_id' => $insert_columns['e_b_id'],
+                                    'e_r_id' => ( isset($insert_columns['e_r_id']) ? $insert_columns['e_r_id'] : 0 ),
                                 ),
                             ));
 
@@ -1491,13 +1491,13 @@ WHERE ru.ru_status >= 4
             //Individual subscriptions:
             foreach($engagement_subscriptions as $subscription){
 
-                if(in_array($link_data['e_inbound_c_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
+                if(in_array($insert_columns['e_inbound_c_id'],$subscription['subscription']) || in_array(0,$subscription['subscription'])){
 
                     //Just do this one:
                     if(!isset($engagements[0])){
                         //Fetch Engagement Data:
                         $engagements = $this->Db_model->e_fetch(array(
-                            'e_id' => $link_data['e_id']
+                            'e_id' => $insert_columns['e_id']
                         ));
                     }
 
@@ -1537,7 +1537,7 @@ WHERE ru.ru_status >= 4
             //Log this query Error
             $this->Db_model->e_create(array(
                 'e_text_value' => 'Query Error e_create() : '.$this->db->_error_message(),
-                'e_json' => $link_data,
+                'e_json' => $insert_columns,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
 
@@ -1545,7 +1545,7 @@ WHERE ru.ru_status >= 4
         }
 		
 		//Return:
-		return $link_data;
+		return $insert_columns;
 	}
 
 
