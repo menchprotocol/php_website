@@ -610,7 +610,7 @@ class Comm_model extends CI_Model {
                 'e_inbound_u_id' => $u_id,
                 'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => $i['i_id'],
-                'e_outbound_u_id' => $i['i_inbound_c_id'],
+                'e_outbound_c_id' => $i['i_inbound_c_id'],
                 'e_b_id' => $b_id,
                 'e_fp_id' => $fp_id,
                 'e_status' => 0, //Job pending
@@ -853,7 +853,7 @@ class Comm_model extends CI_Model {
                     $notify_user = $this->Comm_model->foundation_message(array(
                         'e_outbound_u_id' => $u['u_id'],
                         'e_fp_id' => $fp['fp_id'],
-                        'e_outbound_u_id' => 923,
+                        'e_outbound_c_id' => 923,
                         'depth' => 0,
                         'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                         'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -999,7 +999,7 @@ class Comm_model extends CI_Model {
                 $activation_msg = $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],
-                    'e_outbound_u_id' => ($u['u_status']==2 ? 918 : 926),
+                    'e_outbound_c_id' => ($u['u_status']==2 ? 918 : 926),
                     'depth' => 0,
                     'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -1075,7 +1075,7 @@ class Comm_model extends CI_Model {
                 $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],
-                    'e_outbound_u_id' => 921,
+                    'e_outbound_c_id' => 921,
                     'depth' => 0,
                 ));
 
@@ -1240,7 +1240,7 @@ class Comm_model extends CI_Model {
                     'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
                     'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
                     'e_i_id'  => ( isset($message['i_id'])      ? $message['i_id']    :0), //The message that is being dripped
-                    'e_outbound_u_id'  => ( isset($message['i_inbound_c_id'])    ? $message['i_inbound_c_id']  :0),
+                    'e_outbound_c_id'  => ( isset($message['i_inbound_c_id'])    ? $message['i_inbound_c_id']  :0),
                 ));
 
                 if(!$process['status']){
@@ -1292,7 +1292,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_c_id' => 28, //Email message sent
                             'e_r_id'  => ( isset($message['e_r_id']) ? $message['e_r_id'] : 0 ),
                             'e_b_id'  => ( isset($message['e_b_id']) ? $message['e_b_id'] : 0 ),
-                            'e_outbound_u_id'  => ( isset($message['i_inbound_c_id']) ? $message['i_inbound_c_id'] : 0 ),
+                            'e_outbound_c_id'  => ( isset($message['i_inbound_c_id']) ? $message['i_inbound_c_id'] : 0 ),
                         ),
                     );
 
@@ -1344,8 +1344,8 @@ class Comm_model extends CI_Model {
         $error_message = null;
         if(count($message)<1){
             $error_message = 'Missing $message';
-        } elseif(!isset($message['e_outbound_u_id']) || $message['e_outbound_u_id']<1){
-            $error_message = 'Missing e_outbound_u_id';
+        } elseif(!isset($message['e_outbound_c_id']) || $message['e_outbound_c_id']<1){
+            $error_message = 'Missing e_outbound_c_id';
         } elseif(!isset($message['e_outbound_u_id']) || $message['e_outbound_u_id']<1) {
             $error_message = 'Missing e_outbound_u_id';
         }
@@ -1376,7 +1376,7 @@ class Comm_model extends CI_Model {
                 $bs = fetch_action_plan_copy($message['e_b_id'],$message['e_r_id']);
 
                 //Fetch intent relative to the Bootcamp by doing an array search:
-                $b_data = extract_level($bs[0], $message['e_outbound_u_id']);
+                $b_data = extract_level($bs[0], $message['e_outbound_c_id']);
                 //IF !$b_data it likely means that intent is a generic system notification not part of $message['e_b_id']
 
                 //Do we have a Class?
@@ -1389,7 +1389,7 @@ class Comm_model extends CI_Model {
             //Fetch intent and its messages with an appropriate depth
             $fetch_depth = (($message['depth']==1 || ($message['e_b_id'] && $b_data['level']==2)) ? 1 : ( $message['depth']>1 ? $message['depth'] : 0 ));
             $tree = $this->Db_model->c_fetch(array(
-                'c.c_id' => $message['e_outbound_u_id'],
+                'c.c_id' => $message['e_outbound_c_id'],
             ), $fetch_depth, array('i')); //Supports up to 2 levels deep for now...
 
 
@@ -1398,7 +1398,7 @@ class Comm_model extends CI_Model {
             if($message['e_r_id'] && !$message['e_b_id']){
                 $error_message = 'Had e_r_id=['.$message['e_r_id'].'] but missing e_b_id';
             } elseif(!isset($tree[0])){
-                $error_message = 'Invalid Intent ID ['.$message['e_outbound_u_id'].']';
+                $error_message = 'Invalid Intent ID ['.$message['e_outbound_c_id'].']';
             } elseif($message['e_b_id'] && count($bs)<1){
                 $error_message = 'Failed to find Bootcamp ['.$message['e_b_id'].']';
             } elseif($message['e_r_id'] && !$message['e_b_id']){
@@ -1419,7 +1419,7 @@ class Comm_model extends CI_Model {
                 'e_json' => $message,
                 'e_outbound_u_id' => $message['e_outbound_u_id'],
                 'e_fp_id' => $message['e_fp_id'],
-                'e_outbound_u_id' => $message['e_outbound_u_id'],
+                'e_outbound_c_id' => $message['e_outbound_c_id'],
                 'e_inbound_u_id' => $message['e_inbound_u_id'],
                 'e_b_id' => $message['e_b_id'],
                 'e_r_id' => $message['e_r_id'],

@@ -693,7 +693,7 @@ class Api_v1 extends CI_Controller {
                 $this->Comm_model->foundation_message(array(
                     'e_inbound_u_id' => 0,
                     'e_outbound_u_id' => $udata['u_id'],
-                    'e_outbound_u_id' => 2697,
+                    'e_outbound_c_id' => 2697,
                     'depth' => 0,
                     'e_b_id' => $duplicate_registries[0]['ru_b_id'],
                     'e_r_id' => $duplicate_registries[0]['r_id'],
@@ -745,7 +745,7 @@ class Api_v1 extends CI_Controller {
             $this->Comm_model->foundation_message(array(
                 'e_inbound_u_id' => 0,
                 'e_outbound_u_id' => $udata['u_id'],
-                'e_outbound_u_id' => 2697,
+                'e_outbound_c_id' => 2697,
                 'depth' => 0,
                 'e_b_id' => $b['b_id'],
             ), true);
@@ -1141,7 +1141,7 @@ class Api_v1 extends CI_Controller {
                             'html' => $html_message,
                         ),
                         'e_inbound_c_id' => 28, //Email message sent
-                        'e_outbound_u_id' => $intent_data['intent']['c_id'],
+                        'e_outbound_c_id' => $intent_data['intent']['c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => $focus_class['r_id'],
                     ));
@@ -1218,7 +1218,7 @@ class Api_v1 extends CI_Controller {
                     'e_inbound_c_id' => 52, //Pending Drip e_inbound_c_id=52
                     'e_status' => 0, //Pending for the Drip Cron
                     'e_i_id' => $i['i_id'],
-                    'e_outbound_u_id' => $i['i_inbound_c_id'],
+                    'e_outbound_c_id' => $i['i_inbound_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
 
@@ -1230,7 +1230,6 @@ class Api_v1 extends CI_Controller {
         //Save student completion report:
         $us_eng = $this->Db_model->e_create(array(
             'e_inbound_u_id' => $matching_admissions[0]['u_id'],
-            //'e_outbound_u_id' => $matching_admissions[0]['u_id'], //The Bootcamp leader who has to review this
             'e_status' => -1, //Auto approved
             'e_text_value' => trim($_POST['us_notes']),
             'e_time_estimate' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
@@ -1264,7 +1263,7 @@ class Api_v1 extends CI_Controller {
             //Send graduation message:
             $this->Comm_model->foundation_message(array(
                 'e_outbound_u_id' => intval($_POST['u_id']),
-                'e_outbound_u_id' => 4632, //As soon as Graduated message
+                'e_outbound_c_id' => 4632, //As soon as Graduated message
                 'depth' => 0,
                 'e_b_id' => intval($_POST['b_id']),
                 'e_r_id' => intval($_POST['r_id']),
@@ -1278,17 +1277,6 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__completion_rate' => number_format( ( $matching_admissions[0]['ru_cache__completion_rate'] + ($intent_data['intent']['c_time_estimate']/$bs[0]['c__estimated_hours']) ),8),
                 'ru_cache__current_task' => $intent_data['next_intent']['cr_outbound_rank'],
             ));
-
-            //Send appropriate Message:
-            /*
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => intval($_POST['u_id']),
-                'e_outbound_u_id' => $intent_data['next_intent']['c_id'],
-                'depth' => 0,
-                'e_b_id' => intval($_POST['b_id']),
-                'e_r_id' => intval($_POST['r_id']),
-            ));
-            */
 
             //Show button for next Task:
             echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
@@ -1307,7 +1295,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_c_id' => 8, //Platform Error
                 'e_b_id' => $_POST['b_id'],
                 'e_r_id' => $_POST['r_id'],
-                'e_outbound_u_id' => $_POST['c_id'],
+                'e_outbound_c_id' => $_POST['c_id'],
             ));
 
         }
@@ -1334,7 +1322,7 @@ class Api_v1 extends CI_Controller {
             $this->Comm_model->foundation_message(array(
                 'e_inbound_u_id' => 0,
                 'e_outbound_u_id' => $matching_users[0]['u_id'],
-                'e_outbound_u_id' => 3030,
+                'e_outbound_c_id' => 3030,
                 'depth' => 0,
                 'e_b_id' => 0,
                 'e_r_id' => 0,
@@ -2095,7 +2083,7 @@ class Api_v1 extends CI_Controller {
             ),
             'e_inbound_c_id' => 20, //Intent Created
             'e_b_id' => $b['b_id'],
-            'e_outbound_u_id' => $intent['c_id'],
+            'e_outbound_c_id' => $intent['c_id'],
         ));
 
 
@@ -2443,7 +2431,7 @@ class Api_v1 extends CI_Controller {
 	        ),
 	        'e_inbound_c_id' => 20, //New Intent
 	        'e_b_id' => intval($_POST['b_id']),
-	        'e_outbound_u_id' => $new_intent['c_id'],
+	        'e_outbound_c_id' => $new_intent['c_id'],
 	    ));
 
 	    //Create Link:
@@ -2566,7 +2554,7 @@ class Api_v1 extends CI_Controller {
             'e_inbound_u_id' => $udata['u_id'],
             'e_inbound_c_id' => 89, //Intent link archived
             'e_b_id' => $_POST['current_b_id'],
-            'e_outbound_u_id' => $bs[0]['b_outbound_c_id'],
+            'e_outbound_c_id' => $bs[0]['b_outbound_c_id'],
             'e_cr_id' => $_POST['delete_cr_id'],
         ));
 
@@ -2681,7 +2669,7 @@ class Api_v1 extends CI_Controller {
 	        ),
 	        'e_inbound_c_id' => 23, //New Intent Link
             'e_b_id' => $inbound_bs[0]['b_id'],
-            'e_outbound_u_id' => $inbound_bs[0]['b_outbound_c_id'],
+            'e_outbound_c_id' => $inbound_bs[0]['b_outbound_c_id'],
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
 
@@ -2774,7 +2762,7 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_text_value' => '['.$subject[0]['c_outcome'].'] was migrated from ['.$from[0]['c_outcome'].'] to ['.$to[0]['c_outcome'].']', //Message migrated
                     'e_inbound_c_id' => 50, //Intent migrated
-                    'e_outbound_u_id' => intval($_POST['c_id']),
+                    'e_outbound_c_id' => intval($_POST['c_id']),
                     'e_cr_id' => intval($_POST['cr_id']),
                     'e_b_id' => intval($_POST['b_id']),
                 ));
@@ -2927,7 +2915,7 @@ class Api_v1 extends CI_Controller {
                 ),
                 'e_inbound_c_id' => ( $_POST['level']>=2 && isset($c_update['c_status']) && $c_update['c_status']<0 ? 21 : 19 ), //Intent Deleted OR Updated
                 'e_b_id' => intval($_POST['b_id']),
-                'e_outbound_u_id' => intval($_POST['pid']),
+                'e_outbound_c_id' => intval($_POST['pid']),
             ));
 
         }
@@ -3008,7 +2996,7 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_inbound_c_id' => 22, //Links Sorted
                     'e_b_id' => intval($_POST['b_id']),
-                    'e_outbound_u_id' => intval($_POST['pid']),
+                    'e_outbound_c_id' => intval($_POST['pid']),
                 ));
 
                 //Display message:
@@ -3288,7 +3276,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => $i,
                 'e_inbound_c_id' => 40, //Got It
-                'e_outbound_u_id' => intval($_POST['intent_id']),
+                'e_outbound_c_id' => intval($_POST['intent_id']),
                 'e_i_id' => $i['i_id'],
             ));
         }
@@ -3370,7 +3358,7 @@ class Api_v1 extends CI_Controller {
             //All seems good, attempt dispatch:
             echo_json($this->Comm_model->foundation_message(array(
                 'e_outbound_u_id' => intval($_POST['u_id']),
-                'e_outbound_u_id' => intval($_POST['pid']),
+                'e_outbound_c_id' => intval($_POST['pid']),
                 'depth' => intval($_POST['depth']),
                 'e_b_id' => 0,
                 'e_r_id' => 0,
@@ -3491,7 +3479,7 @@ class Api_v1 extends CI_Controller {
             ),
             'e_inbound_c_id' => 34, //Message added e_inbound_c_id=34
             'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_outbound_u_id' => intval($new_messages[0]['i_inbound_c_id']),
+            'e_outbound_c_id' => intval($new_messages[0]['i_inbound_c_id']),
             'e_b_id' => $bs[0]['b_id'],
         ));
 
@@ -3503,7 +3491,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => intval($new_messages[0]['i_id']),
-                'e_outbound_u_id' => intval($new_messages[0]['i_inbound_c_id']),
+                'e_outbound_c_id' => intval($new_messages[0]['i_inbound_c_id']),
                 'e_b_id' => $bs[0]['b_id'],
                 'e_fp_id' => $bs[0]['b_fp_id'],
                 'e_status' => 0, //Job pending
@@ -3606,7 +3594,7 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_inbound_c_id' => 34, //Message added
                     'e_i_id' => intval($new_messages[0]['i_id']),
-                    'e_outbound_u_id' => intval($_POST['pid']),
+                    'e_outbound_c_id' => intval($_POST['pid']),
                     'e_b_id' => $bs[0]['b_id'],
                 ));
 
@@ -3710,7 +3698,7 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_inbound_c_id' => 36, //Message edited
                     'e_i_id' => $messages[0]['i_id'],
-                    'e_outbound_u_id' => intval($_POST['pid']),
+                    'e_outbound_c_id' => intval($_POST['pid']),
                 ));
 
                 //Print the challenge:
@@ -3773,7 +3761,7 @@ class Api_v1 extends CI_Controller {
                     ),
                     'e_inbound_c_id' => 35, //Message deleted
                     'e_i_id' => intval($messages[0]['i_id']),
-                    'e_outbound_u_id' => intval($_POST['pid']),
+                    'e_outbound_c_id' => intval($_POST['pid']),
                 ));
 
                 echo_json(array(
@@ -3825,7 +3813,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 39, //Messages sorted
-                'e_outbound_u_id' => intval($_POST['pid']),
+                'e_outbound_c_id' => intval($_POST['pid']),
                 'e_b_id' => intval($_POST['b_id']),
             ));
 
@@ -3840,7 +3828,7 @@ class Api_v1 extends CI_Controller {
         //Dispatch Messages:
         $results = $this->Comm_model->foundation_message(array(
             'e_outbound_u_id' => $_POST['u_id'],
-            'e_outbound_u_id' => $_POST['c_id'],
+            'e_outbound_c_id' => $_POST['c_id'],
             'depth' => $_POST['depth'],
             'e_b_id' => $_POST['b_id'],
             'e_r_id' => 0,

@@ -250,7 +250,7 @@ class My extends CI_Controller {
                 'e_inbound_c_id' => 32, //actionplan Opened
                 'e_b_id' => $focus_admission['b_id'],
                 'e_r_id' => $focus_admission['r_id'],
-                'e_outbound_u_id' => $focus_admission['c_id'],
+                'e_outbound_c_id' => $focus_admission['c_id'],
             ));
 
             //Reload with specific directions:

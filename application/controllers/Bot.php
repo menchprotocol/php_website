@@ -104,74 +104,9 @@ class Bot extends CI_Controller {
     function m1(){
         echo_json($this->Comm_model->foundation_message(array(
             'e_outbound_u_id' => 1,
-            'e_outbound_u_id' => 923,
+            'e_outbound_c_id' => 923,
             'depth' => 0,
         )));
-    }
-    function m2($c_id=2088){
-        echo_json($this->Comm_model->foundation_message(array(
-            'e_outbound_u_id' => 1,
-            'e_outbound_u_id' => $c_id,
-            'depth' => 0,
-            'e_b_id' => 21,
-            'e_r_id' => 196,
-        )));
-    }
-
-
-    function scott(){
-        exit;
-        $results = array(
-
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => 624,
-                'e_outbound_u_id' => 5988,
-                'depth' => 0,
-                'e_b_id' => 292,
-                'e_r_id' => 12124,
-            )),
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => 601,
-                'e_outbound_u_id' => 5988,
-                'depth' => 0,
-                'e_b_id' => 292,
-                'e_r_id' => 12124,
-            )),
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => 602,
-                'e_outbound_u_id' => 5988,
-                'depth' => 0,
-                'e_b_id' => 292,
-                'e_r_id' => 12124,
-            )),
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => 625,
-                'e_outbound_u_id' => 5988,
-                'depth' => 0,
-                'e_b_id' => 292,
-                'e_r_id' => 12124,
-            )),
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => 612,
-                'e_outbound_u_id' => 5988,
-                'depth' => 0,
-                'e_b_id' => 292,
-                'e_r_id' => 12124,
-            )),
-
-            /////// Different Class:
-            /*
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => 600,
-                'e_outbound_u_id' => 5988,
-                'depth' => 0,
-                'e_b_id' => 292,
-                'e_r_id' => 12128,
-            )),
-            */
-        );
-
-        echo_json($results);
     }
 
 

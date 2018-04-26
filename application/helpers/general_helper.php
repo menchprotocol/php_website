@@ -511,10 +511,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
     //Do a quick hack to make these two variables inter-changable:
-    if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0 && !isset($i['e_outbound_u_id'])){
-        $i['e_outbound_u_id'] = $i['i_inbound_c_id'];
-    } elseif(isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0 && !isset($i['i_inbound_c_id'])){
-        $i['i_inbound_c_id'] = $i['e_outbound_u_id'];
+    if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0 && !isset($i['e_outbound_c_id'])){
+        $i['e_outbound_c_id'] = $i['i_inbound_c_id'];
+    } elseif(isset($i['e_outbound_c_id']) && $i['e_outbound_c_id']>0 && !isset($i['i_inbound_c_id'])){
+        $i['i_inbound_c_id'] = $i['e_outbound_c_id'];
     }
 
 

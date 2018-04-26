@@ -574,7 +574,7 @@ $config['engagement_references'] = array(
         'name' => 'Class',
         'object_code' => 'r',
     ),
-    'e_outbound_u_id' => array(
+    'e_outbound_c_id' => array(
         'name' => 'Intent',
         'object_code' => 'c',
     ),

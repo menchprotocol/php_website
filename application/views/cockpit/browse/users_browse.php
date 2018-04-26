@@ -144,7 +144,7 @@ foreach($users as $key=>$user){
         $sent_messages = $this->Db_model->e_fetch(array(
             'e_inbound_c_id' => 7,
             'e_outbound_u_id' => $user['u_id'],
-            'e_outbound_u_id' => intval($_GET['pid']),
+            'e_outbound_c_id' => intval($_GET['pid']),
         ),1);
         if(count($sent_messages)>0){
             //Already sent!

@@ -399,16 +399,6 @@ WHERE ru.ru_status >= 4
 
         } else {
 
-            //All good, send Welcome to Mench Message:
-            /*
-            $this->Comm_model->foundation_message(array(
-                'e_inbound_u_id' => 0,
-                'e_outbound_u_id' => $insert_columns['u_id'],
-                'e_outbound_u_id' => 5980, //Welcome to Mench
-                'depth' => 0,
-            ));
-            */
-
             //Fetch to return:
             $users = $this->Db_model->u_fetch(array(
                 'u_id' => $insert_columns['u_id'],
@@ -705,7 +695,7 @@ WHERE ru.ru_status >= 4
             $this->Comm_model->foundation_message(array(
                 'e_inbound_u_id' => 0,
                 'e_outbound_u_id' => $admissions[0]['u_id'],
-                'e_outbound_u_id' => 2698,
+                'e_outbound_c_id' => 2698,
                 'depth' => 0,
                 'e_b_id' => $admissions[0]['ru_b_id'],
                 'e_r_id' => $admissions[0]['ru_r_id'],
@@ -1308,7 +1298,7 @@ WHERE ru.ru_status >= 4
             'e_json' => $bs[0],
             'e_inbound_c_id' => 70, //Action Plan Snapshot
             'e_b_id' => $bs[0]['b_id'],
-            'e_outbound_u_id' => $bs[0]['b_outbound_c_id'],
+            'e_outbound_c_id' => $bs[0]['b_outbound_c_id'],
             'e_r_id' => $r_id,
         ));
 

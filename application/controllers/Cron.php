@@ -76,7 +76,7 @@ class Cron extends CI_Controller {
                     $this->Comm_model->foundation_message(array(
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $admission['u_id'],
-                        'e_outbound_u_id' => 3016,
+                        'e_outbound_c_id' => 3016,
                         'depth' => 0,
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
@@ -141,7 +141,7 @@ class Cron extends CI_Controller {
                     //Send message letting them know that their Bootcamp has started:
                     $this->Comm_model->foundation_message(array(
                         'e_outbound_u_id' => $admission['u_id'],
-                        'e_outbound_u_id' => 5441, //Bootcamp/Class Started
+                        'e_outbound_c_id' => 5441, //Bootcamp/Class Started
                         'depth' => 0,
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
@@ -153,7 +153,7 @@ class Cron extends CI_Controller {
                         $this->Comm_model->foundation_message(array(
                             'e_inbound_u_id' => 0,
                             'e_outbound_u_id' => $admission['u_id'],
-                            'e_outbound_u_id' => 3120,
+                            'e_outbound_c_id' => 3120,
                             'depth' => 0,
                             'e_b_id' => $class['r_b_id'],
                             'e_r_id' => $class['r_id'],
@@ -391,7 +391,7 @@ class Cron extends CI_Controller {
             'e_r_id >' => 0,
             'e_outbound_u_id >' => 0,
             'e_b_id >' => 0,
-            'e_outbound_u_id >' => 0,
+            'e_outbound_c_id >' => 0,
         ), 200, array('ej'));
 
 
@@ -784,10 +784,10 @@ class Cron extends CI_Controller {
 
             //Send them a reminder to complete 24 hours after they start, only IF they started their application more than 6 days before the Class start:
             $reminder_c_id = 0;
-            if(($admission_time+(3*24*3600))<$admission_end_time && ($admission_time+(24*3600))<time() && !filter($reminders_sent,'e_outbound_u_id',3127)){
+            if(($admission_time+(3*24*3600))<$admission_end_time && ($admission_time+(24*3600))<time() && !filter($reminders_sent,'e_outbound_c_id',3127)){
                 //Sent 24 hours after initiating admission IF registered more than 3 days before Class starts
                 $reminder_c_id = 3127;
-            } elseif(($admission_time+(26*3600))<$admission_end_time && (time()+(24*3600))>$admission_end_time && !filter($reminders_sent,'e_outbound_u_id',3140)){
+            } elseif(($admission_time+(26*3600))<$admission_end_time && (time()+(24*3600))>$admission_end_time && !filter($reminders_sent,'e_outbound_c_id',3140)){
                 //Sent 24 hours before class starts IF registered more than 26 hours before Class starts
                 $reminder_c_id = 3140;
             }
@@ -878,7 +878,7 @@ class Cron extends CI_Controller {
                             'e_inbound_c_id IN (7,28)' => null, //Email or Message sent
                             'e_outbound_u_id' => $admission['u_id'],
                             'e_r_id' => $admission['r_id'],
-                            'e_outbound_u_id' => $logic['reminder_c_id'],
+                            'e_outbound_c_id' => $logic['reminder_c_id'],
                         ));
 
                         if(count($reminders_sent)==0){
@@ -887,7 +887,7 @@ class Cron extends CI_Controller {
                             $this->Comm_model->foundation_message(array(
                                 'e_inbound_u_id' => 0, //System
                                 'e_outbound_u_id' => $admission['u_id'],
-                                'e_outbound_u_id' => $logic['reminder_c_id'],
+                                'e_outbound_c_id' => $logic['reminder_c_id'],
                                 'depth' => 0,
                                 'e_b_id' => $admission['ru_b_id'],
                                 'e_r_id' => $admission['r_id'],
