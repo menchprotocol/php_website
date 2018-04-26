@@ -1,6 +1,7 @@
 <?php
 //Fetch the sprint units from config:
 $message_max = $this->config->item('message_max');
+$website = $this->config->item('website');
 $intent_statuses = status_bible('c');
 $udata = $this->session->userdata('user');
 if($b['b_is_parent']){
@@ -9,7 +10,7 @@ if($b['b_is_parent']){
 }
 ?>
 <style> .breadcrumb li { display:block; } </style>
-<script src="/js/console/<?= ( $b['b_is_parent'] ? 'actionplan_multiweek.js' : 'actionplan_7day.js' ) ?>" type="text/javascript"></script>
+<script src="/js/console/<?= ( $b['b_is_parent'] ? 'actionplan_multiweek.js' : 'actionplan_7day.js' ).'?v='.$website['version'] ?>" type="text/javascript"></script>
 
 <input type="hidden" id="b_id" value="<?= $b['b_id'] ?>" />
 <input type="hidden" id="pid" value="<?= $intent['c_id'] ?>" />
