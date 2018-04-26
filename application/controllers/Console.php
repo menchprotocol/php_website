@@ -105,7 +105,7 @@ class Console extends CI_Controller {
 	        exit;
 	    }
 	    
-	    $title = 'Dashboard | '.$bs[0]['c_objective'];
+	    $title = 'Dashboard | '.$bs[0]['c_outcome'];
 	    
 	    //Log view:
 	    $this->Db_model->e_create(array(
@@ -192,7 +192,7 @@ class Console extends CI_Controller {
         }
 	    
 	    $view_data = array(
-	        'title' => 'Classes | '.$bs[0]['c_objective'],
+	        'title' => 'Classes | '.$bs[0]['c_outcome'],
             'b' => $bs[0],
             'udata' => $udata,
 	        'breadcrumb' => array(
@@ -221,7 +221,7 @@ class Console extends CI_Controller {
 	    
 	    //Load view
 	    $this->load->view('console/shared/d_header' , array(
-	        'title' => 'Settings | '.$bs[0]['c_objective'],
+	        'title' => 'Settings | '.$bs[0]['c_outcome'],
 	        'b' => $bs[0],
 	        'breadcrumb' => array(
 	            array(

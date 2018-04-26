@@ -357,7 +357,7 @@ if($level==1){
         }
 
         //Intent title:
-        $ui .= $this_intent['c_objective'].' ';
+        $ui .= $this_intent['c_outcome'].' ';
 
         $ui .= '<span class="sub-stats">';
 

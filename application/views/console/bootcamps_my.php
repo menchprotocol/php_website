@@ -46,7 +46,7 @@ $website = $this->config->item('website');
             return false;
         }
 
-        var obj = $('#b_c_objective_'+b_is_parent);
+        var obj = $('#b_c_outcome_'+b_is_parent);
         var plc = $('.li'+b_is_parent);
 
         if(obj.val().length<2){
@@ -57,7 +57,7 @@ $website = $this->config->item('website');
 
         //Show loader:
         processing_b = 1;
-        var c_objective = obj.val();
+        var c_outcome = obj.val();
         $('.no-b-div-'+b_is_parent).remove(); //It may exist...
         obj.val('').prop('disabled',true);
         $('.new-b').hide();
@@ -65,7 +65,7 @@ $website = $this->config->item('website');
         plc.before( '<div class="list-group-item loader-div" style="padding:10px 10px;"><img src="/img/round_load.gif" class="loader" /> Creating New Bootcamp...</div>' );
 
         $.post("/api_v1/b_create", {
-            c_objective:c_objective,
+            c_outcome:c_outcome,
             b_is_parent:b_is_parent,
         }, function(data) {
 
@@ -122,7 +122,7 @@ $website = $this->config->item('website');
         echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
             <div class="input-group">
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_objective_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" data-placement="top" onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div>ADD</div>
@@ -153,7 +153,7 @@ $website = $this->config->item('website');
         echo '<div class="list-group-item list_input li0 new-step-input" style="padding: 5px 7px;">
             <div class="input-group">
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
-                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_objective_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
+                <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" data-placement="top" onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div>ADD</div>

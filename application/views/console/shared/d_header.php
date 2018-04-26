@@ -96,7 +96,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<div class="left-li-title">';
 	    		if(isset($b)){
-	    		    echo '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_objective_'.$b['b_outbound_c_id'].'">'.$b['c_objective'].'</span>';
+	    		    echo '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
                     if($b['b_old_format']){
                         echo ' <i class="fa fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp." aria-hidden="true"></i>';
                     }

@@ -305,7 +305,7 @@ function insert_gravatar(){
        echo '<div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History</h4></div>';
        //Attempt to fetch all payouts:
        $class_transactions = $this->Db_model->t_fetch(array(
-           't.t_u_id' => $udata['u_id'],
+           't.t_inbound_u_id' => $udata['u_id'],
        ));
        if(count($class_transactions)<1){
            //Class is not yet started:

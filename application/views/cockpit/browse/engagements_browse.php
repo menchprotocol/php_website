@@ -70,7 +70,7 @@ foreach($engagement_filters as $key=>$value){
         echo '<select name="'.$key.'" class="border" style="width:160px;">';
         echo '<option value="0">'.$value.'</option>';
         foreach($all_engs as $c_eng){
-            echo '<option value="'.$c_eng['c_id'].'" '.((isset($_GET[$key]) && $_GET[$key]==$c_eng['c_id'])?'selected="selected"':'').'>'.$c_eng['c_objective'].'</option>';
+            echo '<option value="'.$c_eng['c_id'].'" '.((isset($_GET[$key]) && $_GET[$key]==$c_eng['c_id'])?'selected="selected"':'').'>'.$c_eng['c_outcome'].'</option>';
         }
         echo '</select>';
         echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fa fa-external-link-square" aria-hidden="true"></i></a></div>';
@@ -102,7 +102,7 @@ echo '</form>';
         foreach($engagements as $e){
             echo '<tr>';
             echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
-            echo '<td><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['c_objective'].'</span></td>';
+            echo '<td><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['c_outcome'].'</span></td>';
 
             //Do we have a message?
             if(strlen($e['e_text_value'])>0){

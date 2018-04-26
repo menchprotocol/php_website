@@ -278,7 +278,7 @@ class Api_v1 extends CI_Controller {
 
         //List pages:
         $ready_pages = $this->Db_model->fp_fetch(array(
-            'fs_u_id' => $udata['u_id'],
+            'fs_inbound_u_id' => $udata['u_id'],
             'fs_status' => 1, //Have access
             'fp_status >=' => 0, //Available or Connected
         ));
@@ -346,7 +346,7 @@ class Api_v1 extends CI_Controller {
                     $additional_ui_boxes .= '<h4>Other Mench Bootcamps Connected to this Facebook Page:</h4>';
                     $additional_ui_boxes .= '<ul style="list-style: decimal;">';
                     foreach($other_bs as $count=>$b){
-                        $additional_ui_boxes .= '<li><a href="/console/'.$b['b_id'].'">'.$b['c_objective'].'</a></li>';
+                        $additional_ui_boxes .= '<li><a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></li>';
                     }
                     $additional_ui_boxes .= '</ul>';
                     $additional_ui_boxes .= '</div>';
@@ -1121,11 +1121,11 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
                     $html_message .= '<br />';
-                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_outcome'].'</div>';
                     $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
-                    $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_objective'].'</div>';
+                    $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_outcome'].'</div>';
                     $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($intent_data['intent']['c_time_estimate'],0).'</div>';
                     $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
                     $html_message .= '<br />';
@@ -1164,7 +1164,7 @@ class Api_v1 extends CI_Controller {
                 array_push($on_complete_text_values, array_merge($i , array(
                     'e_inbound_u_id' => 0,
                     'e_outbound_u_id' => $matching_admissions[0]['u_id'],
-                    'i_c_id' => $i['i_c_id'],
+                    'i_inbound_c_id' => $i['i_inbound_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
                 )));
@@ -1180,7 +1180,7 @@ class Api_v1 extends CI_Controller {
                     array_push($on_complete_text_values, array_merge($i , array(
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $matching_admissions[0]['u_id'],
-                        'i_c_id' => $i['i_c_id'],
+                        'i_inbound_c_id' => $i['i_inbound_c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => intval($_POST['r_id']),
                     )));
@@ -1218,7 +1218,7 @@ class Api_v1 extends CI_Controller {
                     'e_inbound_c_id' => 52, //Pending Drip e_inbound_c_id=52
                     'e_status' => 0, //Pending for the Drip Cron
                     'e_i_id' => $i['i_id'],
-                    'e_outbound_u_id' => $i['i_c_id'],
+                    'e_outbound_u_id' => $i['i_inbound_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
 
@@ -1233,7 +1233,7 @@ class Api_v1 extends CI_Controller {
             //'e_outbound_u_id' => $matching_admissions[0]['u_id'], //The Bootcamp leader who has to review this
             'e_status' => -1, //Auto approved
             'e_text_value' => trim($_POST['us_notes']),
-            'e_float_value' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
+            'e_time_estimate' => $intent_data['intent']['c_time_estimate'], //Estimate time spent on this item
             'e_inbound_c_id' => 33, //Completion Report
             'e_outbound_c_id' => intval($_POST['c_id']),
             'e_b_id' => intval($_POST['b_id']),
@@ -1733,7 +1733,7 @@ class Api_v1 extends CI_Controller {
 
         //Echo the export file:
         header("Content-type: application/octet-stream");
-        header("Content-Disposition: attachment; filename=".$classes[0]['c_objective']." - Class of ".time_format($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
+        header("Content-Disposition: attachment; filename=".$classes[0]['c_outcome']." - Class of ".time_format($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
         header("Pragma: no-cache");
         header("Expires: 0");
 
@@ -1948,7 +1948,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Session expired. Login to try again.',
             ));
             return false;
-        } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<2){
+        } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<2){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Outcome must be 2 characters or longer.',
@@ -1965,14 +1965,14 @@ class Api_v1 extends CI_Controller {
 
         //Create new intent:
         $intent = $this->Db_model->c_create(array(
-            'c_creator_id' => $udata['u_id'],
-            'c_objective' => trim($_POST['c_objective']),
+            'c_inbound_u_id' => $udata['u_id'],
+            'c_outcome' => trim($_POST['c_outcome']),
         ));
         if(intval($intent['c_id'])<=0){
             //Log this error:
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $udata['u_id'],
-                'e_text_value' => 'b_create() Function failed to create intent ['.$_POST['c_objective'].'].',
+                'e_text_value' => 'b_create() Function failed to create intent ['.$_POST['c_outcome'].'].',
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 8, //Platform Error
             ));
@@ -1987,7 +1987,7 @@ class Api_v1 extends CI_Controller {
 
         //Generaye URL Key:
         //Cleans text:
-        $generated_key = generate_hashtag($_POST['c_objective']);
+        $generated_key = generate_hashtag($_POST['c_outcome']);
 
 
         //Check for duplicates:
@@ -2405,7 +2405,7 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid Bootcamp ID.</span>');
 	    } elseif(!isset($_POST['pid']) || intval($_POST['pid'])<=0){
 	        die('<span style="color:#FF0000;">Error: Invalid Intent ID.</span>');
-	    } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
+	    } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing Intent Outcome.</span>');
 	    }
 
@@ -2427,15 +2427,15 @@ class Api_v1 extends CI_Controller {
 
 	    //Create intent:
 	    $new_intent = $this->Db_model->c_create(array(
-	        'c_creator_id' => $udata['u_id'],
-            'c_objective' => trim($_POST['c_objective']),
+	        'c_inbound_u_id' => $udata['u_id'],
+            'c_outcome' => trim($_POST['c_outcome']),
             'c_time_estimate' => ( $_POST['next_level']>=2 ? '0.05' : '0' ), //3 min default Step
 	    ));
 
 	    //Log Engagement for New Intent:
 	    $this->Db_model->e_create(array(
 	        'e_inbound_u_id' => $udata['u_id'],
-	        'e_text_value' => 'Intent ['.$new_intent['c_objective'].'] created',
+	        'e_text_value' => 'Intent ['.$new_intent['c_outcome'].'] created',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
@@ -2461,7 +2461,7 @@ class Api_v1 extends CI_Controller {
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_inbound_u_id' => $udata['u_id'],
-	        'e_text_value' => 'Linked intent ['.$new_intent['c_objective'].'] as outbound of intent ['.$inbound_intents[0]['c_objective'].']',
+	        'e_text_value' => 'Linked intent ['.$new_intent['c_outcome'].'] as outbound of intent ['.$inbound_intents[0]['c_outcome'].']',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'before' => null,
@@ -2674,7 +2674,7 @@ class Api_v1 extends CI_Controller {
 	    //Log Engagement for New Intent Link:
 	    $this->Db_model->e_create(array(
 	        'e_inbound_u_id' => $udata['u_id'],
-	        'e_text_value' => 'Linked intent ['.$outbound_bs[0]['c_objective'].'] as a child intent of ['.$inbound_bs[0]['c_objective'].']',
+	        'e_text_value' => 'Linked intent ['.$outbound_bs[0]['c_outcome'].'] as a child intent of ['.$inbound_bs[0]['c_outcome'].']',
 	        'e_json' => array(
 	            'input' => $_POST,
 	            'after' => $relation,
@@ -2772,7 +2772,7 @@ class Api_v1 extends CI_Controller {
                     'e_json' => array(
                         'post' => $_POST,
                     ),
-                    'e_text_value' => '['.$subject[0]['c_objective'].'] was migrated from ['.$from[0]['c_objective'].'] to ['.$to[0]['c_objective'].']', //Message migrated
+                    'e_text_value' => '['.$subject[0]['c_outcome'].'] was migrated from ['.$from[0]['c_outcome'].'] to ['.$to[0]['c_outcome'].']', //Message migrated
                     'e_inbound_c_id' => 50, //Intent migrated
                     'e_outbound_u_id' => intval($_POST['c_id']),
                     'e_cr_id' => intval($_POST['cr_id']),
@@ -2822,7 +2822,7 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Missing level',
             ));
             return false;
-        } elseif(!isset($_POST['c_objective']) || strlen($_POST['c_objective'])<=0){
+        } elseif(!isset($_POST['c_outcome']) || strlen($_POST['c_outcome'])<=0){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Missing Outcome',
@@ -2877,10 +2877,10 @@ class Api_v1 extends CI_Controller {
         if($_POST['level']==1){
 
             //Did the Bootcamp's Intent Outcome change?
-            if(!(trim($_POST['c_objective'])==$original_intents[0]['c_objective'])){
+            if(!(trim($_POST['c_outcome'])==$original_intents[0]['c_outcome'])){
                 //Generate Update Array
                 $c_update = array(
-                    'c_objective' => trim($_POST['c_objective']),
+                    'c_outcome' => trim($_POST['c_outcome']),
                 );
             }
 
@@ -2888,7 +2888,7 @@ class Api_v1 extends CI_Controller {
 
             //For level 2 & 3
             $c_update = array(
-                'c_objective' => trim($_POST['c_objective']),
+                'c_outcome' => trim($_POST['c_outcome']),
                 'c_status' => intval($_POST['c_status']),
                 'c_time_estimate' => doubleval($_POST['c_time_estimate']),
                 'c_complete_url_required' => ( intval($_POST['c_complete_url_required']) ? 't' : 'f' ),
@@ -3000,7 +3000,7 @@ class Api_v1 extends CI_Controller {
                 //Log Engagement:
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $udata['u_id'],
-                    'e_text_value' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_objective'].']',
+                    'e_text_value' => 'Sorted outbound intents for ['.$inbound_intents[0]['c_outcome'].']',
                     'e_json' => array(
                         'input' => $_POST,
                         'before' => $outbounds_before,
@@ -3062,7 +3062,7 @@ class Api_v1 extends CI_Controller {
             //Action Plan stuff:
             array(
                 'is_header' => 1,
-                'name' => '<h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</h4>',
+                'name' => '<h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_outcome'].'</h4>',
             ),
             array(
                 'is_header' => 0,
@@ -3092,7 +3092,7 @@ class Api_v1 extends CI_Controller {
                     //Give a single/total option:
                     array_push($import_items,array(
                         'is_header' => 0,
-                        'name' => 'Tasks form ['.$task['c_objective'].']',
+                        'name' => 'Tasks form ['.$task['c_outcome'].']',
                         'id' => 'b_outbound_c_ids',
                         'value' => $task['c_id'],
                         'count' => count($task['c__child_intents']),
@@ -3278,7 +3278,7 @@ class Api_v1 extends CI_Controller {
 
         //Fetch Messages and the User's Got It Engagement History:
         $messages = $this->Db_model->i_fetch(array(
-            'i_c_id' => intval($_POST['intent_id']),
+            'i_inbound_c_id' => intval($_POST['intent_id']),
             'i_status >' => 0, //Published in any form
         ));
 
@@ -3464,15 +3464,15 @@ class Api_v1 extends CI_Controller {
 
         //Create message:
         $i = $this->Db_model->i_create(array(
-            'i_creator_id' => $udata['u_id'],
-            'i_c_id' => intval($_POST['pid']),
+            'i_inbound_u_id' => $udata['u_id'],
+            'i_inbound_c_id' => intval($_POST['pid']),
             'i_media_type' => $i_media_type,
             'i_message' => $message,
             'i_url' => $new_file_url,
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
                     'i_status' => $_POST['i_status'],
-                    'i_c_id' => $_POST['pid'],
+                    'i_inbound_c_id' => $_POST['pid'],
                 )),
         ));
 
@@ -3491,7 +3491,7 @@ class Api_v1 extends CI_Controller {
             ),
             'e_inbound_c_id' => 34, //Message added e_inbound_c_id=34
             'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_outbound_u_id' => intval($new_messages[0]['i_c_id']),
+            'e_outbound_u_id' => intval($new_messages[0]['i_inbound_c_id']),
             'e_b_id' => $bs[0]['b_id'],
         ));
 
@@ -3503,7 +3503,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => intval($new_messages[0]['i_id']),
-                'e_outbound_u_id' => intval($new_messages[0]['i_c_id']),
+                'e_outbound_u_id' => intval($new_messages[0]['i_inbound_c_id']),
                 'e_b_id' => $bs[0]['b_id'],
                 'e_fp_id' => $bs[0]['b_fp_id'],
                 'e_status' => 0, //Job pending
@@ -3580,15 +3580,15 @@ class Api_v1 extends CI_Controller {
 
                 //Create Message:
                 $i = $this->Db_model->i_create(array(
-                    'i_creator_id' => $udata['u_id'],
-                    'i_c_id' => intval($_POST['pid']),
+                    'i_inbound_u_id' => $udata['u_id'],
+                    'i_inbound_c_id' => intval($_POST['pid']),
                     'i_media_type' => $i_media_type,
                     'i_message' => trim($_POST['i_message']),
                     'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
                     'i_status' => $_POST['i_status'],
                     'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
                         'i_status' => $_POST['i_status'],
-                        'i_c_id' => intval($_POST['pid']),
+                        'i_inbound_c_id' => intval($_POST['pid']),
                     )),
                 ));
 
@@ -3672,7 +3672,7 @@ class Api_v1 extends CI_Controller {
                 //All good, lets move on:
                 //Define what needs to be updated:
                 $to_update = array(
-                    'i_creator_id' => $udata['u_id'],
+                    'i_inbound_u_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
                 );
 
@@ -3688,7 +3688,7 @@ class Api_v1 extends CI_Controller {
                     //Put it at the end of the new list:
                     $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
                         'i_status' => $_POST['i_status'],
-                        'i_c_id' => intval($_POST['pid']),
+                        'i_inbound_c_id' => intval($_POST['pid']),
                     ));
                 }
 
@@ -3759,7 +3759,7 @@ class Api_v1 extends CI_Controller {
             } else {
                 //Now update the DB:
                 $this->Db_model->i_update( intval($_POST['i_id']) , array(
-                    'i_creator_id' => $udata['u_id'],
+                    'i_inbound_u_id' => $udata['u_id'],
                     'i_timestamp' => date("Y-m-d H:i:s"),
                     'i_status' => -1, //Deleted by instructor
                 ));

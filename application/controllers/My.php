@@ -54,7 +54,7 @@ class My extends CI_Controller {
         }
 
         $data = array(
-            'title' => 'Enroll in '.$bs[0]['c_objective'],
+            'title' => 'Enroll in '.$bs[0]['c_outcome'],
             'udata' => $udata,
             'b' => $bs[0],
             'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
@@ -92,7 +92,7 @@ class My extends CI_Controller {
 
         //Assemble the data:
         $data = array(
-            'title' => 'Join '.$admissions[0]['c_objective'].' - Starting '.time_format($admissions[0]['r_start_date'],4),
+            'title' => 'Join '.$admissions[0]['c_outcome'].' - Starting '.time_format($admissions[0]['r_start_date'],4),
             'ru_id' => $ru_id,
             'u_id' => $_GET['u_id'],
             'u_key' => $_GET['u_key'],
@@ -343,7 +343,7 @@ class My extends CI_Controller {
 
                 }
 
-                echo '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>'.$other_admission['c_objective'].'</b>';
+                echo '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>'.$other_admission['c_outcome'].'</b>';
                 echo ' <span style="display:inline-block;"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($other_admission['r_start_date'],2).'</span>';
 
                 if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){
@@ -720,7 +720,7 @@ class My extends CI_Controller {
                                 echo '<div class="us_c_title">';
                                 echo '<a href="javascript:view_el('.$admission['u_id'].','.$intent['c_id'].')" class="plain">';
                                 echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'" aria-hidden="true"></i> ';
-                                echo status_bible('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_objective'];
+                                echo status_bible('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_outcome'];
                                 echo '</a>';
                                 echo '</div>';
 
@@ -837,7 +837,7 @@ class My extends CI_Controller {
 
         //Assemble the data:
         $data = array(
-            'title' => 'Review '.$lead_instructor.' - '.$admissions[0]['c_objective'],
+            'title' => 'Review '.$lead_instructor.' - '.$admissions[0]['c_outcome'],
             'lead_instructor' => $lead_instructor,
             'admission' => $admissions[0],
             'ru_key' => $ru_key,

@@ -126,7 +126,7 @@ class Front extends CI_Controller {
 
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
-            'title' => $bs[0]['c_objective'],
+            'title' => $bs[0]['c_outcome'],
             'b_id' => $bs[0]['b_id'],
 	        'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
             'canonical' => 'https://mench.com/'.$bs[0]['b_url_key'], //Would set this in the <head> for SEO purposes

@@ -77,7 +77,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
             echo '<div class="admission_checklist">';
 
-                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_objective'].'</b></p>';
+                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_outcome'].'</b></p>';
                 //Show date:
                 echo '<p style="font-size: 0.9em;"><i class="fa fa-calendar" aria-hidden="true"></i> ';
                 if(isset($bs[0]['b_is_parent']) && $bs[0]['b_is_parent']){
@@ -136,7 +136,7 @@ if(count($admissions)>0 && is_array($admissions)){
                 foreach($child_intents as $child_admission){
                     echo '<li>';
                     echo status_bible('ru',$child_admission['ru_status'],1,'right');
-                    echo ' Week '.$child_admission['cr_outbound_rank'].': '.$child_admission['c_objective'];
+                    echo ' Week '.$child_admission['cr_outbound_rank'].': '.$child_admission['c_outcome'];
                     echo '</li>';
                 }
                 echo '</ul>';
@@ -175,7 +175,7 @@ if(count($admissions)>0 && is_array($admissions)){
                 <input type="hidden" name="cmd" value="_xclick">
                 <input type="hidden" name="business" value="EYKXCMCJHEBA8">
                 <input type="hidden" name="lc" value="US">
-                <input type="hidden" name="item_name" value="<?= $bs[0]['c_objective'] ?>">
+                <input type="hidden" name="item_name" value="<?= $bs[0]['c_outcome'] ?>">
                 <input type="hidden" name="item_number" value="<?= $admission['ru_id'] ?>">
                 <input type="hidden" name="custom_b_id" value="<?= $admission['ru_b_id'] ?>">
                 <input type="hidden" name="custom_u_id" value="<?= $u_id ?>">

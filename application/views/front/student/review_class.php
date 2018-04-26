@@ -81,7 +81,7 @@ if(count($admission['b__admins'])>1){
     }
     echo '</div>';
 }
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$admission['c_objective'].'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Bootcamp</b>: '.$admission['c_outcome'].'</div>';
 echo '<div class="maxout" style="padding-bottom:7px;"><b>Class</b>: '.time_format($admission['r_start_date'],2).'</div>';
 echo '<div style="border-bottom:2px solid #3C4858; margin:0 0 25px;">&nbsp;</div>';
 

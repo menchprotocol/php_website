@@ -65,7 +65,7 @@ if(count($bs)>0){
 
         echo '</h6>';
 
-        echo '<h4 class="card-title"><a href="/'.$b['b_url_key'].'">'.$b['c_objective'].'</a></h4>';
+        echo '<h4 class="card-title"><a href="/'.$b['b_url_key'].'">'.$b['c_outcome'].'</a></h4>';
         echo '<div class="card-description">';
         //Print lead admin:
         foreach($b['b__admins'] as $admin){

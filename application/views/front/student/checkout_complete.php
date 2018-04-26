@@ -177,14 +177,14 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_objective'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
 
 
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="review_prerequisites">
     <p>Welcome <?= $b['u_fname'] ?> 👋​</p>
-    <p>Before we welcome you to this Bootcamp, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to [<?= $b['c_objective'] ?>]:</p>
+    <p>Before we welcome you to this Bootcamp, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to [<?= $b['c_outcome'] ?>]:</p>
     <ul style="list-style: decimal;">
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
@@ -262,7 +262,7 @@ $(document).ready(function() {
 <div class="wizard-box">
     <p>Review and confirm admission details:</p>
     <ul>
-        <li>Target Outcome: <b><?= $b['c_objective'] ?></b></li>
+        <li>Target Outcome: <b><?= $b['c_outcome'] ?></b></li>
         <li>Duration: <b><?= $b['b__week_count'].' Week'.show_s($b['b__week_count']) ?></b></li>
         <li>Dates: <b id="class_dates"></b></li>
         <?php /* <li>Content By: <?= '<b>'.$b['b__admins'][0]['u_fname'].' '.$b['b__admins'][0]['u_lname'].'</b>' ?></li> */ ?>

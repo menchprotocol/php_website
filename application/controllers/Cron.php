@@ -319,7 +319,7 @@ class Cron extends CI_Controller {
 
                     //Log Engagement:
                     $industry_completion = 0.10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$bs[0]['c_objective'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
+                    $completion_message = 'Your ['.$bs[0]['c_outcome'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
 
                     //Log Engagement for Class Completion:
                     $this->Db_model->e_create(array(
@@ -420,7 +420,7 @@ class Cron extends CI_Controller {
                     array_merge($json_data['i'], array(
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $matching_admissions[0]['u_id'],
-                        'i_c_id' => $json_data['i']['i_c_id'],
+                        'i_inbound_c_id' => $json_data['i']['i_inbound_c_id'],
                         'e_b_id' => $e_text_value['e_b_id'],
                         'e_r_id' => $e_text_value['e_r_id'],
                     )),
@@ -681,7 +681,7 @@ class Cron extends CI_Controller {
                     $notify_fb_ids = array();
                     $b_data = array(
                         'b_id' => $active_admission['b_id'],
-                        'c_objective' => $active_admission['c_objective'],
+                        'c_outcome' => $active_admission['c_outcome'],
                     );
                     //Fetch the admins for this admission:
                     foreach($active_admission['b__admins'] as $admin){
@@ -720,7 +720,7 @@ class Cron extends CI_Controller {
                 //Prepare the message Body:
                 $message = null;
                 if(count($msg['b_data'])>0){
-                    $message .= '🎯 '.$msg['b_data']['c_objective']."\n";
+                    $message .= '🎯 '.$msg['b_data']['c_outcome']."\n";
                 }
                 $message .= '💡 Premium Support Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){

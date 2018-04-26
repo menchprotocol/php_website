@@ -50,7 +50,7 @@ $( document ).ready(function() {
 </script>
 
 
-<h1 style="margin-bottom:30px;"><?= $b['c_objective'] ?></h1>
+<h1 style="margin-bottom:30px;"><?= $b['c_outcome'] ?></h1>
 
 <div class="row" id="landing_page">
 
@@ -108,7 +108,7 @@ $( document ).ready(function() {
                 foreach($b['c__child_intents'] as $b7d){
 
                     echo '<div id="c_'.$b7d['c_id'].'">';
-                    echo '<h4><a href="javascript:toggleview(\'c_'.$b7d['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_objective'];
+                    echo '<h4><a href="javascript:toggleview(\'c_'.$b7d['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
                     if($b7d['c__estimated_hours']>0){
                         echo ' &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.format_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.format_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
@@ -123,7 +123,7 @@ $( document ).ready(function() {
                                 continue; //Not published yet
                             }
                             $intent_count++;
-                            echo '<li>Task '.$intent['cr_outbound_rank'].': '.$intent['c_objective'].'</li>';
+                            echo '<li>Task '.$intent['cr_outbound_rank'].': '.$intent['c_outcome'].'</li>';
                         }
                         echo '</ul>';
                     }
@@ -131,7 +131,7 @@ $( document ).ready(function() {
                     if($b['child_bs'][$b7d['cr_outbound_b_id']]['b_status']==3){
                         //This is a Public Bootcamp, show link to Landing Page:
                         echo '<div class="title-sub">';
-                        echo $this->lang->line('level_0_icon').' <a href="/'.$b['child_bs'][$b7d['cr_outbound_b_id']]['b_url_key'].'" style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="['.$b7d['c_objective'].'] is also offered as a '.$this->lang->line('level_0_name').'">'.$this->lang->line('level_0_name').' &raquo;</a>';
+                        echo $this->lang->line('level_0_icon').' <a href="/'.$b['child_bs'][$b7d['cr_outbound_b_id']]['b_url_key'].'" style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="['.$b7d['c_outcome'].'] is also offered as a '.$this->lang->line('level_0_name').'">'.$this->lang->line('level_0_name').' &raquo;</a>';
                         echo '</div>';
                     }
 
@@ -153,7 +153,7 @@ $( document ).ready(function() {
                         echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
                         //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_time($child_intent['c__estimated_hours'],1) : '').'</span>';
                         echo ( $b['b_is_parent'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon') ).' ';
-                        echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_objective'];
+                        echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_outcome'];
                         echo '</li>';
                         $counter++;
                     }

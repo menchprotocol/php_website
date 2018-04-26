@@ -121,7 +121,7 @@ foreach($users as $key=>$user){
                 '(e_inbound_c_id IN ('.join(',',$meaningful_b_engagements).'))' => null,
             ));
 
-            echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_objective'].'</a> '.( isset($b_building_engagements[0]) ? time_format($b_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($b_building_engagements)>=100 ? '100+' : count($b_building_engagements) ).'</div>';
+            echo '<div>'.($counter+1).') <a href="/console/'.$ib['b_id'].'">'.$ib['c_outcome'].'</a> '.( isset($b_building_engagements[0]) ? time_format($b_building_engagements[0]['e_timestamp'],1) : '---' ).'/'.( count($b_building_engagements)>=100 ? '100+' : count($b_building_engagements) ).'</div>';
         }
     } else {
         echo '---';

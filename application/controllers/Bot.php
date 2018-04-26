@@ -507,10 +507,9 @@ class Bot extends CI_Controller {
                     't_ru_id' => $admissions[0]['ru_id'],
                     't_r_id' => $admissions[0]['ru_r_id'],
                     't_b_id' => $admissions[0]['ru_b_id'],
-                    't_u_id' => $admissions[0]['ru_u_id'],
+                    't_inbound_u_id' => $admissions[0]['ru_u_id'],
                     't_status' => 1, //Payment received from Student
                     't_timestamp' => date("Y-m-d H:i:s"),
-                    't_creator_id' => $admissions[0]['ru_u_id'],
                     't_paypal_id' => $_POST['txn_id'],
                     't_paypal_ipn' => json_encode($_POST),
                     't_currency' => $_POST['mc_currency'],

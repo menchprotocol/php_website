@@ -127,7 +127,7 @@ $(document).ready(function() {
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_objective.value;
+                return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_outcome.value;
             },
             header: function(data) {
                 if(!data.isEmpty){
@@ -177,7 +177,7 @@ function c_sort(c_id,level){
             //Fetch variables for this intent:
             var pid = parseInt($(this).attr('intent-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
-            var status = parseInt($('.c_objective_'+pid).attr('current-status'));
+            var status = parseInt($('.c_outcome_'+pid).attr('current-status'));
             var prefix = ( level==2 ? '<?= ( $b['b_is_parent'] ? 'Week' : 'Task') ?>' : 'Step' ); //The default for all intents
 
             if(status>=1){
@@ -191,7 +191,7 @@ function c_sort(c_id,level){
                 new_sort[sort_rank] = cr_id;
 
                 //Is the Outbound rank correct? Check DB value:
-                var db_rank = parseInt($('.c_objective_'+pid).attr('outbound-rank'));
+                var db_rank = parseInt($('.c_outcome_'+pid).attr('outbound-rank'));
 
                 if(level==2 && !(db_rank==sort_rank) && !c_id){
                     is_properly_sorted = false;
@@ -298,9 +298,9 @@ function load_intent_sort(pid,level){
 
                     //Determine core variables for hour move calculations:
                     var step_hours = parseFloat($('#t_estimate_'+inputs.c_id).attr('current-hours'));
-                    var step_status = parseInt($('.c_objective_'+inputs.c_id).attr('current-status'));
-                    var from_c_status = parseInt($('.c_objective_'+inputs.from_c_id).attr('current-status'));
-                    var to_c_status = parseInt($('.c_objective_'+inputs.to_c_id).attr('current-status'));
+                    var step_status = parseInt($('.c_outcome_'+inputs.c_id).attr('current-status'));
+                    var from_c_status = parseInt($('.c_outcome_'+inputs.from_c_id).attr('current-status'));
+                    var to_c_status = parseInt($('.c_outcome_'+inputs.to_c_id).attr('current-status'));
 
                     if(!(step_hours==0) && step_status>0){
 
@@ -409,17 +409,17 @@ function load_modify(c_id, level){
         //Loadup variables for Tasks & Steps:
         if(level>=2){
 
-            $('#c_objective'+level+' .c_objective_input').val($(".c_objective_"+c_id).html());
+            $('#c_outcome'+level+' .c_outcome_input').val($(".c_outcome_"+c_id).html());
 
             //Fetch current status
-            $('#modifybox #c_status_'+level).val($('.c_objective_'+c_id).attr('current-status'));
+            $('#modifybox #c_status_'+level).val($('.c_outcome_'+c_id).attr('current-status'));
 
             //Update Timer:
             $('.timer_'+level).val($('#t_estimate_'+c_id).attr('current-hours'));
 
             //Completion settings:
-            document.getElementById("c_complete_url_required").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_url_required'));
-            document.getElementById("c_complete_notes_required").checked = parseInt($('.c_objective_'+c_id).attr('c_complete_notes_required'));
+            document.getElementById("c_complete_url_required").checked = parseInt($('.c_outcome_'+c_id).attr('c_complete_url_required'));
+            document.getElementById("c_complete_notes_required").checked = parseInt($('.c_outcome_'+c_id).attr('c_complete_notes_required'));
 
         }
 
@@ -475,16 +475,16 @@ function c_save_settings(){
         //Now append more based on levels and take action:
         if(modify_data['level']==1){
 
-            modify_data['c_objective'] = $('#c_objective1 .c_objective_input').val();
+            modify_data['c_outcome'] = $('#c_outcome1 .c_outcome_input').val();
 
         } else if(modify_data['level']>=2){
 
             if(modify_data['level']==2){
                 //TODO TO be implemented
-                modify_data['c_completion_rule'] = parseInt($('.c_objective_'+modify_data['pid']).attr('completion-rule'));
+                modify_data['c_completion_rule'] = parseInt($('.c_outcome_'+modify_data['pid']).attr('completion-rule'));
             }
 
-            modify_data['c_objective'] = $('#c_objective'+modify_data['level']+' .c_objective_input').val();
+            modify_data['c_outcome'] = $('#c_outcome'+modify_data['level']+' .c_outcome_input').val();
             modify_data['c_status'] = $('#c_status_'+modify_data['level']).val();
             modify_data['c_time_estimate'] = $('#c_time_estimate').val();
             modify_data['c_complete_url_required'] = (document.getElementById('c_complete_url_required').checked ? 1 : 0);
@@ -502,18 +502,18 @@ function c_save_settings(){
             if(data.status){
 
                 //Always update title for all 3 levels:
-                $(".c_objective_"+modify_data['pid']).html(modify_data['c_objective']);
+                $(".c_outcome_"+modify_data['pid']).html(modify_data['c_outcome']);
 
                 //Update page variables:
                 if(modify_data['level']==2){
 
                     //Update status?
-                    var current_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
+                    var current_status = parseInt($('.c_outcome_'+modify_data['pid']).attr('current-status'));
 
                     if(!(current_status==modify_data['c_status'])) {
 
                         //Needs to update:
-                        $('.c_objective_' + modify_data['pid']).attr('current-status', modify_data['c_status']);
+                        $('.c_outcome_' + modify_data['pid']).attr('current-status', modify_data['c_status']);
 
                         var current_c_hours = parseFloat($('#t_estimate_' + modify_data['pid']).attr('current-hours'));
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
@@ -563,7 +563,7 @@ function c_save_settings(){
                     if(!(hours_deficit==0)){
 
                         //Adjust 3 levels of hours:
-                        var current_c_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
+                        var current_c_status = parseInt($('.c_outcome_'+modify_data['pid']).attr('current-status'));
                         var current_c_hours = parseFloat($('#t_estimate_'+modify_data['pid']).attr('current-hours'));
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
 
@@ -587,14 +587,14 @@ function c_save_settings(){
                     var parent_c_id = parseInt($('.maplevel'+modify_data['pid']).attr('parent-intent-id'));
 
                     //Update Completion Settings (All the time):
-                    $('.c_objective_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
-                    $('.c_objective_'+modify_data['pid']).attr('c_complete_notes_required'  , modify_data['c_complete_notes_required']);
+                    $('.c_outcome_'+modify_data['pid']).attr('c_complete_url_required'    , modify_data['c_complete_url_required']);
+                    $('.c_outcome_'+modify_data['pid']).attr('c_complete_notes_required'  , modify_data['c_complete_notes_required']);
 
                     //Update status?
-                    var current_status = parseInt($('.c_objective_'+modify_data['pid']).attr('current-status'));
+                    var current_status = parseInt($('.c_outcome_'+modify_data['pid']).attr('current-status'));
                     if(!(current_status==modify_data['c_status'])){
                         //Needs to update:
-                        $('.c_objective_'+modify_data['pid']).attr('current-status',modify_data['c_status']);
+                        $('.c_outcome_'+modify_data['pid']).attr('current-status',modify_data['c_status']);
 
                         if(current_status==1 && modify_data['c_status']<=0){
                             //We need to remove initial hours from the totals:
@@ -634,7 +634,7 @@ function c_save_settings(){
                         //Adjust 3 levels of hours:
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
                         var current_c_hours = parseFloat($('#t_estimate_'+parent_c_id).attr('current-hours'));
-                        var current_c_status = parseInt($('.c_objective_'+parent_c_id).attr('current-status'));
+                        var current_c_status = parseInt($('.c_outcome_'+parent_c_id).attr('current-status'));
 
 
                         //Update Task if Step is active:
@@ -980,21 +980,21 @@ function add_item(group_id,prefix,current_value){
 
             <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
 
-            <div id="c_objective1" class="levelz level1 hidden">
-                <?php $this->load->view('console/shared/c_objective' , array(
-                    'c_objective' => $b['c_objective'],
+            <div id="c_outcome1" class="levelz level1 hidden">
+                <?php $this->load->view('console/shared/c_outcome' , array(
+                    'c_outcome' => $b['c_outcome'],
                     'level' => $b['b_is_parent'], //Either 0 or 1 depending which type of Bootcamp
                 )); ?>
             </div>
-            <div id="c_objective2" class="levelz level2 hidden">
-                <?php $this->load->view('console/shared/c_objective' , array(
-                    'c_objective' => null,
+            <div id="c_outcome2" class="levelz level2 hidden">
+                <?php $this->load->view('console/shared/c_outcome' , array(
+                    'c_outcome' => null,
                     'level' => 2,
                 )); ?>
             </div>
-            <div id="c_objective3" class="levelz level3 hidden">
-                <?php $this->load->view('console/shared/c_objective' , array(
-                    'c_objective' => null,
+            <div id="c_outcome3" class="levelz level3 hidden">
+                <?php $this->load->view('console/shared/c_outcome' , array(
+                    'c_outcome' => null,
                     'level' => 3,
                 )); ?>
             </div>

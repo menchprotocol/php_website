@@ -96,7 +96,7 @@ WHERE ru.ru_status >= 4
             if(count($join_objects)==0 || in_array('i',$join_objects)){
                 $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_status >' => 0,
-                    'i_c_id' => $c['c_id'],
+                    'i_inbound_c_id' => $c['c_id'],
                 ));
                 $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
             }
@@ -106,7 +106,7 @@ WHERE ru.ru_status >= 4
 
                 $b_messages = $this->Db_model->i_fetch(array(
                     'i_status >=' => 1,
-                    'i_c_id' => $c['c_id'],
+                    'i_inbound_c_id' => $c['c_id'],
                 ));
                 $bs[$key]['c__header_media'] = null;
 
@@ -167,7 +167,7 @@ WHERE ru.ru_status >= 4
                 if(count($join_objects)==0 || in_array('i',$join_objects)){
                     $intent_messages = $this->Db_model->i_fetch(array(
                         'i_status >' => 0,
-                        'i_c_id' => $intent['c_id'],
+                        'i_inbound_c_id' => $intent['c_id'],
                     ));
                     $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] = 0;
                     $bs[$key]['c__message_tree_count'] += count($intent_messages);
@@ -201,7 +201,7 @@ WHERE ru.ru_status >= 4
                         //Count Messages:
                         $step_messages = $this->Db_model->i_fetch(array(
                             'i_status >' => 0,
-                            'i_c_id' => $step['c_id'],
+                            'i_inbound_c_id' => $step['c_id'],
                         ));
 
                         //Add messages:
@@ -474,8 +474,8 @@ WHERE ru.ru_status >= 4
     function i_fetch($match_columns, $limit=0){
         $this->db->select('*');
         $this->db->from('v5_messages i');
-        $this->db->join('v5_intents c', 'i.i_c_id = c.c_id');
-        $this->db->join('v5_entities u', 'u.u_id = i.i_creator_id');
+        $this->db->join('v5_intents c', 'i.i_inbound_c_id = c.c_id');
+        $this->db->join('v5_entities u', 'u.u_id = i.i_inbound_u_id');
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -535,7 +535,7 @@ WHERE ru.ru_status >= 4
 	
 	function i_create($insert_columns){
 		//Missing anything?
-		if(!isset($insert_columns['i_c_id'])){
+		if(!isset($insert_columns['i_inbound_c_id'])){
 			return false;
 		} elseif(!isset($insert_columns['i_message'])){
 			return false;
@@ -581,7 +581,7 @@ WHERE ru.ru_status >= 4
         $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
 
         if(in_array('u',$join_objects)){
-            $this->db->join('v5_entities u', 'u.u_id = fs.fs_u_id');
+            $this->db->join('v5_entities u', 'u.u_id = fs.fs_inbound_u_id');
         }
 
         foreach($match_columns as $key=>$value){
@@ -651,7 +651,7 @@ WHERE ru.ru_status >= 4
         //Missing anything?
         if(!isset($insert_columns['fs_access_token'])){
             return false;
-        } elseif(!isset($insert_columns['fs_u_id'])){
+        } elseif(!isset($insert_columns['fs_inbound_u_id'])){
             return false;
         } elseif(!isset($insert_columns['fs_fp_id'])){
             return false;
@@ -944,7 +944,7 @@ WHERE ru.ru_status >= 4
 	        //Fetch Messages:
 	        foreach($intents as $key=>$value){
 	            $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-	                'i_c_id' => $value['c_id'],
+	                'i_inbound_c_id' => $value['c_id'],
 	                'i_status >' => 0, //Published in any form
 	            ));
 	        }
@@ -1026,7 +1026,7 @@ WHERE ru.ru_status >= 4
                 if(in_array('i',$join_objects)){
                     //Fetch Messages:
                     $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                        'i_c_id' => $value['c_id'],
+                        'i_inbound_c_id' => $value['c_id'],
                         'i_status >' => 0, //Published in any form
                     ));
                 }
@@ -1195,9 +1195,9 @@ WHERE ru.ru_status >= 4
 	
 	function c_create($insert_columns){
 	    
-	    if(!isset($insert_columns['c_objective'])){
+	    if(!isset($insert_columns['c_outcome'])){
 	        return false;
-	    } elseif(!isset($insert_columns['c_creator_id'])){
+	    } elseif(!isset($insert_columns['c_inbound_u_id'])){
 	        return false;
 	    }
 
@@ -1457,7 +1457,7 @@ WHERE ru.ru_status >= 4
                         'u.u_status >=' => 1, //Must be a user level 1 or higher
                     ));
 
-                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_objective'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
                     $url = 'https://mench.com/console/'.$insert_columns['e_b_id'];
 
                     $body = trim(strip_tags($insert_columns['e_text_value']));
@@ -1500,7 +1500,7 @@ WHERE ru.ru_status >= 4
                     //Did we find it? We should have:
                     if(isset($engagements[0])){
 
-                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_objective'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
 
                         //Compose email:
                         $html_message = null; //Start
@@ -1641,7 +1641,7 @@ WHERE ru.ru_status >= 4
                 $new_item['b_old_format'] = intval($item['b_old_format']);
 
                 //Standard algolia terms:
-                $new_item['alg_name'] = $item['c_objective'];
+                $new_item['alg_name'] = $item['c_outcome'];
                 $new_item['alg_url'] = '/'.$item['b_url_key'];
                 $new_item['alg_owner_id'] = intval($item['u_id']);
                 $new_item['alg_keywords'] = '';
@@ -1656,7 +1656,7 @@ WHERE ru.ru_status >= 4
 
                 //Fetch all text messages for description:
                 $i_messages = $this->Db_model->i_fetch(array(
-                    'i_c_id' => $item['b_outbound_c_id'],
+                    'i_inbound_c_id' => $item['b_outbound_c_id'],
                     'i_media_type' => 'text', //Only type that we can index in search
                     'i_status >' => 0, //Published in any form
                 ));
@@ -1674,7 +1674,7 @@ WHERE ru.ru_status >= 4
                 ));
                 if(count($c_intents)>0){
                     foreach($c_intents as $c){
-                        $new_item['alg_keywords'] .= $c['c_objective'].' ';
+                        $new_item['alg_keywords'] .= $c['c_outcome'].' ';
                     }
                 }
 

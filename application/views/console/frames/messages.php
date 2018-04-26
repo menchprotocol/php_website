@@ -6,7 +6,7 @@ $i_statuses = status_bible('i', null);
 $udata = $this->session->userdata('user');
 $drip_enabled = ($level>1);
 $i_messages = $this->Db_model->i_fetch(array(
-    'i_c_id' => $c_id,
+    'i_inbound_c_id' => $c_id,
     'i_status >' => 0, //Published in any form
 ));
 
@@ -567,7 +567,7 @@ if(!isset($intents[0])){
 
 
 
-<div class="iphone-title"><?= $this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_icon').' '.$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name').': '.$intents[0]['c_objective'] ?></div>
+<div class="iphone-title"><?= $this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_icon').' '.$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name').': '.$intents[0]['c_outcome'] ?></div>
 
 <ul class="nav nav-tabs iphone-nav-tabs">
     <li role="presentation" class="nav_1 active"><a href="#messages-<?= $c_id ?>-1"><?= status_bible('i',1, false, null) ?></a></li>

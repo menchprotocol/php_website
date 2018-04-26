@@ -88,7 +88,7 @@ if($b['b_is_parent']){
             echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
             echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
             echo '<i class="fa fa-folder-open" aria-hidden="true"></i> ';
-            echo $parent_b['c_objective'];
+            echo $parent_b['c_outcome'];
             echo '</a>';
         }
         echo '</div>';

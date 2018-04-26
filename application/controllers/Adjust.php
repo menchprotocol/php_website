@@ -11,6 +11,23 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
+    function resync_class_actionplans(){
+
+        //First delete old caches:
+        $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_c_id=70");
+
+        //Now re-create for active & completed Classes:
+        $classes = $this->Db_model->r_fetch(array(
+            'r.r_status >=' => 2,
+        ));
+
+        foreach($classes as $r){
+            $this->Db_model->snapshot_action_plan($r['r_b_id'],$r['r_id']);
+        }
+
+        echo 'Updated for '.count($classes).' Classes';
+
+    }
 
     function ru_b_id(){
 
@@ -131,7 +148,7 @@ class Adjust extends CI_Controller {
                         } else {
 
                             //Addup the total hours based on the Action Plan
-                            $total_hours_done += $us_data[$task['c_id']]['e_float_value'];
+                            $total_hours_done += $us_data[$task['c_id']]['e_time_estimate'];
                             $found_incomplete_step = false; //Reset this
                             $done_steps++;
 

@@ -233,11 +233,11 @@ function extract_level($b,$c_id){
         $view_data['level'] = 1;
         $view_data['task_index'] = 0;
         $view_data['intent'] = $b;
-        $view_data['title'] = 'Action Plan | '.$b['c_objective'];
+        $view_data['title'] = 'Action Plan | '.$b['c_outcome'];
         $view_data['breadcrumb_p'] = array(
             array(
                 'link' => null,
-                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_objective'],
+                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_outcome'],
             ),
         );
         //Not applicable at Bootcamp Level:
@@ -265,15 +265,15 @@ function extract_level($b,$c_id){
                 $view_data['level'] = 2;
                 $view_data['task_index'] = $intent['cr_outbound_rank'];
                 $view_data['intent'] = $intent;
-                $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'];
+                $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_outcome'];
                 $view_data['breadcrumb_p'] = array(
                     array(
                         'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
-                        'anchor' => $CI->lang->line('level_'.( isset($b['b_is_parent']) ? $b['b_is_parent'] : 0 ).'_icon').' '.$b['c_objective'],
+                        'anchor' => $CI->lang->line('level_'.( isset($b['b_is_parent']) ? $b['b_is_parent'] : 0 ).'_icon').' '.$b['c_outcome'],
                     ),
                     array(
                         'link' => null,
-                        'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'],
+                        'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_outcome'],
                     ),
                 );
 
@@ -329,20 +329,20 @@ function extract_level($b,$c_id){
                         $view_data['step_goal'] = $intent; //Only available for Steps
                         $view_data['task_index'] = $intent['cr_outbound_rank'];
                         $view_data['intent'] = $step;
-                        $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_objective'];
+                        $view_data['title'] = 'Action Plan | '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_outcome'];
 
                         $view_data['breadcrumb_p'] = array(
                             array(
                                 'link' => '/my/actionplan/'.$b['b_id'].'/'.$b['b_outbound_c_id'],
-                                'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_objective'],
+                                'anchor' => $CI->lang->line('level_'.$b['b_is_parent'].'_icon').' '.$b['c_outcome'],
                             ),
                             array(
                                 'link' => '/my/actionplan/'.$b['b_id'].'/'.$intent['c_id'],
-                                'anchor' => $CI->lang->line('level_'.($view_data['level']-1).'_icon').' '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_objective'],
+                                'anchor' => $CI->lang->line('level_'.($view_data['level']-1).'_icon').' '.$CI->lang->line('level_'.($view_data['level']-1).'_name').' '.$intent['cr_outbound_rank'].': '.$intent['c_outcome'],
                             ),
                             array(
                                 'link' => null,
-                                'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_objective'],
+                                'anchor' => $CI->lang->line('level_'.$view_data['level'].'_icon').' '.$CI->lang->line('level_'.$view_data['level'].'_name').' '.$step['cr_outbound_rank'].': '.$step['c_outcome'],
                             ),
                         );
                         
@@ -511,10 +511,10 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
     //Do a quick hack to make these two variables inter-changable:
-    if(isset($i['i_c_id']) && $i['i_c_id']>0 && !isset($i['e_outbound_u_id'])){
-        $i['e_outbound_u_id'] = $i['i_c_id'];
-    } elseif(isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0 && !isset($i['i_c_id'])){
-        $i['i_c_id'] = $i['e_outbound_u_id'];
+    if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0 && !isset($i['e_outbound_u_id'])){
+        $i['e_outbound_u_id'] = $i['i_inbound_c_id'];
+    } elseif(isset($i['e_outbound_u_id']) && $i['e_outbound_u_id']>0 && !isset($i['i_inbound_c_id'])){
+        $i['i_inbound_c_id'] = $i['e_outbound_u_id'];
     }
 
 
@@ -554,16 +554,16 @@ function echo_i($i,$first_name=null,$fb_format=false){
             $command = '{button}';
             $button_url = 'https://mench.com/my/actionplan'; //We assume a basic link to Action Plan
 
-            if(isset($i['i_c_id']) && isset($i['e_b_id']) && isset($i['e_r_id'])){
+            if(isset($i['i_inbound_c_id']) && isset($i['e_b_id']) && isset($i['e_r_id'])){
 
                 //Validate this to make sure it's all Good:
                 $bs = fetch_action_plan_copy($i['e_b_id'],$i['e_r_id']);
-                $intent_data = extract_level( $bs[0], $i['i_c_id'] );
+                $intent_data = extract_level( $bs[0], $i['i_inbound_c_id'] );
 
                 //Does this intent belong to this Bootcamp/Class?
                 if($intent_data){
                     //Everything looks good:
-                    $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_c_id'];
+                    $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_inbound_c_id'];
                 }
             }
 
@@ -998,18 +998,18 @@ function copy_messages($u_id,$c__messages,$c_id){
         $new_i = array();
         foreach($i as $key=>$value){
             //Is this a message field?
-            if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_creator_id','i_c_id','i_timestamp','i_rank'))){
+            if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_inbound_u_id','i_inbound_c_id','i_timestamp','i_rank'))){
                 //Yes, move over:
                 $new_i[$key] = $value;
             }
         }
 
         //Replace creator & c_id
-        $new_i['i_creator_id'] = $u_id;
-        $new_i['i_c_id'] = $c_id;
+        $new_i['i_inbound_u_id'] = $u_id;
+        $new_i['i_inbound_c_id'] = $c_id;
         $new_i['i_rank'] = 1 + $CI->Db_model->max_value('v5_messages','i_rank', array(
             'i_status' => $new_i['i_status'],
-            'i_c_id' => $c_id,
+            'i_inbound_c_id' => $c_id,
         ));
 
         //Create:
@@ -1043,14 +1043,14 @@ function copy_intent($u_id,$intent,$c_id){
     $new_c = array();
     foreach($intent as $key=>$value){
         //Is this a message field?
-        if(!(substr($key,0,3)=='c__') && substr($key,0,2)=='c_' && !in_array($key,array('c_id','c_timestamp','c_creator_id'))){
+        if(!(substr($key,0,3)=='c__') && substr($key,0,2)=='c_' && !in_array($key,array('c_id','c_timestamp','c_inbound_u_id'))){
             //Yes, move over:
             $new_c[$key] = $value;
         }
     }
 
     //Append creator:
-    $new_c['c_creator_id'] = $u_id;
+    $new_c['c_inbound_u_id'] = $u_id;
 
     //Create intent:
     $new_intent = $CI->Db_model->c_create($new_c);
@@ -1081,7 +1081,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
-    $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_objective']);
+    $clean_title = preg_replace("/[^A-Za-z0-9 ]/", "", $intent['c_outcome']);
     $clean_title = (strlen($clean_title)>0 ? $clean_title : 'This Intent');
     $default_time = ( $b['b_is_parent'] ? 0 : 0.05 );
     $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
@@ -1159,7 +1159,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_objective_'.$intent['c_id'].'">'.$intent['c_objective'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1174,12 +1174,12 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent'] ? 'Week' : $CI->lang->line('level_2_name')).' #'.$intent['cr_outbound_rank'].'</span>';
         $ui .= '</span>';
 
-        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_objective_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</b> ';
+        $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</b> ';
 
     } elseif ($level>=3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_name').' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_objective_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_objective'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_name').' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
 
     }
 
@@ -1242,7 +1242,7 @@ function echo_b($b){
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
     $b_ui .= '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" aria-hidden="true" style="margin: 0 8px 0 2px; color:#222;"></i> ';
-    $b_ui .= $b['c_objective'];
+    $b_ui .= $b['c_outcome'];
 
     if($all_students>0){
         $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
@@ -1440,7 +1440,7 @@ function b_progress($b){
             $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
             array_push( $checklist , array(
                 'href' => '/console/'.$b['b_id'].'/actionplan#messages-'.$c['c_id'],
-                'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$intent_anchor.$c['c_objective'],
+                'anchor' => '<b>Add '.status_bible('i',1).' Message</b> to '.$intent_anchor.$c['c_outcome'],
                 'e_status' => $e_status,
                 'time_min' => $estimated_minutes,
             ));
@@ -1819,7 +1819,7 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
         $ui .= '<span class="pull-right">';
         $ui .= '<span class="badge badge-primary">'.count($c_child).' <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
         $ui .= '</span>';
-        $ui .= '<span style="font-weight:'.($level<=2 ? 'bold' :'normal').';">'.$c['c_objective'].'</span>';
+        $ui .= '<span style="font-weight:'.($level<=2 ? 'bold' :'normal').';">'.$c['c_outcome'].'</span>';
         $ui .= '</a>';
 
     } elseif($format=='select' && $level<=2){
@@ -1827,7 +1827,7 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
         $ui .= '<select data-c-id="'.$c['c_id'].'" id="c_s_'.$c['c_id'].'" class="border c_select level'.$level.' '.( isset($c['cr_outbound_c_id']) ? 'outbound_c_'.$c['cr_outbound_c_id'] : '' ).' '.( $level==2 ? 'hidden' : '' ).'" style="width:100%; margin-bottom:10px; max-width:380px;">';
         //$ui .= '<option value="0">Choose...</option>'; //Not needed for now as we transition to single level categories
         foreach($c_child as $child_intent){
-            $ui .= '<option value="'.$child_intent['c_id'].'" '.( in_array($child_intent['c_id'],$current_c_ids) ?'selected="selected"':'').'>'.$child_intent['c_objective'].'</option>';
+            $ui .= '<option value="'.$child_intent['c_id'].'" '.( in_array($child_intent['c_id'],$current_c_ids) ?'selected="selected"':'').'>'.$child_intent['c_outcome'].'</option>';
         }
         $ui .= '</select>';
 
@@ -2493,9 +2493,9 @@ function object_link($object,$id,$b_id=0){
             if(isset($intents[0])){
                 if($b_id){
                     //We can return a link:
-                    return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan#modify-'.$intents[0]['c_id'].'">'.$intents[0]['c_objective'].'</a>';
+                    return '<a href="'.$website['url'].'console/'.$b_id.'/actionplan#modify-'.$intents[0]['c_id'].'">'.$intents[0]['c_outcome'].'</a>';
                 } else {
-                    return $intents[0]['c_objective'];
+                    return $intents[0]['c_outcome'];
                 }
             }
         } elseif($object=='b'){
@@ -2505,9 +2505,9 @@ function object_link($object,$id,$b_id=0){
             ), array('c'));
             if(isset($bs[0])){
                 if($b_id){
-                    return '<a href="'.$website['url'].'console/'.$bs[0]['b_id'].'">'.$bs[0]['c_objective'].'</a>';
+                    return '<a href="'.$website['url'].'console/'.$bs[0]['b_id'].'">'.$bs[0]['c_outcome'].'</a>';
                 } else {
-                    return $bs[0]['c_objective'];
+                    return $bs[0]['c_outcome'];
                 }
             }
             

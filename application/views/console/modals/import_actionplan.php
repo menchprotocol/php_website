@@ -200,14 +200,14 @@ $bs = $this->Db_model->instructor_bs(array(
                             <option value="0">Choose Bootcamp...</option>
                             <?php
                             foreach($bs as $this_b){
-                                echo '<option value="'.$this_b['b_id'].'">'.( $this_b['b_old_format'] ? '[OLD FORMAT] ' : '' ).$this_b['c_objective'].'</option>';
+                                echo '<option value="'.$this_b['b_id'].'">'.( $this_b['b_old_format'] ? '[OLD FORMAT] ' : '' ).$this_b['c_outcome'].'</option>';
                             }
                             ?>
                         </select>
                     </div>
                     <br />
                     <p>Import to this Bootcamp:</p>
-                    <div class="form-group"><b><?= $b['c_objective'] ?></b></div>
+                    <div class="form-group"><b><?= $b['c_outcome'] ?></b></div>
                 </div>
 
                 <!-- Content to be dynamically loaded based on Bootcamp -->
