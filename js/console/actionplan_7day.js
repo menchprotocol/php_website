@@ -150,7 +150,7 @@ function new_intent(pid,next_level){
         var step_deficit = 0.05; //3 minutes is the default for new Tasks/Steps
         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
         var current_task_hours = parseFloat($('#t_estimate_'+pid).attr('current-hours'));
-        var current_task_status = parseInt($('.c_objective_'+pid).attr('current-status'));
+        var current_task_status = parseInt($('.c_outcome_'+pid).attr('current-status'));
 
         //Update Miletsone:
         $('#t_estimate_'+pid).attr('current-hours',(current_task_hours + step_deficit)).text(format_hours((current_task_hours + step_deficit)));
