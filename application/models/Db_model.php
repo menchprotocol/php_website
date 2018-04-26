@@ -1407,6 +1407,10 @@ WHERE ru.ru_status >= 4
         if(!isset($insert_columns['e_timestamp'])){
             $insert_columns['e_timestamp'] = date("Y-m-d H:i:s");
         }
+        if(!isset($insert_columns['e_text_value'])){
+            $insert_columns['e_text_value'] = null;
+        }
+
 
         //Remove e_json from here to keep v5_engagements small and lean
         unset($insert_columns['e_json']);
