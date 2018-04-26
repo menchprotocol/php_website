@@ -119,7 +119,7 @@ function new_intent(pid,next_level){
     input_field.val("").focus();
 
     //Update backend:
-    $.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_objective:intent_name, next_level:next_level}, function(data) {
+    $.post("/api_v1/c_new", {b_id:b_id, pid:pid, c_outcome:intent_name, next_level:next_level}, function(data) {
 
         //Update UI to confirm with user:
         $( "#temp"+next_level ).remove();
