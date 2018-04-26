@@ -80,7 +80,7 @@ class My extends CI_Controller {
         //Fetch all their addmissions:
         $admissions = $this->Db_model->remix_admissions(array(
             'ru.ru_id'	   => $ru_id, //Loading a very specific Admission ID for this Student
-            'ru.ru_u_id'   => intval($_GET['u_id']),
+            'ru.ru_outbound_u_id'   => intval($_GET['u_id']),
         ));
 
         //Did we find at-least one?
@@ -140,7 +140,7 @@ class My extends CI_Controller {
 
         //Fetch all their addmissions:
         $admissions = $this->Db_model->ru_fetch(array(
-            'ru_u_id'	=> $udata['u_id'],
+            'ru_outbound_u_id'	=> $udata['u_id'],
             'ru_parent_ru_id'	=> 0, //Child admissions are fetched within the child row
         ),array(
             'ru.ru_timestamp' => 'DESC',
@@ -310,7 +310,7 @@ class My extends CI_Controller {
 
         //Fetch all their admissions:
         $admissions = $this->Db_model->remix_admissions(array(
-            'ru.ru_u_id' => $_POST['u_id'],
+            'ru.ru_outbound_u_id' => $_POST['u_id'],
             'ru.ru_status >=' => 4, //Admitted
             'r.r_status >=' => 1, //Open for Admission or Higher
         ));

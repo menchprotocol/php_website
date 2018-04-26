@@ -87,7 +87,7 @@ if(count($admissions)>0 && is_array($admissions)){
                         'cr.cr_inbound_c_id' => $bs[0]['b_outbound_c_id'],
                         'cr.cr_status >=' => 0,
                         'c.c_status >=' => 0,
-                        'ru.ru_u_id' => $admission['ru_u_id'],
+                        'ru.ru_outbound_u_id' => $admission['ru_outbound_u_id'],
                     ), array('ru'));
 
                     if(count($child_intents)>0){

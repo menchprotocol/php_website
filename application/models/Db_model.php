@@ -13,7 +13,7 @@ class Db_model extends CI_Model {
         return objectToArray($this->db->query("
 SELECT AVG(ru.ru_cache__completion_rate) AS cr
 FROM v5_class_students ru
-JOIN v5_entities u ON u.u_id = ru.ru_u_id
+JOIN v5_entities u ON u.u_id = ru.ru_outbound_u_id
 WHERE ru.ru_status >= 4
   AND ru_r_id = ".$r_id)->result());
     }
@@ -308,9 +308,9 @@ WHERE ru.ru_status >= 4
 	            'e_inbound_c_id' => 8, //Platform Error
 	        ));
 	        return false;
-	    } elseif(!isset($insert_columns['ru_u_id'])){
+	    } elseif(!isset($insert_columns['ru_outbound_u_id'])){
 	        $this->Db_model->e_create(array(
-	            'e_text_value' => 'ru_create() missing ru_u_id.',
+	            'e_text_value' => 'ru_create() missing ru_outbound_u_id.',
 	            'e_json' => $insert_columns,
 	            'e_inbound_c_id' => 8, //Platform Error
 	        ));
@@ -881,7 +881,7 @@ WHERE ru.ru_status >= 4
         $this->db->select('*');
         $this->db->from('v5_class_students ru');
         $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id','left');
-        $this->db->join('v5_entities u', 'u.u_id = ru.ru_u_id');
+        $this->db->join('v5_entities u', 'u.u_id = ru.ru_outbound_u_id');
 
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){

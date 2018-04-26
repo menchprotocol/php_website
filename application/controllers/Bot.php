@@ -354,7 +354,7 @@ class Bot extends CI_Controller {
                             'r.r_status >='	   => 1, //Open for admission
                             'r.r_status <='	   => 2, //Running
                             'ru.ru_status >='  => 0, //Initiated or higher as long as Bootcamp is running!
-                            'ru.ru_u_id'	   => $eng_data['e_inbound_u_id'],
+                            'ru.ru_outbound_u_id'	   => $eng_data['e_inbound_u_id'],
                         ));
                         if(count($admissions)>0){
                             //Append Bootcamp & Class ID to engagement:
@@ -507,7 +507,7 @@ class Bot extends CI_Controller {
                     't_ru_id' => $admissions[0]['ru_id'],
                     't_r_id' => $admissions[0]['ru_r_id'],
                     't_b_id' => $admissions[0]['ru_b_id'],
-                    't_inbound_u_id' => $admissions[0]['ru_u_id'],
+                    't_inbound_u_id' => $admissions[0]['ru_outbound_u_id'],
                     't_status' => 1, //Payment received from Student
                     't_timestamp' => date("Y-m-d H:i:s"),
                     't_paypal_id' => $_POST['txn_id'],

@@ -404,7 +404,7 @@ class Cron extends CI_Controller {
 
             //Fetch user data:
             $matching_admissions = $this->Db_model->ru_fetch(array(
-                'ru_u_id' => $e_text_value['e_outbound_u_id'],
+                'ru_outbound_u_id' => $e_text_value['e_outbound_u_id'],
                 'ru_r_id' => $e_text_value['e_r_id'],
                 'ru_status >=' => 4, //Active student
                 'r_status' => 2, //Running Class
@@ -670,7 +670,7 @@ class Cron extends CI_Controller {
                 //Lets see who is responsible for this student:
                 //Checks to see who is responsible for this user, likely to receive update messages or something...
                 $admissions = $this->Db_model->remix_admissions(array(
-                    'ru_u_id'	     => $nm['e_inbound_u_id'],
+                    'ru_outbound_u_id'	     => $nm['e_inbound_u_id'],
                     'ru_status >='	 => 0,
                 ));
                 $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now

@@ -681,7 +681,7 @@ class Api_v1 extends CI_Controller {
 
             //Make sure they have not enrolled in this Class before:
             $duplicate_registries = $this->Db_model->ru_fetch(array(
-                'ru.ru_u_id'	            => $udata['u_id'],
+                'ru.ru_outbound_u_id'	            => $udata['u_id'],
                 'ru.ru_b_id'	            => $b['b_id'],
                 'ru.ru_parent_ru_id'	    => 0, //We only care about the main admission
                 'ru.ru_status IN (0,4,7)'   => null,
@@ -723,7 +723,7 @@ class Api_v1 extends CI_Controller {
         //Lets start their admission application:
         $admissions[0] = $this->Db_model->ru_create(array(
             'ru_b_id' 	        => $b['b_id'],
-            'ru_u_id' 	        => $udata['u_id'],
+            'ru_outbound_u_id' 	        => $udata['u_id'],
             'ru_fp_id'          => ( $b['b_is_parent'] ? 0 : $b['b_fp_id'] ), //Current Page that the student should connect to
         ));
 
@@ -858,7 +858,7 @@ class Api_v1 extends CI_Controller {
                     $new_admission = array(
                         'ru_b_id' 	        => $bs[0]['b_id'],
                         'ru_r_id' 	        => $r_id,
-                        'ru_u_id' 	        => $_POST['u_id'],
+                        'ru_outbound_u_id' 	        => $_POST['u_id'],
                         'ru_status'         => 0, //Always insert as Pending, update if FREE of when paid
                         'ru_fp_id'          => $bs[0]['b_fp_id'],
                         'ru_fp_psid'        => ( $bs[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
@@ -942,7 +942,7 @@ class Api_v1 extends CI_Controller {
             //Attempt to withdraw user:
             $admissions = $this->Db_model->ru_fetch(array(
                 'ru.ru_status'  => 0, //Initiated or higher as long as Bootcamp is running!
-                'ru.ru_u_id'	=> $_POST['u_id'],
+                'ru.ru_outbound_u_id'	=> $_POST['u_id'],
                 'ru.ru_id'	    => $_POST['ru_id'],
             ));
 
@@ -1055,7 +1055,7 @@ class Api_v1 extends CI_Controller {
 
         //Fetch student name and details:
         $matching_admissions = $this->Db_model->ru_fetch(array(
-            'ru_u_id' => intval($_POST['u_id']),
+            'ru_outbound_u_id' => intval($_POST['u_id']),
             'ru_r_id' => intval($_POST['r_id']),
             'ru_status >=' => 4, //Only Active students can submit Steps
         ));
@@ -1401,7 +1401,7 @@ class Api_v1 extends CI_Controller {
 	    if(count($users)==1){
 
             $admissions = $this->Db_model->remix_admissions(array(
-                'ru_u_id' => $users[0]['u_id'],
+                'ru_outbound_u_id' => $users[0]['u_id'],
                 'ru_status >=' => 4,
             ));
             //We'd need to see which admission to load now:

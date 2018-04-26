@@ -69,7 +69,7 @@ class Adjust extends CI_Controller {
             //Admit them to the second Class:
             $this->Db_model->ru_create(array(
                 'ru_r_id' 	        => $to_r_id,
-                'ru_u_id' 	        => $admission['u_id'],
+                'ru_outbound_u_id' 	        => $admission['u_id'],
                 'ru_status'         => 4,
                 'ru_fp_id'          => $admission['ru_fp_id'],
                 'ru_fp_psid'        => $admission['ru_fp_psid'],

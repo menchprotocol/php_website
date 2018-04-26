@@ -802,7 +802,7 @@ class Comm_model extends CI_Model {
 
             //Attempt to search based on u_id:
             $ru_filter = array(
-                'ru.ru_u_id' => $u['u_id'],
+                'ru.ru_outbound_u_id' => $u['u_id'],
             );
 
         } else {
@@ -915,7 +915,7 @@ class Comm_model extends CI_Model {
 
                 //See if we can find it in the admission table:
                 $admissions = $this->Db_model->ru_fetch(array(
-                    'ru.ru_u_id' => $u['u_id'],
+                    'ru.ru_outbound_u_id' => $u['u_id'],
                 ));
                 $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
                 if($active_admission){
@@ -984,7 +984,7 @@ class Comm_model extends CI_Model {
 
                 //Go through all their admissions and update their Messenger PSID:
                 $admissions = $this->Db_model->ru_fetch(array(
-                    'ru_u_id' => $u['u_id'],
+                    'ru_outbound_u_id' => $u['u_id'],
                     'ru_fp_id' => $fp['fp_id'], //Already set to this
                     'ru_fp_psid' => null, //Not activated yet...
                 ));
@@ -1125,7 +1125,7 @@ class Comm_model extends CI_Model {
                 if(!$force_email && isset($message['e_r_id']) && $message['e_r_id']>0){
                     //Fetch admission to class:
                     $users = $this->Db_model->ru_fetch(array(
-                        'ru_u_id' => $message['e_outbound_u_id'],
+                        'ru_outbound_u_id' => $message['e_outbound_u_id'],
                         'ru_r_id' => $message['e_r_id'],
                     ));
                 }
