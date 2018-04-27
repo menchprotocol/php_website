@@ -128,15 +128,15 @@ $(document).ready(function() {
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<span class="suggest-prefix"><i class="fa fa-eye" aria-hidden="true"></i> Link to</span> '+ suggestion._highlightResult.c_outcome.value;
+                return '<span class="suggest-prefix"><i class="fas fa-eye"></i> Link to</span> '+ suggestion._highlightResult.c_outcome.value;
             },
             header: function(data) {
                 if(!data.isEmpty){
-                    return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+                    return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fas fa-plus"></i> Create</span> "'+data.query+'"'+'</a>';
                 }
             },
             empty: function(data) {
-                return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fa fa-plus" aria-hidden="true"></i> Create</span> "'+data.query+'"'+'</a>';
+                return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fas fa-plus"></i> Create</span> "'+data.query+'"'+'</a>';
             },
         }
     }]).keypress(function (e) {
@@ -210,7 +210,7 @@ function c_sort(c_id,level){
                 //Save temporarily so we can later give proper index based on all active ones:
                 drafting_ids[(drafting_ids.length)] = cr_id;
 
-                $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fa fa-pencil-square"></i></b>');
+                $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fas fa-pencil-square"></i></b>');
 
             }
         }
@@ -363,8 +363,8 @@ function i_load_frame(c_id, level){
         var top_menu = '<div class="ix-top">\n' +
             '<span class="ix-top-left" data-toggle="tooltip" title="PST Time" data-placement="bottom"><?= date("H:i") ?></span>\n' +
             '<span class="ix-top-right">\n' +
-            '<i class="fa fa-wifi" aria-hidden="true"></i>\n' +
-            '<i class="fa fa-battery-full" aria-hidden="true"></i>\n' +
+            '<i class="fas fa-wifi"></i>\n' +
+            '<i class="fas fa-battery-full"></i>\n' +
             '</span>\n' +
             '</div>';
 
@@ -532,7 +532,7 @@ function c_save_settings(){
                         if (modify_data['c_status'] < 0) {
 
                             //Yes! Remove from UI:
-                            $('.intent_line_' + modify_data['pid']).html('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
+                            $('.intent_line_' + modify_data['pid']).html('<span style="color:#222;"><i class="fas fa-trash-alt"></i> Deleted</span>');
 
                             //Disapper in a while:
                             setTimeout(function () {
@@ -608,7 +608,7 @@ function c_save_settings(){
                         //Has this been deleted?
                         if(modify_data['c_status']<0){
                             //Yes! Remove from UI:
-                            $('.intent_line_'+modify_data['pid']).html('<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>');
+                            $('.intent_line_'+modify_data['pid']).html('<span style="color:#222;"><i class="fas fa-trash-alt"></i> Deleted</span>');
                             //Disapper in a while:
                             setTimeout(function() {
                                 //Hide the editor & saving results:
@@ -669,7 +669,7 @@ function c_save_settings(){
 
             } else {
                 //Ooops there was an error!
-                $('.save_setting_results').html('<span style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+data.message+'</span>').hide().fadeIn();
+                $('.save_setting_results').html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> '+data.message+'</span>').hide().fadeIn();
             }
         });
     }
@@ -696,7 +696,7 @@ function initiate_list(group_id,placeholder,prefix,current_items){
         '<div class="input-group">'+
         '<div class="form-group is-empty" style="margin: 0; padding: 0;"><input type="text" class="form-control listerin" placeholder="'+placeholder+'" maxlength="140"></div>'+
         '<span class="input-group-addon" style="padding-right:0;">'+
-        '<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fa fa-plus" aria-hidden="true"></i></span></span>'+
+        '<span class="pull-right"><span class="badge badge-primary" style="cursor:pointer;"><i class="fas fa-plus"></i></span></span>'+
         '</span>'+
         '</div>'+
         '</div>');
@@ -814,10 +814,10 @@ function add_item(group_id,prefix,current_value){
         }
         $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
             '<span class="pull-right">'+
-            '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fa fa-trash"></i></a> '+
-            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fa fa-pencil-square"></i></a>'+
+            '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fas fa-trash-alt"></i></a> '+
+            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fas fa-pencil-square"></i></a>'+
             '</span>'+
-            '<i class="fa fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
+            '<i class="fas fa-sort"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
             '</li>');
 
         //Reset input field and re-focus only if manually added:
@@ -859,8 +859,8 @@ function add_item(group_id,prefix,current_value){
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
             <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' '.$this->lang->line('level_0_name').'s' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
-            <li id="nav_prerequisites"><a href="#prerequisites"><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites</a></li>
-            <li id="nav_skills"><a href="#skills"><i class="fa fa-diamond" aria-hidden="true"></i> Skills</a></li>
+            <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-eye"></i> Prerequisites</a></li>
+            <li id="nav_skills"><a href="#skills"><i class="fas fa-diamond"></i> Skills</a></li>
         </ul>
 
 
@@ -878,8 +878,8 @@ function add_item(group_id,prefix,current_value){
                 //Task Expand/Contract all if more than 2
                 if(count($intent['c__child_intents'])>0 && ($b['b_old_format'] || $b['b_is_parent'])){
                     echo '<div id="task_view">';
-                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
-                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                    echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
+                    echo '<i class="fas fa-minus-square close_all"></i>';
                     echo '</div>';
                 }
 
@@ -901,7 +901,7 @@ function add_item(group_id,prefix,current_value){
 
                             <?php if(!$b['b_is_parent']){ ?>
                             <span id="dir_handle" data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" class="badge badge-primary pull-right" style="cursor:pointer; margin: 1px 3px 0 6px;">
-                                <div><i class="fa fa-plus"></i></div>
+                                <div><i class="fas fa-plus"></i></div>
                             </span>
                             <?php } ?>
 
@@ -921,7 +921,7 @@ function add_item(group_id,prefix,current_value){
                 <?php itip(610); ?>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fa fa-eye" aria-hidden="true"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fas fa-eye"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_prerequisites" class="list-group grey-list"></div>
@@ -933,7 +933,7 @@ function add_item(group_id,prefix,current_value){
                         echo '<p>All '.$this->lang->line('level_0_name').' prerequisites are also linked to this '.$this->lang->line('level_1_name').':</p>';
                         echo '<ul style="list-style:none; margin-left:-20px;">';
                         foreach($all_items as $key=>$item){
-                            echo '<li><i class="fa fa-link" aria-hidden="true"></i> #'.($key+1).': '.$item.'</li>';
+                            echo '<li><i class="fas fa-link"></i> #'.($key+1).': '.$item.'</li>';
                         }
                         echo '</ul>';
                     }
@@ -949,7 +949,7 @@ function add_item(group_id,prefix,current_value){
 
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_transformations','+ New Skill','<i class="fa fa-diamond"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
+                        initiate_list('b_transformations','+ New Skill','<i class="fas fa-diamond"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_transformations" class="list-group grey-list"></div>
@@ -961,7 +961,7 @@ function add_item(group_id,prefix,current_value){
                         echo '<p>All '.$this->lang->line('level_0_name').' skills are also linked to this '.$this->lang->line('level_1_name').':</p>';
                         echo '<ul style="list-style:none; margin-left:-20px;">';
                         foreach($all_items as $key=>$item){
-                            echo '<li><i class="fa fa-link" aria-hidden="true"></i> #'.($key+1).': '.$item.'</li>';
+                            echo '<li><i class="fas fa-link"></i> #'.($key+1).': '.$item.'</li>';
                         }
                         echo '</ul>';
                     }
@@ -979,7 +979,7 @@ function add_item(group_id,prefix,current_value){
 
         <div id="modifybox" class="hidden" intent-id="0" level="0">
 
-            <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+            <div style="text-align:right; font-size: 22px; margin: -5px 0 -20px 0;"><a href="javascript:void(0)" onclick="$('#modifybox').addClass('hidden')"><i class="fas fa-times"></i></a></div>
 
             <div id="c_outcome1" class="levelz level1 hidden">
                 <?php $this->load->view('console/shared/c_outcome' , array(
@@ -1004,7 +1004,7 @@ function add_item(group_id,prefix,current_value){
 
             <div class="levelz level3 level2 hidden" style="margin-top:15px;">
                 <?php $times = $this->config->item('c_time_options'); ?>
-                <div class="title"><h4><i class="fa fa-clock-o"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
+                <div class="title"><h4><i class="fas fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
                 <div class="help_body maxout" id="content_609"></div>
                 <select class="form-control input-mini border timer_2 timer_3" id="c_time_estimate">
                     <?php
@@ -1018,7 +1018,7 @@ function add_item(group_id,prefix,current_value){
 
 
             <div class="levelz level3 level2 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fa fa-check-square"></i> Completion Settings <span id="hb_2284" class="help_button" intent-id="2284"></span></h4></div>
+                <div class="title"><h4><i class="fal fa-check-circle"></i> Completion Settings <span id="hb_2284" class="help_button" intent-id="2284"></span></h4></div>
                 <div class="help_body maxout" id="content_2284"></div>
                 <div class="form-group label-floating is-empty">
                     <div class="checkbox">
@@ -1031,7 +1031,7 @@ function add_item(group_id,prefix,current_value){
 
 
             <div class="levelz level2 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Task Status</h4></div>
+                <div class="title"><h4><i class="fas fa-sliders-h"></i> Task Status</h4></div>
                 <div class="form-group label-floating is-empty">
                     <select class="form-control input-mini border" id="c_status_2">
                         <?php
@@ -1045,7 +1045,7 @@ function add_item(group_id,prefix,current_value){
 
 
             <div class="levelz level3 hidden" style="margin-top:15px;">
-                <div class="title"><h4><i class="fa fa-circle" aria-hidden="true"></i> Step Status</h4></div>
+                <div class="title"><h4><i class="fas fa-sliders-h"></i> Step Status</h4></div>
                 <div class="form-group label-floating is-empty">
                     <select class="form-control input-mini border" id="c_status_3">
                         <?php
@@ -1070,7 +1070,7 @@ function add_item(group_id,prefix,current_value){
 
 
         <div class="marvel-device iphone-x hidden" id="iphonex" intent-id="">
-            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden')"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+            <div style="font-size: 22px; margin: -5px 0 -20px 0; top: 0; right: 0px; position: absolute; z-index:9999999;"><a href="javascript:void(0)" onclick="$('#iphonex').addClass('hidden')"><i class="fas fa-times"></i></a></div>
             <div class="notch">
                 <div class="camera"></div>
                 <div class="speaker"></div>

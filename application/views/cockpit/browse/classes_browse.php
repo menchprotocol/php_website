@@ -70,7 +70,7 @@ foreach($classes as $key=>$class) {
     echo '</td>';
 
 
-    echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fa fa-plug"></i></a>' : '<i class="fa fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
+    echo '<td>'.( $bs[0]['b_fp_id']>0 ? '<a href="https://www.facebook.com/'.$bs[0]['fp_fb_id'].'" target="_blank" data-toggle="tooltip" title="Bootcamp Facebook Page is '.$bs[0]['fp_name'].'" data-placement="right" ><i class="fas fa-plug"></i></a>' : '<i class="fas fa-exclamation-triangle redalert" data-toggle="tooltip" title="Bootcamp not connected to a Facebook Page yet" data-placement="right"></i>').'</td>';
 
 
 

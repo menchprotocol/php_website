@@ -258,7 +258,7 @@ function extract_level($b,$c_id){
         $view_data['breadcrumb_p'] = array(
             array(
                 'link' => null,
-                'anchor' => '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$b['c_outcome'],
+                'anchor' => '<i class="fas fa-circle"></i> '.$b['c_outcome'],
             ),
         );
         //Not applicable at Bootcamp Level:
@@ -483,7 +483,7 @@ function detect_embed_media($url,$full_message,$require_image=false){
 
             //Inform Student that this video has been sliced:
             if($start_sec || $end_sec){
-                $embed_code .= '<div class="video-prefix"><i class="fa fa-youtube-play" style="color:#ff0202;" aria-hidden="true"></i> Watch this video from <b>'.($start_sec ? sec_to_min($start_sec) : 'start').'</b> to <b>'.($end_sec ? sec_to_min($end_sec) : 'end').'</b>:</div>';
+                $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch this video from <b>'.($start_sec ? sec_to_min($start_sec) : 'start').'</b> to <b>'.($end_sec ? sec_to_min($end_sec) : 'end').'</b>:</div>';
             }
 
             $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -665,7 +665,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
                 } else {
                     //HTML format:
-                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$masked_url.'" target="_blank">'.clean_url($i['i_url']).'<i class="fa fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;" aria-hidden="true"></i></a>',$i['i_message']));
+                    $i['i_message'] = trim(str_replace($i['i_url'],'<a href="'.$masked_url.'" target="_blank">'.clean_url($i['i_url']).'<i class="fas fa-external-link-square" style="font-size: 0.8em; text-decoration:none; padding-left:4px;"></i></a>',$i['i_message']));
                 }
 
             }
@@ -849,7 +849,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
     	
         //Editing menu:
         $echo_ui .= '<ul class="msg-nav">';
-        //$echo_ui .= '<li class="edit-off"><i class="fa fa-clock-o"></i> 4s Ago</li>';
+        //$echo_ui .= '<li class="edit-off"><i class="fas fa-clock"></i> 4s Ago</li>';
         $echo_ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
         if($i['i_media_type']=='text'){
             $CI =& get_instance();
@@ -859,14 +859,14 @@ function echo_message($i,$level=0,$editing_enabled=true){
         $echo_ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_uploader($i).'</span></li>';
 
         if($editing_enabled){
-            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fa fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
-            $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fa fa-trash" style="margin:0 7px 0 5px;"></i></a></span></li>';
+            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-sort sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
+            $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
             if($i['i_media_type']=='text' || $level<=2){
-                $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fa fa-pencil-square"></i></a></span></li>';
+                $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pencil-square"></i></a></span></li>';
             }
             //Right side reverse:
-            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fa fa-check" aria-hidden="true"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fa fa-times" style="color:#3C4858"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
+            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fas fa-times" style="color:#3C4858"></i></a></li>';
             $echo_ui .= '<li class="pull-right edit-on hidden">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level>1?array(-1):array(-1,2)),'dropup',$level,1).'</li>';
             $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
         }
@@ -919,12 +919,12 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
         if($c_id){
 
             $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.format_hours( $c_time_estimate,true).'</span>';
-            $ui .= ' <i class="fa fa-clock-o" aria-hidden="true"></i>';
+            $ui .= ' <i class="fas fa-clock"></i>';
 
         } else {
 
             if($show_icon){
-                $ui .= '<i class="fa fa-clock-o" aria-hidden="true"></i>';
+                $ui .= '<i class="fas fa-clock"></i>';
             }
             if($c_time_estimate<1){
                 //Minutes:
@@ -950,7 +950,7 @@ function echo_br($admin){
     //Right content
     $ui .= '<span class="pull-right">';
     //$ui .= '<span class="label label-primary" data-toggle="tooltip" data-placement="left" title="Click to modify/revoke access.">';
-    //$ui .= '<i class="fa fa-cog" aria-hidden="true"></i>';
+    //$ui .= '<i class="fas fa-cog"></i>';
     //$ui .= '</span>';
     $ui .= status_bible('ba',$admin['ba_status']);
 
@@ -962,16 +962,16 @@ function echo_br($admin){
 
     //Are they shown on the profile?
     if($admin['ba_team_display']=='t'){
-        $ui .= '&nbsp; <i class="fa fa-eye" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
+        $ui .= '&nbsp; <i class="fas fa-eye" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
     } else {
-        $ui .= '&nbsp; <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
+        $ui .= '&nbsp; <i class="fas fa-eye-slash" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
     }
 
     $ui .= '</span> ';
 
     //Left content
-    //$ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i> ';
-    $ui .= (strlen($admin['u_image_url'])>4 ? '<img src="'.$admin['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i> &nbsp;').$admin['u_full_name'].' &nbsp;';
+    //$ui .= '<i class="fa fas-sort" style="padding-right:3px;"></i> ';
+    $ui .= (strlen($admin['u_image_url'])>4 ? '<img src="'.$admin['u_image_url'].'" class="profile-icon" />' : '<i class="fas fa-user-circle"></i> &nbsp;').$admin['u_full_name'].' &nbsp;';
 
 
 
@@ -1125,21 +1125,21 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         if($b['b_is_parent'] && $level==2){
 
             //The Bootcamp of multi-week Bootcamps
-            $ui .= '<a class="badge badge-primary" style="margin-right:-1px; width:34px;" href="javascript:delete_b('.$intent['cr_outbound_b_id'].','.$intent['cr_id'].');"><i class="fa fa-trash"></i></a> &nbsp;';
+            $ui .= '<a class="badge badge-primary" style="margin-right:-1px; width:34px;" href="javascript:delete_b('.$intent['cr_outbound_b_id'].','.$intent['cr_id'].');"><i class="fas fa-trash-alt"></i></a> &nbsp;';
 
-            $ui .= '<a class="badge badge-primary" style="margin-right:1px; width:60px;" href="/console/'.$intent['cr_outbound_b_id'].'"><i class="fa fa-chevron-right"></i></a>';
+            $ui .= '<a class="badge badge-primary" style="margin-right:1px; width:60px;" href="/console/'.$intent['cr_outbound_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
 
         } elseif(!$b['b_is_parent'] || $level==1) {
 
             if($editing_enabled){
                 if(!$b['b_old_format'] || $udata['u_status']==3){
-                    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fa fa-cog"></i></a> &nbsp;';
+                    $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
                 }
 
-                $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
+                $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fas fa-comment-dots"></i></a>';
             } else {
                 //Show link to current section:
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fa fa-commenting" aria-hidden="true"></i></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fas fa-comment-dots"></i></a>';
             }
 
         }
@@ -1152,14 +1152,14 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     //Sorting & Then Left Content:
     if($level>1 && $editing_enabled && (!$b['b_is_parent'] || $level==2)) {
-        $ui .= '<i class="fa fa-bars" aria-hidden="true"></i> &nbsp;';
+        $ui .= '<i class="fas fa-sort"></i> &nbsp;';
     }
 
 
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;" aria-hidden="true"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1168,7 +1168,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         $ui .= '<span class="inline-level">';
 
         if($child_enabled){
-            $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fa fa-plus-square-o" aria-hidden="true"></i></a> &nbsp;';
+            $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
         }
 
         $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent'] ? 'Week' : $CI->lang->line('level_2_name')).' #'.$intent['cr_outbound_rank'].'</span>';
@@ -1179,7 +1179,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     } elseif ($level>=3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_name').' #'.$intent['cr_outbound_rank'] : '<b><i class="fa fa-pencil-square" aria-hidden="true"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_name').' #'.$intent['cr_outbound_rank'] : '<b><i class="fas fa-pencil-square"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
 
     }
 
@@ -1212,7 +1212,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
                     <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form action="#" onsubmit="new_intent('.$intent['c_id'].','.($level+1).');" intent-id="'.$intent['c_id'].'"><input type="text" class="form-control autosearch"  maxlength="70" id="addintent'.$intent['c_id'].'" placeholder=""></form></div>
                     <span class="input-group-addon" style="padding-right:8px;">
                         <span data-toggle="tooltip" title="or press ENTER ;)" data-placement="top" onclick="new_intent('.$intent['c_id'].','.($level+1).');" class="badge badge-primary pull-right" intent-id="'.$intent['c_id'].'" style="cursor:pointer; margin: 13px -6px 1px 13px;">
-                            <div><i class="fa fa-plus"></i></div>
+                            <div><i class="fas fa-plus"></i></div>
                         </span>
                     </span>
                 </div>
@@ -1240,15 +1240,15 @@ function echo_b($b){
 
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
-    $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-    $b_ui .= '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" aria-hidden="true" style="margin: 0 8px 0 2px; color:#222;"></i> ';
+    $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span>';
+    $b_ui .= '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin: 0 8px 0 2px; color:#222;"></i> ';
     $b_ui .= $b['c_outcome'];
 
     if($all_students>0){
-        $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fa fa-user" aria-hidden="true"></i> '.$all_students.'</b>';
+        $b_ui .= ' &nbsp;<b style="color:#3C4858;" data-toggle="tooltip" data-placement="top" title="This Bootcamp has '.$all_students.' all-time Student'.show_s($all_students).'"><i class="fas fa-user"></i> '.$all_students.'</b>';
     }
 
-    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fa fa-lock" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
+    $b_ui .= ( $b['b_old_format'] ? ' &nbsp;<b style="color:#FF0000;"><i class="fas fa-lock" data-toggle="tooltip" data-placement="top" title="Bootcamp created with older version of Mench. You can import its Action Plan into a new Bootcamp."></i></b>' : '' );
     $b_ui .= '</a>';
     return $b_ui;
 }
@@ -1362,7 +1362,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <i class="fa fa-clock-o" aria-hidden="true"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. (Average '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest <i class="fas fa-clock"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. (Average '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day)');
     }
     return $pre_req_array;
 }
@@ -1391,7 +1391,7 @@ function b_progress($b){
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/settings#pages',
-            'anchor' => '<b>Connect your <i class="fa fa-facebook-official" aria-hidden="true" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
+            'anchor' => '<b>Connect your <i class="fab fa-facebook" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
@@ -1712,7 +1712,7 @@ function b_progress($b){
     
     //Return the final message:
     return array(
-        'stage' => '<i class="fa fa-steps" aria-hidden="true" title="Gained '.$progress_gained.'/'.$progress_possible.' points"></i> <i class="fa fa-rocket" aria-hidden="true"></i> Launch Checklist',
+        'stage' => '<i class="fas fa-rocket"></i> Launch Checklist',
         'progress' => round($progress_gained/$progress_possible*100),
         'check_list' => $checklist,
     );
@@ -1736,7 +1736,7 @@ function echo_r($b,$class,$append_class=null){
     if($class['r__current_admissions']>0){
 
         //How many students, if any, are enrolled in support packages?
-        echo '<a href="#class-'.$class['r_id'].'" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_admissions'].' <i class="fa fa-chevron-right" aria-hidden="true"></i></a>';
+        echo '<a href="#class-'.$class['r_id'].'" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_admissions'].' <i class="fas fa-chevron-right"></i></a>';
 
     } else {
 
@@ -1776,7 +1776,7 @@ function echo_r($b,$class,$append_class=null){
 
     echo ' <span title="Class ID '.$class['r_id'].'">'.time_format($class['r_start_date'],1).'</span>';
 
-    echo ' <i class="fa fa-eye-slash not_published" data-toggle="tooltip" data-placement="top" title="Class not published yet. Mench accepts admissions only for the upcoming '.$class_settings['students_show_max'].' Classes." aria-hidden="true"></i>';
+    echo ' <i class="fas fa-eye-slash not_published" data-toggle="tooltip" data-placement="top" title="Class not published yet. Mench accepts admissions only for the upcoming '.$class_settings['students_show_max'].' Classes."></i>';
 
     echo '</li>';
 }
@@ -1817,7 +1817,7 @@ function tree_menu($c,$current_c_ids,$format='list',$level=1){
         //Show the item:
         $ui .= '<a href="/'.$c['c_id'].'" class="list-group-item '.( in_array($c['c_id'],$current_c_ids) ? 'active' :'').'" style="'.($level==3 ? 'padding-left:20px;' : '').'; text-decoration:none;">';
         $ui .= '<span class="pull-right">';
-        $ui .= '<span class="badge badge-primary">'.count($c_child).' <i class="fa fa-chevron-right" aria-hidden="true"></i></span>';
+        $ui .= '<span class="badge badge-primary">'.count($c_child).' <i class="fas fa-chevron-right"></i></span>';
         $ui .= '</span>';
         $ui .= '<span style="font-weight:'.($level<=2 ? 'bold' :'normal').';">'.$c['c_outcome'].'</span>';
         $ui .= '</a>';
@@ -1857,7 +1857,7 @@ function echo_checklist($href,$anchor,$e_status,$time_min=0){
     $ui = '';
     if($href){
         $ui .= '<a href="'.$href.'" class="list-group-item '.(($e_status>=-2)?'checklist-done':'').'">';
-        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+        $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
     } else {
         $ui .= '<li class="list-group-item '.(($e_status>=-2)?'checklist-done':'').'">';
     }
@@ -2006,7 +2006,7 @@ function status_bible($object=null,$status=null,$micro_status=false,$data_placem
             return false;
         } else {
             //We have two skins for displaying statuses:
-            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" aria-hidden="true" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'><i class="fa '.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fa-circle' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
+            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'><i class="'.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fas fa-sliders-h' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
         }
 	}
 }
@@ -2459,7 +2459,7 @@ function format_e_text_value($e_text_value){
             } elseif($segments[0]=='video'){
                 $e_text_value .= '<video width="100%" onclick="this.play()" controls><source src="'.$sub_segments[0].'" type="video/mp4"></video>';
             } elseif($segments[0]=='file'){
-                $e_text_value .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download File</a>';
+                $e_text_value .= '<a href="'.$sub_segments[0].'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
             }
             
             //Do we have any leftovers after the URL? If so, append:
@@ -2621,40 +2621,40 @@ function html_run($run){
 	$return_string .= ' <span title="Click to Copy URL to share Plugin on Messenger." data-toggle="tooltip" class="hastt clickcopy" data-clipboard-text="httpurlhere"><img src="/img/messenger.png" class="action_icon" /><b>112233</b></span>';
 	
 	//Date
-	$return_string .= '<span title="Added TIME UTC" data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" aria-hidden="true" style="margin-right:2px;"></span>TIME</span>';
+	$return_string .= '<span title="Added TIME UTC" data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-time" style="margin-right:2px;"></span>TIME</span>';
 	
 	/*
 	//Update ID
 	$return_string .= '<span title="Unique Update ID assigned per each edit." data-toggle="tooltip" class="hastt">#'.$intent[$key]['id'].'</span>';
 	
 	if(auth_admin(1)){
-		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></button>';
+		$return_string .= '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>';
 		$return_string .= '<ul class="dropdown-menu">';
-		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$intent[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit</a></li>';
+		$return_string .= '<li><a href="javascript:edit_link('.$key.','.$intent[$key]['id'].')" class="edit_link"><span class="glyphicon glyphicon-cog"></span> Edit</a></li>';
 		
 		//Make sure this is not a grandpa before showing the delete button:
 		$grandparents = $CI->config->item('grand_parents');
 		if(!($key==0 && array_key_exists($intent[$key]['intent_id'],$grandparents))){
-			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$intent[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> Remove</a></li>'
+			$return_string .= '<li><a href="javascript:delete_link('.$key.','.$intent[$key]['id'].');"><span class="glyphicon glyphicon-minus-sign"></span> Remove</a></li>'
 		}
 		
 		//Add search shortcuts:
-		$return_string .= '<li><a href="https://www.google.com/search?q='.urlencode($intent[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Google</a></li>';
-		$return_string .= '<li><a href="https://www.youtube.com/results?search_query='.urlencode($intent[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> YouTube</a></li>';
+		$return_string .= '<li><a href="https://www.google.com/search?q='.urlencode($intent[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search"></span> Google</a></li>';
+		$return_string .= '<li><a href="https://www.youtube.com/results?search_query='.urlencode($intent[$key]['value']).'" target="_blank"><span class="glyphicon glyphicon-search"></span> YouTube</a></li>';
 		
 		//Display inversing if NOT direct
 		if(!$is_direct){
-			//TODO $return_string .= '<li><a href="javascript:inverse_link('.$key.','.$intent[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Flip Direction</a></li>';
+			//TODO $return_string .= '<li><a href="javascript:inverse_link('.$key.','.$intent[$key]['id'].')"><span class="glyphicon glyphicon-refresh"></span> Flip Direction</a></li>';
 		}
 		if($intent[$key]['update_id']>0){
 			//This gem has previous revisions:
-			//TODO $return_string .= '<li><a href="javascript:browse_revisions('.$key.','.$intent[$key]['id'].')"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Revisions</a></li>';
+			//TODO $return_string .= '<li><a href="javascript:browse_revisions('.$key.','.$intent[$key]['id'].')"><span class="glyphicon glyphicon-refresh"></span> Revisions</a></li>';
 		}
 		
 		$return_string .= '</ul></div>';
 		
 	} else {
-		$return_string .= ''; //<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Limited Access</span>
+		$return_string .= ''; //<span title="Request admin access to start collecting Gems." data-toggle="tooltip" class="hastt"><span class="glyphicon glyphicon-alert"></span> Limited Access</span>
 	}
 	*/
 	$return_string .= '</div></div>';
@@ -2670,8 +2670,8 @@ function html_run($run){
 
 function echo_completion_report($us_eng){
     echo status_bible('e_status',$us_eng['e_status']);
-    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-clock-o initial"></i>Completion Time:</span> '.time_format($us_eng['e_timestamp']).' PST</div>';
-    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fa fa-file-text initial"></i>Your Comments:</span> '.( strlen($us_eng['e_text_value'])>0 ? make_links_clickable(nl2br(htmlentities($us_eng['e_text_value']))) : 'None' ).'</div>';
+    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fas fa-clock initial"></i>Completion Time:</span> '.time_format($us_eng['e_timestamp']).' PST</div>';
+    echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fas fa-comment-dots initial"></i>Your Comments:</span> '.( strlen($us_eng['e_text_value'])>0 ? make_links_clickable(nl2br(htmlentities($us_eng['e_text_value']))) : 'None' ).'</div>';
 }
 
 

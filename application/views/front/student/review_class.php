@@ -92,7 +92,7 @@ echo '<div style="border-bottom:2px solid #3C4858; margin:0 0 25px;">&nbsp;</div
 echo '<div id="update_results"></div>'; //To be updated when submitted
 echo '<div id="save_review">';
 
-    echo '<div class="maxout"><b><i class="fa fa-star" aria-hidden="true"></i> Review Score</b><br />From a scale of 1-10, how likely are you to recommend your Bootcamp experience to friends/family?</div>';
+    echo '<div class="maxout"><b><i class="fas fa-star"></i> Review Score</b><br />From a scale of 1-10, how likely are you to recommend your Bootcamp experience to friends/family?</div>';
     echo '<select class="input-mini border" id="ru_review_score" style="padding:4px !important;">';
     if(!$has_reviewed){
         echo '<option value="0">Choose Score...</option>';
@@ -105,11 +105,11 @@ echo '<div id="save_review">';
 
     echo '<div id="hide_before_score" style="display:'.( !$has_reviewed ? 'none' : 'block' ).';">';
 
-        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fa fa-eye-slash" aria-hidden="true"></i> Private & Anonymous Feedback (Optional)</b><br />Share your thoughts/suggestions on how '.$lead_instructor.' can improve future Classes:</div>';
+        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-eye-slash"></i> Private & Anonymous Feedback (Optional)</b><br />Share your thoughts/suggestions on how '.$lead_instructor.' can improve future Classes:</div>';
         echo '<textarea id="ru_review_private_note" class="form-textarea maxout">'.$admission['ru_review_private_note'].'</textarea>';
 
 
-        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fa fa-eye" aria-hidden="true"></i> Public Review (Optional)</b><br />Write a review for '.$lead_instructor.' to let his future/potential students know about your experience and what to expect:</div>';
+        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-eye"></i> Public Review (Optional)</b><br />Write a review for '.$lead_instructor.' to let his future/potential students know about your experience and what to expect:</div>';
         echo '<textarea id="ru_review_public_note" class="form-textarea maxout">'.$admission['ru_review_public_note'].'</textarea>';
 
     echo '</div>';

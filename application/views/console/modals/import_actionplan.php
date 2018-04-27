@@ -184,11 +184,11 @@ $bs = $this->Db_model->instructor_bs(array(
 </style>
 
 
-<div class="modal fade" id="importActionPlan" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="importActionPlan" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Action Plan Import Wizard</h3>
             </div>
             <div class="modal-body" style="min-height:300px;">
@@ -217,27 +217,27 @@ $bs = $this->Db_model->instructor_bs(array(
 
 
                     <div id="task_mode" class="hidden">
-                        <h4 style="margin-bottom:20px;"><i class="fa fa-check-square-o" aria-hidden="true"></i> Task Import Mode</h4>
-                        <p><i class="fa fa-link" aria-hidden="true"></i> <b>Link:</b> New copy is linked to original item. Settings & Messages are mirrored and would remain in-sync if edited from either Action Plan.</p>
-                        <p><i class="fa fa-clone" aria-hidden="true"></i> <b>Copy:</b> A copy is made. Changes to Settings & Messages of either copy would not affect the other copy as they are independent from one another.</p>
+                        <h4 style="margin-bottom:20px;">Task Import Mode</h4>
+                        <p><i class="fas fa-link"></i> <b>Link:</b> New copy is linked to original item. Settings & Messages are mirrored and would remain in-sync if edited from either Action Plan.</p>
+                        <p><i class="fas fa-clone"></i> <b>Copy:</b> A copy is made. Changes to Settings & Messages of either copy would not affect the other copy as they are independent from one another.</p>
                         <div class="radio">
                             <label>
                                 <input type="radio" name="task_import_mode" value="1" disabled />
-                                <i class="fa fa-link" aria-hidden="true"></i> Link Tasks <i class="fa fa-link" aria-hidden="true"></i> Link Steps <b class="badge">UPCOMING</b>
+                                <i class="fas fa-link"></i> Link Tasks <i class="fas fa-link"></i> Link Steps <b class="badge">UPCOMING</b>
                                 <p>Keeps all Tasks in-sync. Changes made to the Settings/Messages of Tasks and Steps would be synced.</p>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
                                 <input type="radio" name="task_import_mode" value="2" disabled />
-                                <i class="fa fa-clone" aria-hidden="true"></i> Copy Tasks <i class="fa fa-link" aria-hidden="true"></i> Link Steps <b class="badge">UPCOMING</b>
+                                <i class="fas fa-clone"></i> Copy Tasks <i class="fas fa-link"></i> Link Steps <b class="badge">UPCOMING</b>
                                 <p>Ideal for re-structuring Tasks by making your Action Plan longer or shorter. Settings/Messages for Tasks would be independent while Settings/Messages for Steps would be synced.</p>
                             </label>
                         </div>
                         <div class="radio">
                             <label>
                                 <input type="radio" name="task_import_mode" value="3" checked="true" />
-                                <i class="fa fa-clone" aria-hidden="true"></i> Copy Tasks <i class="fa fa-clone" aria-hidden="true"></i> Copy Steps
+                                <i class="fas fa-clone"></i> Copy Tasks <i class="fas fa-clone"></i> Copy Steps
                                 <p>A fresh copy is made for both Tasks and Steps, and their Settings/Messages would be independent.</p>
                             </label>
                         </div>
@@ -258,8 +258,8 @@ $bs = $this->Db_model->instructor_bs(array(
 
             </div>
             <div class="modal-footer" style="text-align:left;">
-                <a id="btn_prev" href="javascript:move_ui(-1)" class="btn btn-primary" style="padding-left:10px;padding-right:12px; display:none;"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-                <span id="btn_next"><a href="javascript:move_ui(1)" class="btn btn-primary">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></span>
+                <a id="btn_prev" href="javascript:move_ui(-1)" class="btn btn-primary" style="padding-left:10px;padding-right:12px; display:none;"><i class="fas fa-chevron-left"></i></a>
+                <span id="btn_next"><a href="javascript:move_ui(1)" class="btn btn-primary">Next <i class="fas fa-chevron-right"></i></a></span>
 
                 <div style="text-align:right; margin:-30px 2px 0;"><b id="step_progress"></b></div>
                 <div class="progress" style="margin:auto 2px;">

@@ -50,7 +50,7 @@ class Cockpit extends CI_Controller {
 	                ),
 	                array(
 	                    'link' => null,
-	                    'anchor' => urldecode($_GET['cat']).' <a href="/scraper/udemy_csv?cat='.urlencode($_GET['cat']).'"><i class="fa fa-cloud-download" aria-hidden="true"></i>CSV</a>',
+	                    'anchor' => urldecode($_GET['cat']).' <a href="/scraper/udemy_csv?cat='.urlencode($_GET['cat']).'"><i class="fas fa-cloud-download"></i>CSV</a>',
 	                ),
 	            ),
 	        ));

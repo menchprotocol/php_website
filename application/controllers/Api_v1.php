@@ -208,12 +208,12 @@ class Api_v1 extends CI_Controller {
         $udata = auth(2,0,$_POST['b_id']);
         if(!$udata){
 
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Session expired. Login to try again.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fas fa-info-circle"></i> Session expired. Login to try again.</div>';
             return false;
 
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
 
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Missing Bootcamp ID.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fas fa-info-circle"></i> Missing Bootcamp ID.</div>';
             return false;
 
         }
@@ -223,7 +223,7 @@ class Api_v1 extends CI_Controller {
             'b_id' => intval($_POST['b_id']),
         ));
         if(count($bs)<1){
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Invalid Bootcamp ID.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fas fa-info-circle"></i> Invalid Bootcamp ID.</div>';
             return false;
         }
 
@@ -231,7 +231,7 @@ class Api_v1 extends CI_Controller {
         //Make sure we have their Access Token via the JS call that was made earlier...
         if(!isset($_POST['login_response']['authResponse']['accessToken'])){
             //We have an issue as we cannot access the user's access token, let them know:
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Cannot fetch your Facebook Access Token.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fas fa-info-circle"></i> Cannot fetch your Facebook Access Token.</div>';
             return false;
         }
 
@@ -243,7 +243,7 @@ class Api_v1 extends CI_Controller {
 
             //Unknown processing error, let them know about this:
             //This has already been logged via fb_index_pages()
-            echo '<div class="alert alert-danger maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Unknown error while trying to list your Facebook Pages.</div>';
+            echo '<div class="alert alert-danger maxout" role="alert"><i class="fas fa-info-circle"></i> Unknown error while trying to list your Facebook Pages.</div>';
             return false;
 
         }
@@ -256,12 +256,12 @@ class Api_v1 extends CI_Controller {
                 'fp_id' => $bs[0]['b_fp_id']
             ));
             if(count($no_control_pages)>0){
-                echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-plug" aria-hidden="true"></i> Currently connected to a Page you don\'t control: <a href="https://www.facebook.com/'.$no_control_pages[0]['fp_fb_id'].'">'.$no_control_pages[0]['fp_name'].'</a></div>';
+                echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-plug"></i> Currently connected to a Page you don\'t control: <a href="https://www.facebook.com/'.$no_control_pages[0]['fp_fb_id'].'">'.$no_control_pages[0]['fp_name'].'</a></div>';
             }
 
         } elseif(intval($bs[0]['b_fp_id'])==0){
             //Indicate to the user that they do not have a match:
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> Connect to a Facebook Page to activate Mench</div>';
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-info-circle"></i> Connect to a Facebook Page to activate Mench</div>';
         }
 
 
@@ -270,7 +270,7 @@ class Api_v1 extends CI_Controller {
         $admin_lost_pages = $this->Comm_model->fb_detect_revoked($udata['u_id'],$authorized_fp_ids,$_POST['b_id']);
         if(count($admin_lost_pages)>0){
             //Let them know that they lost access to certain pages that is no longer associated with their account:
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-info-circle" aria-hidden="true"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged into Facebook.</div>';
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-info-circle"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged into Facebook.</div>';
         }
 
 
@@ -302,16 +302,16 @@ class Api_v1 extends CI_Controller {
                     $pages_list_ui .= '<span class="pull-right">';
 
                     if($page['fp_status']==1 && $udata['u_status']==3){
-                        $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:fp_refresh('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                        $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:fp_refresh('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fas fa-sync"></i></a>';
                     }
 
                     if($bs[0]['b_fp_id']>0 && $page['fp_id']==$bs[0]['b_fp_id']){
                         //This page is already assigned:
-                        $pages_list_ui .= '<b><i class="fa fa-plug" aria-hidden="true"></i> Connected</b> &nbsp;';
-                        $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bs[0]['b_fp_id'].',0)" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-times-circle" aria-hidden="true"></i> Disconnect</a>';
+                        $pages_list_ui .= '<b><i class="fas fa-plug"></i> Connected</b> &nbsp;';
+                        $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bs[0]['b_fp_id'].',0)" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fas fa-times-circle"></i> Disconnect</a>';
                     } else {
                         //Give the option to connect:
-                        $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bs[0]['b_fp_id'].','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fa fa-plug" aria-hidden="true"></i> Connect</a>';
+                        $pages_list_ui .= '<a href="javascript:void(0);" onclick="fb_connect('.$bs[0]['b_fp_id'].','.$page['fp_id'].')" class="badge badge-primary badge-msg" style="text-decoration:none; margin-top:-4px;"><i class="fas fa-plug"></i> Connect</a>';
                     }
                     $pages_list_ui .= '</span> ';
                 }
@@ -327,7 +327,7 @@ class Api_v1 extends CI_Controller {
                 //Do we have a Page greeting?
                 if(strlen($page['fp_greeting'])>0){
                     //Show link:
-                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="The Greeting of the Messenger Bot is set by Mench" data-placement="top" onclick="$(\'.fp_greeting_'.$page['fp_id'].'\').toggle()"><i class="fa fa-align-left" aria-hidden="true"></i></a>';
+                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="The Greeting of the Messenger Bot is set by Mench" data-placement="top" onclick="$(\'.fp_greeting_'.$page['fp_id'].'\').toggle()"><i class="fas fa-align-left"></i></a>';
 
                     //Add Box:
                     $additional_ui_boxes .= '<div class="fp_box fp_greeting_'.$page['fp_id'].'" style="display:none;">';
@@ -339,7 +339,7 @@ class Api_v1 extends CI_Controller {
                 //How about other Connected Bootcamps?
                 if(count($other_bs)>0){
                     //Show link:
-                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.count($other_bs).'</a>';
+                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-circle"></i> '.count($other_bs).'</a>';
 
                     //Show other connected Bootcamps:
                     $additional_ui_boxes .= '<div class="fp_box fp_current_'.$page['fp_id'].'" style="display:none;">';
@@ -353,7 +353,7 @@ class Api_v1 extends CI_Controller {
                 }
 
                 //Link to FB Page
-                $pages_list_ui .= ' &nbsp;<a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank" style="font-size:0.9em;"><i class="fa fa-external-link-square" aria-hidden="true"></i></a>';
+                $pages_list_ui .= ' &nbsp;<a href="https://www.facebook.com/'.$page['fp_fb_id'].'" target="_blank" style="font-size:0.9em;"><i class="fas fa-external-link-square"></i></a>';
 
 
                 //Addup additional boxes:
@@ -363,11 +363,11 @@ class Api_v1 extends CI_Controller {
             }
         } else {
             //No page found!
-            $pages_list_ui .= '<li class="list-group-item" style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Facebook Pages found. Create a new one to continue...</li>';
+            $pages_list_ui .= '<li class="list-group-item" style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> No Facebook Pages found. Create a new one to continue...</li>';
         }
 
         //Link to create a new Facebook page:
-        $pages_list_ui .= '<a href="https://www.facebook.com/pages/create" class="list-group-item"><i class="fa fa-plus-square" style="color:#fedd16;" aria-hidden="true"></i> Create New Facebook Page</a>';
+        $pages_list_ui .= '<a href="https://www.facebook.com/pages/create" class="list-group-item"><i class="fas fa-plus-square" style="color:#fedd16;"></i> Create New Facebook Page</a>';
         $pages_list_ui .= '</div>';
 
         //Show the UI:
@@ -423,7 +423,7 @@ class Api_v1 extends CI_Controller {
                 //Let user know:
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" title="Success"></i>',
+                    'message' => '<i class="fas fa-signal" data-toggle="tooltip" title="Success"></i>',
                 ));
             }
         }
@@ -606,20 +606,20 @@ class Api_v1 extends CI_Controller {
         if(!isset($_POST['b_id']) || intval($_POST['b_id'])<1){
             die(echo_json(array(
                 'status' => 0,
-                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Core Data</div>',
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> Missing Core Data</div>',
             )));
         } elseif(!isset($_POST['u_full_name'])){
 
             die(echo_json(array(
                 'status' => 0,
-                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid name, try again.</div>',
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> Invalid name, try again.</div>',
             )));
 
         } elseif(!isset($_POST['u_email']) || strlen($_POST['u_email'])<1 || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
 
             die(echo_json(array(
                 'status' => 0,
-                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid email, try again.</div>',
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> Invalid email, try again.</div>',
             )));
 
         }
@@ -632,7 +632,7 @@ class Api_v1 extends CI_Controller {
         if(count($bs)<1) {
             die(echo_json(array(
                 'status' => 0,
-                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid Bootcamp ID</div>',
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> Invalid Bootcamp ID</div>',
             )));
         }
 
@@ -649,7 +649,7 @@ class Api_v1 extends CI_Controller {
                 //Invalid First name,
                 die(echo_json(array(
                     'status' => 0,
-                    'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid name, try again.</div>',
+                    'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> Invalid name, try again.</div>',
                 )));
             } else {
 
@@ -712,7 +712,7 @@ class Api_v1 extends CI_Controller {
                     //Show them an error:
                     die(echo_json(array(
                         'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> You have already enrolled in this Bootcampd. Your admission status is ['.trim(strip_tags(status_bible('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your admissions. Check your email to continue.').'</div>',
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcampd. Your admission status is ['.trim(strip_tags(status_bible('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your admissions. Check your email to continue.').'</div>',
                     )));
 
                 }
@@ -777,7 +777,7 @@ class Api_v1 extends CI_Controller {
             //Show them an error:
             die(echo_json(array(
                 'status' => 0,
-                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '.$message.'</div>',
+                'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> '.$message.'</div>',
             )));
 
         }
@@ -982,9 +982,9 @@ class Api_v1 extends CI_Controller {
 
     function ru_save_review(){
         if(!isset($_POST['ru_id']) || !isset($_POST['ru_key']) || intval($_POST['ru_id'])<1 || !($_POST['ru_key']==substr(md5($_POST['ru_id'].'r3vi3wS@lt'),0,6))){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Admission Data.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Admission Data.</div>');
         } elseif(!isset($_POST['ru_review_score']) || intval($_POST['ru_review_score'])<1 || intval($_POST['ru_review_score'])>10){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Review Score must be between 1-10.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Review Score must be between 1-10.</div>');
         }
 
         //Validate Admission:
@@ -997,7 +997,7 @@ class Api_v1 extends CI_Controller {
                 'e_text_value' => 'Validated review submission call failed to fetch admission data',
                 'e_inbound_c_id' => 8, //System Error
             ));
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Unable to locate your Admission.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Unable to locate your Admission.</div>');
         }
 
         //Is this a new review, or updating an existing one?
@@ -1280,7 +1280,7 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Show button for next Task:
-            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fa fa-arrow-right"></i></a></div>';
+            echo '<div style="font-size:1.2em;"><a href="/my/actionplan/'.$_POST['b_id'].'/'.$intent_data['next_intent']['c_id'].'" class="btn btn-black">Next <i class="fas fa-arrow-right"></i></a></div>';
 
 
         } else {
@@ -1309,9 +1309,9 @@ class Api_v1 extends CI_Controller {
     function u_password_reset_initiate(){
         //We need an email input:
         if(!isset($_POST['email'])){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Email.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Email.</div>');
         } elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-            die('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid Email.</div>');
+            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Email.</div>');
         }
 
         //Attempt to fetch this user:
@@ -1339,11 +1339,11 @@ class Api_v1 extends CI_Controller {
     function u_password_reset_apply(){
         //This function updates the user's new password as requested via a password reset:
         if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0 || !isset($_POST['timestamp']) || intval($_POST['timestamp'])<=0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash'])<10){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Core Variables.</div>';
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
         } elseif(!($_POST['p_hash']==md5($_POST['u_id'] . 'p@ssWordR3s3t' . $_POST['timestamp']))){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid hash key.</div>';
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
         } elseif(!isset($_POST['new_pass']) || strlen($_POST['new_pass'])<6){
-            echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: New password must be longer than 6 characters. Try again.</div>';
+            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: New password must be longer than 6 characters. Try again.</div>';
         } else {
             //All seems good, lets update their account:
             $this->Db_model->u_update( intval($_POST['u_id']) , array(
@@ -2157,7 +2157,7 @@ class Api_v1 extends CI_Controller {
             //Display message:
             echo_json(array(
                 'status' => 1,
-                'message' => '<i class="fa fa-check" aria-hidden="true"></i> Saved',
+                'message' => '<i class="fas fa-check"></i> Saved',
             ));
         }
     }
@@ -2555,7 +2555,7 @@ class Api_v1 extends CI_Controller {
 
         echo_json(array(
             'status' => 1,
-            'message' => '<i class="fa fa-trash"></i> Deleted',
+            'message' => '<i class="fas fa-trash-alt"></i> Deleted',
             'deleted_hours' => $bs[0]['c__estimated_hours'],
         ));
 
@@ -2919,7 +2919,7 @@ class Api_v1 extends CI_Controller {
         //Show success:
         echo_json(array(
             'status' => 1,
-            'message' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
+            'message' => '<span><i class="fas fa-check"></i> Saved</span>',
         ));
 
     }
@@ -2998,7 +2998,7 @@ class Api_v1 extends CI_Controller {
                 //Display message:
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<i class="fa fa-check" aria-hidden="true"></i> Sorted',
+                    'message' => '<i class="fas fa-check"></i> Sorted',
                 ));
             }
         }
@@ -3045,26 +3045,14 @@ class Api_v1 extends CI_Controller {
         $import_items = array(
             //Action Plan stuff:
             array(
-                'is_header' => 1,
-                'name' => '<h4><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_outcome'].'</h4>',
-            ),
-            array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-commenting" aria-hidden="true"></i> Import Bootcamp-Level Messages',
+                'name' => '<i class="fas fa-comment-dots"></i> Import Bootcamp-Level Messages',
                 'id' => 'b_level_messages',
                 'count' => count($bs[0]['c__messages']),
             ),
             array(
-                'is_header' => 0,
-                'name' => '<i class="fa fa-check-square-o" aria-hidden="true"></i> Override Prerequisites',
+                'name' => '<i class="fas fa-eye"></i> Override Prerequisites',
                 'id' => 'b_prerequisites',
                 'count' => ( strlen($bs[0]['b_prerequisites'])>0 ? count(json_decode($bs[0]['b_prerequisites'])) : 0 ),
-            ),
-
-
-            array(
-                'is_header' => 1,
-                'name' => '<h5><i class="fa fa-check-square-o" aria-hidden="true"></i> Import Tasks with Messages</h5>',
             ),
         );
 
@@ -3075,8 +3063,7 @@ class Api_v1 extends CI_Controller {
                 if(isset($task['c__child_intents'])){
                     //Give a single/total option:
                     array_push($import_items,array(
-                        'is_header' => 0,
-                        'name' => 'Tasks form ['.$task['c_outcome'].']',
+                        'name' => '<i class="fas fa-circle"></i> Tasks form ['.$task['c_outcome'].']',
                         'id' => 'b_outbound_c_ids',
                         'value' => $task['c_id'],
                         'count' => count($task['c__child_intents']),
@@ -3087,8 +3074,7 @@ class Api_v1 extends CI_Controller {
         } else {
 
             array_push($import_items,array(
-                'is_header' => 0,
-                'name' => 'Tasks of Action Plan',
+                'name' => '<i class="fas fa-circle"></i> Tasks in Action Plan',
                 'id' => 'b_outbound_c_ids',
                 'value' => $bs[0]['b_outbound_c_id'],
                 'count' => count($bs[0]['c__child_intents']),
@@ -3099,12 +3085,7 @@ class Api_v1 extends CI_Controller {
 
         //Add Outcome section:
         array_push($import_items,array(
-            'is_header' => 1,
-            'name' => '<h5><i class="fa fa-sign-out" aria-hidden="true"></i> Outcomes</h5>',
-        ));
-        array_push($import_items,array(
-            'is_header' => 0,
-            'name' => '<i class="fa fa-diamond" aria-hidden="true"></i> Override Skills You Will Gain',
+            'name' => '<i class="fas fa-diamond"></i> Override Skills',
             'id' => 'b_transformations',
             'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
         ));
@@ -3114,11 +3095,7 @@ class Api_v1 extends CI_Controller {
         //Generate UI:
         $ui = '<p>Choose what to import:</p>'; //Start generating this...
         foreach($import_items as $item){
-            if($item['is_header']){
-                $ui .= '<div class="title">'.$item['name'].'</div>';
-            } else {
-                $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" class="import_checkbox" name="'.$item['id'].'" '.( isset($item['value']) ? 'value="'.$item['value'].'"' : '' ).' '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
-            }
+            $ui .= '<div class="form-group label-floating is-empty"><div class="checkbox"><label><input type="checkbox" class="import_checkbox" name="'.$item['id'].'" '.( isset($item['value']) ? 'value="'.$item['value'].'"' : '' ).' '.( $item['count']==0 ? 'disabled':'').' /> '.$item['count'].'x &nbsp;'.$item['name'].'</label></div></div>';
         }
 
         echo_json(array(
@@ -3702,7 +3679,7 @@ class Api_v1 extends CI_Controller {
                     'status' => 1,
                     'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
                     'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
-                    'success_icon' => '<span><i class="fa fa-check" aria-hidden="true"></i> Saved</span>',
+                    'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
                     'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
                 ));
             }
@@ -3762,7 +3739,7 @@ class Api_v1 extends CI_Controller {
 
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<span style="color:#222;"><i class="fa fa-trash" aria-hidden="true"></i> Deleted</span>',
+                    'message' => '<span style="color:#222;"><i class="fas fa-trash-alt"></i> Deleted</span>',
                 ));
             }
         }
@@ -3831,9 +3808,9 @@ class Api_v1 extends CI_Controller {
         ));
 
         if($results['status']){
-            echo '<i class="fa fa-check-circle" style="color:#3C4858;" title="SUCCESS: '.$results['message'].'" aria-hidden="true"></i>';
+            echo '<i class="fas fa-comment-alt-check" style="color:#3C4858;" title="SUCCESS: '.$results['message'].'"></i>';
         } else {
-            echo '<i class="fa fa-exclamation-triangle" style="color:#FF0000;" title="ERROR: '.$results['message'].'" aria-hidden="true"></i>';
+            echo '<i class="fas fa-comment-alt-times" style="color:#FF0000;" title="ERROR: '.$results['message'].'"></i>';
         }
     }
 

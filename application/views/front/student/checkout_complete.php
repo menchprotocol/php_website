@@ -15,7 +15,7 @@ var support_price = 0;
 function move_ui(adjustment){
 
     //Set Defaults:
-    $('#btn_next a').html('Next <i class="fa fa-chevron-right" aria-hidden="true"></i>');
+    $('#btn_next a').html('Next <i class="fas fa-chevron-right"></i>');
     $('#payment_method').html('');
 
 	//Any pre-check with submitted data?
@@ -72,13 +72,13 @@ function move_ui(adjustment){
             if(support_price>0){
 
                 //Payment is required:
-                $('#btn_next a').html('CONFIRM & PAY &nbsp;[$'+support_price+'] &nbsp;&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i>');
+                $('#btn_next a').html('CONFIRM & PAY &nbsp;[$'+support_price+'] &nbsp;&nbsp;<i class="fas fa-chevron-right"></i>');
                 $('#payment_method').html('<span id="white_paypal"><img src="/img/paypal.png" /></span>');
-                $('#outcome_guarantee').html(' (<a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Tuition Reimbursement Guarantee <i class="fa fa-external-link-square" aria-hidden="true"></i></a>)');
+                $('#outcome_guarantee').html(' (<a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Tuition Reimbursement Guarantee <i class="fas fa-external-link-square"></i></a>)');
 
             } else {
                 //This is a FREE Class:
-                $('#btn_next a').html('CONFIRM & JOIN <i class="fa fa-chevron-right" aria-hidden="true"></i>');
+                $('#btn_next a').html('CONFIRM & JOIN <i class="fas fa-chevron-right"></i>');
                 $('#outcome_guarantee').html('');
             }
 
@@ -177,7 +177,7 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-dot-circle"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fas fa-calendar"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
 
 
 
@@ -210,7 +210,7 @@ $(document).ready(function() {
     <div class="radio pricing_block">
         <label>
             <input type="radio" id="p_selection_1" data-price="<?= echo_price($b,1, true) ?>" name="p_selection" value="1" />
-            <b id="p_name_1"><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?></b> &nbsp;[<b id="p_price_1"><?= echo_price($b,1) ?></b>]
+            <b id="p_name_1"><i class="<?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;"></i> <?= $status_rs[1]['s_name'] ?></b> &nbsp;[<b id="p_price_1"><?= echo_price($b,1) ?></b>]
             <p style="margin-left:30px;"><?= nl2br($status_rs[1]['s_desc']) ?></p>
         </label>
     </div>
@@ -221,7 +221,7 @@ $(document).ready(function() {
         <div class="radio pricing_block">
             <label>
                 <input type="radio" id="p_selection_2" data-price="<?= echo_price($b,2, true) ?>" name="p_selection" value="2" />
-                <b id="p_name_2"><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true" style="margin:0 1px;"></i> <?= $b['b_p2_weeks'] .' Week'.show_s($b['b_p2_weeks']).' of '.$status_rs[2]['s_name'] ?></b> &nbsp;[<b id="p_price_2"><?= echo_price($b,2) ?></b>]<?php /* <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b> */ ?>
+                <b id="p_name_2"><i class="<?= $status_rs[2]['s_mini_icon'] ?>" style="margin:0 1px;"></i> <?= $b['b_p2_weeks'] .' Week'.show_s($b['b_p2_weeks']).' of '.$status_rs[2]['s_name'] ?></b> &nbsp;[<b id="p_price_2"><?= echo_price($b,2) ?></b>]<?php /* <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b> */ ?>
                 <p style="margin-left:30px;"><?= nl2br($status_rs[2]['s_desc']) ?></p>
             </label>
         </div>
@@ -231,7 +231,7 @@ $(document).ready(function() {
             <div class="radio pricing_block">
                 <label>
                     <input type="radio" id="p_selection_3" data-price="<?= echo_price($b,3, true) ?>" name="p_selection" value="3" />
-                    <b id="p_name_3"><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $b['b_p3_weeks'] .' Week'.show_s($b['b_p3_weeks']).' of '.$status_rs[3]['s_name'] ?></b> &nbsp;[<b id="p_price_3"><?= echo_price($b,3) ?></b>]
+                    <b id="p_name_3"><i class="<?= $status_rs[3]['s_mini_icon'] ?>"></i> <?= $b['b_p3_weeks'] .' Week'.show_s($b['b_p3_weeks']).' of '.$status_rs[3]['s_name'] ?></b> &nbsp;[<b id="p_price_3"><?= echo_price($b,3) ?></b>]
                     <p style="margin-left:30px;"><?= nl2br($status_rs[3]['s_desc']) ?></p>
                 </label>
             </div>
@@ -279,8 +279,8 @@ $(document).ready(function() {
 </div>
 
 
-<a id="btn_prev" href="javascript:move_ui(-1)" class="btn btn-primary" style="padding-left:10px;padding-right:12px; display:none;"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-<span id="btn_next"><a href="javascript:move_ui(1)" class="btn btn-primary">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></span>
+<a id="btn_prev" href="javascript:move_ui(-1)" class="btn btn-primary" style="padding-left:10px;padding-right:12px; display:none;"><i class="fas fa-chevron-left"></i></a>
+<span id="btn_next"><a href="javascript:move_ui(1)" class="btn btn-primary">Next <i class="fas fa-chevron-right"></i></a></span>
 
 <div style="text-align:right; margin:0px 2px 0;"><b id="step_progress"></b></div>
 <div class="progress" style="margin:auto 2px;">

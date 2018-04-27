@@ -73,7 +73,7 @@ foreach($engagement_filters as $key=>$value){
             echo '<option value="'.$c_eng['c_id'].'" '.((isset($_GET[$key]) && $_GET[$key]==$c_eng['c_id'])?'selected="selected"':'').'>'.$c_eng['c_outcome'].'</option>';
         }
         echo '</select>';
-        echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fa fa-external-link-square" aria-hidden="true"></i></a></div>';
+        echo '<div><a href="/console/360/actionplan" target="_blank">Open in Action Plan <i class="fas fa-external-link-square"></i></a></div>';
 
     } else {
         //show text input
@@ -101,8 +101,8 @@ echo '</form>';
         //Fetch objects
         foreach($engagements as $e){
             echo '<tr>';
-            echo '<td><span aria-hidden="true" data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
-            echo '<td><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" aria-hidden="true" data-placement="right" class="underdot">'.$e['c_outcome'].'</span></td>';
+            echo '<td><span data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span></td>';
+            echo '<td><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right" class="underdot">'.$e['c_outcome'].'</span></td>';
 
             //Do we have a message?
             if(strlen($e['e_text_value'])>0){
@@ -117,7 +117,7 @@ echo '</form>';
                 }
             }
 
-            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_text_value'].( in_array($e['e_status'],array(0,-2)) ? '<div style="color:#008000;"><i class="fa fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
+            echo '<td><div style="max-width:300px; padding-left:10px;">'.$e['e_text_value'].( in_array($e['e_status'],array(0,-2)) ? '<div style="color:#008000;"><i class="fas fa-spinner fa-spin fa-3x fa-fw" style="font-size:14px;"></i> Processing...</div>' : '' ).'</div></td>';
             echo '<td>';
 
             //Lets go through all references to see what is there:
@@ -131,7 +131,7 @@ echo '</form>';
             }
 
             echo '</td>';
-            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/ej_list/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" aria-hidden="true" data-placement="left"><i class="fa fa-search-plus" id="icon_'.$e['e_id'].'" aria-hidden="true"></i></a>' : '' ).'</td>';
+            echo '<td style="text-align:center !important;">'.( $e['e_has_blob']=='t' ? '<a href="/api_v1/ej_list/'.$e['e_id'].'" target="_blank" data-toggle="tooltip" title="Analyze Engagement JSON Blob in a new window" data-placement="left"><i class="fas fa-search-plus" id="icon_'.$e['e_id'].'"></i></a>' : '' ).'</td>';
             echo '</tr>';
         }
         ?>

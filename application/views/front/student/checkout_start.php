@@ -40,7 +40,7 @@ $( document ).ready(function() {
 
 </script>
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fa fa-calendar" aria-hidden="true"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-dot-circle"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fas fa-calendar"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
 
 
 <div class="section">
@@ -57,7 +57,7 @@ $( document ).ready(function() {
     <div class="row maxout" style="padding-left:10px;">
         <div class="col-xs-12" style="padding-left:14px;">
             <div id="start_result"></div>
-            <a href="javascript:start_application()" id="submit_button" class="btn btn-funnel" style="color:#FFF;">Start &nbsp;<i class="fa fa-chevron-circle-right" style="font-size:1.1em;" aria-hidden="true"></i></a>
+            <a href="javascript:start_application()" id="submit_button" class="btn btn-funnel" style="color:#FFF;">Start &nbsp;<i class="fas fa-chevron-circle-right" style="font-size:1.1em;"></i></a>
         </div>
     </div>
 </div>

@@ -1,11 +1,11 @@
 <?php
 //Make sure we have all key variables:
 if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp']) || intval($_GET['timestamp'])<=0 || !isset($_GET['p_hash']) || strlen($_GET['p_hash'])<10){
-    echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Missing Core Variables.</div>';
+    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
 } elseif(!($_GET['p_hash']==md5($_GET['u_id'] . 'p@ssWordR3s3t' . $_GET['timestamp']))){
-    echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Invalid hash key.</div>';
+    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
 } elseif(($_GET['timestamp']+(24*3600))<time()){
-    echo '<div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: Password reset link has expired. You can request another one <a href="/login">here</a>.</div>';
+    echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Password reset link has expired. You can request another one <a href="/login">here</a>.</div>';
 } else {
 
 //Everything is good, enable the password reset:
@@ -33,7 +33,7 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
 <h3>Enter New Password</h3>
 <div class="input-group pass_success">
     <span class="input-group-addon">
-        <i class="material-icons">lock_outline</i>
+        <i class="fas fa-lock"></i>
     </span>
     <div class="form-group is-empty"><input type="password" autocomplete="false" nofill id="u_password" placeholder="New Password" class="form-control"><span class="material-input"></span></div>
 </div>
@@ -50,7 +50,7 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
         }
     });
 </script>
-<div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
+<div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fas fa-exclamation-triangle"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 */?>
 
 <div id="loginb" class="submit-btn pass_success">

@@ -224,7 +224,7 @@ if(!isset($intents[0])){
                 var iid = $(evt.item).attr('iid');
                 if($('#ul-nav-'+iid).find('.video-sorting').length!==0){
                     inner_content = $('#msg_body_'+iid).html();
-                    $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fa fa-sort" aria-hidden="true"></i> Drag up/down to sort video');
+                    $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fas fa-sort"></i> Drag up/down to sort video');
                 } else {
                     inner_content = null;
                 }
@@ -388,7 +388,7 @@ if(!isset($intents[0])){
 
             } else {
                 //Oops, some sort of an error, lets
-                $("#ul-nav-"+i_id+" .edit-updates").html('<b style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+data.message+'</b>');
+                $("#ul-nav-"+i_id+" .edit-updates").html('<b style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> '+data.message+'</b>');
             }
 
             //Tooltips:
@@ -585,15 +585,15 @@ if(!isset($intents[0])){
     //Give more information on each message type:
     $i_desc = status_bible('i');
     echo '<div class="ix-tip all_msg msg_1">';
-    echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
+    echo '<i class="fas fa-info-circle"></i> ';
     echo str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[1]['s_desc']).'.';
     if($level==2){
-        echo ' <a id="simulate_'.$c_id.'" href="javascript:void(0)" onclick="tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fa fa-mobile" aria-hidden="true"></i></a>';
+        echo ' <a id="simulate_'.$c_id.'" href="javascript:void(0)" onclick="tree_message('.$c_id.','.$udata['u_id'].')" data-toggle="tooltip" title="Simulate messages sent to students when Task starts" data-placement="bottom">Send Test Message <i class="fas fa-mobile"></i></a>';
     }
     echo '</div>';
-    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[2]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_2 hidden"><i class="fas fa-info-circle"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[2]['s_desc']).'.</div>';
 
-    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fa fa-info-circle" aria-hidden="true"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[3]['s_desc']).'.</div>';
+    echo '<div class="ix-tip all_msg msg_3 hidden"><i class="fas fa-info-circle"></i> '.str_replace('item',$this->lang->line('level_'.( $level<=1 ? $bs[0]['b_is_parent'] : $level ).'_name'),$i_desc[3]['s_desc']).'.</div>';
 
     $message_count_1 = 0;
     $message_count_2 = 0;
@@ -617,13 +617,13 @@ if(!isset($intents[0])){
 
     //Show no Message errors:
     if($message_count_1==0){
-        echo '<div class="ix-tip no-messages'.$c_id.'_1 all_msg msg_1"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No '.status_bible('i',1, false, null).' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages'.$c_id.'_1 all_msg msg_1"><i class="fas fa-exclamation-triangle"></i> No '.status_bible('i',1, false, null).' Messages added yet</div>';
     }
     if($message_count_2==0){
-        echo '<div class="ix-tip no-messages'.$c_id.'_2 all_msg msg_2 hidden"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No '.status_bible('i',2, false, null).' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages'.$c_id.'_2 all_msg msg_2 hidden"><i class="fas fa-exclamation-triangle"></i> No '.status_bible('i',2, false, null).' Messages added yet</div>';
     }
     if($message_count_3==0){
-        echo '<div class="ix-tip no-messages'.$c_id.'_3 all_msg msg_3 hidden"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No '.status_bible('i',3, false, null).' Messages added yet</div>';
+        echo '<div class="ix-tip no-messages'.$c_id.'_3 all_msg msg_3 hidden"><i class="fas fa-exclamation-triangle"></i> No '.status_bible('i',3, false, null).' Messages added yet</div>';
     }
 
     ?>
@@ -645,12 +645,12 @@ if(!isset($intents[0])){
 
     if($level>1){
         //{first_name}
-        echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fa fa-id-card-o" aria-hidden="true"></i> {first_name}</a>';
+        echo '<a href="javascript:add_first_name();" class="textarea_buttons remove_loading" style="float:right;" data-toggle="tooltip" title="Replaced with student\'s First Name for a more personal message." data-placement="left"><i class="fas fa-id-card"></i> {first_name}</a>';
     }
 
     //Choose a file:
     $file_limit_mb = $this->config->item('file_limit_mb');
-    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="top"><i class="fa fa-picture-o" aria-hidden="true"></i> Upload File</label></div>';
+    echo '<div style="float:right; display:inline-block; margin-right:8px;" class="remove_loading"><input class="box__file inputfile" type="file" name="file" id="file" /><label class="textarea_buttons" for="file" data-toggle="tooltip" title="Upload Video, Audio, Images or PDFs up to '.$file_limit_mb.' MB." data-placement="top"><i class="fas fa-image"></i> Upload File</label></div>';
     echo '</div>';
 
 

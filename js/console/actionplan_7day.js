@@ -17,7 +17,7 @@ $(document).ready(function() {
     $('#c_status_2').change(function() {
         if(parseInt($(this).val())<0){
             //Delete has been selected!
-            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fa fa-trash" aria-hidden="true"></i> You are about to permanently delete this Task, its Steps and all related messages.</span>');
+            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fas fa-trash-alt"></i> You are about to permanently delete this Task, its Steps and all related messages.</span>');
         } else {
             $('#delete_warning').html('');
         }
@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('#c_status_3').change(function() {
         if(parseInt($(this).val())<0){
             //Delete has been selected!
-            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fa fa-trash" aria-hidden="true"></i> You are about to permanently delete this Step and all its messages.</span>');
+            $('#delete_warning').html('<span style="color:#FF0000;"><i class="fas fa-trash-alt"></i> You are about to permanently delete this Step and all its messages.</span>');
         } else {
             $('#delete_warning').html('');
         }

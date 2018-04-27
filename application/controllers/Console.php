@@ -155,7 +155,7 @@ class Console extends CI_Controller {
             $view_data['breadcrumb'] = array(
                 array(
                     'link' => null,
-                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['b_is_parent'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of prerequisites, Tasks or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fa fa-download" aria-hidden="true"></i></span></a>' : ''),
+                    'anchor' => 'Action Plan <span id="hb_2272" class="help_button" intent-id="2272"></span>'.( !$bs[0]['b_old_format'] && !$bs[0]['b_is_parent'] ? ' <a href="#" data-toggle="modal" data-target="#importActionPlan" class="tipbtn"><span class="badge tip-badge" title="Import parts of all of prerequisites, Tasks or Outcomes from another Bootcamp you manage" data-toggle="tooltip" data-placement="bottom"><i class="fas fa-download"></i></span></a>' : ''),
                 ),
             );
         }
@@ -195,7 +195,7 @@ class Console extends CI_Controller {
 	        'breadcrumb' => array(
 	            array(
 	                'link' => null,
-	                'anchor' => 'Classes <span id="hb_2274" class="help_button" intent-id="2274"></span>'.($bs[0]['b__admins'][0]['u_id']==$udata['u_id'] ? '' : '<i class="fa fa-lock" aria-hidden="true" style="color:#FF0000; margin:0 0 0 5px;" data-toggle="tooltip" data-placement="bottom" title="Support settings locked because you are not the lead instructor of this Bootcamp"></i>'),
+	                'anchor' => 'Classes <span id="hb_2274" class="help_button" intent-id="2274"></span>'.($bs[0]['b__admins'][0]['u_id']==$udata['u_id'] ? '' : '<i class="fas fa-lock" style="color:#FF0000; margin:0 0 0 5px;" data-toggle="tooltip" data-placement="bottom" title="Support settings locked because you are not the lead instructor of this Bootcamp"></i>'),
 	            ),
 	        ),
 	    );

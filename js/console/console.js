@@ -16,7 +16,7 @@ function update_dropdown(name,intvalue,count){
 }
 
 //Define tip style:
-var tips_button = '<span class="badge tip-badge"><i class="fa fa-info-circle" aria-hidden="true"></i></span>';
+var tips_button = '<span class="badge tip-badge"><i class="fas fa-info-circle"></i></span>';
 
 function open_tip(intent_id){
 	
@@ -31,7 +31,7 @@ function open_tip(intent_id){
 			//Let's see what we got:
 			if(data.success){
 				//Load the content:
-				$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip('+data.intent_id+')">'+tips_button+'</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')"><i class="fa fa-times" aria-hidden="true"></i></a></div></div>'); //Show the same button at top for UX
+				$("div#content_"+data.intent_id).html('<div class="row"><div class="col-xs-6"><a href="javascript:close_tip('+data.intent_id+')">'+tips_button+'</a></div><div class="col-xs-6" style="text-align:right;"><a href="javascript:close_tip('+data.intent_id+')"><i class="fas fa-times"></i></a></div></div>'); //Show the same button at top for UX
 				$("div#content_"+data.intent_id).append(data.help_content);
 				
 				//Reload tooldip:
@@ -151,7 +151,7 @@ $(document).ready(function() {
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'" aria-hidden="true"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fa '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'" aria-hidden="true"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fa fa-lock" aria-hidden="true"></i>' : '' );
+                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fa '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fas fa-lock"></i>' : '' );
             },
         }
 

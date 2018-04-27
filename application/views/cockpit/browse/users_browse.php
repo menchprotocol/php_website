@@ -52,7 +52,7 @@ if(isset($_GET['r_id']) && intval($_GET['r_id'])>0){
 
                 if(data.status){
                     //Update UI to confirm with user:
-                    $('#i_test_'+u_id).html('<i class="fa fa-check-circle" aria-hidden="true"></i>').hide().fadeIn();
+                    $('#i_test_'+u_id).html('<i class="fas fa-comment-alt-check"></i>').hide().fadeIn();
                 } else {
                     alert('ERROR: '+data.message);
                     $('#i_test_'+u_id).html('ERROR').hide().fadeIn();
@@ -70,7 +70,7 @@ if(isset($_GET['r_id']) && intval($_GET['r_id'])>0){
             <th>User</th>
             <th>Bootcamps</th>
             <th>Joined</th>
-            <th colspan="4"><i class="fa fa-commenting" aria-hidden="true"></i> Latest Message / <i class="fa fa-eye" aria-hidden="true"></i> Read (Total)</th>
+            <th colspan="4"><i class="fas fa-comment-dots"></i> Latest Message / <i class="fas fa-eye"></i> Read (Total)</th>
             <th>Timezone</th>
             <th>Actions</th>
         </tr>
@@ -105,7 +105,7 @@ foreach($users as $key=>$user){
     echo '<td>'.($key+1).'</td>';
     echo '<td>'.$user['u_id'].'</td>';
     echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
-    echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_full_name'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
+    echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_full_name'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fas fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
 
 
     echo '<td>';
@@ -130,13 +130,13 @@ foreach($users as $key=>$user){
     echo '<td>'.time_format($user['u_timestamp'],1).'</td>';
     echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? ( $messages[0]['e_inbound_c_id']==6 ? '<b style="color:#FF0000">Received</b>' : 'Sent' ).' on' : 'Not Activated' ).'</td>';
     echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? time_format($messages[0]['e_timestamp'],1) : '' ).'</td>';
-    echo '<td>'.( isset($read_message[0]) ? '<i class="fa fa-eye" aria-hidden="true"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
+    echo '<td>'.( isset($read_message[0]) ? '<i class="fas fa-eye"></i> '.time_format($read_message[0]['e_timestamp'],1) : '' ).'</td>';
     echo '<td>'.( isset($messages[0]) && $user['u_cache__fp_psid']>0 ? '<b>('.(count($messages)>=100 ? '100+' : count($messages)).')</b>' : '' ).'</td>';
     echo '<td>'.$user['u_timezone'].'</td>';
     echo '<td>';
 
     if(strlen($user['u_email'])>0){
-        echo '<a href="mailto:'.$user['u_email'].'" title="Email '.$user['u_email'].'"><i class="fa fa-envelope" aria-hidden="true"></i></a>&nbsp;';
+        echo '<a href="mailto:'.$user['u_email'].'" title="Email '.$user['u_email'].'"><i class="fas fa-envelope"></i></a>&nbsp;';
     }
 
     if(isset($_GET['pid']) && $user['u_cache__fp_psid']>0){
@@ -148,7 +148,7 @@ foreach($users as $key=>$user){
         ),1);
         if(count($sent_messages)>0){
             //Already sent!
-            echo '<i class="fa fa-check-circle" aria-hidden="true"></i> ';
+            echo '<i class="fas fa-comment-alt-check"></i> ';
         }
 
         //Show send button:

@@ -61,7 +61,7 @@ if(count($bs)>0){
             //echo status_bible('df',$b['b_difficulty_level'],0,'top').' ';
         }
 
-        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__child_count'].' Task'.show_s($b['c__child_count']).' totalling '.format_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.show_s($b['b__week_count']).' Bootcamp"><i class="fa fa-clock-o" aria-hidden="true"></i> '.format_hours($b['c__estimated_hours'],true).' IN '.$b['b__week_count'].' Week'.show_s($b['b__week_count']).'</span>';
+        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__child_count'].' Task'.show_s($b['c__child_count']).' totalling '.format_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.show_s($b['b__week_count']).' Bootcamp"><i class="fas fa-clock"></i> '.format_hours($b['c__estimated_hours'],true).' IN '.$b['b__week_count'].' Week'.show_s($b['b__week_count']).'</span>';
 
         echo '</h6>';
 
@@ -82,7 +82,7 @@ if(count($bs)>0){
     echo '</div>';
 } else {
     //No Bootcamps, show message:
-    echo '<div class="alert alert-info" style="margin:30px 0 100px; font-size:1.3em;"><i class="fa fa-bullhorn" aria-hidden="true"></i> Bootcamps are cooking. If hungry you can <a href="https://m.me/menchbot">connect to MenchBot</a> to be notified when food is ready.</div>';
+    echo '<div class="alert alert-info" style="margin:30px 0 100px; font-size:1.3em;"><i class="fas fa-bullhorn"></i> Bootcamps are cooking. If hungry you can <a href="https://m.me/menchbot">connect to MenchBot</a> to be notified when food is ready.</div>';
 }
 ?>
 </div>

@@ -496,7 +496,7 @@
           inputGroup = this.$element.parent().hasClass('input-group') ? ' input-group-btn' : '',
           autofocus = this.autofocus ? ' autofocus' : '';
       // Elements
-      var header = this.options.header ? '<div class="popover-title"><button type="button" class="close" aria-hidden="true">&times;</button>' + this.options.header + '</div>' : '';
+      var header = this.options.header ? '<div class="popover-title"><button type="button" class="close">&times;</button>' + this.options.header + '</div>' : '';
       var searchbox = this.options.liveSearch ?
       '<div class="bs-searchbox">' +
       '<input type="text" class="form-control" autocomplete="off"' +

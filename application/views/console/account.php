@@ -34,14 +34,14 @@ function changeBio() {
 function trigger_link_watch(link_id,prepend_url){
 	
 	if($( "#"+link_id ).val().length>0){
-		$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fa fa-external-link-square" aria-hidden="true"></i></a>');
+		$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fas fa-external-link-square"></i></a>');
     } else {
     	$( "#ph_"+link_id ).html('');
     }
 	
 	$( "#"+link_id ).bind('change keyup', function () {
 		if($( "#"+link_id ).val().length>0){
-			$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fa fa-external-link-square" aria-hidden="true"></i></a>');
+			$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fas fa-external-link-square"></i></a>');
         } else {
         	$( "#ph_"+link_id ).html('');
         }
@@ -114,16 +114,16 @@ function insert_gravatar(){
 
 
 <p style="float:right; margin-top:-75px;">
-	<a href="/api_v1/logout" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="We'll miss you ​😍​"><i class="fa fa-power-off" aria-hidden="true"></i><span> Logout</span></a>
+	<a href="/api_v1/logout" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="We'll miss you ​😍​"><i class="fas fa-power-off"></i><span> Logout</span></a>
 </p>
 
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_profile" class="active"><a href="#profile"><i class="fa fa-id-card" aria-hidden="true"></i> Profile</a></li>
-  <li id="nav_communication"><a href="#communication"><i class="fa fa-share-alt" aria-hidden="true"></i> Communication</a></li>
-  <li id="nav_finance"><a href="#finance"><i class="fa fa-bar-chart" aria-hidden="true"></i> Payouts</a></li>
-  <li id="nav_password"><a href="#password"><i class="fa fa-lock" aria-hidden="true"></i> Password</a></li>
+  <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-id-bardge"></i> Profile</a></li>
+  <li id="nav_communication"><a href="#communication"><i class="fas fa-comment-alt-dots"></i> Communication</a></li>
+  <li id="nav_finance"><a href="#finance"><i class="fas fa-chart-bar"></i> Payouts</a></li>
+  <li id="nav_password"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
 </ul>
 
 
@@ -132,7 +132,7 @@ function insert_gravatar(){
 
     <div class="tab-pane active" id="tabprofile">
 
-        <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fa fa-id-card" aria-hidden="true"></i> Name</h4></div>
+        <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Name</h4></div>
         
         <div class="row" style="margin:0 0 0 0;">
         	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
@@ -143,12 +143,12 @@ function insert_gravatar(){
 
 
         <div style="display: block;">
-            <div class="title" style="margin-top:30px;"><h4><i class="fa fa-picture-o" aria-hidden="true"></i> Picture</h4></div>
+            <div class="title" style="margin-top:30px;"><h4><i class="fas fa-image"></i> Picture</h4></div>
             <ul>
                 <li>Used as your instructor profile photo in your Bootcamp landing pages.</li>
                 <li>Link to any URL that hosts your photo, starting with "https://"</li>
                 <?php if(strlen($udata['u_email'])>0){ ?>
-                    <li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></a>.</li>
+                    <li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></a>.</li>
                 <?php } ?>
             </ul>
             <div class="row" style="margin:0 0 0 0;">
@@ -164,7 +164,7 @@ function insert_gravatar(){
         
         
         <div style="display:none;">
-        		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-venus-mars" aria-hidden="true"></i> Gender</h4></div>
+        		<div class="title" style="margin-top:30px;"><h4><i class="fas fa-venus-mars"></i> Gender</h4></div>
             <div class="form-group label-floating is-empty">
                 <select id="u_gender" class="border">
                 	<option value="">Choose...</option>
@@ -179,7 +179,7 @@ function insert_gravatar(){
     		
     		
 		
-		<div class="title" style="margin-top:30px;"><h4><i class="fa fa-commenting" aria-hidden="true"></i> Introductory Message</h4></div>
+		<div class="title" style="margin-top:30px;"><h4><i class="fas fa-comment-dots"></i> Introductory Message</h4></div>
 		<ul class="maxout">
 			<li>Give the Mench community an overview of your professional background.</li>
 			<li>Make sure to include your strong suits and tangible accomplishments.</li>
@@ -191,7 +191,7 @@ function insert_gravatar(){
         
         
         
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-map-marker" aria-hidden="true"></i> Location</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-map-marker"></i> Location</h4></div>
         <div class="form-group label-floating is-empty">
         	<select id="u_country_code" class="border" style="width:100%; margin-bottom:10px; max-width:260px;">
         		<option value="">Choose...</option>
@@ -217,7 +217,7 @@ function insert_gravatar(){
     <div class="tab-pane" id="tabcommunication">
     
     
-     	<div class="title"><h4><i class="fa fa-language" aria-hidden="true"></i> Fluent Languages</h4></div>
+     	<div class="title"><h4><i class="fas fa-language"></i> Fluent Languages</h4></div>
         <p>Hold down Ctrl to select multiple:</p>
         <div class="form-group label-floating is-empty">
         	<select multiple id="u_language" style="height:150px;" class="border">
@@ -235,7 +235,7 @@ function insert_gravatar(){
         
 		
         
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-clock-o" aria-hidden="true"></i> Timezone</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-clock"></i> Timezone</h4></div>
         <div class="form-group label-floating is-empty">
             <select id="u_timezone" class="border">
             	<option value="">Choose...</option>
@@ -253,7 +253,7 @@ function insert_gravatar(){
 
 
 
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Email <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-envelope"></i> Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_email'] ?>" class="form-control border">
             <span class="material-input"></span>
@@ -262,7 +262,7 @@ function insert_gravatar(){
 
 
         
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-phone-square" aria-hidden="true"></i> Phone <i class="fa fa-eye-slash" aria-hidden="true" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-eye-slash" data-toggle="tooltip" title="Hidden from students"></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="tel" maxlength="30" required id="u_phone" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_phone'] ?>" class="form-control border">
             <span class="material-input"></span>
@@ -272,7 +272,7 @@ function insert_gravatar(){
        
        
     	
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-chrome" aria-hidden="true"></i> Website <span id="ph_u_website_url"></span></h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fab fa-chrome"></i> Website <span id="ph_u_website_url"></span></h4></div>
         <p>Start with http:// or https://</p>
     	<input type="url" class="form-control border" id="u_website_url" data-lpignore="true" maxlength="255" value="<?= $udata['u_website_url'] ?>" />
         <script>trigger_link_watch('u_website_url','');</script>
@@ -288,7 +288,7 @@ function insert_gravatar(){
         }
         ?>
         
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-skype" aria-hidden="true"></i> Skype Username</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fab fa-skype"></i> Skype Username</h4></div>
     	<input type="text" class="form-control border" data-lpignore="true" id="u_skype_username" maxlength="100" value="<?= $udata['u_skype_username'] ?>" />
     	
     	<table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
@@ -298,14 +298,14 @@ function insert_gravatar(){
     <div class="tab-pane" id="tabfinance" style="max-width:none !important;">
 
        <?php
-       echo '<div class="title"><h4><i class="fa fa-history" aria-hidden="true"></i> Payout History</h4></div>';
+       echo '<div class="title"><h4><i class="fas fa-history"></i> Payout History</h4></div>';
        //Attempt to fetch all payouts:
        $class_transactions = $this->Db_model->t_fetch(array(
            't.t_inbound_u_id' => $udata['u_id'],
        ));
        if(count($class_transactions)<1){
            //Class is not yet started:
-           echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No transactions yet.</div>';
+           echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> No transactions yet.</div>';
        } else {
            //List all transactions:
 
@@ -313,7 +313,7 @@ function insert_gravatar(){
        ?>
 
 
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-paypal" aria-hidden="true"></i> Paypal Email for Payouts</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fab fa-paypal"></i> Paypal Email for Payouts</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $udata['u_paypal_email'] ?>" class="form-control border">
             <span class="material-input"></span>
@@ -321,12 +321,12 @@ function insert_gravatar(){
 
 
 
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Instructor Agreement</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-badge-check"></i> Instructor Agreement</h4></div>
         <ul>
-        	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a> work.</li>
-        	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
-        	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
-        	<li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fa fa-external-link-square" style="font-size: 0.8em;" aria-hidden="true"></i></u></a>.</li>
+        	<li>I have read and understood how <a href="https://support.mench.co/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a> work.</li>
+        	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
+        	<li>I have read and understood the <a href="https://support.mench.co/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
+        	<li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
         </ul>
         <div class="form-group label-floating is-empty">
         	<div class="checkbox">
@@ -349,13 +349,13 @@ function insert_gravatar(){
 
 
     <div class="tab-pane" id="tabpassword">
-        <div class="title"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> Current Password</h4></div>
+        <div class="title"><h4><i class="fas fa-asterisk"></i> Current Password</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="password" id="u_password_current" style="max-width: 260px;" class="form-control border">
             <span class="material-input"></span>
         </div>
 
-        <div class="title" style="margin-top:30px;"><h4><i class="fa fa-asterisk" aria-hidden="true"></i> New Password</h4></div>
+        <div class="title" style="margin-top:30px;"><h4><i class="fas fa-asterisk"></i> New Password</h4></div>
         <div class="form-group label-floating is-empty">
             <input type="password" id="u_password_new" style="max-width: 260px;" class="form-control border">
             <span class="material-input"></span>

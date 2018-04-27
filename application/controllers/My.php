@@ -319,7 +319,7 @@ class My extends CI_Controller {
         if(count($admissions)<=1){
 
             //No other admissions found:
-            die('<div class="alert alert-info" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them.<div style="margin-top: 15px;"><a href="/">Browse Bootcamps &raquo;</a></div></div>');
+            die('<div class="alert alert-info" role="alert"><i class="fas fa-exclamation-triangle"></i> Error: You must be part of at-least 2 Bootcamps to be able to switch between them.<div style="margin-top: 15px;"><a href="/">Browse Bootcamps &raquo;</a></div></div>');
 
         } else {
 
@@ -339,12 +339,12 @@ class My extends CI_Controller {
                 } else {
 
                     echo '<a href="/my/actionplan/'.$other_admission['b_id'].'/'.$other_admission['b_outbound_c_id'].'" class="list-group-item">';
-                    echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top: -7px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+                    echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top: -7px;"><i class="fas fa-chevron-right"></i></span></span>';
 
                 }
 
-                echo '<i class="fa fa-dot-circle-o" aria-hidden="true"></i> <b>'.$other_admission['c_outcome'].'</b>';
-                echo ' <span style="display:inline-block;"><i class="fa fa-calendar" aria-hidden="true"></i> '.time_format($other_admission['r_start_date'],2).'</span>';
+                echo '<i class="fas fa-circle"></i> <b>'.$other_admission['c_outcome'].'</b>';
+                echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.time_format($other_admission['r_start_date'],2).'</span>';
 
                 if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){
                     echo ' <span class="badge badge-primary grey" style="padding: 2px 9px;">RUNNING</span>';
@@ -389,7 +389,7 @@ class My extends CI_Controller {
                 if($uadmission){
                     $focus_admission = $uadmission;
                 } else {
-                    die('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> To access your Classmates you need to <a href="https://mench.com/login?url='.urlencode($_SERVER['REQUEST_URI']).'" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
+                    die('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Classmates you need to <a href="https://mench.com/login?url='.urlencode($_SERVER['REQUEST_URI']).'" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
                 }
 
             } else {
@@ -496,11 +496,11 @@ class My extends CI_Controller {
                 echo ' ('.( $class_running ? 'Running' : ( time()<$class['r__class_start_time'] ? 'Upcoming' : 'Completed' ) ).')';
 
                 //Export
-                echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all Class students and their contact details"><span class="badge tip-badge"><i class="fa fa-cloud-download" aria-hidden="true"></i></span></a>';
+                echo ' <a href="/api_v1/r_export/'.$class['r_id'].'" data-toggle="tooltip" data-placement="left" title="Download a CSV file of all Class students and their contact details"><span class="badge tip-badge"><i class="fas fa-cloud-download"></i></span></a>';
 
                 //Action Plan:
                 if(count($cache_action_plans)>0){
-                    echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fa fa-list-ol" aria-hidden="true"></i></span></a>';
+                    echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fas fa-list-ol"></i></span></a>';
                 }
 
                 //Help Bubble:
@@ -518,7 +518,7 @@ class My extends CI_Controller {
 
                 echo '<div class="ap_toggle" style="display:none;">';
 
-                echo '<div class="title"><h4><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
+                echo '<div class="title"><h4><i class="fas fa-list-ol"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
                 echo '<div class="help_body maxout" id="content_3267"></div>';
 
                 //Show Action Plan:
@@ -530,8 +530,8 @@ class My extends CI_Controller {
                 if(count($b['c__child_intents'])>0){
                     /*
                     echo '<div id="task_view">';
-                    echo '<i class="fa fa-plus-square expand_all" aria-hidden="true"></i> &nbsp;';
-                    echo '<i class="fa fa-minus-square close_all" aria-hidden="true"></i>';
+                    echo '<i class="fas fa-plus-square expand_all"></i> &nbsp;';
+                    echo '<i class="fas fa-minus-square close_all"></i>';
                     echo '</div>';
                     */
                 }
@@ -547,15 +547,15 @@ class My extends CI_Controller {
 
                 //Prerequisites, which get some system appended ones:
                 $b['b_prerequisites'] = prep_prerequisites($b);
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-eye" aria-hidden="true"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-eye"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
             <div class="help_body maxout" id="content_610"></div>';
-                echo ( count($b['b_prerequisites'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+                echo ( count($b['b_prerequisites'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
 
 
                 //Skills You Will Gain
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fa fa-diamond" aria-hidden="true"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-diamond"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
             <div class="help_body maxout" id="content_2271"></div>';
-                echo ( strlen($b['b_transformations'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Not Set</div>' );
+                echo ( strlen($b['b_transformations'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
 
 
                 if($class['r_status']==2 && $udata['u_status']>=2){
@@ -563,7 +563,7 @@ class My extends CI_Controller {
                     ?>
                     <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>
                     <div id="action_plan_status" class="copy_ap maxout" style="display:none; border:1px solid #3C4858; border-radius:5px; margin-top:20px; padding:10px;">
-                        <p><b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete.</p>
+                        <p><b><i class="fas fa-exclamation-triangle"></i> WARNING:</b> This Class is currently running, and updating your Action Plan may cause confusion for your students as they might need to complete Steps form previous Tasks they had already marked as complete.</p>
                         <p><a href="javascript:void(0);" onclick="r_sync_c(<?= $b['b_id'] ?>,<?= $class['r_id'] ?>)">I Understand, Continue With Update &raquo;</a></p>
                     </div>
                     <?php
@@ -612,7 +612,7 @@ class My extends CI_Controller {
                     if($show_ranking_top==$counter){
                         echo '<span data-toggle="tooltip" title="While only the top '.($show_top*100).'% are ranked, any student who completes all Steps by the end of the class will win the completion awards.">Ranking for top '.($show_top*100).'% only</span>';
                     } else {
-                        echo '<span>Above students have successfully <i class="fa fa-trophy" aria-hidden="true"></i> COMPLETED</span>';
+                        echo '<span>Above students have successfully <i class="fas fa-trophy"></i> COMPLETED</span>';
                     }
                     echo '</td>';
                     echo '</tr>';
@@ -646,7 +646,7 @@ class My extends CI_Controller {
                 if($is_instructor){
 
                     echo '<a href="javascript:view_el('.$admission['u_id'].','.$bs[0]['c_id'].')" class="plain">';
-                    echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$bs[0]['c_id'].'" aria-hidden="true"></i> ';
+                    echo '<i class="pointer fas fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$bs[0]['c_id'].'"></i> ';
                     echo $student_name;
                     echo '</a>';
 
@@ -664,7 +664,7 @@ class My extends CI_Controller {
 
                     //They have completed it all, show them as winners!
                     echo '<td valign="top" colspan="'.($intent_count_enabled?'2':'1').'" style="text-align:left; vertical-align:top;">';
-                    echo '<i class="fa fa-trophy" aria-hidden="true"></i><span style="font-size: 0.8em; padding-left:2px;"></span>';
+                    echo '<i class="fas fa-trophy"></i><span style="font-size: 0.8em; padding-left:2px;"></span>';
                     echo '</td>';
 
                 } else {
@@ -719,7 +719,7 @@ class My extends CI_Controller {
                                 //Title:
                                 echo '<div class="us_c_title">';
                                 echo '<a href="javascript:view_el('.$admission['u_id'].','.$intent['c_id'].')" class="plain">';
-                                echo '<i class="pointer fa fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'" aria-hidden="true"></i> ';
+                                echo '<i class="pointer fas fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'"></i> ';
                                 echo status_bible('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_outcome'];
                                 echo '</a>';
                                 echo '</div>';
@@ -728,9 +728,9 @@ class My extends CI_Controller {
                                 //Submission Details:
                                 echo '<div id="c_el_'.$admission['u_id'].'_'.$intent['c_id'].'" class="homework hidden">';
                                 if($intent_submitted){
-                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['e_text_value'])>0 ? make_links_clickable($us_data[$intent['c_id']]['e_text_value']) : '<i class="fa fa-sticky-note-o" aria-hidden="true"></i> No completion notes by Student' ).'</p>';
+                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['e_text_value'])>0 ? make_links_clickable($us_data[$intent['c_id']]['e_text_value']) : '<i class="fas fa-comment-alt-times"></i> No completion notes by Student' ).'</p>';
                                 } else {
-                                    echo '<p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Nothing submitted Yet</p>';
+                                    echo '<p><i class="fas fa-exclamation-triangle"></i> Nothing submitted Yet</p>';
                                 }
                                 
                                 //TODO Show Steps here in the future
@@ -750,7 +750,7 @@ class My extends CI_Controller {
 
             //No students admitted yet:
             echo '<tr style="font-weight:bold; ">';
-            echo '<td colspan="7" style="font-size:1.2em; padding:15px 0; text-align:center;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No Students Admitted Yet</td>';
+            echo '<td colspan="7" style="font-size:1.2em; padding:15px 0; text-align:center;"><i class="fas fa-exclamation-triangle"></i>  No Students Admitted Yet</td>';
             echo '</tr>';
 
         }
@@ -765,7 +765,7 @@ class My extends CI_Controller {
             $message_max = $this->config->item('message_max');
 
             //Add Broadcasting:
-            echo '<div class="title" style="margin-top:25px;"><h4><i class="fa fa-comments" aria-hidden="true"></i> Broadcast Message <span id="hb_4997" class="help_button" intent-id="4997"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>';
+            echo '<div class="title" style="margin-top:25px;"><h4><i class="fas fa-comments"></i> Broadcast Message <span id="hb_4997" class="help_button" intent-id="4997"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>';
             echo '<div class="help_body maxout" id="content_4997"></div>';
             echo '<div class="form-group label-floating is-empty">
             <textarea class="form-control text-edit border msg msgin" style="min-height:80px; max-width:420px; padding:3px;" onkeyup="changeBroadcastCount()" id="r_broadcast"></textarea>

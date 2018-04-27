@@ -16,7 +16,7 @@ function show_fb_auth(error_message=null){
     $('#page_list').addClass('hidden');
     $('#fb_login').removeClass('hidden');
     if(error_message){
-        $('#login_message').html('<span style="color:#FF0000"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ERROR: '+error_message+'</span>');
+        $('#login_message').html('<span style="color:#FF0000"><i class="fas fa-exclamation-triangle"></i> ERROR: '+error_message+'</span>');
         $('#why_permissions').addClass('hidden');
     } else {
         $('#login_message').html('<span style="color:#3C4858">to connect this Bootcamp to your Facebook Page</span>');
@@ -41,7 +41,7 @@ function fp_refresh(fp_id){
         } else {
             alert('ERROR: '+data.message);
 
-            $('#simulate_'+fp_id).html('<i class="fa fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" title="ERROR: '+data.message+'"></i>');
+            $('#simulate_'+fp_id).html('<i class="fas fa-exclamation-triangle" data-toggle="tooltip" title="ERROR: '+data.message+'"></i>');
 
             //Load ToolTip:
             $('[data-toggle="tooltip"]').tooltip();
@@ -306,15 +306,15 @@ function b_save_settings(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_landingpage" class="active"><a href="#landingpage"><i class="fa fa-bullhorn" aria-hidden="true"></i> Landing Page</a></li>
+    <li id="nav_landingpage" class="active"><a href="#landingpage"><i class="fas fa-cart-plus"></i> Landing Page</a></li>
 
     <?php if(!$b['b_is_parent']){ ?>
-    <li id="nav_support"><a href="#support"><i class="fa fa-life-ring" aria-hidden="true"></i> Support</a></li>
-    <li id="nav_pages"><a href="#pages"><i class="fa fa-facebook-official" aria-hidden="true"></i> Pages</a></li>
+    <li id="nav_support"><a href="#support"><i class="fas fa-life-ring"></i> Support</a></li>
+    <li id="nav_pages"><a href="#pages"><i class="fab fa-facebook"></i> Pages</a></li>
     <?php } ?>
 
-    <li id="nav_team"><a href="#team"><i class="fa fa-user-plus" aria-hidden="true"></i> Team</a></li>
-    <!-- <li id="nav_coupons"><a href="#coupons"><i class="fa fa-tags" aria-hidden="true"></i> Coupons</a></li> -->
+    <li id="nav_team"><a href="#team"><i class="fas fa-user-plus"></i> Team</a></li>
+    <!-- <li id="nav_coupons"><a href="#coupons"><i class="fas fa-tags"></i> Coupons</a></li> -->
 </ul>
 
 
@@ -325,13 +325,13 @@ function b_save_settings(){
     <div class="tab-pane active" id="tablandingpage">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-circle" aria-hidden="true"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
         <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_status']==3 && !$b['b_old_format'] ? array() : array(3) )); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
 
 
-        <div class="title" style="margin-top:0;"><h4><i class="fa fa-hashtag" aria-hidden="true"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
+        <div class="title" style="margin-top:0;"><h4><i class="fas fa-hashtag"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
         <div class="help_body maxout" id="content_4869"></div>
         <div class="form-group label-floating">
             <?php
@@ -348,11 +348,11 @@ function b_save_settings(){
             ?>
         </div>
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-thermometer-half" aria-hidden="true"></i> Required Experience Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-thermometer-half"></i> Required Experience Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
         <div class="help_body maxout" id="content_4868"></div>
 
         <?php if($b['b_is_parent']){ ?>
-            <p><i class="fa fa-check-circle" aria-hidden="true"></i> Auto set to highest experience level required by 7-Day Bootcamps.</p>
+            <p><i class="fas fa-magic"></i> Auto set to highest experience level required by 7-Day Bootcamps.</p>
         <?php } else { ?>
             <div class="form-group label-floating is-empty">
                 <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -369,7 +369,7 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:15px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-link"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
         <div class="help_body maxout" id="content_725"></div>
         <div class="form-group label-floating is-empty">
             <div class="input-group border" style="width:100%; max-width:380px;">
@@ -380,14 +380,14 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-link" aria-hidden="true"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
         <div class="help_body maxout" id="content_4867"></div>
         <div class="input-group">
             <input type="URL" id="b_thankyou_url" style="width:380px;" value="<?= $b['b_thankyou_url'] ?>" class="form-control border" />
         </div>
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fab fa-facebook"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
         <div class="help_body maxout" id="content_718"></div>
         <div class="input-group">
             <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
@@ -403,7 +403,7 @@ function b_save_settings(){
     <div class="tab-pane" id="tabsupport">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $status_rs[1]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[1]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="<?= $status_rs[1]['s_mini_icon'] ?>"></i> <?= $status_rs[1]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
         <div class="help_body maxout" id="content_4789"></div>
         <div class="form-group label-floating <?= (count($pm['p1_rates'])<=1 ? 'hidden' : '') ?>">
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -421,7 +421,7 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:25px;"><h4><i class="fa <?= $status_rs[2]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[2]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="<?= $status_rs[2]['s_mini_icon'] ?>"></i> <?= $status_rs[2]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
         <div class="help_body maxout" id="content_4791"></div>
 
 
@@ -454,7 +454,7 @@ function b_save_settings(){
             </div>
 
             <div style="padding-left:30px;">
-                <div class="title" style="margin-top:20px;"><h4><i class="fa fa-envelope" aria-hidden="true"></i> Support Email Address <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
+                <div class="title" style="margin-top:20px;"><h4><i class="fas fa-envelope"></i> Support Email Address <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
                 <div class="help_body maxout" id="content_4790"></div>
                 <div class="form-group label-floating is-empty">
                     <input type="email" id="b_support_email" data-lpignore="true" style="width:320px;" placeholder="yoursupportemail@gmail.com" value="<?= $b['b_support_email'] ?>" class="form-control border">
@@ -464,7 +464,7 @@ function b_save_settings(){
 
 
 
-            <div class="title" style="margin-top:20px;"><h4><i class="fa <?= $status_rs[3]['s_mini_icon'] ?>" aria-hidden="true"></i> <?= $status_rs[3]['s_name'] ?> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
+            <div class="title" style="margin-top:20px;"><h4><i class="<?= $status_rs[3]['s_mini_icon'] ?>"></i> <?= $status_rs[3]['s_name'] ?> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
             <div class="help_body maxout" id="content_615"></div>
             <div class="form-group label-floating">
                 <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -483,7 +483,7 @@ function b_save_settings(){
                     <div>Session Duration: <b>50</b> Minutes per Student per Week</div>
                     <div>Tutoring Price: <b>$<span id="tutoring_price"></span></b> per Session</div>
 
-                    <div class="title" style="margin-top:20px;"><h4><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
+                    <div class="title" style="margin-top:20px;"><h4><i class="fas fa-calendar-check"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
                     <div class="help_body maxout" id="content_4792"></div>
                     <div class="form-group label-floating is-empty">
                         <input type="url" id="b_calendly_url" style="width:320px;" placeholder="https://calendly.com/shervine/demo" value="<?= $b['b_calendly_url'] ?>" class="form-control border">
@@ -557,7 +557,7 @@ function b_save_settings(){
     </div>
 
     <div class="tab-pane" id="tabcoupons">
-        <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Pending development; Scheduled for March 2018 🎉​</div>
+        <div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Pending development; Scheduled for March 2018 🎉​</div>
     </div>
 
 </div>

@@ -76,7 +76,7 @@ function toggle_support(r_id){
 
         } else {
             //Restore Loader:
-            $('#support_toggle_'+r_id).html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>');
+            $('#support_toggle_'+r_id).html('<i class="fas fa-exclamation-triangle"></i>');
 
             //Show Error:
             alert('ERROR: ' + data.message);
@@ -125,8 +125,8 @@ function r_sync_c(b_id,r_id){
         <td class="class_nav" style="vertical-align:top;">
 
             <ul id="topnav" class="nav nav-pills nav-pills-primary" style="margin-bottom:12px;">
-                <li id="nav_active" class="active"><a href="#active"><i class="fa fa-play-circle initial"></i> Active</a></li>
-                <li id="nav_complete"><a href="#complete"><i class="fa fa-check-circle initial"></i> Complete</a></li>
+                <li id="nav_active" class="active"><a href="#active"><i class="fas fa-play-circle initial"></i> Active</a></li>
+                <li id="nav_complete"><a href="#complete"><i class="fas fa-check-circle initial"></i> Complete</a></li>
             </ul>
 
             <div class="tab-content tab-space">
@@ -150,13 +150,13 @@ function r_sync_c(b_id,r_id){
                             echo_r($b,$class,( $key>=$class_settings['instructor_show_default']?' active_extra hidden ':'').( $upcoming_classes<=$class_settings['students_show_max'] ? ' is_public ' : ''));
                         }
                         if(count($active_classes)>$class_settings['instructor_show_default']){
-                            echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'active_extra\')" data-toggle="tooltip" data-placement="top" title="Classes are automatically created for the next '.$class_settings['create_weeks_ahead'].' Weeks" class="list-group-item active_extra" style="text-decoration:none;"><i class="fa fa-plus-square-o" style="margin: 0 6px 0 4px; font-size: 19px;" aria-hidden="true"></i> See All Classes</a>';
+                            echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'active_extra\')" data-toggle="tooltip" data-placement="top" title="Classes are automatically created for the next '.$class_settings['create_weeks_ahead'].' Weeks" class="list-group-item active_extra" style="text-decoration:none;"><i class="fal fa-plus-circle" style="margin: 0 6px 0 4px; font-size: 19px;"></i> See All Classes</a>';
                         }
                         echo '</div>';
 
                     } else {
                         //Show none
-                        echo '<div class="alert alert-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> None</div>';
+                        echo '<div class="alert alert-info"><i class="fas fa-exclamation-triangle"></i> None</div>';
                     }
                     ?>
                 </div>
@@ -173,11 +173,11 @@ function r_sync_c(b_id,r_id){
                             echo_r($b,$class,($key>=$class_settings['instructor_show_default']?'past_extra hidden':'').' is_public');
                         }
                         if(count($complete_classes)>$class_settings['instructor_show_default']){
-                            echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'past_extra\')" class="list-group-item past_extra" style="text-decoration:none;"><i class="fa fa-plus-square-o" style="margin: 0 6px 0 4px; font-size: 19px;" aria-hidden="true"></i> See all '.count($complete_classes).'</a>';
+                            echo '<a href="javascript:void(0);" onclick="toggle_hidden_class(\'past_extra\')" class="list-group-item past_extra" style="text-decoration:none;"><i class="fal fa-plus-circle" style="margin: 0 6px 0 4px; font-size: 19px;"></i> See all '.count($complete_classes).'</a>';
                         }
                         echo '</div>';
                     } else {
-                        echo '<div class="alert alert-info"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> None</div>';
+                        echo '<div class="alert alert-info"><i class="fas fa-exclamation-triangle"></i> None</div>';
                     }
                     ?>
                 </div>

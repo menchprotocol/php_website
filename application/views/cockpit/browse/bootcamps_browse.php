@@ -13,7 +13,7 @@ function echo_row($b,$counter){
     echo '<td>'.$counter.'</td>';
     echo '<td>'.$b['b_id'].'</td>';
     echo '<td>'.status_bible('b',$b['b_status'],1,'right').'</td>';
-    echo '<td>'.( $b['b_old_format'] ? '<i class="fa fa-lock" style="color:#FF0000;" title="OLD FORMAT" aria-hidden="true"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></td>';
+    echo '<td>'.( $b['b_old_format'] ? '<i class="fas fa-lock" style="color:#FF0000;" title="OLD FORMAT"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></td>';
 
     echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
     echo '<td>'.( $b['b_difficulty_level']>=1 ? status_bible('df',$b['b_difficulty_level'],1,'top') : '' ).'</td>';
@@ -85,7 +85,7 @@ foreach($bs as $key=>$mb){
         <th style="width:40px;">ID</th>
         <th>&nbsp;</th>
         <th>Bootcamp</th>
-        <th><i class="fa fa-plug"></i> Facebook Page</th>
+        <th><i class="fas fa-plug"></i> Facebook Page</th>
         <th>&nbsp;</th>
         <th>Lead Instructor</th>
         <th colspan="3" style="width: 300px;">Pricing</th>
@@ -127,7 +127,7 @@ foreach($bs as $key=>$mb){
         <th style="width:40px;">ID</th>
         <th>&nbsp;</th>
         <th>Bootcamp</th>
-        <th><i class="fa fa-plug"></i> Facebook Page</th>
+        <th><i class="fas fa-plug"></i> Facebook Page</th>
         <th>&nbsp;</th>
         <th>Lead Instructor</th>
         <th colspan="3" style="width:300px;">Pricing</th>

@@ -24,7 +24,7 @@ $total_goals = count($b['c__active_intents']) + show_s($b['c__child_child_count'
 
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
-<div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fa fa-list-ol" aria-hidden="true"></i> Action Plan <i class="fa fa-arrow-right" aria-hidden="true"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
+<div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fas fa-list-ol"></i> Action Plan <i class="fas fa-arrow-right"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
 
 
@@ -34,9 +34,9 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
         <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').show_s($b['c__child_child_count']) ?></div>
     <?php } ?>
 
-<div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fa fa-comments" aria-hidden="true"></i> '.$this->lang->line('obj_i_name'). show_s($b['c__message_tree_count']) ?></div>
+<div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fas fa-comments"></i> '.$this->lang->line('obj_i_name'). show_s($b['c__message_tree_count']) ?></div>
 
-<div class="dash-label"><span class="stat-num"><?= $daily_hours .'</span> <i class="fa fa-clock-o" aria-hidden="true"></i> Hours per Day' ?></div>
+<div class="dash-label"><span class="stat-num"><?= $daily_hours .'</span> <i class="fas fa-clock"></i> Hours per Day' ?></div>
 
 
 
@@ -47,7 +47,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 
 if($b['b_is_parent']){
 
-    echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fa fa-users" aria-hidden="true"></i> Admissions</b></a></h4></div>';
+    echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fas fa-users"></i> Admissions</b></a></h4></div>';
 
     //Fetch admission stats:
     $student_funnel = array(
@@ -82,19 +82,19 @@ if($b['b_is_parent']){
     ),array('b'));
 
     if(count($parent_bs)>0){
-        echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fa fa-folder-open" aria-hidden="true"></i> Parent Bootcamps</b></a></h4></div>';
+        echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fas fa-folder-open"></i> Parent Bootcamps</b></a></h4></div>';
         echo '<div class="list-group maxout">';
         foreach ($parent_bs as $parent_b){
             echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
-            echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
-            echo '<i class="fa fa-folder-open" aria-hidden="true"></i> ';
+            echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
+            echo '<i class="fas fa-folder-open"></i> ';
             echo $parent_b['c_outcome'];
             echo '</a>';
         }
         echo '</div>';
     }
 
-    echo '<div class="title" style="margin-top:40px;"><h4><a href="/console/'.$b['b_id'].'/classes" class="badge badge-primary badge-msg"><b><i class="fa fa-users" aria-hidden="true"></i> Classes <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div><div class="help_body maxout" id="content_2274"></div>';
+    echo '<div class="title" style="margin-top:40px;"><h4><a href="/console/'.$b['b_id'].'/classes" class="badge badge-primary badge-msg"><b><i class="fas fa-users"></i> Classes <i class="fas fa-arrow-right"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div><div class="help_body maxout" id="content_2274"></div>';
 
     //Fetch admission stats:
     $student_funnel = array(
@@ -125,7 +125,7 @@ foreach($student_funnel as $ru_status=>$count){
 
 
 
-<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fa fa-cog" aria-hidden="true"></i> Settings <i class="fa fa-arrow-right" aria-hidden="true"></i></b></a></h4></div>
+<div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fas fa-cog"></i> Settings <i class="fas fa-arrow-right"></i></b></a></h4></div>
 
 <?php
 echo '<div>Team: ';
@@ -148,7 +148,7 @@ if($total_advisers>0){
 }
 echo '</div>';
 ?>
-<div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fa fa-clone" style="font-size:1em;" aria-hidden="true"></i></a></div>
+<div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>
 <div style="margin-top:-5px;">Bootcamp Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
 
 
@@ -185,6 +185,6 @@ echo '<div id="list-checklist" class="list-group maxout">';
 echo $check_list;
 echo '</div>';
 if($count_done>0){
-    echo '<div class="toggle-done"><a href="javascript:void(0)" onclick="$(\'.checklist-done\').toggleClass(\'checklist-done-see\')"><i class="fa fa-check-square initial"></i> &nbsp;Toggle '.$count_done.' Completed Steps</a></div>';
+    echo '<div class="toggle-done"><a href="javascript:void(0)" onclick="$(\'.checklist-done\').toggleClass(\'checklist-done-see\')"><i class="fas fa-check-circle initial"></i> &nbsp;Toggle '.$count_done.' Completed Steps</a></div>';
 }
 ?>

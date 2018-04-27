@@ -62,7 +62,7 @@ $( document ).ready(function() {
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#EFEFEF; border-radius:5px;">
                 <li>Commitment: <b><?= format_hours($b['c__estimated_hours']) ?> in <?= $week_count.' Week'.show_s($week_count) ?></b></li>
                 <li>Starts: <b>Every Monday</b></li>
-                <li><?= ( echo_price($b,99, true) ? 'Tuition Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.echo_price($b).'</b>' ) ?></li>
+                <li><?= ( echo_price($b,99, true) ? 'Tuition Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.echo_price($b).'</b>' ) ?></li>
 
                 <?php
                 if($b['b_difficulty_level']>0){
@@ -72,8 +72,8 @@ $( document ).ready(function() {
             </ul>
             
             <div style="padding:10px 0 0; text-align:center;">
-                <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
-         `       <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
+                <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fas fa-chevron-right"></i></a></div>
+                <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
             </div>
 
         </div>
@@ -108,9 +108,9 @@ $( document ).ready(function() {
                 foreach($b['c__child_intents'] as $b7d){
 
                     echo '<div id="c_'.$b7d['c_id'].'">';
-                    echo '<h4><a href="javascript:toggleview(\'c_'.$b7d['c_id'].'\');" style="font-weight: normal;"><i class="pointer fa fa-caret-right" aria-hidden="true"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
+                    echo '<h4><a href="javascript:toggleview(\'c_'.$b7d['c_id'].'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
                     if($b7d['c__estimated_hours']>0){
-                        echo ' &nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.format_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.format_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                        echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.format_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.format_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
                     echo '</a></h4>';
                     echo '<div class="toggleview c_'.$b7d['c_id'].'" style="display:none;">';
@@ -148,7 +148,7 @@ $( document ).ready(function() {
                 foreach($b['c__child_intents'] as $child_intent){
                     if($child_intent['c_status']>=1){
                         if($counter==$class_settings['landing_page_visible']){
-                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fa fa-plus-square" aria-hidden="true" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
+                            echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fas fa-plus-circle" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
                         }
                         echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
                         //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_time($child_intent['c__estimated_hours'],1) : '').'</span>';
@@ -164,7 +164,7 @@ $( document ).ready(function() {
 
             ?>
         </div>
-        <div class="show_full_list" style="display: none;"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">ENROLL &nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
+        <div class="show_full_list" style="display: none;"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">ENROLL &nbsp;<i class="fas fa-chevron-right"></i></a></div>
 
     		
     		
@@ -191,7 +191,7 @@ $( document ).ready(function() {
                     $all_languages = $this->config->item('languages');
                     //They know more than enligh!
                     $langs = explode(',',$admin['u_language']);
-                    echo '<i class="fa fa-language ic-lrg" aria-hidden="true"></i>Fluent in ';
+                    echo '<i class="fas fa-language ic-lrg"></i>Fluent in ';
                     $count = 0;
                     foreach($langs as $lang){
                         if($count>0){
@@ -205,7 +205,7 @@ $( document ).ready(function() {
                 //Public profiles:
                 echo '<div class="public-profiles" style="margin-top:10px;">';
                 if(strlen($admin['u_website_url'])>0){
-                    echo '<a href="'.$admin['u_website_url'].'" data-toggle="tooltip" title="Visit Website" target="_blank"><i class="fa fa-chrome" aria-hidden="true"></i></a>';
+                    echo '<a href="'.$admin['u_website_url'].'" data-toggle="tooltip" title="Visit Website" target="_blank"><i class="fab fa-chrome"></i></a>';
                 }
                 $u_social_account = $this->config->item('u_social_account');
                 foreach($u_social_account as $sa_key=>$sa){
@@ -228,7 +228,7 @@ $( document ).ready(function() {
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-    <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fa fa-chevron-right" aria-hidden="true"></i></a></div>
+    <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fas fa-chevron-right"></i></a></div>
     <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
 </div>
 

@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.16',
+    'version' => '3.17',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -93,77 +93,63 @@ $config['default_class_prerequisites'] = array(
 
 $config['object_statuses'] = array(
     'u' => array(
-        -2 => array(
-            's_name'  => 'Merged',
-            's_desc'  => 'User merged with another user',
-            'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
-            's_mini_icon' => 'fa-user-times',
-        ),
+
         -1 => array(
             's_name'  => 'Delete',
             's_desc'  => 'User no longer active',
             'u_min_status'  => 3, //Only admins can delete user accounts, or the user for their own account
-            's_mini_icon' => 'fa-user-times',
+            's_mini_icon' => 'fas fa-user-times',
         ),
         0 => array(
-            's_name'  => 'Pending',
-            's_desc'  => 'User added by the students but has not yet claimed their account',
+            's_name'  => 'Unclaimed',
+            's_desc'  => 'User added by other community members who have not yet claimed their account',
             'u_min_status'  => 999, //System only
-            's_mini_icon' => 'fa-user-o',
+            's_mini_icon' => 'fal fa-user',
         ),
         1 => array(
             's_name'  => 'Active',
-            's_desc'  => 'User active',
-            's_mini_icon' => 'fa-user',
+            's_desc'  => 'Active user',
+            's_mini_icon' => 'fas fa-user',
             'u_min_status'  => 3, //Only admins can downgrade users from a leader status
         ),
-        2 => array(
+
+
+
+
+        2 => array( //TODO Migrate to Entities
             's_name'  => 'Lead Instructor',
             's_desc'  => 'User onboarded as Bootcamp leader and can create/manage their own Bootcamps',
-            's_mini_icon' => 'fa-star',
+            's_mini_icon' => 'fas fa-star',
             'u_min_status'  => 3, //Only admins can approve leaders
         ),
-        3 => array(
+        3 => array( //TODO Migrate to Entities
             's_name'  => 'Mench Admin',
             's_desc'  => 'User part of Mench team who facilitates Bootcamp operations',
-            's_mini_icon' => 'fa-shield',
+            's_mini_icon' => 'fas fa-shield',
             'u_min_status'  => 3, //Only admins can create other admins
         ),
     ),
     'b' => array(
+
         -1 => array(
             's_name'  => 'Archived',
             's_desc'  => 'Bootcamp no longer active',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-trash',
+            's_mini_icon' => 'fas fa-trash-alt',
         ),
-        /* Deorecated
-        0 => array(
-            's_name'  => 'Drafting',
-            's_desc'  => 'Bootcamp under development. Admissions starts when published live',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-pencil-square',
-        ),
-        1 => array(
-            's_name'  => 'Request To Publish',
-            's_desc'  => 'Bootcamp submitted for review by Mench team to be published live',
-            'u_min_status'  => 1,
-            's_mini_icon' => 'fa-eye',
-        ),
-        */
 
         //The following two status ICONS are hard-coded in console.js for Algolia search
         2 => array(
-            's_name'  => 'Private URL',
+            's_name'  => 'Published',
             's_desc'  => 'Bootcamp open for admission for anyone who received the Private Landing Page URL',
             'u_min_status'  => 3, //Can only be done by admin
-            's_mini_icon' => 'fa-link',
+            's_mini_icon' => 'fas fa-cart-plus',
         ),
         3 => array(
-            's_name'  => 'Mench.com Public',
+            's_name'  => 'Mench Marketplace',
             's_desc'  => 'Bootcamp published on Mench.com Marketplace',
             'u_min_status'  => 3, //Can only be done by admin
-            's_mini_icon' => 'fa-bullhorn',
+            's_mini_icon' => 'fas fa-bullhorn',
         ),
     ),
     'df' => array(
@@ -171,19 +157,19 @@ $config['object_statuses'] = array(
             's_name'  => 'Beginner',
             's_desc'  => 'No experience needed',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-thermometer-empty',
+            's_mini_icon' => 'fas fa-thermometer-empty',
         ),
         2 => array(
             's_name'  => 'Intermediate',
             's_desc'  => 'Basic experience required',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-thermometer-half',
+            's_mini_icon' => 'fas fa-thermometer-half',
         ),
         3 => array(
             's_name'  => 'Advanced',
             's_desc'  => 'Practical experience required',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-thermometer-full',
+            's_mini_icon' => 'fas fa-thermometer-full',
         ),
     ),
 
@@ -192,25 +178,25 @@ $config['object_statuses'] = array(
             's_name'  => 'Revoked',
             's_desc'  => 'Bootcamp access revoked',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-minus-circle',
+            's_mini_icon' => 'fas fa-trash-alt',
         ),
         1 => array(
             's_name'  => 'Adviser',
             's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the Bootcamp configurations',
-            's_mini_icon' => 'fa-comments-o',
+            's_mini_icon' => 'fas fa-comment-alt-smile',
             'u_min_status'  => 3, //For now this is NOT in use, just being hacked into the UI via team section of settings.php page view file
         ),
         2 => array(
             's_name'  => 'Co-Instructor',
             's_desc'  => 'Supports the lead instructor in Bootcamp operations based on specific privileges assigned to them',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-user-plus',
+            's_mini_icon' => 'fas fa-user-plus',
         ),
         3 => array(
             's_name'  => 'Lead Instructor',
             's_desc'  => 'The Bootcamp CEO who is responsible for the Bootcamp performance measured by its completion rate',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-star',
+            's_mini_icon' => 'fas fa-star',
         ),
     ),
     'i' => array(
@@ -218,25 +204,25 @@ $config['object_statuses'] = array(
             's_name'  => 'Delete',
             's_desc'  => 'Message removed.',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-trash',
+            's_mini_icon' => 'fas fa-trash-alt',
         ),
         //No drafting for messages as it over-complicates things
         1 => array(
             's_name'  => 'On-Start',
             's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this item',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-bolt',
+            's_mini_icon' => 'fas fa-hourglass-start',
         ),
         3 => array(
             's_name'  => 'On-Complete',
             's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
-            's_mini_icon' => 'fa-check-square',
+            's_mini_icon' => 'fas fa-hourglass-end',
             'u_min_status'  => 1,
         ),
         2 => array(
             's_name'  => 'Drip',
             's_desc'  => 'Messages sent in intervals after students complete this item but before their Class ends. Re-iterate key insights to help students retain learnings',
-            's_mini_icon' => 'fa-tint',
+            's_mini_icon' => 'fas fa-tint',
             'u_min_status'  => 1,
         ),
     ),
@@ -245,52 +231,53 @@ $config['object_statuses'] = array(
             's_name'  => 'Delete',
             's_desc'  => 'Item removed',
             'u_min_status'  => 1, //Not possible for now.
-            's_mini_icon' => 'fa-trash',
+            's_mini_icon' => 'fas fa-minus-circle',
         ),
         0 => array(
             's_name'  => 'Drafting',
             's_desc'  => 'Step being drafted and not accessible by students until published live',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-pencil-square',
+            's_mini_icon' => 'fas fa-pause-circle',
         ),
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Step is active and accessible by students',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-bullhorn',
+            's_mini_icon' => 'fas fa-circle',
         ),
     ),
     'cr' => array(
         -1 => array(
-            's_name'  => 'Archived',
+            's_name'  => 'Archived Link',
             's_desc'  => 'Step link removed',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-trash',
+            's_mini_icon' => 'fas fa-unlink',
         ),
         1 => array(
-            's_name'  => 'Publish',
+            's_name'  => 'Active Link',
             's_desc'  => 'Step link is active',
             'u_min_status'  => 1,
+            's_mini_icon' => 'fas fa-link',
         ),
     ),
     'ex' => array(
         0 => array(
-            's_name'  => 'None',
-            's_desc'  => 'Task does not have any Steps. Students complete the Task by marking its self as Done',
+            's_name'  => 'Self',
+            's_desc'  => 'Task does not have any child Steps and is complete when the Task its self is marked as complete',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-minus-circle',
+            's_mini_icon' => 'fas fa-circle',
         ),
         1 => array(
-            's_name'  => 'All',
+            's_name'  => 'All Children',
             's_desc'  => 'Task is complete when all child Steps are completed',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-sitemap',
+            's_mini_icon' => 'fas fa-sitemap',
         ),
         2 => array(
-            's_name'  => 'Any',
+            's_name'  => 'Any Child',
             's_desc'  => 'Task is complete when any child Step is completed',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-code-fork',
+            's_mini_icon' => 'fas fa-code-branch',
         ),
     ),
 
@@ -299,37 +286,37 @@ $config['object_statuses'] = array(
             's_name'  => 'Pending Completion',
             's_desc'  => 'Item not yet completed',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-square-o',
+            's_mini_icon' => 'fal fa-circle',
         ),
         -3 => array(
             's_name'  => 'Rejected',
             's_desc'  => 'Item was reviewed and rejected as it did not meet Mench guidelines',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-exclamation-triangle',
+            's_mini_icon' => 'fas fa-exclamation-circle',
         ),
         -2 => array(
             's_name'  => 'Processing',
             's_desc'  => 'Temporary status to prevent duplicate processing',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-spinner fa-spin',
+            's_mini_icon' => 'fas fa-spinner fa-spin',
         ),
         -1 => array(
             's_name'  => 'Auto Verified',
             's_desc'  => 'Item has been auto approved',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-check-square-o',
+            's_mini_icon' => 'fal fa-check-circle',
         ),
         0 => array(
-            's_name'  => 'Pending',
-            's_desc'  => 'Item needs additional processing to be complete',
+            's_name'  => 'Submitted',
+            's_desc'  => 'Item submitted and pending verification',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-eye',
+            's_mini_icon' => 'fal fa-check-circle',
         ),
         1 => array(
             's_name'  => 'Verified',
             's_desc'  => 'Item has been processed and is now complete',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-check-square',
+            's_mini_icon' => 'fas fa-check-circle',
         ),
     ),
 
@@ -338,31 +325,31 @@ $config['object_statuses'] = array(
             's_name'  => 'Cancelled',
             's_desc'  => 'Class cancelled after it had started, likely for reasons beyond the instructors control',
             'u_min_status'  => 3,
-            's_mini_icon' => 'fa-times-circle',
+            's_mini_icon' => 'fas fa-times-circle',
         ),
         -2 => array(
             's_name'  => 'Expired',
             's_desc'  => 'Class start time passed without meeting the minimum student admission requirement',
             'u_min_status'  => 3,
-            's_mini_icon' => 'fa-times-circle',
+            's_mini_icon' => 'fas fa-times-circle',
         ),
         1 => array(
             's_name'  => 'Open Admission',
             's_desc'  => 'Class is open for admission',
             'u_min_status'  => 2,
-            's_mini_icon' => 'fa-users',
+            's_mini_icon' => 'fas fa-cart-plus',
         ),
         2 => array(
             's_name'  => 'Class Running',
             's_desc'  => 'Class has admitted students and is currently running',
             'u_min_status'  => 3,
-            's_mini_icon' => 'fa-play-circle',
+            's_mini_icon' => 'fas fa-play-circle',
         ),
         3 => array(
             's_name'  => 'Class Completed',
             's_desc'  => 'Class was operated completely until its last day',
             'u_min_status'  => 3,
-            's_mini_icon' => 'fa-graduation-cap',
+            's_mini_icon' => 'fas fa-check-circle',
         ),
     ),
     'rs' => array(
@@ -374,7 +361,7 @@ $config['object_statuses'] = array(
 - Classmates Leaderboard
 - Notification & Reminders
 - Optional Peer Networking',
-            's_mini_icon' => 'fa-user',
+            's_mini_icon' => 'fas fa-wrench',
         ),
         2 => array(
             's_name'  => 'Premium Support',
@@ -387,14 +374,14 @@ $config['object_statuses'] = array(
 - Lifetime Action Plan Access
 - Certificate of Completion
 - LinkedIn Recommendation',
-            's_mini_icon' => 'fa-users',
+            's_mini_icon' => 'fas fa-shield-check',
         ),
         3 => array(
             's_name'  => '1-on-1 Tutoring',
             's_desc'  => 'Everything in Premium Support plus:
             
 - 50 Minutes of 1-on-1 Tutoring per Week',
-            's_mini_icon' => 'fa-handshake-o',
+            's_mini_icon' => 'fas fa-handshake-alt',
         ),
 
     ),
@@ -405,61 +392,40 @@ $config['object_statuses'] = array(
             's_name'  => 'Student Removed',
             's_desc'  => 'Student removed from Class post-admission',
             'u_min_status'  => 2,
-            's_mini_icon' => 'fa-times-circle',
+            's_mini_icon' => 'fas fa-times-hexagon',
         ),
         //Withrew prior to course has started:
         -2 => array(
             's_name'  => 'Student Withdrew',
             's_desc'  => 'Student withdrew before Class started',
             'u_min_status'  => 999, //Only done by Student themselves
-            's_mini_icon' => 'fa-times-circle',
+            's_mini_icon' => 'fas fa-times-hexagon',
         ),
 
         0 => array(
             's_name'  => 'Admission Initiated',
             's_desc'  => 'Student initiated application but had not completed the checkout process',
             'u_min_status'  => 999, //System insertion only
-            's_mini_icon' => 'fa-question-circle',
+            's_mini_icon' => 'fas fa-question-circle',
         ),
-        /*
-        1 => array(
-            's_name'  => 'Applied - Pending Full Payment',
-            's_desc'  => 'Student has applied but has not paid in full yet, pending Bootcamp leader approval before paying in full',
-            'u_min_status'  => 999, //System insertion only
-        ),
-
-        2 => array(
-            's_name'  => 'Admitted',
-            's_desc'  => 'Student completed application and payment (for paid classes) and is pending instructor review and approval',
-            's_mini_icon' => 'fa-pause-circle',
-            'u_min_status'  => 999, //System insertion only
-        ),
-
-        3 => array(
-            's_name'  => 'Invitation Sent',
-            's_desc'  => 'Admins have full access to all Bootcamp features',
-            'u_min_status'  => 1,
-        ),
-        */
-
         4 => array(
             's_name'  => 'Admitted',
             's_desc'  => 'Student joined Class',
-            's_mini_icon' => 'fa-user-circle',
+            's_mini_icon' => 'fas fa-user-circle',
             'u_min_status'  => 1,
         ),
 
         //Upon Class End Time:
         6 => array(
-            's_name'  => 'Failed',
+            's_name'  => 'Incomplete',
             's_desc'  => 'Student did not complete all Tasks by the last day of the Bootcamp',
-            's_mini_icon' => 'fa-minus-circle',
+            's_mini_icon' => 'fas fa-times-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
         7 => array(
             's_name'  => 'Completed',
             's_desc'  => 'Student successfully completed all Tasks by the Class end time and became a Bootcamp graduate',
-            's_mini_icon' => 'fa-check-circle',
+            's_mini_icon' => 'fas fa-check-circle',
             'u_min_status'  => 999, //System automatically updates to this status on Class end time
         ),
     ),
@@ -469,25 +435,25 @@ $config['object_statuses'] = array(
             's_name'  => 'Instructor Payout',
             's_desc'  => 'Payment sent to instructors and affiliates',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-money',
+            's_mini_icon' => 'fas fa-usd-circle',
         ),
         -1 => array(
             's_name'  => 'Refund Payout',
             's_desc'  => 'Transaction hold the exact amount of refund issues to the student',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-money',
+            's_mini_icon' => 'fas fa-usd-circle',
         ),
         0 => array(
             's_name'  => 'Transaction Refunded',
             's_desc'  => 'Payment has been fully or partially refunded and a new transaction has been added to reflect the exact refund',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-money',
+            's_mini_icon' => 'fas fa-usd-circle',
         ),
         1 => array(
             's_name'  => 'Payment Received',
             's_desc'  => 'Payment received from students for a class admission',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-money',
+            's_mini_icon' => 'fas fa-usd-circle',
         ),
     ),
     'fp' => array(
@@ -495,19 +461,19 @@ $config['object_statuses'] = array(
             's_name'  => 'Archived',
             's_desc'  => 'Facebook Page not accessible by Mench',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-trash',
+            's_mini_icon' => 'fas fa-trash-alt',
         ),
         0 => array(
             's_name'  => 'Available',
             's_desc'  => 'Facebook Page available but not connected to a Mench Bootcamp yet',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-facebook-official',
+            's_mini_icon' => 'fab fa-facebook',
         ),
         1 => array(
             's_name'  => 'Connected',
             's_desc'  => 'Facebook Page connected to a Mench Bootcamp',
             'u_min_status'  => 999,
-            's_mini_icon' => 'fa-plug',
+            's_mini_icon' => 'fas fa-plug',
         ),
     ),
     'fs' => array(
@@ -515,13 +481,13 @@ $config['object_statuses'] = array(
             's_name'  => 'Access Revoked',
             's_desc'  => 'Instructor is not authorized as the Facebook Page administrator',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-bookmark-o',
+            's_mini_icon' => 'fal fa-bookmark',
         ),
         1 => array(
             's_name'  => 'Access Authorized',
             's_desc'  => 'Instructor is an authorized Facebook Page administrator',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fa-bookmark',
+            's_mini_icon' => 'fas fa-bookmark',
         ),
     ),
 );
@@ -603,43 +569,43 @@ $config['u_social_account'] = array(
         'sa_name' => 'Facebook',
         'sa_prefix' => 'https://www.facebook.com/',
         'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-facebook-official" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fab fa-facebook"></i>',
     ),
     'u_instagram_username' => array(
         'sa_name' => 'Instagram',
         'sa_prefix' => 'https://www.instagram.com/',
         'sa_postfix' => '/',
-        'sa_icon' => '<i class="fa fa-instagram" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fab fa-instagram"></i>',
     ),
     'u_twitter_username' => array(
         'sa_name' => 'Twitter',
         'sa_prefix' => 'https://twitter.com/',
         'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-twitter" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fab fa-twitter"></i>',
     ),
     'u_youtube_username' => array(
         'sa_name' => 'YouTube',
         'sa_prefix' => 'https://www.youtube.com/',
         'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-youtube-play" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fab fa-youtube"></i>',
     ),
     'u_linkedin_username' => array(
         'sa_name' => 'Linkedin',
         'sa_prefix' => 'https://www.linkedin.com/in/',
         'sa_postfix' => '/',
-        'sa_icon' => '<i class="fa fa-linkedin-square" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fab fa-linkedin"></i>',
     ),
     'u_github_username' => array(
         'sa_name' => 'Github',
         'sa_prefix' => 'https://github.com/',
         'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-github" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fab fa-github"></i>',
     ),
     'u_calendly_username' => array(
         'sa_name' => 'Calendly',
         'sa_prefix' => 'https://calendly.com/',
         'sa_postfix' => '',
-        'sa_icon' => '<i class="fa fa-calendar-check-o" aria-hidden="true"></i>',
+        'sa_icon' => '<i class="fas fa-calendar-check"></i>',
     ),
 );
 

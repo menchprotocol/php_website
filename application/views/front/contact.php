@@ -7,8 +7,8 @@
 	<div class="row" style="margin-top:30px;">
 		<div class="col-sm-4">
 				<div class="info info-horizontal" style="margin:0;">
-					<div class="icon icon-primary">
-						<i class="material-icons">email</i>
+					<div class="icon icon-default">
+						<i class="fas fa-envelope-open"></i>
 					</div>
 					<div class="description">
 						<h4 class="info-title">Email us</h4>
@@ -19,8 +19,8 @@
 		</div>
 		<div class="col-sm-4">
 				<div class="info info-horizontal" style="margin:0;">
-					<div class="icon icon-primary">
-						<i class="material-icons">phone</i>
+					<div class="icon icon-default">
+						<i class="fas fa-phone"></i>
 					</div>
 					<div class="description">
 						<h4 class="info-title">Give us a ring</h4>
@@ -33,13 +33,13 @@
 		</div>
 		<div class="col-sm-4">
 				<div class="info info-horizontal" style="margin:0;">
-					<div class="icon icon-primary">
-						<i class="material-icons">pin_drop</i>
+					<div class="icon icon-default">
+						<i class="fas fa-map-marker"></i>
 					</div>
 					<div class="description">
 						<h4 class="info-title">Find us at the office</h4>
 						<p><a href="http://www.venturelabs.ca/">VentureLabs</a><br />
-                             Unit #1200<br />555 W Hastings St<br />Vancouver, BC<br />V6B 4N6 &nbsp;<a href="https://goo.gl/maps/oVK71TGoddu" target="_blank"><i class="fa fa-map icon-primary" aria-hidden="true"></i></a><br />
+                             Unit #1200<br />555 W Hastings St<br />Vancouver, BC<br />V6B 4N6 &nbsp;<a href="https://goo.gl/maps/oVK71TGoddu" target="_blank"><i class="fas fa-map-marker-alt icon-default"></i></a><br />
 						</p>
 					</div>
 	        	</div>

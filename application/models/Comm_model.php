@@ -834,9 +834,9 @@ class Comm_model extends CI_Model {
                 //See what type of account is this, as it might be an empty shell:
                 if($u['u_status']==0 && strlen($u['u_email'])<1){
 
-                    //Update this user to remove them:
+                    //Remove this user to remove them:
                     $this->Db_model->u_update( $u['u_id'] , array(
-                        'u_status'   => -2, //Merged
+                        'u_status'   => -1, //Deleted
                         'u_cache__fp_psid' => null, //Remove from this user...
                     ));
 

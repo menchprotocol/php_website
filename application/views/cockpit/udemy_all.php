@@ -18,7 +18,7 @@ foreach($il_overview as $ilo){
         echo '<td>'.number_format($ilo['total_courses'],0).'</td>';
         echo '<td>'.number_format($ilo['total_students'],0).'</td>';
         echo '<td>'.number_format(( $ilo['total_students']>0 ? ( $ilo['total_reviews']/$ilo['total_students']*100 ) : 0 ),1).'%</td>';
-        echo '<td><a href="/scraper/udemy_csv?cat='.urlencode($ilo['il_udemy_category']).'"><i class="fa fa-cloud-download" aria-hidden="true"></i>CSV</a></td>';
+        echo '<td><a href="/scraper/udemy_csv?cat='.urlencode($ilo['il_udemy_category']).'"><i class="fas fa-cloud-download"></i>CSV</a></td>';
         
         $totals[0] += $ilo['total_instructors'];
         $totals[1] += $ilo['total_courses'];

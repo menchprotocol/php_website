@@ -77,9 +77,9 @@ if(count($admissions)>0 && is_array($admissions)){
 
             echo '<div class="admission_checklist">';
 
-                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> '.$bs[0]['c_outcome'].'</b></p>';
+                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fas fa-circle"></i> '.$bs[0]['c_outcome'].'</b></p>';
                 //Show date:
-                echo '<p style="font-size: 0.9em;"><i class="fa fa-calendar" aria-hidden="true"></i> ';
+                echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar"></i> ';
                 if(isset($bs[0]['b_is_parent']) && $bs[0]['b_is_parent']){
 
                     //Should have some child Bootcamps:
@@ -112,7 +112,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
 
                 //Student need to complete the Checkout process:
-                echo '<div class="checkbox"><label><input type="checkbox" disabled '.( $admission['ru_status']>=4 ? 'checked' : '' ).'> '.( $admission['ru_status']>=4 || !$admission_active ? '<span style="text-decoration: line-through;">' : '<a href="/my/checkout_complete/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'">' ).'Step 2: Submit Your Application to Join Bootcamp'.( $admission['ru_status']>=4 || !$admission_active ? '</span>' : ' <i class="fa fa-chevron-right" aria-hidden="true"></i></a>' ).'</label></div>';
+                echo '<div class="checkbox"><label><input type="checkbox" disabled '.( $admission['ru_status']>=4 ? 'checked' : '' ).'> '.( $admission['ru_status']>=4 || !$admission_active ? '<span style="text-decoration: line-through;">' : '<a href="/my/checkout_complete/'.$admission['ru_id'].'?u_key='.$u_key.'&u_id='.$u_id.'">' ).'Step 2: Submit Your Application to Join Bootcamp'.( $admission['ru_status']>=4 || !$admission_active ? '</span>' : ' <i class="fas fa-chevron-right"></i></a>' ).'</label></div>';
 
 
                 //Messenger activation for Active Bootcamps only
@@ -121,7 +121,7 @@ if(count($admissions)>0 && is_array($admissions)){
                     if($admission['u_cache__fp_psid']>0){
                         echo '<div class="checkbox"><label style="text-decoration: line-through;"><input type="checkbox" disabled checked> '.$bot_title.'</label></div>';
                     } else {
-                        echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></label></div>';
+                        echo '<div class="checkbox"><label><input type="checkbox" disabled> <a href="'.$this->Comm_model->fb_activation_url($admission['u_id'],$live_bs[0]['b_fp_id']).'"> '.$bot_title.' <i class="fas fa-chevron-right"></i></a></label></div>';
                     }
                 }
 
@@ -148,10 +148,10 @@ if(count($admissions)>0 && is_array($admissions)){
             //More info like Bootcamp URL:
             echo '<div class="admission_footer">';
                 echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span>';
-                echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamp Overview</a>';
+                echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-circle"></i> Bootcamp Overview</a>';
                 if($admission['ru_status']==0){
                     //They can still withdraw their application:
-                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fa fa-minus-circle" aria-hidden="true"></i> Withdraw</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
+                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
                 }
             echo '</div>';
 
@@ -198,7 +198,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
 } else {
 
-    echo '<br /><div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>  No applications found</div>';
+    echo '<br /><div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i>  No applications found</div>';
 
 }
 

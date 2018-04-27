@@ -13,18 +13,18 @@
 <?php
 $totals = array(0,0,0);
 $links = array(
-    'il_youtube' => '<i class="fa fa-youtube-play" aria-hidden="true"></i>',
-    'il_linkedin' => '<i class="fa fa-linkedin-square" aria-hidden="true"></i>',
-    'il_twitter' => '<i class="fa fa-twitter" aria-hidden="true"></i>',
-    'il_facebook' => '<i class="fa fa-facebook-official" aria-hidden="true"></i>',
-    'il_website' => '<i class="fa fa-chrome" aria-hidden="true"></i>',
+    'il_youtube' => '<i class="fab fa-youtube"></i>',
+    'il_linkedin' => '<i class="fab fa-linkedin"></i>',
+    'il_twitter' => '<i class="fab fa-twitter"></i>',
+    'il_facebook' => '<i class="fab fa-facebook"></i>',
+    'il_website' => '<i class="fab fa-chrome"></i>',
     'il_url' => '<img src="https://www.udemy.com/staticx/udemy/images/v6/apple-touch-icon-precomposed.png" width="16" style="margin-top:-2px;" />', //The Udemy URL
 );
 
 foreach($il_category as $i=>$ilo){
     echo '<tr>';
     echo '<td>'.number_format(($i+1),0).'</td>';
-    echo '<td style="width:300px; text-align:left; ">'.( strlen($ilo['il_overview'])>0 ? '<i class="fa fa-info-circle" data-toggle="tooltip" title="'.strip_tags(substr($ilo['il_overview'],0,600)).'..." data-placement="right" aria-hidden="true"></i> ' : '' ).$ilo['il_first_name'].' '.$ilo['il_last_name'].'</td>';
+    echo '<td style="width:300px; text-align:left; ">'.( strlen($ilo['il_overview'])>0 ? '<i class="fas fa-info-circle" data-toggle="tooltip" title="'.strip_tags(substr($ilo['il_overview'],0,600)).'..." data-placement="right"></i> ' : '' ).$ilo['il_first_name'].' '.$ilo['il_last_name'].'</td>';
     echo '<td style="">'.number_format($ilo['il_course_count'],0).'</td>';
     echo '<td style="">'.number_format($ilo['il_student_count'],0).'</td>';
         echo '<td style="">'.number_format(( $ilo['il_student_count']>0 ? ( $ilo['il_review_count']/$ilo['il_student_count']*100 ) : 0 ),1).'%</td>';
@@ -36,7 +36,7 @@ foreach($il_category as $i=>$ilo){
                     echo '<a href="'.$ilo[$link_id].'" target="_blank">'.$link_icon.'</a> ';
                 }
             }
-            echo '<a href="https://www.google.ca/search?q='.urlencode($ilo['il_first_name'].' '.$ilo['il_last_name']).'" target="_blank"><i class="fa fa-google" aria-hidden="true"></i></a>';
+            echo '<a href="https://www.google.ca/search?q='.urlencode($ilo['il_first_name'].' '.$ilo['il_last_name']).'" target="_blank"><i class="fab fa-google"></i></a>';
         echo '</td>';
     echo '</tr>';
     

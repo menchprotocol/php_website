@@ -37,7 +37,7 @@ foreach($pages as $key=>$fp){
     echo '<td>'.status_bible('fp',$fp['fp_status'],1,'right').'</td>';
     echo '<td>'.$fp['fp_name'].'</td>';
     echo '<td>'.$fp['fp_id'].'</td>';
-    echo '<td><a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></td>';
+    echo '<td><a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fas fa-external-link-square"></i></a></td>';
     echo '<td>'.$fp['u_full_name'].'</td>';
 
     echo '<td>'.time_format($fp['fs_timestamp'],0).'</td>';
@@ -55,7 +55,7 @@ foreach($pages as $key=>$fp){
         echo '<script> e_json_'.$fp['fs_id'].' = '.json_encode($graph_fetch['e_json']['result']).'; </script>';
 
         //Show results:
-        echo '<a href="javascript:console.log(e_json_'.$fp['fs_id'].');">'.( isset($graph_fetch['e_json']['result']['error']) ? '<i class="fa fa-exclamation-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Connection seems Broken. Click once to load error message in console."></i>' : '<i class="fa fa-check-circle" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Connection to Facebook Page is healthy. Click once to load Page Settings in console."></i>').'</a>';
+        echo '<a href="javascript:console.log(e_json_'.$fp['fs_id'].');">'.( isset($graph_fetch['e_json']['result']['error']) ? '<i class="fas fa-exclamation-triangle" data-toggle="tooltip" data-placement="top" title="Connection seems Broken. Click once to load error message in console."></i>' : '<i class="fas fa-signal" data-toggle="tooltip" data-placement="top" title="Connection to Facebook Page is healthy. Click once to load Page Settings in console."></i>').'</a>';
 
     }
     echo '</td>';

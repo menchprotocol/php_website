@@ -60,20 +60,20 @@ $url_part_1 = $this->uri->segment(1);
                     if(isset($udata['u_id'])){
 
                         if(isset($b_id) && auth(2,0,$b_id)){
-                            echo '<li id="isloggedin"><a href="/console/'.$b_id.'">Manage <i class="fa fa-cog" aria-hidden="true"></i></a></li>';
+                            echo '<li id="isloggedin"><a href="/console/'.$b_id.'">Manage <i class="fas fa-cog"></i></a></li>';
                         }
 
-                        echo '<li id="isloggedin"><a href="/console">Console <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+                        echo '<li id="isloggedin"><a href="/console">Console <i class="fas fa-chevron-circle-right"></i></a></li>';
 
                     } elseif(isset($uadmission['u_id'])){
-                        echo '<li id="isloggedin"><a href="/my/actionplan">Student Portal <i class="fa fa-chevron-circle-right" aria-hidden="true"></i></a></li>';
+                        echo '<li id="isloggedin"><a href="/my/actionplan">Student Portal <i class="fas fa-chevron-circle-right"></i></a></li>';
                     } else {
                         if(!($url_part_1=='launch')) {
-                            echo '<li><a href="/launch"><i class="fa fa-rocket" aria-hidden="true"></i> Launch</a></li>';
+                            echo '<li><a href="/launch"><i class="fas fa-rocket"></i> Launch</a></li>';
                         }
                         if(!($url_part_1=='login')) {
                             //This is the login page, show the Launch Button:
-                            echo '<li><a href="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></li>';
+                            echo '<li><a href="/login"><i class="fas fa-sign-in"></i> Login</a></li>';
                         }
                     }
     				?>

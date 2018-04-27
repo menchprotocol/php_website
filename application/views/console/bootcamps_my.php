@@ -92,7 +92,7 @@ $website = $this->config->item('website');
 
 <div class="help_body below_h maxout" id="content_6024"></div>
 
-<div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
+<div class="alert alert-info" role="alert" id="mobile-no" style="display:none; margin-top:30px;"><i class="fas fa-exclamation-triangle"></i> Mench Console v<?= $website['version'] ?> is not fully optimized for a mobile device. We recommend using a desktop computer instead.</div>
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
@@ -115,13 +115,13 @@ $website = $this->config->item('website');
                 echo echo_b($b);
             }
         } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No Multi-Week Bootcamps Found. Create a new Bootcamp below:</div>';
+            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No Multi-Week Bootcamps Found. Create a new Bootcamp below:</div>';
         }
 
         //Input to create new Bootcamp:
         echo '<div class="list-group-item list_input li1 new-step-input" style="padding: 5px 7px;">
             <div class="input-group">
-                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fas fa-plus-circle"></i></span>
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
@@ -146,13 +146,13 @@ $website = $this->config->item('website');
                 echo echo_b($b);
             }
         } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-0" style="padding: 15px 10px;"><i class="fa fa-exclamation-triangle" style="margin:0 8px 0 2px;" aria-hidden="true"></i> No 7-Day Bootcamps Found. Create a new Bootcamp below:</div>';
+            echo '<div class="list-group-item alert alert-info no-b-div-0" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No 7-Day Bootcamps Found. Create a new Bootcamp below:</div>';
         }
 
         //Input to create new Bootcamp:
         echo '<div class="list-group-item list_input li0 new-step-input" style="padding: 5px 7px;">
             <div class="input-group">
-                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fas fa-plus-circle"></i></span>
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
                     <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">

@@ -131,11 +131,11 @@ if(!$class_has_started){
             });
         });
     </script>
-    <div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class starts in <span id="b_start"></span></div>
+    <div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class starts in <span id="b_start"></span></div>
     <?php
 } elseif($class_has_ended){
     //Class has ended
-    echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
 }
 
 
@@ -163,7 +163,7 @@ if($displayed_messages>0){
     $load_open = ( $level>=2 ); //&& !isset($us_data[$intent['c_id']])
 
     //Messages:
-    echo '<h4 style="margin-top:20px;" class="maxout"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fa fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';" aria-hidden="true"></i><i class="pointer fa fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';" aria-hidden="true"></i> <i class="fa fa-commenting" aria-hidden="true"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
+    echo '<h4 style="margin-top:20px;" class="maxout"><a href="javascript:void(0)" onclick="$(\'.messages_ap\').toggle();"><i class="pointer fas fa-caret-right messages_ap" style="display:'.( $load_open ? 'none' : 'inline-block' ).';"></i><i class="pointer fas fa-caret-down messages_ap" style="display:'.( $load_open ? 'inline-block' : 'none' ).';"></i> <i class="fas fa-comment-dots"></i> '.$displayed_messages.' Message'.($displayed_messages==1?'':'s').'</a></h4>';
     echo '<div class="tips_content messages_ap" style="display:'.( $load_open ? 'block' : 'none' ).';">';
     foreach($intent['c__messages'] as $i){
         if($i['i_status']==1){
@@ -189,12 +189,12 @@ if($level==2){
     /* ******************************
      * Step Completion
      ****************************** */
-    echo '<h4 class="maxout"><i class="fa fa-check-square" aria-hidden="true"></i> Completion</h4>';
+    echo '<h4 class="maxout"><i class="fas fa-check-circle"></i> Completion</h4>';
 
     if($class_has_ended || !$class_has_started){
 
         //Class if finished, no more submissions allowed!
-        echo '<div class="alert alert-info maxout" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Submissions are not allowed at this time.</div>';
+        echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Submissions are not allowed at this time.</div>';
 
     } else {
 
@@ -220,17 +220,17 @@ if($level==2){
             }
 
             echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
-            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-tight btn-black" style="padding-left:8px; padding-right:8px;"><i class="fa fa-check-circle initial"></i>Mark as Complete</a></div>';
+            echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-tight btn-black" style="padding-left:8px; padding-right:8px;"><i class="fas fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
             //Submission button visible after first button was clicked:
             echo '<div class="mark_done" style="display:none; margin-top:10px;">';
             //What instructions do we need to give?
             if($red_note) {
-                echo '<div style="color:#FF0000;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Marking as complete requires ' . $red_note . '</div>';
+                echo '<div style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> Marking as complete requires ' . $red_note . '</div>';
             }
             echo '<textarea id="us_notes" class="form-control maxout" placeholder="'.$textarea_note.'"></textarea>';
-            echo '<a href="javascript:mark_done();" class="btn btn-tight btn-black"><i class="fa fa-check-circle" aria-hidden="true"></i>Submit</a>';
+            echo '<a href="javascript:mark_done();" class="btn btn-tight btn-black"><i class="fas fa-check-circle"></i>Submit</a>';
             echo '</div>';
 
 
@@ -248,7 +248,7 @@ if($level==2){
                         });
                     });
                 </script>
-                <div><i class="fa fa-calendar" aria-hidden="true"></i> Due in <span id="ontime_dueby"></span></div>
+                <div><i class="fas fa-calendar"></i> Due in <span id="ontime_dueby"></span></div>
                 <?php
             }
 
@@ -265,13 +265,13 @@ if($level==2){
     $previous_on = (isset($previous_intent['c_id']));
     $next_on = ( $next_level>=2 && ($class_has_ended || (isset($next_intent['c_id']) && isset($us_data[$intent['c_id']]))));
     if($previous_on || $next_on){
-        echo '<h4 class="maxout"><i class="fa fa-arrows" aria-hidden="true"></i> Navigation</h4>';
+        echo '<h4 class="maxout"><i class="fas fa-arrows"></i> Navigation</h4>';
         echo '<div style="font-size:0.8em;">';
         if($previous_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fa fa-arrow-left"></i> Previous</a>';
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$previous_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0;"><i class="fas fa-arrow-left"></i> Previous</a>';
         }
         if($next_on){
-            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fa fa-arrow-right"></i></a>';
+            echo '<a href="/my/actionplan/'.$admission['b_id'].'/'.$next_intent['c_id'].'" class="btn btn-tight btn-black" style="margin:0 0 0 8px;">Next <i class="fas fa-arrow-right"></i></a>';
         }
         echo '</div>';
     }
@@ -292,9 +292,9 @@ if($level==1){
 
     echo '<h4 class="maxout">';
         if($level==1){
-            echo '<i class="fa fa-check-square-o" aria-hidden="true"></i> Tasks';
+            echo '<i class="fas fa-circle"></i> Tasks';
         } elseif($level==2){
-            echo '<i class="fa fa-list-ul" aria-hidden="true"></i> Steps';
+            echo '<i class="fal fa-circle"></i> Steps';
         }
         //Show aggregate hours:
         echo ' <span class="sub-title">'.echo_time($intent['c__estimated_hours'],1).'</span>';
@@ -338,14 +338,14 @@ if($level==1){
 
             //Show link to enter this item:
             $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$this_intent['c_id'].'" class="list-group-item">';
-            $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></span></span>';
+            $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
             $ui .= status_bible('e_status',$this_item_e_status,1).' ';
 
         } else {
 
             //Step/Task is locked, do not show link:
             $ui = '<li class="list-group-item">';
-            $ui .= '<i class="fa fa-lock initial" aria-hidden="true"></i> ';
+            $ui .= '<i class="fas fa-lock initial"></i> ';
 
         }
 
@@ -370,7 +370,7 @@ if($level==1){
 
         if($level==1 && $unlocked_item && isset($child_step_count) && $child_step_count){
             //Show the number of sub-Steps:
-            //$ui .= '<span class="title-sub"><i class="fa fa-list-ul" aria-hidden="true"></i>'.$child_step_count.'</span>';
+            //$ui .= '<span class="title-sub"><i class="fas fa-list-ol"></i>'.$child_step_count.'</span>';
         }
 
         $ui .= '</span>';
