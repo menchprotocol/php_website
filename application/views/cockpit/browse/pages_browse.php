@@ -38,7 +38,7 @@ foreach($pages as $key=>$fp){
     echo '<td>'.$fp['fp_name'].'</td>';
     echo '<td>'.$fp['fp_id'].'</td>';
     echo '<td><a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></td>';
-    echo '<td>'.$fp['u_fname'].' '.$fp['u_lname'].'</td>';
+    echo '<td>'.$fp['u_fname'].'</td>';
 
     echo '<td>'.time_format($fp['fs_timestamp'],0).'</td>';
 

@@ -975,8 +975,7 @@ class Comm_model extends CI_Model {
                     'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
                     'u_country_code'   => $locale[1],
-                    'u_fname'          => $fb_profile['first_name'], //Update their original names with FB
-                    'u_lname'          => $fb_profile['last_name'], //Update their original names with FB
+                    'u_fname'          => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
                     'u_cache__fp_id'   => $fp['fp_id'],
                     'u_cache__fp_psid' => $fp_psid,
                 ));
@@ -1059,8 +1058,7 @@ class Comm_model extends CI_Model {
 
                 //Create user
                 $u = $this->Db_model->u_create(array(
-                    'u_fname' 			=> $fb_profile['first_name'],
-                    'u_lname' 			=> $fb_profile['last_name'],
+                    'u_fname' 			=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
                     'u_timezone' 		=> $fb_profile['timezone'],
                     'u_image_url' 		=> $fb_profile['profile_pic'],
                     'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),

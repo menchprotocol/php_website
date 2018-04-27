@@ -141,7 +141,7 @@ foreach($b['b__admins'] as $key=>$instructor){
     if($key>0){
         echo ', ';
     }
-    echo $instructor['u_fname'].' '.$instructor['u_lname'];
+    echo $instructor['u_fname'];
 }
 if($total_advisers>0){
     echo ' + '.$total_advisers.' Adviser'.( $total_advisers ==1? '' : 's');

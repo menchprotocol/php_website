@@ -105,7 +105,7 @@ foreach($users as $key=>$user){
     echo '<td>'.($key+1).'</td>';
     echo '<td>'.$user['u_id'].'</td>';
     echo '<td>'.status_bible('u',$user['u_status'],1,'right').'</td>';
-    echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].' '.$user['u_lname'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
+    echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$user['u_id'].'" title="View All Engagements">'.$user['u_fname'].'</a>'.( $user['u_unsubscribe_fb_id']>0 ? ' <i class="fa fa-exclamation-triangle" data-toggle="tooltip" title="User has Unsubscribed" data-placement="bottom" style="color:#FF0000;"></i>' : '' ).'</td>';
 
 
     echo '<td>';

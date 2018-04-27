@@ -328,8 +328,7 @@ class Scraper extends CI_Controller {
         header("Expires: 0");
 
         echo "#";
-        echo "\tFirst Name";
-        echo "\tLast Name";
+        echo "\tName";
         echo "\tEmail";
         echo "\r\n";
 
@@ -338,7 +337,6 @@ class Scraper extends CI_Controller {
             $counter++;
             echo $counter;
             echo "\t".$tp['u_fname'];
-            echo "\t".$tp['u_lname'];
             echo "\t".$tp['u_email'];
             echo "\r\n";
         }

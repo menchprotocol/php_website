@@ -70,7 +70,7 @@ if(count($bs)>0){
         //Print lead admin:
         foreach($b['b__admins'] as $admin){
             if($admin['ba_status']==3){
-                echo '<span style="display:inline-block; width:100%;">By <img src="'.$admin['u_image_url'].'" style="display:inline-block;" /> '.$admin['u_fname'].' '.$admin['u_lname'].'</span>';
+                echo '<span style="display:inline-block; width:100%;">By <img src="'.$admin['u_image_url'].'" style="display:inline-block;" /> '.$admin['u_fname'].'</span>';
             }
         }
         echo '</div>';

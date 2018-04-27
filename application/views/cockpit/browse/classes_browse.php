@@ -52,7 +52,7 @@ foreach($classes as $key=>$class) {
     echo '<td>'.($key+1).'</td>';
 
     echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bs[0]['c_outcome'].'</a></td>';
-    echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].' '.$leaders[0]['u_lname'].'</a></td>';
+    echo '<td><a href="/cockpit/browse/engagements?e_u_id='.$leaders[0]['u_id'].'">'.$leaders[0]['u_fname'].'</a></td>';
     echo '<td><a href="/console/'.$class['r_b_id'].'/classes#class-'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),2).'</a></td>';
     echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';
     if($class['r_status']==3){

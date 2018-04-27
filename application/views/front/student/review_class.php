@@ -77,7 +77,7 @@ if(count($admission['b__admins'])>1){
             //Skip this lead instructor:
             echo ', ';
         }
-        echo '<img src="'.( strlen($assistant['u_image_url'])>0 ? $assistant['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$assistant['u_fname'].' '.$assistant['u_lname'];
+        echo '<img src="'.( strlen($assistant['u_image_url'])>0 ? $assistant['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$assistant['u_fname'];
     }
     echo '</div>';
 }

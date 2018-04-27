@@ -1451,7 +1451,7 @@ WHERE ru.ru_status >= 4
                         'u.u_status >=' => 1, //Must be a user level 1 or higher
                     ));
 
-                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'] : 'System' );
                     $url = 'https://mench.com/console/'.$insert_columns['e_b_id'];
 
                     $body = trim(strip_tags($insert_columns['e_text_value']));
@@ -1494,7 +1494,7 @@ WHERE ru.ru_status >= 4
                     //Did we find it? We should have:
                     if(isset($engagements[0])){
 
-                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'].' '.$engagements[0]['u_lname'] : 'System' );
+                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'] : 'System' );
 
                         //Compose email:
                         $html_message = null; //Start

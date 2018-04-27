@@ -11,7 +11,7 @@ class Adjust extends CI_Controller {
         $this->output->enable_profiler(FALSE);
     }
 
-    function resync_class_actionplans(){
+    function resync_class_actionplans_and_message_instructors(){
 
         //First delete old caches:
         $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_c_id=70");

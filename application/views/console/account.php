@@ -58,7 +58,6 @@ function update_account(){
 		
 		u_id:$('#u_id').val(),
 		u_fname:$('#u_fname').val(),
-		u_lname:$('#u_lname').val(),
 		u_email:$('#u_email').val(),
 		u_phone:$('#u_phone').val(),
 		u_image_url:$('#u_image_url').val(),
@@ -137,10 +136,7 @@ function insert_gravatar(){
         
         <div class="row" style="margin:0 0 0 0;">
         	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-            	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" data-lpignore="true" placeholder="First Name" class="form-control border">
-            </div>
-            <div class="col-xs-6" style="padding-left:5px; padding-right:0;">
-            	<input type="text" required id="u_lname" value="<?= $udata['u_lname'] ?>" data-lpignore="true" placeholder="Last Name" class="form-control border">
+            	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
             </div>
         </div>
         

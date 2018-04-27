@@ -46,7 +46,7 @@ $( document ).ready(function() {
 <div class="section">
     <div class="row" style="max-width:330px; padding-left:10px;">
         <div class="col-xs-12">
-            <p>First Name:</p>
+            <p>Full Name:</p>
             <p><input type="text" id="u_fname" value="<?= ( isset($udata['u_fname']) ? $udata['u_fname'] : '' ) ?>" class="form-el" /></p>
         </div>
         <div class="col-xs-12">

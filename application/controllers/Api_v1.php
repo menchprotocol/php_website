@@ -649,7 +649,7 @@ class Api_v1 extends CI_Controller {
                 //Invalid First name,
                 die(echo_json(array(
                     'status' => 0,
-                    'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid first name, try again.</div>',
+                    'error_message' => '<div class="alert alert-danger" role="alert"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Invalid name, try again.</div>',
                 )));
             } else {
 
@@ -1106,7 +1106,7 @@ class Api_v1 extends CI_Controller {
                 'u.u_status >=' => 1, //Must be a user level 1 or higher
             ));
 
-            $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'].' '.$matching_admissions[0]['u_lname'] : 'System' );
+            $student_name = ( isset($matching_admissions[0]['u_fname']) && strlen($matching_admissions[0]['u_fname'])>0 ? $matching_admissions[0]['u_fname'] : 'System' );
 
             $subject = '⚠️ Review Task Completion '.( strlen(trim($_POST['us_notes']))>0 ? 'Comment' : '(Without Comment)' ).' by '.$student_name;
             $div_style = ' style="padding:5px 0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"';
@@ -1117,7 +1117,7 @@ class Api_v1 extends CI_Controller {
                 if(strlen($bi['u_email'])>0){
                     //Step Completion Email:
                     //Draft HTML message for this:
-                    $html_message  = '<div'.$div_style.'>Hi '.$bi['u_fname'].' 👋​</div>';
+                    $html_message  = '<div'.$div_style.'>Hi '.one_two_explode('',' ',$bi['u_fname']).' 👋​</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
                     $html_message .= '<br />';
@@ -1542,8 +1542,6 @@ class Api_v1 extends CI_Controller {
 	        die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
 	    } elseif(!isset($_POST['u_fname']) || strlen($_POST['u_fname'])<=0){
 	        die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
-	    } elseif(!isset($_POST['u_lname']) || strlen($_POST['u_lname'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing last name. Try again.</span>');
         } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
             die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
         } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
@@ -1565,7 +1563,6 @@ class Api_v1 extends CI_Controller {
 
 	    $u_update = array(
 	        'u_fname' => trim($_POST['u_fname']),
-	        'u_lname' => trim($_POST['u_lname']),
 	        'u_email' => trim(strtolower($_POST['u_email'])),
 	        'u_phone' => $_POST['u_phone'],
 	        'u_image_url' => $_POST['u_image_url'],
@@ -1726,8 +1723,7 @@ class Api_v1 extends CI_Controller {
         header("Expires: 0");
 
         echo "#";
-        echo "\tFirst Name";
-        echo "\tLast Name";
+        echo "\tName";
         echo "\tEmail";
         echo "\tActive On";
         echo "\tTimezone";
@@ -1743,7 +1739,6 @@ class Api_v1 extends CI_Controller {
             $counter++;
             echo $counter;
             echo "\t".$admission['u_fname'];
-            echo "\t".$admission['u_lname'];
             echo "\t".$admission['u_email'];
             echo "\t";
                 if($admission['u_cache__fp_psid']>0){
@@ -1865,7 +1860,7 @@ class Api_v1 extends CI_Controller {
                 //Inform Admin:
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $udata['u_id'],
-                    'e_text_value' => $udata['u_fname'].' '.$udata['u_lname'].' (Lead Instructor) is trying to disable a support week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$guided_admissions.'] Classroom seats across all their Bootcamps. Reach out to see if they need any help with this.',
+                    'e_text_value' => $udata['u_fname'].' (Lead Instructor) is trying to disable a support week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$guided_admissions.'] Classroom seats across all their Bootcamps. Reach out to see if they need any help with this.',
                     'e_inbound_c_id' => 9, //Support Needed
                     'e_b_id' => $classes[0]['r_b_id'],
                     'e_r_id' => $classes[0]['r_id'],

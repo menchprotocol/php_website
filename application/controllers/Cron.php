@@ -246,8 +246,8 @@ class Cron extends CI_Controller {
                     ));
 
                     //Construct the review message and button:
-                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$lead_instructors[0]['u_fname'].' '.$lead_instructors[0]['u_lname'].' and help improve future Classes:';
-                    $review_button = '📣 Review '.$lead_instructors[0]['u_fname']; //Will show a button to rate/review Lead Instructor
+                    $review_message = 'Your final step is to rate & review your experience with ​​​​'.$lead_instructors[0]['u_fname'].' and help improve future Classes:';
+                    $review_button = '📣 Review '.one_two_explode('',' ',$lead_instructors[0]['u_fname']); //Will show a button to rate/review Lead Instructor
 
 
                     //Do a count for stat reporting:
@@ -643,7 +643,7 @@ class Cron extends CI_Controller {
 
 
         //Fetch student inbound messages that have not yet been replied to:
-        $q = $this->db->query('SELECT u_fname, u_lname, e_inbound_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_entities u ON (e.e_inbound_u_id = u.u_id) WHERE e_inbound_c_id=6 AND e_timestamp > \''.$after_time.'\' AND e_inbound_u_id>0 AND u_status<=1 GROUP BY e_inbound_u_id, u_status, u_fname, u_lname');
+        $q = $this->db->query('SELECT u_fname, e_inbound_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_entities u ON (e.e_inbound_u_id = u.u_id) WHERE e_inbound_c_id=6 AND e_timestamp > \''.$after_time.'\' AND e_inbound_u_id>0 AND u_status<=1 GROUP BY e_inbound_u_id, u_status, u_fname');
         $new_messages = $q->result_array();
         $notify_messages = array();
         foreach($new_messages as $key=>$nm){
@@ -688,7 +688,6 @@ class Cron extends CI_Controller {
                         //We can handle either email or messenger connection:
                         array_push( $notify_fb_ids , array(
                             'u_fname' => $admin['u_fname'],
-                            'u_lname' => $admin['u_lname'],
                             'u_id' => $admin['u_id'],
                         ));
                     }
@@ -724,7 +723,7 @@ class Cron extends CI_Controller {
                 }
                 $message .= '💡 Premium Support Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
-                    $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'].' '.$thread['u_lname'];
+                    $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_fname'];
                 }
                 if(count($msg['b_data'])>0 && strlen($message)<580){
                     $message .= "\n\n".'https://mench.com/console/'.$msg['b_data']['b_id'];
@@ -894,7 +893,7 @@ class Cron extends CI_Controller {
                             ));
 
                             //Show in stats:
-                            array_push($stats,$admission['u_fname'].' '.$admission['u_lname'].' done '.round($admission['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
+                            array_push($stats,$admission['u_fname'].' done '.round($admission['ru_cache__completion_rate']*100).'% (less than target '.round($logic['progress_below']*100).'%) where class is '.round($elapsed_class_percentage*100).'% complete and got reminded via c_id '.$logic['reminder_c_id']);
                         }
                     }
 

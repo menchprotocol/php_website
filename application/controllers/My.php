@@ -640,7 +640,7 @@ class My extends CI_Controller {
 
 
                 echo '<td colspan="'.( $admission['ru_cache__completion_rate']<1 && !$ranking_visible ? 2 : 1 ).'" valign="top" style="text-align:left; vertical-align:top;">';
-                $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_fname'].' '.$admission['u_lname'];
+                $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_fname'];
 
 
                 if($is_instructor){
@@ -787,7 +787,7 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
     function display_account(){
-        //echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].' '.$admissions[0]['u_lname'].'</p>';
+        //echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_fname'].'</p>';
     }
 
 
@@ -833,7 +833,7 @@ class My extends CI_Controller {
         }
 
 
-        $lead_instructor = $admissions[0]['b__admins'][0]['u_fname'].' '.$admissions[0]['b__admins'][0]['u_lname'];
+        $lead_instructor = $admissions[0]['b__admins'][0]['u_fname'];
 
         //Assemble the data:
         $data = array(
