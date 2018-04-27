@@ -35,7 +35,7 @@ class Bot extends CI_Controller {
 
         $pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
-        ));
+        ), array('fs'));
 
         $res = array();
         foreach($pages as $fp){
@@ -162,7 +162,7 @@ class Bot extends CI_Controller {
                 $fp_pages = $this->Db_model->fp_fetch(array(
                     'fp_fb_id' => $entry['id'],
                     'fp_status' => 1, //Must be connected to Mench
-                ));
+                ), array('fs'));
             }
 
             //check the page ID:

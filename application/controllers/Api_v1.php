@@ -88,7 +88,7 @@ class Api_v1 extends CI_Controller {
 
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
-        ));
+        ), array('fs'));
         if(count($fp_pages)<1){
             die('invalid ID');
         }
@@ -153,7 +153,7 @@ class Api_v1 extends CI_Controller {
         if($_POST['current_b_fp_id']>0){
             $fp_pages = $this->Db_model->fp_fetch(array(
                 'fp_id' => $_POST['current_b_fp_id'],
-            ));
+            ), array('fs'));
             if(count($fp_pages)<1){
                 echo_json(array(
                     'status' => 0,
@@ -165,7 +165,7 @@ class Api_v1 extends CI_Controller {
         if($_POST['new_b_fp_id']>0){
             $fp_pages = $this->Db_model->fp_fetch(array(
                 'fp_id' => $_POST['new_b_fp_id'],
-            ));
+            ), array('fs'));
             if(count($fp_pages)<1){
                 echo_json(array(
                     'status' => 0,
@@ -254,7 +254,7 @@ class Api_v1 extends CI_Controller {
             //Bootcamp connected to a page they do not control, fetch details and let them know:
             $no_control_pages = $this->Db_model->fp_fetch(array(
                 'fp_id' => $bs[0]['b_fp_id']
-            ));
+            ), array('fs'));
             if(count($no_control_pages)>0){
                 echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-plug"></i> Currently connected to a Page you don\'t control: <a href="https://www.facebook.com/'.$no_control_pages[0]['fp_fb_id'].'">'.$no_control_pages[0]['fp_name'].'</a></div>';
             }
@@ -398,7 +398,7 @@ class Api_v1 extends CI_Controller {
             //Fetch Page:
             $fp_pages = $this->Db_model->fp_fetch(array(
                 'fp_id' => $_POST['fp_id'],
-            ));
+            ), array('fs'));
 
             if(count($fp_pages)<1){
                 echo_json(array(

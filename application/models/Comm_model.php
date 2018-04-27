@@ -560,7 +560,7 @@ class Comm_model extends CI_Model {
         //Validate the Page:
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
-        ));
+        ), array('fs'));
 
         //Does this Bootcamp have any current pages connected to it? If so, we'd need to disconnect them first:
         $bs = $this->Db_model->b_fetch(array(
@@ -632,7 +632,7 @@ class Comm_model extends CI_Model {
         //Validate both $fp_id & $b_id
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
-        ));
+        ), array('fs'));
 
         //Does this Bootcamp have any current pages connected to it? If so, we'd need to disconnect them first:
         $bs = $this->Db_model->b_fetch(array(
@@ -710,7 +710,7 @@ class Comm_model extends CI_Model {
         $fp_pages = $this->Db_model->fp_fetch(array(
             'fp_id' => $fp_id,
             'fp_status' => 1, //Must be connected to Mench
-        ));
+        ), array('fs'));
 
         if(count($fp_pages)<1){
             //Log Error:

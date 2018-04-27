@@ -2543,7 +2543,7 @@ function object_link($object,$id,$b_id=0){
         } elseif($object=='fp'){
             $pages = $CI->Db_model->fp_fetch(array(
                 'fp_id' => $id,
-            ));
+            ), array('fs'));
             if(isset($pages[0])){
                 return '<a href="https://www.facebook.com/'.$pages[0]['fp_fb_id'].'" target="_blank">'.$pages[0]['fp_name'].'</a>';
             } else {
