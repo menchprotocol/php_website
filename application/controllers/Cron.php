@@ -420,7 +420,7 @@ class Cron extends CI_Controller {
                     array_merge($json_data['i'], array(
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $matching_admissions[0]['u_id'],
-                        'i_inbound_c_id' => $json_data['i']['i_inbound_c_id'],
+                        'i_outbound_c_id' => $json_data['i']['i_outbound_c_id'],
                         'e_b_id' => $e_text_value['e_b_id'],
                         'e_r_id' => $e_text_value['e_r_id'],
                     )),

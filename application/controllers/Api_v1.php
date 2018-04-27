@@ -1164,7 +1164,7 @@ class Api_v1 extends CI_Controller {
                 array_push($on_complete_text_values, array_merge($i , array(
                     'e_inbound_u_id' => 0,
                     'e_outbound_u_id' => $matching_admissions[0]['u_id'],
-                    'i_inbound_c_id' => $i['i_inbound_c_id'],
+                    'i_outbound_c_id' => $i['i_outbound_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
                 )));
@@ -1180,7 +1180,7 @@ class Api_v1 extends CI_Controller {
                     array_push($on_complete_text_values, array_merge($i , array(
                         'e_inbound_u_id' => 0,
                         'e_outbound_u_id' => $matching_admissions[0]['u_id'],
-                        'i_inbound_c_id' => $i['i_inbound_c_id'],
+                        'i_outbound_c_id' => $i['i_outbound_c_id'],
                         'e_b_id' => intval($_POST['b_id']),
                         'e_r_id' => intval($_POST['r_id']),
                     )));
@@ -1218,7 +1218,7 @@ class Api_v1 extends CI_Controller {
                     'e_inbound_c_id' => 52, //Pending Drip e_inbound_c_id=52
                     'e_status' => 0, //Pending for the Drip Cron
                     'e_i_id' => $i['i_id'],
-                    'e_outbound_c_id' => $i['i_inbound_c_id'],
+                    'e_outbound_c_id' => $i['i_outbound_c_id'],
                     'e_b_id' => intval($_POST['b_id']),
                     'e_r_id' => intval($_POST['r_id']),
 
@@ -3262,7 +3262,7 @@ class Api_v1 extends CI_Controller {
 
         //Fetch Messages and the User's Got It Engagement History:
         $messages = $this->Db_model->i_fetch(array(
-            'i_inbound_c_id' => intval($_POST['intent_id']),
+            'i_outbound_c_id' => intval($_POST['intent_id']),
             'i_status >' => 0, //Published in any form
         ));
 
@@ -3449,14 +3449,14 @@ class Api_v1 extends CI_Controller {
         //Create message:
         $i = $this->Db_model->i_create(array(
             'i_inbound_u_id' => $udata['u_id'],
-            'i_inbound_c_id' => intval($_POST['pid']),
+            'i_outbound_c_id' => intval($_POST['pid']),
             'i_media_type' => $i_media_type,
             'i_message' => $message,
             'i_url' => $new_file_url,
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
                     'i_status' => $_POST['i_status'],
-                    'i_inbound_c_id' => $_POST['pid'],
+                    'i_outbound_c_id' => $_POST['pid'],
                 )),
         ));
 
@@ -3475,7 +3475,7 @@ class Api_v1 extends CI_Controller {
             ),
             'e_inbound_c_id' => 34, //Message added e_inbound_c_id=34
             'e_i_id' => intval($new_messages[0]['i_id']),
-            'e_outbound_c_id' => intval($new_messages[0]['i_inbound_c_id']),
+            'e_outbound_c_id' => intval($new_messages[0]['i_outbound_c_id']),
             'e_b_id' => $bs[0]['b_id'],
         ));
 
@@ -3487,7 +3487,7 @@ class Api_v1 extends CI_Controller {
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => intval($new_messages[0]['i_id']),
-                'e_outbound_c_id' => intval($new_messages[0]['i_inbound_c_id']),
+                'e_outbound_c_id' => intval($new_messages[0]['i_outbound_c_id']),
                 'e_b_id' => $bs[0]['b_id'],
                 'e_fp_id' => $bs[0]['b_fp_id'],
                 'e_status' => 0, //Job pending
@@ -3565,14 +3565,14 @@ class Api_v1 extends CI_Controller {
                 //Create Message:
                 $i = $this->Db_model->i_create(array(
                     'i_inbound_u_id' => $udata['u_id'],
-                    'i_inbound_c_id' => intval($_POST['pid']),
+                    'i_outbound_c_id' => intval($_POST['pid']),
                     'i_media_type' => $i_media_type,
                     'i_message' => trim($_POST['i_message']),
                     'i_url' => ( count($validation['urls'])==1 ? $validation['urls'][0] : null ),
                     'i_status' => $_POST['i_status'],
                     'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
                         'i_status' => $_POST['i_status'],
-                        'i_inbound_c_id' => intval($_POST['pid']),
+                        'i_outbound_c_id' => intval($_POST['pid']),
                     )),
                 ));
 
@@ -3672,7 +3672,7 @@ class Api_v1 extends CI_Controller {
                     //Put it at the end of the new list:
                     $to_update['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
                         'i_status' => $_POST['i_status'],
-                        'i_inbound_c_id' => intval($_POST['pid']),
+                        'i_outbound_c_id' => intval($_POST['pid']),
                     ));
                 }
 

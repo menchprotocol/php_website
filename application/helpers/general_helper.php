@@ -511,10 +511,10 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
 
 
     //Do a quick hack to make these two variables inter-changable:
-    if(isset($i['i_inbound_c_id']) && $i['i_inbound_c_id']>0 && !isset($i['e_outbound_c_id'])){
-        $i['e_outbound_c_id'] = $i['i_inbound_c_id'];
-    } elseif(isset($i['e_outbound_c_id']) && $i['e_outbound_c_id']>0 && !isset($i['i_inbound_c_id'])){
-        $i['i_inbound_c_id'] = $i['e_outbound_c_id'];
+    if(isset($i['i_outbound_c_id']) && $i['i_outbound_c_id']>0 && !isset($i['e_outbound_c_id'])){
+        $i['e_outbound_c_id'] = $i['i_outbound_c_id'];
+    } elseif(isset($i['e_outbound_c_id']) && $i['e_outbound_c_id']>0 && !isset($i['i_outbound_c_id'])){
+        $i['i_outbound_c_id'] = $i['e_outbound_c_id'];
     }
 
 
@@ -554,16 +554,16 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
             $command = '{button}';
             $button_url = 'https://mench.com/my/actionplan'; //We assume a basic link to Action Plan
 
-            if(isset($i['i_inbound_c_id']) && isset($i['e_b_id']) && isset($i['e_r_id'])){
+            if(isset($i['i_outbound_c_id']) && isset($i['e_b_id']) && isset($i['e_r_id'])){
 
                 //Validate this to make sure it's all Good:
                 $bs = fetch_action_plan_copy($i['e_b_id'],$i['e_r_id']);
-                $intent_data = extract_level( $bs[0], $i['i_inbound_c_id'] );
+                $intent_data = extract_level( $bs[0], $i['i_outbound_c_id'] );
 
                 //Does this intent belong to this Bootcamp/Class?
                 if($intent_data){
                     //Everything looks good:
-                    $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_inbound_c_id'];
+                    $button_url = 'https://mench.com/my/actionplan/'.$i['e_b_id'].'/'.$i['i_outbound_c_id'];
                 }
             }
 
@@ -977,7 +977,7 @@ function copy_messages($u_id,$c__messages,$c_id){
         $new_i = array();
         foreach($i as $key=>$value){
             //Is this a message field?
-            if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_inbound_u_id','i_inbound_c_id','i_timestamp','i_rank'))){
+            if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_inbound_u_id','i_outbound_c_id','i_timestamp','i_rank'))){
                 //Yes, move over:
                 $new_i[$key] = $value;
             }
@@ -985,10 +985,10 @@ function copy_messages($u_id,$c__messages,$c_id){
 
         //Replace creator & c_id
         $new_i['i_inbound_u_id'] = $u_id;
-        $new_i['i_inbound_c_id'] = $c_id;
+        $new_i['i_outbound_c_id'] = $c_id;
         $new_i['i_rank'] = 1 + $CI->Db_model->max_value('v5_messages','i_rank', array(
             'i_status' => $new_i['i_status'],
-            'i_inbound_c_id' => $c_id,
+            'i_outbound_c_id' => $c_id,
         ));
 
         //Create:

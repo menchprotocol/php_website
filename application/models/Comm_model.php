@@ -602,7 +602,7 @@ class Comm_model extends CI_Model {
         $media_messages = $this->Db_model->i_fetch(array(
             'i_status >' => 0, //Published in any form
             'i_media_type IN (\'video\',\'audio\',\'image\',\'file\')' => null, //Attachments only
-            'i_inbound_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bs[0]['b_outbound_c_id'])).')' => null, //Entire Bootcamp Action Plan
+            'i_outbound_c_id IN ('.join(',',$this->Db_model->fetch_c_tree($bs[0]['b_outbound_c_id'])).')' => null, //Entire Bootcamp Action Plan
         ));
         foreach($media_messages as $i){
             //Craete a request to sync attachment:
@@ -610,7 +610,7 @@ class Comm_model extends CI_Model {
                 'e_inbound_u_id' => $u_id,
                 'e_inbound_c_id' => 83, //Message Facebook Sync e_inbound_c_id=83
                 'e_i_id' => $i['i_id'],
-                'e_outbound_c_id' => $i['i_inbound_c_id'],
+                'e_outbound_c_id' => $i['i_outbound_c_id'],
                 'e_b_id' => $b_id,
                 'e_fp_id' => $fp_id,
                 'e_status' => 0, //Job pending
@@ -1238,7 +1238,7 @@ class Comm_model extends CI_Model {
                     'e_r_id'  => ( isset($message['e_r_id'])    ? $message['e_r_id']  :0), //If set...
                     'e_b_id'  => ( isset($message['e_b_id'])    ? $message['e_b_id']  :0), //If set...
                     'e_i_id'  => ( isset($message['i_id'])      ? $message['i_id']    :0), //The message that is being dripped
-                    'e_outbound_c_id'  => ( isset($message['i_inbound_c_id']) ? $message['i_inbound_c_id'] : 0),
+                    'e_outbound_c_id'  => ( isset($message['i_outbound_c_id']) ? $message['i_outbound_c_id'] : 0),
                 ));
 
                 if(!$process['status']){
@@ -1254,9 +1254,9 @@ class Comm_model extends CI_Model {
 
 
                     $subject_line = 'New Message from Mench'; //Default...
-                    if($intent_title_subject && isset($message['i_inbound_c_id']) && $message['i_inbound_c_id']>0){
+                    if($intent_title_subject && isset($message['i_outbound_c_id']) && $message['i_outbound_c_id']>0){
                         $intents = $this->Db_model->c_fetch(array(
-                            'c.c_id' => $message['i_inbound_c_id'],
+                            'c.c_id' => $message['i_outbound_c_id'],
                         ));
                         if(count($intents)>0){
                             $subject_line = $intents[0]['c_outcome'];
@@ -1290,7 +1290,7 @@ class Comm_model extends CI_Model {
                             'e_inbound_c_id' => 28, //Email message sent
                             'e_r_id'  => ( isset($message['e_r_id']) ? $message['e_r_id'] : 0 ),
                             'e_b_id'  => ( isset($message['e_b_id']) ? $message['e_b_id'] : 0 ),
-                            'e_outbound_c_id'  => ( isset($message['i_inbound_c_id']) ? $message['i_inbound_c_id'] : 0 ),
+                            'e_outbound_c_id'  => ( isset($message['i_outbound_c_id']) ? $message['i_outbound_c_id'] : 0 ),
                         ),
                     );
 

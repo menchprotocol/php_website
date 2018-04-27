@@ -96,7 +96,7 @@ WHERE ru.ru_status >= 4
             if(count($join_objects)==0 || in_array('i',$join_objects)){
                 $bs[$key]['c__messages'] = $this->Db_model->i_fetch(array(
                     'i_status >' => 0,
-                    'i_inbound_c_id' => $c['c_id'],
+                    'i_outbound_c_id' => $c['c_id'],
                 ));
                 $bs[$key]['c__message_tree_count'] = count($bs[$key]['c__messages']);
             }
@@ -106,7 +106,7 @@ WHERE ru.ru_status >= 4
 
                 $b_messages = $this->Db_model->i_fetch(array(
                     'i_status >=' => 1,
-                    'i_inbound_c_id' => $c['c_id'],
+                    'i_outbound_c_id' => $c['c_id'],
                 ));
                 $bs[$key]['c__header_media'] = null;
 
@@ -167,7 +167,7 @@ WHERE ru.ru_status >= 4
                 if(count($join_objects)==0 || in_array('i',$join_objects)){
                     $intent_messages = $this->Db_model->i_fetch(array(
                         'i_status >' => 0,
-                        'i_inbound_c_id' => $intent['c_id'],
+                        'i_outbound_c_id' => $intent['c_id'],
                     ));
                     $bs[$key]['c__child_intents'][$intent_key]['c__message_tree_count'] = 0;
                     $bs[$key]['c__message_tree_count'] += count($intent_messages);
@@ -201,7 +201,7 @@ WHERE ru.ru_status >= 4
                         //Count Messages:
                         $step_messages = $this->Db_model->i_fetch(array(
                             'i_status >' => 0,
-                            'i_inbound_c_id' => $step['c_id'],
+                            'i_outbound_c_id' => $step['c_id'],
                         ));
 
                         //Add messages:
@@ -464,7 +464,7 @@ WHERE ru.ru_status >= 4
     function i_fetch($match_columns, $limit=0){
         $this->db->select('*');
         $this->db->from('v5_messages i');
-        $this->db->join('v5_intents c', 'i.i_inbound_c_id = c.c_id');
+        $this->db->join('v5_intents c', 'i.i_outbound_c_id = c.c_id');
         $this->db->join('v5_entities u', 'u.u_id = i.i_inbound_u_id');
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -525,7 +525,7 @@ WHERE ru.ru_status >= 4
 	
 	function i_create($insert_columns){
 		//Missing anything?
-		if(!isset($insert_columns['i_inbound_c_id'])){
+		if(!isset($insert_columns['i_outbound_c_id'])){
 			return false;
 		} elseif(!isset($insert_columns['i_message'])){
 			return false;
@@ -934,7 +934,7 @@ WHERE ru.ru_status >= 4
 	        //Fetch Messages:
 	        foreach($intents as $key=>$value){
 	            $intents[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-	                'i_inbound_c_id' => $value['c_id'],
+	                'i_outbound_c_id' => $value['c_id'],
 	                'i_status >' => 0, //Published in any form
 	            ));
 	        }
@@ -1016,7 +1016,7 @@ WHERE ru.ru_status >= 4
                 if(in_array('i',$join_objects)){
                     //Fetch Messages:
                     $return[$key]['c__messages'] = $this->Db_model->i_fetch(array(
-                        'i_inbound_c_id' => $value['c_id'],
+                        'i_outbound_c_id' => $value['c_id'],
                         'i_status >' => 0, //Published in any form
                     ));
                 }
@@ -1650,7 +1650,7 @@ WHERE ru.ru_status >= 4
 
                 //Fetch all text messages for description:
                 $i_messages = $this->Db_model->i_fetch(array(
-                    'i_inbound_c_id' => $item['b_outbound_c_id'],
+                    'i_outbound_c_id' => $item['b_outbound_c_id'],
                     'i_media_type' => 'text', //Only type that we can index in search
                     'i_status >' => 0, //Published in any form
                 ));

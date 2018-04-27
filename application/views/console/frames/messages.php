@@ -6,7 +6,7 @@ $i_statuses = status_bible('i', null);
 $udata = $this->session->userdata('user');
 $drip_enabled = ($level>1);
 $i_messages = $this->Db_model->i_fetch(array(
-    'i_inbound_c_id' => $c_id,
+    'i_outbound_c_id' => $c_id,
     'i_status >' => 0, //Published in any form
 ));
 
