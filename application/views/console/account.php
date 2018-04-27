@@ -120,7 +120,7 @@ function insert_gravatar(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-  <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-id-bardge"></i> Profile</a></li>
+  <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
   <li id="nav_communication"><a href="#communication"><i class="fas fa-comment-alt-dots"></i> Communication</a></li>
   <li id="nav_finance"><a href="#finance"><i class="fas fa-chart-bar"></i> Payouts</a></li>
   <li id="nav_password"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
