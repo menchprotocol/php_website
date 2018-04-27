@@ -211,12 +211,12 @@ $config['object_statuses'] = array(
             's_name'  => 'On-Start',
             's_desc'  => 'Initial messages giving students instructions on how to effectively execute and complete this item',
             'u_min_status'  => 1,
-            's_mini_icon' => 'fas fa-hourglass-start',
+            's_mini_icon' => 'fas fa-bolt',
         ),
         3 => array(
             's_name'  => 'On-Complete',
             's_desc'  => 'Messages sent when students complete this item. Re-iterate key insights to help students retain learnings',
-            's_mini_icon' => 'fas fa-hourglass-end',
+            's_mini_icon' => 'fas fa-check-circle',
             'u_min_status'  => 1,
         ),
         2 => array(
