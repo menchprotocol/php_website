@@ -723,7 +723,8 @@ class Api_v1 extends CI_Controller {
         //Lets start their admission application:
         $admissions[0] = $this->Db_model->ru_create(array(
             'ru_b_id' 	        => $b['b_id'],
-            'ru_outbound_u_id' 	        => $udata['u_id'],
+            'ru_status'         => 0, //Pending
+            'ru_outbound_u_id' 	=> $udata['u_id'],
             'ru_fp_id'          => ( $b['b_is_parent'] ? 0 : $b['b_fp_id'] ), //Current Page that the student should connect to
         ));
 
@@ -859,7 +860,7 @@ class Api_v1 extends CI_Controller {
                         'ru_b_id' 	        => $bs[0]['b_id'],
                         'ru_r_id' 	        => $r_id,
                         'ru_outbound_u_id' 	        => $_POST['u_id'],
-                        'ru_status'         => 0, //Always insert as Pending, update if FREE of when paid
+                        'ru_status'         => 0, //Pending
                         'ru_fp_id'          => $bs[0]['b_fp_id'],
                         'ru_fp_psid'        => ( $bs[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
                         'ru_p1_price'       => echo_price($bs[0],1,true, false),
@@ -1995,7 +1996,6 @@ class Api_v1 extends CI_Controller {
             'b_support_email' => ( intval($_POST['b_is_parent']) ? null : $udata['u_email'] ),
             'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 && !intval($_POST['b_is_parent']) ? 'https://calendly.com/'.$udata['u_calendly_username'] : null ),
             'b_is_parent' => intval($_POST['b_is_parent']),
-            'b_old_format' => 0,
         ));
 
         if(intval($b['b_id'])<=0 || intval($b['b_outbound_c_id'])<=0){

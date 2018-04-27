@@ -300,25 +300,19 @@ WHERE ru.ru_status >= 4
 	}
 	
 	function ru_create($insert_columns){
-	    //Make sure required fields are here:
-	    if(!isset($insert_columns['ru_b_id'])){
-	        $this->Db_model->e_create(array(
-	            'e_text_value' => 'ru_create() missing ru_b_id.',
-	            'e_json' => $insert_columns,
-	            'e_inbound_c_id' => 8, //Platform Error
-	        ));
-	        return false;
-	    } elseif(!isset($insert_columns['ru_outbound_u_id'])){
-	        $this->Db_model->e_create(array(
-	            'e_text_value' => 'ru_create() missing ru_outbound_u_id.',
-	            'e_json' => $insert_columns,
-	            'e_inbound_c_id' => 8, //Platform Error
-	        ));
-	        return false;
-	    }
+
+        if(missing_required_db_fields($insert_columns,array('ru_b_id','ru_outbound_u_id','ru_status'))){
+            return false;
+        }
 
         if(!isset($insert_columns['ru_timestamp'])){
             $insert_columns['ru_timestamp'] = date("Y-m-d H:i:s");
+        }
+        if(!isset($insert_columns['ru_r_id'])){
+            $insert_columns['ru_r_id'] = 0;
+        }
+        if(!isset($insert_columns['ru_parent_ru_id'])){
+            $insert_columns['ru_parent_ru_id'] = 0;
         }
 	    
 	    //Lets now add:
@@ -326,15 +320,6 @@ WHERE ru.ru_status >= 4
 	    
 	    //Fetch inserted id:
 	    $insert_columns['ru_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['ru_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error ru_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
 	    
 	    return $insert_columns;
 	}
@@ -1138,47 +1123,57 @@ WHERE ru.ru_status >= 4
 	}	
 	
 	function r_create($insert_columns){
+        if(missing_required_db_fields($insert_columns,array('r_b_id','r_start_date','r_status'))){
+            return false;
+        }
 	    $this->db->insert('v5_classes', $insert_columns);
 	    $insert_columns['r_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['r_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error r_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
-
 	    return $insert_columns;
 	}
 	
 	function b_create($insert_columns){
-	    
-	    if(!isset($insert_columns['b_outbound_c_id'])){
-	        return false;
-	    } elseif(!isset($insert_columns['b_url_key'])){
-	        return false;
-	    }
+
+        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','b_is_parent'))){
+            return false;
+        }
 
         if(!isset($insert_columns['b_timestamp'])){
             $insert_columns['b_timestamp'] = date("Y-m-d H:i:s");
         }
-	    
-	    //Lets now add:
+        if(!isset($insert_columns['b_status'])){
+            $insert_columns['b_status'] = 2; //Published Privately
+        }
+        if(!isset($insert_columns['b_algolia_id'])){
+            $insert_columns['b_algolia_id'] = 0;
+        }
+        if(!isset($insert_columns['b_fp_id'])){
+            $insert_columns['b_fp_id'] = 0;
+        }
+        if(!isset($insert_columns['b_old_format'])){
+            $insert_columns['b_old_format'] = 0;
+        }
+
+        //Fetch config to determine defaults:
+        $pm = $this->config->item('pricing_model');
+
+        if(!isset($insert_columns['b_p1_rate'])){
+            $insert_columns['b_p1_rate'] = $pm['p1_rate_default'];
+        }
+        if(!isset($insert_columns['b_p2_max_seats'])){
+            $insert_columns['b_p2_max_seats'] = $pm['p2_seat_default'];
+        }
+        if(!isset($insert_columns['b_p2_rate'])){
+            $insert_columns['b_p2_rate'] = $pm['p2_rate_default'];
+        }
+        if(!isset($insert_columns['b_p3_rate'])){
+            $insert_columns['b_p3_rate'] = $pm['p3_rate_default'];
+        }
+
+        //Lets now add:
 	    $this->db->insert('v5_bootcamps', $insert_columns);
 	    
 	    //Fetch inserted id:
 	    $insert_columns['b_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['b_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error b_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
 	    
 	    return $insert_columns;
 	}
@@ -1219,17 +1214,10 @@ WHERE ru.ru_status >= 4
 	 ****************************** */
 	
 	function ba_create($insert_columns){
-	    
-	    //TODO Do better check on required fields:
-	    if(!isset($insert_columns['ba_outbound_u_id'])){
-	        return false;
-	    } elseif(!isset($insert_columns['ba_b_id'])){
-	        return false;
-	    } elseif(!isset($insert_columns['ba_status'])){
-	        return false;
-	    } elseif(!isset($insert_columns['ba_team_display'])){
-	        return false;
-	    }
+
+        if(missing_required_db_fields($insert_columns,array('ba_outbound_u_id','ba_b_id','ba_status','ba_team_display'))){
+            return false;
+        }
 
         if(!isset($insert_columns['ba_timestamp'])){
             $insert_columns['ba_timestamp'] = date("Y-m-d H:i:s");
@@ -1239,16 +1227,7 @@ WHERE ru.ru_status >= 4
 	    $this->db->insert('v5_bootcamp_team', $insert_columns);
 	    
 	    //Fetch inserted id:
-	    $insert_columns['ba_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['ba_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error ba_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
+        $insert_columns['ba_id'] = $this->db->insert_id();
 	    
 	    return $insert_columns;
 	}
@@ -1359,8 +1338,12 @@ WHERE ru.ru_status >= 4
 	
 	
 	function e_create($insert_columns){
+
+        if(missing_required_db_fields($insert_columns,array('e_inbound_c_id'))){
+            return false;
+        }
 	    
-	    //Sort out the optional fields first:
+	    //Try to auto detect user:
 	    if(!isset($insert_columns['e_inbound_u_id'])){
 	        //Try to fetch user ID from session:
 	        $user_data = $this->session->userdata('user');
@@ -1371,46 +1354,46 @@ WHERE ru.ru_status >= 4
 	            $insert_columns['e_inbound_u_id'] = 0;
 	        }
 	    }
-		
-	    
-		//Now check required fields:
-		if(!isset($insert_columns['e_inbound_c_id']) || intval($insert_columns['e_inbound_c_id'])<=0){
-		    //Log this error:
-		    $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $insert_columns['e_inbound_u_id'],
-                'e_text_value' => 'e_create() Function missing [e_inbound_c_id] variable.',
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-			return false;
-		}
 
-		//Do we have a json attachment for this engagement?
-		$save_blob = null;
+
+        //Do we have a json attachment for this engagement?
+        $insert_columns['e_has_blob'] = 'f';
+        $save_blob = null;
         if(isset($insert_columns['e_json']) && strlen(print_r($insert_columns['e_json'],true))>0){
             if(is_array($insert_columns['e_json']) && count($insert_columns['e_json'])>0){
                 $save_blob = $insert_columns['e_json'];
                 $insert_columns['e_has_blob'] = 't';
             }
         }
+        //Remove e_json from here to keep v5_engagements small and lean
+        unset($insert_columns['e_json']);
 
+
+        //Set some defaults:
         if(!isset($insert_columns['e_timestamp'])){
             $insert_columns['e_timestamp'] = date("Y-m-d H:i:s");
         }
         if(!isset($insert_columns['e_text_value'])){
             $insert_columns['e_text_value'] = null;
         }
+        if(!isset($insert_columns['e_status'])){
+            $insert_columns['e_status'] = -1; //Auto approved
+        }
 
-
-        //Remove e_json from here to keep v5_engagements small and lean
-        unset($insert_columns['e_json']);
-		
+        //Set some zero defaults if not set:
+        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_b_id','e_r_id','e_cr_id','e_i_id','e_fp_id','e_replaced_e_id') as $dz){
+            if(!isset($insert_columns[$dz]) || intval($insert_columns[$dz])<1){
+                $insert_columns[$dz] = 0;
+            }
+        }
 
 		//Lets log:
 		$this->db->insert('v5_engagements', $insert_columns);
 
+
 		//Fetch inserted id:
 		$insert_columns['e_id'] = $this->db->insert_id();
+
 
 		if($insert_columns['e_id']>0){
 
@@ -1431,7 +1414,7 @@ WHERE ru.ru_status >= 4
             //Email: The [33] Engagement ID corresponding to Step completion is a email system for instructors to give them more context on certain activities
 
             //Do we have any instructor subscription:
-            if(isset($insert_columns['e_b_id']) && $insert_columns['e_b_id']>0 && in_array($insert_columns['e_inbound_c_id'],$instructor_subscriptions)){
+            if($insert_columns['e_b_id']>0 && in_array($insert_columns['e_inbound_c_id'],$instructor_subscriptions)){
 
                 //Just do this one:
                 if(!isset($engagements[0])){
@@ -1522,16 +1505,6 @@ WHERE ru.ru_status >= 4
                 }
             }
 
-        } else {
-
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error e_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-
-            return false;
         }
 		
 		//Return:

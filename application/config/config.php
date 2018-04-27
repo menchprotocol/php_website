@@ -52,11 +52,15 @@ $config['pricing_model'] = array(
     'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Bootcamp    'p1_rates' => array(0.00,8.00,15.00), //Per Week
 
     'p1_rates' => array(0,8,18), //Per Week 8,15
+    'p1_rate_default' => 0,
 
     'p2_rates' => array(55), //Per Week 85
+    'p2_rate_default' => 55,
     'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
+    'p2_seat_default' => 6,
 
     'p3_rates' => array(0,1.12,1.8), //Per Minute, Next level is 4.6
+    'p3_rate_default' => 0,
 );
 
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time

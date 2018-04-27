@@ -19,6 +19,27 @@ function lock_cron_for_processing($e_items){
     }
 }
 
+function missing_required_db_fields($insert_columns,$field_array){
+    foreach($field_array as $req_field){
+        if(!isset($insert_columns[$req_field]) || strlen($insert_columns[$req_field])==0){
+            //Ooops, we're missing this required field:
+            $CI =& get_instance();
+            $CI->Db_model->e_create(array(
+                'e_text_value' => 'Missing required field ['.$req_field.'] for inserting new DB row',
+                'e_json' => array(
+                    'insert_columns' => $insert_columns,
+                    'required_fields' => $field_array,
+                ),
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+
+            return true; //We have an issue
+        }
+    }
+
+    //No errors found, all good:
+    return false; //Not missing anything
+}
 
 function calculate_total($admission){
     //TODO Implement Coupons here

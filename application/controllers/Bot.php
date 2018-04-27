@@ -14,6 +14,7 @@ class Bot extends CI_Controller {
         echo_json(array('status'=>'success'));
     }
 
+
     function ad($ru_id=1539){
 
         $admissions = $this->Db_model->remix_admissions(array(
