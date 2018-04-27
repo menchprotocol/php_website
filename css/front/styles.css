@@ -79,9 +79,9 @@ a.badge-primary:hover {
 }
 .main-panel .content { min-height:auto !important; }
 #task_view { text-align:left; }
-#task_view .fa { font-size:18px; cursor: pointer;}
+#task_view .fas { font-size:18px; cursor: pointer;}
 #b_objective {font-family: "Roboto Slab", "Times New Roman", serif;}
-#b_objective .fa {padding-right:3px;}
+#b_objective .fas {padding-right:3px;}
 
 .breadcrumb a { font-weight:bold; }
 .scheduler-iframe {
@@ -120,7 +120,7 @@ a.badge-primary:hover {
 }
 
 #timeline_update ul { margin-left:-10px; }
-.fa-trash, .list_input .badge-primary {cursor:pointer;}
+.fas-trash, .list_input .badge-primary {cursor:pointer;}
 .dropdown-menu a { text-decoration:none !important; }
 .video-player {margin-top:10px;}
 .video-player video {border-radius:6px;}
@@ -247,7 +247,7 @@ a.badge-primary:hover {
     width: 55px;
     float:right;
 }
-.ix-top-right .fa-wifi{
+.ix-top-right .fas-wifi{
 	margin-right: 2px;
 }
 
@@ -303,7 +303,7 @@ a.badge-primary:hover {
 
 .tab-pane, .maxout {max-width:665px !important;}
 .list-group-item { padding: 10px 10px; }
-.fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; } 
+.fas-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; }
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 
 .title-main { display:block; line-height:100%; padding-bottom:5px; font-size:1em; font-weight:bold; }
@@ -403,7 +403,7 @@ h5, .h5 {
     padding-bottom: 7px;
     font-weight: bold;
 }
-.actionplan_list .fa {
+.actionplan_list .fas {
     margin: 0 4px 0 2px;
     color:#3C4858;
 }
@@ -454,7 +454,7 @@ h5, .h5 {
     text-decoration-style: dotted;
     cursor:help;
 }
-.fa-info-circle{
+.fas-info-circle{
 	text-decoration-line:none !important;
 }
 #console h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height:100%; }
@@ -722,7 +722,7 @@ padding:0 0 0 0;
 font-weight:bold;
 color: #999;
 }
-.below_list li .status-label .fa {
+.below_list li .status-label .fas {
     width: 12px;
     margin-right: 3px;color:#3C4858;
 }
@@ -903,8 +903,8 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .bootstrap-select.btn-group .dropdown-menu li{
     padding-bottom:7px;
 }
-.mini-li .fa { color:#fedd16; }
-.mini-li a:hover .fa { color:#3C4858; }
+.mini-li .fas { color:#fedd16; }
+.mini-li a:hover .fas { color:#3C4858; }
 
 
 .mini-li {
@@ -1013,8 +1013,8 @@ a.badge:focus, a.badge:hover {
 	color:#ABABAB;
 	text-decoration:none;
 }
-.fa-ellipsis-v {color:#bbb;}
-.fa-sort, .fa-bars  {
+.fas-ellipsis-v {color:#bbb;}
+.fas-sort, .fas-bars  {
     color:#AAA;
 	cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
@@ -1023,7 +1023,7 @@ a.badge:focus, a.badge:hover {
     padding: 12px 10px;
     margin: -10px -7px -10px -10px;
 }
-.is_step_sortable .fa-bars{
+.is_step_sortable .fas-bars{
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
 .btn-adj {color:#bbb; margin:0 7px 0 0; z-index:9999999;}
@@ -1032,7 +1032,7 @@ a.badge:focus, a.badge:hover {
 .action-right a{color:#f57171;    margin-top: 15px;    display: inline-block;}
 .action-right span{color:#bbb;    margin-top: 15px;    display: inline-block;}
 
-.list-group-item .fa-circle {
+.list-group-item .fas-circle {
     font-size: 0.9em;
     margin-right: 5px;
 }
@@ -1235,7 +1235,7 @@ a.badge:focus, a.badge:hover {
     font-weight: bold;
     color: #FFF;
 }
-.btn-black .fa{
+.btn-black .fas{
 	font-size:1.2em !important;
 	margin-right:5px !important;
 }
@@ -1275,7 +1275,7 @@ a.badge:focus, a.badge:hover {
     margin-right:0;
 }
 
-.iphone-nav-tabs .fa {
+.iphone-nav-tabs .fas {
     font-size:1.1em;
 }
 .iphone-nav-tabs a {
@@ -1283,7 +1283,7 @@ a.badge:focus, a.badge:hover {
     padding: 5px 7px 5px 3px !important;
 }
 
-.iphone-nav-tabs > li > a:hover, .iphone-nav-tabs > li > a:hover > .status-label, .iphone-nav-tabs > li > a:hover .fa {
+.iphone-nav-tabs > li > a:hover, .iphone-nav-tabs > li > a:hover > .status-label, .iphone-nav-tabs > li > a:hover .fas {
     border-radius: 0 !important;
     background-color:#3C4858 !important;
     color:#FFFFFF !important;
@@ -1299,7 +1299,7 @@ a.badge:focus, a.badge:hover {
     border-radius: 0 !important;
 }
 
-.iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus, .iphone-nav-tabs > li.active > a > .status-label, .iphone-nav-tabs > li.active > a .fa {
+.iphone-nav-tabs > li.active > a, .iphone-nav-tabs > li.active > a:hover, .iphone-nav-tabs > li.active > a:focus, .iphone-nav-tabs > li.active > a > .status-label, .iphone-nav-tabs > li.active > a .fas {
     color:#FFFFFF !important;
 }
 footer ul li a, footer ul li i {
@@ -1536,7 +1536,7 @@ h4 .tip-badge{
     border-radius:3px;
 }
 
-.help_body .fa-times {
+.help_body .fas-times {
 	color: #3C4858;
 	font-size: 28px;
     padding-right: 2px;
