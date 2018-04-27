@@ -210,7 +210,7 @@ function c_sort(c_id,level){
                 //Save temporarily so we can later give proper index based on all active ones:
                 drafting_ids[(drafting_ids.length)] = cr_id;
 
-                $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fas fa-pencil-square"></i></b>');
+                $( "#cr_"+cr_id+" .inline-level-"+level ).html('<b><i class="fas fa-pen-square"></i></b>');
 
             }
         }
@@ -815,7 +815,7 @@ function add_item(group_id,prefix,current_value){
         $('#'+group_id+'>.list_input').before( '<li class="list-group-item is_sortable">'+
             '<span class="pull-right">'+
             '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fas fa-trash-alt"></i></a> '+
-            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fas fa-pencil-square"></i></a>'+
+            '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fas fa-pen-square"></i></a>'+
             '</span>'+
             '<i class="fas fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
             '</li>');
