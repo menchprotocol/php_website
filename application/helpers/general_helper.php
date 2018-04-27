@@ -502,7 +502,7 @@ function clean_url($url){
 }
 
 
-function echo_i($i,$first_name=null,$fb_format=false){
+function echo_i($i,$u_full_name=null,$fb_format=false){
     
     //Must be one of these types:
     if(!isset($i['i_media_type']) || !in_array($i['i_media_type'],array('text','video','audio','image','file'))){
@@ -535,9 +535,9 @@ function echo_i($i,$first_name=null,$fb_format=false){
 
 
         //Do we have a {first_name} replacement?
-        if($first_name){
+        if($u_full_name){
             //Tweak the name:
-            $i['i_message'] = str_replace('{first_name}', trim($first_name), $i['i_message']);
+            $i['i_message'] = str_replace('{first_name}', one_two_explode('',' ',$u_full_name), $i['i_message']);
         }
 
 
