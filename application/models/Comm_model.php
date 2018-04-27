@@ -32,7 +32,7 @@ class Comm_model extends CI_Model {
                 'fp_id' => $fp_id,
                 'fp_status >=' => 0, //Available or Connected
                 'fs_status' => 1, //Authorized Access
-            ));
+            ), array('fs'));
             if(!isset($pages[0]['fs_access_token']) || strlen($pages[0]['fs_access_token'])<1){
                 return array(
                     'status' => 0,
@@ -228,7 +228,6 @@ class Comm_model extends CI_Model {
                 //Check if we have this page in the database for this user:
                 $pages = $this->Db_model->fp_fetch(array(
                     'fp_fb_id' => $fb_page['id'],
-                    'fs_inbound_u_id' => $u_id,
                 ));
 
                 if(count($pages)==0){
@@ -249,21 +248,8 @@ class Comm_model extends CI_Model {
                         'e_inbound_c_id' => 76, //Facebook Page Added
                     ));
 
-                    //Give admin the authorization to access it:
-                    $fs = $this->Db_model->fs_create(array(
-                        'fs_fp_id' => $fp['fp_id'],
-                        'fs_inbound_u_id' => $u_id,
-                        'fs_status' => 1, //Authorized
-                        'fs_access_token' => $fb_page['access_token'],
-                    ));
-
-                    //Log Engagement:
-                    $this->Db_model->e_create(array(
-                        'e_inbound_u_id' => $u_id,
-                        'e_fp_id' => $fp['fp_id'],
-                        'e_b_id' => $b_id,
-                        'e_inbound_c_id' => 82, //Facebook Page Access Authorized
-                    ));
+                    //New page, we also need to add this person as admin:
+                    $add_admin = true;
 
                 } else {
 
@@ -302,29 +288,17 @@ class Comm_model extends CI_Model {
                     $admin_pages = $this->Db_model->fp_fetch(array(
                         'fs_inbound_u_id' => $u_id,
                         'fs_fp_id' => $fp['fp_id'],
-                    ));
+                    ), array('fs'));
 
                     if(count($admin_pages)==0){
 
-                        //Give admin the authorization to access it:
-                        $fs = $this->Db_model->fs_create(array(
-                            'fs_fp_id' => $fp['fp_id'],
-                            'fs_inbound_u_id' => $u_id,
-                            'fs_status' => 1, //Authorized
-                            'fs_access_token' => $fb_page['access_token'],
-                        ));
-
-                        //Log Engagement:
-                        $this->Db_model->e_create(array(
-                            'e_inbound_u_id' => $u_id,
-                            'e_fp_id' => $fp['fp_id'],
-                            'e_b_id' => $b_id,
-                            'e_inbound_c_id' => 82, //Facebook Page Access Authorized
-                        ));
+                        //This user is not yet an admin, add them:
+                        $add_admin = true;
 
                     } else {
 
                         //yes, instructor is assigned as its admin
+                        $add_admin = false;
                         $fs = $admin_pages[0];
 
                         //Does the user permissions associated to the Page need updating?
@@ -333,7 +307,6 @@ class Comm_model extends CI_Model {
                             //Update instructor admin status, as this happens frequently...
                             $this->Db_model->fs_update( $fs['fs_id'] , array(
                                 'fs_access_token' => $fb_page['access_token'],
-                                'fs_timestamp' => date("Y-m-d H:i:s"), //The most recent updated time
                                 'fs_status' => 1, //Authorized
                             ));
 
@@ -341,8 +314,28 @@ class Comm_model extends CI_Model {
                     }
                 }
 
+                //Do we need to assign the Admin?
+                if($add_admin){
+
+                    //Give admin the authorization to access it:
+                    $fs = $this->Db_model->fs_create(array(
+                        'fs_fp_id' => $fp['fp_id'],
+                        'fs_inbound_u_id' => $u_id,
+                        'fs_status' => 1, //Authorized
+                        'fs_access_token' => $fb_page['access_token'],
+                    ));
+
+                    //Log Engagement:
+                    $this->Db_model->e_create(array(
+                        'e_inbound_u_id' => $u_id,
+                        'e_fp_id' => $fp['fp_id'],
+                        'e_b_id' => $b_id,
+                        'e_inbound_c_id' => 82, //Facebook Page Access Authorized
+                    ));
+                }
+
                 //Now add this page to $authorized_fp_ids
-                array_push($authorized_fp_ids,$fp['fp_id']);
+                array_push($authorized_fp_ids, $fp['fp_id']);
 
             }
         }
@@ -368,7 +361,7 @@ class Comm_model extends CI_Model {
 	    if(count($authorized_fp_ids)>0){
             $filters['fs_fp_id NOT IN ('.join(',',$authorized_fp_ids).')'] = null;
         }
-        $admin_lost_pages = $this->Db_model->fp_fetch($filters);
+        $admin_lost_pages = $this->Db_model->fp_fetch($filters, array('fs'));
 
         if(count($admin_lost_pages)>0){
 
@@ -395,7 +388,7 @@ class Comm_model extends CI_Model {
                     'fs_inbound_u_id !=' => $u_id, //Not this instructor
                     'fs_fp_id' => $fp['fp_id'],
                     'fs_status' => 1, //Authorized Access
-                ));
+                ), array('fs'));
 
                 if(count($admin_access_points)==0){
 

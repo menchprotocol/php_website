@@ -637,8 +637,10 @@ WHERE ru.ru_status >= 4
 
         $this->db->select('*');
         $this->db->from('v5_facebook_pages fp');
-        $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
 
+        if(in_array('fs',$join_objects)){
+            $this->db->join('v5_facebook_page_admins fs', 'fs.fs_fp_id = fp.fp_id', 'left');
+        }
         if(in_array('u',$join_objects)){
             $this->db->join('v5_entities u', 'u.u_id = fs.fs_inbound_u_id');
         }

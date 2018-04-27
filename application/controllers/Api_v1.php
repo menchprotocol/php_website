@@ -281,7 +281,7 @@ class Api_v1 extends CI_Controller {
             'fs_inbound_u_id' => $udata['u_id'],
             'fs_status' => 1, //Have access
             'fp_status >=' => 0, //Available or Connected
-        ));
+        ), array('fs'));
 
 
         //List UI:

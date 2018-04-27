@@ -817,7 +817,7 @@ function add_item(group_id,prefix,current_value){
             '<a class="badge badge-primary" href="javascript:void(0);" onclick="confirm_remove($(this))"><i class="fas fa-trash-alt"></i></a> '+
             '<a class="badge badge-primary" href="javascript:void(0);" onclick="initiate_edit($(this))" style="margin-right: -3px;"><i class="fas fa-pencil-square"></i></a>'+
             '</span>'+
-            '<i class="fas fa-sort"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
+            '<i class="fas fa-bars"></i> <span class="inline-level">'+prefix+' #'+next_item+'</span><span class="theitem">'+current_value+'</span>'+
             '</li>');
 
         //Reset input field and re-focus only if manually added:

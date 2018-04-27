@@ -859,7 +859,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
         $echo_ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_uploader($i).'</span></li>';
 
         if($editing_enabled){
-            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-sort sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
+            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
             $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
             if($i['i_media_type']=='text' || $level<=2){
                 $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pencil-square"></i></a></span></li>';
@@ -1152,7 +1152,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     //Sorting & Then Left Content:
     if($level>1 && $editing_enabled && (!$b['b_is_parent'] || $level==2)) {
-        $ui .= '<i class="fas fa-sort"></i> &nbsp;';
+        $ui .= '<i class="fas fa-bars"></i> &nbsp;';
     }
 
 

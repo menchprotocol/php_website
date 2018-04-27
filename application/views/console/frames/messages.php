@@ -224,7 +224,7 @@ if(!isset($intents[0])){
                 var iid = $(evt.item).attr('iid');
                 if($('#ul-nav-'+iid).find('.video-sorting').length!==0){
                     inner_content = $('#msg_body_'+iid).html();
-                    $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fas fa-sort"></i> Drag up/down to sort video');
+                    $('#msg_body_'+iid).css('height',$('#msg_body_'+iid).height()).html('<i class="fas fa-bars"></i> Drag up/down to sort video');
                 } else {
                     inner_content = null;
                 }

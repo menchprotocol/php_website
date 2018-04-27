@@ -8,7 +8,7 @@
 
 $pages = $this->Db_model->fp_fetch(array(
     'fp_status >=' => 0, //Activated
-),array('u'), array(
+),array('u','fs'), array(
     'fp_status'=>'DESC',
     'fs_timestamp'=>'DESC'
 ));
