@@ -183,7 +183,7 @@ $(document).ready(function() {
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="review_prerequisites">
-    <p>Welcome <?= one_two_explode('',' ', $b['u_fname']) ?> 👋​</p>
+    <p>Welcome <?= one_two_explode('',' ', $b['u_full_name']) ?> 👋​</p>
     <p>Before we welcome you to this Bootcamp, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to [<?= $b['c_outcome'] ?>]:</p>
     <ul style="list-style: decimal;">
 	<?php

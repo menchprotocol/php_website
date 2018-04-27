@@ -56,7 +56,7 @@
 
 <?php
 echo '<div id="application_status" style="text-align:left !important; padding-left:5px !important;">';
-echo '<h3>'.$udata['u_fname'].' Bootcamps</h3>';
+echo '<h3>'.$udata['u_full_name'].' Bootcamps</h3>';
 
 
 if(count($admissions)>0 && is_array($admissions)){

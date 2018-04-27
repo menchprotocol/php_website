@@ -10,7 +10,7 @@ function start_application(){
     //Send data for processing:
     $.post("/api_v1/ru_checkout_initiate", {
         b_id:<?= $b['b_id'] ?>,
-        u_fname:$('#u_fname').val(),
+        u_full_name:$('#u_full_name').val(),
         u_email:$('#u_email').val(),
     } , function(data) {
         //Do we have a redirect URL?
@@ -35,7 +35,7 @@ $('body').keyup(function(e){
 
 $( document ).ready(function() {
 	//Make focus:
-	$('#u_fname').focus(); //Focus on input
+	$('#u_full_name').focus(); //Focus on input
 });
 
 </script>
@@ -47,7 +47,7 @@ $( document ).ready(function() {
     <div class="row" style="max-width:330px; padding-left:10px;">
         <div class="col-xs-12">
             <p>Full Name:</p>
-            <p><input type="text" id="u_fname" value="<?= ( isset($udata['u_fname']) ? $udata['u_fname'] : '' ) ?>" class="form-el" /></p>
+            <p><input type="text" id="u_full_name" value="<?= ( isset($udata['u_full_name']) ? $udata['u_full_name'] : '' ) ?>" class="form-el" /></p>
         </div>
         <div class="col-xs-12">
             <p>Email:</p>

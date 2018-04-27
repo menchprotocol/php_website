@@ -57,7 +57,7 @@ function update_account(){
 	$.post("/api_v1/u_update", {
 		
 		u_id:$('#u_id').val(),
-		u_fname:$('#u_fname').val(),
+		u_full_name:$('#u_full_name').val(),
 		u_email:$('#u_email').val(),
 		u_phone:$('#u_phone').val(),
 		u_image_url:$('#u_image_url').val(),
@@ -136,7 +136,7 @@ function insert_gravatar(){
         
         <div class="row" style="margin:0 0 0 0;">
         	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-            	<input type="text" required id="u_fname" value="<?= $udata['u_fname'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
+            	<input type="text" required id="u_full_name" value="<?= $udata['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
             </div>
         </div>
         

@@ -368,9 +368,9 @@ WHERE ru.ru_status >= 4
 	function u_create($insert_columns){
 		
 		//Make sure required fields are here:
-		if(!isset($insert_columns['u_fname'])){
+		if(!isset($insert_columns['u_full_name'])){
 			$this->Db_model->e_create(array(
-			    'e_text_value' => 'u_create() missing u_fname.',
+			    'e_text_value' => 'u_create() missing u_full_name.',
 			    'e_json' => $insert_columns,
 			    'e_inbound_c_id' => 8, //Platform Error
 			));
@@ -1451,7 +1451,7 @@ WHERE ru.ru_status >= 4
                         'u.u_status >=' => 1, //Must be a user level 1 or higher
                     ));
 
-                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'] : 'System' );
+                    $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System' );
                     $url = 'https://mench.com/console/'.$insert_columns['e_b_id'];
 
                     $body = trim(strip_tags($insert_columns['e_text_value']));
@@ -1494,7 +1494,7 @@ WHERE ru.ru_status >= 4
                     //Did we find it? We should have:
                     if(isset($engagements[0])){
 
-                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' - '.( isset($engagements[0]['u_fname']) ? $engagements[0]['u_fname'] : 'System' );
+                        $subject = 'Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' - '.( isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System' );
 
                         //Compose email:
                         $html_message = null; //Start

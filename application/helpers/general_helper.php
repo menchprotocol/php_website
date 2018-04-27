@@ -805,7 +805,7 @@ function extract_urls($text,$inverse=false){
 }
 
 function echo_uploader($i){
-    return '<img src="'.$i['u_image_url'].'" data-toggle="tooltip" title="Last modified by '.$i['u_fname'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right" />';
+    return '<img src="'.$i['u_image_url'].'" data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right" />';
 }
 
 function echo_message($i,$level=0,$editing_enabled=true){
@@ -950,7 +950,7 @@ function echo_br($admin){
 
     //Left content
     //$ui .= '<i class="fa fa-sort" aria-hidden="true" style="padding-right:3px;"></i> ';
-    $ui .= (strlen($admin['u_image_url'])>4 ? '<img src="'.$admin['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i> &nbsp;').$admin['u_fname'].' &nbsp;';
+    $ui .= (strlen($admin['u_image_url'])>4 ? '<img src="'.$admin['u_image_url'].'" class="profile-icon" />' : '<i class="fa fa-user-circle" aria-hidden="true"></i> &nbsp;').$admin['u_full_name'].' &nbsp;';
 
 
 
@@ -1491,7 +1491,7 @@ function b_progress($b){
      *********************************/
     if($bl){
         $is_my_account = ( $bl['u_id']==$udata['u_id'] );
-        $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_fname'].'\'s Account' );
+        $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_full_name'].'\'s Account' );
         $account_href = ( $is_my_account ? '/console/account' : null );
 
 
@@ -2503,7 +2503,7 @@ function object_link($object,$id,$b_id=0){
                 ));
                 if(isset($matching_users[0])){
                     //TODO Link to profile or chat widget link maybe?
-                    return '<a href="'.$website['url'].'cockpit/browse/engagements?e_u_id='.$id.'" title="User ID '.$id.'">'.$matching_users[0]['u_fname'].'</a>';
+                    return '<a href="'.$website['url'].'cockpit/browse/engagements?e_u_id='.$id.'" title="User ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                 }
             }
 

@@ -336,7 +336,7 @@ class Scraper extends CI_Controller {
         foreach($to_print as $tp){
             $counter++;
             echo $counter;
-            echo "\t".$tp['u_fname'];
+            echo "\t".$tp['u_full_name'];
             echo "\t".$tp['u_email'];
             echo "\r\n";
         }

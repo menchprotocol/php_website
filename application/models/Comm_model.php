@@ -975,7 +975,7 @@ class Comm_model extends CI_Model {
                     'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
                     'u_country_code'   => $locale[1],
-                    'u_fname'          => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
+                    'u_full_name'          => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
                     'u_cache__fp_id'   => $fp['fp_id'],
                     'u_cache__fp_psid' => $fp_psid,
                 ));
@@ -1058,7 +1058,7 @@ class Comm_model extends CI_Model {
 
                 //Create user
                 $u = $this->Db_model->u_create(array(
-                    'u_fname' 			=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
+                    'u_full_name' 			=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
                     'u_timezone' 		=> $fb_profile['timezone'],
                     'u_image_url' 		=> $fb_profile['profile_pic'],
                     'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
@@ -1213,7 +1213,7 @@ class Comm_model extends CI_Model {
                     'recipient' => array(
                         'id' => $dispatch_fp_psid,
                     ),
-                    'message' => echo_i($message, $u['u_fname'],true),
+                    'message' => echo_i($message, $u['u_full_name'],true),
                     'messaging_type' => 'NON_PROMOTIONAL_SUBSCRIPTION', //https://developers.facebook.com/docs/messenger-platform/send-messages#messaging_types
                     'notification_type' => $u['u_fb_notification'],
                 );
@@ -1266,7 +1266,7 @@ class Comm_model extends CI_Model {
                     $email_variables = array(
                         'u_email' => $u['u_email'],
                         'subject_line' => $subject_line,
-                        'html_message' => echo_i($message, $u['u_fname'],false),
+                        'html_message' => echo_i($message, $u['u_full_name'],false),
                         'b_support_email' => null, //Might get updated soon...
                     );
 
@@ -1298,7 +1298,7 @@ class Comm_model extends CI_Model {
 
                 } else {
                     //Append message to this user:
-                    $email_to_send[$u['u_id']]['html_message'] .= '<div style="padding-top:12px;">'.echo_i($message, $u['u_fname'],false).'</div>';
+                    $email_to_send[$u['u_id']]['html_message'] .= '<div style="padding-top:12px;">'.echo_i($message, $u['u_full_name'],false).'</div>';
                 }
 
             }
