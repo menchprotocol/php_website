@@ -3739,7 +3739,7 @@ class Api_v1 extends CI_Controller {
 
                 echo_json(array(
                     'status' => 1,
-                    'message' => '<span style="color:#222;"><i class="fas fa-trash-alt"></i> Deleted</span>',
+                    'message' => '<span style="color:#3C4858;"><i class="fas fa-trash-alt"></i> Deleted</span>',
                 ));
             }
         }

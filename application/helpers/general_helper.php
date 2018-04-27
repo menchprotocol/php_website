@@ -1241,7 +1241,7 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span>';
-    $b_ui .= '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin: 0 8px 0 2px; color:#222;"></i> ';
+    $b_ui .= '<i class="'.( $b['b_is_parent'] ? 'fas fa-folder-open' : 'fas fa-dot-circle' ).'" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
     $b_ui .= $b['c_outcome'];
 
     if($all_students>0){

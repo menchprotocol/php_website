@@ -532,7 +532,7 @@ function c_save_settings(){
                         if (modify_data['c_status'] < 0) {
 
                             //Yes! Remove from UI:
-                            $('.intent_line_' + modify_data['pid']).html('<span style="color:#222;"><i class="fas fa-trash-alt"></i> Deleted</span>');
+                            $('.intent_line_' + modify_data['pid']).html('<span style="color:#3C4858;"><i class="fas fa-trash-alt"></i> Deleted</span>');
 
                             //Disapper in a while:
                             setTimeout(function () {
@@ -608,7 +608,7 @@ function c_save_settings(){
                         //Has this been deleted?
                         if(modify_data['c_status']<0){
                             //Yes! Remove from UI:
-                            $('.intent_line_'+modify_data['pid']).html('<span style="color:#222;"><i class="fas fa-trash-alt"></i> Deleted</span>');
+                            $('.intent_line_'+modify_data['pid']).html('<span style="color:#3C4858;"><i class="fas fa-trash-alt"></i> Deleted</span>');
                             //Disapper in a while:
                             setTimeout(function() {
                                 //Hide the editor & saving results:

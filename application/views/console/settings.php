@@ -373,7 +373,7 @@ function b_save_settings(){
         <div class="help_body maxout" id="content_725"></div>
         <div class="form-group label-floating is-empty">
             <div class="input-group border" style="width:100%; max-width:380px;">
-                <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;">https://mench.com/</span>
+                <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">https://mench.com/</span>
                 <input type="text" id="b_url_key" style="margin:0 0 0 -3px !important; font-size:16px !important; padding-left:0;" value="<?= $b['b_url_key'] ?>" maxlength="30" class="form-control" />
             </div>
         </div>
