@@ -970,7 +970,7 @@ function echo_br($admin){
     $ui .= '</span> ';
 
     //Left content
-    //$ui .= '<i class="fa fas-sort" style="padding-right:3px;"></i> ';
+    //$ui .= '<i class="fa fas-bars" style="padding-right:3px;"></i> ';
     $ui .= (strlen($admin['u_image_url'])>4 ? '<img src="'.$admin['u_image_url'].'" class="profile-icon" />' : '<i class="fas fa-user-circle"></i> &nbsp;').$admin['u_full_name'].' &nbsp;';
 
 

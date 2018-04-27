@@ -120,7 +120,7 @@ a.badge-primary:hover {
 }
 
 #timeline_update ul { margin-left:-10px; }
-.fas-trash, .list_input .badge-primary {cursor:pointer;}
+.fa-trash, .list_input .badge-primary {cursor:pointer;}
 .dropdown-menu a { text-decoration:none !important; }
 .video-player {margin-top:10px;}
 .video-player video {border-radius:6px;}
@@ -247,7 +247,7 @@ a.badge-primary:hover {
     width: 55px;
     float:right;
 }
-.ix-top-right .fas-wifi{
+.ix-top-right .fa-wifi{
 	margin-right: 2px;
 }
 
@@ -303,7 +303,7 @@ a.badge-primary:hover {
 
 .tab-pane, .maxout {max-width:665px !important;}
 .list-group-item { padding: 10px 10px; }
-.fas-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; }
+.fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; }
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
 
 .title-main { display:block; line-height:100%; padding-bottom:5px; font-size:1em; font-weight:bold; }
@@ -454,7 +454,7 @@ h5, .h5 {
     text-decoration-style: dotted;
     cursor:help;
 }
-.fas-info-circle{
+.fa-info-circle{
 	text-decoration-line:none !important;
 }
 #console h1 { font-size:2.8em; margin-bottom:15px; margin-top:15px; line-height:100%; }
@@ -1013,8 +1013,8 @@ a.badge:focus, a.badge:hover {
 	color:#ABABAB;
 	text-decoration:none;
 }
-.fas-ellipsis-v {color:#bbb;}
-.fas-sort, .fas-bars  {
+.fa-ellipsis-v {color:#bbb;}
+.fa-bars  {
     color:#AAA;
 	cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
@@ -1023,7 +1023,7 @@ a.badge:focus, a.badge:hover {
     padding: 12px 10px;
     margin: -10px -7px -10px -10px;
 }
-.is_step_sortable .fas-bars{
+.is_step_sortable .fa-bars{
     margin: -10px -7px -10px -7px; /* TODO -margin: -10px -5px -10px -39px; But needs hover-only CSS logic */
 }
 .btn-adj {color:#bbb; margin:0 7px 0 0; z-index:9999999;}
@@ -1032,7 +1032,7 @@ a.badge:focus, a.badge:hover {
 .action-right a{color:#f57171;    margin-top: 15px;    display: inline-block;}
 .action-right span{color:#bbb;    margin-top: 15px;    display: inline-block;}
 
-.list-group-item .fas-circle {
+.list-group-item .fa-circle {
     font-size: 0.9em;
     margin-right: 5px;
 }
@@ -1536,7 +1536,7 @@ h4 .tip-badge{
     border-radius:3px;
 }
 
-.help_body .fas-times {
+.help_body .fa-times {
 	color: #3C4858;
 	font-size: 28px;
     padding-right: 2px;
