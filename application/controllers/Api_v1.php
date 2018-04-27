@@ -3455,9 +3455,9 @@ class Api_v1 extends CI_Controller {
             'i_url' => $new_file_url,
             'i_status' => $_POST['i_status'],
             'i_rank' => 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
-                    'i_status' => $_POST['i_status'],
-                    'i_outbound_c_id' => $_POST['pid'],
-                )),
+                'i_status' => $_POST['i_status'],
+                'i_outbound_c_id' => $_POST['pid'],
+            )),
         ));
 
         //Fetch full message:

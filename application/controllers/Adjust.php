@@ -29,6 +29,24 @@ class Adjust extends CI_Controller {
 
     }
 
+
+    function delete_users(){
+        $users = $this->Db_model->u_fetch(array(
+            'u_status <' => 0,
+        ));
+
+        $delete = array(
+            'error' => array(),
+            'success' => array(),
+        );
+        foreach($users as $u){
+            $del = $this->Db_model->u_delete($u['u_id']);
+            array_push($delete[( $del['status'] ? 'success' : 'error' )], $del);
+        }
+
+        echo_json($delete);
+    }
+
     function ru_b_id(){
 
         $admissions = $this->Db_model->ru_fetch(array(

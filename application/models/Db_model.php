@@ -349,18 +349,96 @@ WHERE ru.ru_status >= 4
 	    
 	    return $insert_columns;
 	}
+
+	function u_delete($u_id){
+
+        if(intval($u_id)<0){
+            return array(
+                'status' => 0,
+                'message' => 'Missing input $u_id',
+            );
+        }
+
+	    //Validate user exists:
+        $users = $this->Db_model->u_fetch(array(
+            'u_id' => $u_id,
+        ));
+
+        if(!(count($users)==1)){
+            return array(
+                'status' => 0,
+                'message' => 'User Not Found in DB',
+            );
+        } elseif($users[0]['u_status']==3){
+            return array(
+                'status' => 0,
+                'message' => 'Cannot delete Admin',
+                'user' => $users[0],
+            );
+        }
+
+        //Check transactions:
+        $transactions = $this->Db_model->t_fetch(array(
+            't_inbound_u_id' => $u_id,
+        ));
+        if(count($transactions)>0){
+            return array(
+                'status' => 0,
+                'message' => 'Cannot delete because user has transactions',
+                'user' => $users[0],
+            );
+        }
+
+        //Check admissions:
+        $admissions = $this->Db_model->ru_fetch(array(
+            'ru.ru_outbound_u_id' => $u_id,
+        ));
+        if(count($admissions)>0){
+            foreach($admissions as $admission){
+                if($admission['ru_status']==4){
+                    return array(
+                        'status' => 0,
+                        'message' => 'Cannot delete because they have active admission',
+                        'user' => $users[0],
+                    );
+                }
+            }
+        }
+
+        $delete_stats = array();
+
+        //Start removal process by deleting engagements:
+        $this->db->query("DELETE FROM v5_engagements WHERE e_inbound_u_id=".$u_id." OR e_outbound_u_id=".$u_id);
+        $delete_stats['v5_engagements'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_class_students WHERE ru_outbound_u_id=".$u_id);
+        $delete_stats['v5_class_students'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_bootcamp_team WHERE ba_outbound_u_id=".$u_id);
+        $delete_stats['v5_bootcamp_team'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_facebook_page_admins WHERE fs_inbound_u_id=".$u_id);
+        $delete_stats['v5_facebook_page_admins'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_facebook_page_admins WHERE fs_inbound_u_id=".$u_id);
+        $delete_stats['v5_facebook_page_admins'] = $this->db->affected_rows();
+
+        $this->db->query("DELETE FROM v5_entities WHERE u_id=".$u_id);
+        $delete_stats['v5_entities'] = $this->db->affected_rows();
+
+        return array(
+            'status' => 1,
+            'stats' => $delete_stats,
+            'user' => $users[0],
+        );
+
+    }
 	
 	function u_create($insert_columns){
-		
-		//Make sure required fields are here:
-		if(!isset($insert_columns['u_full_name'])){
-			$this->Db_model->e_create(array(
-			    'e_text_value' => 'u_create() missing u_full_name.',
-			    'e_json' => $insert_columns,
-			    'e_inbound_c_id' => 8, //Platform Error
-			));
-			return false;
-		}
+
+        if(missing_required_db_fields($insert_columns,array('u_full_name'))){
+            return false;
+        }
 
         if(!isset($insert_columns['u_timestamp'])){
             $insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
@@ -372,25 +450,12 @@ WHERE ru.ru_status >= 4
         //Fetch inserted id:
         $insert_columns['u_id'] = $this->db->insert_id();
 
-        if(!$insert_columns['u_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error u_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
+        //Fetch to return full data:
+        $users = $this->Db_model->u_fetch(array(
+            'u_id' => $insert_columns['u_id'],
+        ));
 
-            return false;
-
-        } else {
-
-            //Fetch to return:
-            $users = $this->Db_model->u_fetch(array(
-                'u_id' => $insert_columns['u_id'],
-            ));
-
-            return $users[0];
-        }
+        return $users[0];
 	}
 	
 	function u_update($user_id,$update_columns){
@@ -509,15 +574,33 @@ WHERE ru.ru_status >= 4
     }
 	
 	function i_create($insert_columns){
-		//Missing anything?
-		if(!isset($insert_columns['i_outbound_c_id'])){
-			return false;
-		} elseif(!isset($insert_columns['i_message'])){
-			return false;
-		}
+
+        //Need either entity or intent:
+        if(!isset($insert_columns['i_outbound_c_id']) && !isset($insert_columns['i_outbound_u_id'])){
+            $this->Db_model->e_create(array(
+                'e_text_value' => 'A new message requires either an Entity or Intent to be referenced to',
+                'e_json' => $insert_columns,
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+            return false;
+        }
+
+        //Other required fields:
+        if(missing_required_db_fields($insert_columns,array('i_message','i_inbound_u_id','i_media_type'))){
+            return false;
+        }
 
         if(!isset($insert_columns['i_timestamp'])){
             $insert_columns['i_timestamp'] = date("Y-m-d H:i:s");
+        }
+        if(!isset($insert_columns['i_status'])){
+            $insert_columns['i_status'] = 1;
+        }
+        if(!isset($insert_columns['i_rank'])){
+            $insert_columns['i_rank'] = 1;
+        }
+        if(!isset($insert_columns['i_url'])){
+            $insert_columns['i_url'] = null;
         }
 		
 		//Lets now add:
@@ -525,15 +608,6 @@ WHERE ru.ru_status >= 4
 		
 		//Fetch inserted id:
 		$insert_columns['i_id'] = $this->db->insert_id();
-
-        if(!$insert_columns['i_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error i_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
 		
 		return $insert_columns;
 	}
@@ -1062,16 +1136,23 @@ WHERE ru.ru_status >= 4
 	}
 	
 	function cr_create($insert_columns){
-		
-		//Missing anything?
-		if(!isset($insert_columns['cr_outbound_c_id'])){
-			return false;
-		} elseif(!isset($insert_columns['cr_inbound_u_id'])){
-			return false;
-		}
+
+        if(missing_required_db_fields($insert_columns,array('cr_outbound_c_id','cr_inbound_c_id','cr_inbound_u_id'))){
+            return false;
+        }
 
         if(!isset($insert_columns['cr_timestamp'])){
             $insert_columns['cr_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        if(!isset($insert_columns['cr_status'])){
+            $insert_columns['cr_status'] = 1;
+        }
+        if(!isset($insert_columns['cr_outbound_b_id'])){
+            $insert_columns['cr_outbound_b_id'] = 0;
+        }
+        if(!isset($insert_columns['cr_outbound_rank'])){
+            $insert_columns['cr_outbound_rank'] = 1;
         }
 		
 		//Lets now add:
@@ -1179,15 +1260,25 @@ WHERE ru.ru_status >= 4
 	}
 	
 	function c_create($insert_columns){
-	    
-	    if(!isset($insert_columns['c_outcome'])){
-	        return false;
-	    } elseif(!isset($insert_columns['c_inbound_u_id'])){
-	        return false;
-	    }
+
+        if(missing_required_db_fields($insert_columns,array('c_outcome','c_inbound_u_id'))){
+            return false;
+        }
 
         if(!isset($insert_columns['c_timestamp'])){
             $insert_columns['c_timestamp'] = date("Y-m-d H:i:s");
+        }
+        if(!isset($insert_columns['c_status'])){
+            $insert_columns['c_status'] = 1;
+        }
+        if(!isset($insert_columns['c_is_output'])){
+            $insert_columns['c_is_output'] = 0;
+        }
+        if(!isset($insert_columns['c_is_public'])){
+            $insert_columns['c_is_public'] = 0;
+        }
+        if(!isset($insert_columns['c_completion_rule'])){
+            $insert_columns['c_completion_rule'] = 1; //ALL
         }
 		
 		//Lets now add:
@@ -1195,15 +1286,6 @@ WHERE ru.ru_status >= 4
 		
 		//Fetch inserted id:
 		$insert_columns['c_id'] = ( isset($insert_columns['c_id']) ? $insert_columns['c_id'] : $this->db->insert_id() );
-
-        if(!$insert_columns['c_id']){
-            //Log this query Error
-            $this->Db_model->e_create(array(
-                'e_text_value' => 'Query Error c_create() : '.$this->db->_error_message(),
-                'e_json' => $insert_columns,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-        }
 		
 		return $insert_columns;
 	}
