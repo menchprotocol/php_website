@@ -124,7 +124,7 @@ $website = $this->config->item('website');
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_1" placeholder="Example: Get Hired as Junior Front-End Developer" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" data-placement="top" onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                    <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create(1);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div>ADD</div>
                     </span>
                 </span>
@@ -155,7 +155,7 @@ $website = $this->config->item('website');
                 <span class="input-group-addon addon-lean" style="color:#222; font-weight: 300;"><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
                 <div class="form-group is-empty"  style="margin: 0; padding: 0;"><form><input type="text" class="form-control"  maxlength="70" id="b_c_outcome_0" placeholder="Example: Build Todo list app with AngularJS" /></form></div>
                 <span class="input-group-addon" style="padding-right:8px;">
-                    <span data-toggle="tooltip" data-placement="top" onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
+                    <span data-toggle="tooltip" data-placement="top" title="Keyboard Shortcut [Ctr+Enter]"​ onclick="b_create(0);" class="badge badge-primary pull-right new-b" style="cursor:pointer; margin: 6px -5px 4px 8px;">
                         <div>ADD</div>
                     </span>
                 </span>

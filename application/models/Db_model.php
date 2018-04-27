@@ -602,7 +602,17 @@ WHERE ru.ru_status >= 4
         if(!isset($insert_columns['i_url'])){
             $insert_columns['i_url'] = null;
         }
-		
+
+        if(!isset($insert_columns['i_outbound_u_id'])){
+            //Describes an entity:
+            $insert_columns['i_outbound_u_id'] = 0;
+        }
+        if(!isset($insert_columns['i_outbound_c_id'])){
+            //Describes an entity:
+            $insert_columns['i_outbound_c_id'] = 0;
+        }
+
+
 		//Lets now add:
 		$this->db->insert('v5_messages', $insert_columns);
 		

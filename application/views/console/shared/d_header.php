@@ -69,7 +69,21 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fa fa-dot-circle-o" aria-hidden="true"></i> Bootcamps</a></li>
 
+
+                        <?php if($udata['u_id']==1){ ?>
+
+                            <?
+                            //7-Day Bootcamps
+                            //My Task`//Public Bootcamps
+                            //Public Tasks
+                            ?>
+
+
+                        <?php } ?>
+
+
                         <li <?= ( $uri_segment_1=='console' && $uri_segment_2=='account' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage profile, set your Paypal email for weekly payouts and see payment history"><a href="/console/account"><i class="fa fa-user-circle" aria-hidden="true"></i> Account</a></li>
+
 
                         <?php if($udata['u_status']==3){ ?>
 
@@ -134,6 +148,15 @@ $uri_segment_2 = $this->uri->segment(2);
                         echo '<li><a class="landing_page_url" href="/'.$b['b_url_key'].'" target="_blank"><i class="fa fa-bullhorn" aria-hidden="true"></i><p>Landing Page &nbsp;<i class="fa fa-external-link-square" aria-hidden="true"></i></p></a></li>';
 
                     }
+
+                } elseif($uri_segment_1=='entities'){
+
+
+
+                } elseif($uri_segment_1=='intents'){
+
+
+
                 } elseif($uri_segment_1=='cockpit'){
 
             	    //The the Cockpit Menu for the Mench team:
