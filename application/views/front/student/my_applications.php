@@ -104,6 +104,8 @@ if(count($admissions)>0 && is_array($admissions)){
 
                 } elseif(isset($bs[0]['this_class'])) {
                     echo time_format($bs[0]['this_class']['r_start_date'],2).' - '.trim(time_format($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
+                } else {
+                    echo 'Not Selected';
                 }
                 echo '</p>';
 
