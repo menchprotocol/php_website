@@ -5,7 +5,7 @@ function start_application(){
     //Show loader:
     $('#submit_button').addClass('hidden');
     $('#start_result').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
-    $(".form-el").prop('disabled', true).css('background-color','#EFEFEF');
+    $(".form-el").prop('disabled', true).css('background-color','#E5E5E5');
 
     //Send data for processing:
     $.post("/api_v1/ru_checkout_initiate", {

@@ -180,7 +180,7 @@ a.badge-primary:hover {
 }
 .checklist-done{
 	display:none;
-	background-color:#EFEFEF;
+	background-color:#E5E5E5;
 	text-decoration: line-through !important;
 }
 .checklist-done-see{
@@ -348,7 +348,7 @@ input { font-size:16px !important; }
 .underdot{ border-bottom: 1px dotted #BBB; cursor:help; }
 body { font-size:18px; }
 p a, td a { text-decoration:underline; }
-.mono { font-family:monospace; background-color:#EFEFEF; padding:10px; line-height:180%; border-radius:3px; }
+.mono { font-family:monospace; background-color:#E5E5E5; padding:10px; line-height:180%; border-radius:3px; }
 .panel-body img { max-width:100% !important; }
 .list-group-item .inline-level { color:#3C4858; font-size:0.9em; padding-right:5px; }
 .list-group-item .inline-level .status-label { color:#3C4858; font-weight:normal !important; }
@@ -546,7 +546,7 @@ h5, .h5 {
 .msg-nav li>.dropup { margin:-4px -8px 0 0 !important; padding:5px 8px; }
 .remove_loading .dropup>a { padding:5px 8px; }
 
-.msg-nav>li>a:hover { background-color:#EFEFEF; }
+.msg-nav>li>a:hover { background-color:#E5E5E5; }
 .add-msg { width:100%; }
 .msg-show { display:inline-block !important; }
 .msg-hide { display:none; }
@@ -1070,7 +1070,7 @@ a.badge:focus, a.badge:hover {
   cursor: pointer;
   padding: 5px 4px;
     color: #3C4858;
-  border-top: 1px solid #efefef;
+  border-top: 1px solid #E5E5E5;
     font-size:18px;
     font-weight: 500 !important;
     line-height: 110%;
@@ -1172,7 +1172,7 @@ a.badge:focus, a.badge:hover {
 }
 
 #funnel .list-group>li{
-	background-color:#efefef;
+	background-color:#E5E5E5;
 }
 
 #funnel h4 {
@@ -1309,7 +1309,7 @@ footer ul li a, footer ul li i {
 .fp_box{
     font-size: 15px;
     margin: 10px 0px;
-    background-color: #EFEFEF;
+    background-color: #E5E5E5;
     padding: 5px 10px;
     border-radius: 5px;
 }
@@ -1465,6 +1465,7 @@ a .badge {
     line-height: 120% !important;
     font-weight: 300 !important;
     font-size:0.9em;
+    border-radius:3px;
 }
 .dropdown-menu{ margin-top: -20px !important; }
 .dropdown-menu li > a { padding: 7px 10px; }
@@ -1490,7 +1491,7 @@ a .badge {
 }
 .i_content audio, .i_content video{ width:100%; }
 .disabled{
-	background-color: #EFEFEF !important;
+	background-color: #E5E5E5 !important;
     border-radius: 3px !important;
     cursor: default !important;
 }
@@ -1518,7 +1519,7 @@ a .badge {
 	font-size:1em;
 }
 .badge-inactive{
-	background-color: #EFEFEF;
+	background-color: #E5E5E5;
 }
 h4 .tip-badge{
     font-size: 18px;
