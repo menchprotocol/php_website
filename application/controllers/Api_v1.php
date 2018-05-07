@@ -61,7 +61,7 @@ class Api_v1 extends CI_Controller {
     }
 
     function ej_list($e_id){
-        $udata = auth(3,1);
+        $udata = auth(array(1281),1);
         //Fetch blob of engagement and display it on screen:
         $blobs = $this->Db_model->e_fetch(array(
             'ej_e_id' => $e_id,
@@ -126,7 +126,7 @@ class Api_v1 extends CI_Controller {
 
         }
 
-        $udata = auth(2,0,$_POST['b_id']);
+        $udata = auth(array(1308,1280),0,$_POST['b_id']);
         $bs = $this->Db_model->b_fetch(array(
             'b_id' => $_POST['b_id'],
         ));
@@ -205,7 +205,7 @@ class Api_v1 extends CI_Controller {
 
 	function fp_list(){
 
-        $udata = auth(2,0,$_POST['b_id']);
+        $udata = auth(array(1308,1280),0,$_POST['b_id']);
         if(!$udata){
 
             echo '<div class="alert alert-danger maxout" role="alert"><i class="fas fa-info-circle"></i> Session expired. Login to try again.</div>';
@@ -301,7 +301,7 @@ class Api_v1 extends CI_Controller {
                 if($page['fp_status']>=0){
                     $pages_list_ui .= '<span class="pull-right">';
 
-                    if($page['fp_status']==1 && $udata['u_status']==3){
+                    if($page['fp_status']==1 && $udata['u_inbound_u_id']==1281){
                         $pages_list_ui .= '<a id="simulate_'.$page['fp_id'].'" class="badge badge-primary btn-mls" href="javascript:fp_refresh('.$page['fp_id'].')" data-toggle="tooltip" title="Refresh the Mench integration on your Facebook Page to resolve any possible connection issues." data-placement="left"><i class="fas fa-sync"></i></a>';
                     }
 
@@ -377,7 +377,7 @@ class Api_v1 extends CI_Controller {
 
     function fp_refresh(){
 
-        $udata = auth(2,0,$_POST['b_id']);
+        $udata = auth(array(1308,1280),0,$_POST['b_id']);
         if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -519,7 +519,7 @@ class Api_v1 extends CI_Controller {
                         $instructors = $this->Db_model->ba_fetch(array(
                             'ba.ba_b_id' => $b7d['cr_outbound_b_id'],
                             'ba.ba_status' => 3,
-                            'u.u_status >=' => 1,
+                            'u.u_status' => 1,
                         ));
 
                         $instructor_has_off = true;
@@ -655,10 +655,10 @@ class Api_v1 extends CI_Controller {
 
                 //Create new user:
                 $udata = $this->Db_model->u_create(array(
-                    'u_status' 			=> 0, //Since nothing is yet validated
                     'u_language' 		=> 'en', //Since they answered initial questions in English
                     'u_email' 			=> trim(strtolower($_POST['u_email'])),
-                    'u_full_name' 			=> trim($_POST['u_full_name']),
+                    'u_full_name' 		=> trim($_POST['u_full_name']),
+                    'u_inbound_u_id'    => 1323, //Admission Initiated
                 ));
 
                 //Log Engagement for registration:
@@ -717,6 +717,16 @@ class Api_v1 extends CI_Controller {
 
                 }
 
+            } else {
+
+                //They have never signed up for this Bootcamp, it's all good!
+                //Change the entity bucket if needed:
+                if(in_array($udata['u_inbound_u_id'], array(1304,1282))){
+                    $this->Db_model->u_update( $udata['u_id'] , array(
+                        'u_inbound_u_id' => 1323, //Admission Initiated
+                    ));
+                }
+
             }
         }
 
@@ -727,6 +737,7 @@ class Api_v1 extends CI_Controller {
             'ru_outbound_u_id' 	=> $udata['u_id'],
             'ru_fp_id'          => ( $b['b_is_parent'] ? 0 : $b['b_fp_id'] ), //Current Page that the student should connect to
         ));
+
 
         if(isset($admissions[0]['ru_id']) && intval($admissions[0]['ru_id'])>0){
 
@@ -750,7 +761,6 @@ class Api_v1 extends CI_Controller {
                 'depth' => 0,
                 'e_b_id' => $b['b_id'],
             ), true);
-
 
             //Redirect to application:
             die(echo_json(array(
@@ -782,6 +792,7 @@ class Api_v1 extends CI_Controller {
 
         }
     }
+
 
     function ru_checkout_complete(){
 
@@ -928,6 +939,7 @@ class Api_v1 extends CI_Controller {
         echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $update_data['ru_final_price'] ? 'Redirecting to Paypal...​' : 'Successfully Joined 🙌​').'</div>';
 
     }
+
 
     function ru_withdraw(){
         //Validate inputs:
@@ -1104,7 +1116,7 @@ class Api_v1 extends CI_Controller {
             $b_instructors = $this->Db_model->ba_fetch(array(
                 'ba.ba_b_id' => intval($_POST['b_id']),
                 'ba.ba_status >=' => 2, //co-instructors & lead instructor
-                'u.u_status >=' => 1, //Must be a user level 1 or higher
+                'u.u_status' => 1,
             ));
 
             $student_name = ( isset($matching_admissions[0]['u_full_name']) && strlen($matching_admissions[0]['u_full_name'])>0 ? $matching_admissions[0]['u_full_name'] : 'System' );
@@ -1261,6 +1273,13 @@ class Api_v1 extends CI_Controller {
                 'ru_cache__current_task' => ($focus_class['r__total_tasks']+1), //Go 1 Task after the total Tasks to indicate completion
             ));
 
+            //Change their entity Group
+            if(in_array($matching_admissions[0]['u_inbound_u_id'],array(1304,1282,1323,1279))){
+                $this->Db_model->u_update( $matching_admissions[0]['u_id'] , array(
+                    'u_inbound_u_id' => 1307, //Graduate
+                ));
+            }
+
             //Send graduation message:
             $this->Comm_model->foundation_message(array(
                 'e_outbound_u_id' => intval($_POST['u_id']),
@@ -1303,377 +1322,6 @@ class Api_v1 extends CI_Controller {
     }
 
     /* ******************************
-	 * Users
-	 ****************************** */
-
-    function u_password_reset_initiate(){
-        //We need an email input:
-        if(!isset($_POST['email'])){
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Email.</div>');
-        } elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-            die('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid Email.</div>');
-        }
-
-        //Attempt to fetch this user:
-        $matching_users = $this->Db_model->u_fetch(array(
-            'u_email' => strtolower($_POST['email']),
-        ));
-        if(count($matching_users)>0){
-            //Dispatch the password reset Intent:
-            $this->Comm_model->foundation_message(array(
-                'e_inbound_u_id' => 0,
-                'e_outbound_u_id' => $matching_users[0]['u_id'],
-                'e_outbound_c_id' => 3030,
-                'depth' => 0,
-                'e_b_id' => 0,
-                'e_r_id' => 0,
-            ), true);
-        }
-
-        //Show message:
-        echo '<div class="alert alert-success">Password reset accepted. You will receive an email only if you have a registered Mench account.</div>';
-        echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
-
-    }
-
-    function u_password_reset_apply(){
-        //This function updates the user's new password as requested via a password reset:
-        if(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0 || !isset($_POST['timestamp']) || intval($_POST['timestamp'])<=0 || !isset($_POST['p_hash']) || strlen($_POST['p_hash'])<10){
-            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Missing Core Variables.</div>';
-        } elseif(!($_POST['p_hash']==md5($_POST['u_id'] . 'p@ssWordR3s3t' . $_POST['timestamp']))){
-            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: Invalid hash key.</div>';
-        } elseif(!isset($_POST['new_pass']) || strlen($_POST['new_pass'])<6){
-            echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Error: New password must be longer than 6 characters. Try again.</div>';
-        } else {
-            //All seems good, lets update their account:
-            $this->Db_model->u_update( intval($_POST['u_id']) , array(
-                'u_password' => md5($_POST['new_pass']),
-            ));
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => intval($_POST['u_id']),
-                'e_inbound_c_id' => 59, //Password reset
-            ));
-
-            //Log all sessions out:
-            $this->session->sess_destroy();
-
-            //Show message:
-            echo '<div class="alert alert-success">Passsword reset successful. You can <a href="/login"><u>login here</u></a>.</div>';
-            echo '<script> $(document).ready(function() { $(".pass_success").hide(); }); </script>';
-        }
-    }
-
-	function login(){
-
-	    //Setting for admin logins:
-	    $master_password = 'mench7788826962';
-        $website = $this->config->item('website');
-
-	    if(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid email to continue.</div>');
-	        return false;
-	    } elseif(!isset($_POST['u_password'])){
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Enter valid password to continue.</div>');
-	        return false;
-	    }
-
-	    //Fetch user data:
-	    $users = $this->Db_model->u_fetch(array(
-	        'u_email' => strtolower($_POST['u_email']),
-	    ));
-
-        //See if they have any active admissions:
-        $active_admission = null;
-
-	    if(count($users)==1){
-
-            $admissions = $this->Db_model->remix_admissions(array(
-                'ru_outbound_u_id' => $users[0]['u_id'],
-                'ru_status >=' => 4,
-            ));
-            //We'd need to see which admission to load now:
-            $active_admission = detect_active_admission($admissions);
-
-        }
-
-	    if(count($users)==0){
-
-	        //Not found!
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: '.$_POST['u_email'].' not found.</div>');
-	        return false;
-
-	    } elseif($users[0]['u_status']<0){
-
-	        //Inactive account
-	        $this->Db_model->e_create(array(
-	            'e_inbound_u_id' => $users[0]['u_id'],
-	            'e_text_value' => 'login() denied because account is not active.',
-	            'e_json' => $_POST,
-	            'e_inbound_c_id' => 9, //Support Needing Graceful Errors
-	        ));
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Your account has been de-activated. Contact us to re-active your account.</div>');
-	        return false;
-
-	    } elseif(!($_POST['u_password']==$master_password) && !($users[0]['u_password']==md5($_POST['u_password']))){
-
-	        //Bad password
-	        redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Incorrect password for '.$_POST['u_email'].'.</div>');
-	        return false;
-
-	    }
-
-        $co_instructors = array();
-        if($users[0]['u_status']==1){
-            //Regular user, see if they are assigned to any Bootcamp as co-instructor
-            $co_instructors = $this->Db_model->instructor_bs(array(
-                'ba.ba_outbound_u_id' => $users[0]['u_id'],
-                'ba.ba_status >=' => 1,
-                'b.b_status >=' => 2,
-            ));
-        }
-
-        $session_data = array();
-        $is_chrome = (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')!==false || strpos($_SERVER['HTTP_USER_AGENT'], 'CriOS')!==false);
-        $is_instructor = false;
-        $is_student = false;
-
-        //Are they a student?
-        if($active_admission){
-            //They have admin rights:
-            $session_data['uadmission'] = $active_admission;
-            $is_student = true;
-        }
-
-	    //Are they admin?
-	    if($users[0]['u_status']>=2){
-	        //They have admin rights:
-            $session_data['user'] = $users[0];
-            $is_instructor = true;
-        }
-
-
-        //Applicable for instructors only:
-        if(!$is_chrome){
-
-            if($is_student){
-
-                //Remove instructor privileges as they cannot use the Console with non-chrome Browser:
-                $is_instructor = false;
-                unset($session_data['user']);
-
-            } else {
-
-                redirect_message('/login','<div class="alert alert-danger" role="alert">Error: Login Denied. Mench Console v'.$website['version'].' support <a href="https://www.google.com/chrome/browser/" target="_blank"><u>Google Chrome</u></a> only.<br />Wanna know why? <a href="https://support.mench.com/hc/en-us/articles/115003469471"><u>Continue Reading</u> &raquo;</a></div>');
-                return false;
-
-            }
-
-        } elseif(!$is_instructor && !$is_student){
-
-            //We assume this is a student request:
-            redirect_message('/login','<div class="alert alert-danger" role="alert">Error: You have not been admitted to any Bootcamps yet. You can only login as a student after you have been approved by your instructor.</div>');
-            return false;
-
-        }
-
-
-        //Log engagement
-        if(!($_POST['u_password']==$master_password)){
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $users[0]['u_id'],
-                'e_json' => $users[0],
-                'e_inbound_c_id' => 10, //login
-            ));
-        }
-
-        //All good to go!
-        //Load session and redirect:
-        $this->session->set_userdata($session_data);
-
-        //Append user IP and agent information
-        if(isset($_POST['u_password'])){
-            unset($_POST['u_password']); //Sensitive information to be removed and NOT logged
-        }
-        $users[0]['login_ip'] = $_SERVER['REMOTE_ADDR'];
-        $users[0]['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $users[0]['input_post_data'] = $_POST;
-
-
-        if(isset($_POST['url']) && strlen($_POST['url'])>0){
-            header( 'Location: '.$_POST['url'] );
-        } else {
-            //Default:
-            if($is_instructor){
-                //Instructor default:
-                header( 'Location: /console' );
-            } else {
-                //Student default:
-                header( 'Location: /my/actionplan' );
-            }
-        }
-	}
-
-	function logout(){
-	    //Log engagement:
-	    $udata = $this->session->userdata('user');
-	    $this->Db_model->e_create(array(
-	        'e_inbound_u_id' => ( isset($udata['u_id']) && $udata['u_id']>0 ? $udata['u_id'] : 0 ),
-	        'e_json' => $udata,
-	        'e_inbound_c_id' => 11, //Admin Logout
-	    ));
-
-	    //Called via AJAX to destroy user session:
-	    $this->session->sess_destroy();
-	    header( 'Location: /' );
-	}
-
-	function u_update(){
-
-	    //Auth user and check required variables:
-	    $udata = auth(2);
-	    $countries_all = $this->config->item('countries_all');
-	    $timezones = $this->config->item('timezones');
-        $message_max = $this->config->item('message_max');
-
-	    if(!$udata){
-	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the page and try again.</span>');
-	    } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<=0){
-	        die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
-	    } elseif(!isset($_POST['u_full_name']) || strlen($_POST['u_full_name'])<=0){
-	        die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
-        } elseif(!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
-            die('<span style="color:#FF0000;">Error: Missing email. Try again.</span>');
-        } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
-            die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
-	    } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://')){
-	        die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
-	    } elseif(strlen($_POST['u_bio'])>$message_max){
-	        die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
-	    }
-
-	    if(!isset($_POST['u_language'])){
-	        $_POST['u_language'] = array();
-	    }
-
-	    //Fetch current data:
-	    $u_current = $this->Db_model->u_fetch(array(
-	        'u_id' => intval($_POST['u_id']),
-	    ));
-
-	    $u_update = array(
-	        'u_full_name' => trim($_POST['u_full_name']),
-	        'u_email' => trim(strtolower($_POST['u_email'])),
-	        'u_phone' => $_POST['u_phone'],
-	        'u_image_url' => $_POST['u_image_url'],
-	        'u_gender' => $_POST['u_gender'],
-	        'u_country_code' => $_POST['u_country_code'],
-	        'u_current_city' => $_POST['u_current_city'],
-	        'u_timezone' => $_POST['u_timezone'],
-	        'u_language' => join(',',$_POST['u_language']),
-	        'u_bio' => trim($_POST['u_bio']),
-            'u_skype_username' => trim($_POST['u_skype_username']),
-            'u_paypal_email' => ( isset($_POST['u_paypal_email']) ? trim(strtolower($_POST['u_paypal_email'])) : null ),
-	    );
-
-	    //Some more checks:
-	    if(!(count($u_current)==1)){
-	        die('<span style="color:#FF0000;">Error: Invalid user ID.</span>');
-	    } elseif(strlen($_POST['u_password_new'])>0 || strlen($_POST['u_password_current'])>0){
-	        //Password update attempt, lets check:
-	        if(strlen($_POST['u_password_new'])<=0){
-	            die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
-	        } elseif(strlen($_POST['u_password_current'])<=0){
-	            die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
-	        } elseif(!(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
-	            die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
-	        } elseif($_POST['u_password_new']==$_POST['u_password_current']){
-	            die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
-	        } elseif(strlen($_POST['u_password_new'])<6){
-	            die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
-	        } else {
-	            //Set password for updating:
-	            $u_update['u_password'] = md5($_POST['u_password_new']);
-	            //Reset both fields:
-	            echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
-	        }
-	    }
-	    $warning = NULL;
-
-	    //Check social links:
-	    if($_POST['u_website_url']!==$u_current[0]['u_website_url']){
-	        if(strlen($_POST['u_website_url'])>0){
-	            //Validate it:
-	            if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
-	                $u_update['u_website_url'] = $_POST['u_website_url'];
-	                echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
-	            } else {
-	                $warning .= 'Invalid website URL. ';
-	            }
-	        } else {
-	            $u_update['u_website_url'] = '';
-	        }
-	    }
-
-
-	    //Did they just agree to the agreement?
-	    if(isset($_POST['u_newly_checked']) && intval($_POST['u_newly_checked']) && strlen($u_current[0]['u_terms_agreement_time'])<1){
-	        //Yes they did, save the timestamp:
-	        $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
-	    }
-
-
-	    $u_social_account = $this->config->item('u_social_account');
-	    foreach($u_social_account as $sa_key=>$sa_value){
-	        if($_POST[$sa_key]!==$u_current[0][$sa_key]){
-	            if(strlen($_POST[$sa_key])>0){
-	                //User has attempted to update it, lets validate it:
-	                //$full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
-	                $u_update[$sa_key] = trim($_POST[$sa_key]);
-	            } else {
-	                $u_update[$sa_key] = '';
-	            }
-	        }
-	    }
-
-	    //Now update the DB:
-	    $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
-
-
-	    //Refetch some DB (to keep consistency with login session format) & update the Session:
-        $users = $this->Db_model->u_fetch(array(
-            'u_id' => intval($_POST['u_id']),
-        ));
-        if(isset($users[0])){
-            $this->session->set_userdata(array('user' => $users[0]));
-        }
-
-
-	    //Remove sensitive data before logging:
-	    unset($_POST['u_password_new']);
-	    unset($_POST['u_password_current']);
-
-	    //Log engagement:
-	    $this->Db_model->e_create(array(
-	        'e_inbound_u_id' => $udata['u_id'], //The user that updated the account
-	        'e_text_value' => readable_updates($u_current[0],$u_update,'u_'),
-	        'e_json' => array(
-	            'input' => $_POST,
-	            'before' => $u_current[0],
-	            'after' => $u_update,
-	        ),
-	        'e_inbound_c_id' => 12, //Account Update
-	        'e_outbound_u_id' => intval($_POST['u_id']), //The user that their account was updated
-	    ));
-
-	    //TODO update algolia
-
-	    //Show result:
-	    echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
-	}
-
-    /* ******************************
      * r Classes
      ****************************** */
 
@@ -1692,7 +1340,7 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Invalid Class ID.</span>');
         }
 
-        $udata = auth(2,0,$classes[0]['r_b_id']);
+        $udata = auth(array(1308,1280),0,$classes[0]['r_b_id']);
         if(!$udata){
             die('<span style="color:#FF0000;">Error: Session Expired.</span>');
         }
@@ -1761,7 +1409,7 @@ class Api_v1 extends CI_Controller {
     }
 
     function r_sync_c(){
-        $udata = auth(2,0,$_POST['b_id']);
+        $udata = auth(array(1308,1280),0,$_POST['b_id']);
         if(!$udata){
             echo '<span style="color:#FF0000;">Error: Session Expired.</span>';
         } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
@@ -1782,7 +1430,7 @@ class Api_v1 extends CI_Controller {
 
 	function r_update_status(){
 
-        $udata = auth(2, 0);
+        $udata = auth(array(1308,1280), 0);
         $_POST['rs_new_status'] = intval($_POST['rs_new_status']);
 
         if(!$udata){
@@ -1925,7 +1573,7 @@ class Api_v1 extends CI_Controller {
 
 	function b_create(){
 
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -2120,7 +1768,7 @@ class Api_v1 extends CI_Controller {
 
     function b_save_list(){
         //Auth user and Load object:
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
         if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -2165,7 +1813,7 @@ class Api_v1 extends CI_Controller {
     function b_save_settings(){
 
         //Auth user and check required variables:
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
 
         //Validate Bootcamp ID:
         if(isset($_POST['b_id'])){
@@ -2381,7 +2029,7 @@ class Api_v1 extends CI_Controller {
 
 	function c_new(){
 
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    if(!$udata){
 	        die('<span style="color:#FF0000;">Error: Invalid Session. Refresh the Page to Continue.</span>');
 	    } elseif(!isset($_POST['b_id']) || intval($_POST['b_id'])<=0){
@@ -2470,7 +2118,7 @@ class Api_v1 extends CI_Controller {
 
 	function delete_b_link(){
 
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
 
         if(!$udata){
             echo_json(array(
@@ -2563,7 +2211,7 @@ class Api_v1 extends CI_Controller {
 
 	function link_b(){
 
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 
 	    if(!$udata){
 
@@ -2692,7 +2340,7 @@ class Api_v1 extends CI_Controller {
 	function c_move_c(){
 
         //Auth user and Load object:
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
         if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -2775,7 +2423,7 @@ class Api_v1 extends CI_Controller {
     function c_save_settings(){
 
         //Auth user and check required variables:
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
 
         //Validate Bootcamp ID:
         $bs = $this->Db_model->b_fetch(array(
@@ -2926,7 +2574,7 @@ class Api_v1 extends CI_Controller {
 
     function c_sort(){
 	    //Auth user and Load object:
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -3022,7 +2670,7 @@ class Api_v1 extends CI_Controller {
             exit;
         }
 
-        $udata = auth(2,0,$_POST['import_from_b_id']);
+        $udata = auth(array(1308,1280),0,$_POST['import_from_b_id']);
         if(!$udata){
             echo_json(array(
                 'status' => 0,
@@ -3121,8 +2769,8 @@ class Api_v1 extends CI_Controller {
             exit;
         }
 
-        $udata = auth(2,0,$_POST['import_from_b_id']);
-        $udata2 = auth(2,0,$_POST['import_to_b_id']);
+        $udata = auth(array(1308,1280),0,$_POST['import_from_b_id']);
+        $udata2 = auth(array(1308,1280),0,$_POST['import_to_b_id']);
         if(!$udata || !$udata2){
             echo_json(array(
                 'status' => 0,
@@ -3229,7 +2877,7 @@ class Api_v1 extends CI_Controller {
     }
 
     function c_tip(){
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
         //Used to load all the help messages within the Console:
         if(!$udata || !isset($_POST['intent_id']) || intval($_POST['intent_id'])<1){
             echo_json(array(
@@ -3273,7 +2921,7 @@ class Api_v1 extends CI_Controller {
 	 ****************************** */
 
     function i_load_frame(){
-        $udata = auth(1);
+        $udata = auth();
         if(!$udata){
             //Display error:
             die('<span style="color:#FF0000;">Error: Invalid Session. Login again to continue.</span>');
@@ -3285,14 +2933,14 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: invalid level ID.</span>');
         } else {
             //Load the phone:
-            $this->load->view('console/frames/messages' , $_POST);
+            $this->load->view('console/b/frame_messages' , $_POST);
         }
     }
 
     function i_test(){
 
         //Auth user and check required variables:
-        $udata = auth(2);
+        $udata = auth(array(1308,1280));
 
         if(!$udata){
 
@@ -3343,7 +2991,7 @@ class Api_v1 extends CI_Controller {
 
     function i_attach(){
 
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    $file_limit_mb = $this->config->item('file_limit_mb');
 	    if(!$udata){
 	        echo_json(array(
@@ -3484,7 +3132,7 @@ class Api_v1 extends CI_Controller {
 
 	function i_create(){
 
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    if(!$udata){
 	        echo_json(array(
 	            'status' => 0,
@@ -3586,7 +3234,7 @@ class Api_v1 extends CI_Controller {
 	function i_modify(){
 
 	    //Auth user and Load object:
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    if(!$udata){
 	        echo_json(array(
 	            'status' => 0,
@@ -3680,7 +3328,7 @@ class Api_v1 extends CI_Controller {
                     'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
                     'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
                     'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
-                    'new_uploader' => echo_uploader($new_messages[0]), //If there is a person change...
+                    'new_uploader' => echo_owner($new_messages[0]), //If there is a person change...
                 ));
             }
 	    }
@@ -3688,7 +3336,7 @@ class Api_v1 extends CI_Controller {
 
 	function i_delete(){
 	    //Auth user and Load object:
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 
 	    if(!$udata){
             echo_json(array(
@@ -3747,7 +3395,7 @@ class Api_v1 extends CI_Controller {
 
 	function i_sort(){
 	    //Auth user and Load object:
-	    $udata = auth(2);
+	    $udata = auth(array(1308,1280));
 	    if(!$udata){
             echo_json(array(
                 'status' => 0,

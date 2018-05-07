@@ -81,7 +81,10 @@ a.badge-primary:hover {
 #task_view { text-align:left; }
 #task_view .fas { font-size:18px; cursor: pointer;}
 #b_objective {font-family: "Roboto Slab", "Times New Roman", serif;}
+#u_title {font-size: 1.3em;font-family: "Roboto Slab", "Times New Roman", serif;}
+.obj-id{ color:#3C4858; font-size:1.0em;}
 #b_objective .fas {padding-right:3px;}
+.stnd-btn {text-align:right; min-width:66px !important;}
 
 .breadcrumb a { font-weight:bold; }
 .scheduler-iframe {
@@ -195,7 +198,7 @@ a.badge-primary:hover {
     border-bottom-right-radius: 3px;
 }
 
-#list-outbound>.is_sortable, #temp2{
+#list-outbound>.is_sortable, #temp2, #list-entities > .list-group-item{
     margin-bottom: 0px;
     border: 0;
     border-bottom:1px solid #CCC;
@@ -301,7 +304,7 @@ a.badge-primary:hover {
 
 
 
-.tab-pane, .maxout {max-width:665px !important;}
+.tab-pane, .maxout, .alert {max-width:665px !important;}
 .list-group-item { padding: 10px 10px; }
 .fa-chain-broken { color:#c32626; margin-right:5px; font-size:0.8em; }
 .extra-info { font-size:0.9em; color:#AAA; padding-bottom:15px; }
@@ -1706,11 +1709,21 @@ margin:5px 0;
 .textarea_buttons:hover{
     color:#777 !important;
 }
+.entity-head-icon{
+    font-size:1.0em;
+    margin-left:5px;
+}
 .dropdown-toggle.btn{ padding:12px 5px; }
 .profile-icon {
     width: 20px;
     height: 20px;
     margin: -2px 5px 0 0;
+    border-radius: 50%;
+}
+.profile-icon2 {
+    width: 26px;
+    height: 26px;
+    margin: -8px 5px 0 0;
     border-radius: 50%;
 }
 .message_status{

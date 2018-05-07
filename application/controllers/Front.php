@@ -21,18 +21,18 @@ class Front extends CI_Controller {
 	function index($c_id=0){
 		//Load home page:
         $data = array(
-            'title' => 'Land a Tech Job. Guaranteed.',
+            'title' => 'Land a Dream Coding Job',
             'c_id' => $c_id,
         );
 		$this->load->view('front/shared/f_header' , $data);
-		$this->load->view('front/bootcamp/marketplace', $data);
+		$this->load->view('front/b/marketplace', $data);
 		$this->load->view('front/shared/f_footer');
 	}
 	
 	function login(){
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
-	    if(isset($udata['u_id']) && $udata['u_status']>=2){
+	    if(isset($udata['u_inbound_u_id']) && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
 	        //Lead instructor and above, go to console:
 	        redirect_message('/console');
 	    }
@@ -59,13 +59,14 @@ class Front extends CI_Controller {
 		$this->load->view('front/contact');
 		$this->load->view('front/shared/f_footer');
 	}
-	
-	function ses(){
-		//For admins
-		//echo exec('whoami');
-		//print_r($this->session->all_userdata());
-		echo phpinfo();
-	}
+
+    function ses(){
+        echo_json($this->session->all_userdata());
+    }
+
+    function info(){
+        echo phpinfo();
+    }
 	
 	
 	/* ******************************
@@ -131,7 +132,7 @@ class Front extends CI_Controller {
 	        'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
             'canonical' => 'https://mench.com/'.$bs[0]['b_url_key'], //Would set this in the <head> for SEO purposes
 	    ));
-	    $this->load->view('front/bootcamp/landing_page' , array(
+	    $this->load->view('front/b/landing_page' , array(
 	        'b' => $bs[0],
 	    ));
 	    $this->load->view('front/shared/f_footer');

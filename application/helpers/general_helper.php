@@ -41,6 +41,90 @@ function missing_required_db_fields($insert_columns,$field_array){
     return false; //Not missing anything
 }
 
+
+function fetch_entity_tree($inbound_u_id,$is_edit=false){
+
+    $inbound_u_id = intval($inbound_u_id);
+    $view_data = array(
+        'inbound_u_id' => $inbound_u_id,
+    );
+
+    //Fetch parent name:
+    if($inbound_u_id){
+
+        $CI =& get_instance();
+        $parent_id = $inbound_u_id; //Start our recursive loop here
+        $this_entity = null; //Will be set during the loop below
+        $breadcrumb = array(); //Populate as we go along
+
+        while($parent_id){
+
+            //Fetch parent details:
+            $parent_entities = $CI->Db_model->u_fetch(array(
+                'u_id' => $parent_id,
+            ), array('count_child'));
+
+            if(count($parent_entities)<1){
+                redirect_message('/entities','<div class="alert alert-danger" role="alert">Invalid Entity ID</div>');
+                break;
+            } elseif(!$this_entity){
+                $this_entity = $parent_entities[0];
+
+                //Push this item to breadcrumb:
+                if($is_edit){
+                    array_push( $breadcrumb , array(
+                        'link' => null,
+                        'anchor' => '<i class="fas fa-cog"></i> Modify',
+                    ));
+                    array_push( $breadcrumb , array(
+                        'link' => '/entities/'.$parent_entities[0]['u_id'],
+                        'anchor' => $parent_entities[0]['u_full_name'],
+                    ));
+                } else {
+                    array_push( $breadcrumb , array(
+                        'link' => null,
+                        'anchor' => $parent_entities[0]['u_full_name'],
+                    ));
+                }
+
+            } else {
+                //Push this item to breadcrumb:
+                array_push( $breadcrumb , array(
+                    'link' => '/entities'.( $parent_id ? '/'.$parent_id : '' ),
+                    'anchor' => $parent_entities[0]['u_full_name'],
+                ));
+            }
+
+            //Set new parent ID:
+            $parent_id = intval($parent_entities[0]['u_inbound_u_id']);
+        }
+
+        //Add core entity item and reverse:
+        array_push( $breadcrumb , array(
+            'link' => '/entities',
+            'anchor' => 'Entities',
+        ));
+
+        $view_data['title'] = ( $is_edit ? 'Modify ' : '' ).$this_entity['u_full_name'];
+        $view_data['breadcrumb'] = array_reverse($breadcrumb);
+        $view_data['entity'] = $this_entity;
+
+    } else {
+
+        $view_data['entity'] = null;
+        $view_data['title'] = 'Entities';
+        $view_data['breadcrumb'] = array(
+            array(
+                'link' => null,
+                'anchor' => $view_data['title'] . ' <span id="hb_6776" class="help_button" intent-id="6776"></span>',
+            ),
+        );
+
+    }
+
+    return $view_data;
+}
+
 function calculate_total($admission){
     //TODO Implement Coupons here
     return doubleval( $admission['ru_p1_price'] + $admission['ru_p2_price'] + ($admission['ru_p3_price']*50));
@@ -544,8 +628,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     if(!$fb_format){
         //HTML format:
         $div_style = ' style="padding:0; margin:0; font-family: Lato, Helvetica, sans-serif; font-size:16px;"'; //We do this for email templates that do not support CSS and also for internal website...
-        $echo_ui = '';
-        $echo_ui .= '<div class="i_content">';
+        $ui = '';
+        $ui .= '<div class="i_content">';
     } else {
         //This is what will be returned to be sent via messenger:
         $fb_message = array();
@@ -708,7 +792,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 //HTML format replaces the button with the command:
                 $i['i_message'] = trim(str_replace($command, '<div class="msg" style="padding-top:15px;"><a href="'.$button_url.'" target="_blank"><b>'.$button_title.'</b></a></div>', $i['i_message']));
                 //Return HTML code:
-                $echo_ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
+                $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
             }
 
         } else {
@@ -723,7 +807,7 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
                 );
             } else {
                 //HTML format:
-                $echo_ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
+                $ui .= '<div class="msg" '.$div_style.'>'.nl2br($i['i_message']).'</div>';
             }
 
         }
@@ -772,12 +856,12 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
         } else {
 
             //HTML media format:
-            $echo_ui .= '<div '.$div_style.'>'.format_e_text_value('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
+            $ui .= '<div '.$div_style.'>'.format_e_text_value('/attach '.$i['i_media_type'].':'.$i['i_url']).'</div>';
 
             //Facebook Messenger Webview adds an additional button to view full screen:
             if(isset($i['show_new_window']) && $i['i_media_type']=='video'){
                 //HTML media format:
-                $echo_ui .= '<div><a href="https://mench.com/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
+                $ui .= '<div><a href="https://mench.com/webview_video/'.$i['i_id'].'" target="_blank">Full Screen in New Window ↗️</a></div>';
             }
 
         }
@@ -798,8 +882,8 @@ function echo_i($i,$u_full_name=null,$fb_format=false){
     } elseif(!$fb_format) {
 
         //This must be HTML if we're still here, return:
-        $echo_ui .= '</div>';
-        return $echo_ui;
+        $ui .= '</div>';
+        return $ui;
 
     } else {
 
@@ -825,60 +909,72 @@ function extract_urls($text,$inverse=false){
     return $return;
 }
 
-function echo_uploader($i){
+function echo_owner($i){
     return '<img src="'.$i['u_image_url'].'" data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right" />';
 }
 
 function echo_message($i,$level=0,$editing_enabled=true){
 
-    $echo_ui = '';
-    $echo_ui .= '<div class="list-group-item is-msg is_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
-    $echo_ui .= '<input type="hidden" class="i_media_type" value="'.$i['i_media_type'].'" />';
-    $echo_ui .= '<div style="overflow:visible !important;">';
+    $ui = '';
+    $ui .= '<div class="list-group-item is-msg is_sortable all_msg msg_'.$i['i_status'].'" id="ul-nav-'.$i['i_id'].'" iid="'.$i['i_id'].'">';
+    $ui .= '<input type="hidden" class="i_media_type" value="'.$i['i_media_type'].'" />';
+    $ui .= '<div style="overflow:visible !important;">';
 	
 	    //Type & Delivery Method:    
-	    $echo_ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" id="msg_body_'.$i['i_id'].'" style="margin:5px 0 0 0;">';
-	    $echo_ui .= echo_i($i);
-    	$echo_ui .= '</div>';
+	    $ui .= '<div class="'.($i['i_media_type']=='text'?'edit-off text_message':'').'" id="msg_body_'.$i['i_id'].'" style="margin:5px 0 0 0;">';
+	    $ui .= echo_i($i);
+    	$ui .= '</div>';
 
     	
     	if($i['i_media_type']=='text'){
     	    //Text editing:
-    	    $echo_ui .= '<textarea onkeyup="changeMessageEditing('.$i['i_id'].')" name="i_message" id="message_body_'.$i['i_id'].'" class="edit-on hidden msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
+    	    $ui .= '<textarea onkeyup="changeMessageEditing('.$i['i_id'].')" name="i_message" id="message_body_'.$i['i_id'].'" class="edit-on hidden msg msgin" placeholder="Write Message..." style="margin-top: 4px;">'.$i['i_message'].'</textarea>';
     	}
     	
         //Editing menu:
-        $echo_ui .= '<ul class="msg-nav">';
-        //$echo_ui .= '<li class="edit-off"><i class="fas fa-clock"></i> 4s Ago</li>';
-        $echo_ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
+        $ui .= '<ul class="msg-nav">';
+        //$ui .= '<li class="edit-off"><i class="fal fa-clock"></i> 4s Ago</li>';
+        $ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.status_bible('i',$i['i_status'],1,'right').'</li>';
         if($i['i_media_type']=='text'){
             $CI =& get_instance();
             $message_max = $CI->config->item('message_max');
-            $echo_ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
+            $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
         }
-        $echo_ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_uploader($i).'</span></li>';
+        $ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_owner($i).'</span></li>';
 
         if($editing_enabled){
-            $echo_ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
-            $echo_ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
+            $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
+            $ui .= '<li class="edit-off" style="margin-right: 10px; margin-left: 6px;"><span class="on-hover"><a href="javascript:i_delete('.$i['i_id'].');"><i class="fas fa-trash-alt" style="margin:0 7px 0 5px;"></i></a></span></li>';
             if($i['i_media_type']=='text' || $level<=2){
-                $echo_ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pen-square"></i></a></span></li>';
+                $ui .= '<li class="edit-off" style="margin-left:-4px;"><span class="on-hover"><a href="javascript:msg_start_edit('.$i['i_id'].','.$i['i_status'].');"><i class="fas fa-pen-square"></i></a></span></li>';
             }
             //Right side reverse:
-            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fas fa-times" style="color:#3C4858"></i></a></li>';
-            $echo_ui .= '<li class="pull-right edit-on hidden">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level>1?array(-1):array(-1,2)),'dropup',$level,1).'</li>';
-            $echo_ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
+            $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-primary" href="javascript:message_save_updates('.$i['i_id'].','.$i['i_status'].');" style="text-decoration:none; font-weight:bold; padding: 1px 8px 4px;"><i class="fas fa-check"></i></a></li>';
+            $ui .= '<li class="pull-right edit-on hidden"><a class="btn btn-hidden" href="javascript:msg_cancel_edit('.$i['i_id'].');"><i class="fas fa-times" style="color:#3C4858"></i></a></li>';
+            $ui .= '<li class="pull-right edit-on hidden">'.echo_status_dropdown('i','i_status_'.$i['i_id'],$i['i_status'],($level>1?array(-1):array(-1,2)),'dropup',$level,1).'</li>';
+            $ui .= '<li class="pull-right edit-updates"></li>'; //Show potential errors
         }
-        $echo_ui .= '</ul>';
+        $ui .= '</ul>';
 	    
-    $echo_ui .= '</div>';
-    $echo_ui .= '</div>';
+    $ui .= '</div>';
+    $ui .= '</div>';
     
-    return $echo_ui;
+    return $ui;
 }
 
-
+function format_big_num($number){
+    if($number>=10000000){
+        return '<span title="'.$number.'">'.round(($number/1000000),0).'m</span>';
+    } elseif($number>=1000000){
+        return '<span title="'.$number.'">'.round(($number/1000000), 1).'m</span>';
+    } elseif($number>=10000){
+        return '<span title="'.$number.'">'.round(($number/1000), 0).'k</span>';
+    } elseif($number>=1000){
+        return '<span title="'.$number.'">'.round(($number/1000),1).'k</span>';
+    } else {
+        return $number;
+    }
+}
 
 
 function format_hours($decimal_hours,$micro=false){
@@ -919,12 +1015,12 @@ function echo_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,$level=0,$
         if($c_id){
 
             $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.format_hours( $c_time_estimate,true).'</span>';
-            $ui .= ' <i class="fas fa-clock"></i>';
+            $ui .= ' <i class="fal fa-clock"></i>';
 
         } else {
 
             if($show_icon){
-                $ui .= '<i class="fas fa-clock"></i>';
+                $ui .= '<i class="fal fa-clock"></i>';
             }
             if($c_time_estimate<1){
                 //Minutes:
@@ -1023,6 +1119,13 @@ function copy_messages($u_id,$c__messages,$c_id){
 
 }
 
+function echo_score($score){
+    if(!$score){
+        return false;
+    }
+    return '<span class="title-sub" style="text-transform:none;" data-toggle="tooltip" data-placement="top" title="Calculated based on total engagement quantity/quality"><span class="slim-time">'.format_big_num($score).'</span> <i class="fas fa-badge"></i></span>';
+}
+
 function aggregate_field($input_array,$field){
     $return_array = array();
     foreach($input_array as $item){
@@ -1086,7 +1189,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     $default_time = ( $b['b_is_parent'] ? 0 : 0.05 );
     $intent['c__estimated_hours'] = ( isset($intent['c__estimated_hours']) ? $intent['c__estimated_hours'] : $intent['c_time_estimate'] );
     $intent['c__estimated_hours'] = ( $level>1 && $intent['c__estimated_hours']==0 ? $default_time : $intent['c__estimated_hours'] );
-    $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || !isset($b['b_old_format']) || ($udata['u_status']==3 && $b['b_old_format']));
+    $child_enabled = ((isset($intent['c__child_intents']) && count($intent['c__child_intents'])>0) || !isset($b['b_old_format']) || ($udata['u_inbound_u_id']==1281 && $b['b_old_format']));
 
     if(!$editing_enabled && $intent['c_status']<1){
         //Do not show drafting items in read-only mode:
@@ -1132,7 +1235,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         } elseif(!$b['b_is_parent'] || $level==1) {
 
             if($editing_enabled){
-                if(!$b['b_old_format'] || $udata['u_status']==3){
+                if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){
                     $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
                 }
 
@@ -1362,7 +1465,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <i class="fas fa-clock"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. (Average '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest <i class="fal fa-clock"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. (Average '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day)');
     }
     return $pre_req_array;
 }
@@ -1387,7 +1490,7 @@ function b_progress($b){
         //Facebook Page
         $estimated_minutes = 15;
         $progress_possible += $estimated_minutes;
-        $e_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_status']==3) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $e_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_inbound_u_id']==1281) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => '/console/'.$b['b_id'].'/settings#pages',
@@ -1572,7 +1675,7 @@ function b_progress($b){
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#communication' : null ),
-            'anchor' => '<b>Set Fluent Languages</b> in '.$account_anchor,
+            'anchor' => '<b>Set Languages</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
@@ -1624,16 +1727,18 @@ function b_progress($b){
 
 
         //u_terms_agreement_time
-        $estimated_minutes = 45;
-        $progress_possible += $estimated_minutes;
-        $e_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => ( $account_href ? $account_href.'#finance' : null ),
-            'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
-            'e_status' => $e_status,
-            'time_min' => $estimated_minutes,
-        ));
+        if(in_array($bl['u_inbound_u_id'],array(1308,1280,1281))){
+            $estimated_minutes = 45;
+            $progress_possible += $estimated_minutes;
+            $e_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+            $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+            array_push( $checklist , array(
+                'href' => ( $account_href ? $account_href.'#finance' : null ),
+                'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
+                'e_status' => $e_status,
+                'time_min' => $estimated_minutes,
+            ));
+        }
     }
 
 
@@ -1920,7 +2025,7 @@ function echo_status_dropdown($object,$input_name,$current_status_id,$exclude_id
 
     $count = 0;
     foreach($statuses as $intval=>$status){
-        if(isset($status['u_min_status']) && ($udata['u_status']<$status['u_min_status'] || in_array($intval,$exclude_ids))){
+        if((isset($status['limit_u_inbounds']) && !in_array($udata['u_inbound_u_id'], $status['limit_u_inbounds'])) || in_array($intval,$exclude_ids)){
             //Do not enable this user to modify to this status:
             continue;
         }
@@ -2024,20 +2129,20 @@ function filter($array,$ikey,$ivalue){
 }
 
 
-function auth($min_level,$force_redirect=0,$b_id=0){
+function auth($entity_groups=null,$force_redirect=0,$b_id=0){
 	
 	$CI =& get_instance();
 	$udata = $CI->session->userdata('user');
 	
 	//Let's start checking various ways we can give user access:
-	if(!$min_level && !$b_id){
+	if(!$entity_groups && !$b_id && is_array($udata) && count($udata)>0){
 	    
-	    //No minimum level required, grant access:
+	    //No minimum level required, grant access IF logged in:
 	    return $udata;
 	    
-	} elseif(isset($udata['u_id']) && $udata['u_status']>=3){
+	} elseif(isset($udata['u_inbound_u_id']) && $udata['u_inbound_u_id']==1281){
 	    
-	    //Always grant access to Super Admins:
+	    //Always grant access to Admins:
 	    return $udata;
 	    
 	} elseif(isset($udata['u_id']) && $b_id){
@@ -2045,8 +2150,8 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    //Fetch Bootcamp admins and see if they have access to this:
 	    $b_instructors = $CI->Db_model->ba_fetch(array(
 	        'ba.ba_b_id' => $b_id,
-	        'ba.ba_status >=' => 1, //Must be an actively assigned instructor
-	        'u.u_status >=' => 1, //Must be a user level 1 or higher
+	        'ba.ba_status >=' => 1, //Actively assigned team member
+	        'u.u_status' => 1, //Active entity
 	        'u.u_id' => $udata['u_id'],
 	    ));
 	    
@@ -2057,7 +2162,7 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	        return $udata;
 	    }
 	    
-	} elseif(isset($udata['u_id']) && intval($udata['u_status'])>=intval($min_level)){
+	} elseif(isset($udata['u_id']) && in_array($udata['u_inbound_u_id'],$entity_groups)){
 	    
 		//They meet the minimum level requirement:
 	    return $udata;
@@ -2070,7 +2175,7 @@ function auth($min_level,$force_redirect=0,$b_id=0){
 	    return false;
 	} else {
 	    //Block access:
-	    redirect_message( ( isset($udata['u_id']) && (intval($udata['u_status'])>=2 || (intval($udata['u_status'])==1 && isset($udata['project_permissions']))) ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
+	    redirect_message( ( isset($udata['u_id']) && (in_array($udata['u_inbound_u_id'], array(1280,1308,1281)) || isset($udata['project_permissions'])) ? '/console' : '/login?url='.urlencode($_SERVER['REQUEST_URI']) ),'<div class="alert alert-danger maxout" role="alert">'.( isset($udata['u_id']) ? 'Access not authorized.' : 'Session Expired. Login to continue.' ).'</div>');
 	}
 	
 }
@@ -2082,14 +2187,14 @@ function can_modify($object,$object_id){
 	//TODO Validate:
 	return true;
 	
-	if(isset($udata['u_status']) && $udata['u_status']>=2){
+	if(isset($udata['u_inbound_u_id']) && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
 		if(in_array($object,array('c','r'))){
 			
 			return in_array($object_id,$udata['access'][$object]);
 			
 		} elseif($object=='u'){
 			
-			return ($udata['u_id']==$object_id || $udata['u_status']>=4);
+			return ($udata['u_id']==$object_id);
 			
 		}
 	}
@@ -2229,6 +2334,90 @@ function curl_html($url){
 function boost_power(){
 	ini_set('memory_limit', '-1');
 	ini_set('max_execution_time', 600);
+}
+
+
+
+function echo_next_u($page,$limit,$u__outbound_count){
+    //We have more child entities than what was listed here.
+    //Give user a way to access them:
+    echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="entity_load_more('.$page.')">';
+
+    //Right content:
+    echo '<span class="pull-right"><span class="badge badge-primary stnd-btn"><i class="fas fa-plus"></i></span></span>';
+
+    //Regular section:
+    $max_entities = (($page+1)*$limit);
+    $max_entities = ( $max_entities>$u__outbound_count ? $u__outbound_count : $max_entities );
+    echo 'Load '.(($page*$limit)+1).'-'.$max_entities.' from '.$u__outbound_count.' total';
+
+    echo '</a>';
+}
+
+function echo_u($u){
+    echo '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" class="list-group-item">';
+
+    //Right content:
+    echo '<span class="pull-right">';
+    echo echo_score($u['u_impact_score']);
+    echo '<a class="badge badge-primary stnd-btn" href="/entities/'.$u['u_id'].'">'.( $u['u__outbound_count']>0 ? format_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
+    echo '</span>';
+
+    //Regular section:
+    echo (strlen($u['u_image_url'])>4 ? '<img src="'.$u['u_image_url'].'" class="profile-icon" />' : '');
+    if(strlen($u['u_bio'])>0){
+        echo '<span data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
+    } else {
+        echo $u['u_full_name'];
+    }
+
+
+    echo '</div>';
+}
+
+
+function echo_ru($ru){
+    echo '<div class="list-group-item">';
+
+    //Right content:
+    echo '<span class="pull-right">';
+    echo '<a class="badge badge-primary stnd-btn" href="/console/'.$ru['ru_b_id'].( $ru['ru_r_id']>0 ? '/classes#class-'.$ru['ru_r_id'] : '' ).'"><i class="fas fa-chevron-right"></i></a>';
+    echo '</span>';
+
+    //Regular section:
+    echo $ru['c_outcome'].' ';
+    echo status_bible('ru', $ru['ru_status']);
+
+    echo '</div>';
+}
+
+function echo_ba($ba){
+    echo '<div class="list-group-item">';
+
+    //Right content:
+    echo '<span class="pull-right">';
+    echo '<a class="badge badge-primary stnd-btn" href="/console/'.$ba['ba_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
+    echo '</span>';
+
+    //Regular section:
+    echo status_bible('ba',$ba['ba_status']);
+    echo ' @ '.$ba['c_outcome'];
+
+    echo '</div>';
+}
+
+function echo_t($t){
+    echo '<div class="list-group-item">';
+
+    //Right content:
+    echo '<span class="pull-right">';
+    echo '<a class="badge badge-primary stnd-btn" href="https://www.paypal.com/activity/payment/'.$t['t_paypal_id'].'" target="_blank"><i class="fab fa-paypal"></i> <i class="fas fa-external-link-square"></i></a>';
+    echo '</span>';
+
+    //Regular section:
+    echo $t['t_total'].' '.$t['t_currency'];
+
+    echo '</div>';
 }
 
 function echo_rank($rank){
@@ -2670,7 +2859,7 @@ function html_run($run){
 
 function echo_completion_report($us_eng){
     echo status_bible('e_status',$us_eng['e_status']);
-    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fas fa-clock initial"></i>Completion Time:</span> '.time_format($us_eng['e_timestamp']).' PST</div>';
+    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fal fa-clock initial"></i>Completion Time:</span> '.time_format($us_eng['e_timestamp']).' PST</div>';
     echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fas fa-comment-dots initial"></i>Your Comments:</span> '.( strlen($us_eng['e_text_value'])>0 ? make_links_clickable(nl2br(htmlentities($us_eng['e_text_value']))) : 'None' ).'</div>';
 }
 

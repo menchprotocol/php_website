@@ -29,7 +29,7 @@ window.fbAsyncInit = function(){
         version          : 'v2.10'
     });
 
-    //This would only be included via d_header.php which is for the Console:
+    //This would only be included via console_header.php which is for the Console:
     if(!$(".fb-customerchat").length) {
         FB.getLoginStatus(function(response) {
 

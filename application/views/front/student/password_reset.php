@@ -17,7 +17,7 @@ if(!isset($_GET['u_id']) || intval($_GET['u_id'])<=0 || !isset($_GET['timestamp'
         //Show loading:
         $('#pass_reset').html('<span><img src="/img/round_load.gif" class="loader" /></span>');
         //Hide the editor & saving results:
-        $.post("/api_v1/u_password_reset_apply", {
+        $.post("/entities/u_password_reset_apply", {
             u_id:<?= $_GET['u_id'] ?>,
             timestamp:<?= $_GET['timestamp'] ?>,
             p_hash:"<?= $_GET['p_hash'] ?>",

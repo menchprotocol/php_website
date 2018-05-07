@@ -57,7 +57,7 @@ class Cron extends CI_Controller {
                 ),
             );
 
-            //Auto withdraw all incomplete admission requests:
+            //Auto withdraw all incomplete/unpaid admission requests:
             $incomplete_admissions = $this->Db_model->ru_fetch(array(
                 'ru.ru_r_id'	    => $class['r_id'],
                 'ru.ru_status'	    => 0,
@@ -121,6 +121,21 @@ class Cron extends CI_Controller {
                     'r_status' => $stats[$class['r_id']]['new_status'],
                 ));
 
+                //Change Lead Instructor Entity bucket to activated instructors
+                $leaders = $this->Db_model->ba_fetch(array(
+                    'ba.ba_b_id' => $class['r_b_id'],
+                    'ba.ba_status' => 3,
+                ));
+                if(count($leaders)==1){
+                    if(in_array($leaders[0]['u_inbound_u_id'],array(1308))){
+                        $this->Db_model->u_update( $leaders[0]['u_id'] , array(
+                            'u_inbound_u_id' => 1280, //Lead Instructors
+                        ));
+                    }
+                }
+
+
+
                 //Take snapshot of Action Plan ONLY IF not already taken for this class:
                 if(!$bs[0]['is_copy']){
                     //Save Action Plan only if not already done so:
@@ -146,6 +161,13 @@ class Cron extends CI_Controller {
                         'e_b_id' => $class['r_b_id'],
                         'e_r_id' => $class['r_id'],
                     ));
+
+                    //Update Student Entity group IF they are a prospect:
+                    if(in_array($admission['u_inbound_u_id'],array(1304,1323,1282))){
+                        $this->Db_model->u_update( $admission['u_id'] , array(
+                            'u_inbound_u_id' => 1279, //Student Admitted
+                        ));
+                    }
 
                     if(!intval($admission['ru_fp_psid']) || !intval($admission['ru_fp_id'])){
 
@@ -189,6 +211,70 @@ class Cron extends CI_Controller {
 
         //Echo Summary:
         echo_json($stats);
+    }
+
+    function update_u_impact_score($u=array()){
+
+        //Updates u_impact_score based on number/value of connections to other intents/entities
+        //Cron Settings: 2 * * * 30
+
+        //Define weights:
+        $score_weights = array(
+            'e_outbound_u_id' => 1, //Engagement initiator
+            'e_inbound_u_id' => 1, //Engagement recipient
+            'u_inbound_u_id' => 2, //Child entities
+            'c_inbound_u_id' => 13, //Intent creator
+            'ru_outbound_u_id' => 21, //Active Student
+            'ba_outbound_u_id' => 55, //Bootcamp team member
+            't_inbound_u_id' => 233, //Paid student
+        );
+
+        //Fetch child entities:
+        $entities = $this->Db_model->u_fetch(array(
+            'u_inbound_u_id' => ( count($u)>0 ? $u['u_id'] : 0 ),
+        ));
+
+        //Recursively loops through child entities:
+        $score = 0;
+        foreach($entities as $u_child){
+            //Addup all child sores:
+            $score += $this->update_u_impact_score($u_child);
+        }
+
+        //Anything to update?
+        if(count($u)>0){
+
+            //Update this row:
+            $score += count($entities) * $score_weights['u_inbound_u_id'];
+
+            $score += count($this->Db_model->e_fetch(array(
+                    'e_outbound_u_id' => $u['u_id'],
+                ), 5000)) * $score_weights['e_outbound_u_id'];
+            $score += count($this->Db_model->e_fetch(array(
+                    'e_inbound_u_id' => $u['u_id'],
+                ), 5000)) * $score_weights['e_inbound_u_id'];
+            $score += count($this->Db_model->c_fetch(array(
+                    'c_inbound_u_id' => $u['u_id'],
+                ))) * $score_weights['c_inbound_u_id'];
+            $score += count($this->Db_model->ru_fetch(array(
+                    'ru_outbound_u_id' => $u['u_id'],
+                ))) * $score_weights['ru_outbound_u_id'];
+            $score += count($this->Db_model->ba_fetch(array(
+                    'ba_outbound_u_id' => $u['u_id'],
+                ))) * $score_weights['ba_outbound_u_id'];
+            $score += count($this->Db_model->t_fetch(array(
+                    't_inbound_u_id' => $u['u_id'],
+                ))) * $score_weights['t_inbound_u_id'];
+
+            //Update the score:
+            $this->Db_model->u_update( $u['u_id'] , array(
+                'u_impact_score' => $score,
+            ));
+
+            //return the score:
+            return $score;
+
+        }
     }
 
     function class_complete(){
@@ -242,7 +328,7 @@ class Cron extends CI_Controller {
                     $lead_instructors = $this->Db_model->ba_fetch(array(
                         'ba.ba_b_id'            => $class['r_b_id'],
                         'ba.ba_status >='       => 3, //Lead Instructor
-                        'u.u_status >='         => 1, //Must be a user level 1 or higher
+                        'u.u_status'            => 1,
                     ));
 
                     //Construct the review message and button:
@@ -643,7 +729,8 @@ class Cron extends CI_Controller {
 
 
         //Fetch student inbound messages that have not yet been replied to:
-        $q = $this->db->query('SELECT u_full_name, e_inbound_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_entities u ON (e.e_inbound_u_id = u.u_id) WHERE e_inbound_c_id=6 AND e_timestamp > \''.$after_time.'\' AND e_inbound_u_id>0 AND u_status<=1 GROUP BY e_inbound_u_id, u_status, u_full_name');
+        //TODO this could cause an issue if an instructor takes a Class and tries to communicate... Fix later...
+        $q = $this->db->query('SELECT u_full_name, e_inbound_u_id, COUNT(e_id) as received_messages FROM v5_engagements e JOIN v5_entities u ON (e.e_inbound_u_id = u.u_id) WHERE e_inbound_c_id=6 AND e_timestamp > \''.$after_time.'\' AND e_inbound_u_id>0 AND u_inbound_u_id NOT IN (1280,1308,1281) GROUP BY e_inbound_u_id, u_inbound_u_id, u_full_name');
         $new_messages = $q->result_array();
         $notify_messages = array();
         foreach($new_messages as $key=>$nm){

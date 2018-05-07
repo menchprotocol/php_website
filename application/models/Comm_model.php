@@ -824,10 +824,10 @@ class Comm_model extends CI_Model {
             //Yes, make sure that there is no referral variable or if there is, its the same as this one:
             if($ref_u_id && !($u['u_id']==$ref_u_id)){
 
-                //See what type of account is this, as it might be an empty shell:
-                if($u['u_status']==0 && strlen($u['u_email'])<1){
+                //See what type of account is this, as it might be just a Prospect student
+                if($u['u_inbound_u_id']==1304 && strlen($u['u_email'])<1){
 
-                    //Remove this user to remove them:
+                    //Remove this entity to remove them:
                     $this->Db_model->u_update( $u['u_id'] , array(
                         'u_status'   => -1, //Deleted
                         'u_cache__fp_psid' => null, //Remove from this user...
@@ -963,7 +963,6 @@ class Comm_model extends CI_Model {
                 //Do an Update for selected fields as linking:
                 $this->Db_model->u_update( $u['u_id'] , array(
                     'u_image_url'      => ( strlen($u['u_image_url'])<5 ? $fb_profile['profile_pic'] : $u['u_image_url'] ),
-                    'u_status'         => ( $u['u_status']==0 ? 1 : $u['u_status'] ), //Activate their profile as well
                     'u_timezone'       => $fb_profile['timezone'],
                     'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
@@ -991,7 +990,7 @@ class Comm_model extends CI_Model {
                 $activation_msg = $this->Comm_model->foundation_message(array(
                     'e_outbound_u_id' => $u['u_id'],
                     'e_fp_id' => $fp['fp_id'],
-                    'e_outbound_c_id' => ($u['u_status']==2 ? 918 : 926),
+                    'e_outbound_c_id' => ( in_array($u['u_inbound_u_id'], array(1280,1308)) ? 918 /*Instructor*/ : 926),
                     'depth' => 0,
                     'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
@@ -1051,7 +1050,7 @@ class Comm_model extends CI_Model {
 
                 //Create user
                 $u = $this->Db_model->u_create(array(
-                    'u_full_name' 			=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
+                    'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
                     'u_timezone' 		=> $fb_profile['timezone'],
                     'u_image_url' 		=> $fb_profile['profile_pic'],
                     'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
@@ -1059,7 +1058,7 @@ class Comm_model extends CI_Model {
                     'u_country_code' 	=> $locale[1],
                     'u_cache__fp_id'    => $fp['fp_id'],
                     'u_cache__fp_psid'  => $fp_psid,
-                    'u_status'          => 0, //For new users via Messenger
+                    'u_inbound_u_id'    => 1304, //Prospects
                 ));
 
                 //New Student Without Admission:

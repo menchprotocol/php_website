@@ -24,7 +24,7 @@ $navigation = array(
         }
 
         //Logout button:
-        echo '<li class="pull-right"><a href="/api_v1/logout">Logout <i class="fas fa-power-off"></i></a></li>';
+        echo '<li class="pull-right"><a href="/logout">Logout <i class="fas fa-power-off"></i></a></li>';
         ?>
     </ul>
 </div>

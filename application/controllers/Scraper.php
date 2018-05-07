@@ -314,31 +314,4 @@ class Scraper extends CI_Controller {
         }
     }
 
-
-
-    function inactive_instructors(){
-
-        $to_print = $this->Db_model->u_fetch(array(
-            'u_status' => 2,
-        ));
-
-        header("Content-type: application/octet-stream");
-        header("Content-Disposition: attachment; filename=Inactive Mench Instructors.xls");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-
-        echo "#";
-        echo "\tName";
-        echo "\tEmail";
-        echo "\r\n";
-
-        $counter = 0;
-        foreach($to_print as $tp){
-            $counter++;
-            echo $counter;
-            echo "\t".$tp['u_full_name'];
-            echo "\t".$tp['u_email'];
-            echo "\r\n";
-        }
-    }
 }

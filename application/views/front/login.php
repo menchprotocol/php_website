@@ -13,7 +13,7 @@
                 //Show loading:
                 $('#pass_reset').html('<span><img src="/img/round_load.gif" style="width:16px; height:16px; margin-top:-2px;" class="loader" /></span>');
                 //Hide the editor & saving results:
-                $.post("/api_v1/u_password_reset_initiate", {
+                $.post("/entities/u_password_reset_initiate", {
                     email:$('#u_email').val(),
                 }, function(data) {
                     //Show success:
@@ -22,7 +22,7 @@
             }
         </script>
 
-	    <form method="post" action="/api_v1/login">
+	    <form method="post" action="/entities/login">
 	    <input type="hidden" name="url" value="<?= @$_GET['url'] ?>" />
 		<div class="input-group pass_success" style="margin-bottom: 5px;">
 			<span class="input-group-addon">

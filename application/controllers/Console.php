@@ -18,30 +18,21 @@ class Console extends CI_Controller {
     function ping(){
         echo_json(array('status'=>'success'));
     }
-	
-	/* ******************************
-	 * User & Help
-	 ****************************** */
-	
-	function account(){
-		//Authenticate level 2 or higher, redirect if not:
-		$udata = auth(2,1);
-		
-		//This lists all users based on the permissions of the user
-		$this->load->view('console/shared/d_header', array(
-            'title' => 'My Account',
-            'breadcrumb' => array(
-                array(
-                    'link' => null,
-                    'anchor' => 'My Account',
-                ),
-            ),
-		));
-		$this->load->view('console/account');
-		$this->load->view('console/shared/d_footer');
-	}
 
-	
+
+    /* ******************************
+       #Intents
+     ****************************** */
+
+    function intent_edit($c_id=0){
+        //TODO complete
+    }
+
+    function intents($inbound_c_id=0){
+        //TODO complete
+    }
+
+
 	
 	/* ******************************
 	 * Bootcamps
@@ -50,12 +41,12 @@ class Console extends CI_Controller {
 	function bootcamps(){
 
 		//Authenticate level 2 or higher, redirect if not:
-		$udata = auth(2,1);
+		$udata = auth(array(1308,1280),1);
 
 		$title = 'My Bootcamps';
-		
+
 		//Load view
-		$this->load->view('console/shared/d_header' , array(
+		$this->load->view('console/console_header' , array(
 		    'title' => $title,
 		    'breadcrumb' => array(
 		        array(
@@ -67,7 +58,7 @@ class Console extends CI_Controller {
 
         //Have they activated their Bot yet?
         //Yes, show them their Bootcamps:
-        $this->load->view('console/bootcamps_my' , array(
+        $this->load->view('console/b/bootcamps_my' , array(
             'bs' => $this->Db_model->instructor_bs(array(
                 'ba.ba_outbound_u_id' => $udata['u_id'],
                 'ba.ba_status >=' => 0,
@@ -82,9 +73,9 @@ class Console extends CI_Controller {
             )),
             'udata' => $udata,
         ));
-    	
+
 		//Footer:
-		$this->load->view('console/shared/d_footer');
+		$this->load->view('console/console_footer');
 
 	}
 	
@@ -92,12 +83,12 @@ class Console extends CI_Controller {
 	function dashboard($b_id){
 
 	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(1,1,$b_id);
+	    $udata = auth(null,1,$b_id);
 	    $bs = $this->Db_model->remix_bs(array(
 	        'b.b_id' => $b_id,
 	    ));
 	    if(!isset($bs[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
+	        redirect_message('/console','<div class="alert alert-danger maxout" role="alert">Invalid Bootcamp ID.</div>');
 	    }
 	    
 	    if(isset($_GET['raw'])){
@@ -119,7 +110,7 @@ class Console extends CI_Controller {
 	    ));
 	    
 	    //Load view
-	    $this->load->view('console/shared/d_header' , array(
+	    $this->load->view('console/console_header' , array(
 	        'title' => $title,
 	        'b' => $bs[0],
 	        'breadcrumb' => array(
@@ -129,21 +120,21 @@ class Console extends CI_Controller {
 	            ),
 	        ),
 	    ));
-	    $this->load->view('console/dashboard' , array(
+	    $this->load->view('console/b/dashboard' , array(
 	        'b' => $bs[0],
 	    ));
-	    $this->load->view('console/shared/d_footer');
+	    $this->load->view('console/console_footer');
 	}
 	
 	
 	function actionplan($b_id,$pid=null){
 		
-	    $udata = auth(1,1,$b_id);
+	    $udata = auth(null,1,$b_id);
 		$bs = $this->Db_model->remix_bs(array(
 		    'b.b_id' => $b_id,
 		));
 		if(!isset($bs[0])){
-		    redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
+		    redirect_message('/console','<div class="alert alert-danger maxout" role="alert">Invalid Bootcamp ID.</div>');
 		}
 
 		//Fetch intent relative to the Bootcamp by doing an array search:
@@ -167,10 +158,10 @@ class Console extends CI_Controller {
 		}
 		
 		//Load views:
-		$this->load->view('console/shared/d_header' , $view_data);
-		$this->load->view('console/actionplan' , $view_data);
-		$this->load->view('console/shared/d_footer' , array(
-            'load_view' => 'console/modals/import_actionplan',
+		$this->load->view('console/console_header' , $view_data);
+		$this->load->view('console/b/actionplan' , $view_data);
+		$this->load->view('console/console_footer' , array(
+            'load_view' => 'console/b/frame_import_actionplan',
         ));
 		
 	}
@@ -178,7 +169,7 @@ class Console extends CI_Controller {
 	
 	function classes($b_id){
 	    //Authenticate:
-	    $udata = auth(1,1,$b_id);
+	    $udata = auth(null,1,$b_id);
 	    $bs = $this->Db_model->remix_bs(array(
 	        'b.b_id' => $b_id,
 	    ));
@@ -201,14 +192,14 @@ class Console extends CI_Controller {
 	    );
 	    
 	    //Load view
-	    $this->load->view('console/shared/d_header' , $view_data);
-	    $this->load->view('console/classes' , $view_data);
-	    $this->load->view('console/shared/d_footer');
+	    $this->load->view('console/console_header' , $view_data);
+	    $this->load->view('console/b/classes' , $view_data);
+	    $this->load->view('console/console_footer');
 	}
 	
 	function settings($b_id){
 	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(1,1,$b_id);
+	    $udata = auth(null,1,$b_id);
 	    $bs = $this->Db_model->remix_bs(array(
 	        'b.b_id' => $b_id,
 	    ));
@@ -217,7 +208,7 @@ class Console extends CI_Controller {
 	    }
 	    
 	    //Load view
-	    $this->load->view('console/shared/d_header' , array(
+	    $this->load->view('console/console_header' , array(
 	        'title' => 'Settings | '.$bs[0]['c_outcome'],
 	        'b' => $bs[0],
 	        'breadcrumb' => array(
@@ -227,11 +218,11 @@ class Console extends CI_Controller {
 	            ),
 	        ),
 	    ));
-	    $this->load->view('console/settings' , array(
+	    $this->load->view('console/b/settings' , array(
 	        'b' => $bs[0],
 	        'udata' => $udata,
 	    ));
-	    $this->load->view('console/shared/d_footer');
+	    $this->load->view('console/console_footer');
 	}
 	
 }

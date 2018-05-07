@@ -435,7 +435,7 @@ class My extends CI_Controller {
                 die('<span style="color:#FF0000;">Error: Missing Core Data</span>');
             }
 
-            $udata = auth(2, 0, $classes[0]['r_b_id']);
+            $udata = auth(array(1308,1280), 0, $classes[0]['r_b_id']);
             if(!$udata){
                 die('<span style="color:#FF0000;">Error: Session Expired.</span>');
             }
@@ -558,7 +558,7 @@ class My extends CI_Controller {
                 echo ( strlen($b['b_transformations'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
 
 
-                if($class['r_status']==2 && $udata['u_status']>=2){
+                if($class['r_status']==2 && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
                     //Show button to refresh:
                     ?>
                     <div class="copy_ap"><a href="javascript:void(0);" onclick="$('.copy_ap').toggle();" class="btn btn-primary">Update Action Plan</a></div>

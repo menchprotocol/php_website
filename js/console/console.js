@@ -138,7 +138,7 @@ $(document).ready(function() {
             algolia_index.search(q, {
 
                 hitsPerPage: 7,
-                filters: '(b_status>=2)' + ( parseInt($('#u_status').val())<3 ? ' AND (alg_owner_id=' + $('#u_id').val() + ')' : '' ),
+                filters: '(b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (alg_owner_id=' + $('#u_id').val() + ')' ),
 
             }, function(error, content) {
                 if (error) {

@@ -144,7 +144,7 @@ WHERE ru.ru_status >= 4
                 $bs[$key]['b__admins'] = $this->Db_model->ba_fetch(array(
                     'ba.ba_b_id' => $c['b_id'],
                     'ba.ba_status >=' => 0,
-                    'u.u_status >=' => 0,
+                    'u.u_status' => 1,
                 ));
             }
 
@@ -275,8 +275,10 @@ WHERE ru.ru_status >= 4
 	 * Users
 	 ****************************** */
 	
-	function u_fetch($match_columns){
-	    //Fetch the target gems:
+	function u_fetch($match_columns, $join_objects=array(), $limit_row=0, $limit_offset=0, $order_columns=array(
+        'u_impact_score' => 'DESC',
+    )){
+	    //Fetch the target entities:
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
 	    foreach($match_columns as $key=>$value){
@@ -286,10 +288,28 @@ WHERE ru.ru_status >= 4
                 $this->db->where($key);
             }
 	    }
-	    $this->db->order_by('u_status','DESC');
-	    $this->db->order_by('u_id','DESC');
+
+        if($limit_row>0){
+            $this->db->limit($limit_row,$limit_offset);
+        }
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
+
 	    $q = $this->db->get();
-	    return $q->result_array();
+	    $res = $q->result_array();
+
+        if(in_array('count_child',$join_objects)){
+            foreach($res as $key=>$val){
+                //Fetch the messages for this entity:
+                $res[$key]['u__outbound_count'] = count($this->Db_model->u_fetch(array(
+                    'u_inbound_u_id' => $val['u_id'],
+                    'u_status' => 1, //Active
+                )));
+            }
+        }
+
+        return $res;
 	}
 	
 	function ru_update($ru_id,$update_columns){
@@ -369,7 +389,7 @@ WHERE ru.ru_status >= 4
                 'status' => 0,
                 'message' => 'User Not Found in DB',
             );
-        } elseif($users[0]['u_status']==3){
+        } elseif($users[0]['u_inbound_u_id']==1281){
             return array(
                 'status' => 0,
                 'message' => 'Cannot delete Admin',
@@ -436,12 +456,16 @@ WHERE ru.ru_status >= 4
 	
 	function u_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('u_full_name'))){
+        if(missing_required_db_fields($insert_columns,array('u_full_name','u_inbound_u_id'))){
             return false;
         }
 
         if(!isset($insert_columns['u_timestamp'])){
             $insert_columns['u_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        if(!isset($insert_columns['u_status'])){
+            $insert_columns['u_status'] = 1;
         }
 		
 		//Lets now add:
@@ -450,10 +474,15 @@ WHERE ru.ru_status >= 4
         //Fetch inserted id:
         $insert_columns['u_id'] = $this->db->insert_id();
 
-        //Fetch to return full data:
-        $users = $this->Db_model->u_fetch(array(
-            'u_id' => $insert_columns['u_id'],
-        ));
+        if($insert_columns['u_id']>0){
+            //Fetch to return full data:
+            $users = $this->Db_model->u_fetch(array(
+                'u_id' => $insert_columns['u_id'],
+            ));
+
+            //Update Algolia:
+            $this->Db_model->algolia_sync('u',$insert_columns['u_id']);
+        }
 
         return $users[0];
 	}
@@ -462,24 +491,31 @@ WHERE ru.ru_status >= 4
 	    //Update first
 	    $this->db->where('u_id', $user_id);
 	    $this->db->update('v5_entities', $update_columns);
+
 	    //Return new row:
 	    $users = $this->u_fetch(array(
 	        'u_id' => $user_id
 	    ));
+
+	    //Update Algolia:
+        $this->Db_model->algolia_sync('u',$user_id);
+
 	    return $users[0];
 	}
 	
 	
-	function ba_fetch($match_columns,$fetch_extra=false){
+	function ba_fetch($match_columns, $join_objects=array()){
+
 	    //Fetch the admins of the Bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
         $this->db->join('v5_bootcamp_team ba', 'ba.ba_outbound_u_id = u.u_id');
-        if($fetch_extra){
-            //This is a HACK!
+
+        if(in_array('b',$join_objects)){
             $this->db->join('v5_bootcamps b', 'ba.ba_b_id = b.b_id');
             $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
         }
+
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -751,7 +787,9 @@ WHERE ru.ru_status >= 4
 
 	function ru_finalize($ru_id){
 
-	    //This function finalizes the admission for FREE Bootcamps or when the user pays:
+	    //Students complete their registration in 2 ways: Join a Free Bootcamp or Pay for a Paid Bootcamps
+        //This function finalizes the admission when either of these 2 situations happen
+
         $admissions = $this->Db_model->remix_admissions(array(
             'ru.ru_id'	=> $ru_id,
         ));
@@ -759,11 +797,6 @@ WHERE ru.ru_status >= 4
         if(count($admissions)==1){
 
             $admissions_updated = 1;
-
-            //Update student's payment status:
-            $this->Db_model->ru_update( $ru_id , array(
-                'ru_status' => 4,
-            ));
 
             //Inform the Student:
             $this->Comm_model->foundation_message(array(
@@ -784,6 +817,11 @@ WHERE ru.ru_status >= 4
                 'e_inbound_c_id' => 30,
                 'e_b_id' => $admissions[0]['ru_b_id'],
                 'e_r_id' => $admissions[0]['ru_r_id'],
+            ));
+
+            //Update student's payment status:
+            $this->Db_model->ru_update( $ru_id , array(
+                'ru_status' => 4,
             ));
 
             if($admissions[0]['b_is_parent']){
@@ -940,12 +978,17 @@ WHERE ru.ru_status >= 4
     function ru_fetch($match_columns,$order_columns=array(
         'ru.ru_cache__completion_rate' => 'DESC',
         'u.u_cache__fp_psid' => 'ASC',
-    )){
+    ), $join_objects=array()){
 
         $this->db->select('*');
         $this->db->from('v5_class_students ru');
         $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id','left');
         $this->db->join('v5_entities u', 'u.u_id = ru.ru_outbound_u_id');
+
+        if(in_array('b',$join_objects)){
+            $this->db->join('v5_bootcamps b', 'b.b_id = ru.ru_b_id');
+            $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
+        }
 
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
@@ -1528,7 +1571,7 @@ WHERE ru.ru_status >= 4
                     $b_instructors = $this->Db_model->ba_fetch(array(
                         'ba.ba_b_id' => $insert_columns['e_b_id'],
                         'ba.ba_status >=' => 2, //co-instructors & lead instructor
-                        'u.u_status >=' => 1, //Must be a user level 1 or higher
+                        'u.u_status' => 1,
                     ));
 
                     $subject = '⚠️ Notification: '.trim(strip_tags($engagements[0]['c_outcome'])).' by '.( isset($engagements[0]['u_full_name']) ? $engagements[0]['u_full_name'] : 'System' );
@@ -1619,7 +1662,7 @@ WHERE ru.ru_status >= 4
         $algolia_indexes = array(
             'c' => 'alg_intents',
             'b' => 'alg_bootcamps',
-            'u' => 'alg_users',
+            'u' => 'alg_entities',
         );
         $algolia_local_tables = array(
             'c' => 'v5_intents',
@@ -1675,6 +1718,7 @@ WHERE ru.ru_status >= 4
             $items = $this->Db_model->c_fetch($limits);
         } elseif($obj=='u'){
             $items = $this->Db_model->u_fetch($limits);
+            $u_social_account = $this->config->item('u_social_account');
         }
 
         //Go through selection and update:
@@ -1742,12 +1786,47 @@ WHERE ru.ru_status >= 4
                     }
                 }
 
-            } elseif($obj=='c'){
-
-
-
             } elseif($obj=='u') {
 
+                //Object specific:
+                $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
+                $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
+                $new_item['u_impact_score'] = intval($item['u_impact_score']);
+
+                //Standard algolia terms:
+                $new_item['alg_name'] = $item['u_full_name'];
+                $new_item['alg_url'] = '/entities/'.$item['u_id'];
+
+                $new_item['alg_keywords'] = $item['u_bio'];
+
+                //Additional information to tag along:
+                if(strlen($item['u_website_url'])>0){
+                    $new_item['alg_keywords'] .= ' '.$item['u_website_url'];
+                }
+
+                foreach($u_social_account as $sa_key=>$sa){
+                    if(strlen($item[$sa_key])>0){
+                        $new_item['alg_keywords'] .= ' '.$item[$sa_key];
+                    }
+                }
+
+                if(strlen($item['u_synonyms'])>0){
+                    $new_item['alg_keywords'] .= join(' ',json_decode($item['u_synonyms'])).' ';
+                }
+
+                if(strlen($item['u_email'])>0){
+                    $new_item['alg_keywords'] .= ' '.$item['u_email'];
+                }
+
+                if(strlen($item['u_paypal_email'])>0){
+                    $new_item['alg_keywords'] .= ' '.$item['u_paypal_email'];
+                }
+
+                if(strlen($item['u_phone'])>0){
+                    $new_item['alg_keywords'] .= ' '.$item['u_phone'];
+                }
+
+            } elseif($obj=='c'){
 
 
             }

@@ -14,7 +14,9 @@ $route['launch'] 				    = "front/launch";
 $route['contact'] 					= "front/contact";
 $route['faq'] 					    = "front/faq"; //TODO Not in use?
 $route['ses'] 						= "front/ses"; //Raw session logs
+$route['info'] 						= "front/info"; //PHP Info
 $route['login']						= "front/login"; //Bootcamp Operator login
+$route['logout']				    = "entities/logout"; //Logout from entites
 
 /* ******************************
  * Student Semi-Private URLs
@@ -28,7 +30,6 @@ $route['webview_video/(:num)'] 	            = "my/webview_video/$1";
  * Console for Operators
  ****************************** */
 
-$route['console/account'] 						       = "console/account"; //Instructor account
 $route['console/(:num)/actionplan'] 			       = "console/actionplan/$1";
 $route['console/(:num)/settings'] 				       = "console/settings/$1";
 $route['console/(:num)/classes/(:num)/scheduler']      = "console/scheduler/$1/$2"; //iFrame view
@@ -37,6 +38,14 @@ $route['console/(:num)/classes'] 				       = "console/classes/$1";
 $route['console/(:num)/raw'] 				           = "console/raw/$1"; //For dev purposes
 $route['console/(:num)'] 			                   = "console/dashboard/$1";
 $route['console'] 								       = "console/bootcamps";
+
+$route['entities/(:num)/modify'] 			           = "entities/entity_edit/$1";
+$route['entities/(:num)'] 			                   = "entities/entity_browse/$1";
+$route['entities'] 			                           = "entities/entity_browse";
+
+$route['intents/(:num)/modify'] 			               = "console/intent_edit/$1";
+$route['intents/(:num)'] 			                   = "console/intents/$1";
+$route['intents'] 			                           = "console/intents";
 
 //Affiliate Links:
 $route['a/(:num)/(:num)/apply'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name

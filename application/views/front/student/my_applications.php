@@ -90,6 +90,7 @@ if(count($admissions)>0 && is_array($admissions)){
                         'ru.ru_outbound_u_id' => $admission['ru_outbound_u_id'],
                     ), array('ru'));
 
+
                     if(count($child_intents)>0){
 
                         //Fetch start date for first Class:

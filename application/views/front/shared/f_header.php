@@ -59,7 +59,7 @@ $url_part_1 = $this->uri->segment(1);
     				<?php
                     if(isset($udata['u_id'])){
 
-                        if(isset($b_id) && auth(2,0,$b_id)){
+                        if(isset($b_id) && auth(array(1308,1280),0,$b_id)){
                             echo '<li id="isloggedin"><a href="/console/'.$b_id.'">Manage <i class="fas fa-cog"></i></a></li>';
                         }
 
