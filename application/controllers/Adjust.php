@@ -40,16 +40,28 @@ class Adjust extends CI_Controller {
             'i_status >' => 0, //Published in any form
             'i_media_type' => 'text',
             'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-        ),$limit,array(
+        ), $limit, array(
             'i_id' => 'ASC',
         ));
 
         foreach($content as $key=>$i){
+
             $curl = curl_html($i['i_url'],true);
-            echo '<div>#'.($key+1).' ID '.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').'</div>';
+            $url_parts = parse_url(( $curl['last_url']==$i['i_url'] ? $i['i_url'] : $curl['last_url'] ));
+            $i_domain = str_replace('www.','',$url_parts['host']);
+
+            //Update Message:
+            $this->Db_model->i_update( $i['i_id'] , array(
+                'i_http_code' => $curl['httpcode'],
+                'i_final_url' => ( $curl['last_url']==$i['i_url'] ? null : $curl['last_url'] ),
+                'i_domain' => $i_domain,
+            ));
+
+            echo '<div>#'.($key+1).' ID '.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').' ('.$i_domain.')</div>';
             echo '<div>Code ['.$curl['httpcode'].'] <a href="javascript:$(\'#i'.$i['i_id'].'\').toggle();">Toggle Body</a> '.$curl['header'].'</div>';
             echo '<div id="i'.$i['i_id'].'" style="display:none; border:1px solid #000; padding:10px; margin:10px; background-color:#EFEFEF; font-size:10px; font-family:monospace;">'.htmlentities($curl['body']).'</div>';
             echo '<br /><hr /><br />';
+
         }
 
         echo '</body></html>';
