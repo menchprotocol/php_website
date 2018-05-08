@@ -2338,10 +2338,12 @@ function curl_html($url,$return_breakdown=false){
 	if($return_breakdown){
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $last_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         $header = substr($response, 0, $header_size);
         $body = substr($response, $header_size);
         return array(
             'header' => $header,
+            'last_url' => $last_url,
             'httpcode' => $httpcode,
             'body' => $body,
         );
