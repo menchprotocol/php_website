@@ -20,6 +20,26 @@ class Adjust extends CI_Controller {
         echo count($bs);
     }
 
+    function i(){
+
+        $content = $this->Db_model->i_fetch(array(
+            'i_status >' => 0, //Published in any form
+            'i_media_type' => 'text',
+            'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
+        ),10);
+
+        $domain_grouped = array();
+        foreach($content as $i){
+            array_push($domain_grouped,array(
+                parse_url($i['i_url']),
+                get_headers($i['i_url'])
+            ));
+            //echo '<div>'.$i['i_url'].'</div>';
+        }
+
+        echo_json($domain_grouped);
+    }
+
 
     function resync_class_actionplans_and_message_instructors(){
 

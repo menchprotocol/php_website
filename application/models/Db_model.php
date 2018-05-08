@@ -612,7 +612,7 @@ WHERE ru.ru_status >= 4
 	function i_create($insert_columns){
 
         //Need either entity or intent:
-        if(!isset($insert_columns['i_outbound_c_id']) && !isset($insert_columns['i_outbound_u_id'])){
+        if(!isset($insert_columns['i_outbound_c_id'])){
             $this->Db_model->e_create(array(
                 'e_text_value' => 'A new message requires either an Entity or Intent to be referenced to',
                 'e_json' => $insert_columns,
