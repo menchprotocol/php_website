@@ -26,14 +26,14 @@ class Adjust extends CI_Controller {
             'i_status >' => 0, //Published in any form
             'i_media_type' => 'text',
             'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-        ),100);
+        ),50);
 
         $domain_grouped = array();
         foreach($content as $i){
             array_push($domain_grouped,array(
                 $i['i_url'],
                 parse_url($i['i_url']),
-                json_encode(get_headers($i['i_url']))
+                @get_headers($i['i_url']),
             ));
             //echo '<div>'.$i['i_url'].'</div>';
         }
