@@ -8,7 +8,7 @@ class Cron extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 
-        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron student_reminder_complete_application
+        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron update_u_impact_score
 	}
 
 	function ping(){

@@ -339,7 +339,7 @@ class Api_v1 extends CI_Controller {
                 //How about other Connected Bootcamps?
                 if(count($other_bs)>0){
                     //Show link:
-                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-circle"></i>'.count($other_bs).'</a>';
+                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-dot-circle"></i>'.count($other_bs).'</a>';
 
                     //Show other connected Bootcamps:
                     $additional_ui_boxes .= '<div class="fp_box fp_current_'.$page['fp_id'].'" style="display:none;">';

@@ -343,7 +343,7 @@ class My extends CI_Controller {
 
                 }
 
-                echo '<i class="fas fa-circle"></i> <b>'.$other_admission['c_outcome'].'</b>';
+                echo '<i class="fas fa-dot-circle"></i> <b>'.$other_admission['c_outcome'].'</b>';
                 echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.time_format($other_admission['r_start_date'],2).'</span>';
 
                 if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){

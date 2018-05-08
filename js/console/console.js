@@ -2,7 +2,8 @@
 
 //Loadup Algolia:
 client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-algolia_index = client.initIndex('alg_bootcamps');
+algolia_b_index = client.initIndex('alg_bootcamps');
+algolia_u_index = client.initIndex('alg_entities');
 
 
 //To update fancy dropdown which is usually used for STATUS updates:
@@ -130,32 +131,59 @@ $(document).ready(function() {
 
     $( "#console_search" ).on('autocomplete:selected', function(event, suggestion, dataset) {
 
-        window.location = "/console/"+suggestion.b_id;
-
-    }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [{
-
-        source: function(q, cb) {
-            algolia_index.search(q, {
-
-                hitsPerPage: 7,
-                filters: '(b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (alg_owner_id=' + $('#u_id').val() + ')' ),
-
-            }, function(error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function(suggestion) { return "" },
-        templates: {
-            suggestion: function(suggestion) {
-                return '<i class="fa '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle-o' : 'fa-folder-open' )+'"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fa '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fas fa-lock"></i>' : '' );
-            },
+        if(dataset==1){
+            window.location = "/console/"+suggestion.b_id;
+        } else if(dataset==2){
+            window.location = "/entities/"+suggestion.u_id;
         }
 
-    }]);
+
+    }).autocomplete({ hint: false, keyboardShortcuts: ['s'] }, [
+        {
+            source: function(q, cb) {
+                algolia_b_index.search(q, {
+
+                    hitsPerPage: 7,
+                    filters: '(b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (alg_owner_id=' + $('#u_id').val() + ')' ),
+
+                }, function(error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function(suggestion) { return "" },
+            templates: {
+                suggestion: function(suggestion) {
+                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle' : 'fa-folder-open' )+'"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fas '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fas fa-lock"></i>' : '' );
+                },
+            }
+        },
+        {
+            source: function(q, cb) {
+                algolia_u_index.search(q, {
+
+                    hitsPerPage: 7,
+                    filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND u_id='+$('#u_id').val() ),
+
+                }, function(error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: function(suggestion) { return "" },
+            templates: {
+                suggestion: function(suggestion) {
+                    return '<i class="fas fa-at"></i> '+ suggestion._highlightResult.alg_name.value + ' ('+suggestion.u_inbound_name+')';
+                },
+            }
+        }
+    ]);
 
     //Watch the expand/close all buttons:
     $('#task_view .expand_all').click(function (e) {

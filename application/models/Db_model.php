@@ -1659,7 +1659,7 @@ WHERE ru.ru_status >= 4
         $website = $this->config->item('website');
         $obj_id = intval($obj_id);
 
-        $algolia_indexes = array(
+        $alg_indexes = array(
             'c' => 'alg_intents',
             'b' => 'alg_bootcamps',
             'u' => 'alg_entities',
@@ -1670,7 +1670,7 @@ WHERE ru.ru_status >= 4
             'u' => 'v5_entities',
         );
 
-	    if(!array_key_exists($obj,$algolia_indexes)){
+	    if(!array_key_exists($obj,$alg_indexes)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid object ['.$obj.']',
@@ -1693,7 +1693,7 @@ WHERE ru.ru_status >= 4
         //Include PHP library:
         require_once('application/libraries/algoliasearch.php');
         $client = new \AlgoliaSearch\Client("49OCX1ZXLJ", "84a8df1fecf21978299e31c5b535ebeb");
-        $index = $client->initIndex($algolia_indexes[$obj]);
+        $index = $client->initIndex($alg_indexes[$obj]);
 
 
         if(!$obj_id){
@@ -1719,6 +1719,7 @@ WHERE ru.ru_status >= 4
         } elseif($obj=='u'){
             $items = $this->Db_model->u_fetch($limits);
             $u_social_account = $this->config->item('u_social_account');
+            $inbound_names = array(); //To cache names of parents
         }
 
         //Go through selection and update:
@@ -1750,7 +1751,6 @@ WHERE ru.ru_status >= 4
 
                 //Standard algolia terms:
                 $new_item['alg_name'] = $item['c_outcome'];
-                $new_item['alg_url'] = '/'.$item['b_url_key'];
                 $new_item['alg_owner_id'] = intval($item['u_id']);
                 $new_item['alg_keywords'] = '';
 
@@ -1793,10 +1793,20 @@ WHERE ru.ru_status >= 4
                 $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
                 $new_item['u_impact_score'] = intval($item['u_impact_score']);
 
+                if($new_item['u_inbound_u_id']>0 && !isset($inbound_names[$new_item['u_inbound_u_id']])){
+                    //Fetch parent name:
+                    $entities = $this->Db_model->u_fetch(array(
+                        'u_id' => $new_item['u_inbound_u_id'],
+                    ));
+                    if(count($entities)>0){
+                        $inbound_names[$new_item['u_inbound_u_id']] = $entities[0]['u_full_name'];
+                    }
+                }
+
+                $new_item['u_inbound_name'] = ( isset($inbound_names[$new_item['u_inbound_u_id']]) ? $inbound_names[$new_item['u_inbound_u_id']] : 'Entities' );
+
                 //Standard algolia terms:
                 $new_item['alg_name'] = $item['u_full_name'];
-                $new_item['alg_url'] = '/entities/'.$item['u_id'];
-
                 $new_item['alg_keywords'] = $item['u_bio'];
 
                 //Additional information to tag along:

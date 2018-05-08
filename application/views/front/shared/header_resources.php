@@ -5,10 +5,10 @@ $website = $this->config->item('website');
 
 <!-- START SHARED RESOURCES -->
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato|Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons|Titillium+Web:700" />
-<link href="/css/lib/fa/fontawesome.min.css" rel="stylesheet" />
-<link href="/css/lib/fa/fa-brands.min.css" rel="stylesheet" />
-<link href="/css/lib/fa/fa-solid.min.css" rel="stylesheet" />
-<link href="/css/lib/fa/fa-light.min.css" rel="stylesheet" />
+<link href="/css/lib/fa/fontawesome.min.css?v=3" rel="stylesheet" />
+<link href="/css/lib/fa/fa-brands.min.css?v=3" rel="stylesheet" />
+<link href="/css/lib/fa/fa-solid.min.css?v=3" rel="stylesheet" />
+<link href="/css/lib/fa/fa-light.min.css?v=3" rel="stylesheet" />
 
 <!-- CSS -->
 <link href="/css/lib/bootstrap.min.css" rel="stylesheet" />

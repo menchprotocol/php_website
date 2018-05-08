@@ -342,7 +342,7 @@ function extract_level($b,$c_id){
         $view_data['breadcrumb_p'] = array(
             array(
                 'link' => null,
-                'anchor' => '<i class="fas fa-circle"></i> '.$b['c_outcome'],
+                'anchor' => '<i class="fas fa-dot-circle"></i> '.$b['c_outcome'],
             ),
         );
         //Not applicable at Bootcamp Level:

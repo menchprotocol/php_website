@@ -116,7 +116,7 @@ $(document).ready(function() {
 
     }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
         source: function(q, cb) {
-            algolia_index.search(q, { hitsPerPage: 7 }, function(error, content) {
+            algolia_b_index.search(q, { hitsPerPage: 7 }, function(error, content) {
                 if (error) {
                     cb([]);
                     return;
