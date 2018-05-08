@@ -2339,7 +2339,7 @@ function curl_html($url,$return_breakdown=false){
         return array(
             'header_size' => $header_size,
             'header' => $header,
-            'body' => $body,
+            'body' => strlen($body),
         );
     } else {
         //Simply return the response:
