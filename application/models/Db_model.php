@@ -547,7 +547,9 @@ WHERE ru.ru_status >= 4
 	 * i Messages
 	 ****************************** */
 
-    function i_fetch($match_columns, $limit=0){
+    function i_fetch($match_columns, $limit=0, $order_columns = array(
+        'i_rank' => 'ASC',
+    )){
         $this->db->select('*');
         $this->db->from('v5_messages i');
         $this->db->join('v5_intents c', 'i.i_outbound_c_id = c.c_id');
@@ -562,7 +564,10 @@ WHERE ru.ru_status >= 4
         if($limit>0){
             $this->db->limit($limit);
         }
-        $this->db->order_by('i_rank');
+
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
         $q = $this->db->get();
         return $q->result_array();
     }

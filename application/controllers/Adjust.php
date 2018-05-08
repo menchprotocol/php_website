@@ -40,11 +40,13 @@ class Adjust extends CI_Controller {
             'i_status >' => 0, //Published in any form
             'i_media_type' => 'text',
             'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-        ),$limit);
+        ),$limit,array(
+            'i_id' => 'ASC',
+        ));
 
         foreach($content as $key=>$i){
             $curl = curl_html($i['i_url'],true);
-            echo '<div>#'.($key+1).' ID '.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a> => <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a></div>';
+            echo '<div>#'.($key+1).' ID '.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').'</div>';
             echo '<div>Code ['.$curl['httpcode'].'] <a href="javascript:$(\'#i'.$i['i_id'].'\').toggle();">Toggle Body</a> '.$curl['header'].'</div>';
             echo '<div id="i'.$i['i_id'].'" style="display:none; border:1px solid #000; padding:10px; margin:10px; background-color:#EFEFEF; font-size:10px; font-family:monospace;">'.htmlentities($curl['body']).'</div>';
             echo '<br /><hr /><br />';
