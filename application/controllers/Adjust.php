@@ -20,13 +20,13 @@ class Adjust extends CI_Controller {
         echo count($bs);
     }
 
-    function i(){
+    function i($limit=10){
 
         $content = $this->Db_model->i_fetch(array(
             'i_status >' => 0, //Published in any form
             'i_media_type' => 'text',
             'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-        ),50);
+        ),$limit);
 
         $domain_grouped = array();
         foreach($content as $i){

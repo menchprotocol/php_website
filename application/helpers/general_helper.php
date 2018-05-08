@@ -2345,10 +2345,6 @@ function curl_html($url,$return_breakdown=false){
         //Simply return the response:
         return $response;
     }
-
-
-
-
 }
 
 function boost_power(){
