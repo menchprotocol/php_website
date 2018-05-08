@@ -2320,7 +2320,10 @@ function fb_time($unix_time){
 
 function curl_html($url,$return_breakdown=false){
 	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
+    curl_setopt($ch, CURLOPT_REFERER, "https://www.mench.com");
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 	curl_setopt($ch, CURLOPT_POST, FALSE);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_VERBOSE, 1);
@@ -2334,12 +2337,13 @@ function curl_html($url,$return_breakdown=false){
 
 	if($return_breakdown){
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $header = substr($response, 0, $header_size);
         $body = substr($response, $header_size);
         return array(
-            'header_size' => $header_size,
             'header' => $header,
-            'body' => strlen($body),
+            'httpcode' => $httpcode,
+            'body' => $body,
         );
     } else {
         //Simply return the response:

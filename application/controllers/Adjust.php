@@ -20,24 +20,38 @@ class Adjust extends CI_Controller {
         echo count($bs);
     }
 
-    function i($limit=10){
+    function i($limit=10,$smallest_i_id=0){
+
+        echo '<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="/img/bp_16.png">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Links Analysis</title>
+	<meta content=\'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\' name=\'viewport\' />
+<script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
+</head>
+<body style="padding:20px;">';
+
 
         $content = $this->Db_model->i_fetch(array(
+            'i_id >' => $smallest_i_id, //Published in any form
             'i_status >' => 0, //Published in any form
             'i_media_type' => 'text',
             'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
         ),$limit);
 
-        $domain_grouped = array();
         foreach($content as $i){
-            array_push($domain_grouped,array(
-                $i['i_url'],
-                curl_html($i['i_url'],true),
-            ));
-            //echo '<div>'.$i['i_url'].'</div>';
+            $curl = curl_html($i['i_url'],true);
+            echo '<div>#'.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a></div>';
+            echo '<div>Code ['.$curl['httpcode'].'] <a href="javascript:$(\'i'.$i['i_id'].'\').toggle();">Toggle Body</a> '.$curl['header'].'</div>';
+            echo '<div id="i'.$i['i_id'].'" style="display:none;">'.$curl['body'].'</div>';
+            echo '<br /><hr /><br />';
         }
 
-        echo_json($domain_grouped);
+        echo '</body></html>';
+
     }
 
 
