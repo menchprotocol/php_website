@@ -2318,17 +2318,37 @@ function fb_time($unix_time){
 	return date("Y-m-d H:i:s",round($unix_time/1000));
 }
 
-function curl_html($url){
+function curl_html($url,$return_breakdown=false){
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
 	curl_setopt($ch, CURLOPT_POST, FALSE);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	if(is_dev()){
+    curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 1);
+    if(is_dev()){
 	    //SSL does not work on my local PC.
 	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	}
-	return curl_exec($ch);
+    $response = curl_exec($ch);
+
+	if($return_breakdown){
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        return array(
+            'header_size' => $header_size,
+            'header' => $header,
+            'body' => $body,
+        );
+    } else {
+        //Simply return the response:
+        return $response;
+    }
+
+
+
+
 }
 
 function boost_power(){

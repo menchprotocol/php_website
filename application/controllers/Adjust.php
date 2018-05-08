@@ -32,8 +32,7 @@ class Adjust extends CI_Controller {
         foreach($content as $i){
             array_push($domain_grouped,array(
                 $i['i_url'],
-                parse_url($i['i_url']),
-                @get_headers($i['i_url']),
+                curl_html($i['i_url'],true),
             ));
             //echo '<div>'.$i['i_url'].'</div>';
         }
