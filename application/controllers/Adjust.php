@@ -51,12 +51,14 @@ class Adjust extends CI_Controller {
             $i_domain = strtolower(str_replace('www.','',$url_parts['host']));
             $i_url_title = one_two_explode('>','',one_two_explode('<title','</title',$curl['body']));
 
+
             //Update Message:
             $this->Db_model->i_update( $i['i_id'] , array(
                 'i_http_code' => $curl['httpcode'],
                 'i_final_url' => ( $curl['last_url']==$i['i_url'] ? null : $curl['last_url'] ),
                 'i_domain' => $i_domain,
                 'i_url_title' => $i_url_title,
+                'i_content_type' => $curl['content_type'],
             ));
 
             echo '<div>#'.($key+1).' ID '.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').' ('.$i_domain.') ('.$i_url_title.')</div>';
