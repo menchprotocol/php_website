@@ -2343,7 +2343,7 @@ function curl_html($url,$return_breakdown=false){
             'body' => substr($response, $header_size),
             'header' => substr($response, 0, $header_size),
             'last_url' => curl_getinfo($ch, CURLINFO_EFFECTIVE_URL),
-            'content_type' => curl_getinfo($ch, CURLINFO_CONTENT_TYPE),
+            'content_type' => one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE)),
         );
     } else {
         //Simply return the response:
