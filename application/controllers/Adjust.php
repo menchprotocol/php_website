@@ -49,7 +49,7 @@ class Adjust extends CI_Controller {
             $curl = curl_html($i['i_url'],true);
             $url_parts = parse_url(( $curl['last_url']==$i['i_url'] ? $i['i_url'] : $curl['last_url'] ));
             $i_domain = strtolower(str_replace('www.','',$url_parts['host']));
-            $i_url_title = one_two_explode('<title>','</title>',$curl['body']);
+            $i_url_title = one_two_explode('>','',one_two_explode('<title','</title',$curl['body']));
 
             //Update Message:
             $this->Db_model->i_update( $i['i_id'] , array(

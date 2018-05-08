@@ -2637,11 +2637,16 @@ function one_two_explode($one,$two,$content){
             return NULL;
         }
         $temp = explode($one,$content,2);
-        $temp = explode($two,$temp[1],2);
+        if(strlen($two)>0){
+            $temp = explode($two,$temp[1],2);
+            return trim($temp[0]);
+        } else {
+            return trim($temp[1]);
+        }
     } else {
         $temp = explode($two,$content,2);
+        return trim($temp[0]);
     }
-	return trim($temp[0]);
 }
 
 
