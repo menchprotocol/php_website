@@ -316,7 +316,7 @@ $config['object_statuses'] = array(
             's_name'  => 'Coaching',
             's_desc'  => 'Everything in [Do It Yourself] plus:
             
-- Build a relationship with an Industry Expert
+- Get coaching from an Industry Expert
 - 1-on-1 Chat Line & Email Support
 - Assignment Review & Feedback
 - Completion Certificate & LinkedIn Recommendation',

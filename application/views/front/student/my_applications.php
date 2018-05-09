@@ -102,7 +102,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
                         $start_unix = strtotime($classes[0]['r_start_date']);
 
-                        echo time_format($classes[0]['r_start_date'],2).' - '.trim(time_format($classes[0]['r_start_date'],2, ((count($child_intents)*7*24*3600)-(12*3600)))).' ('.count($child_intents).' Weeks)';
+                        echo time_format($classes[0]['r_start_date'],2).' - '.trim(time_format($classes[0]['r_start_date'],2, ((count($child_intents)*7*24*3600)-(12*3600)))).' ('.$child_intents[(count($child_intents)-1)]['cr_outbound_rank'].' Weeks)';
 
                     } else {
                         echo 'Dates not yet selected';
