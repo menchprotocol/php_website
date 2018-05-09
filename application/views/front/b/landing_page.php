@@ -3,6 +3,7 @@
 $class_settings = $this->config->item('class_settings');
 $week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
 $child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
+$udata = $this->session->userdata('user');
 
 if($b['b_is_parent'] && count($b['c__child_intents'])>0){
     //Replace $b with the new aggregated $b
@@ -105,15 +106,15 @@ $( document ).ready(function() {
             <?php
             if($b['b_is_parent']){
 
-                foreach($b['c__child_intents'] as $b7d){
+                foreach($b['c__child_intents'] as $key=>$b7d){
 
-                    echo '<div id="c_'.$b7d['c_id'].'">';
-                    echo '<h4><a href="javascript:toggleview(\'c_'.$b7d['c_id'].'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
+                    echo '<div id="c_'.$key.'">';
+                    echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
                     if($b7d['c__estimated_hours']>0){
                         echo ' &nbsp;<i class="fal fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.format_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.format_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
                     echo '</a></h4>';
-                    echo '<div class="toggleview c_'.$b7d['c_id'].'" style="display:none;">';
+                    echo '<div class="toggleview c_'.$key.'" style="display:none;">';
                     //Display all Active Tasks:
                     $intent_count = 0;
                     if(count($b7d['c__child_intents'])>0){
@@ -183,7 +184,7 @@ $( document ).ready(function() {
                 if($admin['ba_status']==3){
                     $leader_fname = one_two_explode('', ' ', $admin['u_full_name']);
                 }
-                echo '<h4 class="userheader"><img src="'.$admin['u_image_url'].'" /> '.$admin['u_full_name'].'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
+                echo '<h4 class="userheader"><img src="'.$admin['u_image_url'].'" /> '.( $udata['u_inbound_u_id']==1281 ? ' <a href="/entities/'.$admin['u_id'].'/modify">'.$admin['u_full_name'].' <i class="fas fa-cog"></i></a>' : $admin['u_full_name'] ).'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
                 echo '<p id="u_bio">'.$admin['u_bio'].'</p>';
                 
                 //Any languages other than English?

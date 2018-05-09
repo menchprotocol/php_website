@@ -80,6 +80,8 @@ if(count($admissions)>0 && is_array($admissions)){
                 echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fas fa-dot-circle"></i> '.$bs[0]['c_outcome'].'</b></p>';
                 //Show date:
                 echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar"></i> ';
+
+                $start_unix = 0; //See if we have a start date
                 if(isset($bs[0]['b_is_parent']) && $bs[0]['b_is_parent']){
 
                     //Should have some child Bootcamps:
@@ -98,15 +100,24 @@ if(count($admissions)>0 && is_array($admissions)){
                             'r.r_id' => $child_intents[0]['ru_r_id'],
                         ));
 
+                        $start_unix = strtotime($classes[0]['r_start_date']);
+
                         echo time_format($classes[0]['r_start_date'],2).' - '.trim(time_format($classes[0]['r_start_date'],2, ((count($child_intents)*7*24*3600)-(12*3600)))).' ('.count($child_intents).' Weeks)';
+
                     } else {
                         echo 'Dates not yet selected';
                     }
 
                 } elseif(isset($bs[0]['this_class'])) {
+
+                    $start_unix = strtotime($bs[0]['this_class']['r_start_date']);
+
                     echo time_format($bs[0]['this_class']['r_start_date'],2).' - '.trim(time_format($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
+
                 } else {
+
                     echo 'Not Selected';
+
                 }
                 echo '</p>';
 
@@ -136,7 +147,12 @@ if(count($admissions)>0 && is_array($admissions)){
 
                 //Fetch the Child Bootcamp ID:
                 echo '<ul class="child_admissions">';
+                $admissions_displayed = array(); //There might be duplicate admissions in $child_intents IF the instructor repeats the same Bootcamp more than once because of the join query. I am not good with queries so will weave out the duplicates here...
                 foreach($child_intents as $child_admission){
+                    if(in_array($child_admission['cr_outbound_rank'],$admissions_displayed)){
+                        continue;
+                    }
+                    array_push($admissions_displayed,$child_admission['cr_outbound_rank']);
                     echo '<li>';
                     echo status_bible('ru',$child_admission['ru_status'],1,'right');
                     echo ' Week '.$child_admission['cr_outbound_rank'].': '.$child_admission['c_outcome'];
@@ -152,9 +168,9 @@ if(count($admissions)>0 && is_array($admissions)){
             echo '<div class="admission_footer">';
                 echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span>';
                 echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-dot-circle"></i> Bootcamp Overview</a>';
-                if($admission['ru_status']==0){
+                if(in_array($admission['ru_status'],array(0,4)) && (!$start_unix || $start_unix>time())){
                     //They can still withdraw their application:
-                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
+                    echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" title="'.$start_unix.'" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';
                 }
             echo '</div>';
 

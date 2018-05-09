@@ -28,4 +28,4 @@ $lang['obj_fs_name'] = 'Facebook Page Admin';
 //None Database Objects:
 $lang['obj_ex_name'] = 'Intent Completion Rule';
 $lang['obj_df_name'] = 'Bootcamp Difficulty Level';
-$lang['obj_rs_name'] = 'Support Package';
+$lang['obj_rs_name'] = 'Support Framework';

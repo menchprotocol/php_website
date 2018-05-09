@@ -220,13 +220,15 @@ class Cron extends CI_Controller {
 
         //Define weights:
         $score_weights = array(
+            'u_inbound_u_id' => 0, //Child entities are just containers, no score on the link
+
             'e_outbound_u_id' => 1, //Engagement initiator
             'e_inbound_u_id' => 1, //Engagement recipient
-            'u_inbound_u_id' => 2, //Child entities
-            'c_inbound_u_id' => 13, //Intent creator
-            'ru_outbound_u_id' => 21, //Active Student
-            'ba_outbound_u_id' => 55, //Bootcamp team member
-            't_inbound_u_id' => 233, //Paid student
+
+            'ru_outbound_u_id' => 13, //Admissions
+            'c_inbound_u_id' => 21, //Active Intents
+            't_inbound_u_id' => 55, //Transactions
+            'ba_outbound_u_id' => 233, //Bootcamp team member
         );
 
         //Fetch child entities:
@@ -808,7 +810,7 @@ class Cron extends CI_Controller {
                 if(count($msg['b_data'])>0){
                     $message .= '🎯 '.$msg['b_data']['c_outcome']."\n";
                 }
-                $message .= '💡 Premium Support Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
+                $message .= '💡 Coaching Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
                     $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_full_name'];
                 }

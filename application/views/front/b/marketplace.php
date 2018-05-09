@@ -61,7 +61,7 @@ if(count($bs)>0){
             //echo status_bible('df',$b['b_difficulty_level'],0,'top').' ';
         }
 
-        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.$b['c__child_count'].' Task'.show_s($b['c__child_count']).' totalling '.format_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.show_s($b['b__week_count']).' Bootcamp"><i class="fal fa-clock"></i> '.format_hours($b['c__estimated_hours'],true).' IN '.$b['b__week_count'].' Week'.show_s($b['b__week_count']).'</span>';
+        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.format_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.show_s($b['b__week_count']).' Bootcamp"><i class="fal fa-clock"></i> '.format_hours($b['c__estimated_hours'],true).' IN '.$b['b__week_count'].' Week'.show_s($b['b__week_count']).'</span>';
 
         echo '</h6>';
 

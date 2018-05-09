@@ -494,7 +494,7 @@ function echo_price($b,$support_level=1,$return_double=false,$aggregate_prices=t
     }
 
 
-    //Only DIY package:
+    //Only DIY:
     if($return_double){
 
         return $price;
@@ -1123,7 +1123,7 @@ function echo_score($score){
     if(!$score){
         return false;
     }
-    return '<span class="title-sub" style="text-transform:none;" data-toggle="tooltip" data-placement="top" title="Calculated based on total engagement quantity/quality"><span class="slim-time">'.format_big_num($score).'</span> <i class="fas fa-badge"></i></span>';
+    return '<span class="title-sub" style="text-transform:none;" data-toggle="tooltip" data-placement="top" title="Engagement Score"><span class="slim-time">'.format_big_num($score).'</span> <i class="fas fa-badge"></i></span>';
 }
 
 function aggregate_field($input_array,$field){
@@ -1170,7 +1170,7 @@ function copy_intent($u_id,$intent,$c_id){
         )),
     ));
 
-    //Return full package:
+    //Return everything:
     $new_intents = $CI->Db_model->cr_outbound_fetch(array(
         'cr.cr_id' => $intent_relation['cr_id'],
     ));
@@ -1465,7 +1465,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <i class="fal fa-clock"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. (Average '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day)');
+        array_unshift($pre_req_array, 'Commitment to invest <i class="fal fa-clock"></i> <b>'.format_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.show_s($week_count).'</b> anytime that works best for you. This is an average of '.format_hours($b['c__estimated_hours']/($week_count*7)) .' per day.');
     }
     return $pre_req_array;
 }
@@ -1749,7 +1749,6 @@ function b_progress($b){
      *******************************/
 
     if(!$b['b_is_parent']){
-        //Offer Classroom Package?
         if($b['b_p2_max_seats']>0){
             $estimated_minutes = 15;
             $progress_possible += $estimated_minutes;
@@ -1840,7 +1839,7 @@ function echo_r($b,$class,$append_class=null){
     echo '<span class="pull-right">';
     if($class['r__current_admissions']>0){
 
-        //How many students, if any, are enrolled in support packages?
+        //How many students, if any, are enrolled in Support Frameworks?
         echo '<a href="#class-'.$class['r_id'].'" onclick="load_class('.$class['r_id'].')" class="badge badge-primary" style="text-decoration: none;">'.$class['r__current_admissions'].' <i class="fas fa-chevron-right"></i></a>';
 
     } else {

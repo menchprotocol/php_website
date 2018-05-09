@@ -442,7 +442,7 @@ function b_save_settings(){
                 <div style="margin:0 0 5px 30px;">Universal Price: <b>$<?= $pm['p2_rates'][0] ?></b> per Student per Week</div>
             <?php } ?>
 
-            <!-- Disabled for now as we only have a single pricing option for Classroom Package -->
+            <!-- Disabled for now as we only have a single pricing for Coaching -->
             <div class="form-group label-floating <?= (count($pm['p2_rates'])<=1 ? 'hidden' : '') ?>">
                 <select id="b_p2_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                     <?php

@@ -42,8 +42,8 @@ function move_ui(adjustment){
             }
 
 
-            //Load possible dates based on their support package:
-            $( "#select_dates" ).html('<img src="/img/round_load.gif" class="loader" /> Checking Available Dates...');
+            //Load possible dates based on their Support Framework:
+            $( "#select_dates" ).html('<img src="/img/round_load.gif" class="loader" /> Loading Available Dates...');
 
             $.post("/api_v1/ru_date_selector", {
                 ru_id:<?= $ru_id ?>,
@@ -74,7 +74,7 @@ function move_ui(adjustment){
                 //Payment is required:
                 $('#btn_next a').html('CONFIRM & PAY &nbsp;[$'+support_price+'] &nbsp;&nbsp;<i class="fas fa-chevron-right"></i>');
                 $('#payment_method').html('<span id="white_paypal"><img src="/img/paypal.png" /></span>');
-                $('#outcome_guarantee').html(' (<a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Tuition Reimbursement Guarantee <i class="fas fa-external-link-square"></i></a>)');
+                $('#outcome_guarantee').html(' with <a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Mench Outcome Guarantee <i class="fas fa-external-link-square"></i></a>');
 
             } else {
                 //This is a FREE Class:
@@ -184,7 +184,7 @@ $(document).ready(function() {
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="review_prerequisites">
     <p>Welcome <?= one_two_explode('',' ', $b['u_full_name']) ?> 👋​</p>
-    <p>Before we welcome you to this Bootcamp, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to [<?= $b['c_outcome'] ?>]:</p>
+    <p>Before we welcome you on-board, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to <?= strtolower($b['c_outcome']) ?>:</p>
     <ul style="list-style: decimal;">
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
@@ -193,7 +193,7 @@ $(document).ready(function() {
 	?>
     </ul>
     <br />
-    <p>Click "Next" if you meet all prerequisites OR if you believe you can meet them before you start this Bootcamp.</p>
+    <p>Click [Next] if you meet all prerequisites.</p>
     <p>If not, you can <a href="/"><b>choose another Bootcamp &raquo;</b></a></p>
 	<br />
 </div>
@@ -205,16 +205,15 @@ $(document).ready(function() {
 
 <div class="wizard-box" id="price_selection">
 
-    <p>Choose a <?= $this->lang->line('obj_rs_name') ?> that's right for you:</p>
+    <p>Choose a <?= strtolower($this->lang->line('obj_rs_name')) ?> that's right for you:</p>
 
-    <div class="radio pricing_block">
+    <div class="radio pricing_block" style="margin:20px 0 15px;">
         <label>
-            <input type="radio" id="p_selection_1" data-price="<?= echo_price($b,1, true) ?>" name="p_selection" value="1" />
-            <b id="p_name_1"><i class="<?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;"></i> <?= $status_rs[1]['s_name'] ?></b> &nbsp;[<b id="p_price_1"><?= echo_price($b,1) ?></b>]
+            <input type="radio" id="p_selection_1" data-price="0" name="p_selection" value="1" />
+            <b id="p_name_1"><i class="<?= $status_rs[1]['s_mini_icon'] ?>" style="margin:0 5px;"></i> <?= $status_rs[1]['s_name'] ?></b> &nbsp;[<b id="p_price_1">Free</b>]
             <p style="margin-left:30px;"><?= nl2br($status_rs[1]['s_desc']) ?></p>
         </label>
     </div>
-
 
     <?php if($b['b_p2_max_seats']>0){ ?>
 
@@ -223,6 +222,7 @@ $(document).ready(function() {
                 <input type="radio" id="p_selection_2" data-price="<?= echo_price($b,2, true) ?>" name="p_selection" value="2" />
                 <b id="p_name_2"><i class="<?= $status_rs[2]['s_mini_icon'] ?>" style="margin:0 1px;"></i> <?= $b['b_p2_weeks'] .' Week'.show_s($b['b_p2_weeks']).' of '.$status_rs[2]['s_name'] ?></b> &nbsp;[<b id="p_price_2"><?= echo_price($b,2) ?></b>]<?php /* <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b> */ ?>
                 <p style="margin-left:30px;"><?= nl2br($status_rs[2]['s_desc']) ?></p>
+                <p><i class="fas fa-comment-alt-smile"></i> All our coaching packages offer the <b>Mench Outcome Guarantee</b> which means we promise you will <?= strtolower($b['c_outcome']) ?> so long that you complete all <?= ( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ) ?> tasks before the end of this <?= $b['b__week_count'].' week' ?> Bootcamp. If not, we willl give you a full refund. <a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Learn more <i class="fas fa-external-link-square"></i></a></p>
             </label>
         </div>
 
@@ -251,7 +251,7 @@ $(document).ready(function() {
 
 <div class="wizard-box" id="date_selection">
 
-    <p>Choose your start date for this <?= $b['b__week_count'] ?> week Bootcamp:</p>
+    <p>Choose your dates for this <?= $b['b__week_count'] ?> week Bootcamp:</p>
     <div id="select_dates"></div>
     <br /><br /><br />
 
@@ -260,12 +260,11 @@ $(document).ready(function() {
 
 
 <div class="wizard-box">
-    <p>Review and confirm admission details:</p>
+    <p>Review and confirm your admission details:</p>
     <ul>
         <li>Target Outcome: <b><?= $b['c_outcome'] ?></b></li>
-        <li>Duration: <b><?= $b['b__week_count'].' Week'.show_s($b['b__week_count']) ?></b></li>
-        <li>Dates: <b id="class_dates"></b></li>
-        <li>Commitment: <b><?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' week'.show_s($b['b__week_count']) ?></b> (<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day)</li>
+        <li>Your Commitment: <b><?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' week'.show_s($b['b__week_count']) ?> (<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day)</b></li>
+        <li>Class Dates: <b id="class_dates"></b></li>
         <li><?= $this->lang->line('obj_rs_name') ?>: <b id="confirm_support"></b></li>
         <li>Tuition: <b id="confirm_price"></b><span id="outcome_guarantee"></span></li>
     </ul>

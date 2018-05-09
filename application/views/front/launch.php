@@ -6,7 +6,7 @@ $udata = $this->session->userdata('user');
 
 <div class="row text-center">
     <div class="col-md-12">
-        <h2 class="title" style="margin:60px 0 40px 0;">Launch Weekly Bootcamps with our:</h2>
+        <h2 class="title" style="margin:60px 0 40px 0;">Why Mench?</h2>
     </div>
 </div>
 
@@ -23,14 +23,14 @@ $udata = $this->session->userdata('user');
         <div class="info">
             <div class="icon icon-default mtweak"><i class="fas fa-microchip"></i></div>
             <h3 class="info-title">Technology</h3>
-            <p>Our technology is designed from the ground up to maximize student engagement. We automate notifications and reminders to help you take more of your students across the finish line.</p>
+            <p>Our technology is designed from the ground up to maximize student engagements. MenchBot automates some parts of your conversation so you can take more students across the finishing line.</p>
         </div>
     </div>
     <div class="col-md-4">
         <div class="info">
             <div class="icon icon-default mtweak"><i class="fas fa-handshake-alt"></i></div>
             <h3 class="info-title">Support</h3>
-            <p>We work closely with our partner instructors to share best-practices for organizing their expertise into an effective "Action Plan". We also help with topic ideation and content sourcing.</p>
+            <p>We work closely with our partner instructors to share best-practices for organizing their expertise into an effective "Action Plan". We share everything you need to know to build an amazing Bootcamp.</p>
         </div>
     </div>
 </div>
@@ -49,7 +49,7 @@ $udata = $this->session->userdata('user');
 
 		<div class="row">
 			<div class="col-md-12">
-				<h2 class="title">Get started as easy as:</h2>
+				<h2 class="title">How it works?</h2>
 			</div>
 		</div>
 		
@@ -72,7 +72,7 @@ $udata = $this->session->userdata('user');
 				<div class="info">
 					<div class="icon icon-default mtweak"><i class="fas fa-usd-circle"></i></div>
 					<h3 class="info-title">3. Earn</h3>
-					<p>Students join your Classes each week and choose between Solo, Classroom or Tutoring packages. They may also upgrade at any time. We transfer your earnings via Paypal on a weekly basis.</p>
+					<p>Students join your Classes each week and can complete everything on their own or choose to build a deeper relationship with you and your coaching team. They may also upgrade at any time. We transfer your earnings via Paypal on a weekly basis.</p>
 				</div>
 			</div>
 		</div>
@@ -85,7 +85,7 @@ $udata = $this->session->userdata('user');
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="title" style="margin-top:50px;">Mench partners with:</h2>
+                    <h2 class="title" style="margin-top:50px;">Who is it for?</h2>
                 </div>
             </div>
 

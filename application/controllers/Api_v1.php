@@ -478,7 +478,7 @@ class Api_v1 extends CI_Controller {
 
 
         //Now loadup the dates based on Class:
-        echo '<option value="">Choose Start Date...</option>';
+        echo '<option value="">Choose Class Dates...</option>';
 
         if($admissions[0]['b_is_parent']){
 
@@ -536,7 +536,7 @@ class Api_v1 extends CI_Controller {
                         $seats_available = $b7d['b_p2_max_seats'] - count($this->Db_model->ru_fetch(array(
                             'r.r_id'	       => $classes[0]['r_id'],
                             'ru.ru_status >='  => 4, //Joined Students
-                            'ru.ru_p2_price >' => 0, //They have premium support
+                            'ru.ru_p2_price >' => 0, //They have Coaching
                         )));
                         if(!$seats_available){
                             $not_available_reason = 'Sold Out';
@@ -569,11 +569,11 @@ class Api_v1 extends CI_Controller {
 
                 if($_POST['support_level']>1){
 
-                    //Student wants premium support, see if its available for this week:
+                    //Student wants Coaching, see if its available for this week:
                     $seats_available = $admissions[0]['b_p2_max_seats'] - count($this->Db_model->ru_fetch(array(
                         'r.r_id'	       => $class['r_id'],
                         'ru.ru_status >='  => 4, //Joined Students
-                        'ru.ru_p2_price >' => 0, //They have premium support
+                        'ru.ru_p2_price >' => 0, //They have Coaching
                     )));
 
                     $instructor_has_off = (strlen($admissions[0]['b__admins'][0]['u_weeks_off'])>0 && in_array($class['r_start_date'],unserialize($admissions[0]['b__admins'][0]['u_weeks_off'])));
@@ -954,7 +954,7 @@ class Api_v1 extends CI_Controller {
 
             //Attempt to withdraw user:
             $admissions = $this->Db_model->ru_fetch(array(
-                'ru.ru_status'  => 0, //Initiated or higher as long as Bootcamp is running!
+                'ru.ru_status <='  => 4, //Initiated or higher as long as Bootcamp is running!
                 'ru.ru_outbound_u_id'	=> $_POST['u_id'],
                 'ru.ru_id'	    => $_POST['ru_id'],
             ));
@@ -965,6 +965,9 @@ class Api_v1 extends CI_Controller {
                 $this->Db_model->ru_update( $_POST['ru_id'] , array(
                     'ru_status' => -2,
                 ));
+
+                //Also withdraw from any potential child admissions:
+                $this->db->query("UPDATE v5_class_students SET ru_status=-2 WHERE ru_parent_ru_id=".$_POST['ru_id']);
 
                 //Log Engagement:
                 $this->Db_model->e_create(array(
@@ -2103,7 +2106,6 @@ class Api_v1 extends CI_Controller {
 	        'e_cr_id' => $relation['cr_id'],
 	    ));
 
-	    //Fetch full link package:
 	    $relations = $this->Db_model->cr_outbound_fetch(array(
 	        'cr.cr_id' => $relation['cr_id'],
 	    ));
@@ -2319,7 +2321,6 @@ class Api_v1 extends CI_Controller {
 
 
 
-        //Fetch full OUTBOUND link package:
 	    $relations = $this->Db_model->cr_outbound_fetch(array(
 	        'cr.cr_id' => $relation['cr_id'],
 	    ));

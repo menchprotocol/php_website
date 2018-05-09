@@ -157,7 +157,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle' : 'fa-folder-open' )+'"></i> '+ suggestion._highlightResult.alg_name.value + ' <i class="fas '+( parseInt(suggestion.b_status)==3 ? 'fa-bullhorn' : 'fa-link' )+'"></i>' + ( parseInt(suggestion.b_old_format)==1 ? ' <i class="fas fa-lock"></i>' : '' );
+                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle' : 'fa-folder-open' )+'"></i> '+ suggestion.alg_name;
                 },
             }
         },
@@ -179,7 +179,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas fa-at"></i> '+ suggestion._highlightResult.alg_name.value + ' ('+suggestion.u_inbound_name+')';
+                    return '<i class="fas fa-at"></i> '+ suggestion.alg_name + ' ('+suggestion.u_inbound_name+')';
                 },
             }
         }

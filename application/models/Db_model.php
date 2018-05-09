@@ -568,6 +568,8 @@ WHERE ru.ru_status >= 4
         foreach($order_columns as $key=>$value){
             $this->db->order_by($key,$value);
         }
+
+        $this->db->order_by('i_rank');
         $q = $this->db->get();
         return $q->result_array();
     }

@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.3',
+    'version' => '3.31',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -306,30 +306,25 @@ $config['object_statuses'] = array(
     'rs' => array(
         1 => array(
             's_name'  => 'Do It Yourself',
-            's_desc'  => 'Join Online Classroom & receive:
-            
-- Step by Step Action Plan
+            's_desc'  => '- Step by Step Action Plan
 - Classmates Leaderboard
-- Notification & Reminders
-- Optional Peer Networking',
+- Peer Chat & Networking
+- Notification & Reminders',
             's_mini_icon' => 'fas fa-wrench',
         ),
         2 => array(
-            's_name'  => 'Premium Support',
-            's_desc'  => 'Everything in Do It Yourself plus:
+            's_name'  => 'Coaching',
+            's_desc'  => 'Everything in [Do It Yourself] plus:
             
-- Mench Outcome Guarantee
-- Expert Chat-Line or Email Support
+- Build a relationship with an Industry Expert
+- 1-on-1 Chat Line & Email Support
 - Assignment Review & Feedback
-- Weekly Group Coaching Calls
-- Lifetime Action Plan Access
-- Certificate of Completion
-- LinkedIn Recommendation',
-            's_mini_icon' => 'fas fa-shield-check',
+- Completion Certificate & LinkedIn Recommendation',
+            's_mini_icon' => 'fas fa-whistle',
         ),
         3 => array(
             's_name'  => '1-on-1 Tutoring',
-            's_desc'  => 'Everything in Premium Support plus:
+            's_desc'  => 'Everything in Coaching plus:
             
 - 50 Minutes of 1-on-1 Tutoring per Week',
             's_mini_icon' => 'fas fa-handshake-alt',
