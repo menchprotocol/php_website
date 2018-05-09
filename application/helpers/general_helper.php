@@ -2339,11 +2339,18 @@ function curl_html($url,$return_breakdown=false){
 
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $last_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        $url_parts = parse_url(( strlen($last_url)<1 || $last_url==$url ? $url : $last_url ));
+        $body_html = substr($response, $header_size);
+
         return array(
             'httpcode' => $httpcode,
-            'body' => substr($response, $header_size),
+            'is_broken_link' => ( in_array($httpcode,array(0,404)) ? 1 : 0 ),
+            'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
+            //'page_html' => $body_html, //No need for now as we only need the title
             'header' => substr($response, 0, $header_size),
-            'last_url' => curl_getinfo($ch, CURLINFO_EFFECTIVE_URL),
+            'last_url' => $last_url,
+            'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
             'content_type' => one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE)),
         );
 

@@ -24,19 +24,6 @@ class Adjust extends CI_Controller {
 
         boost_power();
 
-        echo '<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<link rel="icon" type="image/png" href="/img/bp_16.png">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Links Analysis</title>
-	<meta content=\'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\' name=\'viewport\' />
-<script src="/js/console/jquery-3.1.0.min.js" type="text/javascript"></script>
-</head>
-<body style="padding:20px;">';
-
-
         $content = $this->Db_model->i_fetch(array(
             'i_id >' => $smallest_i_id, //Published in any form
             'i_status >' => 0, //Published in any form
@@ -49,28 +36,19 @@ class Adjust extends CI_Controller {
         foreach($content as $key=>$i){
 
             $curl = curl_html($i['i_url'],true);
-            $url_parts = parse_url(( $curl['last_url']==$i['i_url'] ? $i['i_url'] : $curl['last_url'] ));
-            $i_domain = strtolower(str_replace('www.','',$url_parts['host']));
-            $i_url_title = one_two_explode('>','',one_two_explode('<title','</title',$curl['body']));
-
 
             //Update Message:
             $this->Db_model->i_update( $i['i_id'] , array(
                 'i_http_code' => $curl['httpcode'],
                 'i_final_url' => ( $curl['last_url']==$i['i_url'] ? null : $curl['last_url'] ),
-                'i_domain' => $i_domain,
-                'i_url_title' => $i_url_title,
+                'i_domain' => $curl['last_domain'],
+                'i_url_title' => $curl['page_title'],
                 'i_content_type' => $curl['content_type'],
             ));
 
-            echo '<div>#'.($key+1).' ID '.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.$i['i_url'].'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').' ('.$i_domain.') ('.$i_url_title.')</div>';
-            echo '<div>Code ['.$curl['httpcode'].'] <a href="javascript:$(\'#i'.$i['i_id'].'\').toggle();">Toggle Body</a> '.$curl['header'].'</div>';
-            echo '<div id="i'.$i['i_id'].'" style="display:none; border:1px solid #000; padding:10px; margin:10px; background-color:#EFEFEF; font-size:10px; font-family:monospace;">'.htmlentities($curl['body']).'</div>';
-            echo '<br /><hr /><br />';
+            echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' <span title="'.stripslashes($curl['header']).'">['.$curl['httpcode'].']</span> id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : 'NO TITLE' ).'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').' ['.$curl['last_domain'].']</div>';
 
         }
-
-        echo '</body></html>';
 
     }
 
