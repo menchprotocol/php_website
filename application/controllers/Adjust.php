@@ -22,6 +22,8 @@ class Adjust extends CI_Controller {
 
     function i($limit=10,$smallest_i_id=0){
 
+        boost_power();
+
         echo '<!doctype html>
 <html lang="en">
 <head>

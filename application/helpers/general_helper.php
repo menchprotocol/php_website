@@ -2319,6 +2319,7 @@ function fb_time($unix_time){
 }
 
 function curl_html($url,$return_breakdown=false){
+
 	$ch = curl_init($url);
     curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
     curl_setopt($ch, CURLOPT_REFERER, "https://www.mench.com");
@@ -2336,6 +2337,7 @@ function curl_html($url,$return_breakdown=false){
     $response = curl_exec($ch);
 
 	if($return_breakdown){
+
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         return array(
@@ -2345,6 +2347,7 @@ function curl_html($url,$return_breakdown=false){
             'last_url' => curl_getinfo($ch, CURLINFO_EFFECTIVE_URL),
             'content_type' => one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE)),
         );
+
     } else {
         //Simply return the response:
         return $response;
