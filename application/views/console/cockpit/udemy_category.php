@@ -17,7 +17,7 @@ $links = array(
     'il_linkedin' => '<i class="fab fa-linkedin"></i>',
     'il_twitter' => '<i class="fab fa-twitter"></i>',
     'il_facebook' => '<i class="fab fa-facebook"></i>',
-    'il_website' => '<i class="fab fa-chrome"></i>',
+    'il_website' => '<i class="fas fa-link"></i>',
     'il_url' => '<img src="https://www.udemy.com/staticx/udemy/images/v6/apple-touch-icon-precomposed.png" width="16" style="margin-top:-2px;" />', //The Udemy URL
 );
 

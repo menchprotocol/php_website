@@ -58,7 +58,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         <table style="width: 100%; border:0; padding:0; margin:0;">
                             <tr>
                                 <td style="width:40px;"><a href="/console"><img src="/img/bp_128.png" /></a></td>
-                                <td><input type="text" id="console_search" placeholder="Search Bootcamps..."></td>
+                                <td><input type="text" id="console_search" data-lpignore="true" placeholder="Search Bootcamps..."></td>
                             </tr>
                         </table>
 					</span>

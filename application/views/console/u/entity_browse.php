@@ -1,3 +1,6 @@
+<?php
+$udata = $this->session->userdata('user');
+?>
 <script>
 
 $(document).ready(function() {
@@ -50,8 +53,9 @@ if(!$inbound_u_id){
 
     //Public profiles:
     if(strlen($entity['u_website_url'])>0){
-        echo '<a href="'.$entity['u_website_url'].'" data-toggle="tooltip" title="Visit Website" target="_blank" class="entity-head-icon"><i class="fab fa-chrome"></i></a>';
+        echo '<a href="'.$entity['u_website_url'].'" target="_blank" class="entity-head-icon"><i class="fas fa-link"></i></a>';
     }
+
     $u_social_account = $this->config->item('u_social_account');
     foreach($u_social_account as $sa_key=>$sa){
         if(strlen($entity[$sa_key])>0){
@@ -59,8 +63,20 @@ if(!$inbound_u_id){
         }
     }
 
-    echo '<div>'.$entity['u_bio'].'</div>';
+    //Check last engagement ONLY IF admin:
+    if($udata['u_inbound_u_id']==1281){
 
+        //Check last engagement:
+        $last_eng = $this->Db_model->e_fetch(array(
+            '(e_inbound_u_id='.$entity['u_id'].')' => null,
+        ),1);
+
+        if(count($last_eng)>0){
+            echo ' &nbsp;<a href="/cockpit/browse/engagements?e_u_id='.$entity['u_id'].'" style="display: inline-block;" data-toggle="tooltip" data-placement="right" title="User last engaged '.time_diff($last_eng[0]['e_timestamp']).' ago. Click to see all engagements in Cockpit"><i class="fas fa-eye"></i> <b>'.time_diff($last_eng[0]['e_timestamp']).' &raquo;</b></a>';
+        }
+    }
+
+    echo '<div>'.$entity['u_bio'].'</div>';
 
     echo '</div>';
     echo '</div>';

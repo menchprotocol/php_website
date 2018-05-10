@@ -2319,6 +2319,11 @@ function fb_time($unix_time){
 
 function curl_html($url,$return_breakdown=false){
 
+    //Validate URL:
+    if(!filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
+        return false;
+    }
+
 	$ch = curl_init($url);
     curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1");
     curl_setopt($ch, CURLOPT_REFERER, "https://www.mench.com");
@@ -2328,6 +2333,8 @@ function curl_html($url,$return_breakdown=false){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_VERBOSE, 1);
     curl_setopt($ch, CURLOPT_HEADER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 8); //If site takes longer than this to connect, we have an issue!
+
     if(is_dev()){
 	    //SSL does not work on my local PC.
 	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -2343,9 +2350,8 @@ function curl_html($url,$return_breakdown=false){
         $url_parts = parse_url(( strlen($last_url)<1 || $last_url==$url ? $url : $last_url ));
         $body_html = substr($response, $header_size);
         $content_type = one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-        $file_type = 'text';
 
-        //Now see if this is a specific file type:
+        // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
         // Video File URL: https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
         // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
@@ -2353,18 +2359,27 @@ function curl_html($url,$return_breakdown=false){
 
         if(substr_count($content_type,'application/')==1){
             $file_type = 'file';
+        } elseif(substr_count($content_type,'audio/')==1){
+            $file_type = 'audio';
+        } elseif(substr_count($content_type,'video/')==1){
+            $file_type = 'video';
+        } elseif(substr_count($content_type,'image/')==1){
+            $file_type = 'image';
+        } else {
+            $file_type = 'text';
         }
 
         return array(
+            //used all the time, also when updating en entity:
+            'url_is_broken' => ( in_array($httpcode,array(0,404)) ? 1 : 0 ),
             'httpcode' => $httpcode,
-            'is_broken_link' => ( in_array($httpcode,array(0,404)) ? 1 : 0 ),
-            'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
-            //'page_html' => $body_html, //No need for now as we only need the title
-            'header' => substr($response, 0, $header_size),
             'file_type' => $file_type,
-            'last_url' => $last_url,
-            'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
+            'last_url' => ( !$last_url || $last_url==$url ? null : $last_url ),
             'content_type' => $content_type,
+
+            //Used upon creation only:
+            'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
+            'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
         );
 
     } else {

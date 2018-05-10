@@ -15,21 +15,53 @@ class Bot extends CI_Controller {
     }
 
 
-    function ad($ru_id=1539){
 
-        $admissions = $this->Db_model->remix_admissions(array(
-            'ru.ru_id'	=> $ru_id,
-        ));
+    function url($smallest_i_id=0,$limit=1){
 
-        if($admissions[0]['b_is_parent'] && count($admissions[0]['c__child_intents'])>0){
+        //Show custom input
+        echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
 
-            //We need to aggregate this Bootcamp
-            $admissions[0] = b_aggregate($admissions[0]);
+        if(isset($_GET['url'])){
 
+            $curl = curl_html($_GET['url'],true);
+            foreach($curl as $key=>$value){
+                echo '<div style="color:'.( $key=='is_broken_link' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': '.$value.'</div>';
+            }
+
+        } else {
+
+            boost_power();
+
+            $content = $this->Db_model->i_fetch(array(
+                'i_id >' => $smallest_i_id, //Published in any form
+                'i_status >' => 0, //Published in any form
+                'i_media_type' => 'text',
+                'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
+            ), $limit, array(
+                'i_id' => 'ASC',
+            ));
+
+            foreach($content as $key=>$i){
+
+                $curl = curl_html($i['i_url'],true);
+
+                //Update Message:
+                $this->Db_model->i_update( $i['i_id'] , array(
+                    'i_http_code' => $curl['httpcode'],
+                    'i_domain' => $curl['last_domain'],
+                    'i_url_title' => $curl['page_title'],
+                    'i_content_type' => $curl['content_type'],
+                    'i_detected_type' => $curl['file_type'],
+                ));
+
+                echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' ['.$curl['httpcode'].'] id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : $i['i_url'] ).'</a>'.( $curl['last_url'] ? ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>' : '' ).' ['.$curl['last_domain'].']</div>';
+
+            }
         }
 
-        echo_json($admissions[0]);
     }
+
+
 
     function update_all($fp_id){
 

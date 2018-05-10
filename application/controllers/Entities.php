@@ -143,8 +143,12 @@ class Entities extends CI_Controller {
         }
 
         $u_update = array(
+
+            //Email updates:
+            'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
+            'u_paypal_email' => ( isset($_POST['u_paypal_email']) && strlen($_POST['u_paypal_email'])>0 ? trim(strtolower($_POST['u_paypal_email'])) : null ),
+
             'u_full_name' => trim($_POST['u_full_name']),
-            'u_email' => trim(strtolower($_POST['u_email'])),
             'u_phone' => $_POST['u_phone'],
             'u_image_url' => $_POST['u_image_url'],
             'u_gender' => $_POST['u_gender'],
@@ -154,43 +158,65 @@ class Entities extends CI_Controller {
             'u_language' => join(',',$_POST['u_language']),
             'u_bio' => trim($_POST['u_bio']),
             'u_skype_username' => trim($_POST['u_skype_username']),
-            'u_paypal_email' => ( isset($_POST['u_paypal_email']) ? trim(strtolower($_POST['u_paypal_email'])) : null ),
         );
 
         //Some more checks:
         if(strlen($_POST['u_password_new'])>0 || strlen($_POST['u_password_current'])>0){
+
             //Password update attempt, lets check:
             if(strlen($_POST['u_password_new'])<=0){
                 die('<span style="color:#FF0000;">Error: Missing new password. Try again.</span>');
-            } elseif(strlen($_POST['u_password_current'])<=0){
+            } elseif(strlen($u_current[0]['u_password'])>0 && !($udata['u_inbound_u_id']==1281) && strlen($_POST['u_password_current'])<=0){
                 die('<span style="color:#FF0000;">Error: Missing current password. Try again.</span>');
-            } elseif(!(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
+            } elseif(strlen($u_current[0]['u_password'])>0 && !($udata['u_inbound_u_id']==1281) && !(md5($_POST['u_password_current'])==$u_current[0]['u_password'])){
                 die('<span style="color:#FF0000;">Error: Invalid current password. Try again.</span>');
-            } elseif($_POST['u_password_new']==$_POST['u_password_current']){
+            } elseif(strlen($u_current[0]['u_password'])>0 && !($udata['u_inbound_u_id']==1281) && $_POST['u_password_new']==$_POST['u_password_current']){
                 die('<span style="color:#FF0000;">Error: New and current password cannot be the same. Try again.</span>');
             } elseif(strlen($_POST['u_password_new'])<6){
                 die('<span style="color:#FF0000;">Error: New password must be longer than 6 characters. Try again.</span>');
             } else {
+
                 //Set password for updating:
                 $u_update['u_password'] = md5($_POST['u_password_new']);
+
                 //Reset both fields:
                 echo "<script> $('#u_password_current').val(''); $('#u_password_new').val(''); </script>";
+
             }
         }
         $warning = NULL;
 
-        //Check social links:
-        if($_POST['u_website_url']!==$u_current[0]['u_website_url']){
+        //Check primary URL:
+        if($_POST['u_website_url']!==$u_current[0]['u_website_url'] || (strlen($_POST['u_website_url'])>0 && strlen($u_current[0]['u_last_url'])==0)){
             if(strlen($_POST['u_website_url'])>0){
-                //Validate it:
-                if(filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
+
+                //Let's Validate it:
+                $curl = curl_html($_POST['u_website_url'],true);
+
+                if(!$curl){
+                    $warning .= 'Invalid Primary URL. ';
+                } elseif($curl['url_is_broken']) {
+                    $warning .= '<a href="'.$curl['last_url'].'">Primary URL</a> seems broken with http code ['.$curl['httpcode'].'] ';
+                } else{
+                    //Seems all good, let's add the data to the saving data set:
+                    $u_update['u_url_last_check'] = date("Y-m-d H:i:s"); //Timestamp of the last time it was validated
                     $u_update['u_website_url'] = $_POST['u_website_url'];
-                    echo "<script>$('#u_password_current').val('');$('#u_password_new').val('');</script>";
-                } else {
-                    $warning .= 'Invalid website URL. ';
+                    $u_update['u_last_url'] = $curl['last_url'];
+                    $u_update['u_url_http_code'] = $curl['httpcode'];
+                    $u_update['u_url_file_type'] = $curl['file_type'];
+                    $u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken
                 }
+
             } else {
+
+                //We used to have a primary URL but now its being deleted
                 $u_update['u_website_url'] = '';
+
+                //Is the last URL recorded? If not, let's save the current URL there to have it mapped to the indexed URL-related fields
+                if(strlen($u_current[0]['u_last_url'])<1){
+                    $u_update['u_last_url'] = $u_current[0]['u_website_url'];
+                }
+
             }
         }
 
