@@ -167,7 +167,7 @@ function insert_gravatar(){
             }
 
             echo '<i class="fal fa-clock" data-toggle="tooltip" data-placement="right" title="This URL was last checked on: '.time_format($entity['u_url_last_check'],0).'"></i> &nbsp;';
-            echo '<i class="fas fa-file-code" data-toggle="tooltip" data-placement="right" title="File type is ['.$entity['u_url_file_type'].'] and Website HTTP code was ['.$entity['u_url_http_code'].']"></i> &nbsp;';
+            echo '<i class="fas fa-file-code" data-toggle="tooltip" data-placement="right" title="Website HTTP code was ['.$entity['u_url_http_code'].']"></i> &nbsp;';
 
             if($entity['u_url_is_broken']==1){
                 //The previous URL was detected broken:

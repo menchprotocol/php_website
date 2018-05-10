@@ -203,7 +203,6 @@ class Entities extends CI_Controller {
                     $u_update['u_website_url'] = $_POST['u_website_url'];
                     $u_update['u_last_url'] = $curl['last_url'];
                     $u_update['u_url_http_code'] = $curl['httpcode'];
-                    $u_update['u_url_file_type'] = $curl['file_type'];
                     $u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken
                 }
 
