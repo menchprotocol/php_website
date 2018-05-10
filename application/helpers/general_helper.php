@@ -2342,6 +2342,18 @@ function curl_html($url,$return_breakdown=false){
         $last_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         $url_parts = parse_url(( strlen($last_url)<1 || $last_url==$url ? $url : $last_url ));
         $body_html = substr($response, $header_size);
+        $content_type = one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+        $file_type = 'text';
+
+        //Now see if this is a specific file type:
+        // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
+        // Video File URL: https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
+        // Image File URL: https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
+        // Reglr File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
+
+        if(substr_count($content_type,'application/')==1){
+            $file_type = 'file';
+        }
 
         return array(
             'httpcode' => $httpcode,
@@ -2349,9 +2361,10 @@ function curl_html($url,$return_breakdown=false){
             'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
             //'page_html' => $body_html, //No need for now as we only need the title
             'header' => substr($response, 0, $header_size),
+            'file_type' => $file_type,
             'last_url' => $last_url,
             'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
-            'content_type' => one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE)),
+            'content_type' => $content_type,
         );
 
     } else {

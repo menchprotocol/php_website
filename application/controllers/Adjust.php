@@ -22,32 +22,44 @@ class Adjust extends CI_Controller {
 
     function i($limit=10,$smallest_i_id=0){
 
-        boost_power();
+        echo '<div><form action=""><input type="url" name="url" value="'.@$_GET['url'].'" style="width:400px;"> <input type="submit" value="Go"></form></div>';
 
-        $content = $this->Db_model->i_fetch(array(
-            'i_id >' => $smallest_i_id, //Published in any form
-            'i_status >' => 0, //Published in any form
-            'i_media_type' => 'text',
-            'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-        ), $limit, array(
-            'i_id' => 'ASC',
-        ));
+        if(isset($_GET['url'])){
 
-        foreach($content as $key=>$i){
+            $curl = curl_html($_GET['url'],true);
+            foreach($curl as $key=>$value){
+                echo '<div>'.$key.': '.$value.'</div>';
+            }
 
-            $curl = curl_html($i['i_url'],true);
+        } else {
+            boost_power();
 
-            //Update Message:
-            $this->Db_model->i_update( $i['i_id'] , array(
-                'i_http_code' => $curl['httpcode'],
-                'i_final_url' => ( $curl['last_url']==$i['i_url'] ? null : $curl['last_url'] ),
-                'i_domain' => $curl['last_domain'],
-                'i_url_title' => $curl['page_title'],
-                'i_content_type' => $curl['content_type'],
+            $content = $this->Db_model->i_fetch(array(
+                'i_id >' => $smallest_i_id, //Published in any form
+                'i_status >' => 0, //Published in any form
+                'i_media_type' => 'text',
+                'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
+            ), $limit, array(
+                'i_id' => 'ASC',
             ));
 
-            echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' <span title="'.stripslashes($curl['header']).'">['.$curl['httpcode'].']</span> id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : 'NO TITLE' ).'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').' ['.$curl['last_domain'].']</div>';
+            foreach($content as $key=>$i){
 
+                $curl = curl_html($i['i_url'],true);
+
+                //Update Message:
+                $this->Db_model->i_update( $i['i_id'] , array(
+                    'i_http_code' => $curl['httpcode'],
+                    'i_final_url' => ( $curl['last_url']==$i['i_url'] ? null : $curl['last_url'] ),
+                    'i_domain' => $curl['last_domain'],
+                    'i_url_title' => $curl['page_title'],
+                    'i_content_type' => $curl['content_type'],
+                    'i_detected_type' => $curl['file_type'],
+                ));
+
+                echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' <span title="'.str_replace('"','',$curl['header']).'">['.$curl['httpcode'].']</span> id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : $i['i_url'] ).'</a>'.( $curl['last_url']==$i['i_url'] ? '' : ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>').' ['.$curl['last_domain'].']</div>';
+
+            }
         }
 
     }
