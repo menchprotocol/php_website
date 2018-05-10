@@ -72,7 +72,7 @@ if(!$inbound_u_id){
         ),1);
 
         if(count($last_eng)>0){
-            echo ' &nbsp;<a href="/cockpit/browse/engagements?e_u_id='.$entity['u_id'].'" style="display: inline-block;" data-toggle="tooltip" data-placement="right" title="User last engaged '.time_diff($last_eng[0]['e_timestamp']).' ago. Click to see all engagements in Cockpit"><i class="fas fa-eye"></i> <b>'.time_diff($last_eng[0]['e_timestamp']).' &raquo;</b></a>';
+            echo ' &nbsp;<a href="/cockpit/browse/engagements?e_u_id='.$entity['u_id'].'" style="display: inline-block;" data-toggle="tooltip" data-placement="right" title="User last engaged '.time_diff($last_eng[0]['e_timestamp']).' ago. Click to see all engagements"><i class="fas fa-eye"></i> <b>'.time_diff($last_eng[0]['e_timestamp']).' &raquo;</b></a>';
         }
     }
 
