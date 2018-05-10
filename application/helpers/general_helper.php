@@ -2320,7 +2320,7 @@ function fb_time($unix_time){
 function curl_html($url,$return_breakdown=false){
 
     //Validate URL:
-    if(!filter_var($_POST['u_website_url'], FILTER_VALIDATE_URL)){
+    if(!filter_var($url, FILTER_VALIDATE_URL)){
         return false;
     }
 
