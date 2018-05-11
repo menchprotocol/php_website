@@ -499,6 +499,44 @@ h5, .h5 {
 .tab-space{padding-top:0;}
 .list-group-item>.badge {float:none;}
 
+.grey-input {
+    padding: 5px 10px !important;
+}
+
+.grey-input .badge-primary {
+    margin: 0 -7px -2px 0 !important;
+    font-size:0.9em !important;
+    line-height: 130%;
+}
+
+.grey-input .form-group {
+    margin: 0;
+    padding: 0;
+}
+
+.grey-input .input-group-addon {
+    padding-right:8px;
+}
+
+
+
+.grey-input .form-control {
+    padding-left: 0;
+    margin-left: 0;
+    font-weight: 300;
+    font-size: 18px !important;
+    color: #3C4858;
+}
+
+.grey-input .form-control::placeholder {
+    padding-left: 0;
+    margin-left: 0;
+    font-weight: 300;
+    font-size: 18px !important;
+    color: #999999;
+}
+
+
 .typicalform {max-width:50%;}
 .nav-pills:not(.nav-pills-icons) > li > a {
     font-weight: bold;

@@ -69,7 +69,7 @@ function update_account(){
 
         //Social accounts:
         u_fb_username:$('#u_fb_username').val(),
-		u_website_url:$('#u_website_url').val(),
+		u_primary_url:$('#u_primary_url').val(),
 		u_linkedin_username:$('#u_linkedin_username').val(),
 		u_github_username:$('#u_github_username').val(),
 		u_twitter_username:$('#u_twitter_username').val(),
@@ -102,12 +102,9 @@ function insert_gravatar(){
 
 
 
-
-<!--
 <p style="float:right; margin-top:-75px;">
 	<a href="/logout" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="We'll miss you ​😍​"><i class="fas fa-power-off"></i><span> Logout</span></a>
 </p>
--->
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
@@ -151,19 +148,19 @@ function insert_gravatar(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Primary URL <span id="ph_u_website_url"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Primary URL <span id="ph_u_primary_url"></span></h4></div>
         <p>Start with http:// or https://</p>
-        <input type="url" class="form-control border" id="u_website_url" data-lpignore="true" maxlength="255" value="<?= $entity['u_website_url'] ?>" />
-        <script>trigger_link_watch('u_website_url','');</script>
+        <input type="url" class="form-control border" id="u_primary_url" data-lpignore="true" maxlength="255" value="<?= $entity['u_primary_url'] ?>" />
+        <script>trigger_link_watch('u_primary_url','');</script>
         <?php
-        if(strlen($entity['u_website_url'])>0 && strlen($entity['u_url_last_check'])>0){
+        if(strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0){
 
             //We have checked this before, lets show the results:
             echo '<div>';
 
-            if(strlen($entity['u_last_url'])>0){
+            if(strlen($entity['u_clean_url'])>0){
                 //We have a different Last URL:
-                echo '<a href="'.$entity['u_last_url'].'" target="_blank"><i class="fas fa-link" data-toggle="tooltip" data-placement="right" title="Click to open followed URL in new window"></i></a> &nbsp;';
+                echo '<a href="'.$entity['u_clean_url'].'" target="_blank"><i class="fas fa-link" data-toggle="tooltip" data-placement="right" title="Click to open followed URL in new window"></i></a> &nbsp;';
             }
 
             echo '<i class="fal fa-clock" data-toggle="tooltip" data-placement="right" title="This URL was last checked on: '.time_format($entity['u_url_last_check'],0).'"></i> &nbsp;';
@@ -175,6 +172,11 @@ function insert_gravatar(){
             }
 
             echo '</div>';
+
+            if($entity['u_url_type_id']==1){
+                //Embed type:
+                echo '<div>'.detect_embed_media($i['i_url'],$i['i_url'],true).'</div>';
+            }
         }
         ?>
 

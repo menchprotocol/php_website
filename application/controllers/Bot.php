@@ -25,7 +25,7 @@ class Bot extends CI_Controller {
 
             $curl = curl_html($_GET['url'],true);
             foreach($curl as $key=>$value){
-                echo '<div style="color:'.( $key=='is_broken_link' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': '.$value.'</div>';
+                echo '<div style="color:'.( $key=='is_broken_link' && intval($value) ? '#FF0000' : '#000000' ).';">'.$key.': <b>'.$value.'</b></div>';
             }
 
         } else {
@@ -50,11 +50,10 @@ class Bot extends CI_Controller {
                     'i_http_code' => $curl['httpcode'],
                     'i_domain' => $curl['last_domain'],
                     'i_url_title' => $curl['page_title'],
-                    'i_content_type' => $curl['content_type'],
-                    'i_detected_type' => $curl['file_type'],
+                    'i_detected_type' => $curl['u_url_type_id'],
                 ));
 
-                echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' ['.$curl['httpcode'].'] id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : $i['i_url'] ).'</a>'.( $curl['last_url'] ? ' ====> <a href="'.$curl['last_url'].'" target="_blank">'.$curl['last_url'].'</a>' : '' ).' ['.$curl['last_domain'].']</div>';
+                echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' ['.$curl['httpcode'].'] id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : $i['i_url'] ).'</a>'.( $curl['clean_url'] ? ' ====> <a href="'.$curl['clean_url'].'" target="_blank">'.$curl['clean_url'].'</a>' : '' ).' ['.$curl['last_domain'].']</div>';
 
             }
         }

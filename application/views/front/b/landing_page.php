@@ -205,8 +205,8 @@ $( document ).ready(function() {
                 
                 //Public profiles:
                 echo '<div class="public-profiles" style="margin-top:10px;">';
-                if(strlen($admin['u_website_url'])>0){
-                    echo '<a href="'.$admin['u_website_url'].'" target="_blank"><i class="fas fa-link"></i></a>';
+                if(strlen($admin['u_primary_url'])>0){
+                    echo '<a href="'.$admin['u_primary_url'].'" target="_blank"><i class="fas fa-link"></i></a>';
                 }
                 $u_social_account = $this->config->item('u_social_account');
                 foreach($u_social_account as $sa_key=>$sa){

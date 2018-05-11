@@ -52,8 +52,8 @@ if(!$inbound_u_id){
     echo ' <span class="obj-id">@'.$entity['u_id'].'</span>';
 
     //Public profiles:
-    if(strlen($entity['u_website_url'])>0){
-        echo '<a href="'.$entity['u_website_url'].'" target="_blank" class="entity-head-icon"><i class="fas fa-link"></i></a>';
+    if(strlen($entity['u_primary_url'])>0){
+        echo '<a href="'.$entity['u_primary_url'].'" target="_blank" class="entity-head-icon"><i class="fas fa-link"></i></a>';
     }
 
     $u_social_account = $this->config->item('u_social_account');
@@ -104,7 +104,7 @@ $is_active = null;
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
     <?php
 
-    if(count($child_entities)>0){
+    if(count($child_entities)>0 || $entity['u_id']==1326){
         echo '<li id="nav_list" '.( !$is_active ? 'class="active"' : '' ).'><a href="#list"><i class="fas fa-list-ul"></i> List ('.count($child_entities).')</a></li>';
         if(!$is_active){
             $is_active = 'list';
@@ -140,16 +140,89 @@ $is_active = null;
 
     <?php
 
-    if(count($child_entities)>0){
+    if(count($child_entities)>0 || $entity['u_id']==1326){
 
         echo '<div class="tab-pane '.( $is_active=='list' ? 'active' : '' ).'" id="tablist">';
+
         echo '<div id="list-entities" class="list-group maxout">';
         foreach($child_entities as $u){
-            echo_u($u);
+            echo echo_u($u);
         }
 
         if($entity['u__outbound_count']>count($child_entities)){
             echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
+        }
+
+        if($entity['u_id']==1326){
+            ?>
+            <script>
+
+                function add_url(){
+                    var input = $('#addinput').val();
+
+                    if(!input.length){
+                        alert('Hint: Enter a URL to create a new reference');
+                        return false;
+                    }
+
+                    $.post("/entities/entitiy_create_from_url", { u_primary_url:input }, function(data) {
+
+                        if(data.status){
+
+                            //Link has been added!
+
+                            // Remove old parent first:
+                            $( "#u_"+data.new_u_id).remove();
+
+                            // Add parent:
+                            $( "#list-entities").before(data.new_u);
+
+                        } else {
+                            //Show error:
+                            alert('ERROR: '+data.message);
+                        }
+
+                    });
+
+                }
+
+
+                $(document).ready(function() {
+                    $(window).keydown(function(event){
+                        if(event.keyCode == 10 || event.keyCode == 13) {
+                            add_url();
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
+                });
+
+            </script>
+            <div class="list-group-item list_input grey-input">
+                <div class="input-group">
+                    <div class="form-group is-empty"><input type="url" class="form-control" id="addinput" placeholder="Paste URL here..."></div>
+                    <span class="input-group-addon">
+                        <a class="badge badge-primary stnd-btn" onclick="add_url()" href="javascript:void(0);">ADD <i class="fas fa-link"></i></a>
+                    </span>
+                </div>
+            </div>
+            <?php
+        } elseif($entity['u_id']==1278 && 0){
+            ?>
+            <script>
+                function add_person(){
+
+                }
+            </script>
+            <div class="list-group-item list_input grey-input">
+                <div class="input-group">
+                    <div class="form-group is-empty"><input type="email" class="form-control" id="addinput" placeholder="newuser@email.com"></div>
+                    <span class="input-group-addon">
+                        <a class="badge badge-primary stnd-btn" onclick="add_person()" href="javascript:void(0);">ADD <i class="fas fa-user"></i></a>
+                    </span>
+                </div>
+            </div>
+            <?php
         }
 
         echo '</div>';

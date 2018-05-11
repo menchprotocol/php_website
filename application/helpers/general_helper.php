@@ -522,10 +522,11 @@ function sec_to_min($sec_int){
     return ( $min ? $min.'m' : '' ).( $sec ? ( $min ? ' ' : '' ).$sec.'s' : '' );
 }
 
-function detect_embed_media($url,$full_message,$require_image=false){
+function detect_embed_media($url,$full_message,$require_image=false,$return_array=false){
 
     //$require_image is for Finding the cover photo in YouTube content
 
+    $clean_url = null;
     $embed_code = null;
     $prefix_message = null;
 
@@ -551,26 +552,31 @@ function detect_embed_media($url,$full_message,$require_image=false){
         //This should be 11 characters!
         if(strlen($video_id)==11){
 
+            //Set the Clean URL:
+            $clean_url = 'https://www.youtube.com/watch?v='.$video_id;
+
             if($require_image){
-                return '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container" style="padding-bottom:0; margin:-28px 0px;" />';
-            }
 
-            //We might also find these in the URL:
-            $start_sec = 0;
-            $end_sec = 0;
-            if(substr_count($url,'start=')>0){
-                $start_sec = intval(one_two_explode('start=','&',$url));
-            }
-            if(substr_count($url,'end=')>0){
-                $end_sec = intval(one_two_explode('end=','&',$url));
-            }
+                $embed_code = '<img src="https://img.youtube.com/vi/'.$video_id.'/0.jpg" class="yt-container" style="padding-bottom:0; margin:-28px 0px;" />';
 
-            //Inform Student that this video has been sliced:
-            if($start_sec || $end_sec){
-                $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch this video from <b>'.($start_sec ? sec_to_min($start_sec) : 'start').'</b> to <b>'.($end_sec ? sec_to_min($end_sec) : 'end').'</b>:</div>';
-            }
+            } else {
+                //We might also find these in the URL:
+                $start_sec = 0;
+                $end_sec = 0;
+                if(substr_count($url,'start=')>0){
+                    $start_sec = intval(one_two_explode('start=','&',$url));
+                }
+                if(substr_count($url,'end=')>0){
+                    $end_sec = intval(one_two_explode('end=','&',$url));
+                }
 
-            $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+                //Inform Student that this video has been sliced:
+                if($start_sec || $end_sec){
+                    $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch this video from <b>'.($start_sec ? sec_to_min($start_sec) : 'start').'</b> to <b>'.($end_sec ? sec_to_min($end_sec) : 'end').'</b>:</div>';
+                }
+
+                $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
+            }
 
         }
 
@@ -581,6 +587,7 @@ function detect_embed_media($url,$full_message,$require_image=false){
 
         //This should be an integer!
         if(intval($video_id)==$video_id){
+            $clean_url = 'https://vimeo.com/'.$video_id;
             $embed_code = '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="https://player.vimeo.com/video/'.$video_id.'?title=0&byline=0" class="yt-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
         }
 
@@ -588,17 +595,31 @@ function detect_embed_media($url,$full_message,$require_image=false){
 
         //Seems to be Wistia:
         $video_id = trim(one_two_explode('wistia.com/medias/','?',$url));
-
+        $clean_url = trim(one_two_explode('','?',$url));
         $embed_code = '<script src="https://fast.wistia.com/embed/medias/'.$video_id.'.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding video-sorting" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_'.$video_id.' seo=false videoFoam=true" style="height:100%;width:100%">&nbsp;</div></div></div>';
 
     }
 
-    if($embed_code){
-        return trim(str_replace($url,$embed_code,$full_message));
+    if($return_array){
+
+        //Return all aspects of this parsed URL:
+        return array(
+            'status' => ( $embed_code ? 1 : 0 ),
+            'embed_code' => $embed_code,
+            'clean_url' => $clean_url,
+        );
+
     } else {
-        //Not matched with an embed rule:
-        return false;
+        //Just return the embed code:
+        if($embed_code){
+            return trim(str_replace($url,$embed_code,$full_message));
+        } else {
+            //Not matched with an embed rule:
+            return false;
+        }
     }
+
+
 
 }
 
@@ -1693,7 +1714,7 @@ function b_progress($b){
         ));
 
         //Profile counter:
-        $profile_counter = ( strlen($bl['u_website_url'])>0 ? 1 : 0 );
+        $profile_counter = ( strlen($bl['u_primary_url'])>0 ? 1 : 0 );
         $profile_counter = 1;
         $u_social_account = $CI->config->item('u_social_account');
         foreach($u_social_account as $sa_key=>$sa){
@@ -2346,10 +2367,15 @@ function curl_html($url,$return_breakdown=false){
 
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $last_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $url_parts = parse_url(( strlen($last_url)<1 || $last_url==$url ? $url : $last_url ));
+        $clean_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        $effective_url = ( strlen($clean_url)<1 || $clean_url==$url ? $url : $clean_url );
+
+        $url_parts = parse_url($effective_url);
         $body_html = substr($response, $header_size);
         $content_type = one_two_explode('',';',curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
+
+        $embed_code = detect_embed_media($effective_url, $effective_url, false, true);
+        $clean_url = ( $embed_code['status'] && !($clean_url==$embed_code['clean_url']) ? $embed_code['clean_url'] : $clean_url );
 
         // Now see if this is a specific file type:
         // Audio File URL: https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
@@ -2358,29 +2384,46 @@ function curl_html($url,$return_breakdown=false){
         // Reglr File URL: https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
 
         if(substr_count($content_type,'application/')==1){
-            $file_type = 'file';
-        } elseif(substr_count($content_type,'audio/')==1){
-            $file_type = 'audio';
-        } elseif(substr_count($content_type,'video/')==1){
-            $file_type = 'video';
+            $u_url_type_id = 5;
         } elseif(substr_count($content_type,'image/')==1){
-            $file_type = 'image';
+            $u_url_type_id = 4;
+        } elseif(substr_count($content_type,'audio/')==1){
+            $u_url_type_id = 3;
+        } elseif(substr_count($content_type,'video/')==1){
+            $u_url_type_id = 2;
+        } elseif($embed_code['status']){
+            //Embed enabled URL:
+            $u_url_type_id = 1;
         } else {
-            $file_type = 'text';
+            //Generic URL:
+            $u_url_type_id = 0;
         }
 
-        return array(
+        $return_array = array(
             //used all the time, also when updating en entity:
+            'input_url' => $url,
             'url_is_broken' => ( in_array($httpcode,array(0,404)) ? 1 : 0 ),
-            'httpcode' => $httpcode,
-            'file_type' => $file_type,
-            'last_url' => ( !$last_url || $last_url==$url ? null : $last_url ),
-            'content_type' => $content_type,
-
-            //Used upon creation only:
-            'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
+            'u_url_type_id' => $u_url_type_id,
+            'clean_url' => ( !$clean_url || $clean_url==$url ? null : $clean_url ),
             'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
+            'httpcode' => $httpcode,
+            'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
+            'embed_html_code' => $embed_code['embed_code'],
         );
+
+
+        if($return_array['url_is_broken']){
+
+            //Log this for Admin review:
+            $CI =& get_instance();
+            $CI->Db_model->e_create(array(
+                'e_json' => $return_array,
+                'e_inbound_c_id' => 6909, //URL Review
+            ));
+
+        }
+
+        return $return_array;
 
     } else {
         //Simply return the response:
@@ -2412,24 +2455,27 @@ function echo_next_u($page,$limit,$u__outbound_count){
 }
 
 function echo_u($u){
-    echo '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" class="list-group-item">';
+
+    $ui = null;
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" class="list-group-item">';
 
     //Right content:
-    echo '<span class="pull-right">';
-    echo echo_score($u['u_impact_score']);
-    echo '<a class="badge badge-primary stnd-btn" href="/entities/'.$u['u_id'].'">'.( $u['u__outbound_count']>0 ? format_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
-    echo '</span>';
+    $ui .= '<span class="pull-right">';
+    $ui .= echo_score($u['u_impact_score']);
+    $ui .= '<a class="badge badge-primary stnd-btn" href="/entities/'.$u['u_id'].'">'.( $u['u__outbound_count']>0 ? format_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
+    $ui .= '</span>';
 
     //Regular section:
-    echo (strlen($u['u_image_url'])>4 ? '<img src="'.$u['u_image_url'].'" class="profile-icon" />' : '');
+    $ui .= (strlen($u['u_image_url'])>4 ? '<img src="'.$u['u_image_url'].'" class="profile-icon" />' : '');
     if(strlen($u['u_bio'])>0){
-        echo '<span data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
+        $ui .= '<span data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
     } else {
-        echo $u['u_full_name'];
+        $ui .= $u['u_full_name'];
     }
 
+    $ui .= '</div>';
 
-    echo '</div>';
+    return $ui;
 }
 
 

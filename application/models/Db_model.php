@@ -1812,8 +1812,8 @@ WHERE ru.ru_status >= 4
                 $new_item['alg_keywords'] = $item['u_bio'];
 
                 //Additional information to tag along:
-                if(strlen($item['u_website_url'])>0){
-                    $new_item['alg_keywords'] .= ' '.$item['u_website_url'];
+                if(strlen($item['u_primary_url'])>0){
+                    $new_item['alg_keywords'] .= ' '.$item['u_primary_url'];
                 }
 
                 foreach($u_social_account as $sa_key=>$sa){

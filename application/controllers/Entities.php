@@ -53,7 +53,7 @@ class Entities extends CI_Controller {
         ), array('count_child'), $limit, ($page*$limit));
 
         foreach($child_entities as $u){
-            echo_u($u);
+            echo echo_u($u);
         }
 
         //Do we need another load more button?
@@ -95,6 +95,82 @@ class Entities extends CI_Controller {
         $this->load->view('console/console_header', $view_data);
         $this->load->view('console/u/entity_edit', $view_data);
         $this->load->view('console/console_footer');
+    }
+
+    function entitiy_create_from_url(){
+
+        $udata = $this->session->userdata('user');
+        $u_inbound_u_id = 1326; //Called from this entity only
+        $error_message = null;
+        $new_u = null; //Will be set if we had to create a new parent entity for domain grouping
+
+        if(!$udata){
+            $error_message = 'Session expired, login and try again';
+        } elseif(!isset($_POST['u_primary_url']) || strlen($_POST['u_primary_url'])<3){
+            $error_message = 'Missing URL';
+        } else {
+
+            //Check the URL:
+            $curl = curl_html($_POST['u_primary_url'],true);
+
+            //Make sure this URL does not exist:
+            $dup_urls = $this->Db_model->u_fetch(array(
+                '(  u_primary_url LIKE \'%'.$_POST['u_primary_url'].'%\' OR u_clean_url LIKE \'%'.$_POST['u_primary_url'].'%\'  )' => null,
+            ));
+
+
+            if(!$curl){
+                $error_message = 'Invalid Primary URL';
+            } elseif(count($dup_urls)>0){
+                $error_message = 'URL already exits at this entity: '.$dup_urls[0]['u_full_name'];
+            } elseif($curl['url_is_broken']) {
+                $error_message = 'URL Seems broken with http code ['.$curl['httpcode'].']';
+            } else {
+
+                //Check if the parent exists, if not, make it:
+                $u_domains = $this->Db_model->u_fetch(array(
+                    'u_full_name' => $curl['last_domain'],
+                ));
+
+                if(count($u_domains)==0){
+                    //Make it:
+                    $u_domains[0] = $this->Db_model->u_create(array(
+                        'u_full_name' 		=> $curl['last_domain'],
+                        'u_timezone' 		=> $fb_profile['timezone'],
+                        'u_image_url' 		=> $fb_profile['profile_pic'],
+                        'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+                        'u_language' 		=> $locale[0],
+                        'u_country_code' 	=> $locale[1],
+                        'u_cache__fp_id'    => $fp['fp_id'],
+                        'u_cache__fp_psid'  => $fp_psid,
+                        'u_inbound_u_id'    => 1304, //Prospects
+                    ));
+                }
+
+                //Seems all good, let's add the data to the saving data set:
+                //$u_update['u_url_last_check'] = date("Y-m-d H:i:s"); //Timestamp of the last time it was validated
+                //$u_update['u_primary_url'] = $_POST['u_primary_url'];
+                //$u_update['u_clean_url'] = $curl['clean_url'];
+                //$u_update['u_url_http_code'] = $curl['httpcode'];
+               // $u_update['u_url_type_id'] = $curl['u_url_type_id'];
+                //$u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken\
+
+
+                $entities = $this->Db_model->u_fetch(array(
+                    'u_id' => $u_inbound_u_id,
+                ), array('count_child'));
+
+                $new_u = echo_u($entities[0]);
+            }
+
+        }
+
+        //Let's return out findings:
+        echo_json(array(
+            'status' => ( $error_message ? 0 : 1 ),
+            'message' => $error_message,
+            'new_u' => $new_u,
+        ));
     }
 
     function entity_save_edit(){
@@ -187,35 +263,35 @@ class Entities extends CI_Controller {
         $warning = NULL;
 
         //Check primary URL:
-        if($_POST['u_website_url']!==$u_current[0]['u_website_url'] || (strlen($_POST['u_website_url'])>0 && strlen($u_current[0]['u_last_url'])==0)){
-            if(strlen($_POST['u_website_url'])>0){
+        if($_POST['u_primary_url']!==$u_current[0]['u_primary_url'] || (strlen($_POST['u_primary_url'])>0 && strlen($u_current[0]['u_clean_url'])==0)){
+            if(strlen($_POST['u_primary_url'])>0){
 
                 //Let's Validate it:
-                $curl = curl_html($_POST['u_website_url'],true);
+                $curl = curl_html($_POST['u_primary_url'],true);
 
-                if(!$curl){
+                if(!$curl) {
                     $warning .= 'Invalid Primary URL. ';
                 } elseif($curl['url_is_broken']) {
-                    $warning .= '<a href="'.$curl['last_url'].'">Primary URL</a> seems broken with http code ['.$curl['httpcode'].'] ';
-                } else{
+                    $warning .= '<a href="'.$curl['clean_url'].'">Primary URL</a> seems broken with http code ['.$curl['httpcode'].'] ';
+                } else {
                     //Seems all good, let's add the data to the saving data set:
+                    $u_update['u_primary_url'] = $_POST['u_primary_url'];
+                    $u_update['u_clean_url'] = ( $curl['clean_url'] ? $curl['clean_url'] : $_POST['u_primary_url'] );
                     $u_update['u_url_last_check'] = date("Y-m-d H:i:s"); //Timestamp of the last time it was validated
-                    $u_update['u_website_url'] = $_POST['u_website_url'];
-                    $u_update['u_last_url'] = $curl['last_url'];
                     $u_update['u_url_http_code'] = $curl['httpcode'];
-                    $u_update['u_url_file_type'] = $curl['file_type'];
-                    $u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken
+                    $u_update['u_url_is_broken'] = $curl['url_is_broken']; //Inserts as 0 but may later become 1 if cron job detects the URL is broken
+                    $u_update['u_url_type_id'] = $curl['u_url_type_id'];
                 }
 
             } else {
 
                 //We used to have a primary URL but now its being deleted
-                $u_update['u_website_url'] = '';
-
-                //Is the last URL recorded? If not, let's save the current URL there to have it mapped to the indexed URL-related fields
-                if(strlen($u_current[0]['u_last_url'])<1){
-                    $u_update['u_last_url'] = $u_current[0]['u_website_url'];
-                }
+                $u_update['u_primary_url'] = null;
+                $u_update['u_clean_url'] = null;
+                $u_update['u_url_last_check'] = null;
+                $u_update['u_url_http_code'] = null;
+                $u_update['u_url_is_broken'] = null;
+                $u_update['u_url_type_id'] = null;
 
             }
         }
