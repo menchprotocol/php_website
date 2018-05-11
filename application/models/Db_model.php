@@ -276,7 +276,7 @@ WHERE ru.ru_status >= 4
 	 ****************************** */
 	
 	function u_fetch($match_columns, $join_objects=array(), $limit_row=0, $limit_offset=0, $order_columns=array(
-        'u_impact_score' => 'DESC',
+        'u_e_score' => 'DESC',
     )){
 	    //Fetch the target entities:
 	    $this->db->select('*');
@@ -1793,7 +1793,7 @@ WHERE ru.ru_status >= 4
                 //Object specific:
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
-                $new_item['u_impact_score'] = intval($item['u_impact_score']);
+                $new_item['u_e_score'] = intval($item['u_e_score']);
 
                 if($new_item['u_inbound_u_id']>0 && !isset($inbound_names[$new_item['u_inbound_u_id']])){
                     //Fetch parent name:

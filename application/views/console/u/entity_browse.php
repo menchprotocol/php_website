@@ -42,7 +42,7 @@ if(!$inbound_u_id){
 
     //Right content:
     echo '<span class="pull-right">';
-    echo echo_score($entity['u_impact_score']);
+    echo echo_score($entity['u_e_score']);
     echo '<a class="badge badge-primary stnd-btn" onclick="load_modify('.$entity['u_id'].')" href="/entities/'.$entity['u_id'].'/modify"><i class="fas fa-cog"></i></a>';
     echo '</span>';
 

@@ -8,7 +8,7 @@ class Cron extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 
-        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron update_u_impact_score
+        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron update_u_e_score
 	}
 
 	function ping(){
@@ -213,9 +213,9 @@ class Cron extends CI_Controller {
         echo_json($stats);
     }
 
-    function update_u_impact_score($u=array()){
+    function update_u_e_score($u=array()){
 
-        //Updates u_impact_score based on number/value of connections to other intents/entities
+        //Updates u_e_score based on number/value of connections to other intents/entities
         //Cron Settings: 2 * * * 30
 
         //Define weights:
@@ -240,7 +240,7 @@ class Cron extends CI_Controller {
         $score = 0;
         foreach($entities as $u_child){
             //Addup all child sores:
-            $score += $this->update_u_impact_score($u_child);
+            $score += $this->update_u_e_score($u_child);
         }
 
         //Anything to update?
@@ -270,7 +270,7 @@ class Cron extends CI_Controller {
 
             //Update the score:
             $this->Db_model->u_update( $u['u_id'] , array(
-                'u_impact_score' => $score,
+                'u_e_score' => $score,
             ));
 
             //return the score:

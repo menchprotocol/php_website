@@ -2461,7 +2461,7 @@ function echo_u($u){
 
     //Right content:
     $ui .= '<span class="pull-right">';
-    $ui .= echo_score($u['u_impact_score']);
+    $ui .= echo_score($u['u_e_score']);
     $ui .= '<a class="badge badge-primary stnd-btn" href="/entities/'.$u['u_id'].'">'.( $u['u__outbound_count']>0 ? format_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
     $ui .= '</span>';
 
