@@ -103,7 +103,7 @@ function insert_gravatar(){
 
 
 <p style="float:right; margin-top:-75px;">
-	<a href="/logout" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="left" title="We'll miss you ​😍​"><i class="fas fa-power-off"></i><span> Logout</span></a>
+	<a href="/logout" class="btn btn-sm btn-primary"><i class="fas fa-power-off"></i><span> Logout</span></a>
 </p>
 
 
@@ -120,31 +120,17 @@ function insert_gravatar(){
 <div class="tab-content tab-space">
 
     <div class="tab-pane active" id="tabprofile">
-
-        <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Name</h4></div>
         
         <div class="row" style="margin:0 0 0 0;">
-        	<div class="col-xs-6" style="padding-left:0; padding-right:5px;">
-            	<input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
+            <div class="col-xs-6" style="margin-top:0; padding-left:0; padding-right:5px;">
+                <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
+                <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
+            </div>
+            <div class="col-xs-6" style="margin-top:0; padding:0; display:<?= ( in_array($entity['u_inbound_u_id'], array(1280,1323,1279,1307,1281,1308,1304,1282)) ? 'block' : 'none' ) ?>;">
+                <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+                <input type="email" id="u_email" data-lpignore="true" value="<?= $entity['u_email'] ?>" class="form-control border">
             </div>
         </div>
-
-
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
-        <textarea class="form-control text-edit border msg" id="u_bio" style="height:80px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
-        <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
-
-
-
-
-        <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
-        <div class="form-group label-floating is-empty">
-            <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_email'] ?>" class="form-control border">
-            <span class="material-input"></span>
-        </div>
-
-
 
 
 
@@ -164,39 +150,26 @@ function insert_gravatar(){
                 }
                 ?>
                 <span id="ph_u_primary_url"></span></h4></div>
-        <p>Start with http:// or https://</p>
         <input type="url" class="form-control border" id="u_primary_url" data-lpignore="true" maxlength="255" value="<?= $entity['u_primary_url'] ?>" />
         <script>trigger_link_watch('u_primary_url','');</script>
-        <?php
-        if($entity['u_url_type_id']==1){
-            //Embed type:
-            $primary_embed = detect_embed_media($entity['u_primary_url'],$entity['u_primary_url']);
-            echo '<div>'.( $primary_embed ? $primary_embed : detect_embed_media($entity['u_clean_url'],$entity['u_clean_url']) ).'</div>';
-        } elseif($entity['u_url_type_id']>=2){
-            //Embed type:
-            echo '<div>'.echo_direct_url($entity['u_clean_url'],$entity['u_url_type_id']).'</div>';
-        }
-        ?>
 
 
 
         <div style="display: block;">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-image"></i> Picture URL</h4></div>
-            <ul>
-                <li>Link to any URL that hosts the photo, starting with "https://"</li>
-                <?php if(strlen($entity['u_email'])>0){ ?>
-                    <li>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></a>.</li>
-                <?php } ?>
-            </ul>
+            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-image"></i>  HTTPS Picture URL <img src="<?= ( strlen($entity['u_image_url'])>0 ? $entity['u_image_url'] : '/img/bp_128.png' ) ?>" style="width: 24px; height:24px; margin-left:0;" class="profile-pic" /></h4></div>
+            <?php if(strlen($entity['u_email'])>0){ ?>
+                <p>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u></a> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></p>
+            <?php } ?>
             <div class="row" style="margin:0 0 0 0;">
-                <div class="col-xs-2" style="padding-left:0; padding-right:5px;">
-                    <img src="<?= ( strlen($entity['u_image_url'])>0 ? $entity['u_image_url'] : '/img/bp_128.png' ) ?>" class="profile-pic" />
-                </div>
-                <div class="col-xs-10" style="padding-left:5px; padding-right:0;">
-                    <input type="url" required id="u_image_url" value="<?= $entity['u_image_url'] ?>" class="form-control border">
-                </div>
+                <input type="url" required id="u_image_url" value="<?= $entity['u_image_url'] ?>" class="form-control border">
             </div>
         </div>
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
+        <textarea class="form-control text-edit border msg" id="u_bio" style="height:80px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
+        <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
+
 
 
 

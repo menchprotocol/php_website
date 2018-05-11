@@ -118,9 +118,8 @@ class Entities extends CI_Controller {
                 '(  u_primary_url LIKE \'%'.$_POST['u_primary_url'].'%\' OR u_clean_url LIKE \'%'.$_POST['u_primary_url'].'%\'  )' => null,
             ));
 
-
             if(!$curl){
-                $error_message = 'Invalid Primary URL';
+                $error_message = 'Invalid Primary URL (start with http:// or https://)';
             } elseif(count($dup_urls)>0){
                 $error_message = 'URL already exits at this entity: '.$dup_urls[0]['u_full_name'];
             } elseif($curl['url_is_broken']) {
@@ -192,7 +191,9 @@ class Entities extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Invalid ID. Try again.</span>');
         } elseif(!isset($_POST['u_full_name']) || strlen($_POST['u_full_name'])<=0){
             die('<span style="color:#FF0000;">Error: Missing First Name. Try again.</span>');
-        } elseif(strlen($u_current[0]['u_email'])>0 && (!isset($_POST['u_email']) || !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL))){
+        } elseif(strlen($_POST['u_email'])>0 && !filter_var($_POST['u_email'], FILTER_VALIDATE_EMAIL)){
+            die('<span style="color:#FF0000;">Error: Email ['.$_POST['u_email'].'] is invalid. Try again.</span>');
+        } elseif(filter_var($u_current[0]['u_email'], FILTER_VALIDATE_EMAIL) && strlen($_POST['u_email'])==0){
             die('<span style="color:#FF0000;">Error: Initial email was ['.$u_current[0]['u_email'].']. Email required once set. Try again.</span>');
         } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
             die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
@@ -200,6 +201,21 @@ class Entities extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
         } elseif(strlen($_POST['u_bio'])>$message_max){
             die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
+        }
+
+        //Adjust email:
+        $_POST['u_email'] = strtolower($_POST['u_email']);
+        $_POST['u_paypal_email'] = strtolower($_POST['u_paypal_email']);
+
+        //Do we have a new image URL? Validate it:
+        if(strlen($_POST['u_image_url'])>0 && !($u_current[0]['u_image_url']==$_POST['u_image_url'])){
+            //Make sure this is a new image:
+            $image_curl = curl_html($_POST['u_image_url'],true);
+            if($image_curl['url_is_broken']){
+                die('<span style="color:#FF0000;">Error: Image URL seems broken</span>');
+            } elseif(!($image_curl['u_url_type_id']==4)){
+                die('<span style="color:#FF0000;">Error: Image URL does not seem to be a valid image URL</span>');
+            }
         }
 
         //Make sure email is unique:
@@ -219,7 +235,6 @@ class Entities extends CI_Controller {
         }
 
         $u_update = array(
-
             //Email updates:
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
             'u_paypal_email' => ( isset($_POST['u_paypal_email']) && strlen($_POST['u_paypal_email'])>0 ? trim(strtolower($_POST['u_paypal_email'])) : null ),
@@ -270,8 +285,15 @@ class Entities extends CI_Controller {
                 //Let's Validate it:
                 $curl = curl_html($_POST['u_primary_url'],true);
 
+                //Make sure this URL does not exist:
+                $dup_urls = $this->Db_model->u_fetch(array(
+                    '( u_primary_url LIKE \'%'.$_POST['u_primary_url'].'%\' OR u_clean_url LIKE \'%'.$_POST['u_primary_url'].'%\' )' => null,
+                ));
+
                 if(!$curl) {
                     $warning .= 'Invalid Primary URL. ';
+                } elseif(count($dup_urls)>0) {
+                    $warning = 'URL already used by ['.$dup_urls[0]['u_full_name'].']';
                 } elseif($curl['url_is_broken']) {
                     $warning .= '<a href="'.$curl['clean_url'].'">Primary URL</a> seems broken with http code ['.$curl['httpcode'].'] ';
                 } else {
@@ -332,7 +354,6 @@ class Entities extends CI_Controller {
                 $this->session->set_userdata(array('user' => $users[0]));
             }
         }
-
 
         //Remove sensitive data before logging:
         unset($_POST['u_password_new']);

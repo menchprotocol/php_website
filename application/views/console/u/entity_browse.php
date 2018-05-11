@@ -78,6 +78,15 @@ if(!$inbound_u_id){
 
     echo '<div>'.$entity['u_bio'].'</div>';
 
+    if($entity['u_url_type_id']==1){
+        //Embed type:
+        $primary_embed = detect_embed_media($entity['u_primary_url'],$entity['u_primary_url']);
+        echo '<div>'.( $primary_embed ? $primary_embed : detect_embed_media($entity['u_clean_url'],$entity['u_clean_url']) ).'</div>';
+    } elseif($entity['u_url_type_id']>=2){
+        //Embed type:
+        echo '<div>'.echo_direct_url($entity['u_clean_url'],$entity['u_url_type_id']).'</div>';
+    }
+
     echo '</div>';
     echo '</div>';
 }
