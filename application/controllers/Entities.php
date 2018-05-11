@@ -264,6 +264,7 @@ class Entities extends CI_Controller {
 
         //Check primary URL:
         if($_POST['u_primary_url']!==$u_current[0]['u_primary_url'] || (strlen($_POST['u_primary_url'])>0 && strlen($u_current[0]['u_clean_url'])==0)){
+
             if(strlen($_POST['u_primary_url'])>0){
 
                 //Let's Validate it:
@@ -274,6 +275,7 @@ class Entities extends CI_Controller {
                 } elseif($curl['url_is_broken']) {
                     $warning .= '<a href="'.$curl['clean_url'].'">Primary URL</a> seems broken with http code ['.$curl['httpcode'].'] ';
                 } else {
+
                     //Seems all good, let's add the data to the saving data set:
                     $u_update['u_primary_url'] = $_POST['u_primary_url'];
                     $u_update['u_clean_url'] = ( $curl['clean_url'] ? $curl['clean_url'] : $_POST['u_primary_url'] );
@@ -281,6 +283,7 @@ class Entities extends CI_Controller {
                     $u_update['u_url_http_code'] = $curl['httpcode'];
                     $u_update['u_url_is_broken'] = $curl['url_is_broken']; //Inserts as 0 but may later become 1 if cron job detects the URL is broken
                     $u_update['u_url_type_id'] = $curl['u_url_type_id'];
+
                 }
 
             } else {

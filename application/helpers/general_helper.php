@@ -522,6 +522,20 @@ function sec_to_min($sec_int){
     return ( $min ? $min.'m' : '' ).( $sec ? ( $min ? ' ' : '' ).$sec.'s' : '' );
 }
 
+function echo_direct_url($u_clean_url,$u_url_type_id){
+    if($u_url_type_id==4){
+        return '<img src="'.$u_clean_url.'" style="max-width:100%" />';
+    } elseif($u_url_type_id==3){
+        return '<audio controls><source src="'.$u_clean_url.'" type="audio/mpeg"></audio>';
+    } elseif($u_url_type_id==2){
+        return '<video width="100%" onclick="this.play()" controls><source src="'.$u_clean_url.'" type="video/mp4"></video>';
+    } elseif($u_url_type_id==5){
+        return '<a href="'.$u_clean_url.'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+    } else {
+        return false;
+    }
+}
+
 function detect_embed_media($url,$full_message,$require_image=false,$return_array=false){
 
     //$require_image is for Finding the cover photo in YouTube content
@@ -2408,7 +2422,6 @@ function curl_html($url,$return_breakdown=false){
             'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),
             'httpcode' => $httpcode,
             'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
-            'embed_html_code' => $embed_code['embed_code'],
         );
 
 
