@@ -21,21 +21,29 @@ class Adjust extends CI_Controller {
     }
 
 
-    function migrate_fb_photos(){
+    function migrate_fb_photos($limit=5){
 
         $users = $this->Db_model->u_fetch(array(
             'u_cover_x_id' => 0,
             '(u_image_url LIKE \'%fbcdn.net%\' OR u_image_url LIKE \'%facebook.com%\')' => null,
-        ));
+        ), array(), $limit);
 
         $results = array();
         foreach($users as $u){
+
+            $save_results = $this->Comm_model->save_cover_to_cdn($u,$u['u_image_url']);
+
+            if(!$save_results['status'] && 0){
+                $this->Db_model->u_update( $u['u_id'] , array(
+                    'u_image_url' => null,
+                ));
+            }
+
             array_push( $results, array(
                 'u_id' => $u['u_id'],
                 'u_image_url' => $u['u_image_url'],
-                'results' => $this->Comm_model->save_cover_to_cdn($u,$u['u_image_url']),
+                'results' => $save_results,
             ));
-            break;
         }
 
         echo_json($results);

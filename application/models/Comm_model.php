@@ -755,15 +755,15 @@ class Comm_model extends CI_Model {
                 'status' => 0,
                 'message' => 'Invalid URL (start with http:// or https://)',
             );
-        } elseif($curl['u_url_type_id']!=4) {
-            return array(
-                'status' => 0,
-                'message' => 'URL [Type '.$curl['u_url_type_id'].'] Does not point to an image',
-            );
         } elseif($curl['url_is_broken']) {
             return array(
                 'status' => 0,
                 'message' => 'URL Seems broken with http code ['.$curl['httpcode'].']',
+            );
+        } elseif($curl['u_url_type_id']!=4) {
+            return array(
+                'status' => 0,
+                'message' => 'URL [Type '.$curl['u_url_type_id'].'] Does not point to an image',
             );
         }
 
