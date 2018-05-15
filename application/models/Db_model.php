@@ -1398,7 +1398,7 @@ WHERE ru.ru_status >= 4
         }
 
         //Check to see if this URL exists, if so, return that:
-        $urls = $this->Db_model->x_create(array(
+        $urls = $this->Db_model->x_fetch(array(
             '(x_url LIKE \'%'.$insert_columns['x_url'].'%\' OR x_clean_url LIKE \'%'.$insert_columns['x_clean_url'].'%\')' => null,
         ));
 
