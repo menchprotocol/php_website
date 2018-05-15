@@ -2846,7 +2846,7 @@ function object_link($object,$id,$b_id=0){
                 ));
                 if(isset($matching_users[0])){
                     //TODO Link to profile or chat widget link maybe?
-                    return '<a href="'.$website['url'].'cockpit/browse/engagements?e_u_id='.$id.'" title="User ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
+                    return '<a href="'.$website['url'].'entities/'.$id.'" title="User ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                 }
             }
 
