@@ -775,6 +775,12 @@ class Comm_model extends CI_Model {
                 'status' => 0,
                 'message' => 'Failed to upload the file to Mench CDN',
             );
+        } elseif(substr_count($new_file_url,'ecd274930db69ba4b2d9137949026300')>0){
+            //This is the hashkey for the Facebook Generic User icon:
+            return array(
+                'status' => 0,
+                'message' => 'This is the user generic icon on Facebook',
+            );
         }
 
         //Save URL:

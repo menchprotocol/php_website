@@ -1361,10 +1361,63 @@ WHERE ru.ru_status >= 4
 	 * Other
 	 ****************************** */
 
+
+    function x_fetch($match_columns, $order_columns=array(
+        'x_id' => 'ASC'
+    )){
+        //Fetch the target entities:
+        $this->db->select('*');
+        $this->db->from('v5_urls x');
+
+        foreach($match_columns as $key=>$value){
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
+        }
+
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
+
+        $q = $this->db->get();
+        $res = $q->result_array();
+
+        return $res;
+    }
+
     function x_create($insert_columns){
 
         if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_inbound_u_id','x_outbound_u_id'))){
             return false;
+        }
+
+        //Check to see if this URL exists, if so, return that:
+        $urls = $this->Db_model->x_create(array(
+            '(x_url LIKE \'%'.$insert_columns['x_url'].'%\' OR x_clean_url LIKE \'%'.$insert_columns['x_clean_url'].'%\')' => null,
+        ));
+
+        if(count($urls)>0){
+            if($urls[0]['x_status']==1 && $insert_columns['x_outbound_u_id']==$urls[0]['x_outbound_u_id']){
+
+                //For same object, we're all good, return this URL:
+                return $urls[0];
+
+            } else {
+
+                //Save this engagement as we have an issue here...
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $insert_columns['x_inbound_u_id'],
+                    'e_outbound_u_id' => $insert_columns['x_outbound_u_id'],
+                    'e_inbound_c_id' => 8, //System error
+                    'e_message' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
+                    'e_json' => $insert_columns,
+                    'e_x_id' => $urls[0]['x_id'],
+                ));
+
+                return false;
+            }
         }
 
         if(!isset($insert_columns['x_timestamp'])){
