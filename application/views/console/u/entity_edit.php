@@ -108,7 +108,7 @@ function insert_gravatar(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
-  <li id="nav_references"><a href="#references"><i class="fab fa-link"></i> References</a></li>
+  <li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>
   <li id="nav_details"><a href="#details"><i class="fas fa-cog"></i> Details</a></li>
   <li id="nav_password" style="<?= ( in_array($entity['u_inbound_u_id'], array(1280,1323,1279,1307,1281,1308,1304)) ? '' : 'display:none;' ) ?>"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
 </ul>
