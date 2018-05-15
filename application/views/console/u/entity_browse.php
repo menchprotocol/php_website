@@ -47,7 +47,7 @@ if(!$inbound_u_id){
     echo '</span>';
 
     //Regular section:
-    echo (strlen($entity['u_image_url'])>4 ? '<img src="'.$entity['u_image_url'].'" class="profile-icon2" />' : '');
+    echo ( $entity['u_cover_x_id']>0 ? '<img src="'.$entity['x_url'].'" class="profile-icon2" />' : '' );
     echo '<b id="u_title">'.$entity['u_full_name'].'</b>';
     echo ' <span class="obj-id">@'.$entity['u_id'].'</span>';
 

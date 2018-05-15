@@ -24,17 +24,18 @@ class Adjust extends CI_Controller {
     function migrate_fb_photos(){
 
         $users = $this->Db_model->u_fetch(array(
-            'u_id' => 1,
             'u_cover_x_id' => 0,
-            'LENGTH(u_image_url)>0' => null,
+            '(u_image_url LIKE \'%fbcdn.net%\' OR u_image_url LIKE \'%facebook.com%\')' => null,
         ));
 
         $results = array();
         foreach($users as $u){
             array_push( $results, array(
                 'u_id' => $u['u_id'],
-                'results' => $this->Comm_model->fb_profile_picture_save($u,$u['u_image_url']),
+                'u_image_url' => $u['u_image_url'],
+                'results' => $this->Comm_model->save_cover_to_cdn($u,$u['u_image_url']),
             ));
+            break;
         }
 
         echo_json($results);

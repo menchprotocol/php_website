@@ -737,7 +737,7 @@ class Comm_model extends CI_Model {
     }
 
 
-    function fb_profile_picture_save($u,$fb_cdn_url){
+    function save_cover_to_cdn($u,$fb_cdn_url){
 
         //Does this user have a profile assigned?
         if(intval($u['u_cover_x_id'])>0){
@@ -1039,7 +1039,7 @@ class Comm_model extends CI_Model {
                 $locale = explode('_',$fb_profile['locale'],2);
 
                 //Save picture locally if needed:
-                $this->Comm_model->fb_profile_picture_save($u,$fb_profile['profile_pic']);
+                $this->Comm_model->save_cover_to_cdn($u,$fb_profile['profile_pic']);
 
                 //Do an Update for selected fields as linking:
                 $this->Db_model->u_update( $u['u_id'] , array(
@@ -1146,7 +1146,6 @@ class Comm_model extends CI_Model {
                 $u = $this->Db_model->u_create(array(
                     'u_full_name' 		=> $fb_profile['first_name'].' '.$fb_profile['last_name'],
                     'u_timezone' 		=> $fb_profile['timezone'],
-                    'u_image_url' 		=> $fb_profile['profile_pic'],
                     'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language' 		=> $locale[0],
                     'u_country_code' 	=> $locale[1],
@@ -1154,6 +1153,9 @@ class Comm_model extends CI_Model {
                     'u_cache__fp_psid'  => $fp_psid,
                     'u_inbound_u_id'    => 1304, //Prospects
                 ));
+
+                //Save picture locally if needed:
+                $this->Comm_model->save_cover_to_cdn($u,$fb_profile['profile_pic']);
 
                 //New Student Without Admission:
                 $this->Comm_model->foundation_message(array(

@@ -138,7 +138,6 @@ class Entities extends CI_Controller {
                     $u_domains[0] = $this->Db_model->u_create(array(
                         'u_full_name' 		=> $curl['last_domain'],
                         'u_timezone' 		=> $fb_profile['timezone'],
-                        'u_image_url' 		=> $fb_profile['profile_pic'],
                         'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                         'u_language' 		=> $locale[0],
                         'u_country_code' 	=> $locale[1],
@@ -146,6 +145,10 @@ class Entities extends CI_Controller {
                         'u_cache__fp_psid'  => $fp_psid,
                         'u_inbound_u_id'    => 1304, //Prospects
                     ));
+
+                    //Give it a try to see if the site has a Favicon and use that as their profile picture:
+                    $this->Comm_model->save_cover_to_cdn($u_domains[0],'http://'.$curl['last_domain'].'/favicon.ico');
+
                 }
 
                 //Now create the URL:

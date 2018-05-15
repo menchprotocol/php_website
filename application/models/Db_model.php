@@ -281,6 +281,7 @@ WHERE ru.ru_status >= 4
 	    //Fetch the target entities:
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
+        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
 	    foreach($match_columns as $key=>$value){
 	        if(!is_null($value)){
                 $this->db->where($key,$value);
