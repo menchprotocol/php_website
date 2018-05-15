@@ -1391,6 +1391,10 @@ WHERE ru.ru_status >= 4
 
         if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_inbound_u_id','x_outbound_u_id'))){
             return false;
+        } elseif(!filter_var($insert_columns['x_url'], FILTER_VALIDATE_URL)){
+            return false;
+        } elseif(!filter_var($insert_columns['x_clean_url'], FILTER_VALIDATE_URL)){
+            return false;
         }
 
         //Check to see if this URL exists, if so, return that:
@@ -1411,7 +1415,7 @@ WHERE ru.ru_status >= 4
                     'e_inbound_u_id' => $insert_columns['x_inbound_u_id'],
                     'e_outbound_u_id' => $insert_columns['x_outbound_u_id'],
                     'e_inbound_c_id' => 8, //System error
-                    'e_message' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
+                    'e_text_value' => 'x_create() found a duplicate URL ID ['.$urls[0]['x_id'].']',
                     'e_json' => $insert_columns,
                     'e_x_id' => $urls[0]['x_id'],
                 ));
