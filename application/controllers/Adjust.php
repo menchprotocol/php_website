@@ -58,7 +58,7 @@ class Adjust extends CI_Controller {
 
             $save_results = $this->Comm_model->save_cover_to_cdn($u,$u['u_image_url']);
 
-            if(!$save_results['status'] && 0){
+            if(!$save_results['status']){
                 $this->Db_model->u_update( $u['u_id'] , array(
                     'u_image_url' => null,
                 ));
