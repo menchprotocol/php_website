@@ -5,75 +5,11 @@ class Adjust extends CI_Controller {
 
     //This controller is for functions that do mass adjustments on the DB
 
-    function __construct() {
+    function __construct(){
         parent::__construct();
 
         $this->output->enable_profiler(FALSE);
     }
-
-    function b_missing_admins(){
-        $bs = $this->Db_model->b_fetch(array(),array('c'));
-
-        foreach($bs as $b){
-
-        }
-        echo count($bs);
-    }
-
-
-    function migrate_fb_photos($limit=5){
-
-        $users = $this->Db_model->u_fetch(array(
-            'u_cover_x_id' => 0,
-            '(u_image_url LIKE \'%fbcdn.net%\' OR u_image_url LIKE \'%facebook.com%\')' => null,
-        ), array(), $limit);
-
-        $results = array();
-
-
-        foreach($users as $u){
-
-            $save_results = $this->Comm_model->save_cover_to_cdn($u,$u['u_image_url']);
-
-            if(!$save_results['status']){
-                $this->Db_model->u_update( $u['u_id'] , array(
-                    'u_image_url' => null,
-                ));
-            }
-
-            array_push( $results, array(
-                'u_id' => $u['u_id'],
-                'u_image_url' => $u['u_image_url'],
-                'results' => $save_results,
-            ));
-        }
-
-        //Also fetch regular profiles:
-        $users = $this->Db_model->u_fetch(array(
-            'u_cover_x_id' => 0,
-            'LENGTH(u_image_url)>0' => null,
-        ), array(), $limit);
-
-        foreach($users as $u){
-
-            $save_results = $this->Comm_model->save_cover_to_cdn($u,$u['u_image_url']);
-
-            if(!$save_results['status']){
-                $this->Db_model->u_update( $u['u_id'] , array(
-                    'u_image_url' => null,
-                ));
-            }
-
-            array_push( $results, array(
-                'u_id' => $u['u_id'],
-                'u_image_url' => $u['u_image_url'],
-                'results' => $save_results,
-            ));
-        }
-
-        echo_json($results);
-    }
-
 
 
     function resync_class_actionplans_and_message_instructors(){
@@ -91,7 +27,6 @@ class Adjust extends CI_Controller {
         }
 
         echo 'Updated for '.count($classes).' Classes';
-
     }
 
 

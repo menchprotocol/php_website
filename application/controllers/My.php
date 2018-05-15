@@ -640,7 +640,7 @@ class My extends CI_Controller {
 
 
                 echo '<td colspan="'.( $admission['ru_cache__completion_rate']<1 && !$ranking_visible ? 2 : 1 ).'" valign="top" style="text-align:left; vertical-align:top;">';
-                $student_name = echo_cover($admission,'mini-image', true).' '.$admission['u_full_name'];
+                $student_name = echo_cover($admission,'micro-image', true).' '.$admission['u_full_name'];
 
 
                 if($is_instructor){

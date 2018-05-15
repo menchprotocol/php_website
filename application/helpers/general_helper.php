@@ -2436,18 +2436,6 @@ function curl_html($url,$return_breakdown=false){
             'page_title' => one_two_explode('>','',one_two_explode('<title','</title',$body_html)),
         );
 
-
-        if($return_array['url_is_broken']){
-
-            //Log this for Admin review:
-            $CI =& get_instance();
-            $CI->Db_model->e_create(array(
-                'e_json' => $return_array,
-                'e_inbound_c_id' => 6909, //URL Review
-            ));
-
-        }
-
         return $return_array;
 
     } else {
