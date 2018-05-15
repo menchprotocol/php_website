@@ -510,6 +510,7 @@ WHERE ru.ru_status >= 4
 	    //Fetch the admins of the Bootcamps
 	    $this->db->select('*');
 	    $this->db->from('v5_entities u');
+        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
         $this->db->join('v5_bootcamp_team ba', 'ba.ba_outbound_u_id = u.u_id');
 
         if(in_array('b',$join_objects)){
@@ -992,6 +993,7 @@ WHERE ru.ru_status >= 4
         $this->db->from('v5_class_students ru');
         $this->db->join('v5_classes r', 'r.r_id = ru.ru_r_id','left');
         $this->db->join('v5_entities u', 'u.u_id = ru.ru_outbound_u_id');
+        $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
 
         if(in_array('b',$join_objects)){
             $this->db->join('v5_bootcamps b', 'b.b_id = ru.ru_b_id');

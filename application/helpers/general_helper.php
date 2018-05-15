@@ -948,9 +948,6 @@ function extract_urls($text,$inverse=false){
     return $return;
 }
 
-function echo_owner($i){
-    return '<img src="'.$i['u_image_url'].'" data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right" />';
-}
 
 function echo_message($i,$level=0,$editing_enabled=true){
 
@@ -979,7 +976,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
             $message_max = $CI->config->item('message_max');
             $ui .= '<li class="edit-on hidden"><span id="charNumEditing'.$i['i_id'].'">0</span>/'.$message_max.'</li>';
         }
-        $ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_owner($i).'</span></li>';
+        $ui .= '<li class="edit-off"><span class="on-hover i_uploader">'.echo_cover($i,null,true, 'data-toggle="tooltip" title="Last modified by '.$i['u_full_name'].' about '.time_diff($i['i_timestamp']).' ago" data-placement="right"').'</span></li>';
 
         if($editing_enabled){
             $ui .= '<li class="edit-off" style="margin: 0 0 0 8px;"><span class="on-hover"><i class="fas fa-bars sort_message" iid="'.$i['i_id'].'" style="color:#3C4858;"></i></span></li>';
@@ -1106,7 +1103,7 @@ function echo_br($admin){
 
     //Left content
     //$ui .= '<i class="fa fas-bars" style="padding-right:3px;"></i> ';
-    $ui .= (strlen($admin['u_image_url'])>4 ? '<img src="'.$admin['u_image_url'].'" class="profile-icon" />' : '<i class="fas fa-user-circle"></i> &nbsp;').$admin['u_full_name'].' &nbsp;';
+    $ui .= echo_cover($admin,'profile-icon',true).' '.$admin['u_full_name'].' &nbsp;';
 
 
 
@@ -1670,14 +1667,14 @@ function b_progress($b){
             'time_min' => $estimated_minutes,
         ));
 
-        //u_image_url
+        //u_cover_x_id
         $estimated_minutes = 10;
         $progress_possible += $estimated_minutes;
-        $e_status = ( strlen($bl['u_image_url'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $e_status = ( intval($bl['u_cover_x_id'])>0 ? 1 /*Has Cover Photo*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
             'href' => $account_href,
-            'anchor' => '<b>Set Picture</b> in '.$account_anchor,
+            'anchor' => '<b>Set Cover Photo</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
@@ -2357,6 +2354,16 @@ function fb_time($unix_time){
 	return date("Y-m-d H:i:s",round($unix_time/1000));
 }
 
+function echo_cover($u,$img_class=null,$return_anyways=false,$tooltip_content=null){
+    if($u['u_cover_x_id']>0 && isset($u['x_url'])){
+        return '<img src="'.$u['x_url'].'" class="'.$img_class.'" '.$tooltip_content.' />';
+    } elseif($return_anyways) {
+        return '<i class="fas fa-user-circle" '.$tooltip_content.' ></i>';
+    } else {
+        return null;
+    }
+}
+
 function curl_html($url,$return_breakdown=false){
 
     //Validate URL:
@@ -2484,7 +2491,7 @@ function echo_u($u){
     $ui .= '</span>';
 
     //Regular section:
-    $ui .= (strlen($u['u_image_url'])>4 ? '<img src="'.$u['u_image_url'].'" class="profile-icon" />' : '');
+    $ui .= echo_cover($u,'profile-icon');
     if(strlen($u['u_bio'])>0){
         $ui .= '<span data-toggle="tooltip" data-placement="right" title="'.$u['u_bio'].'" style="border-bottom:1px dotted #3C4858; cursor:help;">'.$u['u_full_name'].'</span>';
     } else {

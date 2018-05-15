@@ -53,7 +53,6 @@ function update_account(){
 		u_full_name:$('#u_full_name').val(),
 		u_email:$('#u_email').val(),
 		u_phone:$('#u_phone').val(),
-		u_image_url:$('#u_image_url').val(),
 		u_gender:$('#u_gender').val(),
 		u_country_code:$('#u_country_code').val(),
 		u_current_city:$('#u_current_city').val(),
@@ -92,7 +91,7 @@ function update_account(){
 function insert_gravatar(){
 	var gravatar_url = 'https://www.gravatar.com/avatar/<?= md5(trim(strtolower($entity['u_email']))) ?>';
 	$('.profile-pic').attr('src',gravatar_url);
-    $('#u_image_url').val(gravatar_url);
+    //TODO Insert gravatar_url into URL Adding Box
     alert('Gravatar URL for your email <?= $entity['u_email'] ?> was successfully inserted. Make sure to SAVE changes.');
 }
 </script>
@@ -109,7 +108,7 @@ function insert_gravatar(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
-  <li id="nav_communication"><a href="#communication"><i class="fab fa-twitter"></i> Social Links</a></li>
+  <li id="nav_references"><a href="#references"><i class="fab fa-link"></i> References</a></li>
   <li id="nav_details"><a href="#details"><i class="fas fa-cog"></i> Details</a></li>
   <li id="nav_password" style="<?= ( in_array($entity['u_inbound_u_id'], array(1280,1323,1279,1307,1281,1308,1304)) ? '' : 'display:none;' ) ?>"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
 </ul>
@@ -152,21 +151,6 @@ function insert_gravatar(){
         <input type="url" class="form-control border" id="u_primary_url" data-lpignore="true" maxlength="255" value="<?= $entity['u_primary_url'] ?>" />
         <script>trigger_link_watch('u_primary_url','');</script>
 
-
-
-        <div style="display: block;">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-image"></i>  HTTPS Picture URL
-                    <?php if(strlen($entity['u_image_url'])>0){ ?>
-                    <img src="<?= ( strlen($entity['u_image_url'])>0 ? $entity['u_image_url'] : '/img/bp_128.png' ) ?>" style="width: 24px; height:24px; margin-left:0;" class="profile-pic" />
-                    <?php } ?>
-                </h4></div>
-            <?php if(strlen($entity['u_email'])>0 && strlen($entity['u_image_url'])<1){ ?>
-                <p>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u></a> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></p>
-            <?php } ?>
-            <div class="row" style="margin:0 0 0 0;">
-                <input type="url" required id="u_image_url" value="<?= $entity['u_image_url'] ?>" class="form-control border">
-            </div>
-        </div>
 
 
         <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
@@ -307,7 +291,13 @@ function insert_gravatar(){
     </div>
 
 
-    <div class="tab-pane" id="tabcommunication">
+    <div class="tab-pane" id="tabreferences">
+
+
+        <?php if(strlen($entity['u_email'])>0 && $entity['u_cover_x_id']==0){ ?>
+            <p>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u></a> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></p>
+        <?php } ?>
+
 
         <?php
         //Social links:

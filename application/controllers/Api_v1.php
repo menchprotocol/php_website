@@ -3329,7 +3329,7 @@ class Api_v1 extends CI_Controller {
                     'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
                     'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
                     'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
-                    'new_uploader' => echo_owner($new_messages[0]), //If there is a person change...
+                    'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.time_diff($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
                 ));
             }
 	    }

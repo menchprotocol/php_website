@@ -65,7 +65,7 @@ $review_score_options = array(
 //Show Overview:
 echo '<div style="font-size:0.7em;">';
 
-echo '<div class="maxout" style="padding-bottom:7px;"><b>Lead Instructor</b>: <img src="'.( strlen($admission['b__admins'][0]['u_image_url'])>0 ? $admission['b__admins'][0]['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$lead_instructor.'</div>';
+echo '<div class="maxout" style="padding-bottom:7px;"><b>Lead Instructor</b>: '.echo_cover($admission['b__admins'][0],'mini-image').' '.$lead_instructor.'</div>';
 if(count($admission['b__admins'])>1){
     echo '<div class="maxout" style="padding-bottom:7px;"><b>Co-Instructor'.show_s((count($admission['b__admins'])-1)).'</b>: ';
     //We have assistant instructors, list them here:
@@ -77,7 +77,7 @@ if(count($admission['b__admins'])>1){
             //Skip this lead instructor:
             echo ', ';
         }
-        echo '<img src="'.( strlen($assistant['u_image_url'])>0 ? $assistant['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$assistant['u_full_name'];
+        echo echo_cover($assistant,'mini-image').' '.$assistant['u_full_name'];
     }
     echo '</div>';
 }

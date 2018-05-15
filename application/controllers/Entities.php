@@ -155,7 +155,6 @@ class Entities extends CI_Controller {
                 $this->Db_model->u_create(array(
                     'u_full_name' 		=> $curl['last_domain'],
                     'u_timezone' 		=> $fb_profile['timezone'],
-                    'u_image_url' 		=> $fb_profile['profile_pic'],
                     'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language' 		=> $locale[0],
                     'u_country_code' 	=> $locale[1],
@@ -220,8 +219,6 @@ class Entities extends CI_Controller {
             die('<span style="color:#FF0000;">Error: Initial email was ['.$u_current[0]['u_email'].']. Email required once set. Try again.</span>');
         } elseif(strlen($_POST['u_paypal_email'])>0 && !filter_var($_POST['u_paypal_email'], FILTER_VALIDATE_EMAIL)){
             die('<span style="color:#FF0000;">Error: Invalid Paypal Email. Try again.</span>');
-        } elseif(strlen($_POST['u_image_url'])>0 && (!filter_var($_POST['u_image_url'], FILTER_VALIDATE_URL) || substr($_POST['u_image_url'],0,8)!=='https://')){
-            die('<span style="color:#FF0000;">Error: Invalid HTTPS profile picture url. Try again.</span>');
         } elseif(strlen($_POST['u_bio'])>$message_max){
             die('<span style="color:#FF0000;">Error: Introductory Message should be less than '.$message_max.' characters. Try again.</span>');
         }
@@ -230,16 +227,6 @@ class Entities extends CI_Controller {
         $_POST['u_email'] = strtolower($_POST['u_email']);
         $_POST['u_paypal_email'] = strtolower($_POST['u_paypal_email']);
 
-        //Do we have a new image URL? Validate it:
-        if(strlen($_POST['u_image_url'])>0 && !($u_current[0]['u_image_url']==$_POST['u_image_url'])){
-            //Make sure this is a new image:
-            $image_curl = curl_html($_POST['u_image_url'],true);
-            if($image_curl['url_is_broken']){
-                die('<span style="color:#FF0000;">Error: Image URL seems broken</span>');
-            } elseif(!($image_curl['u_url_type_id']==4)){
-                die('<span style="color:#FF0000;">Error: Image URL does not seem to be a valid image URL</span>');
-            }
-        }
 
         //Make sure email is unique:
         if(strlen($_POST['u_email'])>0){
@@ -264,7 +251,6 @@ class Entities extends CI_Controller {
 
             'u_full_name' => trim($_POST['u_full_name']),
             'u_phone' => $_POST['u_phone'],
-            'u_image_url' => $_POST['u_image_url'],
             'u_gender' => $_POST['u_gender'],
             'u_country_code' => $_POST['u_country_code'],
             'u_current_city' => $_POST['u_current_city'],

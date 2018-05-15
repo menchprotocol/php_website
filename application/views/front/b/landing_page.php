@@ -184,7 +184,7 @@ $( document ).ready(function() {
                 if($admin['ba_status']==3){
                     $leader_fname = one_two_explode('', ' ', $admin['u_full_name']);
                 }
-                echo '<h4 class="userheader"><img src="'.$admin['u_image_url'].'" /> '.( $udata['u_inbound_u_id']==1281 ? ' <a href="/entities/'.$admin['u_id'].'/modify">'.$admin['u_full_name'].' <i class="fas fa-cog"></i></a>' : $admin['u_full_name'] ).'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
+                echo '<h4 class="userheader">'.echo_cover($admin).' '.( $udata['u_inbound_u_id']==1281 ? ' <a href="/entities/'.$admin['u_id'].'/modify">'.$admin['u_full_name'].' <i class="fas fa-cog"></i></a>' : $admin['u_full_name'] ).'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
                 echo '<p id="u_bio">'.$admin['u_bio'].'</p>';
                 
                 //Any languages other than English?

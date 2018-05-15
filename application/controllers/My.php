@@ -640,7 +640,7 @@ class My extends CI_Controller {
 
 
                 echo '<td colspan="'.( $admission['ru_cache__completion_rate']<1 && !$ranking_visible ? 2 : 1 ).'" valign="top" style="text-align:left; vertical-align:top;">';
-                $student_name = '<img src="'.( strlen($admission['u_image_url'])>0 ? $admission['u_image_url'] : '/img/fb_user.jpg' ).'" class="mini-image"> '.$admission['u_full_name'];
+                $student_name = echo_cover($admission,'mini-image', true).' '.$admission['u_full_name'];
 
 
                 if($is_instructor){
@@ -787,7 +787,7 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
     function display_account(){
-        //echo '<p class="p_footer"><img src="'.$admissions[0]['u_image_url'].'" class="mini-image" /> '.$admissions[0]['u_full_name'].'</p>';
+        //TODO later...
     }
 
 
