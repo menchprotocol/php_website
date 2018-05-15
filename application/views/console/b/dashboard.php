@@ -79,6 +79,7 @@ if($b['b_is_parent']){
     $parent_bs = $this->Db_model->cr_inbound_fetch(array(
         'cr.cr_outbound_b_id' => $b['b_id'],
         'cr.cr_status >=' => 1,
+        'b.b_status >=' => 2, //Published in some way
     ),array('b'));
 
     if(count($parent_bs)>0){
