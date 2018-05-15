@@ -1619,7 +1619,7 @@ WHERE ru.ru_status >= 4
         }
 
         //Set some zero defaults if not set:
-        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_b_id','e_r_id','e_cr_id','e_i_id','e_fp_id','e_replaced_e_id') as $dz){
+        foreach(array('e_outbound_c_id','e_outbound_u_id','e_inbound_u_id','e_b_id','e_r_id','e_cr_id','e_i_id','e_fp_id','e_replaced_e_id','e_x_id') as $dz){
             if(!isset($insert_columns[$dz]) || intval($insert_columns[$dz])<1){
                 $insert_columns[$dz] = 0;
             }
