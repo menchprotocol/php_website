@@ -42,7 +42,7 @@ function missing_required_db_fields($insert_columns,$field_array){
 }
 
 
-function fetch_entity_tree($inbound_u_id,$is_edit=false){
+function fetch_entity_tree($inbound_u_id,$is_edit=false,$entity_breadcrumb_prefix=false){
 
     $inbound_u_id = intval($inbound_u_id);
     $view_data = array(
@@ -100,10 +100,12 @@ function fetch_entity_tree($inbound_u_id,$is_edit=false){
         }
 
         //Add core entity item and reverse:
-        array_push( $breadcrumb , array(
-            'link' => '/entities',
-            'anchor' => 'Entities',
-        ));
+        if($entity_breadcrumb_prefix){
+            array_push( $breadcrumb , array(
+                'link' => '/entities',
+                'anchor' => 'Entities',
+            ));
+        }
 
         $view_data['title'] = ( $is_edit ? 'Modify ' : '' ).$this_entity['u_full_name'];
         $view_data['breadcrumb'] = array_reverse($breadcrumb);
@@ -579,9 +581,11 @@ function detect_embed_media($url,$full_message,$require_image=false,$return_arra
                 $end_sec = 0;
                 if(substr_count($url,'start=')>0){
                     $start_sec = intval(one_two_explode('start=','&',$url));
+                    $clean_url = $clean_url.'&start='.$start_sec;
                 }
                 if(substr_count($url,'end=')>0){
                     $end_sec = intval(one_two_explode('end=','&',$url));
+                    $clean_url = $clean_url.'&end='.$end_sec;
                 }
 
                 //Inform Student that this video has been sliced:
@@ -1754,7 +1758,7 @@ function b_progress($b){
         $e_status = ( strlen($bl['u_paypal_email'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => ( $account_href ? $account_href.'#finance' : null ),
+            'href' => ( $account_href ? $account_href.'#details' : null ),
             'anchor' => '<b>Set Paypal Email for Payouts</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
@@ -1768,7 +1772,7 @@ function b_progress($b){
             $e_status = ( strlen($bl['u_terms_agreement_time'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
             $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
             array_push( $checklist , array(
-                'href' => ( $account_href ? $account_href.'#finance' : null ),
+                'href' => ( $account_href ? $account_href.'#details' : null ),
                 'anchor' => '<b>Check Instructor Agreement</b> in '.$account_anchor,
                 'e_status' => $e_status,
                 'time_min' => $estimated_minutes,
@@ -1915,7 +1919,8 @@ function echo_r($b,$class,$append_class=null){
 
     echo ' <span title="Class ID '.$class['r_id'].'">'.time_format($class['r_start_date'],1).'</span>';
 
-    echo ' <i class="fas fa-eye-slash not_published" data-toggle="tooltip" data-placement="top" title="Class not published yet. Mench accepts admissions only for the upcoming '.$class_settings['students_show_max'].' Classes."></i>';
+    //Hide this for now as the logic is not true for multi-week Bootcamps which allow the students to register beyond the 13 week window depending on the length of the multi-week Bootcamp
+    //echo ' <i class="fas fa-eye-slash not_published" data-toggle="tooltip" data-placement="top" title="Class not published yet. Mench accepts admissions only for the upcoming '.$class_settings['students_show_max'].' Classes."></i>';
 
     echo '</li>';
 }
@@ -2416,7 +2421,7 @@ function curl_html($url,$return_breakdown=false){
         $return_array = array(
             //used all the time, also when updating en entity:
             'input_url' => $url,
-            'url_is_broken' => ( in_array($httpcode,array(0,404)) ? 1 : 0 ),
+            'url_is_broken' => ( in_array($httpcode,array(0,403,404)) ? 1 : 0 ),
             'u_url_type_id' => $u_url_type_id,
             'clean_url' => ( !$clean_url || $clean_url==$url ? null : $clean_url ),
             'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),

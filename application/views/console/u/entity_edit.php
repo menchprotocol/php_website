@@ -134,12 +134,11 @@ function insert_gravatar(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Primary URL
+        <div class="title" style="margin-top:20px;"><h4><?= (strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0 ? status_bible('u_url_type_id', $entity['u_url_type_id'],1, 'right') : '<i class="fas fa-link"></i>' ) ?> Primary URL
                 <?php
                 if(strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0){
                     //We have checked this before, lets show the results:
-                    echo '&nbsp;'.status_bible('u_url_type_id', $entity['u_url_type_id'],1, 'right').' &nbsp;';
-                    echo '<a href="'.$entity['u_clean_url'].'" target="_blank">';
+                    echo '&nbsp;<a href="'.$entity['u_clean_url'].'" target="_blank">';
                     if($entity['u_url_is_broken']==1){
                         //The previous URL was detected broken:
                         echo '<i class="fas fa-times-hexagon" data-toggle="tooltip" data-placement="right" style="color:#FF0000;" title="URL detected broken on '.time_format($entity['u_url_last_check'],0).'"></i>';
@@ -156,8 +155,12 @@ function insert_gravatar(){
 
 
         <div style="display: block;">
-            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-image"></i>  HTTPS Picture URL <img src="<?= ( strlen($entity['u_image_url'])>0 ? $entity['u_image_url'] : '/img/bp_128.png' ) ?>" style="width: 24px; height:24px; margin-left:0;" class="profile-pic" /></h4></div>
-            <?php if(strlen($entity['u_email'])>0){ ?>
+            <div class="title" style="margin-top:20px;"><h4><i class="fas fa-image"></i>  HTTPS Picture URL
+                    <?php if(strlen($entity['u_image_url'])>0){ ?>
+                    <img src="<?= ( strlen($entity['u_image_url'])>0 ? $entity['u_image_url'] : '/img/bp_128.png' ) ?>" style="width: 24px; height:24px; margin-left:0;" class="profile-pic" />
+                    <?php } ?>
+                </h4></div>
+            <?php if(strlen($entity['u_email'])>0 && strlen($entity['u_image_url'])<1){ ?>
                 <p>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u></a> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></p>
             <?php } ?>
             <div class="row" style="margin:0 0 0 0;">
@@ -167,48 +170,9 @@ function insert_gravatar(){
 
 
         <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
-        <textarea class="form-control text-edit border msg" id="u_bio" style="height:80px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
+        <textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
         <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
 
-
-
-
-
-
-
-        <div style="display:<?= (in_array($entity['u_inbound_u_id'],array(1308,1280,1281)) ? 'block' : 'none') ?>;">
-
-
-            <div class="title" style="margin-top:30px;"><h4><i class="fab fa-paypal"></i> Paypal Payout Email</h4></div>
-            <div class="form-group label-floating is-empty">
-                <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_paypal_email'] ?>" class="form-control border">
-                <span class="material-input"></span>
-            </div>
-
-
-            <div>
-                <div class="title" style="margin-top:30px;"><h4><i class="fas fa-badge-check"></i> Instructor Agreement</h4></div>
-                <ul>
-                    <li>I have read and understood how <a href="https://support.mench.com/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a> work.</li>
-                    <li>I have read and understood the <a href="https://support.mench.com/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
-                    <li>I have read and understood the <a href="https://support.mench.com/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
-                    <li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
-                </ul>
-                <div class="form-group label-floating is-empty">
-                    <div class="checkbox">
-                        <label>
-                            <?php $has_agreed = (isset($entity['u_terms_agreement_time']) && strlen($entity['u_terms_agreement_time'])>0); ?>
-                            <?php if($has_agreed){ ?>
-                                <input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($entity['u_terms_agreement_time'],0) ?> PST</b>
-                            <?php } else { ?>
-                                <input type="checkbox" id="u_terms_agreement_time" <?= ( $udata['u_id']==$entity['u_id'] ? '' : 'disabled') ?> /> I certify that all above statements are true <?= ( $udata['u_id']==$entity['u_id'] ? '' : '<i class="fas fa-lock" data-toggle="tooltip" data-placement="left" title="Only owner can mark this as done​"></i>') ?>
-                            <?php } ?>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-        </div>
 
         
         
@@ -298,6 +262,43 @@ function insert_gravatar(){
                 <span class="material-input"></span>
             </div>
         </div>
+
+
+
+
+        <div style="display:<?= (in_array($entity['u_inbound_u_id'],array(1308,1280,1281)) ? 'block' : 'none') ?>;">
+
+            <div class="title" style="margin-top:15px;"><h4><i class="fab fa-paypal"></i> Paypal Payout Email</h4></div>
+            <div class="form-group label-floating is-empty">
+                <input type="email" id="u_paypal_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_paypal_email'] ?>" class="form-control border">
+                <span class="material-input"></span>
+            </div>
+
+
+            <div>
+                <div class="title" style="margin-top:20px;"><h4><i class="fas fa-badge-check"></i> Instructor Agreement</h4></div>
+                <ul>
+                    <li>I have read and understood how <a href="https://support.mench.com/hc/en-us/articles/115002473111" target="_blank"><u>Instructor Earning & Payouts <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a> work.</li>
+                    <li>I have read and understood the <a href="https://support.mench.com/hc/en-us/articles/115002096752" target="_blank"><u>Mench Code of Conduct <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
+                    <li>I have read and understood the <a href="https://support.mench.com/hc/en-us/articles/115002096732" target="_blank"><u>Mench Honor Code <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
+                    <li>I have read and agreed to Mench's <a href="/terms" target="_blank"><u>Terms of Service & Privacy Policy <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></u></a>.</li>
+                </ul>
+                <div class="form-group label-floating is-empty">
+                    <div class="checkbox">
+                        <label>
+                            <?php $has_agreed = (isset($entity['u_terms_agreement_time']) && strlen($entity['u_terms_agreement_time'])>0); ?>
+                            <?php if($has_agreed){ ?>
+                                <input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($entity['u_terms_agreement_time'],0) ?> PST</b>
+                            <?php } else { ?>
+                                <input type="checkbox" id="u_terms_agreement_time" <?= ( $udata['u_id']==$entity['u_id'] ? '' : 'disabled') ?> /> I certify that all above statements are true <?= ( $udata['u_id']==$entity['u_id'] ? '' : '<i class="fas fa-lock" data-toggle="tooltip" data-placement="left" title="Only owner can mark this as done​"></i>') ?>
+                            <?php } ?>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
 
 
 

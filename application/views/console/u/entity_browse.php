@@ -195,10 +195,10 @@ $is_active = null;
 
                 }
 
-
+                //Watch for Ctrl+Enter add
                 $(document).ready(function() {
                     $(window).keydown(function(event){
-                        if(event.keyCode == 10 || event.keyCode == 13) {
+                        if((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
                             add_url();
                             event.preventDefault();
                             return false;

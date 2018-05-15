@@ -736,6 +736,84 @@ class Comm_model extends CI_Model {
         }
     }
 
+
+    function fb_profile_picture_save($u,$fb_cdn_url){
+
+        //Does this user have a profile assigned?
+        if(intval($u['u_cover_x_id'])>0){
+            return array(
+                'status' => 0,
+                'message' => 'User already had a cover photo assigned.',
+            );
+        }
+
+        //Check URL and validate:
+        $curl = curl_html($fb_cdn_url,true);
+
+        if(!$curl){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid URL (start with http:// or https://)',
+            );
+        } elseif($curl['u_url_type_id']!=4) {
+            return array(
+                'status' => 0,
+                'message' => 'URL [Type '.$curl['u_url_type_id'].'] Does not point to an image',
+            );
+        } elseif($curl['url_is_broken']) {
+            return array(
+                'status' => 0,
+                'message' => 'URL Seems broken with http code ['.$curl['httpcode'].']',
+            );
+        }
+
+        //Save the file to S3
+        $new_file_url = save_file($fb_cdn_url,$u);
+
+        if(!$new_file_url){
+            return array(
+                'status' => 0,
+                'message' => 'Failed to upload the file to Mench CDN',
+            );
+        }
+
+        //Save URL:
+        $new_x = $this->Db_model->x_create(array(
+            'x_inbound_u_id' => $u['u_id'],
+            'x_outbound_u_id' => $u['u_id'],
+            'x_url' => $new_file_url,
+            'x_clean_url' => $new_file_url,
+            'x_type' => 4, //Image
+        ));
+
+        if(!isset($new_x['x_id']) || $new_x['x_id']<1){
+            return array(
+                'status' => 0,
+                'message' => 'Failed to save CDN URL to Mench',
+            );
+        }
+
+        //Update Cover ID:
+        $this->Db_model->u_update( $u['u_id'] , array(
+            'u_cover_x_id' => $new_x['x_id'],
+        ));
+
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $u['u_id'],
+            'e_outbound_u_id' => $u['u_id'],
+            'e_inbound_c_id' => 12, //Account Update
+            'e_text_value' => 'Profile cover photo updates from Facebook Image ['.$fb_cdn_url.'] to Mench CDN ['.$new_file_url.']',
+            'e_x_id' => $new_x['x_id'],
+        ));
+
+        return array(
+            'status' => 1,
+            'message' => 'Successfully updated cover photo',
+        );
+
+    }
+
     function fb_identify_activate($fp, $fp_psid, $fb_ref=null){
 
 	    /*
@@ -960,16 +1038,30 @@ class Comm_model extends CI_Model {
                 //Split locale into language and country
                 $locale = explode('_',$fb_profile['locale'],2);
 
+                //Save picture locally if needed:
+                $this->Comm_model->fb_profile_picture_save($u,$fb_profile['profile_pic']);
+
                 //Do an Update for selected fields as linking:
                 $this->Db_model->u_update( $u['u_id'] , array(
-                    'u_image_url'      => ( strlen($u['u_image_url'])<5 ? $fb_profile['profile_pic'] : $u['u_image_url'] ),
                     'u_timezone'       => $fb_profile['timezone'],
                     'u_gender'         => strtolower(substr($fb_profile['gender'],0,1)),
                     'u_language'       => ( $u['u_language']=='en' && !($u['u_language']==$locale[0]) ? $locale[0] : $u['u_language'] ),
                     'u_country_code'   => $locale[1],
-                    'u_full_name'          => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
+                    'u_full_name'      => $fb_profile['first_name'].' '.$fb_profile['last_name'], //Update their original names with FB
                     'u_cache__fp_id'   => $fp['fp_id'],
                     'u_cache__fp_psid' => $fp_psid,
+                ));
+
+
+                //Log Account Update Engagement:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $u['u_id'],
+                    'e_outbound_u_id' => $u['u_id'],
+                    'e_json' => array(
+                        'before' => $u,
+                        'after' => $fb_profile,
+                    ),
+                    'e_inbound_c_id' => 12, //Account Updated
                 ));
 
 
@@ -1008,6 +1100,8 @@ class Comm_model extends CI_Model {
                     'e_b_id' => ( isset($u['ru_b_id']) ? $u['ru_b_id'] : 0 ),
                     'e_r_id' => ( isset($u['r_id']) ? $u['r_id'] : 0 ),
                 ));
+
+
 
                 //Return User Object:
                 return $u;

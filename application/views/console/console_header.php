@@ -72,7 +72,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                         <?php if($udata['u_inbound_u_id']==1281){ ?>
                             <!-- <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Intents are outcomes that related to one another"><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li> -->
-                            <li <?= ( $uri_segment_1=='entities' && $uri_segment_2!==$udata['u_id'] ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities"><i class="fas fa-at"></i> Entities</a></li>
+                            <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
                             <li <?= ( $uri_segment_1=='cockpit' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Tools to overview and manage the Mench platform"><a href="/cockpit/browse/engagements"><i class="fab fa-bandcamp"></i> Cockpit</a></li>
                         <?php } else { ?>
                             <li <?= ( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage my profile settings"><a href="/entities/<?= $udata['u_id'] ?>/modify"><i class="fas fa-user-circle"></i> My Account</a></li>
@@ -99,7 +99,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<div class="left-li-title">';
 	    		if(isset($b)){
-	    		    echo '<i class="fa '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
+	    		    echo '<i class="fas '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
                     if($b['b_old_format']){
                         echo ' <i class="fas fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp."></i>';
                     }
@@ -140,8 +140,18 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 } elseif($uri_segment_1=='entities' && $udata['u_inbound_u_id']==1281){
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2!==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities"><i class="fas fa-at"></i><p>All Entities</p></a></li>';
+
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-users"></i><p>People</p></a></li>';
+
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-link"></i><p>References</p></a></li>';
+
                     echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-user-circle"></i><p>My Entity</p></a></li>';
+
+                    if($udata['u_id']==1 && 0){
+                        //Not shown to anyone as we're focused on People and References for now
+                        echo '<li class="li-sep '.( $uri_segment_1=='entities' && !in_array($uri_segment_2,array($udata['u_id'],1278,1326)) ? 'active' : '' ).'"><a href="/entities"><i class="fas fa-at"></i><p>All Entities</p></a></li>';
+                    }
+
                     echo '<li class="li-sep"><a href="/logout"><i class="fas fa-power-off"></i><p>Logout</p></a></li>';
 
                 } elseif($uri_segment_1=='intents' && $udata['u_inbound_u_id']==1281){

@@ -1359,6 +1359,39 @@ WHERE ru.ru_status >= 4
 	/* ******************************
 	 * Other
 	 ****************************** */
+
+    function x_create($insert_columns){
+
+        if(missing_required_db_fields($insert_columns,array('x_url','x_clean_url','x_type','x_inbound_u_id','x_outbound_u_id'))){
+            return false;
+        }
+
+        if(!isset($insert_columns['x_timestamp'])){
+            $insert_columns['x_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        if(!isset($insert_columns['x_check_timestamp'])){
+            $insert_columns['x_check_timestamp'] = date("Y-m-d H:i:s");
+        }
+
+        if(!isset($insert_columns['x_status'])){
+            $insert_columns['x_status'] = 1; //Live URL
+        }
+
+        if(!isset($insert_columns['x_http_code'])){
+            $insert_columns['x_http_code'] = 200; //As the URL was just added
+        }
+
+
+        //Lets now add:
+        $this->db->insert('v5_urls', $insert_columns);
+
+        //Fetch inserted id:
+        $insert_columns['x_id'] = $this->db->insert_id();
+
+        return $insert_columns;
+    }
+
 	
 	function ba_create($insert_columns){
 
@@ -1657,6 +1690,7 @@ WHERE ru.ru_status >= 4
 		//Return:
 		return $insert_columns;
 	}
+
 
 
 

@@ -103,6 +103,7 @@ class Entities extends CI_Controller {
         $u_inbound_u_id = 1326; //Called from this entity only
         $error_message = null;
         $new_u = null; //Will be set if we had to create a new parent entity for domain grouping
+        $new_u_id = 0;
 
         if(!$udata){
             $error_message = 'Session expired, login and try again';
@@ -119,15 +120,16 @@ class Entities extends CI_Controller {
             ));
 
             if(!$curl){
-                $error_message = 'Invalid Primary URL (start with http:// or https://)';
+                $error_message = 'Invalid URL (start with http:// or https://)';
             } elseif(count($dup_urls)>0){
-                $error_message = 'URL already exits at this entity: '.$dup_urls[0]['u_full_name'];
+                $error_message = 'URL already used by ['.$dup_urls[0]['u_full_name'].']';
             } elseif($curl['url_is_broken']) {
                 $error_message = 'URL Seems broken with http code ['.$curl['httpcode'].']';
             } else {
 
                 //Check if the parent exists, if not, make it:
                 $u_domains = $this->Db_model->u_fetch(array(
+                    'u_inbound_u_id' => 1326, //References root folder
                     'u_full_name' => $curl['last_domain'],
                 ));
 
@@ -146,6 +148,22 @@ class Entities extends CI_Controller {
                     ));
                 }
 
+                //Now create the URL:
+                $this->Db_model->u_create(array(
+                    'u_full_name' 		=> $curl['last_domain'],
+                    'u_timezone' 		=> $fb_profile['timezone'],
+                    'u_image_url' 		=> $fb_profile['profile_pic'],
+                    'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
+                    'u_language' 		=> $locale[0],
+                    'u_country_code' 	=> $locale[1],
+                    'u_cache__fp_id'    => $fp['fp_id'],
+                    'u_cache__fp_psid'  => $fp_psid,
+                    'u_inbound_u_id'    => 1304, //Prospects
+                ));
+
+                //Log Engagement:
+
+
                 //Seems all good, let's add the data to the saving data set:
                 //$u_update['u_url_last_check'] = date("Y-m-d H:i:s"); //Timestamp of the last time it was validated
                 //$u_update['u_primary_url'] = $_POST['u_primary_url'];
@@ -155,10 +173,11 @@ class Entities extends CI_Controller {
                 //$u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken\
 
 
+                //Show the parent in the Reference adding section:
+                $new_u_id = $u_domains[0]['u_id'];
                 $entities = $this->Db_model->u_fetch(array(
-                    'u_id' => $u_inbound_u_id,
+                    'u_id' => $new_u_id,
                 ), array('count_child'));
-
                 $new_u = echo_u($entities[0]);
             }
 
@@ -169,6 +188,7 @@ class Entities extends CI_Controller {
             'status' => ( $error_message ? 0 : 1 ),
             'message' => $error_message,
             'new_u' => $new_u,
+            'new_u_id' => $new_u_id,
         ));
     }
 
@@ -287,11 +307,12 @@ class Entities extends CI_Controller {
 
                 //Make sure this URL does not exist:
                 $dup_urls = $this->Db_model->u_fetch(array(
+                    'u_id !=' => $u_current[0]['u_id'],
                     '( u_primary_url LIKE \'%'.$_POST['u_primary_url'].'%\' OR u_clean_url LIKE \'%'.$_POST['u_primary_url'].'%\' )' => null,
                 ));
 
                 if(!$curl) {
-                    $warning .= 'Invalid Primary URL. ';
+                    $warning .= 'Invalid URL. ';
                 } elseif(count($dup_urls)>0) {
                     $warning = 'URL already used by ['.$dup_urls[0]['u_full_name'].']';
                 } elseif($curl['url_is_broken']) {
