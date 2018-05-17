@@ -21,9 +21,7 @@
 
 echo '<h1>'.$title.'</h1>';
 echo '<p class="home_line_2">';
-    echo 'Land a tech job by completing weekly Bootcamps from industry experts.';
-    echo ' Tuition ranges from <span style="display:inline-block;">$0-163 per week</span> based on the '.strtolower($this->lang->line('obj_rs_name')).' you choose.';
-    echo ' We offer a <a href="https://support.mench.com/hc/en-us/articles/115002080031"><b>tuition reimbursement guarantee</b></a> for students who do the work but don\'t get a job offer by the last day of their Bootcamp.';
+    echo 'Land your dream full stack job by completing weekly Bootcamps from industry experts.';
     echo ' New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
 echo '</p>';
 echo '<br />';
