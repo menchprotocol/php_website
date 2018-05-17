@@ -4,7 +4,7 @@
 $required_fb_permissions = $this->config->item('required_fb_permissions');
 $fb_settings = $this->config->item('fb_settings');
 $pm = $this->config->item('pricing_model');
-$status_rs = status_bible('rs');
+$status_rs = echo_status('rs');
 
 $permission_string = join_keys($required_fb_permissions);
 echo 'var required_fb_permissions = '.json_encode($required_fb_permissions).';';
@@ -327,7 +327,7 @@ function b_save_settings(){
 
         <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
-        <?= echo_status_dropdown('b','b_status',$b['b_status'],( $udata['u_inbound_u_id']==1281 && !$b['b_old_format'] ? array() : array(3) )); ?>
+        <?= echo_dropdown_status('b','b_status',$b['b_status'],( $udata['u_inbound_u_id']==1281 && !$b['b_old_format'] ? array() : array(3) )); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
 
 
@@ -358,7 +358,7 @@ function b_save_settings(){
                 <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
                     <?php
                     echo '<option value="">Choose...</option>';
-                    $df_statuses = status_bible('df');
+                    $df_statuses = echo_status('df');
                     foreach($df_statuses as $status_id=>$status){
                         echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
                     }
@@ -502,7 +502,7 @@ function b_save_settings(){
 
     <div class="tab-pane" id="tabpages">
 
-        <?php itip(3531); ?>
+        <?php echo_tip(3531); ?>
         <div id="page_list"><img src="/img/round_load.gif" class="loader" /></div>
         <div id="fb_login" class="hidden">
             <fb:login-button scope="<?= $permission_string ?>" onlogin="loadFacebookPages(0);"></fb:login-button>
@@ -524,7 +524,7 @@ function b_save_settings(){
 
     <div class="tab-pane" id="tabteam">
 
-        <?php itip(629); ?>
+        <?php echo_tip(629); ?>
         <div class="list-group maxout">
             <?php
             $admin_ids = array();

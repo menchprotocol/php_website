@@ -4,7 +4,11 @@ $admission['b_p2_weeks'] = 1;
 $admission['b_p3_weeks'] = 1;
 $b = ( $admission['b_is_parent'] ? b_aggregate($admission) : $admission );
 $pre_req_array = prep_prerequisites($b);
-$status_rs = status_bible('rs');
+$status_rs = echo_status('rs');
+$price_range = array(
+    'min' => echo_price($b,1, true),
+    'max' => echo_price($b,2, true),
+);
 
 ?>
 <script>
@@ -177,14 +181,14 @@ $(document).ready(function() {
 
 
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-dot-circle"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fas fa-calendar"></i> <?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.show_s($b['b__week_count']) ?> [<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-dot-circle"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fas fa-calendar"></i> <?= echo_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']) ?> [<?= echo_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
 
 
 
 <?php if(count($pre_req_array)>0){ ?>
 <div class="wizard-box" id="review_prerequisites">
     <p>Welcome <?= one_two_explode('',' ', $b['u_full_name']) ?> 👋​</p>
-    <p>Before we welcome you on-board, let's review the <?= count($pre_req_array) ?> prerequisite<?= show_s(count($pre_req_array)) ?> that will empower you to <?= strtolower($b['c_outcome']) ?>:</p>
+    <p>Before we welcome you on-board, let's review the <?= count($pre_req_array) ?> prerequisite<?= echo__s(count($pre_req_array)) ?> that will empower you to <?= strtolower($b['c_outcome']) ?>:</p>
     <ul style="list-style: decimal;">
 	<?php
 	foreach($pre_req_array as $index=>$prereq){
@@ -205,8 +209,16 @@ $(document).ready(function() {
 
 <div class="wizard-box" id="price_selection">
 
-    <p>Choose a <?= strtolower($this->lang->line('obj_rs_name')) ?> that's right for you:</p>
 
+    <?php if($price_range['min']>=0 && $price_range['max']>=0){ ?>
+        <!-- Show available options -->
+        <p>Choose a <?= strtolower($this->lang->line('obj_rs_name')) ?> that's right for you:</p>
+    <?php } else { ?>
+        <p>This Bootcamp offers the following <?= strtolower($this->lang->line('obj_rs_name')) ?>:</p>
+    <?php } ?>
+
+
+    <?php if($price_range['min']>=0){ ?>
     <div class="radio pricing_block" style="margin:20px 0 15px;">
         <label>
             <input type="radio" id="p_selection_1" data-price="0" name="p_selection" value="1" />
@@ -214,29 +226,19 @@ $(document).ready(function() {
             <p style="margin-left:30px;"><?= nl2br($status_rs[1]['s_desc']) ?></p>
         </label>
     </div>
+    <?php } ?>
 
-    <?php if($b['b_p2_max_seats']>0){ ?>
+
+    <?php if($price_range['max']>=0){ ?>
 
         <div class="radio pricing_block">
             <label>
-                <input type="radio" id="p_selection_2" data-price="<?= echo_price($b,2, true) ?>" name="p_selection" value="2" />
-                <b id="p_name_2"><i class="<?= $status_rs[2]['s_mini_icon'] ?>" style="margin:0 1px;"></i> <?= $b['b_p2_weeks'] .' Week'.show_s($b['b_p2_weeks']).' of '.$status_rs[2]['s_name'] ?></b> &nbsp;[<b id="p_price_2"><?= echo_price($b,2) ?></b>]<?php /* <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . show_s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b> */ ?>
+                <input type="radio" id="p_selection_2" data-price="<?= $price_range['max'] ?>" name="p_selection" value="2" />
+                <b id="p_name_2"><i class="<?= $status_rs[2]['s_mini_icon'] ?>" style="margin:0 1px;"></i> <?= $b['b_p2_weeks'] .' Week'.echo__s($b['b_p2_weeks']).' of '.$status_rs[2]['s_name'] ?></b> &nbsp;[<b id="p_price_2">$<?= $price_range['max'] ?></b>]<?php /* <b class="badge badge-grey"><?= ( $instructor_support_off ? 'NOT AVAILABLE' : ( $classroom_available ? $classroom_available . ' Seat' . echo__s($classroom_available).' Remaining' : 'SOLD OUT' ) ) ?></b> */ ?>
                 <p style="margin-left:30px;"><?= nl2br($status_rs[2]['s_desc']) ?></p>
                 <p><i class="fas fa-comment-alt-smile"></i> All our coaching packages offer the <b>Mench Outcome Guarantee</b> which means we promise you will <?= strtolower($b['c_outcome']) ?> so long that you complete all <?= ( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ) ?> tasks before the end of this <?= $b['b__week_count'].' week' ?> Bootcamp. If not, we willl give you a full refund. <a href="https://support.mench.com/hc/en-us/articles/115002080031" target="_blank">Learn more <i class="fas fa-external-link-square"></i></a></p>
             </label>
         </div>
-
-        <?php if($b['b_p3_rate']>0){ ?>
-
-            <div class="radio pricing_block">
-                <label>
-                    <input type="radio" id="p_selection_3" data-price="<?= echo_price($b,3, true) ?>" name="p_selection" value="3" />
-                    <b id="p_name_3"><i class="<?= $status_rs[3]['s_mini_icon'] ?>"></i> <?= $b['b_p3_weeks'] .' Week'.show_s($b['b_p3_weeks']).' of '.$status_rs[3]['s_name'] ?></b> &nbsp;[<b id="p_price_3"><?= echo_price($b,3) ?></b>]
-                    <p style="margin-left:30px;"><?= nl2br($status_rs[3]['s_desc']) ?></p>
-                </label>
-            </div>
-
-        <?php } ?>
 
     <?php } ?>
 
@@ -263,7 +265,7 @@ $(document).ready(function() {
     <p>Review and confirm your admission details:</p>
     <ul>
         <li>Target Outcome: <b><?= $b['c_outcome'] ?></b></li>
-        <li>Your Commitment: <b><?= format_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' week'.show_s($b['b__week_count']) ?> (<?= format_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day)</b></li>
+        <li>Your Commitment: <b><?= echo_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' week'.echo__s($b['b__week_count']) ?> (<?= echo_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day)</b></li>
         <li>Class Dates: <b id="class_dates"></b></li>
         <li><?= $this->lang->line('obj_rs_name') ?>: <b id="confirm_support"></b></li>
         <li>Tuition: <b id="confirm_price"></b><span id="outcome_guarantee"></span></li>

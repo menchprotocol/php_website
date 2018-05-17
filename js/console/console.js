@@ -46,6 +46,17 @@ function open_tip(intent_id){
 	$("div#content_"+intent_id).fadeIn();
 }
 
+function add_to_list(sort_list_id,sort_handler,html_content){
+    //See if we already have a list in place?
+    if($( "#"+sort_list_id+" "+sort_handler).length>0){
+        //yes we do! add this:
+        $( "#"+sort_list_id+" "+sort_handler+":last").after(html_content);
+    } else {
+        //Empty list, add before input filed:
+        $( "#"+sort_list_id).prepend(html_content);
+    }
+}
+
 function close_tip(intent_id){
 	$("div#content_"+intent_id).hide();
 	$('#hb_'+intent_id).fadeIn('slow');

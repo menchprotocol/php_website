@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.32',
+    'version' => '3.33',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -307,15 +307,15 @@ $config['object_statuses'] = array(
         1 => array(
             's_name'  => 'Do It Yourself',
             's_desc'  => '- Step by Step Action Plan
-- Classmates Leaderboard
 - Peer Chat & Networking
 - Notification & Reminders',
             's_mini_icon' => 'fas fa-wrench',
         ),
         2 => array(
             's_name'  => 'Coaching',
-            's_desc'  => 'Everything in [Do It Yourself] plus:
-            
+            's_desc'  => '- Step by Step Action Plan
+- Peer Chat & Networking
+- Notification & Reminders
 - Get coaching from an Industry Expert
 - 1-on-1 Chat Line & Email Support
 - Assignment Review & Feedback
@@ -332,7 +332,7 @@ $config['object_statuses'] = array(
 
     ),
 
-    'u_url_type_id' => array(
+    'x_type' => array(
         0 => array(
             's_name'  => 'Web Page',
             's_fb_key'  => 'text',
@@ -373,7 +373,7 @@ $config['object_statuses'] = array(
 
     'x_status' => array(
         -2 => array(
-            's_name'  => 'Archived',
+            's_name'  => 'Deleted',
             's_desc'  => 'URL removed by User',
             's_mini_icon' => 'fas fa-trash-alt',
         ),

@@ -119,7 +119,7 @@ WHERE ru.ru_status >= 4
                     } elseif($i['i_media_type']=='text' && strlen($i['i_url'])>0){
 
                         //Attempt to find the image for the cover photo:
-                        $content_image = detect_embed_media($i['i_url'],$i['i_url'],true);
+                        $content_image = echo_embed($i['i_url'],$i['i_url'],true);
 
                         //Did we find a valid image?
                         if($content_image){
@@ -528,13 +528,17 @@ WHERE ru.ru_status >= 4
 	}
 	
 	
-	function instructor_bs($match_columns){
+	function instructor_bs($match_columns, $order_columns=array(
+        'b_id' => 'ASC',
+    )){
 	    $this->db->select('*');
 	    $this->db->from('v5_intents c');
 	    $this->db->join('v5_bootcamps b', 'b.b_outbound_c_id = c.c_id');
 	    $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id');
         $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
-	    $this->db->order_by('b.b_id', 'ASC');
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
 	    foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
 	    }
@@ -673,6 +677,43 @@ WHERE ru.ru_status >= 4
 		return $this->db->affected_rows();
 	}
 
+    function i_replicate($u_id,$c__messages,$c_id){
+        //This function strips and copies all $c__messages to $c_id recorded as $u_id
+        $newly_created_messages = array();
+
+        foreach($c__messages as $i){
+
+            if($i['i_status']<=0){
+                continue; //Only do active messages, should not happen...
+            }
+
+            $new_i = array();
+            foreach($i as $key=>$value){
+                //Is this a message field?
+                if(substr($key,0,2)=='i_' && !in_array($key,array('i_id','i_inbound_u_id','i_outbound_c_id','i_timestamp','i_rank'))){
+                    //Yes, move over:
+                    $new_i[$key] = $value;
+                }
+            }
+
+            //Replace creator & c_id
+            $new_i['i_inbound_u_id'] = $u_id;
+            $new_i['i_outbound_c_id'] = $c_id;
+            $new_i['i_rank'] = 1 + $this->Db_model->max_value('v5_messages','i_rank', array(
+                    'i_status' => $new_i['i_status'],
+                    'i_outbound_c_id' => $c_id,
+                ));
+
+            //Create:
+            $i_create = $this->Db_model->i_create($new_i);
+
+            //Append to total stats:
+            array_push($newly_created_messages,$i_create);
+        }
+
+        return $newly_created_messages;
+
+    }
 
     /* ******************************
      * Facebook Pages/Admins
@@ -1231,7 +1272,55 @@ WHERE ru.ru_status >= 4
 		
 		return $insert_columns;
 	}
-	
+
+
+
+
+
+    function c_replicate($u_id,$intent,$c_id){
+
+        if($intent['c_status']<0){
+            return array();
+        }
+
+        $new_c = array();
+        foreach($intent as $key=>$value){
+            //Is this a message field?
+            if(!(substr($key,0,3)=='c__') && substr($key,0,2)=='c_' && !in_array($key,array('c_id','c_timestamp','c_inbound_u_id'))){
+                //Yes, move over:
+                $new_c[$key] = $value;
+            }
+        }
+
+        //Append creator:
+        $new_c['c_inbound_u_id'] = $u_id;
+
+        //Create intent:
+        $new_intent = $this->Db_model->c_create($new_c);
+
+        //Create Link:
+        $intent_relation = $this->Db_model->cr_create(array(
+            'cr_inbound_u_id' => $u_id,
+            'cr_inbound_c_id'  => $c_id,
+            'cr_outbound_c_id' => $new_intent['c_id'],
+            'cr_outbound_rank' => 1 + $this->Db_model->max_value('v5_intent_links','cr_outbound_rank', array(
+                    'cr_status >=' => 1,
+                    'c_status >=' => 1,
+                    'cr_inbound_c_id' => $c_id,
+                )),
+        ));
+
+        //Return everything:
+        $new_intents = $this->Db_model->cr_outbound_fetch(array(
+            'cr.cr_id' => $intent_relation['cr_id'],
+        ));
+
+        return $new_intents[0];
+
+    }
+
+
+
 	function c_update($c_id,$update_columns){
 	    $this->db->where('c_id', $c_id);
 	    $this->db->update('v5_intents', $update_columns);
@@ -1364,13 +1453,15 @@ WHERE ru.ru_status >= 4
 	 ****************************** */
 
 
-    function x_fetch($match_columns, $order_columns=array(
+    function x_fetch($match_columns, $join_objects=array(), $order_columns=array(
         'x_id' => 'ASC'
     )){
         //Fetch the target entities:
         $this->db->select('*');
         $this->db->from('v5_urls x');
-
+        if(in_array('u',$join_objects)){
+            $this->db->join('v5_entities u', 'u.u_id=x.x_outbound_u_id','left');
+        }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1727,7 +1818,7 @@ WHERE ru.ru_status >= 4
                         foreach($engagement_references as $engagement_field=>$er){
                             if(intval($engagements[0][$engagement_field])>0){
                                 //Yes we have a value here:
-                                $html_message .= '<div>'.$er['name'].': '.object_link($er['object_code'], $engagements[0][$engagement_field], $engagements[0]['e_b_id']).'</div>';
+                                $html_message .= '<div>'.$er['name'].': '.echo_object($er['object_code'], $engagements[0][$engagement_field], $engagements[0]['e_b_id']).'</div>';
                             }
                         }
 

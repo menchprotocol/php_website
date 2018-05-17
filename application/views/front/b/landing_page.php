@@ -9,6 +9,11 @@ if($b['b_is_parent'] && count($b['c__child_intents'])>0){
     //Replace $b with the new aggregated $b
     $b = b_aggregate($b);
 }
+
+$price_range = array(
+    'min' => echo_price($b,1, true),
+    'max' => echo_price($b,2, true),
+);
 ?>
 
 <style>
@@ -41,7 +46,7 @@ function toggleview(object_key){
 $( document ).ready(function() {
 	$(".next_start_date").countdowntimer({
 		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , time_format(strtotime('next monday'),3,-1)); ?> 23:59:59",
+        dateAndTime : "<?php echo date('Y/m/d' , echo_time(strtotime('next monday'),3,-1)); ?> 23:59:59",
 		size : "lg",
 		regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
       		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -61,13 +66,13 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
 
             <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
-                <li>Commitment: <b><?= format_hours($b['c__estimated_hours']) ?> in <?= $week_count.' Week'.show_s($week_count) ?></b></li>
+                <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']) ?> in <?= $week_count.' Week'.echo__s($week_count) ?></b></li>
                 <li>Starts: <b>Every Monday</b></li>
-                <li><?= ( echo_price($b,99, true) ? 'Tuition Range: <b>'.echo_price($b).' - '.echo_price($b,99).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.echo_price($b).'</b>' ) ?></li>
+                <li><?= ( $price_range['min']>=0 && $price_range['max']>=0 ? 'Tuition Range: <b>'.echo_price($b,1).' - '.echo_price($b,2).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.( echo_price($b,( $price_range['min']>=0 ? 1 : 2 )) ).'</b>' ) ?></li>
 
                 <?php
                 if($b['b_difficulty_level']>0){
-                    echo '<li>Experience Level: '.status_bible('df',$b['b_difficulty_level'],0,'top').'</li>';
+                    echo '<li>Experience Level: '.echo_status('df',$b['b_difficulty_level'],0,'top').'</li>';
                 }
                 ?>
             </ul>
@@ -111,7 +116,7 @@ $( document ).ready(function() {
                     echo '<div id="c_'.$key.'">';
                     echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
                     if($b7d['c__estimated_hours']>0){
-                        echo ' &nbsp;<i class="fal fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.format_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.format_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                        echo ' &nbsp;<i class="fal fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
                     echo '</a></h4>';
                     echo '<div class="toggleview c_'.$key.'" style="display:none;">';
@@ -152,7 +157,7 @@ $( document ).ready(function() {
                             echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list\').toggle();" class="show_full_list list-group-item"><i class="fas fa-plus-circle" style="margin: 0 4px 0 2px; color:#999;"></i> See All '.$child_name.'s</a>';
                         }
                         echo '<li class="list-group-item '.( $counter>=$class_settings['landing_page_visible'] ? 'show_full_list" style="display:none;"' : '"' ).'>';
-                        //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_time($child_intent['c__estimated_hours'],1) : '').'</span>';
+                        //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
                         echo ( $b['b_is_parent'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon') ).' ';
                         echo $child_name.' '.$child_intent['cr_outbound_rank'].': '.$child_intent['c_outcome'];
                         echo '</li>';

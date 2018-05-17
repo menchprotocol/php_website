@@ -2,7 +2,7 @@
 //Fetch the sprint units from config:
 $message_max = $this->config->item('message_max');
 $website = $this->config->item('website');
-$intent_statuses = status_bible('c');
+$intent_statuses = echo_status('c');
 $udata = $this->session->userdata('user');
 if($b['b_is_parent']){
     //For the list of prerequisites and skills:
@@ -32,7 +32,7 @@ function update_tree_input(){
     }
 }
 
-function format_hours(dbl_hour){
+function echo_hours(dbl_hour){
     dbl_hour = parseFloat(dbl_hour);
     if(dbl_hour<=0){
         return '0';
@@ -92,7 +92,7 @@ $(document).ready(function() {
     }
 
     //Update Bootcamp hours:
-    $('.hours_level_1').text(format_hours($('.hours_level_1').attr('current-hours')));
+    $('.hours_level_1').text(echo_hours($('.hours_level_1').attr('current-hours')));
 
 
     //Update counters on load:
@@ -127,7 +127,7 @@ $(document).ready(function() {
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<span class="suggest-prefix"><i class="fas fa-eye"></i> Link to</span> '+ suggestion._highlightResult.c_outcome.value;
+                return '<span class="suggest-prefix"><i class="fas fa-link"></i> Link to</span> '+ suggestion._highlightResult.c_outcome.value;
             },
             header: function(data) {
                 if(!data.isEmpty){
@@ -306,11 +306,11 @@ function load_intent_sort(pid,level){
 
                         //Remove from old one:
                         var from_hours_new = parseFloat($('#t_estimate_'+inputs.from_c_id).attr('current-hours'))-step_hours;
-                        $('#t_estimate_'+inputs.from_c_id).attr('current-hours',from_hours_new).text(format_hours(from_hours_new));
+                        $('#t_estimate_'+inputs.from_c_id).attr('current-hours',from_hours_new).text(echo_hours(from_hours_new));
 
                         //Add to new:
                         var to_hours_new = parseFloat($('#t_estimate_'+inputs.to_c_id).attr('current-hours'))+step_hours;
-                        $('#t_estimate_'+inputs.to_c_id).attr('current-hours',to_hours_new).text(format_hours(to_hours_new));
+                        $('#t_estimate_'+inputs.to_c_id).attr('current-hours',to_hours_new).text(echo_hours(to_hours_new));
 
                         //Adjust Bootcamp hours if necessary:
                         if(!(from_c_status==to_c_status)){
@@ -318,7 +318,7 @@ function load_intent_sort(pid,level){
                             var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
                             //Determine what to do:
                             var new_bootcamp_hours = current_b_hours + ( ( from_c_status>to_c_status ? -1 : 1 ) * step_hours );
-                            $('.hours_level_1').attr('current-hours',new_bootcamp_hours).text(format_hours(new_bootcamp_hours));
+                            $('.hours_level_1').attr('current-hours',new_bootcamp_hours).text(echo_hours(new_bootcamp_hours));
                         }
                     }
 
@@ -444,16 +444,6 @@ function load_modify(c_id, level){
 
 
 
-function add_to_list(sort_list_id,sort_handler,html_content){
-    //See if we already have a list in place?
-    if($( "#"+sort_list_id+" "+sort_handler).length>0){
-        //yes we do! add this:
-        $( "#"+sort_list_id+" "+sort_handler+":last").after(html_content);
-    } else {
-        //Empty list, add before input filed:
-        $( "#"+sort_list_id).prepend(html_content);
-    }
-}
 
 
 function c_save_settings(){
@@ -521,10 +511,10 @@ function c_save_settings(){
                         //Does this need to be removed from the totals?
                         if (current_status == 1 && modify_data['c_status'] <= 0 && current_c_hours > 0) {
                             //We need to remove initial hours from the totals:
-                            $('.hours_level_1').attr('current-hours', (current_b_hours - current_c_hours)).text(format_hours(current_b_hours - current_c_hours));
+                            $('.hours_level_1').attr('current-hours', (current_b_hours - current_c_hours)).text(echo_hours(current_b_hours - current_c_hours));
                         } else if (current_status <= 0 && modify_data['c_status'] > 0 && current_c_hours > 0) {
                             //We need to add the hours to the total:
-                            $('.hours_level_1').attr('current-hours', (current_b_hours + current_c_hours)).text(format_hours(current_b_hours + current_c_hours));
+                            $('.hours_level_1').attr('current-hours', (current_b_hours + current_c_hours)).text(echo_hours(current_b_hours + current_c_hours));
                         }
 
                         //Has this been deleted?
@@ -570,11 +560,11 @@ function c_save_settings(){
                         //Only update Bootcamp if Task+Step are Active:
                         if(current_c_status>0){
                             var new_b_hours = current_b_hours + hours_deficit;
-                            $('.hours_level_1').attr('current-hours',new_b_hours).text(format_hours(new_b_hours));
+                            $('.hours_level_1').attr('current-hours',new_b_hours).text(echo_hours(new_b_hours));
                         }
 
                         //Update Task:
-                        $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(format_hours(modify_data['c_time_estimate']));
+                        $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(echo_hours(modify_data['c_time_estimate']));
 
                     }
 
@@ -642,18 +632,18 @@ function c_save_settings(){
 
                             //Update Miletsone:
                             var new_c_hours = current_c_hours + step_deficit;
-                            $('#t_estimate_'+parent_c_id).attr('current-hours',new_c_hours).text(format_hours(new_c_hours));
+                            $('#t_estimate_'+parent_c_id).attr('current-hours',new_c_hours).text(echo_hours(new_c_hours));
 
                             //Only update Bootcamp if Task+Step are Active:
                             if(current_c_status>0){
                                 var new_b_hours = current_b_hours + step_deficit;
-                                $('.hours_level_1').attr('current-hours',new_b_hours).text(format_hours(new_b_hours));
+                                $('.hours_level_1').attr('current-hours',new_b_hours).text(echo_hours(new_b_hours));
                             }
 
                         }
 
                         //Always update the Step:
-                        $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(format_hours(modify_data['c_time_estimate']));
+                        $('#t_estimate_'+modify_data['pid']).attr('current-hours',modify_data['c_time_estimate']).text(echo_hours(modify_data['c_time_estimate']));
                     }
                 }
 
@@ -843,9 +833,9 @@ function add_item(group_id,prefix,current_value){
         //Show relevant tips:
         /*
         if($level==1){
-            itip(599);
+            echo_tip(599);
         } elseif($level==2){
-            itip(602);
+            echo_tip(602);
         }
         */
         echo '<div id="bootcamp-objective" class="list-group maxout">';
@@ -858,7 +848,7 @@ function add_item(group_id,prefix,current_value){
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
             <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' '.$this->lang->line('level_0_name').'s' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
-            <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-eye"></i> Prerequisites</a></li>
+            <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-shield-check"></i> Prerequisites</a></li>
             <li id="nav_skills"><a href="#skills"><i class="fas fa-diamond"></i> Skills</a></li>
         </ul>
 
@@ -871,7 +861,7 @@ function add_item(group_id,prefix,current_value){
 
                 if(!$b['b_is_parent']){
                     //Show tip for Tasks:
-                    itip(602);
+                    echo_tip(602);
                 }
 
                 //Task Expand/Contract all if more than 2
@@ -917,10 +907,10 @@ function add_item(group_id,prefix,current_value){
 
             <div class="tab-pane" id="tabprerequisites">
 
-                <?php itip(610); ?>
+                <?php echo_tip(610); ?>
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fas fa-eye"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
+                        initiate_list('b_prerequisites','+ New Prerequisite','<i class="fas fa-shield-check"></i>',<?= ( strlen($b['b_prerequisites'])>0 ? $b['b_prerequisites'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_prerequisites" class="list-group grey-list"></div>
@@ -944,7 +934,7 @@ function add_item(group_id,prefix,current_value){
 
             <div class="tab-pane" id="tabskills">
 
-                <?php itip(2271); ?>
+                <?php echo_tip(2271); ?>
 
                 <script>
                     $(document).ready(function() {
@@ -1008,7 +998,7 @@ function add_item(group_id,prefix,current_value){
                 <select class="form-control input-mini border timer_2 timer_3" id="c_time_estimate">
                     <?php
                     foreach($times as $time){
-                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.format_hours($time).'</option>';
+                        echo '<option value="'.$time.'" '.( $intent['c_time_estimate']==$time ? 'selected="selected"' : '' ).'>'.echo_hours($time).'</option>';
                     }
                     ?>
                 </select>

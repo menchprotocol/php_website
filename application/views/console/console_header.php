@@ -140,19 +140,13 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 } elseif($uri_segment_1=='entities' && $udata['u_inbound_u_id']==1281){
 
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-at"></i><p>Community</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-users"></i><p>People</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-at"></i><p>Expert Content</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-link"></i><p>References</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-at"></i><p>'.$udata['u_full_name'].'</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-user-circle"></i><p>My Entity</p></a></li>';
-
-                    if($udata['u_id']==1 && 0){
-                        //Not shown to anyone as we're focused on People and References for now
-                        echo '<li class="li-sep '.( $uri_segment_1=='entities' && !in_array($uri_segment_2,array($udata['u_id'],1278,1326)) ? 'active' : '' ).'"><a href="/entities"><i class="fas fa-at"></i><p>All Entities</p></a></li>';
-                    }
-
-                    echo '<li class="li-sep"><a href="/logout"><i class="fas fa-power-off"></i><p>Logout</p></a></li>';
+                    //echo '<li class="li-sep"><a href="/logout"><i class="fas fa-power-off"></i><p>Logout '.one_two_explode('',' ',$udata['u_full_name']).'</p></a></li>';
 
                 } elseif($uri_segment_1=='intents' && $udata['u_inbound_u_id']==1281){
 

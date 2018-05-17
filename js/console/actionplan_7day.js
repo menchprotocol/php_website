@@ -46,7 +46,7 @@ $(document).ready(function() {
             load_intent_sort(intent_id,"3");
 
             //Load time:
-            $('#t_estimate_'+intent_id).text(format_hours($('#t_estimate_'+intent_id).attr('current-hours')));
+            $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('current-hours')));
 
         });
 
@@ -56,7 +56,7 @@ $(document).ready(function() {
                 var intent_id = $(this).attr('intent-id');
                 if(intent_id){
                     //Load time:
-                    $('#t_estimate_'+intent_id).text(format_hours($('#t_estimate_'+intent_id).attr('current-hours')));
+                    $('#t_estimate_'+intent_id).text(echo_hours($('#t_estimate_'+intent_id).attr('current-hours')));
                 }
             });
         }
@@ -153,11 +153,11 @@ function new_intent(pid,next_level){
         var current_task_status = parseInt($('.c_outcome_'+pid).attr('current-status'));
 
         //Update Miletsone:
-        $('#t_estimate_'+pid).attr('current-hours',(current_task_hours + step_deficit)).text(format_hours((current_task_hours + step_deficit)));
+        $('#t_estimate_'+pid).attr('current-hours',(current_task_hours + step_deficit)).text(echo_hours((current_task_hours + step_deficit)));
 
         //Only update Bootcamp if Task is active:
         if(current_task_status>0){
-            $('.hours_level_1').attr('current-hours',(current_b_hours + step_deficit)).text(format_hours((current_b_hours + step_deficit)));
+            $('.hours_level_1').attr('current-hours',(current_b_hours + step_deficit)).text(echo_hours((current_b_hours + step_deficit)));
         }
 
     });

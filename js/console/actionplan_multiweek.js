@@ -65,7 +65,7 @@ function delete_b(b_id,cr_id){
                     if(data.deleted_hours>0){
                         //Expected... Subtract hours from current total
                         var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours')) - data.deleted_hours;
-                        $('.hours_level_1').attr('current-hours',current_b_hours).text(format_hours(current_b_hours));
+                        $('.hours_level_1').attr('current-hours',current_b_hours).text(echo_hours(current_b_hours));
                     }
 
                 }, 1597);
@@ -120,7 +120,7 @@ function link_b(new_b_id){
                 var current_b_hours = parseFloat($('.hours_level_1').attr('current-hours'));
                 current_b_hours += data.new_hours;
                 //Update UI:
-                $('.hours_level_1').attr('current-hours',current_b_hours).text(format_hours(current_b_hours));
+                $('.hours_level_1').attr('current-hours',current_b_hours).text(echo_hours(current_b_hours));
             }
 
             //Tooltips:

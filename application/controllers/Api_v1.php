@@ -270,7 +270,7 @@ class Api_v1 extends CI_Controller {
         $admin_lost_pages = $this->Comm_model->fb_detect_revoked($udata['u_id'],$authorized_fp_ids,$_POST['b_id']);
         if(count($admin_lost_pages)>0){
             //Let them know that they lost access to certain pages that is no longer associated with their account:
-            echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-info-circle"></i> You lost access to '.count($admin_lost_pages).' page'.show_s(count($admin_lost_pages)).' since the last time you logged into Facebook.</div>';
+            echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-info-circle"></i> You lost access to '.count($admin_lost_pages).' page'.echo__s(count($admin_lost_pages)).' since the last time you logged into Facebook.</div>';
         }
 
 
@@ -317,7 +317,7 @@ class Api_v1 extends CI_Controller {
                 }
 
                 //Left content
-                $pages_list_ui .= status_bible('fp',$page['fp_status'],true, 'right');
+                $pages_list_ui .= echo_status('fp',$page['fp_status'],true, 'right');
                 $pages_list_ui .= ' '.$page['fp_name'];
 
                 //Goes below the list:
@@ -339,7 +339,7 @@ class Api_v1 extends CI_Controller {
                 //How about other Connected Bootcamps?
                 if(count($other_bs)>0){
                     //Show link:
-                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.show_s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-dot-circle"></i>'.count($other_bs).'</a>';
+                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.echo__s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-dot-circle"></i>'.count($other_bs).'</a>';
 
                     //Show other connected Bootcamps:
                     $additional_ui_boxes .= '<div class="fp_box fp_current_'.$page['fp_id'].'" style="display:none;">';
@@ -551,7 +551,7 @@ class Api_v1 extends CI_Controller {
 
                 //Show the result:
                 echo '<option value="'.($not_available_reason?'':$r_ids).'" '.( $not_available_reason ? ' disabled="disabled" ' : '').'>';
-                echo time_format($admission_start_date,5) .' - '. time_format($admission_start_date,5, ((count($admissions[0]['c__child_intents'])*7*24*3600)-(12*3600)));
+                echo echo_time($admission_start_date,5) .' - '. echo_time($admission_start_date,5, ((count($admissions[0]['c__child_intents'])*7*24*3600)-(12*3600)));
                 echo ( $not_available_reason ? ' ('.$not_available_reason.')' : '');
                 echo '</option>';
 
@@ -582,14 +582,14 @@ class Api_v1 extends CI_Controller {
 
                 echo '<option value="r_ids_'.$class['r_id'].'" '.($_POST['support_level']>1 && ($instructor_has_off || !$seats_available) ? ' disabled="disabled" ' : '').'>';
 
-                echo time_format($class['r_start_date'],5) .' - '. time_format($class['r__class_end_time'],5);
+                echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r__class_end_time'],5);
                 if($_POST['support_level']>1){
                     if($instructor_has_off){
                         echo ' (Closed)';
                     } elseif(!$seats_available){
                         echo ' (Sold Out)';
                     } elseif($seats_available<$admissions[0]['b_p2_max_seats']){
-                        echo ' ('.$seats_available.' Seat'.show_s($seats_available).' Remaining)';
+                        echo ' ('.$seats_available.' Seat'.echo__s($seats_available).' Remaining)';
                     }
                 }
                 echo '</option>';
@@ -658,7 +658,7 @@ class Api_v1 extends CI_Controller {
                     'u_language' 		=> 'en', //Since they answered initial questions in English
                     'u_email' 			=> trim(strtolower($_POST['u_email'])),
                     'u_full_name' 		=> trim($_POST['u_full_name']),
-                    'u_inbound_u_id'    => 1323, //Admission Initiated
+                    'u_inbound_u_id'    => 1304, //Interested
                 ));
 
                 //Log Engagement for registration:
@@ -712,7 +712,7 @@ class Api_v1 extends CI_Controller {
                     //Show them an error:
                     die(echo_json(array(
                         'status' => 0,
-                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcampd. Your admission status is ['.trim(strip_tags(status_bible('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your admissions. Check your email to continue.').'</div>',
+                        'error_message' => '<div class="alert alert-danger" role="alert"><i class="fas fa-exclamation-triangle"></i> You have already enrolled in this Bootcampd. Your admission status is ['.trim(strip_tags(echo_status('ru',$duplicate_registries[0]['ru_status']))).']. '.($duplicate_registries[0]['ru_status']==-2 ? '<a href="/contact"><u>Contact us</u></a> if you like to restart your application.' : 'We emailed you a link to manage your admissions. Check your email to continue.').'</div>',
                     )));
 
                 }
@@ -723,7 +723,7 @@ class Api_v1 extends CI_Controller {
                 //Change the entity bucket if needed:
                 if(in_array($udata['u_inbound_u_id'], array(1304,1282))){
                     $this->Db_model->u_update( $udata['u_id'] , array(
-                        'u_inbound_u_id' => 1323, //Admission Initiated
+                        'u_inbound_u_id' => 1304, //Interested
                     ));
                 }
 
@@ -882,7 +882,7 @@ class Api_v1 extends CI_Controller {
 
                     //Calculate total
                     //TODO Consider coupons here
-                    $new_admission['ru_final_price'] = $new_admission['ru_p1_price'] + $new_admission['ru_p2_price'] + $new_admission['ru_p3_price'];
+                    $new_admission['ru_final_price'] = ( $new_admission['ru_p1_price']>0 ? $new_admission['ru_p1_price'] : 0 ) + ( $new_admission['ru_p2_price']>0 ? $new_admission['ru_p2_price'] : 0 );
 
                     $this->Db_model->ru_create($new_admission);
                 }
@@ -908,7 +908,7 @@ class Api_v1 extends CI_Controller {
         );
 
         //TODO Consider coupons here
-        $update_data['ru_final_price'] = $update_data['ru_p1_price'] + $update_data['ru_p2_price'] + $update_data['ru_p3_price'];
+        $update_data['ru_final_price'] = ( $update_data['ru_p1_price']>0 ? $update_data['ru_p1_price'] : 0 ) + ( $update_data['ru_p2_price']>0 ? $update_data['ru_p2_price'] : 0 );
 
         if(!$admissions[0]['b_is_parent'] && count($class_ids)==1){
             //Yes, change the status to Admitted:
@@ -980,7 +980,7 @@ class Api_v1 extends CI_Controller {
                 //Inform User:
                 echo_json(array(
                     'status' => 1,
-                    'message' => status_bible('ru',-2,0,'top'),
+                    'message' => echo_status('ru',-2,0,'top'),
                 ));
 
             } else {
@@ -1138,11 +1138,11 @@ class Api_v1 extends CI_Controller {
                     $html_message .= '<div'.$div_style.'>A new Task Completion report is ready for your review:</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Bootcamp: '.$bs[0]['c_outcome'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Class: '.time_format($focus_class['r_start_date'],2).'</div>';
+                    $html_message .= '<div'.$div_style.'>Class: '.echo_time($focus_class['r_start_date'],2).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Student: '.$student_name.'</div>';
                     $html_message .= '<div'.$div_style.'>Task: '.$intent_data['intent']['c_outcome'].'</div>';
-                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_time($intent_data['intent']['c_time_estimate'],0).'</div>';
+                    $html_message .= '<div'.$div_style.'>Estimated Time: '.echo_estimated_time($intent_data['intent']['c_time_estimate'],0).'</div>';
                     $html_message .= '<div'.$div_style.'>Completion Notes: '.( strlen(trim($_POST['us_notes']))>0 ? nl2br(trim($_POST['us_notes'])) : 'None' ).'</div>';
                     $html_message .= '<br />';
                     $html_message .= '<div'.$div_style.'>Cheers,</div>';
@@ -1277,7 +1277,7 @@ class Api_v1 extends CI_Controller {
             ));
 
             //Change their entity Group
-            if(in_array($matching_admissions[0]['u_inbound_u_id'],array(1304,1282,1323,1279))){
+            if(in_array($matching_admissions[0]['u_inbound_u_id'],array(1304,1282,1279))){
                 $this->Db_model->u_update( $matching_admissions[0]['u_id'] , array(
                     'u_inbound_u_id' => 1307, //Graduate
                 ));
@@ -1370,7 +1370,7 @@ class Api_v1 extends CI_Controller {
 
         //Echo the export file:
         header("Content-type: application/octet-stream");
-        header("Content-Disposition: attachment; filename=".$classes[0]['c_outcome']." - Class of ".time_format($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
+        header("Content-Disposition: attachment; filename=".$classes[0]['c_outcome']." - Class of ".echo_time($classes[0]['r_start_date'],1)." Student List (".count($admissions).").xls");
         header("Pragma: no-cache");
         header("Expires: 0");
 
@@ -1382,7 +1382,6 @@ class Api_v1 extends CI_Controller {
         echo "\tGender";
         echo "\tLanguage";
         echo "\tStatus";
-        echo "\tNotes";
         echo "\r\n";
 
         $counter = 0;
@@ -1404,9 +1403,7 @@ class Api_v1 extends CI_Controller {
             echo "\t".$admission['u_timezone'];
             echo "\t".$admission['u_gender'];
             echo "\t".$admission['u_language'];
-            echo "\t".trim(strip_tags(status_bible('ru',$admission['ru_status'])));
-            echo "\t";
-
+            echo "\t".trim(strip_tags(echo_status('ru',$admission['ru_status'])));
             echo "\r\n";
         }
     }
@@ -1520,7 +1517,7 @@ class Api_v1 extends CI_Controller {
 
                 echo_json(array(
                     'status' => 0,
-                    'message' => $guided_admissions.' Student'.show_s($guided_admissions).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
+                    'message' => $guided_admissions.' Student'.echo__s($guided_admissions).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
                 ));
                 exit;
 
@@ -1565,7 +1562,7 @@ class Api_v1 extends CI_Controller {
         echo_json(array(
             'status' => 1,
             'rs_new_status' => $_POST['rs_new_status'],
-            'message' => status_bible('rs',$_POST['rs_new_status'],true, null),
+            'message' => echo_status('rs',$_POST['rs_new_status'],true, null),
         ));
 
 	}
@@ -2699,7 +2696,7 @@ class Api_v1 extends CI_Controller {
                 'count' => count($bs[0]['c__messages']),
             ),
             array(
-                'name' => '<i class="fas fa-eye"></i> Override Prerequisites',
+                'name' => '<i class="fas fa-shield-check"></i> Override Prerequisites',
                 'id' => 'b_prerequisites',
                 'count' => ( strlen($bs[0]['b_prerequisites'])>0 ? count(json_decode($bs[0]['b_prerequisites'])) : 0 ),
             ),
@@ -2826,7 +2823,7 @@ class Api_v1 extends CI_Controller {
         $b_level_messages_results = array();
         if(isset($_POST['b_level_messages']) && intval($_POST['b_level_messages']) && count($bs_from[0]['c__messages'])>0){
             //Yes, import messages:
-            $b_level_messages_results = copy_messages($udata['u_id'],$bs_from[0]['c__messages'],$bs_to[0]['b_outbound_c_id']);
+            $b_level_messages_results = $this->Db_model->i_replicate($udata['u_id'],$bs_from[0]['c__messages'],$bs_to[0]['b_outbound_c_id']);
         }
 
 
@@ -2844,11 +2841,11 @@ class Api_v1 extends CI_Controller {
                         if(intval($_POST['task_import_mode'])==3){
 
                             //Copy intent:
-                            $new_task = copy_intent($udata['u_id'],$c,$bs_to[0]['b_outbound_c_id']);
+                            $new_task = $this->Db_model->c_replicate($udata['u_id'],$c,$bs_to[0]['b_outbound_c_id']);
 
                             if(count($c['c__messages'])>0){
                                 //Copy messages:
-                                $new_task['c__messages'] = copy_messages($udata['u_id'], $c['c__messages'], $new_task['c_id']);
+                                $new_task['c__messages'] = $this->Db_model->i_replicate($udata['u_id'], $c['c__messages'], $new_task['c_id']);
                             }
                         }
                     }
@@ -3327,9 +3324,9 @@ class Api_v1 extends CI_Controller {
                 echo_json(array(
                     'status' => 1,
                     'message' => echo_i(array_merge($new_messages[0],array('e_outbound_u_id'=>$udata['u_id'])),$udata['u_full_name']),
-                    'new_status' => status_bible('i',$new_messages[0]['i_status'],1,'right'),
+                    'new_status' => echo_status('i',$new_messages[0]['i_status'],1,'right'),
                     'success_icon' => '<span><i class="fas fa-check"></i> Saved</span>',
-                    'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.time_diff($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
+                    'new_uploader' => echo_cover($new_messages[0],null,true, 'data-toggle="tooltip" title="Last modified by '.$new_messages[0]['u_full_name'].' about '.echo_diff_time($new_messages[0]['i_timestamp']).' ago" data-placement="right"'), //If there is a person change...
                 ));
             }
 	    }

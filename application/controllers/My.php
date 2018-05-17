@@ -92,7 +92,7 @@ class My extends CI_Controller {
 
         //Assemble the data:
         $data = array(
-            'title' => 'Join '.$admissions[0]['c_outcome'].' - Starting '.time_format($admissions[0]['r_start_date'],4),
+            'title' => 'Join '.$admissions[0]['c_outcome'].' - Starting '.echo_time($admissions[0]['r_start_date'],4),
             'ru_id' => $ru_id,
             'u_id' => $_GET['u_id'],
             'u_key' => $_GET['u_key'],
@@ -344,7 +344,7 @@ class My extends CI_Controller {
                 }
 
                 echo '<i class="fas fa-dot-circle"></i> <b>'.$other_admission['c_outcome'].'</b>';
-                echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.time_format($other_admission['r_start_date'],2).'</span>';
+                echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.echo_time($other_admission['r_start_date'],2).'</span>';
 
                 if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){
                     echo ' <span class="badge badge-primary grey" style="padding: 2px 9px;">RUNNING</span>';
@@ -490,7 +490,7 @@ class My extends CI_Controller {
             echo '<h3 style="margin:0;" class="maxout">';
 
                 //Title (Dates)
-                echo time_format($class['r_start_date'],2).' - '.time_format($class['r__class_end_time'],2);
+                echo echo_time($class['r_start_date'],2).' - '.echo_time($class['r__class_end_time'],2);
 
                 //Status:
                 echo ' ('.( $class_running ? 'Running' : ( time()<$class['r__class_start_time'] ? 'Upcoming' : 'Completed' ) ).')';
@@ -518,7 +518,7 @@ class My extends CI_Controller {
 
                 echo '<div class="ap_toggle" style="display:none;">';
 
-                echo '<div class="title"><h4><i class="fas fa-list-ol"></i> Action Plan as of '.time_format($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
+                echo '<div class="title"><h4><i class="fas fa-list-ol"></i> Action Plan as of '.echo_time($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
                 echo '<div class="help_body maxout" id="content_3267"></div>';
 
                 //Show Action Plan:
@@ -547,7 +547,7 @@ class My extends CI_Controller {
 
                 //Prerequisites, which get some system appended ones:
                 $b['b_prerequisites'] = prep_prerequisites($b);
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-eye"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-shield-check"></i> Prerequisites <span id="hb_610" class="help_button" intent-id="610"></span> <span id="b_prerequisites_status" class="list_status">&nbsp;</span></h4></div>
             <div class="help_body maxout" id="content_610"></div>';
                 echo ( count($b['b_prerequisites'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',$b['b_prerequisites']).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
 
@@ -720,7 +720,7 @@ class My extends CI_Controller {
                                 echo '<div class="us_c_title">';
                                 echo '<a href="javascript:view_el('.$admission['u_id'].','.$intent['c_id'].')" class="plain">';
                                 echo '<i class="pointer fas fa-caret-right" id="pointer_'.$admission['u_id'].'_'.$intent['c_id'].'"></i> ';
-                                echo status_bible('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_outcome'];
+                                echo echo_status('e_status',( $intent_submitted ? $us_data[$intent['c_id']]['e_status'] : -4 /* Not completed yet */ ),1,'right').'#'.$intent['cr_outbound_rank'].' '.$intent['c_outcome'];
                                 echo '</a>';
                                 echo '</div>';
 
@@ -728,7 +728,7 @@ class My extends CI_Controller {
                                 //Submission Details:
                                 echo '<div id="c_el_'.$admission['u_id'].'_'.$intent['c_id'].'" class="homework hidden">';
                                 if($intent_submitted){
-                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['e_text_value'])>0 ? make_links_clickable($us_data[$intent['c_id']]['e_text_value']) : '<i class="fas fa-comment-alt-times"></i> No completion notes by Student' ).'</p>';
+                                    echo '<p>'.( strlen($us_data[$intent['c_id']]['e_text_value'])>0 ? echo_link($us_data[$intent['c_id']]['e_text_value']) : '<i class="fas fa-comment-alt-times"></i> No completion notes by Student' ).'</p>';
                                 } else {
                                     echo '<p><i class="fas fa-exclamation-triangle"></i> Nothing submitted Yet</p>';
                                 }
@@ -871,7 +871,7 @@ class My extends CI_Controller {
                 echo '<div>'.format_e_text_value('/attach '.$messages[0]['i_media_type'].':'.$messages[0]['i_url']).'</div>';
             } else {
                 //Show embed video:
-                echo detect_embed_media($messages[0]['i_url'],$messages[0]['i_message']);
+                echo echo_embed($messages[0]['i_url'],$messages[0]['i_message']);
             }
 
         } else {
@@ -899,7 +899,7 @@ class My extends CI_Controller {
         if(isset($messages[0]) && $messages[0]['i_media_type']=='text' && strlen($messages[0]['i_url'])>0){
 
             //Is this an embed video?
-            $embed_html = detect_embed_media($messages[0]['i_url'],$messages[0]['i_message']);
+            $embed_html = echo_embed($messages[0]['i_url'],$messages[0]['i_message']);
 
             if(!$embed_html){
                 //Now redirect:

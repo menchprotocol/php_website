@@ -20,7 +20,7 @@ $(document).ready(function() {
 $website = $this->config->item('website');
 $daily_hours = round($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__active_intents'])>0 ? count($b['c__active_intents']) : 1 )*7) , 1);
 
-$total_goals = count($b['c__active_intents']) + show_s($b['c__child_child_count']) + $b['c__child_child_count'];
+$total_goals = count($b['c__active_intents']) + echo__s($b['c__child_child_count']) + $b['c__child_child_count'];
 
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
@@ -28,13 +28,13 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 <div class="help_body maxout" id="content_2272"></div>
 
 
-<div class="dash-label"><span class="stat-num"><?= count($b['c__active_intents']) .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_name').show_s(count($b['c__active_intents'])) ?></div>
+<div class="dash-label"><span class="stat-num"><?= count($b['c__active_intents']) .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_name').echo__s(count($b['c__active_intents'])) ?></div>
 
     <?php if($b['c__child_child_count']>0){ ?>
-        <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').show_s($b['c__child_child_count']) ?></div>
+        <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').echo__s($b['c__child_child_count']) ?></div>
     <?php } ?>
 
-<div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fas fa-comments"></i> '.$this->lang->line('obj_i_name'). show_s($b['c__message_tree_count']) ?></div>
+<div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fas fa-comments"></i> '.$this->lang->line('obj_i_name'). echo__s($b['c__message_tree_count']) ?></div>
 
 <div class="dash-label"><span class="stat-num"><?= $daily_hours .'</span> <i class="fal fa-clock"></i> Hours per Day' ?></div>
 
@@ -120,7 +120,7 @@ if($b['b_is_parent']){
 
 //Show current funnel
 foreach($student_funnel as $ru_status=>$count){
-    echo '<div><span class="stat-num">'.$count.'</span>'.status_bible('ru',$ru_status).'</div>';
+    echo '<div><span class="stat-num">'.$count.'</span>'.echo_status('ru',$ru_status).'</div>';
 }
 ?>
 
@@ -150,7 +150,7 @@ if($total_advisers>0){
 echo '</div>';
 ?>
 <div style="margin-top:-5px;">Landing Page: <a href="/<?= $b['b_url_key'] ?>"><u><?= $website['url'] . $b['b_url_key'] ?></u></a> <a href="#" class="btn btn-sm btn-default marketplace_b_url copy-btn">Copy&nbsp;<i class="fas fa-clone" style="font-size:1em;"></i></a></div>
-<div style="margin-top:-5px;">Bootcamp Status: <?= status_bible('b',$b['b_status'],0,'right') ?></div>
+<div style="margin-top:-5px;">Bootcamp Status: <?= echo_status('b',$b['b_status'],0,'right') ?></div>
 
 
 

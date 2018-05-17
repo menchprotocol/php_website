@@ -101,7 +101,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
                         $start_unix = strtotime($classes[0]['r_start_date']);
 
-                        echo time_format($classes[0]['r_start_date'],2).' - '.trim(time_format($classes[0]['r_start_date'],2, ((count($child_intents)*7*24*3600)-(12*3600)))).' ('.$child_intents[(count($child_intents)-1)]['cr_outbound_rank'].' Weeks)';
+                        echo echo_time($classes[0]['r_start_date'],2).' - '.trim(echo_time($classes[0]['r_start_date'],2, ((count($child_intents)*7*24*3600)-(12*3600)))).' ('.$child_intents[(count($child_intents)-1)]['cr_outbound_rank'].' Weeks)';
 
                     } else {
                         echo 'Dates not yet selected';
@@ -111,7 +111,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
                     $start_unix = strtotime($bs[0]['this_class']['r_start_date']);
 
-                    echo time_format($bs[0]['this_class']['r_start_date'],2).' - '.trim(time_format($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
+                    echo echo_time($bs[0]['this_class']['r_start_date'],2).' - '.trim(echo_time($bs[0]['this_class']['r__class_end_time'],2)).' (1 Week)';
 
                 } else {
 
@@ -153,7 +153,7 @@ if(count($admissions)>0 && is_array($admissions)){
                     }
                     array_push($admissions_displayed,$child_admission['cr_outbound_rank']);
                     echo '<li>';
-                    echo status_bible('ru',$child_admission['ru_status'],1,'right');
+                    echo echo_status('ru',$child_admission['ru_status'],1,'right');
                     echo ' Week '.$child_admission['cr_outbound_rank'].': '.$child_admission['c_outcome'];
                     echo '</li>';
                 }
@@ -165,7 +165,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
             //More info like Bootcamp URL:
             echo '<div class="admission_footer">';
-                echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.status_bible('ru',$admission['ru_status'],0,'top').'</span>';
+                echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.echo_status('ru',$admission['ru_status'],0,'top').'</span>';
                 echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-dot-circle"></i> Bootcamp Overview</a>';
                 if(in_array($admission['ru_status'],array(0,4)) && (!$start_unix || $start_unix>time())){
                     //They can still withdraw their application:

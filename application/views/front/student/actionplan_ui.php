@@ -135,7 +135,7 @@ if(!$class_has_started){
     <?php
 } elseif($class_has_ended){
     //Class has ended
-    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(time_diff($class['r__class_end_time'])).' ago</div>';
+    echo '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Class ended '.strtolower(echo_diff_time($class['r__class_end_time'])).' ago</div>';
 }
 
 
@@ -219,7 +219,7 @@ if($level==2){
                 $textarea_note = 'Include optional feedback for your instructor';
             }
 
-            echo '<div>Estimated time to complete: '.echo_time($intent['c_time_estimate'],1).'</div>';
+            echo '<div>Estimated time to complete: '.echo_estimated_time($intent['c_time_estimate'],1).'</div>';
             echo '<div class="mark_done" id="initiate_done"><a href="javascript:start_report();" class="btn btn-tight btn-black" style="padding-left:8px; padding-right:8px;"><i class="fas fa-check-circle initial"></i>Mark as Complete</a></div>';
 
 
@@ -297,7 +297,7 @@ if($level==1){
             echo '<i class="fal fa-circle"></i> Steps';
         }
         //Show aggregate hours:
-        echo ' <span class="sub-title">'.echo_time($intent['c__estimated_hours'],1).'</span>';
+        echo ' <span class="sub-title">'.echo_estimated_time($intent['c__estimated_hours'],1).'</span>';
     echo '</h4>';
 
     echo '<div id="list-outbound" class="list-group maxout">';
@@ -339,7 +339,7 @@ if($level==1){
             //Show link to enter this item:
             $ui = '<a href="/my/actionplan/'.$admission['b_id'].'/'.$this_intent['c_id'].'" class="list-group-item">';
             $ui .= '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
-            $ui .= status_bible('e_status',$this_item_e_status,1).' ';
+            $ui .= echo_status('e_status',$this_item_e_status,1).' ';
 
         } else {
 
@@ -363,9 +363,9 @@ if($level==1){
 
         //Enable total hours/Task reporting...
         if($level==1 && isset($this_intent['c__estimated_hours'])){
-            $ui .= echo_time($this_intent['c__estimated_hours'],1);
+            $ui .= echo_estimated_time($this_intent['c__estimated_hours'],1);
         } elseif(isset($this_intent['c_time_estimate'])){
-            $ui .= echo_time($this_intent['c_time_estimate'],1);
+            $ui .= echo_estimated_time($this_intent['c_time_estimate'],1);
         }
 
         if($level==1 && $unlocked_item && isset($child_step_count) && $child_step_count){

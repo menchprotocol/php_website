@@ -163,7 +163,7 @@ class Cron extends CI_Controller {
                     ));
 
                     //Update Student Entity group IF they are a prospect:
-                    if(in_array($admission['u_inbound_u_id'],array(1304,1323,1282))){
+                    if(in_array($admission['u_inbound_u_id'],array(1304,1282))){
                         $this->Db_model->u_update( $admission['u_id'] , array(
                             'u_inbound_u_id' => 1279, //Student Admitted
                         ));
@@ -407,7 +407,7 @@ class Cron extends CI_Controller {
 
                     //Log Engagement:
                     $industry_completion = 0.10; //Like Udemy, etc...
-                    $completion_message = 'Your ['.$bs[0]['c_outcome'].'] Class of ['.time_format($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
+                    $completion_message = 'Your ['.$bs[0]['c_outcome'].'] Class of ['.echo_time($class['r_start_date'],2).'] has ended with a ['.round($r_cache__completion_rate*100).'%] completion rate. From the total students of ['.count($accepted_admissions).'], you helped ['.$completion_stats['completed'].'] of them graduate by completing all Tasks on-time.'.( $r_cache__completion_rate>$industry_completion ? ' Great job on exceeding the e-learning industry average completion rate of '.(round($industry_completion*100)).'% 🎉🎉🎉​' : '' );
 
                     //Log Engagement for Class Completion:
                     $this->Db_model->e_create(array(
@@ -709,7 +709,7 @@ class Cron extends CI_Controller {
         //Echo message for cron job:
         echo_json(array(
             'status' => ( $success_count==count($e_pending) && $success_count>0 ? 1 : 0 ),
-            'message' => $success_count.'/'.count($e_pending).' Message'.show_s(count($e_pending)).' successfully synced their attachment with Facebook',
+            'message' => $success_count.'/'.count($e_pending).' Message'.echo__s(count($e_pending)).' successfully synced their attachment with Facebook',
             'e_json' => $e_json,
         ));
 
@@ -812,7 +812,7 @@ class Cron extends CI_Controller {
                 }
                 $message .= '💡 Coaching Student activity in the past '.round($seconds_ago/3600).' hours:'."\n";
                 foreach($msg['message_threads'] as $thread){
-                    $message .= "\n".$thread['received_messages'].' message'.show_s($thread['received_messages']).' from '.$thread['u_full_name'];
+                    $message .= "\n".$thread['received_messages'].' message'.echo__s($thread['received_messages']).' from '.$thread['u_full_name'];
                 }
                 if(count($msg['b_data'])>0 && strlen($message)<580){
                     $message .= "\n\n".'https://mench.com/console/'.$msg['b_data']['b_id'];

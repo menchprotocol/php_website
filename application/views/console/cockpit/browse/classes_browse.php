@@ -53,7 +53,7 @@ foreach($classes as $key=>$class) {
 
     echo '<td><a href="/console/'.$class['r_b_id'].'">'.$bs[0]['c_outcome'].'</a></td>';
     echo '<td><a href="/entities/'.$leaders[0]['u_id'].'">'.$leaders[0]['u_full_name'].'</a></td>';
-    echo '<td><a href="/console/'.$class['r_b_id'].'/classes#class-'.$class['r_id'].'">'.time_format(strtotime($class['r_start_date']),2).'</a></td>';
+    echo '<td><a href="/console/'.$class['r_b_id'].'/classes#class-'.$class['r_id'].'">'.echo_time(strtotime($class['r_start_date']),2).'</a></td>';
     echo '<td><span data-toggle="tooltip" title="% of Class Elapsed Time">';
     if($class['r_status']==3){
         echo '100%';
@@ -76,12 +76,12 @@ foreach($classes as $key=>$class) {
 
     echo '<td class="'.( $bs[0]['b_status']<2 ? 'redalert' : '' ).'">';
     if($class['r_status']<2){
-        echo status_bible('b',$bs[0]['b_status'],1,'right');
+        echo echo_status('b',$bs[0]['b_status'],1,'right');
     }
     echo '</td>';
 
 
-    echo '<td>'.status_bible('r',$class['r_status'],true).'</td>';
+    echo '<td>'.echo_status('r',$class['r_status'],true).'</td>';
     echo '<td>';
 
     if($class['r_status']>=2){

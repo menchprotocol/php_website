@@ -102,7 +102,7 @@ echo '</form>';
             echo '<tr>';
             echo '<td>';
                 echo '<div style="margin-bottom:3px; font-weight:bold;"><span data-toggle="tooltip" title="Intent #'.$e['c_id'].'" data-placement="right" class="underdot">'.$e['c_outcome'].'</span></div>';
-                echo '<span data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.time_format($e['e_timestamp']).'</span>';
+                echo '<span data-toggle="tooltip" data-placement="right" title="'.date("Y-m-d H:i:s",strtotime($e['e_timestamp'])).' Engagement #'.$e['e_id'].'" class="underdot">'.echo_time($e['e_timestamp']).'</span>';
             echo '</td>';
 
             //Do we have a message?
@@ -125,7 +125,7 @@ echo '</form>';
             foreach($engagement_references as $engagement_field=>$er){
                 if(intval($e[$engagement_field])>0){
                     //Yes we have a value here:
-                    echo '<div>'.$er['name'].': '.object_link($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';
+                    echo '<div>'.$er['name'].': '.echo_object($er['object_code'], $e[$engagement_field], $e['e_b_id']).'</div>';
                 } elseif(intval($e[$engagement_field])>0) {
                     echo '<div>'.$er['name'].': #'.$e[$engagement_field].'</div>';
                 }

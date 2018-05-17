@@ -12,18 +12,17 @@ function echo_row($b,$counter){
     echo '<tr>';
     echo '<td>'.$counter.'</td>';
     echo '<td>'.$b['b_id'].'</td>';
-    echo '<td>'.status_bible('b',$b['b_status'],1,'right').'</td>';
+    echo '<td>'.echo_status('b',$b['b_status'],1,'right').'</td>';
     echo '<td>'.( $b['b_old_format'] ? '<i class="fas fa-lock" style="color:#FF0000;" title="OLD FORMAT"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></td>';
 
     echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
-    echo '<td>'.( $b['b_difficulty_level']>=1 ? status_bible('df',$b['b_difficulty_level'],1,'top') : '' ).'</td>';
+    echo '<td>'.( $b['b_difficulty_level']>=1 ? echo_status('df',$b['b_difficulty_level'],1,'top') : '' ).'</td>';
 
     echo '<td>'.( isset($b['leaders'][0]) ? '<a href="/entities/'.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_full_name'].'</a>' : '' ).'</td>';
 
     //Pricing:
     echo '<td>'.echo_price($b,1).'</td>';
     echo '<td>'.echo_price($b,2).'</td>';
-    echo '<td>'.echo_price($b,3).'</td>';
 
 
     echo '<td>';
@@ -35,7 +34,7 @@ function echo_row($b,$counter){
     echo '</td>';
 
     echo '<td>';
-    echo ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.time_format($b['engagements'][0]['e_timestamp'],1).')' : 'Never' );
+    echo ( count($b['engagements'])>0 ? '<a href="/cockpit/browse/engagements?e_b_id='.$b['b_id'].'">'.( count($b['engagements'])>=1000 ? '1000+' : count($b['engagements']) ).'</a> ('.echo_time($b['engagements'][0]['e_timestamp'],1).')' : 'Never' );
 
 
     echo '</td>';

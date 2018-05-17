@@ -95,7 +95,7 @@ class Cockpit extends CI_Controller {
                 ),
             ),
         ));
-        $this->load->view('console/cockpit/status_bible');
+        $this->load->view('console/cockpit/echo_status');
         $this->load->view('console/console_footer');
     }
 

@@ -34,13 +34,13 @@ foreach($pages as $key=>$fp){
 
     echo '<tr>';
     echo '<td>'.($key+1).'</td>';
-    echo '<td>'.status_bible('fp',$fp['fp_status'],1,'right').'</td>';
+    echo '<td>'.echo_status('fp',$fp['fp_status'],1,'right').'</td>';
     echo '<td>'.$fp['fp_name'].'</td>';
     echo '<td>'.$fp['fp_id'].'</td>';
     echo '<td><a href="https://www.facebook.com/'.$fp['fp_fb_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Open Facebook Page in a new window"><i class="fas fa-external-link-square"></i></a></td>';
     echo '<td>'.$fp['u_full_name'].'</td>';
 
-    echo '<td>'.time_format($fp['fs_timestamp'],0).'</td>';
+    echo '<td>'.echo_time($fp['fs_timestamp'],0).'</td>';
 
 
 

@@ -326,6 +326,17 @@ a.badge-primary:hover {
     margin:0 !important;
     paddding:0 !important;
 }
+.url_truncate {
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    margin:0 4px -7px 0;
+    font-size: 1em;
+    text-decoration: underline;
+}
+
 .inline_block{display:inline-block;}
 .icon-default{color:#3C4858 !important; }
 .plain{ text-decoration:none; }
@@ -840,6 +851,7 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 
 @media (max-width: 767px){
 
+    .url_truncate { max-width:220px; }
     .class_nav{width:220px;}
     #funnel .main{ margin-top:5px !important; }
 	#funnel .body-container{ font-size:20px; line-height: 30px; }
@@ -906,12 +918,19 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 	color: #999;
 }
 
-.rotate90{ 
-	-webkit-transform: rotate(90deg);     /* Chrome and other webkit browsers */
-	 -moz-transform: rotate(90deg);        /* FF */
-  -o-transform: rotate(90deg);          /* Opera */
-  -ms-transform: rotate(90deg);         /* IE9 */
-  transform: rotate(90deg);             /* W3C compliant browsers */	
+.rotate45{
+    -webkit-transform: rotate(45deg);     /* Chrome and other webkit browsers */
+    -moz-transform: rotate(45deg);        /* FF */
+    -o-transform: rotate(45deg);          /* Opera */
+    -ms-transform: rotate(45deg);         /* IE9 */
+    transform: rotate(45deg);             /* W3C compliant browsers */
+}
+.rotate90{
+    -webkit-transform: rotate(90deg);     /* Chrome and other webkit browsers */
+    -moz-transform: rotate(90deg);        /* FF */
+    -o-transform: rotate(90deg);          /* Opera */
+    -ms-transform: rotate(90deg);         /* IE9 */
+    transform: rotate(90deg);             /* W3C compliant browsers */
 }
 .rotate180{ 
 	-webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */

@@ -24,22 +24,6 @@ function changeBio() {
     }
 }
 
-function trigger_link_watch(link_id,prepend_url){
-	
-	if($( "#"+link_id ).val().length>0){
-		$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fas fa-external-link-square"></i></a>');
-    } else {
-    	$( "#ph_"+link_id ).html('');
-    }
-	
-	$( "#"+link_id ).bind('change keyup', function () {
-		if($( "#"+link_id ).val().length>0){
-			$( "#ph_"+link_id ).html('<a href="'+prepend_url+$( "#"+link_id ).val()+'" class="link-view" target="_blank">Test <i class="fas fa-external-link-square"></i></a>');
-        } else {
-        	$( "#ph_"+link_id ).html('');
-        }
-	});
-}
 
 
 function update_account(){
@@ -89,7 +73,7 @@ function update_account(){
 }
 
 function insert_gravatar(){
-	var gravatar_url = 'https://www.gravatar.com/avatar/<?= md5(trim(strtolower($entity['u_email']))) ?>';
+	var gravatar_url = 'https://www.gravatar.com/avatar/<?= md5(trim(strtolower($entity['u_email']))) ?>?d=404';
 	$('.profile-pic').attr('src',gravatar_url);
     //TODO Insert gravatar_url into URL Adding Box
     alert('Gravatar URL for your email <?= $entity['u_email'] ?> was successfully inserted. Make sure to SAVE changes.');
@@ -100,17 +84,10 @@ function insert_gravatar(){
 
 
 
-
-<p style="float:right; margin-top:-75px;">
-	<a href="/logout" class="btn btn-sm btn-primary"><i class="fas fa-power-off"></i><span> Logout</span></a>
-</p>
-
-
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
-  <li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>
   <li id="nav_details"><a href="#details"><i class="fas fa-cog"></i> Details</a></li>
-  <li id="nav_password" style="<?= ( in_array($entity['u_inbound_u_id'], array(1280,1323,1279,1307,1281,1308,1304)) ? '' : 'display:none;' ) ?>"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
+  <li id="nav_password" style="<?= ( in_array($entity['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304)) ? '' : 'display:none;' ) ?>"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
 </ul>
 
 
@@ -125,31 +102,30 @@ function insert_gravatar(){
                 <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
                 <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
             </div>
-            <div class="col-xs-6" style="margin-top:0; padding:0; display:<?= ( in_array($entity['u_inbound_u_id'], array(1280,1323,1279,1307,1281,1308,1304,1282)) ? 'block' : 'none' ) ?>;">
-                <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+            <div class="col-xs-6" style="margin-top:0; padding:0; display:<?= ( in_array($entity['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304,1282)) ? 'block' : 'none' ) ?>;">
+                <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-user-secret" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
                 <input type="email" id="u_email" data-lpignore="true" value="<?= $entity['u_email'] ?>" class="form-control border">
             </div>
         </div>
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><?= (strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0 ? status_bible('u_url_type_id', $entity['u_url_type_id'],1, 'right') : '<i class="fas fa-link"></i>' ) ?> Primary URL
+        <div class="title" style="margin-top:20px;"><h4><?= (strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0 ? echo_status('x_type', $entity['x_type'],1, 'right') : '<i class="fas fa-link"></i>' ) ?> Primary URL
                 <?php
                 if(strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0){
                     //We have checked this before, lets show the results:
                     echo '&nbsp;<a href="'.$entity['u_clean_url'].'" target="_blank">';
                     if($entity['u_url_is_broken']==1){
                         //The previous URL was detected broken:
-                        echo '<i class="fas fa-times-hexagon" data-toggle="tooltip" data-placement="right" style="color:#FF0000;" title="URL detected broken on '.time_format($entity['u_url_last_check'],0).'"></i>';
+                        echo '<i class="fas fa-times-hexagon" data-toggle="tooltip" data-placement="right" style="color:#FF0000;" title="URL detected broken on '.echo_time($entity['u_url_last_check'],0).'"></i>';
                     } else {
-                        echo '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="right" title="HTTP code ['.$entity['u_url_http_code'].'] when we last checked on '.time_format($entity['u_url_last_check'],0).'"></i>';
+                        echo '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="right" title="HTTP code ['.$entity['u_url_http_code'].'] when we last checked on '.echo_time($entity['u_url_last_check'],0).'"></i>';
                     }
                     echo '</a>';
                 }
                 ?>
                 <span id="ph_u_primary_url"></span></h4></div>
         <input type="url" class="form-control border" id="u_primary_url" data-lpignore="true" maxlength="255" value="<?= $entity['u_primary_url'] ?>" />
-        <script>trigger_link_watch('u_primary_url','');</script>
 
 
 
@@ -204,7 +180,7 @@ function insert_gravatar(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-user-secret" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="tel" maxlength="30" required id="u_phone" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_phone'] ?>" class="form-control border">
             <span class="material-input"></span>
@@ -272,7 +248,7 @@ function insert_gravatar(){
                         <label>
                             <?php $has_agreed = (isset($entity['u_terms_agreement_time']) && strlen($entity['u_terms_agreement_time'])>0); ?>
                             <?php if($has_agreed){ ?>
-                                <input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= time_format($entity['u_terms_agreement_time'],0) ?> PST</b>
+                                <input type="checkbox" id="u_terms_agreement_time" disabled checked /> Agreed on <b><?= echo_time($entity['u_terms_agreement_time'],0) ?> PST</b>
                             <?php } else { ?>
                                 <input type="checkbox" id="u_terms_agreement_time" <?= ( $udata['u_id']==$entity['u_id'] ? '' : 'disabled') ?> /> I certify that all above statements are true <?= ( $udata['u_id']==$entity['u_id'] ? '' : '<i class="fas fa-lock" data-toggle="tooltip" data-placement="left" title="Only owner can mark this as done​"></i>') ?>
                             <?php } ?>
@@ -291,31 +267,6 @@ function insert_gravatar(){
     </div>
 
 
-    <div class="tab-pane" id="tabreferences">
-
-
-        <?php if(strlen($entity['u_email'])>0 && $entity['u_cover_x_id']==0){ ?>
-            <p>You may also <a href="javascript:insert_gravatar();"><u>Insert Your Gravatar URL</u></a> & then update it on <a href="https://en.gravatar.com/" target="_blank"><u>gravatar.com</u></a> <i class="fas fa-external-link-square" style="font-size: 0.8em;"></i></p>
-        <?php } ?>
-
-
-        <?php
-        //Social links:
-        $u_social_account = $this->config->item('u_social_account');
-        foreach($u_social_account as $sa_key=>$sa){
-            echo '<div class="title" style="margin-top:'.( $sa_key>0 ? 30 : 0 ).'px;"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' <span id="ph_'.$sa_key.'"></span></h4></div>
-    	<div class="input-group border">
-          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span><input type="text" data-lpignore="true" class="form-control social-input" id="'.$sa_key.'" maxlength="100" value="'.$entity[$sa_key].'" />
-        </div>';
-            echo '<script>trigger_link_watch("'.$sa_key.'","'.$sa['sa_prefix'].'");</script>';
-        }
-        ?>
-        
-        <div class="title" style="margin-top:10px;"><h4><i class="fab fa-skype"></i> Skype Username</h4></div>
-    	<input type="text" class="form-control border" data-lpignore="true" id="u_skype_username" maxlength="100" value="<?= $entity['u_skype_username'] ?>" />
-    	
-    	<table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
-    </div>
 
 
 

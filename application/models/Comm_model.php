@@ -760,10 +760,10 @@ class Comm_model extends CI_Model {
                 'status' => 0,
                 'message' => 'URL Seems broken with http code ['.$curl['httpcode'].']',
             );
-        } elseif($curl['u_url_type_id']!=4) {
+        } elseif($curl['x_type']!=4) {
             return array(
                 'status' => 0,
-                'message' => 'URL [Type '.$curl['u_url_type_id'].'] Does not point to an image',
+                'message' => 'URL [Type '.$curl['x_type'].'] Does not point to an image',
             );
         }
 
@@ -775,13 +775,28 @@ class Comm_model extends CI_Model {
                 'status' => 0,
                 'message' => 'Failed to upload the file to Mench CDN',
             );
-        } elseif(substr_count($new_file_url,'ecd274930db69ba4b2d9137949026300')>0){
-            //This is the hashkey for the Facebook Generic User icon:
-            return array(
-                'status' => 0,
-                'message' => 'This is the user generic icon on Facebook',
-            );
         }
+
+        //Check to make sure this is not a Generic FB URL:
+        foreach(array(
+                    'ecd274930db69ba4b2d9137949026300',
+                    '5bf2d884209d168608b02f3d0850210d',
+                    'b3575aa3d0a67fb7d7a076198b442b93',
+                    'e35cf96f814f6509d8a202efbda18d3c',
+                    '5d2524cb2bdd09422832fa2d25399049',
+                    '164c8275278f05c770418258313fb4f4',
+                    '',
+                ) as $generic_url){
+            if(substr_count($new_file_url,$generic_url)>0){
+                //This is the hashkey for the Facebook Generic User icon:
+                return array(
+                    'status' => 0,
+                    'message' => 'This is the user generic icon on Facebook',
+                );
+                break;
+            }
+        }
+
 
         //Save URL:
         $new_x = $this->Db_model->x_create(array(
@@ -1415,7 +1430,7 @@ class Comm_model extends CI_Model {
 
             return array(
                 'status' => 0,
-                'message' => 'Failed to send '.$failed_count.'/'.count($messages).' message'.show_s(count($messages)).'.',
+                'message' => 'Failed to send '.$failed_count.'/'.count($messages).' message'.echo__s(count($messages)).'.',
                 'e_json' => $e_json,
             );
 
@@ -1423,7 +1438,7 @@ class Comm_model extends CI_Model {
 
             return array(
                 'status' => 1,
-                'message' => 'Successfully sent '.count($messages).' message'.show_s(count($messages)),
+                'message' => 'Successfully sent '.count($messages).' message'.echo__s(count($messages)),
                 'e_json' => $e_json,
             );
 

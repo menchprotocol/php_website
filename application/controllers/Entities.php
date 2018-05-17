@@ -129,7 +129,7 @@ class Entities extends CI_Controller {
 
                 //Check if the parent exists, if not, make it:
                 $u_domains = $this->Db_model->u_fetch(array(
-                    'u_inbound_u_id' => 1326, //References root folder
+                    'u_inbound_u_id' => 1326, //Expert Content root folder
                     'u_full_name' => $curl['last_domain'],
                 ));
 
@@ -171,7 +171,7 @@ class Entities extends CI_Controller {
                 //$u_update['u_primary_url'] = $_POST['u_primary_url'];
                 //$u_update['u_clean_url'] = $curl['clean_url'];
                 //$u_update['u_url_http_code'] = $curl['httpcode'];
-               // $u_update['u_url_type_id'] = $curl['u_url_type_id'];
+               // $u_update['x_type'] = $curl['x_type'];
                 //$u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken\
 
 
@@ -248,7 +248,6 @@ class Entities extends CI_Controller {
             //Email updates:
             'u_email' => ( isset($_POST['u_email']) && strlen($_POST['u_email'])>0 ? trim(strtolower($_POST['u_email'])) : null ),
             'u_paypal_email' => ( isset($_POST['u_paypal_email']) && strlen($_POST['u_paypal_email'])>0 ? trim(strtolower($_POST['u_paypal_email'])) : null ),
-
             'u_full_name' => trim($_POST['u_full_name']),
             'u_phone' => $_POST['u_phone'],
             'u_gender' => $_POST['u_gender'],
@@ -257,7 +256,6 @@ class Entities extends CI_Controller {
             'u_timezone' => $_POST['u_timezone'],
             'u_language' => join(',',$_POST['u_language']),
             'u_bio' => trim($_POST['u_bio']),
-            'u_skype_username' => trim($_POST['u_skype_username']),
         );
 
         //Some more checks:
@@ -284,52 +282,6 @@ class Entities extends CI_Controller {
 
             }
         }
-        $warning = NULL;
-
-        //Check primary URL:
-        if($_POST['u_primary_url']!==$u_current[0]['u_primary_url'] || (strlen($_POST['u_primary_url'])>0 && strlen($u_current[0]['u_clean_url'])==0)){
-
-            if(strlen($_POST['u_primary_url'])>0){
-
-                //Let's Validate it:
-                $curl = curl_html($_POST['u_primary_url'],true);
-
-                //Make sure this URL does not exist:
-                $dup_urls = $this->Db_model->u_fetch(array(
-                    'u_id !=' => $u_current[0]['u_id'],
-                    '( u_primary_url LIKE \'%'.$_POST['u_primary_url'].'%\' OR u_clean_url LIKE \'%'.$_POST['u_primary_url'].'%\' )' => null,
-                ));
-
-                if(!$curl) {
-                    $warning .= 'Invalid URL. ';
-                } elseif(count($dup_urls)>0) {
-                    $warning = 'URL already used by ['.$dup_urls[0]['u_full_name'].']';
-                } elseif($curl['url_is_broken']) {
-                    $warning .= '<a href="'.$curl['clean_url'].'">Primary URL</a> seems broken with http code ['.$curl['httpcode'].'] ';
-                } else {
-
-                    //Seems all good, let's add the data to the saving data set:
-                    $u_update['u_primary_url'] = $_POST['u_primary_url'];
-                    $u_update['u_clean_url'] = ( $curl['clean_url'] ? $curl['clean_url'] : $_POST['u_primary_url'] );
-                    $u_update['u_url_last_check'] = date("Y-m-d H:i:s"); //Timestamp of the last time it was validated
-                    $u_update['u_url_http_code'] = $curl['httpcode'];
-                    $u_update['u_url_is_broken'] = $curl['url_is_broken']; //Inserts as 0 but may later become 1 if cron job detects the URL is broken
-                    $u_update['u_url_type_id'] = $curl['u_url_type_id'];
-
-                }
-
-            } else {
-
-                //We used to have a primary URL but now its being deleted
-                $u_update['u_primary_url'] = null;
-                $u_update['u_clean_url'] = null;
-                $u_update['u_url_last_check'] = null;
-                $u_update['u_url_http_code'] = null;
-                $u_update['u_url_is_broken'] = null;
-                $u_update['u_url_type_id'] = null;
-
-            }
-        }
 
 
         //Did they just agree to the agreement?
@@ -338,7 +290,7 @@ class Entities extends CI_Controller {
             $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
         }
 
-
+        /*
         $u_social_account = $this->config->item('u_social_account');
         foreach($u_social_account as $sa_key=>$sa_value){
             if($_POST[$sa_key]!==$u_current[0][$sa_key]){
@@ -351,6 +303,7 @@ class Entities extends CI_Controller {
                 }
             }
         }
+        */
 
         //Now update the DB:
         $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);
@@ -382,8 +335,8 @@ class Entities extends CI_Controller {
             'e_outbound_u_id' => intval($_POST['u_id']), //The user that their account was updated
         ));
 
-        //Show result:
-        echo ( $warning ? '<span style="color:#FF8C00;">Saved all except: '.$warning.'</span>' : '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>');
+        //Show success:
+        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span>';
 
     }
 
