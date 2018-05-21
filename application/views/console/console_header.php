@@ -67,7 +67,7 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-dot-circle"></i> Bootcamps</a></li>
+                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-cube"></i> Bootcamps</a></li>
 
 
                         <?php if($udata['u_inbound_u_id']==1281){ ?>
@@ -75,7 +75,7 @@ $uri_segment_2 = $this->uri->segment(2);
                             <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
                             <li <?= ( $uri_segment_1=='cockpit' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Tools to overview and manage the Mench platform"><a href="/cockpit/browse/engagements"><i class="fab fa-bandcamp"></i> Cockpit</a></li>
                         <?php } else { ?>
-                            <li <?= ( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage my profile settings"><a href="/entities/<?= $udata['u_id'] ?>/modify"><i class="fas fa-user-circle"></i> My Account</a></li>
+                            <li <?= ( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage my profile settings"><a href="/entities/<?= $udata['u_id'] ?>"><i class="fas fa-user-circle"></i> My Account</a></li>
                         <?php } ?>
 
 
@@ -99,7 +99,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 echo '<div class="left-li-title">';
 	    		if(isset($b)){
-	    		    echo '<i class="fas '.( $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
+	    		    echo '<i class="fas '.( $b['b_is_parent'] ? 'fa-cubes' : 'fa-cube' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$b['b_outbound_c_id'].'">'.$b['c_outcome'].'</span>';
                     if($b['b_old_format']){
                         echo ' <i class="fas fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp."></i>';
                     }
@@ -116,7 +116,7 @@ $uri_segment_2 = $this->uri->segment(2);
 
             	    echo '<li class="li-sep '.( in_array($_SERVER['REQUEST_URI'],array('/console/'.$b['b_id'],'/console/'.$b['b_id'].'/')) ? 'active' : '' ).'"><a href="/console/'.$b['b_id'].'"><i class="fas fa-tachometer"></i><p>Dashboard</p></a></li>';
             	    
-            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fas fa-list-ol"></i><p>Action Plan</p></a></li>';
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fas fa-flag"></i><p>Action Plan</p></a></li>';
 
                     if(!$b['b_is_parent']){
                         echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fas fa-users"></i><p>Classes</p></a></li>';

@@ -18,25 +18,15 @@ $(document).ready(function() {
 
 <?php
 $website = $this->config->item('website');
-$daily_hours = round($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__active_intents'])>0 ? count($b['c__active_intents']) : 1 )*7) , 1);
 
 $total_goals = count($b['c__active_intents']) + echo__s($b['c__child_child_count']) + $b['c__child_child_count'];
 
 echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_url_key'].'</div>';
 ?>
-<div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fas fa-list-ol"></i> Action Plan <i class="fas fa-arrow-right"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
+<div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fas fa-flag"></i> Action Plan <i class="fas fa-arrow-right"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
 
-
-<div class="dash-label"><span class="stat-num"><?= count($b['c__active_intents']) .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 0 : 2).'_name').echo__s(count($b['c__active_intents'])) ?></div>
-
-    <?php if($b['c__child_child_count']>0){ ?>
-        <div class="dash-label"><span class="stat-num"><?= $b['c__child_child_count'] .'</span> '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' '.$this->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').echo__s($b['c__child_child_count']) ?></div>
-    <?php } ?>
-
-<div class="dash-label"><span class="stat-num"><?= $b['c__message_tree_count'] .'</span> <i class="fas fa-comments"></i> '.$this->lang->line('obj_i_name'). echo__s($b['c__message_tree_count']) ?></div>
-
-<div class="dash-label"><span class="stat-num"><?= $daily_hours .'</span> <i class="fal fa-clock"></i> Hours per Day' ?></div>
+<?php echo_action_plan_overview($b) ?>
 
 
 
@@ -82,19 +72,6 @@ if($b['b_is_parent']){
         'b.b_status >=' => 2, //Published in some way
     ),array('b'));
 
-    if(count($parent_bs)>0){
-        echo '<div class="title" style="margin-top:40px;"><h4><b><i class="fas fa-folder-open"></i> Parent Bootcamps</b></a></h4></div>';
-        echo '<div class="list-group maxout">';
-        foreach ($parent_bs as $parent_b){
-            echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
-            echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
-            echo '<i class="fas fa-folder-open"></i> ';
-            echo $parent_b['c_outcome'];
-            echo '</a>';
-        }
-        echo '</div>';
-    }
-
     echo '<div class="title" style="margin-top:40px;"><h4><a href="/console/'.$b['b_id'].'/classes" class="badge badge-primary badge-msg"><b><i class="fas fa-users"></i> Classes <i class="fas fa-arrow-right"></i></b></a> <span id="hb_2274" class="help_button" intent-id="2274"></span></h4></div><div class="help_body maxout" id="content_2274"></div>';
 
     //Fetch admission stats:
@@ -129,23 +106,12 @@ foreach($student_funnel as $ru_status=>$count){
 <div class="title" style="margin-top:40px;"><h4><a href="/console/<?= $b['b_id'] ?>/settings" class="badge badge-primary badge-msg"><b><i class="fas fa-cog"></i> Settings <i class="fas fa-arrow-right"></i></b></a></h4></div>
 
 <?php
-echo '<div>Team: ';
-$mench_support_team = $this->config->item('mench_support_team');
-$total_advisers = count($mench_support_team);
-foreach($b['b__admins'] as $admin){
-    if(in_array($admin['u_id'],$mench_support_team)){
-        $total_advisers--;
-    }
-}
-
+echo '<div>Coaches: ';
 foreach($b['b__admins'] as $key=>$instructor){
     if($key>0){
         echo ', ';
     }
     echo $instructor['u_full_name'];
-}
-if($total_advisers>0){
-    echo ' + '.$total_advisers.' Adviser'.( $total_advisers ==1? '' : 's');
 }
 echo '</div>';
 ?>
@@ -160,7 +126,20 @@ echo '</div>';
 
 
 
-
+<?php
+if(!$b['b_is_parent'] && count($parent_bs)>0){
+    echo '<div class="title" style="margin-top:30px;"><h4><b><i class="fas fa-cubes"></i> Parent Bootcamps</b></a></h4></div>';
+    echo '<div class="list-group maxout">';
+    foreach ($parent_bs as $parent_b){
+        echo '<a href="/console/'.$parent_b['b_id'].'/actionplan" class="list-group-item">';
+        echo '<span class="pull-right"><span class="badge badge-primary" style="margin-top:-5px;"><i class="fas fa-chevron-right"></i></span></span>';
+        echo '<i class="fas fa-cubes"></i> ';
+        echo $parent_b['c_outcome'];
+        echo '</a>';
+    }
+    echo '</div>';
+}
+?>
 
 
 

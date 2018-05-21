@@ -176,7 +176,7 @@ class Console extends CI_Controller {
         if(!isset($bs[0])){
             redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
         } elseif($bs[0]['b_is_parent']){
-            redirect_message('/console/'.$b_id,'<div class="alert alert-danger" role="alert">Multi-Week Bootcamp do not have Classes of their own, they operate under the Classes of their 7-Day Bootcamps.</div>');
+            redirect_message('/console/'.$b_id,'<div class="alert alert-danger" role="alert">Multi-Week Bootcamp do not have Classes of their own, they operate under the Classes of their Weekly Bootcamps.</div>');
         }
 	    
 	    $view_data = array(
@@ -198,33 +198,34 @@ class Console extends CI_Controller {
 	    $this->load->view('console/b/classes' , $view_data);
 	    $this->load->view('console/console_footer');
 	}
-	
-	function settings($b_id){
-	    //Authenticate level 2 or higher, redirect if not:
-	    $udata = auth(null,1,$b_id);
-	    $bs = $this->Db_model->remix_bs(array(
-	        'b.b_id' => $b_id,
-	    ));
-	    if(!isset($bs[0])){
-	        redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
-	    }
-	    
-	    //Load view
-	    $this->load->view('console/console_header' , array(
-	        'title' => 'Settings | '.$bs[0]['c_outcome'],
-	        'b' => $bs[0],
-	        'breadcrumb' => array(
-	            array(
-	                'link' => null,
-	                'anchor' => 'Settings',
-	            ),
-	        ),
-	    ));
-	    $this->load->view('console/b/settings' , array(
-	        'b' => $bs[0],
-	        'udata' => $udata,
-	    ));
-	    $this->load->view('console/console_footer');
-	}
+
+
+    function settings($b_id){
+        //Authenticate level 2 or higher, redirect if not:
+        $udata = auth(null,1,$b_id);
+        $bs = $this->Db_model->remix_bs(array(
+            'b.b_id' => $b_id,
+        ));
+        if(!isset($bs[0])){
+            redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
+        }
+
+        //Load view
+        $this->load->view('console/console_header' , array(
+            'title' => 'Settings | '.$bs[0]['c_outcome'],
+            'b' => $bs[0],
+            'breadcrumb' => array(
+                array(
+                    'link' => null,
+                    'anchor' => 'Settings',
+                ),
+            ),
+        ));
+        $this->load->view('console/b/settings' , array(
+            'b' => $bs[0],
+            'udata' => $udata,
+        ));
+        $this->load->view('console/console_footer');
+    }
 	
 }

@@ -1,12 +1,12 @@
 <?php
 /* Sample use case: <?= $this->lang->line('obj_rs_name') ?> */
 
-$lang['level_0_name'] = '7-Day Bootcamp';
-$lang['level_0_icon'] = '<i class="fas fa-dot-circle"></i>';
+$lang['level_0_name'] = 'Weekly Bootcamp';
+$lang['level_0_icon'] = '<i class="fas fa-cube"></i>';
 $lang['level_1_name'] = 'Multi-Week Bootcamp';
-$lang['level_1_icon'] = '<i class="fas fa-folder-open"></i>';
+$lang['level_1_icon'] = '<i class="fas fa-cubes"></i>';
 $lang['level_2_name'] = 'Task';
-$lang['level_2_icon'] = '<i class="fas fa-circle"></i>';
+$lang['level_2_icon'] = '<i class="fas fa-clipboard-check"></i>';
 $lang['level_3_name'] = 'Step';
 $lang['level_3_icon'] = '<i class="fal fa-circle"></i>';
 

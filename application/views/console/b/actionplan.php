@@ -847,9 +847,9 @@ function add_item(group_id,prefix,current_value){
 
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
-            <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' '.$this->lang->line('level_0_name').'s' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
+            <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' Bootcamps' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
             <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-shield-check"></i> Prerequisites</a></li>
-            <li id="nav_skills"><a href="#skills"><i class="fas fa-diamond"></i> Skills</a></li>
+            <li id="nav_skills"><a href="#skills"><i class="fas fa-trophy"></i> Skills</a></li>
         </ul>
 
 
@@ -915,14 +915,17 @@ function add_item(group_id,prefix,current_value){
                 </script>
                 <div id="b_prerequisites" class="list-group grey-list"></div>
 
+
+
+
                 <?php
                 if($b['b_is_parent'] && strlen($agg_b['b_prerequisites'])>0){
                     $all_items = json_decode($agg_b['b_prerequisites']);
                     if(count($all_items)>0){
-                        echo '<p>All '.$this->lang->line('level_0_name').' prerequisites are also linked to this '.$this->lang->line('level_1_name').':</p>';
-                        echo '<ul style="list-style:none; margin-left:-20px;">';
+                        echo '<p>Here are the prerequisites of the '.$this->lang->line('level_0_name').':</p>';
+                        echo '<ul class="list-group grey-list">';
                         foreach($all_items as $key=>$item){
-                            echo '<li><i class="fas fa-link"></i> #'.($key+1).': '.$item.'</li>';
+                            echo '<li class="list-group-item"><i class="fas fa-lock" style="color:#AAA;"></i>&nbsp; <span class="inline-level"><i class="fas fa-shield-check"></i> #'.($key+1).'</span><span class="theitem">'.$item.'</span></li>';
                         }
                         echo '</ul>';
                     }
@@ -938,7 +941,7 @@ function add_item(group_id,prefix,current_value){
 
                 <script>
                     $(document).ready(function() {
-                        initiate_list('b_transformations','+ New Skill','<i class="fas fa-diamond"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
+                        initiate_list('b_transformations','+ New Skill','<i class="fas fa-trophy"></i>',<?= ( strlen($b['b_transformations'])>0 ? $b['b_transformations'] : '[]' ) ?>);
                     });
                 </script>
                 <div id="b_transformations" class="list-group grey-list"></div>
@@ -947,10 +950,11 @@ function add_item(group_id,prefix,current_value){
                 if($b['b_is_parent'] && strlen($agg_b['b_transformations'])>0){
                     $all_items = json_decode($agg_b['b_transformations']);
                     if(count($all_items)>0){
-                        echo '<p>All '.$this->lang->line('level_0_name').' skills are also linked to this '.$this->lang->line('level_1_name').':</p>';
-                        echo '<ul style="list-style:none; margin-left:-20px;">';
+
+                        echo '<p>Here are the skills of the '.$this->lang->line('level_0_name').':</p>';
+                        echo '<ul class="list-group grey-list">';
                         foreach($all_items as $key=>$item){
-                            echo '<li><i class="fas fa-link"></i> #'.($key+1).': '.$item.'</li>';
+                            echo '<li class="list-group-item"><i class="fas fa-lock" style="color:#AAA;"></i>&nbsp; <span class="inline-level"><i class="fas fa-trophy"></i> #'.($key+1).'</span><span class="theitem">'.$item.'</span></li>';
                         }
                         echo '</ul>';
                     }
@@ -993,7 +997,7 @@ function add_item(group_id,prefix,current_value){
 
             <div class="levelz level3 level2 hidden" style="margin-top:15px;">
                 <?php $times = $this->config->item('c_time_options'); ?>
-                <div class="title"><h4><i class="fal fa-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
+                <div class="title"><h4><i class="fas fa-alarm-clock"></i> Time Estimate <span id="hb_609" class="help_button" intent-id="609"></span></h4></div>
                 <div class="help_body maxout" id="content_609"></div>
                 <select class="form-control input-mini border timer_2 timer_3" id="c_time_estimate">
                     <?php

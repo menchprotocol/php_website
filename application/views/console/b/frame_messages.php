@@ -8,7 +8,7 @@ $drip_enabled = ($level>1);
 $i_messages = $this->Db_model->i_fetch(array(
     'i_outbound_c_id' => $c_id,
     'i_status >' => 0, //Published in any form
-));
+), 0, array('x'));
 
 //Fetch intent details:
 $intents = $this->Db_model->c_fetch(array(

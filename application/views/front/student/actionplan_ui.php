@@ -248,7 +248,7 @@ if($level==2){
                         });
                     });
                 </script>
-                <div><i class="fas fa-calendar"></i> Due in <span id="ontime_dueby"></span></div>
+                <div><i class="fas fa-alarm-clock"></i> Due in <span id="ontime_dueby"></span></div>
                 <?php
             }
 
@@ -292,7 +292,7 @@ if($level==1){
 
     echo '<h4 class="maxout">';
         if($level==1){
-            echo '<i class="fas fa-circle"></i> Tasks';
+            echo '<i class="fas fa-clipboard-check"></i> Tasks';
         } elseif($level==2){
             echo '<i class="fal fa-circle"></i> Steps';
         }
@@ -370,7 +370,7 @@ if($level==1){
 
         if($level==1 && $unlocked_item && isset($child_step_count) && $child_step_count){
             //Show the number of sub-Steps:
-            //$ui .= '<span class="title-sub"><i class="fas fa-list-ol"></i>'.$child_step_count.'</span>';
+            //$ui .= '<span class="title-sub"><i class="fas fa-flag"></i>'.$child_step_count.'</span>';
         }
 
         $ui .= '</span>';

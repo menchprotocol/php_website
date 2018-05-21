@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.33',
+    'version' => '3.5',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -206,7 +206,7 @@ $config['object_statuses'] = array(
         1 => array(
             's_name'  => 'Published',
             's_desc'  => 'Step is active and accessible by students',
-            's_mini_icon' => 'fas fa-circle',
+            's_mini_icon' => 'fas fa-clipboard-check',
         ),
     ),
     'cr' => array(
@@ -225,7 +225,7 @@ $config['object_statuses'] = array(
         0 => array(
             's_name'  => 'Self',
             's_desc'  => 'Task does not have any child Steps and is complete when the Task its self is marked as complete',
-            's_mini_icon' => 'fas fa-circle',
+            's_mini_icon' => 'fas fa-clipboard-check',
         ),
         1 => array(
             's_name'  => 'All Children',
@@ -312,22 +312,20 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fas fa-wrench',
         ),
         2 => array(
-            's_name'  => 'Coaching',
-            's_desc'  => '- Step by Step Action Plan
-- Peer Chat & Networking
-- Notification & Reminders
-- Get coaching from an Industry Expert
+            's_name'  => '1-on-1 Coaching (Upfront Payment)',
+            's_desc'  => '- Get coaching from an Industry Expert
 - 1-on-1 Chat Line & Email Support
 - Assignment Review & Feedback
 - Completion Certificate & LinkedIn Recommendation',
             's_mini_icon' => 'fas fa-whistle',
         ),
         3 => array(
-            's_name'  => '1-on-1 Tutoring',
-            's_desc'  => 'Everything in Coaching plus:
-            
-- 50 Minutes of 1-on-1 Tutoring per Week',
-            's_mini_icon' => 'fas fa-handshake-alt',
+            's_name'  => '1-on-1 Coaching (Deferred Payment)',
+            's_desc'  => '- Get coaching from an Industry Expert
+- 1-on-1 Chat Line & Email Support
+- Assignment Review & Feedback
+- Completion Certificate & LinkedIn Recommendation',
+            's_mini_icon' => 'fas fa-whistle',
         ),
 
     ),
@@ -487,6 +485,18 @@ $config['object_statuses'] = array(
     ),
 );
 
+//These URLs are recognized as Social Profiles
+$config['social_urls'] =array(
+    'https://www.facebook.com/'         => 'fab fa-facebook',
+    'https://www.instagram.com/'        => 'fab fa-instagram',
+    'https://twitter.com/'              => 'fab fa-twitter',
+    'https://www.youtube.com/'          => 'fab fa-youtube',
+    'https://www.linkedin.com/in/'      => 'fab fa-linkedin',
+    'https://github.com/'               => 'fab fa-github',
+    'https://join.skype.com/'           => 'fab fa-skype',
+);
+
+
 //No Bootcamps can be created using these hashtags
 //URL structure is: https://mench.com/URLKEY
 $config['reserved_hashtags'] = array(
@@ -543,6 +553,10 @@ $config['engagement_references'] = array(
         'name' => 'Intent',
         'object_code' => 'c',
     ),
+    'e_x_id' => array(
+        'name' => 'Reference',
+        'object_code' => 'x',
+    ),
     'e_cr_id' => array(
         'name' => 'Intent Link',
         'object_code' => 'cr',
@@ -555,53 +569,7 @@ $config['engagement_references'] = array(
         'name' => 'Facebook Page',
         'object_code' => 'fp',
     ),
-);
 
-
-//NOTE: If changed, also make corresponding changes to update_account() function in global.js file
-$config['u_social_account'] = array(
-    'u_fb_username' => array(
-        'sa_name' => 'Facebook',
-        'sa_prefix' => 'https://www.facebook.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fab fa-facebook"></i>',
-    ),
-    'u_instagram_username' => array(
-        'sa_name' => 'Instagram',
-        'sa_prefix' => 'https://www.instagram.com/',
-        'sa_postfix' => '/',
-        'sa_icon' => '<i class="fab fa-instagram"></i>',
-    ),
-    'u_twitter_username' => array(
-        'sa_name' => 'Twitter',
-        'sa_prefix' => 'https://twitter.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fab fa-twitter"></i>',
-    ),
-    'u_youtube_username' => array(
-        'sa_name' => 'YouTube',
-        'sa_prefix' => 'https://www.youtube.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fab fa-youtube"></i>',
-    ),
-    'u_linkedin_username' => array(
-        'sa_name' => 'Linkedin',
-        'sa_prefix' => 'https://www.linkedin.com/in/',
-        'sa_postfix' => '/',
-        'sa_icon' => '<i class="fab fa-linkedin"></i>',
-    ),
-    'u_github_username' => array(
-        'sa_name' => 'Github',
-        'sa_prefix' => 'https://github.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fab fa-github"></i>',
-    ),
-    'u_calendly_username' => array(
-        'sa_name' => 'Calendly',
-        'sa_prefix' => 'https://calendly.com/',
-        'sa_postfix' => '',
-        'sa_icon' => '<i class="fas fa-calendar-check"></i>',
-    ),
 );
 
 

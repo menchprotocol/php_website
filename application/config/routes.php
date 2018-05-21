@@ -48,12 +48,13 @@ $route['intents/(:num)'] 			                   = "console/intents/$1";
 $route['intents'] 			                           = "console/intents";
 
 //Affiliate Links:
-$route['a/(:num)/(:num)/apply'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name
+$route['a/(:num)/(:num)/enroll'] 	                   = "front/affiliate_click/$1/$2/1"; //Start of application funnel for Email, first & last name
 $route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$1/$2/0"; //Start of application funnel for Email, first & last name
 
 
 //Three steps of the signup process:
-$route['(:any)/apply'] 	                    = "my/checkout_start/$1"; //Start of application funnel for Email, first & last name
+$route['(:any)/apply'] 	                    = "my/apply_form/$1"; //Redirect to Apply URL set by lead instructor
+$route['(:any)/enroll'] 	                = "my/checkout_start/$1"; //Start of application funnel for Email, first & last name
 $route['(:num)']	                        = "front/index/$1"; //Landing Page with specific c_id as Parent Focus
 $route['(:any)']	                        = "front/landing_page/$1"; //Load specific Bootcamp
 

@@ -168,7 +168,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-dot-circle' : 'fa-folder-open' )+'"></i> '+ suggestion.alg_name;
+                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.alg_name;
                 },
             }
         },

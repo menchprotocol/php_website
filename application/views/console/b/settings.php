@@ -273,6 +273,7 @@ function b_save_settings(){
         level1_c_id:$('.level1').val(),
         level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
         b_thankyou_url:$('#b_thankyou_url').val(),
+        b_apply_url:$('#b_apply_url').val(),
     };
 
     //Save the rest of the content:
@@ -306,14 +307,14 @@ function b_save_settings(){
 
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
-    <li id="nav_landingpage" class="active"><a href="#landingpage"><i class="fas fa-cart-plus"></i> Landing Page</a></li>
+    <li id="nav_general" class="active"><a href="#general"><i class="fas fa-cog"></i> General</a></li>
 
     <?php if(!$b['b_is_parent']){ ?>
     <li id="nav_support"><a href="#support"><i class="fas fa-life-ring"></i> Support</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fab fa-facebook"></i> Pages</a></li>
     <?php } ?>
 
-    <li id="nav_team"><a href="#team"><i class="fas fa-user-plus"></i> Team</a></li>
+    <li id="nav_coaches"><a href="#coaches"><i class="fas fa-whistle"></i> Coaches</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fas fa-tags"></i> Coupons</a></li> -->
 </ul>
 
@@ -322,7 +323,7 @@ function b_save_settings(){
 
 <div class="tab-content tab-space">
 
-    <div class="tab-pane active" id="tablandingpage">
+    <div class="tab-pane active" id="tabgeneral">
 
 
         <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
@@ -352,7 +353,7 @@ function b_save_settings(){
         <div class="help_body maxout" id="content_4868"></div>
 
         <?php if($b['b_is_parent']){ ?>
-            <p><i class="fas fa-magic"></i> Auto set to highest experience level required by 7-Day Bootcamps.</p>
+            <p style="margin-left:13px;"><b>Note:</b> Will be automatically set to highest experience level required by Weekly Bootcamps added in the <a href="/console/<?= $b['b_id'] ?>/actionplan">Action Plan</a>.</p>
         <?php } else { ?>
             <div class="form-group label-floating is-empty">
                 <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
@@ -378,6 +379,13 @@ function b_save_settings(){
             </div>
         </div>
 
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Apply Form URL <span id="hb_6964" class="help_button" intent-id="6964"></span></h4></div>
+        <div class="help_body maxout" id="content_6964"></div>
+        <div class="input-group">
+            <input type="URL" id="b_apply_url" style="width:380px;" value="<?= $b['b_apply_url'] ?>" class="form-control border" />
+        </div>
 
 
         <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
@@ -522,7 +530,7 @@ function b_save_settings(){
 
     </div>
 
-    <div class="tab-pane" id="tabteam">
+    <div class="tab-pane" id="tabcoaches">
 
         <?php echo_tip(629); ?>
         <div class="list-group maxout">
@@ -532,28 +540,9 @@ function b_save_settings(){
                 echo echo_br($admin);
                 array_push($admin_ids,$admin['u_id']);
             }
-            $mench_support_team = $this->config->item('mench_support_team');
-            //Fetch the profile of the hard-coded mench advisery team
-            //Currently: Miguel & Shervin
-            $mench_support_team = $this->Db_model->u_fetch(array(
-                'u_id IN ('.join(',',$mench_support_team).')' => null,
-            ));
-
-            foreach($mench_support_team as $adviser){
-                if(in_array($adviser['u_id'],$admin_ids)){
-                    continue;
-                }
-                echo echo_br(array_merge($adviser, array(
-                    'ba_id' => 0,
-                    'ba_outbound_u_id' => $adviser['u_id'],
-                    'ba_status' => 1, //Advisery status
-                    'ba_b_id' => $b['b_id'],
-                    'ba_team_display' => 'f', //Advisers are not shown on the landing page
-                )));
-            }
             ?>
         </div>
-        <p>Contact us to add new co-instructors.</p>
+        <p>Contact us to add new coaches to this Bootcamp.</p>
     </div>
 
     <div class="tab-pane" id="tabcoupons">

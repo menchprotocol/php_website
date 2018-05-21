@@ -20,8 +20,39 @@ function echo_next_u($page,$limit,$u__outbound_count){
     echo '</a>';
 }
 
+function echo_social_profiles($social_profiles){
+    $ui = null;
+    foreach($social_profiles as $sp){
+        $ui .= '<a href="'.$sp['url'].'" target="_blank" class="social-link"><i class="'.$sp['fa_icon'].'"></i></a>';
+    }
+    return $ui;
+}
+
+function echo_action_plan_overview($b){
+    $CI =& get_instance();
+    ?>
+    <div class="dash-label"><?= ($b['b_is_parent'] ? '<i class="fas fa-calendar"></i>' : '<i class="fas fa-clipboard-check"></i>').' <b>'.$b['c__child_count'].'</b> '.($b['b_is_parent'] ? 'Week' : 'Task' ).echo__s($b['c__child_count']) ?></div>
+
+    <?php if($b['c__child_child_count']>0){ ?>
+        <div class="dash-label"><?= $CI->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_icon').' <b>'.$b['c__child_child_count'].'</b> '.$CI->lang->line('level_'.($b['b_is_parent'] ? 2 : 3).'_name').echo__s($b['c__child_child_count']) ?></div>
+    <?php } ?>
+
+    <div class="dash-label"><?= ' <i class="fas fa-comment-dots"></i> <b>'.$b['c__message_tree_count'].'</b> '.$CI->lang->line('obj_i_name'). echo__s($b['c__message_tree_count']) ?></div>
+
+
+    <?php
+    $daily_hours = round($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__active_intents'])>0 ? count($b['c__active_intents']) : 1 )*7) , 1);
+    ?>
+    <div class="dash-label"><?= '<i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 )*7)).'</b> per Day' ?></div>
+    <?php
+}
+
+
 
 function echo_x($u, $x){
+
+    $CI =& get_instance();
+    $social_urls = $CI->config->item('social_urls');
 
     $ui = null;
     $ui .= '<div id="x_'.$x['x_id'].'" class="list-group-item url-item">';
@@ -31,14 +62,14 @@ function echo_x($u, $x){
 
     if(strlen($x['x_clean_url'])>0 && !($x['x_url']==$x['x_clean_url'])){
         //We have detected a different URL behind the scene:
-        $ui .= '<a class="badge badge-primary" href="'.$x['x_clean_url'].'" data-toggle="tooltip" data-placement="left" title="This is a redirect URL"><i class="fas fa-route"></i></a> ';
+        $ui .= '<a class="badge badge-primary" href="'.$x['x_clean_url'].'" target="_blank" data-toggle="tooltip" data-placement="left" title="Redirects to another URL"><i class="fas fa-route"></i></a> ';
     }
 
     //This is an image and can be set as Cover photo, or may have already been set so...
     if($x['x_id']==$u['u_cover_x_id']){
         //Already set as the cover photo:
         $ui .= '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
-    } elseif($x['x_type']==4 && $x['x_status']>0){
+    } elseif($x['x_type']==4 && $x['x_status']>0 && 0){
         //Could be set as the cover photo:
         $ui .= '<a class="badge badge-primary" href="javascript:void(0);" onclick="x_cover_add('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
     }
@@ -50,7 +81,19 @@ function echo_x($u, $x){
 
 
     //Regular section:
-    $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'><span class="url_truncate">'.$x['x_url'].'</span><i class="fas fa-external-link-square"></i></a>';
+    $ui .= '<a href="'.$x['x_url'].'" target="_blank" '.( strlen($x['x_url'])>0 && !($x['x_url']==$x['x_url']) ? '' : '' ).'>';
+    $ui .= '<span class="url_truncate">'.echo_clean_url($x['x_url']).'</span>';
+
+    //Is this a social URL?
+    foreach($social_urls as $url=>$fa_icon){
+        if(substr_count($x['x_url'],$url)>0){
+            $ui .= '<i class="'.$fa_icon.'" data-toggle="tooltip" data-placement="top" title="Recognized as a Social Media Profile"></i> ';
+            break;
+        }
+    }
+
+
+    $ui .= '<i class="fas fa-external-link-square"></i></a>';
 
     //Can we display this URL?
     if($x['x_type']==1){
@@ -633,7 +676,7 @@ function echo_message($i,$level=0,$editing_enabled=true){
 
     //Editing menu:
     $ui .= '<ul class="msg-nav">';
-    //$ui .= '<li class="edit-off"><i class="fal fa-clock"></i> 4s Ago</li>';
+    //$ui .= '<li class="edit-off"><i class="fas fa-alarm-clock"></i> 4s Ago</li>';
     $ui .= '<li class="the_status edit-off" style="margin: 0 6px 0 -3px;">'.echo_status('i',$i['i_status'],1,'right').'</li>';
     if($i['i_media_type']=='text'){
         $CI =& get_instance();
@@ -680,7 +723,7 @@ function echo_link($text){
 
 function echo_completion_report($us_eng){
     echo echo_status('e_status',$us_eng['e_status']);
-    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fal fa-clock initial"></i>Completion Time:</span> '.echo_time($us_eng['e_timestamp']).' PST</div>';
+    echo '<div style="margin:10px 0 10px;"><span class="status-label" style="color:#3C4858;"><i class="fas fa-alarm-clock initial"></i>Completion Time:</span> '.echo_time($us_eng['e_timestamp']).' PST</div>';
     echo '<div style="margin-bottom:10px;"><span class="status-label" style="color:#3C4858;"><i class="fas fa-comment-dots initial"></i>Your Comments:</span> '.( strlen($us_eng['e_text_value'])>0 ? echo_link(nl2br(htmlentities($us_eng['e_text_value']))) : 'None' ).'</div>';
 }
 
@@ -784,6 +827,15 @@ function echo_object($object,$id,$b_id=0){
                     //TODO Link to profile or chat widget link maybe?
                     return '<a href="'.$website['url'].'entities/'.$id.'" title="User ID '.$id.'">'.$matching_users[0]['u_full_name'].'</a>';
                 }
+            }
+
+        } elseif($object=='x' && $id>0){
+
+            $matching_urls = $CI->Db_model->x_fetch(array(
+                'x_id' => $id,
+            ));
+            if(isset($matching_urls[0])){
+                return '<a href="'.$matching_urls[0]['x_url'].'" title="Reference ID '.$id.'" target="_blank">'.echo_clean_url($matching_urls[0]['x_url']).'</a>';
             }
 
         } elseif($object=='r'){
@@ -935,12 +987,12 @@ function echo_estimated_time($c_time_estimate,$show_icon=1,$micro=false,$c_id=0,
         if($c_id){
 
             $ui .= '<span class="slim-time'.( $level<=2?' hours_level_'.$level:'').( $c_status==1 ? '': ' crossout').'" id="t_estimate_'.$c_id.'" current-hours="'.$c_time_estimate.'">'.echo_hours( $c_time_estimate,true).'</span>';
-            $ui .= ' <i class="fal fa-clock"></i>';
+            $ui .= ' <i class="fas fa-alarm-clock"></i>';
 
         } else {
 
             if($show_icon){
-                $ui .= '<i class="fal fa-clock"></i>';
+                $ui .= '<i class="fas fa-alarm-clock"></i>';
             }
             if($c_time_estimate<1){
                 //Minutes:
@@ -978,9 +1030,9 @@ function echo_br($admin){
 
     //Are they shown on the profile?
     if($admin['ba_team_display']=='t'){
-        $ui .= '&nbsp; <i class="fas fa-user-check" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
+        $ui .= '&nbsp; <i class="fas fa-eye" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
     } else {
-        $ui .= '&nbsp; <i class="fas fa-slash" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
+        $ui .= '&nbsp; <i class="fas fa-eye-slash" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
     }
 
     $ui .= '</span> ';
@@ -1090,7 +1142,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-folder-open' : 'fa-dot-circle-o' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-cubes' : 'fa-cube-o' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1172,7 +1224,7 @@ function echo_b($b){
     $b_ui = null;
     $b_ui .= '<a href="/console/'.$b['b_id'].'" class="list-group-item">';
     $b_ui .= '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span>';
-    $b_ui .= '<i class="'.( $b['b_is_parent'] ? 'fas fa-folder-open' : 'fas fa-dot-circle' ).'" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
+    $b_ui .= '<i class="'.( $b['b_is_parent'] ? 'fas fa-cubes' : 'fas fa-cube' ).'" style="margin: 0 8px 0 2px; color:#3C4858;"></i> ';
     $b_ui .= $b['c_outcome'];
 
     if($all_students>0){

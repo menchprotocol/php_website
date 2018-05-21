@@ -77,7 +77,7 @@ if(count($admissions)>0 && is_array($admissions)){
 
             echo '<div class="admission_checklist">';
 
-                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fas fa-dot-circle"></i> '.$bs[0]['c_outcome'].'</b></p>';
+                echo '<p><b title="Admission ID '.$admission['ru_id'].'"><i class="fas fa-cube"></i> '.$bs[0]['c_outcome'].'</b></p>';
                 //Show date:
                 echo '<p style="font-size: 0.9em;"><i class="fas fa-calendar"></i> ';
 
@@ -166,7 +166,7 @@ if(count($admissions)>0 && is_array($admissions)){
             //More info like Bootcamp URL:
             echo '<div class="admission_footer">';
                 echo '<span id="withdraw_update_'.$admission['ru_id'].'">'.echo_status('ru',$admission['ru_status'],0,'top').'</span>';
-                echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-dot-circle"></i> Bootcamp Overview</a>';
+                echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-cube"></i> Bootcamp Overview</a>';
                 if(in_array($admission['ru_status'],array(0,4)) && (!$start_unix || $start_unix>time())){
                     //They can still withdraw their application:
                     echo '<span id="hide_post_withdrawal_'.$admission['ru_id'].'"> | <a href="javascript:void(0);" title="'.$start_unix.'" onclick="ru_withdraw('.$admission['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$admission['ru_id'].'"></span></span>';

@@ -22,7 +22,7 @@
 echo '<h1>'.$title.'</h1>';
 echo '<p class="home_line_2">';
     echo 'Land your dream full stack job by completing weekly Bootcamps from industry experts.';
-    echo ' New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
+    echo '<br />New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
 echo '</p>';
 echo '<br />';
 
@@ -54,16 +54,13 @@ if(count($bs)>0){
 
         echo '<h6 class="category text-muted">';
 
-        if($b['b_difficulty_level']>0){
-            //Do not show for now as its not needed
-            //echo echo_status('df',$b['b_difficulty_level'],0,'top').' ';
-        }
-
-        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fal fa-clock"></i> '.echo_hours($b['c__estimated_hours'],true).' IN '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).'</span>';
+        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fas fa-alarm-clock"></i> '.echo_hours($b['c__estimated_hours'],false).' IN '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).'</span>';
 
         echo '</h6>';
 
         echo '<h4 class="card-title"><a href="/'.$b['b_url_key'].'">'.$b['c_outcome'].'</a></h4>';
+
+        /*
         echo '<div class="card-description">';
         //Print lead admin:
         foreach($b['b__admins'] as $admin){
@@ -72,6 +69,7 @@ if(count($bs)>0){
             }
         }
         echo '</div>';
+        */
         echo '</div>
 </div>
 </div>';

@@ -339,7 +339,7 @@ class Api_v1 extends CI_Controller {
                 //How about other Connected Bootcamps?
                 if(count($other_bs)>0){
                     //Show link:
-                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.echo__s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-dot-circle"></i>'.count($other_bs).'</a>';
+                    $pages_list_ui .= ' &nbsp;<a href="javascript:void(0)" data-toggle="tooltip" title="This Page is connected to '.count($other_bs).' other Mench Bootcamp'.echo__s(count($other_bs)).'" data-placement="top" onclick="$(\'.fp_current_'.$page['fp_id'].'\').toggle()" style="text-decoration:none;"><i class="fas fa-cube"></i>'.count($other_bs).'</a>';
 
                     //Show other connected Bootcamps:
                     $additional_ui_boxes .= '<div class="fp_box fp_current_'.$page['fp_id'].'" style="display:none;">';
@@ -1864,6 +1864,12 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Enter Valid Thank You URL',
             ));
             return false;
+        } elseif(strlen($_POST['b_apply_url'])>0 && !filter_var($_POST['b_apply_url'], FILTER_VALIDATE_URL)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Enter Valid Apply URL',
+            ));
+            return false;
         } elseif(strlen($_POST['b_calendly_url'])>0 && substr_count($_POST['b_calendly_url'],'https://calendly.com/')==0){
             echo_json(array(
                 'status' => 0,
@@ -1871,8 +1877,6 @@ class Api_v1 extends CI_Controller {
             ));
             return false;
         }
-
-
 
         //Fetch reserved terms:
         $reserved_hashtags = $this->config->item('reserved_hashtags');
@@ -1945,6 +1949,7 @@ class Api_v1 extends CI_Controller {
             'b_support_email' => $_POST['b_support_email'],
             'b_calendly_url' => $_POST['b_calendly_url'],
             'b_thankyou_url' => $_POST['b_thankyou_url'],
+            'b_apply_url' => $_POST['b_apply_url'],
             'b_difficulty_level' => ( isset($_POST['b_difficulty_level']) && intval($_POST['b_difficulty_level'])>0 ? intval($_POST['b_difficulty_level']) : null ),
         );
 
@@ -2709,7 +2714,7 @@ class Api_v1 extends CI_Controller {
                 if(isset($task['c__child_intents'])){
                     //Give a single/total option:
                     array_push($import_items,array(
-                        'name' => '<i class="fas fa-circle"></i> Tasks form ['.$task['c_outcome'].']',
+                        'name' => '<i class="fas fa-clipboard-check"></i> Tasks form ['.$task['c_outcome'].']',
                         'id' => 'b_outbound_c_ids',
                         'value' => $task['c_id'],
                         'count' => count($task['c__child_intents']),
@@ -2720,7 +2725,7 @@ class Api_v1 extends CI_Controller {
         } else {
 
             array_push($import_items,array(
-                'name' => '<i class="fas fa-circle"></i> Tasks in Action Plan',
+                'name' => '<i class="fas fa-clipboard-check"></i> Tasks in Action Plan',
                 'id' => 'b_outbound_c_ids',
                 'value' => $bs[0]['b_outbound_c_id'],
                 'count' => count($bs[0]['c__child_intents']),
@@ -2731,7 +2736,7 @@ class Api_v1 extends CI_Controller {
 
         //Add Outcome section:
         array_push($import_items,array(
-            'name' => '<i class="fas fa-diamond"></i> Override Skills',
+            'name' => '<i class="fas fa-trophy"></i> Override Skills',
             'id' => 'b_transformations',
             'count' => ( strlen($bs[0]['b_transformations'])>0 ? count(json_decode($bs[0]['b_transformations'])) : 0 ),
         ));
@@ -3202,7 +3207,7 @@ class Api_v1 extends CI_Controller {
                 //Fetch full message:
                 $new_messages = $this->Db_model->i_fetch(array(
                     'i_id' => $i['i_id'],
-                ));
+                ), 1, array('x'));
 
                 //Log engagement:
                 $this->Db_model->e_create(array(
@@ -3305,7 +3310,7 @@ class Api_v1 extends CI_Controller {
                 //Re-fetch the message for display purposes:
                 $new_messages = $this->Db_model->i_fetch(array(
                     'i_id' => intval($_POST['i_id']),
-                ));
+                ), 0, array('x'));
 
                 //Log engagement:
                 $this->Db_model->e_create(array(

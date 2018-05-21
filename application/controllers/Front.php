@@ -96,7 +96,7 @@ class Front extends CI_Controller {
         ));
         if(count($bs)>0){
             //Lets redirect to Page:
-            redirect_message('/'.$bs[0]['b_url_key'].( $goto_apply ? '/apply' : '' ) );
+            redirect_message('/'.$bs[0]['b_url_key'] );
         } else {
             //Invalid Bootcamp ID
             redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');

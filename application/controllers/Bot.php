@@ -39,7 +39,7 @@ class Bot extends CI_Controller {
                 'i_status >' => 0, //Published in any form
                 'i_media_type' => 'text',
                 'LENGTH(i_url)>0' => null, //Entire Bootcamp Action Plan
-            ), $limit, array(
+            ), $limit, array(), array(
                 'i_id' => 'ASC',
             ));
 

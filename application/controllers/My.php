@@ -33,6 +33,36 @@ class My extends CI_Controller {
      * Signup
      ****************************** */
 
+
+
+    function apply_form($b_url_key){
+        //The start of the funnel for email, first name & last name
+
+        //Fetch data:
+        $udata = $this->session->userdata('user');
+        $bs = $this->Db_model->remix_bs(array(
+            'LOWER(b.b_url_key)' => strtolower($b_url_key),
+        ));
+
+        //Validate Bootcamp:
+        if(!isset($bs[0])){
+            //Invalid key, redirect back:
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid Bootcamp URL.</div>');
+        } elseif($bs[0]['b_status']<2){
+            //Here we don't even let instructors move forward to apply!
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is Archived.</div>');
+        } elseif($bs[0]['b_fp_id']<=0){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
+        } elseif(strlen($bs[0]['b_apply_url'])<1){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp missing Application URL.</div>');
+        } else {
+            //All good, redirect to apply:
+            redirect_message($bs[0]['b_apply_url']);
+        }
+
+    }
+
+
     function checkout_start($b_url_key){
         //The start of the funnel for email, first name & last name
 
@@ -343,7 +373,7 @@ class My extends CI_Controller {
 
                 }
 
-                echo '<i class="fas fa-dot-circle"></i> <b>'.$other_admission['c_outcome'].'</b>';
+                echo '<i class="fas fa-cube"></i> <b>'.$other_admission['c_outcome'].'</b>';
                 echo ' <span style="display:inline-block;"><i class="fas fa-calendar"></i> '.echo_time($other_admission['r_start_date'],2).'</span>';
 
                 if(time()>$other_admission['r__class_start_time'] && time()<$other_admission['r__class_end_time']){
@@ -500,7 +530,7 @@ class My extends CI_Controller {
 
                 //Action Plan:
                 if(count($cache_action_plans)>0){
-                    echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fas fa-list-ol"></i></span></a>';
+                    echo ' <a href="javascript:void();" onclick="$(\'.ap_toggle\').toggle()" data-toggle="tooltip" data-placement="left" title="This Class is running on a Copy of your Action Plan. Click to see details."><span class="badge tip-badge"><i class="fas fa-flag"></i></span></a>';
                 }
 
                 //Help Bubble:
@@ -518,7 +548,7 @@ class My extends CI_Controller {
 
                 echo '<div class="ap_toggle" style="display:none;">';
 
-                echo '<div class="title"><h4><i class="fas fa-list-ol"></i> Action Plan as of '.echo_time($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
+                echo '<div class="title"><h4><i class="fas fa-flag"></i> Action Plan as of '.echo_time($cache_action_plans[0]['e_timestamp'],0).' <span id="hb_3267" class="help_button" intent-id="3267"></span></h4></div>';
                 echo '<div class="help_body maxout" id="content_3267"></div>';
 
                 //Show Action Plan:
@@ -553,7 +583,7 @@ class My extends CI_Controller {
 
 
                 //Skills You Will Gain
-                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-diamond"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
+                echo '<div class="title" style="margin-top:30px;"><h4><i class="fas fa-trophy"></i> Skills You Will Gain <span id="hb_2271" class="help_button" intent-id="2271"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>
             <div class="help_body maxout" id="content_2271"></div>';
                 echo ( strlen($b['b_transformations'])>0 ? '<ol class="maxout"><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : '<div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Not Set</div>' );
 
@@ -765,7 +795,7 @@ class My extends CI_Controller {
             $message_max = $this->config->item('message_max');
 
             //Add Broadcasting:
-            echo '<div class="title" style="margin-top:25px;"><h4><i class="fas fa-comments"></i> Broadcast Message <span id="hb_4997" class="help_button" intent-id="4997"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>';
+            echo '<div class="title" style="margin-top:25px;"><h4><i class="fas fa-comment-dots"></i> Broadcast Message <span id="hb_4997" class="help_button" intent-id="4997"></span> <span id="b_transformations_status" class="list_status">&nbsp;</span></h4></div>';
             echo '<div class="help_body maxout" id="content_4997"></div>';
             echo '<div class="form-group label-floating is-empty">
             <textarea class="form-control text-edit border msg msgin" style="min-height:80px; max-width:420px; padding:3px;" onkeyup="changeBroadcastCount()" id="r_broadcast"></textarea>

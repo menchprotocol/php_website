@@ -104,9 +104,6 @@ $website = $this->config->item('website');
 <div class="tab-content tab-space">
 
     <div class="tab-pane" id="tabmultiweek">
-
-        <p>Multi-Week Bootcamps are a combination of existing 7-Day Bootcamps:</p>
-
         <?php
         echo '<div class="list-group maxout">';
 
@@ -146,7 +143,7 @@ $website = $this->config->item('website');
                 echo echo_b($b);
             }
         } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-0" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No 7-Day Bootcamps Found. Create a new Bootcamp below:</div>';
+            echo '<div class="list-group-item alert alert-info no-b-div-0" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No Weekly Bootcamps Found. Create a new Bootcamp below:</div>';
         }
 
         //Input to create new Bootcamp:
@@ -169,7 +166,7 @@ $website = $this->config->item('website');
 
     <div class="tab-pane" id="tabgoals">
 
-        <p>Soon will list all Tasks from all Bootcamps so you can manage them centrally and easily re-use Tasks across multiple 7-day Bootcamps.</p>
+        <p>Soon will list all Tasks from all Bootcamps so you can manage them centrally and easily re-use Tasks across multiple weekly Bootcamps.</p>
 
     </div>
 

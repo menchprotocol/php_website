@@ -17,6 +17,7 @@ class Urls extends CI_Controller
 
         //Auth user and check required variables:
         $udata = auth(array(1308,1280));
+        $_POST['x_url'] = trim($_POST['x_url']);
 
         if(!$udata){
             return echo_json(array(
@@ -40,10 +41,6 @@ class Urls extends CI_Controller
             ));
         }
 
-        sleep(10);
-
-        $_POST['x_url'] = trim($_POST['x_url']);
-
         //Validate entity
         $outbound_us = $this->Db_model->u_fetch(array(
             'u_id' => $_POST['x_outbound_u_id'],
@@ -54,21 +51,21 @@ class Urls extends CI_Controller
 
         //Make sure this URL does not exist:
         $dup_urls = $this->Db_model->x_fetch(array(
-            'x_url' => $_POST['x_url'],
-            'x_clean_url' => $_POST['x_url'],
+            'x_status >' => -2,
+            '(x_url LIKE \''.$_POST['x_url'].'\' OR x_clean_url LIKE \''.$_POST['x_url'].'\')' => null,
         ), array('u'));
 
-        if(!$curl) {
+        if(!$curl){
             return echo_json(array(
                 'status' => 0,
                 'message' => 'Invalid URL',
             ));
-        } elseif (count($dup_urls) > 0) {
+        } elseif(count($dup_urls) > 0){
 
             if($dup_urls[0]['u_id']==$_POST['x_outbound_u_id']){
                 return echo_json(array(
                     'status' => 0,
-                    'message' => 'This URL has already been added to [' . $dup_urls[0]['u_full_name'] . ']',
+                    'message' => 'This URL has already been added!',
                 ));
             } else {
                 return echo_json(array(
@@ -82,7 +79,7 @@ class Urls extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Outbound Entity ID ['.$_POST['x_outbound_u_id'].']',
             ));
-        } elseif ($curl['url_is_broken']) {
+        } elseif($curl['url_is_broken']) {
             return echo_json(array(
                 'status' => 0,
                 'message' => 'URL seems broken with http code [' . $curl['httpcode'] . ']',
@@ -100,6 +97,21 @@ class Urls extends CI_Controller
             'x_status' => ( $curl['url_is_broken'] ? 1 : 2 ),
         ));
 
+        //Log Engagements:
+        $this->Db_model->e_create(array(
+            'e_json' => $curl,
+            'e_inbound_c_id' => 6911, //URL Detected Live
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $_POST['x_outbound_u_id'],
+            'e_x_id' => $new_x['x_id'],
+        ));
+        $this->Db_model->e_create(array(
+            'e_json' => $new_x,
+            'e_inbound_c_id' => 6910, //URL Added
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $_POST['x_outbound_u_id'],
+            'e_x_id' => $new_x['x_id'],
+        ));
 
         return echo_json(array(
             'status' => 1,
@@ -108,5 +120,128 @@ class Urls extends CI_Controller
         ));
 
     }
+
+    function delete_url(){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['x_id']) || intval($_POST['x_id'])<=0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing URL ID',
+            ));
+        }
+
+        //Validate URL:
+        $urls = $this->Db_model->x_fetch(array(
+            'x_id' => $_POST['x_id'],
+        ), array('u'));
+
+        if(count($urls)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL ID',
+            ));
+        }
+
+        //Make the update (Assume it's all good):
+        $rows_updated = $this->Db_model->x_update( $_POST['x_id'] , array(
+            'x_status' => -2, //Delete by user
+        ));
+
+        if(!$rows_updated){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Unknown error while trying to delete this URL',
+            ));
+        }
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_json' => $urls[0],
+            'e_inbound_c_id' => 6912, //URL Deleted
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $urls[0]['x_outbound_u_id'],
+            'e_x_id' => $_POST['x_id'],
+        ));
+
+        //Is this URL set as the Cover photo?
+        if($urls[0]['u_cover_x_id']==$_POST['x_id']){
+            //This is set as the Cover photo, let's remove it:
+            $this->Db_model->u_update( $urls[0]['u_id'] , array(
+                'u_cover_x_id' => 0, //Remove Cover photo
+            ));
+
+            //Log Engagement:
+            $this->Db_model->e_create(array(
+                'e_json' => $urls[0],
+                'e_inbound_c_id' => 6924, //Cover Photo Removed
+                'e_inbound_u_id' => $udata['u_id'],
+                'e_outbound_u_id' => $urls[0]['x_outbound_u_id'],
+                'e_x_id' => $_POST['x_id'],
+            ));
+        }
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => '<i class="fas fa-trash-alt"></i> Deleted',
+        ));
+    }
+
+
+    function cover_photo_set(){
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['x_id']) || intval($_POST['x_id'])<=0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing URL ID',
+            ));
+        }
+
+        //Validate URL:
+        $urls = $this->Db_model->x_fetch(array(
+            'x_id' => $_POST['x_id'],
+        ), array('u'));
+
+        if(count($urls)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL ID',
+            ));
+        }
+
+        //This is set as the Cover photo, let's remove it:
+        $this->Db_model->u_update( $urls[0]['u_id'] , array(
+            'u_cover_x_id' => $_POST['x_id'], //Add Cover photo
+        ));
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_json' => $urls[0],
+            'e_inbound_c_id' => 6924, //Cover Photo Removed
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $urls[0]['x_outbound_u_id'],
+            'e_x_id' => $_POST['x_id'],
+        ));
+
+        return echo_json(array(
+            'status' => 1,
+        ));
+    }
+
 
 }

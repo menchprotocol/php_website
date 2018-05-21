@@ -109,7 +109,7 @@ echo '<div id="save_review">';
         echo '<textarea id="ru_review_private_note" class="form-textarea maxout">'.$admission['ru_review_private_note'].'</textarea>';
 
 
-        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-comment-lines"></i> Public Review (Optional)</b><br />Write a review for '.$lead_instructor.' to let his future/potential students know about your experience and what to expect:</div>';
+        echo '<div style="margin-top:25px;" class="maxout"><b><i class="fas fa-comment-dots"></i> Public Review (Optional)</b><br />Write a review for '.$lead_instructor.' to let his future/potential students know about your experience and what to expect:</div>';
         echo '<textarea id="ru_review_public_note" class="form-textarea maxout">'.$admission['ru_review_public_note'].'</textarea>';
 
     echo '</div>';

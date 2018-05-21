@@ -63,22 +63,17 @@ $( document ).ready(function() {
 	<div class="col-md-4">
         <div id="sidebar">
         	
-        	<h3 style="margin-top:0;">Bootcamp Snapshot</h3>
+        	<h3 style="margin-top:0;"><i class="fas fa-flag"></i> Action Plan</h3>
 
-            <ul style="list-style:none; margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
-                <li>Commitment: <b><?= echo_hours($b['c__estimated_hours']) ?> in <?= $week_count.' Week'.echo__s($week_count) ?></b></li>
-                <li>Starts: <b>Every Monday</b></li>
-                <li><?= ( $price_range['min']>=0 && $price_range['max']>=0 ? 'Tuition Range: <b>'.echo_price($b,1).' - '.echo_price($b,2).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.( echo_price($b,( $price_range['min']>=0 ? 1 : 2 )) ).'</b>' ) ?></li>
-
-                <?php
-                if($b['b_difficulty_level']>0){
-                    echo '<li>Experience Level: '.echo_status('df',$b['b_difficulty_level'],0,'top').'</li>';
-                }
-                ?>
-            </ul>
+            <div style="list-style:none; margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
+                <?php echo_action_plan_overview($b) ?>
+                <?php /*
+                <div><?= ( $price_range['min']>=0 && $price_range['max']>=0 ? 'Tuition Range: <b>'.echo_price($b,1).' - '.echo_price($b,2).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.( echo_price($b,( $price_range['min']>=0 ? 1 : 2 )) ).'</b>' ) ?></div>
+                */ ?>
+            </div>
             
             <div style="padding:10px 0 0; text-align:center;">
-                <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fas fa-chevron-right"></i></a></div>
+                <div class="lp_action"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
                 <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
             </div>
 
@@ -96,17 +91,16 @@ $( document ).ready(function() {
         }
         ?>
 
-
-        <h3>Skills You Will Gain</h3>
+        <h3><i class="fas fa-trophy"></i> Skills You Will Gain</h3>
         <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
 
-        <h3>Prerequisites</h3>
+        <h3><i class="fas fa-shield-check"></i> Prerequisites</h3>
         <?php $pre_req_array = prep_prerequisites($b); ?>
         <div id="b_prerequisites"><?= ( count($pre_req_array)>0 /* Should always be true! */ ? '<ol><li>'.join('</li><li>',$pre_req_array).'</li></ol>' : 'None' ) ?></div>
 
 
 
-        <h3>Action Plan</h3>
+        <h3><i class="fas fa-clipboard-check"></i> <?= ( $b['b_is_parent'] ? 'Weekly Tasks' : 'Tasks' ) ?></h3>
         <div id="c_tasks_list">
             <?php
             if($b['b_is_parent']){
@@ -116,7 +110,7 @@ $( document ).ready(function() {
                     echo '<div id="c_'.$key.'">';
                     echo '<h4><a href="javascript:toggleview(\'c_'.$key.'\');" style="font-weight: normal;"><i class="pointer fas fa-caret-right"></i> Week '.$b7d['cr_outbound_rank'].': '.$b7d['c_outcome'];
                     if($b7d['c__estimated_hours']>0){
-                        echo ' &nbsp;<i class="fal fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
+                        echo ' &nbsp;<i class="fas fa-alarm-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
                     echo '</a></h4>';
                     echo '<div class="toggleview c_'.$key.'" style="display:none;">';
@@ -148,7 +142,7 @@ $( document ).ready(function() {
 
             } else {
 
-                //Regular 7-day Bootcamp:
+                //Regular weekly Bootcamp:
                 echo '<div class="list-group maxout actionplan_list">';
                 $counter = 0;
                 foreach($b['c__child_intents'] as $child_intent){
@@ -167,14 +161,13 @@ $( document ).ready(function() {
                 echo '</div>';
 
             }
-
             ?>
         </div>
-        <div class="show_full_list" style="display: none;"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">ENROLL &nbsp;<i class="fas fa-chevron-right"></i></a></div>
+        <div class="show_full_list" style="display: none;"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
 
     		
     		
-    		<h3>Content By</h3>
+    		<h3><i class="fas fa-whistle"></i> Coaches</h3>
     		<?php
             $admin_count = 0;
             $leader_fname = '';
@@ -210,15 +203,7 @@ $( document ).ready(function() {
                 
                 //Public profiles:
                 echo '<div class="public-profiles" style="margin-top:10px;">';
-                if(strlen($admin['u_primary_url'])>0){
-                    echo '<a href="'.$admin['u_primary_url'].'" target="_blank"><i class="fas fa-link"></i></a>';
-                }
-                $u_social_account = $this->config->item('u_social_account');
-                foreach($u_social_account as $sa_key=>$sa){
-                    if(strlen($admin[$sa_key])>0){
-                        echo '<a href="'.$sa['sa_prefix'].$admin[$sa_key].$sa['sa_postfix'].'" data-toggle="tooltip" title="'.$sa['sa_name'].'" target="_blank">'.$sa['sa_icon'].'</a>';
-                    }
-                }
+                echo echo_social_profiles($this->Db_model->x_social_fetch($admin['u_id']));
                 echo '</div>';
                 
                 $admin_count++;
@@ -234,7 +219,7 @@ $( document ).ready(function() {
 
 
 <div style="padding:20px 0 30px; text-align:center;">
-    <div class="lp_action"><a href="/<?= $b['b_url_key'] ?>/apply" class="btn btn-primary btn-round">Enroll&nbsp;<i class="fas fa-chevron-right"></i></a></div>
+    <div class="lp_action"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
     <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
 </div>
 

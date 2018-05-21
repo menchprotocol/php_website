@@ -225,6 +225,9 @@ class Cron extends CI_Controller {
             'e_outbound_u_id' => 1, //Engagement initiator
             'e_inbound_u_id' => 1, //Engagement recipient
 
+            'x_inbound_u_id' => 5, //URL Creator
+            'x_outbound_u_id' => 8, //URL Referenced to them
+
             'ru_outbound_u_id' => 13, //Admissions
             'c_inbound_u_id' => 21, //Active Intents
             't_inbound_u_id' => 55, //Transactions
@@ -255,6 +258,16 @@ class Cron extends CI_Controller {
             $score += count($this->Db_model->e_fetch(array(
                     'e_inbound_u_id' => $u['u_id'],
                 ), 5000)) * $score_weights['e_inbound_u_id'];
+
+            $score += count($this->Db_model->x_fetch(array(
+                    'x_status >' => 0,
+                    'x_outbound_u_id' => $u['u_id'],
+                ), 5000)) * $score_weights['x_outbound_u_id'];
+            $score += count($this->Db_model->x_fetch(array(
+                    'x_status >' => 0,
+                    'x_inbound_u_id' => $u['u_id'],
+                ), 5000)) * $score_weights['x_inbound_u_id'];
+
             $score += count($this->Db_model->c_fetch(array(
                     'c_inbound_u_id' => $u['u_id'],
                 ))) * $score_weights['c_inbound_u_id'];

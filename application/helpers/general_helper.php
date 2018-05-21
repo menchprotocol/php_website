@@ -337,7 +337,7 @@ function extract_level($b,$c_id){
         $view_data['breadcrumb_p'] = array(
             array(
                 'link' => null,
-                'anchor' => '<i class="fas fa-dot-circle"></i> '.$b['c_outcome'],
+                'anchor' => '<i class="fas fa-cube"></i> '.$b['c_outcome'],
             ),
         );
         //Not applicable at Bootcamp Level:
@@ -614,7 +614,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <i class="fal fa-clock"></i> <b>'.echo_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.echo__s($week_count).'</b> anytime that works best for you. This is an average of '.echo_hours($b['c__estimated_hours']/($week_count*7)) .' per day.');
+        array_unshift($pre_req_array, 'Commitment to invest <i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.echo__s($week_count).'</b> anytime that works best for you. This is an average of '.echo_hours($b['c__estimated_hours']/($week_count*7)) .' per day.');
     }
     return $pre_req_array;
 }
@@ -842,21 +842,15 @@ function b_progress($b){
         ));
 
         //Profile counter:
-        $profile_counter = ( strlen($bl['u_primary_url'])>0 ? 1 : 0 );
-        $profile_counter = 1;
-        $u_social_account = $CI->config->item('u_social_account');
-        foreach($u_social_account as $sa_key=>$sa){
-            $profile_counter += ( strlen($bl[$sa_key])>0 ? 1 : 0 );
-        }
-
         $estimated_minutes = 30;
-        $progress_possible += $estimated_minutes;
         $required_social_profiles = 3;
-        $e_status = ( $profile_counter>=$required_social_profiles ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-        $progress_gained += ( $e_status==1 ? $estimated_minutes : ($profile_counter/$required_social_profiles)*$estimated_minutes );
+        $current_profiles = count($CI->Db_model->x_social_fetch($bl['u_id']));
+        $progress_possible += $estimated_minutes;
+        $e_status = ( $current_profiles>=$required_social_profiles ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : ($current_profiles/$required_social_profiles)*$estimated_minutes );
         array_push( $checklist , array(
             'href' => ( $account_href ? $account_href.'#communication' : null ),
-            'anchor' => '<b>Set '.$required_social_profiles.' or more Social Profiles</b> in '.$account_anchor,
+            'anchor' => '<b>Add '.$required_social_profiles.' Social Profiles</b> (Like Facebook, Linkedin, Instagram, Udemy, etc...) in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
@@ -965,7 +959,7 @@ function b_progress($b){
     
     //Return the final message:
     return array(
-        'stage' => '<i class="fas fa-rocket"></i> Launch Checklist',
+        'stage' => '<i class="fas fa-bell"></i> Reminders',
         'progress' => round($progress_gained/$progress_possible*100),
         'check_list' => $checklist,
     );
@@ -1295,7 +1289,7 @@ function curl_html($url,$return_breakdown=false){
         $return_array = array(
             //used all the time, also when updating en entity:
             'input_url' => $url,
-            'url_is_broken' => ( in_array($httpcode,array(0,403,404)) ? 1 : 0 ),
+            'url_is_broken' => ( in_array($httpcode,array(0,403,404)) && substr_count($url,'www.facebook.com')==0 ? 1 : 0 ),
             'x_type' => $x_type,
             'clean_url' => ( !$clean_url || $clean_url==$url ? null : $clean_url ),
             'last_domain' => strtolower(str_replace('www.','',$url_parts['host'])),

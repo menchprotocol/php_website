@@ -23,35 +23,37 @@ $(document).ready(function() {
     }
 });
 
+
 function add_new_url(){
 
-    if($('#add_new_url').val().length<1){
+    if($('#add_url_input').val().length<1){
         //Empty field!
         alert('Error: Input field is empty. Paste a URL and then click "Add"');
+        $('#add_url_input').focus();
         return false;
     }
 
     //Let's try adding:
-    $('#add_new_url').prop('disabled', true); //Empty input
-    add_to_list('list-urls', '.url-item', '<div class="list-group-item temp-loader"><img src="/img/round_load.gif" class="loader" /> Checking URL... </div>');
+    $('#add_url_input').prop('disabled', true); //Empty input
+    $('#add_url_btn').attr('href','javascript:void(0);').html('<i class="fas fa-spinner fa-spin"></i>');
+
 
     $.post("/urls/add_url", {
 
         x_outbound_u_id: <?= $entity['u_id'] ?>,
-        x_url: $('#add_new_url').val(),
+        x_url: $('#add_url_input').val(),
 
     } , function(data) {
 
-        //Remove loader:
-        $('.temp-loader').remove();
-
         //Release lock:
-        $('#add_new_url').prop('disabled', false);
+        $('#add_url_input').prop('disabled', false);
+        $('#add_url_btn').attr('href','javascript:add_new_url();').html('ADD <i class="fas fa-link"></i>');
+        $('.no-b-div-1').remove(); //This MIGHT be there if there was no URLs previously
 
         if(data.status){
 
             //Empty input to make it ready for next URL:
-            $('#add_new_url').val('');
+            $('#add_url_input').val('');
 
             //Add new object to list:
             add_to_list('list-urls', '.url-item', data.new_x);
@@ -62,6 +64,41 @@ function add_new_url(){
         } else {
             //We had an error:
             alert('Error: '+data.message);
+        }
+
+    });
+
+}
+
+function x_delete(x_id){
+
+    var r = confirm("Delete Reference?");
+    if (r == false) {
+        return false;
+    }
+
+    //Show loader to delete:
+    $('#x_'+x_id).html('<img src="/img/round_load.gif" class="loader" /> Deleting... ');
+
+    //Delete"
+    $.post("/urls/delete_url", {
+
+        x_id:x_id,
+
+    } , function(data) {
+
+        if(data.status){
+
+            $('#x_'+x_id).html(data.message);
+
+            //Remove the who bar:
+            setTimeout(function() {
+                $('#x_'+x_id).fadeOut();
+            }, 377);
+
+        } else {
+            //We had an error:
+            $('#x_'+x_id).html('<span style="color:#FF0000;"><i class="fas fa-exclamation-triangle"></i> Error: ' + data.message + '</span>');
         }
 
     });
@@ -109,6 +146,9 @@ if(!$inbound_u_id){
     echo echo_cover($entity,'profile-icon2');
     echo '<b id="u_title">'.$entity['u_full_name'].'</b>';
     echo ' <span class="obj-id">@'.$entity['u_id'].'</span>';
+
+    //Do they have any social profiles in their link?
+    echo echo_social_profiles($this->Db_model->x_social_fetch($entity['u_id']));
 
     //Check last engagement ONLY IF admin:
     if($udata['u_inbound_u_id']==1281){
@@ -179,7 +219,7 @@ $show_tabs = array(
 
         echo '<div class="tab-pane" id="tablist">';
 
-        echo '<div id="list-entities" class="list-group maxout">';
+        echo '<div id="list-entities" class="list-group maxout grey-list">';
         foreach($child_entities as $u){
             echo echo_u($u);
         }
@@ -188,7 +228,7 @@ $show_tabs = array(
             echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
         }
 
-        if($entity['u_id']==1326){
+        if($entity['u_id']==1326 && 0){
             ?>
             <script>
 
@@ -200,7 +240,7 @@ $show_tabs = array(
                         return false;
                     }
 
-                    $.post("/entities/entitiy_create_from_url", { u_primary_url:input }, function(data) {
+                    $.post("/entities/entitiy_create_from_url", { url:input }, function(data) {
 
                         if(data.status){
 
@@ -237,7 +277,7 @@ $show_tabs = array(
                 <div class="input-group">
                     <div class="form-group is-empty"><input type="url" class="form-control" id="url_for_source" placeholder="Paste URL here..."></div>
                     <span class="input-group-addon">
-                        <a class="badge badge-primary stnd-btn" onclick="add_source_by_url()" href="javascript:void(0);">ADD <i class="fas fa-link"></i></a>
+                        <a class="badge badge-primary stnd-btn" href="javascript:add_source_by_url();">ADD <i class="fas fa-link"></i></a>
                     </span>
                 </div>
             </div>
@@ -265,25 +305,24 @@ $show_tabs = array(
 
     }
 
+    if($show_tabs['coach']){
 
-    if($show_tabs['student']){
-
-        echo '<div class="tab-pane" id="tabstudent">';
-        echo '<div id="list-student" class="list-group maxout">';
-        foreach($admissions as $ru){
-            echo_ru($ru);
+        echo '<div class="tab-pane" id="tabcoach">';
+        echo '<div id="list-coach" class="list-group maxout grey-list">';
+        foreach($b_team_member as $ba){
+            echo_ba($ba);
         }
         echo '</div>';
         echo '</div>';
 
     }
 
-    if($show_tabs['coach']){
+    if($show_tabs['student']){
 
-        echo '<div class="tab-pane" id="tabcoach">';
-        echo '<div id="list-coach" class="list-group maxout">';
-        foreach($b_team_member as $ba){
-            echo_ba($ba);
+        echo '<div class="tab-pane" id="tabstudent">';
+        echo '<div id="list-student" class="list-group maxout grey-list">';
+        foreach($admissions as $ru){
+            echo_ru($ru);
         }
         echo '</div>';
         echo '</div>';
@@ -293,7 +332,7 @@ $show_tabs = array(
     if($show_tabs['payments']){
 
         echo '<div class="tab-pane" id="tabpayments">';
-        echo '<div id="list-payments" class="list-group maxout">';
+        echo '<div id="list-payments" class="list-group maxout grey-list">';
         foreach($payments as $t){
             echo_t($t);
         }
@@ -309,43 +348,35 @@ $show_tabs = array(
 
         //Fetch all the URLs for this Entity:
         $urls = $this->Db_model->x_fetch(array(
+            'x_status >' => 0,
             'x_outbound_u_id' => $entity['u_id'],
         ), array(), array(
-            'x_id' => 'DESC'
+            'x_id' => 'ASC'
         ));
 
         //URL List:
-        echo '<div id="list-urls" class="list-group maxout">';
+        echo '<div id="list-urls" class="list-group maxout grey-list">';
 
-        foreach($urls as $x){
-            echo echo_x($entity,$x);
+        if(count($urls)>0){
+            foreach($urls as $x){
+                echo echo_x($entity,$x);
+            }
+        } else {
+            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No Referenced added yet. Add your first Reference by pasting a URL below.</div>';
         }
+
 
         //Add new Reference:
         echo '<div class="list-group-item list_input grey-input">
                 <div class="input-group">
-                    <div class="form-group is-empty"><input type="url" class="form-control" id="add_new_url" placeholder="Paste URL here..."></div>
+                    <div class="form-group is-empty"><input type="url" class="form-control" id="add_url_input" placeholder="Paste URL here..."></div>
                     <span class="input-group-addon">
-                        <a class="badge badge-primary stnd-btn" href="javascript:add_new_url();">ADD <i class="fas fa-link"></i></a>
+                        <a class="badge badge-primary stnd-btn" id="add_url_btn" href="javascript:add_new_url();">ADD <i class="fas fa-link"></i></a>
                     </span>
                 </div>
             </div>';
 
         echo '</div>';
-
-
-
-        //Social links:
-        $u_social_account = $this->config->item('u_social_account');
-        foreach($u_social_account as $sa_key=>$sa){
-            echo '<div class="title" style="margin-top:'.( $sa_key>0 ? 30 : 0 ).'px;"><h4>'.$sa['sa_icon'].' '.$sa['sa_name'].' <span id="ph_'.$sa_key.'"></span></h4></div>
-    	<div class="input-group border">
-          <span class="input-group-addon addon-lean">'.$sa['sa_prefix'].'</span><input type="text" data-lpignore="true" class="form-control social-input" id="'.$sa_key.'" maxlength="100" value="'.$entity[$sa_key].'" />
-        </div>';
-        }
-        echo '<div class="title" style="margin-top:10px;"><h4><i class="fab fa-skype"></i> Skype Username</h4></div>
-        <input type="text" class="form-control border" data-lpignore="true" id="u_skype_username" maxlength="100" value="'.$entity['u_skype_username'].'" />';
-
 
 
         echo '</div>'; //Tab content ends

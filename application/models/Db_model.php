@@ -553,13 +553,17 @@ WHERE ru.ru_status >= 4
 	 * i Messages
 	 ****************************** */
 
-    function i_fetch($match_columns, $limit=0, $order_columns = array(
+    function i_fetch($match_columns, $limit=0, $join_objects=array(), $order_columns=array(
         'i_rank' => 'ASC',
     )){
+
         $this->db->select('*');
         $this->db->from('v5_messages i');
         $this->db->join('v5_intents c', 'i.i_outbound_c_id = c.c_id');
         $this->db->join('v5_entities u', 'u.u_id = i.i_inbound_u_id');
+        if(in_array('x',$join_objects)){
+            $this->db->join('v5_urls x', 'x.x_id = u.u_cover_x_id','left'); //Fetch the cover photo if >0
+        }
         foreach($match_columns as $key=>$value){
             if(!is_null($value)){
                 $this->db->where($key,$value);
@@ -1452,10 +1456,32 @@ WHERE ru.ru_status >= 4
 	 * Other
 	 ****************************** */
 
+	function x_social_fetch($u_id){
 
-    function x_fetch($match_columns, $join_objects=array(), $order_columns=array(
-        'x_id' => 'ASC'
-    )){
+	    $social_urls = $this->config->item('social_urls');
+
+        $return_array = array();
+	    foreach($social_urls as $key=>$fa_icon){
+
+            $urls = $this->Db_model->x_fetch(array(
+                'x_outbound_u_id' => $u_id,
+                'x_status >' => 0,
+                '(x_url LIKE \'%'.$key.'%\' OR x_clean_url LIKE \'%'.$key.'%\')' => null,
+            ));
+
+            foreach($urls as $url){
+                array_push($return_array , array(
+                    'url' => $url['x_url'],
+                    'fa_icon' => $fa_icon,
+                ));
+            }
+        }
+
+	    return $return_array;
+
+    }
+
+    function x_fetch($match_columns, $join_objects=array(), $order_columns=array()){
         //Fetch the target entities:
         $this->db->select('*');
         $this->db->from('v5_urls x');
@@ -1470,14 +1496,22 @@ WHERE ru.ru_status >= 4
             }
         }
 
-        foreach($order_columns as $key=>$value){
-            $this->db->order_by($key,$value);
+        if(count($order_columns)>0){
+            foreach($order_columns as $key=>$value){
+                $this->db->order_by($key,$value);
+            }
         }
 
         $q = $this->db->get();
         $res = $q->result_array();
 
         return $res;
+    }
+
+    function x_update($x_id,$update_columns){
+        $this->db->where('x_id', $x_id);
+        $this->db->update('v5_urls', $update_columns);
+        return $this->db->affected_rows();
     }
 
     function x_create($insert_columns){
@@ -1492,6 +1526,7 @@ WHERE ru.ru_status >= 4
 
         //Check to see if this URL exists, if so, return that:
         $urls = $this->Db_model->x_fetch(array(
+            'x_status >' => -2,
             '(x_url LIKE \'%'.$insert_columns['x_url'].'%\' OR x_clean_url LIKE \'%'.$insert_columns['x_clean_url'].'%\')' => null,
         ));
 
@@ -1905,7 +1940,6 @@ WHERE ru.ru_status >= 4
             $items = $this->Db_model->c_fetch($limits);
         } elseif($obj=='u'){
             $items = $this->Db_model->u_fetch($limits);
-            $u_social_account = $this->config->item('u_social_account');
             $inbound_names = array(); //To cache names of parents
         }
 
@@ -1996,14 +2030,18 @@ WHERE ru.ru_status >= 4
                 $new_item['alg_name'] = $item['u_full_name'];
                 $new_item['alg_keywords'] = $item['u_bio'];
 
-                //Additional information to tag along:
-                if(strlen($item['u_primary_url'])>0){
-                    $new_item['alg_keywords'] .= ' '.$item['u_primary_url'];
-                }
+                //Append additional information:
+                $urls = $this->Db_model->x_fetch(array(
+                    'x_status >' => 0,
+                    'x_outbound_u_id' => $item['u_id'],
+                ));
+                foreach($urls as $x){
+                    //Add main URL:
+                    $new_item['alg_keywords'] .= ' '.$x['x_url'];
 
-                foreach($u_social_account as $sa_key=>$sa){
-                    if(strlen($item[$sa_key])>0){
-                        $new_item['alg_keywords'] .= ' '.$item[$sa_key];
+                    //Add Clean URL only if different from main:
+                    if(!($x['x_url']==$x['x_clean_url'])){
+                        $new_item['alg_keywords'] .= ' '.$x['x_clean_url'];
                     }
                 }
 

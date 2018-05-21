@@ -22,9 +22,25 @@ class Entities extends CI_Controller {
 
         //Authenticate contributor, redirect if not:
         //$udata = auth(array(1308,1280),1);
-        $udata = auth(array(1281),1);
-        $entity_tree = fetch_entity_tree($inbound_u_id);
+
+        $udata = $this->session->userdata('user');
+        if(!($udata['u_id']==$inbound_u_id || $udata['u_inbound_u_id']==1281)){
+            //This is not an admin, so they cannot edit this:
+            redirect_message('/console','<div class="alert alert-danger" role="alert">You can only view <a href="/entities/'.$udata['u_id'].'">your own entity</a>.</div>');
+        }
+
         $entities_per_page = 100;
+        $entity_tree = fetch_entity_tree($inbound_u_id);
+
+        //Adjust Breadcrumb for non-admins
+        if(!($udata['u_inbound_u_id']==1281)){
+            $entity_tree['breadcrumb'] = array(
+                array(
+                    'link' => null,
+                    'anchor' => 'My Account',
+                ),
+            );
+        }
 
         //Fetch core data:
         $view_data = array_merge( $entity_tree , array(
@@ -80,8 +96,12 @@ class Entities extends CI_Controller {
         if(!($udata['u_inbound_u_id']==1281)){
             $entity_tree['breadcrumb'] = array(
                 array(
-                    'link' => null,
+                    'link' => '/entities/'.$u_id,
                     'anchor' => 'My Account',
+                ),
+                array(
+                    'link' => null,
+                    'anchor' => '<i class="fas fa-cog"></i> Modify',
                 ),
             );
         }
@@ -97,102 +117,6 @@ class Entities extends CI_Controller {
         $this->load->view('console/console_footer');
     }
 
-    function entitiy_create_from_url(){
-
-        $udata = $this->session->userdata('user');
-        $u_inbound_u_id = 1326; //Called from this entity only
-        $error_message = null;
-        $new_u = null; //Will be set if we had to create a new parent entity for domain grouping
-        $new_u_id = 0;
-
-        if(!$udata){
-            $error_message = 'Session expired, login and try again';
-        } elseif(!isset($_POST['u_primary_url']) || strlen($_POST['u_primary_url'])<3){
-            $error_message = 'Missing URL';
-        } else {
-
-            //Check the URL:
-            $curl = curl_html($_POST['u_primary_url'],true);
-
-            //Make sure this URL does not exist:
-            $dup_urls = $this->Db_model->u_fetch(array(
-                '(  u_primary_url LIKE \'%'.$_POST['u_primary_url'].'%\' OR u_clean_url LIKE \'%'.$_POST['u_primary_url'].'%\'  )' => null,
-            ));
-
-            if(!$curl){
-                $error_message = 'Invalid URL (start with http:// or https://)';
-            } elseif(count($dup_urls)>0){
-                $error_message = 'URL already used by ['.$dup_urls[0]['u_full_name'].']';
-            } elseif($curl['url_is_broken']) {
-                $error_message = 'URL Seems broken with http code ['.$curl['httpcode'].']';
-            } else {
-
-                //Check if the parent exists, if not, make it:
-                $u_domains = $this->Db_model->u_fetch(array(
-                    'u_inbound_u_id' => 1326, //Expert Content root folder
-                    'u_full_name' => $curl['last_domain'],
-                ));
-
-                if(count($u_domains)==0){
-                    //Make it:
-                    $u_domains[0] = $this->Db_model->u_create(array(
-                        'u_full_name' 		=> $curl['last_domain'],
-                        'u_timezone' 		=> $fb_profile['timezone'],
-                        'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-                        'u_language' 		=> $locale[0],
-                        'u_country_code' 	=> $locale[1],
-                        'u_cache__fp_id'    => $fp['fp_id'],
-                        'u_cache__fp_psid'  => $fp_psid,
-                        'u_inbound_u_id'    => 1304, //Prospects
-                    ));
-
-                    //Give it a try to see if the site has a Favicon and use that as their profile picture:
-                    $this->Comm_model->save_cover_to_cdn($u_domains[0],'http://'.$curl['last_domain'].'/favicon.ico');
-
-                }
-
-                //Now create the URL:
-                $this->Db_model->u_create(array(
-                    'u_full_name' 		=> $curl['last_domain'],
-                    'u_timezone' 		=> $fb_profile['timezone'],
-                    'u_gender'		 	=> strtolower(substr($fb_profile['gender'],0,1)),
-                    'u_language' 		=> $locale[0],
-                    'u_country_code' 	=> $locale[1],
-                    'u_cache__fp_id'    => $fp['fp_id'],
-                    'u_cache__fp_psid'  => $fp_psid,
-                    'u_inbound_u_id'    => 1304, //Prospects
-                ));
-
-                //Log Engagement:
-
-
-                //Seems all good, let's add the data to the saving data set:
-                //$u_update['u_url_last_check'] = date("Y-m-d H:i:s"); //Timestamp of the last time it was validated
-                //$u_update['u_primary_url'] = $_POST['u_primary_url'];
-                //$u_update['u_clean_url'] = $curl['clean_url'];
-                //$u_update['u_url_http_code'] = $curl['httpcode'];
-               // $u_update['x_type'] = $curl['x_type'];
-                //$u_update['u_url_is_broken'] = $curl['url_is_broken']; //This might later become 1 if cron job detects the URL is broken\
-
-
-                //Show the parent in the Reference adding section:
-                $new_u_id = $u_domains[0]['u_id'];
-                $entities = $this->Db_model->u_fetch(array(
-                    'u_id' => $new_u_id,
-                ), array('count_child'));
-                $new_u = echo_u($entities[0]);
-            }
-
-        }
-
-        //Let's return out findings:
-        echo_json(array(
-            'status' => ( $error_message ? 0 : 1 ),
-            'message' => $error_message,
-            'new_u' => $new_u,
-            'new_u_id' => $new_u_id,
-        ));
-    }
 
     function entity_save_edit(){
 
@@ -289,21 +213,6 @@ class Entities extends CI_Controller {
             //Yes they did, save the timestamp:
             $u_update['u_terms_agreement_time'] = date("Y-m-d H:i:s");
         }
-
-        /*
-        $u_social_account = $this->config->item('u_social_account');
-        foreach($u_social_account as $sa_key=>$sa_value){
-            if($_POST[$sa_key]!==$u_current[0][$sa_key]){
-                if(strlen($_POST[$sa_key])>0){
-                    //User has attempted to update it, lets validate it:
-                    //$full_url = $sa_value['sa_prefix'].trim($_POST[$sa_key]).$sa_value['sa_postfix'];
-                    $u_update[$sa_key] = trim($_POST[$sa_key]);
-                } else {
-                    $u_update[$sa_key] = '';
-                }
-            }
-        }
-        */
 
         //Now update the DB:
         $this->Db_model->u_update(intval($_POST['u_id']) , $u_update);

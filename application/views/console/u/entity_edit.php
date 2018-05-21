@@ -52,7 +52,6 @@ function update_account(){
 
         //Social accounts:
         u_fb_username:$('#u_fb_username').val(),
-		u_primary_url:$('#u_primary_url').val(),
 		u_linkedin_username:$('#u_linkedin_username').val(),
 		u_github_username:$('#u_github_username').val(),
 		u_twitter_username:$('#u_twitter_username').val(),
@@ -103,29 +102,10 @@ function insert_gravatar(){
                 <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
             </div>
             <div class="col-xs-6" style="margin-top:0; padding:0; display:<?= ( in_array($entity['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304,1282)) ? 'block' : 'none' ) ?>;">
-                <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-user-secret" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+                <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
                 <input type="email" id="u_email" data-lpignore="true" value="<?= $entity['u_email'] ?>" class="form-control border">
             </div>
         </div>
-
-
-
-        <div class="title" style="margin-top:20px;"><h4><?= (strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0 ? echo_status('x_type', $entity['x_type'],1, 'right') : '<i class="fas fa-link"></i>' ) ?> Primary URL
-                <?php
-                if(strlen($entity['u_primary_url'])>0 && strlen($entity['u_url_last_check'])>0){
-                    //We have checked this before, lets show the results:
-                    echo '&nbsp;<a href="'.$entity['u_clean_url'].'" target="_blank">';
-                    if($entity['u_url_is_broken']==1){
-                        //The previous URL was detected broken:
-                        echo '<i class="fas fa-times-hexagon" data-toggle="tooltip" data-placement="right" style="color:#FF0000;" title="URL detected broken on '.echo_time($entity['u_url_last_check'],0).'"></i>';
-                    } else {
-                        echo '<i class="fas fa-check-circle" data-toggle="tooltip" data-placement="right" title="HTTP code ['.$entity['u_url_http_code'].'] when we last checked on '.echo_time($entity['u_url_last_check'],0).'"></i>';
-                    }
-                    echo '</a>';
-                }
-                ?>
-                <span id="ph_u_primary_url"></span></h4></div>
-        <input type="url" class="form-control border" id="u_primary_url" data-lpignore="true" maxlength="255" value="<?= $entity['u_primary_url'] ?>" />
 
 
 
@@ -180,7 +160,7 @@ function insert_gravatar(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-user-secret" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-phone-square"></i> Phone <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
         <div class="form-group label-floating is-empty">
             <input type="tel" maxlength="30" required id="u_phone" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_phone'] ?>" class="form-control border">
             <span class="material-input"></span>

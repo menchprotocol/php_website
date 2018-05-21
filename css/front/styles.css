@@ -32,6 +32,8 @@ a.badge-primary {
 a.badge-msg{
     min-width:50px;
     text-align: right;
+    border-radius: 5px;
+    border: 1px solid #CCC;
 }
 .list-group-item a{
     cursor:pointer !important;
@@ -164,7 +166,7 @@ a.badge-primary:hover {
 
 
 
-.product-splash .alert{ margin-top:30px; border-radius:3px; }
+.product-splash .alert{ margin-top:30px; border-radius:5px; }
 .product-splash .alert>span, #console .alert>span{ font-weight:bold;display:block; padding-bottom:7px; text-transform: uppercase; }
 
 .dashboard-logo{
@@ -260,7 +262,7 @@ a.badge-primary:hover {
 
 .form-el{
     padding:10px;
-    border-radius: 3px;
+    border-radius:5px;
     font-size:24px !important;
     font-weight:300;
     width: 100%;
@@ -364,7 +366,7 @@ input { font-size:16px !important; }
 .underdot{ border-bottom: 1px dotted #BBB; cursor:help; }
 body { font-size:18px; }
 p a, td a { text-decoration:underline; }
-.mono { font-family:monospace; background-color:#E5E5E5; padding:10px; line-height:180%; border-radius:3px; }
+.mono { font-family:monospace; background-color:#E5E5E5; padding:10px; line-height:180%; border-radius:5px; }
 .panel-body img { max-width:100% !important; }
 .list-group-item .inline-level { color:#3C4858; font-size:0.9em; padding-right:5px; }
 .list-group-item .inline-level .status-label { color:#3C4858; font-weight:normal !important; }
@@ -374,7 +376,7 @@ h5, .h5 {
     font-weight:bold;
     margin-bottom:5px;
 }
-.flag { width:22px; height:14px; border-radius:3px; border:1px solid #CCC; }
+.flag { width:22px; height:14px; border-radius:5px; border:1px solid #CCC; }
 .messages-inline{
     display:none;
     margin:10px 0;
@@ -444,7 +446,7 @@ h5, .h5 {
 .ic-lrg, .public-profiles>a{
 	color:#3C4858 !important;
 	font-size:24px !important;
-	margin-right:10px;
+	margin-right:5px;
 }
 .public-profiles>a:hover{
 	color:#fedd16 !important;
@@ -595,7 +597,7 @@ h5, .h5 {
 
 .msg-nav {list-style-type: none; margin: 0; padding:5px 0 0 0; }
 .msg-nav>li { margin-right:5px; display:inline-block; padding:0 5px 0 0; font-size:0.9em; color:#666; }
-.msg-nav>li>a { color:#3C4858; padding:3px 5px; border-radius:3px; }
+.msg-nav>li>a { color:#3C4858; padding:3px 5px; border-radius:5px; }
 .msg-nav>li .btn { margin:-10px 0px 0 0 !important; padding:5px 8px; }
 .msg-nav li>.dropup { margin:-4px -8px 0 0 !important; padding:5px 8px; }
 .remove_loading .dropup>a { padding:5px 8px; }
@@ -623,7 +625,7 @@ h5, .h5 {
 .list-messages>div>div {
 	max-width:100%;
 	min-width:280px;
-	border-radius:3px;
+	border-radius:5px;
 	border-bottom-right-radius: 1.3em;
     border-top-right-radius: 1.3em;
 	padding:5px 10px;
@@ -634,7 +636,7 @@ h5, .h5 {
 	background-color: #E5E5E5 !important;
 }
 .tip_bubble{
-	border-radius:3px;
+	border-radius:5px;
 	border-bottom-right-radius: 1.3em;
     border-top-right-radius: 1.3em;
 	padding:10px 15px 10px 10px;
@@ -758,7 +760,7 @@ h5, .h5 {
     padding: 5px;
     font-size: 16px;
     margin:10px 0 3px 0;
-    border-radius:3px;
+    border-radius:5px;
 }
 
 .below_list{
@@ -793,7 +795,7 @@ color: #999;
 	margin-left: 0px;
     padding: 0 8px;
     border: 1px solid #3C4858;
-    border-radius: 3px;
+    border-radius:5px;
     margin-top: -10px;
 }
 .addon-lean{ font-weight:normal; font-size:1.0em; color:#AAA; padding-left:5px !important; }
@@ -911,7 +913,9 @@ input.form-control, textarea.form-control, select { padding:3px 7px 5px; }
 .morphext > .animated {
     display: inline-block;
 }
-
+.social-link{
+    margin-left: 5px;
+}
 .li-notify {
 	padding-left: 20px;
 	padding-bottom: 15px;
@@ -1094,7 +1098,7 @@ a.badge:focus, a.badge:hover {
 .action-right a{color:#f57171;    margin-top: 15px;    display: inline-block;}
 .action-right span{color:#bbb;    margin-top: 15px;    display: inline-block;}
 
-.list-group-item .fa-circle {
+.list-group-item .fa-clipboard-check {
     font-size: 0.9em;
     margin-right: 5px;
 }
@@ -1505,7 +1509,7 @@ a .badge {
 	margin:10px 0 0 !important;
 	padding:21px 10px 25px !important;
 	background-color:#FFF;
-	border-radius:3px;
+	border-radius:5px;
 	font-size:20px !important;
 }
 
@@ -1527,7 +1531,7 @@ a .badge {
     line-height: 120% !important;
     font-weight: 300 !important;
     font-size:0.9em;
-    border-radius:3px;
+    border-radius:5px;
 }
 .dropdown-menu{ margin-top: -20px !important; }
 .dropdown-menu li > a { padding: 7px 10px; }
@@ -1566,7 +1570,7 @@ a .badge {
     font-size: 18px;
     background-color: #3C4858;
     color:#FFF;
-    border-radius: 3px;
+    border-radius:5px;
     margin:0;
     cursor:default;
     font-family:"Lato", "Helvetica", "Arial", sans-serif;
@@ -1593,10 +1597,10 @@ h4 .tip-badge{
 	cursor:default;
     display:none;
     background-color:#fedd16;
-    border:1px solid #CCC;
+    border:1px solid #FFF;
     margin:0 0 10px;
     padding:10px;
-    border-radius:3px;
+    border-radius:5px;
 }
 
 .help_body .fa-times {
@@ -1626,7 +1630,7 @@ h4 .tip-badge{
     font-size: 18px;
     background-color: #FFF;
     color:#333;
-    border-radius: 3px;
+    border-radius:5px;
     margin: -4px 0 0 5px;
 }
 .status-label{
@@ -1859,7 +1863,22 @@ margin:5px 0;
 }
 .dash-label{
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 300;
+}
+
+.badge {
+    border-radius: 5px;
+    border:1px solid #FFF !important;
+}
+
+.nav-pills-primary li.active a {
+    border-radius:5px !important;
+    border: 1px solid #fedd16;
+    box-shadow: none !important;
+}
+.nav-pills-primary li a {
+    border-radius:3px !important;
+    border: 1px solid #FFF;
 }
 #b_c_outcome, #b_c_outcome::placeholder {
     font-size: 18px !important;
@@ -1890,6 +1909,11 @@ margin:5px 0;
 .navbar-main > .active > a, .navbar-main > .active > a:hover, .navbar-main > .active > a:focus {
     color: #3C4858 !important;
     background-color: #fedd16 !important;
-    border-radius: 4px !important;
+    border-radius: 5px !important;
     cursor:pointer !important;
+    border: 1px solid #FFF;
+}
+
+.navbar-main a, .navbar-main a:hover, .navbar-main a:focus {
+    border: 1px solid transparent;
 }

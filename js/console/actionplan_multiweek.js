@@ -24,7 +24,7 @@ $(document).ready(function() {
         displayKey: function(suggestion) { return "" },
         templates: {
             suggestion: function(suggestion) {
-                return '<span class="suggest-prefix"><i class="fas fa-dot-circle"></i></span> '+ suggestion._highlightResult.alg_name.value;
+                return '<span class="suggest-prefix"><i class="fas fa-cube"></i></span> '+ suggestion._highlightResult.alg_name.value;
             },
         }
     }]);
