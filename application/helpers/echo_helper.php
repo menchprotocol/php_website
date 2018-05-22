@@ -60,7 +60,7 @@ function echo_action_plan_overview($b,$is_student=false){
 
     //Messages:
     if($is_student){
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-comment-dots"></i> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' scheduled messages will communicate best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
+        $ui .= ' <div class="dash-label bold"> <i class="fas fa-comment-dots"></i> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages communicate the best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
     } else {
         $ui .= ' <div class="dash-label bold"> <i class="fas fa-comment-dots"></i> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).'</div>';
     }
