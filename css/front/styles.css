@@ -443,6 +443,9 @@ h5, .h5 {
     font-size: 18px !important;
     margin: 0 0 -2px 0 !important;
 }
+.btn.btn-primary, .navbar .navbar-nav > li > a.btn.btn-primary{
+    box-shadow: none !important;
+}
 .ic-lrg, .public-profiles>a{
 	color:#3C4858 !important;
 	font-size:24px !important;

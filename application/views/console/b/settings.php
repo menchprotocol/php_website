@@ -417,7 +417,15 @@ function b_save_settings(){
             <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
                 <?php
                 foreach($pm['p1_rates'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Free 1 Week Trial' : '$'.$option.' per Student per Week' ).'</option>';
+                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>';
+                    if($option<0){
+                        echo 'Unavailable';
+                    } elseif($option==0){
+                        echo 'Do It Yourself for Free';
+                    } else {
+                        echo '$'.$option.' per Student per Week';
+                    }
+                    echo '</option>';
                 }
                 ?>
             </select>

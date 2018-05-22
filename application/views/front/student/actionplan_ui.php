@@ -294,7 +294,7 @@ if($level==1){
         if($level==1){
             echo '<i class="fas fa-clipboard-check"></i> Tasks';
         } elseif($level==2){
-            echo '<i class="fal fa-circle"></i> Steps';
+            echo '<i class="fal fa-clipboard-check"></i> Steps';
         }
         //Show aggregate hours:
         echo ' <span class="sub-title">'.echo_estimated_time($intent['c__estimated_hours'],1).'</span>';

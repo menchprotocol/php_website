@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.5',
+    'version' => '3.51',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -51,7 +51,7 @@ $config['pricing_model'] = array(
     'baseline_rate' => 0.10, //Applied to all transactions, covers Transaction Fee
     'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Bootcamp    'p1_rates' => array(0.00,8.00,15.00), //Per Week
 
-    'p1_rates' => array(0,8,18), //Per Week 8,15
+    'p1_rates' => array(-1,0,8,18), //Per Week 8,15
     'p1_rate_default' => 0,
 
     'p2_rates' => array(55), //Per Week 85

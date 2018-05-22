@@ -68,10 +68,10 @@ function echo_x($u, $x){
     //This is an image and can be set as Cover photo, or may have already been set so...
     if($x['x_id']==$u['u_cover_x_id']){
         //Already set as the cover photo:
-        $ui .= '<span class="badge badge-primary grey" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
-    } elseif($x['x_type']==4 && $x['x_status']>0 && 0){
+        $ui .= '<span class="badge badge-primary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
+    } elseif($x['x_type']==4 && $x['x_status']>0){
         //Could be set as the cover photo:
-        $ui .= '<a class="badge badge-primary" href="javascript:void(0);" onclick="x_cover_add('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
+        $ui .= '<a class="badge badge-primary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
     }
 
     //User can always remove a URL:
@@ -87,7 +87,7 @@ function echo_x($u, $x){
     //Is this a social URL?
     foreach($social_urls as $url=>$fa_icon){
         if(substr_count($x['x_url'],$url)>0){
-            $ui .= '<i class="'.$fa_icon.'" data-toggle="tooltip" data-placement="top" title="Recognized as a Social Media Profile"></i> ';
+            $ui .= '<i class="'.$fa_icon.'" data-toggle="tooltip" data-placement="top" title="Verified Social Media Profile"></i> ';
             break;
         }
     }
@@ -138,12 +138,13 @@ function echo_ru($ru){
 
     //Right content:
     echo '<span class="pull-right">';
-    echo '<a class="badge badge-primary stnd-btn" href="/console/'.$ru['ru_b_id'].( $ru['ru_r_id']>0 ? '/classes#class-'.$ru['ru_r_id'] : '' ).'"><i class="fas fa-chevron-right"></i></a>';
+    echo echo_status('ru', $ru['ru_status'], true, 'left').' &nbsp;';
+    echo '<a class="badge badge-primary" href="/console/'.$ru['ru_b_id'].( $ru['ru_r_id']>0 ? '/classes#class-'.$ru['ru_r_id'] : '' ).'"><i class="fas fa-chevron-right"></i></a>';
     echo '</span>';
 
     //Regular section:
-    echo $ru['c_outcome'].' ';
-    echo echo_status('ru', $ru['ru_status']);
+    $CI =& get_instance();
+    echo $CI->lang->line('level_'.$ru['b_is_parent'].'_icon').' '.$ru['c_outcome'];
 
     echo '</div>';
 }
@@ -153,12 +154,13 @@ function echo_ba($ba){
 
     //Right content:
     echo '<span class="pull-right">';
-    echo '<a class="badge badge-primary stnd-btn" href="/console/'.$ba['ba_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
+    echo echo_status('ba',$ba['ba_status'], true, 'left').' &nbsp;';
+    echo '<a class="badge badge-primary" href="/console/'.$ba['ba_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
     echo '</span>';
 
     //Regular section:
-    echo echo_status('ba',$ba['ba_status']);
-    echo ' @ '.$ba['c_outcome'];
+    $CI =& get_instance();
+    echo $CI->lang->line('level_'.$ba['b_is_parent'].'_icon').' '.$ba['c_outcome'];
 
     echo '</div>';
 }
@@ -1142,7 +1144,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     if($level==1){
 
         //Bootcamp Outcome:
-        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="fa '.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fa-cubes' : 'fa-cube-o' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
+        $ui .= '<span><b id="b_objective" style="font-size: 1.3em;"><i class="'.( isset($b['b_is_parent']) && $b['b_is_parent'] ? 'fas fa-cubes' : 'fas fa-cube' ).'" style="margin-right:3px;"></i><span class="c_outcome_'.$intent['c_id'].'">'.$intent['c_outcome'].'</span></b></span>';
 
     } elseif($level==2){
 
@@ -1154,7 +1156,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
             $ui .= '<a href="javascript:ms_toggle('.$intent['c_id'].');"><i id="handle-'.$intent['c_id'].'" class="fal fa-plus-square"></i></a> &nbsp;';
         }
 
-        $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent'] ? 'Week' : $CI->lang->line('level_2_name')).' #'.$intent['cr_outbound_rank'].'</span>';
+        $ui .= '<span class="inline-level-'.$level.'">'.( $b['b_is_parent'] ? $CI->lang->line('level_0_icon') : $CI->lang->line('level_2_icon')).' #'.$intent['cr_outbound_rank'].'</span>';
         $ui .= '</span>';
 
         $ui .= '<b id="title_'.$intent['cr_id'].'" class="cdr_crnt c_outcome_'.$intent['c_id'].'" completion-rule="'.@$intent['c_completion_rule'].'" parent-intent-id="" outbound-rank="'.$intent['cr_outbound_rank'].'" current-status="'.$intent['c_status'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</b> ';
@@ -1162,7 +1164,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
     } elseif ($level>=3){
 
         //Steps
-        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_name').' #'.$intent['cr_outbound_rank'] : '<b><i class="fas fa-pen-square"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
+        $ui .= '<span class="inline-level inline-level-'.$level.'">'.( $intent['c_status']==1 ? $CI->lang->line('level_'.( $b['b_is_parent'] ? '2' : '3' ).'_icon').' #'.$intent['cr_outbound_rank'] : '<b><i class="fas fa-pen-square"></i></b>' ).'</span><span id="title_'.$intent['cr_id'].'" class="c_outcome_'.$intent['c_id'].'" current-status="'.$intent['c_status'].'" outbound-rank="'.$intent['cr_outbound_rank'].'" c_complete_url_required="'.($intent['c_complete_url_required']=='t'?1:0).'"  c_complete_notes_required="'.($intent['c_complete_notes_required']=='t'?1:0).'">'.$intent['c_outcome'].'</span> ';
 
     }
 

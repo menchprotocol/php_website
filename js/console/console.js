@@ -121,11 +121,11 @@ function ms_toggle(c_id,new_state=-1){
     if(new_state){
         //open:
         $('#list-outbound-'+c_id).removeClass('hidden');
-        $('#handle-'+c_id).removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+        $('#handle-'+c_id).removeClass('fa-plus-square').addClass('fa-minus-square');
     } else {
         //Close:
         $('#list-outbound-'+c_id).addClass('hidden');
-        $('#handle-'+c_id).removeClass('fa-minus-square-o').addClass('fa-plus-square-o');
+        $('#handle-'+c_id).removeClass('fa-minus-square').addClass('fa-plus-square');
     }
 }
 

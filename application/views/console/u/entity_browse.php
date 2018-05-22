@@ -23,6 +23,33 @@ $(document).ready(function() {
     }
 });
 
+function x_cover_set(x_id){
+    //Set loader:
+    $('#x_'+x_id+' .add-cover').addClass('hidden').after('<span class="badge badge-primary grey cover-load"><i class="fas fa-spinner fa-spin"></i></span>');
+
+    //Add cover photo:
+    $.post("/urls/set_cover", { x_id: x_id } , function(data) {
+
+        if(data.status){
+
+            $('.current-cover').remove(); //Remove Current cover icon
+            $('#entity-box .profile-icon2').remove();
+            $('#x_'+x_id+' .cover-load').html(data.message);
+
+            //Tooltips:
+            $('[data-toggle="tooltip"]').tooltip();
+
+        } else {
+            //We had an error:
+            alert('Error: '+data.message);
+            $('#x_'+x_id+' .cover-load').remove();
+            $('#x_'+x_id+' .add-cover').removeClass('hidden')
+        }
+
+    });
+
+}
+
 
 function add_new_url(){
 

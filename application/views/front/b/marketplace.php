@@ -21,8 +21,8 @@
 
 echo '<h1>'.$title.'</h1>';
 echo '<p class="home_line_2">';
-    echo 'Land your dream full stack job by completing weekly Bootcamps from industry experts.';
-    echo '<br />New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
+    echo 'Land your dream job by completing weekly Bootcamps from industry experts.';
+    //echo '<br />New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
 echo '</p>';
 echo '<br />';
 

@@ -178,7 +178,7 @@ function c_sort(c_id,level){
             var pid = parseInt($(this).attr('intent-id'));
             var cr_id = parseInt($( this ).attr('data-link-id'));
             var status = parseInt($('.c_outcome_'+pid).attr('current-status'));
-            var prefix = ( level==2 ? '<?= ( $b['b_is_parent'] ? 'Week' : 'Task') ?>' : 'Step' ); //The default for all intents
+            var prefix = ( level==2 ? '<?= ( $b['b_is_parent'] ? $this->lang->line('level_0_icon') : $this->lang->line('level_2_icon')) ?>' : '<?= $this->lang->line('level_3_icon') ?>' ); //The default for all intents
 
             if(status>=1){
 
@@ -847,8 +847,8 @@ function add_item(group_id,prefix,current_value){
 
 
         <ul id="topnav" class="nav nav-pills nav-pills-primary">
-            <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' Bootcamps' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
             <li id="nav_prerequisites"><a href="#prerequisites"><i class="fas fa-shield-check"></i> Prerequisites</a></li>
+            <li id="nav_list" class="active"><a href="#list"><?= ($b['b_is_parent'] ? $this->lang->line('level_0_icon').' Bootcamps' : $this->lang->line('level_2_icon').' '.$this->lang->line('level_2_name').'s') ?></a></li>
             <li id="nav_skills"><a href="#skills"><i class="fas fa-trophy"></i> Skills</a></li>
         </ul>
 

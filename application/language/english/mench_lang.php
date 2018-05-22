@@ -8,7 +8,7 @@ $lang['level_1_icon'] = '<i class="fas fa-cubes"></i>';
 $lang['level_2_name'] = 'Task';
 $lang['level_2_icon'] = '<i class="fas fa-clipboard-check"></i>';
 $lang['level_3_name'] = 'Step';
-$lang['level_3_icon'] = '<i class="fal fa-circle"></i>';
+$lang['level_3_icon'] = '<i class="fal fa-clipboard-check"></i>';
 
 //Core Databae Objects:
 $lang['obj_b_name'] = 'Bootcamp';

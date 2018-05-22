@@ -13,6 +13,53 @@ class Urls extends CI_Controller
         $this->output->enable_profiler(FALSE);
     }
 
+    function set_cover(){
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['x_id']) || strlen($_POST['x_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Missing URL ID',
+            ));
+        }
+
+        //Validate URL:
+        $urls = $this->Db_model->x_fetch(array(
+            'x_id' => $_POST['x_id'],
+        ), array('u'));
+
+        if(count($urls)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid URL ID',
+            ));
+        }
+
+        //Set Cover photo:
+        $this->Db_model->u_update( $urls[0]['u_id'] , array(
+            'u_cover_x_id' => $_POST['x_id'],
+        ));
+
+        //Log Engagements:
+        $this->Db_model->e_create(array(
+            'e_inbound_c_id' => 69123, //Cover photo added
+            'e_inbound_u_id' => $udata['u_id'],
+            'e_outbound_u_id' => $urls[0]['u_id'],
+            'e_x_id' => $_POST['x_id'],
+        ));
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => '<i class="fas fa-file-check" data-toggle="tooltip" data-placement="left" title="File Set as Cover Photo"></i>',
+        ));
+    }
+
     function add_url() {
 
         //Auth user and check required variables:
