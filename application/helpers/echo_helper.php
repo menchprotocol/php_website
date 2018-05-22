@@ -39,6 +39,7 @@ function echo_action_plan_overview($b,$is_student=false){
     $ui .= '<div class="dash-label bold"><i class="fas fa-calendar"></i> '.$weeks.' Week'.( $is_student ? ' Bootcamp' : echo__s($weeks) ).'</div>';
 
 
+
     if($b['b_is_parent']) {
 
         //Show total tasks:
@@ -58,6 +59,11 @@ function echo_action_plan_overview($b,$is_student=false){
     $ui .= '<div class="dash-label bold"><i class="fas fa-alarm-clock"></i> '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 )*7)).' per Day</div>';
 
 
+
+    if($b['b_id']==354 && $is_student){
+        $ui .= ' <div class="dash-label bold"> <i class="fas fa-whistle"></i> '.( $weekly_coaching * $weeks ).' Hours Of Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
+    }
+
     //Messages:
     if($is_student){
         $ui .= ' <div class="dash-label bold"> <i class="fas fa-comment-dots"></i> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages communicate the best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
@@ -70,7 +76,6 @@ function echo_action_plan_overview($b,$is_student=false){
     if($b['b_id']==354 && $is_student){
         $ui .= ' <div class="dash-label bold"> <i class="fas fa-book"></i> 32 Referenced Sources <i class="fas fa-info-circle" data-toggle="tooltip" title="Messages reference 32 external sources (like books, videos, blog posts and podcasts)"></i></div>';
         $ui .= ' <div class="dash-label bold"> <i class="fas fa-user-graduate"></i> 17 Industry Experts <i class="fas fa-info-circle" data-toggle="tooltip" title="References are authored by 17 industry experts with first-hand experience to '.strtolower($b['c_outcome']).'"></i></div>';
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-whistle"></i> '.( $weekly_coaching * $weeks ).' Hours Of Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
     }
 
     return $ui;
