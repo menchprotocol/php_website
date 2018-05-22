@@ -47,14 +47,6 @@ class Bot extends CI_Controller {
 
                 $curl = curl_html($i['i_url'],true);
 
-                //Update Message:
-                $this->Db_model->i_update( $i['i_id'] , array(
-                    'i_http_code' => $curl['httpcode'],
-                    'i_domain' => $curl['last_domain'],
-                    'i_url_title' => $curl['page_title'],
-                    'i_detected_type' => $curl['x_type'],
-                ));
-
                 echo '<div style="color:'.( $curl['is_broken_link'] ? '#FF0000' : '#000000' ).';">#'.($key+1).' ['.$curl['httpcode'].'] id='.$i['i_id'].' <a href="'.$i['i_url'].'" target="_blank">'.( strlen($curl['page_title'])>0 ? $curl['page_title'] : $i['i_url'] ).'</a>'.( $curl['clean_url'] ? ' ====> <a href="'.$curl['clean_url'].'" target="_blank">'.$curl['clean_url'].'</a>' : '' ).' ['.$curl['last_domain'].']</div>';
 
             }

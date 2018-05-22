@@ -50,16 +50,6 @@ function update_account(){
 		u_password_current:$('#u_password_current').val(),
 		u_password_new:$('#u_password_new').val(),
 
-        //Social accounts:
-        u_fb_username:$('#u_fb_username').val(),
-		u_linkedin_username:$('#u_linkedin_username').val(),
-		u_github_username:$('#u_github_username').val(),
-		u_twitter_username:$('#u_twitter_username').val(),
-		u_youtube_username:$('#u_youtube_username').val(),
-		u_instagram_username:$('#u_instagram_username').val(),
-        u_skype_username:$('#u_skype_username').val(),
-        u_calendly_username:$('#u_calendly_username').val(),
-
 	} , function(data) {
 		//Update UI to confirm with user:
 		$('.update_u_results').html(data).hide().fadeIn();
@@ -85,7 +75,6 @@ function insert_gravatar(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
   <li id="nav_profile" class="active"><a href="#profile"><i class="fas fa-user-circle"></i> Profile</a></li>
-  <li id="nav_details"><a href="#details"><i class="fas fa-cog"></i> Details</a></li>
   <li id="nav_password" style="<?= ( in_array($entity['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304)) ? '' : 'display:none;' ) ?>"><a href="#password"><i class="fas fa-lock"></i> Password</a></li>
 </ul>
 
@@ -95,17 +84,15 @@ function insert_gravatar(){
 <div class="tab-content tab-space">
 
     <div class="tab-pane active" id="tabprofile">
-        
-        <div class="row" style="margin:0 0 0 0;">
-            <div class="col-xs-6" style="margin-top:0; padding-left:0; padding-right:5px;">
-                <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
-                <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
-            </div>
-            <div class="col-xs-6" style="margin-top:0; padding:0; display:<?= ( in_array($entity['u_inbound_u_id'], array(1280,1279,1307,1281,1308,1304,1282)) ? 'block' : 'none' ) ?>;">
-                <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
-                <input type="email" id="u_email" data-lpignore="true" value="<?= $entity['u_email'] ?>" class="form-control border">
-            </div>
-        </div>
+
+
+        <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
+        <input type="text" required id="u_full_name" style="max-width:260px;" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
+
+
+
+        <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+        <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_email'] ?>" class="form-control border">
 
 
 
@@ -113,15 +100,6 @@ function insert_gravatar(){
         <textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
         <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
 
-
-        
-        
-        
-        <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
-    </div>
-
-
-    <div class="tab-pane" id="tabdetails">
 
 
         <div class="title" style="margin-top:0px;"><h4><i class="fas fa-language"></i> Languages</h4></div>

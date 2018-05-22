@@ -250,15 +250,15 @@ function echo_min_from_sec($sec_int){
     return ( $min ? $min.'m' : '' ).( $sec ? ( $min ? ' ' : '' ).$sec.'s' : '' );
 }
 
-function echo_content_url($u_clean_url,$x_type){
+function echo_content_url($x_clean_url,$x_type){
     if($x_type==4){
-        return '<img src="'.$u_clean_url.'" style="max-width:100%" />';
+        return '<img src="'.$x_clean_url.'" style="max-width:100%" />';
     } elseif($x_type==3){
-        return '<audio controls><source src="'.$u_clean_url.'" type="audio/mpeg"></audio>';
+        return '<audio controls><source src="'.$x_clean_url.'" type="audio/mpeg"></audio>';
     } elseif($x_type==2){
-        return '<video width="100%" onclick="this.play()" controls><source src="'.$u_clean_url.'" type="video/mp4"></video>';
+        return '<video width="100%" onclick="this.play()" controls><source src="'.$x_clean_url.'" type="video/mp4"></video>';
     } elseif($x_type==5){
-        return '<a href="'.$u_clean_url.'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
+        return '<a href="'.$x_clean_url.'" class="btn btn-primary" target="_blank"><i class="fas fa-cloud-download"></i> Download File</a>';
     } else {
         return false;
     }
