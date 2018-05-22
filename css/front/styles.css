@@ -443,9 +443,6 @@ h5, .h5 {
     font-size: 18px !important;
     margin: 0 0 -2px 0 !important;
 }
-.btn.btn-primary, .navbar .navbar-nav > li > a.btn.btn-primary{
-    box-shadow: none !important;
-}
 .btn.btn-round, .navbar .navbar-nav > li > a.btn.btn-round{
     border-radius: 5px;
 }
