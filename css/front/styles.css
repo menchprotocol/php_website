@@ -503,6 +503,7 @@ h5, .h5 {
 .landing_page_url:hover{
     color:#3C4858;
 }
+.bold{ font-weight: bold !important;}
 .is_empty { color:#999 !important; }
 .active>.is_empty { color:#3C4858 !important; }
 .main-plain .container{ padding:30px; }

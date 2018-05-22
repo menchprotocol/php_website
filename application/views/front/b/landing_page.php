@@ -44,13 +44,13 @@ function toggleview(object_key){
 }
 
 $( document ).ready(function() {
-	$(".next_start_date").countdowntimer({
-		startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
+    $(".next_start_date").countdowntimer({
+        startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
         dateAndTime : "<?php echo date('Y/m/d' , echo_time(strtotime('next monday'),3,-1)); ?> 23:59:59",
-		size : "lg",
-		regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
-      		regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
-	});
+        size : "lg",
+        regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
+        regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
+    });
 });
 
 </script>
@@ -63,10 +63,10 @@ $( document ).ready(function() {
 	<div class="col-md-4">
         <div id="sidebar">
         	
-        	<h3 style="margin-top:0;"><i class="fas fa-flag"></i> Action Plan</h3>
+        	<h3 style="margin-top:0;"><i class="fas fa-binoculars"></i> Overview</h3>
 
-            <div style="list-style:none; margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
-                <?php echo_action_plan_overview($b) ?>
+            <div style="margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
+                <?php echo echo_action_plan_overview($b,1) ?>
                 <?php /*
                 <div><?= ( $price_range['min']>=0 && $price_range['max']>=0 ? 'Tuition Range: <b>'.echo_price($b,1).' - '.echo_price($b,2).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.( echo_price($b,( $price_range['min']>=0 ? 1 : 2 )) ).'</b>' ) ?></div>
                 */ ?>
@@ -100,7 +100,7 @@ $( document ).ready(function() {
 
 
 
-        <h3><i class="fas fa-clipboard-check"></i> <?= ( $b['b_is_parent'] ? 'Weekly Tasks' : 'Tasks' ) ?></h3>
+        <h3><i class="fas fa-flag"></i> Action Plan</h3>
         <div id="c_tasks_list">
             <?php
             if($b['b_is_parent']){
@@ -220,7 +220,6 @@ $( document ).ready(function() {
 
 <div style="padding:20px 0 30px; text-align:center;">
     <div class="lp_action"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
-    <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
 </div>
 
 

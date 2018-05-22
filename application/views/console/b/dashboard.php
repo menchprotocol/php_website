@@ -26,7 +26,7 @@ echo '<div id="marketplace_b_url" style="display:none;">'.$website['url'].$b['b_
 <div class="title"><h4><a href="/console/<?= $b['b_id'] ?>/actionplan" class="badge badge-primary badge-msg"><i class="fas fa-flag"></i> Action Plan <i class="fas fa-arrow-right"></i></a> <span id="hb_2272" class="help_button" intent-id="2272"></span></h4></div>
 <div class="help_body maxout" id="content_2272"></div>
 
-<?php echo_action_plan_overview($b) ?>
+<?php echo echo_action_plan_overview($b) ?>
 
 
 
