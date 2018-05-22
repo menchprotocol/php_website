@@ -6,7 +6,7 @@ $navigation = array(
     ),
     array(
         'my_url' => 'classmates',
-        'anchor' => '👥 Classmates',
+        'anchor' => '👥 Classroom',
     ),
 );
 ?>

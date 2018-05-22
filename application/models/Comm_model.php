@@ -496,7 +496,7 @@ class Comm_model extends CI_Model {
                                 'messenger_extensions' => true,
                             ),
                             array(
-                                'title' => '👥 Classmates',
+                                'title' => '👥 Classroom',
                                 'type' => 'web_url',
                                 'url' => 'https://mench.com/my/classmates',
                                 'webview_height_ratio' => 'tall',

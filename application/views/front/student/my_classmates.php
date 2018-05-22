@@ -34,5 +34,5 @@ window.extAsyncInit = function() {
 
 
 
-<h2>Classmates</h2>
+<h2>Classroom</h2>
 <div id="page_content"><div style="text-align:center;"><img src="/img/round_load.gif" class="loader" /></div></div>

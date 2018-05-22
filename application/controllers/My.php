@@ -391,7 +391,7 @@ class My extends CI_Controller {
     function classmates(){
         //Load apply page:
         $data = array(
-            'title' => '👥 Classmates',
+            'title' => '👥 Classroom',
         );
         $this->load->view('front/shared/p_header' , $data);
         $this->load->view('front/student/classmates_frame' , $data);
@@ -419,7 +419,7 @@ class My extends CI_Controller {
                 if($uadmission){
                     $focus_admission = $uadmission;
                 } else {
-                    die('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Classmates you need to <a href="https://mench.com/login?url='.urlencode($_SERVER['REQUEST_URI']).'" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
+                    die('<div class="alert alert-info" role="alert" style="line-height:110%;"><i class="fas fa-exclamation-triangle"></i> To access your Classroom you need to <a href="https://mench.com/login?url='.urlencode($_SERVER['REQUEST_URI']).'" style="font-weight:bold;">Login</a>. Use [Forgot Password] if you never logged in before.</div>');
                 }
 
             } else {
@@ -440,7 +440,7 @@ class My extends CI_Controller {
 
             } else {
 
-                //Show Classmates:
+                //Show Classroom:
                 $b_id = $focus_admission['b_id'];
                 $r_id = $focus_admission['r_id'];
 
@@ -614,7 +614,7 @@ class My extends CI_Controller {
                 echo '<td style="width:38px;">#</td>';
                 echo '<td style="width:43px;">Rank</td>';
             } else {
-                echo '<td style="width:50px;">Rank</td>';
+                echo '<td style="width:50px;">&nbsp;</td>';
             }
 
             //Fixed columns for both Instructors/Students:

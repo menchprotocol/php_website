@@ -97,7 +97,7 @@ class Bot extends CI_Controller {
                                 'messenger_extensions' => true,
                             ),
                             array(
-                                'title' => '👥 Classmates',
+                                'title' => '👥 Classroom',
                                 'type' => 'web_url',
                                 'url' => 'https://mench.com/my/classmates',
                                 'webview_height_ratio' => 'tall',
