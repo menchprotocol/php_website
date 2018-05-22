@@ -1642,7 +1642,7 @@ class Api_v1 extends CI_Controller {
             'b_outbound_c_id' => $intent['c_id'],
             'b_prerequisites' => ( intval($_POST['b_is_parent']) ? null : json_encode($default_class_prerequisites) ),
             'b_support_email' => ( intval($_POST['b_is_parent']) ? null : $udata['u_email'] ),
-            'b_calendly_url' => ( strlen($udata['u_calendly_username'])>0 && !intval($_POST['b_is_parent']) ? 'https://calendly.com/'.$udata['u_calendly_username'] : null ),
+            'b_calendly_url' => null, //Starts as not set
             'b_is_parent' => intval($_POST['b_is_parent']),
         ));
 
