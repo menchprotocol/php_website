@@ -115,7 +115,7 @@ echo '</ol>';
 /* ****************************************
  * Class Not Started / Ended Notification
  *************************************** */
-$class_has_started = ($class['r__class_start_time']<=time());
+$class_has_started = ($class['r__class_start_time']<=time()) || (1); //Always treat as started for now
 $class_has_ended = ($class['r__class_end_time']<=time());
 if(!$class_has_started){
     //Class has not yet started:
