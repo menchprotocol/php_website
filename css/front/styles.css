@@ -446,6 +446,9 @@ h5, .h5 {
 .btn.btn-primary, .navbar .navbar-nav > li > a.btn.btn-primary{
     box-shadow: none !important;
 }
+.btn.btn-round, .navbar .navbar-nav > li > a.btn.btn-round{
+    border-radius: 5px;
+}
 .ic-lrg, .public-profiles>a{
 	color:#3C4858 !important;
 	font-size:24px !important;
