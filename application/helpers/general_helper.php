@@ -614,7 +614,7 @@ function prep_prerequisites($b){
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest <i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']).' in '.$week_count.' Week'.echo__s($week_count).'</b> anytime that works best for you. This is an average of '.echo_hours($b['c__estimated_hours']/($week_count*7)) .' per day.');
+        array_unshift($pre_req_array, 'Commitment to invest <i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']/($week_count)).'/Week</b> during this '.$week_count.' week Bootcamp');
     }
     return $pre_req_array;
 }
