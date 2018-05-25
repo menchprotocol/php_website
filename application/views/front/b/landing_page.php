@@ -4,7 +4,7 @@ $class_settings = $this->config->item('class_settings');
 $week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
 $child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
-$start_date_unix = strtotime('monday June 11 2018'); //next monday
+$start_date_unix = strtotime(( $b['b_id']==354 ? 'monday June 11 2018' : 'next monday' )); //
 
 if($b['b_is_parent'] && count($b['c__child_intents'])>0){
     //Replace $b with the new aggregated $b
