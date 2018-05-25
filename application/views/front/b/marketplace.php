@@ -54,7 +54,7 @@ if(count($bs)>0){
 
         echo '<h6 class="category text-muted">';
 
-        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fas fa-clock"></i> '.echo_hours($b['c__estimated_hours'],false).' IN '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).'</span>';
+        echo '<span class="line_1" data-toggle="tooltip" data-placement="top" title="Complete '.( $b['b_is_parent'] ? $b['c__child_child_count'] : $b['c__child_count'] ).' tasks totalling '.echo_hours($b['c__estimated_hours'],false).' anytime during this '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' Bootcamp"><i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week</span>';
 
         echo '</h6>';
 

@@ -4,6 +4,7 @@ $class_settings = $this->config->item('class_settings');
 $week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
 $child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
+$start_date_unix = strtotime('monday June 11 2018'); //next monday
 
 if($b['b_is_parent'] && count($b['c__child_intents'])>0){
     //Replace $b with the new aggregated $b
@@ -46,7 +47,7 @@ function toggleview(object_key){
 $( document ).ready(function() {
     $(".next_start_date").countdowntimer({
         startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , echo_time(strtotime('next monday'),3,-1)); ?> 23:59:59",
+        dateAndTime : "<?php echo date('Y/m/d' , echo_time($start_date_unix,3,-1)); ?> 23:59:59",
         size : "lg",
         regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
         regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -63,10 +64,10 @@ $( document ).ready(function() {
 	<div class="col-md-4">
         <div id="sidebar">
         	
-        	<h3 style="margin-top:0;"><i class="fas fa-binoculars"></i> Overview</h3>
+        	<h3 style="margin-top:0;">Bootcamp Overview</h3>
 
             <div style="margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
-                <?php echo echo_action_plan_overview($b,1) ?>
+                <?php echo echo_action_plan_overview($b,1, $start_date_unix) ?>
                 <?php /*
                 <div><?= ( $price_range['min']>=0 && $price_range['max']>=0 ? 'Tuition Range: <b>'.echo_price($b,1).' - '.echo_price($b,2).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.( echo_price($b,( $price_range['min']>=0 ? 1 : 2 )) ).'</b>' ) ?></div>
                 */ ?>

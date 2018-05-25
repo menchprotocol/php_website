@@ -87,18 +87,19 @@ function insert_gravatar(){
 
 
         <div class="title" style="margin-bottom:0; padding-bottom:0;"><h4><i class="fas fa-id-card"></i> Full Name</h4></div>
-        <input type="text" required id="u_full_name" style="max-width:260px;" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
+        <input type="text" required id="u_full_name" value="<?= $entity['u_full_name'] ?>" data-lpignore="true" placeholder="Full Name" class="form-control border">
 
 
-
-        <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
-        <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_email'] ?>" class="form-control border">
 
 
 
         <div class="title" style="margin-top:20px;"><h4><i class="fas fa-comment-dots"></i> Summary</h4></div>
         <textarea class="form-control text-edit border msg" id="u_bio" style="height:100px;" onkeyup="changeBio()"><?= substr(trim(strip_tags($entity['u_bio'])),0,$message_max); ?></textarea>
         <div style="margin:0 0 10px 0; font-size:0.8em;"><span id="charNum">0</span>/<?= $message_max ?></div>
+
+
+        <div class="title" style="margin-top:5px;"><h4><i class="fas fa-envelope"></i> Primary Email <i class="fas fa-eye-slash" data-toggle="tooltip" title="Will NOT be published publicly"></i></h4></div>
+        <input type="email" id="u_email" data-lpignore="true" style="max-width:260px;" value="<?= $entity['u_email'] ?>" class="form-control border">
 
 
 

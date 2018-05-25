@@ -10,7 +10,7 @@ function echo_next_u($page,$limit,$u__outbound_count){
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="entity_load_more('.$page.')">';
 
     //Right content:
-    echo '<span class="pull-right"><span class="badge badge-primary stnd-btn"><i class="fas fa-plus"></i></span></span>';
+    echo '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-plus"></i></span></span>';
 
     //Regular section:
     $max_entities = (($page+1)*$limit);
@@ -28,7 +28,7 @@ function echo_social_profiles($social_profiles){
     return $ui;
 }
 
-function echo_action_plan_overview($b,$is_student=false){
+function echo_action_plan_overview($b,$is_student=false,$custom_start_date=null){
 
     $CI =& get_instance();
     $ui = null;
@@ -36,46 +36,46 @@ function echo_action_plan_overview($b,$is_student=false){
     $weekly_coaching = 2;
 
     //Intent
-    $ui .= '<div class="dash-label bold"><i class="fas fa-calendar"></i> '.$weeks.' Week'.( $is_student ? ' Bootcamp' : echo__s($weeks) ).'</div>';
+    $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$weeks.' Week'.echo__s($weeks).' @ '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
+
+    if($custom_start_date){
+        $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-calendar"></i></span> '.echo_time($custom_start_date,5).' - '.echo_time($custom_start_date,5, (($weeks*7*24*3600)-(4*3600))).'</div>';
+    }
 
 
 
     if($b['b_is_parent']) {
 
         //Show total tasks:
-        $ui .= '<div class="dash-label bold"><i class="fas fa-clipboard-check"></i> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . ' = '.echo_hours($b['c__estimated_hours'],false).'</div>';
+        //$ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
 
     } else {
 
         //Total Tasks for weekly Bootcamps:
-        $ui .= '<div class="dash-label bold"><i class="fas fa-clipboard-check"></i> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .' = '.echo_hours($b['c__estimated_hours'],false).'</div>';
+        //$ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
         if($b['c__child_child_count']>0){
-            $ui .= '<div class="dash-label bold"><i class="fal fa-clipboard-check"></i> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
+            //$ui .= '<div class="dash-label"><span class="icon-left"><i class="fal fa-clipboard-check"></i></span> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
         }
     }
 
 
-    //Minutes/Day
-    $ui .= '<div class="dash-label bold"><i class="fas fa-alarm-clock"></i> '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 )*7)).' per Day</div>';
-
-
 
     if($b['b_id']==354 && $is_student){
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-whistle"></i> '.( $weekly_coaching * $weeks ).' Hours Of Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
+        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> '.$weekly_coaching.' Hours Of Coaching per Week <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
     }
 
     //Messages:
     if($is_student){
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-comment-dots"></i> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages communicate the best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
+        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> '.$b['c__message_tree_count'].' Insight'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages communicate the best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
     } else {
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-comment-dots"></i> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).'</div>';
+        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-comment-dots"></i></span> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).'</div>';
     }
 
 
 
     if($b['b_id']==354 && $is_student){
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-book"></i> 32 Referenced Sources <i class="fas fa-info-circle" data-toggle="tooltip" title="Messages reference 32 external sources (like books, videos, blog posts and podcasts)"></i></div>';
-        $ui .= ' <div class="dash-label bold"> <i class="fas fa-user-graduate"></i> 17 Industry Experts <i class="fas fa-info-circle" data-toggle="tooltip" title="References are authored by 17 industry experts with first-hand experience to '.strtolower($b['c_outcome']).'"></i></div>';
+        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> 32 Referenced Sources <i class="fas fa-info-circle" data-toggle="tooltip" title="Messages reference 32 external sources (like books, videos, blog posts and podcasts)"></i></div>';
+        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> 17 Industry Experts <i class="fas fa-info-circle" data-toggle="tooltip" title="References are authored by 17 industry experts with first-hand experience to '.strtolower($b['c_outcome']).'"></i></div>';
     }
 
     return $ui;
@@ -145,12 +145,12 @@ function echo_x($u, $x){
 function echo_u($u){
 
     $ui = null;
-    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" class="list-group-item">';
+    $ui .= '<div id="u_'.$u['u_id'].'" entity-id="'.$u['u_id'].'" class="list-group-item u-item">';
 
     //Right content:
     $ui .= '<span class="pull-right">';
     $ui .= echo_score($u['u_e_score']);
-    $ui .= '<a class="badge badge-primary stnd-btn" href="/entities/'.$u['u_id'].'">'.( $u['u__outbound_count']>0 ? echo_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
+    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'">'.( isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? echo_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
     $ui .= '</span>';
 
     //Regular section:

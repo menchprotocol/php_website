@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.53',
+    'version' => '3.54',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -569,7 +569,10 @@ $config['engagement_references'] = array(
         'name' => 'Facebook Page',
         'object_code' => 'fp',
     ),
-
+    'e_e_id' => array(
+        'name' => 'Referenced Engagement',
+        'object_code' => 'e',
+    ),
 );
 
 

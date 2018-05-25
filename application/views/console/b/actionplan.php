@@ -107,45 +107,6 @@ $(document).ready(function() {
 	//Load Sortable:
 	load_intent_sort($("#pid").val(),"2");
 
-
-    /*
-    $( "#addintent" ).on('autocomplete:selected', function(event, suggestion, dataset) {
-
-        link_lintent(suggestion.c_id);
-
-    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
-        source: function(q, cb) {
-            algolia_b_index.search(q, { hitsPerPage: 7 }, function(error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-
-                cb(content.hits, content);
-            });
-        },
-        displayKey: function(suggestion) { return "" },
-        templates: {
-            suggestion: function(suggestion) {
-                return '<span class="suggest-prefix"><i class="fas fa-link"></i> Link to</span> '+ suggestion._highlightResult.c_outcome.value;
-            },
-            header: function(data) {
-                if(!data.isEmpty){
-                    return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fas fa-plus"></i> Create</span> "'+data.query+'"'+'</a>';
-                }
-            },
-            empty: function(data) {
-                return '<a href="javascript:new_intent(\''+data.query+'\')" class="add_intent"><span class="suggest-prefix"><i class="fas fa-plus"></i> Create</span> "'+data.query+'"'+'</a>';
-            },
-        }
-    }]).keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
-            new_intent($( "#addintent" ).val());
-            return true;
-        }
-    });
-    */
 });
 
 

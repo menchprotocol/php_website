@@ -17,6 +17,7 @@ $engagement_filters = array(
     'e_r_id' => 'Class ID',
     'e_outbound_c_id' => 'Intent ID',
     'e_fp_id' => 'FB Page ID',
+    'e_e_id' => 'Referenced Engagement ID',
 );
 
 $match_columns = array();
@@ -60,7 +61,7 @@ foreach($engagement_filters as $key=>$value){
     echo '<td><div style="padding-right:5px;">';
     if($key=='e_inbound_c_id'){ //We have a list to show:
 
-        //Fetch all community engagements from intent #6653
+        //Fetch all engagements from intent #6653
         $all_engs = $this->Db_model->cr_outbound_fetch(array(
             'cr.cr_inbound_c_id' => 6653,
             'cr.cr_status >' => 0,

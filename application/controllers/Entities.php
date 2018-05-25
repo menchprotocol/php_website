@@ -118,6 +118,94 @@ class Entities extends CI_Controller {
     }
 
 
+    function link_entities(){
+        //Responsible to link inbound/outbound entities to each other via a JS function on entity_browse.php
+
+
+        //Auth user and check required variables:
+        $udata = auth(array(1308,1280));
+
+        if(!$udata){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Session. Refresh the page and try again.',
+            ));
+        } elseif(!isset($_POST['u_id']) || intval($_POST['u_id'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid Parent Entity',
+            ));
+        } elseif(!isset($_POST['new_u_id']) || !isset($_POST['new_u_full_name']) || (intval($_POST['new_u_id'])<1 && strlen($_POST['new_u_full_name'])<1)){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Either New Entity ID or Name is required',
+            ));
+        }
+
+        //Validate parent entity:
+        $current_us = $this->Db_model->u_fetch(array(
+            'u_id' => $_POST['u_id'],
+        ));
+        if(count($current_us)<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid current entity ID',
+            ));
+        }
+
+
+        //Do we need to add a new entity?
+        if(intval($_POST['new_u_id'])>1){
+
+            //We already have an entity that we just want to link:
+            $new_us = $this->Db_model->u_fetch(array(
+                'u_id' => $_POST['new_u_id'],
+            ));
+
+            if(count($new_us)<1){
+                return echo_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid new linked entity ID',
+                ));
+            } else {
+                $new_u = $new_us[0];
+            }
+
+        } else {
+
+            //We should add a new entity:
+            $new_u = $this->Db_model->u_create(array(
+                'u_full_name' 		=> trim($_POST['new_u_full_name']),
+                'u_inbound_u_id'    => 1282, //Authors
+            ));
+
+        }
+
+        //Link to new OR existing entity:
+        $new_link = $this->Db_model->e_create(array(
+            'e_inbound_c_id' => 6966, //Link
+            'e_inbound_u_id'  => $current_us[0]['u_id'],
+            'e_outbound_u_id' => $new_u['u_id'],
+        ));
+
+
+        //Create a link to track this new creation:
+        $this->Db_model->e_create(array(
+            'e_inbound_c_id' => 6978, //Link Added
+            'e_inbound_u_id'  => $udata['u_id'], //The person who added this link
+            'e_e_id' => $new_link['e_id'],
+        ));
+
+
+        //Return newly added/linked entity:
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Success',
+            'new_u' => echo_u($new_u),
+        ));
+    }
+
+
     function entity_save_edit(){
 
         //Auth user and check required variables:

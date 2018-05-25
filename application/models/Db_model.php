@@ -1651,7 +1651,9 @@ WHERE ru.ru_status >= 4
 
     }
 	
-	function e_fetch($match_columns=array(),$limit=100,$join_objects=array(),$replace_key=null){
+	function e_fetch($match_columns=array(), $limit=100, $join_objects=array(), $replace_key=null, $order_columns=array(
+        'e.e_id' => 'DESC',
+    )){
 	    $this->db->select('*');
 	    $this->db->from('v5_engagements e');
         $this->db->join('v5_intents c', 'c.c_id=e.e_inbound_c_id');
@@ -1672,7 +1674,11 @@ WHERE ru.ru_status >= 4
 	            $this->db->where($key);
 	        }
 	    }
-	    $this->db->order_by('e.e_id','DESC');
+
+        foreach($order_columns as $key=>$value){
+            $this->db->order_by($key,$value);
+        }
+
 	    if($limit>0){
 	        $this->db->limit($limit);
 	    }

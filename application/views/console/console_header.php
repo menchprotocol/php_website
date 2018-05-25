@@ -140,9 +140,9 @@ $uri_segment_2 = $this->uri->segment(2);
 
                 } elseif($uri_segment_1=='entities' && $udata['u_inbound_u_id']==1281){
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-at"></i><p>Community</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1278 ? 'active' : '' ).'"><a href="/entities/1278"><i class="fas fa-at"></i><p>People</p></a></li>';
 
-                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-at"></i><p>Expert Content</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==1326 ? 'active' : '' ).'"><a href="/entities/1326"><i class="fas fa-at"></i><p>Content</p></a></li>';
 
                     echo '<li class="li-sep '.( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'active' : '' ).'"><a href="/entities/'.$udata['u_id'].'"><i class="fas fa-at"></i><p>'.$udata['u_full_name'].'</p></a></li>';
 

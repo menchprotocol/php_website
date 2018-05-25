@@ -517,6 +517,19 @@ h5, .h5 {
 .container-fluid .alert { margin-top:10px; }
 .tab-space{padding-top:0;}
 .list-group-item>.badge {float:none;}
+.suggestion{
+    font-size:1.4em;
+    display: block;
+    padding:2px 4px;
+}
+.icon-left{
+    width:24px;
+    text-align: center;
+    display: inline-block;
+}
+.suggestion:hover {
+    background-color: #fedd16;
+}
 
 .grey-input {
     padding: 5px 10px !important;
@@ -1866,8 +1879,7 @@ margin:5px 0;
     color: #888;
 }
 .dash-label{
-    text-transform: uppercase;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .badge {
