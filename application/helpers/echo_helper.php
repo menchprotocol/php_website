@@ -61,7 +61,7 @@ function echo_action_plan_overview($b,$is_student=false,$custom_start_date=null)
 
 
     if($b['b_id']==354 && $is_student){
-        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> '.$weekly_coaching.' Hours Of Coaching per Week <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
+        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> '.$weekly_coaching.' Hours/Week Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
     }
 
     //Messages:
