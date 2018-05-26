@@ -86,7 +86,7 @@ a.badge-primary:hover {
 #u_title {font-size: 1.3em;font-family: "Roboto Slab", "Times New Roman", serif;}
 .obj-id{ color:#3C4858; font-size:1.0em;}
 #b_objective .fas {padding-right:3px;}
-.stnd-btn {text-align:right; min-width:66px !important;}
+.stnd-btn {text-align:right !important; min-width:66px !important;}
 
 .breadcrumb a { font-weight:bold; }
 .scheduler-iframe {

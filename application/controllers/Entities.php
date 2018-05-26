@@ -26,7 +26,7 @@ class Entities extends CI_Controller {
         $udata = $this->session->userdata('user');
         if(!($udata['u_id']==$inbound_u_id || $udata['u_inbound_u_id']==1281)){
             //This is not an admin, so they cannot edit this:
-            redirect_message('/console','<div class="alert alert-danger" role="alert">You can only view <a href="/entities/'.$udata['u_id'].'">your own entity</a>.</div>');
+            redirect_message(( isset($udata['u_id']) && $udata['u_id']>0 ? '/console' : '/entities/'.$inbound_u_id ),'<div class="alert alert-danger" role="alert">You can only view <a href="/entities/'.$udata['u_id'].'">your own entity</a>.</div>');
         }
 
         $entities_per_page = 100;

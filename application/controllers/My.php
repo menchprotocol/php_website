@@ -826,6 +826,35 @@ class My extends CI_Controller {
      * User Functions
      ****************************** */
 
+    function quiz($u_id){
+
+        if(isset($_GET['u_email'])){
+            //Fetch this user:
+            $us = $this->Db_model->u_fetch(array(
+                'u_id' => $u_id,
+                'u_email' => $_GET['u_email'],
+            ));
+            if(count($us)<1){
+                redirect_message('/','<div class="alert alert-danger" role="alert">User not found.</div>');
+            }
+        } else {
+            redirect_message('/','<div class="alert alert-danger" role="alert">Missing u_email variable.</div>');
+        }
+
+        $this->load->view('front/shared/p_header' , array(
+            'title' => $us[0]['u_full_name'].' Technical Quiz @ Mench',
+        ));
+        $this->load->view('front/student/technical_quiz' , array(
+            'u' => $us[0],
+            'attempts' => $this->Db_model->e_fetch(array(
+                'e_inbound_c_id' => 6997, //Technical Quiz Attempts
+                'e_inbound_u_id' => $us[0]['u_id'], //This student
+            ), 1000),
+        ));
+        $this->load->view('front/shared/p_footer');
+    }
+
+
     function reset_pass(){
         $data = array(
             'title' => 'Password Reset',

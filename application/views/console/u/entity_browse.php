@@ -335,10 +335,10 @@ $outbound_us = $this->Db_model->e_fetch(array(
 
 $show_tabs = array(
     'list'       => ( count($child_entities)>0 || $entity['u_id']==1326 ? '<li id="nav_list"><a href="#list"><i class="fas fa-at"></i> List</a></li>' : false ),
+    'references' => ( !in_array($entity['u_inbound_u_id'],array(0,1278)) ? '<li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>' : false ),
     'coach'      => ( count($b_team_member)>0 ? '<li id="nav_coach"><a href="#coach"><i class="fas fa-whistle"></i> Coach</a></li>' : false ),
     'student'    => ( count($admissions)>0 ? '<li id="nav_student"><a href="#student"><i class="fas fa-graduation-cap"></i> Student</a></li>' : false ),
     'payments'   => ( count($payments)>0 ? '<li id="nav_payments"><a href="#payments"><i class="fab fa-paypal"></i> Payments</a></li>' : false ),
-    'references' => ( !in_array($entity['u_inbound_u_id'],array(0,1278)) ? '<li id="nav_references"><a href="#references"><i class="fas fa-link"></i> References</a></li>' : false ),
     'authors'    => ( $entity['u_inbound_u_id']==1326 ? '<li id="nav_authors"><a href="#authors"><i class="fas fa-at"></i> Authors</a></li>' : false ),
     'content'    => ( !in_array($entity['u_inbound_u_id'],array(0,1278,1326)) ? '<li id="nav_content"><a href="#content"><i class="fas fa-at"></i> Content</a></li>' : false ),
     'intents'    => ( $entity['u_inbound_u_id']==1326 ? '<li id="nav_intents"><a href="#intents"><i class="fas fa-hashtag"></i> Intents</a></li>' : false ),
@@ -363,254 +363,241 @@ $show_tabs = array(
 
     <?php
 
-    if($show_tabs['list']){
+    foreach ($show_tabs as $item=>$is_available){
 
-        echo '<div class="tab-pane" id="tablist">';
-
-        echo '<div id="list-entities" class="list-group maxout grey-list">';
-        foreach($child_entities as $u){
-            echo echo_u($u);
+        if(!$is_available){
+            continue;
         }
 
-        if($entity['u__outbound_count']>count($child_entities)){
-            echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
-        }
+        if($item=='list'){
 
-        if($entity['u_id']==1326){
-            ?>
-            <script>
+            echo '<div class="tab-pane" id="tablist">';
 
-                function add_source_by_url(){
+            echo '<div id="list-entities" class="list-group maxout grey-list">';
+            foreach($child_entities as $u){
+                echo echo_u($u);
+            }
 
-                    if($('#url_for_source').val().length<1){
-                        //Empty field!
-                        alert('Error: Input field is empty. Paste a URL and then click "Add"');
-                        $('#url_for_source').focus();
-                        return false;
-                    }
+            if($entity['u__outbound_count']>count($child_entities)){
+                echo_next_u(1, $entities_per_page, $entity['u__outbound_count']);
+            }
 
-                    //Let's try adding:
-                    $('#url_for_source').prop('disabled', true); //Empty input
-                    $('#add_source_url_btn').attr('href','javascript:void(0);').html('<i class="fas fa-spinner fa-spin"></i>');
+            if($entity['u_id']==1326){
+                ?>
+                <script>
 
-                    $.post("/urls/add_url", {
+                    function add_source_by_url(){
 
-                        x_outbound_u_id: <?= $entity['u_id'] ?>, //We will create a new entity for this URL
-                        x_url: $('#url_for_source').val(),
-
-                    } , function(data) {
-
-                        //Release lock:
-                        $('#url_for_source').prop('disabled', false);
-                        $('#add_source_url_btn').attr('href','javascript:add_source_by_url();').html('ADD');
-
-                        if(data.status){
-
-                            //Empty input to make it ready for next URL:
-                            $('#url_for_source').val('');
-
-                            //Add new object to list:
-                            add_to_list('list-entities', '.u-item', data.new_u);
-
-                            //Tooltips:
-                            $('[data-toggle="tooltip"]').tooltip();
-
-                        } else {
-                            //We had an error:
-                            alert('Error: '+data.message);
-                        }
-
-                    });
-
-                }
-
-                //Watch for Ctrl+Enter add
-                $(document).ready(function() {
-                    $('#url_for_source').keydown(function(event){
-                        if((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
-                            add_source_by_url();
-                            event.preventDefault();
+                        if($('#url_for_source').val().length<1){
+                            //Empty field!
+                            alert('Error: Input field is empty. Paste a URL and then click "Add"');
+                            $('#url_for_source').focus();
                             return false;
                         }
+
+                        //Let's try adding:
+                        $('#url_for_source').prop('disabled', true); //Empty input
+                        $('#add_source_url_btn').attr('href','javascript:void(0);').html('<i class="fas fa-spinner fa-spin"></i>');
+
+                        $.post("/urls/add_url", {
+
+                            x_outbound_u_id: <?= $entity['u_id'] ?>, //We will create a new entity for this URL
+                            x_url: $('#url_for_source').val(),
+
+                        } , function(data) {
+
+                            //Release lock:
+                            $('#url_for_source').prop('disabled', false);
+                            $('#add_source_url_btn').attr('href','javascript:add_source_by_url();').html('ADD');
+
+                            if(data.status){
+
+                                //Empty input to make it ready for next URL:
+                                $('#url_for_source').val('');
+
+                                //Add new object to list:
+                                add_to_list('list-entities', '.u-item', data.new_u);
+
+                                //Tooltips:
+                                $('[data-toggle="tooltip"]').tooltip();
+
+                            } else {
+                                //We had an error:
+                                alert('Error: '+data.message);
+                            }
+
+                        });
+
+                    }
+
+                    //Watch for Ctrl+Enter add
+                    $(document).ready(function() {
+                        $('#url_for_source').keydown(function(event){
+                            if((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
+                                add_source_by_url();
+                                event.preventDefault();
+                                return false;
+                            }
+                        });
                     });
-                });
 
-            </script>
-            <div class="list-group-item list_input grey-input">
-                <div class="input-group">
-                    <div class="form-group is-empty"><input type="url" class="form-control" id="url_for_source" placeholder="Paste URL here..."></div>
-                    <span class="input-group-addon">
-                        <a class="badge badge-primary" id="add_source_url_btn" href="javascript:add_source_by_url();">ADD</a>
-                    </span>
+                </script>
+                <div class="list-group-item list_input grey-input">
+                    <div class="input-group">
+                        <div class="form-group is-empty"><input type="url" class="form-control" id="url_for_source" placeholder="Paste URL here..."></div>
+                        <span class="input-group-addon">
+                            <a class="badge badge-primary" id="add_source_url_btn" href="javascript:add_source_by_url();">ADD</a>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <?php
-        } elseif($entity['u_id']==1278 && 0){
-            ?>
-            <script>
-                function add_person_by_email(){
+                <?php
+            } elseif($entity['u_id']==1278 && 0){
+                ?>
+                <script>
+                    function add_person_by_email(){
 
-                }
-            </script>
-            <div class="list-group-item list_input grey-input">
-                <div class="input-group">
-                    <div class="form-group is-empty"><input type="email" class="form-control" id="email_for_user" placeholder="newuser@email.com"></div>
-                    <span class="input-group-addon">
-                        <a class="badge badge-primary" onclick="add_person()" href="javascript:void(0);">ADD</a>
-                    </span>
+                    }
+                </script>
+                <div class="list-group-item list_input grey-input">
+                    <div class="input-group">
+                        <div class="form-group is-empty"><input type="email" class="form-control" id="email_for_user" placeholder="newuser@email.com"></div>
+                        <span class="input-group-addon">
+                            <a class="badge badge-primary" onclick="add_person()" href="javascript:void(0);">ADD</a>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <?php
-        }
-
-        echo '</div>';
-        echo '</div>';
-
-    }
-
-    if($show_tabs['coach']){
-
-        echo '<div class="tab-pane" id="tabcoach">';
-        echo '<div id="list-coach" class="list-group maxout grey-list">';
-        foreach($b_team_member as $ba){
-            echo_ba($ba);
-        }
-        echo '</div>';
-        echo '</div>';
-
-    }
-
-    if($show_tabs['student']){
-
-        echo '<div class="tab-pane" id="tabstudent">';
-        echo '<div id="list-student" class="list-group maxout grey-list">';
-        foreach($admissions as $ru){
-            echo_ru($ru);
-        }
-        echo '</div>';
-        echo '</div>';
-
-    }
-
-    if($show_tabs['payments']){
-
-        echo '<div class="tab-pane" id="tabpayments">';
-        echo '<div id="list-payments" class="list-group maxout grey-list">';
-        foreach($payments as $t){
-            echo_t($t);
-        }
-        echo '</div>';
-        echo '</div>';
-
-    }
-
-
-    if($show_tabs['references']){
-
-        echo '<div class="tab-pane" id="tabreferences">'; //Tab content starts
-
-        //Fetch all the URLs for this Entity:
-        $urls = $this->Db_model->x_fetch(array(
-            'x_status >' => 0,
-            'x_outbound_u_id' => $entity['u_id'],
-        ), array(), array(
-            'x_id' => 'ASC'
-        ));
-
-        //URL List:
-        echo '<div id="list-urls" class="list-group maxout grey-list">';
-
-        if(count($urls)>0){
-            foreach($urls as $x){
-                echo echo_x($entity,$x);
+                <?php
             }
-        } else {
-            echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No references added yet. Add your first Reference by pasting a URL below.</div>';
-        }
-
-
-        //Add new Reference:
-        echo '<div class="list-group-item list_input grey-input">
-                <div class="input-group">
-                    <div class="form-group is-empty"><input type="url" class="form-control" id="add_url_input" placeholder="Paste URL here..."></div>
-                    <span class="input-group-addon">
-                        <a class="badge badge-primary" id="add_url_btn" href="javascript:add_new_url();">ADD</a>
-                    </span>
-                </div>
-            </div>';
-
-        echo '</div>';
-
-
-        echo '</div>'; //Tab content ends
-    }
-
-    if($show_tabs['authors']){
-
-        echo '<div class="tab-pane" id="tabauthors">';
-            echo '<div id="list-authors" class="list-group maxout grey-list">';
-
-                foreach($inbound_us as $e){
-                    //Fetch the U:
-                    $us = $this->Db_model->u_fetch(array(
-                        'u_id' => $e['e_outbound_u_id'],
-                    ), array('count_child'));
-                    echo echo_u($us[0]);
-                }
-
-                //Input to add new authors:
-                echo '<div class="list-group-item list_input grey-input">
-                        <div class="input-group">
-                            <div class="form-group is-empty"><input type="text" class="form-control" id="add_authors_input" placeholder="Add Author..."></div>
-                            <span class="input-group-addon">
-                                <a class="badge badge-primary" id="add_authors_btn" href="javascript:add_u_link(0, $(\'#add_authors_input\').val(), \'inbound\');">ADD</a>
-                            </span>
-                        </div>
-                    </div>';
 
             echo '</div>';
-        echo '</div>';
+            echo '</div>';
 
-    }
+        } elseif($item=='references'){
+
+            echo '<div class="tab-pane" id="tabreferences">'; //Tab content starts
+
+            //Fetch all the URLs for this Entity:
+            $urls = $this->Db_model->x_fetch(array(
+                'x_status >' => 0,
+                'x_outbound_u_id' => $entity['u_id'],
+            ), array(), array(
+                'x_id' => 'ASC'
+            ));
+
+            //URL List:
+            echo '<div id="list-urls" class="list-group maxout grey-list">';
+
+            if(count($urls)>0){
+                foreach($urls as $x){
+                    echo echo_x($entity,$x);
+                }
+            } else {
+                echo '<div class="list-group-item alert alert-info no-b-div-1" style="padding: 15px 10px;"><i class="fas fa-exclamation-triangle" style="margin:0 8px 0 2px;"></i> No references added yet. Add your first Reference by pasting a URL below.</div>';
+            }
 
 
-    if($show_tabs['content']){
+            //Add new Reference:
+            echo '<div class="list-group-item list_input grey-input">
+                    <div class="input-group">
+                        <div class="form-group is-empty"><input type="url" class="form-control" id="add_url_input" placeholder="Paste URL here..."></div>
+                        <span class="input-group-addon">
+                            <a class="badge badge-primary" id="add_url_btn" href="javascript:add_new_url();">ADD</a>
+                        </span>
+                    </div>
+                </div>';
 
-        echo '<div class="tab-pane" id="tabcontent">';
-        echo '<div id="list-content" class="list-group maxout grey-list">';
+            echo '</div>';
 
-        foreach($outbound_us as $e){
-            //Fetch the U:
-            $us = $this->Db_model->u_fetch(array(
-                'u_id' => $e['e_inbound_u_id'],
-            ), array('count_child'));
-            echo echo_u($us[0]);
+
+            echo '</div>'; //Tab content ends
+        } elseif($item=='coach'){
+
+            echo '<div class="tab-pane" id="tabcoach">';
+            echo '<div id="list-coach" class="list-group maxout grey-list">';
+            foreach($b_team_member as $ba){
+                echo_ba($ba);
+            }
+            echo '</div>';
+            echo '</div>';
+
+        } elseif($item=='student'){
+
+            echo '<div class="tab-pane" id="tabstudent">';
+            echo '<div id="list-student" class="list-group maxout grey-list">';
+            foreach($admissions as $ru){
+                echo_ru($ru);
+            }
+            echo '</div>';
+            echo '</div>';
+
+        } elseif($item=='payments'){
+
+            echo '<div class="tab-pane" id="tabpayments">';
+            echo '<div id="list-payments" class="list-group maxout grey-list">';
+            foreach($payments as $t){
+                echo_t($t);
+            }
+            echo '</div>';
+            echo '</div>';
+
+        } elseif($item=='authors'){
+
+            echo '<div class="tab-pane" id="tabauthors">';
+                echo '<div id="list-authors" class="list-group maxout grey-list">';
+
+                    foreach($inbound_us as $e){
+                        //Fetch the U:
+                        $us = $this->Db_model->u_fetch(array(
+                            'u_id' => $e['e_outbound_u_id'],
+                        ), array('count_child'));
+                        echo echo_u($us[0]);
+                    }
+
+                    //Input to add new authors:
+                    echo '<div class="list-group-item list_input grey-input">
+                            <div class="input-group">
+                                <div class="form-group is-empty"><input type="text" class="form-control" id="add_authors_input" placeholder="Add Author..."></div>
+                                <span class="input-group-addon">
+                                    <a class="badge badge-primary" id="add_authors_btn" href="javascript:add_u_link(0, $(\'#add_authors_input\').val(), \'inbound\');">ADD</a>
+                                </span>
+                            </div>
+                        </div>';
+
+                echo '</div>';
+            echo '</div>';
+
+        } elseif($item=='content'){
+
+            echo '<div class="tab-pane" id="tabcontent">';
+            echo '<div id="list-content" class="list-group maxout grey-list">';
+
+            foreach($outbound_us as $e){
+                //Fetch the U:
+                $us = $this->Db_model->u_fetch(array(
+                    'u_id' => $e['e_inbound_u_id'],
+                ), array('count_child'));
+                echo echo_u($us[0]);
+            }
+
+
+            echo '</div>';
+            echo '</div>';
+
+        } elseif($item=='intents'){
+
+            //Fetch the current intent relations found in this entity:
+
+            echo '<div class="tab-pane" id="tabintents">';
+            echo '<div id="list-intents" class="list-group maxout grey-list">';
+
+
+
+
+            echo '</div>';
+            echo '</div>';
+
         }
-
-
-        echo '</div>';
-        echo '</div>';
-
     }
-
-
-
-    if($show_tabs['intents']){
-
-        //Fetch the current intent relations found in this entity:
-
-        echo '<div class="tab-pane" id="tabintents">';
-        echo '<div id="list-intents" class="list-group maxout grey-list">';
-
-
-
-
-        echo '</div>';
-        echo '</div>';
-
-    }
-
-
     ?>
 
 

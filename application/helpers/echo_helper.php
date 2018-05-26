@@ -10,7 +10,7 @@ function echo_next_u($page,$limit,$u__outbound_count){
     echo '<a class="load-more list-group-item" href="javascript:void(0);" onclick="entity_load_more('.$page.')">';
 
     //Right content:
-    echo '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-plus"></i></span></span>';
+    echo '<span class="pull-right"><span class="badge badge-primary"><i class="fas fa-search-plus"></i></span></span>';
 
     //Regular section:
     $max_entities = (($page+1)*$limit);
@@ -44,19 +44,19 @@ function echo_action_plan_overview($b,$is_student=false,$custom_start_date=null)
 
 
 
-    if($b['b_is_parent']) {
-
-        //Show total tasks:
-        //$ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
-
-    } else {
-
-        //Total Tasks for weekly Bootcamps:
-        //$ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
-        if($b['c__child_child_count']>0){
-            //$ui .= '<div class="dash-label"><span class="icon-left"><i class="fal fa-clipboard-check"></i></span> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
+    if(!$is_student){
+        if($b['b_is_parent']) {
+            //Show total tasks:
+            $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
+        } else {
+            //Total Tasks for weekly Bootcamps:
+            $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
+            if($b['c__child_child_count']>0){
+                $ui .= '<div class="dash-label"><span class="icon-left"><i class="fal fa-clipboard-check"></i></span> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
+            }
         }
     }
+
 
 
 
@@ -150,7 +150,7 @@ function echo_u($u){
     //Right content:
     $ui .= '<span class="pull-right">';
     $ui .= echo_score($u['u_e_score']);
-    $ui .= '<a class="badge badge-primary" href="/entities/'.$u['u_id'].'">'.( isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? echo_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
+    $ui .= '<a class="badge badge-primary '.( $u['u__outbound_count']>0 ? 'stnd-btn' : '' ).'" href="/entities/'.$u['u_id'].'">'.( isset($u['u__outbound_count']) && $u['u__outbound_count']>0 ? echo_big_num($u['u__outbound_count']) : '' ).' <i class="fas fa-chevron-right"></i></a>';
     $ui .= '</span>';
 
     //Regular section:

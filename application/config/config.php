@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.54',
+    'version' => '3.56',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -66,7 +66,7 @@ $config['pricing_model'] = array(
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
 
 //The engagements that instructors are subscribed to:
-$config['instructor_subscriptions'] = array(57,60,68,69,70,72);
+$config['instructor_subscriptions'] = array(57,60,68,69,70,72,6997);
 
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(

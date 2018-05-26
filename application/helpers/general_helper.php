@@ -941,16 +941,18 @@ function b_progress($b){
 
 
     // Required Experience Level
-    $estimated_minutes = 15;
-    $progress_possible += $estimated_minutes;
-    $e_status = ( $b['b_difficulty_level']>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-    array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings#landingpage',
-        'anchor' => '<b>Choose Required Experience Level</b> in Settings',
-        'e_status' => $e_status,
-        'time_min' => $estimated_minutes,
-    ));
+    if(0){ //Disabled for now as its not fully integrated into the UI
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $e_status = ( $b['b_difficulty_level']>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/settings#landingpage',
+            'anchor' => '<b>Choose Required Experience Level</b> in Settings',
+            'e_status' => $e_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
 
 
 
