@@ -5,7 +5,7 @@
 //Quiz Settings
 $b_id = 354; //Full stack junior Job Placement
 $quiz_duration_minutes = 30; //Minutes
-$quiz_url = 'https://docs.google.com/forms/d/e/1FAIpQLSdlmHhvniTzJ2s5JOa_eALgWbv9qWD5Rrd17OA2XNyGt6bZ6w/viewform?embedded=true';
+$quiz_url = 'https://docs.google.com/forms/d/e/1FAIpQLSdlmHhvniTzJ2s5JOa_eALgWbv9qWD5Rrd17OA2XNyGt6bZ6w/viewform?usp=pp_url&entry.366927620='.$u['u_email'];
 
 
 if(!isset($_GET['start'])){
