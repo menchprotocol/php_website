@@ -17,7 +17,10 @@ if(!isset($_GET['start'])){
         <p>Applicant: <b><?= $u['u_full_name'] ?></b></p>
         <p>Email: <b><?= $u['u_email'] ?></b></p>
         <p>Quiz Time: <b><?= $quiz_duration_minutes ?> Minutes</b></p>
-        <p>Attempts so far: <b><?= count($attempts) ?></b></p>
+        <?php if(count($attempts)>0){ ?>
+            <p>Attempts so far: <b><?= count($attempts) ?></b></p>
+        <?php } ?>
+
         <br />
         <br />
         <div><a href="/my/quiz/<?= $u['u_id'] ?>?u_email=<?= $u['u_email'] ?>&start=1" class="btn btn-primary">Start <?= $quiz_duration_minutes ?>-Minute Quiz <i class="fas fa-chevron-right"></i></a></div>
