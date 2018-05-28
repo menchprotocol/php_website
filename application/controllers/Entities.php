@@ -16,6 +16,66 @@ class Entities extends CI_Controller {
     }
 
 
+    function new_student_api(){
+
+        //And API call that get's POST variables for email and name and creates a new user
+
+        //Check variables to make sure it's set
+        if(!isset($_POST['secret']) || !($_POST['secret']=='9d8f710315f4136bf6060b339cedddd1')){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid secret',
+            ));
+        } elseif(!isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid email',
+            ));
+        } elseif(!isset($_POST['name']) || strlen($_POST['name'])<1){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Invalid name',
+            ));
+        }
+
+        $_POST['email'] = trim(strtolower($_POST['email']));
+
+        //Validate parent entity:
+        $current_us = $this->Db_model->u_fetch(array(
+            'u_email' => $_POST['email'],
+        ));
+        if(count($current_us)>0){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Email already exists',
+            ));
+        }
+
+
+        //We should add a new entity:
+        $new_u = $this->Db_model->u_create(array(
+            'u_email' 		    => $_POST['email'],
+            'u_status' 		    => 1,
+            'u_full_name' 		=> trim($_POST['name']),
+            'u_inbound_u_id'    => 1304, //Interested student
+        ));
+
+
+        //Log engagement
+        $this->Db_model->e_create(array(
+            'e_text_value' => 'New student entity created using new_student_api() api',
+            'e_inbound_c_id' => 6971, //New Entity
+            'e_inbound_u_id'  => 0, //System/API
+            'e_outbound_u_id' => $new_u['u_id'],
+        ));
+
+        return echo_json(array(
+            'status' => 1,
+            'message' => 'Success',
+            'new_user' => $new_u,
+        ));
+    }
+
 
     //Lists entities
     function entity_browse($inbound_u_id=0){
