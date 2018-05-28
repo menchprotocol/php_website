@@ -1,4 +1,4 @@
-<h3>Mench Technical Quiz</h3>
+<h3>Technical Quiz</h3>
 
 <?php
 
@@ -61,22 +61,22 @@ if(!isset($_GET['start'])){
             // If the count down is finished, write some text
             if (distance < 0) {
                 //Redirect to finished page:
-                $('#quiz_take').hide();
                 $('#quiz_expired').fadeIn();
             }
         }, 1000);
 
     </script>
 
+    <div id="quiz_expired" style="display:none;">
+        <h1>Time is Up </h1>
+        <p>Make sure you submit your quiz for your results to be saved. We will get back to you shortly after reviewing your answers.</p>
+    </div>
+
     <div id="quiz_take" style="display:block;">
         <p>Time Remaining: <b id="demo">Loading...</b> [Do Not Refresh]</p>
         <div style="max-width: 700px;"><iframe src="<?= $quiz_url ?>" height="700" frameborder="0" marginheight="0" marginwidth="0" width="100%">Loading...</iframe></div>
     </div>
 
-    <div id="quiz_expired" style="display:none;">
-        <h1>Awesome 🙌​</h1>
-        <p>You have completed your technical assessment quiz and we will get back to you shortly after reviewing your answers.</p>
-    </div>
 
     <?php
 }
