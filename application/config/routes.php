@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['404_override'] = '';
+$route['404_override'] = 'front/error';
 $route['translate_uri_dashes'] = FALSE;
 
 /* ******************************

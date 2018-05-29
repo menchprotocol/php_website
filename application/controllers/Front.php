@@ -13,6 +13,10 @@ class Front extends CI_Controller {
     function ping(){
         echo_json(array('status'=>'success'));
     }
+
+    function error(){
+	    echo 'hi';
+    }
 	
 	function index($c_id=0){
 		//Load home page:
