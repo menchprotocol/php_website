@@ -108,6 +108,7 @@ class Entities extends CI_Controller {
             'entities_per_page' => $entities_per_page,
             'child_entities' => $this->Db_model->u_fetch(array(
                 'u_inbound_u_id' => $inbound_u_id,
+                'u_status' => 1, //Only active
             ), array('count_child'), $entities_per_page),
         ));
 

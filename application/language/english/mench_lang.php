@@ -12,7 +12,7 @@ $lang['level_3_icon'] = '<i class="fal fa-clipboard-check"></i>';
 
 //Core Databae Objects:
 $lang['obj_b_name'] = 'Bootcamp';
-$lang['obj_u_name'] = 'User';
+$lang['obj_u_name'] = 'Entity';
 $lang['obj_r_name'] = 'Class';
 $lang['obj_t_name'] = 'Transaction';
 $lang['obj_i_name'] = 'Message';
