@@ -1328,6 +1328,10 @@ WHERE ru.ru_status >= 4
 	function c_update($c_id,$update_columns){
 	    $this->db->where('c_id', $c_id);
 	    $this->db->update('v5_intents', $update_columns);
+
+        //Update Algolia:
+        $this->Db_model->algolia_sync('c',$c_id);
+
 	    return $this->db->affected_rows();
 	}
 	
@@ -1447,6 +1451,9 @@ WHERE ru.ru_status >= 4
 		
 		//Fetch inserted id:
 		$insert_columns['c_id'] = ( isset($insert_columns['c_id']) ? $insert_columns['c_id'] : $this->db->insert_id() );
+
+        //Update Algolia:
+        $this->Db_model->algolia_sync('c',$insert_columns['c_id']);
 		
 		return $insert_columns;
 	}
@@ -2069,10 +2076,36 @@ WHERE ru.ru_status >= 4
 
             } elseif($obj=='c'){
 
+                //Fetch all Messages:
+                $messages = $this->Db_model->i_fetch(array(
+                    'i_status >' => 0,
+                    'i_outbound_c_id' => $item['c_id'],
+                ));
+
+                $parents = $this->Db_model->cr_inbound_fetch(array(
+                    'cr.cr_outbound_c_id' => $item['c_id'],
+                    'cr.cr_status' => 1,
+                ));
+
+                //Object specific:
+                $new_item['c_id'] = intval($item['c_id']);
+                $new_item['c_is_output'] = intval($item['c_is_output']);
+                $new_item['c_is_public'] = intval($item['c_is_public']);
+                $new_item['c_i_count'] = count($messages);
+                $new_item['c_cr_count'] = count($parents);
+
+                $new_item['alg_name'] = $item['c_outcome'];
+                $new_item['alg_keywords'] = '';
+
+                foreach($messages as $i){
+                    //Add main URL:
+                    $new_item['alg_keywords'] .= ' '.$i['i_message'];
+                }
 
             }
 
             //Clean the keywords:
+            $new_item['alg_name'] = trim($new_item['alg_name']);
             $new_item['alg_keywords'] = trim(strip_tags($new_item['alg_keywords']));
 
             //Add to main array

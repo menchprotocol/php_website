@@ -107,6 +107,51 @@ $(document).ready(function() {
 	//Load Sortable:
 	load_intent_sort($("#pid").val(),"2");
 
+
+	//Intent Search/Add
+    /*
+    $( "#addintent" ).on('autocomplete:selected', function(event, suggestion, dataset) {
+
+        add_c_link(suggestion.u_id, null, 'inbound');
+
+    }).autocomplete({ hint: false, keyboardShortcuts: ['a'] }, [{
+
+        source: function(q, cb) {
+            algolia_u_index.search(q, {
+                hitsPerPage: 7,
+                filters:'(u_inbound_u_id=1280 OR u_inbound_u_id=1279 OR u_inbound_u_id=1307 OR u_inbound_u_id=1281 OR u_inbound_u_id=1308 OR u_inbound_u_id=1304 OR u_inbound_u_id=1282)',
+            }, function(error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function(suggestion) { return "" },
+        templates: {
+            suggestion: function(suggestion) {
+                //If clicked, would trigger the autocomplete:selected above which will trigger the add_u_link() function
+                return '<span><i class="fas fa-at"></i></span> '+ suggestion.alg_name + ' ('+suggestion.u_inbound_name+')';
+            },
+            header: function(data) {
+                if(!data.isEmpty){
+                    return '<a href="javascript:add_u_link(0,\''+data.query+'\',\'inbound\')" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "'+data.query+'"'+' (Referenced Auhtors)</a>';
+                }
+            },
+            empty: function(data) {
+                return '<a href="javascript:add_u_link(0,\''+data.query+'\',\'inbound\')" class="suggestion"><span><i class="fas fa-plus-circle"></i> Create</span> "'+data.query+'"'+' (Referenced Auhtors)</a>';
+            },
+        }
+    }]).keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code == 13) || (e.ctrlKey && code == 13)) {
+            add_u_link(0, $("#add_authors_input").val(), 'inbound');
+            return true;
+        }
+    });
+    */
+
 });
 
 
