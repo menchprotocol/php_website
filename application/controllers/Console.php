@@ -9,10 +9,6 @@ class Console extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 
         $udata = $this->session->userdata('user');
-        if(is_old() && !isset($_GET['skip']) && !isset($udata['u_id'])){
-            //Always redirect to newer version:
-            redirect_message('https://mench.com'.$_SERVER['REQUEST_URI']);
-        }
 	}
 
     function ping(){
