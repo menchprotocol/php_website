@@ -56,7 +56,7 @@
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
 
-redirect_mench_co();
+//redirect_mench_co();
 
 /*
  *---------------------------------------------------------------
