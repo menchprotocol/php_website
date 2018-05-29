@@ -2095,7 +2095,7 @@ WHERE ru.ru_status >= 4
                 $new_item['c_cr_count'] = count($parents);
 
                 $new_item['alg_name'] = $item['c_outcome'];
-                $new_item['alg_owner_id'] = $item['c_inbound_u_id'];
+                $new_item['alg_owner_id'] = intval($item['c_inbound_u_id']);
                 $new_item['alg_keywords'] = '';
 
                 foreach($messages as $i){
