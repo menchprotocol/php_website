@@ -8,6 +8,8 @@ class Front extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 
         $udata = $this->session->userdata('user');
+
+        redirect_mench_co();
 	}
 
     function ping(){
@@ -15,7 +17,13 @@ class Front extends CI_Controller {
     }
 
     function error(){
-	    echo 'hi';
+	    if(!redirect_mench_co()){
+            $this->load->view('front/shared/f_header', array(
+                'title' => 'Page Not Found',
+            ));
+            $this->load->view('front/error');
+            $this->load->view('front/shared/f_footer');
+        }
     }
 	
 	function index($c_id=0){

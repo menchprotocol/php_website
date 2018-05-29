@@ -74,8 +74,6 @@ switch (ENVIRONMENT)
 	case 'testing':
 	case 'production':
 
-        redirect_mench_co();
-
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
 		{

@@ -10,6 +10,8 @@ function redirect_mench_co(){
     if(isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' && !isset($_GET['skip']) && !isset($udata['u_id'])){
         //Always redirect to newer version:
         redirect_message('https://mench.com');
+    } else {
+        return false;
     }
 }
 
