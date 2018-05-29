@@ -828,7 +828,7 @@ class My extends CI_Controller {
 
     function quiz($u_id){
 
-        if(isset($_GET['u_email'])){
+        if(isset($_GET['u_email']) && intval($u_id)>0){
             //Fetch this user:
             $us = $this->Db_model->u_fetch(array(
                 'u_id' => $u_id,
@@ -838,7 +838,7 @@ class My extends CI_Controller {
                 redirect_message('/','<div class="alert alert-danger" role="alert">User not found.</div>');
             }
         } else {
-            redirect_message('/','<div class="alert alert-danger" role="alert">Missing u_email variable.</div>');
+            redirect_message('/','<div class="alert alert-danger" role="alert">Missing inputs.</div>');
         }
 
         $this->load->view('front/shared/p_header' , array(

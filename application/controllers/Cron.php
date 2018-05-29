@@ -262,11 +262,11 @@ class Cron extends CI_Controller {
             $score += count($this->Db_model->x_fetch(array(
                     'x_status >' => 0,
                     'x_outbound_u_id' => $u['u_id'],
-                ), 5000)) * $score_weights['x_outbound_u_id'];
+                ))) * $score_weights['x_outbound_u_id'];
             $score += count($this->Db_model->x_fetch(array(
                     'x_status >' => 0,
                     'x_inbound_u_id' => $u['u_id'],
-                ), 5000)) * $score_weights['x_inbound_u_id'];
+                ))) * $score_weights['x_inbound_u_id'];
 
             $score += count($this->Db_model->c_fetch(array(
                     'c_inbound_u_id' => $u['u_id'],

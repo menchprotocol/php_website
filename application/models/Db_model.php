@@ -2145,8 +2145,8 @@ WHERE ru.ru_status >= 4
 
         //Return results:
         return array(
-            'status' => ( count($obj_add_message['objectIDs'])>0 ? 1 : 0 ),
-            'message' => count($obj_add_message['objectIDs']).' items updated',
+            'status' => ( isset($obj_add_message['objectIDs']) && count($obj_add_message['objectIDs'])>0 ? 1 : 0 ),
+            'message' => ( isset($obj_add_message['objectIDs']) ? count($obj_add_message['objectIDs']) : 0 ).' items updated',
         );
 
     }
