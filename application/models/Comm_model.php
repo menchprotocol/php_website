@@ -737,103 +737,6 @@ class Comm_model extends CI_Model {
     }
 
 
-    function save_cover_to_cdn($u,$fb_cdn_url){
-
-        //Does this user have a profile assigned?
-        if(intval($u['u_cover_x_id'])>0){
-            return array(
-                'status' => 0,
-                'message' => 'User already had a cover photo assigned.',
-            );
-        }
-
-        //Check URL and validate:
-        $curl = curl_html($fb_cdn_url,true);
-
-        if(!$curl){
-            return array(
-                'status' => 0,
-                'message' => 'Invalid URL (start with http:// or https://)',
-            );
-        } elseif($curl['url_is_broken']) {
-            return array(
-                'status' => 0,
-                'message' => 'URL Seems broken with http code ['.$curl['httpcode'].']',
-            );
-        } elseif($curl['x_type']!=4) {
-            return array(
-                'status' => 0,
-                'message' => 'URL [Type '.$curl['x_type'].'] Does not point to an image',
-            );
-        }
-
-        //Save the file to S3
-        $new_file_url = save_file($fb_cdn_url,$u);
-
-        if(!$new_file_url){
-            return array(
-                'status' => 0,
-                'message' => 'Failed to upload the file to Mench CDN',
-            );
-        }
-
-        //Check to make sure this is not a Generic FB URL:
-        foreach(array(
-                    'ecd274930db69ba4b2d9137949026300',
-                    '5bf2d884209d168608b02f3d0850210d',
-                    'b3575aa3d0a67fb7d7a076198b442b93',
-                    'e35cf96f814f6509d8a202efbda18d3c',
-                    '5d2524cb2bdd09422832fa2d25399049',
-                    '164c8275278f05c770418258313fb4f4',
-                    '',
-                ) as $generic_url){
-            if(substr_count($new_file_url,$generic_url)>0){
-                //This is the hashkey for the Facebook Generic User icon:
-                return array(
-                    'status' => 0,
-                    'message' => 'This is the user generic icon on Facebook',
-                );
-                break;
-            }
-        }
-
-
-        //Save URL:
-        $new_x = $this->Db_model->x_create(array(
-            'x_inbound_u_id' => $u['u_id'],
-            'x_outbound_u_id' => $u['u_id'],
-            'x_url' => $new_file_url,
-            'x_clean_url' => $new_file_url,
-            'x_type' => 4, //Image
-        ));
-
-        if(!isset($new_x['x_id']) || $new_x['x_id']<1){
-            return array(
-                'status' => 0,
-                'message' => 'Failed to save CDN URL to Mench',
-            );
-        }
-
-        //Update Cover ID:
-        $this->Db_model->u_update( $u['u_id'] , array(
-            'u_cover_x_id' => $new_x['x_id'],
-        ));
-
-        //Log engagement:
-        $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $u['u_id'],
-            'e_outbound_u_id' => $u['u_id'],
-            'e_inbound_c_id' => 12, //Account Update
-            'e_text_value' => 'Profile cover photo updates from Facebook Image ['.$fb_cdn_url.'] to Mench CDN ['.$new_file_url.']',
-            'e_x_id' => $new_x['x_id'],
-        ));
-
-        return array(
-            'status' => 1,
-            'message' => 'Successfully updated cover photo',
-        );
-
-    }
 
     function fb_identify_activate($fp, $fp_psid, $fb_ref=null){
 
@@ -1059,8 +962,14 @@ class Comm_model extends CI_Model {
                 //Split locale into language and country
                 $locale = explode('_',$fb_profile['locale'],2);
 
-                //Save picture locally if needed:
-                $this->Comm_model->save_cover_to_cdn($u,$fb_profile['profile_pic']);
+                //Save picture locally:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $u['u_id'],
+                    'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
+                    'e_status' => 0, //Pending upload
+                    'e_inbound_c_id' => 7001, //Cover Photo Save
+                ));
+
 
                 //Do an Update for selected fields as linking:
                 $this->Db_model->u_update( $u['u_id'] , array(
@@ -1175,8 +1084,13 @@ class Comm_model extends CI_Model {
                     'u_inbound_u_id'    => 1304, //Prospects
                 ));
 
-                //Save picture locally if needed:
-                $this->Comm_model->save_cover_to_cdn($u,$fb_profile['profile_pic']);
+                //Save picture locally:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $u['u_id'],
+                    'e_text_value' => $fb_profile['profile_pic'], //Image to be saved
+                    'e_status' => 0, //Pending upload
+                    'e_inbound_c_id' => 7001, //Cover Photo Save
+                ));
 
                 //New Student Without Admission:
                 $this->Comm_model->foundation_message(array(

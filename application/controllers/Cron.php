@@ -542,6 +542,116 @@ class Cron extends CI_Controller {
 
     }
 
+
+    function save_profile_pic(){
+
+
+        $max_per_batch = 20; //Max number of scans per run
+
+        $e_pending = $this->Db_model->e_fetch(array(
+            'e_status' => 0, //Pending
+            'e_inbound_c_id' => 7001, //Cover Photo Save
+        ), $max_per_batch);
+
+
+        //Lock item so other Cron jobs don't pick this up:
+        lock_cron_for_processing($e_pending);
+
+
+        $counter = 0;
+        foreach($e_pending as $u){
+
+            //Check URL and validate:
+            $error_message = null;
+            $curl = curl_html($u['e_text_value'],true);
+
+            if(!$curl){
+                $error_message = 'Invalid URL (start with http:// or https://)';
+            } elseif($curl['url_is_broken']) {
+                $error_message = 'URL Seems broken with http code ['.$curl['httpcode'].']';
+            } elseif($curl['x_type']!=4) {
+                $error_message = 'URL [Type '.$curl['x_type'].'] Does not point to an image';
+            }
+
+            if(!$error_message){
+
+                //Save the file to S3
+                $new_file_url = save_file($u['e_text_value'],$u);
+
+                if(!$new_file_url){
+                    $error_message = 'Failed to upload the file to Mench CDN';
+                }
+
+                //Check to make sure this is not a Generic FB URL:
+                foreach(array(
+                            'ecd274930db69ba4b2d9137949026300',
+                            '5bf2d884209d168608b02f3d0850210d',
+                            'b3575aa3d0a67fb7d7a076198b442b93',
+                            'e35cf96f814f6509d8a202efbda18d3c',
+                            '5d2524cb2bdd09422832fa2d25399049',
+                            '164c8275278f05c770418258313fb4f4',
+                            '',
+                        ) as $generic_url){
+                    if(substr_count($new_file_url,$generic_url)>0){
+                        //This is the hashkey for the Facebook Generic User icon:
+                        $error_message = 'This is the user generic icon on Facebook';
+                        break;
+                    }
+                }
+
+                if(!$error_message){
+
+                    //Save URL:
+                    $new_x = $this->Db_model->x_create(array(
+                        'x_inbound_u_id' => $u['u_id'],
+                        'x_outbound_u_id' => $u['u_id'],
+                        'x_url' => $new_file_url,
+                        'x_clean_url' => $new_file_url,
+                        'x_type' => 4, //Image
+                    ));
+
+                    //Replace cover photo only if this user has no cover photo set:
+                    if(!(intval($u['u_cover_x_id'])>0)){
+
+                        //Update Cover ID:
+                        $this->Db_model->u_update( $u['u_id'] , array(
+                            'u_cover_x_id' => $new_x['x_id'],
+                        ));
+
+                        //Log engagement:
+                        $this->Db_model->e_create(array(
+                            'e_inbound_u_id' => $u['u_id'],
+                            'e_outbound_u_id' => $u['u_id'],
+                            'e_inbound_c_id' => 12, //Account Update
+                            'e_text_value' => 'Profile cover photo updates from Facebook Image ['.$u['e_text_value'].'] to Mench CDN ['.$new_file_url.']',
+                            'e_x_id' => $new_x['x_id'],
+                        ));
+                    }
+                }
+            }
+
+            //Update engagement:
+            $this->Db_model->e_update( $u['e_id'] , array(
+                'e_text_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ),
+                'e_status' => 1, //Done
+                'e_has_blob' => 't', //We will save the results back to the engagement
+            ));
+
+            //Save the results:
+            $this->db->insert('v5_engagement_blob', array(
+                'ej_e_id' => $u['e_id'],
+                'ej_e_blob' => serialize(array(
+                    'url' => $u['e_text_value'],
+                    'status' => ( $error_message ? 0 : 1 ),
+                    'message' => ( $error_message ? $error_message : 'Success' ),
+                )),
+            ));
+
+        }
+
+        echo_json($e_pending);
+    }
+
     function message_file_save(){
 
         //Cron Settings: * * * * *
