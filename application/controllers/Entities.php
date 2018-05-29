@@ -127,6 +127,7 @@ class Entities extends CI_Controller {
 
         $child_entities = $this->Db_model->u_fetch(array(
             'u_inbound_u_id' => $inbound_u_id,
+            'u_status' => 1, //Only active
         ), array('count_child'), $limit, ($page*$limit));
 
         foreach($child_entities as $u){
