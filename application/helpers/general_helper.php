@@ -4,8 +4,13 @@ function is_dev(){
     return ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='local.mench.co' );
 }
 
-function is_old(){
-    return ( isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' );
+function redirect_mench_co(){
+    $CI =& get_instance();
+    $udata = $CI->session->userdata('user');
+    if(isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME']=='mench.co' && !isset($_GET['skip']) && !isset($udata['u_id'])){
+        //Always redirect to newer version:
+        redirect_message('https://mench.com');
+    }
 }
 
 function lock_cron_for_processing($e_items){
