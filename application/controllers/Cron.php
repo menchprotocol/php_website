@@ -8,7 +8,7 @@ class Cron extends CI_Controller {
 		
 		$this->output->enable_profiler(FALSE);
 
-        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron update_u_e_score
+        //Example: /usr/bin/php /home/ubuntu/mench-web-app/index.php cron save_profile_pic
 	}
 
 	function ping(){
@@ -632,19 +632,8 @@ class Cron extends CI_Controller {
 
             //Update engagement:
             $this->Db_model->e_update( $u['e_id'] , array(
-                'e_text_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ),
+                'e_text_value' => ( $error_message ? 'ERROR: '.$error_message : 'Success' ).' (Original Image URL: '.$u['e_text_value'].')',
                 'e_status' => 1, //Done
-                'e_has_blob' => 't', //We will save the results back to the engagement
-            ));
-
-            //Save the results:
-            $this->db->insert('v5_engagement_blob', array(
-                'ej_e_id' => $u['e_id'],
-                'ej_e_blob' => serialize(array(
-                    'url' => $u['e_text_value'],
-                    'status' => ( $error_message ? 0 : 1 ),
-                    'message' => ( $error_message ? $error_message : 'Success' ),
-                )),
             ));
 
         }
