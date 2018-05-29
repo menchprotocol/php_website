@@ -56,12 +56,6 @@
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
 
-$udata = $this->session->userdata('user');
-if(is_old() && !isset($_GET['skip']) && !isset($udata['u_id'])){
-    //Always redirect to newer version:
-    redirect_message('https://mench.com');
-}
-
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
