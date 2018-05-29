@@ -51,7 +51,7 @@ $(document).ready(function() {
         templates: {
             suggestion: function(suggestion) {
                 //If clicked, would trigger the autocomplete:selected above which will trigger the add_u_link() function
-                return '<span><i class="fas fa-at"></i></span> '+ suggestion.alg_name + ' ('+suggestion.u_inbound_name+')';
+                return '<span><i class="fas fa-at"></i></span> '+ suggestion.u_full_name + ' ('+suggestion.u_inbound_name+')';
             },
             header: function(data) {
                 if(!data.isEmpty){

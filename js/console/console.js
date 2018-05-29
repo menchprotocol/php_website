@@ -155,7 +155,7 @@ $(document).ready(function() {
                 algolia_b_index.search(q, {
 
                     hitsPerPage: 7,
-                    filters: '(b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (alg_owner_id=' + $('#u_id').val() + ')' ),
+                    filters: '(b_status>=2)' + ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND (b_inbound_u_id=' + $('#u_id').val() + ')' ),
 
                 }, function(error, content) {
                     if (error) {
@@ -168,7 +168,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.alg_name;
+                    return '<i class="fas '+( parseInt(suggestion.b_is_parent)==0 ? 'fa-cube' : 'fa-cubes' )+'"></i> '+ suggestion.c_b_outcome;
                 },
             }
         },
@@ -190,7 +190,7 @@ $(document).ready(function() {
             displayKey: function(suggestion) { return "" },
             templates: {
                 suggestion: function(suggestion) {
-                    return '<i class="fas fa-at"></i> '+ suggestion.alg_name + ' ('+suggestion.u_inbound_name+')';
+                    return '<i class="fas fa-at"></i> '+ suggestion.u_full_name + ' ('+suggestion.u_inbound_name+')';
                 },
             }
         }

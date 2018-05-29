@@ -1977,23 +1977,20 @@ WHERE ru.ru_status >= 4
 
             if($obj=='b'){
 
-                //Object specific:
                 $new_item['b_id'] = intval($item['b_id']); //rquired for all objects
                 $new_item['b_status'] = intval($item['b_status']);
                 $new_item['b_is_parent'] = intval($item['b_is_parent']);
                 $new_item['b_old_format'] = intval($item['b_old_format']);
-
-                //Standard algolia terms:
-                $new_item['alg_name'] = $item['c_outcome'];
-                $new_item['alg_owner_id'] = intval($item['u_id']);
-                $new_item['alg_keywords'] = '';
+                $new_item['c_b_outcome'] = $item['c_outcome'];
+                $new_item['b_inbound_u_id'] = intval($item['u_id']);
+                $new_item['b_keywords'] = '';
 
                 if(strlen($item['b_prerequisites'])>0){
-                    $new_item['alg_keywords'] .= join(' ',json_decode($item['b_prerequisites'])).' ';
+                    $new_item['b_keywords'] .= join(' ',json_decode($item['b_prerequisites'])).' ';
                 }
 
                 if(strlen($item['b_transformations'])>0){
-                    $new_item['alg_keywords'] .= join(' ',json_decode($item['b_transformations'])).' ';
+                    $new_item['b_keywords'] .= join(' ',json_decode($item['b_transformations'])).' ';
                 }
 
                 //Fetch all text messages for description:
@@ -2004,7 +2001,7 @@ WHERE ru.ru_status >= 4
                 ));
                 if(count($i_messages)>0){
                     foreach($i_messages as $i){
-                        $new_item['alg_keywords'] .= $i['i_message'].' ';
+                        $new_item['b_keywords'] .= $i['i_message'].' ';
                     }
                 }
 
@@ -2016,13 +2013,15 @@ WHERE ru.ru_status >= 4
                 ));
                 if(count($c_intents)>0){
                     foreach($c_intents as $c){
-                        $new_item['alg_keywords'] .= $c['c_outcome'].' ';
+                        $new_item['b_keywords'] .= $c['c_outcome'].' ';
                     }
                 }
 
+                //Clean keywords
+                $new_item['b_keywords'] = trim(strip_tags($new_item['b_keywords']));
+
             } elseif($obj=='u') {
 
-                //Object specific:
                 $new_item['u_id'] = intval($item['u_id']); //rquired for all objects
                 $new_item['u_inbound_u_id'] = intval($item['u_inbound_u_id']);
                 $new_item['u_e_score'] = intval($item['u_e_score']);
@@ -2039,9 +2038,8 @@ WHERE ru.ru_status >= 4
 
                 $new_item['u_inbound_name'] = ( isset($inbound_names[$new_item['u_inbound_u_id']]) ? $inbound_names[$new_item['u_inbound_u_id']] : 'Entities' );
 
-                //Standard algolia terms:
-                $new_item['alg_name'] = $item['u_full_name'];
-                $new_item['alg_keywords'] = $item['u_bio'];
+                $new_item['u_full_name'] = $item['u_full_name'];
+                $new_item['u_keywords'] = $item['u_bio'];
 
                 //Append additional information:
                 $urls = $this->Db_model->x_fetch(array(
@@ -2050,29 +2048,32 @@ WHERE ru.ru_status >= 4
                 ));
                 foreach($urls as $x){
                     //Add main URL:
-                    $new_item['alg_keywords'] .= ' '.$x['x_url'];
+                    $new_item['u_keywords'] .= ' '.$x['x_url'];
 
                     //Add Clean URL only if different from main:
                     if(!($x['x_url']==$x['x_clean_url'])){
-                        $new_item['alg_keywords'] .= ' '.$x['x_clean_url'];
+                        $new_item['u_keywords'] .= ' '.$x['x_clean_url'];
                     }
                 }
 
                 if(strlen($item['u_synonyms'])>0){
-                    $new_item['alg_keywords'] .= join(' ',json_decode($item['u_synonyms'])).' ';
+                    $new_item['u_keywords'] .= join(' ',json_decode($item['u_synonyms'])).' ';
                 }
 
                 if(strlen($item['u_email'])>0){
-                    $new_item['alg_keywords'] .= ' '.$item['u_email'];
+                    $new_item['u_keywords'] .= ' '.$item['u_email'];
                 }
 
                 if(strlen($item['u_paypal_email'])>0){
-                    $new_item['alg_keywords'] .= ' '.$item['u_paypal_email'];
+                    $new_item['u_keywords'] .= ' '.$item['u_paypal_email'];
                 }
 
                 if(strlen($item['u_phone'])>0){
-                    $new_item['alg_keywords'] .= ' '.$item['u_phone'];
+                    $new_item['u_keywords'] .= ' '.$item['u_phone'];
                 }
+
+                //Clean keywords
+                $new_item['u_keywords'] = trim(strip_tags($new_item['u_keywords']));
 
             } elseif($obj=='c'){
 
@@ -2087,27 +2088,24 @@ WHERE ru.ru_status >= 4
                     'cr.cr_status' => 1,
                 ));
 
-                //Object specific:
                 $new_item['c_id'] = intval($item['c_id']);
+                $new_item['c_inbound_u_id'] = intval($item['c_inbound_u_id']);
                 $new_item['c_is_output'] = intval($item['c_is_output']);
                 $new_item['c_is_public'] = intval($item['c_is_public']);
                 $new_item['c_i_count'] = count($messages);
                 $new_item['c_cr_count'] = count($parents);
-
-                $new_item['alg_name'] = $item['c_outcome'];
-                $new_item['alg_owner_id'] = intval($item['c_inbound_u_id']);
-                $new_item['alg_keywords'] = '';
+                $new_item['c_outcome'] = $item['c_outcome'];
+                $new_item['c_keywords'] = '';
 
                 foreach($messages as $i){
                     //Add main URL:
-                    $new_item['alg_keywords'] .= ' '.$i['i_message'];
+                    $new_item['c_keywords'] .= ' '.$i['i_message'];
                 }
 
-            }
+                //Clean keywords
+                $new_item['c_keywords'] = trim(strip_tags($new_item['c_keywords']));
 
-            //Clean the keywords:
-            $new_item['alg_name'] = trim($new_item['alg_name']);
-            $new_item['alg_keywords'] = trim(strip_tags($new_item['alg_keywords']));
+            }
 
             //Add to main array
             array_push( $return_items , $new_item);
