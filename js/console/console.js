@@ -177,7 +177,7 @@ $(document).ready(function() {
                 algolia_u_index.search(q, {
 
                     hitsPerPage: 7,
-                    filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : ' AND u_id='+$('#u_id').val() ),
+                    filters: ( parseInt($('#u_inbound_u_id').val())==1281 ? '' : 'u_id='+$('#u_id').val() ),
 
                 }, function(error, content) {
                     if (error) {

@@ -84,38 +84,65 @@ function changeBio() {
 
 
 function update_account(){
-	
-	//Show spinner:
-	$('.update_u_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
-	
-	$.post("/entities/entity_save_edit", {
-		
-		u_id:<?= $entity['u_id'] ?>,
-		u_full_name:$('#u_full_name').val(),
-		u_email:$('#u_email').val(),
-		u_phone:$('#u_phone').val(),
-		u_gender:$('#u_gender').val(),
-		u_country_code:$('#u_country_code').val(),
-		u_current_city:$('#u_current_city').val(),
-		u_timezone:$('#u_timezone').val(),
-		u_language:$('#u_language').val(),
+
+    //Show spinner:
+    $('.update_u_results').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+
+    $.post("/entities/entity_save_edit", {
+
+        u_id:<?= $entity['u_id'] ?>,
+        u_full_name:$('#u_full_name').val(),
+        u_email:$('#u_email').val(),
+        u_phone:$('#u_phone').val(),
+        u_gender:$('#u_gender').val(),
+        u_country_code:$('#u_country_code').val(),
+        u_current_city:$('#u_current_city').val(),
+        u_timezone:$('#u_timezone').val(),
+        u_language:$('#u_language').val(),
         u_paypal_email:$('#u_paypal_email').val(),
         u_newly_checked:(document.getElementById('u_terms_agreement_time').checked ? '1' : '0'),
-		
-		u_bio:$('#u_bio').val(),
-		
-		u_password_current:$('#u_password_current').val(),
-		u_password_new:$('#u_password_new').val(),
 
-	} , function(data) {
-		//Update UI to confirm with user:
-		$('.update_u_results').html(data).hide().fadeIn();
-		
-		//Disapper in a while:
-		setTimeout(function() {
-			$('.update_u_results').fadeOut();
-	    }, 10000);
+        u_bio:$('#u_bio').val(),
+
+        u_password_current:$('#u_password_current').val(),
+        u_password_new:$('#u_password_new').val(),
+
+    } , function(data) {
+        //Update UI to confirm with user:
+        $('.update_u_results').html(data).hide().fadeIn();
+
+        //Disapper in a while:
+        setTimeout(function() {
+            $('.update_u_results').fadeOut();
+        }, 10000);
     });
+}
+
+function u_delete(u_id, u_redirect_id){
+
+    var r = confirm("Are you sure you want to PERMANENTLY delete this entity?");
+    if (r == true) {
+        //Show spinner:
+        $('.u_delete').html('<span><img src="/img/round_load.gif" class="loader" /></span>').hide().fadeIn();
+
+        $.post("/entities/delete/"+u_id, {} , function(data) {
+
+            if(data.status){
+
+                $('.u_delete').html('<span>Success, Redirecting now...</span>');
+
+                //Redirect to parent entity
+                setTimeout(function() {
+                    window.location = "/entities/"+u_redirect_id;
+                }, 2584);
+
+            } else {
+                //We had some error:
+                $('.u_delete').html('<span style="color:#FF0000;">Error: '+data.message+'</span>');
+            }
+
+        });
+    }
 }
 
 function insert_gravatar(){
@@ -299,6 +326,12 @@ function insert_gravatar(){
 
 
         <table width="100%" style="margin-top:30px;"><tr><td class="save-td"><a href="javascript:update_account();" class="btn btn-primary">Save</a></td><td><span class="update_u_results"></span></td></tr></table>
+
+        <?php
+        if($udata['u_inbound_u_id']==1281){
+            echo '<div class="u_delete" style="text-align: right;"><a href="javascript:void(0);" onclick="u_delete('.$entity['u_id'].','.$entity['u_inbound_u_id'].')">Delete Entity</a></div>';
+        }
+        ?>
 
     </div>
 

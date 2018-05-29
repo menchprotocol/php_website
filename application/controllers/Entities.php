@@ -84,9 +84,16 @@ class Entities extends CI_Controller {
         //$udata = auth(array(1308,1280),1);
 
         $udata = $this->session->userdata('user');
-        if(!($udata['u_id']==$inbound_u_id || $udata['u_inbound_u_id']==1281)){
+        if(!isset($udata['u_id'])){
+
+            //This is not an admin, so they cannot edit this:
+            redirect_message( '/','<div class="alert alert-danger" role="alert">You must login to browse entities.</div>');
+
+        } elseif(!($udata['u_id']==$inbound_u_id || $udata['u_inbound_u_id']==1281)){
+
             //This is not an admin, so they cannot edit this:
             redirect_message(( isset($udata['u_id']) && $udata['u_id']>0 ? '/console' : '/entities/'.$inbound_u_id ),'<div class="alert alert-danger" role="alert">You can only view <a href="/entities/'.$udata['u_id'].'">your own entity</a>.</div>');
+
         }
 
         $entities_per_page = 100;
@@ -116,6 +123,20 @@ class Entities extends CI_Controller {
         $this->load->view('console/console_header' , $view_data);
         $this->load->view('console/u/entity_browse' , $view_data);
         $this->load->view('console/console_footer');
+    }
+
+    function delete($u_id){
+
+        $udata = $this->session->userdata('user');
+        if(!($udata['u_inbound_u_id']==1281)){
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'Session expired',
+            ));
+        } else {
+            //Attempt to delete:
+            echo_json($this->Db_model->u_delete($u_id));
+        }
     }
 
     function entity_load_more($inbound_u_id,$limit,$page){
