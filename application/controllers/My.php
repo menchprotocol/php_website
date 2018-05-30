@@ -821,12 +821,11 @@ class My extends CI_Controller {
      * User Functions
      ****************************** */
 
-    function quiz($u_id){
+    function quiz($u_id=0){
 
-        if(isset($_GET['u_email']) && intval($u_id)>0){
+        if(isset($_GET['u_email'])){
             //Fetch this user:
             $us = $this->Db_model->u_fetch(array(
-                'u_id' => $u_id,
                 'u_email' => $_GET['u_email'],
             ));
             if(count($us)<1){
