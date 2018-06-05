@@ -20,8 +20,8 @@ function echo_row($b,$counter){
     echo '<td>'.( isset($b['leaders'][0]) ? '<a href="/entities/'.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_full_name'].'</a>' : '' ).'</td>';
 
     //Pricing:
-    echo '<td>$'.($b['b_weekly_coaching_rate'] * $b['b__week_count']).'</td>';
-    echo '<td>$'.($b['b_weekly_coaching_rate'] * $b['b__week_count'] * $b['b_deferred_rate'] * $b['b_deferred_deposit']).'</td>';
+    echo '<td>$'.($b['b_weekly_coaching_rate']).'</td>';
+    echo '<td>$'.($b['b_weekly_coaching_rate'] * $b['b_deferred_rate'] * $b['b_deferred_deposit']).'</td>';
 
 
     echo '<td>';

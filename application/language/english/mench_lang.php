@@ -19,6 +19,7 @@ $lang['obj_i_name'] = 'Message';
 $lang['obj_e_status_name'] = 'Engagement Status';
 $lang['obj_x_type_name'] = 'URL Content Type';
 $lang['obj_x_status_name'] = 'URL Status';
+$lang['obj_c_level_name'] = 'Intent Level';
 $lang['obj_c_name'] = 'Intent';
 $lang['obj_cr_name'] = 'Intent Link';
 $lang['obj_ru_name'] = 'Admission';

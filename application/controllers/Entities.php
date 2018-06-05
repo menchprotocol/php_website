@@ -16,7 +16,7 @@ class Entities extends CI_Controller {
     }
 
 
-    function new_student_api(){
+    function new_student_api($b_id=354 /*Get Hired As A Junior Full-Stack Developer*/, $support_level=0 /*Same as checkout 1,2,3*/){
 
         //And API call that get's POST variables for email and name and creates a new user
 
@@ -68,6 +68,47 @@ class Entities extends CI_Controller {
             'e_inbound_u_id'  => 0, //System/API
             'e_outbound_u_id' => $new_u['u_id'],
         ));
+
+        //Also enroll them in the Bootcamp if set and IF offers coaching:
+        if($b_id && in_array($support_level,array(1,2,3))){
+
+            //Fetch Bootcamp:
+            $bs = $this->Db_model->b_fetch(array(
+                'b_id' => $b_id,
+            ));
+
+            if(count($bs)==1 && (($support_level==1 && $bs[0]['b_offers_diy']>0) || ($support_level==2 && $bs[0]['b_weekly_coaching_hours']>0) || ($support_level==3 && $bs[0]['b_deferred_rate']>0))){
+
+                //Find the next coaching class:
+                $classes = $this->Db_model->r_fetch(array(
+                    'r_b_id' => $b_id,
+                    'r_status' => 1, //Available for coaching
+                ),null,'ASC',1);
+
+                if(count($classes)==1){
+
+                    //Create student admission:
+                    $this->Db_model->ru_create(array(
+                        'ru_b_id' 	        => $b_id,
+                        'ru_r_id' 	        => $classes[0]['r_id'],
+                        'ru_outbound_u_id' 	=> $new_u['u_id'],
+                        'ru_status'         => 0, //Pending Payment...
+                        'ru_fp_id'          => $admissions[0]['b_fp_id'],
+                        'ru_fp_psid'        => ( $admissions[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
+                        'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
+
+                        'ru_upfront_pay'    => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * $admissions[0]['b_deferred_deposit']) : ( $_POST['support_level']==2 ? ($admissions[0]['b_weekly_coaching_rate']) : 0 ) ),
+                        'ru_deferred_pay'   => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * (1-$admissions[0]['b_deferred_deposit'])) : 0 ),
+
+                        'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
+                        'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
+                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($admissions[0]['b__week_count']+$admissions[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+                    ));
+
+
+                }
+            }
+        }
 
         return echo_json(array(
             'status' => 1,

@@ -67,13 +67,14 @@ $uri_segment_2 = $this->uri->segment(2);
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-main navbar-right">
 
-                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-cube"></i> Bootcamps</a></li>
+                        <?php /* <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage Bootcamps & Tasks"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-hashtag"></i> Intents</a></li> */ ?>
 
+                        <li <?= ( $uri_segment_1=='console' && ( !$uri_segment_2 || intval($uri_segment_2)>0 ) ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage your Bootcamps"><a href="/console<?= ( isset($b) && $b['b_is_parent'] ? '#multiweek' : '' ) ?>"><i class="fas fa-cube"></i> Bootcamps</a></li>
 
                         <?php if($udata['u_inbound_u_id']==1281){ ?>
                             <!-- <li <?= ( $uri_segment_1=='intents' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Intents are outcomes that related to one another"><a href="/intents"><i class="fas fa-hashtag"></i> Intents</a></li> -->
                             <li <?= ( $uri_segment_1=='entities' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="All platform objects like people, organizations and content"><a href="/entities/1278"><i class="fas fa-at"></i> Entities</a></li>
-                            <li <?= ( $uri_segment_1=='cockpit' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Tools to overview and manage the Mench platform"><a href="/cockpit/browse/engagements"><i class="fab fa-bandcamp"></i> Cockpit</a></li>
+                            <li <?= ( $uri_segment_1=='cockpit' ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Tools to overview and manage the Mench platform"><a href="/cockpit/browse/engagements"><i class="fas fa-tachometer"></i> Cockpit</a></li>
                         <?php } else { ?>
                             <li <?= ( $uri_segment_1=='entities' && $uri_segment_2==$udata['u_id'] ? 'class="active"' : '' ) ?> data-toggle="tooltip" data-placement="bottom" title="Manage my profile settings"><a href="/entities/<?= $udata['u_id'] ?>"><i class="fas fa-user-circle"></i> My Account</a></li>
                         <?php } ?>
@@ -104,7 +105,7 @@ $uri_segment_2 = $this->uri->segment(2);
                         echo ' <i class="fas fa-lock" style="margin-right:3px; color:#FF0000;" data-toggle="tooltip" data-placement="bottom" title="This Bootcamp was created with an older version of Mench. You can import the Action Plan into a new Weekly Bootcamp."></i>';
                     }
 	    		} elseif($uri_segment_1=='cockpit'){
-                    echo '<i class="fab fa-bandcamp" style="margin-right:3px;"></i> Cockpit';
+                    echo '<i class="fas fa-tachometer" style="margin-right:3px;"></i> Cockpit';
                 }
 
 	    		echo '</div>';
@@ -146,9 +147,12 @@ $uri_segment_2 = $this->uri->segment(2);
 
                     //echo '<li class="li-sep"><a href="/logout"><i class="fas fa-power-off"></i><p>Logout '.one_two_explode('',' ',$udata['u_full_name']).'</p></a></li>';
 
-                } elseif($uri_segment_1=='intents' && $udata['u_inbound_u_id']==1281){
+                } elseif(in_array($uri_segment_1,array('console','tasks')) && 0){
 
+            	    $c_level = echo_status('c_level', null);
 
+                    echo '<li class="li-sep '.( $uri_segment_1=='console' ? 'active' : '' ).'"><a href="/console"><i class="'.$c_level[0]['s_mini_icon'].'"></i><p>Bootcamps</p></a></li>';
+                    echo '<li class="li-sep '.( $uri_segment_1=='tasks' ? 'active' : '' ).'"><a href="/tasks"><i class="'.$c_level[2]['s_mini_icon'].'"></i><p>Tasks</p></a></li>';
 
                 } elseif($uri_segment_1=='cockpit' && $udata['u_inbound_u_id']==1281){
 

@@ -192,6 +192,28 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fas fa-clipboard-check',
         ),
     ),
+    'c_level' => array(
+        0 => array(
+            's_name'  => 'Weekly Bootcamp',
+            's_desc'  => 'The core unit of education at Mench. Weekly Bootcamps are a bucket of tasks to be executed within 7-days',
+            's_mini_icon' => 'fas fa-cube',
+        ),
+        1 => array(
+            's_name'  => 'Multi-Week Bootcamp',
+            's_desc'  => 'A collection of weekly Bootcamps designed for accomplishing larger intents',
+            's_mini_icon' => 'fas fa-cubes',
+        ),
+        2 => array(
+            's_name'  => 'Task',
+            's_desc'  => 'An executable unit of execution to be completed in less than 5 hours',
+            's_mini_icon' => 'fas fa-clipboard-check',
+        ),
+        3 => array(
+            's_name'  => 'Steps',
+            's_desc'  => 'Breaks tasks down into smaller execution to be completed in less than 30 minutes',
+            's_mini_icon' => 'fal fa-clipboard-check',
+        ),
+    ),
     'b_guarantee_weeks' => array(
         0 => array(
             's_name'  => 'Before Class Ends',
@@ -486,6 +508,7 @@ $config['object_statuses'] = array(
             's_mini_icon' => 'fas fa-plug',
         ),
     ),
+    //0=Weekly, 1=Multiweek, 2=Task, 3=Step
     'fs' => array(
         -1 => array(
             's_name'  => 'Access Revoked',
