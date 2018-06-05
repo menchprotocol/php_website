@@ -53,7 +53,6 @@ WHERE ru.ru_status >= 4
             if($admission['ru_r_id']>0){
                 $classes = $this->Db_model->r_fetch(array(
                     'r.r_id' => $admission['ru_r_id'],
-                    'r.r_status >=' => 1,
                 ));
                 if(count($classes)<1){
                     $this->Db_model->e_create(array(
@@ -522,7 +521,6 @@ WHERE ru.ru_status >= 4
 	        $this->db->where($key,$value);
 	    }
 	    $this->db->order_by('ba.ba_status','DESC');
-	    $this->db->order_by('ba.ba_team_display','DESC');
 	    $q = $this->db->get();
 	    return $q->result_array();
 	}
@@ -866,7 +864,7 @@ WHERE ru.ru_status >= 4
             //Log Engagement
             $this->Db_model->e_create(array(
                 'e_inbound_u_id' => $admissions[0]['u_id'],
-                'e_text_value' => ($admissions[0]['ru_final_price']>0 ? 'Received $'.$admissions[0]['ru_final_price'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
+                'e_text_value' => ($admissions[0]['ru_upfront_pay']>0 ? 'Received $'.$admissions[0]['ru_upfront_pay'].' USD via PayPal.' : 'Student Joined FREE Bootcamp' ),
                 'e_json' => $_POST,
                 'e_inbound_c_id' => 30,
                 'e_b_id' => $admissions[0]['ru_b_id'],
@@ -897,11 +895,8 @@ WHERE ru.ru_status >= 4
 
         //Log Error:
         $this->Db_model->e_create(array(
-            'e_inbound_u_id' => $admissions[0]['u_id'],
             'e_text_value' => 'ru_finalize() failed to update admission for ru_id=['.$ru_id.']',
             'e_inbound_c_id' => 8,
-            'e_b_id' => $admissions[0]['ru_b_id'],
-            'e_r_id' => $admissions[0]['ru_r_id'],
         ));
 
         return 0;
@@ -1153,7 +1148,7 @@ WHERE ru.ru_status >= 4
         if(in_array('ba',$join_objects)){
             $this->db->join('v5_bootcamp_team ba', 'ba.ba_b_id = b.b_id','left');
             $this->db->join('v5_entities u', 'u.u_id = ba.ba_outbound_u_id','left');
-            $this->db->where('ba_status',3); //Lead instructor
+            $this->db->where('ba_status',3); //Lead coach
         }
         foreach($match_columns as $key=>$value){
 	        $this->db->where($key,$value);
@@ -1399,22 +1394,6 @@ WHERE ru.ru_status >= 4
             $insert_columns['b_old_format'] = 0;
         }
 
-        //Fetch config to determine defaults:
-        $pm = $this->config->item('pricing_model');
-
-        if(!isset($insert_columns['b_p1_rate'])){
-            $insert_columns['b_p1_rate'] = $pm['p1_rate_default'];
-        }
-        if(!isset($insert_columns['b_p2_max_seats'])){
-            $insert_columns['b_p2_max_seats'] = $pm['p2_seat_default'];
-        }
-        if(!isset($insert_columns['b_p2_rate'])){
-            $insert_columns['b_p2_rate'] = $pm['p2_rate_default'];
-        }
-        if(!isset($insert_columns['b_p3_rate'])){
-            $insert_columns['b_p3_rate'] = $pm['p3_rate_default'];
-        }
-
         //Lets now add:
 	    $this->db->insert('v5_bootcamps', $insert_columns);
 	    
@@ -1588,7 +1567,7 @@ WHERE ru.ru_status >= 4
 	
 	function ba_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('ba_outbound_u_id','ba_b_id','ba_status','ba_team_display'))){
+        if(missing_required_db_fields($insert_columns,array('ba_outbound_u_id','ba_b_id','ba_status'))){
             return false;
         }
 

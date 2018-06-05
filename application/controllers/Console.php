@@ -171,8 +171,6 @@ class Console extends CI_Controller {
 	    ));
         if(!isset($bs[0])){
             redirect_message('/console','<div class="alert alert-danger" role="alert">Invalid Bootcamp ID.</div>');
-        } elseif($bs[0]['b_is_parent']){
-            redirect_message('/console/'.$b_id,'<div class="alert alert-danger" role="alert">Multi-Week Bootcamp do not have Classes of their own, they operate under the Classes of their Weekly Bootcamps.</div>');
         }
 	    
 	    $view_data = array(

@@ -1290,7 +1290,6 @@ class Comm_model extends CI_Model {
                         'u_email' => $u['u_email'],
                         'subject_line' => $subject_line,
                         'html_message' => echo_i($message, $u['u_full_name'],false),
-                        'b_support_email' => null, //Might get updated soon...
                     );
 
                     //Should we update email?
@@ -1299,9 +1298,6 @@ class Comm_model extends CI_Model {
                         $bs = $this->Db_model->b_fetch(array(
                             'b.b_id' => $message['e_b_id'],
                         ));
-                        if(count($bs)>0 && strlen($bs[0]['b_support_email'])>0){
-                            $email_variables['b_support_email'] = $bs[0]['b_support_email'];
-                        }
                     }
 
                     $e_var_create = array(
@@ -1332,7 +1328,7 @@ class Comm_model extends CI_Model {
         if(count($email_to_send)>0){
             //Yes, go through these emails and send them:
             foreach($email_to_send as $email){
-                $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], $email['b_support_email']);
+                $process = $this->Comm_model->send_email(array($email['u_email']), $email['subject_line'], $email['html_message'], $email['e_var_create'], 'support@mench.com' /*Hack! To be replaced with ceo email*/);
 
                 array_push( $e_json['email'] , $process );
             }

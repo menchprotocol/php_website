@@ -6,7 +6,7 @@ date_default_timezone_set('America/Los_Angeles');
 
 //Primary website variables:
 $config['website'] = array(
-    'version' => '3.56',
+    'version' => '3.7',
     'name' => 'Mench',
     'url' => 'https://mench.com/', //Important to end with "/" as other links depend on this.
     'email' => 'shervin@mench.com',
@@ -25,6 +25,13 @@ $config['class_settings'] = array(
     'students_show_max'         => 13, //Maximum available for students to see
 );
 
+$config['deferred_pay_defaults'] = array(
+    //NOTE: If making changes also make sure to edit informational help intent #7019
+    'b_deferred_rate'        => 2.0,  //Multiplier relative to up-front pay
+    'b_deferred_deposit'     => 0.1,  //% of the new/large deferred rate that students must pay up-front which is non-refundable
+    'b_deferred_payback'     => 0.25, //Percentage of each net paycheck that they need to pay back
+);
+
 $config['required_fb_permissions'] = array(
     'public_profile' => 'Basic permission granted by Facebook so we can access your profile\'s publicly available information.', //Basic permission
     'pages_show_list' => 'Enables us to list all Facebook Pages you manage so you can choose which one to connect to this Bootcamp.',
@@ -37,8 +44,6 @@ $config['required_fb_permissions'] = array(
 $config['application_status_salt'] = 'SALTs3cr3t777';
 $config['bot_activation_salt'] = 'S@LTB0Ts3cr3t4';
 $config['file_limit_mb'] = 25; //Server setting is 32MB. see here: mench.com/ses
-
-//That is auto added to all Bootcamp teams as Adviser role:
 $config['message_max'] = 420; //Max number of characters allowed in messages
 
 //Learn more: https://console.aws.amazon.com/iam/home?region=us-west-2#/users/foundation?section=security_credentials
@@ -46,22 +51,6 @@ $config['aws_credentials'] = [
     'key'    => 'AKIAJOLBLKFSYCCYYDRA',
     'secret' => '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',
 ];
-
-$config['pricing_model'] = array(
-    'baseline_rate' => 0.10, //Applied to all transactions, covers Transaction Fee
-    'affiliate_rate' => 0.00, //Additional charge only if Mench refers student to Bootcamp    'p1_rates' => array(0.00,8.00,15.00), //Per Week
-
-    'p1_rates' => array(-1,0,8,18), //Per Week 8,15
-    'p1_rate_default' => 0,
-
-    'p2_rates' => array(55), //Per Week 85
-    'p2_rate_default' => 55,
-    'p2_max_seats' => array(0,2,6,12,20,30,50,80,130), //Defines how many Guided students would an instructor accept into each Class
-    'p2_seat_default' => 6,
-
-    'p3_rates' => array(0,1.12,1.8), //Per Minute, Next level is 4.6
-    'p3_rate_default' => 0,
-);
 
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
 
@@ -116,13 +105,13 @@ $config['object_statuses'] = array(
 
         //The following two status ICONS are hard-coded in console.js for Algolia search
         2 => array(
-            's_name'  => 'Published Privately',
-            's_desc'  => 'Bootcamp open for admission for anyone who received the Private Landing Page URL',
+            's_name'  => 'Unlisted',
+            's_desc'  => 'Bootcamp open for admission for students who receive the private landing page URL',
             'limit_u_inbounds'  => array(1281), //Can only be done by admin
-            's_mini_icon' => 'fas fa-cart-plus',
+            's_mini_icon' => 'fas fa-link',
         ),
         3 => array(
-            's_name'  => 'Mench Marketplace',
+            's_name'  => 'Public',
             's_desc'  => 'Bootcamp published on Mench.com Marketplace',
             'limit_u_inbounds'  => array(1281), //Can only be done by admin
             's_mini_icon' => 'fas fa-bullhorn',
@@ -152,19 +141,13 @@ $config['object_statuses'] = array(
             's_desc'  => 'Bootcamp access revoked',
             's_mini_icon' => 'fas fa-trash-alt',
         ),
-        1 => array(
-            's_name'  => 'Adviser',
-            's_desc'  => 'Mench advisory team who extend your resources by reviewing and sharing feedback on ways to improve the Bootcamp configurations',
-            's_mini_icon' => 'fas fa-comment-alt-smile',
-            'limit_u_inbounds'  => array(1281), //For now this is NOT in use, just being hacked into the UI via team section of settings.php page view file
-        ),
         2 => array(
-            's_name'  => 'Co-Instructor',
-            's_desc'  => 'Supports the lead instructor in Bootcamp operations based on specific privileges assigned to them',
-            's_mini_icon' => 'fas fa-user-plus',
+            's_name'  => 'Coach',
+            's_desc'  => 'Supports the lead coach in supporting Bootcamp students',
+            's_mini_icon' => 'fas fa-whistle',
         ),
         3 => array(
-            's_name'  => 'Lead Instructor',
+            's_name'  => 'Lead Coach',
             's_desc'  => 'The Bootcamp CEO who is responsible for the Bootcamp performance measured by its completion rate',
             's_mini_icon' => 'fas fa-star',
         ),
@@ -207,6 +190,33 @@ $config['object_statuses'] = array(
             's_name'  => 'Published',
             's_desc'  => 'Step is active and accessible by students',
             's_mini_icon' => 'fas fa-clipboard-check',
+        ),
+    ),
+    'b_guarantee_weeks' => array(
+        0 => array(
+            's_name'  => 'Before Class Ends',
+            's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome before their class ends',
+            's_mini_icon' => 'fas fa-bolt',
+        ),
+        1 => array(
+            's_name'  => '1 Week After Class Ends',
+            's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 1 week after their class ends',
+            's_mini_icon' => 'fas fa-alarm-clock',
+        ),
+        2 => array(
+            's_name'  => '2 Weeks After Class Ends',
+            's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 2 weeks after their class ends',
+            's_mini_icon' => 'fas fa-alarm-clock',
+        ),
+        3 => array(
+            's_name'  => '3 Weeks After Class Ends',
+            's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 3 weeks after their class ends',
+            's_mini_icon' => 'fas fa-alarm-clock',
+        ),
+        4 => array(
+            's_name'  => '4 Weeks After Class Ends',
+            's_desc'  => 'Bootcamp offers tuition reimbursement for students that complete all weekly tasks on-time but fail to accomplish the outcome within 4 weeks after their class ends',
+            's_mini_icon' => 'fas fa-alarm-clock',
         ),
     ),
     'cr' => array(
@@ -285,10 +295,15 @@ $config['object_statuses'] = array(
             'limit_u_inbounds'  => array(1281),
             's_mini_icon' => 'fas fa-times-circle',
         ),
+        0 => array(
+            's_name'  => 'Coaching Unavailable',
+            's_desc'  => 'Class is not available for coaching admissions this week',
+            's_mini_icon' => 'fas fa-minus-circle',
+        ),
         1 => array(
-            's_name'  => 'Open Admission',
-            's_desc'  => 'Class is open for admission',
-            's_mini_icon' => 'fas fa-cart-plus',
+            's_name'  => 'Coaching Available',
+            's_desc'  => 'Class is open for coaching admission',
+            's_mini_icon' => 'fas fa-whistle',
         ),
         2 => array(
             's_name'  => 'Class Running',
@@ -487,13 +502,13 @@ $config['object_statuses'] = array(
 
 //These URLs are recognized as Social Profiles
 $config['social_urls'] =array(
-    'https://www.facebook.com/'         => 'fab fa-facebook',
-    'https://www.instagram.com/'        => 'fab fa-instagram',
-    'https://twitter.com/'              => 'fab fa-twitter',
-    'https://www.youtube.com/'          => 'fab fa-youtube',
     'https://www.linkedin.com/in/'      => 'fab fa-linkedin',
-    'https://github.com/'               => 'fab fa-github',
+    'https://www.youtube.com/'          => 'fab fa-youtube',
+    'https://twitter.com/'              => 'fab fa-twitter',
+    'https://www.instagram.com/'        => 'fab fa-instagram',
+    'https://www.facebook.com/'         => 'fab fa-facebook',
     'https://join.skype.com/'           => 'fab fa-skype',
+    'https://github.com/'               => 'fab fa-github',
 );
 
 

@@ -129,6 +129,11 @@ class Urls extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Outbound Entity ID ['.$_POST['x_outbound_u_id'].']',
             ));
+        } elseif(is_booking_url($_POST['x_url']) && $outbound_us[0]['u_booking_x_id']>0) {
+            return echo_json(array(
+                'status' => 0,
+                'message' => 'You cannot add a second booking URL to this profile. Remove the current booking URL before adding a new one.',
+            ));
         }
 
 
@@ -163,6 +168,17 @@ class Urls extends CI_Controller
             'x_type' => $curl['x_type'],
             'x_status' => ( $curl['url_is_broken'] ? 1 : 2 ),
         ));
+
+        //Is this a Booking URL?
+        if(is_booking_url($_POST['x_url']) && $outbound_us[0]['u_booking_x_id']==0){
+            //Set as Booking URL:
+            $this->Db_model->u_update( $outbound_us[0]['u_id'] , array(
+                'u_booking_x_id'   => $new_x['x_id'],
+            ));
+
+            //Update data to be instantly shown in UI:
+            $outbound_us[0]['u_booking_x_id'] = $new_x['x_id'];
+        }
 
         //Log Engagements:
         $this->Db_model->e_create(array(
@@ -256,7 +272,7 @@ class Urls extends CI_Controller
         if($urls[0]['u_cover_x_id']==$_POST['x_id']){
             //This is set as the Cover photo, let's remove it:
             $this->Db_model->u_update( $urls[0]['u_id'] , array(
-                'u_cover_x_id' => 0, //Remove Cover photo
+                'u_cover_x_id' => 0,
             ));
 
             //Log Engagement:
@@ -266,6 +282,11 @@ class Urls extends CI_Controller
                 'e_inbound_u_id' => $udata['u_id'],
                 'e_outbound_u_id' => $urls[0]['x_outbound_u_id'],
                 'e_x_id' => $_POST['x_id'],
+            ));
+        } elseif($urls[0]['u_booking_x_id']==$_POST['x_id']){
+            //This is set as the Booking URL, let's remove it:
+            $this->Db_model->u_update( $urls[0]['u_id'] , array(
+                'u_booking_x_id' => 0,
             ));
         }
 

@@ -41,7 +41,7 @@ class Front extends CI_Controller {
 	    //Check to see if they are already logged in?
 	    $udata = $this->session->userdata('user');
 	    if(isset($udata['u_inbound_u_id']) && in_array($udata['u_inbound_u_id'], array(1280,1308,1281))){
-	        //Lead instructor and above, go to console:
+	        //Lead coach and above, go to console:
 	        redirect_message('/console');
 	    }
 	    
@@ -128,6 +128,8 @@ class Front extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page.</div>');
+        } elseif(!(intval($bs[0]['b_offers_diy']) || doubleval($bs[0]['b_weekly_coaching_hours']))){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not offer any admission packages yet.</div>');
         } elseif(!(strcmp($bs[0]['b_url_key'], $b_url_key)==0)){
             //URL Case sensitivity redirect:
             redirect_message('/'.$bs[0]['b_url_key']);

@@ -479,7 +479,7 @@ class Bot extends CI_Controller {
                     't_fees' => doubleval(( $_POST['payment_fee']>$_POST['mc_fee'] ? $_POST['payment_fee'] : $_POST['mc_fee'] )),
                 ));
 
-                if($payment_received>=$admissions[0]['ru_final_price']){
+                if($payment_received>=$admissions[0]['ru_upfront_pay']){
 
                     //Finalize their Admission:
                     $this->Db_model->ru_finalize($admissions[0]['ru_id']);

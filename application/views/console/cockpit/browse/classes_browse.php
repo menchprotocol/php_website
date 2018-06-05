@@ -107,11 +107,11 @@ foreach($classes as $key=>$class) {
         $guided_admissions = count($this->Db_model->ru_fetch(array(
             'ru_r_id' => $class['r_id'],
             'ru_status >=' => 4,
-            'ru_p2_price >' => 0,
+            'ru_upfront_pay >' => 0,
         )));
 
-        echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats/Max-Guided">';
-        echo $pending_completion.' &raquo; <b>'.$class['r__current_admissions'].'</b>'.( $guided_admissions>0 ? ' (<b>'.$guided_admissions.'</b>/'.$bs[0]['b_p2_max_seats'].')' : '' );
+        echo '<span data-toggle="tooltip" title="Pending &raquo; Joined Student &raquo; Guided-Seats">';
+        echo $pending_completion.' &raquo; <b>'.$class['r__current_admissions'].'</b>'.( $guided_admissions>0 ? ' (<b>'.$guided_admissions.'</b>)' : '' );
         echo '</span>';
 
     }

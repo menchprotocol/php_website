@@ -12,6 +12,31 @@ class Adjust extends CI_Controller {
     }
 
 
+    function rsync(){
+
+        $bs = $this->Db_model->b_fetch(array(
+            'b_is_parent' => 1,
+        ));
+
+        $created = 0;
+        foreach($bs as $b){
+            //See if we have classes:
+            $classes = $this->Db_model->r_fetch(array(
+                'r_b_id' => $b['b_id'],
+            ));
+
+            if(count($classes)==0){
+                $created++;
+                $new_class_count = $this->Db_model->r_sync($b['b_id']);
+            } else {
+                //echo '<div><a href="/console/'.$b['b_id'].'">'.$b['b_id'].'</a> Has '.count($classes).' Classes</div>';
+            }
+        }
+
+        echo $created.'/'.count($bs).' Needed classes';
+    }
+
+
     function resync_class_actionplans_and_message_instructors(){
 
         //First delete old caches:
@@ -80,39 +105,7 @@ class Adjust extends CI_Controller {
         echo $counter;
     }
 
-    function mass_enroll($from_r_id,$to_b_id,$to_r_id){
 
-        //Admits all Free students from $from_r_id to $to_r_id
-        $admissions = $this->Db_model->ru_fetch(array(
-            'ru_r_id' 	        => $from_r_id,
-            'ru.ru_status >='   => 4, //Initiated or higher as long as bootcamp is running!
-            'ru.ru_p1_price'	=> 0, //Free DIY
-        ));
-
-        foreach($admissions as $admission){
-
-            //Admit them to the second Class:
-            $this->Db_model->ru_create(array(
-                'ru_r_id' 	        => $to_r_id,
-                'ru_outbound_u_id' 	        => $admission['u_id'],
-                'ru_status'         => 4,
-                'ru_fp_id'          => $admission['ru_fp_id'],
-                'ru_fp_psid'        => $admission['ru_fp_psid'],
-            ));
-
-            //Let them know about this Admission:
-            $this->Comm_model->foundation_message(array(
-                'e_outbound_u_id' => $admission['u_id'],
-                'e_outbound_c_id' => 5995,
-                'depth' => 0,
-                'e_b_id' => $to_b_id,
-                'e_r_id' => $to_r_id,
-            ));
-        }
-
-        echo count($admissions).' Students moved from Class ['.$from_r_id.'] to Class ['.$to_r_id.']';
-
-    }
 
     function sync_student_progress(){
 

@@ -40,18 +40,18 @@ $( document ).ready(function() {
 
 </script>
 
-<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-cube"></i> Enroll in <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.8em;"><i class="fas fa-alarm-clock"></i> <?= echo_hours($b['c__estimated_hours']).' in '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']) ?> [<?= echo_hours($b['c__estimated_hours']/($b['b__week_count']*7)) ?> per Day]</span></p>
+<p style="border-bottom:4px solid #3C4858; font-weight:bold; padding-bottom:10px; margin-bottom:20px; display:block;"><i class="fas fa-cube"></i> <?= $b['c_outcome'] ?><span style="font-weight: 500; display: block; padding-top:5px; font-size:0.9em;"><?= '<i class="fas fa-clock"></i> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours(($b['c__estimated_hours']/$b['b__week_count']),false).'/Week' ?></span></p>
 
 
 <div class="section">
     <div class="row" style="max-width:330px; padding-left:10px;">
         <div class="col-xs-12">
             <p>Full Name:</p>
-            <p><input type="text" id="u_full_name" value="<?= ( isset($udata['u_full_name']) ? $udata['u_full_name'] : '' ) ?>" class="form-el" /></p>
+            <p><input type="text" id="u_full_name" value="<?= ( isset($u['u_full_name']) ? $u['u_full_name'] : '' ) ?>" class="form-el" /></p>
         </div>
         <div class="col-xs-12">
             <p>Email:</p>
-            <p><input type="email" id="u_email" value="<?= ( isset($udata['u_email']) ? $udata['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
+            <p><input type="email" id="u_email" value="<?= ( isset($u['u_email']) ? $u['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
         </div>
     </div>
     <div class="row maxout" style="padding-left:10px;">

@@ -1,26 +1,22 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-$week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
+
 $child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
-$start_date_unix = strtotime(( $b['b_id']==354 ? 'monday June 11 2018' : 'next monday' )); //
+$b = ( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? b_aggregate($b) : $b ); //Replace $b with the new aggregated $b
+$next_classes = $this->Db_model->r_fetch(array(
+    'r_b_id' => $b['b_id'],
+    'r_status' => ( $b['b_offers_diy'] ? 0 : 1 /* Require coaching */ ),
+),null,'ASC',1);
 
-if($b['b_is_parent'] && count($b['c__child_intents'])>0){
-    //Replace $b with the new aggregated $b
-    $b = b_aggregate($b);
-}
-
-$price_range = array(
-    'min' => echo_price($b,1, true),
-    'max' => echo_price($b,2, true),
-);
 ?>
 
 <style>
-    .msg { font-size:18px !important; font-weight:300 !important;}
+    .msg { font-size:18px !important; font-weight:300 !important; margin-top:6px !important }
     .msg a { max-width: none; }
 </style>
+
 <script>
 
 function toggleview(object_key){
@@ -47,7 +43,7 @@ function toggleview(object_key){
 $( document ).ready(function() {
     $(".next_start_date").countdowntimer({
         startDate : "<?php echo date('Y/m/d H:i:s'); ?>",
-        dateAndTime : "<?php echo date('Y/m/d' , echo_time($start_date_unix,3,-1)); ?> 23:59:59",
+        dateAndTime : "<?php echo date('Y/m/d' , echo_time($next_classes[0]['r_start_date'],3,-1)); ?> 23:59:59",
         size : "lg",
         regexpMatchFormat: "([0-9]{1,3}):([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",
         regexpReplaceWith: "<b>$1</b><sup>Days</sup><b>$2</b><sup>H</sup><b>$3</b><sup>M</sup><b>$4</b><sup>S</sup>"
@@ -67,16 +63,61 @@ $( document ).ready(function() {
         	<h3 style="margin-top:0;">Bootcamp Overview</h3>
 
             <div style="margin-left:0; padding:5px 10px; background-color:#E5E5E5; border-radius:5px;">
-                <?php echo echo_action_plan_overview($b,1, $start_date_unix) ?>
-                <?php /*
-                <div><?= ( $price_range['min']>=0 && $price_range['max']>=0 ? 'Tuition Range: <b>'.echo_price($b,1).' - '.echo_price($b,2).' <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition depends on the support level you choose"></i></b>' : 'Tuition: <b>'.( echo_price($b,( $price_range['min']>=0 ? 1 : 2 )) ).'</b>' ) ?></div>
-                */ ?>
+                <?php
+
+                //Duration/Commitment
+                echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$b['b__week_count'].' Week'.echo__s($b['b__week_count']).' @ '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
+
+                //Next class?
+                echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-calendar"></i></span> '.echo_time($next_classes[0]['r_start_date'],5).' - '.echo_time($next_classes[0]['r_start_date'],5, (($b['b__week_count']*7*24*3600)-(4*3600))).'</div>';
+
+                if($b['b_weekly_coaching_hours']){
+                    //Coaching hours:
+                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> '.echo_hours($b['b_weekly_coaching_hours']).' of Weekly Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.echo_hours($b['b_weekly_coaching_hours']*$b['b__week_count']).' of 1-on-1 coaching in '.$b['b__week_count'].' week'.echo__s($b['b__week_count']).' with a direct chat line & weekly video calls"></i></div>';
+                }
+
+
+
+                //To be replaced with real data soon
+                if($b['b_id']==354 && 0){
+                    echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> '.$b['c__message_tree_count'].' Insight'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages with best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
+
+                    echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> 32 Referenced Sources <i class="fas fa-info-circle" data-toggle="tooltip" title="Messages reference 32 external sources (like books, videos, blog posts and podcasts)"></i></div>';
+                    echo ' <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> 17 Industry Experts <i class="fas fa-info-circle" data-toggle="tooltip" title="References are authored by 17 industry experts with first-hand experience to '.strtolower($b['c_outcome']).'"></i></div>';
+                }
+
+
+
+                if($b['b_weekly_coaching_hours']){
+
+                    $guarantee_date = echo_time($next_classes[0]['r_start_date'],8, ((($b['b__week_count']+$b['b_guarantee_weeks'])*7*24*3600)-(4*3600)));
+
+                    //Coaching Rate:
+                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-dollar-sign"></i></span> '.number_format(($b['b_weekly_coaching_rate']*$b['b__week_count']),0).' USD Coaching Tuition <i class="fas fa-info-circle" data-toggle="tooltip" title="Tuition covers the 1-on-1 coaching you will receive during this '.$b['b__week_count'].' week Bootcamp"></i></div>';
+
+                    if($b['b_deferred_rate']){
+                        //Deferred payment also available
+                        echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-credit-card"></i></span> Deferred Payments Available <i class="fas fa-info-circle" data-toggle="tooltip" title="Pay a non-refundable deposit of $'.number_format(($b['b_weekly_coaching_rate']*$b['b__week_count']*$b['b_deferred_rate']*$b['b_deferred_deposit']),0).' up-front and pay $'.number_format(($b['b_weekly_coaching_rate']*$b['b__week_count']*$b['b_deferred_rate']*(1-$b['b_deferred_deposit'])),0).' after you get hired from '.($b['b_deferred_payback']*100).'% of each paycheck"></i></div>';
+                    }
+
+                    //What's the guarantee?
+                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-smile"></i></span> <a href="https://support.mench.com/hc/en-us/articles/115002080031" style="border-bottom:1px dashed #3C4858;" data-toggle="tooltip" title="Click to lean more about our signature tuition reimbursement guarantee">Outcome Guarantee</a> by '.$guarantee_date.' <i class="fas fa-info-circle" data-toggle="tooltip" title="Receive a full refund if you do not '.strtolower($b['c_outcome']).( $b['b_guarantee_weeks'] ? ' within '.$b['b_guarantee_weeks'].' week'.echo__s($b['b_guarantee_weeks']).' after your class ends' : ' before your class ends' ).' ['.$guarantee_date.'] as long as you complete all assigned weekly tasks on-time"></i></div>';
+
+                }
+
+                if($b['b_offers_diy']){
+                    echo '<div class="dash-label"><span class="icon-left"><i class="fas fa-wrench"></i></span> Offers Do It Yourself for FREE <i class="fas fa-info-circle" data-toggle="tooltip" title="Bootcamp offers a Free Do It Yourself admission where you get access to the Action Plan to complete all tasks on your own without any coaching"></i></div>';
+                }
+                ?>
             </div>
             
             <div style="padding:10px 0 0; text-align:center;">
                 <div class="lp_action"><a href="<?= '/'.$b['b_url_key'].( strlen($b['b_apply_url'])>0 ? '/apply' : '/enroll' ) ?>" class="btn btn-primary btn-round"><?= ( strlen($b['b_apply_url'])>0 ? 'Apply' : 'Enroll' ) ?> &nbsp;<i class="fas fa-chevron-right"></i></a></div>
-                <div class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
+
+                <div style="margin:10px 0 !important;" class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
             </div>
+
+            <div style="text-align: center;"><a href="https://support.mench.com/hc/en-us/articles/115002079731">Read Student Testimonials &raquo;</a></div>
 
         </div>
     </div>
@@ -129,13 +170,6 @@ $( document ).ready(function() {
                         echo '</ul>';
                     }
 
-                    if($b['child_bs'][$b7d['cr_outbound_b_id']]['b_status']==3){
-                        //This is a Public Bootcamp, show link to Landing Page:
-                        echo '<div class="title-sub">';
-                        echo $this->lang->line('level_0_icon').' <a href="/'.$b['child_bs'][$b7d['cr_outbound_b_id']]['b_url_key'].'" style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="['.$b7d['c_outcome'].'] is also offered as a '.$this->lang->line('level_0_name').'">'.$this->lang->line('level_0_name').' &raquo;</a>';
-                        echo '</div>';
-                    }
-
 
                     echo '</div>';
                     echo '</div>';
@@ -168,24 +202,23 @@ $( document ).ready(function() {
 
     		
     		
-    		<h3><i class="fas fa-whistle"></i> Coaches</h3>
-    		<?php
+
+        <?php
+        if($b['b_weekly_coaching_hours'] && count($b['b__admins'])>0){
+            echo '<h3><i class="fas fa-whistle"></i> Coaches</h3>';
             $admin_count = 0;
             $leader_fname = '';
             foreach($b['b__admins'] as $admin){
-                if($admin['ba_team_display']!=='t'){
-                    continue;
-                }
                 if($admin_count>0){
                     echo '<hr />';
                 }
-                
+
                 if($admin['ba_status']==3){
                     $leader_fname = one_two_explode('', ' ', $admin['u_full_name']);
                 }
                 echo '<h4 class="userheader">'.echo_cover($admin).' '.( $udata['u_inbound_u_id']==1281 ? ' <a href="/entities/'.$admin['u_id'].'/modify">'.$admin['u_full_name'].' <i class="fas fa-cog"></i></a>' : $admin['u_full_name'] ).'<span><img src="/img/flags/'.strtolower($admin['u_country_code']).'.png" class="flag" style="margin-top:-4px;" /> '.$admin['u_current_city'].'</span></h4>';
                 echo '<p id="u_bio">'.$admin['u_bio'].'</p>';
-                
+
                 //Any languages other than English?
                 if(strlen($admin['u_language'])>0 && $admin['u_language']!=='en'){
                     $all_languages = $this->config->item('languages');
@@ -201,18 +234,19 @@ $( document ).ready(function() {
                         $count++;
                     }
                 }
-                
+
                 //Public profiles:
                 echo '<div class="public-profiles" style="margin-top:10px;">';
                 echo echo_social_profiles($this->Db_model->x_social_fetch($admin['u_id']));
                 echo '</div>';
-                
+
                 $admin_count++;
             }
-            ?>
+        }
+        ?>
 
-            <hr />
-            <p>Ready to unleash your full potential?</p>
+        <hr />
+        <p>Ready to unleash your full potential?</p>
 
     </div>
 </div>

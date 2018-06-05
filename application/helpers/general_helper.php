@@ -499,9 +499,15 @@ function echo_big_num($number){
     }
 }
 
-
-
-
+function is_booking_url($url){
+    if(substr_count(strtolower($url),'calendly.com')==1){
+        return true;
+    } elseif(substr_count(strtolower($url),'app.hubspot.com/meetings')==1){
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function aggregate_field($input_array,$field){
     $return_array = array();
@@ -532,24 +538,10 @@ function mime_type($mime){
 function b_aggregate($b,$skip_parent=false){
 
     //Aggregate this from child-Bootcamps:
-    $b_aggregate = array(
+    $b_agg = array(
         'b_prerequisites'   => ( strlen($b['b_prerequisites'])>0 && !$skip_parent ? json_decode($b['b_prerequisites']) : array() ),
         'b_transformations' => ( strlen($b['b_transformations'])>0 && !$skip_parent ? json_decode($b['b_transformations']) : array() ),
     );
-
-    //Unset some unnecessary fields that do not make sense for a parent Bootcamp:
-    unset($b['b_support_email']);
-    unset($b['b_calendly_url']);
-
-    //Set price to zero:
-    $b['child_bs'] = array();
-    $b['b_p1_rate'] = 0;
-    $b['b_p2_rate'] = 0;
-    $b['b_p3_rate'] = 0;
-    $b['b_p2_weeks'] = 0; //Defines how many weeks this is offered
-    $b['b_p3_weeks'] = 0; //Defines how many weeks this is offered
-    $b['b_p2_max_seats'] = 0; //Would be offered if any of sub-Bootcamps offer
-    $b['b_difficulty_level'] = 0; //Not set
 
     $CI =& get_instance();
 
@@ -565,63 +557,35 @@ function b_aggregate($b,$skip_parent=false){
             continue;
         }
 
-        //This this as child bootcamp
-        $b['child_bs'][$b7d['cr_outbound_b_id']] = $bs[0];
-
         if(strlen($bs[0]['b_transformations'])>0){
             foreach (json_decode($bs[0]['b_transformations']) as $item){
-                if(!in_array($item,$b_aggregate['b_transformations'])){
-                    array_push($b_aggregate['b_transformations'],$item);
+                if(!in_array($item,$b_agg['b_transformations'])){
+                    array_push($b_agg['b_transformations'],$item);
                 }
             }
         }
         if(strlen($bs[0]['b_prerequisites'])>0){
             foreach (json_decode($bs[0]['b_prerequisites']) as $item){
-                if(!in_array($item,$b_aggregate['b_prerequisites'])){
-                    array_push($b_aggregate['b_prerequisites'],$item);
+                if(!in_array($item,$b_agg['b_prerequisites'])){
+                    array_push($b_agg['b_prerequisites'],$item);
                 }
             }
-        }
-
-        //Addup the rates:
-        $b['b_p1_rate'] += doubleval($bs[0]['b_p1_rate']);
-        if(intval($bs[0]['b_p2_max_seats'])>0){
-
-            $b['b_p2_weeks']++;
-            $b['b_p2_rate'] += doubleval($bs[0]['b_p2_rate']);
-            $b['b_p3_rate'] += doubleval($bs[0]['b_p3_rate']);
-
-            if($bs[0]['b_p2_max_seats']>$b['b_p2_max_seats']){
-                //This is the most difficult child Bootcamp, set this as the overall difficulty:
-                $b['b_p2_max_seats'] = $bs[0]['b_p2_max_seats'];
-            }
-
-            if($bs[0]['b_p3_rate']>0){
-                $b['b_p3_weeks']++;
-            }
-        }
-
-        //Max Difficulty level:
-        if(intval($bs[0]['b_difficulty_level'])>$b['b_difficulty_level']){
-            //This is the most difficult child Bootcamp, set this as the overall difficulty:
-            $b['b_difficulty_level'] = intval($bs[0]['b_difficulty_level']);
         }
     }
 
     //Encode like original data:
-    $b['b_transformations'] = ( count($b_aggregate['b_transformations'])>0 ? json_encode($b_aggregate['b_transformations']) : null);
-    $b['b_prerequisites'] = ( count($b_aggregate['b_prerequisites'])>0 ? json_encode($b_aggregate['b_prerequisites']) : null);
+    $b['b_transformations'] = ( count($b_agg['b_transformations'])>0 ? json_encode($b_agg['b_transformations']) : null);
+    $b['b_prerequisites'] = ( count($b_agg['b_prerequisites'])>0 ? json_encode($b_agg['b_prerequisites']) : null);
 
     return $b;
 }
 
 
 function prep_prerequisites($b){
-    $week_count = ( $b['b_is_parent'] ? count($b['c__child_intents']) : 1 );
     //Appends system-enforced prerequisites based on Bootcamp settings:
     $pre_req_array = ( strlen($b['b_prerequisites'])>0 ? json_decode($b['b_prerequisites']) : array() );
     if($b['c__estimated_hours']>0){
-        array_unshift($pre_req_array, 'Commitment to invest at-least <i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']/($week_count)).'/Week</b> during this '.$week_count.' week Bootcamp');
+        array_unshift($pre_req_array, 'Commitment to invest at-least <i class="fas fa-alarm-clock"></i> <b>'.echo_hours($b['c__estimated_hours']/($b['b__week_count'])).'/Week</b> during this '.$b['b__week_count'].' week Bootcamp');
     }
     return $pre_req_array;
 }
@@ -642,20 +606,17 @@ function b_progress($b){
 
 
 
-    if(!$b['b_is_parent']){
-        //Facebook Page
-        $estimated_minutes = 15;
-        $progress_possible += $estimated_minutes;
-        $e_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_inbound_u_id']==1281) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-        array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/settings#pages',
-            'anchor' => '<b>Connect your <i class="fab fa-facebook" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
-            'e_status' => $e_status,
-            'time_min' => $estimated_minutes,
-        ));
-    }
-
+    //Facebook Page
+    $estimated_minutes = 15;
+    $progress_possible += $estimated_minutes;
+    $e_status = ( $b['b_fp_id']>0 && (!($b['b_fp_id']==4) || $bl['u_inbound_u_id']==1281) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+    array_push( $checklist , array(
+        'href' => '/console/'.$b['b_id'].'/settings#pages',
+        'anchor' => '<b>Connect your <i class="fab fa-facebook" style="color:#4267b2;"></i> Facebook Page</b> in Settings (also activates Landing Page)',
+        'e_status' => $e_status,
+        'time_min' => $estimated_minutes,
+    ));
 
 
     //Do we have enough Children?
@@ -733,7 +694,9 @@ function b_progress($b){
 
 
 
-    if(!$b['b_is_parent']){
+
+
+    if(!$b['b_is_parent'] || 1){
         //Prerequisites
         $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
@@ -772,7 +735,7 @@ function b_progress($b){
     if($bl){
         $is_my_account = ( $bl['u_id']==$udata['u_id'] );
         $account_anchor = ( $is_my_account ? 'My Account' : $bl['u_full_name'].'\'s Account' );
-        $account_href = ( $is_my_account ? '/console/account' : null );
+        $account_href = ( $is_my_account ? '/entities/'.$bl['u_id'] : null );
 
 
         //u_phone
@@ -781,26 +744,56 @@ function b_progress($b){
         $e_status = ( strlen($bl['u_phone'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'href' => ( $account_href ? $account_href : null ),
             'anchor' => '<b>Set Private Phone Number</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
+
         //u_cover_x_id
-        $estimated_minutes = 10;
+        $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
         $e_status = ( intval($bl['u_cover_x_id'])>0 ? 1 /*Has Cover Photo*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => $account_href,
-            'anchor' => '<b>Set Cover Photo</b> in '.$account_anchor,
+            'href' => $account_href.'#references',
+            'anchor' => '<b>Add a Cover Photo</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
-        //u_country_code && u_current_city
+
+        //u_booking_x_id
         $estimated_minutes = 30;
+        $progress_possible += $estimated_minutes;
+        $e_status = ( intval($bl['u_booking_x_id'])>0 ? 1 /*Has Booking URL*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => $account_href.'#references',
+            'anchor' => '<b>Add a Calendly or HubSpot Booking URL</b> in '.$account_anchor,
+            'e_status' => $e_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+
+        //Profile counter:
+        $estimated_minutes = 30;
+        $required_social_profiles = 3;
+        $current_profiles = count($CI->Db_model->x_social_fetch($bl['u_id']));
+        $progress_possible += $estimated_minutes;
+        $e_status = ( $current_profiles>=$required_social_profiles ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : ($current_profiles/$required_social_profiles)*$estimated_minutes );
+        array_push( $checklist , array(
+            'href' => ( $account_href ? $account_href.'#references' : null ),
+            'anchor' => '<b>Add '.$required_social_profiles.' Social Profiles</b> (Like Facebook, Linkedin, Instagram, Udemy, etc...) in '.$account_anchor,
+            'e_status' => $e_status,
+            'time_min' => $estimated_minutes,
+        ));
+
+
+        //u_country_code && u_current_city
+        $estimated_minutes = 10;
         $progress_possible += $estimated_minutes;
         $e_status = ( strlen($bl['u_country_code'])>0 && strlen($bl['u_current_city'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
@@ -813,24 +806,24 @@ function b_progress($b){
 
 
         //u_timezone
-        $estimated_minutes = 15;
+        $estimated_minutes = 10;
         $progress_possible += $estimated_minutes;
         $e_status = ( strlen($bl['u_timezone'])>0 && strlen($bl['u_timezone'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'href' => ( $account_href ? $account_href : null ),
             'anchor' => '<b>Set Timezone</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
 
         //u_language
-        $estimated_minutes = 30;
+        $estimated_minutes = 10;
         $progress_possible += $estimated_minutes;
         $e_status = ( strlen($bl['u_language'])>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => ( $account_href ? $account_href.'#communication' : null ),
+            'href' => ( $account_href ? $account_href : null ),
             'anchor' => '<b>Set Languages</b> in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
@@ -844,20 +837,6 @@ function b_progress($b){
         array_push( $checklist , array(
             'href' => $account_href,
             'anchor' => '<b>Set Introductory Message</b> in '.$account_anchor,
-            'e_status' => $e_status,
-            'time_min' => $estimated_minutes,
-        ));
-
-        //Profile counter:
-        $estimated_minutes = 30;
-        $required_social_profiles = 3;
-        $current_profiles = count($CI->Db_model->x_social_fetch($bl['u_id']));
-        $progress_possible += $estimated_minutes;
-        $e_status = ( $current_profiles>=$required_social_profiles ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-        $progress_gained += ( $e_status==1 ? $estimated_minutes : ($current_profiles/$required_social_profiles)*$estimated_minutes );
-        array_push( $checklist , array(
-            'href' => ( $account_href ? $account_href.'#communication' : null ),
-            'anchor' => '<b>Add '.$required_social_profiles.' Social Profiles</b> (Like Facebook, Linkedin, Instagram, Udemy, etc...) in '.$account_anchor,
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
@@ -898,64 +877,36 @@ function b_progress($b){
      *  Settings
      *******************************/
 
-    if(!$b['b_is_parent']){
-        if($b['b_p2_max_seats']>0){
-            $estimated_minutes = 15;
-            $progress_possible += $estimated_minutes;
-            $e_status = ( strlen($b['b_support_email'])>=1 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-            $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-            array_push( $checklist , array(
-                'href' => '/console/'.$b['b_id'].'/settings#support',
-                'anchor' => '<b>Enter Support Email Address</b> in Settings',
-                'e_status' => $e_status,
-                'time_min' => $estimated_minutes,
-            ));
-        }
 
-
-        //Offer Tutoring?
-        if($b['b_p3_rate']>0){
-            $estimated_minutes = 15;
-            $progress_possible += $estimated_minutes;
-            $e_status = ( strlen($b['b_calendly_url'])>=1 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
-            $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
-            array_push( $checklist , array(
-                'href' => '/console/'.$b['b_id'].'/settings#support',
-                'anchor' => '<b>Enter Calendly URL</b> for Tutoring Bookings in Settings',
-                'e_status' => $e_status,
-                'time_min' => $estimated_minutes,
-            ));
-        }
-    }
-
-
-
-    //Landing Page Category
-    $current_inbounds = $CI->Db_model->cr_inbound_fetch(array(
-        'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
-        'cr.cr_status' => 1,
-    ));
-    $estimated_minutes = 15;
+    //Admission package
+    $estimated_minutes = 50;
     $progress_possible += $estimated_minutes;
-    $e_status = ( count($current_inbounds)>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+    $e_status = ( intval($b['b_offers_diy']) || doubleval($b['b_weekly_coaching_hours']) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
     $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
     array_push( $checklist , array(
-        'href' => '/console/'.$b['b_id'].'/settings#landingpage',
-        'anchor' => '<b>Choose Category</b> in Settings',
+        'href' => '/console/'.$b['b_id'].'/settings#admission',
+        'anchor' => '<b>Choose at-least 1 Admission Package</b> in Settings',
         'e_status' => $e_status,
         'time_min' => $estimated_minutes,
     ));
 
 
-    // Required Experience Level
-    if(0){ //Disabled for now as its not fully integrated into the UI
-        $estimated_minutes = 15;
+    //Does it offer coaching?
+    if(doubleval($b['b_weekly_coaching_hours'])){
+
+        //Do we have at-least one active Class?
+        $classes = $CI->Db_model->r_fetch(array(
+            'r_b_id' => $b['b_id'],
+            'r_status' => 1, //Coaching available
+        ));
+
+        $estimated_minutes = 30;
         $progress_possible += $estimated_minutes;
-        $e_status = ( $b['b_difficulty_level']>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $e_status = ( count($classes) ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
         $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
         array_push( $checklist , array(
-            'href' => '/console/'.$b['b_id'].'/settings#landingpage',
-            'anchor' => '<b>Choose Required Experience Level</b> in Settings',
+            'href' => '/console/'.$b['b_id'].'/classes',
+            'anchor' => '<b>Turn On Coaching for at-least 1 Class</b> in Classes',
             'e_status' => $e_status,
             'time_min' => $estimated_minutes,
         ));
@@ -963,6 +914,24 @@ function b_progress($b){
 
 
 
+    //Landing Page Category
+    //Disabled for now until we launch the marketplace
+    if(0){
+        $current_inbounds = $CI->Db_model->cr_inbound_fetch(array(
+            'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
+            'cr.cr_status' => 1,
+        ));
+        $estimated_minutes = 15;
+        $progress_possible += $estimated_minutes;
+        $e_status = ( count($current_inbounds)>0 ? 1 /*Verified*/ : -4 /*Pending Completion*/ );
+        $progress_gained += ( $e_status==1 ? $estimated_minutes : 0 );
+        array_push( $checklist , array(
+            'href' => '/console/'.$b['b_id'].'/settings#landingpage',
+            'anchor' => '<b>Choose Category</b> in Settings',
+            'e_status' => $e_status,
+            'time_min' => $estimated_minutes,
+        ));
+    }
 
     
     

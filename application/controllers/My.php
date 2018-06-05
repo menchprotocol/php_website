@@ -23,12 +23,9 @@ class My extends CI_Controller {
 
 
 
-
     /* ******************************
      * Signup
      ****************************** */
-
-
 
     function apply_form($b_url_key){
         //The start of the funnel for email, first name & last name
@@ -54,11 +51,10 @@ class My extends CI_Controller {
             //All good, redirect to apply:
             redirect_message($bs[0]['b_apply_url']);
         }
-
     }
 
 
-    function checkout_start($b_url_key){
+    function checkout_start($b_url_key,$autoload_u_id=0){
         //The start of the funnel for email, first name & last name
 
         //Fetch data:
@@ -66,6 +62,13 @@ class My extends CI_Controller {
         $bs = $this->Db_model->remix_bs(array(
             'LOWER(b.b_url_key)' => strtolower($b_url_key),
         ));
+
+        if($autoload_u_id){
+            //Fetch user:
+            $us = $this->Db_model->u_fetch(array(
+                'u_id' => $autoload_u_id,
+            ));
+        }
 
         //Validate Bootcamp:
         if(!isset($bs[0])){
@@ -76,11 +79,13 @@ class My extends CI_Controller {
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp is Archived.</div>');
         } elseif($bs[0]['b_fp_id']<=0){
             redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp not connected to a Facebook Page yet.</div>');
+        } elseif(!(intval($bs[0]['b_offers_diy']) || doubleval($bs[0]['b_weekly_coaching_hours']))){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not offer any admission packages yet.</div>');
         }
 
         $data = array(
-            'title' => 'Enroll in '.$bs[0]['c_outcome'],
-            'udata' => $udata,
+            'title' => $bs[0]['c_outcome'],
+            'u' => ( isset($us[0]) ? $us[0] : $udata ),
             'b' => $bs[0],
             'b_fb_pixel_id' => $bs[0]['b_fb_pixel_id'], //Will insert pixel code in header
         );
@@ -89,7 +94,6 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_header' , $data);
         $this->load->view('front/student/checkout_start' , $data);
         $this->load->view('front/shared/p_footer');
-
     }
 
     function checkout_complete($ru_id){
@@ -157,20 +161,19 @@ class My extends CI_Controller {
             'u_id' => intval($_GET['u_id']),
         ));
 
-        if(count($users)==1){
-            $udata = $users[0];
-        } else {
-            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
-        }
-
         //Fetch all their addmissions:
         $admissions = $this->Db_model->ru_fetch(array(
-            'ru_outbound_u_id'	=> $udata['u_id'],
+            'ru_outbound_u_id'	=> @$users[0]['u_id'],
             'ru_parent_ru_id'	=> 0, //Child admissions are fetched within the child row
         ),array(
             'ru.ru_timestamp' => 'DESC',
         ));
 
+        if(count($users)==1 && count($admissions)>0){
+            $udata = $users[0];
+        } else {
+            redirect_message('/','<div class="alert alert-danger" role="alert">Invalid URL. Choose your Bootcamp and re-apply to receive an email with your application status url.</div>');
+        }
 
         $bs = $this->Db_model->b_fetch(array(
             'b_id'	=> ( $admissions[0]['ru_b_id'] ),

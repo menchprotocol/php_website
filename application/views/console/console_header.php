@@ -118,9 +118,7 @@ $uri_segment_2 = $this->uri->segment(2);
             	    
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/actionplan')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/actionplan"><i class="fas fa-flag"></i><p>Action Plan</p></a></li>';
 
-                    if(!$b['b_is_parent']){
-                        echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fas fa-users"></i><p>Classes</p></a></li>';
-                    }
+            	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/classes')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/classes"><i class="fas fa-users"></i><p>Classes</p></a></li>';
 
 
             	    echo '<li'.( substr_count($_SERVER['REQUEST_URI'],'/console/'.$b['b_id'].'/settings')>0 ? ' class="active"' : '' ).'><a href="/console/'.$b['b_id'].'/settings"><i class="fas fa-cog"></i><p>Settings</p></a></li>';

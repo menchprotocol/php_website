@@ -19,8 +19,8 @@
 <!-- <div class="col-sm-4"><?php // echo tree_menu(4793,array(4793)) ?></div> -->
 <?php
 
-echo '<h1>'.$title.'</h1>';
-echo '<p class="home_line_2">';
+echo '<h1 class="center">'.$title.'</h1>';
+echo '<p class="home_line_2 center">';
     echo 'Land your dream job by completing weekly Bootcamps from industry experts.';
     //echo '<br />New classes start every Monday. <span style="display:inline-block;">(in <span id="classes_start"></span>)</span>';
 echo '</p>';
@@ -41,12 +41,7 @@ if(count($bs)>0){
             echo '</div><div class="row">';
         }
 
-        if($b['b_is_parent']){
-            //Aggregate the data for all children:
-            $b = b_aggregate($b);
-        }
-
-        echo '<div class="col-md-4">
+        echo '<div class="col-md-4 '.( count($bs)==1 ? 'col-md-offset-4' : ( count($bs)==2 && $count==0 ? 'col-md-offset-2' : '' ) ).'">
 <div class="card card-product">
 <div class="card-image"><a href="/'.$b['b_url_key'].'">'.$b['c__header_media'].'</a></div>
 <div class="card-content">';

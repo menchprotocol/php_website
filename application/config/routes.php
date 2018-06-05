@@ -54,6 +54,7 @@ $route['a/(:num)/(:num)'] 	                           = "front/affiliate_click/$
 
 //Three steps of the signup process:
 $route['(:any)/apply'] 	                    = "my/apply_form/$1"; //Redirect to Apply URL set by lead instructor
+$route['(:any)/enroll/(:num)'] 	            = "my/checkout_start/$1/$2"; //Start of application funnel for Email, first & last name
 $route['(:any)/enroll'] 	                = "my/checkout_start/$1"; //Start of application funnel for Email, first & last name
 $route['(:num)']	                        = "front/index/$1"; //Landing Page with specific c_id as Parent Focus
 $route['(:any)']	                        = "front/landing_page/$1"; //Load specific Bootcamp

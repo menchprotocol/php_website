@@ -3,8 +3,6 @@
 //What are the total permissions we need?
 $required_fb_permissions = $this->config->item('required_fb_permissions');
 $fb_settings = $this->config->item('fb_settings');
-$pm = $this->config->item('pricing_model');
-$status_rs = echo_status('rs');
 
 $permission_string = join_keys($required_fb_permissions);
 echo 'var required_fb_permissions = '.json_encode($required_fb_permissions).';';
@@ -133,14 +131,28 @@ function loadFacebookPages(is_onstart){
     });
 }
 
-function update_tutoring_price(){
-    var price = parseFloat($('#b_p3_rate').val());
-    if(price>0){
-        $('#tutoring_price').html(parseInt( price*50 ));
-    }
-}
 
 $(document).ready(function() {
+
+
+    $('#b_offers_diy').change(function() {
+        if (this.checked) {
+            $('.diy_package_class').removeClass('hidden');
+        } else {
+            $('.diy_package_class').addClass('hidden');
+        }
+    });
+
+    $('#coaching_package_check').change(function() {
+        if (this.checked) {
+            $('#coaching_package_div').removeClass('hidden');
+        } else {
+            $('#coaching_package_div').addClass('hidden');
+        }
+    });
+
+
+
 
     //Go through Level 2 menus to see if any are selected, if so, select the Level 1 too:
     $( ".level2" ).each(function() {
@@ -174,26 +186,6 @@ $(document).ready(function() {
     if(window.location.hash) {
         focus_hash(window.location.hash);
     }
-
-    //Watch for Group Support Change:
-    $('#b_p2_max_seats').on('change', function() {
-        if(this.value==0){
-            $('#support_settings').hide();
-        } else {
-            $('#support_settings').fadeIn();
-        }
-    });
-
-    update_tutoring_price();
-
-    $('#b_p3_rate').on('change', function() {
-        update_tutoring_price();
-        if(this.value==0){
-            $('.tutoring_settings').hide();
-        } else {
-            $('.tutoring_settings').fadeIn();
-        }
-    });
 
 
     window.fbAsyncInit = function() {
@@ -259,22 +251,29 @@ function b_save_settings(){
     $('.save_r_results').html('<img src="/img/round_load.gif" class="loader" />').hide().fadeIn();
 
     var modify_data = {
+
         b_id:$('#b_id').val(),
-        b_url_key:$('#b_url_key').val(),
+
         b_status:$('#b_status').val(),
-        b_fb_pixel_id:$('#b_fb_pixel_id').val(),
-        b_p1_rate:$('#b_p1_rate').val(),
-        b_p2_max_seats:$('#b_p2_max_seats').val(),
-        b_p2_rate:$('#b_p2_rate').val(),
-        b_p3_rate:$('#b_p3_rate').val(),
-        b_support_email:$('#b_support_email').val(),
-        b_calendly_url:$('#b_calendly_url').val(),
-        b_difficulty_level:$('#b_difficulty_level').val(),
-        level1_c_id:$('.level1').val(),
-        level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
+        b_url_key:$('#b_url_key').val(),
         b_thankyou_url:$('#b_thankyou_url').val(),
         b_apply_url:$('#b_apply_url').val(),
+        b_fb_pixel_id:$('#b_fb_pixel_id').val(),
+        level1_c_id:$('.level1').val(),
+        level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
+
+        b_offers_diy:(document.getElementById('b_offers_diy').checked ? '1' : '0'),
+        coaching_package_check:(document.getElementById('coaching_package_check').checked ? '1' : '0'),
+        offer_deferred:(document.getElementById('offer_deferred').checked ? '1' : '0'),
+
+        b_weekly_coaching_hours:$('#b_weekly_coaching_hours').val(),
+        b_weekly_coaching_rate:$('#b_weekly_coaching_rate').val(),
+        b_guarantee_weeks:$('#b_guarantee_weeks').val(),
+
+
     };
+
+    console.log(modify_data);
 
     //Save the rest of the content:
     $.post("/api_v1/b_save_settings", modify_data, function(data) {
@@ -308,13 +307,8 @@ function b_save_settings(){
 
 <ul id="topnav" class="nav nav-pills nav-pills-primary">
     <li id="nav_general" class="active"><a href="#general"><i class="fas fa-cog"></i> General</a></li>
-
-    <?php if(!$b['b_is_parent']){ ?>
-    <li id="nav_support"><a href="#support"><i class="fas fa-life-ring"></i> Support</a></li>
+    <li id="nav_admission"><a href="#admission"><i class="fas fa-ticket"></i> Admission</a></li>
     <li id="nav_pages"><a href="#pages"><i class="fab fa-facebook"></i> Pages</a></li>
-    <?php } ?>
-
-    <li id="nav_coaches"><a href="#coaches"><i class="fas fa-whistle"></i> Coaches</a></li>
     <!-- <li id="nav_coupons"><a href="#coupons"><i class="fas fa-tags"></i> Coupons</a></li> -->
 </ul>
 
@@ -325,52 +319,34 @@ function b_save_settings(){
 
     <div class="tab-pane active" id="tabgeneral">
 
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Bootcamp Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-sliders-h"></i> Publish Status <span id="hb_627" class="help_button" intent-id="627"></span></h4></div>
         <div class="help_body maxout" id="content_627"></div>
         <?= echo_dropdown_status('b','b_status',$b['b_status'],( $udata['u_inbound_u_id']==1281 && !$b['b_old_format'] ? array() : array(3) )); ?>
         <div style="clear:both; margin:0; padding:0;"></div>
 
 
-        <div class="title" style="margin-top:0;"><h4><i class="fas fa-hashtag"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
-        <div class="help_body maxout" id="content_4869"></div>
-        <div class="form-group label-floating">
-            <?php
-            $current_c_ids = array();
-            $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
-                'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
-                'cr.cr_status' => 1,
-            ));
-            foreach($current_inbounds as $c){
-                array_push($current_c_ids,$c['cr_inbound_c_id']);
-            }
-            //Show Menu
-            echo tree_menu(4793,$current_c_ids,'select');
-            ?>
+
+        <div style="display:none; margin-bottom:20px;">
+            <div class="title" style="margin-top:0;"><h4><i class="fas fa-hashtag"></i> Category <span id="hb_4869" class="help_button" intent-id="4869"></span></h4></div>
+            <div class="help_body maxout" id="content_4869"></div>
+            <div class="form-group label-floating">
+                <?php
+                $current_c_ids = array();
+                $current_inbounds = $this->Db_model->cr_inbound_fetch(array(
+                    'cr.cr_outbound_c_id' => $b['b_outbound_c_id'],
+                    'cr.cr_status' => 1,
+                ));
+                foreach($current_inbounds as $c){
+                    array_push($current_c_ids,$c['cr_inbound_c_id']);
+                }
+                //Show Menu
+                echo tree_menu(4793,$current_c_ids,'select');
+                ?>
+            </div>
         </div>
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-thermometer-half"></i> Required Experience Level <span id="hb_4868" class="help_button" intent-id="4868"></span></h4></div>
-        <div class="help_body maxout" id="content_4868"></div>
 
-        <?php if($b['b_is_parent']){ ?>
-            <p style="margin-left:13px;"><b>Note:</b> Will be automatically set to highest experience level required by Weekly Bootcamps added in the <a href="/console/<?= $b['b_id'] ?>/actionplan">Action Plan</a>.</p>
-        <?php } else { ?>
-            <div class="form-group label-floating is-empty">
-                <select class="border c_select" id="b_difficulty_level" style="width:100%; margin-bottom:10px; max-width:380px;">
-                    <?php
-                    echo '<option value="">Choose...</option>';
-                    $df_statuses = echo_status('df');
-                    foreach($df_statuses as $status_id=>$status){
-                        echo '<option value="'.$status_id.'" '.( $b['b_difficulty_level']==$status_id ? 'selected="selected"' : '' ).'>'.$status['s_name'].': '.$status['s_desc'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-        <?php } ?>
-
-
-
-        <div class="title" style="margin-top:15px;"><h4><i class="fas fa-link"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
+        <div class="title" style="margin-top:0px;"><h4><i class="fas fa-cart-plus"></i> Landing Page URL <span id="hb_725" class="help_button" intent-id="725"></span></h4></div>
         <div class="help_body maxout" id="content_725"></div>
         <div class="form-group label-floating is-empty">
             <div class="input-group border" style="width:100%; max-width:380px;">
@@ -381,25 +357,21 @@ function b_save_settings(){
 
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Apply Form URL <span id="hb_6964" class="help_button" intent-id="6964"></span></h4></div>
-        <div class="help_body maxout" id="content_6964"></div>
+        <div class="title" style="margin-top:25px;"><h4><i class="fab fa-facebook"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
+        <div class="help_body maxout" id="content_718"></div>
         <div class="input-group">
-            <input type="URL" id="b_apply_url" style="width:380px;" value="<?= $b['b_apply_url'] ?>" class="form-control border" />
+            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
         </div>
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-link"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
+
+
+        <div class="title" style="margin-top:25px;"><h4><i class="fas fa-link"></i> Thank You Redirect URL <span id="hb_4867" class="help_button" intent-id="4867"></span></h4></div>
         <div class="help_body maxout" id="content_4867"></div>
         <div class="input-group">
             <input type="URL" id="b_thankyou_url" style="width:380px;" value="<?= $b['b_thankyou_url'] ?>" class="form-control border" />
         </div>
 
-
-        <div class="title" style="margin-top:20px;"><h4><i class="fab fa-facebook"></i> Facebook Pixel Tracker <span id="hb_718" class="help_button" intent-id="718"></span></h4></div>
-        <div class="help_body maxout" id="content_718"></div>
-        <div class="input-group">
-            <input type="number" min="0" step="1" style="width:380px; margin-bottom:-5px;" id="b_fb_pixel_id" placeholder="123456789012345" value="<?= (strlen($b['b_fb_pixel_id'])>0?$b['b_fb_pixel_id']:null) ?>" class="form-control border" />
-        </div>
 
 
 
@@ -408,111 +380,110 @@ function b_save_settings(){
 
     </div>
 
-    <div class="tab-pane" id="tabsupport">
+    <div class="tab-pane" id="tabadmission">
 
 
-        <div class="title" style="margin-top:20px;"><h4><i class="<?= $status_rs[1]['s_mini_icon'] ?>"></i> <?= $status_rs[1]['s_name'] ?> Pricing <span id="hb_4789" class="help_button" intent-id="4789"></span></h4></div>
+
+
+        <div class="title" style="margin-top:20px;"><h4><i class="fas fa-wrench"></i> Free DIY Package <span id="hb_4789" class="help_button" intent-id="4789"></h4></h4></div>
         <div class="help_body maxout" id="content_4789"></div>
-        <div class="form-group label-floating <?= (count($pm['p1_rates'])<=1 ? 'hidden' : '') ?>">
-            <select id="b_p1_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
-                <?php
-                foreach($pm['p1_rates'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p1_rate']==$option?'selected="selected"':'').'>';
-                    if($option<0){
-                        echo 'Unavailable';
-                    } elseif($option==0){
-                        echo 'Do It Yourself for Free';
-                    } else {
-                        echo '$'.$option.' per Student per Week';
-                    }
-                    echo '</option>';
-                }
-                ?>
-            </select>
-        </div>
-        <?php if(count($pm['p1_rates'])==1){ ?>
-            <div>Universal Price: $<?= $pm['p1_rates'][0] ?>/Week/Student</div>
-        <?php } ?>
-
-
-
-
-        <div class="title" style="margin-top:25px;"><h4><i class="<?= $status_rs[2]['s_mini_icon'] ?>"></i> <?= $status_rs[2]['s_name'] ?> Capacity <span id="hb_4791" class="help_button" intent-id="4791"></span></h4></div>
-        <div class="help_body maxout" id="content_4791"></div>
-
-
-        <div class="form-group label-floating">
-            <select id="b_p2_max_seats" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
-                <?php
-                foreach($pm['p2_max_seats'] as $option){
-                    echo '<option value="'.$option.'" '.($b['b_p2_max_seats']==$option?'selected="selected"':'').'>'.( $option==0 ? 'Do Not Offer '.$status_rs[2]['s_name'] : $option.' Maximum Students per Week' ).'</option>';
-                }
-                ?>
-            </select>
-        </div>
-
-
-        <div id="support_settings" style="display:<?= ( $b['b_p2_max_seats']==0 ? 'none' : 'block' ) ?>;">
-
-            <?php if(count($pm['p2_rates'])==1){ ?>
-                <div style="margin:0 0 5px 30px;">Universal Price: <b>$<?= $pm['p2_rates'][0] ?></b> per Student per Week</div>
-            <?php } ?>
-
-            <!-- Disabled for now as we only have a single pricing for Coaching -->
-            <div class="form-group label-floating <?= (count($pm['p2_rates'])<=1 ? 'hidden' : '') ?>">
-                <select id="b_p2_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
-                    <?php
-                    foreach($pm['p2_rates'] as $option){
-                        echo '<option value="'.$option.'" '.($b['b_p2_rate']==$option?'selected="selected"':'').'>$'.$option.' per Week</option>';
-                    }
-                    ?>
-                </select>
+        <div class="form-group label-floating is-empty">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="b_offers_diy" <?= ( $b['b_offers_diy'] ? 'checked' : '') ?> /> Offer a Free Do It Yourself Package
+                </label>
             </div>
+        </div>
+        <div class="inline-box diy_package_class <?= ( $b['b_offers_diy'] ? '' : 'hidden') ?>">
+            <div class="alert alert-info" style="margin:0; font-size:1.3em;">DIY Package will essentially make yor action plan public using the <a href="https://creativecommons.org/" target="_blank" style="display: inline-block"><i class="fab fa-creative-commons"></i> Creative Commons Copyright License <i class="fas fa-external-link-square"></i></a> while also publishing it in our intent directory. This gives your content (and Bootcamp) more visibility while also giving students the option to join this Bootcamp for free and complete all tasks on their own without any coaching.</div>
+        </div>
 
-            <div style="padding-left:30px;">
-                <div class="title" style="margin-top:20px;"><h4><i class="fas fa-envelope"></i> Support Email Address <span id="hb_4790" class="help_button" intent-id="4790"></span></h4></div>
-                <div class="help_body maxout" id="content_4790"></div>
-                <div class="form-group label-floating is-empty">
-                    <input type="email" id="b_support_email" data-lpignore="true" style="width:320px;" placeholder="yoursupportemail@gmail.com" value="<?= $b['b_support_email'] ?>" class="form-control border">
-                    <span class="material-input"></span>
+
+
+
+        <div class="title" style="margin-top:25px;"><h4><i class="fas fa-whistle"></i> Coaching Package <span id="hb_4791" class="help_button" intent-id="4791"></h4></div>
+        <div class="help_body maxout" id="content_4791"></div>
+        <div class="form-group label-floating is-empty">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="coaching_package_check" <?= ( $b['b_weekly_coaching_hours']>0 ? 'checked' : '') ?> /> Offer 1-on-1 Coaching
+                </label>
+            </div>
+        </div>
+
+        <div id="coaching_package_div" class="inline-box <?= ( $b['b_weekly_coaching_hours']>0 ? '' : 'hidden') ?>">
+
+            <div class="form-group label-floating is-empty" style="margin-bottom:7px;">
+                <div class="input-group border" style="width:366px;">
+                    <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">Coach each student for ~</span>
+                    <input type="number" step="0.1" style="padding-left:0; padding-right:0;" id="b_weekly_coaching_hours" value="<?= $b['b_weekly_coaching_hours'] ?>" class="form-control">
+                    <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">hours per week</span>
+                </div>
+            </div>
+            <div class="form-group label-floating is-empty">
+                <div class="input-group border" style="width:366px;">
+                    <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">With a tuition rate of $</span>
+                    <input style="padding-left:0; padding-right:0;" type="number" step="0.1" id="b_weekly_coaching_rate" value="<?= $b['b_weekly_coaching_rate'] ?>" class="form-control">
+                    <span class="input-group-addon addon-lean" style="color:#3C4858; font-weight: 300;">USD per week</span>
                 </div>
             </div>
 
 
 
-            <div class="title" style="margin-top:20px;"><h4><i class="<?= $status_rs[3]['s_mini_icon'] ?>"></i> <?= $status_rs[3]['s_name'] ?> <span id="hb_615" class="help_button" intent-id="615"></span></h4></div>
-            <div class="help_body maxout" id="content_615"></div>
-            <div class="form-group label-floating">
-                <select id="b_p3_rate" class="border" style="width:100%; margin-bottom:10px; max-width:380px;">
-                    <?php
-                    foreach($pm['p3_rates'] as $option){
-                        echo '<option value="'.$option.'" '.($b['b_p3_rate']==$option?'selected="selected"':'').'>'.($option==0?'Do Not Offer '.$status_rs[3]['s_name']:'$'.number_format($option,2).' per Minute').'</option>';
-                    }
-                    ?>
-                </select>
+
+            <div class="title" style="margin-top:25px;"><h4><i class="fas fa-user-plus"></i> Coaching Team <span id="hb_629" class="help_button" intent-id="629"></h4></div>
+            <div class="help_body maxout" id="content_629"></div>
+            <div class="list-group maxout" style="margin: 0; padding: 0;">
+                <?php
+                $admin_ids = array();
+                foreach($b['b__admins'] as $admin){
+                    echo echo_br($admin);
+                    array_push($admin_ids,$admin['u_id']);
+                }
+                ?>
+                <li class="list-group-item"><i class="fab fa-facebook-messenger"></i> &nbsp;&nbsp;Contact us to add new coaches to your team.</li>
             </div>
 
-            <div style="padding-left:30px;">
 
-                <div class="tutoring_settings" style="display:<?= ( $b['b_p3_rate']==0 ? 'none' : 'block' ) ?>;">
 
-                    <div>Session Duration: <b>50</b> Minutes per Student per Week</div>
-                    <div>Tutoring Price: <b>$<span id="tutoring_price"></span></b> per Session</div>
+            <div class="title" style="margin-top:25px;"><h4><i class="fas fa-smile"></i> Tuition Reimbursement Guarantee <span id="hb_2585" class="help_button" intent-id="2585"></h4></div>
+            <div class="help_body maxout" id="content_2585"></div>
+            <p>By what time are students guaranteed to [<?= $b['c_outcome'] ?>]?</p>
+            <?= echo_dropdown_status('b_guarantee_weeks','b_guarantee_weeks',$b['b_guarantee_weeks'],( !$b['b_is_parent'] ? array(2,3,4) : array() )); ?>
 
-                    <div class="title" style="margin-top:20px;"><h4><i class="fas fa-calendar-check"></i> Calendly Booking URL <span id="hb_4792" class="help_button" intent-id="4792"></span></h4></div>
-                    <div class="help_body maxout" id="content_4792"></div>
-                    <div class="form-group label-floating is-empty">
-                        <input type="url" id="b_calendly_url" style="width:320px;" placeholder="https://calendly.com/shervine/demo" value="<?= $b['b_calendly_url'] ?>" class="form-control border">
-                        <span class="material-input"></span>
+
+
+            <div style="display:<?= ( $b['b_is_parent'] ? 'block' : 'none') ?>;">
+                <div class="title" style="margin-top:0px;"><h4><i class="fas fa-credit-card"></i> Deferred Payments <span id="hb_7019" class="help_button" intent-id="7019"></h4></div>
+                <div class="help_body maxout" id="content_7019"></div>
+                <div class="form-group label-floating is-empty">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="offer_deferred" <?= ( $b['b_deferred_rate']>0 ? 'checked' : '') ?> /> Offer Deferred Payments (for Job-Placement Bootcamps)
+                            <?php
+                            if($b['b_deferred_rate']>0){
+                                echo ' [Students can choose the deferred payment plan and pay '.($b['b_deferred_rate']*100).'% of the normal tuition rate from '.($b['b_deferred_payback']*100).'% of each net-paycheck (after they get a job) with a '.($b['b_deferred_deposit']*100).'% up-front & non-refundable payment.';
+                            }
+                            ?>
+                        </label>
                     </div>
                 </div>
+
+
+                <div class="title" style="margin-top:25px;"><h4><i class="fab fa-wpforms"></i> [Optional] Apply URL <span id="hb_6964" class="help_button" intent-id="6964"></span></h4></div>
+                <div class="help_body maxout" id="content_6964"></div>
+                <div class="input-group">
+                    <input type="URL" id="b_apply_url" style="width:380px;" value="<?= $b['b_apply_url'] ?>" class="form-control border" />
+                </div>
             </div>
+
 
         </div>
 
 
-        <br />
-        <table width="100%" style="margin-top:10px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
+
+
+        <table width="100%" style="margin-top:25px;"><tr><td class="save-td"><a href="javascript:b_save_settings();" class="btn btn-primary">Save</a></td><td><span class="save_r_results"></span></td></tr></table>
 
     </div>
 
@@ -538,20 +509,6 @@ function b_save_settings(){
 
     </div>
 
-    <div class="tab-pane" id="tabcoaches">
-
-        <?php echo_tip(629); ?>
-        <div class="list-group maxout">
-            <?php
-            $admin_ids = array();
-            foreach($b['b__admins'] as $admin){
-                echo echo_br($admin);
-                array_push($admin_ids,$admin['u_id']);
-            }
-            ?>
-        </div>
-        <p>Contact us to add new coaches to this Bootcamp.</p>
-    </div>
 
     <div class="tab-pane" id="tabcoupons">
         <div class="alert alert-info maxout" role="alert"><i class="fas fa-exclamation-triangle"></i> Pending development; Scheduled for March 2018 🎉​</div>

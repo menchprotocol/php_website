@@ -42,9 +42,9 @@ function toggle_support(r_id){
     //Show spinner:
     var r_status = parseInt($('#support_toggle_'+r_id).attr('current-status'));
     if(r_status==1){
-        var rs_new_status = 2;
-    } else if(r_status==2){
-        var rs_new_status = 1;
+        var r_new_status = 0;
+    } else if(r_status==0){
+        var r_new_status = 1;
     } else {
         alert('ERROR: Unknown status');
         return false;
@@ -57,7 +57,7 @@ function toggle_support(r_id){
     $.post("/api_v1/r_update_status", {
 
         r_id:r_id,
-        rs_new_status:rs_new_status,
+        r_new_status:r_new_status,
 
     } , function(data) {
 
@@ -66,11 +66,11 @@ function toggle_support(r_id){
             $('#support_toggle_'+r_id).html(data.message);
 
             //Update UI to confirm with user:
-            $('#support_toggle_'+r_id).attr('current-status',data.rs_new_status);
+            $('#support_toggle_'+r_id).attr('current-status',r_new_status);
 
-            if(data.rs_new_status==2){
+            if(r_new_status){
                 $('#support_toggle_'+r_id).removeClass('grey');
-            } else if(data.rs_new_status==1) {
+            } else {
                 $('#support_toggle_'+r_id).addClass('grey');
             }
 
@@ -135,7 +135,7 @@ function r_sync_c(b_id,r_id){
                     <?php
                     $active_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id'	        => $b['b_id'],
-                        'r.r_status >='	    => 1, //Open Admission or higher
+                        'r.r_status >='	    => 0, //Open Admission or higher
                         'r.r_status <='	    => 2, //Running
                     ), $b, 'ASC');
 

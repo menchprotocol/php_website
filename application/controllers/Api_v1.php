@@ -479,123 +479,47 @@ class Api_v1 extends CI_Controller {
 
         //Now loadup the dates based on Class:
         echo '<option value="">Choose Class Dates...</option>';
+        //Access Classes for this Bootcamp and show available options:
+        $classes = $this->Db_model->r_fetch(array(
+            'r.r_b_id' => $admissions[0]['b_id'],
+            'r.r_status IN (0,1)' => null,
+        ), null, 'ASC', $class_settings['students_show_max']);
 
-        if($admissions[0]['b_is_parent']){
+        foreach($classes as $class){
 
-            //Give options to register ahead of time:
-            $class_settings = $this->config->item('class_settings');
+            if($_POST['support_level']>1){
 
-            //List the next [students_show_max] number of weeks:
-            $monday_start = ( date("w")==1 ? 2 : 1 );
-            for($i=$monday_start;$i<=($class_settings['students_show_max']-1+$monday_start);$i++){
+                if($class['r_status']==0){
+                    continue;
+                }
 
-                //Determine the start date for this first week:
-                $admission_start_date = date("Y-m-d",(strtotime($i.' mondays from now')+(12*3600)  /* For GMT/timezone adjustments */ ));
-                $not_available_reason = null; //IF null it means its available
-                $r_ids = 'r_ids'; //Aggregate the Classes that this student would be registering...
-                $monday_from_now = $i;
-
+                //Are all child classes available for this Multi-week Bootcamp?
                 //Now go through all Bootcamps and see if their Classes are available with this start date
-                foreach($admissions[0]['c__child_intents'] as $b7d){
-
+                $not_available_reason = null;
+                foreach($admissions[0]['c__child_intents'] as $key=>$b7d){
                     //Fetch corresponding Class:
-                    $class_start_date = date("Y-m-d",(strtotime($monday_from_now.' mondays from now')+(12*3600)  /* For GMT/timezone adjustments */ ));
-                    $classes = $this->Db_model->r_fetch(array(
+                    $validate_classes = $this->Db_model->r_fetch(array(
                         'r.r_b_id' => $b7d['b_id'],
-                        'r.r_start_date' => $class_start_date,
+                        'r.r_start_date' => date("Y-m-d",(strtotime($class['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )),
                         'r.r_status' => 1,
                     ));
-
-                    if(count($classes)<1){
+                    if(count($validate_classes)<1){
                         //Class not found!
                         $not_available_reason = 'Not Found';
                         break;
                     }
-
-                    //We only care about the Bootcamps that do offer this level of support:
-                    if($_POST['support_level']>1 && echo_price($b7d,$_POST['support_level'],true)>=0){
-
-                        //Fetch lead instructor Profile:
-                        $instructors = $this->Db_model->ba_fetch(array(
-                            'ba.ba_b_id' => $b7d['cr_outbound_b_id'],
-                            'ba.ba_status' => 3,
-                            'u.u_status' => 1,
-                        ));
-
-                        $instructor_has_off = true;
-                        if(count($instructors)>=1){
-                            $instructor_has_off = (strlen($instructors[0]['u_weeks_off'])>0 && in_array($class_start_date,unserialize($instructors[0]['u_weeks_off'])));
-                        }
-
-                        if($instructor_has_off){
-                            $not_available_reason = 'Closed';
-                            break;
-                        }
-
-                        //Count current Class students:
-                        $seats_available = $b7d['b_p2_max_seats'] - count($this->Db_model->ru_fetch(array(
-                            'r.r_id'	       => $classes[0]['r_id'],
-                            'ru.ru_status >='  => 4, //Joined Students
-                            'ru.ru_p2_price >' => 0, //They have Coaching
-                        )));
-                        if(!$seats_available){
-                            $not_available_reason = 'Sold Out';
-                            break;
-                        }
-                    }
-
-                    $r_ids .= '_'.$classes[0]['r_id'];
-
-                    $monday_from_now++;
                 }
 
-                //Show the result:
-                echo '<option value="'.($not_available_reason?'':$r_ids).'" '.( $not_available_reason ? ' disabled="disabled" ' : '').'>';
-                echo echo_time($admission_start_date,5) .' - '. echo_time($admission_start_date,5, ((count($admissions[0]['c__child_intents'])*7*24*3600)-(12*3600)));
-                echo ( $not_available_reason ? ' ('.$not_available_reason.')' : '');
-                echo '</option>';
-
+                if($not_available_reason){
+                    continue;
+                }
             }
 
-        } else {
-
-            //Access all Classes for this Bootcamp and show actual options:
-            $classes = $this->Db_model->r_fetch(array(
-                'r.r_b_id' => $admissions[0]['b_id'],
-                'r.r_status' => 1,
-            ), null, 'ASC', $class_settings['students_show_max']);
-
-            foreach($classes as $class){
-
-                if($_POST['support_level']>1){
-
-                    //Student wants Coaching, see if its available for this week:
-                    $seats_available = $admissions[0]['b_p2_max_seats'] - count($this->Db_model->ru_fetch(array(
-                        'r.r_id'	       => $class['r_id'],
-                        'ru.ru_status >='  => 4, //Joined Students
-                        'ru.ru_p2_price >' => 0, //They have Coaching
-                    )));
-
-                    $instructor_has_off = (strlen($admissions[0]['b__admins'][0]['u_weeks_off'])>0 && in_array($class['r_start_date'],unserialize($admissions[0]['b__admins'][0]['u_weeks_off'])));
-
-                }
-
-                echo '<option value="r_ids_'.$class['r_id'].'" '.($_POST['support_level']>1 && ($instructor_has_off || !$seats_available) ? ' disabled="disabled" ' : '').'>';
-
-                echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r__class_end_time'],5);
-                if($_POST['support_level']>1){
-                    if($instructor_has_off){
-                        echo ' (Closed)';
-                    } elseif(!$seats_available){
-                        echo ' (Sold Out)';
-                    } elseif($seats_available<$admissions[0]['b_p2_max_seats']){
-                        echo ' ('.$seats_available.' Seat'.echo__s($seats_available).' Remaining)';
-                    }
-                }
-                echo '</option>';
-
-            }
+            echo '<option value="'.$class['r_id'].'">';
+            echo echo_time($class['r_start_date'],5) .' - '. echo_time($class['r_start_date'],5, (($admissions[0]['b__week_count']*7*24*3600)-(8*3600)));
+            echo '</option>';
         }
+
     }
 
     function ru_checkout_initiate(){
@@ -798,8 +722,9 @@ class Api_v1 extends CI_Controller {
 
         //When students complete the checkout process:
         $application_status_salt = $this->config->item('application_status_salt');
+        $_POST['support_level'] = intval($_POST['support_level']);
 
-        if(!isset($_POST['r_ids']) || !(substr_count($_POST['r_ids'],'r_ids_')==1) || !isset($_POST['support_level']) || !in_array(intval($_POST['support_level']),array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+        if(!isset($_POST['r_id']) || intval($_POST['r_id'])<1 || !isset($_POST['support_level']) || !in_array($_POST['support_level'],array(1,2,3)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
 
             //Log engagement:
             $this->Db_model->e_create(array(
@@ -814,11 +739,15 @@ class Api_v1 extends CI_Controller {
         }
 
         //Fetch their admission:
-        $_POST['support_level'] = intval($_POST['support_level']);
-        $class_ids = explode('_',str_replace('r_ids_','',$_POST['r_ids']));
         $admissions = $this->Db_model->remix_admissions(array(
             'ru.ru_id'	=> intval($_POST['ru_id']),
         ));
+
+        //Fetch selected Class:
+        $chosen_classes = $this->Db_model->r_fetch(array(
+            'r.r_id' => $_POST['r_id'],
+            'r.r_status >=' => ( $_POST['support_level']>=2 ? 1 : 0 ),
+        ), null, 'DESC', 1, array('b'));
 
 
         //Make sure we got all this data:
@@ -835,58 +764,64 @@ class Api_v1 extends CI_Controller {
             //Error:
             die('<span style="color:#FF0000;">Error: Failed to fetch admission data. Report Logged for Admin to review.</span>');
 
-        } elseif(intval($admissions[0]['b_is_parent']) && (count($admissions[0]['c__child_intents'])==0 || count($class_ids)<=1)){
-
-            //Log this error:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $_POST['u_id'],
-                'e_text_value' => 'ru_checkout_complete() found Multi-week Bootcamp without proper child data',
-                'e_json' => $_POST,
-                'e_inbound_c_id' => 8, //Platform Error
-            ));
-
-            //Error:
-            die('<span style="color:#FF0000;">Error: Failed to enroll you in this Bootcamp. Report Logged for Admin to review.</span>');
-
         } elseif($admissions[0]['b_is_parent']){
-
-            //We need to aggregate this Bootcamp
-            $admissions[0] = b_aggregate($admissions[0]);
 
             //Delete all existing child Admissions, which IF exist, would be from the last submission:
             $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
 
-            //Insert child admissions for each Bootcamp:
-            foreach($class_ids as $r_id){
+            //Now go through all Bootcamps and see if their Classes are available with this start date
+            $not_available_reason = null;
+            foreach($admissions[0]['c__child_intents'] as $key=>$b7d){
 
-                //Fetch the Bootcamp data for this Class:
-                $bs = $this->Db_model->r_fetch(array(
-                    'r_id' => $r_id,
+                //Fetch corresponding Class:
+                $validate_classes = $this->Db_model->r_fetch(array(
+                    'r.r_b_id' => $b7d['b_id'],
+                    'r.r_start_date' => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )),
+                    'r.r_status >=' => ( $_POST['support_level']>=2 ? 1 : 0 ),
                 ), null, 'DESC', 1, array('b'));
 
-                //Make sure we found this Class:
-                if(count($bs)==1){
 
-                    $new_admission = array(
-                        'ru_b_id' 	        => $bs[0]['b_id'],
-                        'ru_r_id' 	        => $r_id,
-                        'ru_outbound_u_id' 	        => $_POST['u_id'],
-                        'ru_status'         => 0, //Pending
-                        'ru_fp_id'          => $bs[0]['b_fp_id'],
-                        'ru_fp_psid'        => ( $bs[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
-                        'ru_p1_price'       => echo_price($bs[0],1,true, false),
-                        'ru_p2_price'       => ( $_POST['support_level']>=2 ? echo_price($bs[0],2,true, false) : 0 ),
-                        'ru_p3_price'       => ( $_POST['support_level']==3 ? echo_price($bs[0],3,true, false) : 0 ),
+                if(count($validate_classes)<1){
+                    //Class not found!
+                    $not_available_reason = 'Not Found';
+                    break;
+                } else {
+                    //Create student admission:
+                    $this->Db_model->ru_create(array(
+                        'ru_b_id' 	        => $validate_classes[0]['b_id'],
+                        'ru_r_id' 	        => $validate_classes[0]['r_id'],
+                        'ru_outbound_u_id' 	=> $admissions[0]['u_id'],
+                        'ru_status'         => ( $_POST['support_level']>=2 ? 0 /* Pending Payment*/ : 4 ),
+                        'ru_fp_id'          => $admissions[0]['b_fp_id'],
+                        'ru_fp_psid'        => ( $admissions[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
                         'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
-                    );
 
-                    //Calculate total
-                    //TODO Consider coupons here
-                    $new_admission['ru_final_price'] = ( $new_admission['ru_p1_price']>0 ? $new_admission['ru_p1_price'] : 0 ) + ( $new_admission['ru_p2_price']>0 ? $new_admission['ru_p2_price'] : 0 );
+                        'ru_upfront_pay'    => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * $admissions[0]['b_deferred_deposit']) : ( $_POST['support_level']==2 ? ($admissions[0]['b_weekly_coaching_rate']) : 0 ) ),
+                        'ru_deferred_pay'   => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b_deferred_rate'] * (1-$admissions[0]['b_deferred_deposit'])) : 0 ),
 
-                    $this->Db_model->ru_create($new_admission);
+                        'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
+                        'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
+                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($admissions[0]['b__week_count']+$admissions[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+                    ));
                 }
             }
+
+            if($not_available_reason){
+                //Ooops we had an issue finding all child Classes:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $_POST['u_id'],
+                    'e_text_value' => 'ru_checkout_complete() failed to fetch all child Classess.',
+                    'e_json' => $_POST,
+                    'e_inbound_c_id' => 8, //Platform Error
+                ));
+
+                //Delete all existing child Admissions again:
+                $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
+
+                //Error:
+                die('<span style="color:#FF0000;">Error: Failed to admit you to this multi-week Bootcamp starting ['.date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600))).'].</span>');
+            }
+
         }
 
 
@@ -896,47 +831,45 @@ class Api_v1 extends CI_Controller {
             'e_json' => $_POST,
             'e_inbound_c_id' => 26, //Checkout Submitted (Pending Payment)
             'e_b_id' => $admissions[0]['b_id'],
-            'e_r_id' => $class_ids[0],
+            'e_r_id' => $_POST['r_id'],
         ));
 
         //Set updating data and calculate the final price:
         $next_url = '/my/applications?pay_ru_id='.$admissions[0]['ru_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
-        $update_data = array(
-            'ru_p1_price' => echo_price($admissions[0],1,true, false),
-            'ru_p2_price' => ( $_POST['support_level']>=2 ? echo_price($admissions[0],2,true, false) : 0 ),
-            'ru_p3_price' => ( $_POST['support_level']==3 ? echo_price($admissions[0],3,true, false) : 0 ),
-        );
 
-        //TODO Consider coupons here
-        $update_data['ru_final_price'] = ( $update_data['ru_p1_price']>0 ? $update_data['ru_p1_price'] : 0 ) + ( $update_data['ru_p2_price']>0 ? $update_data['ru_p2_price'] : 0 );
-
-        if(!$admissions[0]['b_is_parent'] && count($class_ids)==1){
-            //Yes, change the status to Admitted:
-            $update_data['ru_r_id'] = $class_ids[0]; //They have selected their first Class
-        }
 
         //Save checkout preferences (Still not finalized):
-        $this->Db_model->ru_update( intval($_POST['ru_id']) , $update_data);
+        $this->Db_model->ru_update( intval($_POST['ru_id']) , array(
+            'ru_r_id'           => $_POST['r_id'],
+            'ru_fp_id'          => $admissions[0]['b_fp_id'],
+            'ru_fp_psid'        => ( $admissions[0]['b_fp_id']==$admissions[0]['u_cache__fp_id'] ? $admissions[0]['u_cache__fp_psid'] : 0 ),
+
+            'ru_upfront_pay'    => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b__week_count'] * $admissions[0]['b_deferred_rate'] * $admissions[0]['b_deferred_deposit']) : ( $_POST['support_level']==2 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b__week_count']) : 0 ) ),
+            'ru_deferred_pay'   => ( $_POST['support_level']==3 ? ($admissions[0]['b_weekly_coaching_rate'] * $admissions[0]['b__week_count'] * $admissions[0]['b_deferred_rate'] * (1-$admissions[0]['b_deferred_deposit'])) : 0 ),
+
+            'ru_start_time'     => $chosen_classes[0]['r_start_date'].' 00:00:00',
+            'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($admissions[0]['b__week_count']*7*24*3600)-(12*3600))).' 23:59:59',
+            'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($admissions[0]['b__week_count']+$admissions[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+        ));
 
 
-        //Is this a free Bootcamp? If so, we can fast forward the payment step...
-        if($update_data['ru_final_price']==0){
+        //Is this a free DIY Bootcamp? If so, we can fast forward the payment step...
+        if($_POST['support_level']==1){
 
             //Update the admission as its now paid:
-            $this->Db_model->ru_finalize($admissions[0]['ru_id']);
+            $this->Db_model->ru_finalize($_POST['ru_id']);
 
             //Do they have a custom URL?
             if(strlen($admissions[0]['b_thankyou_url'])>0){
                 //Override with Instructor's Thank You URL
                 $next_url = $admissions[0]['b_thankyou_url'];
             }
-
         }
 
         //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
         //Show message & redirect:
         echo '<script> setTimeout(function() { window.location = "'.$next_url.'" }, 1000); </script>';
-        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $update_data['ru_final_price'] ? 'Redirecting to Paypal...​' : 'Successfully Joined 🙌​').'</div>';
+        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $_POST['support_level']>=2 ? 'Redirecting to Paypal...​' : 'Successfully Joined 🙌​').'</div>';
 
     }
 
@@ -1112,8 +1045,8 @@ class Api_v1 extends CI_Controller {
             die('<span style="color:#FF0000;">Error: You have already marked this item as complete, You cannot re-submit it.</span>');
         }
 
-        //Do we need to send any notifications to Instuctor for Premium Students?
-        if($matching_admissions[0]['ru_p2_price']>0 && strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
+        //Do we need to send any notifications to Instuctor for Coaching Students?
+        if($matching_admissions[0]['ru_upfront_pay']>0 && strlen(trim($_POST['us_notes']))>0 && !($matching_admissions[0]['u_id']==1) /* Shervin does a lot of testing...*/ ){
 
             //Send email to all instructors of this Bootcamp:
             $b_instructors = $this->Db_model->ba_fetch(array(
@@ -1431,7 +1364,8 @@ class Api_v1 extends CI_Controller {
 	function r_update_status(){
 
         $udata = auth(array(1308,1280), 0);
-        $_POST['rs_new_status'] = intval($_POST['rs_new_status']);
+        $_POST['r_new_status'] = intval($_POST['r_new_status']);
+        $_POST['r_id'] = intval($_POST['r_id']);
 
         if(!$udata){
             echo_json(array(
@@ -1445,28 +1379,18 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Invalid Class ID',
             ));
             exit;
-	    } elseif(!isset($_POST['rs_new_status']) || !in_array($_POST['rs_new_status'],array(1,2))){
+	    } elseif(!isset($_POST['r_new_status']) || !in_array($_POST['r_new_status'],array(0,1))){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Invalid Support Status',
+                'message' => 'Invalid Class Status',
             ));
             exit;
 	    }
 
 	    //Fetch Class:
 	    $classes = $this->Db_model->r_fetch(array(
-	        'r.r_id' => intval($_POST['r_id']),
+	        'r.r_id' => $_POST['r_id'],
 	    ));
-        //Fetch all Existing Bootcamps for this Instructor:
-        $bs = $this->Db_model->instructor_bs(array(
-            'ba.ba_outbound_u_id' => $udata['u_id'],
-            'ba.ba_status' => 3, //Bootcamp Leaders
-            'b.b_status >=' => 2, //Lead Instructor
-        ));
-        //Fetch the Lead Instructor's weeks off:
-        $users = $this->Db_model->u_fetch(array(
-            'u_id' => $udata['u_id'],
-        ));
 
 	    if(count($classes)<1){
             echo_json(array(
@@ -1481,35 +1405,24 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Class does not start on Monday, cannot Toggle Support',
             ));
             exit;
-        } elseif(count($bs)==0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'You are not assigned to Any Bootcamps as the Lead Instructor',
-            ));
-            exit;
-        } elseif(count($users)==0){
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Could not find your account.',
-            ));
-            exit;
         }
 
-        //Are they attempting to disable Support?
-        if($_POST['rs_new_status']==1){
 
-            //Let's make sure this Instructor has NOT sold any seats across ALL Bootcamps they lead:
-            $guided_admissions = count($this->Db_model->ru_fetch(array(
-                'ru_b_id IN ('.join(',',aggregate_field($bs,'b_id')).')' => null,
+        //Are they attempting to disable Support?
+        if(!$_POST['r_new_status']){
+
+            //Let's make sure this Class has NOT sold any seats:
+            $coaching_admissions = count($this->Db_model->ru_fetch(array(
+                'ru_r_id' => $_POST['r_id'],
                 'ru_status >=' => 4,
-                'ru_p2_price >' => 0,
+                'ru_upfront_pay >' => 0,
             )));
-            if($guided_admissions>0){
+            if($coaching_admissions>0){
 
                 //Inform Admin:
                 $this->Db_model->e_create(array(
                     'e_inbound_u_id' => $udata['u_id'],
-                    'e_text_value' => $udata['u_full_name'].' (Lead Instructor) is trying to disable a support week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$guided_admissions.'] Classroom seats across all their Bootcamps. Reach out to see if they need any help with this.',
+                    'e_text_value' => $udata['u_full_name'].' (Lead Instructor) is trying to disable coaching for the week of ['.$classes[0]['r_start_date'].'] that they have already sold ['.$coaching_admissions.'] coaching packages. Reach out to see if they need any help with this.',
                     'e_inbound_c_id' => 9, //Support Needed
                     'e_b_id' => $classes[0]['r_b_id'],
                     'e_r_id' => $classes[0]['r_id'],
@@ -1517,52 +1430,32 @@ class Api_v1 extends CI_Controller {
 
                 echo_json(array(
                     'status' => 0,
-                    'message' => $guided_admissions.' Student'.echo__s($guided_admissions).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
+                    'message' => $coaching_admissions.' Student'.echo__s($coaching_admissions).' have already paid for your Classroom for this Week for 1 or more of the Bootcamps you lead, so you cannot disable support until those Students are refunded. Contact Mench support if you need to disable support.',
                 ));
                 exit;
 
             }
         }
 
-        $current_weeks_off = ( strlen($users[0]['u_weeks_off'])>0 ? unserialize($users[0]['u_weeks_off']) : array() );
-        $make_changes = false;
+        //Change status
+        $this->Db_model->r_update( $_POST['r_id'] , array(
+            'r_status' => $_POST['r_new_status'],
+        ));
 
-        if($_POST['rs_new_status']==1 && !in_array($classes[0]['r_start_date'],$current_weeks_off)){
 
-            //We need to add this:
-            $make_changes = true;
-            array_push($current_weeks_off,$classes[0]['r_start_date']);
-
-        } elseif($_POST['rs_new_status']==2 && in_array($classes[0]['r_start_date'],$current_weeks_off)){
-
-            //We need to remove this:
-            $make_changes = true;
-            unset($current_weeks_off[array_search($classes[0]['r_start_date'], $current_weeks_off)]);
-
-        }
-
-        if($make_changes){
-
-            //Change user profile:
-            $this->Db_model->u_update( $udata['u_id'] , array(
-                'u_weeks_off' => ( count($current_weeks_off)>0 ? serialize($current_weeks_off) : null ),
-            ));
-
-            //Log engagement:
-            $this->Db_model->e_create(array(
-                'e_inbound_u_id' => $udata['u_id'], //The user
-                'e_inbound_c_id' => ( $_POST['rs_new_status']==2 ? 86 : 87 ), //Class Support Enabled/Disabled
-                'e_text_value' => 'Bootcamp support was '.( $_POST['rs_new_status']==2 ? 'Enabled' : 'Disabled' ).' for the week of ['.$classes[0]['r_start_date'].']', //Class Support Enabled/Disabled
-                'e_b_id' => $classes[0]['r_b_id'],
-                'e_r_id' => $classes[0]['r_id'],
-            ));
-        }
+        //Log engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $udata['u_id'], //The user
+            'e_inbound_c_id' => ( $_POST['r_new_status'] ? 86 : 87 ), //Class coaching Enabled/Disabled
+            'e_b_id' => $classes[0]['r_b_id'],
+            'e_r_id' => $classes[0]['r_id'],
+        ));
 
 	    //Show result:
         echo_json(array(
             'status' => 1,
-            'rs_new_status' => $_POST['rs_new_status'],
-            'message' => echo_status('rs',$_POST['rs_new_status'],true, null),
+            'r_new_status' => $_POST['r_new_status'],
+            'message' => echo_status('r',$_POST['r_new_status'],true, null),
         ));
 
 	}
@@ -1641,8 +1534,6 @@ class Api_v1 extends CI_Controller {
             'b_url_key' => $generated_key,
             'b_outbound_c_id' => $intent['c_id'],
             'b_prerequisites' => ( intval($_POST['b_is_parent']) ? null : json_encode($default_class_prerequisites) ),
-            'b_support_email' => ( intval($_POST['b_is_parent']) ? null : $udata['u_email'] ),
-            'b_calendly_url' => null, //Starts as not set
             'b_is_parent' => intval($_POST['b_is_parent']),
         ));
 
@@ -1662,10 +1553,8 @@ class Api_v1 extends CI_Controller {
         }
 
 
-        if(!intval($_POST['b_is_parent'])){
-            //Create all Classes:
-            $new_class_count = $this->Db_model->r_sync($b['b_id']);
-        }
+        //Create all Classes:
+        $new_class_count = $this->Db_model->r_sync($b['b_id']);
 
 
         //Add this Bootcamp to the General category:
@@ -1683,18 +1572,7 @@ class Api_v1 extends CI_Controller {
             'ba_outbound_u_id' => $udata['u_id'],
             'ba_status' => 3, //Leader - As this is the first person to create
             'ba_b_id' => $b['b_id'],
-            'ba_team_display' => 't', //Show on landing page
         ));
-
-        if($udata['u_id']==2){
-            //This is Miguel, also assign Shervin to help-out:
-            $admin_status = $this->Db_model->ba_create(array(
-                'ba_outbound_u_id' => 1, //Shervin
-                'ba_status' => 2, //co-instructor
-                'ba_b_id' => $b['b_id'],
-                'ba_team_display' => 'f', //Show on landing page
-            ));
-        }
 
         //Did it go well?
         if(intval($admin_status['ba_id'])<=0){
@@ -1843,19 +1721,13 @@ class Api_v1 extends CI_Controller {
         } elseif(!isset($_POST['b_status'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Missing Bootcamp Status',
+                'message' => 'Missing Publish Status',
             ));
             return false;
         } elseif($_POST['level1_c_id']>0 && $_POST['level2_c_id']==0){
             echo_json(array(
                 'status' => 0,
                 'message' => 'Select Category',
-            ));
-            return false;
-        } elseif(strlen($_POST['b_support_email'])>0 && !filter_var($_POST['b_support_email'], FILTER_VALIDATE_EMAIL)) {
-            echo_json(array(
-                'status' => 0,
-                'message' => 'Enter Valid Support Email Address',
             ));
             return false;
         } elseif(strlen($_POST['b_thankyou_url'])>0 && !filter_var($_POST['b_thankyou_url'], FILTER_VALIDATE_URL)){
@@ -1870,16 +1742,38 @@ class Api_v1 extends CI_Controller {
                 'message' => 'Enter Valid Apply URL',
             ));
             return false;
-        } elseif(strlen($_POST['b_calendly_url'])>0 && substr_count($_POST['b_calendly_url'],'https://calendly.com/')==0){
+        } elseif(!isset($_POST['b_offers_diy']) || !isset($_POST['coaching_package_check'])){
             echo_json(array(
                 'status' => 0,
-                'message' => 'Calendly URL must include https://calendly.com/',
+                'message' => 'Missing admission data',
+            ));
+            return false;
+        } elseif(intval($_POST['coaching_package_check']) && (doubleval($_POST['b_weekly_coaching_hours'])<=0 || doubleval($_POST['b_weekly_coaching_rate'])<=0)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Coaching hours and rate are required to offer a coaching package',
+            ));
+            return false;
+        } elseif(intval($_POST['coaching_package_check']) && (doubleval($_POST['b_weekly_coaching_hours'])<=0 || doubleval($_POST['b_weekly_coaching_rate'])<=0)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Coaching hours and rate are required to offer a coaching package',
+            ));
+            return false;
+        } elseif(intval($_POST['coaching_package_check']) && (doubleval($_POST['b_weekly_coaching_hours'])<0.5 || doubleval($_POST['b_weekly_coaching_rate'])<30)){
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Coaching packages must have at-least half an hour of coaching at a minimum of $30 USD ($1/minute)',
             ));
             return false;
         }
 
-        //Fetch reserved terms:
+
+
+        //Fetch config variables:
         $reserved_hashtags = $this->config->item('reserved_hashtags');
+        $deferred_pay_defaults = $this->config->item('deferred_pay_defaults');
+
 
         //Validate URL Key to be unique:
         $duplicate_bs = $this->Db_model->b_fetch(array(
@@ -1926,32 +1820,28 @@ class Api_v1 extends CI_Controller {
             return false;
         }
 
-        /*
-        :$('#b_p2_max_seats').val(),
-        :$('#b_p2_rate').val(),
-        :$('#b_p3_rate').val(),
-        :$('#b_support_email').val(),
-        :$('#b_calendly_url').val(),
-        :$('#b_difficulty_level').val(),
-        level1_c_id:$('.level1').val(),
-        level2_c_id:( $('.level1').val()>0 ? $('.outbound_c_'+$('.level1').val()).val() : 0),
-        */
+
 
         //Update Bootcamp:
         $b_update = array(
             'b_status' => intval($_POST['b_status']),
             'b_url_key' => $_POST['b_url_key'],
             'b_fb_pixel_id' => ( strlen($_POST['b_fb_pixel_id'])>0 ? bigintval($_POST['b_fb_pixel_id']) : NULL ),
-            'b_p1_rate' => doubleval($_POST['b_p1_rate']),
-            'b_p2_max_seats' => intval($_POST['b_p2_max_seats']),
-            'b_p2_rate' => doubleval($_POST['b_p2_rate']),
-            'b_p3_rate' => doubleval($_POST['b_p3_rate']),
-            'b_support_email' => $_POST['b_support_email'],
-            'b_calendly_url' => $_POST['b_calendly_url'],
             'b_thankyou_url' => $_POST['b_thankyou_url'],
-            'b_apply_url' => $_POST['b_apply_url'],
-            'b_difficulty_level' => ( isset($_POST['b_difficulty_level']) && intval($_POST['b_difficulty_level'])>0 ? intval($_POST['b_difficulty_level']) : null ),
+
+            'b_offers_diy' => intval($_POST['b_offers_diy']),
+
+            'b_weekly_coaching_hours' => ( intval($_POST['coaching_package_check']) ? doubleval($_POST['b_weekly_coaching_hours']) : 0 ),
+            'b_weekly_coaching_rate' => ( intval($_POST['coaching_package_check']) ? doubleval($_POST['b_weekly_coaching_rate']) : 0 ),
+
+            'b_deferred_rate' => ( intval($_POST['coaching_package_check']) && intval($_POST['offer_deferred']) ? $deferred_pay_defaults['b_deferred_rate'] : 0 ),
+            'b_deferred_deposit' => ( intval($_POST['coaching_package_check']) && intval($_POST['offer_deferred']) ? $deferred_pay_defaults['b_deferred_deposit'] : 0 ),
+            'b_deferred_payback' => ( intval($_POST['coaching_package_check']) && intval($_POST['offer_deferred']) ? $deferred_pay_defaults['b_deferred_payback'] : 0 ),
+
+            'b_guarantee_weeks' => intval($_POST['b_guarantee_weeks']),
+            'b_apply_url' => ( intval($_POST['coaching_package_check']) ? $_POST['b_apply_url'] : null ), //Only applicable for coaching
         );
+
 
         $this->Db_model->b_update( intval($_POST['b_id']) , $b_update );
 

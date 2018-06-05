@@ -149,7 +149,7 @@ class Cron extends CI_Controller {
                 $classroom_students = 0;
                 foreach($accepted_admissions as $admission){
 
-                    if($admission['ru_p2_price']>0){
+                    if($admission['ru_upfront_pay']>0){
                         $classroom_students++;
                     }
 
@@ -876,7 +876,7 @@ class Cron extends CI_Controller {
                 ));
                 $active_admission = detect_active_admission($admissions); //We'd need to see which admission to load now
 
-                if($active_admission && $active_admission['ru_p2_price']>0 /* Premium Students Only */){
+                if($active_admission && $active_admission['ru_upfront_pay']>0 /* Coaching Students Only */){
 
                     unset($notify_fb_ids);
                     $notify_fb_ids = array();

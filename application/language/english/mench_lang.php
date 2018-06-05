@@ -1,5 +1,5 @@
 <?php
-/* Sample use case: <?= $this->lang->line('obj_rs_name') ?> */
+/* Sample use case: <?= $this->lang->line('level_0_name') ?> */
 
 $lang['level_0_name'] = 'Weekly Bootcamp';
 $lang['level_0_icon'] = '<i class="fas fa-cube"></i>';
@@ -30,4 +30,3 @@ $lang['obj_fs_name'] = 'Facebook Page Admin';
 //None Database Objects:
 $lang['obj_ex_name'] = 'Intent Completion Rule';
 $lang['obj_df_name'] = 'Bootcamp Difficulty Level';
-$lang['obj_rs_name'] = 'Support Framework';

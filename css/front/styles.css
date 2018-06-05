@@ -87,6 +87,14 @@ a.badge-primary:hover {
 .obj-id{ color:#3C4858; font-size:1.0em;}
 #b_objective .fas {padding-right:3px;}
 .stnd-btn {text-align:right !important; min-width:66px !important;}
+.form-group .form-control { z-index: 0 !important; }
+.center { text-align: center; }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
 
 .breadcrumb a { font-weight:bold; }
 .scheduler-iframe {
@@ -168,7 +176,7 @@ a.badge-primary:hover {
 
 .product-splash .alert{ margin-top:30px; border-radius:5px; }
 .product-splash .alert>span, #console .alert>span{ font-weight:bold;display:block; padding-bottom:7px; text-transform: uppercase; }
-
+.alert{font-size: 1em !important;}
 .dashboard-logo{
 	width:80% !important;
 	padding:11px 0 0 0 !important;
@@ -1352,7 +1360,7 @@ a.badge:focus, a.badge:hover {
 }
 
 .iphone-nav-tabs > li {
-    margin-right:5px;
+    margin-right:2px;
 }
 .iphone-nav-tabs > li:last-of-type {
     margin-right:0;
@@ -1641,6 +1649,12 @@ h4 .tip-badge{
     margin-bottom:15px;
 }
 .badge-current{display:inline-block; font-weight:bold; background-color:#3C4858; color:#FFF; float:none !important; font-size:14px; }
+.inline-box {padding:8px 0px 8px 16px; margin-left:8px; border-left: 5px solid #3C4858; }
+
+.checkbox label {
+    font-size: 1em !important;
+    font-weight: 300 !important;
+}
 .pricing-badge {
     padding: 4px 6px;
     cursor:help;
@@ -1651,7 +1665,13 @@ h4 .tip-badge{
     margin: -4px 0 0 5px;
 }
 .status-label{
-	cursor:help;color:#3C4858;
+	cursor:help;
+    color:#3C4858;
+}
+
+.dropdown .status-label{
+    font-weight: 500 !important;
+    font-size: 1.2em !important;
 }
 .list-group-item>.input-group>.form-group>input[type="text"]{
     margin-bottom: -1px;

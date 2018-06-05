@@ -28,59 +28,6 @@ function echo_social_profiles($social_profiles){
     return $ui;
 }
 
-function echo_action_plan_overview($b,$is_student=false,$custom_start_date=null){
-
-    $CI =& get_instance();
-    $ui = null;
-    $weeks = ( $b['b_is_parent'] ? $b['c__child_count'] : 1 );
-    $weekly_coaching = 2;
-
-    //Intent
-    $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clock"></i></span> '.$weeks.' Week'.echo__s($weeks).' @ '.echo_hours($b['c__estimated_hours']/(( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? count($b['c__child_intents']) : 1 ))).'/Week</div>';
-
-    if($custom_start_date){
-        $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-calendar"></i></span> '.echo_time($custom_start_date,5).' - '.echo_time($custom_start_date,5, (($weeks*7*24*3600)-(4*3600))).'</div>';
-    }
-
-
-
-    if(!$is_student){
-        if($b['b_is_parent']) {
-            //Show total tasks:
-            $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> ' . $b['c__child_child_count'] . ' Task' . echo__s($b['c__child_child_count']) . '</div>';
-        } else {
-            //Total Tasks for weekly Bootcamps:
-            $ui .= '<div class="dash-label"><span class="icon-left"><i class="fas fa-clipboard-check"></i></span> '.$b['c__child_count'].' Task'.echo__s($b['c__child_count']) .'</div>';
-            if($b['c__child_child_count']>0){
-                $ui .= '<div class="dash-label"><span class="icon-left"><i class="fal fa-clipboard-check"></i></span> '.$b['c__child_child_count'].' Step'.echo__s($b['c__child_child_count']).'</div>';
-            }
-        }
-    }
-
-
-
-
-    if($b['b_id']==354 && $is_student){
-        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-whistle"></i></span> '.$weekly_coaching.' Hours/Week Coaching <i class="fas fa-info-circle" data-toggle="tooltip" title="'.( $weekly_coaching * $weeks ).' hours of 1-on-1 coaching in '.$weeks.' week'.echo__s($weeks).' which includes a direct chat line & weekly brainstorming calls"></i></div>';
-    }
-
-    //Messages:
-    if($is_student){
-        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-lightbulb"></i></span> '.$b['c__message_tree_count'].' Insight'. echo__s($b['c__message_tree_count']).' <i class="fas fa-info-circle" data-toggle="tooltip" title="'.$b['c__message_tree_count'].' curated messages communicate the best-practices on how to '.strtolower($b['c_outcome']).'"></i></div>';
-    } else {
-        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-comment-dots"></i></span> '.$b['c__message_tree_count'].' Message'. echo__s($b['c__message_tree_count']).'</div>';
-    }
-
-
-
-    if($b['b_id']==354 && $is_student){
-        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-book"></i></span> 32 Referenced Sources <i class="fas fa-info-circle" data-toggle="tooltip" title="Messages reference 32 external sources (like books, videos, blog posts and podcasts)"></i></div>';
-        $ui .= ' <div class="dash-label"><span class="icon-left"><i class="fas fa-user-graduate"></i></span> 17 Industry Experts <i class="fas fa-info-circle" data-toggle="tooltip" title="References are authored by 17 industry experts with first-hand experience to '.strtolower($b['c_outcome']).'"></i></div>';
-    }
-
-    return $ui;
-}
-
 
 
 function echo_x($u, $x){
@@ -103,6 +50,9 @@ function echo_x($u, $x){
     if($x['x_id']==$u['u_cover_x_id']){
         //Already set as the cover photo:
         $ui .= '<span class="badge badge-primary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Cover Photo"><i class="fas fa-file-check"></i></span> ';
+    } elseif($x['x_id']==$u['u_booking_x_id']){
+        //Already set as the cover photo:
+        $ui .= '<span class="badge badge-primary grey current-cover" data-toggle="tooltip" data-placement="left" title="Currently set as Booking URL"><i class="fas fa-calendar-check"></i></span> ';
     } elseif($x['x_type']==4 && $x['x_status']>0){
         //Could be set as the cover photo:
         $ui .= '<a class="badge badge-primary add-cover" href="javascript:void(0);" onclick="x_cover_set('.$x['x_id'].')" data-toggle="tooltip" data-placement="left" title="Set this image as Cover Photo"><i class="fas fa-file-image"></i></a> ';
@@ -121,7 +71,7 @@ function echo_x($u, $x){
     //Is this a social URL?
     foreach($social_urls as $url=>$fa_icon){
         if(substr_count($x['x_url'],$url)>0){
-            $ui .= '<i class="'.$fa_icon.'" data-toggle="tooltip" data-placement="top" title="Verified Social Media Profile"></i> ';
+            $ui .= '<i class="'.$fa_icon.'" data-toggle="tooltip" data-placement="top" title="Verified Social Profile"></i> ';
             break;
         }
     }
@@ -233,44 +183,6 @@ function echo_tip($c_id){
 
 
 
-function echo_price($b,$support_level=1,$return_double=false,$aggregate_prices=true){
-
-    $price = ( $aggregate_prices ? -1 : 0 ); //Error
-
-    if($support_level==1){
-
-        $price = doubleval($b['b_p1_rate']); //May or may not be available
-
-    } elseif($support_level==2){
-
-        if($b['b_p2_max_seats']>0 && $b['b_p2_rate']>0){
-            //We should offer this:
-            $price = doubleval(($b['b_p1_rate']>0 ? $b['b_p1_rate'] : 0 ) + $b['b_p2_rate'] );
-        } else {
-            $price = -1; //Unavailable
-        }
-
-    }
-
-    //Only DIY:
-    if($return_double){
-
-        return $price;
-
-    } else {
-        //Need a fancy return for UI:
-        if($price<0) {
-            return 'Unavailable';
-        } elseif($price==0){
-                return 'FREE';
-        } elseif($price>0) {
-            return '$'.number_format($price,0).'<b style="font-size:0.7em; font-weight:300; padding-left:2px;">USD</b>';
-        }
-    }
-
-}
-
-
 
 
 
@@ -350,7 +262,7 @@ function echo_embed($url,$full_message,$require_image=false,$return_array=false)
 
                 //Inform Student that this video has been sliced:
                 if($start_sec || $end_sec){
-                    $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch this video from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
+                    $embed_code .= '<div class="video-prefix"><i class="fab fa-youtube" style="color:#ff0202;"></i> Watch from <b>'.($start_sec ? echo_min_from_sec($start_sec) : 'start').'</b> to <b>'.($end_sec ? echo_min_from_sec($end_sec) : 'end').'</b>:</div>';
                 }
 
                 $embed_code .= '<div class="yt-container video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/'.$video_id.'?theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start='.$start_sec.( $end_sec ? '&end='.$end_sec : '' ).'" frameborder="0" allowfullscreen class="yt-video"></iframe></div>';
@@ -968,6 +880,8 @@ function echo_time($t,$format=0,$adjust_seconds=0){
         return date("Y/m/d",$timestamp);
     } elseif($format==7){
         return date(( $year ? "D M j, g:i a" : "D M j, Y, g:i a" ),$timestamp);
+    } elseif($format==8){
+        return date(( $year ? "M j" : "M j Y" ),$timestamp);
     }
 }
 
@@ -1008,7 +922,7 @@ function echo_status($object=null,$status=null,$micro_status=false,$data_placeme
             return false;
         } else {
             //We have two skins for displaying statuses:
-            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'><i class="'.( isset($result['s_mini_icon']) ? $result['s_mini_icon'] : 'fas fa-sliders-h' ).' initial"></i>'.($micro_status?'':$result['s_name']).'</span>';
+            return '<span class="status-label" '.( isset($result['s_desc']) && !is_null($data_placement) ? 'data-toggle="tooltip" data-placement="'.$data_placement.'" title="'.$result['s_desc'].'" style="border-bottom:1px dotted #444; padding-bottom:1px;"':'style="cursor:pointer;"').'>'.( isset($result['s_mini_icon']) ? '<i class="'.$result['s_mini_icon'].' initial"></i> ' : '<i class="fas fa-sliders-h initial"></i> ' ).($micro_status?'':$result['s_name']).'</span>';
         }
     }
 }
@@ -1058,29 +972,11 @@ function echo_br($admin){
     //$ui .= '</span>';
     $ui .= echo_status('ba',$admin['ba_status']);
 
-    //Is this a Mench Adviser?
-    if($admin['ba_status']==1){
-        //let them know how to get in touch:
-        $ui .= ' &nbsp; Get in touch using <img data-toggle="tooltip" data-placement="left" title="Facebook Messenger accessible via Console and other devices." src="/img/MessengerIcon.png" class="profile-icon" />';
-    }
-
-    //Are they shown on the profile?
-    if($admin['ba_team_display']=='t'){
-        $ui .= '&nbsp; <i class="fas fa-eye" data-toggle="tooltip" data-placement="left" title="Team member who is listed on the Landing Page"></i>';
-    } else {
-        $ui .= '&nbsp; <i class="fas fa-eye-slash" data-toggle="tooltip" data-placement="left" title="Team member who is not listed on the Landing Page"></i>';
-    }
-
     $ui .= '</span> ';
 
     //Left content
     //$ui .= '<i class="fa fas-bars" style="padding-right:3px;"></i> ';
     $ui .= echo_cover($admin,'profile-icon',true).' '.$admin['u_full_name'].' &nbsp;';
-
-
-
-
-    //TODO sorting status & updates later on...
 
     $ui .= '</li>';
     return $ui;
@@ -1146,7 +1042,7 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
         //The Bootcamp of multi-week Bootcamps
         $ui .= '<a class="badge badge-primary" style="margin-right:-1px; width:34px;" href="javascript:delete_b('.$intent['cr_outbound_b_id'].','.$intent['cr_id'].');"><i class="fas fa-trash-alt"></i></a> &nbsp;';
 
-        $ui .= '<a class="badge badge-primary" style="margin-right:1px; width:60px;" href="/console/'.$intent['cr_outbound_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
+        $ui .= '<a class="badge badge-primary" style="margin-right:1px;" href="/console/'.$intent['cr_outbound_b_id'].'"><i class="fas fa-chevron-right"></i></a>';
 
     } elseif(!$b['b_is_parent'] || $level==1) {
 
@@ -1163,6 +1059,19 @@ function echo_cr($b,$intent,$level=0,$parent_c_id=0,$editing_enabled=true){
 
     }
 
+
+    /*
+    if($editing_enabled){
+        if(!$b['b_old_format'] || $udata['u_inbound_u_id']==1281){
+            $ui .= '<a class="badge badge-primary" onclick="load_modify('.$intent['c_id'].','.$level.')" style="margin-right: -1px;" href="#modify-'.$intent['c_id'].'"><i class="fas fa-cog"></i></a> &nbsp;';
+        }
+
+        $ui .= '<a href="#messages-'.$intent['c_id'].'" onclick="i_load_frame('.$intent['c_id'].','.$level.')" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fas fa-comment-dots"></i></a>';
+    } else {
+        //Show link to current section:
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'#messages_'.$intent['c_id'].'\').toggle();" class="badge badge-primary badge-msg"><span id="messages-counter-'.$intent['c_id'].'">'.( isset($intent['c__messages']) ? count($intent['c__messages']) : 0 ).'</span> <i class="fas fa-comment-dots"></i></a>';
+    }
+    */
 
     //Keep an eye out for inner message counter changes:
     $ui .= '</span> ';
@@ -1282,10 +1191,11 @@ function echo_r($b,$class,$append_class=null){
     $CI =& get_instance();
     $udata = $CI->session->userdata('user');
     $class_settings = $CI->config->item('class_settings');
+
     $guided_admissions = count($CI->Db_model->ru_fetch(array(
         'ru_r_id' => $class['r_id'],
         'ru_status >=' => 4,
-        'ru_p2_price >' => 0,
+        'ru_upfront_pay >' => 0,
     )));
 
     echo '<li class="list-group-item '.$append_class.'">';
@@ -1304,31 +1214,21 @@ function echo_r($b,$class,$append_class=null){
     echo '</span>';
 
     //Determine the state of the Checkbox:
-    if($guided_admissions>0 || $class['r_status']>=2 || !($b['b__admins'][0]['u_id']==$udata['u_id'])){
+    if($guided_admissions>0 || $class['r_status']>=2){
 
         //Locked:
         echo '<span class="badge badge-primary '.( $guided_admissions==0 ? 'grey' : '' ).'">';
         echo echo_status('r',$class['r_status'],true, 'right');
         if($guided_admissions>0){
-            echo ' <span data-toggle="tooltip" data-placement="right" title="'.$guided_admissions.'/'.$b['b_p2_max_seats'].' Classroom Seats are Full">'.$guided_admissions.'</span>';
+            echo ' <span data-toggle="tooltip" data-placement="right" title="'.$guided_admissions.' Students Enrolled">'.$guided_admissions.'</span>';
         }
         echo '</span>';
 
     } else {
 
-        //See what the Lead Instructor's calendar looks like:
-        if(strlen($b['b__admins'][0]['u_weeks_off'])>0){
-
-            //They have some days that are booked off:
-            $current_status = ( in_array($class['r_start_date'],unserialize($b['b__admins'][0]['u_weeks_off'])) ? 1 : 2 );
-
-        } else {
-            //Classroom package #2 is Available as they have no Weeks off:
-            $current_status = 2;
-        }
-
         //Can still change:
-        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $current_status==1 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$current_status.'" data-toggle="tooltip" data-placement="right" title="Toggle support across all your Bootcamps/Classes for the week of '.echo_time($class['r_start_date'],4).'. Yellow = Support Available Grey = Do It Yourself Only">'.echo_status('rs',$current_status,true, null).'</a>';
+        echo '<a href="javascript:void(0);" onclick="toggle_support('.$class['r_id'].')" id="support_toggle_'.$class['r_id'].'" class="badge badge-primary '.( $class['r_status']==0 ? 'grey' : '' ).'" style="text-decoration: none;" current-status="'.$class['r_status'].'" data-toggle="tooltip" data-placement="right" title="Click to toggle availability for the week of '.echo_time($class['r_start_date'],4).'. Yellow = Coaching On Grey = Coaching Off">'.echo_status('r',$class['r_status'],true, null).'</a>';
+
 
     }
 
@@ -1372,8 +1272,8 @@ function echo_ordinal($number){
     }
 }
 
-function echo__s($count){
-    return ( $count==1?'':'s' );
+function echo__s($count,$is_es=0){
+    return ( $count==1?'':( $is_es ? 'es' : 's'));
 }
 
 

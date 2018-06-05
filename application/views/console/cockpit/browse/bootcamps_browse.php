@@ -16,13 +16,12 @@ function echo_row($b,$counter){
     echo '<td>'.( $b['b_old_format'] ? '<i class="fas fa-lock" style="color:#FF0000;" title="OLD FORMAT"></i> ' : '' ).'<a href="/console/'.$b['b_id'].'">'.$b['c_outcome'].'</a></td>';
 
     echo '<td><a href="https://www.facebook.com/'.$b['fp_fb_id'].'">'.$b['fp_name'].'</a></td>';
-    echo '<td>'.( $b['b_difficulty_level']>=1 ? echo_status('df',$b['b_difficulty_level'],1,'top') : '' ).'</td>';
 
     echo '<td>'.( isset($b['leaders'][0]) ? '<a href="/entities/'.$b['leaders'][0]['u_id'].'" title="User ID '.$b['leaders'][0]['u_id'].'">'.$b['leaders'][0]['u_full_name'].'</a>' : '' ).'</td>';
 
     //Pricing:
-    echo '<td>'.echo_price($b,1).'</td>';
-    echo '<td>'.echo_price($b,2).'</td>';
+    echo '<td>$'.($b['b_weekly_coaching_rate'] * $b['b__week_count']).'</td>';
+    echo '<td>$'.($b['b_weekly_coaching_rate'] * $b['b__week_count'] * $b['b_deferred_rate'] * $b['b_deferred_deposit']).'</td>';
 
 
     echo '<td>';
