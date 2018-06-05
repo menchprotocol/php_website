@@ -117,7 +117,7 @@ $( document ).ready(function() {
                 <div style="margin:10px 0 !important;" class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
             </div>
 
-            <div style="text-align: center;"><a href="https://support.mench.com/hc/en-us/articles/115002079731">Read Student Testimonials &raquo;</a></div>
+            <div style="text-align:center; padding-bottom:25px;"><a href="https://support.mench.com/hc/en-us/articles/115002079731">Read Student Testimonials &raquo;</a></div>
 
         </div>
     </div>

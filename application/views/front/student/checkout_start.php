@@ -36,6 +36,20 @@ $('body').keyup(function(e){
 $( document ).ready(function() {
 	//Make focus:
 	$('#u_full_name').focus(); //Focus on input
+
+    <?php
+    //Do we have a user to be loaded here?
+    if(isset($_GET['u_email'])){
+        $us = $this->Db_model->u_fetch(array(
+            'u_email' => $_GET['u_email'],
+        ));
+        if(count($us)==1){
+            echo '$(\'#u_full_name\').val(\''.$us[0]['u_full_name'].'\'); ';
+            echo '$(\'#u_email\').val(\''.$us[0]['u_email'].'\'); ';
+            echo 'start_application(); ';
+        }
+    }
+    ?>
 });
 
 </script>
