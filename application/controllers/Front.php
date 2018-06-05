@@ -135,6 +135,16 @@ class Front extends CI_Controller {
             redirect_message('/'.$bs[0]['b_url_key']);
         }
 
+        //Fetch classes:
+        $next_classes = $this->Db_model->r_fetch(array(
+            'r_b_id' => $bs[0]['b_id'],
+            'r_status IN ('. ( $bs[0]['b_offers_diy'] ? '0,1' : '1' /* Require coaching */ ).')' => null,
+        ),null,'ASC',1);
+
+        if(count($next_classes)<1){
+            redirect_message('/','<div class="alert alert-danger" role="alert">Bootcamp does not have any active classes.</div>');
+        }
+
 	    //Load home page:
 	    $this->load->view('front/shared/f_header' , array(
             'title' => $bs[0]['c_outcome'],
@@ -143,7 +153,8 @@ class Front extends CI_Controller {
             'canonical' => 'https://mench.com/'.$bs[0]['b_url_key'], //Would set this in the <head> for SEO purposes
 	    ));
 	    $this->load->view('front/b/landing_page' , array(
-	        'b' => $bs[0],
+            'b' => $bs[0],
+            'next_classes' => $next_classes,
 	    ));
 	    $this->load->view('front/shared/f_footer');
 	}

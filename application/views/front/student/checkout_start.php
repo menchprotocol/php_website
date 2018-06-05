@@ -61,11 +61,11 @@ $( document ).ready(function() {
     <div class="row" style="max-width:330px; padding-left:10px;">
         <div class="col-xs-12">
             <p>Full Name:</p>
-            <p><input type="text" id="u_full_name" value="<?= ( isset($u['u_full_name']) ? $u['u_full_name'] : '' ) ?>" class="form-el" /></p>
+            <p><input type="text" id="u_full_name" value="<?= ( isset($u['u_full_name']) && !isset($_GET['u_email']) ? $u['u_full_name'] : '' ) ?>" class="form-el" /></p>
         </div>
         <div class="col-xs-12">
             <p>Email:</p>
-            <p><input type="email" id="u_email" value="<?= ( isset($u['u_email']) ? $u['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
+            <p><input type="email" id="u_email" value="<?= ( isset($u['u_email']) && !isset($_GET['u_email']) ? $u['u_email'] : '' ) ?>" style="text-transform: lowercase;" class="form-el" /></p>
         </div>
     </div>
     <div class="row maxout" style="padding-left:10px;">

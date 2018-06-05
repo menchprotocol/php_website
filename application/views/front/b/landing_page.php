@@ -1,15 +1,9 @@
 <?php 
 //Calculate office hours:
 $class_settings = $this->config->item('class_settings');
-
 $child_name = ( $b['b_is_parent'] ? 'Week' : $this->lang->line('level_2_name') );
 $udata = $this->session->userdata('user');
 $b = ( $b['b_is_parent'] && count($b['c__child_intents'])>0 ? b_aggregate($b) : $b ); //Replace $b with the new aggregated $b
-$next_classes = $this->Db_model->r_fetch(array(
-    'r_b_id' => $b['b_id'],
-    'r_status' => ( $b['b_offers_diy'] ? 0 : 1 /* Require coaching */ ),
-),null,'ASC',1);
-
 ?>
 
 <style>
