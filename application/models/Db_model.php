@@ -157,7 +157,7 @@ WHERE ru.ru_status >= 4
                 'cr.cr_status >=' => 0,
                 'c.c_status >=' => 0,
             ));
-            $bs[$key]['b__week_count'] = ( $c['b_is_parent'] ? count($bs[$key]['c__child_intents']) : 1 );
+            $bs[$key]['b__week_count'] = ( $c['c_level'] ? count($bs[$key]['c__child_intents']) : 1 );
 
 
             foreach($bs[$key]['c__child_intents'] as $intent_key=>$intent){
@@ -876,7 +876,7 @@ WHERE ru.ru_status >= 4
                 'ru_status' => 4,
             ));
 
-            if($admissions[0]['b_is_parent']){
+            if($admissions[0]['c_level']){
                 //This is a Parent Bootcamp, so we also need to update the Child admissions:
                 $child_admissions = $this->Db_model->ru_fetch(array(
                     'ru_parent_ru_id' => $ru_id,
@@ -1139,9 +1139,8 @@ WHERE ru.ru_status >= 4
 	    //Missing anything?
 	    $this->db->select('*');
         $this->db->from('v5_bootcamps b');
-        if(in_array('c',$join_objects)){
-            $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
-        }
+        $this->db->join('v5_intents c', 'c.c_id = b.b_outbound_c_id');
+
         if(in_array('fp',$join_objects)){
             $this->db->join('v5_facebook_pages fp', 'fp.fp_id = b.b_fp_id','left');
         }
@@ -1169,7 +1168,11 @@ WHERE ru.ru_status >= 4
             $this->db->where('cr_outbound_b_id >',0);
         }
 		foreach($match_columns as $key=>$value){
-			$this->db->where($key,$value);
+            if(!is_null($value)){
+                $this->db->where($key,$value);
+            } else {
+                $this->db->where($key);
+            }
 		}
 		$this->db->order_by('cr.cr_outbound_rank','ASC');
 		$q = $this->db->get();
@@ -1374,7 +1377,7 @@ WHERE ru.ru_status >= 4
 	
 	function b_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','b_is_parent'))){
+        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','c_level'))){
             return false;
         }
 
@@ -1927,7 +1930,7 @@ WHERE ru.ru_status >= 4
 
         //Fetch item(s) for updates:
         if($obj=='b'){
-            $items = $this->Db_model->b_fetch($limits,array('c','ba'));
+            $items = $this->Db_model->b_fetch($limits,array('ba'));
         } elseif($obj=='c'){
             $items = $this->Db_model->c_fetch($limits);
         } elseif($obj=='u'){
@@ -1958,9 +1961,10 @@ WHERE ru.ru_status >= 4
 
                 $new_item['b_id'] = intval($item['b_id']); //rquired for all objects
                 $new_item['b_status'] = intval($item['b_status']);
-                $new_item['b_is_parent'] = intval($item['b_is_parent']);
                 $new_item['b_old_format'] = intval($item['b_old_format']);
                 $new_item['c_b_outcome'] = $item['c_outcome'];
+                $new_item['c_level'] = intval($item['c_level']);
+                $new_item['b_is_parent'] = intval($item['c_level']); //TODO Remove later...
                 $new_item['b_inbound_u_id'] = intval($item['u_id']);
                 $new_item['b_keywords'] = '';
 
@@ -2056,26 +2060,19 @@ WHERE ru.ru_status >= 4
 
             } elseif($obj=='c'){
 
+                $new_item['c_id'] = intval($item['c_id']);
+                $new_item['c_inbound_u_id'] = intval($item['c_inbound_u_id']);
+                $new_item['c_is_public'] = intval($item['c_is_public']);
+                $new_item['c_level'] = intval($item['c_level']);
+                $new_item['c_e_score'] = intval($item['c_e_score']);
+                $new_item['c_outcome'] = $item['c_outcome'];
+                $new_item['c_keywords'] = ( strlen($item['c_trigger_statements'])>0 ? join(' ',json_decode($item['c_trigger_statements'])) : '' );
+
                 //Fetch all Messages:
                 $messages = $this->Db_model->i_fetch(array(
                     'i_status >' => 0,
                     'i_outbound_c_id' => $item['c_id'],
                 ));
-
-                $parents = $this->Db_model->cr_inbound_fetch(array(
-                    'cr.cr_outbound_c_id' => $item['c_id'],
-                    'cr.cr_status' => 1,
-                ));
-
-                $new_item['c_id'] = intval($item['c_id']);
-                $new_item['c_inbound_u_id'] = intval($item['c_inbound_u_id']);
-                $new_item['c_is_output'] = intval($item['c_is_output']);
-                $new_item['c_is_public'] = intval($item['c_is_public']);
-                $new_item['c_i_count'] = count($messages);
-                $new_item['c_cr_count'] = count($parents);
-                $new_item['c_outcome'] = $item['c_outcome'];
-                $new_item['c_keywords'] = '';
-
                 foreach($messages as $i){
                     //Add main URL:
                     $new_item['c_keywords'] .= ' '.$i['i_message'];
