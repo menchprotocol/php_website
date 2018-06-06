@@ -1964,6 +1964,7 @@ WHERE ru.ru_status >= 4
                 $new_item['b_old_format'] = intval($item['b_old_format']);
                 $new_item['c_b_outcome'] = $item['c_outcome'];
                 $new_item['c_level'] = intval($item['c_level']);
+                $new_item['b_e_score'] = intval($item['b_e_score']);
                 $new_item['b_is_parent'] = intval($item['c_level']); //TODO Remove later...
                 $new_item['b_inbound_u_id'] = intval($item['u_id']);
                 $new_item['b_keywords'] = '';
