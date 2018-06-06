@@ -111,7 +111,14 @@ $( document ).ready(function() {
                 <div style="margin:10px 0 !important;" class="btn btn-primary btn-round countdown"><div>NEXT CLASS IN:</div><span class="next_start_date"></span></div>
             </div>
 
-            <div style="text-align:center; padding-bottom:25px;"><a href="https://support.mench.com/hc/en-us/articles/115002079731">Read Student Testimonials &raquo;</a></div>
+
+
+            <?php if($b['b_id']==354){ ?>
+            <div class="list-group" style="width: 267px; margin:12px auto 30px auto;">
+                <a href="https://support.mench.com/hc/en-us/articles/360004312611" class="list-group-item"><span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span> Program FAQ</a>
+                <a href="https://support.mench.com/hc/en-us/articles/115002079731" class="list-group-item"><span class="pull-right"><span class="badge badge-primary"><i class="fas fa-chevron-right"></i></span></span> Student Testimonials</a>
+            </div>
+            <?php } ?>
 
         </div>
     </div>
