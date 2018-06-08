@@ -135,10 +135,11 @@ class Front extends CI_Controller {
             redirect_message('/'.$bs[0]['b_url_key']);
         }
 
-        //Fetch classes:
+        //Fetch future classes:
         $next_classes = $this->Db_model->r_fetch(array(
             'r_b_id' => $bs[0]['b_id'],
             'r_status IN ('. ( $bs[0]['b_offers_diy'] ? '0,1' : '1' /* Require coaching */ ).')' => null,
+            'r_start_date >' => date("Y-m-d"),
         ),null,'ASC',1);
 
         if(count($next_classes)<1){
