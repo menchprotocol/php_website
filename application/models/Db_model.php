@@ -1377,7 +1377,15 @@ WHERE ru.ru_status >= 4
 	
 	function b_create($insert_columns){
 
-        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key','c_level'))){
+        if(missing_required_db_fields($insert_columns,array('b_outbound_c_id','b_url_key'))){
+            return false;
+        }
+		
+	//TODO this is a hack until b_is_parent is removed:
+        if(isset($insert_columns['c_level'])){
+            $insert_columns['b_is_parent'] = $insert_columns['c_level'];
+            unset($insert_columns['c_level']);
+        } elseif(!isset($insert_columns['b_is_parent'])){
             return false;
         }
 
