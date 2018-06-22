@@ -1,6 +1,6 @@
 <script>
 
-    function ru_withdraw(ru_id){
+    function withdraw_enrollment(ru_id){
 
         //Confirm that they want to do this:
         var r = confirm("Are you sure you want to withdraw your application?");
@@ -12,7 +12,7 @@
         $('#process_withdrawal_'+ru_id).html('<img src="/img/round_load.gif" class="loader" style="width:24px !important; height:24px !important;" /> Processing...').hide().fadeIn();
 
         //Save the rest of the content:
-        $.post("/api_v1/ru_withdraw", {
+        $.post("/my/withdraw_enrollment", {
 
             u_id:<?= $_GET['u_id'] ?>,
             u_key:'<?= $_GET['u_key'] ?>',
@@ -178,7 +178,7 @@ if(count($enrollments)>0 && is_array($enrollments)){
                 echo '<a href="/'.$live_bs[0]['b_url_key'].'"> | <i class="fas fa-cube"></i> Bootcamp Overview</a>';
                 if(in_array($enrollment['ru_status'],array(0,4)) && (!$start_unix || $start_unix>time())){
                     //They can still withdraw their application:
-                    echo '<span id="hide_post_withdrawal_'.$enrollment['ru_id'].'"> | <a href="javascript:void(0);" title="'.$start_unix.'" onclick="ru_withdraw('.$enrollment['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$enrollment['ru_id'].'"></span></span>';
+                    echo '<span id="hide_post_withdrawal_'.$enrollment['ru_id'].'"> | <a href="javascript:void(0);" title="'.$start_unix.'" onclick="withdraw_enrollment('.$enrollment['ru_id'].')"><i class="fas fa-times-hexagon"></i> Withdraw</a> <span id="process_withdrawal_'.$enrollment['ru_id'].'"></span></span>';
                 }
             echo '</div>';
 

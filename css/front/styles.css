@@ -669,16 +669,8 @@ h5, .h5 {
 	background-color: #EFEFEF !important;
 }
 .tip_bubble{
-	border-radius:5px;
-	border-bottom-right-radius: 1.3em;
-    border-top-right-radius: 1.3em;
-	padding:10px 15px 10px 10px;
-	font-size:16px;
-	margin:0;
-	background-color: #EFEFEF !important;
-	max-width:320px;
-	display:block;
-	margin:10px 0;
+    padding: 5px 0;
+    margin:0;
 }
 
 .crossout{
@@ -703,16 +695,17 @@ h5, .h5 {
 }
 .redalert *, .redalert { color:#FF0000 !important; }
 .msg {
-	font-size: 16px !important;
+    font-size: 0.8em !important;
     font-family: Lato !important;
     line-height: 110% !important;
-    font-weight:500 !important;
+    font-weight: 300 !important;
     color: #3C4858;
 }
 .msg a {
 	text-decoration:underline;
     overflow: hidden;
     display: inline-block;
+    font-weight: 500;
 }
 
 .list-messages video {
@@ -1579,7 +1572,7 @@ a .badge {
 .alert { box-shadow: none !important; }
 
 .i_content{
-    padding-bottom:10px;
+    padding-bottom:5px;
 }
 .card-image .i_content{
     padding-bottom:0px;

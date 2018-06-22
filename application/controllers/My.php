@@ -884,7 +884,240 @@ class My extends CI_Controller {
         ));
     }
 
+    function checkout_submit(){
 
+        //When students complete the checkout process:
+        $application_status_salt = $this->config->item('application_status_salt');
+        $_POST['ru_support_package'] = intval($_POST['ru_support_package']);
+
+        if(!isset($_POST['r_id']) || !isset($_POST['ru_network_level']) || !isset($_POST['ru_inbound_u_id']) || intval($_POST['r_id'])<1 || !in_array($_POST['ru_support_package'],array(1,2)) || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+
+            //Log engagement:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => ( isset($_POST['u_id']) ? intval($_POST['u_id']) : 0 ),
+                'e_text_value' => 'checkout_submit() Missing Core Inputs.',
+                'e_json' => $_POST,
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+
+            //Display Error:
+            die('<span style="color:#FF0000;">Error: Missing Core Inputs. Report Logged for Admin to review.</span>');
+        }
+
+        //Fetch their enrollment:
+        $enrollments = $this->Db_model->remix_enrollments(array(
+            'ru.ru_id'	=> intval($_POST['ru_id']),
+        ));
+
+        //Fetch selected Class:
+        $chosen_classes = $this->Db_model->r_fetch(array(
+            'r.r_id' => $_POST['r_id'],
+            'r.r_status >=' => ( $_POST['ru_support_package']>=2 ? 1 : 0 ),
+        ), null, 'DESC', 1, array('b'));
+
+
+        //Make sure we got all this data:
+        if(!(count($enrollments)==1) || !isset($enrollments[0]['b_id'])){
+
+            //Log this error:
+            $this->Db_model->e_create(array(
+                'e_inbound_u_id' => $_POST['u_id'],
+                'e_text_value' => 'checkout_submit() failed to fetch enrollment data.',
+                'e_json' => $_POST,
+                'e_inbound_c_id' => 8, //Platform Error
+            ));
+
+            //Error:
+            die('<span style="color:#FF0000;">Error: Failed to fetch enrollment data. Report Logged for Admin to review.</span>');
+
+        } elseif($enrollments[0]['c_level']==1 /* Multi-Week Bootcamp */){
+
+            //Delete all existing child Enrollments, which IF exist, would be from the last submission:
+            $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
+
+            //Now go through all Bootcamps and see if their Classes are available with this start date
+            $not_available_reason = null;
+            foreach($enrollments[0]['c__child_intents'] as $key=>$b7d){
+
+                //Fetch corresponding Class:
+                $validate_classes = $this->Db_model->r_fetch(array(
+                    'r.r_b_id' => $b7d['b_id'],
+                    'r.r_start_date' => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )),
+                    'r.r_status >=' => ( $_POST['ru_support_package']>=2 ? 1 : 0 ),
+                ), null, 'DESC', 1, array('b'));
+
+
+                if(count($validate_classes)<1){
+                    //Class not found!
+                    $not_available_reason = 'Not Found';
+                    break;
+                } else {
+                    //Create student enrollment:
+                    $this->Db_model->ru_create(array(
+                        'ru_b_id' 	        => $validate_classes[0]['b_id'],
+                        'ru_r_id' 	        => $validate_classes[0]['r_id'],
+                        'ru_outbound_u_id' 	=> $enrollments[0]['u_id'],
+                        'ru_status'         => ( $_POST['ru_support_package']>=2 ? 0 /* Pending Payment*/ : 4 ),
+                        'ru_fp_id'          => $enrollments[0]['b_fp_id'],
+                        'ru_assessment_result'          => $enrollments[0]['ru_assessment_result'],
+                        'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
+                        'ru_parent_ru_id'   => $_POST['ru_id'], //To indicate the Parent of this Bootcamp
+
+                        'ru_network_level'  => $_POST['ru_network_level'],
+                        'ru_inbound_u_id'   => $_POST['ru_inbound_u_id'],
+                        'ru_support_package'=> $_POST['ru_support_package'],
+
+                        'ru_start_time'     => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600)  /* For GMT/timezone adjustments */ )).' 00:00:00',
+                        'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($key+1)*7*24*3600)-(12*3600)  /* For GMT/timezone adjustments */ )).' 23:59:59',
+                        'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+                    ));
+
+                }
+            }
+
+            if($not_available_reason){
+                //Ooops we had an issue finding all child Classes:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $_POST['u_id'],
+                    'e_text_value' => 'checkout_submit() failed to fetch all child Classess.',
+                    'e_json' => $_POST,
+                    'e_inbound_c_id' => 8, //Platform Error
+                ));
+
+                //Delete all existing child Enrollments again:
+                $this->db->query("DELETE FROM v5_class_students WHERE ru_parent_ru_id=".$_POST['ru_id']);
+
+                //Error:
+                die('<span style="color:#FF0000;">Error: Failed to enroll you to this multi-week Bootcamp starting ['.date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($key*7*24*3600)+(12*3600))).'].</span>');
+            }
+
+        }
+
+
+        //Log Engagement:
+        $this->Db_model->e_create(array(
+            'e_inbound_u_id' => $_POST['u_id'],
+            'e_json' => $_POST,
+            'e_inbound_c_id' => 26, //Checkout Submitted (Pending Payment)
+            'e_b_id' => $enrollments[0]['b_id'],
+            'e_r_id' => $_POST['r_id'],
+        ));
+
+        //Default next URL is the student application dashboard (This may be over-written with logic below)
+        $next_url = '/my/applications?pay_ru_id='.$enrollments[0]['ru_id'].'&u_key='.$_POST['u_key'].'&u_id='.$_POST['u_id'];
+
+
+        //Save checkout preferences (Still not finalized):
+        $this->Db_model->ru_update( intval($_POST['ru_id']) , array(
+            'ru_fp_id'          => $enrollments[0]['b_fp_id'],
+            'ru_fp_psid'        => ( $enrollments[0]['b_fp_id']==$enrollments[0]['u_cache__fp_id'] ? $enrollments[0]['u_cache__fp_psid'] : 0 ),
+            'ru_status'         => 0, //Pending as it might be updated with ru_finalize()
+
+            'ru_network_level'  => $_POST['ru_network_level'],
+            'ru_inbound_u_id'   => $_POST['ru_inbound_u_id'],
+            'ru_support_package'=> $_POST['ru_support_package'],
+
+            //Class details:
+            'ru_r_id'           => $_POST['r_id'],
+            'ru_start_time'     => $chosen_classes[0]['r_start_date'].' 00:00:00',
+            'ru_end_time'       => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+($enrollments[0]['b__week_count']*7*24*3600)-(12*3600))).' 23:59:59',
+            'ru_outcome_time'   => date("Y-m-d",(strtotime($chosen_classes[0]['r_start_date'])+(($enrollments[0]['b__week_count']+$enrollments[0]['b_guarantee_weeks'])*7*24*3600)-(12*3600))).' 23:59:59',
+        ));
+
+
+        //Is this a free DIY Bootcamp? If so, we can fast forward the payment step...
+        if($_POST['ru_support_package']==1){
+
+            //Update the enrollment as its now paid:
+            $this->Db_model->ru_finalize($_POST['ru_id']);
+
+            //Do they have a custom URL?
+            if(strlen($enrollments[0]['b_post_enrollment_url_diy'])>0){
+                $next_url = $enrollments[0]['b_post_enrollment_url_diy'];
+            }
+
+        } elseif($_POST['ru_support_package']==2){
+
+            //They requested to Book a Free Consultation Call:
+            $us_coach = $this->Db_model->u_fetch(array(
+                'u_id' => $_POST['ru_inbound_u_id'],
+            ), array('u_booking_x_id'));
+            if(count($us_coach)>0){
+                //Booking URL for this coach:
+                $next_url = $us_coach[0]['x_url'];
+
+                //Log engagement for this:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $enrollments[0]['ru_outbound_u_id'],
+                    'e_outbound_u_id' => $_POST['ru_inbound_u_id'],
+                    'e_inbound_c_id' => 7098, //Redirected to Book Free Consultation Call
+                    'e_b_id' => $enrollments[0]['b_id'],
+                    'e_r_id' => $_POST['r_id'],
+                    'e_x_id' => $us_coach[0]['x_id'],
+                ));
+            }
+        }
+
+        //We're good now, lets redirect to application status page and MAYBE send them to paypal asap:
+        //Show message & redirect:
+        echo '<script> setTimeout(function() { window.location = "'.$next_url.'" }, 1000); </script>';
+        echo '<span><img src="/img/round_done.gif?time='.time().'" class="loader"  /></span><div>'.( $_POST['ru_support_package']==2 ? 'Redirecting to Book Call With '.one_two_explode('',' ', $us_coach[0]['u_full_name']) : 'Successfully Enrolled 🙌​').'</div>';
+
+    }
+
+    function withdraw_enrollment(){
+        //Validate inputs:
+        $application_status_salt = $this->config->item('application_status_salt');
+        if(!isset($_POST['u_key']) || !isset($_POST['u_id']) || intval($_POST['u_id'])<1 || !isset($_POST['ru_id']) || intval($_POST['ru_id'])<1 || !(md5($_POST['u_id'].$application_status_salt)==$_POST['u_key'])){
+            //Log this error:
+            echo_json(array(
+                'status' => 0,
+                'message' => 'Error: Invalid Inputs',
+            ));
+        } else {
+
+            //Attempt to withdraw user:
+            $enrollments = $this->Db_model->ru_fetch(array(
+                'ru.ru_status <='  => 4, //Initiated or higher as long as Bootcamp is running!
+                'ru.ru_outbound_u_id'	=> $_POST['u_id'],
+                'ru.ru_id'	    => $_POST['ru_id'],
+            ));
+
+            if(count($enrollments)==1){
+
+                //All good, withdraw:
+                $this->Db_model->ru_update( $_POST['ru_id'] , array(
+                    'ru_status' => -2,
+                ));
+
+                //Also withdraw from any potential child enrollments:
+                $this->db->query("UPDATE v5_class_students SET ru_status=-2 WHERE ru_parent_ru_id=".$_POST['ru_id']);
+
+                //Log Engagement:
+                $this->Db_model->e_create(array(
+                    'e_inbound_u_id' => $enrollments[0]['u_id'], //System
+                    'e_inbound_c_id' => 66, //Application Withdraw
+                    'e_b_id' => $enrollments[0]['ru_b_id'],
+                    'e_r_id' => $enrollments[0]['r_id'],
+                ));
+
+                //Inform User:
+                echo_json(array(
+                    'status' => 1,
+                    'message' => echo_status('ru',-2,0,'top'),
+                ));
+
+            } else {
+
+                //Error, Inform User:
+                echo_json(array(
+                    'status' => 0,
+                    'message' => 'Error: Withdraw no longer possible as your application status has changed.',
+                ));
+
+            }
+        }
+    }
 
     function checkout_pay($b_url_key){
 
@@ -936,9 +1169,7 @@ class My extends CI_Controller {
         $this->load->view('front/shared/p_footer');
     }
 
-
     function checkout_assessment($b_url_key='JuniorFullStack' /* Junior FSD Job Placement */){
-
 
         //Validate Bootcamp ID:
         $bs = $this->Db_model->remix_bs(array(

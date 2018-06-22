@@ -30,7 +30,7 @@
                     <i class="fas fa-globe" style="color:#3C4858;"></i>
                 </div>
                 <h3 class="info-title">Online Classrooms</h3>
-                <p>Everything is designed to be completed online are designed to be completed online with fellow classmates. Our execution-based classrooms focus on building up the skills you need to land your next awesome coding job.</p>
+                <p>Everything is designed to be completed online. You can also choose to network with your fellow classmates to faster build the critical skills to land your next awesome coding job.</p>
             </div>
         </div>
 

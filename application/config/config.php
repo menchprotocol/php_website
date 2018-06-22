@@ -20,8 +20,9 @@ $config['fb_settings'] = array(
 
 $config['class_settings'] = array(
     'create_weeks_ahead'        => 55, //How many weeks ahead should we create classes?
-    'coach_show_default'   => 10, //Visible by default in Console for Coaches
+    'coach_show_default'        => 10, //Visible by default in Console for Coaches
     'landing_page_visible'      => 5, //Classes & Tasks visible in the Landing Page by default
+    'landing_pagetask_visible'  => 3, //Tasks underneath each Bootcamp
     'students_show_max'         => 13, //Maximum available for students to see
 );
 
@@ -55,7 +56,7 @@ $config['aws_credentials'] = [
 $config['mench_support_team'] = array(1,2); //Miguel and Shervin @ This Time
 
 //The engagements that coaches are subscribed to:
-$config['coach_subscriptions'] = array(57,60,68,69,70,72,7093);
+$config['coach_subscriptions'] = array(57,60,68,69,70,72,7093,7098);
 
 //Email-based engagements subscriptions:
 $config['engagement_subscriptions'] = array(
@@ -289,7 +290,7 @@ $config['object_statuses'] = array(
         ),
         3 => array(
             's_name'  => '1-on-1 Coaching - Deferred',
-            's_desc'  => 'Student will receive 1-on-1 coaching using deferred payments',
+            's_desc'  => 'Student will receive 1-on-1 coaching using Deferred Payments',
             's_icon' => 'fas fa-users',
         ),
     ),
@@ -641,7 +642,7 @@ $config['engagement_references'] = array(
         'object_code' => 'u',
     ),
     'e_b_id' => array(
-        'name' => 'bootcamp',
+        'name' => 'Bootcamp',
         'object_code' => 'b',
     ),
     'e_r_id' => array(

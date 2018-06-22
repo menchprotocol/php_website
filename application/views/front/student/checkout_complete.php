@@ -6,13 +6,11 @@ $pre_req_array = prep_prerequisites($b);
 <script>
 var current_section = 1; //The index for the wizard
 var ru_support_package = 0; //Not selected yet
-var ru_upfront_pay = 0;
 var ru_inbound_u_id = 0; //Coach ID
 var ru_network_level = 0; //Not selected
 
 function set_package(package_id){
     //Set price based on chosen package:
-    ru_upfront_pay = parseFloat( $('#p_name_'+package_id).attr('data-price'));
     ru_support_package = package_id;
 
     //Move forward:
@@ -90,7 +88,7 @@ function move_ui(adjustment){
 		    //Update details:
             $('#class_dates').html($('#start_dates').find(":selected").text());
 
-            if(ru_upfront_pay<=0){
+            if(ru_support_package==1){
                 //Reset coaching:
                 ru_inbound_u_id = 0;
             }
@@ -149,8 +147,9 @@ function move_ui(adjustment){
         //Hide both buttons:
         $('#btn_next, #btn_prev').hide();
 
+
         //Send for processing:
-        $.post("/api_v1/ru_checkout_complete", {
+        $.post("/my/checkout_submit", {
 
             //Core variables:
             ru_id:<?= $ru_id ?>,
@@ -158,7 +157,6 @@ function move_ui(adjustment){
             u_key:'<?= $u_key ?>',
             ru_support_package:ru_support_package,
             ru_inbound_u_id:ru_inbound_u_id,
-            ru_upfront_pay:ru_upfront_pay,
             ru_network_level:ru_network_level,
             r_id:$('#start_dates').val(),
 
@@ -166,6 +164,7 @@ function move_ui(adjustment){
             //Append data to view:
             $( "#application_result" ).html(data);
         });
+
     } else if((current_section+1)==total_steps){
 
         //This is the confirmation view before they submit:

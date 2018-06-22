@@ -65,7 +65,8 @@ $( document ).ready(function() {
 
 
         <h3><i class="fas fa-trophy"></i> Skills You Will Gain</h3>
-        <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ul><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ul>' : 'Not Set Yet' ) ?></div>
+        <div id="b_transformations"><?= ( strlen($b['b_transformations'])>0 ? '<ol><li>'.join('</li><li>',json_decode($b['b_transformations'])).'</li></ol>' : 'Not Set Yet' ) ?></div>
+
 
         <h3><i class="fas fa-shield-check"></i> Prerequisites</h3>
         <?php $pre_req_array = prep_prerequisites($b); ?>
@@ -86,30 +87,53 @@ $( document ).ready(function() {
                         echo ' &nbsp;<i class="fas fa-clock"></i> <span style="border-bottom:1px dotted #999;" data-toggle="tooltip" data-placement="top" title="This week is estimated to need '.echo_hours($b7d['c__estimated_hours'],0).' to complete all Tasks">'.echo_hours($b7d['c__estimated_hours'],1).'</span> &nbsp; ';
                     }
                     echo '</a></h4>';
+
+
+
+
                     echo '<div class="toggleview c_'.$key.'" style="display:none;">';
-                    //Display all Active Tasks:
-                    $intent_count = 0;
-                    if(count($b7d['c__child_intents'])>0){
-                        echo '<ul style="list-style:none; margin-left:-40px;">';
-                        foreach($b7d['c__child_intents'] as $intent){
-                            if($intent['c_status']<1){
-                                continue; //Not published yet
+                        //First show all messages for this Bootcamp:
+                        foreach($b7d['c__messages'] as $i){
+                            if($i['i_status']==1){
+                                echo '<div class="tip_bubble">';
+                                echo echo_i( array_merge( $i , array(
+                                    'noshow' => 1,
+                                    'e_b_id'=>$b['b_id'],
+                                )) , 'Dear Student' ); //As they are a guest at this point
+                                echo '</div>';
                             }
-                            $intent_count++;
-                            echo '<li>Task '.$intent['cr_outbound_rank'].': '.$intent['c_outcome'].'</li>';
                         }
-                        echo '</ul>';
-                    }
 
 
+                        //Regular weekly Bootcamp:
+                        echo '<div class="list-group actionplan_list">';
+                        $counter = 0;
+                        foreach($b7d['c__child_intents'] as $child_intent){
+                            if($child_intent['c_status']>=1){
+                                if($counter==$class_settings['landing_pagetask_visible']){
+                                    echo '<a href="javascript:void(0);" onclick="$(\'.show_full_list_'.$key.'\').toggle();" class="show_full_list_'.$key.' list-group-item">Review All Tasks for This Week <i class="fas fa-chevron-right"></i></a>';
+                                }
+                                echo '<li class="list-group-item '.( $counter>=$class_settings['landing_pagetask_visible'] ? 'show_full_list_'.$key.'" style="display:none;"' : '"' ).'>';
+                                //echo '<span class="pull-right">'.($child_intent['c__estimated_hours']>0 ? echo_estimated_time($child_intent['c__estimated_hours'],1) : '').'</span>';
+                                echo $this->lang->line('level_2_icon').' ';
+                                echo $child_intent['c_outcome'];
+                                echo '</li>';
+                                $counter++;
+                            }
+                        }
+                        echo '</div>';
                     echo '</div>';
+
+
+
+
                     echo '</div>';
                 }
 
             } else {
 
                 //Regular weekly Bootcamp:
-                echo '<div class="list-group maxout actionplan_list">';
+                echo '<div class="list-group actionplan_list">';
                 $counter = 0;
                 foreach($b['c__child_intents'] as $child_intent){
                     if($child_intent['c_status']>=1){
