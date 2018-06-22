@@ -1051,6 +1051,7 @@ class My extends CI_Controller {
                     'e_inbound_u_id' => $enrollments[0]['ru_outbound_u_id'],
                     'e_outbound_u_id' => $_POST['ru_inbound_u_id'],
                     'e_inbound_c_id' => 7098, //Redirected to Book Free Consultation Call
+                    'e_text_value' => 'To book a call with ['.$us_coach[0]['u_full_name'].'] as their coach',
                     'e_b_id' => $enrollments[0]['b_id'],
                     'e_r_id' => $_POST['r_id'],
                     'e_x_id' => $us_coach[0]['x_id'],

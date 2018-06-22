@@ -780,7 +780,7 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
                 <div class="dash-label"><span class="icon-left"><i class="fas fa-globe"></i></span> FREE Online Classroom Access</div>
                 <?= echo_diy($b) ?>
             </div>
-            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=1" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(1);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Take Online Assessment' : 'Do It Youself for Free' ) ?> <i class="fas fa-chevron-right"></i></a>
+            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=1" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(1);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Continue' : 'Do It Youself for Free' ) ?> <i class="fas fa-chevron-right"></i></a>
         </div>
         <?= ( !$is_landing_page ? '</div>' : '' ) ?>
         <?php
@@ -828,7 +828,7 @@ function echo_package($b,$is_diy,$is_landing_page,$enrollment=array()){
             <?php if(count($enrollment)){ ?>
                 <a href="/<?= $b['b_url_key'] ?>/pay?u_email=shervin@mench.com&payment=<?= $coaching_price ?>" class="btn btn-primary"><?= 'Pay $'.$coaching_price.' USD'.( $b['b_offers_deferred'] ? ' Up-front' : ''  ).' <i class="fas fa-chevron-right"></i>' ?></a>
             <?php } else { ?>
-            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=2" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(2);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Take Online Assessment' : 'Book Free Consultation' ) ?> <i class="fas fa-chevron-right"></i></a>
+            <a <?= ( $is_landing_page ? 'href="/'.$b['b_url_key'].'/enroll?package_id=2" class="btn btn-primary"' : 'href="javascript:void(0);" onclick="set_package(2);"' ) ?>><?= ( $b['b_requires_assessment'] && $is_landing_page ? 'Continue' : 'Book Free Consultation' ) ?> <i class="fas fa-chevron-right"></i></a>
             <?php } ?>
 
 
