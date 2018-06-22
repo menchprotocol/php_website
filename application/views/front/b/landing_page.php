@@ -220,7 +220,7 @@ $( document ).ready(function() {
 </div>
 
 
-<div>
+<div class="main main-raised main-plain">
 <div class="container">
 	
 <?php $this->load->view('front/b/bs_include'); ?>
